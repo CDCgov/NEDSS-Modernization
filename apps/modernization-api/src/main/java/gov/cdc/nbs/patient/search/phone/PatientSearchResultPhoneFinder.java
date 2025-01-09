@@ -12,8 +12,8 @@ class PatientSearchResultPhoneFinder {
           select distinct
               [phone_number].phone_nbr_txt    as [phone_number],
               [phone_number].extension_txt    as [extension],
-              [locators].cd                   as [type_cd],
-              [locators].use_cd               as [use_cd]
+              IsNull([locators].cd, '')       as [type_cd],
+              IsNull([locators].use_cd,'')    as [use_cd]
           from Entity_locator_participation [locators]
 
               join Tele_locator [phone_number] on
@@ -24,7 +24,7 @@ class PatientSearchResultPhoneFinder {
 
           where   [locators].entity_uid = ?
               and [locators].[class_cd] = 'TELE'
-              and [locators].cd <> 'NET'
+              and ([locators].cd is null or [locators].cd <> 'NET')
               and [locators].record_status_cd = 'ACTIVE'
       """;
   private static final int PATIENT_PARAMETER = 1;

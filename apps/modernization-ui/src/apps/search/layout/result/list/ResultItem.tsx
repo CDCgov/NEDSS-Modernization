@@ -12,7 +12,11 @@ type ResultItemProps = {
 
 const ResultItem = ({ label, orientation = 'horizontal', children }: ResultItemProps) => {
     return (
-        <div className={classNames(styles.item, { [styles.vertical]: orientation === 'vertical' })}>
+        <div
+            className={classNames(styles.item, {
+                [styles.vertical]: orientation === 'vertical',
+                [styles.horizontal]: orientation === 'horizontal'
+            })}>
             <span className={styles.label}>{label}</span>
             <Value>{children}</Value>
         </div>

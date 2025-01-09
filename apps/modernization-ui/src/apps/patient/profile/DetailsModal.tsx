@@ -19,8 +19,6 @@ type Props = {
     onDelete?: () => void;
 };
 
-const noData = <NoData />;
-
 const renderField = (detail: Detail, index: number) => (
     <Grid key={index} col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
         <Grid row>
@@ -30,7 +28,7 @@ const renderField = (detail: Detail, index: number) => (
     </Grid>
 );
 
-const maybeRender = (value: string | number | null | undefined) => <>{value}</> ?? noData;
+const maybeRender = (value: string | number | null | undefined) => value ?? <NoData />;
 
 export const DetailsModal = ({ modal, title, onClose, details, onEdit, onDelete }: Props) => {
     return (
@@ -40,7 +38,7 @@ export const DetailsModal = ({ modal, title, onClose, details, onEdit, onDelete 
                 <Icon.Close size={3} onClick={onClose} />
             </header>
             <div className={styles.content}>
-                <section>{(details && <Grid row>{details.map(renderField)}</Grid>) || noData}</section>
+                <section>{(details && <Grid row>{details.map(renderField)}</Grid>) || <NoData />}</section>
             </div>
             <footer className={styles.footer}>
                 {onDelete && (

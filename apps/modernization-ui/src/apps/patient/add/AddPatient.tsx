@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import { PersonInput, useCreatePatientMutation } from 'generated/graphql/schema';
+import { useCreatePatientMutation } from 'generated/graphql/schema';
 import { Button, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
-
 import { StateCodedValues, useLocationCodedValues } from 'location';
 import { useAddPatientCodedValues } from 'apps/patient/add/useAddPatientCodedValues';
 import { asPersonInput } from 'apps/patient/add/asPersonInput';
-
 import { NameFields } from 'apps/patient/add/nameFields/NameFields';
 import AddressFields from 'apps/patient/add/addressFields/AddressFields';
 import ContactFields from 'apps/patient/add/contactFields/ContactFields';
@@ -16,17 +13,20 @@ import RaceFields from 'apps/patient/add/Race/RaceFields';
 import GeneralInformation from 'apps/patient/add/generalInformation/generalInformation';
 import { IdentificationFields } from 'apps/patient/add/identificationFields/IdentificationFields';
 import OtherInfoFields from 'apps/patient/add/otherInfoFields/OtherInfoFields';
-import './AddPatient.scss';
 import { VerifiableAdddress, AddressVerificationModal } from 'address/verification';
 import { orNull } from 'utils';
 import { DefaultNewPatentEntry, initialEntry, NewPatientEntry } from 'apps/patient/add';
 import { usePreFilled } from 'apps/patient/add/usePreFilled';
-import { SuccessModal } from 'success';
 import { useConfiguration } from 'configuration';
-import { ClassicButton } from 'classic';
-import { AddPatientSideNav } from './nav/AddPatientSideNav';
-import { asValue } from 'options';
 import { useBasicExtendedTransition } from './useBasicExtendedTransition';
+import { DataEntryMenu } from './DataEntryMenu';
+import { Shown } from 'conditional-render';
+import { PatientCreatedPanel } from './PatientCreatedPanel';
+
+import './AddPatient.scss';
+import { CreatedPatient } from './api';
+import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
+import { useLocation } from 'react-router-dom';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -58,7 +58,7 @@ const withVerifiedAddress = (entry: NewPatientEntry, address: VerifiableAdddress
     ...entry,
     streetAddress1: address.address1,
     city: address.city,
-    state: asValue(address.state),
+    state: address.state,
     zip: address.zip
 });
 
@@ -68,17 +68,9 @@ type EntryState =
           step: 'verify-missing-fields' | 'verify-address' | 'create';
           entry: NewPatientEntry;
       }
-    | { step: 'created'; shortId: number; id: number; name: string };
-
-const resolveName = (input: PersonInput): string => {
-    const name = input?.names && input?.names[0];
-
-    return (name && [name.last, name.first].filter((e) => e).join(', ')) || 'Patient';
-};
+    | { step: 'created'; created: CreatedPatient };
 
 const AddPatient = () => {
-    const navigate = useNavigate();
-
     const locations = useLocationCodedValues();
     const coded = useAddPatientCodedValues();
 
@@ -88,24 +80,29 @@ const AddPatient = () => {
 
     const [entryState, setEntryState] = useState<EntryState>({ step: 'entry' });
 
-    const prefillled = usePreFilled(initialEntry());
+    const prefilled = usePreFilled(initialEntry());
 
     const { toExtended } = useBasicExtendedTransition();
 
-    useEffect(() => {
-        reset(prefillled);
-    }, [prefillled]);
-
     const methods = useForm<NewPatientEntry, DefaultNewPatentEntry>({
-        defaultValues: initialEntry(),
+        defaultValues: {
+            ...initialEntry(),
+            country: {
+                value: '840',
+                name: 'United States'
+            }
+        },
         mode: 'onBlur'
     });
 
     const {
         handleSubmit,
-        reset,
         formState: { errors }
     } = methods;
+
+    useEffect(() => {
+        methods.reset(prefilled, { keepDefaultValues: true });
+    }, [prefilled, methods.reset]);
 
     const formHasErrors = Object.keys(errors).length > 0;
 
@@ -125,7 +122,6 @@ const AddPatient = () => {
 
     const create = (entry: NewPatientEntry) => {
         const payload = asPersonInput(entry);
-        const name = resolveName(payload);
 
         handleSavePatient({
             variables: {
@@ -137,14 +133,27 @@ const AddPatient = () => {
             }
         }).then((result) => {
             if (result.data?.createPatient) {
-                setEntryState({
-                    step: 'created',
+                const created: CreatedPatient = {
                     shortId: result?.data?.createPatient.shortId,
                     id: result?.data?.createPatient.id,
-                    name: name
+                    name: {
+                        first: entry.firstName ?? undefined,
+                        last: entry.lastName ?? undefined
+                    }
+                };
+
+                setEntryState({
+                    step: 'created',
+                    created
                 });
             }
         });
+    };
+
+    const { toSearch } = useSearchFromAddPatient();
+    const location = useLocation();
+    const handleCancel = () => {
+        toSearch(location.state.criteria);
     };
 
     useEffect(() => {
@@ -225,37 +234,11 @@ const AddPatient = () => {
                     onCancel={cancelSubmission}
                 />
             )}
-            {entryState.step === 'created' && (
-                <SuccessModal
-                    modal={modalRef}
-                    title="Success"
-                    actions={
-                        <>
-                            <ClassicButton outline url={`/nbs/api/profile/${entryState.id}/report/lab`}>
-                                Add lab report
-                            </ClassicButton>
-                            <ClassicButton outline url={`/nbs/api/profile/${entryState.id}/investigation`}>
-                                Add investigation
-                            </ClassicButton>
-                            <Button
-                                type="button"
-                                onClick={() =>
-                                    navigate(`/patient-profile/${entryState.step === 'created' && entryState.shortId}`)
-                                }>
-                                View patient
-                            </Button>
-                        </>
-                    }>
-                    <h3>You have successfully added a new patient</h3>
-                    <p>
-                        A patient file for {(entryState.step === 'created' && entryState.name) || 'the patient'}&nbsp;
-                        (Patient ID: {entryState.shortId}) has been added. You can now either view the patient, add a
-                        report for this patient or add an investigation for this patient using the buttons below.
-                    </p>
-                </SuccessModal>
-            )}
+            <Shown when={entryState.step === 'created'}>
+                {entryState.step === 'created' && <PatientCreatedPanel created={entryState.created} />}
+            </Shown>
             <Grid col={3} className="bg-white">
-                <AddPatientSideNav />
+                <DataEntryMenu />
             </Grid>
             <Grid col={9} className="margin-left-auto" style={{ position: 'relative' }}>
                 <FormProvider {...methods}>
@@ -283,7 +266,17 @@ const AddPatient = () => {
                                             Add extended data
                                         </Button>
                                     )}
-                                    <Button className="add-patient-button" type={'submit'}>
+                                    <Button
+                                        className="add-patient-button"
+                                        onClick={handleCancel}
+                                        type={'button'}
+                                        outline>
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        className="add-patient-button"
+                                        type={'button'}
+                                        onClick={handleSubmit(evaluateMissingFields)}>
                                         Save changes
                                     </Button>
                                 </div>

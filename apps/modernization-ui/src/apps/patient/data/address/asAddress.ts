@@ -1,18 +1,27 @@
 import { asValue } from 'options';
 import { Address } from '../api';
-import { AddressEntry } from '../entry';
+import { AddressEntry } from './entry';
+import { exists, orUndefined } from 'utils';
 
-const asAddress = (entry: AddressEntry): Address => {
-    const { use, type, state, county, country, ...remaining } = entry;
+const asAddress = (entry: AddressEntry): Address | undefined => {
+    const { asOf, use, type, state, county, country, address1, address2, city, zipcode, censusTract, comment } = entry;
 
-    return {
-        type: asValue(type),
-        use: asValue(use),
-        county: asValue(county),
-        state: asValue(state),
-        country: asValue(country),
-        ...remaining
-    };
+    if (asOf && exists(use) && exists(type)) {
+        return {
+            asOf,
+            type: asValue(type),
+            use: asValue(use),
+            county: asValue(county),
+            state: asValue(state),
+            country: asValue(country),
+            address1: orUndefined(address1),
+            address2: orUndefined(address2),
+            city: orUndefined(city),
+            zipcode: orUndefined(zipcode),
+            censusTract: orUndefined(censusTract),
+            comment: orUndefined(comment)
+        };
+    }
 };
 
 export { asAddress };

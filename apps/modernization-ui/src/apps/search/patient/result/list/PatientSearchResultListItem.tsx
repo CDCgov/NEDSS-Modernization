@@ -1,5 +1,4 @@
 import { PatientSearchResult } from 'generated/graphql/schema';
-import { internalizeDate } from 'date';
 
 import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
 import {
@@ -7,7 +6,8 @@ import {
     displayOtherNames,
     displayEmails,
     displayAddresses,
-    displayProfileLegalName
+    displayProfileLegalName,
+    displayPatientAge
 } from 'apps/search/patient/result';
 
 type Props = {
@@ -20,7 +20,7 @@ const PatientSearchResultListItem = ({ result }: Props) => (
             <ResultItem label="Patient name" orientation="vertical">
                 {displayProfileLegalName(result)}
             </ResultItem>
-            <ResultItem label="Date of birth">{internalizeDate(result.birthday)}</ResultItem>
+            <ResultItem label="DOB/Age">{result.birthday && displayPatientAge(result, 'singleline')}</ResultItem>
             <ResultItem label="Current sex">{result.gender}</ResultItem>
             <ResultItem label="Patient ID">{result.shortId}</ResultItem>
         </ResultItemGroup>

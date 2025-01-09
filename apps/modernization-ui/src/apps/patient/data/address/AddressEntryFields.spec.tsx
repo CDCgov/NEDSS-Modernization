@@ -1,9 +1,8 @@
-import { render, waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
-import { AddressEntry } from '../entry';
-import { AddressEntryFields } from './AddressEntryFields';
 import userEvent from '@testing-library/user-event';
+import { render, waitFor, act } from '@testing-library/react';
+import { AddressEntry } from './entry';
+import { AddressEntryFields } from './AddressEntryFields';
 
 const mockPatientAddressCodedValues = {
     types: [{ name: 'House', value: 'H' }],
@@ -53,7 +52,7 @@ const Fixture = () => {
     );
 };
 
-describe('AddressEntryFields', () => {
+describe('when entering patient address demographics', () => {
     it('should render the proper labels', () => {
         const { getByLabelText } = render(<Fixture />);
 
@@ -80,7 +79,7 @@ describe('AddressEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('Type is required.')).toBeInTheDocument();
+            expect(getByText('The Type is required.')).toBeInTheDocument();
         });
     });
 
@@ -93,21 +92,20 @@ describe('AddressEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('Use is required.')).toBeInTheDocument();
+            expect(getByText('The Use is required.')).toBeInTheDocument();
         });
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Address as of');
         act(() => {
             userEvent.click(asOf);
             userEvent.tab();
         });
-        await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
-        });
+
+        expect(await findByText('The Address as of is required.')).toBeInTheDocument();
     });
 
     it('should be valid with as of, type, and use', async () => {
@@ -156,7 +154,7 @@ describe('AddressEntryFields', () => {
         userEvent.tab();
 
         const validationMessage =
-            'Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.';
+            'The Census tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
@@ -185,7 +183,8 @@ describe('AddressEntryFields', () => {
         userEvent.paste(zipCodeInput, value);
         userEvent.tab();
 
-        const validationMessage = 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).';
+        const validationMessage =
+            'Please enter a valid Zip (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);

@@ -104,7 +104,7 @@ export const AddressEntryFields = () => {
                             state: selectedState ?? undefined,
                             zip: enteredZip ?? undefined
                         }}
-                        defaultValue={value ?? ''}
+                        value={value ?? undefined}
                         onChange={onChange}
                         onBlur={onBlur}
                         onSelection={handleSuggestionSelection}
@@ -172,7 +172,8 @@ export const AddressEntryFields = () => {
                 rules={{
                     pattern: {
                         value: /^\d{5}(?:[-\s]\d{4})?$/,
-                        message: 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
+                        message:
+                            'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).'
                     },
                     ...maxLengthRule(20)
                 }}

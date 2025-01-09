@@ -8,6 +8,7 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.IOException;
+import java.net.URI;
 
 /**
  * A {@link ClientHttpRequestInterceptor} that adds basic logging to any requests made to the classic NBS application to
@@ -28,13 +29,16 @@ class ClassicOutgoingLoggingHttpRequestInterceptor implements ClientHttpRequestI
 
     if (LOG.isDebugEnabled()) {
 
-      String path = request.getURI().getRawPath();
+      URI uri = request.getURI();
+      String path = uri.getRawPath();
 
+      String content = new String(body);
       LOG.debug(
-          "{} {}\tResponse: {}",
+          "{} {}\tResponse: {}\n\n{}",
           request.getMethod().name(),
           path,
-          response.getStatusCode()
+          response.getStatusCode(),
+          content
       );
     }
 

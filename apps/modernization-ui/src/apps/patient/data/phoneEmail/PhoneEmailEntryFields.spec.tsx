@@ -1,9 +1,8 @@
-import { render, waitFor, screen } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
-import { FormProvider, useForm } from 'react-hook-form';
-import { PhoneEmailEntry } from '../entry';
-import { PhoneEmailEntryFields } from './PhoneEmailEntryFields';
+import { render, waitFor, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+import { PhoneEmailEntry } from './entry';
+import { PhoneEmailEntryFields } from './PhoneEmailEntryFields';
 
 const mockPatientPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],
@@ -36,7 +35,7 @@ const Fixture = () => {
     );
 };
 
-describe('PhoneEmailEntryFields', () => {
+describe('when entering patient phone & email demographics', () => {
     it('should render the proper labels', () => {
         const { getByLabelText } = render(<Fixture />);
 
@@ -59,7 +58,7 @@ describe('PhoneEmailEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('Type is required.')).toBeInTheDocument();
+            expect(getByText('The Type is required.')).toBeInTheDocument();
         });
     });
 
@@ -72,21 +71,20 @@ describe('PhoneEmailEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('Use is required.')).toBeInTheDocument();
+            expect(getByText('The Use is required.')).toBeInTheDocument();
         });
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Phone & email as of');
         act(() => {
             userEvent.click(asOf);
             userEvent.tab();
         });
-        await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
-        });
+
+        expect(await findByText('The Phone & email as of is required.')).toBeInTheDocument();
     });
 
     it('should be valid with as of, type, and use', async () => {
@@ -106,9 +104,9 @@ describe('PhoneEmailEntryFields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('Type is required.')).not.toBeInTheDocument();
-            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
-            expect(queryByText('Use is required.')).not.toBeInTheDocument();
+            expect(queryByText('The Type is required')).not.toBeInTheDocument();
+            expect(queryByText('The As of date is required')).not.toBeInTheDocument();
+            expect(queryByText('The Use is required')).not.toBeInTheDocument();
         });
     });
 
@@ -157,6 +155,21 @@ describe('PhoneEmailEntryFields', () => {
             } else {
                 expect(validationError).toBeInTheDocument();
             }
+        });
+    });
+
+    it('should verify email field', async () => {
+        const { getByLabelText, getByText } = render(<Fixture />);
+        const email = getByLabelText('Email');
+
+        userEvent.paste(email, 'invalid-email');
+        userEvent.tab();
+
+        await waitFor(() => {
+            const validationError = getByText(
+                'Please enter Email as an email address (example: youremail@website.com).'
+            );
+            expect(validationError).toBeInTheDocument();
         });
     });
 });

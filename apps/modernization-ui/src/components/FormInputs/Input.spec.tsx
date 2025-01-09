@@ -5,7 +5,7 @@ describe('Input component tests', () => {
     describe('when there is an error', () => {
         it('should render an input and display the error', () => {
             const onChange = () => {};
-            const { getByLabelText, getByTestId } = render(
+            const { getByLabelText, getByRole } = render(
                 <Input
                     id="test-input-id"
                     name="test-input-name"
@@ -19,14 +19,14 @@ describe('Input component tests', () => {
                 />
             );
             expect(getByLabelText('Test Input Label')).toBeTruthy();
-            expect(getByTestId('errorMessage').innerHTML).toBe('invalid input');
+            expect(getByRole('alert')).toHaveTextContent('invalid input');
         });
     });
 
     describe('when there is no error', () => {
         it('should render an input and display no errors', () => {
             const onChange = () => {};
-            const { getByLabelText, queryByTestId } = render(
+            const { getByLabelText, queryByRole } = render(
                 <Input
                     id="test-input-id"
                     name="test-input-name"
@@ -39,7 +39,7 @@ describe('Input component tests', () => {
                 />
             );
             expect(getByLabelText('Test Input Label')).toBeTruthy();
-            expect(queryByTestId('errorMessage')).toBe(null);
+            expect(queryByRole('alert')).not.toBeInTheDocument();
         });
     });
 });

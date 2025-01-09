@@ -1,4 +1,6 @@
+import { DateCriteria } from 'design-system/date/entry';
 import { Selectable, asSelectable } from 'options';
+import { TextCriteria, AlphaTextCriteria } from 'options/operator';
 
 const ACTIVE = asSelectable('ACTIVE', 'Active');
 
@@ -10,19 +12,27 @@ const statusOptions: Selectable[] = [
 
 export { statusOptions };
 
+type NameCriteria = {
+    first?: TextCriteria;
+    last?: TextCriteria;
+};
+
+type LocationCriteria = {
+    street?: AlphaTextCriteria;
+    city?: AlphaTextCriteria;
+};
+
 type BasicInformation = {
-    lastName?: string;
-    firstName?: string;
+    name?: NameCriteria;
     dateOfBirth?: string;
     gender?: Selectable;
     id?: string;
     status: Selectable[];
-    includeSimilar?: boolean;
+    bornOn?: DateCriteria;
 };
 
 type Address = {
-    address?: string;
-    city?: string;
+    location?: LocationCriteria;
     state?: Selectable;
     zip?: number;
 };
@@ -42,12 +52,27 @@ type Identification = {
     identificationType?: Selectable;
 };
 
-type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification;
+type EventIds = {
+    morbidity?: string;
+    document?: string;
+    stateCase?: string;
+    abcCase?: string;
+    cityCountyCase?: string;
+    notification?: string;
+    labReport?: string;
+    accessionNumber?: string;
+    investigation?: string;
+    treatment?: string;
+    vaccination?: string;
+};
 
-export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact };
+type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification & EventIds;
+
+export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact, NameCriteria };
 
 const initial: PatientCriteriaEntry = {
-    status: [ACTIVE]
+    status: [ACTIVE],
+    bornOn: { equals: {} }
 };
 
 export { initial };

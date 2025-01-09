@@ -1,10 +1,12 @@
 import { Modal } from 'design-system/modal';
 import { Message } from 'design-system/message';
-import { CreatedPatient } from './extended/api';
+import { CreatedPatient } from './api';
 import { displayName } from 'name';
 import { ClassicButton } from 'classic';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { Heading } from 'components/heading';
+import { FeatureToggle } from 'feature';
+import { LinkButton } from 'components/button';
 
 type Props = {
     created: CreatedPatient;
@@ -24,7 +26,15 @@ const PatientCreatedPanel = ({ created }: Props) => (
                 <ClassicButton outline url={`/nbs/api/profile/${created.id}/investigation`}>
                     Add investigation
                 </ClassicButton>
-                <NavLinkButton to={`/patient-profile/${created.shortId}`}>View patient</NavLinkButton>
+                <FeatureToggle
+                    guard={(features) => features?.patient?.profile.enabled}
+                    fallback={
+                        <LinkButton type="solid" target="_self" href={`/nbs/api/patient/${created.id}/file/redirect`}>
+                            View patient
+                        </LinkButton>
+                    }>
+                    <NavLinkButton to={`/patient-profile/${created.shortId}`}>View patient</NavLinkButton>
+                </FeatureToggle>
             </>
         )}>
         <Message type="success">

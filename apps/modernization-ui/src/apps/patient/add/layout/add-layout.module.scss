@@ -1,0 +1,28 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.addLayout {
+    display: flex;
+    height: calc(100vh - 75px);
+    background-color: colors.$base-white;
+
+    .content {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+
+        main {
+            display: flex;
+            height: 100%;
+            padding: 1rem 1rem 0 1rem;
+            background-color: colors.$background;
+            overflow: auto;
+        }
+
+        .aside {
+            position: sticky;
+            top: 0;
+            min-width: 12.1875rem;
+        }
+    }
+}

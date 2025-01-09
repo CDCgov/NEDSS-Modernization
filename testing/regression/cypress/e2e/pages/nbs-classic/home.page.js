@@ -5,7 +5,7 @@ class ClassicHomePage {
   }
 
   enterLastName(text) {
-    cy.get("#lastName").type(text);
+    cy.get('[id="name.last"]').type(text);
   }
 
   clickSearchBtnInPatientSearchPane() {
@@ -13,7 +13,7 @@ class ClassicHomePage {
   }
 
   enterFirstName(text) {
-    cy.get("#firstName").type(text)
+    cy.get('[id="name.last"]').type(text)
   }
 
   clickAddNewBtnInPatientSearchPane() {
@@ -40,28 +40,24 @@ class ClassicHomePage {
   createTwoPatients() {
     const createPatient = () => {
         cy.get('#homePageAdvancedSearch').click()
-        cy.get("#lastName").type("Simpson");
-        cy.get("#firstName").type("Martin");
+        cy.get('[id="name.last"]').type("Simpson");
+        cy.get('[id="name.first"]').type("Martin");
         cy.wait(1000);
         cy.contains('button', 'Search').eq(0).click()
         cy.wait(2000)
         cy.contains('button', 'Add new').eq(0).click()
         cy.contains('button', 'Add new patient').eq(0).click()
         cy.wait(2000)
-        cy.get("input[data-testid=date-picker-external-input]")
-           .eq(0)
-           .clear()
-        cy.get("input[data-testid=date-picker-external-input]")
-          .eq(0)
-          .type('03/04/2024');
+        cy.get("#asOf").eq(0).clear()
+        cy.get("#asOf").eq(0).type('03/04/2024');
         cy.contains('button', 'Save changes').eq(0).click()
         cy.wait(3000)
         cy.get('body').then(($body) => {
-            if($body.find('button:contains("View patient")').length > 0) {
-                cy.contains('button', 'View patient').click()
+            if($body.find('a:contains("View patient")').length > 0) {
+                cy.contains('a', 'View patient').click()
             } else {
-                cy.contains('button', 'Continue anyways').click()
-                cy.contains('button', 'View patient').click()
+                cy.contains('a', 'Continue anyways').click()
+                cy.contains('a', 'View patient').click()
             }
         })
         cy.contains('Home').eq(0).click()
@@ -120,5 +116,27 @@ class ClassicHomePage {
     cy.get("#id_C_D01").select("AIDS", {force: true})
     cy.get("td").contains("Run").eq(0).click()
   }
+
+  verifyDocumentsRequiringSecurityAssignment() {
+    cy.get("a").contains("Documents Requiring Security Assignment").eq(0).click()
+    cy.get("table#parent th img#queueIcon").eq(3).click()
+    cy.get("input#SearchText1").first().type("jaja")
+    cy.get("#b1SearchText1").click({force: true})
+  }
+
+  verifyDocumentsRequiringReview() {
+    cy.get("a").contains("Documents Requiring Review").eq(0).click()
+    // cy.get("a").contains("Lab Report").eq(0).click()
+    cy.get("th.sortable").eq(1).find("img#queueIcon").click()
+    cy.get("label.selectAll").eq(1).click()
+    cy.get("label").contains("Last 14 Days").click()
+    cy.get("#b1").click({force: true})
+  }
+
+  verifyOpenInvestigations() {
+    cy.get("a").contains("Open Investigations").eq(0).click()
+  } 
+
 }
+
 export default new ClassicHomePage();

@@ -1,3 +1,4 @@
+import { maybeMap, maybeMapAll } from 'utils/mapping';
 import {
     asAddress,
     asAdministrative,
@@ -12,19 +13,8 @@ import {
     asGeneral
 } from 'apps/patient/data';
 import { ExtendedNewPatientEntry } from './entry';
-import { Transformer } from './useAddExtendedPatient';
-import { Mapping } from 'utils';
-import { NewPatient } from './api';
 
-const maybeMap =
-    <R, S>(mapping: Mapping<R, S>) =>
-    (value?: R): S | undefined =>
-        value ? mapping(value) : undefined;
-
-const maybeMapAll =
-    <R, S>(mapping: Mapping<R, S>) =>
-    (value?: R[]): S[] =>
-        value ? value.map(mapping) : [];
+import { NewPatient, Transformer } from 'apps/patient/add/api';
 
 const asNames = maybeMapAll(asName);
 const asAddresses = maybeMapAll(asAddress);
@@ -39,7 +29,7 @@ const maybeBirth = maybeMap(asBirth);
 const maybeMortality = maybeMap(asMortality);
 const maybeGeneral = maybeMap(asGeneral);
 
-const transformer: Transformer = (entry: ExtendedNewPatientEntry): NewPatient => {
+const transformer: Transformer<ExtendedNewPatientEntry> = (entry: ExtendedNewPatientEntry): NewPatient => {
     const administrative = mabyeAsAdministrative(entry.administrative);
     const names = asNames(entry.names);
     const addresses = asAddresses(entry.addresses);

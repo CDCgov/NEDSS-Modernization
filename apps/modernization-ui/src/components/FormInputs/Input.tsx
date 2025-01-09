@@ -1,6 +1,6 @@
-import { FocusEventHandler, RefObject } from 'react';
+import { FocusEventHandler } from 'react';
 import { Textarea, TextInput, TextInputMask } from '@trussworks/react-uswds';
-import classNames from 'classnames';
+
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 
 type InputProps = {
@@ -8,6 +8,7 @@ type InputProps = {
     className?: string;
     htmlFor?: string;
     label?: string;
+    helperText?: string;
     id?: string;
     type: 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
     required?: boolean;
@@ -21,8 +22,6 @@ type InputProps = {
     flexBox?: boolean;
     multiline?: boolean;
     rows?: number;
-    textInputRef?: RefObject<HTMLInputElement>;
-    textAreaRef?: RefObject<HTMLTextAreaElement>;
     mask?: string;
     pattern?: string;
     ariaLabel?: string;
@@ -32,6 +31,7 @@ export const Input = ({
     name,
     className,
     label,
+    helperText,
     id = '',
     type,
     error,
@@ -45,8 +45,6 @@ export const Input = ({
     flexBox,
     multiline,
     rows,
-    textInputRef,
-    textAreaRef,
     mask,
     pattern,
     ariaLabel,
@@ -55,6 +53,7 @@ export const Input = ({
     return (
         <EntryWrapper
             label={label ?? ''}
+            helperText={helperText}
             htmlFor={id ?? ''}
             orientation={flexBox ? 'horizontal' : orientation}
             sizing={sizing}
@@ -71,10 +70,8 @@ export const Input = ({
                         onChange={onChange}
                         value={defaultValue ?? ''}
                         name={name ?? ''}
-                        inputRef={textInputRef}
-                        validationStatus={error ? 'error' : undefined}
                         aria-describedby={error ? `${error}-message` : undefined}
-                        className={classNames(className)}
+                        className={className}
                         type={type}
                         mask={mask}
                         pattern={pattern}
@@ -90,10 +87,8 @@ export const Input = ({
                         onChange={onChange}
                         value={defaultValue ?? ''}
                         name={name ?? ''}
-                        inputRef={textInputRef}
-                        validationStatus={error ? 'error' : undefined}
                         aria-describedby={error ? `${error}-message` : undefined}
-                        className={classNames(className)}
+                        className={className}
                         type={type}
                         aria-label={ariaLabel}
                     />
@@ -108,9 +103,9 @@ export const Input = ({
                     rows={rows}
                     value={defaultValue ?? ''}
                     name={name ?? ''}
-                    inputRef={textAreaRef}
+                    error={!!error}
                     aria-describedby={error ? `${error}-message` : undefined}
-                    className={classNames(className)}
+                    className={className}
                     aria-label={ariaLabel}
                     disabled={props?.disabled}
                 />

@@ -4,7 +4,7 @@ import { useSearchInteraction } from 'apps/search';
 import { Term } from 'apps/search/terms';
 
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
-import { focusedTarget } from 'utils';
+import { focusedTarget, pluralize } from 'utils';
 
 import styles from './search-terms.module.scss';
 
@@ -15,6 +15,9 @@ type Props = {
 
 const SearchTerms = ({ total, terms }: Props) => {
     const { skipTo } = useSkipLink();
+    const resultsText = pluralize('Result', total);
+    const verbText = pluralize('has', total, 'have');
+    const ariaLabel = `${total} ${resultsText} ${verbText} been found`;
 
     useEffect(() => {
         skipTo('resultsCount');
@@ -24,11 +27,19 @@ const SearchTerms = ({ total, terms }: Props) => {
     const { without } = useSearchInteraction();
 
     return (
-        <div className={styles.terms} tabIndex={0} id="resultsCount" aria-label={`${total} Results have been found`}>
+        <div className={styles.terms} tabIndex={0} id="resultsCount" aria-label={ariaLabel}>
             <div className={styles.term}>
-                <h2>{total} results for:</h2>
+                <h2>
+                    {total} {resultsText.toLowerCase()} for:
+                </h2>
                 {terms.map((term, index) => (
-                    <Chip key={index} name={term.title} value={term.name} handleClose={() => without(term)} />
+                    <Chip
+                        key={index}
+                        name={term.title}
+                        value={term.name}
+                        operator={term.operator}
+                        handleClose={() => without(term)}
+                    />
                 ))}
             </div>
         </div>

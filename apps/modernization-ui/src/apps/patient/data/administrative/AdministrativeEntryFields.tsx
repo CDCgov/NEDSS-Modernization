@@ -1,10 +1,16 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { AdministrativeEntry } from '../entry';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { maxLengthRule } from 'validation/entry';
-import { Input } from 'components/FormInputs/Input';
+import { AdministrativeEntry } from 'apps/patient/data/entry';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { EntryFieldsProps } from 'design-system/entry';
+import { TextAreaField } from 'design-system/input/text/TextAreaField';
 
-export const AdministrativeEntryFields = () => {
+const AS_OF_DATE_LABEL = 'Information as of date';
+const COMMENTS_LABEL = 'General comments';
+
+type AdministrativeEntryFieldsProps = EntryFieldsProps;
+
+export const AdministrativeEntryFields = ({ orientation = 'horizontal' }: AdministrativeEntryFieldsProps) => {
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
@@ -12,17 +18,18 @@ export const AdministrativeEntryFields = () => {
             <Controller
                 control={control}
                 name="administrative.asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validDateRule(AS_OF_DATE_LABEL), ...validateRequiredRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Information as of date"
-                        orientation="horizontal"
-                        defaultValue={value}
+                        id={name}
+                        label={AS_OF_DATE_LABEL}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
                         name={name}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        orientation={orientation}
+                        error={error?.message}
+                        sizing="compact"
                         required
                     />
                 )}
@@ -30,22 +37,18 @@ export const AdministrativeEntryFields = () => {
             <Controller
                 control={control}
                 name="administrative.comment"
-                rules={{
-                    ...maxLengthRule(2000)
-                }}
+                rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <Input
-                        label="General comments"
-                        type="text"
-                        orientation="horizontal"
+                    <TextAreaField
+                        label={COMMENTS_LABEL}
+                        orientation={orientation}
+                        sizing="compact"
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
+                        value={value}
                         name={name}
-                        htmlFor={name}
                         id={name}
                         error={error?.message}
-                        multiline
                     />
                 )}
             />

@@ -26,7 +26,7 @@ const Fixture = () => {
     );
 };
 
-describe('EthnicityEntryFields', () => {
+describe('when entering patient ethnicity demographics', () => {
     it('should render the proper labels', () => {
         const { getByLabelText, queryByLabelText, getByText } = render(<Fixture />);
 
@@ -39,16 +39,14 @@ describe('EthnicityEntryFields', () => {
     });
 
     it('should require as of date', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText, findByText } = render(<Fixture />);
         const asOf = getByLabelText('Ethnicity information as of');
         act(() => {
             userEvent.click(asOf);
             userEvent.tab();
         });
 
-        await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
-        });
+        expect(await findByText('The Ethnicity information as of is required.')).toBeInTheDocument();
     });
 
     it('should display spanish origin when hispanic or latino selected', async () => {

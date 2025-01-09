@@ -2,7 +2,6 @@ import { RecordStatus, PersonFilter, IdentificationCriteria } from 'generated/gr
 
 import { asValue, asValues } from 'options/selectable';
 import { PatientCriteriaEntry } from './criteria';
-import { externalizeDate } from 'date';
 
 const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriteria | undefined =>
     data.identification && data.identificationType
@@ -13,24 +12,50 @@ const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriter
         : undefined;
 
 export const transform = (data: PatientCriteriaEntry): PersonFilter => {
-    const { includeSimilar, lastName, firstName, id, address, city, phoneNumber, email, dateOfBirth, ...remaining } =
-        data;
-    return {
-        disableSoundex: !includeSimilar,
-        lastName,
-        firstName,
+    const {
+        name,
         id,
-        address,
-        city,
+        location,
         phoneNumber,
         email,
+        morbidity,
+        document,
+        stateCase,
+        abcCase,
+        cityCountyCase,
+        notification,
+        labReport,
+        accessionNumber,
+        investigation,
+        treatment,
+        vaccination,
+        bornOn,
+        ...remaining
+    } = data;
+    return {
+        name,
+        location,
+        bornOn,
+        id,
+        phoneNumber,
+        email,
+        morbidity,
+        document,
+        stateCase,
+        abcCase,
+        cityCountyCase,
+        notification,
+        labReport,
+        accessionNumber,
+        investigation,
+        vaccination,
+        treatment,
         recordStatus: asValues(remaining.status) as RecordStatus[],
         gender: asValue(remaining.gender),
         state: asValue(remaining.state),
         zip: remaining.zip ? String(remaining.zip) : undefined,
         race: asValue(remaining.race),
         ethnicity: asValue(remaining.ethnicity),
-        identification: resolveIdentification(remaining),
-        dateOfBirth: externalizeDate(dateOfBirth)
+        identification: resolveIdentification(remaining)
     };
 };

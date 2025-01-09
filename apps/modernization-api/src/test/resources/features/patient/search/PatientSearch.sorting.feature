@@ -39,7 +39,7 @@ Feature: Patient Search Sorting
     And I have another patient
     And the patient has the legal name "Pietro" "Maximoff"
     And patients are available for search
-    And I want patients sorted by "legal name" "asc"
+    And I want patients sorted by "patientname" "asc"
     When I search for patients
     Then search result 1 has a "first name" of "Helen"
     And search result 1 has a "last name" of "Cho"

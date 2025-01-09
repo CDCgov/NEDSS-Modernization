@@ -1,48 +1,60 @@
 import { PatientSearchResult } from 'generated/graphql/schema';
-import { displayName, displayNameElement, matchesLegalName } from 'name';
+import { displayNameElement, matchesLegalName } from 'name';
 import { displayAddress } from 'address/display';
-import { Link } from 'react-router-dom';
+
 import { ItemGroup } from 'design-system/item';
-
-const displayProfileLink = (shortId: number, displayName?: string) => {
-    return <Link to={`/patient-profile/${shortId}/summary`}>{displayName || shortId}</Link>;
-};
-
-const displayProfileLegalName = (result: PatientSearchResult) => {
-    const legalNameDisplay = (result.legalName && displayName('fullLastFirst')(result.legalName)) || 'No Data';
-    return displayProfileLink(result.shortId, legalNameDisplay);
-};
+import { internalizeDate, displayAgeAsOfToday } from 'date';
 
 // Displays Other names, that are not the legal name
-const displayOtherNames = (result: PatientSearchResult, order: 'normal' | 'reverse' = 'normal'): JSX.Element => {
+const displayOtherNames = (result: PatientSearchResult, order: 'normal' | 'reverse' = 'normal'): JSX.Element | null => {
     const legalName = result.legalName;
     const patientSearchResultNames = order === 'normal' ? result.names : [...result.names].reverse();
-    return (
+    const patientOtherNames = patientSearchResultNames.filter((name) => !matchesLegalName(name, legalName));
+    return patientOtherNames.length > 0 ? (
         <div>
-            {patientSearchResultNames
-                .filter((name) => !matchesLegalName(name, legalName))
-                .map((name, index) => (
-                    <div key={index}>{displayNameElement(name)}</div>
-                ))}
+            {patientOtherNames.map((name, index) => (
+                <div key={index}>{displayNameElement(name)}</div>
+            ))}
         </div>
-    );
+    ) : null;
 };
 
 // Returns JSX that represents a list of addresses to display
-const displayAddresses = (result: PatientSearchResult): JSX.Element => (
-    <div>
-        {result.addresses.map((address, index) => (
-            <div key={index}>{displayAddress(address)}</div>
-        ))}
-    </div>
-);
+const displayAddresses = (result: PatientSearchResult): JSX.Element | null =>
+    result.addresses.length > 0 ? (
+        <div>
+            {result.addresses.map((address, index) => (
+                <div key={index}>{displayAddress(address)}</div>
+            ))}
+        </div>
+    ) : null;
 
-const displayPhones = (result: PatientSearchResult): string => result.phones.join('\n');
+const displayPhones = (result: PatientSearchResult): JSX.Element | null =>
+    result.detailedPhones.length > 0 ? (
+        <div>
+            {result.detailedPhones.map((phone, index) => (
+                <div key={index}>
+                    <ItemGroup type="phone" label={phone.use ?? phone.type}>
+                        {phone.number}
+                    </ItemGroup>
+                </div>
+            ))}
+        </div>
+    ) : null;
+
 const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
 const displayPatientName = (result: PatientSearchResult): JSX.Element => (
     <div>
         {result.legalName && displayNameElement(result.legalName)}
         {displayOtherNames(result, 'reverse')}
+    </div>
+);
+const displayPatientAge = (result: PatientSearchResult, variant: 'singleline' | 'multiline'): JSX.Element => (
+    <div>
+        {internalizeDate(result.birthday)}
+        {variant === 'multiline' ? <br /> : ' ('}
+        {displayAgeAsOfToday(result.birthday)}
+        {variant === 'singleline' && ')'}
     </div>
 );
 
@@ -61,9 +73,8 @@ const displayIdentifications = (result: PatientSearchResult): JSX.Element => (
 
 export {
     displayPatientName,
+    displayPatientAge,
     displayOtherNames,
-    displayProfileLink,
-    displayProfileLegalName,
     displayPhones,
     displayAddresses,
     displayEmails,

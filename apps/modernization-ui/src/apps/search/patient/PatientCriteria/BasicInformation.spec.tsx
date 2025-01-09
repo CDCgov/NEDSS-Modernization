@@ -23,6 +23,11 @@ describe('when Basic information renders', () => {
     it('should render 8 input fields', () => {
         const { container } = setup();
         const inputs = container.getElementsByTagName('input');
-        expect(inputs.length).toBe(9);
+        expect(inputs.length).toBe(8);
+    });
+
+    it('should have helper text for patient ID', () => {
+        const { getByText } = setup();
+        expect(getByText('Separate IDs by commas, semicolons, or spaces')).toBeInTheDocument();
     });
 });

@@ -1,6 +1,21 @@
 import { categoryValidator } from './categoryValidator';
 
 describe('categoryValidator', () => {
+    it('should not allow the a null race category because it is required', async () => {
+        const entries = [
+            {
+                id: 3,
+                asOf: '06/05/2024',
+                race: { value: 'race-one-value', name: 'race one name' },
+                detailed: []
+            }
+        ];
+
+        const actual = categoryValidator(entries)(5, null);
+
+        await expect(actual).resolves.toBe('The Race is required.');
+    });
+
     it('should allow the same race category when validating the entry that contains the race category', async () => {
         const entries = [
             {

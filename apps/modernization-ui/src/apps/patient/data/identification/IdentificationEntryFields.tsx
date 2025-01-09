@@ -1,12 +1,19 @@
-import { usePatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Input } from 'components/FormInputs/Input';
-import { SingleSelect } from 'design-system/select';
 import { Controller, useFormContext } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry';
-import { IdentificationEntry } from '../entry';
+import { Input } from 'components/FormInputs/Input';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { EntryFieldsProps } from 'design-system/entry';
+import { SingleSelect } from 'design-system/select';
+import { usePatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
+import { IdentificationEntry } from './entry';
 
-export const IdentificationEntryFields = () => {
+const AS_OF_DATE_LABEL = 'Identification as of';
+const TYPE_LABEL = 'Type';
+const ID_VALUE_LABEL = 'ID value';
+
+type IdentificationEntryFieldsProps = EntryFieldsProps;
+
+export const IdentificationEntryFields = ({ orientation = 'horizontal' }: IdentificationEntryFieldsProps) => {
     const { control } = useFormContext<IdentificationEntry>();
 
     const coded = usePatientIdentificationCodedValues();
@@ -16,37 +23,37 @@ export const IdentificationEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Identification as of"
-                        orientation="horizontal"
+                        label={AS_OF_DATE_LABEL}
+                        id={`identification-${name}`}
+                        orientation={orientation}
                         onBlur={onBlur}
-                        defaultValue={value}
+                        value={value}
                         onChange={onChange}
-                        name={`identification-${name}`}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="type"
-                rules={{ required: { value: true, message: 'Type is required.' } }}
+                rules={{ ...validateRequiredRule(TYPE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label="Type"
-                        orientation="horizontal"
+                        label={TYPE_LABEL}
+                        orientation={orientation}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
                         id={`identification-${name}`}
-                        name={`identification-${name}`}
                         options={coded.types}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -56,33 +63,33 @@ export const IdentificationEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Assigning authority"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        name={name}
                         id={name}
                         options={coded.authorities}
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="id"
-                rules={{ required: { value: true, message: 'ID value is required.' }, ...maxLengthRule(100) }}
+                rules={{ ...validateRequiredRule(ID_VALUE_LABEL), ...maxLengthRule(100, ID_VALUE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="ID value"
-                        orientation="horizontal"
+                        label={ID_VALUE_LABEL}
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
                         htmlFor={name}
-                        name={name}
                         id={name}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />

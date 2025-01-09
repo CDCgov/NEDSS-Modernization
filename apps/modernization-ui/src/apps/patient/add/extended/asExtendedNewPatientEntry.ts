@@ -1,46 +1,59 @@
 import { asSelectable, findByValue, Selectable } from 'options';
-import { NewPatientEntry } from '../NewPatientEntry';
-import { ExtendedNewPatientEntry } from './entry';
-import { AddressEntry, IdentificationEntry, NameEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
 import { PatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
+
+import { RaceEntry, AddressEntry, NameEntry, PhoneEmailEntry, IdentificationEntry } from 'apps/patient/data';
+import { NewPatientEntry } from 'apps/patient/add';
+import { ExtendedNewPatientEntry } from './entry';
 import { CodedValue } from 'coded';
-import { isEmpty } from 'utils/isEmpty';
-import { RaceEntry } from 'apps/patient/data/race/entry';
+import { isEmpty, Mapping } from 'utils';
+import { LEGAL } from 'options/name/types';
+import { HOME as HOME_ADDRESS } from 'options/address/uses';
+import { HOUSE } from 'options/address/types';
+import { CELL_PHONE, PHONE, EMAIL } from 'options/phone/types';
+import { HOME as HOME_PHONE, MOBILE_CONTACT, PRIMARY_WORKPLACE } from 'options/phone/uses';
+
+const mapOr =
+    <R, S, O>(mapping: Mapping<R, S>, fallback: O) =>
+    (value?: R | null): S | O =>
+        value ? mapping(value) : fallback;
+
+const asSelectableIfPresent = mapOr(asSelectable, undefined);
+
+const maybeSelectable = mapOr(asSelectable, null);
 
 const asExtendedNewPatientEntry = (
     initial: NewPatientEntry,
     nameCodes: PatientNameCodedValues,
     raceCodes: Selectable[]
 ): ExtendedNewPatientEntry => {
-    const extendedFormValues: ExtendedNewPatientEntry = {
+    return {
         administrative: { asOf: initial.asOf, comment: initial.comments ?? undefined },
         names: nameExtended(initial, nameCodes),
         addresses: addressExtended(initial),
         phoneEmails: phoneEmailsExtended(initial),
         races: raceExtended(initial, raceCodes),
         identifications: identificationExtended(initial),
-        ethnicity: { asOf: initial.asOf, ethnicGroup: asSelectable(initial.ethnicity ?? ''), detailed: [] },
+        ethnicity: { asOf: initial.asOf, ethnicGroup: maybeSelectable(initial.ethnicity), detailed: [] },
         birthAndSex: {
             asOf: initial.asOf,
             bornOn: initial.dateOfBirth ?? undefined,
-            sex: initial.birthGender ? asSelectable(initial.birthGender) : undefined,
-            current: initial.currentGender ? asSelectable(initial.currentGender) : undefined
+            sex: asSelectableIfPresent(initial.birthGender),
+            current: asSelectableIfPresent(initial.currentGender)
         },
         mortality: {
             asOf: initial.asOf,
-            deceased: initial.deceased ? asSelectable(initial.deceased) : undefined,
+            deceased: asSelectableIfPresent(initial.deceased),
             deceasedOn: initial.deceasedTime ?? undefined
         },
         general: {
             asOf: initial.asOf,
-            maritalStatus: initial.maritalStatus ? asSelectable(initial.maritalStatus) : undefined,
+            maritalStatus: asSelectableIfPresent(initial.maritalStatus),
             stateHIVCase: initial.stateHIVCase ?? undefined
         }
     };
-    return extendedFormValues;
 };
 
-const nameExtended = (initial: NewPatientEntry, nameCodes: PatientNameCodedValues): NameEntry[] | undefined => {
+const nameExtended = (initial: NewPatientEntry, nameCodes: PatientNameCodedValues): NameEntry[] => {
     const suffix: CodedValue | undefined = initial.suffix
         ? nameCodes.suffixes.find((suf) => suf.value === initial.suffix)
         : undefined;
@@ -56,17 +69,18 @@ const nameExtended = (initial: NewPatientEntry, nameCodes: PatientNameCodedValue
         return [
             {
                 asOf: initial.asOf,
-                type: asSelectable('L', 'Legal'),
+                type: LEGAL,
                 first: initial.firstName ?? undefined,
                 last: initial.lastName ?? undefined,
                 middle: initial.middleName ?? undefined,
-                suffix: suffix ? asSelectable(suffix.value, suffix.name) : undefined
+                suffix
             }
         ];
     }
+    return [];
 };
 
-const addressExtended = (initial: NewPatientEntry): AddressEntry[] | undefined => {
+const addressExtended = (initial: NewPatientEntry): AddressEntry[] => {
     if (
         !isEmpty({
             address1: initial.streetAddress1,
@@ -81,8 +95,8 @@ const addressExtended = (initial: NewPatientEntry): AddressEntry[] | undefined =
         return [
             {
                 asOf: initial.asOf,
-                type: asSelectable('H', 'House'),
-                use: asSelectable('H', 'Home'),
+                type: HOUSE,
+                use: HOME_ADDRESS,
                 address1: initial.streetAddress1 ?? undefined,
                 address2: initial.streetAddress2 ?? undefined,
                 city: initial.city ?? undefined,
@@ -94,9 +108,11 @@ const addressExtended = (initial: NewPatientEntry): AddressEntry[] | undefined =
             }
         ];
     }
+
+    return [];
 };
 
-const phoneEmailsExtended = (initial: NewPatientEntry): PhoneEmailEntry[] | undefined => {
+const phoneEmailsExtended = (initial: NewPatientEntry): PhoneEmailEntry[] => {
     const phoneEmails: PhoneEmailEntry[] = [];
 
     if (
@@ -110,8 +126,8 @@ const phoneEmailsExtended = (initial: NewPatientEntry): PhoneEmailEntry[] | unde
         if (initial.homePhone) {
             phoneEmails.push({
                 asOf: initial.asOf,
-                type: asSelectable('PH', 'Phone'),
-                use: asSelectable('H', 'Home'),
+                type: PHONE,
+                use: HOME_PHONE,
                 phoneNumber: initial.homePhone
             });
         }
@@ -119,8 +135,8 @@ const phoneEmailsExtended = (initial: NewPatientEntry): PhoneEmailEntry[] | unde
         if (initial.cellPhone) {
             phoneEmails.push({
                 asOf: initial.asOf,
-                type: asSelectable('CP', 'Cellular phone'),
-                use: asSelectable('MC', 'Mobile contact'),
+                type: CELL_PHONE,
+                use: MOBILE_CONTACT,
                 phoneNumber: initial.cellPhone
             });
         }
@@ -128,48 +144,48 @@ const phoneEmailsExtended = (initial: NewPatientEntry): PhoneEmailEntry[] | unde
         if (initial.workPhone) {
             phoneEmails.push({
                 asOf: initial.asOf,
-                type: asSelectable('PH', 'Phone'),
-                use: asSelectable('WP', 'Primary work place'),
+                type: PHONE,
+                use: PRIMARY_WORKPLACE,
                 phoneNumber: initial.workPhone,
                 extension: initial.extension ?? undefined
             });
         }
-
-        if (initial.emailAddresses.length) {
-            initial.emailAddresses.map((emailAddress) => {
-                if (emailAddress.email != null) {
-                    phoneEmails.push({
-                        asOf: initial.asOf,
-                        type: asSelectable('NET', 'Email address'),
-                        use: asSelectable('H', 'Home'),
-                        email: emailAddress.email ?? ''
-                    });
-                }
-            });
-        }
-        return phoneEmails;
-    }
-};
-
-const identificationExtended = (initial: NewPatientEntry): IdentificationEntry[] | undefined => {
-    const identifications: IdentificationEntry[] = [];
-
-    if (initial.identification.length > 0) {
-        initial.identification.map((ident) => {
-            if (!isEmpty({ issuer: ident.authority, id: ident.value, type: ident.type })) {
-                identifications.push({
+        initial.emailAddresses.map((emailAddress) => {
+            if (!isEmpty(emailAddress)) {
+                phoneEmails.push({
                     asOf: initial.asOf,
-                    type: asSelectable(ident.type ?? ''),
-                    issuer: asSelectable(ident.authority ?? ''),
-                    id: ident.value ?? ''
+                    type: EMAIL,
+                    use: HOME_PHONE,
+                    email: emailAddress.email ?? undefined
                 });
             }
         });
-        return identifications;
+
+        return phoneEmails;
     }
+
+    return [];
 };
 
-const raceExtended = (initial: NewPatientEntry, raceCodes: Selectable[]): RaceEntry[] | undefined => {
+const identificationExtended = (initial: NewPatientEntry): IdentificationEntry[] => {
+    const identifications: IdentificationEntry[] = [];
+
+    if (initial.identification.length > 0) {
+        initial.identification.map((identity) => {
+            if (!isEmpty({ issuer: identity.authority, id: identity.value, type: identity.type })) {
+                identifications.push({
+                    asOf: initial.asOf,
+                    type: maybeSelectable(identity.type),
+                    issuer: maybeSelectable(identity.authority),
+                    id: identity.value ?? null
+                });
+            }
+        });
+    }
+    return identifications;
+};
+
+const raceExtended = (initial: NewPatientEntry, raceCodes: Selectable[]): RaceEntry[] => {
     const races: RaceEntry[] = [];
     const raceResolver = findByValue(raceCodes);
 
@@ -178,12 +194,12 @@ const raceExtended = (initial: NewPatientEntry, raceCodes: Selectable[]): RaceEn
             races.push({
                 id: new Date().getTime(),
                 asOf: initial.asOf,
-                race: raceResolver(race) ?? asSelectable(''),
+                race: raceResolver(race) ?? null,
                 detailed: []
             });
         });
-        return races;
     }
+    return races;
 };
 
 export { asExtendedNewPatientEntry };

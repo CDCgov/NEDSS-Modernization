@@ -33,7 +33,7 @@ class ClassicPagePreviewRedirectorTest {
 
     // And a Return-Page cookie is set
     String setCookie = response.getHeaders().get("Set-Cookie").get(0);
-    assertEquals("Return-Page=123; Path=/nbs/; Secure; HttpOnly; SameSite=Strict", setCookie);
+    assertEquals("Return-Page=123; Path=/nbs; Secure; HttpOnly; SameSite=Strict", setCookie);
   }
 
 }

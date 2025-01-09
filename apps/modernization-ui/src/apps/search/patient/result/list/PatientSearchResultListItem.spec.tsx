@@ -49,7 +49,7 @@ describe('PatientSearchResultListItem', () => {
                 <PatientSearchResultListItem result={patient} />
             </MemoryRouter>
         );
-        expect(getByText('07/05/1995')).toBeInTheDocument();
+        expect(getByText('07/05/1995 (29 years)', { trim: true })).toBeInTheDocument();
     });
 
     it('should render the sex', () => {
@@ -136,7 +136,13 @@ describe('PatientSearchResultListItem', () => {
             emails: [],
             names: [],
             identification: [],
-            detailedPhones: []
+            detailedPhones: [
+                {
+                    number: 'phone-number-value',
+                    type: '',
+                    use: ''
+                }
+            ]
         };
 
         const { getByText } = render(
@@ -188,6 +194,28 @@ describe('PatientSearchResultListItem', () => {
         );
 
         expect(getByText('Doe, Jane')).toBeInTheDocument();
+    });
+
+    it('should render no data in all places when there is no data', () => {
+        const patient: PatientSearchResult = {
+            patient: 829,
+            shortId: 653,
+            status: 'status-value',
+            addresses: [],
+            phones: [],
+            emails: [],
+            names: [],
+            identification: [],
+            detailedPhones: []
+        };
+
+        const { queryAllByText } = render(
+            <MemoryRouter>
+                <PatientSearchResultListItem result={patient} />
+            </MemoryRouter>
+        );
+
+        expect(queryAllByText('No Data')).toHaveLength(8);
     });
 
     it('should render each identification', () => {

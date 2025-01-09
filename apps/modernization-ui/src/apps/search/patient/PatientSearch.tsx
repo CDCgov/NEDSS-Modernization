@@ -12,18 +12,26 @@ import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
 import { PatientSearchActions } from './PatientSearchActions';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { usePatientSearch } from './usePatientSearch';
+import { Direction } from 'sorting';
 
 const PatientSearch = () => {
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
         defaultValues,
-        mode: 'onBlur'
+        mode: 'onBlur',
+        reValidateMode: 'onBlur'
     });
 
     const interaction = usePatientSearch({ form });
 
     return (
         <ColumnPreferenceProvider id="search.patients.preferences.columns" defaults={preferences}>
-            <SortingPreferenceProvider id="search.patients.preferences.sorting" available={sorting}>
+            <SortingPreferenceProvider
+                id="search.patients.preferences.sorting"
+                available={sorting}
+                defaultSort={{
+                    property: 'patientname',
+                    direction: Direction.Descending
+                }}>
                 <SearchInteractionProvider interaction={interaction}>
                     <FormProvider {...form}>
                         <SearchLayout

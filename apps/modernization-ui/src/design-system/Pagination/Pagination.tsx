@@ -12,7 +12,7 @@ type PaginationLayoutProps = {
 
 const PaginationLayout = ({ total, pageSize, current, request }: PaginationLayoutProps) => {
     return (
-        <div className={styles.pagination}>
+        <div className={total > 0 ? styles.pagination : styles.hidden}>
             <div className={styles.range}>
                 Showing <RangeToggle initial={pageSize} aria-label="selected page size" /> of {total}
             </div>

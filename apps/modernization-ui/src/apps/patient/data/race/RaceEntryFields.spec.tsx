@@ -1,33 +1,34 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CodedValue } from 'coded/CodedValue';
 import { RaceEntry } from './entry';
+import { categoryRequiredValidator } from './categoryRequiredValidator';
 import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
 
-const mockDetailedOptions: CodedValue[] = [
-    { value: '2', name: 'detailed race1' },
-    { value: '3', name: 'detailed race2' }
-];
+const mockDetailResolver = jest.fn();
 
-jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
-    useDetailedRaceCodedValues: () => mockDetailedOptions
+jest.mock('coded/race', () => ({
+    useDetailedRaceCodedValues: (category: string) => mockDetailResolver(category)
 }));
 
-type Props = Partial<RaceEntryFieldsProps>;
+type Props = Partial<RaceEntryFieldsProps> & { entry?: RaceEntry } & { isDirty?: boolean };
 
 const Fixture = ({
-    categories = [{ value: '1', name: 'race name' }],
-    categoryValidator = jest.fn().mockResolvedValue(true)
+    categories = [
+        { value: '1', name: 'race name' },
+        { value: 'other', name: 'other name' }
+    ],
+    categoryValidator = jest.fn().mockResolvedValue(true),
+    entry = {
+        id: 19,
+        asOf: '04/11/2022',
+        race: null,
+        detailed: []
+    }
 }: Props) => {
     const form = useForm<RaceEntry>({
         mode: 'onBlur',
-        defaultValues: {
-            id: 19,
-            asOf: undefined,
-            race: undefined,
-            detailed: undefined
-        }
+        defaultValues: entry
     });
 
     return (
@@ -59,21 +60,77 @@ describe('Race entry fields', () => {
         });
     });
 
-    it('should require as of', async () => {
+    it('detailed race values should depend on the race category', async () => {
+        mockDetailResolver.mockReturnValue([{ value: 'detailed', name: 'detailed race' }]);
+
         const { getByLabelText, getByText } = render(<Fixture />);
 
-        const asOf = getByLabelText('Race as of');
+        const race = getByLabelText('Race');
+
         act(() => {
-            userEvent.click(asOf);
-            userEvent.tab();
+            userEvent.selectOptions(race, '1');
         });
+
+        const detailed = getByLabelText('Detailed race');
+
+        userEvent.click(detailed);
+
+        expect(getByText('detailed race')).toBeInTheDocument();
+
+        expect(mockDetailResolver).toBeCalledWith('1');
+    });
+
+    it('detailed race values should clear when the category changes', async () => {
+        mockDetailResolver.mockReturnValue([{ value: 'other-detailed', name: 'other detailed name' }]);
+
+        const entry = {
+            id: 389,
+            asOf: '05/08/2013',
+            race: { value: 'selected', name: 'selected name' },
+            detailed: [{ value: 'existing-detailed', name: 'existing detailed race name' }]
+        };
+
+        const { getByLabelText } = render(
+            <Fixture
+                entry={entry}
+                categories={[
+                    { value: 'other', name: 'other name' },
+                    { value: 'selected', name: 'selected name' }
+                ]}
+                isDirty={false}
+            />
+        );
+
+        const race = getByLabelText('Race');
+        const detailed = getByLabelText('Detailed race');
+
+        act(() => {
+            userEvent.selectOptions(race, 'other');
+            userEvent.tab();
+            userEvent.click(detailed);
+        });
+
         await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
+            expect(mockDetailResolver).toBeCalledWith('other');
+            expect(detailed).toHaveValue('');
         });
     });
 
+    it('should require as of', async () => {
+        const { getByLabelText, findByText } = render(<Fixture />);
+
+        const asOf = getByLabelText('Race as of');
+
+        act(() => {
+            userEvent.clear(asOf);
+            userEvent.tab();
+        });
+
+        expect(await findByText(/The Race as of is required/)).toBeInTheDocument();
+    });
+
     it('should require race category', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText, getByText } = render(<Fixture categoryValidator={categoryRequiredValidator} />);
 
         const raceInput = getByLabelText('Race');
 
@@ -82,7 +139,7 @@ describe('Race entry fields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('Race is required.')).toBeInTheDocument();
+            expect(getByText('The Race is required.')).toBeInTheDocument();
         });
     });
 
@@ -117,8 +174,8 @@ describe('Race entry fields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('As of date is required')).not.toBeInTheDocument();
-            expect(queryByText('Race is required')).not.toBeInTheDocument();
+            expect(queryByText('The Race as of is required')).not.toBeInTheDocument();
+            expect(queryByText('The Race is required')).not.toBeInTheDocument();
         });
     });
 });

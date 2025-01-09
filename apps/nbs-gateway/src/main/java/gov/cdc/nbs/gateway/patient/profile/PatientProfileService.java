@@ -9,6 +9,8 @@ public class PatientProfileService extends Service {
     super(uri);
   }
 
+  public String direct() {return "/nbs/redirect/patient/profile";}
+
   public String events() {
     return "/nbs/redirect/patientProfile/events/return";
   }

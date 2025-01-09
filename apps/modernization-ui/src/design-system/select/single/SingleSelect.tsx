@@ -1,11 +1,15 @@
 import { ChangeEvent } from 'react';
-import { Select as TrussworksSelect } from '@trussworks/react-uswds';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { Selectable, findByValue } from 'options';
+import classNames from 'classnames';
 
-const renderOptions = (placeholder: string, options: Selectable[]) => (
+const renderOptions = (options: Selectable[], placeholder?: string) => (
     <>
-        <option value="">{placeholder}</option>
+        {placeholder && (
+            <option key={-1} value="">
+                {placeholder}
+            </option>
+        )}
         {options?.map((item, index) => (
             <option key={index} value={item.value}>
                 {item.name}
@@ -17,6 +21,7 @@ const renderOptions = (placeholder: string, options: Selectable[]) => (
 type Props = {
     id: string;
     label: string;
+    helperText?: string;
     options: Selectable[];
     value?: Selectable | null;
     onChange?: (value?: Selectable) => void;
@@ -29,6 +34,8 @@ type Props = {
 const SingleSelect = ({
     id,
     label,
+    className,
+    helperText,
     options,
     value,
     onChange,
@@ -48,29 +55,26 @@ const SingleSelect = ({
         }
     };
 
-    //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
-    const Wrapped = () => (
-        <TrussworksSelect
-            {...inputProps}
-            id={id}
-            name={inputProps.name ?? id}
-            defaultValue={value?.value}
-            placeholder="-Select-"
-            onChange={handleChange}>
-            {renderOptions(placeholder, options)}
-        </TrussworksSelect>
-    );
-
     return (
         <EntryWrapper
             orientation={orientation}
             sizing={sizing}
             label={label}
+            helperText={helperText}
             htmlFor={id}
             required={required}
             error={error}>
-            {value && <Wrapped />}
-            {!value && <Wrapped />}
+            <select
+                key={value?.value ?? ''}
+                id={id}
+                className={classNames('usa-select', className)}
+                name={inputProps.name ?? id}
+                value={value?.value}
+                placeholder={placeholder}
+                onChange={handleChange}
+                {...inputProps}>
+                {renderOptions(options, placeholder)}
+            </select>
         </EntryWrapper>
     );
 };

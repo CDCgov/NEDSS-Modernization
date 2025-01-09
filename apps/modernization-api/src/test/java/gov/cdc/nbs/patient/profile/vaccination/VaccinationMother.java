@@ -7,6 +7,7 @@ import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
+import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ class VaccinationMother {
     private final MotherSettings settings;
     private final SequentialIdentityGenerator idGenerator;
     private final EntityManager entityManager;
+    private final Active<VaccinationIdentifier> activeVaccination;
     private final TestVaccinationCleaner cleaner;
     private final TestVaccinations vaccinations;
 
@@ -29,13 +31,15 @@ class VaccinationMother {
         final SequentialIdentityGenerator idGenerator,
         final EntityManager entityManager,
         final TestVaccinationCleaner cleaner,
-        final TestVaccinations vaccinations
+        final TestVaccinations vaccinations,
+        final Active<VaccinationIdentifier> activeVaccination
     ) {
         this.settings = settings;
         this.idGenerator = idGenerator;
         this.entityManager = entityManager;
         this.cleaner = cleaner;
         this.vaccinations = vaccinations;
+        this.activeVaccination = activeVaccination;
     }
 
     void reset() {
@@ -68,6 +72,7 @@ class VaccinationMother {
         entityManager.persist(vaccination);
 
         this.vaccinations.available(vaccination.getId());
+        activeVaccination.active(new VaccinationIdentifier(identifier, local));
 
         return vaccination;
     }

@@ -21,7 +21,7 @@ const displayAgeAsOf = (dateOfBirth: Maybe<string | Date>, from: Date) => {
     }
 
     const days = differenceInDays(from, dateOfBirth);
-    return days > 1 ? `${days} days` : `${days} day`;
+    return days > 1 || days === 0 ? `${days} days` : `${days} day`;
 };
 
 const displayAgeAsOfToday = (dateOfBirth: Maybe<string | Date>) => displayAgeAsOf(dateOfBirth, new Date());

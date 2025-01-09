@@ -1092,14 +1092,53 @@ type PatientProfile {
 extend type Query {
     findPatientProfile(patient: ID, shortId: Int): PatientProfile
 }
+input DateEqualsCriteria {
+  day: Int
+  month: Int
+  year: Int
+}
+
+input DateBetweenCriteria {
+  from: Date
+  to: Date
+}
+
+input DateCriteria {
+  equals: DateEqualsCriteria
+  between: DateBetweenCriteria
+}
+
+input TextCriteria {
+  equals: String
+  not: String
+  startsWith: String
+  contains: String
+  soundsLike: String
+}
+
 input IdentificationCriteria {
   identificationNumber: String
   identificationType: String
   assigningAuthority: String
 }
 
+input PatientNameCriteria {
+  first: TextCriteria
+  last: TextCriteria
+}
+
+input LocationCriteria {
+  street: TextCriteria
+  city: TextCriteria
+}
+
+input Filter {
+  id: String
+}
+
 input PersonFilter {
   id: String
+  name: PatientNameCriteria
   lastName: String
   firstName: String
   race: String
@@ -1107,9 +1146,11 @@ input PersonFilter {
   phoneNumber: String
   email: String
   dateOfBirth: Date
+  bornOn: DateCriteria
   dateOfBirthOperator: Operator
   gender: String
   deceased: Deceased
+  location: LocationCriteria
   address: String
   city: String
   state: String
@@ -1117,10 +1158,20 @@ input PersonFilter {
   zip: String
   mortalityStatus: String
   ethnicity: String
-  vaccinationId: String
-  treatmentId: String
+  vaccination: String
+  morbidity: String
+  document: String
+  stateCase: String
+  abcCase: String
+  cityCountyCase: String
+  notification: String
+  treatment: String
+  investigation: String
+  labReport: String
+  accessionNumber: String
   disableSoundex: Boolean
   recordStatus: [RecordStatus!]!
+  filter: Filter
 }
 
 enum Gender {
@@ -1155,10 +1206,9 @@ type PatientSearchResultName {
 }
 
 type PatientSearchResultPhone {
-  extension: String
+  type: String!
+  use: String!
   number: String
-  type: String
-  use: String
 }
 
 type PatientSearchResultAddress {

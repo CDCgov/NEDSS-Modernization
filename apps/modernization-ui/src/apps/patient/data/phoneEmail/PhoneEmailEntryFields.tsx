@@ -1,13 +1,26 @@
-import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Input } from 'components/FormInputs/Input';
-import { SingleSelect } from 'design-system/select';
 import { Controller, useFormContext } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry';
-import { validatePhoneNumber } from 'validation/phone';
-import { PhoneEmailEntry } from '../entry';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { SingleSelect } from 'design-system/select';
+import { EntryFieldsProps } from 'design-system/entry';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { Verification } from 'libs/verification';
+import { EmailField, PhoneNumberInputField, validPhoneNumberRule, maybeValidateEmail } from 'libs/demographics/contact';
+import { MaskedTextInputField, TextInputField } from 'design-system/input/text';
+import { PhoneEmailEntry } from 'apps/patient/data';
+import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
+import { TextAreaField } from 'design-system/input/text/TextAreaField';
 
-export const PhoneEmailEntryFields = () => {
+const AS_OF_DATE_LABEL = 'Phone & email as of';
+const TYPE_LABEL = 'Type';
+const USE_LABEL = 'Use';
+const PHONE_NUMBER_LABEL = 'Phone number';
+const EMAIL_LABEL = 'Email';
+const URL_LABEL = 'URL';
+const COMMENTS_LABEL = 'Phone & email comments';
+
+type PhoneEmailEntryFieldsProps = EntryFieldsProps;
+
+export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmailEntryFieldsProps) => {
     const { control } = useFormContext<PhoneEmailEntry>();
     const coded = usePatientPhoneCodedValues();
 
@@ -16,29 +29,29 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Phone & email as of"
-                        orientation="horizontal"
-                        defaultValue={value}
+                        id={`phone-${name}`}
+                        label={AS_OF_DATE_LABEL}
+                        orientation={orientation}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        name={`phone-${name}`}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="type"
-                rules={{ required: { value: true, message: 'Type is required.' } }}
+                rules={{ ...validateRequiredRule(TYPE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label="Type"
-                        orientation="horizontal"
+                        label={TYPE_LABEL}
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
@@ -47,17 +60,18 @@ export const PhoneEmailEntryFields = () => {
                         options={coded.types}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="use"
-                rules={{ required: { value: true, message: 'Use is required.' } }}
+                rules={{ ...validateRequiredRule(USE_LABEL) }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label="Use"
-                        orientation="horizontal"
+                        label={USE_LABEL}
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
@@ -66,6 +80,7 @@ export const PhoneEmailEntryFields = () => {
                         options={coded.uses}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -74,54 +89,40 @@ export const PhoneEmailEntryFields = () => {
                 name="countryCode"
                 rules={{
                     pattern: {
-                        value: /^\+?\d{1,3}$/,
-                        message: 'A country code should be 1 to 3 digits'
+                        value: /^\+?\d{1,20}$/,
+                        message: 'A Country code should be 1 to 20 digits'
                     }
                 }}
-                render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => {
-                    return (
-                        <Input
-                            label="Country code"
-                            orientation="horizontal"
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            defaultValue={value}
-                            type="tel"
-                            mask="___"
-                            pattern="^\+?\d{1,3}$"
-                            htmlFor={name}
-                            id={name}
-                            name={name}
-                            error={error?.message}
-                        />
-                    );
-                }}
+                render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
+                    <MaskedTextInputField
+                        id={name}
+                        label="Country code"
+                        type="tel"
+                        mask="____________________"
+                        pattern="^\+?\d{1,20}$"
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        orientation={orientation}
+                        error={error?.message}
+                        sizing="compact"
+                    />
+                )}
             />
             <Controller
                 control={control}
                 name="phoneNumber"
-                rules={{
-                    validate: {
-                        properNumber: (value) => validatePhoneNumber(value ?? '')
-                    }
-                }}
+                rules={validPhoneNumberRule(PHONE_NUMBER_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
-                        label="Phone number"
-                        orientation="horizontal"
+                    <PhoneNumberInputField
+                        id={name}
+                        label={PHONE_NUMBER_LABEL}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
-                        type="text"
-                        htmlFor={name}
-                        id={name}
-                        name={name}
-                        mask="___-___-____"
-                        pattern="\d{3}-\d{3}-\d{4}"
-                        error={
-                            error &&
-                            'Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9).'
-                        }
+                        orientation={orientation}
+                        error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -130,24 +131,22 @@ export const PhoneEmailEntryFields = () => {
                 name="extension"
                 rules={{
                     pattern: {
-                        value: /^\+?\d{1,4}$/,
-                        message: 'A Extension should be 1 to 4 digits'
+                        value: /^\+?\d{1,20}$/,
+                        message: 'An Extension should be 1 to 20 digits'
                     }
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <MaskedTextInputField
+                        id={name}
                         label="Extension"
-                        orientation="horizontal"
+                        mask="____________________"
+                        pattern="^\+?\d{1,20}$"
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
-                        type="text"
-                        mask="____"
-                        pattern="^\+?\d{1,4}$"
-                        htmlFor={name}
-                        id={name}
-                        name={name}
+                        orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -155,64 +154,63 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="email"
-                rules={{
-                    pattern: {
-                        value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                        message: 'Please enter a valid email address (example: youremail@website.com)'
-                    },
-                    ...maxLengthRule(100)
-                }}
+                rules={maxLengthRule(100, EMAIL_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
-                        label="Email"
-                        orientation="horizontal"
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        defaultValue={value}
-                        type="text"
-                        htmlFor={name}
-                        id={name}
+                    <Verification
+                        control={control}
                         name={name}
-                        error={error?.message}
+                        constraint={maybeValidateEmail(EMAIL_LABEL)}
+                        render={({ verify, violation }) => (
+                            <EmailField
+                                id={name}
+                                label={EMAIL_LABEL}
+                                onBlur={() => {
+                                    verify();
+                                    onBlur();
+                                }}
+                                onChange={onChange}
+                                value={value}
+                                orientation={orientation}
+                                error={error?.message}
+                                warning={violation}
+                                sizing="compact"
+                            />
+                        )}
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="url"
-                rules={maxLengthRule(100)}
+                rules={maxLengthRule(100, URL_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
-                        label="URL"
-                        orientation="horizontal"
+                    <TextInputField
+                        id={name}
+                        label={URL_LABEL}
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
-                        type="text"
-                        htmlFor={name}
-                        id={name}
-                        name={name}
+                        value={value}
+                        orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="comment"
-                rules={maxLengthRule(2000)}
+                rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
-                        label="Phone & email comments"
-                        orientation="horizontal"
-                        onChange={onChange}
+                    <TextAreaField
+                        label={COMMENTS_LABEL}
+                        orientation={orientation}
                         onBlur={onBlur}
-                        defaultValue={value}
-                        type="text"
+                        onChange={onChange}
+                        value={value}
                         name={`phone-${name}`}
-                        htmlFor={`phone-${name}`}
                         id={`phone-${name}`}
                         error={error?.message}
-                        multiline
+                        sizing="compact"
                     />
                 )}
             />

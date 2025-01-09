@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { NameEntry } from '../entry';
+import { act, render, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { NameEntry } from './entry';
 import { NameEntryFields } from './NameEntryFields';
 
 const mockPatientNameCodedValues = {
@@ -40,7 +40,7 @@ const Fixture = () => {
     );
 };
 
-describe('Name entry fields', () => {
+describe('when entering patient name demographics', () => {
     it('should render the proper labels', () => {
         const { getByLabelText } = render(<Fixture />);
 
@@ -57,29 +57,28 @@ describe('Name entry fields', () => {
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Name as of');
         act(() => {
             userEvent.click(asOf);
             userEvent.tab();
         });
-        await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
-        });
+
+        expect(await findByText('The Name as of is required.')).toBeInTheDocument();
     });
 
     it('should require type', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText, findByText } = render(<Fixture />);
 
         const type = getByLabelText('Type');
+
         act(() => {
             userEvent.click(type);
             userEvent.tab();
         });
-        await waitFor(() => {
-            expect(getByText('Type is required.')).toBeInTheDocument();
-        });
+
+        expect(await findByText('The Type is required.')).toBeInTheDocument();
     });
 
     it('should be valid with as of, race', async () => {
@@ -87,6 +86,7 @@ describe('Name entry fields', () => {
 
         const asOf = getByLabelText('Name as of');
         const type = getByLabelText('Type');
+
         act(() => {
             userEvent.paste(asOf, '01/20/2020');
             userEvent.tab();
@@ -95,8 +95,8 @@ describe('Name entry fields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
-            expect(queryByText('Type is required.')).not.toBeInTheDocument();
+            expect(queryByText('The Name as of is required')).not.toBeInTheDocument();
+            expect(queryByText('The Type is required')).not.toBeInTheDocument();
         });
     });
 });

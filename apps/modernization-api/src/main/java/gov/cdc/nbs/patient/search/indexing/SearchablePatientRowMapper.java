@@ -51,9 +51,9 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
     String morbidityReportIds = resultSet.getString(columns.morbidityReportIds());
     String treatmentIds = resultSet.getString(columns.treatmentIds());
     String vaccinationIds = resultSet.getString(columns.vaccinationIds());
+    String stateCaseIds = resultSet.getString(columns.stateCaseIds());
     String abcsCaseIds = resultSet.getString(columns.abcsCaseIds());
     String cityCaseIds = resultSet.getString(columns.cityCaseIds());
-    String stateCaseIds = resultSet.getString(columns.stateCaseIds());
     String accessionIds = resultSet.getString(columns.accessionIds());
     String investigationIds = resultSet.getString(columns.investigationIds());
     String labReportIds = resultSet.getString(columns.labReportIds());

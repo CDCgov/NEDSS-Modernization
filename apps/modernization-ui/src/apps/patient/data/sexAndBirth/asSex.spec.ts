@@ -3,7 +3,8 @@ import { asSex } from './asSex';
 describe('when mapping a sex entry to a format accepted by the API', () => {
     it('should include the as of date', () => {
         const entry = {
-            asOf: '04/13/2017'
+            asOf: '04/13/2017',
+            current: { value: 'current-sex-value', name: 'current-sex-name' }
         };
 
         const actual = asSex(entry);
@@ -53,5 +54,15 @@ describe('when mapping a sex entry to a format accepted by the API', () => {
         const actual = asSex(entry);
 
         expect(actual).toEqual(expect.objectContaining({ additionalGender: 'additional-gender' }));
+    });
+
+    it('should not map when only as of is present', () => {
+        const entry = {
+            asOf: '04/13/2017'
+        };
+
+        const actual = asSex(entry);
+
+        expect(actual).toBeUndefined();
     });
 });

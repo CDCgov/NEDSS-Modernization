@@ -32,7 +32,7 @@ public class SearchablePatientAddressFinder {
               left join NBS_SRTE..Country_code [srte_country] on [srte_country].code = [address].cntry_cd
           where   [locators].entity_uid = ?
               and [locators].[class_cd] = 'PST'
-              and [locators].use_cd not in ('BIR', 'DTH')
+              and ([locators].use_cd IS NULL OR [locators].use_cd not in ('BIR', 'DTH'))
           """;
   private static final int PATIENT_PARAMETER = 1;
   private static final int ADDRESS_1_COLUMN = 1;

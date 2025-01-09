@@ -44,6 +44,15 @@ public class PatientSteps {
     mother.superseded(patient.active());
   }
 
+  @Given("the patient was born on {localDate}")
+  public void the_patient_was_born_on(final LocalDate value) {
+    this.patient.maybeActive().ifPresent(
+        found -> mother.withBirthday(
+            found,
+            value));
+
+  }
+
   @Given("the patient has a(n) {string} of {string}")
   public void the_patient_has_a_field_with_a_value_of(
       final String field,

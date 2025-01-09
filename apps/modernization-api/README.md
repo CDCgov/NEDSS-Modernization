@@ -129,17 +129,19 @@ and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference
 The modernization-api contains a `/nbs/api/configuration` endpoint that returns a set of configurations for the UI. The
 following configurations are present
 
-| Name                                                | Default | Description                                       |
-|-----------------------------------------------------|---------|---------------------------------------------------|
-| nbs.ui.features.address.autocomplete                | false   | Enables the address autocomplete feature          |
-| nbs.ui.features.address.verification                | false   | Enables the address verification feature          |
-| nbs.ui.features.pageBuilder.enabled                 | false   | Enables the PageBuilder feature                   |
-| nbs.ui.features.pageBuilder.page.library.enabled    | false   | Enables the PageBuilder Page Library feature      |
-| nbs.ui.features.pageBuilder.page.management.enabled | false   | Enables the PageBuilder Page Management feature   |
-| nbs.ui.features.search.events.enabled               | true    | Enables access to NBS6 Event Search               |
-| nbs.ui.features.search.investigations.enabled       | false   | Enables access to modernized Investigation search |
-| nbs.ui.features.search.laboratoryReports.enabled    | false   | Enables access to modernized Laboratory search    |
-| nbs.ui.features.patient.add.extended.enabled        | false   | Enables access to modernized Patient Extended add |
+| Name                                                | Default | Description                                         |
+|-----------------------------------------------------|---------|-----------------------------------------------------|
+| nbs.ui.features.address.autocomplete                | false   | Enables the address autocomplete feature            |
+| nbs.ui.features.address.verification                | false   | Enables the address verification feature            |
+| nbs.ui.features.pageBuilder.enabled                 | false   | Enables the PageBuilder feature                     |
+| nbs.ui.features.pageBuilder.page.library.enabled    | false   | Enables the PageBuilder Page Library feature        |
+| nbs.ui.features.pageBuilder.page.management.enabled | false   | Enables the PageBuilder Page Management feature     |
+| nbs.ui.features.search.events.enabled               | true    | Enables access to NBS6 Event Search                 |
+| nbs.ui.features.search.investigations.enabled       | false   | Enables access to modernized Investigation search   |
+| nbs.ui.features.search.laboratoryReports.enabled    | false   | Enables access to modernized Laboratory search      |
+| nbs.ui.features.patient.add.enabled                 | false   | Enables access to modernized Patient short form add |
+| nbs.ui.features.patient.add.extended.enabled        | false   | Enables access to modernized Patient Extended add   |
+| nbs.ui.features.patient.profile.enabled             | false   | Enables access to modernized Patient Profile        |
 
 Configuration properties can be overwritten at runtime using the `--args` Gradle option to pass arguments to Spring
 Boot.

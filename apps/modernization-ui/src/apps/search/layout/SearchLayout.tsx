@@ -3,11 +3,13 @@ import { Button } from 'components/button';
 import { Loading } from 'components/Spinner';
 import { CollapsiblePanel } from 'design-system/collapsible-panel';
 import { SearchNavigation } from './navigation/SearchNavigation';
+import { PatientSearchHeader } from './patientSearchHeader/PatientSearchHeader';
 import { useSearchInteraction, useSearchResultDisplay } from 'apps/search';
 import { SearchLanding } from './landing';
 import { SearchResults } from './result';
 import { NoResults } from './result/none';
 import { NoInput } from './result/NoInput';
+import { FeatureToggle } from 'feature';
 
 import styles from './search-layout.module.scss';
 
@@ -58,7 +60,12 @@ const SearchLayout = <R,>({
 
     return (
         <section className={styles.search}>
-            <SearchNavigation className={styles.navigation} actions={actions} />
+            <FeatureToggle
+                guard={(features) => features?.search?.events?.enabled}
+                fallback={<SearchNavigation className={styles.navigation} actions={actions} />}>
+                <PatientSearchHeader className={styles.navigation} actions={actions} />
+            </FeatureToggle>
+
             <div className={styles.content}>
                 <CollapsiblePanel
                     className={styles.panel}

@@ -1,14 +1,13 @@
 nbs:
   security:
-    oidc:
-      client:
-        id: nbs-development
-        secret: ${OIDC_CLIENT_SECRET}
     log:
       level: INFO
   gateway:
     log:
       level: INFO
+    patient:
+      profile:
+        enabled: true
     pagebuilder:
       enabled: true
       page:

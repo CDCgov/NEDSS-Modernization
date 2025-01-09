@@ -1,15 +1,19 @@
 import { asValue } from 'options';
 import { Identification } from '../api';
-import { IdentificationEntry } from '../entry';
+import { IdentificationEntry } from './entry';
+import { exists } from 'utils';
 
-const asIdentification = (entry: IdentificationEntry): Identification => {
-    const { type, issuer, ...remaining } = entry;
+const asIdentification = (entry: IdentificationEntry): Identification | undefined => {
+    const { asOf, type, issuer, id } = entry;
 
-    return {
-        type: asValue(type),
-        issuer: asValue(issuer),
-        ...remaining
-    };
+    if (exists(type) && id) {
+        return {
+            asOf,
+            type: asValue(type),
+            id,
+            issuer: asValue(issuer)
+        };
+    }
 };
 
 export { asIdentification };

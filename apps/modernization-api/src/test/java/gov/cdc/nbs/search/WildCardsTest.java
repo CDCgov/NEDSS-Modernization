@@ -51,4 +51,12 @@ class WildCardsTest {
 
     assertThat(actual).isNull();
   }
+
+  @Test
+  void should_escape_special_characters() {
+    String actual = WildCards.startsWith("value*");
+
+    assertThat(actual).isEqualTo("value\\**");
+  }
+
 }

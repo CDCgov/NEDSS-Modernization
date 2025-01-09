@@ -1,9 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import { CreatedPatient } from './api';
-import { creator } from './creator';
-import { transformer } from './transformer';
+import { CreatedPatient } from '../api';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
@@ -12,7 +10,6 @@ import { useNavigationBlock } from 'navigation/useNavigationBlock';
 import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { Button } from 'components/button';
 import { Shown } from 'conditional-render';
-import { AddPatientSideNav } from 'apps/patient/add/nav/AddPatientSideNav';
 import { PatientCreatedPanel } from 'apps/patient/add/PatientCreatedPanel';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
@@ -20,9 +17,10 @@ import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 
 import styles from './add-patient-extended.module.scss';
 import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
+import { DataEntryMenu } from 'apps/patient/add/DataEntryMenu';
 
 export const AddPatientExtended = () => {
-    const interaction = useAddExtendedPatient({ transformer, creator });
+    const interaction = useAddExtendedPatient();
     const { initialize } = useAddPatientExtendedDefaults();
     const { value: bypassModal } = useShowCancelModal();
     const { toBasic } = useBasicExtendedTransition();
@@ -78,7 +76,7 @@ export const AddPatientExtended = () => {
             </Shown>
             <FormProvider {...form}>
                 <div className={styles.addPatientExtended}>
-                    <AddPatientSideNav />
+                    <DataEntryMenu />
                     <div className={styles.content}>
                         <header>
                             <h1>New patient - extended</h1>

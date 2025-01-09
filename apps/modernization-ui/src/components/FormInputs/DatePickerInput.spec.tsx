@@ -5,7 +5,7 @@ import { DatePickerInput } from './DatePickerInput';
 describe('DatePickerInput component tests', () => {
     describe('when default date value is provided', () => {
         it('should render DatePicker which has a label as Test DP Label and an input box with the provided default date value', () => {
-            const { container, getByTestId } = render(
+            const { container, getByTestId, getByText } = render(
                 <DatePickerInput
                     name="test-dp-name"
                     label="Test DP Label"
@@ -19,29 +19,23 @@ describe('DatePickerInput component tests', () => {
             expect(component).toBeTruthy();
             expect(component).not.toHaveClass('error');
 
-            const label = getByTestId('label');
-            expect(label).toHaveTextContent('Test DP Label');
+            expect(getByText('Test DP Label')).toBeInTheDocument();
 
             const input = getByTestId('date-picker-internal-input');
             expect(input).toHaveValue('2022-12-31');
         });
 
         it('should not pass invalid dates to the DatePicker', () => {
-            const { container, getByTestId } = render(
+            const { getByText } = render(
                 <DatePickerInput
                     name="test-dp-name"
                     label="Test DP Label"
                     className="test-dp-class-name"
-                    defaultValue="12/21/1"
+                    errorMessage="test error message"
                 />
             );
 
-            const component = container.firstChild;
-
-            expect(component).toHaveClass('error');
-
-            const input = getByTestId('date-picker-internal-input');
-            expect(input).toHaveValue('');
+            expect(getByText('test error message')).toBeInTheDocument();
         });
     });
     describe('when default date value is not provided', () => {
@@ -120,7 +114,7 @@ describe('DatePickerInput component tests', () => {
         });
 
         it('should add slashes automatically while user types', async () => {
-            const { getByTestId, container } = render(
+            const { getByTestId } = render(
                 <DatePickerInput
                     name="test-dp-name"
                     label="Test DP Label"
@@ -148,13 +142,15 @@ describe('DatePickerInput component tests', () => {
 
             const component = container.firstChild;
 
-            expect(component).toHaveClass('error');
+            expect(component).toHaveTextContent(
+                'Test DP LabelPlease enter a valid date (mm/dd/yyyy) using only numeric characters (0-9) or choose a date from the calendar by clicking on the calendar icon.'
+            );
         });
     });
 
     describe('when required is provided', () => {
         it('should render DatePicker which has a label as Test DP Label*', () => {
-            const { container, getByTestId } = render(
+            const { getByText } = render(
                 <DatePickerInput
                     name="test-dp-name"
                     label="Test DP Label"
@@ -163,8 +159,7 @@ describe('DatePickerInput component tests', () => {
                     required
                 />
             );
-            const label = getByTestId('label');
-            expect(label).toHaveTextContent('Test DP Label');
+            const label = getByText('Test DP Label');
             expect(label).toHaveClass('required');
         });
     });

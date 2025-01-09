@@ -1,14 +1,30 @@
-import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
-import { usePatientAddressCodedValues } from 'apps/patient/profile/addresses/usePatientAddressCodedValues';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Input } from 'components/FormInputs/Input';
-import { SingleSelect } from 'design-system/select';
-import { useLocationCodedValues } from 'location';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry';
-import { AddressEntry } from '../entry';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { SingleSelect } from 'design-system/select';
+import { EntryFieldsProps } from 'design-system/entry';
+import { usePatientAddressCodedValues } from 'apps/patient/profile/addresses/usePatientAddressCodedValues';
+import { useLocationCodedValues } from 'location';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { Input } from 'components/FormInputs/Input';
+import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
+import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
+import { CensusTractInputField, validCensusTractRule } from './census-tract';
+import { AddressEntry } from './entry';
+import { TextAreaField } from 'design-system/input/text/TextAreaField';
 
-export const AddressEntryFields = () => {
+const AS_OF_DATE_LABEL = 'Address as of';
+const TYPE_LABEL = 'Type';
+const USE_LABEL = 'Use';
+const STREET_ADDRESS_LABEL = 'Street address 1';
+const STREET_ADDRESS_2_LABEL = 'Street address 2';
+const CITY_LABEL = 'City';
+const ZIP_LABEL = 'Zip';
+const CENSUS_TRACT_LABEL = 'Census tract';
+const COMMENTS_LABEL = 'Address comments';
+
+type AddressEntryFieldsProps = EntryFieldsProps;
+
+export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryFieldsProps) => {
     const { control, reset } = useFormContext<AddressEntry>();
     const coded = usePatientAddressCodedValues();
     const location = useLocationCodedValues();
@@ -34,29 +50,30 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Address as of"
-                        orientation="horizontal"
-                        defaultValue={value}
+                        id={`address-${name}`}
+                        label={AS_OF_DATE_LABEL}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        name={`address-${name}`}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        name={name}
+                        orientation={orientation}
+                        error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="type"
-                rules={{ required: { value: true, message: 'Type is required.' } }}
+                rules={{ ...validateRequiredRule(TYPE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label="Type"
-                        orientation="horizontal"
+                        label={TYPE_LABEL}
+                        orientation={orientation}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -65,17 +82,18 @@ export const AddressEntryFields = () => {
                         options={coded.types}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="use"
-                rules={{ required: { value: true, message: 'Use is required.' } }}
+                rules={{ ...validateRequiredRule(USE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label="Use"
-                        orientation="horizontal"
+                        label={USE_LABEL}
+                        orientation={orientation}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -84,17 +102,18 @@ export const AddressEntryFields = () => {
                         options={coded.uses}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="address1"
-                rules={maxLengthRule(100)}
+                rules={maxLengthRule(100, STREET_ADDRESS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <AddressSuggestionInput
-                        label="Street address 1"
-                        orientation="horizontal"
+                        label={STREET_ADDRESS_LABEL}
+                        orientation={orientation}
                         id={name}
                         locations={location}
                         criteria={{
@@ -102,7 +121,7 @@ export const AddressEntryFields = () => {
                             state: selectedState?.value ?? undefined,
                             zip: enteredZip ?? undefined
                         }}
-                        defaultValue={value ?? ''}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         onSelection={handleSuggestionSelection}
@@ -113,11 +132,11 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="address2"
-                rules={maxLengthRule(100)}
+                rules={maxLengthRule(100, STREET_ADDRESS_2_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Street address 2"
-                        orientation="horizontal"
+                        label={STREET_ADDRESS_2_LABEL}
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -126,17 +145,18 @@ export const AddressEntryFields = () => {
                         htmlFor={name}
                         id={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="city"
-                rules={maxLengthRule(100)}
+                rules={maxLengthRule(100, CITY_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="City"
-                        orientation="horizontal"
+                        label={CITY_LABEL}
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -145,6 +165,7 @@ export const AddressEntryFields = () => {
                         htmlFor={name}
                         id={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -154,38 +175,30 @@ export const AddressEntryFields = () => {
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="State"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         id={name}
                         name={name}
                         options={location.states.all}
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="zipcode"
-                rules={{
-                    pattern: {
-                        value: /^\d{5}(?:[-\s]\d{4})?$/,
-                        message: 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
-                    }
-                }}
+                rules={validZipCodeRule(ZIP_LABEL)}
                 render={({ field: { onChange, value, name, onBlur }, fieldState: { error } }) => (
-                    <Input
-                        label="Zip"
-                        orientation="horizontal"
+                    <ZipCodeInputField
+                        id={name}
+                        label={ZIP_LABEL}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={value}
-                        type="text"
-                        name="zipcode"
-                        mask="_____-____"
-                        pattern="^\d{5}(?:[-\s]\d{4})?$"
-                        htmlFor={name}
-                        id={name}
+                        orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -195,39 +208,30 @@ export const AddressEntryFields = () => {
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="County"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         id={name}
                         name={name}
                         options={counties}
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="censusTract"
-                rules={{
-                    pattern: {
-                        value: /^(?!0000)(\d{4})(?:\.(?!00|99)\d{2})?$/,
-                        message:
-                            'Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.'
-                    }
-                }}
+                rules={validCensusTractRule(CENSUS_TRACT_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
-                        label="Census tract"
-                        orientation="horizontal"
+                    <CensusTractInputField
+                        id={name}
+                        label={CENSUS_TRACT_LABEL}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={value}
-                        type="text"
-                        mask="____.__"
-                        pattern="^(?!0000)(\d{4})(?:\.(?!00|99)\d{2})?$"
-                        name={name}
-                        htmlFor={name}
-                        id={name}
+                        orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -237,12 +241,13 @@ export const AddressEntryFields = () => {
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="Country"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         id={name}
                         name={name}
                         options={location.countries}
+                        sizing="compact"
                         autoComplete="off"
                     />
                 )}
@@ -251,20 +256,18 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="comment"
-                rules={maxLengthRule(2000)}
+                rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
-                        label="Address comments"
-                        orientation="horizontal"
-                        onChange={onChange}
+                    <TextAreaField
+                        label={COMMENTS_LABEL}
+                        orientation={orientation}
                         onBlur={onBlur}
-                        defaultValue={value}
-                        type="text"
+                        onChange={onChange}
+                        value={value}
                         name={name}
-                        htmlFor={name}
                         id={name}
                         error={error?.message}
-                        multiline
+                        sizing="compact"
                     />
                 )}
             />

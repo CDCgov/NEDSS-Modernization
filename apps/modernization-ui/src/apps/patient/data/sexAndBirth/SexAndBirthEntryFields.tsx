@@ -1,17 +1,26 @@
-import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Input } from 'components/FormInputs/Input';
-import { displayAgeAsOfToday } from 'date/displayAge';
-import { SingleSelect } from 'design-system/select';
-import { useCountyCodedValues } from 'location';
 import { useEffect, useMemo } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry';
-import { BirthEntry, SexEntry } from '../entry';
+import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { SingleSelect } from 'design-system/select';
+import { Input } from 'components/FormInputs/Input';
+import { displayAgeAsOfToday } from 'date/displayAge';
+import { useCountyCodedValues } from 'location';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { BirthEntry, SexEntry } from 'apps/patient/data/entry';
+import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';
 
 const UNKNOWN_GENDER = 'U';
-export const SexAndBirthEntryFields = () => {
+
+const AS_OF_DATE_LABEL = 'Sex & birth information as of';
+const BORN_ON_LABEL = 'Date of birth';
+const BIRTH_CITY_LABEL = 'Birth city';
+const ENTRY_FIELD_PLACEHOLDER = '';
+
+type SexAndBirthEntryFieldsProps = EntryFieldsProps;
+
+export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBirthEntryFieldsProps) => {
     const { control, setValue } = useFormContext<{ birthAndSex: BirthEntry & SexEntry }>();
     const currentBirthday = useWatch({ control, name: 'birthAndSex.bornOn' });
     const selectedCurrentGender = useWatch({ control, name: 'birthAndSex.current' });
@@ -39,33 +48,35 @@ export const SexAndBirthEntryFields = () => {
             <Controller
                 control={control}
                 name="birthAndSex.asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Sex & birth information as of"
-                        orientation="horizontal"
-                        defaultValue={value}
+                        label={AS_OF_DATE_LABEL}
+                        orientation={orientation}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        name={name}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        id={name}
+                        error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="birthAndSex.bornOn"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                rules={validDateRule(BORN_ON_LABEL)}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Date of birth"
-                        orientation="horizontal"
-                        defaultValue={value}
+                        id={name}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        name={name}
-                        disableFutureDates
+                        sizing="compact"
+                        label={BORN_ON_LABEL}
+                        error={error?.message}
+                        orientation={orientation}
                     />
                 )}
             />
@@ -76,13 +87,14 @@ export const SexAndBirthEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Current sex"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
                         options={coded.genders}
+                        sizing="compact"
                     />
                 )}
             />
@@ -90,16 +102,18 @@ export const SexAndBirthEntryFields = () => {
                 <Controller
                     control={control}
                     name="birthAndSex.unknownReason"
+                    shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label="Unknown reason"
-                            orientation="horizontal"
+                            orientation={orientation}
                             value={value}
                             onChange={onChange}
                             onBlur={onBlur}
                             id={name}
                             name={name}
                             options={coded.genderUnknownReasons}
+                            sizing="compact"
                         />
                     )}
                 />
@@ -111,24 +125,26 @@ export const SexAndBirthEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Transgender information"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
                         options={coded.preferredGenders}
+                        sizing="compact"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="birthAndSex.additionalGender"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                rules={maxLengthRule(20)}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Additional gender"
-                        orientation="horizontal"
-                        placeholder="No Data"
+                        orientation={orientation}
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         onChange={onChange}
                         onBlur={onBlur}
                         type="text"
@@ -136,6 +152,8 @@ export const SexAndBirthEntryFields = () => {
                         name={name}
                         htmlFor={name}
                         defaultValue={value}
+                        error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -145,13 +163,14 @@ export const SexAndBirthEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Birth sex"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
                         options={coded.genders}
+                        sizing="compact"
                     />
                 )}
             />
@@ -161,13 +180,14 @@ export const SexAndBirthEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Multiple birth"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
                         options={coded.multipleBirth}
+                        sizing="compact"
                     />
                 )}
             />
@@ -175,12 +195,13 @@ export const SexAndBirthEntryFields = () => {
                 <Controller
                     control={control}
                     name="birthAndSex.order"
+                    shouldUnregister
                     rules={{ min: { value: 0, message: 'Must be a positive number' } }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             label="Birth order"
-                            orientation="horizontal"
-                            placeholder="No Data"
+                            orientation={orientation}
+                            placeholder={ENTRY_FIELD_PLACEHOLDER}
                             onChange={onChange}
                             onBlur={onBlur}
                             type="text"
@@ -191,6 +212,7 @@ export const SexAndBirthEntryFields = () => {
                             mask="_____"
                             pattern="\d{5}"
                             error={error?.message}
+                            sizing="compact"
                         />
                     )}
                 />
@@ -198,12 +220,12 @@ export const SexAndBirthEntryFields = () => {
             <Controller
                 control={control}
                 name="birthAndSex.city"
-                rules={maxLengthRule(100)}
+                rules={maxLengthRule(100, BIRTH_CITY_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Birth city"
-                        orientation="horizontal"
-                        placeholder="No Data"
+                        label={BIRTH_CITY_LABEL}
+                        orientation={orientation}
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         onChange={onChange}
                         onBlur={onBlur}
                         type="text"
@@ -212,6 +234,7 @@ export const SexAndBirthEntryFields = () => {
                         name={name}
                         htmlFor={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -221,13 +244,14 @@ export const SexAndBirthEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Birth state"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
                         options={coded.states.all}
+                        sizing="compact"
                     />
                 )}
             />
@@ -237,13 +261,14 @@ export const SexAndBirthEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Birth county"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
                         options={counties}
+                        sizing="compact"
                     />
                 )}
             />
@@ -254,13 +279,14 @@ export const SexAndBirthEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Birth country"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
                         options={coded.countries}
+                        sizing="compact"
                     />
                 )}
             />

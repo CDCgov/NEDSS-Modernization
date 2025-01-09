@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
+
 @Hidden
 @RestController
 class DeleteInvestigationRedirector {
@@ -21,33 +23,39 @@ class DeleteInvestigationRedirector {
 
   private final RestTemplate template;
   private final ModernizedPatientProfileRedirectResolver resolver;
+  private final DeletedInvestigationResponseHandler handler;
 
   DeleteInvestigationRedirector(
       @Qualifier("classicTemplate") final RestTemplate template,
-      final ModernizedPatientProfileRedirectResolver resolver) {
+      final ModernizedPatientProfileRedirectResolver resolver,
+      final DeletedInvestigationResponseHandler handler
+  ) {
     this.template = template;
     this.resolver = resolver;
+    this.handler = handler;
   }
 
   @PostMapping(
       path = "/nbs/redirect/patient/investigation/delete",
-      consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+      consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
+  )
   ResponseEntity<Void> deleted(
       final HttpServletRequest request,
-      @RequestParam final MultiValueMap<String, String> data) {
+      @RequestParam final MultiValueMap<String, String> data
+  ) {
 
-    deleteInvestigation(data);
-
-    return resolver.fromReturnPatient(request);
+    return deleteInvestigation(data).orElseGet(() -> resolver.fromReturnPatient(request));
   }
 
-  private void deleteInvestigation(final MultiValueMap<String, String> data) {
+  private Optional<ResponseEntity<Void>> deleteInvestigation(final MultiValueMap<String, String> data) {
     RequestEntity<MultiValueMap<String, String>> request = RequestEntity
         .post(LOCATION)
         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         .body(data);
 
-    this.template.exchange(request, Void.class);
+    ResponseEntity<Void> response = this.template.exchange(request, Void.class);
+
+    return this.handler.handle(response);
   }
 
 }

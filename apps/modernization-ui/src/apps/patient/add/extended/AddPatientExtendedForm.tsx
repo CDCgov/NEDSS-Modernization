@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { Card } from './card/Card';
+import { Card } from 'design-system/card';
 import { ExtendedNewPatientEntry } from './entry';
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
 import { EthnicityEntryFields } from 'apps/patient/data/ethnicity/EthnicityEntryFields';
@@ -15,7 +15,7 @@ import { RaceRepeatingBlock } from './inputs/race/RaceRepeatingBlock';
 import { AlertMessage } from 'design-system/message';
 import styles from './add-patient-extended-form.module.scss';
 import { SubFormDirtyState, ValidationErrors } from './useAddExtendedPatientInteraction';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 type Props = {
     validationErrors?: ValidationErrors;
@@ -23,6 +23,7 @@ type Props = {
 };
 export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Props) => {
     const { control } = useFormContext<ExtendedNewPatientEntry>();
+    const formRef = useRef<HTMLDivElement>(null);
 
     // Generates an error message that will contain a link to the section if an id is provided
     const generateErrorMessage = (section: string, id?: string) => {
@@ -35,7 +36,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
         );
         return (
             <React.Fragment key={section}>
-                Data has been entered in the {linkOrText} section. Please press Add or clear the data and submit again.
+                Data have been entered in the {linkOrText} section. Please press Add or clear the data and submit again.
             </React.Fragment>
         );
     };
@@ -55,10 +56,15 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
             </ul>
         );
     };
+    useEffect(() => {
+        if (validationErrors) {
+            formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [validationErrors]);
 
     return (
         <div className={styles.addPatientForm}>
-            <div className={styles.formContent}>
+            <div className={styles.formContent} ref={formRef}>
                 {validationErrors && (
                     <AlertMessage title="Please fix the following errors:" type="error">
                         {renderErrorMessages()}

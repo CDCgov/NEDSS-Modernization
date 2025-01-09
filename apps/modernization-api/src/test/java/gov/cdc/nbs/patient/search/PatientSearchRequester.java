@@ -55,7 +55,6 @@ class PatientSearchRequester {
             }
             detailedPhones {
               number
-              extension
               type
               use
             }

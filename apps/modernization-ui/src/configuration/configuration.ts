@@ -19,6 +19,9 @@ type SearchView = Toggle & {
 };
 
 type Search = {
+    events: Toggle;
+    investigations: Toggle;
+    laboratoryReports: Toggle;
     view: SearchView;
 };
 
@@ -45,7 +48,11 @@ type Features = {
     };
     search: Search;
     patient: {
+        profile: {
+            enabled: boolean;
+        };
         add: {
+            enabled: boolean;
             extended: {
                 enabled: boolean;
             };

@@ -9,7 +9,7 @@ import { categoryValidator } from './categoryValidator';
 
 const columns: Column<RaceEntry>[] = [
     { id: 'race-as-of', name: 'As of', render: (v) => v.asOf },
-    { id: 'race-name', name: 'Race', render: (v) => v.race.name },
+    { id: 'race-name', name: 'Race', render: (v) => v.race?.name },
     {
         id: 'race-detailed',
         name: 'Detailed race',
@@ -28,7 +28,9 @@ type Props = {
 const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty }: Props) => {
     const { categories } = useRaceCategoryOptions();
 
-    const renderForm = () => <RaceEntryFields categories={categories} categoryValidator={categoryValidator(values)} />;
+    const renderForm = (entry?: RaceEntry) => (
+        <RaceEntryFields categories={categories} categoryValidator={categoryValidator(values)} entry={entry} />
+    );
     const renderView = (entry: RaceEntry) => <RaceEntryView entry={entry} />;
 
     return (

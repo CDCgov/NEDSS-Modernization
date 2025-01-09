@@ -11,9 +11,26 @@ class PatientFeaturesConfiguration {
   @Bean
   @Scope("prototype")
   Patient patientFeatures(
-      @Value("${nbs.ui.features.patient.add.extended.enabled:false}") final boolean enabled
+      final Patient.Profile profile,
+      final Patient.Add add
   ) {
-    return new Patient(new Patient.Add(new Patient.Add.Extended(enabled)));
+    return new Patient(profile, add);
   }
 
+  @Bean
+  @Scope("prototype")
+  Patient.Profile patientProfileFeatures(
+      @Value("${nbs.ui.features.patient.profile.enabled:false}") final boolean enabled
+  ) {
+    return new Patient.Profile(enabled);
+  }
+
+  @Bean
+  @Scope("prototype")
+  Patient.Add patientAddFeatures(
+      @Value("${nbs.ui.features.patient.add.enabled:false}") final boolean enabled,
+      @Value("${nbs.ui.features.patient.add.extended.enabled:false}") final boolean extendedEnabled
+  ) {
+    return new Patient.Add(enabled, new Patient.Add.Extended(extendedEnabled));
+  }
 }

@@ -2,7 +2,7 @@ import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
 import { MortalityEntryFields } from './MortalityEntryFields';
 import { FormProvider, useForm } from 'react-hook-form';
 import { internalizeDate } from 'date';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 const mockLocationCodedValues = {
@@ -31,7 +31,7 @@ const Fixture = () => {
         </FormProvider>
     );
 };
-describe('MortalityEntryFields', () => {
+describe('when entering patient mortality demographics', () => {
     it('should render the proper labels', () => {
         const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
@@ -42,6 +42,18 @@ describe('MortalityEntryFields', () => {
         expect(queryByLabelText('Death state')).not.toBeInTheDocument();
         expect(queryByLabelText('Death county')).not.toBeInTheDocument();
         expect(queryByLabelText('Death country')).not.toBeInTheDocument();
+    });
+
+    it('should require as of', async () => {
+        const { getByLabelText, findByText } = render(<Fixture />);
+
+        const asOf = getByLabelText('Mortality information as of');
+        act(() => {
+            userEvent.clear(asOf);
+            userEvent.tab();
+        });
+
+        expect(await findByText('The Mortality information as of is required.')).toBeInTheDocument();
     });
 
     it('should render the death information when deceased is true', () => {

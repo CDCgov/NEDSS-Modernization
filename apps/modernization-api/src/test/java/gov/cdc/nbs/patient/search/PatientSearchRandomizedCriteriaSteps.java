@@ -2,6 +2,9 @@ package gov.cdc.nbs.patient.search;
 
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
+import gov.cdc.nbs.search.criteria.date.DateCriteria;
+import gov.cdc.nbs.search.criteria.date.DateCriteria.Between;
+import gov.cdc.nbs.search.criteria.date.DateCriteria.Equals;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
@@ -20,8 +23,7 @@ public class PatientSearchRandomizedCriteriaSteps {
   public PatientSearchRandomizedCriteriaSteps(
       final Active<PatientFilter> criteria,
       final PatientShortIdentifierResolver resolver,
-      final Active<SearchablePatient> searchable
-  ) {
+      final Active<SearchablePatient> searchable) {
     this.criteria = criteria;
     this.resolver = resolver;
     this.searchable = searchable;
@@ -40,8 +42,7 @@ public class PatientSearchRandomizedCriteriaSteps {
   private PatientFilter applyCriteriaFromTarget(
       final PatientFilter filter,
       final String field,
-      final String qualifier
-  ) {
+      final String qualifier) {
     switch (field) {
       case "email" -> emailFromTarget()
           .map(SearchablePatient.Email::address)
@@ -77,6 +78,30 @@ public class PatientSearchRandomizedCriteriaSteps {
             filter.setDateOfBirthOperator(resolveQualifier(qualifier));
           });
 
+      case "birthday day" -> birthdayDayFromTarget()
+          .ifPresent(day -> {
+            filter.setBornOn(new DateCriteria(new Equals(day, null, null), null));
+          });
+
+      case "birthday month" -> birthdayMonthFromTarget()
+          .ifPresent(month -> {
+            filter.setBornOn(new DateCriteria(new Equals(null, month, null), null));
+          });
+
+      case "birthday year" -> birthdayYearFromTarget()
+          .ifPresent(year -> {
+            filter.setBornOn(new DateCriteria(new Equals(null, null, year), null));
+          });
+
+      case "birthday low" -> birthdayFromTarget("equal")
+          .ifPresent(birthday -> {
+            filter.setBornOn(new DateCriteria(null, new Between(birthday.minusDays(2), null)));
+          });
+
+      case "birthday high" -> birthdayFromTarget("equal")
+          .ifPresent(birthday -> {
+            filter.setBornOn(new DateCriteria(null, new Between(null, birthday.plusDays(2))));
+          });
 
       case "gender" -> this.searchable.maybeActive()
           .map(SearchablePatient::gender)
@@ -172,6 +197,21 @@ public class PatientSearchRandomizedCriteriaSteps {
         .map(found -> resolveDateOfBirth(found, qualifier));
   }
 
+  private Optional<Integer> birthdayDayFromTarget() {
+    return this.searchable.maybeActive()
+        .map(found -> found.birthday().getDayOfMonth());
+  }
+
+  private Optional<Integer> birthdayMonthFromTarget() {
+    return this.searchable.maybeActive()
+        .map(found -> found.birthday().getMonthValue());
+  }
+
+  private Optional<Integer> birthdayYearFromTarget() {
+    return this.searchable.maybeActive()
+        .map(found -> found.birthday().getYear());
+  }
+
   private LocalDate resolveDateOfBirth(final SearchablePatient search, final String qualifier) {
     LocalDate dateOfBirth = search.birthday();
     return switch (qualifier.toLowerCase()) {
@@ -195,23 +235,20 @@ public class PatientSearchRandomizedCriteriaSteps {
     }
 
     this.criteria.active(
-        filter -> applyPartialCriteriaFromTarget(filter, field)
-    );
+        filter -> applyPartialCriteriaFromTarget(filter, field));
 
   }
 
   private PatientFilter applyPartialCriteriaFromTarget(
       final PatientFilter filter,
-      final String field
-  ) {
+      final String field) {
     switch (field.toLowerCase()) {
       case "identification" -> identificationFromTarget().map(
           found -> new PatientFilter.Identification(
               RandomUtil.randomPartialDataSearchString(found.value()),
               null,
-              found.type()
-          )
-      ).ifPresent(filter::setIdentification);
+              found.type()))
+          .ifPresent(filter::setIdentification);
 
       case "phone number" -> phoneFromTarget()
           .map(found -> RandomUtil.randomPartialDataSearchString(found.number()))

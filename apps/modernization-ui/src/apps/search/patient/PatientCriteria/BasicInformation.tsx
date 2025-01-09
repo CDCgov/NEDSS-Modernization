@@ -1,13 +1,14 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 import { SingleSelect } from 'design-system/select';
-import { Toggle } from 'design-system/toggle/Toggle';
+import { OperatorInput } from 'design-system/input/operator';
+import { Input } from 'components/FormInputs/Input';
+import { validNameRule } from 'validation/entry';
+import { genders } from 'options/gender';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
-import { validNameRule } from 'validation/entry';
-import { Input } from 'components/FormInputs/Input';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { genders } from 'options/gender';
+import { DateCriteriaEntry } from 'design-system/date/criteria/DateCriteriaEntry';
+import { validateDateCriteria } from 'design-system/date/criteria/validateDateCriteria';
 
 export const BasicInformation = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -16,67 +17,47 @@ export const BasicInformation = () => {
         <SearchCriteria>
             <Controller
                 control={control}
-                name="lastName"
+                name="name.last"
                 rules={validNameRule}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <Input
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        type="text"
-                        label="Last name"
-                        name={name}
-                        defaultValue={value}
-                        htmlFor={name}
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                    <OperatorInput
                         id={name}
-                        sizing="compact"
-                        error={error?.message}
-                    />
-                )}
-            />
-            <Controller
-                control={control}
-                name="firstName"
-                rules={validNameRule}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <Input
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        defaultValue={value}
-                        type="text"
-                        label="First name"
-                        name={name}
-                        htmlFor={name}
-                        id={name}
-                        sizing="compact"
-                        error={error?.message}
-                    />
-                )}
-            />
-            <Controller
-                control={control}
-                name="includeSimilar"
-                render={({ field: { onChange, value, name } }) => (
-                    <Toggle
                         value={value}
-                        label={'Include results that sound similar'}
-                        name={name}
-                        onChange={onChange}
+                        label="Last name"
                         sizing="compact"
+                        error={error?.message}
+                        onChange={onChange}
                     />
                 )}
             />
             <Controller
                 control={control}
-                name="dateOfBirth"
-                render={({ field: { onChange, onBlur, value, name } }) => (
-                    <DatePickerInput
-                        name={name}
+                name="name.first"
+                rules={validNameRule}
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                    <OperatorInput
+                        id={name}
+                        value={value}
+                        label="First name"
+                        sizing="compact"
+                        error={error?.message}
+                        onChange={onChange}
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="bornOn"
+                rules={{ validate: (value) => !value || validateDateCriteria('Date of birth')(value) }}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                    <DateCriteriaEntry
+                        id={name}
                         label="Date of birth"
-                        defaultValue={value}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
                         sizing="compact"
-                        disableFutureDates
+                        error={error?.message}
                     />
                 )}
             />
@@ -98,16 +79,18 @@ export const BasicInformation = () => {
             <Controller
                 control={control}
                 name="id"
-                render={({ field: { onChange, value, name } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
                         label="Patient ID"
+                        helperText="Separate IDs by commas, semicolons, or spaces"
                         name={name}
                         htmlFor={name}
                         id={name}
                         sizing="compact"
+                        error={error?.message}
                     />
                 )}
             />
@@ -122,7 +105,7 @@ export const BasicInformation = () => {
                         name={name}
                         label={'Include records that are'}
                         sizing="compact"
-                        requried
+                        required
                         options={statusOptions}
                         value={value}
                         onChange={onChange}

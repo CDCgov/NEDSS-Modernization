@@ -26,7 +26,7 @@ public class NameSteps {
   @ParameterType(name = "nameSuffix", value = ".*")
   public String nameSuffix(final String value) {
     return resolver.resolve("P_NM_SFX", value)
-        .orElse(null);
+            .orElse(null);
   }
 
   @ParameterType(name = "degree", value = ".*")

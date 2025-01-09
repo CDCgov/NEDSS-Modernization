@@ -77,6 +77,22 @@ export type ContactsNamedByPatientResults = {
   total: Scalars['Int']['output'];
 };
 
+export type DateBetweenCriteria = {
+  from?: InputMaybe<Scalars['Date']['input']>;
+  to?: InputMaybe<Scalars['Date']['input']>;
+};
+
+export type DateCriteria = {
+  between?: InputMaybe<DateBetweenCriteria>;
+  equals?: InputMaybe<DateEqualsCriteria>;
+};
+
+export type DateEqualsCriteria = {
+  day?: InputMaybe<Scalars['Int']['input']>;
+  month?: InputMaybe<Scalars['Int']['input']>;
+  year?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export enum Deceased {
   N = 'N',
   Unk = 'UNK',
@@ -185,6 +201,10 @@ export type FacilityProviders = {
   orderingProvider?: Maybe<OrderingProvider>;
   reportingFacility?: Maybe<ReportingFacility>;
   sendingFacility?: Maybe<SendingFacility>;
+};
+
+export type Filter = {
+  id?: InputMaybe<Scalars['String']['input']>;
 };
 
 export enum Gender {
@@ -445,6 +465,11 @@ export enum LaboratoryReportStatus {
   Processed = 'PROCESSED',
   Unprocessed = 'UNPROCESSED'
 }
+
+export type LocationCriteria = {
+  city?: InputMaybe<TextCriteria>;
+  street?: InputMaybe<TextCriteria>;
+};
 
 export type MaterialParticipation2 = {
   __typename?: 'MaterialParticipation2';
@@ -1272,6 +1297,11 @@ export type PatientNameChangeResult = {
   sequence: Scalars['Int']['output'];
 };
 
+export type PatientNameCriteria = {
+  first?: InputMaybe<TextCriteria>;
+  last?: InputMaybe<TextCriteria>;
+};
+
 export type PatientNameDegree = {
   __typename?: 'PatientNameDegree';
   description: Scalars['String']['output'];
@@ -1517,10 +1547,9 @@ export type PatientSearchResultName = {
 
 export type PatientSearchResultPhone = {
   __typename?: 'PatientSearchResultPhone';
-  extension?: Maybe<Scalars['String']['output']>;
   number?: Maybe<Scalars['String']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
-  use?: Maybe<Scalars['String']['output']>;
+  type: Scalars['String']['output'];
+  use: Scalars['String']['output'];
 };
 
 export type PatientSearchResults = {
@@ -1637,27 +1666,40 @@ export type PatientVaccinationResults = {
 };
 
 export type PersonFilter = {
+  abcCase?: InputMaybe<Scalars['String']['input']>;
+  accessionNumber?: InputMaybe<Scalars['String']['input']>;
   address?: InputMaybe<Scalars['String']['input']>;
+  bornOn?: InputMaybe<DateCriteria>;
   city?: InputMaybe<Scalars['String']['input']>;
+  cityCountyCase?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   dateOfBirth?: InputMaybe<Scalars['Date']['input']>;
   dateOfBirthOperator?: InputMaybe<Operator>;
   deceased?: InputMaybe<Deceased>;
   disableSoundex?: InputMaybe<Scalars['Boolean']['input']>;
+  document?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   ethnicity?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<Filter>;
   firstName?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   identification?: InputMaybe<IdentificationCriteria>;
+  investigation?: InputMaybe<Scalars['String']['input']>;
+  labReport?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
+  location?: InputMaybe<LocationCriteria>;
+  morbidity?: InputMaybe<Scalars['String']['input']>;
   mortalityStatus?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<PatientNameCriteria>;
+  notification?: InputMaybe<Scalars['String']['input']>;
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
   race?: InputMaybe<Scalars['String']['input']>;
   recordStatus: Array<RecordStatus>;
   state?: InputMaybe<Scalars['String']['input']>;
-  treatmentId?: InputMaybe<Scalars['String']['input']>;
-  vaccinationId?: InputMaybe<Scalars['String']['input']>;
+  stateCase?: InputMaybe<Scalars['String']['input']>;
+  treatment?: InputMaybe<Scalars['String']['input']>;
+  vaccination?: InputMaybe<Scalars['String']['input']>;
   zip?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -2036,6 +2078,14 @@ export enum Suffix {
   Sr = 'SR',
   V = 'V'
 }
+
+export type TextCriteria = {
+  contains?: InputMaybe<Scalars['String']['input']>;
+  equals?: InputMaybe<Scalars['String']['input']>;
+  not?: InputMaybe<Scalars['String']['input']>;
+  soundsLike?: InputMaybe<Scalars['String']['input']>;
+  startsWith?: InputMaybe<Scalars['String']['input']>;
+};
 
 export type TracedCondition = {
   __typename?: 'TracedCondition';
@@ -2529,7 +2579,7 @@ export type FindPatientsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PatientSearchResults', total: number, page: number, size: number, content: Array<{ __typename?: 'PatientSearchResult', patient: number, birthday?: any | null, age?: number | null, gender?: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName?: { __typename?: 'PatientSearchResultName', type?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, names: Array<{ __typename?: 'PatientSearchResultName', type?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null }>, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, addresses: Array<{ __typename?: 'PatientSearchResultAddress', type?: string | null, use?: string | null, address?: string | null, address2?: string | null, city?: string | null, county?: string | null, state?: string | null, zipcode?: string | null }>, detailedPhones: Array<{ __typename?: 'PatientSearchResultPhone', extension?: string | null, number?: string | null, type?: string | null, use?: string | null }> }> } };
+export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PatientSearchResults', total: number, page: number, size: number, content: Array<{ __typename?: 'PatientSearchResult', patient: number, birthday?: any | null, age?: number | null, gender?: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName?: { __typename?: 'PatientSearchResultName', type?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, names: Array<{ __typename?: 'PatientSearchResultName', type?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null }>, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, addresses: Array<{ __typename?: 'PatientSearchResultAddress', type?: string | null, use?: string | null, address?: string | null, address2?: string | null, city?: string | null, county?: string | null, state?: string | null, zipcode?: string | null }>, detailedPhones: Array<{ __typename?: 'PatientSearchResultPhone', type: string, use: string, number?: string | null }> }> } };
 
 export type FindTreatmentsForPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -5294,10 +5344,9 @@ export const FindPatientsByFilterDocument = gql`
       phones
       emails
       detailedPhones {
-        extension
-        number
         type
         use
+        number
       }
     }
     total

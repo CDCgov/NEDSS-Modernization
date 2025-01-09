@@ -1,5 +1,4 @@
-import { asName } from "..";
-
+import { asName } from './asName';
 
 describe('when mapping a name entry to a format accepted by the API', () => {
     it('should include the as of date', () => {
@@ -112,5 +111,16 @@ describe('when mapping a name entry to a format accepted by the API', () => {
         const actual = asName(entry);
 
         expect(actual).toEqual(expect.objectContaining({ degree: 'degree-value' }));
+    });
+
+    it('should not map when type is null', () => {
+        const entry = {
+            asOf: '04/13/2017',
+            type: null
+        };
+
+        const actual = asName(entry);
+
+        expect(actual).toBeUndefined();
     });
 });

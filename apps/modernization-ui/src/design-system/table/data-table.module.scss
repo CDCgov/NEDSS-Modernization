@@ -41,13 +41,14 @@
         td {
             border-style: none !important;
             white-space: pre-wrap;
+            vertical-align: top;
 
             &.fixed {
                 position: sticky;
                 left: 0;
                 z-index: 10;
 
-                min-width: 12.5rem;
+                min-width: 8rem;
                 max-width: 12.5rem;
                 border-right-width: 1px;
                 border-right-style: solid !important;

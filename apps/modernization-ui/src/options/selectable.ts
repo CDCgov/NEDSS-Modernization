@@ -10,34 +10,32 @@ type Selectable = {
 export type { Selectable };
 
 /* eslint-disable no-redeclare */
-function withValue<V>(selectable: Selectable, mapping: Mapping<Selectable, V>): V;
-function withValue<V>(selectable: null | undefined, mapping: Mapping<Selectable, V>): undefined;
-function withValue<V>(selectable: Maybe<Selectable>, mapping: Mapping<Selectable, V>) {
+function mapExisting<V>(mapping: Mapping<Selectable, V>, selectable: Selectable): V;
+function mapExisting<V>(mapping: Mapping<Selectable, V>, selectable: null | undefined): undefined;
+function mapExisting<V>(mapping: Mapping<Selectable, V>, selectable: Maybe<Selectable>) {
     return selectable ? mapping(selectable) : undefined;
 }
 
 /* eslint-disable no-redeclare */
-function withValues<V>(selectables: undefined, mapping: Mapping<Selectable, V>): undefined;
-function withValues<V>(selectables: Selectable[], mapping: Mapping<Selectable, V>): V[];
-function withValues<V>(selectables: Selectable[] | undefined, mapping: Mapping<Selectable, V>) {
-    return selectables && selectables.map((s) => withValue(s, mapping));
+function mapAllExisting<V>(items: undefined, mapping: Mapping<Selectable, V>): undefined;
+function mapAllExisting<V>(items: Selectable[], mapping: Mapping<Selectable, V>): V[];
+function mapAllExisting<V>(items: Selectable[] | undefined, mapping: Mapping<Selectable, V>) {
+    return items && items.map((s) => mapExisting(mapping, s));
 }
-
-export { withValue, withValues };
 
 /* eslint-disable no-redeclare */
 function asNumericValue(selectable: Selectable): number;
 function asNumericValue(selectable: null | undefined): undefined;
 function asNumericValue(selectable: Maybe<Selectable>): undefined;
 function asNumericValue(selectable: Maybe<Selectable>) {
-    return selectable ? withValue(selectable, (s) => Number(s.value)) : undefined;
+    return selectable ? mapExisting((s) => Number(s.value), selectable) : undefined;
 }
 
 /* eslint-disable no-redeclare */
-function asNumericValues(selectables: undefined): undefined;
-function asNumericValues(selectables: Selectable[]): number[];
-function asNumericValues(selectables: Selectable[] | undefined) {
-    return selectables && withValues<number>(selectables, asNumericValue);
+function asNumericValues(items: undefined): undefined;
+function asNumericValues(items: Selectable[]): number[];
+function asNumericValues(items: Selectable[] | undefined) {
+    return items && mapAllExisting<number>(items, asNumericValue);
 }
 
 export { asNumericValue, asNumericValues };
@@ -47,21 +45,33 @@ function asValue(selectable: Selectable): string;
 function asValue(selectable: null | undefined): undefined;
 function asValue(selectable: Maybe<Selectable>): undefined;
 function asValue(selectable: Maybe<Selectable>) {
-    return selectable ? withValue(selectable, (s) => s?.value) : undefined;
+    return selectable ? mapExisting((s) => s?.value, selectable) : undefined;
 }
 
 /* eslint-disable no-redeclare */
-function asValues(selectables: undefined): undefined;
-function asValues(selectables: Selectable[]): string[];
-function asValues(selectables: Selectable[] | undefined) {
-    return selectables && withValues<string>(selectables, asValue);
+function asValues(items: undefined): undefined;
+function asValues(items: Selectable[]): string[];
+function asValues(items: Selectable[] | undefined) {
+    return items && mapAllExisting<string>(items, asValue);
 }
 
 export { asValue, asValues };
 
-function asSelectable(value: string, name?: string): Selectable {
-    return { name: name ?? value, label: name ?? value, value };
+/* eslint-disable no-redeclare */
+function asName(selectable: Selectable): string;
+function asName(selectable: null | undefined): undefined;
+function asName(selectable: Maybe<Selectable>): undefined;
+function asName(selectable: Maybe<Selectable>) {
+    return selectable ? mapExisting((s) => s?.name, selectable) : undefined;
 }
+
+export { asName };
+
+const asSelectable = (value: string, name?: string): Selectable => ({
+    name: name ?? value,
+    label: name ?? value,
+    value
+});
 
 export { asSelectable };
 

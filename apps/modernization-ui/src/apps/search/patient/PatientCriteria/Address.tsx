@@ -4,6 +4,7 @@ import { SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchC
 import { SingleSelect } from 'design-system/select';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
+import { OperatorInput } from 'design-system/input/operator';
 
 export const Address = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -12,31 +13,29 @@ export const Address = () => {
             <SearchCriteria>
                 <Controller
                     control={control}
-                    name="address"
+                    name="location.street"
                     render={({ field: { onChange, value, name } }) => (
-                        <Input
-                            onChange={onChange}
-                            type="text"
-                            label="Street address"
-                            defaultValue={value}
-                            htmlFor={name}
+                        <OperatorInput
                             id={name}
+                            value={value}
+                            label="Street address"
                             sizing="compact"
+                            operationMode="alpha"
+                            onChange={onChange}
                         />
                     )}
                 />
                 <Controller
                     control={control}
-                    name="city"
+                    name="location.city"
                     render={({ field: { onChange, value, name } }) => (
-                        <Input
-                            onChange={onChange}
-                            defaultValue={value}
-                            type="text"
-                            label="City"
-                            htmlFor={name}
+                        <OperatorInput
                             id={name}
+                            value={value}
+                            label="City"
                             sizing="compact"
+                            operationMode="alpha"
+                            onChange={onChange}
                         />
                     )}
                 />
@@ -68,7 +67,8 @@ export const Address = () => {
                     rules={{
                         pattern: {
                             value: /^\d{1,5}(?:[-\s]\d{1,4})?$/,
-                            message: 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
+                            message:
+                                'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).'
                         }
                     }}
                     render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (

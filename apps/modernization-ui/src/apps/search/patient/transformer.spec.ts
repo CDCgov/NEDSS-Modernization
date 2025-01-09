@@ -1,7 +1,6 @@
 import { RecordStatus } from 'generated/graphql/schema';
 import { PatientCriteriaEntry } from './criteria';
 import { transform } from './transformer';
-import { externalizeDate } from 'date';
 
 describe('when the PatientCriteria contains Basic Information criteria', () => {
     it('should transform with status', () => {
@@ -16,49 +15,114 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         );
     });
 
-    it('should disable soundex when not including similar', () => {
-        const input: PatientCriteriaEntry = {
-            includeSimilar: false,
-            status: []
-        };
-
-        const actual = transform(input);
-
-        expect(actual).toEqual(expect.objectContaining({ disableSoundex: true }));
-    });
-
-    it('should enable soundex when including similar', () => {
-      const input: PatientCriteriaEntry = {
-          includeSimilar: true,
-          status: []
-      };
-
-      const actual = transform(input);
-
-      expect(actual).toEqual(expect.objectContaining({ disableSoundex: false }));
-  });
-
-
     it('should transform with last name', () => {
         const input: PatientCriteriaEntry = {
-            lastName: 'last-name-value',
+            name: { last: { equals: 'last-name-value' } },
             status: []
         };
 
         const actual = transform(input);
 
-        expect(actual).toEqual(expect.objectContaining({ lastName: 'last-name-value' }));
+        expect(actual).toEqual(expect.objectContaining({ name: { last: { equals: 'last-name-value' } } }));
+    });
+
+    it('should transform with last name with contains', () => {
+        const input: PatientCriteriaEntry = {
+            name: { last: { contains: 'last-name-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ name: { last: { contains: 'last-name-value' } } }));
+    });
+
+    it('should transform with last name with not equal', () => {
+        const input: PatientCriteriaEntry = {
+            name: { last: { not: 'last-name-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ name: { last: { not: 'last-name-value' } } }));
+    });
+
+    it('should transform with last name with sounds like', () => {
+        const input: PatientCriteriaEntry = {
+            name: { last: { soundsLike: 'last-name-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ name: { last: { soundsLike: 'last-name-value' } } }));
+    });
+
+    it('should transform with last name with starts with', () => {
+        const input: PatientCriteriaEntry = {
+            name: { last: { startsWith: 'last-name-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ name: { last: { startsWith: 'last-name-value' } } }));
     });
 
     it('should transform with first name', () => {
         const input: PatientCriteriaEntry = {
-            firstName: 'first-name-value',
+            name: { first: { equals: 'first-name-value' } },
             status: []
         };
 
         const actual = transform(input);
 
-        expect(actual).toEqual(expect.objectContaining({ firstName: 'first-name-value' }));
+        expect(actual).toEqual(expect.objectContaining({ name: { first: { equals: 'first-name-value' } } }));
+    });
+
+    it('should transform with first name with contains', () => {
+        const input: PatientCriteriaEntry = {
+            name: { first: { contains: 'first-name-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ name: { first: { contains: 'first-name-value' } } }));
+    });
+
+    it('should transform with first name with starts with', () => {
+        const input: PatientCriteriaEntry = {
+            name: { first: { startsWith: 'first-name-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ name: { first: { startsWith: 'first-name-value' } } }));
+    });
+
+    it('should transform with first name with sounds like', () => {
+        const input: PatientCriteriaEntry = {
+            name: { first: { soundsLike: 'first-name-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ name: { first: { soundsLike: 'first-name-value' } } }));
+    });
+
+    it('should transform with first name with not equal', () => {
+        const input: PatientCriteriaEntry = {
+            name: { first: { not: 'first-name-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ name: { first: { not: 'first-name-value' } } }));
     });
 
     it('should transform with gender', () => {
@@ -72,15 +136,28 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(expect.objectContaining({ gender: 'F' }));
     });
 
-    it('should transform with DOB', () => {
+    it('should transform with DOB equals', () => {
         const input: PatientCriteriaEntry = {
-            dateOfBirth: '02/05/1995',
+            bornOn: { equals: { month: 2, day: 5, year: 1995 } },
             status: []
         };
 
         const actual = transform(input);
 
-        expect(actual).toEqual(expect.objectContaining({ dateOfBirth: externalizeDate('02/05/1995') }));
+        expect(actual).toEqual(expect.objectContaining({ bornOn: { equals: { month: 2, day: 5, year: 1995 } } }));
+    });
+
+    it('should transform with DOB between', () => {
+        const input: PatientCriteriaEntry = {
+            bornOn: { between: { from: '02/05/1995', to: '02/05/1995' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({ bornOn: { between: { from: '02/05/1995', to: '02/05/1995' } } })
+        );
     });
 
     it('should transform with patient id', () => {
@@ -98,24 +175,68 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 describe('when the PatientCriteria contains Address criteria', () => {
     it('should transform with Street address', () => {
         const input: PatientCriteriaEntry = {
-            address: 'address-value',
+            location: { street: { equals: 'address-value' } },
             status: []
         };
 
         const actual = transform(input);
 
-        expect(actual).toEqual(expect.objectContaining({ address: 'address-value' }));
+        expect(actual).toEqual(expect.objectContaining({ location: { street: { equals: 'address-value' } } }));
+    });
+
+    it('should transform with Street address with contains', () => {
+        const input: PatientCriteriaEntry = {
+            location: { street: { contains: 'address-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ location: { street: { contains: 'address-value' } } }));
+    });
+
+    it('should transform with Street address with not equal', () => {
+        const input: PatientCriteriaEntry = {
+            location: { street: { not: 'address-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ location: { street: { not: 'address-value' } } }));
     });
 
     it('should transform with City', () => {
         const input: PatientCriteriaEntry = {
-            city: 'city-value',
+            location: { city: { equals: 'city-value' } },
             status: []
         };
 
         const actual = transform(input);
 
-        expect(actual).toEqual(expect.objectContaining({ city: 'city-value' }));
+        expect(actual).toEqual(expect.objectContaining({ location: { city: { equals: 'city-value' } } }));
+    });
+
+    it('should transform with City', () => {
+        const input: PatientCriteriaEntry = {
+            location: { city: { contains: 'city-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ location: { city: { contains: 'city-value' } } }));
+    });
+
+    it('should transform with City', () => {
+        const input: PatientCriteriaEntry = {
+            location: { city: { not: 'city-value' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ location: { city: { not: 'city-value' } } }));
     });
 
     it('should transform with State', () => {
@@ -209,6 +330,35 @@ describe('when the PatientCriteria contains Identification criteria', () => {
                     identificationNumber: 'identification-value',
                     identificationType: 'identification-type-value'
                 })
+            })
+        );
+    });
+});
+
+describe('when the PatientCriteria contains event id criteria', () => {
+    it.each([
+        'morbidity',
+        'investigation',
+        'vaccination',
+        'treatment',
+        'abcCase',
+        'cityCountyCase',
+        'notification',
+        'labReport',
+        'stateCase',
+        'document',
+        'accessionNumber'
+    ])('should transform with %s', (type) => {
+        const input: PatientCriteriaEntry = {
+            [type]: '1234',
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                [type]: '1234'
             })
         );
     });

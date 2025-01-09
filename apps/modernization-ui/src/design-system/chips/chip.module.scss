@@ -1,8 +1,8 @@
 @use 'styles/colors';
 
 .chip-container {
-    padding: 0.25rem;
-    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
     background-color: colors.$primary-lighter;
     color: colors.$primary-dark;
     border-radius: 2px;
@@ -13,6 +13,8 @@
 
     .closeIcon {
         cursor: pointer;
-        margin-left: 0.5rem;
+        margin-left: 0.25rem;
+        height: 1rem;
+        width: 1rem;
     }
 }

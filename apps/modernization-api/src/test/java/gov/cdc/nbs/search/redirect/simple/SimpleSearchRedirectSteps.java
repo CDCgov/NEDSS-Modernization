@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,11 +95,45 @@ public class SimpleSearchRedirectSteps {
   }
 
   @Then("the search parameters include a(n) {string} of {string}")
-  public void the_search_parameters_include_date_of_birth_as(final String property, final String value)
+  public void the_search_parameters_include(final String property, final String value)
       throws Exception {
     JsonPathResultMatchers path = matchingPath(property);
 
+    this.decrypted.active().andExpect(path.value(equalToIgnoringCase(value)));
+  }
+
+  @Then("the search parameters include a date of birth equal to {localDate}")
+  public void the_search_parameters_include(final LocalDate bornOn) throws Exception {
+
+    this.decrypted.active().andDo(print()).
+        andExpect(jsonPath("$.bornOn.equals.month").value(bornOn.getMonthValue()))
+        .andExpect(jsonPath("$.bornOn.equals.day").value(bornOn.getDayOfMonth()))
+        .andExpect(jsonPath("$.bornOn.equals.year").value(bornOn.getYear()));
+
+  }
+
+  @Then("the search parameters include a(n) {string} that starts with {string}")
+  public void the_search_parameters_include_the_criteria_that_starts_with(final String property, final String value)
+      throws Exception {
+    JsonPathResultMatchers path = criteriaMatchingPath(property, "startsWith");
+
     this.decrypted.active().andDo(print()).andExpect(path.value(equalToIgnoringCase(value)));
+  }
+
+  @Then("the search parameters include a(n) {string} that contains {string}")
+  public void the_search_parameters_include_the_criteria_that_contains(final String property, final String value)
+      throws Exception {
+    JsonPathResultMatchers path = criteriaMatchingPath(property, "contains");
+
+    this.decrypted.active().andDo(print()).andExpect(path.value(equalToIgnoringCase(value)));
+  }
+
+  private JsonPathResultMatchers criteriaMatchingPath(final String field, final String property) {
+    return switch (field.toLowerCase()) {
+      case "first name" -> jsonPath("$.name.first.%s", property);
+      case "last name" -> jsonPath("$.name.last.%s",property);
+      default -> throw new IllegalStateException("Unexpected simple search parameter value: " + field.toLowerCase());
+    };
   }
 
   @Then("the search parameters include a(n) {eventTypeId} with the ID {string}")
@@ -108,24 +143,25 @@ public class SimpleSearchRedirectSteps {
   ) throws Exception {
 
     String type = switch (eventType) {
-      case "P10000" -> "ABCS_CASE_ID";
-      case "P10008" -> "CITY_COUNTY_CASE_ID";
-      case "P10001" -> "INVESTIGATION_ID";
-      case "P10013" -> "NOTIFICATION_ID";
-      case "P10004" -> "STATE_CASE_ID";
-      case "P10009" -> "ACCESSION_NUMBER";
-      case "P10002" -> "LAB_ID";
-      default -> null;
+      case "P10000" -> "abcCase";
+      case "P10008" -> "cityCountyCase";
+      case "P10001" -> "investigation";
+      case "P10013" -> "notification";
+      case "P10004" -> "stateCase";
+      case "P10009" -> "accessionNumber";
+      case "P10002" -> "labReport";
+      case "P10006" -> "vaccination";
+      case "P10010" -> "document";
+      case "P10003" -> "morbidity";
+      case "P10005" -> "treatment";
+      default -> throw new IllegalStateException("Unexpected value: " + eventType);
 
     };
 
-    if (type != null) {
+    this.decrypted.active()
+        .andDo(print())
+        .andExpect(jsonPath("$.%s", type).value(equalToIgnoringCase(identifier)));
 
-      this.decrypted.active()
-          .andDo(print())
-          .andExpect(jsonPath("$.identification.type.value").value(equalToIgnoringCase(type)))
-          .andExpect(jsonPath("$.identification.value").value(equalToIgnoringCase(identifier)));
-    }
   }
 
   @Then("the search type is {searchType}")
@@ -136,12 +172,9 @@ public class SimpleSearchRedirectSteps {
 
   private JsonPathResultMatchers matchingPath(final String field) {
     return switch (field.toLowerCase()) {
-      case "date of birth" -> jsonPath("$.dateOfBirth");
-      case "first name" -> jsonPath("$.firstName");
-      case "last name" -> jsonPath("$.lastName");
       case "gender" -> jsonPath("$.gender.value");
       case "patient id" -> jsonPath("$.id");
-      default -> throw new IllegalStateException("Unexpected Page Summary value: " + field.toLowerCase());
+      default -> throw new IllegalStateException("Unexpected simple search parameter value: " + field.toLowerCase());
     };
   }
 

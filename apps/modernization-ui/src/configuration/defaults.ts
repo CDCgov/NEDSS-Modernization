@@ -1,6 +1,15 @@
 import { Features, Properties, Configuration, Settings, Search } from './configuration';
 
 const search: Search = {
+    events: {
+        enabled: true
+    },
+    investigations: {
+        enabled: true
+    },
+    laboratoryReports: {
+        enabled: true
+    },
     view: {
         table: {
             enabled: false
@@ -32,7 +41,11 @@ const defaultFeatures: Features = {
     },
     search,
     patient: {
+        profile: {
+            enabled: false
+        },
         add: {
+            enabled: false,
             extended: {
                 enabled: false
             }

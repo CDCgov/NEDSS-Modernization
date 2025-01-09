@@ -29,10 +29,11 @@ Feature: User accesses patient profile and can view existing patient data here.
         Then user clicks on a patient's profile "Events" tab
         When user clicks on the "Add morbidity report" button
 
-    Scenario: User wants to add a new vaccination record
+    Scenario: User wants to add a new vaccination record and delete it
         Given the user navigate to the patient profile page for "72045"
         Then user clicks on a patient's profile "Events" tab
         When user clicks on the "Add vaccination" button
+        Then user submits "anthrax" vaccination with a popup and deletes it
 
     Scenario: Display all investigations related to the patient in the "Investigations" section
         Given the user navigate to the patient profile page for "72045"

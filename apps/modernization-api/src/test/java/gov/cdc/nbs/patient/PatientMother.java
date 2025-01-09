@@ -383,14 +383,25 @@ public class PatientMother {
       final String number,
       final String extension
   ) {
+    withPhone(identifier, "PH", "H", countryCode, number, extension);
+  }
+
+  public void withPhone(
+      final PatientIdentifier identifier,
+      final String type,
+      final String use,
+      final String countryCode,
+      final String number,
+      final String extension
+  ) {
     Person patient = managed(identifier);
 
     patient.add(
         new PatientCommand.AddPhone(
             identifier.id(),
             idGenerator.next(),
-            "PH",
-            "H",
+            type,
+            use,
             RandomUtil.getRandomDateInPast(),
             countryCode,
             number,

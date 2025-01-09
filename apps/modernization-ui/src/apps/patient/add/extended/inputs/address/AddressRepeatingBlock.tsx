@@ -1,25 +1,12 @@
-import { AddressEntry } from 'apps/patient/data/entry';
-import { today } from 'date';
-import { Column } from 'design-system/table';
-import { AddressView } from './AddressView';
-import { AddressEntryFields } from 'apps/patient/data/address/AddressEntryFields';
-import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { ReactNode } from 'react';
+import { Column } from 'design-system/table';
+import { RepeatingBlock } from 'design-system/entry/multi-value';
+import { AddressEntry, AddressEntryFields, initial } from 'apps/patient/data/address';
+import { asAddressTypeUse } from 'apps/patient/data/address/utils';
 
-const defaultValue: Partial<AddressEntry> = {
-    asOf: today(),
-    type: undefined,
-    use: undefined,
-    address1: '',
-    address2: '',
-    city: '',
-    state: undefined,
-    zipcode: '',
-    county: undefined,
-    country: undefined,
-    censusTract: '',
-    comment: ''
-};
+import { AddressView } from './AddressView';
+
+const defaultValue: Partial<AddressEntry> = initial();
 
 type Props = {
     id: string;
@@ -34,7 +21,11 @@ export const AddressRepeatingBlock = ({ id, values, errors, onChange, isDirty }:
 
     const columns: Column<AddressEntry>[] = [
         { id: 'addressAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'addressType', name: 'Type', render: (v) => v.type.name },
+        {
+            id: 'addressType',
+            name: 'Type',
+            render: (v) => asAddressTypeUse({ type: v.type?.name, use: v.use?.name })
+        },
         { id: 'address', name: 'Address', render: (v) => v.address1 },
         { id: 'city', name: 'City', render: (v) => v.city },
         { id: 'state', name: 'State', render: (v) => v.state?.name },

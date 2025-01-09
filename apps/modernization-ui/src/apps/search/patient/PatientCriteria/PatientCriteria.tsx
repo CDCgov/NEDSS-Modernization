@@ -1,6 +1,5 @@
-import { BasicInformation } from './BasicInformation';
 import { Accordion } from 'components/Accordion';
-
+import { BasicInformation } from './BasicInformation';
 import { Address } from './Address';
 import { Contact } from './Contact';
 import { RaceEthnicity } from './RaceEthnicity';

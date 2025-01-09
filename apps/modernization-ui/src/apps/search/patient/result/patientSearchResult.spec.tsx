@@ -1,8 +1,6 @@
 import { render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import {
-    displayProfileLink,
     displayPhones,
     displayEmails,
     displayAddresses,
@@ -67,17 +65,17 @@ describe('patientSearchResult functions', () => {
         emails: ['emily.reynolds@owensborohealth.org'],
         detailedPhones: [
             {
-                use: '',
-                type: '',
-                number: '270-685-4067',
-                extension: ''
+                use: 'phone-use-value',
+                type: 'phone-type-value',
+                number: '270-685-4067'
             }
         ]
     };
 
     it('should displayPhones returns correct string', () => {
-        const result = displayPhones(mockPatient);
-        expect(result).toBe('270-685-4067');
+        const { getByText } = render(<>{displayPhones(mockPatient)}</>);
+        expect(getByText('phone-use-value')).toBeInTheDocument();
+        expect(getByText('270-685-4067')).toBeInTheDocument();
     });
 
     it('should displayEmails returns correct string', () => {
@@ -85,16 +83,8 @@ describe('patientSearchResult functions', () => {
         expect(result).toBe('emily.reynolds@owensborohealth.org');
     });
 
-    it('should displayProfileLink renders correctly with shortId', () => {
-        const { getByText } = render(
-            <BrowserRouter>{displayProfileLink(mockPatient.shortId, 'John Doe')}</BrowserRouter>
-        );
-        const link = getByText('John Doe');
-        expect(link).toHaveAttribute('href', '/patient-profile/84001/summary');
-    });
-
     it('should render addresses correctly', () => {
-        const { getByText, queryAllByText } = render(displayAddresses(mockPatient));
+        const { getByText, queryAllByText } = render(<>{displayAddresses(mockPatient)}</>);
         expect(getByText('Home')).toBeInTheDocument();
         expect(queryAllByText('2222 Test Valley Rd', { exact: false })).toHaveLength(2);
         expect(queryAllByText('3333 Test Valley Rd', { exact: false })).toHaveLength(1);
@@ -103,7 +93,7 @@ describe('patientSearchResult functions', () => {
     });
 
     it('should render other names with header and content', () => {
-        const { getByText } = render(displayOtherNames(mockPatient));
+        const { getByText } = render(<>{displayOtherNames(mockPatient)}</>);
         expect(getByText('Alias')).toBeInTheDocument();
         expect(getByText('TestnullTest, Johnny')).toBeInTheDocument();
     });

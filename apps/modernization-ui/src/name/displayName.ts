@@ -39,8 +39,8 @@ const displayFullName = ({ first, middle, last, suffix }: DisplayableName) => {
 };
 
 const displayFullNameLastFirst = ({ first, middle, last, suffix }: DisplayableName) => {
-    const firstMiddle = [first, middle].filter(exists).join(' ');
-    const name = [last, firstMiddle].filter(exists).join(', ');
+    const firstMiddle = [first || '--', middle].filter(exists).join(' ');
+    const name = [last || '--', firstMiddle].filter(exists).join(', ');
     return [name, suffix].filter(exists).join(', ');
 };
 

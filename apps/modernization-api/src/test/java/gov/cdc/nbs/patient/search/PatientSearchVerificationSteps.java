@@ -51,8 +51,14 @@ public class PatientSearchVerificationSteps {
 
     JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
 
+    String finalValue = null;
+
+    if(!value.isEmpty()) {
+      finalValue = value;
+    }
+
     this.results.active()
-        .andExpect(pathMatcher.value(matchingValue(field, value)));
+        .andExpect(pathMatcher.value(matchingValue(field, finalValue)));
   }
 
   @Then("the search results have a patient with a(n) {string} equal to {string}")
@@ -62,7 +68,6 @@ public class PatientSearchVerificationSteps {
 
     this.results.active()
         .andExpect(pathMatcher.value(matchingValue(field, value)));
-
   }
 
   @Then("the search results have a patient without a(n) {string} equal to {string}")
@@ -100,20 +105,13 @@ public class PatientSearchVerificationSteps {
       case "gender", "sex" -> jsonPath("$.data.findPatientsByFilter.content[%s].gender", position);
       case "first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].first", position);
       case "last name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].last", position);
+      case "middle name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].middle", position);
+      case "suffix" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].suffix", position);
       case "legal first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.first", position);
       case "legal middle name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.middle", position);
       case "legal last name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.last", position);
       case "legal name suffix" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.suffix", position);
-      case "phone number" -> jsonPath(
-          "$.data.findPatientsByFilter.content[%s].phones[*]",
-          position);
-      case "detailed phone number" -> jsonPath("$.data.findPatientsByFilter.content[%s].detailedPhones[*].number",
-          position);
-      case "detailed phone extension" -> jsonPath("$.data.findPatientsByFilter.content[%s].detailedPhones[*].extension",
-          position);
-      case "detailed phone type" -> jsonPath("$.data.findPatientsByFilter.content[%s].detailedPhones[*].type",
-          position);
-      case "detailed phone use" -> jsonPath("$.data.findPatientsByFilter.content[%s].detailedPhones[*].use", position);
+      case "phone number" -> jsonPath("$.data.findPatientsByFilter.content[%s].phones[*]", position);
       case "email", "email address" -> jsonPath(
           "$.data.findPatientsByFilter.content[%s].emails[*]",
           position);
@@ -125,6 +123,7 @@ public class PatientSearchVerificationSteps {
           position);
       case "patientid", "patient id", "short id" -> jsonPath("$.data.findPatientsByFilter.content[%s].shortId",
           position);
+      case "local id" -> jsonPath("$.data.findPatientsByFilter.content[%s].localId", position);
       default -> throw new AssertionError("Unexpected property check %s".formatted(field));
     };
   }
@@ -154,6 +153,18 @@ public class PatientSearchVerificationSteps {
         .andExpect(pathMatcher.value(matchingValue(field, value)));
   }
 
+  @Then("the search results have a patient with a(n) {} - {} number of {string}")
+  public void search_results_have_a_patient_with_the_phone(final String type, final String use, final String number)
+      throws Exception {
+
+    this.results.active()
+        .andExpect(
+            jsonPath("$.data.findPatientsByFilter.content[*].detailedPhones[?(@.type=='%s' && @.use=='%s')].number",
+                type, use)
+                .value(number)
+        );
+  }
+
   @Then("the patient is in the search result(s)")
   public void the_patient_is_in_the_search_results() throws Exception {
     this.results.active()
@@ -161,7 +172,7 @@ public class PatientSearchVerificationSteps {
             jsonPath(
                 "$.data.findPatientsByFilter.content[?(@.patient=='%s')]",
                 String.valueOf(this.patient.active().id()))
-                    .exists());
+                .exists());
   }
 
   @Then("the patient is not in the search result(s)")
@@ -171,7 +182,7 @@ public class PatientSearchVerificationSteps {
             jsonPath(
                 "$.data.findPatientsByFilter.content[?(@.patient=='%s')]",
                 String.valueOf(this.patient.active().id()))
-                    .doesNotExist());
+                .doesNotExist());
   }
 
   @Then("there is only one patient search result")

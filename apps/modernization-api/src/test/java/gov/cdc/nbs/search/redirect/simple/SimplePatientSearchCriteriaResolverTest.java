@@ -2,6 +2,8 @@ package gov.cdc.nbs.search.redirect.simple;
 
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.option.Option;
+import gov.cdc.nbs.search.criteria.date.DateCriteria;
+import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -18,7 +20,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 class SimplePatientSearchCriteriaResolverTest {
 
   @Test
-  void should_resolve_first_name() {
+  void should_resolve_first_name_starting_with_value() {
     Map<String, String> parameters = Map.of("patientSearchVO.firstName", "first-name-value");
 
 
@@ -27,12 +29,30 @@ class SimplePatientSearchCriteriaResolverTest {
     assertThat(resolved).hasValueSatisfying(
         actual -> assertThat(actual)
             .asInstanceOf(type(SimplePatientSearchCriteria.class))
-            .returns("first-name-value", SimplePatientSearchCriteria::firstName)
+            .extracting(SimplePatientSearchCriteria::name)
+            .extracting(SimplePatientSearchNameCriteria::first)
+            .returns("first-name-value", TextCriteria::startsWith)
     );
   }
 
   @Test
-  void should_resolve_last_name() {
+  void should_resolve_first_name_containing_value() {
+    Map<String, String> parameters = Map.of("patientSearchVO.firstName", "%first-name-value");
+
+
+    Optional<SimplePatientSearchCriteria> resolved = new SimplePatientSearchCriteriaResolver().resolve(parameters);
+
+    assertThat(resolved).hasValueSatisfying(
+        actual -> assertThat(actual)
+            .asInstanceOf(type(SimplePatientSearchCriteria.class))
+            .extracting(SimplePatientSearchCriteria::name)
+            .extracting(SimplePatientSearchNameCriteria::first)
+            .returns("first-name-value", TextCriteria::contains)
+    );
+  }
+
+  @Test
+  void should_resolve_last_name_starting_with_value() {
     Map<String, String> parameters = Map.of("patientSearchVO.lastName", "last-name-value");
 
 
@@ -41,7 +61,25 @@ class SimplePatientSearchCriteriaResolverTest {
     assertThat(resolved).hasValueSatisfying(
         actual -> assertThat(actual)
             .asInstanceOf(type(SimplePatientSearchCriteria.class))
-            .returns("last-name-value", SimplePatientSearchCriteria::lastName)
+            .extracting(SimplePatientSearchCriteria::name)
+            .extracting(SimplePatientSearchNameCriteria::last)
+            .returns("last-name-value", TextCriteria::startsWith)
+    );
+  }
+
+  @Test
+  void should_resolve_last_name_contains_value() {
+    Map<String, String> parameters = Map.of("patientSearchVO.lastName", "%last-name-value");
+
+
+    Optional<SimplePatientSearchCriteria> resolved = new SimplePatientSearchCriteriaResolver().resolve(parameters);
+
+    assertThat(resolved).hasValueSatisfying(
+        actual -> assertThat(actual)
+            .asInstanceOf(type(SimplePatientSearchCriteria.class))
+            .extracting(SimplePatientSearchCriteria::name)
+            .extracting(SimplePatientSearchNameCriteria::last)
+            .returns("last-name-value", TextCriteria::contains)
     );
   }
 
@@ -55,7 +93,7 @@ class SimplePatientSearchCriteriaResolverTest {
     assertThat(resolved).hasValueSatisfying(
         actual -> assertThat(actual)
             .asInstanceOf(type(SimplePatientSearchCriteria.class))
-            .satisfies(value -> assertThat(value.dateOfBirth()).isEqualTo("1990-01-01"))
+            .satisfies(value -> assertThat(value.bornOn()).isEqualTo(DateCriteria.equals(1, 1, 1990)))
     );
   }
 

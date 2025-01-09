@@ -40,7 +40,7 @@ nbs:
         enabled: true
         service: 'localhost:8080'
       profile:
-        enabled: true
+        enabled: false
         service: 'localhost:8080'
     pagebuilder:
       enabled: false

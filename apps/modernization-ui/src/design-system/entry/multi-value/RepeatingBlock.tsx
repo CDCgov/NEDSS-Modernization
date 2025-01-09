@@ -1,3 +1,5 @@
+import { ReactNode, useEffect, useMemo } from 'react';
+import { DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
@@ -5,10 +7,9 @@ import { Shown } from 'conditional-render';
 import { Icon } from 'design-system/icon';
 import { AlertMessage } from 'design-system/message';
 import { Column, DataTable } from 'design-system/table';
-import { ReactNode, useEffect, useMemo } from 'react';
-import { DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
-import styles from './RepeatingBlock.module.scss';
 import { useMultiValueEntryState } from './useMultiValueEntryState';
+
+import styles from './RepeatingBlock.module.scss';
 
 type Props<V extends FieldValues> = {
     id: string;
@@ -19,7 +20,7 @@ type Props<V extends FieldValues> = {
     values?: V[];
     onChange: (data: V[]) => void;
     isDirty: (isDirty: boolean) => void;
-    formRenderer: () => ReactNode;
+    formRenderer: (entry?: V) => ReactNode;
     viewRenderer: (entry: V) => ReactNode;
 };
 
@@ -35,7 +36,7 @@ const RepeatingBlock = <V extends FieldValues>({
     formRenderer,
     viewRenderer
 }: Props<V>) => {
-    const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onSubmit', defaultValues });
+    const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onBlur', defaultValues });
     const { status, selected, add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>({ values });
 
     useEffect(() => {
@@ -78,10 +79,10 @@ const RepeatingBlock = <V extends FieldValues>({
     useEffect(() => {
         // Perform form reset after status update to allow time for rendering of form
         // fixes issue with coded values not being selected within the form
-        if ('editing' === status) {
+        if (status === 'editing') {
             form.reset(selected);
         }
-    }, [status]);
+    }, [status, selected, form.reset]);
 
     const iconColumn: Column<V> = {
         id: 'actions',
@@ -148,7 +149,7 @@ const RepeatingBlock = <V extends FieldValues>({
             <Shown when={status !== 'viewing'}>
                 <FormProvider {...form}>
                     <div className={classNames(styles.form, { [styles.changed]: form.formState.isDirty })}>
-                        {formRenderer()}
+                        {formRenderer(selected)}
                     </div>
                 </FormProvider>
             </Shown>

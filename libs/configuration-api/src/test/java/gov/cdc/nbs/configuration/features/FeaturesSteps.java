@@ -12,7 +12,9 @@ public class FeaturesSteps {
       case "laboratory report search" -> "features.search.laboratoryReports.enabled";
       case "search view" -> "features.search.view.enabled";
       case "tabular search results" -> "features.search.view.table.enabled";
+      case "patient add" -> "features.patient.add.enabled";
       case "patient add extended" -> "features.patient.add.extended.enabled";
+      case "modernized patient profile" -> "features.patient.profile.enabled";
       default -> value;
     };
   }

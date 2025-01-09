@@ -1,25 +1,24 @@
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
-import { internalizeDate } from 'date';
 import {
     displayPhones,
     displayPatientName,
+    displayPatientAge,
     displayProfileLink,
-    displayOtherNames,
     displayEmails,
     displayAddresses,
     displayIdentifications
 } from 'apps/search/patient/result';
+import styles from './patient-search-result-table.module.scss';
 
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
-const LEGAL_NAME = { id: 'legalName', name: 'Patient name' };
-const DATE_OF_BIRTH = { id: 'birthday', name: 'Date of birth' };
+const PATIENT_NAME = { id: 'patientname', name: 'Patient name' };
+const DATE_OF_BIRTH = { id: 'birthday', name: 'DOB/Age' };
 const SEX = { id: 'sex', name: 'Current sex' };
 const ADDRESS = { id: 'address', name: 'Address' };
 const PHONE = { id: 'phoneNumber', name: 'Phone' };
-const NAMES = { id: 'names', name: 'Other names' };
 const IDENTIFICATIONS = { id: 'identification', name: 'ID' };
 const EMAIL = { id: 'email', name: 'Email' };
 
@@ -29,33 +28,34 @@ const columns: Column<PatientSearchResult>[] = [
         ...PATIENT_ID,
         fixed: true,
         sortable: true,
-        render: (result) => displayProfileLink(result.shortId)
+        className: styles['col-patientid'],
+        render: (result) => displayProfileLink(result.patient, result.shortId)
+    },
+    {
+        ...PATIENT_NAME,
+        sortable: true,
+        className: styles['col-patientname'],
+        render: displayPatientName
     },
     {
         ...DATE_OF_BIRTH,
         sortable: true,
-        render: (result) => internalizeDate(result.birthday)
+        className: styles['col-dob'],
+        render: (result) => result.birthday && displayPatientAge(result, 'multiline')
     },
-    { ...SEX, sortable: true, render: (result) => result.gender },
-    {
-        ...LEGAL_NAME,
-        sortable: true,
-        render: displayPatientName
-    },
-    { ...ADDRESS, render: displayAddresses },
-    { ...PHONE, render: displayPhones },
-    { ...NAMES, render: (result) => displayOtherNames(result) },
-    { ...IDENTIFICATIONS, render: displayIdentifications },
-    { ...EMAIL, render: displayEmails }
+    { ...SEX, sortable: true, className: styles['col-sex'], render: (result) => result.gender },
+    { ...ADDRESS, className: styles['col-address'], render: displayAddresses },
+    { ...PHONE, className: styles['col-phone'], render: displayPhones },
+    { ...IDENTIFICATIONS, className: styles['col-id'], render: displayIdentifications },
+    { ...EMAIL, className: styles['col-email'], render: displayEmails }
 ];
 
 // column preferences
 const preferences: ColumnPreference[] = [
     { ...PATIENT_ID },
+    { ...PATIENT_NAME, moveable: true, toggleable: true },
     { ...DATE_OF_BIRTH, moveable: true, toggleable: true },
     { ...SEX, moveable: true, toggleable: true },
-    { ...LEGAL_NAME, moveable: true, toggleable: true, hidden: true },
-    { ...NAMES, moveable: true, toggleable: true, hidden: true },
     { ...ADDRESS, moveable: true, toggleable: true },
     { ...PHONE, moveable: true, toggleable: true },
     { ...IDENTIFICATIONS, moveable: true, toggleable: true },
@@ -69,7 +69,14 @@ type Props = {
 const PatientSearchResultTable = ({ results }: Props) => {
     const { apply } = useColumnPreferences();
 
-    return <DataTable<PatientSearchResult> id="patient-search-results" columns={apply(columns)} data={results} />;
+    return (
+        <DataTable<PatientSearchResult>
+            id="patient-search-results"
+            className={styles.patient_results}
+            columns={apply(columns)}
+            data={results}
+        />
+    );
 };
 
 export { PatientSearchResultTable, preferences };

@@ -14,9 +14,63 @@ Feature: Patient Search
     Then the patient is in the search results
     And there is only one patient search result
 
+  Scenario: I can find a patient by Patient ID using multiple short ids
+    Given patients are available for search
+    And I would like to search for a patient using multiple short IDs
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
   Scenario: I can find a patient by Patient ID using the local id
     Given patients are available for search
     And I would like to search for a patient using a local ID
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can find a patient by Patient ID using the local id and an id filter that equals the id
+    Given patients are available for search
+    And I would like to search for a patient using a local ID and a good equals id filter
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can find a patient by Patient ID using the local id and an id filter the contains the id
+    Given patients are available for search
+    And I would like to search for a patient using a local ID and a good contains id filter
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can't find a patient by Patient ID using a good local id and a bad id filter
+    Given patients are available for search
+    And I would like to search for a patient using a local ID and a bad id filter
+    When I search for patients
+    Then there are 0 patient search results
+
+  Scenario: I can filter search results with the patient's short ID
+    Given I have a patient
+    And the patient has the legal name "Joe" "Other"
+    And I have another patient
+    And the patient has the legal name "Joe" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a first name that equals "Joe"
+    And I would like to filter search results with the patient's short ID
+    When I search for patients
+    Then search result 1 has a "first name" of "Joe"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results
+
+  Scenario: I can find a patient by Patient ID using multiple local ids
+    Given patients are available for search
+    And I would like to search for a patient using multiple local IDs
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can find a patient by Patient ID using short and local ids
+    Given patients are available for search
+    And I would like to search for a patient using short and local IDs
     When I search for patients
     Then the patient is in the search results
     And there is only one patient search result
@@ -176,16 +230,11 @@ Feature: Patient Search
   Scenario: I can search for a Patient using a phone number
     Given the patient has the phone number "1"-"888-240-2200" x"1009"
     And I have another patient
-    And the patient has a "phone number" of "613-240-2200"
+    And the patient has the Answering service - Temporary number of "613-240-2200"
     And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "888-240-2200"
+    And I add the patient criteria for an "phone number" equal to "613-240-2200"
     When I search for patients
-    Then the search results have a patient with a "phone number" equal to "888-240-2200"
-    And the search results have a patient with a "detailed phone number" equal to "888-240-2200"
-    And the search results have a patient with a "detailed phone extension" equal to "1009"
-    And the search results have a patient with a "detailed phone type" equal to "PH"
-    And the search results have a patient with a "detailed phone use" equal to "H"
-
+    Then the search results have a patient with a Answering service - Temporary number of "613-240-2200"
 
   Scenario: I can search for a Patient using a partial phone number
     Given the patient has a "phone number" of "888-240-2200"
@@ -239,6 +288,17 @@ Feature: Patient Search
     And I add the patient criteria for an "identification value" equal to "4099"
     When I search for patients
     Then the patient is not in the search results
+
+  Scenario: I can search for a Patient using a value that is contained in the Identification
+    Given the patient can be identified with a "MC" of "1234"
+    And I have another patient
+    And the patient can be identified with a "MC" of "1345"
+    And patients are available for search
+    And I add the patient criteria for an "identification type" equal to "MC"
+    And I add the patient criteria for an "identification value" equal to "23"
+    When I search for patients
+    Then there is only one patient search result
+    And the search results have a patient with an "identification value" equal to "1234"
 
   Scenario: BUG: CNFT1-2008 I can search for a Patient with invalid identification
     Given the patient has the legal name "Max" "Headroom"

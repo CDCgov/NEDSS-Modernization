@@ -51,9 +51,7 @@ describe('RaceRepeatingBlock', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText, getByRole } = render(
-            <RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />
-        );
+        const { getByLabelText } = render(<RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />);
 
         const dateInput = getByLabelText('Race as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));
@@ -61,7 +59,7 @@ describe('RaceRepeatingBlock', () => {
         const race = getByLabelText('Race');
         expect(race).toHaveValue('');
 
-        const detailedRace = getByRole('combobox');
+        const detailedRace = getByLabelText('Detailed race');
         expect(detailedRace).toHaveValue('');
     });
 

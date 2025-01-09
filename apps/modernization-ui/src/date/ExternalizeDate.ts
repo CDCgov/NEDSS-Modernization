@@ -21,4 +21,4 @@ function externalizeDate(input: string | Date | null | undefined) {
     return null;
 }
 
-export { externalizeDate };
+export { externalizeDate, asDate };

@@ -4,13 +4,13 @@ import classNames from 'classnames';
 import { isFuture } from 'date-fns';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { EN_US } from './datePickerLocalization';
-import styles from './DatePickerInput.module.scss';
 
 type OnChange = (val?: string) => void;
 type OnBlur = (event: ReactFocusEvent<HTMLInputElement> | ReactFocusEvent<HTMLDivElement>) => void;
 
 type DatePickerProps = {
     label?: string;
+    helperText?: string;
     name?: string;
     onChange?: OnChange;
     onBlur?: OnBlur;
@@ -65,19 +65,17 @@ export const DatePickerInput = (props: DatePickerProps) => {
 
     return (
         <EntryWrapper
-            className={classNames(styles.wrapper, {
-                [styles.error]: _error
-            })}
             orientation={orientation}
             sizing={props.sizing}
             label={props.label || ''}
+            helperText={props.helperText}
             htmlFor={props.name || ''}
             required={props.required}
             error={_error}>
             {props.defaultValue && (
-                <InternalDatePicker {...props} onBlur={checkValidity} defaultValue={intialDefault} />
+                <InternalDatePicker {...props} error={_error} onBlur={checkValidity} defaultValue={intialDefault} />
             )}
-            {!props.defaultValue && <InternalDatePicker {...props} onBlur={checkValidity} />}
+            {!props.defaultValue && <InternalDatePicker {...props} error={_error} onBlur={checkValidity} />}
         </EntryWrapper>
     );
 };
@@ -90,7 +88,8 @@ const InternalDatePicker = ({
     defaultValue,
     disabled = false,
     disableFutureDates = false,
-    label
+    label,
+    error
 }: DatePickerProps) => {
     const toggleCalendar = label ? `${label} toggle calendar` : EN_US.toggleCalendar;
     const getCurrentLocalDate = () => {
@@ -113,7 +112,8 @@ const InternalDatePicker = ({
             onBlur={onBlur}
             onKeyDown={handleKeyDown}
             onChange={handleOnChange(onChange)}
-            className={classNames(styles.input, className)}
+            className={classNames(className)}
+            validationStatus={error ? 'error' : undefined}
             name={name}
             disabled={disabled}
             defaultValue={defaultValue || undefined}

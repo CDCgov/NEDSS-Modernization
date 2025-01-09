@@ -66,8 +66,8 @@
                     }
                 }
 
-                &:hover {
-                    & > a {
+                & > a {
+                    &:hover {
                         color: colors.$primary;
                         font-weight: 700;
                     }

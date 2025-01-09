@@ -6,6 +6,8 @@ Below are manual NBS6 creation and run process steps. Foundation image used is M
 ## Files
 - Dockerfile - Configuration file to build docker image
 - entrypoint.ps1 - Docker entrypoint script to run each time a container runs
+- tasks.csv - A csv container tasks that are scheduled within the container, all tasks are on by default. Tasks can be disabled through an environment variable called DISABLED_SCHEDULED_TASKS which is a comma separated list.
+  - CSV expected columns: filename, scriptPathFromWorkDir, startTime, frequencyDays, frequencyHours, frequencyMinutes
 - task-scheduler.ps1 - Script to configure windows scheduled jobs
 
 ## Prerequisites

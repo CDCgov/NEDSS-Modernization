@@ -159,11 +159,13 @@ public class ValueSetMother {
   }
 
   public Codeset createMetadataEntry(Codeset valueset) {
-    CodeSetGroupMetadatum codeGrp = new CodeSetGroupMetadatum();
-    codeGrp.setId(getCodeSetGroupID());
-    codeGrp.setCodeSetDescTxt(valueset.getCodeSetDescTxt());
-    codeGrp.setCodeSetNm(valueset.getValueSetNm());
-    codeGrp.setCodeSetShortDescTxt(valueset.getValueSetNm());
+    CodeSetGroupMetadatum codeGrp = new CodeSetGroupMetadatum(
+        getCodeSetGroupID(),
+        valueset.getCodeSetDescTxt(),
+        valueset.getValueSetNm(),
+        valueset.getValueSetNm()
+    );
+
     codeGrp.setLdfPicklistIndCd(valueset.getLdfPicklistIndCd());
     codeGrp = codeSetGrpMetaRepository.save(codeGrp);
     valueset.setCodeSetGroup(codeGrp);

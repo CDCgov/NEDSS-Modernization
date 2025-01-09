@@ -20,6 +20,7 @@ public class QuestionMother {
   private final EntityManager entityManager;
   private final Active<QuestionIdentifier> active;
   private final TestQuestionCleaner cleaner;
+  private final List<WaQuestion> allQuestions = new ArrayList<>();
 
   public QuestionMother(
       final WaQuestionRepository questionRepository,
@@ -31,8 +32,6 @@ public class QuestionMother {
     this.active = active;
     this.cleaner = cleaner;
   }
-
-  private List<WaQuestion> allQuestions = new ArrayList<>();
 
   public void clean() {
     this.allQuestions.forEach(cleaner::clean);
@@ -48,25 +47,25 @@ public class QuestionMother {
 
   public WaQuestion textQuestion() {
     return allQuestions.stream()
-        .filter(q -> q instanceof TextQuestionEntity).findFirst()
+        .filter(TextQuestionEntity.class::isInstance).findFirst()
         .orElseGet(this::createTextQuestion);
   }
 
   public WaQuestion dateQuestion() {
     return allQuestions.stream()
-        .filter(q -> q instanceof DateQuestionEntity).findFirst()
+        .filter(DateQuestionEntity.class::isInstance).findFirst()
         .orElseGet(this::createDateQuestion);
   }
 
-  public WaQuestion codeQuestion() {
-    return allQuestions.stream()
-        .filter(q -> q instanceof CodedQuestionEntity).findFirst()
+  public void codeQuestion() {
+    allQuestions.stream()
+        .filter(CodedQuestionEntity.class::isInstance).findFirst()
         .orElseGet(this::createCodeQuestion);
   }
 
-  public WaQuestion numericQuestion() {
-    return allQuestions.stream()
-        .filter(q -> q instanceof NumericQuestionEntity).findFirst()
+  public void numericQuestion() {
+    allQuestions.stream()
+        .filter(NumericQuestionEntity.class::isInstance).findFirst()
         .orElseGet(this::createNumericQuestion);
   }
 

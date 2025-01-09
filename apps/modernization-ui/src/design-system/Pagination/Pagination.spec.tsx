@@ -111,4 +111,26 @@ describe('When Pagination renders', () => {
 
         expect(toggle).toBeInTheDocument();
     });
+
+    it('should hide the pagination component when the total results are zero', () => {
+        mockTotal = 0;
+
+        const { getByText } = render(<Setup />);
+
+        const paginationDiv = getByText('Showing', { exact: false }).parentElement;
+
+        expect(paginationDiv).toBeInTheDocument();
+        expect(paginationDiv).toHaveClass('hidden');
+    });
+
+    it('should show the pagination component when the total results are not zero', () => {
+        mockTotal = 20;
+
+        const { getByText } = render(<Setup />);
+
+        const paginationDiv = getByText('Showing', { exact: false }).parentElement;
+
+        expect(paginationDiv).toBeInTheDocument();
+        expect(paginationDiv).toHaveClass('pagination');
+    });
 });

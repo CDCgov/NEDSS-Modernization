@@ -49,4 +49,16 @@ describe('when mapping an identification entry to a format accepted by the API',
 
         expect(actual).toEqual(expect.objectContaining({ id: 'id-value' }));
     });
+
+    it('should not map when type is null', () => {
+        const entry = {
+            asOf: '04/13/2017',
+            type: null,
+            id: 'id-value'
+        };
+
+        const actual = asIdentification(entry);
+
+        expect(actual).toBeUndefined();
+    });
 });

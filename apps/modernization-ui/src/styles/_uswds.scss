@@ -175,11 +175,20 @@ input.usa-input--error:focus {
     min-width: 300px !important;
 }
 
+.from {
+    --calendar-left: 0;
+}
+
 .usa-date-picker__wrapper {
     .usa-date-picker__external-input {
         flex-grow: 1;
+        margin-right: 4px;
     }
     .usa-date-picker__button {
         margin: 0;
+    }
+
+    .usa-date-picker__calendar {
+        left: var(--calendar-left, unset);
     }
 }

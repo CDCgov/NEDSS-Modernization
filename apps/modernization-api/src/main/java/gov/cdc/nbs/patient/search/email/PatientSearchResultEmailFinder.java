@@ -10,14 +10,14 @@ class PatientSearchResultEmailFinder {
 
   private static final String QUERY = """
       select distinct
-          [email_address].email_address as [email]
+          IsNull([email_address].email_address, '') as [email]
       from Entity_locator_participation [locator]
-            
+
           join Tele_locator [email_address] on
                   [email_address].[tele_locator_uid] = [locator].[locator_uid]
               and [email_address].record_status_cd = [locator].[record_status_cd]
-            
-            
+
+
       where   [locator].entity_uid = ?
           and [locator].[class_cd] = 'TELE'
           and [locator].cd = 'NET'
@@ -36,7 +36,6 @@ class PatientSearchResultEmailFinder {
     return this.template.query(
         QUERY,
         statement -> statement.setLong(PATIENT_PARAMETER, patient),
-        (rs, row) -> rs.getString(EMAIL_COLUMN)
-    );
+        (rs, row) -> rs.getString(EMAIL_COLUMN));
   }
 }

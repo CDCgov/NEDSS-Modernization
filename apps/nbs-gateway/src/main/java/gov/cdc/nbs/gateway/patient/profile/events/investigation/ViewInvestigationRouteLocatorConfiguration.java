@@ -39,7 +39,7 @@ class ViewInvestigationRouteLocatorConfiguration {
       "Patient-Action"
   );
   private static final RemoveCookieGatewayFilterFactory.Config REMOVE_RETURN_PATIENT_CONFIG =
-      new RemoveCookieGatewayFilterFactory.Config("/nbs/", "Return-Patient");
+      new RemoveCookieGatewayFilterFactory.Config("/nbs", "Return-Patient");
 
   @Bean
   RouteLocator viewInvestigationActionCookie(
@@ -52,7 +52,7 @@ class ViewInvestigationRouteLocatorConfiguration {
         .routes()
         .route(
             "view-open-investigations-apply-patient-action-cookie",
-            route -> route.path("/nbs/MyProgramAreaInvestigations1.do")
+            route -> route.path("/nbs/MyProgramAreaInvestigations1.do", "/nbs/PatientSearchResults1.do")
                 .and()
                 .query(IDENTIFIER_PARAMETER)
                 .filters(
