@@ -1,19 +1,19 @@
+import { useLocation } from 'react-router-dom';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from 'components/button';
 import { AddPatientLayout, DataEntryLayout } from 'apps/patient/add/layout';
-import styles from './add-patient-basic.module.scss';
 import { sections } from './sections';
 import { AddPatientBasicForm } from './AddPatientBasicForm';
-import { FormProvider, useForm } from 'react-hook-form';
 import { BasicNewPatientEntry } from './entry';
 import { useAddBasicPatient } from './useAddBasicPatient';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
-import { useMemo } from 'react';
 import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
-import { useLocation } from 'react-router-dom';
 import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
 import { useConfiguration } from 'configuration';
-import { useBasicExtendedTransition } from '../useBasicExtendedTransition';
+import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
+
+import styles from './add-patient-basic.module.scss';
 
 export const AddPatientBasic = () => {
     const { initialize } = useAddPatientBasicDefaults();
@@ -27,11 +27,6 @@ export const AddPatientBasic = () => {
 
     const { toExtendedNew } = useBasicExtendedTransition();
 
-    const created = useMemo(
-        () => (interaction.status === 'created' ? interaction.created : undefined),
-        [interaction.status]
-    );
-
     const handleSave = form.handleSubmit(interaction.create);
 
     const { toSearch } = useSearchFromAddPatient();
@@ -41,10 +36,12 @@ export const AddPatientBasic = () => {
     };
     const handleExtended = form.handleSubmit(toExtendedNew);
 
+    const working = !form.formState.isValid || interaction.status !== 'waiting';
+
     return (
         <DataEntryLayout>
             <Shown when={interaction.status === 'created'}>
-                {created && <PatientCreatedPanel created={created} />}
+                {interaction.status === 'created' && <PatientCreatedPanel created={interaction.created} />}
             </Shown>
             <FormProvider {...form}>
                 <AddPatientLayout
@@ -58,14 +55,14 @@ export const AddPatientBasic = () => {
                                     onClick={handleExtended}
                                     outline
                                     className="add-patient-button"
-                                    disabled={!form.formState.isValid}>
+                                    disabled={working}>
                                     Add extended data
                                 </Button>
                             )}
                             <Button onClick={handleCancel} outline>
                                 Cancel
                             </Button>
-                            <Button type="submit" onClick={handleSave} disabled={!form.formState.isValid}>
+                            <Button type="submit" onClick={handleSave} disabled={working}>
                                 Save
                             </Button>
                         </div>
