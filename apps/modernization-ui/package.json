@@ -119,7 +119,6 @@
     "jest": {
         "clearMocks": true,
         "globalSetup": "./global-setup.test.js",
-        "clearMocks": true,
         "moduleNameMapper": {
             "^.+\\.svg$": "<rootDir>/module-mock.js",
             "^@uswds/uswds/js/(.*)$": "<rootDir>/node_modules/@uswds/uswds/packages/$1/src/index.js"
