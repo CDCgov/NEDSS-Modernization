@@ -35,10 +35,10 @@ export const Default: Story = {
     }
 };
 
-export const WithPreselectedOptions: Story = {
+export const PreselectedOptions: Story = {
     args: {
-        id: 'autocomplete-default',
-        name: 'autocomplete-default',
+        id: 'autocomplete-preselected',
+        name: 'autocomplete-preselected',
         label: 'Default',
         options: [...options],
         value: [banana, mango],
