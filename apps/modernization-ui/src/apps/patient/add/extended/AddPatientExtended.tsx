@@ -41,7 +41,7 @@ export const AddPatientExtended = () => {
 
     const handleSave = form.handleSubmit(interaction.create);
 
-    const handleCancel = () => navigate('/add-patient');
+    const handleCancel = () => navigate('/patient/add');
 
     // Setup navigation blocking for back button
     const blocker = useNavigationBlock({ activated: !bypassModal });
