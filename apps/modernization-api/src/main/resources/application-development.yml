@@ -50,6 +50,8 @@ nbs:
               enabled: true
             edit:
               enabled: true
+      deduplication:
+        enabled: true
       search:
         events:
           enabled: true
