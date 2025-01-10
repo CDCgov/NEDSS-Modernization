@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { AutocompleteMulti } from './AutocompleteMulti';
+import { TextAutocomplete } from './TextAutocomplete';
 import { asSelectable, Selectable } from 'options';
 
 const meta = {
-    title: 'Design System/Autocomplete/AutocompleteMulti',
-    component: AutocompleteMulti
-} satisfies Meta<typeof AutocompleteMulti>;
+    title: 'Design System/Autocomplete/TextAutocomplete',
+    component: TextAutocomplete
+} satisfies Meta<typeof TextAutocomplete>;
 
 export default meta;
 
@@ -18,7 +18,6 @@ const options: Selectable[] = [
     asSelectable('orange', 'Orange'),
     asSelectable('watermelon', 'Watermelon')
 ];
-const [, banana, mango] = options;
 
 const resolver = (searchText: string) => {
     return Promise.resolve(options.filter((option) => option.name.toLowerCase().includes(searchText.toLowerCase())));
@@ -26,23 +25,10 @@ const resolver = (searchText: string) => {
 
 export const Default: Story = {
     args: {
-        id: 'autocomplete-default',
-        name: 'autocomplete-default',
+        id: 'selectautocomplete-default',
+        name: 'selectautocomplete-default',
         label: 'Default',
-        options: [...options],
         resolver: resolver,
-        placeholder: 'Select options'
-    }
-};
-
-export const WithPreselectedOptions: Story = {
-    args: {
-        id: 'autocomplete-default',
-        name: 'autocomplete-default',
-        label: 'Default',
-        options: [...options],
-        value: [banana, mango],
-        resolver: resolver,
-        placeholder: 'Select options'
+        placeholder: 'Type text'
     }
 };
