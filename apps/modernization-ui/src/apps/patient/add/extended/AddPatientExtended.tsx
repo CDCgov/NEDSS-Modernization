@@ -18,6 +18,7 @@ import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientIn
 import { useShowCancelModal } from './useShowCancelModal';
 
 import styles from './add-patient-extended.module.scss';
+import { useConfiguration } from 'configuration';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient();
@@ -31,6 +32,8 @@ export const AddPatientExtended = () => {
         [interaction.status]
     );
 
+    const { features } = useConfiguration();
+
     const form = useForm<ExtendedNewPatientEntry>({
         defaultValues: initialize(),
         mode: 'onBlur',
@@ -41,7 +44,13 @@ export const AddPatientExtended = () => {
 
     const handleSave = form.handleSubmit(interaction.create);
 
-    const handleCancel = () => navigate('/patient/add');
+    const handleCancel = () => {
+        if (features.patient.add.enabled) {
+            navigate('/patient/add');
+        } else {
+            navigate('/add-patient');
+        }
+    };
 
     // Setup navigation blocking for back button
     const blocker = useNavigationBlock({ activated: !bypassModal });
