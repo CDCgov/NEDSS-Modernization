@@ -11,6 +11,8 @@ nbs:
               enabled: false
             edit:
               enabled: false
+      deduplication:
+        enabled: true
     settings:
       analytics:
         host: https://us.posthog.com

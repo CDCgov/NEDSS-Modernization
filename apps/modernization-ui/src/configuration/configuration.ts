@@ -46,6 +46,9 @@ type Features = {
             };
         };
     };
+    deduplication: {
+        enabled: boolean;
+    };
     search: Search;
     patient: {
         profile: {

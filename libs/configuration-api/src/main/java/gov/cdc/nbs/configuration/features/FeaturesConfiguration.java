@@ -1,6 +1,7 @@
 package gov.cdc.nbs.configuration.features;
 
 import gov.cdc.nbs.configuration.features.address.Address;
+import gov.cdc.nbs.configuration.features.deduplication.Deduplication;
 import gov.cdc.nbs.configuration.features.page_builder.PageBuilder;
 import gov.cdc.nbs.configuration.features.patient.Patient;
 import gov.cdc.nbs.configuration.features.search.Search;
@@ -17,9 +18,9 @@ class FeaturesConfiguration {
       Search search,
       Address address,
       PageBuilder pageBuilder,
-      Patient patient
-  ) {
-    return () -> new Features(search, address, pageBuilder, patient);
+      Deduplication deduplication,
+      Patient patient) {
+    return () -> new Features(search, address, pageBuilder, deduplication, patient);
   }
 
 }
