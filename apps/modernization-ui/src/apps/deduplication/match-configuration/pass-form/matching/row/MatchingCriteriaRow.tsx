@@ -30,9 +30,11 @@ export const MatchingCriteriaRow = ({ label, activePass, logOdds, index, onRemov
                                     id={`matchingMethod-${index}`}
                                     orientation="horizontal"
                                     label="Method"
+                                    placeholder={''}
                                     onBlur={onBlur}
                                     onChange={(e) => {
-                                        onChange(e), onBlur();
+                                        onChange(e);
+                                        onBlur();
                                     }}
                                     name={name}
                                     value={value}

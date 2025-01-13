@@ -45,8 +45,11 @@ export type MatchingField =
 
 export type MatchingMethod = 'jarowinkler';
 export type MatchingMethodOption = {
-    value: MatchingMethod;
+    value: string;
     name: string;
 };
 
-export const MATCHING_METHOD_OPTIONS: MatchingMethodOption[] = [{ value: 'jarowinkler', name: 'JaroWinkler' }];
+export const MATCHING_METHOD_OPTIONS: MatchingMethodOption[] = [
+    { value: '', name: '- Select -' },
+    { value: 'jarowinkler', name: 'JaroWinkler' }
+];

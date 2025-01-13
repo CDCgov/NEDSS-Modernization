@@ -98,16 +98,6 @@ export const BlockingCriteriaFieldSelection = ({ activePass, onAccept, onCancel 
                                 onChange={handleToggleField}
                             />
                             <FieldCheckbox
-                                field={BLOCKING_FIELD_OPTIONS.city}
-                                selected={selectedFields.includes(BLOCKING_FIELD_OPTIONS.city.value)}
-                                onChange={handleToggleField}
-                            />
-                            <FieldCheckbox
-                                field={BLOCKING_FIELD_OPTIONS.state}
-                                selected={selectedFields.includes(BLOCKING_FIELD_OPTIONS.state.value)}
-                                onChange={handleToggleField}
-                            />
-                            <FieldCheckbox
                                 field={BLOCKING_FIELD_OPTIONS.zip}
                                 selected={selectedFields.includes(BLOCKING_FIELD_OPTIONS.zip.value)}
                                 onChange={handleToggleField}

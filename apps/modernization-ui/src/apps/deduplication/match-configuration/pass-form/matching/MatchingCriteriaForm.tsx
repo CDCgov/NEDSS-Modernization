@@ -13,15 +13,15 @@ import { MatchingCriteriaRow } from './row/MatchingCriteriaRow';
 
 type Props = {
     activePass: number;
-    logOddsTotal?: number;
     dataElements: DataElements;
 };
-export const MatchingCriteriaForm = ({ activePass, logOddsTotal, dataElements }: Props) => {
+export const MatchingCriteriaForm = ({ activePass, dataElements }: Props) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const form = useFormContext<MatchingConfiguration>();
-    const { append, remove } = useFieldArray<MatchingConfiguration>({
+    const { append, remove } = useFieldArray<MatchingConfiguration, `passes.${number}.matchingCriteria`>({
         name: `passes.${activePass}.matchingCriteria`,
-        rules: { required: 'Matching criteria is required', minLength: 1 }
+        rules: { required: 'Matching criteria is required', minLength: 1 },
+        control: form.control
     });
     const handleShowmodal = () => {
         setShowModal(true);
@@ -41,7 +41,7 @@ export const MatchingCriteriaForm = ({ activePass, logOddsTotal, dataElements }:
         // add fields that were selected but not already in list
         fields.forEach((f) => {
             if (currentFields.indexOf(f) < 0) {
-                append({ field: f });
+                append({ field: f, method: { name: 'JaroWinkler', value: 'jarowinkler' } });
             }
         });
 
@@ -71,12 +71,6 @@ export const MatchingCriteriaForm = ({ activePass, logOddsTotal, dataElements }:
                             logOdds={dataElements[b.field.value]?.logOdds ?? 0}
                         />
                     ))}
-                {logOddsTotal && (
-                    <div className={styles.logOddsTotal}>
-                        <div />
-                        <div>Log odds total: {logOddsTotal}</div>
-                    </div>
-                )}
             </div>
             <Button unstyled onClick={handleShowmodal}>
                 <Icon.Add size={3} /> Add matching criteria

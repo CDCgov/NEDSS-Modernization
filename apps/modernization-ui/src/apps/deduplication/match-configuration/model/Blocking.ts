@@ -3,22 +3,7 @@ export type BlockingCriteria = {
     method?: BlockingMethodOption;
 };
 
-export type BlockingField =
-    | 'firstName'
-    | 'lastName'
-    | 'suffix'
-    | 'birthDate'
-    | 'mrn'
-    | 'ssn'
-    | 'sex'
-    | 'gender'
-    | 'race'
-    | 'address'
-    | 'city'
-    | 'state'
-    | 'zip'
-    | 'county'
-    | 'telephone';
+export type BlockingField = 'firstName' | 'lastName' | 'birthDate' | 'mrn' | 'sex' | 'address' | 'zip';
 
 export type BlockingFieldOption = {
     value: BlockingField;
@@ -28,19 +13,11 @@ export type BlockingFieldOption = {
 export const BLOCKING_FIELD_OPTIONS: { [key in BlockingField]: BlockingFieldOption } = {
     firstName: { value: 'firstName', name: 'First name' },
     lastName: { value: 'lastName', name: 'Last name' },
-    suffix: { value: 'suffix', name: 'Suffix' },
     birthDate: { value: 'birthDate', name: 'Date of birth' },
     mrn: { value: 'mrn', name: 'MRN' },
-    ssn: { value: 'ssn', name: 'SSN' },
     sex: { value: 'sex', name: 'Current sex' },
-    gender: { value: 'gender', name: 'Gender' },
-    race: { value: 'race', name: 'Race' },
     address: { value: 'address', name: 'Street address' },
-    city: { value: 'city', name: 'City' },
-    state: { value: 'state', name: 'State' },
-    zip: { value: 'zip', name: 'Zip' },
-    county: { value: 'county', name: 'County' },
-    telephone: { value: 'telephone', name: 'Telephone' }
+    zip: { value: 'zip', name: 'Zip' }
 };
 
 export type BlockingMethod = 'exact' | 'firstFour' | 'lastFour';

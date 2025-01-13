@@ -25,7 +25,10 @@ export const MatchingCriteriaFieldSelection = ({ activePass, dataElements, onAcc
 
     useEffect(() => {
         // get a list of which fields are already selected for matching
-        const activeFields = form.getValues(`passes.${activePass}.matchingCriteria`)?.map((a) => a.field.value);
+        const activeFields = form
+            .getValues(`passes.${activePass}.matchingCriteria`)
+            ?.map((a) => a.field.value)
+            .filter((a) => a !== undefined);
         // update option list with existing selection
         setSelectedFields(activeFields);
     }, [form.getValues(`passes.${activePass}.matchingCriteria`)]);
