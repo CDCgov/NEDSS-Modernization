@@ -48,9 +48,9 @@ class ClassicHomePage {
         cy.contains('button', 'Add new').eq(0).click()
         cy.contains('button', 'Add new patient').eq(0).click()
         cy.wait(2000)
-        cy.get("#asOf").eq(0).clear()
-        cy.get("#asOf").eq(0).type('03/04/2024');
-        cy.contains('button', 'Save changes').eq(0).click()
+        cy.get('input[id="administrative.asOf"]').eq(0).clear()
+        cy.get('input[id="administrative.asOf"]').eq(0).type('03/04/2024');
+        cy.contains('button', 'Save').eq(0).click()
         cy.wait(3000)
         cy.get('body').then(($body) => {
             if($body.find('a:contains("View patient")').length > 0) {
