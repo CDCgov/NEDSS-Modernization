@@ -18,7 +18,7 @@ describe('when entering patient administrative information', () => {
         const { getByLabelText } = render(<Fixture />);
 
         expect(getByLabelText('Information as of date')).toBeInTheDocument();
-        expect(getByLabelText('General comments')).toBeInTheDocument();
+        expect(getByLabelText('Comments')).toBeInTheDocument();
     });
 
     it('should require as of date', async () => {
