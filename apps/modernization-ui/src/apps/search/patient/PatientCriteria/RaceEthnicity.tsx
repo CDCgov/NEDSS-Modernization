@@ -1,11 +1,14 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { SingleSelect } from 'design-system/select';
 import { useConceptOptions } from 'options/concepts';
+import { useRaceCategoryOptions } from 'options/race';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 
 export const RaceEthnicity = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
+
+    const { categories } = useRaceCategoryOptions();
 
     return (
         <SearchCriteria>
@@ -35,7 +38,7 @@ export const RaceEthnicity = () => {
                         label="Race"
                         id={name}
                         sizing="compact"
-                        options={useConceptOptions('P_RACE_CAT', { lazy: false }).options}
+                        options={categories}
                     />
                 )}
             />

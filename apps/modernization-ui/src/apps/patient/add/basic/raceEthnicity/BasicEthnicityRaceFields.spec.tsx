@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { BasicRaceEthnicityFields } from './BasicEthnicityRaceFields';
 import { BasicEthnicityRace } from '../entry';
 
-const mockRaces = [
+const mockRaceCategories = [
     { value: 'asian', name: 'Asian' },
     { value: 'white', name: 'White' },
     { value: 'black', name: 'Black or African American' }
@@ -21,8 +21,8 @@ jest.mock('apps/patient/profile/ethnicity/usePatientEthnicityCodedValues', () =>
     usePatientEthnicityCodedValues: () => mockEthnicityValues
 }));
 
-jest.mock('coded/race/useRaceCodedValues', () => ({
-    useRaceCodedValues: () => mockRaces
+jest.mock('options/race', () => ({
+    useRaceCategoryOptions: () => mockRaceCategories
 }));
 
 const FormWrapper = () => {
