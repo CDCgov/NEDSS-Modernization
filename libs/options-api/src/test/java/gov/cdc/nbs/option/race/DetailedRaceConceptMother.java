@@ -1,6 +1,9 @@
-package gov.cdc.nbs.option.concept;
+package gov.cdc.nbs.option.race;
 
+import gov.cdc.nbs.option.concept.ConceptOption;
 import gov.cdc.nbs.testing.support.Available;
+import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PostConstruct;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,7 +16,8 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
-class RaceConceptMother {
+@ScenarioScope
+class DetailedRaceConceptMother {
 
   private static final String DELETE_IN = """
       delete
@@ -35,12 +39,13 @@ class RaceConceptMother {
   private final Available<ConceptOption> availalbe;
   private static final String RACE_CONCEPT_CODE_SET = "P_RACE_CAT";
 
-  RaceConceptMother(
+  DetailedRaceConceptMother(
       final JdbcTemplate template) {
     this.template = new NamedParameterJdbcTemplate(template);
     this.availalbe = new Available<>();
   }
 
+  @PostConstruct
   void reset() {
 
     template.execute(
