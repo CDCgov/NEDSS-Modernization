@@ -62,6 +62,9 @@ nbs:
           table:
             enabled: true
       patient:
+        search:
+          filters:
+            enabled: true
         profile:
           enabled: true
         add:

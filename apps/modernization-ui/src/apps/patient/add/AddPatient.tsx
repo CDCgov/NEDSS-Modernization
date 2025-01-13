@@ -276,7 +276,8 @@ const AddPatient = () => {
                                     <Button
                                         className="add-patient-button"
                                         type={'button'}
-                                        onClick={handleSubmit(evaluateMissingFields)}>
+                                        onClick={handleSubmit(evaluateMissingFields)}
+                                        disabled={entryState.step === 'create'}>
                                         Save changes
                                     </Button>
                                 </div>
