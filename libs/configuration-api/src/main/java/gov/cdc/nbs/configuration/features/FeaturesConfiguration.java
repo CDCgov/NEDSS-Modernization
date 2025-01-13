@@ -20,7 +20,12 @@ class FeaturesConfiguration {
       PageBuilder pageBuilder,
       Deduplication deduplication,
       Patient patient) {
-    return () -> new Features(search, address, pageBuilder, deduplication, patient);
+    return () -> new Features(
+        search,
+        address,
+        pageBuilder,
+        deduplication,
+        patient);
   }
 
 }

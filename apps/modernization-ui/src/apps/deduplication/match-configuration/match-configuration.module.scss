@@ -34,13 +34,17 @@
 
             .buttonBar {
                 display: flex;
-                justify-content: flex-end;
-                gap: 0.5rem;
+                justify-content: space-between;
                 position: sticky;
                 bottom: 0;
                 padding: 1.5rem;
                 background-color: colors.$base-white;
                 @extend %thin-top;
+
+                & > div {
+                    display: flex;
+                    gap: 0.5rem;
+                }
             }
         }
     }

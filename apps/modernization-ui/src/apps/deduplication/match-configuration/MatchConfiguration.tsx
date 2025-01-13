@@ -4,7 +4,7 @@ import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm, useFormState, useWatch } from 'react-hook-form';
+import { FormProvider, useFieldArray, useForm, useFormState, useWatch } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 import { useDataElements } from '../api/useDataElements';
 import { useMatchingConfiguration } from '../api/useMatchingConfiguration';
@@ -29,6 +29,7 @@ const MatchConfigurationContent = () => {
     const form = useForm<MatchingConfiguration>({ mode: 'onBlur' });
     const watch = useWatch<MatchingConfiguration>({ control: form.control });
     const formState = useFormState({ control: form.control });
+    const { remove } = useFieldArray<MatchingConfiguration>({ control: form.control, name: 'passes' });
 
     useEffect(() => {
         form.reset(matchConfiguration, { keepDefaultValues: false });
@@ -43,6 +44,15 @@ const MatchConfigurationContent = () => {
         save(form.getValues(), () =>
             showSuccess({ message: 'You have successfully updated the match configuration.' })
         );
+    };
+
+    const handleDeletePass = () => {
+        if (watch.passes && watch.passes?.length > 1) {
+            remove(activePass);
+        } else {
+            form.reset({ passes: [] }, { keepDefaultValues: true });
+        }
+        setActivePass(0);
     };
 
     useEffect(() => {
@@ -77,14 +87,22 @@ const MatchConfigurationContent = () => {
                                     )}
                                 </div>
                                 <div className={styles.buttonBar}>
-                                    <Button outline onClick={handleCancel}>
-                                        Cancel
-                                    </Button>
                                     <Button
-                                        disabled={!formState.isValid || watch.passes?.length === 0}
-                                        onClick={handleSumbit}>
-                                        Save configuration
+                                        destructive
+                                        onClick={handleDeletePass}
+                                        disabled={watch.passes == undefined || watch.passes?.length < 1}>
+                                        Delete pass
                                     </Button>
+                                    <div>
+                                        <Button outline onClick={handleCancel}>
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            disabled={!formState.isValid || watch.passes?.length === 0}
+                                            onClick={handleSumbit}>
+                                            Save configuration
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
                         </FormProvider>
