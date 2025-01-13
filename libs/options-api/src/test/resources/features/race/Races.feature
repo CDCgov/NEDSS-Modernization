@@ -28,3 +28,16 @@ Feature: Race Options REST API
   Scenario: I cannot find specific races that do not exist
     When I am trying to find races that start with "zzzzzzzzz"
     Then there aren't any options available
+
+
+  Scenario: I can find detailed races for a category
+    When I am trying to find Asian race details
+    Then there are options available
+
+  Scenario: I can find specific detailed races for a category
+    When I am trying to find American Indian or Alaska Native race details that start with "al"
+    Then there are 1 options included
+
+  Scenario: I cannot find specific detailed races for a category that do not exist
+    When I am trying to find Asian race details that start with "zzzzzzzzz"
+    Then there aren't any options available

@@ -17,7 +17,7 @@ class RaceOptionsController {
   }
 
   @Operation(
-      operationId = "all",
+      operationId = "races",
       summary = "Race Option",
       description = "Provides all Race options.",
       tags = "RaceOptions"

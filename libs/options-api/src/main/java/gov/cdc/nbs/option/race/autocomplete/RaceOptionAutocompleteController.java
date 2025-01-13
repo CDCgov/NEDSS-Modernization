@@ -18,7 +18,7 @@ class RaceOptionAutocompleteController {
   }
 
   @Operation(
-      operationId = "complete",
+      operationId = "racesComplete",
       summary = "Race Option Autocomplete",
       description = "Provides options from Races that have a name matching a criteria.",
       tags = "RaceOptions"

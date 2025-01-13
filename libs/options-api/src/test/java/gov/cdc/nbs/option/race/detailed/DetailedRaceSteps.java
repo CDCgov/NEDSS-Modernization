@@ -1,4 +1,4 @@
-package gov.cdc.nbs.option.race;
+package gov.cdc.nbs.option.race.detailed;
 
 import io.cucumber.java.en.Given;
 

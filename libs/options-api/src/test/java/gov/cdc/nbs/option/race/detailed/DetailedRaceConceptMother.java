@@ -1,4 +1,4 @@
-package gov.cdc.nbs.option.race;
+package gov.cdc.nbs.option.race.detailed;
 
 import gov.cdc.nbs.option.concept.ConceptOption;
 import gov.cdc.nbs.testing.support.Available;
@@ -36,13 +36,13 @@ class DetailedRaceConceptMother {
       """;
 
   private final NamedParameterJdbcTemplate template;
-  private final Available<ConceptOption> availalbe;
+  private final Available<ConceptOption> available;
   private static final String RACE_CONCEPT_CODE_SET = "P_RACE_CAT";
 
   DetailedRaceConceptMother(
       final JdbcTemplate template) {
     this.template = new NamedParameterJdbcTemplate(template);
-    this.availalbe = new Available<>();
+    this.available = new Available<>();
   }
 
   @PostConstruct
@@ -52,7 +52,7 @@ class DetailedRaceConceptMother {
         DELETE_IN,
         new MapSqlParameterSource("codeSet", RACE_CONCEPT_CODE_SET),
         PreparedStatement::executeUpdate);
-    this.availalbe.reset();
+    this.available.reset();
 
   }
 
@@ -61,7 +61,7 @@ class DetailedRaceConceptMother {
         .replace("-", "")
         .substring(0, 20);
 
-    int order = this.availalbe.all()
+    int order = this.available.all()
         .map(ConceptOption::order)
         .max(Comparator.naturalOrder())
         .orElse(1);
@@ -77,7 +77,7 @@ class DetailedRaceConceptMother {
         new MapSqlParameterSource(parameters),
         PreparedStatement::executeUpdate);
 
-    this.availalbe.available(new ConceptOption(code, concept, order));
+    this.available.available(new ConceptOption(code, concept, order));
 
   }
 
