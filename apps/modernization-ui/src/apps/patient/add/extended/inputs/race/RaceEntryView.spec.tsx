@@ -1,22 +1,7 @@
 import { render } from '@testing-library/react';
-import { CodedValue } from 'coded';
 import { RaceEntryView } from './RaceEntryView';
 import { RaceEntry } from 'apps/patient/data/race';
 import { asSelectable } from 'options';
-
-const mockRaceCodedValues: CodedValue[] = [{ value: '1', name: 'race name' }];
-
-jest.mock('coded/race/useRaceCodedValues', () => ({
-    useRaceCodedValues: () => mockRaceCodedValues
-}));
-const mockDetailedOptions: CodedValue[] = [
-    { value: '2', name: 'detailed race1' },
-    { value: '3', name: 'detailed race2' }
-];
-
-jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
-    useDetailedRaceCodedValues: () => mockDetailedOptions
-}));
 
 const entry: RaceEntry = {
     id: 331,

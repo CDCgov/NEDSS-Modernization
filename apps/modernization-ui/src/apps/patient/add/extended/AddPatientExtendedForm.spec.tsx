@@ -11,6 +11,7 @@ import { ExtendedNewPatientEntry, initial } from './entry';
 import { FormProvider, useForm } from 'react-hook-form';
 import { internalizeDate } from 'date';
 import { ValidationErrors } from './useAddExtendedPatientInteraction';
+import { Selectable } from 'options';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -74,19 +75,16 @@ jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
     usePatientPhoneCodedValues: () => mockPatientPhoneCodedValues
 }));
 
-const mockRaceCodedValues: CodedValue[] = [{ value: '1', name: 'race name' }];
+const mockRaceCategories: Selectable[] = [{ value: '1', name: 'race name' }];
 
-jest.mock('coded/race/useRaceCodedValues', () => ({
-    useRaceCodedValues: () => mockRaceCodedValues
-}));
-
-const mockDetailedOptions: CodedValue[] = [
+const mockDetailedRaces: Selectable[] = [
     { value: '2', name: 'detailed race1' },
     { value: '3', name: 'detailed race2' }
 ];
 
-jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
-    useDetailedRaceCodedValues: () => mockDetailedOptions
+jest.mock('options/race', () => ({
+    useRaceCategoryOptions: () => mockRaceCategories,
+    useDetailedRaceOptions: () => mockDetailedRaces
 }));
 
 const mockPatientNameCodedValues = {

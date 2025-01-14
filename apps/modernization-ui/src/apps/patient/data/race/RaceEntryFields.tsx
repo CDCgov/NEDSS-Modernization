@@ -4,8 +4,8 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
 import { validateRequiredRule } from 'validation/entry';
-import { useDetailedRaceCodedValues } from 'coded/race';
 import { RaceCategoryValidator, RaceEntry } from './entry';
+import { useDetailedRaceOptions } from 'options/race';
 
 const RACE_AS_OF_LABEL = 'Race as of';
 
@@ -21,7 +21,7 @@ const RaceEntryFields = ({ categories, categoryValidator, entry }: RaceEntryFiel
     const id = useWatch({ control, name: 'id' });
 
     const selectedCategory = useWatch({ control, name: 'race.value', defaultValue: entry?.race?.value });
-    const detailedRaces = useDetailedRaceCodedValues(selectedCategory);
+    const detailedRaces = useDetailedRaceOptions(selectedCategory);
 
     useEffect(() => {
         if (selectedCategory !== entry?.race?.value) {

@@ -1,26 +1,22 @@
 import { act, render, waitFor } from '@testing-library/react';
-import { CodedValue } from 'coded';
 import { internalizeDate } from 'date';
 import { RaceRepeatingBlock } from './RaceRepeatingBlock';
 import { Selectable } from 'options';
 import userEvent from '@testing-library/user-event';
 
-const mockRaceCodedValues: Selectable[] = [
+const mockRaceCategories: Selectable[] = [
     { value: '1', name: 'race one name' },
     { value: '2', name: 'race two name' }
 ];
 
-jest.mock('options/race/useRaceCategoryOptions', () => ({
-    useRaceCategoryOptions: () => ({ categories: mockRaceCodedValues })
-}));
-
-const mockDetailedOptions: CodedValue[] = [
+const mockDetailedRaces: Selectable[] = [
     { value: '2', name: 'detailed race1' },
     { value: '3', name: 'detailed race2' }
 ];
 
-jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
-    useDetailedRaceCodedValues: () => mockDetailedOptions
+jest.mock('options/race', () => ({
+    useRaceCategoryOptions: () => mockRaceCategories,
+    useDetailedRaceOptions: () => mockDetailedRaces
 }));
 
 const onChange = jest.fn();

@@ -1,10 +1,10 @@
-import { useDetailedRaceCodedValues, useRaceCodedValues } from 'coded/race';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { RaceEntry } from './RaceEntry';
 import { validateCategory } from './validateCategory';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
+import { useRaceCategoryOptions, useDetailedRaceOptions } from 'options/race';
 
 type Props = {
     patient?: number;
@@ -12,9 +12,9 @@ type Props = {
 };
 export const RaceEntryFields = ({ patient, editing }: Props) => {
     const { control } = useFormContext<RaceEntry>();
-    const categories = useRaceCodedValues();
+    const categories = useRaceCategoryOptions();
     const selectedCategory = useWatch({ control, name: 'category' });
-    const detailedRaces = useDetailedRaceCodedValues(selectedCategory);
+    const detailedRaces = useDetailedRaceOptions(selectedCategory);
 
     const handleCategoryValidation = () => {
         if (patient) {

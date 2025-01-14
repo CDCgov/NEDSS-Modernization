@@ -45,4 +45,10 @@ public class OptionsVerificationSteps {
     this.response.active()
         .andExpect(jsonPath("$", hasSize(0)));
   }
+
+  @Then("the {nth} option is {string}")
+  public void the_nth_option_is(final int position, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%s].name", position - 1).value(equalToIgnoringCase(value)));
+  }
 }
