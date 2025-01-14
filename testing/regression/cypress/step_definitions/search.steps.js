@@ -92,7 +92,7 @@ Then("click on clear all button", () => {
 });
 
 When("I last name should be {string}", (string) => {
-  cy.get("#lastName").should('have.text', string);
+  cy.get("#name.last").should('have.text', string);
 });
 
 When("I first name should be {string}", (string) => {

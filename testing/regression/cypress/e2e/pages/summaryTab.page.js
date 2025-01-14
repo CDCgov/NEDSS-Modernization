@@ -63,13 +63,13 @@ class SummaryTabPage {
       .find("thead")
       .contains(columnName)
       .find("button")
-      .click();
+      .click({force: true});
     if (sortBy === "descending") {
       this.documentTable
         .find("thead")
         .contains(columnName)
         .find("button")
-        .click();
+        .click({force: true});
     }
   }
 

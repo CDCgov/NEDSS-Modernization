@@ -1,6 +1,15 @@
 import { faker } from "@faker-js/faker";
 
 class AddPatientPage {
+  clickViewPatientLink() {
+    cy.get("a").contains("View patient").click();
+    // cy.get(".usa-modal__main button").eq(1).click();
+  }
+
+  clickSumbitSaveButton() {
+    cy.get(".add-patient-button").eq(2).click();
+  }
+
   enterPaxName() {
     const randomFirstName = faker.person.firstName();
     const randomLastName = faker.person.lastName();
@@ -14,10 +23,7 @@ class AddPatientPage {
 
   addSimplePatient() {
     this.enterPaxName();
-
-    cy.get(".add-patient-button").eq(1).click();
-
-    cy.get(".usa-modal__main button").eq(1).click();
+    this.clickSumbitSaveButton();
   }
 
   addPatient() {
@@ -34,9 +40,9 @@ class AddPatientPage {
     cy.wait(1000);
     cy.get("select[name=deceased]").select("No");
 
-    cy.get(".add-patient-button").eq(1).click();
+    this.clickSumbitSaveButton();
 
-    cy.get(".usa-modal__main button").eq(2).click();
+    this.clickViewPatientLink();
   }
 
   clearInformationAsOfDate() {
@@ -52,9 +58,9 @@ class AddPatientPage {
     // cy.get("input[data-testid=date-picker-external-input]")
     //   .first()
     //   .type(this.getCurrentDate());
-    cy.get(".add-patient-button").eq(1).click();
+    this.clickSumbitSaveButton();
     cy.wait(500)
-    cy.get(".usa-modal__main button").eq(2).click();
+    this.clickViewPatientLink();
     cy.wait(500)
   }
 
@@ -63,8 +69,8 @@ class AddPatientPage {
       .first()
       .clear()
       .type(this.getNextYearDate());
-    cy.get(".add-patient-button").eq(1).click();
-    cy.get(".usa-modal__main button").eq(1).click();
+    this.clickSumbitSaveButton();
+    this.clickViewPatientLink();
   }
 
   getCurrentDate() {
@@ -86,8 +92,8 @@ class AddPatientPage {
   addPatientNameSpecial() {
     this.enterPaxName();
 
-    cy.get(".add-patient-button").eq(1).click();
-    cy.get(".usa-modal__main button").eq(2).click();
+    this.clickSumbitSaveButton();
+    this.clickViewPatientLink();
   }
 
   addPatientAndDelete() {
@@ -111,9 +117,9 @@ class AddPatientPage {
     cy.wait(1000);
     cy.get("select[name=maritalStatus]").select("Married");
     cy.wait(1000);
-    cy.get(".add-patient-button").eq(1).click();
+    this.clickSumbitSaveButton();
 
-    cy.get(".usa-modal__main button").eq(2).click();
+    this.clickViewPatientLink();
   }
 
   addPatientAddress() {
@@ -126,16 +132,16 @@ class AddPatientPage {
     //   .type(this.getCurrentDate());
     cy.get("#streetAddress1").type(randomFirstStreet);
     cy.get("#streetAddress2").type(randomLastStreet);
-    cy.get("#city").type(randomCity);
+    cy.get('input[id="location.city"]').type(randomCity);
     cy.wait(1000);
     cy.get("select[name=state]").select("California");
     cy.get("#zip").type("93501");
     cy.wait(1000);
     cy.get("select[name=country]").select("United States");
 
-    cy.get(".add-patient-button").eq(1).click();
+    this.clickSumbitSaveButton();
 
-    cy.get(".usa-modal__main button").eq(2).click();
+    this.clickViewPatientLink();
   }
 
   viewPatientProfile() {
@@ -151,7 +157,8 @@ class AddPatientPage {
   }
 
   clickViewPatientProfile() {
-    cy.get("button").contains("View patient").click();
+    this.clickViewPatientLink();
+    // cy.get("button").contains("View patient").click();
   }
 
   addAnotherPatient() {
@@ -174,9 +181,9 @@ class AddPatientPage {
 
     cy.get("label[for='2135-2']").click();
 
-    cy.get(".add-patient-button").eq(1).click();
+    this.clickSumbitSaveButton();
 
-    cy.get(".usa-modal__main button").eq(2).click();
+    this.clickViewPatientLink();
   }
 
   addPatientselectRace() {
@@ -196,9 +203,9 @@ class AddPatientPage {
     cy.get("label[for='2135-2']").click();
     cy.get("label[for='1002-5']").click();
 
-    cy.get(".add-patient-button").eq(1).click();
+    this.clickSumbitSaveButton();
 
-    cy.get(".usa-modal__main button").eq(2).click();
+    this.clickViewPatientLink();
   }
 
   addPatientSelectTwoRace() {
@@ -220,9 +227,8 @@ class AddPatientPage {
     cy.get("label[for='2028-9']").click();
     cy.get("label[for='2106-3']").click();
 
-    cy.get(".add-patient-button").eq(1).click();
-
-    cy.get(".usa-modal__main button").eq(1).click();
+    this.clickSumbitSaveButton();
+    this.clickViewPatientLink();
   }
 
   addPatientId_Identificatione() {
@@ -249,9 +255,8 @@ class AddPatientPage {
       "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > section:nth-child(8) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > select:nth-child(2)"
     ).select("Medicare number");
 
-    cy.get(".add-patient-button").eq(1).click();
-
-    cy.get(".usa-modal__main button").eq(1).click();
+    this.clickSumbitSaveButton();
+    this.clickViewPatientLink();    
   }
 
   addPatientAssigningAuthority_Identificatione() {
@@ -281,9 +286,8 @@ class AddPatientPage {
       "select[placeholder='-Select-'][name='identification[0].authority']"
     ).select("CO");
 
-    cy.get(".add-patient-button").eq(1).click();
-
-    cy.get(".usa-modal__main button").eq(1).click();
+    this.clickSumbitSaveButton();
+    this.clickViewPatientLink();    
   }
 
   addPatientAddAnotherID() {
@@ -322,9 +326,8 @@ class AddPatientPage {
       "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > section:nth-child(8) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > select:nth-child(2)"
     ).select("Social Security");
 
-    cy.get(".add-patient-button").eq(1).click();
-
-    cy.get(".usa-modal__main button").eq(1).click();
+    this.clickSumbitSaveButton();
+    this.clickViewPatientLink();    
   }
 }
 export default new AddPatientPage();

@@ -13,10 +13,21 @@ class ClassicProviderSearchPage {
     cy.get('input[name="Submit"][id="Submit"]').eq(0).click()
   }
 
+  checkEditProviderPage() {
+    cy.get('td[class="boldTwelveBlack"]').contains('Edit Provider')
+  }
+
   navigateToAddProvider() {
     this.navigateToClassicProviderSearchPane()
     this.enterNameInClassicSearchProviderPage('test')
     this.clickSearchBtnInClassicProviderSearchPane()
+  }
+
+  navigateToEditProvider() {
+    this.navigateToClassicProviderSearchPane()
+    this.enterNameInClassicSearchProviderPage('test')
+    this.clickSearchBtnInClassicProviderSearchPane()
+    cy.get('a').contains("View").eq(0).click()
   }
 
   clickAddButtonOnAddProvider() {
@@ -29,6 +40,25 @@ class ClassicProviderSearchPage {
   }
 
   clickSubmitBtnOnProvider() {
+    cy.get('input[name="Submit"][id="Submit"]').eq(0).click()
+  }
+
+  clickEditBtnOnProvider() {
+    cy.get('input[id="Edit"]').eq(0).click();
+  }
+
+  clickEditOverwrittenRadio() {
+    cy.get('input[id="c"]').eq(0).click();
+  }
+
+  clickEditNewProviderRadio() {
+    cy.get('input[id="n"]').eq(0).click();
+  }
+
+  clickEditProviderAddName() {
+    cy.get('select[id="provider.nmPrefix"]').select("Brother", {force: true});
+    cy.get('input[name="provider.nmPrefix_textbox"]').type("Brother", {force: true});
+    cy.get('input[id="provider.firstNm"]').type("TestFirstName");
     cy.get('input[name="Submit"][id="Submit"]').eq(0).click()
   }
 

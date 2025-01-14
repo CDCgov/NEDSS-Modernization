@@ -25,6 +25,29 @@ type Search = {
     view: SearchView;
 };
 
+type PatientProfileFeatures = {
+    enabled: boolean;
+};
+
+type PatientAddFeatures = {
+    enabled: boolean;
+    extended: {
+        enabled: boolean;
+    };
+};
+
+type PatientSearchFeatures = {
+    filters: {
+        enabled: boolean;
+    };
+};
+
+type PatientFeatures = {
+    search: PatientSearchFeatures;
+    profile: PatientProfileFeatures;
+    add: PatientAddFeatures;
+};
+
 type Features = {
     address: {
         autocomplete: boolean;
@@ -50,17 +73,7 @@ type Features = {
         enabled: boolean;
     };
     search: Search;
-    patient: {
-        profile: {
-            enabled: boolean;
-        };
-        add: {
-            enabled: boolean;
-            extended: {
-                enabled: boolean;
-            };
-        };
-    };
+    patient: PatientFeatures;
 };
 
 type Properties = {
