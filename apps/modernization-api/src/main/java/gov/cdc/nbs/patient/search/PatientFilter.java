@@ -42,17 +42,8 @@ public class PatientFilter {
   }
 
   public record Filter(String id, String name) {
-
-    Optional<String> maybeId() {
-      return Optional.ofNullable(id());
-    }
-
     Filter withId(final String id) {
       return new Filter(id, name());
-    }
-
-    Optional<String> maybeName() {
-      return Optional.ofNullable(name());
     }
 
     Filter withName(final String name) {
