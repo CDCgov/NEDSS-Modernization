@@ -11,10 +11,21 @@ class PatientFeaturesConfiguration {
   @Bean
   @Scope("prototype")
   Patient patientFeatures(
+      final Patient.Search search,
       final Patient.Profile profile,
       final Patient.Add add
   ) {
-    return new Patient(profile, add);
+    return new Patient(search, profile, add);
+  }
+
+  @Bean
+  @Scope("prototype")
+  Patient.Search patientSearch(
+      @Value("${nbs.ui.features.patient.search.filters.enabled:false}") final boolean enabled
+  ) {
+    return new Patient.Search(
+        new Patient.Search.Filters(enabled)
+    );
   }
 
   @Bean

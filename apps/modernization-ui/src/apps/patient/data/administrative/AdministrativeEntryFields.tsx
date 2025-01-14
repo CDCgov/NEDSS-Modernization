@@ -6,7 +6,7 @@ import { EntryFieldsProps } from 'design-system/entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 
 const AS_OF_DATE_LABEL = 'Information as of date';
-const COMMENTS_LABEL = 'General comments';
+const COMMENTS_LABEL = 'Comments';
 
 type AdministrativeEntryFieldsProps = EntryFieldsProps;
 

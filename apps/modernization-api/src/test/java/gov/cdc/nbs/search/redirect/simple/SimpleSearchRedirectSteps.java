@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -98,7 +99,17 @@ public class SimpleSearchRedirectSteps {
       throws Exception {
     JsonPathResultMatchers path = matchingPath(property);
 
-    this.decrypted.active().andDo(print()).andExpect(path.value(equalToIgnoringCase(value)));
+    this.decrypted.active().andExpect(path.value(equalToIgnoringCase(value)));
+  }
+
+  @Then("the search parameters include a date of birth equal to {localDate}")
+  public void the_search_parameters_include(final LocalDate bornOn) throws Exception {
+
+    this.decrypted.active().andDo(print()).
+        andExpect(jsonPath("$.bornOn.equals.month").value(bornOn.getMonthValue()))
+        .andExpect(jsonPath("$.bornOn.equals.day").value(bornOn.getDayOfMonth()))
+        .andExpect(jsonPath("$.bornOn.equals.year").value(bornOn.getYear()));
+
   }
 
   @Then("the search parameters include a(n) {string} that starts with {string}")
@@ -161,7 +172,6 @@ public class SimpleSearchRedirectSteps {
 
   private JsonPathResultMatchers matchingPath(final String field) {
     return switch (field.toLowerCase()) {
-      case "date of birth" -> jsonPath("$.dateOfBirth");
       case "gender" -> jsonPath("$.gender.value");
       case "patient id" -> jsonPath("$.id");
       default -> throw new IllegalStateException("Unexpected simple search parameter value: " + field.toLowerCase());

@@ -14,6 +14,22 @@ Then("Click on Add New Tab button on investigation view page", () => {
     classicManagePagesPage.clickAddNewTabImg()
 });
 
+Then("Click on Add New Section button on investigation view page", () => {
+    classicManagePagesPage.clickAddSection()
+});
+
+Then("Click on Add New Subsection button on investigation view page", () => {
+    classicManagePagesPage.clickAddSubSection()
+});
+
+Then("Submit a section in new window", () => {
+    classicOpener.submitNewSection()
+});
+
+Then("Submit a subsection in new window", () => {
+    classicOpener.submitNewSubSection()
+});
+
 Then("Submit a new New Tab via a new window", () => {
     classicOpener.submitNewTab()
 });

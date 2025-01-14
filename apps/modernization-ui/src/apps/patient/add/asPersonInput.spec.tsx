@@ -103,4 +103,36 @@ describe('when asPersonInput is given a new patient with phone numbers', () => {
             })
         );
     });
+
+    it('should include the email address when entered', () => {
+        const data = {
+            asOf: '12/17/2021',
+            identification: [],
+            phoneNumbers: [],
+            emailAddresses: [{ email: 'email-value' }]
+        };
+
+        const result = asPersonInput(data);
+        expect(result).toEqual(
+            expect.objectContaining({
+                emailAddresses: expect.arrayContaining(['email-value'])
+            })
+        );
+    });
+
+    it('should not include the email address when not entered', () => {
+        const data = {
+            asOf: '12/17/2021',
+            identification: [],
+            phoneNumbers: [],
+            emailAddresses: [{ email: '' }]
+        };
+
+        const result = asPersonInput(data);
+        expect(result).toEqual(
+            expect.objectContaining({
+                emailAddresses: []
+            })
+        );
+    });
 });

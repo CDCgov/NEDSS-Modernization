@@ -82,7 +82,6 @@ class SearchAndFilterPage {
     enterTextInMultiInputValue(value) {
         cy.get('.multi-select__input').type(value);
         cy.get('.multi-select__option--is-focused').click();
-        cy.get('#values').click();
     }
 
     showingContainedResults(text, columnName) {

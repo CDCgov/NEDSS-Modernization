@@ -2,10 +2,10 @@ package gov.cdc.nbs.search.redirect.simple;
 
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.option.Option;
+import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import gov.cdc.nbs.time.FlexibleLocalDateConverter;
 
-import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 
@@ -48,8 +48,9 @@ class SimplePatientSearchCriteriaResolver {
   Optional<SimplePatientSearchCriteria> resolve(final Map<String, String> criteria) {
     SimplePatientSearchNameCriteria name = resolveName(criteria).orElse(null);
 
-    LocalDate dateOfBirth = maybe(criteria, NBS_DATE_OF_BIRTH)
+    DateCriteria bornOn = maybe(criteria, NBS_DATE_OF_BIRTH)
         .map(FlexibleLocalDateConverter::fromString)
+        .map(DateCriteria::equals)
         .orElse(null);
 
     Option gender = maybe(criteria, NBS_SEX).map(Gender::resolve)
@@ -70,12 +71,12 @@ class SimplePatientSearchCriteriaResolver {
     String treatment = fromIdentifier(criteria, TREATMENT_ID);
     String vaccination = fromIdentifier(criteria, VACCINATION_ID);
 
-    return anyExist(name, dateOfBirth, gender, id, morbidity, document, stateCase, abcCase, cityCountyCase,
+    return anyExist(name, bornOn, gender, id, morbidity, document, stateCase, abcCase, cityCountyCase,
         notification, labReport, accessionNumber, investigation, treatment, vaccination)
             ? Optional.of(
                 new SimplePatientSearchCriteria(
                     name,
-                    dateOfBirth,
+                    bornOn,
                     gender,
                     id,
                     morbidity,

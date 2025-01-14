@@ -1,10 +1,10 @@
-import { NewPatientEntry } from 'apps/patient/add';
-import { PatientCriteriaEntry, Identification, RaceEthnicity, Contact } from '../criteria';
-import { internalizeDate } from 'date';
+import { today } from 'date';
 import { asValue } from 'options';
 import { orNull } from 'utils';
-import { IdentificationEntry, EmailEntry } from 'apps/patient/add';
+import { resolveDate } from 'design-system/date/entry';
 import { TextCriteria, asTextCriteriaValue } from 'options/operator';
+import { PatientCriteriaEntry, Identification, RaceEthnicity, Contact } from 'apps/search/patient/criteria';
+import { IdentificationEntry, EmailEntry, NewPatientEntry } from 'apps/patient/add';
 
 const resolveIdentification = (entry: Identification): IdentificationEntry[] =>
     entry.identification && entry.identificationType
@@ -25,10 +25,10 @@ const resolveCriteria = (textCriteria?: TextCriteria): string | null => orNull(a
 
 const asNewPatientEntry = (criteria: Partial<PatientCriteriaEntry>): NewPatientEntry => {
     return {
-        asOf: internalizeDate(new Date()),
+        asOf: today(),
         firstName: resolveCriteria(criteria.name?.first),
         lastName: resolveCriteria(criteria.name?.last),
-        dateOfBirth: criteria.dateOfBirth,
+        dateOfBirth: resolveDate(criteria.bornOn),
         currentGender: orNull(asValue(criteria.gender)),
         streetAddress1: resolveCriteria(criteria.location?.street),
         city: resolveCriteria(criteria.location?.city),

@@ -41,7 +41,7 @@ dependencies {
 
     implementation libs.bundles.security
     implementation libs.bundles.oidc
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway:4.1.6'
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway:4.2.0'
     implementation 'org.springframework.security:spring-security-oauth2-client'
     implementation 'org.springframework.security:spring-security-oauth2-jose'
 

@@ -2,6 +2,7 @@ package gov.cdc.nbs.search.redirect.simple;
 
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.option.Option;
+import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -92,7 +93,7 @@ class SimplePatientSearchCriteriaResolverTest {
     assertThat(resolved).hasValueSatisfying(
         actual -> assertThat(actual)
             .asInstanceOf(type(SimplePatientSearchCriteria.class))
-            .satisfies(value -> assertThat(value.dateOfBirth()).isEqualTo("1990-01-01"))
+            .satisfies(value -> assertThat(value.bornOn()).isEqualTo(DateCriteria.equals(1, 1, 1990)))
     );
   }
 

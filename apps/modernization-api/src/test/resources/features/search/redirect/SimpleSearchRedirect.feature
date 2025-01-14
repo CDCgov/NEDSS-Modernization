@@ -12,7 +12,7 @@ Feature: Searching from the NBS home page
     And I want a simple search for a "Patient ID" of "100056"
     When I perform a search from the NBS Home screen
     Then I am redirected to Advanced Search
-    And the search parameters include a "Date of Birth" of "01/07/2000"
+    And the search parameters include a date of birth equal to 01/07/2000
     And the search parameters include a "First Name" that starts with "Firstly"
     And the search parameters include a "Last Name" that contains "Lastly"
     And the search parameters include a "Gender" of "F"
