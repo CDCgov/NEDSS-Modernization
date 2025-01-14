@@ -9,6 +9,7 @@ Feature: Frontend Feature Configuration
     And the NBS6 event search feature is enabled
     And the investigation search feature is disabled
     And the laboratory report search feature is disabled
+    And the deduplication feature is disabled
 
   Scenario Outline: I can configure Frontend features
     Given I <toggle> the <feature> feature
@@ -33,3 +34,5 @@ Feature: Frontend Feature Configuration
       | laboratory report search   | disabled |
       | modernized patient profile | enabled  |
       | modernized patient profile | disabled |
+      | deduplication              | disabled |
+      | deduplication              | enabled  |
