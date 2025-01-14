@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 @Configuration
-public class DeduplicationFeaturesConfiguration {
+class DeduplicationFeaturesConfiguration {
 
   @Bean
   @Scope("prototype")
