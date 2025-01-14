@@ -205,6 +205,7 @@ export type FacilityProviders = {
 
 export type Filter = {
   id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export enum Gender {
