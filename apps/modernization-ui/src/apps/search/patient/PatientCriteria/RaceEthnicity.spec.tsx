@@ -1,6 +1,16 @@
+import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
-import { FormProvider, useForm } from "react-hook-form";
-import { RaceEthnicity } from "./RaceEthnicity";
+import { Selectable } from 'options';
+import { RaceEthnicity } from './RaceEthnicity';
+
+const mockRaceCategories: Selectable[] = [
+    { value: '1', name: 'race one name' },
+    { value: '2', name: 'race two name' }
+];
+
+jest.mock('options/race', () => ({
+    useRaceCategoryOptions: () => mockRaceCategories
+}));
 
 describe('When RaceEthnicity renders', () => {
     it('should render two Select inputs', () => {

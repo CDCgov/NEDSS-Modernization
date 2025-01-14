@@ -8,7 +8,7 @@ import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 export const RaceEthnicity = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
-    const { categories } = useRaceCategoryOptions();
+    const categories = useRaceCategoryOptions();
 
     return (
         <SearchCriteria>
