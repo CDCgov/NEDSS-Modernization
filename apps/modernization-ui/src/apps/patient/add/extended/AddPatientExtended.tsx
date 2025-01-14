@@ -24,7 +24,7 @@ export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient();
     const { initialize } = useAddPatientExtendedDefaults();
     const { value: bypassModal } = useShowCancelModal();
-    const { toBasic } = useBasicExtendedTransition();
+    const { toNewBasic } = useBasicExtendedTransition();
     const navigate = useNavigate();
 
     const created = useMemo<CreatedPatient | undefined>(
@@ -68,7 +68,7 @@ export const AddPatientExtended = () => {
 
     const handleModalConfirm = () => {
         blocker.unblock();
-        toBasic();
+        toNewBasic();
     };
 
     const handleModalClose = blocker.reset;
