@@ -1,32 +1,31 @@
 class SearchPage {
 
   enterLastName(lastName) {
-    cy.get("#lastName").type(lastName);
+    cy.get('input[name="name.last"]').type(lastName);
   }
 
   enterFirstName(firstName) {
-    cy.get("#firstName").type(firstName);
+    cy.get('input[name="name.first"]').type(firstName);
   }
 
   enterPatiendID(id) {
     cy.get("#id").type(id);
   }
 
-  enterStreetAdreess(address) {
-    cy.get("#address").type(address);
-  }
-
   enterCity(city) {
-    cy.get("#city").type(city,{force: true});
+    cy.get('input[id="location.city"]').type(city,{force: true});
+    // cy.get("#city").type(city,{force: true});
   }
 
   enterZipCode(zip) {
     cy.get("#zip").type(zip,{force: true});
-    cy.get("#city").click({force: true});
+    cy.get('input[id="location.city"]').click({force: true});
+    // cy.get("#city").click({force: true});
   }
 
   enterStreetAddress(address) {
-    cy.get("#address").type(address,{force: true});
+    cy.get('input[name="location.street"]').type(address,{force: true});
+    // cy.get("#address").type(address,{force: true});
   }
 
   enterPhone(phone) {
@@ -121,8 +120,11 @@ class SearchPage {
 
   enterDob(dateOfBirth) {
     cy.get("#dateOfBirth").focus().clear();
+    cy.get("#bornOn-exact-date-month").type("1")
+    cy.get("#bornOn-exact-date-day").type("1")
+    cy.get("#bornOn-exact-date-year").type("1982")
     const cleanedDateOfBirth = dateOfBirth.replace(/\//g, "");
-    cy.get("#dateOfBirth").type(cleanedDateOfBirth);
+    // cy.get("#dateOfBirth").type(cleanedDateOfBirth);
   }
 
   clearAll() {
