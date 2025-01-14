@@ -18,7 +18,11 @@ type Props = {
 export const TableNumericInput = ({ label, name, value, error, max, min, step, disabled, onChange, onBlur }: Props) => {
     return (
         <div className={styles.tableNumericInput}>
-            {label && <Label htmlFor={name}>{label}</Label>}
+            {label && (
+                <Label role="label" htmlFor={name}>
+                    {label}
+                </Label>
+            )}
             <div className={styles.inputWithError}>
                 <input
                     type="number"
