@@ -1,4 +1,6 @@
 import { asSelectable } from 'options';
+import { internalizeDate } from 'date';
+import { Mapping } from 'utils';
 import {
     BasicAddressEntry,
     BasicNewPatientEntry,
@@ -8,11 +10,9 @@ import {
     BasicEthnicityRace,
     BasicIdentificationEntry
 } from './entry';
-import { Mapping } from 'utils';
-import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 import { asTextCriteriaValue, TextCriteria } from 'options/operator';
-import { internalizeDate } from 'date';
-import { isDateEqualsCriteria } from 'design-system/date/entry';
+import { resolveDate } from 'design-system/date/entry';
+import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 
 const mapOr =
     <R, S, O>(mapping: Mapping<R, S>, fallback: O) =>
@@ -42,16 +42,7 @@ const nameBasic = (initial: Partial<PatientCriteriaEntry>): NameInformationEntry
 });
 
 const personalDetailsBasic = (initial: Partial<PatientCriteriaEntry>): BasicPersonalDetailsEntry => {
-    const bornOn =
-        initial.bornOn &&
-        isDateEqualsCriteria(initial.bornOn) &&
-        initial.bornOn.equals.year &&
-        initial.bornOn.equals.month &&
-        initial.bornOn.equals.day
-            ? internalizeDate(
-                  new Date(initial.bornOn.equals.year, initial.bornOn.equals.month - 1, initial.bornOn.equals.day)
-              )
-            : undefined;
+    const bornOn = resolveDate(initial.bornOn);
 
     return {
         bornOn,
