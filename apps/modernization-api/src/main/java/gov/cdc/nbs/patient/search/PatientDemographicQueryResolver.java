@@ -43,12 +43,12 @@ class PatientDemographicQueryResolver {
   private static final String NAME_USE_CD = "name.nm_use_cd.keyword";
   private static final String LAST_NAME = "name.lastNm";
   private static final String LOCAL_ID = "local_id";
+  private static final String FIRST_NAME = "name.firstNm";
   private final PatientSearchSettings settings;
   private final PatientLocalIdentifierResolver resolver;
   private final PatientNameDemographicQueryResolver nameQueryResolver;
   private final PatientLocationQueryResolver locationQueryResolver;
   private final Soundex soundex;
-  private static final String FIRST_NAME = "name.firstNm";
 
 
   PatientDemographicQueryResolver(
@@ -89,7 +89,7 @@ class PatientDemographicQueryResolver {
   }
 
   private Optional<QueryVariant> applyPatientIdFilterCriteria(final PatientFilter criteria) {
-    if (criteria.getFilter() == null || criteria.getFilter().id() == null) {
+    if (criteria.getFilter().id() == null) {
       return Optional.empty();
     }
 
@@ -103,7 +103,7 @@ class PatientDemographicQueryResolver {
   }
 
   private Optional<QueryVariant> applyPatientNameFilterCriteria(final PatientFilter criteria) {
-    if (criteria.getFilter() == null || criteria.getFilter().name() == null) {
+    if (criteria.getFilter().name() == null) {
       return Optional.empty();
     }
     return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().name(), null))
@@ -183,7 +183,7 @@ class PatientDemographicQueryResolver {
                                       .must(
                                           primary -> primary.match(
                                               match -> match
-                                                  .field("name.firstNm")
+                                                  .field(FIRST_NAME)
                                                   .query(name)
                                                   .boost(settings.first().primary())
 
@@ -195,7 +195,7 @@ class PatientDemographicQueryResolver {
                               .query(
                                   nonPrimary -> nonPrimary.simpleQueryString(
                                       queryString -> queryString
-                                          .fields("name.firstNm")
+                                          .fields(FIRST_NAME)
                                           .query(WildCards.startsWith(name))
                                           .boost(settings.first().nonPrimary())))))
                   .should(
