@@ -14,11 +14,12 @@ import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
+import jakarta.persistence.EntityManager;
 import net.datafaker.Faker;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -39,6 +40,7 @@ public class PatientMother {
   private final Active<PatientIdentifier> active;
   private final PatientCleaner cleaner;
   private final RevisionPatientCreator revisionCreator;
+  private final JdbcClient jdbcClient;
 
   PatientMother(
       final MotherSettings settings,
@@ -50,7 +52,8 @@ public class PatientMother {
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
       final PatientCleaner cleaner,
-      final RevisionPatientCreator revisionCreator
+      final RevisionPatientCreator revisionCreator,
+      final JdbcClient jdbcClient
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
@@ -62,6 +65,7 @@ public class PatientMother {
     this.active = active;
     this.cleaner = cleaner;
     this.revisionCreator = revisionCreator;
+    this.jdbcClient = jdbcClient;
     this.faker = new Faker(Locale.of("en-us"));
   }
 
@@ -113,8 +117,10 @@ public class PatientMother {
         new PatientCommand.Delete(
             identifier.id(),
             this.settings.createdBy(),
-            this.settings.createdOn()),
-        id -> 0);
+            this.settings.createdOn()
+        ),
+        id -> 0
+    );
   }
 
   public void superseded(final PatientIdentifier identifier) {
@@ -127,15 +133,11 @@ public class PatientMother {
       final PatientIdentifier identifier,
       final String address,
       final String city,
+      final String county,
       final String state,
-      final String zip) {
-    withAddress(
-        identifier,
-        "H",
-        address,
-        city,
-        state,
-        zip);
+      final String zip
+  ) {
+    withAddress(identifier, "H", address, city, county, state, zip);
   }
 
   public void withAddress(
@@ -143,8 +145,23 @@ public class PatientMother {
       final String use,
       final String address,
       final String city,
+      final String county,
       final String state,
-      final String zip) {
+      final String zip
+  ) {
+    withAddress(identifier, "H", use, address, city, county, state, zip);
+  }
+
+  public void withAddress(
+      final PatientIdentifier identifier,
+      final String type,
+      final String use,
+      final String address,
+      final String city,
+      final String county,
+      final String state,
+      final String zip
+  ) {
     Person patient = managed(identifier);
 
     patient.add(
@@ -152,19 +169,21 @@ public class PatientMother {
             patient.getId(),
             idGenerator.next(),
             RandomUtil.getRandomDateInPast(),
-            "H",
+            type,
             use,
             address,
             null,
             city,
             state,
             zip,
-            null,
+            county,
             "840",
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        )
+    );
   }
 
   public void withAddress(final PatientIdentifier identifier) {
@@ -184,14 +203,17 @@ public class PatientMother {
             RandomUtil.country(),
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        )
+    );
   }
 
   public void withIdentification(final PatientIdentifier identifier) {
     withIdentification(
         identifier,
         RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
-        RandomUtil.getRandomNumericString(8));
+        RandomUtil.getRandomNumericString(8)
+    );
   }
 
   public void withIdentification(
@@ -208,7 +230,9 @@ public class PatientMother {
             RandomUtil.maybeOneFrom("GA"),
             type,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        )
+    );
   }
 
   public void withRace(final PatientIdentifier identifier) {
@@ -257,20 +281,23 @@ public class PatientMother {
         faker.name().firstName(),
         faker.name().firstName(),
         faker.name().lastName(),
-        null);
+        null
+    );
   }
 
   public void withName(
       final PatientIdentifier identifier,
       final String type,
       final String first,
-      final String last) {
+      final String last
+  ) {
     withName(
         identifier,
         RandomUtil.getRandomDateInPast(),
         type,
         first,
-        last);
+        last
+    );
   }
 
   public void withName(
@@ -278,7 +305,8 @@ public class PatientMother {
       final Instant asOf,
       final String type,
       final String first,
-      final String last) {
+      final String last
+  ) {
     withName(
         identifier,
         asOf,
@@ -286,7 +314,8 @@ public class PatientMother {
         first,
         null,
         last,
-        null);
+        null
+    );
   }
 
   public void withName(
@@ -296,7 +325,8 @@ public class PatientMother {
       final String first,
       final String middle,
       final String last,
-      final String suffix) {
+      final String suffix
+  ) {
     Person patient = managed(identifier);
 
     patient.add(
@@ -313,7 +343,9 @@ public class PatientMother {
             null,
             type,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        )
+    );
   }
 
   public void withPhone(final PatientIdentifier identifier) {
@@ -326,19 +358,22 @@ public class PatientMother {
             RandomUtil.oneFrom("AN", "BP", "CP", "FAX", "PH"),
             RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
             RandomUtil.getRandomDateInPast(),
-            RandomUtil.getRandomString(),
+            RandomUtil.getRandomString(15),
             faker.phoneNumber().cellPhone(),
             faker.phoneNumber().extension(),
             null,
             null,
             RandomUtil.getRandomString(),
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        )
+    );
   }
 
   public void withPhone(
       final PatientIdentifier identifier,
-      final String number) {
+      final String number
+  ) {
     withPhone(identifier, null, number, null);
   }
 
@@ -346,15 +381,27 @@ public class PatientMother {
       final PatientIdentifier identifier,
       final String countryCode,
       final String number,
-      final String extension) {
+      final String extension
+  ) {
+    withPhone(identifier, "PH", "H", countryCode, number, extension);
+  }
+
+  public void withPhone(
+      final PatientIdentifier identifier,
+      final String type,
+      final String use,
+      final String countryCode,
+      final String number,
+      final String extension
+  ) {
     Person patient = managed(identifier);
 
     patient.add(
         new PatientCommand.AddPhone(
             identifier.id(),
             idGenerator.next(),
-            "PH",
-            "H",
+            type,
+            use,
             RandomUtil.getRandomDateInPast(),
             countryCode,
             number,
@@ -363,13 +410,13 @@ public class PatientMother {
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        )
+    );
   }
 
   public void withEmail(final PatientIdentifier identifier) {
-    withEmail(
-        identifier,
-        faker.internet().emailAddress());
+    withEmail(identifier, faker.internet().emailAddress());
   }
 
   public void withEmail(final PatientIdentifier identifier, final String email) {
@@ -389,12 +436,15 @@ public class PatientMother {
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        )
+    );
   }
 
   public void withBirthday(
       final PatientIdentifier identifier,
-      final LocalDate birthday) {
+      final LocalDate birthday
+  ) {
     Person patient = managed(identifier);
 
     patient.update(
@@ -410,8 +460,10 @@ public class PatientMother {
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()),
-        this.addressIdentifierGenerator);
+            this.settings.createdOn()
+        ),
+        this.addressIdentifierGenerator
+    );
   }
 
   public void withBirthInformation(final PatientIdentifier identifier) {
@@ -430,13 +482,16 @@ public class PatientMother {
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()),
-        this.addressIdentifierGenerator);
+            this.settings.createdOn()
+        ),
+        this.addressIdentifierGenerator
+    );
   }
 
   public void withGender(final PatientIdentifier identifier) {
     withGender(identifier, RandomUtil.gender().value());
   }
+
 
   public void withGender(final PatientIdentifier identifier, final String gender) {
     Person patient = managed(identifier);
@@ -450,7 +505,20 @@ public class PatientMother {
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        )
+    );
+  }
+
+  public void withLocalId(final PatientIdentifier identifier, final String localId) {
+    Person patient = managed(identifier);
+    patient.setLocalId(localId);
+  }
+
+  public void withId(final PatientIdentifier identifier, final long id) {
+    Person patient = managed(identifier);
+
+    patient.setId(id);
   }
 
   public void withMortality(final PatientIdentifier identifier) {
@@ -472,9 +540,10 @@ public class PatientMother {
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()),
-        this.addressIdentifierGenerator);
-
+            this.settings.createdOn()
+        ),
+        this.addressIdentifierGenerator
+    );
   }
 
   public void withEthnicity(
@@ -490,7 +559,8 @@ public class PatientMother {
             ethnicity,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn())
+            this.settings.createdOn()
+        )
     );
   }
 
@@ -520,11 +590,16 @@ public class PatientMother {
             this.settings.createdOn()
         )
     );
-
-
   }
 
   public void withEthnicity(final PatientIdentifier identifier) {
     withEthnicity(identifier, RandomUtil.ethnicity());
+  }
+
+  public void withStateHIVCase(final PatientIdentifier identifier, final String value) {
+    jdbcClient.sql("update person set ehars_id = ?, as_of_date_general = GETDATE() where person_uid = ?")
+        .params(value, identifier.id())
+        .update();
+
   }
 }

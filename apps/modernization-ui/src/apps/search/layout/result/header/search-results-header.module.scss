@@ -1,0 +1,10 @@
+@use 'styles/borders';
+
+.header {
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    display: flex;
+
+    @extend %thin-bottom;
+    justify-content: space-between;
+    align-items: flex-start;
+}

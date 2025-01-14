@@ -153,7 +153,11 @@ export const QuestionSearchTable = ({
                         id="question-search"
                         value={query}
                     />
-                    <Button type="button" className={styles.createNewButton} outline onClick={onCreateNew}>
+                    <Button
+                        type="button"
+                        className={`${styles.createNewButton} addQuestionCreateNewBtn`}
+                        outline
+                        onClick={onCreateNew}>
                         Create new
                     </Button>
                 </div>

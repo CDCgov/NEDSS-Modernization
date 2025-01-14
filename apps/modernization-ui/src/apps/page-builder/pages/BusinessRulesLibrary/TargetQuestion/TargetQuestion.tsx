@@ -166,6 +166,7 @@ export const TargetQuestion = ({
                                     <div key={key} className={styles.section}>
                                         <div
                                             className={styles.sectionToggle}
+                                            data-testid="listedSectionsTarget"
                                             onClick={() => {
                                                 activeSection === section.id
                                                     ? setActiveSection(0)
@@ -184,6 +185,7 @@ export const TargetQuestion = ({
                                                 <div
                                                     key={id}
                                                     className={styles.subsection}
+                                                    data-testid="listedSubsectionsTarget"
                                                     onClick={() => {
                                                         if (activeSubsection === subsection.id) {
                                                             setActiveSubsection(0);
@@ -237,6 +239,7 @@ export const TargetQuestion = ({
                 <Button
                     type="button"
                     outline
+                    data-testid="targetQuestionModalCancelBtn"
                     onClick={() => {
                         onReset?.();
                         onCancel?.();
@@ -250,6 +253,7 @@ export const TargetQuestion = ({
                         onReset?.();
                         onCancel?.();
                     }}
+                    data-testid="targetQuestionModalContinueBtn"
                     disabled={selectedList.length > 10}>
                     Continue
                 </Button>

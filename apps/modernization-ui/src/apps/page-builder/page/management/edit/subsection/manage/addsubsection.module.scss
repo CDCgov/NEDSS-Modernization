@@ -24,6 +24,9 @@
         .headerContent {
             display: flex;
             justify-content: flex-start;
+            h2 {
+                margin: 0;
+            }
         }
         .closeBtn:hover {
             cursor: pointer;

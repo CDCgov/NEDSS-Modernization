@@ -1,7 +1,7 @@
-Feature: User can view existing page library pagination here.
+Feature: Page Builder - User can view existing page library pagination here.
 
     Background:
-        Given I am logged in as "superuser" and password ""
+        Given I am logged in as secure user
         When User navigates to Page Library and views the Page library
 
     Scenario: User checks for 10 rows of pages listed in the library

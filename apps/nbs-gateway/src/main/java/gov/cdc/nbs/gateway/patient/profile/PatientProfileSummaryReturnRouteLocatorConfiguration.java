@@ -1,5 +1,6 @@
 package gov.cdc.nbs.gateway.patient.profile;
 
+import gov.cdc.nbs.gateway.RouteOrdering;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -31,12 +32,14 @@ class PatientProfileSummaryReturnRouteLocatorConfiguration {
     return builder.routes()
         .route(
             "patient-profile-summary-return",
-            route -> route.query("ContextAction", "ReturnToFileSummary")
+            route -> route
+                .order(RouteOrdering.PATIENT_PROFILE.order())
+                .query("ContextAction", "ReturnToFileSummary")
                 .filters(
-                    filter -> filter.setPath(
-                            "/nbs/redirect/patientProfile/summary/return")
+                    filter -> filter.setPath(parameters.summary())
                         .filters(defaults))
-                .uri(parameters.uri()))
+                .uri(parameters.uri())
+        )
         .build();
   }
 }

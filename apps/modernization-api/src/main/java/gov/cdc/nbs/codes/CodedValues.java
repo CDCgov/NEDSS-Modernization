@@ -8,6 +8,10 @@ class CodedValues {
         return existing -> new CodedValue(existing.value(), StandardNameFormatter.formatted(existing.name()));
     }
 
+    static UnaryOperator<CodedValue> withEducationName() {
+        return existing -> new CodedValue(existing.value(), StandardNameFormatter.formatted(existing.name()).replaceFirst("(?i)ged", "GED"));
+    }
+
     private CodedValues() {
 
     }

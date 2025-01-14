@@ -115,7 +115,11 @@ export const AddBusinessRule = () => {
                         type="button">
                         Cancel
                     </Button>
-                    <Button disabled={!checkIsValid()} type="submit" onClick={onSubmit}>
+                    <Button
+                        disabled={!checkIsValid()}
+                        type="submit"
+                        data-testid="AddToLibraryNewBusinessRulesModel"
+                        onClick={onSubmit}>
                         Add to library
                     </Button>
                 </div>

@@ -1,0 +1,15 @@
+@use 'styles/components';
+
+.entry {
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+        font-size: 1rem;
+        line-height: 1.25rem;
+    }
+
+    &.alert {
+        padding-left: 1.25rem;
+    }
+}

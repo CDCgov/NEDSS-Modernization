@@ -7,7 +7,8 @@
     "cy:open": "cypress open",
     "cy:e2e": "cypress run --spec 'cypress/e2e/**/*.feature'",
     "cy:api": "cypress run --spec cypress/api/**/*.feature",
-    "report": "node cucumber-html-report.js"
+    "report": "node cucumber-html-report.js",
+    "githubReport": "node github-report.js"
   },
   "keywords": [
     "cypress",
@@ -19,7 +20,8 @@
     "@badeball/cypress-cucumber-preprocessor": "^18.0.1",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
     "@faker-js/faker": "^8.0.2",
-    "cypress": "^13.6.0",
+    "cypress": "^13.15.1",
+    "cypress-xpath": "^2.0.1",
     "multiple-cucumber-html-reporter": "^3.6.2"
   },
   "cypress-cucumber-preprocessor": {
@@ -38,5 +40,8 @@
       "enabled": true,
       "output": "./reports/cucumber-report.html"
     }
+  },
+  "dependencies": {
+    "badeball": "^20.1.1"
   }
 }

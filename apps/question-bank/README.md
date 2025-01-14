@@ -8,6 +8,7 @@ Contains REST APIs for managing Question Bank entities.
 
 1. Java 21
 2. `nbs-mssql` docker containers. See [CDC Sandbox](../../cdc-sandbox/README.md)
+3. `DATABASE_PASSWORD`, `TOKEN_SECRET` environment variables are set or relevant properties set in an `application-local.yml`
 
 ## Tests
 
@@ -16,7 +17,7 @@ in
 the `cdc-sandbox` directory.
 
 ```sh
-docker-compose build nbs-mssql
+docker compose build nbs-mssql
 ```
 
 To run all tests:

@@ -1,0 +1,49 @@
+@use 'styles/colors';
+
+.accordian {
+    summary {
+        list-style-type: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        background-color: colors.$base-lightest;
+        color: colors.$base-darkest;
+        padding: 1rem;
+
+        cursor: pointer;
+
+        h3 {
+            margin: 0;
+        }
+
+        svg {
+            width: 1.5rem;
+            height: 1.5rem;
+
+            &.opened {
+                display: none;
+            }
+
+            &.closed {
+                display: inline;
+            }
+        }
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+    }
+
+    &[open] summary {
+        svg {
+            &.opened {
+                display: inline;
+            }
+
+            &.closed {
+                display: none;
+            }
+        }
+    }
+}

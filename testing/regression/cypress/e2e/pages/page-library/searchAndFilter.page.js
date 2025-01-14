@@ -56,7 +56,7 @@ class SearchAndFilterPage {
     }
 
     selectColumn(columnName) {
-        cy.get('#select-column').select(this.getColumnValueByName(columnName));
+        cy.get('#select-column').select(this.getColumnValueByName(columnName), { force: true });
     }
 
     selectOperator(operatorValue) {
@@ -82,7 +82,6 @@ class SearchAndFilterPage {
     enterTextInMultiInputValue(value) {
         cy.get('.multi-select__input').type(value);
         cy.get('.multi-select__option--is-focused').click();
-        cy.get('#values').click();
     }
 
     showingContainedResults(text, columnName) {

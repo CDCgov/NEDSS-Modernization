@@ -19,7 +19,7 @@ export const PagesBreadcrumb = ({ currentPage, path }: Props) => {
 
     return (
         <div className="pages-breadcrumb">
-            <div onClick={goBack}>
+            <div onClick={goBack} id="pageLibraryLink">
                 <Icon.ArrowBack size={3} />
                 <h4>Page library</h4>
             </div>

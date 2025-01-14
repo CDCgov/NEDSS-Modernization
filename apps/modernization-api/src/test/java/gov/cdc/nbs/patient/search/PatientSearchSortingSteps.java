@@ -18,8 +18,12 @@ public class PatientSearchSortingSteps {
     Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
     String field = switch (sortBy.toLowerCase()) {
-      case "last name" -> "lastNm";
+      case "local_id", "patient id" -> "patientid";
       case "birthday" -> "birthTime";
+      case "first name" -> "firstNm";
+      case "last name" -> "lastNm";
+      case "legal name" -> "legalName";
+      case "phone" -> "phoneNumber";
       default -> sortBy.toLowerCase();
     };
 

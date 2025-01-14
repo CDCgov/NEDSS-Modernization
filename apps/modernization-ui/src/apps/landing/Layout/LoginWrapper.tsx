@@ -1,5 +1,5 @@
-import styles from './login-wrapper.module.scss';
 import { ReactNode } from 'react';
+import styles from './login-wrapper.module.scss';
 
 type Props = {
     children: ReactNode;
@@ -9,7 +9,7 @@ type Props = {
 const LoginWrapper = ({ children, header }: Props) => (
     <div className={styles.layout}>
         <header>
-            <img src="/nbs-logo.png" height={40} alt="" />
+            <span className={styles.logo}>NBS</span>
             {header && header}
         </header>
         {children}

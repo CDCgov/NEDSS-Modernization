@@ -1,13 +1,11 @@
 package gov.cdc.nbs.questionbank.template;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.net.URI;
-import org.springframework.beans.factory.annotation.Autowired;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.page.PageMother;
+import gov.cdc.nbs.testing.support.Active;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -17,35 +15,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.util.UriComponentsBuilder;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.page.PageMother;
-import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+
+import java.net.URI;
+
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ImportTemplateSteps {
-
-  record TemplateXml(String name, String xml) {
-  };
-
-  @Autowired
-  Active<TemplateXml> template = new Active<>();
-
-  @Autowired
-  @Qualifier("classicRestService")
-  MockRestServiceServer server;
-
-  @Value("${nbs.wildfly.url:http://wildfly:7001}")
-  String classicUrl;
-
-  @Autowired
-  TemplateImportRequest request;
-
-  @Autowired
-  PageMother mother;
-
-  private final Active<ResultActions> response = new Active<>();
 
   private static final String LOCATION =
       "http://localhost:8080/nbs/PreviewTemplate.do?method=viewTemplate&srcTemplateNm=TEMPLATE_NAME&src=Import&templateUid=TEMPLATE_UID";
@@ -73,8 +51,34 @@ public class ImportTemplateSteps {
                 up.','TEMPLATE_NAME',SetPublishIndCdtoF,ReplaceWithCurrentDate,ReplaceCurrentUserId,'Arbo_Case_Map_v1.0',null,ReplaceSrcName,null,null)</InsertStatement>
             </TemplateInsert>
           </xml-fragment>
-                  """;
+          """;
 
+  record TemplateXml(String name, String xml) {
+  }
+
+  private final Active<TemplateXml> template = new Active<>();
+
+  private final MockRestServiceServer server;
+
+  private final String classicUrl;
+
+  private final TemplateImportRequest request;
+
+  private final PageMother mother;
+
+  private final Active<ResultActions> response = new Active<>();
+
+  ImportTemplateSteps(
+      @Qualifier("classicRestService") final MockRestServiceServer server,
+      @Value("${nbs.wildfly.url:http://wildfly:7001}") final String classicUrl,
+      final TemplateImportRequest request,
+      final PageMother mother
+  ) {
+    this.server = server;
+    this.classicUrl = classicUrl;
+    this.request = request;
+    this.mother = mother;
+  }
 
   @Given("I have template to import")
   public void i_have_a_template_to_import() {

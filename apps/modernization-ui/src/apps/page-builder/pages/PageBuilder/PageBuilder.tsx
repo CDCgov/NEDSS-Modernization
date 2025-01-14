@@ -10,7 +10,11 @@ type Props = {
 export const PageBuilder = ({ nav = false, children }: Props) => {
     return (
         <div className="page-builder">
-            {nav ? <PageBuilderSideNav /> : null}
+            {nav ? (
+                <div className="side-nav">
+                    <PageBuilderSideNav />
+                </div>
+            ) : null}
             <div className="page-builder__content">{children}</div>
         </div>
     );

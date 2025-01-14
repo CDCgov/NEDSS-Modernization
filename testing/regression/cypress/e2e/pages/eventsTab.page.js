@@ -4,19 +4,27 @@ class EventsTabPage {
   }
 
   selectMultipleInvestigations() {
+    const conditionText = "Acanthamoeba Disease (Excluding Keratitis)";
+    const conditionColumnIndex = 3;
+
     cy.get(this.table)
       .eq(0)
-      .find("tr")
-      .eq(1)
-      .find("input")
-      .check({ force: true });
-    cy.get(this.table)
-      .eq(0)
-      .find("tr")
-      .eq(2)
-      .find("input")
-      .check({ force: true });
-  }
+      .find("tbody tr")
+      .each(($row) => {
+        cy.wrap($row)
+          .find("td")
+          .eq(conditionColumnIndex)
+          .invoke('text')
+          .then(text => {
+
+            if (text.includes(conditionText)) {
+              cy.wrap($row)
+                .find("input")
+                .check({ force: true });
+            }
+          });
+      });
+}
 
   validateTableColumns(tableName, dataTable) {
     let tableIndex = 0;
@@ -52,7 +60,7 @@ class EventsTabPage {
         });
         dataTable.rawTable.forEach((row) => {
           const label = row[0];
-          if ((label == "Start date") & (tableName === "Investigations")) {
+          if ((label == "Investigation #") & (tableName === "Investigations")) {
             myArray.push("");
           }
           myArray.push(label);

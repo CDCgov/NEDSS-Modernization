@@ -308,6 +308,7 @@ export const BusinessRulesForm = ({
                                     type="button"
                                     outline
                                     onClick={handleOpenSourceQuestion}
+                                    data-testid="searchSourceQuestionBtn"
                                     className={styles.sourceBtn}>
                                     Search source question
                                 </Button>
@@ -382,6 +383,7 @@ export const BusinessRulesForm = ({
                                         options={logicList}
                                         error={error?.message}
                                         disabled={watch.anySourceValue}
+                                        dataTestid="LogicSelectDropdown"
                                     />
                                 </div>
                             </div>
@@ -482,6 +484,7 @@ export const BusinessRulesForm = ({
                                         <Button
                                             type="button"
                                             outline
+                                            data-testid="targetQuestionEditBtn"
                                             onClick={handleOpenTargetQuestion}
                                             className={styles.btn}>
                                             <Icon.Edit />
@@ -493,6 +496,7 @@ export const BusinessRulesForm = ({
                             {!(targetQuestions?.length || 0 > 0) && watch.targetType === Rule.targetType.QUESTION && (
                                 <Button
                                     className={styles.targetBtn}
+                                    data-testid="searchTargetQuestionBtn"
                                     type="button"
                                     outline
                                     onClick={handleOpenTargetQuestion}

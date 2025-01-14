@@ -4,8 +4,10 @@ An entry point for an NBS 6.X Application that allows a Strangler Fig approach t
 
 ## Running
 
-The NBS Gateway is a Spring Cloud Gateway application that runs on port `8000` by default. It can be started from the
-root directory by executing;
+The NBS Gateway is a Spring Cloud Gateway application that runs on port `8000` by default. It requires
+the `OIDC_CLIENT_SECRET` environment variable be set. This can be done by
+running `export OIDC_CLIENT_SECRET=<the value>` or by setting `nbs.security.oidc.client.secret` directly within
+an `application-local.yml`. The application can be started from the root directory by executing;
 
 ```bash
 ./gradlew nbs-gateway:bootRun
@@ -62,13 +64,24 @@ The default profile contains the following properties configuration most likely 
 | nbs.gateway.classic                                    | `http://localhost:7001` | The URI location of the classic NBS Application                                     |
 | nbs.gateway.patient.search.enabled                     | `true`                  | Enables the Patient Search routing                                                  |
 | nbs.gateway.patient.search.service                     | `localhost:8080`        | The host name of the Patient Search service                                         |
-| nbs.gateway.patient.profile.enabled                    | `true`                  | Enables the Patient Profile routing                                                 |
+| nbs.gateway.patient.profile.enabled                    | `false`                 | Enables the Patient Profile routing                                                 |
 | nbs.gateway.patient.profile.service                    | `localhost:8080`        | The host name of the Patient Profile service                                        |
 | nbs.gateway.pagebuilder.enabled                        | `false`                 | Enables Page Builder routing                                                        |
 | nbs.gateway.pagebuilder.service                        | `localhost:8080`        | The host name of the service                                                        |
 | nbs.gateway.pagebuilder.page.library.enabled           | `false`                 | Enables the Page Builder Page Library routing                                       |
 | nbs.gateway.pagebuilder.page.management.create.enabled | `false`                 | Enables the Page Builder Page creation routing                                      |
 | nbs.gateway.pagebuilder.page.management.edit.enabled   | `false`                 | Enables the Page Builder Page preview/edit routing                                  |
+
+### Logo
+
+By default, the NBS logo is served from the path `/images/nedssLogo.jpg` with the content coming from
+the `nbs.gateway.classic` service. The logo can be changed by setting the `nbs.gateway.logo.file` value to the name of
+the file to use as the logo.
+
+| Name                  | Default                 | Description                                                 |
+|-----------------------|-------------------------|-------------------------------------------------------------|
+| nbs.gateway.logo.path | `/images/nedssLogo.jpg` | The path to serve the NBS logo on.                          |
+| nbs.gateway.logo.file |                         | The file system path to the image to serve as the NBS logo. |
 
 ### Logging
 

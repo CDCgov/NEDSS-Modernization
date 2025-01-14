@@ -1,0 +1,53 @@
+name: Regression tests
+on:
+  schedule:
+    # weekdays at 7am UTC -> 3am EST
+    - cron: "0 7 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      spec:
+        description: "Spec to run"
+        required: false
+        type: string
+        default: "cypress/**/*.feature"
+      environment:
+        description: "Target environment"
+        required: true
+        type: choice
+        options:
+          - int1
+          - test
+        default: "test"
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      # Install npm dependencies, cache them, run tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        continue-on-error: true # perform next steps even on failure
+        with:
+          working-directory: testing/regression/
+          spec: ${{ inputs.spec }}
+        env:
+          CYPRESS_BASE_URL: ${{ inputs.environment == 'test' && 'https://app.test.nbspreview.com/' || 'https://app.int1.nbspreview.com/' }}
+          CYPRESS_LOGIN_USERNAME: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_LOGIN_USERNAME || secrets.CYPRESS_INT_LOGIN_USERNAME }}
+          CYPRESS_LOGIN_PASSWORD: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_LOGIN_PASSWORD || secrets.CYPRESS_INT_LOGIN_PASSWORD }}
+          CYPRESS_DI_CLIENT_ID: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_DI_CLIENT || secrets.CYPRESS_INT_DI_CLIENT }}
+          CYPRESS_DI_SECRET: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_DI_SECRET || secrets.CYPRESS_INT_DI_SECRET }}
+      # Create cypress html report
+      - name: Build report
+        working-directory: testing/regression/
+        run: npm run githubReport
+      # Zip up report
+      - name: Zip report
+        working-directory: testing/regression/
+        run: zip -r cypress-report.zip reports/cucumber-report/*
+      # Upload artifact
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cypress-report
+          path: testing/regression/cypress-report.zip

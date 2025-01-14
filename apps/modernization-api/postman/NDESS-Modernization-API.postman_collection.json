@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6c4e59b2-c132-4ef7-a1b6-367437cac535",
+		"_postman_id": "9485c6b8-889e-4768-93b2-a4a6f92d1ff3",
 		"name": "NDESS-Modernization-API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28141522"
@@ -218,7 +218,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query findInvestigationsByFilter($filter:InvestigationFilter!,$page:SortablePage){\n    findInvestigationsByFilter(filter:$filter,page:$page){\n        content{\n            id\n        }\n        total\n    }\n}",
+								"query": "query findInvestigationsByFilter($filter:InvestigationFilter!,$page:SortablePage){\n    findInvestigationsByFilter(filter:$filter,page:$page){\n        content{\n            id\n            localId\n            personParticipations {\n                typeCd\n                personParentUid\n            }\n        }\n        total\n    }\n}",
 								"variables": " {\n\t\t\"page\": {\n\t\t\t\"pageNumber\": 0,\n\t\t\t\"pageSize\": 25\n\t\t},\n\t\t\"filter\": {\n\t\t\t\"notificationStatuses\": [\n\t\t\t\t\"UNASSIGNED\"\n\t\t\t]\n\t\t}\n\t}"
 							}
 						},
@@ -235,7 +235,7 @@
 					"response": []
 				},
 				{
-					"name": "Event Search [Lab Report]",
+					"name": "Laboratory Report Search",
 					"protocolProfileBehavior": {
 						"followRedirects": false,
 						"followOriginalHttpMethod": false,
@@ -262,8 +262,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query findLabReportsByFilter($filter: LabReportFilter!, $page: SortablePage) {\n  findLabReportsByFilter(filter: $filter, page: $page) {\n    content {\n      id\n      observationUid\n      lastChange\n      classCd\n      moodCd\n      observationLastChgTime\n      cdDescTxt\n      recordStatusCd\n      programAreaCd\n      jurisdictionCd\n      jurisdictionCodeDescTxt\n      pregnantIndCd\n      localId\n      activityToTime\n      effectiveFromTime\n      rptToStateTime\n      addTime\n      electronicInd\n      versionCtrlNbr\n      addUserId\n      lastChgUserId\n      personParticipations {\n        actUid\n        localId\n        typeCd\n        entityId\n        subjectClassCd\n        participationRecordStatus\n        typeDescTxt\n        participationLastChangeTime\n        firstName\n        lastName\n        birthTime\n        currSexCd\n        personCd\n        personParentUid\n        personRecordStatus\n        personLastChangeTime\n        __typename\n        shortId\n      }\n      organizationParticipations {\n        actUid\n        typeCd\n        entityId\n        subjectClassCd\n        typeDescTxt\n        participationRecordStatus\n        participationLastChangeTime\n        name\n        organizationLastChangeTime\n        __typename\n      }\n      materialParticipations {\n        actUid\n        typeCd\n        entityId\n        subjectClassCd\n        typeDescTxt\n        participationRecordStatus\n        participationLastChangeTime\n        cd\n        cdDescTxt\n        __typename\n      }\n      observations {\n        cd\n        cdDescTxt\n        domainCd\n        statusCd\n        altCd\n        altDescTxt\n        altCdSystemCd\n        displayName\n        ovcCode\n        ovcAltCode\n        ovcAltDescTxt\n        ovcAltCdSystemCd\n        __typename\n      }\n      actIds {\n        id\n        recordStatus\n        actIdSeq\n        rootExtensionTxt\n        typeCd\n        lastChangeTime\n        __typename\n      }\n      associatedInvestigations {\n        publicHealthCaseUid\n        cdDescTxt\n        localId\n        lastChgTime\n        actRelationshipLastChgTime\n        __typename\n      }\n      __typename\n    }\n    total\n    __typename\n  }\n}\n",
-								"variables": "{\n    \"page\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 25,\n        \"sortDirection\": \"ASC\",\n        \"sortField\": \"lastNm\"\n    },\n    \"filter\": {\n        \"jurisdictions\": [\n            \"130004\"\n        ]\n    }\n}"
+								"query": "query search($filter: LabReportFilter!, $page: SortablePage) {\n        findLabReportsByFilter(filter: $filter, page: $page) {\n          total\n          content{\n              relevance\n              id\n              localId\n              personParticipations {\n                firstName\n                lastName\n              }\n              observations{\n                cdDescTxt\n                displayName\n              }\n              labTestSummaries {\n                name\n                status\n                numeric\n                high\n                low\n                unit\n              }\n       \n          }\n        }\n      }",
+								"variables": "{\n    \"page\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 25,\n        \"sortDirection\": \"ASC\",\n        \"sortField\": \"lastNm\"\n    },\n    \"filter\": {\n        \n    }\n}"
 							}
 						},
 						"url": {
@@ -311,8 +311,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query search($filter: PersonFilter!, $page: SortablePage) {\n  findPatientsByFilter(filter: $filter, page: $page) {\n    content {\n      patient\n      shortId\n      legalName {\n        first\n        middle\n        last\n        suffix\n      }\n      names {\n        first\n        middle\n        last\n        suffix\n      }\n      identification {\n        type\n        value\n      }\n    }\n    total\n  }\n}\n",
-								"variables": "{\n    \"filter\" :{\n        \"recordStatus\": [\"ACTIVE\"],\n        \"gender\" :\"u\"\n    },\n\t\t\"page\": {\n\t\t\t\"pageNumber\": 0,\n\t\t\t\"pageSize\": \"5\"\n\t\t}\n\t}"
+								"query": "query search($filter: PersonFilter!, $page: SortablePage, $share: String) {\n  findPatientsByFilter(filter: $filter, page: $page, share: $share) {\n    content {\n      patient\n      shortId\n      legalName {\n        first\n        middle\n        last\n        suffix\n      }\n      addresses {\n        type\n        use\n        address\n        city\n        county\n        zipcode\n        state\n      }\n    }\n    total\n    page\n    size\n  }\n}\n",
+								"variables": "{\n    \"filter\" :{\n        \"recordStatus\": [\"ACTIVE\"]\n    },\n    \"page\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 5\n\t}\n}"
 							}
 						},
 						"url": {
@@ -328,50 +328,6 @@
 									"key": "",
 									"value": null
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Patient Search (7.0.0)",
-					"protocolProfileBehavior": {
-						"followRedirects": false,
-						"followOriginalHttpMethod": false,
-						"followAuthorizationHeader": false
-					},
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "accessToken",
-									"value": "{{token}}",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query search($filter:PersonFilter!,$page:SortablePage){\n    findPatientsByFilter(filter:$filter,page:$page){\n        content{\n            id\n            shortId\n            names {\n                firstNm\n                middleNm\n                lastNm\n            } \n        }\n        total\n    }\n}",
-								"variables": "{\n\t\t\"filter\": {\n\t\t\t\"recordStatus\": [\n\t\t\t\t\"ACTIVE\"\n\t\t\t]\n\t\t},\n\t\t\"page\": {\n\t\t\t\"pageNumber\": 0,\n\t\t\t\"pageSize\": 25,\n\t\t\t\"sortDirection\": \"ASC\",\n\t\t\t\"sortField\": \"lastNm\"\n\t\t}\n\t}"
-							}
-						},
-						"url": {
-							"raw": "{{base}}/graphql",
-							"host": [
-								"{{base}}"
-							],
-							"path": [
-								"graphql"
 							]
 						}
 					},
@@ -536,6 +492,55 @@
 									],
 									"path": [
 										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Extended",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const patient = pm.response.json().id;",
+											"pm.collectionVariables.set(\"patient\", patient);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true,
+									"user-agent": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"administrative\": {\n        \"asOf\": \"{{localDate}}\",\n        \"comment\": \"testing extended patient data\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/nbs/api/profile",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"profile"
 									]
 								}
 							},
@@ -935,7 +940,7 @@
 											"mode": "graphql",
 											"graphql": {
 												"query": "query profile($patient: ID!, $page: Page) {\n  findPatientProfile(patient: $patient) {\n    id\n    administrative(page: $page) {\n      total\n      number\n      size\n      content {\n        patient\n        id\n        version\n        asOf\n        comment\n      }\n    }\n  }\n}\n",
-												"variables": "{\n    \"patient\": \"{{patient}}\",\n    \"page\": {\n        \"pageNumber\": \"0\",\n        \"pageSize\": \"25\"\n    }\n}"
+												"variables": "{\n    \"patient\": \"10063398\",\n    \"page\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 25\n    }\n}"
 											}
 										},
 										"url": {
@@ -1322,7 +1327,8 @@
 													"const address = pm.response.json().data?.addPatientAddress?.id;",
 													"pm.collectionVariables.set(\"address\", address);"
 												],
-												"type": "text/javascript"
+												"type": "text/javascript",
+												"packages": {}
 											}
 										}
 									],
@@ -1353,7 +1359,7 @@
 											"mode": "graphql",
 											"graphql": {
 												"query": "mutation address($input: NewPatientAddressInput!) {\n  addPatientAddress(input: $input) {\n    patient\n    id\n  }\n}\n",
-												"variables": "{\n\t\"input\": {\n\t\t\"patient\": \"{{patient}}\",\n\t\t\"asOf\": \"{{now}}\",\n\t\t\"type\": \"H\",\n\t\t\"use\": \"H\",\n\t\t\"address1\": \"{{$randomStreetAddress}}\",\t\t\n\t\t\"city\": \"{{$randomCity}}\",\n\t\t\"state\": \"11\",\n\t\t\"zipcode\": \"100001\",\n\t\t\"county\": \"11001\",\n\t\t\"censusTract\": \"0000\",\n\t\t\"country\": \"840\"\n\t}\n}"
+												"variables": "{\n\t\"input\": {\n\t\t\"patient\": {{patient}},\n\t\t\"asOf\": \"{{now}}\",\n\t\t\"type\": \"H\",\n\t\t\"use\": \"H\",\n\t\t\"address1\": \"{{$randomStreetAddress}}\",\t\t\n\t\t\"city\": \"{{$randomCity}}\",\n\t\t\"state\": \"11\",\n\t\t\"zipcode\": \"100001\",\n\t\t\"county\": \"11001\",\n\t\t\"censusTract\": \"0000\",\n\t\t\"country\": \"840\"\n\t}\n}"
 											}
 										},
 										"url": {
@@ -1397,7 +1403,7 @@
 											"mode": "graphql",
 											"graphql": {
 												"query": "mutation address($input: UpdatePatientAddressInput!) {\n  updatePatientAddress(input: $input) {\n    patient\n    id\n  }\n}\n",
-												"variables": "{\n\t\"input\": {\n\t\t\"patient\": \"{{patient}}\",\n\t\t\"id\": {{address}},\n\t\t\"asOf\": \"{{now}}\",\n\t\t\"type\": \"H\",\n\t\t\"use\": \"H\",\n\t\t\"address1\": \"{{$randomStreetAddress}}\",\t\t\n\t\t\"city\": \"{{$randomCity}}\",\n\t\t\"state\": \"11\",\n\t\t\"zipcode\": \"100001\",\n\t\t\"county\": \"11001\",\n\t\t\"censusTract\": \"0000\",\n\t\t\"country\": \"840\"\n\t}\n}"
+												"variables": "{\n\t\"input\": {\n\t\t\"patient\": {{patient}},\n\t\t\"id\": {{address}},\n\t\t\"asOf\": \"{{now}}\",\n\t\t\"type\": \"H\",\n\t\t\"use\": \"H\",\n\t\t\"address1\": \"{{$randomStreetAddress}}\",\t\t\n\t\t\"city\": \"{{$randomCity}}\",\n\t\t\"state\": \"11\",\n\t\t\"zipcode\": \"100001\",\n\t\t\"county\": \"11001\",\n\t\t\"censusTract\": \"0000\",\n\t\t\"country\": \"840\"\n\t}\n}"
 											}
 										},
 										"url": {
@@ -2332,7 +2338,7 @@
 										"body": {
 											"mode": "graphql",
 											"graphql": {
-												"query": "query profileGeneralInformation($patient: ID!) {\n  findPatientProfile(patient: $patient) {\n    id\n    local\n    general {\n      patient\n      id\n      version\n      asOf\n      maritalStatus {\n        id\n        description\n      }\n      maternalMaidenName\n      adultsInHouse\n      childrenInHouse\n      occupation {\n        id\n        description\n      }\n      educationLevel {\n        id\n        description\n      }\n      primaryLanguage {\n        id\n        description\n      }\n      speaksEnglish {\n        id\n        description\n      }\n      stateHIVCase\n    }\n  }\n}\n",
+												"query": "query profileGeneralInformation($patient: ID!) {\n  findPatientProfile(patient: $patient) {\n    id\n    local\n    general {\n      patient\n      id\n      version\n      asOf\n      maritalStatus {\n        id\n        description\n      }\n      maternalMaidenName\n      adultsInHouse\n      childrenInHouse\n      occupation {\n        id\n        description\n      }\n      educationLevel {\n        id\n        description\n      }\n      primaryLanguage {\n        id\n        description\n      }\n      speaksEnglish {\n        id\n        description\n      }\n      stateHIVCase {\n        __typename\n        ... on Allowed {\n        value\n        }\n        ... on Restricted {\n        reason\n        }\n      }\n    }\n  }\n}\n",
 												"variables": "{\n\t\"patient\": \"{{patient}}\"\n}"
 											}
 										},
@@ -2377,7 +2383,7 @@
 											"mode": "graphql",
 											"graphql": {
 												"query": "mutation general($input: GeneralInfoInput!) {\n  updatePatientGeneralInfo(input: $input) {\n    patient\n  }\n}\n",
-												"variables": "{\n\t\"input\": {\n\t\t\"patient\": \"{{patient}}\",\n\t\t\"asOf\": \"{{now}}\",\n\t\t\"maritalStatus\": \"U\",\n\t\t\"maternalMaidenName\": \"{{$randomLastName}}\",\n\t\t\"educationLevel\": \"13\",\n\t\t\"speaksEnglish\": \"Y\"\n\t}\n}"
+												"variables": "{\n\t\"input\": {\n\t\t\"patient\": {{patient}},\n\t\t\"asOf\": \"{{now}}\",\n\t\t\"maritalStatus\": \"U\",\n\t\t\"maternalMaidenName\": \"{{$randomLastName}}\",\n\t\t\"educationLevel\": \"13\",\n\t\t\"speaksEnglish\": \"Y\"\n\t}\n}"
 											}
 										},
 										"url": {
@@ -3113,32 +3119,23 @@
 						"followAuthorizationHeader": false
 					},
 					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "accessToken",
-									"value": "{{token}}",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
 								"value": "",
-								"description": "describes the media type of the request"
+								"description": "describes the media type of the request",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": ""
+							"raw": "l7z0gSU1YSFvx9tamH7fJP0Ing8l1hxG5f1noafdpBtyIxIY658FE7CpAd6tKzWnAjavQWE=",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{base}}/encryption/decrypt",
@@ -3166,21 +3163,6 @@
 						"followAuthorizationHeader": false
 					},
 					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "accessToken",
-									"value": "{{token}}",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -3191,7 +3173,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"q\":\"hi\",\"other\":\"12345\"}"
+							"raw": "{\"q\":\"hi\",\"other\":\"12345\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{base}}/encryption/encrypt",
@@ -3533,7 +3520,7 @@
 									"variable": [
 										{
 											"key": "name",
-											"value": "CODE_SYSTEM"
+											"value": "P_RACE_CAT"
 										}
 									]
 								}
@@ -3673,6 +3660,193 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Resulted Test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/nbs/api/options/resulted-tests/search?criteria=&limit=4",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"nbs",
+								"api",
+								"options",
+								"resulted-tests",
+								"search"
+							],
+							"query": [
+								{
+									"key": "criteria",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Coded Result",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/nbs/api/options/coded-result/search?criteria=abnor&limit=4",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"nbs",
+								"api",
+								"options",
+								"coded-result",
+								"search"
+							],
+							"query": [
+								{
+									"key": "criteria",
+									"value": "abnor"
+								},
+								{
+									"key": "limit",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jurisdictions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/nbs/api/options/jurisdictions/search?criteria=&limit=4",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"nbs",
+								"api",
+								"options",
+								"jurisdictions",
+								"search"
+							],
+							"query": [
+								{
+									"key": "criteria",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Providers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/nbs/api/options/providers/search?criteria=",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"nbs",
+								"api",
+								"options",
+								"providers",
+								"search"
+							],
+							"query": [
+								{
+									"key": "criteria",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": "4",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Program Areas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/nbs/api/options/program-areas/search?criteria=&limit=4",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"nbs",
+								"api",
+								"options",
+								"program-areas",
+								"search"
+							],
+							"query": [
+								{
+									"key": "criteria",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Facilities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/nbs/api/options/facilities/search?criteria=&limit=4",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"nbs",
+								"api",
+								"options",
+								"facilities",
+								"search"
+							],
+							"query": [
+								{
+									"key": "criteria",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -3740,12 +3914,22 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
+					"const lodash = require('lodash');",
+					"",
 					"const now = new Date()",
 					"pm.collectionVariables.set('now', now.toISOString())",
 					"",
-					"pm.collectionVariables.set (\"randomCountryCode\", _.random (1,9));",
-					"pm.collectionVariables.set (\"randomExtension\", _.random (1000,9999));",
-					"pm.collectionVariables.set (\"randomIdentificationNumber\", _.random (100000000,999999999));",
+					"pm.collectionVariables.set(",
+					"    'localDate', ",
+					"    now.toLocaleDateString(",
+					"        'en-us',",
+					"         { year: \"numeric\", month: \"2-digit\", day: \"2-digit\"}",
+					"    )",
+					")",
+					"",
+					"pm.collectionVariables.set (\"randomCountryCode\", lodash.random (1,9));",
+					"pm.collectionVariables.set (\"randomExtension\", lodash.random (1000,9999));",
+					"pm.collectionVariables.set (\"randomIdentificationNumber\", lodash.random (100000000,999999999));",
 					"",
 					"",
 					"const randomDate = (start, end) =>  new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));",
@@ -3812,6 +3996,10 @@
 			"key": "user",
 			"value": "superuser",
 			"type": "string"
+		},
+		{
+			"key": "localDate",
+			"value": ""
 		}
 	]
 }

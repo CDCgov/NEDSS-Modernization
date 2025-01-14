@@ -101,9 +101,9 @@ class PatientEthnicityTupleMapperTest {
         PatientEthnicity actual = mapper.map(tuple);
 
         assertThat(actual.detailed()).satisfiesExactly(
-            actual_ethnicity -> assertAll(
-                () -> assertThat(actual_ethnicity.id()).isEqualTo("ethnicity-id"),
-                () -> assertThat(actual_ethnicity.description()).isEqualTo("ethnicity-description")
+            actualEthnicity -> assertAll(
+                () -> assertThat(actualEthnicity.id()).isEqualTo("ethnicity-id"),
+                () -> assertThat(actualEthnicity.description()).isEqualTo("ethnicity-description")
             )
         );
 

@@ -4,13 +4,13 @@ public class WildCards {
 
   public static String startsWith(final String value) {
     return isValid(value)
-        ? value.toLowerCase().trim() + "*"
+        ? escape(value.toLowerCase().trim()) + "*"
         : null;
   }
 
   public static String contains(final String value) {
     return isValid(value)
-        ? "*" + value.toLowerCase().trim() + "*"
+        ? "*" + escape(value.toLowerCase().trim()) + "*"
         : null;
   }
 
@@ -18,6 +18,9 @@ public class WildCards {
     return value != null && !value.isEmpty();
   }
 
-  private WildCards() {
+  private static String escape(final String value) {
+    return value.replaceAll("([+\\-!(){}\\[\\]^\"~*?:\\\\/])", "\\\\$1");
   }
+
+  private WildCards() {}
 }

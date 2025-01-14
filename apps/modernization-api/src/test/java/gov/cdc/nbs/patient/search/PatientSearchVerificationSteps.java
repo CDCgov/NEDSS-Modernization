@@ -19,8 +19,7 @@ public class PatientSearchVerificationSteps {
 
   PatientSearchVerificationSteps(
       final Active<ResultActions> results,
-      final Active<PatientIdentifier> patient
-  ) {
+      final Active<PatientIdentifier> patient) {
     this.results = results;
     this.patient = patient;
   }
@@ -30,8 +29,7 @@ public class PatientSearchVerificationSteps {
     this.results.active()
         .andExpect(
             jsonPath("$.data.findPatientsByFilter.content[*].shortId")
-                .value(hasItem((int) this.patient.active().shortId()))
-        );
+                .value(hasItem((int) this.patient.active().shortId())));
   }
 
   @Then("I am not able to execute the search")
@@ -40,25 +38,27 @@ public class PatientSearchVerificationSteps {
         .andExpect(jsonPath("$.errors[*].message")
             .value(
                 hasItem(
-                    "User does not have permission to search for Inactive Patients"
-                )
-            )
-        );
+                    "User does not have permission to search for Inactive Patients")));
   }
 
   @Then("search result {int} has a(n) {string} of {string}")
   public void search_result_n_has_a_x_of_y(
       final int position,
       final String field,
-      final String value
-  ) throws Exception {
+      final String value) throws Exception {
 
     int index = position - 1;
 
     JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
 
+    String finalValue = null;
+
+    if(!value.isEmpty()) {
+      finalValue = value;
+    }
+
     this.results.active()
-        .andExpect(pathMatcher.value(matchingValue(field, value)));
+        .andExpect(pathMatcher.value(matchingValue(field, finalValue)));
   }
 
   @Then("the search results have a patient with a(n) {string} equal to {string}")
@@ -68,7 +68,6 @@ public class PatientSearchVerificationSteps {
 
     this.results.active()
         .andExpect(pathMatcher.value(matchingValue(field, value)));
-
   }
 
   @Then("the search results have a patient without a(n) {string} equal to {string}")
@@ -95,35 +94,75 @@ public class PatientSearchVerificationSteps {
     return switch (field.toLowerCase()) {
       case "status" -> jsonPath("$.data.findPatientsByFilter.content[%s].status", position);
       case "birthday" -> jsonPath("$.data.findPatientsByFilter.content[%s].birthday", position);
-      case "gender" -> jsonPath("$.data.findPatientsByFilter.content[%s].gender", position);
+      case "address" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].address", position);
+      case "address type" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].type", position);
+      case "address use" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].use", position);
+      case "city" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].city", position);
+      case "state" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].state", position);
+      case "county" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].county", position);
+      case "country" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].country", position);
+      case "zip" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].zipcode", position);
+      case "gender", "sex" -> jsonPath("$.data.findPatientsByFilter.content[%s].gender", position);
       case "first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].first", position);
       case "last name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].last", position);
+      case "middle name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].middle", position);
+      case "suffix" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].suffix", position);
       case "legal first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.first", position);
       case "legal middle name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.middle", position);
       case "legal last name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.last", position);
       case "legal name suffix" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.suffix", position);
-      case "phone number" -> jsonPath(
-          "$.data.findPatientsByFilter.content[%s].phones[*]",
-          position
-      );
+      case "phone number" -> jsonPath("$.data.findPatientsByFilter.content[%s].phones[*]", position);
       case "email", "email address" -> jsonPath(
           "$.data.findPatientsByFilter.content[%s].emails[*]",
-          position
-      );
-      case "identification type" ->
-          jsonPath("$.data.findPatientsByFilter.content[%s].identification[*].type", position);
-      case "identification value" ->
-          jsonPath("$.data.findPatientsByFilter.content[%s].identification[*].value", position);
+          position);
+      case "identification type" -> jsonPath(
+          "$.data.findPatientsByFilter.content[%s].identification[*].type",
+          position);
+      case "identification value" -> jsonPath(
+          "$.data.findPatientsByFilter.content[%s].identification[*].value",
+          position);
+      case "patientid", "patient id", "short id" -> jsonPath("$.data.findPatientsByFilter.content[%s].shortId",
+          position);
+      case "local id" -> jsonPath("$.data.findPatientsByFilter.content[%s].localId", position);
       default -> throw new AssertionError("Unexpected property check %s".formatted(field));
     };
   }
 
   private Matcher<?> matchingValue(final String field, final String value) {
     return switch (field.toLowerCase()) {
-      case "birthday" -> equalTo(value);
+      case "birthday", "sex" -> equalTo(value);
+      case "patientid", "patient id", "short id" -> equalTo(Integer.parseInt(value));
       case "status" -> hasItem(PatientStatusCriteriaResolver.resolve(value).name());
       default -> hasItem(value);
     };
+  }
+
+  @Then("the search results have a patient with a(n) {string} {} name of {string}")
+  public void search_result_n_has_a_x_of_y(
+      final String type,
+      final String field,
+      final String value) throws Exception {
+
+    JsonPathResultMatchers pathMatcher = switch (field.toLowerCase()) {
+      case "first" -> jsonPath("$.data.findPatientsByFilter.content[*].names[?(@.type=='%s')].first", type);
+      case "last" -> jsonPath("$.data.findPatientsByFilter.content[*].names[?(@.type=='%s')].last", type);
+      default -> throw new IllegalStateException("Unexpected value: " + field);
+    };
+
+    this.results.active()
+        .andExpect(pathMatcher.value(matchingValue(field, value)));
+  }
+
+  @Then("the search results have a patient with a(n) {} - {} number of {string}")
+  public void search_results_have_a_patient_with_the_phone(final String type, final String use, final String number)
+      throws Exception {
+
+    this.results.active()
+        .andExpect(
+            jsonPath("$.data.findPatientsByFilter.content[*].detailedPhones[?(@.type=='%s' && @.use=='%s')].number",
+                type, use)
+                .value(number)
+        );
   }
 
   @Then("the patient is in the search result(s)")
@@ -132,10 +171,8 @@ public class PatientSearchVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findPatientsByFilter.content[?(@.patient=='%s')]",
-                String.valueOf(this.patient.active().id())
-            )
-                .exists()
-        );
+                String.valueOf(this.patient.active().id()))
+                .exists());
   }
 
   @Then("the patient is not in the search result(s)")
@@ -144,10 +181,8 @@ public class PatientSearchVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findPatientsByFilter.content[?(@.patient=='%s')]",
-                String.valueOf(this.patient.active().id())
-            )
-                .doesNotExist()
-        );
+                String.valueOf(this.patient.active().id()))
+                .doesNotExist());
   }
 
   @Then("there is only one patient search result")

@@ -1,4 +1,10 @@
+type Toggle = { enabled: boolean };
+
 type Settings = {
+    session: {
+        warning: number;
+        expiration: number;
+    };
     smarty?: {
         key: string;
     };
@@ -6,6 +12,40 @@ type Settings = {
         key: string;
         host: string;
     };
+};
+
+type SearchView = Toggle & {
+    table: Toggle;
+};
+
+type Search = {
+    events: Toggle;
+    investigations: Toggle;
+    laboratoryReports: Toggle;
+    view: SearchView;
+};
+
+type PatientProfileFeatures = {
+    enabled: boolean;
+};
+
+type PatientAddFeatures = {
+    enabled: boolean;
+    extended: {
+        enabled: boolean;
+    };
+};
+
+type PatientSearchFeatures = {
+    filters: {
+        enabled: boolean;
+    };
+};
+
+type PatientFeatures = {
+    search: PatientSearchFeatures;
+    profile: PatientProfileFeatures;
+    add: PatientAddFeatures;
 };
 
 type Features = {
@@ -29,6 +69,8 @@ type Features = {
             };
         };
     };
+    search: Search;
+    patient: PatientFeatures;
 };
 
 type Properties = {
@@ -42,4 +84,4 @@ type Configuration = {
     properties: Properties;
 };
 
-export type { Settings, Features, Properties, Configuration };
+export type { Settings, Features, Search, Properties, Configuration };

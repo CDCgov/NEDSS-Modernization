@@ -21,10 +21,10 @@ class InvestigationSearchResultConverter {
         searchable.jurisdictionName(),
         searchable.local(),
         searchable.createdOn(),
+        searchable.startedOn(),
         searchable.status(),
         searchable.notificationStatus(),
-        people
-    );
+        people);
   }
 
   private static InvestigationSearchResult.PersonParticipation asPerson(final SearchableInvestigation.Person person) {
@@ -43,13 +43,11 @@ class InvestigationSearchResultConverter {
         patient.lastName(),
         patient.code(),
         patient.identifier(),
-        patient.local()
-    );
+        patient.local());
   }
 
   private static InvestigationSearchResult.PersonParticipation asPerson(
-      final SearchableInvestigation.Person.Provider provider
-  ) {
+      final SearchableInvestigation.Person.Provider provider) {
     return new InvestigationSearchResult.PersonParticipation(
         null,
         null,
@@ -58,8 +56,7 @@ class InvestigationSearchResultConverter {
         provider.lastName(),
         provider.code(),
         provider.identifier(),
-        null
-    );
+        null);
   }
 
   private InvestigationSearchResultConverter() {

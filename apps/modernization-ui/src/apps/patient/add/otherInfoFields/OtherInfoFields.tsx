@@ -1,13 +1,17 @@
 import { useMemo } from 'react';
-import { Grid } from '@trussworks/react-uswds';
-import { calculateAge } from 'date';
-import { CodedValue, Indicator } from 'coded';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { Grid } from '@trussworks/react-uswds';
+import { Deceased } from 'generated/graphql/schema';
+import { CodedValue } from 'coded';
 import FormCard from 'components/FormCard/FormCard';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { displayAgeAsOfToday } from 'date';
 import { Input } from 'components/FormInputs/Input';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { maxLengthRule } from 'validation/entry';
+import { NewPatientEntry } from 'apps/patient/add/NewPatientEntry';
+
+const DATE_OF_BIRTH_LABEL = 'Date of birth';
 
 type CodedValues = {
     deceased: CodedValue[];
@@ -17,13 +21,13 @@ type CodedValues = {
 
 type Props = { id: string; title: string; coded: CodedValues };
 
-export default function OtherInfoFields({ id, title, coded }: Props) {
-    const { control } = useFormContext();
+export default function OtherInfoFields({ id, title, coded }: Readonly<Props>) {
+    const { control } = useFormContext<NewPatientEntry>();
 
     const selectedDeceased = useWatch({ control, name: 'deceased' });
 
     const currentBirthday = useWatch({ control, name: 'dateOfBirth' });
-    const age = useMemo(() => calculateAge(currentBirthday), [currentBirthday]);
+    const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
 
     return (
         <FormCard id={id} title={title}>
@@ -33,14 +37,15 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="dateOfBirth"
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={validDateRule(DATE_OF_BIRTH_LABEL)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <DatePickerInput
-                                    defaultValue={value}
+                                    id={name}
+                                    value={value}
                                     onChange={onChange}
-                                    name={name}
-                                    htmlFor={name}
-                                    disableFutureDates
-                                    label="Date of birth"
+                                    onBlur={onBlur}
+                                    label={DATE_OF_BIRTH_LABEL}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -108,7 +113,7 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                         />
                     </Grid>
                 </Grid>
-                {selectedDeceased === Indicator.Yes && (
+                {selectedDeceased === Deceased.Y && (
                     <Grid row>
                         <Grid col={6}>
                             <Controller
@@ -116,13 +121,12 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                                 name="deceasedTime"
                                 render={({ field: { onChange, value, name } }) => (
                                     <DatePickerInput
-                                        defaultValue={value}
+                                        id={name}
+                                        value={value}
                                         onChange={onChange}
                                         name={name}
-                                        htmlFor={name}
                                         label="Date of death"
-                                        disableFutureDates
-                                        disabled={selectedDeceased !== Indicator.Yes}
+                                        disabled={selectedDeceased !== Deceased.Y}
                                     />
                                 )}
                             />
@@ -152,11 +156,12 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="stateHIVCase"
-                            rules={maxLengthRule(20)}
+                            rules={maxLengthRule(16)}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     label="State HIV case ID"
                                     onChange={onChange}
+                                    maxLength={16}
                                     onBlur={onBlur}
                                     type="text"
                                     defaultValue={value}

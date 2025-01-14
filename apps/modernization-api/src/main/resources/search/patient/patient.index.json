@@ -9,6 +9,12 @@
         "index": false,
         "doc_values": false
       },
+      "abcs_case_ids": {
+        "type": "text"
+      },
+      "accession_ids": {
+        "type": "text"
+      },
       "add_reason_cd": {
         "type": "keyword"
       },
@@ -48,6 +54,15 @@
               }
             }
           },
+          "cntryText": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
           "cntyCd": {
             "type": "text",
             "fields": {
@@ -57,7 +72,25 @@
               }
             }
           },
+          "cntyText": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
           "state": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "stateText": {
             "type": "text",
             "fields": {
               "keyword": {
@@ -182,6 +215,9 @@
       "children_in_house_nbr": {
         "type": "short"
       },
+      "city_case_ids": {
+        "type": "text"
+      },
       "curr_sex_cd": {
         "type": "keyword"
       },
@@ -203,6 +239,9 @@
       },
       "dl_state_cd": {
         "type": "keyword"
+      },
+      "document_ids": {
+        "type": "text"
       },
       "education_level_cd": {
         "type": "keyword"
@@ -333,6 +372,12 @@
       "id": {
         "type": "long"
       },
+      "investigation_ids": {
+        "type": "text"
+      },
+      "lab_report_ids": {
+        "type": "text"
+      },
       "last_chg_reason_cd": {
         "type": "keyword"
       },
@@ -365,6 +410,9 @@
         "type": "keyword"
       },
       "middle_nm": {
+        "type": "text"
+      },
+      "morbidity_report_ids": {
         "type": "text"
       },
       "mothers_maiden_nm": {
@@ -470,6 +518,9 @@
       "nm_suffix": {
         "type": "text"
       },
+      "notification_ids": {
+        "type": "text"
+      },
       "occupation_cd": {
         "type": "keyword"
       },
@@ -501,6 +552,12 @@
                 "ignore_above": 256
               }
             }
+          },
+          "typeCd": {
+            "type": "keyword"
+          },
+          "useCd": {
+            "type": "keyword"
           }
         }
       },
@@ -578,6 +635,9 @@
       "speaks_english_cd": {
         "type": "keyword"
       },
+      "state_case_ids": {
+        "type": "text"
+      },
       "status_cd": {
         "type": "keyword"
       },
@@ -588,7 +648,13 @@
       "survived_ind_cd": {
         "type": "keyword"
       },
+      "treatment_ids": {
+        "type": "text"
+      },
       "user_affiliation_txt": {
+        "type": "text"
+      },
+      "vaccination_ids": {
         "type": "text"
       },
       "version_ctrl_nbr": {

@@ -17,7 +17,6 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,26 +31,36 @@ public class PatientProfileAddressSteps {
 
   private final Faker faker = new Faker(Locale.of("en-us"));
 
-  @Autowired
-  PatientMother mother;
+  private final PatientMother mother;
 
-  @Autowired
-  Active<PatientIdentifier> activePatient;
+  private final Active<PatientIdentifier> activePatient;
 
-  @Autowired
-  PatientAddressResolver resolver;
+  private final PatientAddressResolver resolver;
 
-  @Autowired
-  Active<PatientInput> input;
+  private final Active<PatientInput> activeInput;
 
-  @Autowired
-  TestPatient patient;
+  private final TestPatient testPatient;
 
-  @Autowired
-  Active<NewPatientAddressInput> newRequest;
+  private final Active<NewPatientAddressInput> newRequest;
 
-  @Autowired
-  Active<UpdatePatientAddressInput> updateRequest;
+  private final Active<UpdatePatientAddressInput> updateRequest;
+
+  PatientProfileAddressSteps(
+      final PatientMother mother,
+      final Active<PatientIdentifier> activePatient,
+      final PatientAddressResolver resolver,
+      final Active<PatientInput> activeInput,
+      final TestPatient testPatient,
+      final Active<NewPatientAddressInput> newRequest,
+      final Active<UpdatePatientAddressInput> updateRequest) {
+    this.mother = mother;
+    this.activePatient = activePatient;
+    this.resolver = resolver;
+    this.activeInput = activeInput;
+    this.testPatient = testPatient;
+    this.newRequest = newRequest;
+    this.updateRequest = updateRequest;
+  }
 
   @Given("the patient has an address")
   public void the_patient_has_an_address() {
@@ -63,7 +72,8 @@ public class PatientProfileAddressSteps {
       final String use,
       final String address,
       final String city,
-      final String zip) {
+      final String zip
+  ) {
 
     PatientIdentifier identifier = activePatient.active();
 
@@ -75,7 +85,9 @@ public class PatientProfileAddressSteps {
         address,
         city,
         null,
-        zip);
+        null,
+        zip
+    );
 
   }
 
@@ -92,6 +104,30 @@ public class PatientProfileAddressSteps {
     };
   }
 
+  @Given("the patient has a {addressType} - {addressUse} address at {string} {string} {string}")
+  public void the_patient_has_an_address_at(
+      final String type,
+      final String use,
+      final String address,
+      final String city,
+      final String zip
+  ) {
+
+    PatientIdentifier identifier = activePatient.active();
+
+    mother.withAddress(
+        identifier,
+        type,
+        use,
+        address,
+        city,
+        null,
+        null,
+        zip
+    );
+
+  }
+
   @Given("the new patient's address is entered")
   public void the_new_patient_address_is_entered() {
 
@@ -105,20 +141,20 @@ public class PatientProfileAddressSteps {
         RandomUtil.getRandomNumericString(15),
         null);
 
-    this.input.active().getAddresses().add(address);
+    this.activeInput.active().getAddresses().add(address);
   }
 
   @Then("the new patient has the entered address")
   @Transactional
   public void the_new_patient_has_the_entered_address() {
-    Person actual = patient.managed();
+    Person actual = testPatient.managed();
 
     Collection<PostalEntityLocatorParticipation> addresses = actual.addresses();
 
     if (!addresses.isEmpty()) {
 
       assertThat(addresses)
-          .satisfiesExactlyInAnyOrder(PatientCreateAssertions.containsAddresses(input.active().getAddresses()));
+          .satisfiesExactlyInAnyOrder(PatientCreateAssertions.containsAddresses(activeInput.active().getAddresses()));
     }
 
   }
@@ -211,6 +247,6 @@ public class PatientProfileAddressSteps {
 
     assertThatThrownBy(
         () -> this.resolver.resolve(profile, page))
-        .isInstanceOf(AccessDeniedException.class);
+            .isInstanceOf(AccessDeniedException.class);
   }
 }

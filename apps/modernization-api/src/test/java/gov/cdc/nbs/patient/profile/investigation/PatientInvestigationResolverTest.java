@@ -48,19 +48,19 @@ class PatientInvestigationResolverTest {
 
     verify(finder).find(criteriaCaptor.capture(), pageableCaptor.capture());
 
-    Criteria actual_criteria = criteriaCaptor.getValue();
+    Criteria actualCriteria = criteriaCaptor.getValue();
 
-    assertThat(actual_criteria.patient()).isEqualTo(1861L);
+    assertThat(actualCriteria.patient()).isEqualTo(1861L);
 
-    assertThat(actual_criteria.status()).contains(
+    assertThat(actualCriteria.status()).contains(
         Criteria.Status.OPEN,
         Criteria.Status.CLOSED
     );
 
-    Pageable actual_pageable = pageableCaptor.getValue();
+    Pageable actualPageable = pageableCaptor.getValue();
 
-    assertThat(actual_pageable.getPageNumber()).isEqualTo(2);
-    assertThat(actual_pageable.getPageSize()).isEqualTo(25);
+    assertThat(actualPageable.getPageNumber()).isEqualTo(2);
+    assertThat(actualPageable.getPageSize()).isEqualTo(25);
   }
 
   @Test
@@ -94,14 +94,14 @@ class PatientInvestigationResolverTest {
 
     verify(finder).find(criteriaCaptor.capture(), pageableCaptor.capture());
 
-    Criteria actual_criteria = criteriaCaptor.getValue();
+    Criteria actualCriteria = criteriaCaptor.getValue();
 
-    assertThat(actual_criteria.patient()).isEqualTo(1861L);
-    assertThat(actual_criteria.status()).contains(Criteria.Status.OPEN);
+    assertThat(actualCriteria.patient()).isEqualTo(1861L);
+    assertThat(actualCriteria.status()).contains(Criteria.Status.OPEN);
 
-    Pageable actual_pageable = pageableCaptor.getValue();
+    Pageable actualPageable = pageableCaptor.getValue();
 
-    assertThat(actual_pageable.getPageNumber()).isEqualTo(2);
-    assertThat(actual_pageable.getPageSize()).isEqualTo(25);
+    assertThat(actualPageable.getPageNumber()).isEqualTo(2);
+    assertThat(actualPageable.getPageSize()).isEqualTo(25);
   }
 }

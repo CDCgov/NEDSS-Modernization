@@ -1,8 +1,9 @@
-@use 'design/system';
+@use 'styles/colors';
+@use 'styles/borders';
 
 .library {
     border-radius: 5px;
-    background-color: system.$colors-base-white;
+    background-color: colors.$base-white;
 
     @extend %thin;
 
@@ -13,7 +14,8 @@
 
         @extend %thin-bottom;
 
-        h2 {
+        h1 {
+            font-size: 1.5rem;
             margin: 0;
         }
     }

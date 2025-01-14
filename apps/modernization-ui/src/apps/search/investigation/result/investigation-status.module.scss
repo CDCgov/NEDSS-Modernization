@@ -1,0 +1,23 @@
+@use 'styles/colors';
+
+.status {
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.125rem;
+
+    color: colors.$base-white;
+    text-transform: uppercase;
+
+    font-size: 0.875rem;
+    font-style: normal;
+    line-height: 100%;
+
+    width: fit-content;
+
+    &.open {
+        background-color: colors.$success;
+    }
+
+    &.closed {
+        background-color: colors.$base-dark;
+    }
+}

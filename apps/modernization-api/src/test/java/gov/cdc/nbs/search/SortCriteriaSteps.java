@@ -18,8 +18,13 @@ public class SortCriteriaSteps {
     Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
     String field = switch (sortBy.toLowerCase()) {
-      case "last name" -> "lastNm";
       case "birthday" -> "birthTime";
+      case "legal name" -> "legalName";
+      case "first name" -> "firstNm";
+      case "last name" -> "lastNm";
+      case "phone" -> "phoneNumber";
+      case "startdate" -> "startDate";
+      case "investigationid" -> "investigationId";
       default -> sortBy.toLowerCase();
     };
 

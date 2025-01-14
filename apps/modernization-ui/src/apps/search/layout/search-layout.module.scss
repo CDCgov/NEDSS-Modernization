@@ -1,0 +1,65 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+$search-height: calc(100vh - 74px);
+$navigation-height: 2.75rem;
+$actions-height: 8rem;
+$criteria-width: 320px;
+$content-height: calc($search-height - $navigation-height - 3rem);
+
+.search {
+    padding: 1rem;
+    height: $search-height;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .navigation {
+        height: $navigation-height;
+    }
+
+    .content {
+        height: $content-height;
+        display: flex;
+
+        background-color: colors.$base-white;
+
+        @include borders.bordered();
+        @include borders.rounded();
+
+        .panel {
+            --expanded-max-width: 320px;
+        }
+
+        .criteria {
+            background-color: colors.$base-white;
+
+            @include borders.bordered('border-right');
+
+            .inputs {
+                height: calc($content-height - $actions-height);
+                overflow-y: scroll;
+                padding: 0rem;
+            }
+
+            .actions {
+                @extend %thin-top;
+
+                height: $actions-height;
+                padding: 1rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                button {
+                    margin: 0;
+                }
+            }
+        }
+
+        .results {
+            flex-grow: 1;
+            min-width: calc(100% - $criteria-width);
+        }
+    }
+}

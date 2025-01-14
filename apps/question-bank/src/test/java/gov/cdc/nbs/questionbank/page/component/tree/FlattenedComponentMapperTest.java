@@ -102,7 +102,7 @@ class FlattenedComponentMapperTest {
     when(resultSet.getLong(columns.identifier())).thenReturn(571L);
     when(resultSet.getInt(columns.type())).thenReturn(1993);
     when(resultSet.getLong(columns.order())).thenReturn(863L);
-    when(resultSet.getString(columns.required())).thenReturn("T");
+    when(resultSet.getString(columns.required())).thenReturn("E");
 
     FlattenedComponentMapper mapper = new FlattenedComponentMapper(columns);
 

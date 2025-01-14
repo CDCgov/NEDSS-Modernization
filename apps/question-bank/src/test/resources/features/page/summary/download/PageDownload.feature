@@ -14,7 +14,6 @@ Feature: Download Page Summary
     When I download page summaries as a csv
     Then all summaries are present in the csv
     And the csv has the following headers:
-      | header                |
       | Event Type            |
       | Page Name             |
       | Page State            |
@@ -27,7 +26,6 @@ Feature: Download Page Summary
     When I download page summaries as a pdf
     Then all summaries are present in the pdf
     And the pdf has the following headers:
-      | header                |
       | Event Type            |
       | Page Name             |
       | Page State            |

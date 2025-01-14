@@ -1,20 +1,13 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand.Update;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand.Update;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -42,8 +35,7 @@ public class CodeSetGroupMetadatum {
   @Column(name = "phin_std_val_ind")
   private Character phinStdValInd;
 
-  @OneToMany(mappedBy = "codeSetGroup")
-  private Set<Codeset> codesets = new LinkedHashSet<>();
+  protected CodeSetGroupMetadatum() {}
 
   public CodeSetGroupMetadatum(Long id, String codeSetDescTxt, String codeSetShortDescTxt, String codeSetName) {
     this.id = id;

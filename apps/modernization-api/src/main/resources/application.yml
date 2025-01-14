@@ -1,10 +1,10 @@
 nbs:
-  max-page-size: 50
+  max-page-size: 25
   security:
-    tokenSecret: qJ5+oDurrJnxfaAz6h4Eg1saP7NSeHuQQ/Yq4vh+mbi4B4QYThc/M+33VtPJ5O2A
+    tokenSecret: ${TOKEN_SECRET}
     tokenIssuer: gov.cdc.nbs
     tokenExpirationMillis: 1800000 # 30 minutes
-    parameterSecret: Yq4vh+mbi4B4QYThc/M+33VtPJ5O2Adc
+    parameterSecret: ${PARAMETER_SECRET}
     oidc:
       enabled: false
   elasticsearch:
@@ -22,8 +22,10 @@ nbs:
   datasource:
     server: localhost
     port: 1433
+    username: ${DATABASE_USER:sa}
+    password: ${DATABASE_PASSWORD}
   search:
-    max-page-size: 25
+    max-page-size: 100
     patient:
       index:
         name: person
@@ -44,12 +46,17 @@ nbs:
         - /v3/api-docs/**
         - /swagger-ui/**
         - /swagger-resources/**
+        # Required to support the embedded UI
         - /login
+        - /welcome/**
         - /favicon.ico
-
+        - /static/**
+        - /nbs/timeout
+        - /goodbye
+        - /expired
 
 logging:
-  file.name:
+  file:
     path: ./log/
 
 spring:
@@ -57,6 +64,9 @@ spring:
     include: ui,oidc
   graphql:
     path: /graphql
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
 
   jpa:
     properties:
@@ -69,8 +79,8 @@ spring:
           default_storage: NORMALIZE
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
-    username: sa
-    password: fake.fake.fake.1234
+    username: ${nbs.datasource.username}
+    password: ${nbs.datasource.password}
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

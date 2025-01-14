@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.profile.general;
 
+import gov.cdc.nbs.data.sensitive.Sensitive;
 import gov.cdc.nbs.message.enums.Indicator;
 
 import java.time.Instant;
@@ -11,13 +12,13 @@ record PatientGeneral(
     Instant asOf,
     MaritalStatus maritalStatus,
     String maternalMaidenName,
-    Short adultsInHouse,
-    Short childrenInHouse,
+    Integer adultsInHouse,
+    Integer childrenInHouse,
     Occupation occupation,
     EducationLevel educationLevel,
     Language primaryLanguage,
     Indicator speaksEnglish,
-    String stateHIVCase
+    Sensitive stateHIVCase
 ) {
 
     record MaritalStatus(String id, String description){}

@@ -1,0 +1,19 @@
+.navigation {
+    display: flex;
+    gap: 1rem;
+    flex-shrink: 0;
+    z-index: 100;
+
+    h1 {
+        margin: 0;
+    }
+
+    button {
+        margin: 0;
+        height: 2.75rem;
+    }
+
+    .tabs {
+        flex-grow: 1;
+    }
+}

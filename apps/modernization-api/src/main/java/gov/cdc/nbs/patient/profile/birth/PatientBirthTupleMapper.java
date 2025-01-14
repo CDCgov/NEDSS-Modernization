@@ -17,7 +17,7 @@ import gov.cdc.nbs.geo.state.SimpleStateTupleMapper;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -139,11 +139,11 @@ class PatientBirthTupleMapper {
 
     private LocalDate resolveBirthday(final Tuple tuple) {
 
-        Instant value = tuple.get(tables.patient().birthTime);
+        LocalDateTime value = tuple.get(tables.patient().birthTime);
 
         return value == null
             ? null
-            : LocalDate.ofInstant(value, ZoneId.of("UTC"));
+            : value.toLocalDate();
 
     }
 

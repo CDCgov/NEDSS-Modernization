@@ -1,13 +1,23 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.patient.PatientPostalLocatorHistoryListener;
 import gov.cdc.nbs.patient.PatientCommand;
-
-import jakarta.persistence.*;
+import gov.cdc.nbs.patient.PatientPostalLocatorHistoryListener;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @DiscriminatorValue(PostalEntityLocatorParticipation.POSTAL_CLASS_CODE)
+@SuppressWarnings(
+    //  The PatientPostalLocatorHistoryListener is an entity listener specifically for instances of this class
+    {"javaarchitecture:S7027","javaarchitecture:S7091"}
+)
 @EntityListeners(PatientPostalLocatorHistoryListener.class)
 public class PostalEntityLocatorParticipation extends EntityLocatorParticipation {
 
@@ -65,13 +75,14 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     }
 
     public void update(final PatientCommand.UpdateAddress update) {
+
         this.asOfDate = update.asOf();
         this.cd = update.type();
         this.useCd = update.use();
         this.locatorDescTxt = update.comments();
-        this.locator.update(update);
-
         changed(update);
+
+        this.locator.update(update);
     }
 
     public void delete(final PatientCommand.DeleteAddress deleted) {

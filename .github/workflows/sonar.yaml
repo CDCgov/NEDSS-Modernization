@@ -14,6 +14,18 @@ on:
       SONAR_TOKEN:
         description: "Secret named SONAR_TOKEN that references the sonar token secret corresponding to the project in sonarcloud."
         required: true
+      DATABASE_USER:
+        description: "Secret named DATABASE_USER that references the test database container default username"
+        required: true
+      DATABASE_PASSWORD:
+        description: "Secret named DATABASE_PASSWORD that references the test database container default password"
+        required: true
+      TOKEN_SECRET:
+        description: "Secret named TOKEN_SECRET that references a default JWT token key"
+        required: true
+      PARAMETER_SECRET:
+        description: "Secret named PARAMETER_SECRET that references a default key for encrypting search parameters"
+        required: true
   pull_request:
     paths:
       - "apps/**"
@@ -28,6 +40,10 @@ env:
   accountid: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
   passed_github_token: ${{secrets.PASSED_GITHUB_TOKEN}}
   sonar_token: ${{secrets.SONAR_TOKEN}}
+  test_database_user: ${{secrets.DATABASE_USER}}
+  test_database_password: ${{secrets.DATABASE_PASSWORD}}
+  token_secret: ${{secrets.TOKEN_SECRET}}
+  parameter_secret: ${{secrets.PARAMETER_SECRET}}
 
 jobs:
   pipeline:
@@ -43,10 +59,11 @@ jobs:
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
-      - name: Set up JDK 18
-        uses: actions/setup-java@v1
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
         with:
-          java-version: 18
+          distribution: "temurin"
+          java-version: "21"
 
       - name: Cache Gradle packages
         uses: actions/cache@v1
@@ -54,15 +71,6 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
-
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install react dependencies
-        working-directory: ./apps/modernization-ui
-        run: npm install
 
       - name: Configure Environment Variables
         run: |
@@ -89,13 +97,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.passed_github_token }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ env.sonar_token }}
-        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:latest-SNAPSHOT.e914c35
+          DATABASE_USER: ${{env.test_database_user}}
+          DATABASE_PASSWORD: ${{ env.test_database_password }}
+          TOKEN_SECRET: ${{ env.token_secret }}
+          PARAMETER_SECRET: ${{ env.parameter_secret }}
+        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:530af60
 
       - name: Zip test report
         run: zip -r test-report.zip ./build/reports/*
 
       - name: Publish Testing Reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: testing
           path: ./test-report.zip

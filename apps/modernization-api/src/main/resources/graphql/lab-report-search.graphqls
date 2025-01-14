@@ -1,0 +1,140 @@
+extend type Query {
+  findLabReportsByFilter(
+    filter: LabReportFilter!
+    page: SortablePage
+  ): LabReportResults!
+}
+
+input LaboratoryEventDateSearch {
+  type: LaboratoryReportEventDateType!
+  from: Date!
+  to: Date!
+}
+
+input LabReportProviderSearch {
+  providerType: ProviderType!
+  providerId: ID!
+}
+
+enum ProviderType {
+  ORDERING_FACILITY
+  ORDERING_PROVIDER
+  REPORTING_FACILITY
+}
+
+enum LaboratoryEventIdType {
+  ACCESSION_NUMBER
+  LAB_ID
+}
+
+enum LaboratoryReportEventDateType {
+  DATE_OF_REPORT
+  DATE_RECEIVED_BY_PUBLIC_HEALTH
+  DATE_OF_SPECIMEN_COLLECTION
+  LAB_REPORT_CREATE_DATE
+  LAST_UPDATE_DATE
+}
+
+enum EntryMethod {
+  ELECTRONIC
+  MANUAL
+}
+
+enum UserType {
+  INTERNAL
+  EXTERNAL
+}
+
+enum EventStatus {
+  NEW
+  UPDATE
+}
+
+enum LaboratoryReportStatus {
+  PROCESSED
+  UNPROCESSED
+}
+
+input LabReportFilter {
+  patientId: Int
+  programAreas: [String!]
+  jurisdictions: [Int!]
+  pregnancyStatus: PregnancyStatus
+  eventId: LabReportEventId
+  eventDate: LaboratoryEventDateSearch
+  entryMethods: [EntryMethod!]
+  enteredBy: [UserType!]
+  eventStatus: [EventStatus!]
+  processingStatus: [LaboratoryReportStatus!]
+  createdBy: Int
+  lastUpdatedBy: Int
+  providerSearch: LabReportProviderSearch
+  resultedTest: String
+  codedResult: String
+  orderingLabId: Int
+  orderingProviderId: Int
+  reportingLabId: Int
+}
+
+input LabReportEventId {
+  labEventType: LaboratoryEventIdType!
+  labEventId: String!
+}
+
+type LabReportResults {
+  content: [LabReport!]!
+  total: Int!
+  page: Int!
+  size: Int!
+}
+
+type LabTestSummary {
+  name: String
+  status: String
+  coded: String
+  numeric: Float
+  high: String
+  low: String
+  unit: String
+}
+
+type LabReport {
+  relevance: Float!
+  id: String!
+  jurisdictionCd: Int!
+  localId: String!
+  addTime: Date!
+  personParticipations: [LabReportPersonParticipation!]!
+  organizationParticipations: [LabReportOrganizationParticipation!]!
+  observations: [Observation!]!
+  associatedInvestigations: [AssociatedInvestigation!]!
+  tests: [LabTestSummary!]!
+}
+
+type LabReportPersonParticipation {
+  birthTime: Date
+  currSexCd: String
+  typeCd: String
+  firstName: String
+  lastName: String
+  personCd: String!
+  personParentUid: Int
+  shortId: Int
+}
+
+type LabReportOrganizationParticipation {
+  typeCd: String!
+  name: String!
+}
+
+type Observation {
+  cdDescTxt: String
+  statusCd: String
+  altCd: String
+  displayName: String
+}
+
+type AssociatedInvestigation {
+  cdDescTxt: String!
+  localId: String!
+}

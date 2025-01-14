@@ -1,255 +1,264 @@
 {
-  "mappings" : {
-    "properties" : {
-      "_class" : {
-        "type" : "keyword",
-        "index" : false,
-        "doc_values" : false
+  "mappings": {
+    "properties": {
+      "_class": {
+        "type": "keyword",
+        "index": false,
+        "doc_values": false
       },
-      "act_ids" : {
-        "type" : "nested",
-        "properties" : {
-          "_class" : {
-            "type" : "keyword",
-            "index" : false,
-            "doc_values" : false
+      "act_ids": {
+        "type": "nested",
+        "properties": {
+          "_class": {
+            "type": "keyword",
+            "index": false,
+            "doc_values": false
           },
-          "act_id_seq" : {
-            "type" : "integer"
+          "act_id_seq": {
+            "type": "integer"
           },
-          "id" : {
-            "type" : "long"
+          "id": {
+            "type": "long"
           },
-          "last_change_time" : {
-            "type" : "date",
-            "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+          "last_change_time": {
+            "type": "date",
+            "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
           },
-          "record_status" : {
-            "type" : "keyword"
+          "record_status": {
+            "type": "keyword"
           },
-          "root_extension_txt" : {
-            "type" : "keyword"
+          "root_extension_txt": {
+            "type": "keyword"
           },
-          "type_cd" : {
-            "type" : "keyword"
+          "type_cd": {
+            "type": "keyword"
           },
-          "type_desc_txt" : {
-            "type" : "text"
+          "type_desc_txt": {
+            "type": "text"
           }
         }
       },
-      "activity_from_time" : {
-        "type" : "date",
-        "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+      "activity_from_time": {
+        "type": "date",
+        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
       },
-      "activity_to_time" : {
-        "type" : "date",
-        "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+      "activity_to_time": {
+        "type": "date",
+        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
       },
-      "add_time" : {
-        "type" : "date",
-        "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+      "add_time": {
+        "type": "date",
+        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
       },
-      "add_user_id" : {
-        "type" : "long"
+      "add_user_id": {
+        "type": "long"
       },
-      "case_class_cd" : {
-        "type" : "keyword"
+      "case_class_cd": {
+        "type": "keyword"
       },
-      "case_type_cd" : {
-        "type" : "keyword"
+      "case_type_cd": {
+        "type": "keyword"
       },
-      "cd_desc_txt" : {
-        "type" : "keyword"
+      "cd_desc_txt": {
+        "type": "keyword"
       },
-      "condition" : {
-        "type" : "keyword"
+      "condition": {
+        "type": "keyword"
       },
-      "curr_process_state_cd" : {
-        "type" : "keyword"
+      "curr_process_state_cd": {
+        "type": "keyword"
       },
-      "investigation_status_cd" : {
-        "type" : "keyword"
+      "investigator_last_nm": {
+        "type": "keyword"
       },
-      "jurisdiction_cd" : {
-        "type" : "long"
+      "investigation_status_cd": {
+        "type": "keyword"
       },
-      "jurisdiction_code_desc_txt" : {
-        "type" : "text"
+      "jurisdiction_cd": {
+        "type": "long"
       },
-      "last_change_time" : {
-        "type" : "date",
-        "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+      "jurisdiction_code_desc_txt": {
+        "type": "keyword"
       },
-      "last_chg_user_id" : {
-        "type" : "long"
+      "last_change_time": {
+        "type": "date",
+        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
       },
-      "local_id" : {
-        "type" : "keyword"
+      "last_chg_user_id": {
+        "type": "long"
       },
-      "mood_cd" : {
-        "type" : "keyword"
+      "local_id": {
+        "type": "keyword"
       },
-      "notification_add_time" : {
-        "type" : "date",
-        "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+      "mood_cd": {
+        "type": "keyword"
       },
-      "notification_last_chg_time" : {
-        "type" : "date",
-        "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+      "notification_add_time": {
+        "type": "date",
+        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
       },
-      "notification_local_id" : {
-        "type" : "keyword"
+      "notification_last_chg_time": {
+        "type": "date",
+        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
       },
-      "notification_record_status_cd" : {
-        "type" : "keyword"
+      "notification_local_id": {
+        "type": "keyword"
       },
-      "organization_participations" : {
-        "type" : "nested",
-        "properties" : {
-          "_class" : {
-            "type" : "keyword",
-            "index" : false,
-            "doc_values" : false
+      "notification_record_status_cd": {
+        "type": "keyword"
+      },
+      "organization_participations": {
+        "type": "nested",
+        "properties": {
+          "_class": {
+            "type": "keyword",
+            "index": false,
+            "doc_values": false
           },
-          "act_uid" : {
-            "type" : "long"
+          "act_uid": {
+            "type": "long"
           },
-          "entity_id" : {
-            "type" : "long"
+          "entity_id": {
+            "type": "long"
           },
-          "name" : {
-            "type" : "text"
+          "name": {
+            "type": "text"
           },
-          "org_last_change_time" : {
-            "type" : "date"
+          "org_last_change_time": {
+            "type": "date"
           },
-          "organization_last_change_time" : {
-            "type" : "date",
-            "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+          "organization_last_change_time": {
+            "type": "date",
+            "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
           },
-          "participation_last_change_time" : {
-            "type" : "date",
-            "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+          "participation_last_change_time": {
+            "type": "date",
+            "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
           },
-          "participation_record_status" : {
-            "type" : "keyword"
+          "participation_record_status": {
+            "type": "keyword"
           },
-          "record_status" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "ignore_above" : 256
+          "record_status": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
               }
             }
           },
-          "subject_class_cd" : {
-            "type" : "keyword"
+          "subject_class_cd": {
+            "type": "keyword"
           },
-          "type_cd" : {
-            "type" : "keyword"
+          "type_cd": {
+            "type": "keyword"
           },
-          "type_desc_txt" : {
-            "type" : "keyword"
+          "type_desc_txt": {
+            "type": "keyword"
           }
         }
       },
-      "outbreak_name" : {
-        "type" : "keyword"
+      "outbreak_name": {
+        "type": "keyword"
       },
-      "person_participations" : {
-        "type" : "nested",
-        "properties" : {
-          "_class" : {
-            "type" : "keyword",
-            "index" : false,
-            "doc_values" : false
+      "person_participations": {
+        "type": "nested",
+        "properties": {
+          "_class": {
+            "type": "keyword",
+            "index": false,
+            "doc_values": false
           },
-          "act_uid" : {
-            "type" : "long"
+          "act_uid": {
+            "type": "long"
           },
-          "birth_time" : {
-            "type" : "date",
-            "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+          "birth_time": {
+            "type": "date",
+            "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
           },
-          "curr_sex_cd" : {
-            "type" : "keyword"
+          "curr_sex_cd": {
+            "type": "keyword"
           },
-          "entity_id" : {
-            "type" : "long"
+          "entity_id": {
+            "type": "long"
           },
-          "first_name" : {
-            "type" : "text"
-          },
-          "last_name" : {
-            "type" : "text",
-            "fields" : {
-              "keyword" : {
-                "type" : "keyword",
-                "normalizer" : "lowercase"
+          "first_name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "normalizer": "lowercase"
               }
             }
           },
-          "local_id" : {
-            "type" : "keyword"
+          "last_name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "normalizer": "lowercase"
+              }
+            }
           },
-          "participation_last_change_time" : {
-            "type" : "date",
-            "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+          "local_id": {
+            "type": "keyword"
           },
-          "participation_record_status" : {
-            "type" : "keyword"
+          "participation_last_change_time": {
+            "type": "date",
+            "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
           },
-          "person_cd" : {
-            "type" : "keyword"
+          "participation_record_status": {
+            "type": "keyword"
           },
-          "person_last_change_time" : {
-            "type" : "date",
-            "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+          "person_cd": {
+            "type": "keyword"
           },
-          "person_last_chg_time" : {
-            "type" : "date"
+          "person_last_change_time": {
+            "type": "date",
+            "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
           },
-          "person_parent_uid" : {
-            "type" : "long"
+          "person_last_chg_time": {
+            "type": "date"
           },
-          "person_record_status" : {
-            "type" : "keyword"
+          "person_parent_uid": {
+            "type": "long"
           },
-          "subject_class_cd" : {
-            "type" : "keyword"
+          "person_record_status": {
+            "type": "keyword"
           },
-          "type_cd" : {
-            "type" : "keyword"
+          "subject_class_cd": {
+            "type": "keyword"
           },
-          "type_desc_txt" : {
-            "type" : "keyword"
+          "type_cd": {
+            "type": "keyword"
+          },
+          "type_desc_txt": {
+            "type": "keyword"
           }
         }
       },
-      "pregnant_ind_cd" : {
-        "type" : "keyword"
+      "pregnant_ind_cd": {
+        "type": "keyword"
       },
-      "prog_area_cd" : {
-        "type" : "keyword"
+      "prog_area_cd": {
+        "type": "keyword"
       },
-      "program_jurisdiction_oid" : {
-        "type" : "long"
+      "program_jurisdiction_oid": {
+        "type": "long"
       },
-      "public_health_case_last_chg_time" : {
-        "type" : "date",
-        "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+      "public_health_case_last_chg_time": {
+        "type": "date",
+        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
       },
-      "public_health_case_uid" : {
-        "type" : "long"
+      "public_health_case_uid": {
+        "type": "long"
       },
-      "record_status_cd" : {
-        "type" : "keyword"
+      "record_status_cd": {
+        "type": "keyword"
       },
-      "rpt_form_cmplt_time" : {
-        "type" : "date",
-        "format" : "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+      "rpt_form_cmplt_time": {
+        "type": "date",
+        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
       }
     }
   }

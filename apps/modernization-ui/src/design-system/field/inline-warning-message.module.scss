@@ -1,0 +1,5 @@
+@use 'styles/colors';
+
+.warning {
+    color: colors.$warning-darker;
+}

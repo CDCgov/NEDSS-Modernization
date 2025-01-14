@@ -280,7 +280,15 @@ query findPatientProfile($asOf: DateTime, $page: Page, $page1: Page, $page2: Pag
                 id
                 description
             }
-            stateHIVCase
+            stateHIVCase{
+                __typename
+                ... on Allowed {
+                    value
+                }
+                ... on Restricted {
+                    reason
+                }
+            }
         }
         ethnicity{
             patient

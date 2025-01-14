@@ -16,6 +16,10 @@ import java.time.Instant;
 @Entity
 @Table(name = "Person_race")
 @IdClass(PersonRaceId.class)
+@SuppressWarnings(
+    //  The PatientRaceHistoryListener is an entity listener specifically for instances of this class
+    {"javaarchitecture:S7027","javaarchitecture:S7091"}
+)
 @EntityListeners(PatientRaceHistoryListener.class)
 public class PersonRace {
 
@@ -49,7 +53,7 @@ public class PersonRace {
     @Embedded
     private Audit audit;
 
-    PersonRace() {
+    protected PersonRace() {
 
     }
 

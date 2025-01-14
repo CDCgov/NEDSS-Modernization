@@ -28,7 +28,7 @@ class PatientAdministrativeFinder {
         .where(
             this.tables.patient().id.eq(patient),
             this.tables.patient().cd.eq(PATIENT_CODE),
-            this.tables.patient().description.isNotNull()
+            this.tables.patient().asOfDateAdmin.isNotNull()
         );
   }
 

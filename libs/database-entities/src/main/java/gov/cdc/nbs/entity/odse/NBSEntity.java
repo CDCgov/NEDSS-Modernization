@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "Entity")
+@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
 public class NBSEntity {
     @Id
     @Column(name = "entity_uid", nullable = false)
@@ -57,10 +58,6 @@ public class NBSEntity {
 
     public NBSEntity(final PatientCommand.AddPatient patient) {
         this(patient.person(), "PSN");
-    }
-
-    public List<EntityLocatorParticipation> getEntityLocatorParticipations() {
-        return entityLocatorParticipations;
     }
 
     public void update(

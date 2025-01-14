@@ -1,7 +1,6 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Added;
-import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.Changed;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
@@ -12,14 +11,15 @@ import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
+import gov.cdc.nbs.patient.demographic.GeneralInformation;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.ZoneOffset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -72,18 +72,18 @@ class PersonTest {
     assertThat(actual.getRecordStatusCd()).isEqualTo(RecordStatus.ACTIVE);
     assertThat(actual.getRecordStatusTime()).isEqualTo("2020-03-03T10:15:30.00Z");
 
-    assertThat(LocalDate.ofInstant(actual.getBirthTime(), ZoneOffset.UTC)).isEqualTo("2000-09-03");
+    assertThat(actual.getBirthTime()).isEqualTo("2000-09-03T00:00");
     assertThat(actual.getBirthGenderCd()).isEqualTo(Gender.M);
     assertThat(actual.getCurrSexCd()).isEqualTo(Gender.F);
     assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
-    assertThat(actual.getMaritalStatusCd()).isEqualTo("Marital Status");
+    assertThat(actual.getGeneralInformation().maritalStatus()).isEqualTo("Marital Status");
 
-    assertThat(actual.getAsOfDateGeneral()).isEqualTo("2019-03-03T10:15:30.00Z");
+    assertThat(actual.getGeneralInformation().asOf()).isEqualTo("2019-03-03T10:15:30.00Z");
     assertThat(actual.getAsOfDateAdmin()).isEqualTo("2019-03-03T10:15:30.00Z");
     assertThat(actual.getAsOfDateSex()).isEqualTo("2019-03-03T10:15:30.00Z");
     assertThat(actual.getDescription()).isEqualTo("comments");
 
-    assertThat(actual.getEharsId()).isEqualTo("HIV-Case");
+    assertThat(actual.getGeneralInformation().stateHIVCase()).isEqualTo("HIV-Case");
 
     assertThat(actual)
         .extracting(Person::getEthnicity)
@@ -118,6 +118,10 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(131L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+
     assertThat(patient.getNames()).satisfiesExactly(
         actual -> assertThat(actual)
             .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
@@ -140,16 +144,8 @@ class PersonTest {
             .satisfies(
                 added -> assertThat(added.getAudit())
                     .describedAs("expected name audit state")
-                    .satisfies(
-                        audit -> assertThat(audit.added())
-                            .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
-                    )
-                    .satisfies(
-                        audit -> assertThat(audit.changed())
-                            .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
-                    )
+                    .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                    .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
             )
 
 
@@ -271,6 +267,10 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(171L, Person::getLastChgUserId)
+        .returns(Instant.parse("2021-04-05T06:07:08Z"), Person::getLastChgTime);
+
     assertThat(patient.getNames()).satisfiesExactly(
         actual -> assertThat(actual)
             .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
@@ -293,10 +293,7 @@ class PersonTest {
             .satisfies(
                 added -> assertThat(added.getAudit())
                     .describedAs("expected name audit state")
-                    .satisfies(
-                        audit -> assertThat(audit.changed())
-                            .returns(171L, Changed::changedBy)
-                            .returns(Instant.parse("2021-04-05T06:07:08Z"), Changed::changedOn)
+                    .satisfies(AuditAssertions.changed(171L, "2021-04-05T06:07:08Z")
                     )
             )
     );
@@ -343,6 +340,10 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(171L, Person::getLastChgUserId)
+        .returns(Instant.parse("2021-03-03T10:15:30.00Z"), Person::getLastChgTime);
+
     assertThat(patient.getNames()).satisfiesExactlyInAnyOrder(
         actual -> assertThat(actual)
             .extracting(PersonName::getId)
@@ -371,7 +372,7 @@ class PersonTest {
     );
 
     assertThat(actual.getNames()).satisfiesExactly(
-        actual_primary -> assertThat(actual_primary)
+        actualPrimary -> assertThat(actualPrimary)
             .returns(Instant.parse("2021-05-15T10:00:00Z"), PersonName::getAsOfDate)
             .returns("First", PersonName::getFirstNm)
             .returns("Middle", PersonName::getMiddleNm)
@@ -419,7 +420,7 @@ class PersonTest {
     assertThat(actual.getNmSuffix()).isEqualTo(Suffix.JR);
 
     assertThat(actual.getNames()).satisfiesExactly(
-        actual_primary -> assertThat(actual_primary)
+        actualPrimary -> assertThat(actualPrimary)
             .returns("First", PersonName::getFirstNm)
             .returns("Middle", PersonName::getMiddleNm)
             .returns("Last", PersonName::getLastNm)
@@ -428,7 +429,7 @@ class PersonTest {
             .extracting(PersonName::getId)
             .returns(117L, PersonNameId::getPersonUid)
             .returns((short) 1, PersonNameId::getPersonNameSeq),
-        actual_alias -> assertThat(actual_alias)
+        actualAlias -> assertThat(actualAlias)
             .returns("Other", PersonName::getFirstNm)
             .returns("OtherMiddle", PersonName::getMiddleNm)
             .returns("OtherLast", PersonName::getLastNm)
@@ -466,7 +467,7 @@ class PersonTest {
 
     assertThat(actual.addresses())
         .satisfiesExactly(
-            actual_postal_locator -> assertThat(actual_postal_locator)
+            actualPostalLocator -> assertThat(actualPostalLocator)
                 .returns(4861L, p -> p.getId().getLocatorUid())
                 .returns("H", EntityLocatorParticipation::getCd)
                 .returns("H", EntityLocatorParticipation::getUseCd)
@@ -511,6 +512,11 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(131L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+
+
     assertThat(patient.addresses())
         .satisfiesExactly(
             actual -> assertThat(actual)
@@ -533,6 +539,12 @@ class PersonTest {
                 .returns("Zip", PostalLocator::getZipCd)
                 .returns("country-code", PostalLocator::getCntryCd)
                 .returns("Census Tract", PostalLocator::getCensusTract)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .describedAs("expected name audit state")
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
+                )
         );
 
   }
@@ -581,6 +593,11 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(171L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-04T00:00:00Z"), Person::getLastChgTime);
+
+
     assertThat(patient.addresses())
         .satisfiesExactly(
             actual -> assertThat(actual)
@@ -603,6 +620,12 @@ class PersonTest {
                 .returns("Zip", PostalLocator::getZipCd)
                 .returns("country-code", PostalLocator::getCntryCd)
                 .returns("Census Tract", PostalLocator::getCensusTract)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.changed(171L, "2020-03-04T00:00:00Z"))
+                )
+
         );
 
   }
@@ -657,6 +680,11 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(191L, Person::getLastChgUserId)
+        .returns(Instant.parse("2021-05-24T11:01:17Z"), Person::getLastChgTime);
+
+
     assertThat(patient.addresses())
         .satisfiesExactly(
             actual -> assertThat(actual)
@@ -684,7 +712,7 @@ class PersonTest {
 
     assertThat(actual.emailAddresses())
         .satisfiesExactly(
-            actual_email_locator -> assertThat(actual_email_locator)
+            actualEmailLocator -> assertThat(actualEmailLocator)
                 .returns(5333L, p -> p.getId().getLocatorUid())
                 .returns("NET", EntityLocatorParticipation::getCd)
                 .returns("H", EntityLocatorParticipation::getUseCd)
@@ -716,9 +744,13 @@ class PersonTest {
         )
     );
 
+    assertThat(actual)
+        .returns(131L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+
     assertThat(actual.phoneNumbers())
         .satisfiesExactly(
-            actual_phone_locator -> assertThat(actual_phone_locator)
+            actualPhoneLocator -> assertThat(actualPhoneLocator)
                 .returns(5347L, p -> p.getId().getLocatorUid())
                 .returns(Instant.parse("2017-05-16T11:13:19Z"), EntityLocatorParticipation::getAsOfDate)
                 .returns("CP", EntityLocatorParticipation::getCd)
@@ -726,7 +758,14 @@ class PersonTest {
                 .extracting(TeleEntityLocatorParticipation::getLocator)
                 .returns(5347L, TeleLocator::getId)
                 .returns("Phone Number", TeleLocator::getPhoneNbrTxt)
-                .returns("Extension", TeleLocator::getExtensionTxt));
+                .returns("Extension", TeleLocator::getExtensionTxt)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
+                )
+
+        );
 
   }
 
@@ -752,6 +791,10 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(131L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+
     assertThat(patient.phoneNumbers())
         .satisfiesExactly(
             actual -> assertThat(actual)
@@ -771,6 +814,11 @@ class PersonTest {
                 .returns("extension", TeleLocator::getExtensionTxt)
                 .returns("email", TeleLocator::getEmailAddress)
                 .returns("url", TeleLocator::getUrlAddress)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
+                )
         );
   }
 
@@ -814,6 +862,10 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(171L, Person::getLastChgUserId)
+        .returns(Instant.parse("2023-07-01T13:17:00Z"), Person::getLastChgTime);
+
     assertThat(patient.phoneNumbers())
         .satisfiesExactly(
             actual -> assertThat(actual)
@@ -835,6 +887,11 @@ class PersonTest {
                 .returns("updated-extension", TeleLocator::getExtensionTxt)
                 .returns("updated-email", TeleLocator::getEmailAddress)
                 .returns("updated-url", TeleLocator::getUrlAddress)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.changed(171L, "2023-07-01T13:17:00Z"))
+                )
         );
   }
 
@@ -886,6 +943,10 @@ class PersonTest {
             Instant.parse("2023-03-03T10:15:30.00Z")
         )
     );
+
+    assertThat(patient)
+        .returns(293L, Person::getLastChgUserId)
+        .returns(Instant.parse("2023-03-03T10:15:30.00Z"), Person::getLastChgTime);
 
     assertThat(patient.phones())
         .satisfiesExactly(
@@ -961,164 +1022,24 @@ class PersonTest {
         "education level",
         "prim language",
         "speaks english",
-        "eharsId",
         12L,
         Instant.parse("2019-03-03T10:15:30.00Z"));
 
     actual.update(command);
 
     assertThat(actual)
-        .returns(Instant.parse("2010-03-03T10:15:30.00Z"), Person::getAsOfDateGeneral)
-        .returns("marital status", Person::getMaritalStatusCd)
-        .returns("mothers maiden name", Person::getMothersMaidenNm)
-        .returns((short) 1, Person::getAdultsInHouseNbr)
-        .returns((short) 2, Person::getChildrenInHouseNbr)
-        .returns("occupation code", Person::getOccupationCd)
-        .returns("education level", Person::getEducationLevelCd)
-        .returns("prim language", Person::getPrimLangCd)
-        .returns("speaks english", Person::getSpeaksEnglishCd)
-        .returns("eharsId", Person::getEharsId)
         .returns(12L, Person::getLastChgUserId)
         .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
-    ;
-  }
-
-  @Test
-  void should_change_ethnicity() {
-
-    Person patient = new Person(121L, "local-id-value");
-
-    patient.update(
-        new PatientCommand.UpdateEthnicityInfo(
-            121L,
-            Instant.parse("2012-03-03T10:15:30.00Z"),
-            "ethnic-group-value",
-            "unknown-reason-value",
-            131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
-        )
-    );
-
-    assertThat(patient)
-        .returns(131L, Person::getLastChgUserId)
-        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime)
-        .extracting(Person::getEthnicity)
-        .returns(Instant.parse("2012-03-03T10:15:30.00Z"), PatientEthnicity::asOf)
-        .returns("ethnic-group-value", PatientEthnicity::ethnicGroup)
-        .returns("unknown-reason-value", PatientEthnicity::unknownReason);
-  }
-
-  @Test
-  void should_add_detailed_ethnicity() {
-
-    Person patient = new Person(121L, "local-id-value");
-
-    PersonEthnicGroup actual = patient.add(
-        new PatientCommand.AddDetailedEthnicity(
-            121L,
-            "ethnicity-value",
-            131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
-        )
-    );
-
-    assertThat(actual.getPersonUid()).isEqualTo(patient);
-    assertThat(actual.getId())
-        .returns(121L, PersonEthnicGroupId::getPersonUid)
-        .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
-    ;
-
-    assertThat(patient.getEthnicity().ethnicities())
-        .satisfiesExactlyInAnyOrder(
-            actual_detail -> assertThat(actual_detail)
-                .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
-                .extracting(PersonEthnicGroup::getId)
-                .returns(121L, PersonEthnicGroupId::getPersonUid)
-                .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
-        );
-
-  }
-
-  @Test
-  void should_add_another_detailed_ethnicity() {
-
-    Person patient = new Person(121L, "local-id-value");
-
-    patient.add(
-        new PatientCommand.AddDetailedEthnicity(
-            121L,
-            "ethnicity-value",
-            131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
-        )
-    );
-
-    patient.add(
-        new PatientCommand.AddDetailedEthnicity(
-            121L,
-            "next-ethnicity-value",
-            131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
-        )
-    );
-
-    assertThat(patient.getEthnicity().ethnicities())
-        .satisfiesExactlyInAnyOrder(
-            actual -> assertThat(actual)
-                .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
-                .extracting(PersonEthnicGroup::getId)
-                .returns(121L, PersonEthnicGroupId::getPersonUid)
-                .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd),
-            actual -> assertThat(actual)
-                .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
-                .extracting(PersonEthnicGroup::getId)
-                .returns(121L, PersonEthnicGroupId::getPersonUid)
-                .returns("next-ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
-        );
-
-  }
-
-  @Test
-  void should_remove_detailed_ethnicity() {
-
-    Person patient = new Person(121L, "local-id-value");
-
-    patient.add(
-        new PatientCommand.AddDetailedEthnicity(
-            121L,
-            "ethnicity-value",
-            131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
-        )
-    );
-
-    patient.add(
-        new PatientCommand.AddDetailedEthnicity(
-            121L,
-            "next-ethnicity-value",
-            131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
-        )
-    );
-
-    patient.remove(
-        new PatientCommand.RemoveDetailedEthnicity(
-            121L,
-            "next-ethnicity-value",
-            131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
-        )
-    );
-
-    assertThat(patient.getEthnicity().ethnicities())
-        .satisfiesExactly(
-            actual -> assertThat(actual)
-                .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
-                .extracting(PersonEthnicGroup::getId)
-                .returns(121L, PersonEthnicGroupId::getPersonUid)
-                .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
-        );
-
+        .extracting(Person::getGeneralInformation)
+        .returns(Instant.parse("2010-03-03T10:15:30.00Z"), GeneralInformation::asOf)
+        .returns("marital status", GeneralInformation::maritalStatus)
+        .returns("mothers maiden name", GeneralInformation::mothersMaidenName)
+        .returns(1, GeneralInformation::adultsInHouse)
+        .returns(2, GeneralInformation::childrenInHouse)
+        .returns("occupation code", GeneralInformation::occupation)
+        .returns("education level", GeneralInformation::educationLevel)
+        .returns("prim language", GeneralInformation::primaryLanguage)
+        .returns("speaks english", GeneralInformation::speaksEnglish);
   }
 
   @Test
@@ -1137,23 +1058,17 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(131L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+
     assertThat(patient.identifications()).satisfiesExactly(
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
                     .extracting(EntityId::getAudit)
-                    .satisfies(
-                        added -> assertThat(added)
-                            .extracting(Audit::added)
-                            .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
-                    )
-                    .satisfies(
-                        changed -> assertThat(changed)
-                            .extracting(Audit::changed)
-                            .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
-                    )
+                    .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                    .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
             )
             .returns("identification-type", EntityId::getTypeCd)
             .returns(Instant.parse("1999-09-09T11:59:13Z"), EntityId::getAsOfDate)
@@ -1197,23 +1112,17 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(171L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-13T13:15:30Z"), Person::getLastChgTime);
+
     assertThat(patient.identifications()).satisfiesExactly(
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
                     .extracting(EntityId::getAudit)
-                    .satisfies(
-                        added -> assertThat(added)
-                            .extracting(Audit::added)
-                            .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
-                    )
-                    .satisfies(
-                        changed -> assertThat(changed)
-                            .extracting(Audit::changed)
-                            .returns(171L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-13T13:15:30Z"), Changed::changedOn)
-                    )
+                    .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                    .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30Z"))
             )
             .returns("updated-identification-type", EntityId::getTypeCd)
             .returns(Instant.parse("2001-05-19T11:59:00Z"), EntityId::getAsOfDate)
@@ -1259,6 +1168,10 @@ class PersonTest {
             Instant.parse("2020-03-13T13:15:30Z")
         )
     );
+
+    assertThat(patient)
+        .returns(171L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-13T13:15:30Z"), Person::getLastChgTime);
 
     assertThat(patient.identifications()).satisfiesExactly(
         actual -> assertThat(actual)
@@ -1602,7 +1515,7 @@ class PersonTest {
 
     assertThat(patient)
         .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateSex)
-        .returns(Instant.parse("1949-10-15T00:00:00Z"), Person::getBirthTime)
+        .returns(LocalDateTime.parse("1949-10-15T00:00:00"), Person::getBirthTime)
         .returns(Gender.U, Person::getBirthGenderCd)
         .returns((short) 17, Person::getBirthOrderNbr)
         .satisfies(

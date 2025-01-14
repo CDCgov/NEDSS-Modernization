@@ -263,6 +263,7 @@ const RacesTable = ({ patient }: RacesTableProps) => {
                         entry={asEntry(selected.item)}
                         onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}
+                        editing
                     />
                 </EntryModal>
             )}

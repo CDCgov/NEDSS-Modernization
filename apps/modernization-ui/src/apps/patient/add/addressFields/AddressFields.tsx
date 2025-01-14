@@ -4,10 +4,14 @@ import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
 
 import { Grid } from '@trussworks/react-uswds';
 import FormCard from 'components/FormCard/FormCard';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 
 import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule } from 'validation/entry';
+import { SingleSelect } from 'design-system/select';
+import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
+import { CensusTractInputField, validCensusTractRule } from 'apps/patient/data/address';
+
+const CENSUS_TRACT_LABEL = 'Census tract';
 
 type Props = {
     id: string;
@@ -22,14 +26,14 @@ export default function AddressFields({ id, title, coded }: Props) {
     const enteredCity = useWatch({ control, name: 'city' });
     const enteredZip = useWatch({ control, name: 'zip' });
 
-    const counties = coded.counties.byState(selectedState);
+    const counties = coded.counties.byState(selectedState?.value);
 
-    function handleSuggestionSelection(selected: AddressSuggestion) {
+    const handleSuggestionSelection = (selected: AddressSuggestion) => {
         setValue('streetAddress1', selected.address1);
         setValue('city', selected.city);
         setValue('state', selected.state?.value);
         setValue('zip', selected.zip);
-    }
+    };
 
     return (
         <FormCard id={id} title={title}>
@@ -47,7 +51,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     locations={coded}
                                     criteria={{ zip: enteredZip, city: enteredCity, state: selectedState }}
                                     label="Street address 1"
-                                    defaultValue={value}
+                                    value={value}
                                     onChange={onChange}
                                     onSelection={handleSuggestionSelection}
                                     error={error?.message}
@@ -105,11 +109,11 @@ export default function AddressFields({ id, title, coded }: Props) {
                             control={control}
                             name="state"
                             render={({ field: { onChange, value, name } }) => (
-                                <SelectInput
+                                <SingleSelect
+                                    id={name}
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     name={name}
-                                    htmlFor={name}
                                     label="State"
                                     options={coded.states.all}
                                 />
@@ -120,22 +124,14 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="zip"
-                            rules={{
-                                pattern: {
-                                    value: /[\d]{5}(-[\d]{4})?/,
-                                    message:
-                                        'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
-                                },
-                                ...maxLengthRule(20)
-                            }}
+                            rules={validZipCodeRule('ZIP code')}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                                <Input
+                                <ZipCodeInputField
                                     id={name}
                                     name={name}
-                                    type="text"
                                     label="ZIP"
-                                    htmlFor={name}
-                                    defaultValue={value}
+                                    orientation="vertical"
+                                    value={value}
                                     error={error?.message}
                                     onBlur={onBlur}
                                     onChange={onChange}
@@ -150,11 +146,11 @@ export default function AddressFields({ id, title, coded }: Props) {
                             control={control}
                             name="county"
                             render={({ field: { onChange, value, name } }) => (
-                                <SelectInput
+                                <SingleSelect
+                                    id={name}
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     name={name}
-                                    htmlFor={name}
                                     label="County"
                                     options={counties}
                                 />
@@ -167,23 +163,14 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="censusTract"
-                            rules={{
-                                pattern: {
-                                    value: /[0-9]{4}(.(([0-8][0-9])|([9][0-8])))?/,
-                                    message:
-                                        ' Census tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.'
-                                },
-                                ...maxLengthRule(10)
-                            }}
+                            rules={validCensusTractRule(CENSUS_TRACT_LABEL)}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                                <Input
+                                <CensusTractInputField
+                                    id={name}
+                                    label={CENSUS_TRACT_LABEL}
+                                    value={value}
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    type="text"
-                                    label="Census tract"
-                                    defaultValue={value}
-                                    htmlFor={name}
-                                    id={name}
                                     error={error?.message}
                                 />
                             )}
@@ -196,11 +183,11 @@ export default function AddressFields({ id, title, coded }: Props) {
                             control={control}
                             name="country"
                             render={({ field: { onChange, value, name } }) => (
-                                <SelectInput
+                                <SingleSelect
+                                    id={name}
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     name={name}
-                                    htmlFor={name}
                                     label="Country"
                                     options={coded.countries}
                                 />

@@ -18,7 +18,7 @@ class SearchablePatientRowMapperTest {
   void should_map_from_result_set() throws SQLException {
 
     SearchablePatientRowMapper.Column columns =
-        new SearchablePatientRowMapper.Column(2, 3, 5, 7, 11, 13, 17);
+        new SearchablePatientRowMapper.Column(2, 3, 5, 7, 11, 13, 17, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
 
     ResultSet resultSet = mock(ResultSet.class);
 
@@ -29,9 +29,7 @@ class SearchablePatientRowMapperTest {
     when(resultSet.getObject(columns.birthday(), LocalDateTime.class)).thenReturn(
         LocalDateTime.of(
             1943, Month.NOVEMBER, 3,
-            0, 0, 0
-        )
-    );
+            0, 0, 0));
 
     when(resultSet.getString(columns.deceased())).thenReturn("deceased-value");
     when(resultSet.getString(columns.gender())).thenReturn("gender-value");

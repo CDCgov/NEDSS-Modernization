@@ -1,0 +1,66 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.panel {
+    display: flex;
+    flex-direction: column;
+
+    header {
+        display: flex;
+        justify-content: space-between;
+
+        padding: 1.5rem;
+
+        @extend %thin-bottom;
+
+        svg {
+            cursor: pointer;
+        }
+
+        h2 {
+            margin: 0;
+        }
+    }
+
+    footer {
+        display: flex;
+        justify-content: center;
+        padding: 1.5rem;
+        gap: 2.2rem;
+
+        @extend %thin-top;
+
+        .reset {
+            padding: 0;
+            background-color: transparent;
+            color: colors.$primary;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.preference {
+    display: flex;
+    flex: 1 0 0;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 1rem;
+    padding-right: 0.5rem;
+    background-color: colors.$base-white;
+
+    height: 2.75rem;
+    border-bottom: 1px solid colors.$base-lighter;
+
+    .handle {
+        cursor: pointer;
+        display: flex;
+        width: 2.625rem;
+        height: 2.625rem;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+    }
+}

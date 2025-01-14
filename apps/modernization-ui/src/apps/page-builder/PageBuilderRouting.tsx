@@ -25,7 +25,7 @@ const routing: RouteObject[] = [
                     {
                         index: true,
                         element: (
-                            <FeatureGuard guard={(features) => features.pageBuilder.page.library.enabled}>
+                            <FeatureGuard guard={(features) => features?.pageBuilder?.page?.library?.enabled}>
                                 <PageLibrary />
                             </FeatureGuard>
                         )
@@ -33,7 +33,8 @@ const routing: RouteObject[] = [
                     {
                         path: 'add',
                         element: (
-                            <FeatureGuard guard={(features) => features.pageBuilder.page.management.create.enabled}>
+                            <FeatureGuard
+                                guard={(features) => features?.pageBuilder?.page?.management?.create?.enabled}>
                                 <AddNewPage />
                             </FeatureGuard>
                         )
@@ -41,7 +42,9 @@ const routing: RouteObject[] = [
                     {
                         path: ':pageId',
                         element: (
-                            <FeatureLayout guard={(features) => features.pageBuilder.page.management.edit.enabled} />
+                            <FeatureLayout
+                                guard={(features) => features?.pageBuilder?.page?.management?.edit?.enabled}
+                            />
                         ),
                         children: [
                             {

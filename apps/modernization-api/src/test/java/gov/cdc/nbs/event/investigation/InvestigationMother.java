@@ -34,6 +34,9 @@ public class InvestigationMother {
 
   private final Available<InvestigationIdentifier> available;
   private final Active<InvestigationIdentifier> active;
+  private final Active<AbcCaseIdentifier> activeAbcCase;
+  private final Active<StateCaseIdentifier> activeStateCase;
+  private final Active<CityCountyCaseIdentifier> activeCityCountyCase;
   private final PatientMother patientMother;
   private final TestInvestigationCleaner cleaner;
 
@@ -45,8 +48,10 @@ public class InvestigationMother {
       final Available<InvestigationIdentifier> available,
       final Active<InvestigationIdentifier> active,
       final PatientMother patientMother,
-      final TestInvestigationCleaner cleaner
-  ) {
+      final Active<AbcCaseIdentifier> activeAbcCase,
+      final Active<StateCaseIdentifier> activeStateCase,
+      final Active<CityCountyCaseIdentifier> activeCityCountyCase,
+      final TestInvestigationCleaner cleaner) {
     this.idGenerator = idGenerator;
     this.settings = settings;
     this.entityManager = entityManager;
@@ -54,6 +59,9 @@ public class InvestigationMother {
     this.available = available;
     this.active = active;
     this.patientMother = patientMother;
+    this.activeAbcCase = activeAbcCase;
+    this.activeStateCase = activeStateCase;
+    this.activeCityCountyCase = activeCityCountyCase;
     this.cleaner = cleaner;
   }
 
@@ -70,8 +78,7 @@ public class InvestigationMother {
         identifier,
         local,
         settings.createdBy(),
-        settings.createdOn()
-    );
+        settings.createdOn());
 
     investigation.within(
         // out of system
@@ -79,8 +86,7 @@ public class InvestigationMother {
 
         "STD",
         // Clayton county + STD
-        1300600015L
-    );
+        1300600015L);
 
     investigation.condition("42060"); // other injury
 
@@ -96,8 +102,7 @@ public class InvestigationMother {
   void create(
       final PatientIdentifier patient,
       final JurisdictionIdentifier jurisdiction,
-      final ProgramAreaIdentifier programArea
-  ) {
+      final ProgramAreaIdentifier programArea) {
     PatientIdentifier revision = patientMother.revise(patient);
 
     long identifier = idGenerator.next();
@@ -107,16 +112,14 @@ public class InvestigationMother {
         identifier,
         local,
         settings.createdBy(),
-        settings.createdOn()
-    );
+        settings.createdOn());
 
     investigation.condition("42060"); // other injury
 
     investigation.within(
         jurisdiction.code(),
         programArea.code(),
-        programArea.oid(jurisdiction)
-    );
+        programArea.oid(jurisdiction));
 
     subjectOf(investigation.act(), revision.id());
 
@@ -151,23 +154,20 @@ public class InvestigationMother {
 
   }
 
-  void within(
+  public void within(
       final InvestigationIdentifier identifier,
       final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
+      final JurisdictionIdentifier jurisdiction) {
     PublicHealthCase investigation = managed(identifier);
     investigation.within(
         jurisdiction.code(),
         programArea.code(),
-        programArea.oid(jurisdiction)
-    );
+        programArea.oid(jurisdiction));
   }
 
   void closed(
       final InvestigationIdentifier identifier,
-      final Instant on
-  ) {
+      final Instant on) {
     PublicHealthCase investigation = managed(identifier);
     investigation.close(on);
   }
@@ -185,8 +185,7 @@ public class InvestigationMother {
   void created(
       final InvestigationIdentifier identifier,
       final long by,
-      final Instant on
-  ) {
+      final Instant on) {
     PublicHealthCase investigation = managed(identifier);
     investigation.created(by, on);
   }
@@ -194,8 +193,7 @@ public class InvestigationMother {
   void updated(
       final InvestigationIdentifier identifier,
       final long by,
-      final Instant on
-  ) {
+      final Instant on) {
     PublicHealthCase investigation = managed(identifier);
     investigation.updated(by, on);
   }
@@ -220,7 +218,7 @@ public class InvestigationMother {
     investigation.condition(condition);
   }
 
-  void started(final InvestigationIdentifier identifier, final Instant on) {
+  public void started(final InvestigationIdentifier identifier, final Instant on) {
     PublicHealthCase investigation = managed(identifier);
     investigation.started(on);
   }
@@ -232,56 +230,57 @@ public class InvestigationMother {
 
   void relatedToABCSCase(
       final InvestigationIdentifier identifier,
-      final String number
-  ) {
+      final String abcCaseId) {
     PublicHealthCase investigation = managed(identifier);
 
     Act act = investigation.act();
 
     ActId relatedTo = new ActId(new ActIdId(act.getId(), 2));
     relatedTo.setTypeCd("STATE");
-    relatedTo.setRootExtensionTxt(number);
+    relatedTo.setAssigningAuthorityCd("ABCS");
+    relatedTo.setRootExtensionTxt(abcCaseId);
 
     act.addIdentifier(relatedTo);
+    activeAbcCase.active(new AbcCaseIdentifier(act.getId(), abcCaseId));
 
   }
 
   void relatedToCountyCase(
       final InvestigationIdentifier identifier,
-      final String number
-  ) {
+      final String cityCountyCaseId) {
     PublicHealthCase investigation = managed(identifier);
 
     Act act = investigation.act();
 
     ActId relatedTo = new ActId(new ActIdId(act.getId(), 2));
     relatedTo.setTypeCd("CITY");
-    relatedTo.setRootExtensionTxt(number);
+    relatedTo.setRootExtensionTxt(cityCountyCaseId);
 
     act.addIdentifier(relatedTo);
+    activeCityCountyCase.active(new CityCountyCaseIdentifier(act.getId(), cityCountyCaseId));
 
   }
 
   void relatedToStateCase(
       final InvestigationIdentifier identifier,
-      final String number
-  ) {
+      final String stateCaseId) {
     PublicHealthCase investigation = managed(identifier);
 
     Act act = investigation.act();
 
     ActId relatedTo = new ActId(new ActIdId(act.getId(), 1));
     relatedTo.setTypeCd("STATE");
-    relatedTo.setRootExtensionTxt(number);
+    relatedTo.setRootExtensionTxt(stateCaseId);
 
     act.addIdentifier(relatedTo);
+
+    activeStateCase.active(new StateCaseIdentifier(act.getId(), stateCaseId));
 
   }
 
   void relatedToOutbreak(
       final InvestigationIdentifier identifier,
-      final String outbreak
-  ) {
+      final String outbreak) {
     PublicHealthCase investigation = managed(identifier);
     investigation.outbreak(outbreak);
   }
@@ -307,8 +306,7 @@ public class InvestigationMother {
 
   void reportedBy(
       final InvestigationIdentifier identifier,
-      final ProviderIdentifier provider
-  ) {
+      final ProviderIdentifier provider) {
     PublicHealthCase investigation = managed(identifier);
 
     Act act = investigation.act();
@@ -318,9 +316,7 @@ public class InvestigationMother {
         new ParticipationId(
             provider.identifier(),
             identifier.identifier(),
-            "PerAsReporterOfPHC"
-        )
-    );
+            "PerAsReporterOfPHC"));
     participation.setActClassCd(act.getClassCd());
     participation.setSubjectClassCd("PSN");
 
@@ -333,6 +329,7 @@ public class InvestigationMother {
     act.addParticipation(participation);
 
   }
+
   void investigatedBy(final InvestigationIdentifier identifier, final ProviderIdentifier investigator) {
     PublicHealthCase investigation = managed(identifier);
 

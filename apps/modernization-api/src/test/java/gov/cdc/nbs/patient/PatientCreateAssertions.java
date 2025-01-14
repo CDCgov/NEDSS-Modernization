@@ -91,7 +91,7 @@ public class PatientCreateAssertions {
             .extracting(TeleEntityLocatorParticipation::getLocator)
             .returns(phone.getNumber(), TeleLocator::getPhoneNbrTxt)
             .returns(phone.getExtension(), TeleLocator::getExtensionTxt)
-            .returns("ACTIVE", TeleLocator::getRecordStatusCd)
+            .returns("ACTIVE", locator -> locator.recordStatus().status())
             ;
     }
 
@@ -111,7 +111,7 @@ public class PatientCreateAssertions {
             .returns("H", TeleEntityLocatorParticipation::getUseCd)
             .extracting(TeleEntityLocatorParticipation::getLocator)
             .returns(email, TeleLocator::getEmailAddress)
-            .returns("ACTIVE", TeleLocator::getRecordStatusCd)
+            .returns("ACTIVE", locator -> locator.recordStatus().status())
             ;
     }
 

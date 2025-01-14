@@ -19,15 +19,14 @@
         &.expanded {
             border-bottom: 1px solid colors.$base-lighter;
         }
-
+        h3 {
+            color: colors.$base-black;
+            text-align: center;
+            font-size: 1.375rem;
+            font-weight: 700;
+            margin: 0;
+        }
         .info {
-            .name {
-                color: colors.$base-black;
-                text-align: center;
-                font-size: 1.375rem;
-                font-weight: 700;
-            }
-
             .subsectionCount {
                 color: colors.$base-darkest;
                 font-size: 0.875rem;

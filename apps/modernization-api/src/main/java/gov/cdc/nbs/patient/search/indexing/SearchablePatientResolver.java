@@ -28,8 +28,7 @@ class SearchablePatientResolver {
       final SearchablePatientAddressFinder addressFinder,
       final SearchablePatientRaceFinder raceFinder,
       final SearchablePatientIdentificationFinder identificationFinder,
-      final SearchablePatientTelecomFinder telecomFinder
-  ) {
+      final SearchablePatientTelecomFinder telecomFinder) {
     this.patientFinder = patientFinder;
     this.nameFinder = nameFinder;
     this.addressFinder = addressFinder;
@@ -67,7 +66,17 @@ class SearchablePatientResolver {
         phones,
         emails,
         races,
-        identifications
-    );
+        identifications,
+        patient.documentIds(),
+        patient.morbidityReportIds(),
+        patient.treatmentIds(),
+        patient.vaccinationIds(),
+        patient.abcsCaseIds(),
+        patient.cityCaseIds(),
+        patient.stateCaseIds(),
+        patient.accessionIds(),
+        patient.investigationIds(),
+        patient.labReportIds(),
+        patient.notificationIds());
   }
 }

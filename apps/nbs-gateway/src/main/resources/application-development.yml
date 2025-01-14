@@ -1,16 +1,13 @@
 nbs:
   security:
-    oidc:
-      client:
-        id: nbs-development
-        secret: KK092EEXikR0hpubkwZGHbdtZKw99AJi
     log:
       level: INFO
   gateway:
-    defaults:
-      protocol: http
     log:
       level: INFO
+    patient:
+      profile:
+        enabled: true
     pagebuilder:
       enabled: true
       page:

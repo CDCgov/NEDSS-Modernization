@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PatientProfileRaceSteps {
 
   private final Active<PatientInput> input;
-  private final TestPatient patient;
+  private final TestPatient testPatient;
   private final Active<PatientIdentifier> activePatient;
   private final PatientRaceResolver resolver;
 
@@ -36,14 +36,14 @@ public class PatientProfileRaceSteps {
 
   PatientProfileRaceSteps(
       final Active<PatientInput> input,
-      final TestPatient patient,
+      final TestPatient testPatient,
       final Active<PatientIdentifier> activePatient,
       final PatientRaceResolver resolver,
       final PatientProfileRaceRequester requester,
       final Active<ResultActions> response
   ) {
     this.input = input;
-    this.patient = patient;
+    this.testPatient = testPatient;
     this.activePatient = activePatient;
     this.resolver = resolver;
     this.requester = requester;
@@ -67,7 +67,7 @@ public class PatientProfileRaceSteps {
   @Then("the new patient has the entered race")
   @Transactional
   public void the_new_patient_has_the_entered_race() {
-    Person actual = patient.managed();
+    Person actual = testPatient.managed();
 
     if (!actual.getRaces().isEmpty()) {
       assertThat(actual.getRaces())

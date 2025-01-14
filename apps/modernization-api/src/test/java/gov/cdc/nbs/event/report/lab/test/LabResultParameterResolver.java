@@ -29,7 +29,6 @@ class LabResultParameterResolver {
         QUERY,
         statement -> {
           statement.setString(DESCRIPTION_INDEX, value);
-          ;
         },
         (rs, row) -> rs.getString(IDENTIFIER_COLUMN)
     ).stream().findFirst();

@@ -13,7 +13,7 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public final class LabReportFilter implements EventFilter {
+public final class LabReportFilter {
   private Long patientId;
   private List<String> programAreas = new ArrayList<>();
   private List<Long> jurisdictions = new ArrayList<>();
@@ -27,6 +27,9 @@ public final class LabReportFilter implements EventFilter {
   private Long createdBy;
   private Long lastUpdatedBy;
   private LabReportProviderSearch providerSearch;
+  private Long orderingLabId;
+  private Long orderingProviderId;
+  private Long reportingLabId;
   private String resultedTest;
   private String codedResult;
 
@@ -60,8 +63,24 @@ public final class LabReportFilter implements EventFilter {
 
 
   public enum LaboratoryEventIdType {
-    ACCESSION_NUMBER,
-    LAB_ID;
+    ACCESSION_NUMBER("ACCESSION_NUMBER", "Accession Number"),
+    LAB_ID("LAB_ID", "Lab Id");
+
+    private final String value;
+    private final String display;
+
+    LaboratoryEventIdType(final String value, final String display) {
+      this.value = value;
+      this.display = display;
+    }
+
+    public String value() {
+      return value;
+    }
+
+    public String display() {
+      return display;
+    }
   }
 
 
@@ -124,6 +143,16 @@ public final class LabReportFilter implements EventFilter {
     REPORTING_FACILITY
   }
 
+  public LabReportFilter withResultedTest(final String resultedTest) {
+    this.resultedTest = resultedTest;
+    return this;
+  }
+
+  public LabReportFilter withCodedResult(final String codedResult) {
+    this.codedResult = codedResult;
+    return this;
+  }
+
   public LabReportFilter withEventStatus(final EventStatus status) {
     this.eventStatus.add(status);
     return this;
@@ -140,8 +169,7 @@ public final class LabReportFilter implements EventFilter {
   public Optional<LabReportEventId> accession() {
     if (this.eventId != null
         && this.eventId.getLabEventId() != null
-        && this.eventId.getLabEventType() == LaboratoryEventIdType.ACCESSION_NUMBER
-    ) {
+        && this.eventId.getLabEventType() == LaboratoryEventIdType.ACCESSION_NUMBER) {
       return Optional.of(this.eventId);
     }
     return Optional.empty();
@@ -150,8 +178,7 @@ public final class LabReportFilter implements EventFilter {
   public Optional<LabReportEventId> labId() {
     if (this.eventId != null
         && this.eventId.getLabEventId() != null
-        && this.eventId.getLabEventType() == LaboratoryEventIdType.LAB_ID
-    ) {
+        && this.eventId.getLabEventType() == LaboratoryEventIdType.LAB_ID) {
       return Optional.of(this.eventId);
     }
     return Optional.empty();
@@ -188,30 +215,39 @@ public final class LabReportFilter implements EventFilter {
   }
 
   public Optional<Long> orderingProvider() {
+    if (this.orderingProviderId != null) {
+      return Optional.of(this.orderingProviderId);
+    }
     return (this.providerSearch != null && this.providerSearch.getProviderType() == ProviderType.ORDERING_PROVIDER)
         ? Optional.of(this.providerSearch.getProviderId())
         : Optional.empty();
   }
 
   public Optional<Long> orderingFacility() {
+    if (this.orderingLabId != null) {
+      return Optional.of(this.orderingLabId);
+    }
     return (this.providerSearch != null && this.providerSearch.getProviderType() == ProviderType.ORDERING_FACILITY)
         ? Optional.of(this.providerSearch.getProviderId())
         : Optional.empty();
   }
 
   public Optional<Long> reportingFacility() {
+    if (this.reportingLabId != null) {
+      return Optional.of(this.reportingLabId);
+    }
     return (this.providerSearch != null && this.providerSearch.getProviderType() == ProviderType.REPORTING_FACILITY)
         ? Optional.of(this.providerSearch.getProviderId())
         : Optional.empty();
   }
 
-  public Optional<String> resultedTest() {
+  public Optional<String> withResultedTest() {
     return (this.resultedTest == null || this.resultedTest.isEmpty())
         ? Optional.empty()
         : Optional.of(this.resultedTest);
   }
 
-  public Optional<String> codedResult() {
+  public Optional<String> withCodedResult() {
     return (this.codedResult == null || this.codedResult.isEmpty())
         ? Optional.empty()
         : Optional.of(this.codedResult);

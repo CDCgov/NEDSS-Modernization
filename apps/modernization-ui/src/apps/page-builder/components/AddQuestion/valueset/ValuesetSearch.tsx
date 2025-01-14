@@ -1,5 +1,4 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import { Heading } from 'components/heading';
 import { useEffect, useState } from 'react';
 import { ButtonBar } from '../../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../../CloseableHeader/CloseableHeader';
@@ -62,7 +61,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Pro
             />
             <div className={styles.scrollableContent}>
                 <div className={styles.heading}>
-                    <Heading level={3}>Let's find the right value set for your single choice question</Heading>
+                    <h3>Let's find the right value set for your single choice question</h3>
                 </div>
                 <div className={styles.tableContainer}>
                     <ValuesetSearchTable

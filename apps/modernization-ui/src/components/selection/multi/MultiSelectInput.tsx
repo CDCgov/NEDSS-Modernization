@@ -1,21 +1,14 @@
 import { FocusEventHandler, useEffect, useMemo, useState } from 'react';
-import ReactSelect, { MultiValue, components } from 'react-select';
+import ReactSelect, { MultiValue } from 'react-select';
 import { mapNonNull } from 'utils';
+import { Selectable, asSelectable, asValue as asSelectableValue } from 'options';
 import { EntryWrapper } from 'components/Entry';
+
+import { theme, styles, CheckboxOption } from 'design-system/select/multi';
 
 import './MultiSelectInput.scss';
 
-const CheckedOption = (props: any) => {
-    return (
-        <div>
-            <components.Option {...props}>
-                <input type="checkbox" checked={props.isSelected} readOnly /> <label>{props.label}</label>
-            </components.Option>
-        </div>
-    );
-};
-
-const asSelectable = (selectables: Selectable[]) => (item: string) =>
+const asSelected = (selectables: Selectable[]) => (item: string) =>
     selectables.find((option) => option.value === item) || null;
 
 type Options = { name: string; value: string };
@@ -35,8 +28,6 @@ type MultiSelectInputProps = {
     error?: string;
 };
 
-type Selectable = { value: string; label: string };
-
 export const MultiSelectInput = ({
     label,
     id,
@@ -52,14 +43,15 @@ export const MultiSelectInput = ({
     disabled = false
 }: MultiSelectInputProps) => {
     const selectableOptions = useMemo(
-        () => options.map((item) => ({ value: item.value, label: item.name })),
+        () => options.map((item) => asSelectable(item.value, item.name)),
         [JSON.stringify(options)]
     );
 
     const [selectedOptions, setSelectedOptions] = useState<Selectable[]>([]);
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
-        const selected = mapNonNull(asSelectable(selectableOptions), value);
+        const selected = mapNonNull(asSelected(selectableOptions), value);
         setSelectedOptions(selected);
     }, [JSON.stringify(value), selectableOptions]);
 
@@ -70,33 +62,42 @@ export const MultiSelectInput = ({
             onChange(values);
         }
     };
-    const Input = (props: any) => <components.Input {...props} maxLength={50} />;
+
+    const handleInputChange = (searchText: string, action: { action: string }) => {
+        if (action.action !== 'input-blur' && action.action !== 'set-value') {
+            setSearchText(searchText);
+        }
+    };
 
     return (
-        <div className={'multi-select-input'}>
-            <EntryWrapper
-                orientation={orientation}
-                label={label ?? ''}
-                htmlFor={id ?? ''}
-                required={required}
-                error={error}>
-                <ReactSelect
-                    isMulti={true}
-                    id={id}
-                    name={name}
-                    value={selectedOptions}
-                    placeholder={placeholder}
-                    classNamePrefix="multi-select"
-                    hideSelectedOptions={false}
-                    closeMenuOnSelect={false}
-                    closeMenuOnScroll={false}
-                    onChange={handleOnChange}
-                    onBlur={onBlur}
-                    options={selectableOptions}
-                    components={{ Input, Option: CheckedOption }}
-                    isDisabled={disabled}
-                />
-            </EntryWrapper>
-        </div>
+        <EntryWrapper
+            orientation={orientation}
+            label={label ?? ''}
+            htmlFor={id ?? ''}
+            required={required}
+            error={error}>
+            <ReactSelect<Selectable, true>
+                theme={theme}
+                styles={styles}
+                isMulti
+                id={id}
+                name={name}
+                value={selectedOptions}
+                placeholder={placeholder}
+                className={'multi-select'}
+                classNamePrefix="multi-select"
+                hideSelectedOptions={false}
+                closeMenuOnSelect={false}
+                closeMenuOnScroll={false}
+                onChange={handleOnChange}
+                onBlur={onBlur}
+                options={selectableOptions}
+                components={{ Option: CheckboxOption }}
+                inputValue={searchText}
+                onInputChange={handleInputChange}
+                getOptionValue={asSelectableValue}
+                isDisabled={disabled}
+            />
+        </EntryWrapper>
     );
 };

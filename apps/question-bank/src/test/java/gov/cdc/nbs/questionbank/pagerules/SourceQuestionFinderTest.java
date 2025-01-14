@@ -1,15 +1,17 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
 import gov.cdc.nbs.questionbank.page.detail.PagesResolver;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesQuestion;
@@ -17,7 +19,9 @@ import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesSection;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesSubSection;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesTab;
 import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class SourceQuestionFinderTest {
 
   @Mock
@@ -26,13 +30,10 @@ class SourceQuestionFinderTest {
   @InjectMocks
   SourceQuestionFinder sourceQuestionFinder;
 
-  public SourceQuestionFinderTest() {
-    MockitoAnnotations.openMocks(this);
-  }
 
   @Test
   void testFilterDateQuestions() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePage());
     when(resolver.resolve(pageId)).thenReturn(page);
     SourceQuestionRequest request = new SourceQuestionRequest(Rule.RuleFunction.DATE_COMPARE);
@@ -43,7 +44,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestions() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     when(resolver.resolve(pageId)).thenReturn(page);
 
@@ -54,7 +55,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithoutPage() {
-    Long pageId = 1L;
+    long pageId = 1L;
     when(resolver.resolve(pageId)).thenReturn(Optional.empty());
 
     SourceQuestionRequest request = new SourceQuestionRequest(Rule.RuleFunction.ENABLE);
@@ -64,7 +65,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionsWithoutPage() {
-    Long pageId = 1L;
+    long pageId = 1L;
     when(resolver.resolve(pageId)).thenReturn(Optional.empty());
 
     SourceQuestionRequest request = new SourceQuestionRequest(Rule.RuleFunction.DATE_COMPARE);
@@ -74,7 +75,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithoutDataType() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageNoDataType());
     when(resolver.resolve(pageId)).thenReturn(page);
 
@@ -85,7 +86,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithDatePage() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePage());
     when(resolver.resolve(pageId)).thenReturn(page);
 
@@ -96,7 +97,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilerOtherQuestionsWithTrueStandardNnd() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageWithTrueStandardNnd());
     when(resolver.resolve(pageId)).thenReturn(page);
 
@@ -107,7 +108,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithoutCompBehavior() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageWithoutCompBehavior());
     when(resolver.resolve(pageId)).thenReturn(page);
 
@@ -118,7 +119,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithInv169() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageWithInv169());
     when(resolver.resolve(pageId)).thenReturn(page);
 
@@ -129,7 +130,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionsWithDateTime() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePageDateTime());
     when(resolver.resolve(pageId)).thenReturn(page);
     SourceQuestionRequest request = new SourceQuestionRequest(Rule.RuleFunction.DATE_COMPARE);
@@ -140,7 +141,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionsWithoutDataType() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePageWithoutDataType());
     when(resolver.resolve(pageId)).thenReturn(page);
     SourceQuestionRequest request = new SourceQuestionRequest(Rule.RuleFunction.DATE_COMPARE);
@@ -151,7 +152,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionsWithoutStandardNnd() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePageWithoutStandardNnd());
     when(resolver.resolve(pageId)).thenReturn(page);
     SourceQuestionRequest request = new SourceQuestionRequest(Rule.RuleFunction.DATE_COMPARE);
@@ -162,7 +163,7 @@ class SourceQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionWithoutVisible() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePageWithoutVisible());
     when(resolver.resolve(pageId)).thenReturn(page);
     SourceQuestionRequest request = new SourceQuestionRequest(Rule.RuleFunction.DATE_COMPARE);
@@ -190,8 +191,7 @@ class SourceQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getPageWithInv169() {
@@ -211,8 +211,7 @@ class SourceQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
 
@@ -233,8 +232,7 @@ class SourceQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getPageWithTrueStandardNnd() {
@@ -254,8 +252,7 @@ class SourceQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getPageNoDataType() {
@@ -275,8 +272,7 @@ class SourceQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getDatePage() {
@@ -297,8 +293,7 @@ class SourceQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getDatePageWithoutDataType() {
@@ -319,8 +314,7 @@ class SourceQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getDatePageDateTime() {
@@ -342,8 +336,7 @@ class SourceQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getDatePageWithoutStandardNnd() {
@@ -365,8 +358,7 @@ class SourceQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getDatePageWithoutVisible() {
@@ -388,7 +380,6 @@ class SourceQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 }

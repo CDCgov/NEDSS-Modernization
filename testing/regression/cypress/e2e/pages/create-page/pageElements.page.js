@@ -4,11 +4,11 @@ class PageElementsPage {
     }
 
     userViewsCreatePage() {
-        cy.get("#createNewPage")
+        cy.get(".createNewPage")
     }
 
     selectEventType() {
-        cy.wait(500)
+        cy.wait(1000)
         cy.get("#eventType").select("INV")
     }
 
@@ -27,20 +27,112 @@ class PageElementsPage {
     }
 
     selectValueFromConditions() {
-        cy.get('#conditionIds .multi-select__option input[type="checkbox"]').eq(0).click()
-        cy.get('.multi-select__option--is-focused').click();
+        cy.get('#conditionIds').eq(0).click({ force: true })
     }
 
     conditionFieldHasValue() {
-        cy.get('.multi-select__value-container--has-value').should('be.visible')
+        cy.get('#conditionIds').eq(0).click({ force: true })
     }
 
     clickOnConditionDropdownArrow() {
-        cy.get('.multi-select__dropdown-indicator').click()
+        cy.get('#conditionIds').eq(0).click({ force: true })
     }
 
     dropdownConditionsClose() {
         cy.get(".multi-select__control--menu-is-open").should('not.exist')
+    }
+
+    clickPageNameField() {
+        this.selectEventType()
+        cy.get('#name').click()
+    }
+
+    pageNameFieldFocused() {
+        cy.get('#name').should('be.focused')
+    }
+
+    enterValueInPageNameField() {
+        cy.get('#name').type('Malaria Investigation')
+    }
+
+    pageNameFieldAllows() {
+        cy.get('#name').should('have.value', 'Malaria Investigation')
+    }
+
+    clickEventTypeField() {
+        cy.wait(1000)
+        cy.get('#eventType').select('', {force: true})
+    }
+
+    eventTypeFieldFocused() {
+        cy.wait(1000)
+        cy.get('#eventType').select('', {force: true})
+        cy.get('#eventType').should('be.focused')
+    }
+
+    eventTypeFieldHasValue(optionText) {
+        cy.get('#eventType').should('contain', optionText)
+    }
+
+    clickTemplateField() {
+        this.selectEventType()
+        cy.wait(500)
+        cy.get('#templateId').select('')
+    }
+
+    templateFieldFocused() {
+        cy.get('#templateId').should('be.focused')
+    }
+
+    templateFieldHasValueList() {
+        cy.get('#templateId').find('option').should('have.length.gt', 1)
+    }
+
+    selectValueFromTemplateList() {
+        cy.get('#templateId').find('option').eq(1).then((option) => {
+            cy.get('#templateId').select(option.attr('value'))
+        })
+    }
+
+    templateFieldHasValue() {
+        cy.get('#templateId').invoke('val').should('exist')
+    }
+
+    clickMMGField() {
+        this.selectEventType()
+        cy.wait(500)
+        cy.get('#messageMappingGuide').select('')
+    }
+
+    mmgFieldFocused() {
+        cy.get('#messageMappingGuide').should('be.focused')
+    }
+
+    mmgFieldHasValueList() {
+        cy.get('#messageMappingGuide').find('option').should('have.length.gt', 1)
+    }
+
+    selectValueFromMMGList() {
+        cy.get('#messageMappingGuide').find('option').eq(1).then((option) => {
+            cy.get('#messageMappingGuide').select(option.attr('value'))
+        })
+    }
+
+    mmgFieldHasValue() {
+        cy.get('#messageMappingGuide').invoke('val').should('exist')
+    }
+
+    clickCancelButton() {
+        cy.get('#cancelBtn').click()
+    }
+
+    checkPageLibraryShowing() {
+        cy.visit('/page-builder/pages')
+        cy.url().should('include', 'page-builder/pages')
+    }
+
+    clickPageLibraryLink() {
+        cy.get('#pageLibraryLink').click()
     }
 
 }

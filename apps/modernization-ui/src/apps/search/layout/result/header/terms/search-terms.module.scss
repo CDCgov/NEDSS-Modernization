@@ -1,0 +1,19 @@
+.terms {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    outline: none !important;
+
+    .term {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    h2 {
+        display: flex;
+        white-space: nowrap;
+        margin: 0;
+    }
+}

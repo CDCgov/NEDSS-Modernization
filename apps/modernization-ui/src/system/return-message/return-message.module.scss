@@ -1,0 +1,25 @@
+@use 'styles/colors';
+
+.return {
+    margin: auto;
+    margin-top: 4.88rem;
+
+    display: flex;
+    padding: 2rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+
+    width: fit-content;
+
+    background-color: colors.$base-lightest;
+    line-height: 1.62rem;
+
+    h1 {
+        margin: 0;
+    }
+
+    .message {
+        width: 20.25rem;
+    }
+}

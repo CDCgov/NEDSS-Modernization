@@ -1,58 +1,39 @@
 package gov.cdc.nbs.entity.odse;
 
+import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.audit.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
-
-import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.MappedSuperclass;
-import java.time.Instant;
 
 @MappedSuperclass
 public abstract class Locator {
 
-    @Column(name = "add_reason_cd", length = 80)
-    private String addReasonCd;
+  @Embedded
+  private Audit audit;
 
-    @Column(name = "add_time")
-    private Instant addTime;
+  @Embedded
+  private RecordStatus recordStatus;
 
-    @Column(name = "add_user_id")
-    private Long addUserId;
+  protected Locator() {
 
-    @Column(name = "last_chg_reason_cd", length = 20)
-    private String lastChgReasonCd;
+  }
 
-    @Column(name = "last_chg_time")
-    private Instant lastChgTime;
+  protected Locator(final PatientCommand command) {
+    this.audit = new Audit(command.requester(), command.requestedOn());
+    this.recordStatus = new RecordStatus(command.requestedOn());
+  }
 
-    @Column(name = "last_chg_user_id")
-    private Long lastChgUserId;
+  protected void changed(final PatientCommand command) {
+    this.audit.changed(command.requester(), command.requestedOn());
+  }
 
-    @Column(name = "record_status_cd", length = 20)
-    private String recordStatusCd;
+  public Audit audit() {
+    return audit;
+  }
 
-    @Column(name = "record_status_time")
-    private Instant recordStatusTime;
+  public RecordStatus recordStatus() {
+    return recordStatus;
+  }
 
-    protected Locator() {
-
-    }
-
-    protected Locator(final PatientCommand command) {
-        this.addUserId = command.requester();
-        this.addTime = command.requestedOn();
-
-        this.lastChgTime = command.requestedOn();
-        this.lastChgUserId = command.requester();
-
-        this.recordStatusCd = "ACTIVE";
-        this.recordStatusTime = command.requestedOn();
-    }
-
-    public String getRecordStatusCd() {
-        return recordStatusCd;
-    }
-
-    public void setRecordStatusCd(String recordStatusCd) {
-        this.recordStatusCd = recordStatusCd;
-    }
 }

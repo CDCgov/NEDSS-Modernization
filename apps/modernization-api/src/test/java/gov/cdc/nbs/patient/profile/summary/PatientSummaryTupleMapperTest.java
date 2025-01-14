@@ -6,6 +6,7 @@ import gov.cdc.nbs.message.enums.Suffix;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -24,7 +25,7 @@ class PatientSummaryTupleMapperTest {
 
     when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-    when(tuple.get(tables.patient().birthTime)).thenReturn(Instant.parse("2001-07-07T00:00:00Z"));
+    when(tuple.get(tables.patient().birthTime)).thenReturn(LocalDateTime.parse("2001-07-07T00:00:00"));
 
     when(tuple.get(tables.ethnicity().codeShortDescTxt)).thenReturn("summary-value");
 
@@ -200,7 +201,7 @@ class PatientSummaryTupleMapperTest {
 
     when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-    when(tuple.get(tables.patient().birthTime)).thenReturn(Instant.parse("2001-07-07T00:00:00Z"));
+    when(tuple.get(tables.patient().birthTime)).thenReturn(LocalDateTime.parse("2001-07-07T00:00:00"));
 
     PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 

@@ -5,36 +5,57 @@ import { Direction } from './Sort';
 const SORT_ON_PARAMETER = 'sortOn';
 const DIRECTION_PARAMETER = 'direction';
 
-type SortingState = {
-    sorting: Sorting;
+type Interaction = {
+    property?: string;
+    direction?: Direction;
+    sorting?: string;
     reset: () => void;
     sortBy: (property: string, direction: Direction) => void;
+    toggle: (property: string) => void;
 };
 
-const SortingContext = createContext<SortingState | undefined>(undefined);
+const SortingContext = createContext<Interaction | undefined>(undefined);
 
-type Sorting = string | undefined;
+type Sorting =
+    | {
+          property: string;
+          direction: Direction;
+          sorting: string | undefined;
+      }
+    | undefined;
 
-type Action = { type: 'reset' } | { type: 'sort'; property: string; direction: Direction };
+type Action =
+    | { type: 'reset' }
+    | { type: 'sort'; property: string; direction: Direction }
+    | { type: 'toggle'; property: string };
 
 const reducer = (current: Sorting, action: Action): Sorting => {
     switch (action.type) {
         case 'reset':
             return undefined;
         case 'sort': {
-            return action.direction === Direction.None ? undefined : asSort(action.property, action.direction);
+            return asSorting(action.property, action.direction);
+        }
+        case 'toggle': {
+            if (action.property === current?.property) {
+                return asSorting(current.property, nextDirection(current.direction));
+            } else {
+                return asSorting(action.property, nextDirection(Direction.None));
+            }
         }
         default:
             return current;
     }
 };
 
-const asSort = (property: string, direction: Direction) => {
-    if (direction === Direction.None) {
-        return undefined;
-    } else {
-        return `${property},${fromDirection(direction)}`;
-    }
+const asSorting = (property: string, direction: Direction) => {
+    return direction === Direction.None
+        ? undefined
+        : {
+              property,
+              direction,
+              sorting: `${property},${fromDirection(direction)}`
+          };
 };
 
 const fromDirection = (direction: Direction) => {
@@ -55,6 +76,17 @@ const toDirection = (value: string) => {
         case 'desc':
             return Direction.Descending;
         default:
+            return Direction.None;
+    }
+};
+
+const nextDirection = (direction: Direction) => {
+    switch (direction) {
+        case Direction.None:
+            return Direction.Descending;
+        case Direction.Descending:
+            return Direction.Ascending;
+        case Direction.Ascending:
             return Direction.None;
     }
 };
@@ -102,9 +134,12 @@ const SortingProvider = ({ appendToUrl = false, children }: SortingProviderProps
     const sortByDispatch = (property: string, direction: Direction) => dispatch({ type: 'sort', property, direction });
 
     const value = {
-        sorting: state,
+        sorting: state?.sorting,
+        property: state?.property,
+        direction: state?.direction,
         reset: () => dispatch({ type: 'reset' }),
-        sortBy: appendToUrl ? sortByParameter : sortByDispatch
+        sortBy: appendToUrl ? sortByParameter : sortByDispatch,
+        toggle: (property: string) => dispatch({ type: 'toggle', property })
     };
 
     return <SortingContext.Provider value={value}>{children}</SortingContext.Provider>;
@@ -120,6 +155,8 @@ const useSorting = () => {
     return context;
 };
 
-export type { Sorting, SortingSettings };
+const maybeUseSorting = () => useContext(SortingContext);
 
-export { SortingProvider, useSorting };
+export type { Sorting, SortingSettings, Interaction as SortingInteraction };
+
+export { SortingProvider, useSorting, maybeUseSorting };

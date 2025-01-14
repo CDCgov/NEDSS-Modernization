@@ -1,0 +1,61 @@
+@use 'styles/colors';
+@use 'styles/borders';
+@use 'styles/tooltip';
+@use 'styles/icons';
+
+.input {
+    @extend %thin;
+    background-color: colors.$base-white;
+    header {
+        display: flex;
+        padding: 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        background-color: colors.$base-white;
+
+        @extend %thin-bottom;
+    }
+
+    .errorList {
+        list-style: inside;
+        padding: 0;
+        margin: 0;
+
+        & > li {
+            line-height: 1.62rem;
+        }
+    }
+
+    .dataTable {
+        overflow: hidden;
+        padding-bottom: 1rem;
+        .iconContainer {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+
+            svg {
+                color: colors.$primary;
+                cursor: pointer;
+                font-size: icons.$size-standard;
+            }
+        }
+    }
+
+    .form {
+        background-color: colors.$base-white;
+    }
+
+    .changed {
+        background-color: colors.$primary-lighter;
+    }
+
+    footer {
+        display: flex;
+        padding: 0.5rem 1.5rem 0.5rem 16.5rem;
+
+        svg {
+            font-size: icons.$size-standard;
+        }
+    }
+}

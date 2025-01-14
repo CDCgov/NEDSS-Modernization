@@ -13,6 +13,8 @@ type AlertInteraction = {
     showAlert: (alert: Alert) => void;
     showSuccess: (message: Message) => void;
     showError: (message: Message) => void;
+    showInfo: (message: Message) => void;
+    showWarning: (message: Message) => void;
 };
 
 const AlertContext = createContext<AlertInteraction | undefined>(undefined);
@@ -40,7 +42,9 @@ function AlertProvider({ duration = 5000, children }: AlertProviderProps) {
         clear,
         showAlert: (alert: Alert) => setAlert(alert),
         showSuccess: (message: Message) => setAlert({ type: 'success', header: 'Success', ...message }),
-        showError: (message: Message) => setAlert({ type: 'error', header: 'Error', ...message })
+        showError: (message: Message) => setAlert({ type: 'error', header: 'Error', ...message }),
+        showInfo: (message: Message) => setAlert({ type: 'info', header: 'Info', ...message }),
+        showWarning: (message: Message) => setAlert({ type: 'warning', header: 'Warning', ...message })
     };
 
     return (

@@ -23,7 +23,7 @@ class LabTestSummaryRowMapperTest {
 
     LabTestSummaryRowMapper mapper = new LabTestSummaryRowMapper(columns);
 
-    LabTestSummary mapped = mapper.map(resultSet);
+    LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.name()).isEqualTo("name-value");
     assertThat(mapped.coded()).isNull();
@@ -43,7 +43,7 @@ class LabTestSummaryRowMapperTest {
 
     LabTestSummaryRowMapper mapper = new LabTestSummaryRowMapper(columns);
 
-    LabTestSummary mapped = mapper.map(resultSet);
+    LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.coded()).isEqualTo("coded-value");
 
@@ -57,7 +57,7 @@ class LabTestSummaryRowMapperTest {
 
     LabTestSummaryRowMapper mapper = new LabTestSummaryRowMapper(columns);
 
-    LabTestSummary mapped = mapper.map(resultSet);
+    LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.numeric()).isEqualTo("739.53");
 
@@ -72,7 +72,7 @@ class LabTestSummaryRowMapperTest {
 
     LabTestSummaryRowMapper mapper = new LabTestSummaryRowMapper(columns);
 
-    LabTestSummary mapped = mapper.map(resultSet);
+    LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.high()).isEqualTo("high-value");
 
@@ -87,7 +87,7 @@ class LabTestSummaryRowMapperTest {
 
     LabTestSummaryRowMapper mapper = new LabTestSummaryRowMapper(columns);
 
-    LabTestSummary mapped = mapper.map(resultSet);
+    LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.low()).isEqualTo("low-value");
 
@@ -102,7 +102,7 @@ class LabTestSummaryRowMapperTest {
 
     LabTestSummaryRowMapper mapper = new LabTestSummaryRowMapper(columns);
 
-    LabTestSummary mapped = mapper.map(resultSet);
+    LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.unit()).isEqualTo("unit-value");
 
@@ -117,7 +117,7 @@ class LabTestSummaryRowMapperTest {
 
     LabTestSummaryRowMapper mapper = new LabTestSummaryRowMapper(columns);
 
-    LabTestSummary mapped = mapper.map(resultSet);
+    LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.status()).isEqualTo("status-value");
 

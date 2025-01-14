@@ -21,12 +21,6 @@ public class QueryDSLFilterApplier {
 
   public static Stream<BooleanExpression> apply(
       final ExpressionResolver expressionResolver,
-      final Collection<Filter> filters) {
-    return apply(expressionResolver, new DefaultQueryDSLCriteriaResolver(), filters);
-  }
-
-  public static Stream<BooleanExpression> apply(
-      final ExpressionResolver expressionResolver,
       final CriteriaResolver criteriaResolver,
       final Collection<Filter> filters) {
     return filters.stream()

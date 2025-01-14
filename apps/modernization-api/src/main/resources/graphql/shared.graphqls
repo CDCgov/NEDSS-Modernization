@@ -6,17 +6,50 @@ input Page {
   pageNumber: Int!
 }
 
+enum SortDirection {
+  ASC
+  DESC
+}
+
+scalar Direction
+
+input Sort {
+  property: String!
+  direction: Direction!
+}
+
 input SortablePage {
   pageSize: Int
   pageNumber: Int
+  sort: Sort
   sortField: SortField
   sortDirection: SortDirection
 }
 
 enum SortField {
-  lastNm
+  address
   birthTime
+  city
+  condition
+  country
+  county
+  email
+  firstNm
+  id
+  identification
+  investigator
+  investigationId
+  jurisdiction
+  lastNm
+  local_id
+  notification
+  phoneNumber
   relevance
+  startDate
+  state
+  status
+  sex
+  zip
 }
 
 enum RecordStatus {

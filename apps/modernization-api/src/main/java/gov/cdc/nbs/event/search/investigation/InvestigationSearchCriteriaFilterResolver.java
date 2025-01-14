@@ -260,7 +260,7 @@ class InvestigationSearchCriteriaFilterResolver {
   }
 
   private Optional<QueryVariant> withCreatedBy(final InvestigationFilter criteria) {
-    Long createdBy = criteria.getCreatedBy();
+    String createdBy = criteria.getCreatedBy();
 
     if (createdBy == null) {
       return Optional.empty();
@@ -286,7 +286,7 @@ class InvestigationSearchCriteriaFilterResolver {
   }
 
   private Optional<QueryVariant> withUpdatedBy(final InvestigationFilter criteria) {
-    Long updatedBy = criteria.getLastUpdatedBy();
+    String updatedBy = criteria.getLastUpdatedBy();
 
     if (updatedBy == null) {
       return Optional.empty();

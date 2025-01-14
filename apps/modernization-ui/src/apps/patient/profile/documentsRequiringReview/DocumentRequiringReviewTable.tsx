@@ -1,21 +1,12 @@
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { format } from 'date-fns';
-import { DocumentRequiringReview, DocumentRequiringReviewSortableField, SortDirection } from 'generated/graphql/schema';
 import { usePage } from 'page/usePage';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Direction } from 'sorting/Sort';
-import { Sort } from './DocumentsRequiringReview';
 import { ClassicLink } from 'classic';
 import { NoData } from 'components/NoData';
-
-enum Columns {
-    DocumentType = 'Document type',
-    DateReceived = 'Date received',
-    ReportingFacilityProvider = 'Reporting facility / provider',
-    EventDate = 'Event date',
-    Description = 'Description',
-    EventID = 'Event #'
-}
+import { Columns, DocumentReview } from './ReviewDocuments';
+import { SortCriteria, sort } from './DocumentRequiringReviewSorter';
 
 const headers = [
     { name: Columns.DocumentType, sortable: true },
@@ -26,7 +17,7 @@ const headers = [
     { name: Columns.EventID, sortable: true }
 ];
 
-const resolveUrl = (document: DocumentRequiringReview, patient?: string) => {
+const resolveUrl = (document: DocumentReview, patient?: string) => {
     switch (document.type) {
         case 'Morbidity Report':
             return `/nbs/api/profile/${patient}/report/morbidity/${document.id}`;
@@ -37,7 +28,7 @@ const resolveUrl = (document: DocumentRequiringReview, patient?: string) => {
     }
 };
 
-const renderType = (document: DocumentRequiringReview, patient?: string) => {
+const renderType = (document: DocumentReview, patient?: string) => {
     const url = resolveUrl(document, patient);
     return (
         <>
@@ -52,16 +43,16 @@ const renderType = (document: DocumentRequiringReview, patient?: string) => {
     );
 };
 
-const renderDateReceived = (document: DocumentRequiringReview) => {
+const renderDateReceived = (document: DocumentReview) => {
     return (
         <span>
-            {format(new Date(document?.dateReceived), 'MM/dd/yyyy')} <br />
-            {format(new Date(document?.dateReceived), 'hh:mm a').toLowerCase()}
+            {format(document?.dateReceived, 'MM/dd/yyyy')} <br />
+            {format(document?.dateReceived, 'hh:mm a').toLowerCase()}
         </span>
     );
 };
 
-const renderReportingFacility = (document: DocumentRequiringReview) => {
+const renderReportingFacility = (document: DocumentReview) => {
     return (
         <>
             {document.facilityProviders.reportingFacility ? (
@@ -99,7 +90,7 @@ const renderReportingFacility = (document: DocumentRequiringReview) => {
     );
 };
 
-const renderEventDate = (document: DocumentRequiringReview) => {
+const renderEventDate = (document: DocumentReview) => {
     return (
         <span>
             {document.eventDate ? (
@@ -114,7 +105,7 @@ const renderEventDate = (document: DocumentRequiringReview) => {
     );
 };
 
-const renderDescriptions = (document: DocumentRequiringReview) => {
+const renderDescriptions = (document: DocumentReview) => {
     return document.descriptions.map((d, key) => (
         <div key={key}>
             <strong>{d?.title}</strong>
@@ -124,7 +115,7 @@ const renderDescriptions = (document: DocumentRequiringReview) => {
     ));
 };
 
-const renderIdLink = (document: DocumentRequiringReview) => {
+const renderIdLink = (document: DocumentReview) => {
     return (
         <>
             <span>{document.localId}</span>
@@ -132,7 +123,7 @@ const renderIdLink = (document: DocumentRequiringReview) => {
     );
 };
 
-const asTableBody = (document: DocumentRequiringReview, patient: string): TableBody => ({
+const asTableBody = (document: DocumentReview, patient: string): TableBody => ({
     id: document.id,
     tableDetails: [
         {
@@ -162,47 +153,29 @@ const asTableBody = (document: DocumentRequiringReview, patient: string): TableB
     ]
 });
 
-const asTableBodies = (documents: DocumentRequiringReview[], patient: string): TableBody[] =>
+const asTableBodies = (documents: DocumentReview[], patient: string): TableBody[] =>
     documents?.map((d) => asTableBody(d, patient)) || [];
 
 export const DocumentsRequiringReviewTable = ({
     documents,
-    patient,
-    setSort
+    patient
 }: {
-    documents: DocumentRequiringReview[] | undefined;
+    documents: DocumentReview[] | undefined;
     patient: string | undefined;
-    setSort: Dispatch<SetStateAction<Sort | undefined>>;
 }) => {
     const { page, request } = usePage();
     const [bodies, setBodies] = useState<TableBody[]>([]);
+    const [criteria, setCriteria] = useState<SortCriteria>({});
 
     useEffect(() => {
         if (documents && patient) {
-            setBodies(asTableBodies(documents, patient));
+            const sorted = sort(documents, criteria);
+            setBodies(asTableBodies(sorted, patient));
         }
-    }, [documents]);
+    }, [documents, criteria]);
 
-    const handleSort = (field: string, direction: Direction) => {
-        let sortField: DocumentRequiringReviewSortableField;
-        switch (field) {
-            case Columns.DocumentType:
-                sortField = DocumentRequiringReviewSortableField.Type;
-                break;
-            case Columns.DateReceived:
-                sortField = DocumentRequiringReviewSortableField.DateReceived;
-                break;
-            case Columns.EventDate:
-                sortField = DocumentRequiringReviewSortableField.EventDate;
-                break;
-            case Columns.EventID:
-                sortField = DocumentRequiringReviewSortableField.LocalId;
-                break;
-            default:
-                return;
-        }
-        const sortDirection = direction === Direction.Ascending ? SortDirection.Asc : SortDirection.Desc;
-        setSort({ field: sortField, direction: sortDirection });
+    const handleSort = (name: string, direction: string): void => {
+        setCriteria({ name: name as Columns, type: direction as Direction });
     };
 
     return (

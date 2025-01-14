@@ -1,0 +1,36 @@
+@use 'styles/colors';
+
+.item {
+    display: flex;
+    gap: 0.5rem;
+
+    &.vertical {
+        flex-direction: column;
+        padding-bottom: 1rem;
+        gap: 0.12rem;
+    }
+
+    &.horizontal {
+        align-items: center;
+    }
+
+    .label {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.02031rem;
+        text-transform: uppercase;
+        color: colors.$base-dark;
+    }
+    p {
+        margin-top: 0;
+        margin-bottom: 0;
+        word-break: break-word;
+        white-space: pre-wrap;
+        font-size: 0.875rem;
+        font-weight: 400;
+    }
+
+    a {
+        font-size: 1rem;
+    }
+}

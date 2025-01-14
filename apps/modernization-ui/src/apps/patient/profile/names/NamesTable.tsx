@@ -184,7 +184,7 @@ export const NamesTable = ({ patient }: Props) => {
             add({
                 variables: {
                     input: {
-                        patient: entry.patient,
+                        patient: entry.patient ?? 0,
                         type: entry.type,
                         asOf: externalizeDateTime(entry.asOf),
                         prefix: entry.prefix,
@@ -216,8 +216,8 @@ export const NamesTable = ({ patient }: Props) => {
             update({
                 variables: {
                     input: {
-                        patient: entry.patient,
-                        sequence: entry.sequence,
+                        patient: entry.patient ?? 0,
+                        sequence: entry.sequence ?? 0,
                         type: entry.type,
                         asOf: externalizeDateTime(entry.asOf),
                         prefix: entry.prefix,

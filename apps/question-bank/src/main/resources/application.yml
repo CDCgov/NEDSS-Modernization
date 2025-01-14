@@ -5,8 +5,11 @@ server:
 nbs:
   datasource:
     server: localhost
+    port: 1433
+    username: ${DATABASE_USER:sa}
+    password: ${DATABASE_PASSWORD}
   security:
-    tokenSecret: qJ5+oDurrJnxfaAz6h4Eg1saP7NSeHuQQ/Yq4vh+mbi4B4QYThc/M+33VtPJ5O2A
+    tokenSecret: ${TOKEN_SECRET}
     tokenIssuer: gov.cdc.nbs
     tokenExpirationMillis: 1800000 # 30 minutes
   wildfly:
@@ -45,15 +48,12 @@ spring:
         timezone:
           default_storage: NORMALIZE
   datasource:
-    url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
-    username: sa
-    password: fake.fake.fake.1234
+    url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
+    username: ${nbs.datasource.username}
+    password: ${nbs.datasource.password}
 
 springdoc:
   packages-to-scan: "gov.cdc.nbs.questionbank"
-
-valueset:
-  byidurl: https://phinvads.cdc.gov/baseStu3/ValueSet/
 
 logging:
   file.name.path: ./log/

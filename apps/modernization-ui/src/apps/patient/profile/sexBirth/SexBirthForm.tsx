@@ -1,40 +1,9 @@
-import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
-import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
-import { useCountyCodedValues } from 'location';
-import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { Button, ButtonGroup } from '@trussworks/react-uswds';
+import { externalizeDate, externalizeDateTime } from 'date';
+import { FormProvider, useForm } from 'react-hook-form';
 import { maybeNumber, orNull } from 'utils';
-import { calculateAge, externalizeDate, externalizeDateTime } from 'date';
-import { useMemo } from 'react';
-import { maxLengthRule } from 'validation/entry';
-
-const UNKNOWN_GENDER = 'U';
-
-type BirthEntry = {
-    bornOn: string | null;
-    gender: string | null;
-    multipleBirth: string | null;
-    birthOrder: number | null;
-    city: string | null;
-    state: string | null;
-    county: string | null;
-    country: string | null;
-};
-
-type GenderEntry = {
-    current: string | null;
-    unknownReason: string | null;
-    preferred: string | null;
-    additional: string | null;
-};
-
-export type BirthAndGenderEntry = {
-    asOf: string | null;
-    birth: BirthEntry;
-    gender: GenderEntry;
-};
+import { BirthAndGenderEntryFields } from './BirthAndGenderEntryFields';
+import { BirthAndGenderEntry } from './BirthAndGenderEntry';
 
 type Props = {
     entry: BirthAndGenderEntry;
@@ -43,353 +12,45 @@ type Props = {
 };
 
 export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
-    const {
-        handleSubmit,
-        control,
-        formState: { isValid }
-    } = useForm({ mode: 'onBlur' });
+    const form = useForm<BirthAndGenderEntry>({ mode: 'onBlur', defaultValues: entry });
 
-    const currentBirthday = useWatch({ control, name: 'bornOn', defaultValue: entry.birth.bornOn });
-
-    const age = useMemo(() => calculateAge(currentBirthday), [currentBirthday]);
-
-    const selectedCurrentGender = useWatch({ control, name: 'currentGender', defaultValue: entry.gender.current });
-
-    const selectedState = useWatch({ control, name: 'state', defaultValue: entry.birth.state });
-
-    const selectedMultipleBirth = useWatch({ control, name: 'multipleBirth', defaultValue: entry.birth.multipleBirth });
-
-    const coded = usePatientSexBirthCodedValues();
-
-    const byState = useCountyCodedValues(selectedState);
-
-    const onSubmit = (entered: FieldValues) => {
+    const onSubmit = (entered: BirthAndGenderEntry) => {
         onChanged({
             asOf: externalizeDateTime(entered.asOf),
             birth: {
-                bornOn: externalizeDate(entered.bornOn),
-                gender: orNull(entered.birthGender),
-                multipleBirth: orNull(entered.multipleBirth),
-                birthOrder: maybeNumber(entered.birthOrder),
-                city: entered.city,
-                state: orNull(entered.state),
-                county: orNull(entered.county),
-                country: orNull(entered.country)
+                bornOn: externalizeDate(entered.birth.bornOn),
+                gender: orNull(entered.birth.gender),
+                multipleBirth: orNull(entered.birth.multipleBirth),
+                birthOrder: maybeNumber(entered.birth.birthOrder),
+                city: entered.birth.city,
+                state: orNull(entered.birth.state),
+                county: orNull(entered.birth.county),
+                country: orNull(entered.birth.country)
             },
             gender: {
-                current: orNull(entered.currentGender),
-                unknownReason: orNull(entered.unknownGenderReason),
-                preferred: orNull(entered.preferredGender),
-                additional: entered.additionalGender
+                current: orNull(entered.gender.current),
+                unknownReason: orNull(entered.gender.unknownReason),
+                preferred: orNull(entered.gender.preferred),
+                additional: entered.gender.additional
             }
         });
     };
 
     return (
         <>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 required text-bold">
-                    As of:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="asOf"
-                        defaultValue={entry.asOf}
-                        rules={{ required: { value: true, message: 'As of date is required.' } }}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <DatePickerInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                name="asOf"
-                                htmlFor={'asOf'}
-                                disableFutureDates
-                                errorMessage={error?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Date of birth:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="bornOn"
-                        defaultValue={entry.birth.bornOn}
-                        render={({ field: { onChange, value } }) => (
-                            <DatePickerInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                name="bornOn"
-                                disableFutureDates
-                                htmlFor={'bornOn'}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Current age:
-                </Grid>
-                <Grid col={6}>{age}</Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Current sex:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="currentGender"
-                        defaultValue={entry.gender.current}
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                name="currentGender"
-                                htmlFor={'currentGender'}
-                                options={coded.genders}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Unknown reason:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="unknownGenderReason"
-                        defaultValue={entry.gender.unknownReason}
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                disabled={selectedCurrentGender !== UNKNOWN_GENDER}
-                                defaultValue={value}
-                                onChange={onChange}
-                                name="unknownGenderReason"
-                                htmlFor={'unknownGenderReason'}
-                                options={coded.genderUnknownReasons}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Transgender information:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        defaultValue={entry.gender.preferred}
-                        name="preferredGender"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                name="preferredGender"
-                                htmlFor={'preferredGender'}
-                                options={coded.preferredGenders}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Additional gender:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        defaultValue={entry.gender.additional}
-                        name="additionalGender"
-                        render={({ field: { onChange, value } }) => (
-                            <Input
-                                placeholder="No Data"
-                                onChange={onChange}
-                                type="text"
-                                defaultValue={value}
-                                htmlFor="additionalGender"
-                                id="additionalGender"
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Birth sex:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        defaultValue={entry.birth.gender}
-                        name="birthGender"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                name="birthGender"
-                                htmlFor={'birthGender'}
-                                options={coded.genders}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Multiple birth:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="multipleBirth"
-                        defaultValue={entry.birth.multipleBirth}
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                name="multipleBirth"
-                                htmlFor={'multipleBirth'}
-                                options={coded.multipleBirth}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            {selectedMultipleBirth === 'Y' && (
-                <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                    <Grid col={6} className="margin-top-1 text-bold">
-                        Birth order:
-                    </Grid>
-                    <Grid col={6}>
-                        <Controller
-                            control={control}
-                            defaultValue={entry.birth.birthOrder}
-                            name="birthOrder"
-                            rules={{ min: { value: 0, message: 'Must be a positive number' } }}
-                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                                <Input
-                                    placeholder="No Data"
-                                    onChange={onChange}
-                                    onBlur={onBlur}
-                                    type="text"
-                                    defaultValue={value}
-                                    htmlFor="birthOrder"
-                                    id="birthOrder"
-                                    mask="_____"
-                                    pattern="\d{5}"
-                                    error={error?.message}
-                                />
-                            )}
-                        />
-                    </Grid>
-                </Grid>
-            )}
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Birth city:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="city"
-                        defaultValue={entry.birth.city}
-                        rules={maxLengthRule(100)}
-                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                            <Input
-                                placeholder="No Data"
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                type="text"
-                                defaultValue={value}
-                                htmlFor="city"
-                                id="city"
-                                error={error?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Birth state:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        defaultValue={entry.birth.state}
-                        name="state"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'state'}
-                                options={coded.states.all}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Birth county:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="county"
-                        defaultValue={entry.birth.county}
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'county'}
-                                options={byState.counties}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Birth country:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        defaultValue={entry.birth.country}
-                        name="country"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'country'}
-                                options={coded.countries}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
+            <FormProvider {...form}>
+                <BirthAndGenderEntryFields />
+            </FormProvider>
             <div className="border-top border-base-lighter padding-2 margin-left-auto">
                 <ButtonGroup className="flex-justify-end">
                     <Button type="button" className="margin-top-0" outline onClick={onCancel}>
                         Cancel
                     </Button>
                     <Button
-                        onClick={handleSubmit(onSubmit)}
+                        onClick={form.handleSubmit(onSubmit)}
                         type="submit"
                         className="padding-105 text-center margin-top-0"
-                        disabled={!isValid}>
+                        disabled={!form.formState.isValid}>
                         Save
                     </Button>
                 </ButtonGroup>

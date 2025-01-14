@@ -1,1 +1,19 @@
 @forward 'styles/buttons';
+@use 'styles/colors';
+
+.button-component {
+    margin: 0 !important;
+}
+
+.unpadded {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    cursor: pointer;
+    color: colors.$primary !important;
+    text-align: left !important;
+    height: unset !important;
+    font-size: 0.875rem;
+    line-height: 162%;
+    font-style: normal;
+}

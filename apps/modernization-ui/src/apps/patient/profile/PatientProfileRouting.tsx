@@ -3,11 +3,16 @@ import { PatientProfile } from './PatientProfile';
 import { Summary } from './Summary';
 import { Events } from './Events';
 import { Demographics } from './Demographics';
+import { FeatureGuard } from 'feature';
 
 const routing = [
     {
         path: '/patient-profile/:id',
-        element: <PatientProfile />,
+        element: (
+            <FeatureGuard guard={(features) => features.patient.profile.enabled}>
+                <PatientProfile />
+            </FeatureGuard>
+        ),
         children: [
             { path: '', element: <Navigate to="summary" /> },
             {

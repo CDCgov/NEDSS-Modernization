@@ -17,6 +17,10 @@ public class PatientPostalLocatorHistoryListener {
     }
 
     @PreUpdate
+    @SuppressWarnings(
+        //  The PatientPostalLocatorHistoryListener is an entity listener specifically for instances of PostalEntityLocatorParticipation
+        {"javaarchitecture:S7027","javaarchitecture:S7091"}
+    )
     void preUpdate(final PostalEntityLocatorParticipation postalEntityLocatorParticipation) {
         long locatorId = postalEntityLocatorParticipation.getId().getLocatorUid();
         int currentVersion = getCurrentVersionNumber(locatorId);

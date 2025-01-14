@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.entity.odse.EntityId;
-import gov.cdc.nbs.entity.odse.EntityIdId;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +8,11 @@ import jakarta.persistence.PreUpdate;
 
 @Component
 public class PatientIdentificationHistoryListener {
+
+    private static final String QUERY = "SELECT MAX(version_ctrl_nbr) FROM Entity_id_hist WHERE entity_uid = ? and entity_id_seq = ?";
+    private static final int IDENTIFIER_PARAMETER = 1;
+    private static final int SEQUENCE_PARAMETER = 2;
+
     private final PatientIdentificationHistoryCreator creator;
     private final JdbcTemplate template;
 
@@ -18,17 +22,27 @@ public class PatientIdentificationHistoryListener {
     }
 
     @PreUpdate
+    @SuppressWarnings(
+        //  The PatientIdentificationHistoryListener is an entity listener specifically for instances of EntityId
+        {"javaarchitecture:S7027", "javaarchitecture:S7091"}
+    )
     void preUpdate(final EntityId entityId) {
-        int entityIdSequence = entityId.getId().getEntityIdSeq();
-        int currentVersion = getCurrentVersionNumber(entityId.getId(), entityIdSequence);
-        this.creator.createEntityIdHistory(entityId.getId().getEntityUid(), currentVersion + 1, entityIdSequence);
+        long identifier = entityId.getId().getEntityUid();
+        int sequence = entityId.getId().getEntityIdSeq();
+        int currentVersion = getCurrentVersionNumber(identifier, sequence);
+        this.creator.createEntityIdHistory(identifier, currentVersion + 1, sequence);
 
     }
 
-    private int getCurrentVersionNumber(EntityIdId id, int entityIdSequence) {
-        long entityUid = id.getEntityUid();
-        String query = "SELECT MAX(version_ctrl_nbr) FROM Entity_id_hist WHERE entity_uid = ? and entity_id_seq = ?";
-        Integer maxVersionControlNumber = template.queryForObject(query, Integer.class, entityUid, entityIdSequence);
-        return maxVersionControlNumber != null ? maxVersionControlNumber : 0;
+    private int getCurrentVersionNumber(long identifier, int sequence) {
+        return template.query(
+                QUERY, statement -> {
+                    statement.setLong(IDENTIFIER_PARAMETER, identifier);
+                    statement.setInt(SEQUENCE_PARAMETER, sequence);
+                },
+                (resultSet, row) -> resultSet.getInt(1))
+            .stream()
+            .findFirst()
+            .orElse(0);
     }
 }

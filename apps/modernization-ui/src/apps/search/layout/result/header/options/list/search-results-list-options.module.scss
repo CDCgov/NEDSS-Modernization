@@ -1,0 +1,14 @@
+@use 'styles/colors.scss';
+
+.options {
+    --modal-min-width: max-content;
+}
+
+.opener {
+    color: colors.$primary;
+
+    .icon {
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+}

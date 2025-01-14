@@ -12,11 +12,10 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,22 +24,31 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 public class PatientProfileEthnicitySteps {
 
-  @Autowired
-  Active<PatientInput> input;
+  private final Active<PatientInput> input;
 
-  @Autowired
-  Active<Person> patient;
+  private final Active<Person> activePatient;
 
-  @Autowired
-  EntityManager entityManager;
+  private final EntityManager entityManager;
 
-  @Autowired
-  Available<PatientIdentifier> patients;
+  private final Available<PatientIdentifier> patients;
 
-  @Autowired
-  PatientEthnicityController controller;
+  private final PatientEthnicityController controller;
 
   private EthnicityInput updates;
+
+  PatientProfileEthnicitySteps(
+      final Active<PatientInput> input,
+      final Active<Person> activePatient,
+      final EntityManager entityManager,
+      final Available<PatientIdentifier> patients,
+      final PatientEthnicityController controller
+  ) {
+    this.input = input;
+    this.activePatient = activePatient;
+    this.entityManager = entityManager;
+    this.patients = patients;
+    this.controller = controller;
+  }
 
   @Before("@patient_update")
   public void reset() {
@@ -56,7 +64,7 @@ public class PatientProfileEthnicitySteps {
 
   @Then("the new patient has the entered ethnicity")
   public void the_new_patient_has_the_entered_ethnicity() {
-    Person actual = this.patient.active();
+    Person actual = this.activePatient.active();
     PatientInput expected = this.input.active();
 
     assertThat(actual)

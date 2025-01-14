@@ -84,16 +84,16 @@ table.usa-table {
     font-size: 1rem;
     font-style: normal;
     font-weight: 700;
+
+    height: 2.75rem;
+    min-width: 2.75rem;
     line-height: 125%;
+
     &:has(svg) {
         align-items: center;
         padding: 0.75rem 1.25rem;
         display: inline-flex;
         gap: 0.3125rem;
-    }
-
-    svg {
-        vertical-align: bottom;
     }
 }
 
@@ -151,7 +151,44 @@ table.usa-table {
         padding: 0;
         font-weight: 400;
     }
-    .usa-pagination__arrow .usa-button{
+    .usa-pagination__arrow .usa-button {
         font-weight: 700;
+    }
+}
+
+input.usa-input--error:focus {
+    outline: none;
+}
+.usa-input-mask {
+    display: flex;
+
+    input {
+        flex-grow: 1;
+    }
+
+    .usa-input-mask--content {
+        display: none;
+    }
+}
+
+.usa-date-picker__calendar {
+    min-width: 300px !important;
+}
+
+.from {
+    --calendar-left: 0;
+}
+
+.usa-date-picker__wrapper {
+    .usa-date-picker__external-input {
+        flex-grow: 1;
+        margin-right: 4px;
+    }
+    .usa-date-picker__button {
+        margin: 0;
+    }
+
+    .usa-date-picker__calendar {
+        left: var(--calendar-left, unset);
     }
 }

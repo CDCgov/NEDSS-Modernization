@@ -8,7 +8,18 @@ import java.sql.SQLException;
 
 class SearchablePatientAddressRowMapper implements RowMapper<SearchablePatient.Address> {
 
-  record Column(int address1, int address2, int city, int state, int zip, int county, int country) {}
+  record Column(
+      int address1,
+      int address2,
+      int city,
+      int state,
+      int zip,
+      int county,
+      int country,
+      int countyText,
+      int stateText,
+      int countryText) {
+  }
 
 
   private final Column columns;
@@ -26,6 +37,9 @@ class SearchablePatientAddressRowMapper implements RowMapper<SearchablePatient.A
     String zip = resultSet.getString(this.columns.zip());
     String county = resultSet.getString(this.columns.county());
     String country = resultSet.getString(this.columns.country());
+    String countyText = resultSet.getString(this.columns.countyText());
+    String stateText = resultSet.getString(this.columns.stateText());
+    String countryText = resultSet.getString(this.columns.countryText());
     return new SearchablePatient.Address(
         address1,
         address2,
@@ -33,7 +47,9 @@ class SearchablePatientAddressRowMapper implements RowMapper<SearchablePatient.A
         state,
         zip,
         county,
-        country
-    );
+        country,
+        countyText,
+        stateText,
+        countryText);
   }
 }

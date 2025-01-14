@@ -1,8 +1,11 @@
-import { ErrorMessage, Grid, Label, Textarea } from '@trussworks/react-uswds';
-import FormCard from 'components/FormCard/FormCard';
+import { Grid } from '@trussworks/react-uswds';
 import { Controller, useFormContext } from 'react-hook-form';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { maxLengthRule } from 'validation/entry';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { Input } from 'components/FormInputs/Input';
+import FormCard from 'components/FormCard/FormCard';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
+const AS_OF_DATE_LABEL = 'Information as of date';
 
 export default function GeneralInformation({ id, title }: { id?: string; title?: string }) {
     const { control } = useFormContext();
@@ -11,27 +14,23 @@ export default function GeneralInformation({ id, title }: { id?: string; title?:
             <Grid col={12} className="padding-x-3 padding-bottom-3">
                 <Grid row>
                     <Grid col={12} className="margin-top-2">
-                        <span data-testid="required-text">All fields marked with</span>{' '}
-                        <span className="text-red">*</span> are required
+                        <span>All fields marked with</span> <span className="text-red">*</span> are required
                     </Grid>
                     <Grid col={6}>
-                        <Label className="required" htmlFor="asOf">
-                            <span data-testid="date-lable">Information as of Date</span>{' '}
-                        </Label>
                         <Controller
-                            rules={{
-                                required: { value: true, message: 'This field is required' }
-                            }}
                             control={control}
                             name="asOf"
-                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                            rules={{ ...validDateRule(AS_OF_DATE_LABEL), ...validateRequiredRule(AS_OF_DATE_LABEL) }}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <DatePickerInput
-                                    defaultValue={value}
+                                    id={name}
+                                    label={AS_OF_DATE_LABEL}
+                                    value={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     name={name}
-                                    htmlFor={name}
-                                    disableFutureDates
-                                    errorMessage={error?.message}
+                                    error={error?.message}
+                                    required
                                 />
                             )}
                         />
@@ -41,16 +40,21 @@ export default function GeneralInformation({ id, title }: { id?: string; title?:
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="comments"
+                            name="comment"
                             rules={maxLengthRule(2000)}
-                            render={({ field: { onChange, name, onBlur }, fieldState: { error } }) => (
-                                <>
-                                    <Label htmlFor={name}>Comments</Label>
-                                    <Textarea onChange={onChange} onBlur={onBlur} name={name} id={name} />
-                                    {error?.message && (
-                                        <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>
-                                    )}
-                                </>
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                                <Input
+                                    label="Comments"
+                                    type="text"
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                    defaultValue={value}
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
+                                    error={error?.message}
+                                    multiline
+                                />
                             )}
                         />
                     </Grid>

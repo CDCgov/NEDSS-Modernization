@@ -15,9 +15,19 @@ class PatientProfilePage {
   }
 
   print() {
-    cy.get("button[class=usa-button]").invoke("removeAttr", "target").click({ force: true });
+    cy.get("button").contains("Delete patient").invoke("removeAttr", "target").click({ force: true });
     cy.wait(1000);
   }
+
+  setPatientProfileENVID() {
+    cy.url().then((url) => {      
+      const urlParts = url.split('/');
+      const patientId = urlParts[urlParts.length - 2];
+      Cypress.env('patientId', patientId);
+      cy.log(patientId);
+    });
+  }
+
 
   isDemographicPageDisplayed() {
     cy.wait(1000);
@@ -32,15 +42,15 @@ class PatientProfilePage {
   }
 
   delete() {
-    cy.get(".usa-button.patient-profile_destructive__WvWJ9").wait(2000).click({ force: true });
+    cy.get("button").contains("Delete patient").wait(2000).click({ force: true });
   }
 
   confirmDelete() {
-    cy.get("div[data-testid=modalFooter] button").eq(1).click();
+    cy.get("footer[class=usa-modal__footer] button").eq(1).click();
   }
 
   cancelDelete() {
-    cy.get("div[data-testid=modalFooter] button").eq(0).click();
+    cy.get("footer[class=usa-modal__footer] button").eq(0).click();
   }
 
   navigatePatinet() {

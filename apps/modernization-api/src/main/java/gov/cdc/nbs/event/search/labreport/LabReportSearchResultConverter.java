@@ -1,13 +1,15 @@
 package gov.cdc.nbs.event.search.labreport;
 
 import gov.cdc.nbs.event.search.RelevanceResolver;
-
+import gov.cdc.nbs.patient.documentsrequiringreview.detail.LabTestSummary;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 class LabReportSearchResultConverter {
 
-  static LabReportSearchResult convert(final SearchableLabReport searchable, final Double score) {
+  static LabReportSearchResult convert(final SearchableLabReport searchable, final Double score,
+      final LabTestSummaryFinder labTestSummaryFinder) {
 
     double relevance = RelevanceResolver.resolve(score);
 
@@ -37,8 +39,9 @@ class LabReportSearchResultConverter {
         personParticipations,
         organizationParticipations,
         observations,
-        associatedInvestigations
-    );
+        associatedInvestigations,
+        labTestSummaryFinder == null ? new ArrayList<LabTestSummary>()
+            : labTestSummaryFinder.find(searchable.identifier()));
   }
 
   private static LabReportSearchResult.PersonParticipation asPerson(final SearchableLabReport.Person person) {
@@ -56,13 +59,11 @@ class LabReportSearchResultConverter {
         patient.lastName(),
         patient.code(),
         patient.identifier(),
-        patient.local()
-    );
+        patient.local());
   }
 
   private static LabReportSearchResult.PersonParticipation asPerson(
-      final SearchableLabReport.Person.Provider provider
-  ) {
+      final SearchableLabReport.Person.Provider provider) {
     return new LabReportSearchResult.PersonParticipation(
         null,
         null,
@@ -71,44 +72,37 @@ class LabReportSearchResultConverter {
         provider.lastName(),
         provider.code(),
         provider.identifier(),
-        null
-    );
+        null);
   }
 
   private static LabReportSearchResult.OrganizationParticipation asOrganization(
-      final SearchableLabReport.Organization organization
-  ) {
+      final SearchableLabReport.Organization organization) {
     return new LabReportSearchResult.OrganizationParticipation(
         organization.type(),
-        organization.name()
-    );
+        organization.name());
   }
 
   private static LabReportSearchResult.Observation asObservation(final SearchableLabReport.LabTest test) {
     return new LabReportSearchResult.Observation(
         test.name(),
         test.alternative(),
-        test.result()
-    );
+        test.result());
   }
 
   private static List<LabReportSearchResult.AssociatedInvestigation> asAssociatedInvestigations(
-      final List<SearchableLabReport.Investigation> investigations
-  ) {
+      final List<SearchableLabReport.Investigation> investigations) {
     return investigations == null
         ? Collections.emptyList()
         : investigations.stream()
-        .map(LabReportSearchResultConverter::asAssociatedInvestigation)
-        .toList();
+            .map(LabReportSearchResultConverter::asAssociatedInvestigation)
+            .toList();
   }
 
   private static LabReportSearchResult.AssociatedInvestigation asAssociatedInvestigation(
-      final SearchableLabReport.Investigation investigation
-  ) {
+      final SearchableLabReport.Investigation investigation) {
     return new LabReportSearchResult.AssociatedInvestigation(
         investigation.condition(),
-        investigation.local()
-    );
+        investigation.local());
   }
 
   private LabReportSearchResultConverter() {

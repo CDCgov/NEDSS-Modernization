@@ -1,10 +1,11 @@
+import { useEffect } from 'react';
 import { Button } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import styles from './signIn.module.scss';
-import { LinkButton } from 'components/button';
 import { AlertBanner } from 'alert';
+import { LinkButton } from 'components/button';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
-import { useEffect } from 'react';
+
+import styles from './signIn.module.scss';
 
 export type SignInProps = {
     handleWelcomeEvent?: (value: string) => void;
@@ -28,16 +29,12 @@ export const SignIn = ({ handleWelcomeEvent }: SignInProps) => {
                     </p>
                 </AlertBanner>
             </div>
-            <LinkButton id="login" href="/nbs/login" type="solid" className="margin-top-2">
+            <LinkButton id="login" href="/nbs/login" type="solid" className={styles['sign-in']} target="_self">
                 Login to NBS demo site
             </LinkButton>
-            <div className={classNames(styles.signUpDemoText)}>
+            <div className={classNames(styles.participation)}>
                 Want to participate?
-                <Button
-                    onClick={() => handleWelcomeEvent?.('signUp')}
-                    type="button"
-                    unstyled
-                    className={classNames(styles.signUpButton)}>
+                <Button onClick={() => handleWelcomeEvent?.('signUp')} type="button" unstyled>
                     Sign up for demo access
                 </Button>
             </div>

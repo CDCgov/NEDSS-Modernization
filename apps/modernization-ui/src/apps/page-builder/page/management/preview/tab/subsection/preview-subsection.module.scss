@@ -21,11 +21,13 @@
       align-items: center;
       gap: 0.5rem;
       .name {
-        color: colors.$base-black;
-        text-align: center;
-        font-size: 1rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
+        h4 {
+          color: colors.$base-black;
+          text-align: center;
+          font-size: 1rem;
+          font-weight: 700;
+          margin: 0 0 0.5rem;
+        }
       }
       .count {
         color: colors.$base-darkest;
@@ -71,6 +73,9 @@
         border-left: 1px solid colors.$border;
         &:first-child {
           border: none;
+        }
+        span {
+          font-weight: 700;
         }
       }
     }

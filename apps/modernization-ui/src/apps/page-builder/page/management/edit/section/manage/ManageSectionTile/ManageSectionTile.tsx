@@ -77,7 +77,8 @@ export const ManageSectionTile = ({
                                                     handleDelete?.(section);
                                                     setSelectedForDelete(undefined);
                                                     setOnAction(false);
-                                                }}>
+                                                }}
+                                                className="yesDelete">
                                                 Yes, delete
                                             </div>
                                             <div className={styles.separator}>|</div>
@@ -122,7 +123,7 @@ export const ManageSectionTile = ({
                                     outline
                                     className={styles.iconBtn}
                                     disabled={onAction}>
-                                    <Icon.Edit style={{ cursor: 'pointer' }} size={3} />
+                                    <Icon.Edit data-testId="editIcon" style={{ cursor: 'pointer' }} size={3} />
                                 </Button>
                                 <Button
                                     type="button"
@@ -133,7 +134,7 @@ export const ManageSectionTile = ({
                                         setSelectedForDelete(section);
                                         setOnAction(true);
                                     }}>
-                                    <Icon.Delete style={{ cursor: 'pointer' }} size={3} />
+                                    <Icon.Delete data-testId="deleteIcon" style={{ cursor: 'pointer' }} size={3} />
                                 </Button>
                                 {section.visible ? (
                                     <Button
@@ -144,7 +145,11 @@ export const ManageSectionTile = ({
                                         onClick={() => {
                                             onChangeVisibility(section, false);
                                         }}>
-                                        <Icon.Visibility style={{ cursor: 'pointer' }} size={3} />
+                                        <Icon.Visibility
+                                            data-testId="visibilityIcon"
+                                            style={{ cursor: 'pointer' }}
+                                            size={3}
+                                        />
                                     </Button>
                                 ) : (
                                     <Button

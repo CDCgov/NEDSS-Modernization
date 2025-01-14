@@ -3,14 +3,14 @@
 NBS is a Java EE application which is distributed as a .ear (enterprise application archive) file.
 It is currently built using Maven and Java 8.
 Because it has typically been built using the tools on Windows OS, in order to gain the convenience
-of using Docker, it is necessary to massage a few changes into the code before it can
-be built in the linux environment.
+of using Docker, it is necessary to make a few changes before it can
+be built in a linux environment.
 
 - The project code files are currently encoded with the ISO-8859-1 character set.
   This causes problems if the java compiler is expecting UTF-8 which is it's default
 - One of the files referenced in the build.xml build script has incorrect matching
   case with the actual file on the filesystem
-- The pom-jar.xml is missing an for a couple of `provided` dependencies. `Xalan` and `xerces`. 
+- The pom-jar.xml is missing an entry for a couple of `provided` dependencies. `Xalan` and `xerces`. 
 
 The builder docker in this project addresses these concerns automatically.
 
@@ -41,7 +41,7 @@ git clone -b NBS_6.0.15 git@github.com:cdcent/NEDSSDev.git
 
 From the `cdc-sanbox` directory, execute
 ```shell
-docker-compose up wildfly
+docker compose up wildfly
 ```
 
 The docker build will copy the output of `build.sh` (located in the dist folder) as well as the [pagemanagement](../../pagemanagement/) files into the container. In a normal windows installation the pagemanagement files are generated as follows:
@@ -56,7 +56,7 @@ In docker however, the unzip step fails. For this reason we manually copy the fi
 ## Build MSSQL Database Container Image
 
 ```shell
-docker-compose build nbs-mssql
+docker compose build nbs-mssql
 ```
 
 ## Clean Docker Environment
@@ -65,7 +65,7 @@ To start over and create all the Docker images from scratch again, run the
 following command in this project directory.
 
 ```shell
-docker-compose down
+docker compose down
 ```
 
 The Docker volume named "nbs-mssql-data" will not be removed automatically.
@@ -114,8 +114,8 @@ To build Elasticsearch and Kibana open your command prompt, navigate to the dire
 Configuration settings for **Elasticsearch** can be found at the external link [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html). Configuration settings for **Kibana** can be found at the external link [here](https://www.elastic.co/guide/en/kibana/8.4/settings.html).
 
 ```
-docker-compose up -d elasticsearch
-docker-compose up -d kibana
+docker compose up -d elasticsearch
+docker compose up -d kibana
 ```
 
 Once the containers are up you can access the Kibana home page as follows:
@@ -129,7 +129,7 @@ http://localhost:5601
 ### Running Traefik
 
 ```bash
-docker-compose up -d reverse-proxy
+docker compose up -d reverse-proxy
 ```
 
 ### Requirements
@@ -178,7 +178,7 @@ This configuration snippet defines a `router` that will catch requests matching 
 1. Starting NiFi (run in the cdc-sandbox directory):
 
 ```sh
-docker-compose up nifi -d
+docker compose up nifi -d
 ```
 
 ## Kafka
@@ -200,7 +200,7 @@ cd cdc-sandbox/kafka
 
 2. Launch kafka Docker container environment. If you are on an ARM Environment you may use (docker-compose-arm64v8.yml) if you experience any performance issues but regular script should work fine.
 ```
-docker-compose  -f docker-compose.yml up -d
+docker compose  -f docker-compose.yml up -d
 ```
 
 * Note: To create a topic you can open Zookeeper CLI and find the commands online. You can also open Kafka-UI in

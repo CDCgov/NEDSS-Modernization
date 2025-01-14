@@ -12,4 +12,12 @@ public record Option(
     int order
 ) {
 
+  public Option(String value, String name) {
+    this(value, name, name, 1);
+  }
+
+  public Option(String value) {
+    this(value, value);
+  }
+
 }

@@ -3,14 +3,13 @@ package gov.cdc.nbs.authentication;
 import gov.cdc.nbs.authentication.session.SessionAuthenticator;
 import gov.cdc.nbs.authentication.token.NBSTokenValidator;
 import gov.cdc.nbs.authentication.token.NBSTokenValidator.TokenValidation;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.filter.OncePerRequestFilter;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
 
 /**
@@ -24,7 +23,6 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
   private final IgnoredPaths ignoredPaths;
   private final NBSAuthenticationIssuer authIssuer;
   private final SessionAuthenticator sessionAuthenticator;
-  private static final AntPathRequestMatcher timeoutPath = new AntPathRequestMatcher("/nbs/timeout");
 
   public NBSAuthenticationFilter(
       final NBSTokenValidator tokenValidator,
@@ -70,7 +68,7 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
 
   @Override
   protected boolean shouldNotFilter(final HttpServletRequest request) {
-    return timeoutPath.matches(request) || ignoredPaths.ignored(request);
+    return ignoredPaths.ignored(request);
   }
 
 }

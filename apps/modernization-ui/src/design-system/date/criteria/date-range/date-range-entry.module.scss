@@ -1,0 +1,16 @@
+.date-range-entry {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    .range-wrapper {
+        display: flex;
+        gap: 0.5rem;
+        flex-direction: column;
+    }
+
+    input {
+        width: 100% !important;
+    }
+}

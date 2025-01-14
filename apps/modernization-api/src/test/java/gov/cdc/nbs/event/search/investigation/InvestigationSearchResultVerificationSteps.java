@@ -6,10 +6,10 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
-
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
-import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import org.hamcrest.Matcher;
+import static org.hamcrest.Matchers.*;
 
 public class InvestigationSearchResultVerificationSteps {
 
@@ -20,8 +20,7 @@ public class InvestigationSearchResultVerificationSteps {
   InvestigationSearchResultVerificationSteps(
       final Active<InvestigationIdentifier> investigation,
       final Active<PatientIdentifier> patient,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.investigation = investigation;
     this.patient = patient;
     this.response = response;
@@ -33,10 +32,8 @@ public class InvestigationSearchResultVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findInvestigationsByFilter.content[*].personParticipations[?(@.shortId=='%s')]",
-                String.valueOf(this.patient.active().shortId())
-            )
-                .exists()
-        );
+                String.valueOf(this.patient.active().shortId()))
+                    .exists());
   }
 
   @Then("the Investigation search results contain the Investigation")
@@ -45,10 +42,8 @@ public class InvestigationSearchResultVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findInvestigationsByFilter.content[?(@.id=='%s')]",
-                String.valueOf(this.investigation.active().identifier())
-            )
-                .exists()
-        );
+                String.valueOf(this.investigation.active().identifier()))
+                    .exists());
   }
 
   @Then("there is only one investigation search result")
@@ -79,15 +74,40 @@ public class InvestigationSearchResultVerificationSteps {
     JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
 
     this.response.active()
-        .andExpect(pathMatcher.value(hasItem(value)));
+        .andExpect(pathMatcher.value(matchingValue(field, value)));
+  }
+
+  private Matcher<?> matchingValue(final String field, final String value) {
+    return switch (field.toLowerCase()) {
+      case "patientid","shortid" -> hasItem(Integer.parseInt(value));
+      case "condition", "notification", "investigator", "status", "start date", "jurisdiction", "investigation id" -> equalTo(
+          value);
+      default -> hasItem(value);
+    };
   }
 
   private JsonPathResultMatchers matchingPath(final String field, final String position) {
     return switch (field.toLowerCase()) {
-      case "birthday" ->
-          jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].birthTime", position);
-      case "last name" ->
-          jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].lastName", position);
+      case "birthday" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].birthTime",
+          position);
+      case "last name" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].lastName",
+          position);
+      case "first name" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].firstName",
+          position);
+      case "sex" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].currSexCd",
+          position);
+      case "patientid","shortid" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].shortId",
+          position);
+      case "condition" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].cdDescTxt", position);
+      case "investigation id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].localId", position);
+      case "investigator" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].investigatorLastName", position);
+      case "jurisdiction" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].jurisdictionCodeDescTxt",
+          position);
+      case "notification" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].notificationRecordStatusCd",
+          position);
+      case "start date" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].startedOn", position);
+      case "status" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].investigationStatusCd",
+          position);
       default -> throw new AssertionError("Unexpected Investigation Search Result property %s".formatted(field));
     };
   }

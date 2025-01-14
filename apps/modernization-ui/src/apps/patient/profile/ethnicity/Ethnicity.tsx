@@ -5,10 +5,11 @@ import { internalizeDate } from 'date';
 import { useFindPatientProfileEthnicity } from './useFindPatientProfileMortality';
 import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'apps/patient/profile/coded';
-import { EthnicityForm, EthnicityEntry } from './EthnicityForm';
+import { EthnicityForm } from './EthnicityForm';
 import { useAlert } from 'alert/useAlert';
 import { useProfileContext } from '../ProfileContext';
 import { Patient } from '../Patient';
+import { EthnicityEntry } from './EthnicityEntry';
 
 type Props = {
     patient: Patient | undefined;

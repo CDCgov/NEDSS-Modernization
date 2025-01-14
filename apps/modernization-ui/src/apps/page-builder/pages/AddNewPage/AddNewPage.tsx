@@ -132,7 +132,7 @@ export const AddNewPage = () => {
     };
 
     return (
-        <div className="add-new-page" id="createNewPage">
+        <div className="add-new-page createNewPage" id="createNewPage">
             <div className="breadcrumb-wrap">
                 <PagesBreadcrumb currentPage="Create new page" />
             </div>
@@ -188,7 +188,7 @@ export const AddNewPage = () => {
                     </div>
                 </div>
                 <div className="add-new-page__buttons">
-                    <Button type="button" outline onClick={handleCancel}>
+                    <Button type="button" outline onClick={handleCancel} id="cancelBtn">
                         Cancel
                     </Button>
                     <Button

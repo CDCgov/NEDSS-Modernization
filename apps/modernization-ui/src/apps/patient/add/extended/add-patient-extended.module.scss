@@ -1,0 +1,42 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.addPatientExtended {
+    display: flex;
+    height: calc(100vh - 75px);
+    background-color: colors.$base-white;
+    overflow: auto;
+
+    .content {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+
+        & > header {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            padding: 1rem;
+            align-items: center;
+            @extend %thin-bottom;
+
+            h1 {
+                margin: 0;
+            }
+
+            .buttonGroup {
+                display: flex;
+                gap: 0.5rem;
+            }
+        }
+
+        main {
+            display: flex;
+            height: 100%;
+            padding: 1rem 1rem 0 1rem;
+            background-color: colors.$background;
+            overflow: auto;
+            scroll-behavior: smooth;
+        }
+    }
+}

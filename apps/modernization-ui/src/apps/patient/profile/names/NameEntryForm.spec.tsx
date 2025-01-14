@@ -35,7 +35,7 @@ describe('When adding a name', () => {
                 <NameEntryForm action="Add" entry={entry} onChange={onChange} />
             );
 
-            const input = getByLabelText('First name');
+            const input = getByLabelText('First');
 
             act(() => userEvent.paste(input, 'qwertyqwertyqwertyqwertyqwertyqwertyqwertyqwertyqwerty'));
 
@@ -51,7 +51,7 @@ describe('When adding a name', () => {
         it('should allow numbers in First name', async () => {
             const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('First name');
+            const input = getByLabelText('First');
 
             await userEvent.type(input, '1231');
 
@@ -61,7 +61,7 @@ describe('When adding a name', () => {
         it('should allow special characters in First name', async () => {
             const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('First name');
+            const input = getByLabelText('First');
             await userEvent.type(input, '!@#$%^&*');
 
             expect(input).toHaveValue('!@#$%^&*'); // Asserting that the input contains the special characters
@@ -74,7 +74,7 @@ describe('When adding a name', () => {
                 <NameEntryForm action="Add" entry={entry} onChange={onChange} />
             );
 
-            const input = getByLabelText('Middle name');
+            const input = getByLabelText('Middle');
 
             act(() => userEvent.paste(input, 'qwertyqwertyqwertyqwertyqwertyqwertyqwertyqwertyqwerty'));
 
@@ -90,7 +90,7 @@ describe('When adding a name', () => {
         it('should allow numbers in Middle name', async () => {
             const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Middle name');
+            const input = getByLabelText('Middle');
 
             await userEvent.type(input, '1231');
 
@@ -100,7 +100,7 @@ describe('When adding a name', () => {
         it('should allow special characters in Middle name', async () => {
             const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Middle name');
+            const input = getByLabelText('Middle');
             await userEvent.type(input, '!@#$%^&*');
 
             expect(input).toHaveValue('!@#$%^&*'); // Asserting that the input contains the special characters
@@ -152,7 +152,7 @@ describe('When adding a name', () => {
                 <NameEntryForm action="Add" entry={entry} onChange={onChange} />
             );
 
-            const input = getByLabelText('Last name');
+            const input = getByLabelText('Last');
 
             act(() => userEvent.paste(input, 'qwertyqwertyqwertyqwertyqwertyqwertyqwertyqwertyqwerty'));
 
@@ -168,7 +168,7 @@ describe('When adding a name', () => {
         it('should allow numbers in Last name', async () => {
             const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Last name');
+            const input = getByLabelText('Last');
 
             await userEvent.type(input, '1231');
 
@@ -178,7 +178,7 @@ describe('When adding a name', () => {
         it('should allow special characters in Last name', async () => {
             const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Last name');
+            const input = getByLabelText('Last');
             await userEvent.type(input, '!@#$%^&*');
 
             expect(input).toHaveValue('!@#$%^&*'); // Asserting that the input contains the special characters

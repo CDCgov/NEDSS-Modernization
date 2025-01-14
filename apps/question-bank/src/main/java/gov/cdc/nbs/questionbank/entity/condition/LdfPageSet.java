@@ -17,6 +17,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(catalog = "NBS_SRTE", name = "LDF_page_set")
+@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
 public class LdfPageSet implements Serializable {
 
     @Id

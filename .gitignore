@@ -28,7 +28,16 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# local environment set up
 application-local.yml
+local.env
+.env
 
-# merged .graphqls files used in code generation
-ui/src/generated/schema.graphqls
+# cdc-sandbox
+cdc-sandbox/dist/
+
+cdc-sandbox/nifi/repo
+cdc-sandbox/nifi/nifi_conf/conf/flow.json.gz
+cdc-sandbox/archive/
+cdc-sandbox/NEDSSDev/
+cdc-sandbox/.env

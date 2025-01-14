@@ -1,0 +1,1 @@
+export { InvestigationSearchResultListItem } from './InvestigationSearchResultListItem';

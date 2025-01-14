@@ -8,8 +8,7 @@ import searchResultsPage from "cypress/e2e/pages/search.results.page";
 
 Then(
   "the user has searched for a patient by {string} as {string}",
-  (string, string2) => {
-    searchPage.selectBasicInfo();
+  (string, string2) => {    
     searchPage.selectId();
     searchPage.enterIdType(string);
     searchPage.enterId(string2);
@@ -17,10 +16,13 @@ Then(
   }
 );
 
+Then("I set patient id profile ENV", () => {
+  patientProfilePage.setPatientProfileENVID();
+});
+
 Then(
   "the user has enters for a patient by {string} as {string}",
   (string, string2) => {
-    searchPage.selectBasicInfo();
     searchPage.selectId();
     searchPage.enterIdType(string);
     searchPage.enterId(string2);
@@ -30,7 +32,6 @@ Then(
 Then(
   "the user has searched for a patient by name {string} as {string}",
   (string, string2) => {
-    // searchPage.selectBasicInfo();
     searchPage.selectName();
     searchPage.enterLastName(string);
     searchPage.enterFirstName(string2);
@@ -47,11 +48,16 @@ Then("the patient's profile is displayed", () => {
 });
 
 Then("I should see search button disabled", () => {
-  cy.get('div.bottom-search button[type="submit"]').should('be.disabled')
+  cy.get('button').contains("Search").should('be.disabled')
 });
 
 Then("I should see {string}", (string) => {
-  cy.contains(string).should("be.visible");
+  cy.get('main').contains(string).should("be.visible");
+});
+
+Then("I should see error message {string}", (string) => {
+  cy.get('span[data-testid="errorMessage"].usa-error-message').contains(string).should("be.visible")
+
 });
 
 When("the User close the error message", () => {
@@ -59,7 +65,6 @@ When("the User close the error message", () => {
 });
 
 Given("the user is on a Patient Profile page for {string}", (string) => {
-  searchPage.selectBasicInfo();
   searchPage.selectId();
   searchPage.enterIdType("Person number");
   searchPage.enterId(string);
@@ -85,7 +90,7 @@ Then("confirms the deletion of the patient", () => {
 });
 
 Then("the user is directed to the Home screen", () => {
-  cy.url().should("include", "/advanced-search");
+  cy.url().should("include", "/search/patients");
 });
 
 Then("cancels the deletion of the patient", () => {
@@ -219,8 +224,15 @@ Then(
 );
 
 Given(
+  "the user navigate to a new patient profile page", () => {
+    const clientid = Cypress.env("patientId");
+    cy.visit(`/patient-profile/${clientid}`);
+  }
+);
+
+Given(
   "the user navigate to the patient profile page for {string}",
-  (string) => {
+  (string) => {    
     cy.visit(`/patient-profile/${string}`);
   }
 );
@@ -247,5 +259,5 @@ Then("nagivate to add new patient page", () => {
 Given("create a new patient profile", () => {
   cy.visit('/add-patient');
   addPatientPage.addSimplePatient()
-  addPatientPage.viewPatientProfile();
+  addPatientPage.clickViewPatientProfile();
 });

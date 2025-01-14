@@ -6,8 +6,6 @@ import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientNameHistoryListener;
-import lombok.Getter;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embedded;
@@ -19,18 +17,30 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import lombok.Getter;
+
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.function.Predicate;
 
 @Getter
 @Entity
 @Table(name = "Person_name")
+@SuppressWarnings(
+    //  The PatientNameHistoryListener is an entity listener specifically for instances of this class
+    {"javaarchitecture:S7027","javaarchitecture:S7091"}
+)
 @EntityListeners(PatientNameHistoryListener.class)
 public class PersonName {
 
   public static Predicate<PersonName> active() {
     return input -> Objects.equals(input.recordStatusCd, RecordStatus.ACTIVE.name());
+  }
+
+  public static Predicate<PersonName> havingType(final String use) {
+    return input -> Objects.equals(input.type(),use);
   }
 
   @EmbeddedId
@@ -117,6 +127,14 @@ public class PersonName {
     this.nmUseCd = added.type();
 
     this.audit = new Audit(added.requester(), added.requestedOn());
+  }
+
+  public LocalDate asOf() {
+    return this.asOfDate.atZone(ZoneOffset.UTC).toLocalDate();
+  }
+
+  public String type() {
+    return this.nmUseCd;
   }
 
   public void update(final PatientCommand.UpdateNameInfo info) {

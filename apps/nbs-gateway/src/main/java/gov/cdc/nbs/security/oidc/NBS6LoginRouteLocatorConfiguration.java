@@ -24,7 +24,8 @@ class NBS6LoginRouteLocatorConfiguration {
       final RouteLocatorBuilder builder,
       @Qualifier("defaults") final List<GatewayFilter> defaults,
       final NBSClassicService classic,
-      final HomeService home) {
+      final HomeService home
+  ) {
     return builder.routes()
         .route(
             "nbs6-login-bypass",
@@ -42,8 +43,8 @@ class NBS6LoginRouteLocatorConfiguration {
                 .query("UserName")
                 .filters(
                     filters -> filters
-                        .redirect(302, home
-                            .base()))
+                        .redirect(302, home.base())
+                )
                 .uri("no://op"))
         .build();
   }
@@ -54,10 +55,9 @@ class NBS6LoginRouteLocatorConfiguration {
         .flatMap(
             user -> chain.filter(
                 exchange.mutate().request(
-                        request -> request.path(
-                                "/nbs/nfc?UserName="
-                                    + user)
-                            .build())
+                        request -> request.path("/nbs/nfc?UserName=" + user)
+                            .build()
+                    )
                     .build()));
   }
 

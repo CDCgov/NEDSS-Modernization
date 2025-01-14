@@ -1,16 +1,6 @@
 package gov.cdc.nbs.questionbank.page;
 
-import java.util.Optional;
-
-import org.junit.Assert;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
-
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
@@ -18,24 +8,39 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Transactional
 public class PageDeletorSteps {
-    @Autowired
-    private ExceptionHolder exceptionHolder;
 
-    @Autowired
-    private PageMother pageMother;
+    private final ExceptionHolder exceptionHolder;
 
-    @Autowired
-    private WaTemplateRepository waTemplateRepository;
+    private final PageMother pageMother;
 
-    @Autowired
-    private PageRequest request;
+    private final WaTemplateRepository waTemplateRepository;
+
+    private final PageRequest request;
 
     private final Active<ResultActions> response = new Active<>();
     private final Active<WaTemplate> currPage = new Active<>();
     private final Active<WaTemplate> draftPage = new Active<>();
+
+    PageDeletorSteps(
+        final ExceptionHolder exceptionHolder,
+        final PageMother pageMother,
+        final WaTemplateRepository waTemplateRepository,
+        final PageRequest request
+    ) {
+        this.exceptionHolder = exceptionHolder;
+        this.pageMother = pageMother;
+        this.waTemplateRepository = waTemplateRepository;
+        this.request = request;
+    }
 
     @Given("I create a delete page request with published with draft page")
     public void i_create_a_delete_page_request_with_published_with_draft_page() {
@@ -68,8 +73,8 @@ public class PageDeletorSteps {
     @Then("the draft is deleted and the page changed to published")
     public void the_page_deleted_and_changed_to_published() {
         Optional<WaTemplate> temp = waTemplateRepository.findById(currPage.active().getId());
-        Assert.assertEquals(PageConstants.PUBLISHED, temp.get().getTemplateType());
-        Assert.assertEquals(Optional.empty(), waTemplateRepository.findById(draftPage.active().getId()));
+        assertEquals(PageConstants.PUBLISHED, temp.get().getTemplateType());
+        assertEquals(Optional.empty(), waTemplateRepository.findById(draftPage.active().getId()));
     }
 
     @Then("the draft is deleted")

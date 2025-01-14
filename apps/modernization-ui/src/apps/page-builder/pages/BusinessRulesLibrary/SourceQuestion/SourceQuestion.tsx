@@ -95,6 +95,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                     <div key={key} className={styles.section}>
                                         <div
                                             className={styles.sectionToggle}
+                                            data-testid="listedSections"
                                             onClick={() => {
                                                 activeSection === section.id
                                                     ? setActiveSection(0)
@@ -113,6 +114,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                 <div
                                                     key={id}
                                                     className={styles.subsection}
+                                                    data-testid="listedSubsections"
                                                     onClick={() => {
                                                         if (activeSubsection === subsection.id) {
                                                             setActiveSubsection(0);
@@ -156,6 +158,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                 <Button
                     type="button"
                     outline
+                    data-testid="sourceQuestionModalCancelBtn"
                     onClick={() => {
                         onReset();
                         onCancel?.();
@@ -164,6 +167,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                 </Button>
                 <Button
                     type="button"
+                    data-testid="sourceQuestionModalContinueBtn"
                     onClick={() => {
                         onContinue(questionSelect);
                         onCancel?.();

@@ -9,7 +9,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static com.github.tomakehurst.wiremock.matching.RequestPatternBuilder.allRequests;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItems;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -43,8 +45,14 @@ class ViewObservationRouteLocatorConfigurationTest {
                 )
                 .exchange()
                 .expectHeader()
-                .value("Set-Cookie", containsString("Patient-Action=7841"));
-
+            .values(
+                "Set-Cookie",
+                hasItems(
+                    containsString("Patient-Action=7841;"),
+                    containsString("Return-Patient=;")
+                )
+            );
+        classic.verify(1, allRequests());
     }
 
     @Test
@@ -62,7 +70,41 @@ class ViewObservationRouteLocatorConfigurationTest {
             )
             .exchange()
             .expectHeader()
-            .value("Set-Cookie", containsString("Patient-Action=7841"));
+            .values(
+                "Set-Cookie",
+                hasItems(
+                    containsString("Patient-Action=7841;"),
+                    containsString("Return-Patient=;")
+                )
+            );
 
+        classic.verify(1, allRequests());
+    }
+
+    @Test
+    void should_add_Patient_Action_cookie_when_viewing_a_lab_report_observation_from_an_event_search_result() {
+
+        classic.stubFor(get(urlPathMatching("/nbs/PatientSearchResults1.do\\\\?.*")).willReturn(ok()));
+
+        webClient
+            .get().uri(
+                builder -> builder
+                    .path("/nbs/PatientSearchResults1.do")
+                    .queryParam("ContextAction", "ViewLab")
+                    .queryParam("observationUID", "7841")
+                    .queryParam("MPRUid","257")
+                    .build()
+            )
+            .exchange()
+            .expectHeader()
+            .values(
+                "Set-Cookie",
+                hasItems(
+                    containsString("Patient-Action=7841;"),
+                    containsString("Return-Patient=;")
+                )
+            );
+
+        classic.verify(1, allRequests());
     }
 }

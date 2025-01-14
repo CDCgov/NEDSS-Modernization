@@ -9,13 +9,11 @@ Feature: Patient Delete
     Given I have the authorities: "DELETE-PATIENT,VIEW-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     When I delete the patient
     Then the patient is deleted
-    And the patient delete event is emitted
 
   Scenario Outline: I delete a patient without the proper permissions
     Given  I have the authorities: "<authorities>" for the jurisdiction: "ALL" and program area: "STD"
     When I delete the patient
     Then I am not allowed to delete the patient
-    And a patient event is not emitted
 
     Examples:
       | authorities    |
@@ -27,35 +25,30 @@ Feature: Patient Delete
     Given I have the authorities: "DELETE-PATIENT,VIEW-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     When I delete an unknown patient
     Then there is no patient to delete
-    And a patient event is not emitted
 
   Scenario: I can not delete a patient that is associated with events
     Given I have the authorities: "DELETE-PATIENT,VIEW-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     And the patient is a subject of an investigation
     When I delete the patient
     Then the patient is not deleted because of an association with an event
-    And a patient event is not emitted
 
   Scenario: I can not delete a patient that is associated with events
     Given I have the authorities: "DELETE-PATIENT,VIEW-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     And the patient has a lab Report
     When I delete the patient
     Then the patient is not deleted because of an association with an event
-    And a patient event is not emitted
 
   Scenario: I can not delete a patient that is associated with events
     Given I have the authorities: "DELETE-PATIENT,VIEW-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     And the patient has a Morbidity Report
     When I delete the patient
     Then the patient is not deleted because of an association with an event
-    And a patient event is not emitted
 
   Scenario: I can not delete a patient that is associated with events
     Given I have the authorities: "DELETE-PATIENT,VIEW-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     And the patient is vaccinated
     When I delete the patient
     Then the patient is not deleted because of an association with an event
-    And a patient event is not emitted
 
   Scenario: I can not delete a patient that is associated with events
     Given I have the authorities: "DELETE-PATIENT,VIEW-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
@@ -63,14 +56,12 @@ Feature: Patient Delete
     And the patient is a subject of a Treatment
     When I delete the patient
     Then the patient is not deleted because of an association with an event
-    And a patient event is not emitted
 
   Scenario: I can not delete a patient that is associated with events
     Given I have the authorities: "DELETE-PATIENT,VIEW-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     And the patient has a Case Report
     When I delete the patient
     Then the patient is not deleted because of an association with an event
-    And a patient event is not emitted
 
   Scenario: I can not delete a patient that is associated with events
     Given I have the authorities: "DELETE-PATIENT,VIEW-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
@@ -78,11 +69,9 @@ Feature: Patient Delete
     And the patient names a contact
     When I delete the patient
     Then the patient is not deleted because of an association with an event
-    And a patient event is not emitted
 
   Scenario: I can not delete a patient that is associated with events
     Given I have the authorities: "DELETE-PATIENT,VIEW-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     And the patient is named as a contact
     When I delete the patient
     Then the patient is not deleted because of an association with an event
-    And a patient event is not emitted

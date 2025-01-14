@@ -1,0 +1,1 @@
+export { NoPatientResults } from './NoPatientResults';

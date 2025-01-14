@@ -24,6 +24,7 @@ class PrimaryOccupationValueSetFinder {
         return this.factory.select(
                 values.id,
                 values.codeShortDescTxt).from(values)
+                .where(values.indentLevelNbr.eq((short) 1))
                 .orderBy(new OrderSpecifier<>(Order.ASC, values.codeShortDescTxt))
                 .fetch()
                 .stream()

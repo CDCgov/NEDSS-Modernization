@@ -1,11 +1,5 @@
 package gov.cdc.nbs.questionbank.question;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -19,6 +13,12 @@ import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class QuestionMapperTest {
@@ -45,7 +45,7 @@ class QuestionMapperTest {
 
     // Date question specific fields
     assertEquals(entity.getMask(), q.mask());
-    assertEquals(entity.getFutureDateIndCd().equals('T') ? true : false, q.allowFutureDates());
+    assertEquals(entity.getFutureDateIndCd().equals('T'), q.allowFutureDates());
 
     validateQuestionFields(q, entity);
   }
@@ -90,7 +90,9 @@ class QuestionMapperTest {
       }
 
       @Override
-      public void update(Update command) {}
+      public void update(Update command) {// NOOP
+        //
+      }
 
     };
 
@@ -120,11 +122,11 @@ class QuestionMapperTest {
     assertEquals(entity.getUserDefinedColumnNm(), q.dataMartInfo().dataMartColumnName());
 
     // messaging
-    assertEquals(entity.getNndMsgInd().equals('T') ? true : false, q.messagingInfo().includedInMessage());
+    assertEquals(entity.getNndMsgInd().equals('T'), q.messagingInfo().includedInMessage());
     assertEquals(entity.getQuestionIdentifierNnd(), q.messagingInfo().messageVariableId());
     assertEquals(entity.getQuestionLabelNnd(), q.messagingInfo().labelInMessage());
     assertEquals(entity.getQuestionOid(), q.messagingInfo().codeSystem());
-    assertEquals(entity.getQuestionRequiredNnd().equals('R') ? true : false, q.messagingInfo().requiredInMessage());
+    assertEquals(entity.getQuestionRequiredNnd().equals('R'), q.messagingInfo().requiredInMessage());
     assertEquals(entity.getQuestionDataTypeNnd(), q.messagingInfo().hl7DataType());
   }
 

@@ -11,10 +11,11 @@ import {
 import { Loading } from 'components/Spinner';
 import { internalizeDate } from 'date';
 import { Patient } from 'apps/patient/profile';
-import { displayAddress } from 'address/display/displayAddress';
+import { displayAddressText } from 'address/display';
 import { NoData } from 'components/NoData';
 import { displayName } from 'name';
 import { useProfileContext } from '../ProfileContext';
+import { displayAgeAsOfToday } from 'date/displayAge';
 
 type Props = {
     patient?: Patient;
@@ -40,7 +41,7 @@ const asText = (value: string) => <p className="patient-summary-item-value">{val
 const allAsText = (items: string[]) => asText(items.join('\n'));
 
 const asBirthday = (summary: PatientSummary) => {
-    const value = summary.birthday && `${internalizeDate(summary.birthday)} (${summary.age} years old)`;
+    const value = summary.birthday && `${internalizeDate(summary.birthday)} (${displayAgeAsOfToday(summary.birthday)})`;
     return maybeRender(value, asText);
 };
 
@@ -49,7 +50,7 @@ const asPhones = (items: PatientSummaryPhone[]) => asText(items.map((items) => i
 const asEmails = (items: PatientSummaryEmail[]) => asText(items.map((item) => item.address).join('\n'));
 
 const asAddress = (address: PatientSummaryAddress) => {
-    const value = displayAddress(address);
+    const value = displayAddressText(address);
     return maybeRender(value, asText);
 };
 
@@ -88,16 +89,16 @@ export const PatientProfileSummary = ({ patient }: Props) => {
             ) : (
                 <>
                     <div className="border-bottom border-base-lighter patient-summary-title">
-                        <h2>{summary?.legalName && displayName()(summary.legalName)}</h2>
+                        <h2>{(summary?.legalName && displayName('fullLastFirst')(summary.legalName)) ?? '---'}</h2>
                         <span>Patient ID: {patient.shortId}</span>
                         {patient.status != 'ACTIVE' && <span className="text-red">{patient.status}</span>}
                     </div>
                     <div className="patient-summary-items">
                         <div className="grouped">
-                            <SummaryItem label="Sex">{maybeRender(summary.gender, asText)}</SummaryItem>
+                            <SummaryItem label="Current sex">{maybeRender(summary.gender, asText)}</SummaryItem>
                             <SummaryItem label="Phone"> {maybeRender(summary.phone, asPhones)}</SummaryItem>
-                            <SummaryItem label={addressLabel(summary.home)}>
-                                {maybeRender(summary.home, asAddress)}
+                            <SummaryItem label={addressLabel(summary.home) ?? 'Address'}>
+                                {maybeRender(summary.home ?? summary.address[0], asAddress)}
                             </SummaryItem>
                             <SummaryItem label="Race">{maybeRender(summary.races, allAsText)}</SummaryItem>
                             <SummaryItem label="Date of birth">{asBirthday(summary)}</SummaryItem>

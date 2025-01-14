@@ -4,9 +4,11 @@ import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.ChildScoreMode;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.NestedQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Operator;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryVariant;
 import gov.cdc.nbs.event.search.LabReportFilter;
+import gov.cdc.nbs.search.WildCards;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -14,6 +16,8 @@ import java.util.stream.Stream;
 
 @Component
 class LabReportSearchCriteriaQueryResolver {
+
+  private static final String OBSERVATIONS = "observations";
 
   Query resolve(final LabReportFilter criteria) {
     return Stream.of(
@@ -64,14 +68,15 @@ class LabReportSearchCriteriaQueryResolver {
   }
 
   private Optional<QueryVariant> withResultedTest(final LabReportFilter criteria) {
-    return criteria.resultedTest().map(
-        test -> NestedQuery.of(
-            nested -> nested.path("observations")
-                .scoreMode(ChildScoreMode.None)
+    return criteria.withResultedTest().map(
+        value -> NestedQuery.of(
+            nested -> nested.path(OBSERVATIONS)
+                .scoreMode(ChildScoreMode.Avg)
                 .query(
-                    query -> query.match(
-                        match -> match.field("observations.cd_desc_txt")
-                            .query(test)
+                    query -> query.simpleQueryString(
+                        simple -> simple.fields("observations.cd_desc_txt")
+                            .query(WildCards.startsWith(value))
+                            .defaultOperator(Operator.And)
                     )
                 )
         )
@@ -79,14 +84,15 @@ class LabReportSearchCriteriaQueryResolver {
   }
 
   private Optional<QueryVariant> withCodedResult(final LabReportFilter criteria) {
-    return criteria.codedResult().map(
-        result -> NestedQuery.of(
-            nested -> nested.path("observations")
-                .scoreMode(ChildScoreMode.None)
+    return criteria.withCodedResult().map(
+        value -> NestedQuery.of(
+            nested -> nested.path(OBSERVATIONS)
+                .scoreMode(ChildScoreMode.Avg)
                 .query(
-                    query -> query.match(
-                        match -> match.field("observations.display_name")
-                            .query(result)
+                    query -> query.simpleQueryString(
+                        simple -> simple.fields("observations.display_name")
+                            .query(WildCards.startsWith(value))
+                            .defaultOperator(Operator.And)
                     )
                 )
         )

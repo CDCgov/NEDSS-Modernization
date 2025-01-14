@@ -17,6 +17,10 @@ public class PatientPhoneLocatorHistoryListener {
     }
 
     @PreUpdate
+    @SuppressWarnings(
+        //  The PatientPhoneLocatorHistoryListener is an entity listener specifically for instances of TeleEntityLocatorParticipation
+        {"javaarchitecture:S7027","javaarchitecture:S7091"}
+    )
     void preUpdate(final TeleEntityLocatorParticipation teleEntityLocatorParticipation) {
         long locatorId = teleEntityLocatorParticipation.getId().getLocatorUid();
         int currentVersion = getCurrentVersionNumber(locatorId);

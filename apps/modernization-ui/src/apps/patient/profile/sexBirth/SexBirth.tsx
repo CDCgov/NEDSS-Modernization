@@ -5,18 +5,23 @@ import { PatientProfileBirthAndGenderResult, useFindPatientProfileBirth } from '
 import { internalizeDate } from 'date';
 import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeId } from '../coded';
-import { BirthAndGenderEntry, SexBirthForm } from './SexBirthForm';
+import { SexBirthForm } from './SexBirthForm';
+import { BirthAndGenderEntry } from './BirthAndGenderEntry';
 import { maybeNumber, orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
 import { useProfileContext } from '../ProfileContext';
 import { Patient } from '../Patient';
+import { displayAgeAsOfToday } from 'date/displayAge';
 
 const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
     {
         title: 'As of:',
         text: internalizeDate(birth?.asOf)
     },
-    { title: 'Current age:', text: birth?.age?.toString() },
+    {
+        title: 'Current age:',
+        text: `${displayAgeAsOfToday(birth?.bornOn)}`
+    },
     { title: 'Date of birth:', text: internalizeDate(birth?.bornOn) },
     { title: 'Current sex:', text: gender?.current?.description },
     { title: 'Unknown reason:', text: maybeDescription(gender?.unknownReason) },

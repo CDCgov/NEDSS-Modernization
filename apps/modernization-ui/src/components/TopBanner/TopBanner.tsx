@@ -8,6 +8,9 @@ import { BannerContent } from './BannerContent/BannerContent';
 import { BannerGuidance } from './BannerGuidance/BannerGuidance';
 import { BannerIcon } from './BannerIcon/BannerIcon';
 import { MediaBlockBody } from '../MediaBlockBody/MediaBlockBody';
+import flagImage from './Assets/us_flag_small.png';
+import dotIcon from './Assets/icon-dot-gov.svg';
+import httpIcon from './Assets/icon-https.svg';
 
 export const TopBanner = (): ReactElement => {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +21,7 @@ export const TopBanner = (): ReactElement => {
         <Banner>
             <BannerHeader
                 isOpen={isOpen}
-                flagImg={<BannerFlag src="/us_flag_small.png" alt="U.S. flag" />}
+                flagImg={<BannerFlag src={flagImage} alt="U.S. flag" />}
                 headerText="An official website of the United States government"
                 headerActionText="Here's how you know">
                 <BannerButton
@@ -33,7 +36,7 @@ export const TopBanner = (): ReactElement => {
             <BannerContent id="custom-banner" isOpen={isOpen}>
                 <div className="grid-row grid-gap-lg">
                     <BannerGuidance className="tablet:grid-col-6">
-                        <BannerIcon src="/icons/icon-dot-gov.svg" alt="" />
+                        <BannerIcon src={dotIcon} alt="" />
                         <MediaBlockBody>
                             <p>
                                 <strong>Official websites use .gov</strong>
@@ -43,7 +46,7 @@ export const TopBanner = (): ReactElement => {
                         </MediaBlockBody>
                     </BannerGuidance>
                     <BannerGuidance className="tablet:grid-col-6">
-                        <BannerIcon src="/icons/icon-https.svg" alt="" />
+                        <BannerIcon src={httpIcon} alt="" />
                         <MediaBlockBody>
                             <p>
                                 <strong>Secure .gov websites use HTTPS</strong>

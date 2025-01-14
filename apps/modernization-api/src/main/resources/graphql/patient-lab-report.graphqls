@@ -24,6 +24,9 @@ input PatientLabReportFilter {
   providerSearch: LabReportProviderSearch
   resultedTest: String
   codedResult: String
+  orderingLabId: ID
+  orderingProviderId: ID
+  reportingLabId: ID
 }
 
 type PatientLabReport {

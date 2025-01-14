@@ -1,4 +1,5 @@
 nbs:
+  max-page-size: 100
   ui:
     features:
       address:
@@ -20,14 +21,8 @@ spring:
     graphiql:
       enabled: false
 
-  kafka:
-    bootstrap-servers: ${spring.embedded.kafka.brokers}
-
   main:
     allow-bean-definition-overriding: true
-
-kafka:
-  enabled: true
 
 testing:
   id-generation:

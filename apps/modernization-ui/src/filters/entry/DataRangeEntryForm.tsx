@@ -32,7 +32,6 @@ const DataRangeEntryForm = () => {
                         onBlur={onBlur}
                         onChange={onChange}
                         name={name}
-                        htmlFor={name}
                         label="From"
                         disableFutureDates
                         required={!before}
@@ -56,7 +55,6 @@ const DataRangeEntryForm = () => {
                         onBlur={onBlur}
                         onChange={onChange}
                         name={name}
-                        htmlFor={name}
                         label="To"
                         disableFutureDates
                         required={!after}

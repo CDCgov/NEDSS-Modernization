@@ -1,0 +1,26 @@
+.checkboxGroup {
+    .fieldSet {
+        padding: 0;
+        border: none;
+    }
+    &.horizontalCheckboxGroup {
+        padding: 1rem 1.5rem !important;
+    }
+
+    .verticalOptions {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .horizontalOptions {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        label {
+            font-weight: normal !important;
+        }
+    }
+}

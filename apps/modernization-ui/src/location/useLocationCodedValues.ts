@@ -41,7 +41,7 @@ const initial = {
         byValue: () => null
     },
     counties: {
-        byState: (state: string) => useCountyCodedValues(state).counties
+        byState: (state?: string) => useCountyCodedValues(state).counties
     }
 };
 
@@ -52,7 +52,7 @@ type StateCodedValues = {
 };
 
 type CountyCodedValues = {
-    byState: (state: string) => CodedValue[];
+    byState: (state?: string) => CodedValue[];
 };
 
 type LocationCodedValues = {

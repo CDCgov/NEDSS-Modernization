@@ -6,7 +6,6 @@ import {
 } from 'apps/page-builder/generated';
 import { Controller, useForm } from 'react-hook-form';
 import styles from './addsubsection.module.scss';
-import { Heading } from 'components/heading';
 import { Button, Form, Icon } from '@trussworks/react-uswds';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { maxLengthRule } from 'validation/entry';
@@ -66,11 +65,7 @@ export const AddSubSection = ({
         <div className={styles.subSection}>
             <div className={styles.header}>
                 <div className={styles.headerContent}>
-                    {isEdit ? (
-                        <Heading level={4}>Edit subsection</Heading>
-                    ) : (
-                        <Heading level={4}>Add subsection</Heading>
-                    )}
+                    {isEdit ? <h2>Edit subsection</h2> : <h2>Add subsection</h2>}
                 </div>
                 <Icon.Close
                     size={3}
@@ -100,6 +95,7 @@ export const AddSubSection = ({
                                 type="text"
                                 error={error?.message}
                                 required
+                                data-testid="subsectionName"
                                 className={styles.inputField}
                             />
                         )}
@@ -138,6 +134,7 @@ export const AddSubSection = ({
                             <Button
                                 type="button"
                                 onClick={onSubmit}
+                                data-testid="confirmation-btn"
                                 disabled={!form.formState.isDirty || !form.formState.isValid}>
                                 Save changes
                             </Button>
@@ -153,7 +150,11 @@ export const AddSubSection = ({
                                 }}>
                                 Cancel
                             </Button>
-                            <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
+                            <Button
+                                type="button"
+                                onClick={onSubmit}
+                                disabled={!form.formState.isValid}
+                                data-testid="addOrEditSubsectionBtn">
                                 Add subsection
                             </Button>
                         </>

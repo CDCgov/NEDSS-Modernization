@@ -6,7 +6,6 @@ import {
     PageInformationService
 } from 'apps/page-builder/generated';
 import { useDownloadPageMetadata } from 'apps/page-builder/hooks/api/useDownloadPageMetadata';
-import { Heading } from 'components/heading';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePageManagement } from '../../usePageManagement';
@@ -68,7 +67,10 @@ const PageInformation = () => {
             <li className={activeTab == 'Details' ? styles.active : ''} onClick={() => setActiveTab('Details')}>
                 Details
             </li>
-            <li className={activeTab == 'History' ? styles.active : ''} onClick={() => setActiveTab('History')}>
+            <li
+                className={`${activeTab == 'History' ? styles.active : ''} historyTab`}
+                data-testid="historyTab"
+                onClick={() => setActiveTab('History')}>
                 History
             </li>
         </ul>
@@ -86,7 +88,7 @@ const PageInformation = () => {
     return (
         <section className={styles.information}>
             <header>
-                <Heading level={2}>Page information</Heading>
+                <h3>Page information</h3>
                 <Button type="button" outline onClick={handleDownloadMetadata} className={styles.icon}>
                     <Icon.FileDownload />
                     Metadata
@@ -126,7 +128,12 @@ const PageInformation = () => {
                     </div>
                     <div className={styles.detailsContainer}>
                         <footer>
-                            <Button type="button" outline onClick={handleViewPage} className={styles.icon}>
+                            <Button
+                                type="button"
+                                outline
+                                onClick={handleViewPage}
+                                className={`${styles.icon} EditViewPageDetails`}
+                                data-testid="EditViewPageDetails">
                                 {isEditable ? <Icon.Edit /> : <Icon.Visibility />}
                                 {isEditable ? 'Edit page details' : 'View page details'}
                             </Button>
@@ -134,7 +141,7 @@ const PageInformation = () => {
                     </div>
                 </div>
             ) : (
-                <div className={styles.content}>
+                <div className={`${styles.content} historyTabContent`} data-testid="historyTabContent">
                     <div className={styles.historyContent}>
                         {pageHistory?.map((pageData, index) => (
                             <div className={styles.versionBlock} key={index}>

@@ -1,6 +1,5 @@
 import { ErrorMessage, Label, Textarea } from '@trussworks/react-uswds';
 import { Input } from 'components/FormInputs/Input';
-import { Heading } from 'components/heading';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm } from '../QuestionForm';
@@ -100,7 +99,7 @@ export const UserInterfaceFields = ({ published = false }: Props) => {
 
     return (
         <>
-            <Heading level={4}>User interface</Heading>
+            <h4>User interface</h4>
             <Controller
                 control={form.control}
                 name="label"

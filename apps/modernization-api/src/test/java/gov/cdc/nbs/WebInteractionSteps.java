@@ -7,6 +7,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class WebInteractionSteps {
@@ -37,5 +38,12 @@ public class WebInteractionSteps {
   @Then("I made a bad request")
   public void bad_request() throws Exception {
     this.activeAction.active().andExpect(status().isBadRequest());
+  }
+
+  @Then("I am redirected to the timeout page")
+  public void i_am_redirected_to_the_timeout_page() throws Exception {
+    this.activeAction.active()
+        .andExpect(status().isFound())
+        .andExpect(header().string("Location", "/nbs/timeout"));
   }
 }

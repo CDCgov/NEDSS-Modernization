@@ -15,6 +15,10 @@ jobs:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
       PASSED_GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+      DATABASE_USER: ${{secrets.DATABASE_USER}}
+      DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+      PARAMETER_SECRET: ${{secrets.PARAMETER_SECRET}}
+      TOKEN_SECRET: ${{secrets.TOKEN_SECRET}}
   call-build-microservice-container-workflow:
     name: Build Container
     needs: sonar_scan

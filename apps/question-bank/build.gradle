@@ -64,6 +64,7 @@ testing {
                 implementation.bundle(libs.bundles.cucumber)
 
                 implementation project(':testing-support')
+                implementation project(':testing-database')
                 implementation project(':testing-identity')
                 implementation project(':testing-auth')
                 implementation project(':testing-auth-cucumber')
@@ -126,16 +127,16 @@ dependencies {
 
 
     // csv
-    implementation "org.apache.commons:commons-csv:1.10.0"
+    implementation "org.apache.commons:commons-csv:1.12.0"
 
     // itext pdf generation
     implementation libs.itextpdf
 
-    implementation 'org.apache.poi:poi:5.2.5'
-    implementation 'org.apache.poi:poi-ooxml:5.2.5'
+    implementation 'org.apache.poi:poi:5.3.0'
+    implementation 'org.apache.poi:poi-ooxml:5.3.0'
 
     constraints {
-        implementation 'org.apache.commons:commons-compress:1.26.0'
+        implementation 'org.apache.commons:commons-compress:1.27.1'
     }
 
 }
@@ -158,7 +159,7 @@ tasks.withType(JavaExec).configureEach {
 }
 
 bootRun {
-    systemProperty('spring.profiles.active', 'default,development');
+    systemProperty('spring.profiles.active', 'default,development,local');
 }
 
 distributions {

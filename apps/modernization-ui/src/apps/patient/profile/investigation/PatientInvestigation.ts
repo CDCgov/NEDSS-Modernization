@@ -1,4 +1,5 @@
 export enum Headers {
+    Investigation = 'Investigation #',
     StartDate = 'Start date',
     Condition = 'Condition',
     Status = 'Status',
@@ -6,7 +7,6 @@ export enum Headers {
     Notification = 'Notification',
     Jurisdiction = 'Jurisdiction',
     Investigator = 'Investigator',
-    Investigation = 'Investigation #',
     CoInfection = 'Co-infection #'
 }
 

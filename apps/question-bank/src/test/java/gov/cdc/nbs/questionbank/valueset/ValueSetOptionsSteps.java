@@ -1,17 +1,6 @@
 package gov.cdc.nbs.questionbank.valueset;
 
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.io.UnsupportedEncodingException;
-import java.util.Comparator;
-import java.util.List;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.test.web.servlet.ResultActions;
+import com.google.common.collect.Comparators;
 import com.jayway.jsonpath.JsonPath;
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.support.valueset.ValueSetMother;
@@ -19,8 +8,20 @@ import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import com.google.common.collect.Comparators;
 import io.cucumber.java.en.When;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Comparator;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ValueSetOptionsSteps {
 
@@ -46,8 +47,8 @@ public class ValueSetOptionsSteps {
   }
 
   @Given("the valueset is {string}")
-  public void the_valueset_is_status(String status) throws IllegalAccessException {
-    Codeset vs = mother.setActive(valueset.active(), "active".equals(status.toLowerCase()));
+  public void the_valueset_is_status(String status) {
+    Codeset vs = mother.setActive(valueset.active(), "active".equalsIgnoreCase(status));
     valueset.active(vs);
   }
 
@@ -84,7 +85,7 @@ public class ValueSetOptionsSteps {
   }
 
   @Then("the valueset options are sorted by {string} {string}")
-  public void options_are_sorted_by(String field, String direction) throws UnsupportedEncodingException, Exception {
+  public void options_are_sorted_by(String field, String direction) throws Exception {
     String content = response.active()
         .andExpect(status().isOk())
         .andReturn()

@@ -31,7 +31,7 @@ const SignUp = () => {
                 <p>
                     Upon approval, you will receive an email with login details and the demo site address. If you
                     haven't received it within 24 hours, please let us know by emailing{' '}
-                    <a href="mailto:nbs@cdc.org">nbs@cdc.org</a>
+                    <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a>
                 </p>
                 <div className={styles.form}>
                     <Controller

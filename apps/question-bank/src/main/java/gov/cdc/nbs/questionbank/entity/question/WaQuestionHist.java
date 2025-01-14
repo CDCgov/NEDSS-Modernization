@@ -15,6 +15,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "WA_question_hist", catalog = "NBS_ODSE")
+@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
 public class WaQuestionHist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

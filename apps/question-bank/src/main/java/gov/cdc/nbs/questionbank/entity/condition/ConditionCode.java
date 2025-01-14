@@ -23,6 +23,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(catalog = "NBS_SRTE", name = "Condition_code")
+@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
 public class ConditionCode implements Serializable {
     @Id
     @Column(name = "condition_cd", nullable = false, length = 20)

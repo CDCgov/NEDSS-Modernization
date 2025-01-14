@@ -1,6 +1,5 @@
 import styles from './question-content.module.scss';
 import { Input } from 'components/FormInputs/Input';
-import { Heading } from 'components/heading';
 import { useEffect, useState } from 'react';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Selectable } from 'options/selectable';
@@ -60,7 +59,7 @@ export const QuestionContent = ({
     const renderLabelWithComponent = (
         <div className={styles.content}>
             <div className={styles.questionHeader}>
-                <Heading level={2}>{name}</Heading>
+                <span>{name}</span>
                 <div className={styles.identifier}>{`(${identifier})`}</div>
             </div>
             <div className={styles.questionContent}>

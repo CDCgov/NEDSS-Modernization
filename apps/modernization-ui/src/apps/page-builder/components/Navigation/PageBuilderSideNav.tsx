@@ -1,19 +1,20 @@
-import { SideNavigation, NavigationEntry, LinkEntry } from 'components/SideNavigation/SideNavigation';
-
-import './PageBuilderSideNav.scss';
+import { NavEntry, SideNavigation } from 'design-system/side-nav';
 
 export const PageBuilderSideNav = () => (
-    <SideNavigation className="page-builder-side-nav" title="Page Management">
-        <NavigationEntry path="/page-builder/pages">Page library</NavigationEntry>
-        <LinkEntry href="/nbs/ManageCondition.do?method=ViewConditionLib&actionMode=Manage&initLoad=true">
-            Condition library
-        </LinkEntry>
-        <LinkEntry href="/nbs/SearchManageQuestions.do?method=loadQuestionLibrary&initLoad=true">
-            Question library
-        </LinkEntry>
-        <LinkEntry href="/nbs/ManageTemplates.do?method=ManageTemplatesLib&actionMode=Manage&initLoad=true">
-            Template library
-        </LinkEntry>
-        <LinkEntry href="/nbs/ManageCodeSet.do?method=ViewValueSetLib&initLoad=true">Value set library</LinkEntry>
+    <SideNavigation title="Data entry" className="side-nav">
+        <NavEntry name="Page library" active />
+        <NavEntry
+            name="Condition library"
+            href="/nbs/ManageCondition.do?method=ViewConditionLib&actionMode=Manage&initLoad=true"
+        />
+        <NavEntry
+            name="Question library"
+            href="/nbs/SearchManageQuestions.do?method=loadQuestionLibrary&initLoad=true"
+        />
+        <NavEntry
+            name="Template library"
+            href="/nbs/ManageTemplates.do?method=ManageTemplatesLib&actionMode=Manage&initLoad=true"
+        />
+        <NavEntry name="Value set library" href="/nbs/ManageCodeSet.do?method=ViewValueSetLib&initLoad=true" />
     </SideNavigation>
 );

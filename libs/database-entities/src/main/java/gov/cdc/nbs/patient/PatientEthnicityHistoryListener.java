@@ -8,6 +8,12 @@ import jakarta.persistence.PreRemove;
 
 @Component
 public class PatientEthnicityHistoryListener {
+
+    private static final String QUERY =
+        "SELECT MAX(version_ctrl_nbr) FROM Person_ethnic_group_hist WHERE person_uid = ? and ethnic_group_cd = ?";
+    private static final int IDENTIFIER_PARAMETER = 1;
+    private static final int GROUP_PARAMETER = 2;
+
     private final PatientEthnicityHistoryCreator creator;
     private final JdbcTemplate template;
 
@@ -17,6 +23,10 @@ public class PatientEthnicityHistoryListener {
     }
 
     @PreRemove
+    @SuppressWarnings(
+        //  The PatientEthnicityHistoryListener is an entity listener specifically for instances of PersonEthnicGroup
+        {"javaarchitecture:S7027","javaarchitecture:S7091"}
+    )
     void preRemove(final PersonEthnicGroup personEthnicGroup) {
         long personUid = personEthnicGroup.getPersonUid().getId();
         String personEthnicityGroupCd = personEthnicGroup.getId().getEthnicGroupCd();
@@ -25,9 +35,15 @@ public class PatientEthnicityHistoryListener {
 
     }
 
-    private int getCurrentVersionNumber(long personUid, String ethnicityGroupCd) {
-        String query = "SELECT MAX(version_ctrl_nbr) FROM Person_ethnic_group_hist WHERE person_uid = ? and ethnic_group_cd = ?";
-        Integer maxVersionControlNumber = template.queryForObject(query, Integer.class, personUid, ethnicityGroupCd);
-        return maxVersionControlNumber != null ? maxVersionControlNumber : 0;
+    private int getCurrentVersionNumber(final long identifier, final String group) {
+        return template.query(
+                QUERY, statement -> {
+                    statement.setLong(IDENTIFIER_PARAMETER, identifier);
+                    statement.setString(GROUP_PARAMETER, group);
+                },
+                (resultSet, row) -> resultSet.getInt(1))
+            .stream()
+            .findFirst()
+            .orElse(0);
     }
 }

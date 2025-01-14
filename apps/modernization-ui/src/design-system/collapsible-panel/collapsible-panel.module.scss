@@ -1,0 +1,93 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+$control-height: 3rem;
+$control-width: 1.5rem;
+
+@mixin expanded($property) {
+    transition-duration: 0.25s;
+    transition-property: #{$property};
+    transition-timing-function: ease-out;
+}
+
+@mixin collapsed($property) {
+    transition-duration: 0.2s;
+    transition-property: #{$property};
+    transition-timing-function: ease-in;
+}
+
+.control {
+    position: absolute;
+    z-index: 10000;
+    padding: 0;
+
+    background-color: colors.$base-lighter;
+    width: $control-width;
+    height: $control-height;
+
+    @include borders.bordered('border', colors.$base-light);
+    @include borders.rounded();
+
+    top: calc(50% - #{$control-height});
+
+    right: -($control-width / 2);
+
+    cursor: pointer;
+
+    &:focus {
+        outline: 0;
+    }
+
+    &:focus-visible {
+        outline: 0.25rem solid colors.$focused;
+        outline-offset: 0rem;
+    }
+
+    svg {
+        width: 100%;
+        height: 100%;
+
+        transform: rotate(-90deg);
+    }
+}
+
+.collapsible {
+    --expanded-max-width: 100%;
+    --collapsed-max-width: 0;
+
+    position: relative;
+
+    @include expanded('width');
+    width: var(--expanded-max-width, 100%);
+
+    .boundary {
+        overflow: clip;
+    }
+
+    .content {
+        width: var(--expanded-max-width, 100%);
+
+        position: relative;
+        @include expanded('left');
+        left: 0;
+    }
+
+    &.collapsed {
+        @include expanded('width');
+        width: var(--collapsed-max-width, 0);
+
+        .content {
+            @include collapsed('left');
+            left: -100%;
+
+            animation: collapsing 600ms forwards;
+        }
+    }
+}
+
+@keyframes collapsing {
+    to {
+        display: none;
+        visibility: hidden;
+    }
+}

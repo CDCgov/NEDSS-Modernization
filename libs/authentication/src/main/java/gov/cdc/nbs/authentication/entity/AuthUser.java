@@ -29,6 +29,10 @@ public class AuthUser {
     @Column(name = "auth_user_uid", nullable = false)
     private Long id;
 
+    @SuppressWarnings(
+        //  Bidirectional mappings require knowledge of each other
+        "javaarchitecture:S7027"
+    )
     @OneToMany(
         mappedBy = "authUserUid",
         fetch = FetchType.LAZY,

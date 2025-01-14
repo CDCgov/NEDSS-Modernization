@@ -1,12 +1,5 @@
 package gov.cdc.nbs.questionbank.support.valueset;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralId;
@@ -15,37 +8,51 @@ import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.CodesetId;
 import gov.cdc.nbs.questionbank.valueset.repository.CodesetGroupMetadatumRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 @Component
 @Transactional
 public class ValueSetMother {
-  private final String CODESET_NAME = "TestCodeset";
-  private int codesetIds = 9910;
+  private static final String CODE_SET_NAME = "TestCodeset";
+  private int identifier = 9910;
 
-  @Autowired
-  private ValueSetRepository valueSetRepository;
+  private final ValueSetRepository valueSetRepository;
 
-  @Autowired
-  private CodeValueGeneralRepository conceptRepository;
+  private final CodeValueGeneralRepository conceptRepository;
 
-  @Autowired
-  private CodesetGroupMetadatumRepository codeSetGrpMetaRepository;
+  private final CodesetGroupMetadatumRepository codeSetGrpMetaRepository;
 
-  private List<Codeset> allValueSets = new ArrayList<>();
-  private HashMap<String, List<CodeValueGeneral>> concepts = new HashMap<>();
+  private final List<Codeset> allValueSets = new ArrayList<>();
+  private final HashMap<String, List<CodeValueGeneral>> concepts = new HashMap<>();
 
+  ValueSetMother(
+      final ValueSetRepository valueSetRepository,
+      final CodeValueGeneralRepository conceptRepository,
+      final CodesetGroupMetadatumRepository codeSetGrpMetaRepository
+  ) {
+    this.valueSetRepository = valueSetRepository;
+    this.conceptRepository = conceptRepository;
+    this.codeSetGrpMetaRepository = codeSetGrpMetaRepository;
+  }
 
   public void clean() {
     valueSetRepository.deleteAll();
     codeSetGrpMetaRepository.deleteAll();
-    conceptRepository.deleteAllByCodesetName(CODESET_NAME);
+    conceptRepository.deleteAllByCodesetName(CODE_SET_NAME);
     concepts.clear();
     allValueSets.clear();
   }
 
   public Codeset valueSet() {
     return allValueSets.stream()
-        .filter(v -> v instanceof Codeset)
+        .filter(Objects::nonNull)
         .findFirst()
         .orElseGet(this::valueSetWithConcepts);
   }
@@ -95,10 +102,10 @@ public class ValueSetMother {
   private Codeset valueSetWithConcepts() {
     Instant now = Instant.now();
     Codeset codeset = new Codeset();
-    codeset.setId(new CodesetId("code_value_general", CODESET_NAME));
+    codeset.setId(new CodesetId("code_value_general", CODE_SET_NAME));
     codeset.setStatusCd("A");
     codeset.setStatusToTime(now);
-    codeset.setCodeSetDescTxt(CODESET_NAME);
+    codeset.setCodeSetDescTxt(CODE_SET_NAME);
     codeset.setAssigningAuthorityCd("L");
     codeset.setValueSetTypeCd("LOCAL");
     codeset.setAddTime(now);
@@ -107,7 +114,7 @@ public class ValueSetMother {
     codeset = valueSetRepository.save(codeset);
 
     CodeValueGeneral yes = new CodeValueGeneral();
-    yes.setId(new CodeValueGeneralId(CODESET_NAME, "Yes"));
+    yes.setId(new CodeValueGeneralId(CODE_SET_NAME, "Yes"));
     yes.setCodeDescTxt("Yes");
     yes.setCodeShortDescTxt("Yes");
     yes.setCodeSystemCd("2.16.840.1.113883.12.136");
@@ -125,7 +132,7 @@ public class ValueSetMother {
     yes = conceptRepository.save(yes);
 
     CodeValueGeneral no = new CodeValueGeneral();
-    no.setId(new CodeValueGeneralId(CODESET_NAME, "No"));
+    no.setId(new CodeValueGeneralId(CODE_SET_NAME, "No"));
     no.setCodeDescTxt("No");
     no.setCodeShortDescTxt("No");
     no.setCodeSystemCd("2.16.840.1.113883.12.136");
@@ -146,17 +153,19 @@ public class ValueSetMother {
     conceptList.add(yes);
     conceptList.add(no);
 
-    concepts.put(CODESET_NAME, conceptList);
+    concepts.put(CODE_SET_NAME, conceptList);
     allValueSets.add(codeset);
     return codeset;
   }
 
   public Codeset createMetadataEntry(Codeset valueset) {
-    CodeSetGroupMetadatum codeGrp = new CodeSetGroupMetadatum();
-    codeGrp.setId(getCodeSetGroupID());
-    codeGrp.setCodeSetDescTxt(valueset.getCodeSetDescTxt());
-    codeGrp.setCodeSetNm(valueset.getValueSetNm());
-    codeGrp.setCodeSetShortDescTxt(valueset.getValueSetNm());
+    CodeSetGroupMetadatum codeGrp = new CodeSetGroupMetadatum(
+        getCodeSetGroupID(),
+        valueset.getCodeSetDescTxt(),
+        valueset.getValueSetNm(),
+        valueset.getValueSetNm()
+    );
+
     codeGrp.setLdfPicklistIndCd(valueset.getLdfPicklistIndCd());
     codeGrp = codeSetGrpMetaRepository.save(codeGrp);
     valueset.setCodeSetGroup(codeGrp);
@@ -165,7 +174,7 @@ public class ValueSetMother {
   }
 
   private long getCodeSetGroupID() {
-    return codesetIds += 10;
+    return identifier += 10;
   }
 
   public void addConcept(Codeset codeset, String name, String value) {
@@ -186,7 +195,7 @@ public class ValueSetMother {
     concept.setConceptStatusTime(now);
     concept.setAddTime(now);
     concept.setAddUserId(99999999L);
-    concept = conceptRepository.save(concept);
+    conceptRepository.save(concept);
   }
 
 }

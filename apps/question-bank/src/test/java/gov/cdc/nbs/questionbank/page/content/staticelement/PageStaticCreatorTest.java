@@ -47,7 +47,7 @@ class PageStaticCreatorTest {
   void should_add_line_separator_to_page() {
     var request = new StaticContentRequests.AddDefault(null, 10L);
     NbsConfiguration nbsConfiguration = new NbsConfiguration("test");
-    IdGeneratorService.GeneratedId generatedId = new IdGeneratorService.GeneratedId(100l);
+    IdGeneratorService.GeneratedId generatedId = new IdGeneratorService.GeneratedId(100L);
 
     Long pageId = 123L;
     when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
@@ -118,11 +118,6 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    WaUiMetadata subsec = new WaUiMetadata();
-    subsec.setOrderNbr(4);
-
-    // when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
-
     assertThrows(AddStaticElementException.class, () -> contentManager.addLineSeparator(pageId, request, userId));
   }
 
@@ -137,7 +132,7 @@ class PageStaticCreatorTest {
     Long pageId = 123L;
 
     NbsConfiguration nbsConfiguration = new NbsConfiguration("test");
-    IdGeneratorService.GeneratedId generatedId = new IdGeneratorService.GeneratedId(100l);
+    IdGeneratorService.GeneratedId generatedId = new IdGeneratorService.GeneratedId(100L);
 
     when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
 
@@ -219,11 +214,6 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    WaUiMetadata subsec = new WaUiMetadata();
-    subsec.setOrderNbr(4);
-
-    // when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
-
     assertThrows(AddStaticElementException.class, () -> contentManager.addHyperLink(pageId, request, userId));
   }
 
@@ -236,7 +226,7 @@ class PageStaticCreatorTest {
 
     Long pageId = 321L;
     NbsConfiguration nbsConfiguration = new NbsConfiguration("test");
-    IdGeneratorService.GeneratedId generatedId = new IdGeneratorService.GeneratedId(100l);
+    IdGeneratorService.GeneratedId generatedId = new IdGeneratorService.GeneratedId(100L);
 
     when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
 
@@ -317,11 +307,6 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    WaUiMetadata subsec = new WaUiMetadata();
-    subsec.setOrderNbr(4);
-
-    // when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
-
     assertThrows(AddStaticElementException.class,
         () -> contentManager.addReadOnlyComments(pageId, request, userId));
   }
@@ -332,7 +317,7 @@ class PageStaticCreatorTest {
 
     Long pageId = 123L;
     NbsConfiguration nbsConfiguration = new NbsConfiguration("test");
-    IdGeneratorService.GeneratedId generatedId = new IdGeneratorService.GeneratedId(100l);
+    IdGeneratorService.GeneratedId generatedId = new IdGeneratorService.GeneratedId(100L);
 
     when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
 
@@ -402,11 +387,6 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    WaUiMetadata subsec = new WaUiMetadata();
-    subsec.setOrderNbr(4);
-
-    // when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
-
     assertThrows(AddStaticElementException.class,
         () -> contentManager.addReadOnlyParticipantsList(pageId, request, userId));
   }
@@ -417,7 +397,7 @@ class PageStaticCreatorTest {
 
     Long pageId = 123L;
     NbsConfiguration nbsConfiguration = new NbsConfiguration("test");
-    IdGeneratorService.GeneratedId generatedId = new IdGeneratorService.GeneratedId(100l);
+    IdGeneratorService.GeneratedId generatedId = new IdGeneratorService.GeneratedId(100L);
 
     when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
 
@@ -486,12 +466,7 @@ class PageStaticCreatorTest {
     when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
 
     Long userId = 999L;
-
-    WaUiMetadata subsec = new WaUiMetadata();
-    subsec.setOrderNbr(4);
-
-    // when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
-
+    
     assertThrows(
         AddStaticElementException.class,
         () -> contentManager.addOriginalElectronicDocList(pageId, request, userId));

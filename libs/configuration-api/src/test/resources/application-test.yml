@@ -1,0 +1,16 @@
+nbs:
+  datasource:
+    server: localhost
+    port: 1433
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+
+testing:
+  database:
+    image: cdc-sandbox-nbs-mssql
+
+spring:
+  datasource:
+    url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
+    username: ${nbs.datasource.username}
+    password: ${nbs.datasource.password}

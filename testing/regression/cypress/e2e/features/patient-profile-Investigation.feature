@@ -1,7 +1,7 @@
 # Feature: User can add a patient profilenp
 
 #     Background:
-#         Given I am logged in as "superuser" and password ""
+#         Given I am logged in as secure user
 
 #     Scenario: User verify Open Investigations - 'Acute flaccid myelitis' in suumary of patient profile 
 #         Given create a new patient profile

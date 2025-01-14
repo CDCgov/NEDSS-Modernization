@@ -9,6 +9,7 @@ import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -41,7 +42,7 @@ public class PatientProfileIncomingRedirectionSteps {
     response.active(
         mvc
             .perform(
-                authenticated.withSession(post("/nbs/redirect/patientProfile"))
+                authenticated.withSession(post("/nbs/redirect/patient/profile"))
                     .param("MPRUid", String.valueOf(patient.id()))
             )
     );
@@ -54,7 +55,7 @@ public class PatientProfileIncomingRedirectionSteps {
     response.active(
         mvc
             .perform(
-                authenticated.withSession(post("/nbs/redirect/patientProfile"))
+                authenticated.withSession(post("/nbs/redirect/patient/profile"))
                     .param("uid", String.valueOf(patient.id()))
             )
     );
@@ -70,6 +71,17 @@ public class PatientProfileIncomingRedirectionSteps {
         .andExpect(cookie().value("Return-Patient", ""))
         .andExpect(cookie().value("Patient-Action", ""))
     ;
+  }
 
+  @Then("I am redirected to the Modernized Patient Profile {patientProfileTab} tab")
+  public void i_am_redirected_to_the_modernized_patient_profile_tab(final String tab) throws Exception {
+    PatientIdentifier patient = patients.one();
+
+    this.response.active()
+        .andExpect(status().isSeeOther())
+        .andExpect(header().string("Location", equalTo("/patient-profile/" + patient.shortId() + "/" + tab)))
+        .andExpect(cookie().value("Return-Patient", ""))
+        .andExpect(cookie().value("Patient-Action", ""))
+    ;
   }
 }

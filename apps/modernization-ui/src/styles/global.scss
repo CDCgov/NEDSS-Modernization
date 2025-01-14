@@ -8,6 +8,7 @@
 body {
     height: 100vh;
     background-color: colors.$background;
+    scroll-behavior: smooth;
 }
 
 #root {
@@ -42,6 +43,12 @@ td span {
         color: colors.$mandatory;
     }
 }
+.required-before {
+    &::before {
+        content: '* ';
+        color: colors.$mandatory;
+    }
+}
 
 .text-red {
     color: colors.$mandatory !important;
@@ -73,4 +80,8 @@ a {
 
 .text-uppercase {
     text-transform: uppercase;
+}
+
+.display-inline-flex {
+    display: inline-flex;
 }

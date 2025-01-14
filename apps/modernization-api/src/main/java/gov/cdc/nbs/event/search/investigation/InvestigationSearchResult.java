@@ -11,10 +11,10 @@ record InvestigationSearchResult(
     String jurisdictionCodeDescTxt,
     String localId,
     LocalDate addTime,
+    LocalDate startedOn,
     String investigationStatusCd,
     String notificationRecordStatusCd,
-    List<PersonParticipation> personParticipations
-    ) {
+    List<PersonParticipation> personParticipations) {
 
   record PersonParticipation(
       LocalDate birthTime,
@@ -24,7 +24,6 @@ record InvestigationSearchResult(
       String lastName,
       String personCd,
       long personParentUid,
-      String local
-  ) {
+      String local) {
   }
 }

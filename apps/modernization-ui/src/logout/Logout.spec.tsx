@@ -1,26 +1,20 @@
 import { render } from '@testing-library/react';
 import Logout from './Logout';
-import { BrowserRouter } from 'react-router-dom';
 
 describe('Logout Component', () => {
-    it('renders logout confirmation message', () => {
-        const { getByText } = render(
-            <BrowserRouter>
-                <Logout />
-            </BrowserRouter>
-        );
+    it('renders logout confirmation title', () => {
+        const { getByRole } = render(<Logout />);
 
-        expect(getByText('Logout confirmation')).toBeInTheDocument();
+        expect(getByRole('heading', { name: 'Logout confirmation' })).toBeInTheDocument();
     });
 
-    it('renders "Return to NBS" button', () => {
-        const { getByRole } = render(
-            <BrowserRouter>
-                <Logout />
-            </BrowserRouter>
-        );
+    it('renders logout confirmation message', () => {
+        const { getByText } = render(<Logout />);
 
-        const returnButton = getByRole('link', { name: 'Return to NBS' });
-        expect(returnButton).toBeInTheDocument();
+        const message = getByText(/You have successfully logged out/);
+
+        expect(message).toHaveTextContent(/Thank you for using NBS/);
+
+        expect(message).toBeInTheDocument();
     });
 });

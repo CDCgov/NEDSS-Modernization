@@ -14,12 +14,72 @@ Feature: Patient Search
     Then the patient is in the search results
     And there is only one patient search result
 
+  Scenario: I can find a patient by Patient ID using multiple short ids
+    Given patients are available for search
+    And I would like to search for a patient using multiple short IDs
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
   Scenario: I can find a patient by Patient ID using the local id
     Given patients are available for search
     And I would like to search for a patient using a local ID
     When I search for patients
     Then the patient is in the search results
     And there is only one patient search result
+
+  Scenario: I can find a patient by Patient ID using the local id and an id filter that equals the id
+    Given patients are available for search
+    And I would like to search for a patient using a local ID and a good equals id filter
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can find a patient by Patient ID using the local id and an id filter the contains the id
+    Given patients are available for search
+    And I would like to search for a patient using a local ID and a good contains id filter
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can't find a patient by Patient ID using a good local id and a bad id filter
+    Given patients are available for search
+    And I would like to search for a patient using a local ID and a bad id filter
+    When I search for patients
+    Then there are 0 patient search results
+
+  Scenario: I can filter search results with the patient's short ID
+    Given I have a patient
+    And the patient has the legal name "Joe" "Other"
+    And I have another patient
+    And the patient has the legal name "Joe" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a first name that equals "Joe"
+    And I would like to filter search results with the patient's short ID
+    When I search for patients
+    Then search result 1 has a "first name" of "Joe"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results
+
+  Scenario: I can find a patient by Patient ID using multiple local ids
+    Given patients are available for search
+    And I would like to search for a patient using multiple local IDs
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can find a patient by Patient ID using short and local ids
+    Given patients are available for search
+    And I would like to search for a patient using short and local IDs
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: Patient search does not fail when the Patient ID is blank (BUG CNFT1-2861)
+    Given patients are available for search
+    And I add the patient criteria for a "Patient ID" equal to ""
+    When I search for patients
+    Then the patient is in the search results
 
   Scenario: I can find patients with active record status
     Given I have another patient
@@ -72,11 +132,11 @@ Feature: Patient Search
       | address    | 1234 Address |
 
   Scenario: I can find the most relevant patient when searching by first name
-    Given the patient has the "legal" name "Something" "Other"
+    Given the patient has the legal name "Something" "Other"
     And I have another patient
-    And the patient has the "legal" name "Jon" "Snow"
+    And the patient has the legal name "Jon" "Snow"
     And I have another patient
-    And the patient has the "legal" name "John" "Little"
+    And the patient has the legal name "John" "Little"
     And patients are available for search
     And I add the patient criteria for a "first name" equal to "John"
     When I search for patients
@@ -86,11 +146,11 @@ Feature: Patient Search
     And search result 2 has a "last name" of "Snow"
 
   Scenario: I can find the most relevant patient when searching by first name with soundex disabled
-    Given the patient has the "legal" name "Something" "Other"
+    Given the patient has the legal name "Something" "Other"
     And I have another patient
-    And the patient has the "legal" name "Jon" "Snow"
+    And the patient has the legal name "Jon" "Snow"
     And I have another patient
-    And the patient has the "legal" name "John" "Little"
+    And the patient has the legal name "John" "Little"
     And patients are available for search
     And I add the patient criteria for a "first name" equal to "John"
     And I add the patient criteria for a "disable soundex" equal to "true"
@@ -100,11 +160,11 @@ Feature: Patient Search
     And there are 1 patient search results
 
   Scenario: I can find the most relevant patient when searching by last name
-    Given the patient has the "legal" name "Something" "Other"
+    Given the patient has the legal name "Something" "Other"
     And I have another patient
-    And the patient has the "legal" name "Albert" "Smyth"
+    And the patient has the legal name "Albert" "Smyth"
     And I have another patient
-    And the patient has the "legal" name "Fatima" "Smith"
+    And the patient has the legal name "Fatima" "Smith"
     And patients are available for search
     And I add the patient criteria for a "last name" equal to "Smith"
     When I search for patients
@@ -114,11 +174,11 @@ Feature: Patient Search
     And search result 2 has a "last name" of "Smyth"
 
   Scenario: I can find the most relevant patient when searching by last name with soundex disabled
-    Given the patient has the "legal" name "Something" "Other"
+    Given the patient has the legal name "Something" "Other"
     And I have another patient
-    And the patient has the "legal" name "Albert" "Smyth"
+    And the patient has the legal name "Albert" "Smyth"
     And I have another patient
-    And the patient has the "legal" name "Fatima" "Smith"
+    And the patient has the legal name "Fatima" "Smith"
     And patients are available for search
     And I add the patient criteria for a "last name" equal to "Smith"
     And I add the patient criteria for a "disable soundex" equal to "true"
@@ -128,31 +188,33 @@ Feature: Patient Search
     And there are 1 patient search results
 
   Scenario: I can find the patient when searching for a hyphenated last name using a hyphen
-    Given the patient has the "legal" name "Something" "Other-than"
+    Given the patient has the legal name "Something" "Other-than"
     And patients are available for search
     And I add the patient criteria for a "last name" equal to "Other-than"
     When I search for patients
     Then search result 1 has a "last name" of "Other-than"
 
   Scenario: I can find the patient when searching for a hyphenated last name without using a hyphen
-    Given the patient has the "legal" name "Something" "Other-than"
+    Given the patient has the legal name "Something" "Other-than"
     And patients are available for search
     And I add the patient criteria for a "last name" equal to "Other than"
     When I search for patients
     Then search result 1 has a "last name" of "Other-than"
 
   Scenario: I can search for a Patient and find them by their legal name
-    Given the patient has the "legal" name "Something" "Other" as of "2022-01-01"
-    And the patient has the "legal" name "This" "One" "Here", "Junior" as of "2022-11-13"
-    And the patient has the "alias" name "Al" "Lias"
+    Given the patient has the legal name "Something" "Other" as of 01/01/2022
+    And the patient has the legal name "This" "One" "Here", Jr. as of 11/13/2022
+    And the patient has the Alias Name name "Al" "Lias"
     And patients are available for search
     When I search for patients
     Then the search results have a patient with a "legal first name" equal to "This"
     And the search results have a patient with a "legal middle name" equal to "One"
     And the search results have a patient with a "legal last name" equal to "Here"
-    And the search results have a patient with a "legal name suffix" equal to "Junior"
-    And the search results have a patient with a "first name" equal to "Something"
-    And the search results have a patient with a "last name" equal to "Other"
+    And the search results have a patient with a "legal name suffix" equal to "Jr."
+    And the search results have a patient with an "Legal" first name of "Something"
+    And the search results have a patient with an "Legal" last name of "Other"
+    And the search results have a patient with an "Alias Name" first name of "Al"
+    And the search results have a patient with an "Alias Name" last name of "Lias"
 
   Scenario: I can search for a Patient and find them by their legal name
     Given the patient has the "alias" name "Al" "Lias"
@@ -168,11 +230,11 @@ Feature: Patient Search
   Scenario: I can search for a Patient using a phone number
     Given the patient has the phone number "1"-"888-240-2200" x"1009"
     And I have another patient
-    And the patient has a "phone number" of "613-240-2200"
+    And the patient has the Answering service - Temporary number of "613-240-2200"
     And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "888-240-2200"
+    And I add the patient criteria for an "phone number" equal to "613-240-2200"
     When I search for patients
-    Then the search results have a patient with a "phone number" equal to "888-240-2200"
+    Then the search results have a patient with a Answering service - Temporary number of "613-240-2200"
 
   Scenario: I can search for a Patient using a partial phone number
     Given the patient has a "phone number" of "888-240-2200"
@@ -227,11 +289,22 @@ Feature: Patient Search
     When I search for patients
     Then the patient is not in the search results
 
+  Scenario: I can search for a Patient using a value that is contained in the Identification
+    Given the patient can be identified with a "MC" of "1234"
+    And I have another patient
+    And the patient can be identified with a "MC" of "1345"
+    And patients are available for search
+    And I add the patient criteria for an "identification type" equal to "MC"
+    And I add the patient criteria for an "identification value" equal to "23"
+    When I search for patients
+    Then there is only one patient search result
+    And the search results have a patient with an "identification value" equal to "1234"
+
   Scenario: BUG: CNFT1-2008 I can search for a Patient with invalid identification
-    Given the patient has the "legal" name "Max" "Headroom"
+    Given the patient has the legal name "Max" "Headroom"
     And the patient can be identified with a Medicare Number of "1009"
     And I have another patient
-    And the patient has the "legal" name "Max" "Smart"
+    And the patient has the legal name "Max" "Smart"
     And the patient has the gender Male
     And the patient can be identified with an Account Number without a value
     And patients are available for search
@@ -287,7 +360,7 @@ Feature: Patient Search
     Then the search results have a patient with a "gender" equal to "Unknown"
     And the search results have a patient without a "gender" equal to "Female"
     And the search results have a patient without a "gender" equal to "Male"
-    And there are 2 patient search results
+    And there is only one patient search result
 
   Scenario: BUG: CNFT1-1560 Patients with only a country code are searchable
     Given the patient has a "country code" of "+32"
@@ -305,3 +378,37 @@ Feature: Patient Search
     When I search for patients
     Then the search results have a patient with a "first name" equal to "Liam"
 
+  Scenario: I can find a patient by last name using special characters without an error 
+    Given the patient has the legal name "Sam" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a "last name" equal to "Sm~th"
+    When I search for patients
+    Then there are 1 patient search results
+
+  Scenario: I can find a patient by first name using special characters without an error 
+    Given the patient has the legal name "Sam" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a "first name" equal to "S~m"
+    When I search for patients
+    Then there are 1 patient search results
+
+  Scenario: I can find a patient by address using special characters without an error 
+    Given the patient has an "address" of "123 Way"
+    And patients are available for search
+    And I add the patient criteria for a "address" equal to "123 W~y"
+    When I search for patients
+    Then there are 0 patient search results
+
+  Scenario: I can find a patient by email using special characters without an error 
+    Given the patient has an "email address" of "email@test.com"
+    And patients are available for search
+    And I add the patient criteria for a "email address" equal to "email~test.com"
+    When I search for patients
+    Then there are 1 patient search results
+
+  Scenario: I can find a patient by city using special characters without an error 
+    Given the patient has an "city" of "acity"
+    And patients are available for search
+    And I add the patient criteria for a "city" equal to "a~ity"
+    When I search for patients
+    Then there are 0 patient search results

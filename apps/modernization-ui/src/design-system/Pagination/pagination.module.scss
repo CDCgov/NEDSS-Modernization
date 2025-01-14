@@ -1,0 +1,31 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.hidden {
+    display: none;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 1rem;
+    color: colors.$base;
+
+    @extend %thin-top;
+
+    .range {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .pages {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        button {
+            border-color: colors.$base-lighter;
+        }
+    }
+}

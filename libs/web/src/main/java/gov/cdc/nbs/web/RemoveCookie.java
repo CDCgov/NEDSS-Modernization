@@ -9,7 +9,7 @@ public class RemoveCookie {
 
     public static void from(final String name, final HttpHeaders headers) {
         String cookie = ResponseCookie.from(name,"")
-            .path("/nbs/")
+            .path("/nbs")
             .sameSite("Strict")
             .httpOnly(true)
             .secure(true)

@@ -9,7 +9,7 @@ class AddAddressModule {
   type() {
     cy.get(".usa-modal-wrapper.is-visible select[data-testid=dropdown]")
       .first()
-      .select("Dormitory");
+      .select("Dormitory", {force: true});
     return this;
   }
 

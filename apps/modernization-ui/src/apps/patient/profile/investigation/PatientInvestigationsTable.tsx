@@ -23,22 +23,22 @@ const asTableBody =
         tableDetails: [
             {
                 id: 1,
-                title: investigation?.startedOn && format(investigation.startedOn, 'MM/dd/yyyy')
-            },
-            { id: 2, title: investigation?.condition },
-            { id: 3, title: investigation?.status },
-            { id: 4, title: investigation?.caseStatus },
-            { id: 5, title: investigation?.notification },
-            { id: 6, title: investigation?.jurisdiction },
-            { id: 7, title: investigation?.investigator },
-            {
-                id: 8,
                 title: investigation?.event && (
                     <ClassicLink url={`/nbs/api/profile/${patient}/investigation/${investigation.investigation}`}>
                         {investigation?.event}
                     </ClassicLink>
                 )
             },
+            {
+                id: 2,
+                title: investigation?.startedOn && format(investigation.startedOn, 'MM/dd/yyyy')
+            },
+            { id: 3, title: investigation?.condition },
+            { id: 4, title: investigation?.status },
+            { id: 5, title: investigation?.caseStatus },
+            { id: 6, title: investigation?.notification },
+            { id: 7, title: investigation?.jurisdiction },
+            { id: 8, title: investigation?.investigator },
             { id: 9, title: investigation?.coInfection || null }
         ]
     });
@@ -50,6 +50,7 @@ const asTableBodies = (
 ): TableBody[] => investigations?.map(asTableBody(handleSelect, patient)) || [];
 
 const headers = [
+    { name: Headers.Investigation, sortable: true },
     { name: Headers.StartDate, sortable: true },
     { name: Headers.Condition, sortable: true },
     { name: Headers.Status, sortable: true },
@@ -57,7 +58,6 @@ const headers = [
     { name: Headers.Notification, sortable: true },
     { name: Headers.Jurisdiction, sortable: true },
     { name: Headers.Investigator, sortable: true },
-    { name: Headers.Investigation, sortable: true },
     { name: Headers.CoInfection, sortable: true }
 ];
 

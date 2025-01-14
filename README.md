@@ -19,9 +19,20 @@
 - [Code Formatting](documentation/Code-Formatting.md)
 - [Pull requests](documentation/Pull-Requests.md)
 
+## Configuring local development secrets
+
+Some containers within the `cdc-sandbox` directory require sensitive values be set prior to building.
+
+| Container | Required environment variable    |
+|-----------|----------------------------------|
+| nbs-mssql | DATABASE_PASSWORD                |
+| nifi      | NIFI_PASSWORD, DATABASE_PASSWORD |
+| keycloak  | KEYCLOAK_ADMIN_PASSWORD          |
+
 ## Running everything inside docker
 
-1. Gain access to the [NBS source code repository](https://github.com/cdcent/NEDSSDev) _this is required to build the wildfly container_
+1. Gain access to the [NBS source code repository](https://github.com/cdcent/NEDSSDev) _this is required to build the
+   wildfly container_
 2. Navigate to the `cdc-sandbox` directory
 
    ```sh
@@ -58,14 +69,14 @@ To learn more about the build process view the cdc-sandbox [README](cdc-sandbox/
 2. Start the database and Elasticsearch containers
 
     ```sh
-    docker-compose up -d nbs-mssql elasticsearch
+    docker compose up -d nbs-mssql elasticsearch
     ```
 3. Navigate to the root directory
 
    ```sh
    cd ..
    ``` 
-   
+
 4. Start the `modernized-api` _Port `5005` will be open for debugger attachment._
 
     ```sh
@@ -121,7 +132,7 @@ achieved by altering the configuration to point to the local instances.
    ```
 
 2. Start the `nbs-gateway` container configured to route to the local `modernization-ui` by executing the
-following command from the root folder
+   following command from the root folder
 
    ```shell
    MODERNIZATION_UI_SERVER=host.docker.internal MODERNIZATION_UI_PORT=3000 docker compose up -d nbs-gateway
@@ -132,8 +143,9 @@ following command from the root folder
 From the root folder.
 
 1. Start the backend API locally listening on port 9080 from the root project folder. The `nbs-gateway` container is
-accessible from port `8080`, which is the default port for the `modernization-api`. It must be changed in order for the
-backend to start properly.
+   accessible from port `8080`, which is the default port for the `modernization-api`. It must be changed in order for
+   the
+   backend to start properly.
 
    ```shell
    ./gradlew :modernization-api:bootRun --args='--server.port=9080'
@@ -157,7 +169,7 @@ From the root folder.
    ```
 
 2. Start the `nbs-gateway` container configured to route to the local `pagebuilder-api` by executing the
-following command.
+   following command.
 
    ```shell
    PAGEBUILDER_API=host.docker.internal PAGEBUILDER_API_PORT=8095 docker compose up -d nbs-gateway

@@ -1,4 +1,4 @@
-FROM node:18 AS ui-builder
+FROM node:22 AS ui-builder
 
 WORKDIR /usr/modernization-ui
 
@@ -37,19 +37,19 @@ RUN gradle :modernization-api:buildNeeded -x test --no-daemon
 RUN jar xf apps/modernization-api/build/libs/modernization-api.jar
 
 RUN jdeps --ignore-missing-deps -q  \
-    --recursive  \
-    --multi-release 21  \
-    --print-module-deps  \
-    --class-path 'BOOT-INF/lib/*'  \
-    apps/modernization-api/build/libs/modernization-api.jar > deps.info
+  --recursive  \
+  --multi-release 21  \
+  --print-module-deps  \
+  --class-path 'BOOT-INF/lib/*'  \
+  apps/modernization-api/build/libs/modernization-api.jar > deps.info
 
 RUN jlink \
-    --add-modules $(cat deps.info) \
-    --strip-debug \
-    --compress 2 \
-    --no-header-files \
-    --no-man-pages \
-    --output modernization-api/runtime
+  --add-modules $(cat deps.info),jdk.crypto.cryptoki \
+  --strip-debug \
+  --compress 2 \
+  --no-header-files \
+  --no-man-pages \
+  --output modernization-api/runtime
 
 FROM redhat/ubi9-micro:latest
 

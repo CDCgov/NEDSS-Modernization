@@ -8,7 +8,7 @@ import java.util.Optional;
 
 class SearchablePatientPhoneMapper {
 
-  record Column(int number, int extension) {
+  record Column(int number, int extension, int typeCd, int useCd) {
   }
 
 
@@ -21,11 +21,14 @@ class SearchablePatientPhoneMapper {
   SearchablePatient.Phone map(final ResultSet resultSet) throws SQLException {
     String number = resultSet.getString(columns.number());
     String extension = resultSet.getString(columns.extension());
+    String typeCd = resultSet.getString(columns.typeCd());
+    String useCd = resultSet.getString(columns.useCd());
 
     return new SearchablePatient.Phone(
         number,
-        extension
-    );
+        extension,
+        typeCd,
+        useCd);
   }
 
   Optional<SearchablePatient.Phone> maybeMap(final ResultSet resultSet) throws SQLException {
@@ -37,12 +40,14 @@ class SearchablePatientPhoneMapper {
     }
 
     String extension = resultSet.getString(columns.extension());
+    String typeCd = resultSet.getString(columns.typeCd());
+    String useCd = resultSet.getString(columns.useCd());
 
     return Optional.of(
         new SearchablePatient.Phone(
             number,
-            extension
-        )
-    );
+            extension,
+            typeCd,
+            useCd));
   }
 }

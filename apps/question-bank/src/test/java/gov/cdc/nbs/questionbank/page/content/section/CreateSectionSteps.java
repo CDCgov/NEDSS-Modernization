@@ -1,40 +1,49 @@
 package gov.cdc.nbs.questionbank.page.content.section;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.questionbank.page.content.section.model.Section;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.page.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 public class CreateSectionSteps {
-    @Autowired
-    private SectionController sectionController;
 
-    @Autowired
-    private WaUiMetadataRepository repository;
+    private final SectionController sectionController;
 
-    @Autowired
-    private PageMother pageMother;
+    private final WaUiMetadataRepository repository;
 
-    @Autowired
-    private ExceptionHolder exceptionHolder;
+    private final PageMother pageMother;
 
-    @Autowired
-    private UserDetailsProvider user;
+    private final ExceptionHolder exceptionHolder;
+
+    private final UserDetailsProvider user;
 
     private Section section;
+
+    CreateSectionSteps(
+        final SectionController sectionController,
+        final WaUiMetadataRepository repository,
+        final PageMother pageMother,
+        final ExceptionHolder exceptionHolder,
+        final UserDetailsProvider user
+    ) {
+        this.sectionController = sectionController;
+        this.repository = repository;
+        this.pageMother = pageMother;
+        this.exceptionHolder = exceptionHolder;
+        this.user = user;
+    }
 
     @Given("I send a create section request")
     public void i_send_a_create_section_request() {
@@ -52,9 +61,7 @@ public class CreateSectionSteps {
                             "new section",
                             true),
                     user.getCurrentUserDetails());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }

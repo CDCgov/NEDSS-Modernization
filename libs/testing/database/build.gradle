@@ -4,24 +4,12 @@ plugins {
 
 group = 'gov.cdc.nbs.testing.database'
 
-testing {
-    suites {
-        test {
-            useJUnitJupiter()
-
-            dependencies {
-                implementation.bundle(libs.bundles.testing)
-            }
-        }
-    }
-}
-
 dependencies {
 
     implementation libs.springBoot
 
     implementation libs.spring.test
-
-    implementation libs.bundles.testcontainers
+    implementation libs.testcontainers
+    implementation libs.testcontainers.mssqlserver
 
 }

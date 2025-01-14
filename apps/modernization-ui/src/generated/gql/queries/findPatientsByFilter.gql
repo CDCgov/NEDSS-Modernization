@@ -1,5 +1,5 @@
-query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
-    findPatientsByFilter(filter: $filter, page: $page){
+query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage, $share: String){
+    findPatientsByFilter(filter: $filter, page: $page, share: $share){
         content{
             patient
             birthday
@@ -8,12 +8,14 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
             status
             shortId
             legalName{
+                type
                 first
                 middle
                 last
                 suffix
             }
             names{
+                type
                 first
                 middle
                 last
@@ -24,16 +26,25 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
                 value
             }
             addresses{
+                type
                 use
                 address
                 address2
                 city
+                county
                 state
                 zipcode
             }
             phones
             emails
+            detailedPhones{
+                type
+                use
+                number
+            }
         }
         total
+        page
+        size
     }
 }

@@ -69,6 +69,8 @@ public class TeleLocator extends Locator {
         this.extensionTxt = phone.extension();
         this.emailAddress = phone.email();
         this.urlAddress = phone.url();
+
+        changed(phone);
     }
 
     @Override

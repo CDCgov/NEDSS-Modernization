@@ -1,11 +1,5 @@
 @use 'styles/colors';
-
-.multi-select-input {
-    label {
-        margin-top: 1.8rem;
-        margin-bottom: 0.5rem;
-    }
-}
+@use 'styles/components';
 
 .multi-select-selection__indicator {
     height: 1.25rem;
@@ -14,44 +8,70 @@
     background-size: 1.25rem;
 }
 
-.multi-select__control {
-    min-height: 40px;
-    height: unset;
-    border-radius: 0 !important;
-    border-color: rgb(86, 92, 101) !important;
+.multi-select {
+    .multi-select__control {
+        border-width: 1px;
+        border-style: solid;
+        border-color: colors.$base-dark;
+        min-height: 2.5rem;
+        border-radius: 0;
+
+        .multi-select__indicator {
+            color: colors.$base-darker !important;
+            height: 2rem;
+            width: 2rem;
+            padding: 0.5rem;
+        }
+
+        .multi-select__indicator-separator {
+            background-color: colors.$base-lighter !important;
+        }
+
+        .multi-select__multi-value {
+            background-color: colors.$primary-lighter !important;
+        }
+
+        .multi-select_multi-value_label {
+            color: colors.$primary-dark !important;
+            font-size: 100% !important;
+        }
+
+        .multi-select_multi-value_remove {
+            color: colors.$primary-dark !important;
+        }
+
+        .multi-select_multi-value_path {
+            display: none !important;
+        }
+
+        .multi-select__placeholder {
+            color: colors.$base-darkest !important;
+            margin: 0;
+            padding-left: 0.25rem;
+        }
+
+        .multi-select__input {
+            margin: 0;
+            padding-left: 0.25rem;
+        }
+    }
 }
 
-.multi-select__indicator {
-    color: rgb(86, 92, 101) !important;
-}
+.multi-select__compact {
+    @extend %compact;
 
-.multi-select__indicator-separator {
-    background-color: unset !important;
-}
+    .multi-select__control {
+        .multi-select__value-container {
+            padding: 0 !important;
 
-.multi-select__multi-value {
-    color: white !important;
-    background-color: #0096fb !important;
-    border-radius: 8px !important;
-}
+            .multi-select__input-container {
+                padding: 0;
+                margin: 0;
 
-.multi-select__multi-value__label {
-    color: white !important;
-    font-size: 100% !important;
-}
-
-.multi-select__multi-value__path {
-    display: none !important;
-}
-
-.multi-select__option {
-    background: none;
-}
-
-.multi-select__option--is-selected {
-    background: none;
-}
-
-.multi-select__placeholder {
-    color: colors.$base-black !important;
+                input {
+                    height: unset;
+                }
+            }
+        }
+    }
 }

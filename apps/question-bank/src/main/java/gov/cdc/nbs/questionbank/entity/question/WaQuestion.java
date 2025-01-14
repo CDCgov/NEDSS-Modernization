@@ -31,6 +31,7 @@ import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNonNull;
 @Table(name = "WA_question", catalog = "NBS_ODSE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "data_type", discriminatorType = DiscriminatorType.STRING)
+@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
 public abstract class WaQuestion {
 
     public static final String ACTIVE = "Active";

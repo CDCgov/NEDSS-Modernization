@@ -33,10 +33,13 @@
 
             .info {
                 .name {
-                    color: colors.$base-black;
-                    text-align: center;
-                    font-size: 1.375rem;
-                    font-weight: 700;
+                    h3{
+                        color: colors.$base-black;
+                        text-align: center;
+                        font-size: 1.375rem;
+                        font-weight: 700;
+                        margin: 0;
+                    }
                 }
 
                 .subsectionCount {

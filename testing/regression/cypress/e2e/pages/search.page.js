@@ -1,70 +1,55 @@
 class SearchPage {
-  selectBasicInfo() {
-    cy.get('button[data-testid="accordionButton_1"]').click();
-  }
 
   enterLastName(lastName) {
-    cy.get("#lastName").type(lastName);
+    cy.get('input[name="name.last"]').type(lastName);
   }
 
   enterFirstName(firstName) {
-    cy.get("#firstName").type(firstName);
+    cy.get('input[name="name.first"]').type(firstName);
   }
 
   enterPatiendID(id) {
     cy.get("#id").type(id);
   }
 
-  selectAddress() {
-    cy.get('button[data-testid="accordionButton_2"]').click();
-  }
-
-  enterStreetAdreess(address) {
-    cy.get("#address").type(address);
-  }
-
   enterCity(city) {
-    cy.get("#city").type(city);
+    cy.get('input[id="location.city"]').type(city,{force: true});
+    // cy.get("#city").type(city,{force: true});
   }
 
   enterZipCode(zip) {
-    cy.get("#zip").type(zip);
-    cy.get("#city").click();
+    cy.get("#zip").type(zip,{force: true});
+    cy.get('input[id="location.city"]').click({force: true});
+    // cy.get("#city").click({force: true});
   }
 
   enterStreetAddress(address) {
-    cy.get("#address").type(address);
-  }
-
-  selectContact() {
-    cy.get("button[data-testid=accordionButton_3]").click();
+    cy.get('input[name="location.street"]').type(address,{force: true});
+    // cy.get("#address").type(address,{force: true});
   }
 
   enterPhone(phone) {
-    cy.get("#phoneNumber").type(phone);
+    cy.get("#homePhone").type(phone,{force: true});
   }
 
   enterEmail(email) {
-    cy.get("#email").type(email);
+    cy.get("#email").type(email, {force: true});
   }
 
   selectId() {
+    cy.get('svg[aria-label="Collapse Basic information"]').first().click()
+    cy.get('svg[aria-label="Expand ID"]').first().click()
     cy.wait(500);
-    let elem = "button[data-testid=accordionButton_5]";
-    cy.get(elem).scrollIntoView();
-    elem = "button[data-testid=accordionButton_4]";
-    cy.get(elem).click();
-    cy.wait(1000);
   }
 
   enterIdType(type) {
-    const elem = "div[data-testid=accordionItem_4] select";
+    const elem = "#identificationType";
     cy.get(elem).scrollIntoView().select(type);
   }
 
   enterId(id) {
     if (id.length !== 0) {
-      cy.get('input[id*=identificationNumber]').type(id);
+      cy.get('input[name*=identification]').type(id);
     }
   }
 
@@ -76,25 +61,29 @@ class SearchPage {
   }
 
   selectRace() {
-    cy.get('button[data-testid="accordionButton_5"]').click();
+    cy.get('svg[aria-label="Collapse Basic information"]').first().click()
+    cy.get('svg[aria-label="Expand Race/Ethnicity"]').first().click()
+    cy.wait(500);
     cy.wait(1000);
   }
 
   enterEthnicity(type) {
-    cy.get('div[data-testid="accordionItem_5"] label[for="ethnicity"]+select')
+    cy.get('#ethnicity')
       .scrollIntoView()
       .select(type);
   }
 
   enterRace(type) {
-    cy.get('div[data-testid="accordionItem_5"] label[for="race"]+select')
+    cy.get('#race')
       .scrollIntoView()
       .select(type);
   }
 
   search() {
-    cy.get('div.bottom-search button[type="submit"]').click();
+    cy.get('button').contains("Search").click();
+    // cy.get('div.bottom-search button[type="submit"]').click();
     cy.wait(100);
+    cy.get('button').contains("List").click();
   }
 
   verifySearchPage() {
@@ -114,9 +103,8 @@ class SearchPage {
   //   cy.wait(1000);
   // }
 
-  selectState() {
-    cy.get("div[id='2'] select[placeholder='-Select-']");
-    cy.get("option[value='15']");
+  selectState(string) {
+    cy.get("select[name='state']").select(string);    
     cy.wait(500);
   }
 
@@ -132,8 +120,11 @@ class SearchPage {
 
   enterDob(dateOfBirth) {
     cy.get("#dateOfBirth").focus().clear();
+    cy.get("#bornOn-exact-date-month").type("1")
+    cy.get("#bornOn-exact-date-day").type("1")
+    cy.get("#bornOn-exact-date-year").type("1982")
     const cleanedDateOfBirth = dateOfBirth.replace(/\//g, "");
-    cy.get("#dateOfBirth").type(cleanedDateOfBirth);
+    // cy.get("#dateOfBirth").type(cleanedDateOfBirth);
   }
 
   clearAll() {
@@ -141,13 +132,19 @@ class SearchPage {
   }
 
   selectDelete() {
-    cy.get('#record-status-active').focus().click( { force: true})
-    cy.get('#record-status-deleted').focus().click({ force: true})
+    cy.get('label[for="status__checkbox__ACTIVE"]').click({ force: true });
+    cy.get('label[for="status__checkbox__LOG_DEL"]').click({ force: true });
+    
   }
 
   selectSuperseded() {
-    cy.get('#record-status-active').focus().click( { force: true})
-    cy.get('#record-status-deleted').focus().click({ force: true})
+    cy.get('label[for="status__checkbox__ACTIVE"]').click({ force: true });
+    cy.get('label[for="status__checkbox__SUPERCEDED"]').click({ force: true });
+
+  }
+
+  clickAddressTab() {    
+    cy.get('summary').contains("Address").click();
   }
 }
 

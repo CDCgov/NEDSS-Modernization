@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import styles from './managesubsection.module.scss';
 import { Button, Icon } from '@trussworks/react-uswds';
-import { Heading } from 'components/heading';
 import { AlertInLineProps } from '../../section/manage/ManageSectionModal';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
 import { PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
@@ -97,7 +96,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                 <div className={styles.manageSubsection}>
                     <div className={styles.header}>
                         <div className={styles.manageSubsectionHeader} data-testid="header">
-                            <Heading level={4}>Manage subsections</Heading>
+                            <h2>Manage subsections</h2>
                         </div>
                         <div className={styles.addSubsectionHeader}>
                             <Button
@@ -163,6 +162,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                                 onCancel?.();
                             }}
                             type={'button'}
+                            data-testid="manageSubsectionCloseBtn"
                             outline>
                             Close
                         </Button>

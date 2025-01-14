@@ -82,7 +82,7 @@ public class PatientDeleteSteps {
         .isInstanceOf(PatientDeleteResult.PatientDeleteFailed.class)
         .asInstanceOf(InstanceOfAssertFactories.type(PatientDeleteResult.PatientDeleteFailed.class))
         .satisfies(
-            actual_result -> assertThat(actual_result.reason())
+            actual -> assertThat(actual.reason())
                 .containsIgnoringCase("Cannot delete patient with Active Revisions"));
 
     Person actual = repository.findById(this.result.patient())
@@ -113,7 +113,7 @@ public class PatientDeleteSteps {
         .isInstanceOf(PatientDeleteResult.PatientDeleteFailed.class)
         .asInstanceOf(InstanceOfAssertFactories.type(PatientDeleteResult.PatientDeleteFailed.class))
         .satisfies(
-            actual_result -> assertThat(actual_result.reason())
+            actual -> assertThat(actual.reason())
                 .containsIgnoringCase("Unable to find patient")
                 .contains(String.valueOf(this.result.patient())));
   }

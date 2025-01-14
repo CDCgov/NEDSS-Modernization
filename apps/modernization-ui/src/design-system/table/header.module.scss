@@ -1,0 +1,33 @@
+@use 'styles/colors';
+
+.header {
+    padding-top: 0.62rem !important;
+    padding-bottom: 0.62rem !important;
+
+    &.fixed {
+        position: sticky;
+        left: 0;
+        z-index: 30;
+
+        min-width: 12.5rem;
+        max-width: 12.5rem;
+        border-right-width: 1px;
+        border-right-style: solid !important;
+        border-right-color: colors.$base;
+    }
+
+    div {
+        display: flex;
+        justify-content: space-between;
+        border: none;
+        align-items: center;
+    }
+    svg {
+        height: 1.0625rem;
+        width: 0.625rem;
+    }
+
+    &.sorted {
+        background-color: colors.$cool-accent-light !important;
+    }
+}

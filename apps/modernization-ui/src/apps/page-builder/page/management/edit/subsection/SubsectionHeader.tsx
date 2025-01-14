@@ -74,24 +74,34 @@ export const SubsectionHeader = ({
     };
 
     return (
-        <div className={`${styles.header} ${subsection.isGrouped !== false ? styles.grouped : ''}`}>
+        <div className={`${styles.header} ${subsection.isGrouped !== false ? styles.grouped : ''} subsectionHeader`}>
             <div className={styles.info}>
-                {subsection.isGrouped !== false ? <div className={styles.indicator}>R</div> : null}
+                {subsection.isGrouped !== false ? (
+                    <div data-testid="questionGroupIndicator" className={styles.indicator}>
+                        R
+                    </div>
+                ) : null}
                 <div>
-                    <div className={styles.name}>{subsection.name}</div>
+                    <div className={styles.name}>
+                        <h4>{subsection.name}</h4>
+                    </div>
                     <div className={styles.count}>
                         {`${subsection.questions?.length} question${subsection.questions?.length > 1 ? 's' : ''}`}
                     </div>
                 </div>
             </div>
             <div className={styles.buttons}>
-                <Button type="button" className="add-btn" outline onClick={onAddQuestion}>
+                <Button type="button" className="add-btn addQuestionBtn" outline onClick={onAddQuestion}>
                     Add question
                 </Button>
                 <MoreOptions
                     header={<Icon.MoreVert role="menu" size={4} onClick={() => setCloseOptions(false)} />}
+                    className={`subsectionOptionsWithGrouped-${subsection.isGrouped ? 'grouped' : subsection.questions.length > 2 ? 'ungrouped' : ''}`}
                     close={closeOptions}>
-                    <Button type="button" onClick={() => closeThenAct(onEditSubsection)}>
+                    <Button
+                        type="button"
+                        data-testid="editSubsectionOption"
+                        onClick={() => closeThenAct(onEditSubsection)}>
                         <Icon.Edit size={3} /> Edit subsection
                     </Button>
                     {subsection.isGrouped &&
@@ -100,6 +110,7 @@ export const SubsectionHeader = ({
                             <ModalToggleButton
                                 type="button"
                                 modalRef={ungroupSubsectionModalRef}
+                                data-testid="ungroupQuestionsOption"
                                 onClick={() => setCloseOptions(true)}>
                                 <IconComponent name={'group'} size={'s'} /> Ungroup questions
                             </ModalToggleButton>
@@ -113,7 +124,10 @@ export const SubsectionHeader = ({
                         ) && (
                             <>
                                 {subsection.isGroupable && subsection.questions.length > 0 && (
-                                    <Button type="button" onClick={() => closeThenAct(onGroupQuestion)}>
+                                    <Button
+                                        type="button"
+                                        data-testid="groupQuestionsOption"
+                                        onClick={() => closeThenAct(onGroupQuestion)}>
                                         <IconComponent name={'group'} size={'s'} /> Group questions
                                     </Button>
                                 )}
@@ -126,12 +140,13 @@ export const SubsectionHeader = ({
                         type="button"
                         onClick={() => {
                             closeThenAct(onDeleteSubsection);
-                        }}>
+                        }}
+                        className="deleteSubsectionBtn">
                         <Icon.Delete size={3} /> Delete subsection
                     </Button>
                 </MoreOptions>
                 {isExpanded ? (
-                    <Icon.ExpandLess size={4} onClick={() => onExpandedChange(false)} />
+                    <Icon.ExpandLess className="iconExpandLess" size={4} onClick={() => onExpandedChange(false)} />
                 ) : (
                     <Icon.ExpandMore size={4} onClick={() => onExpandedChange(true)} />
                 )}

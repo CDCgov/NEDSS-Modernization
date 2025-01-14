@@ -15,7 +15,6 @@ import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { ConfirmationModal } from 'confirmation';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heading } from '../../../../../components/heading';
 import { PageControllerService } from '../../../generated/services/PageControllerService';
 import { PublishPage } from './PublishPage/PublishPage';
 import { SaveTemplate } from './SaveTemplate/SaveTemplate';
@@ -133,7 +132,10 @@ const PreviewPageContent = () => {
             <PageManagementLayout name={page.name} mode={page.status}>
                 <PageHeader page={page} tabs={visibleTabs}>
                     <PageManagementMenu>
-                        <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
+                        <NavLinkButton
+                            to={`/page-builder/pages/${page.id}/business-rules`}
+                            type="outline"
+                            dataTestId="businessRulesBtn">
                             Business rules
                         </NavLinkButton>
                         <ModalToggleButton modalRef={saveTemplateRef} outline type="button">
@@ -144,7 +146,10 @@ const PreviewPageContent = () => {
                                 <ModalToggleButton modalRef={deleteDraftRef} type="button" outline>
                                     Delete draft
                                 </ModalToggleButton>
-                                <NavLinkButton to={`/page-builder/pages/${page.id}/edit`} type="outline">
+                                <NavLinkButton
+                                    className="editDraftBtn"
+                                    to={`/page-builder/pages/${page.id}/edit`}
+                                    type="outline">
                                     Edit draft
                                 </NavLinkButton>
                             </>
@@ -180,11 +185,15 @@ const PreviewPageContent = () => {
                                 <Icon.Print size={3} />
                             </LinkButton>
                             {page.status === 'Published' ? (
-                                <Button type="button" onClick={handleCreateDraft}>
+                                <Button id="create-new-draft-button" type="button" onClick={handleCreateDraft}>
                                     Create new draft
                                 </Button>
                             ) : (
-                                <ModalToggleButton modalRef={publishDraftRef} type="button">
+                                <ModalToggleButton
+                                    modalRef={publishDraftRef}
+                                    type="button"
+                                    data-testid="publishBtn"
+                                    className="publishBtn">
                                     Publish
                                 </ModalToggleButton>
                             )}
@@ -242,10 +251,10 @@ const PreviewPageContent = () => {
                         <div className={styles.loaderContent}>
                             <Loading center className={styles.loaderIcon} />
                             <div className={styles.loaderText}>
-                                <Heading level={2}>Publishing...</Heading>
+                                <h2>Publishing...</h2>
                             </div>
                             <div className={styles.loaderText}>
-                                <Heading level={2}>This may take a moment</Heading>
+                                <h2>This may take a moment</h2>
                             </div>
                         </div>
                     }

@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: remove-cookie-test
+          uri: ${test.destination.uri}
+          predicates:
+            - Path=/remove-cookie-test
+          filters:
+            - RemoveCookie=/path, cookie-name

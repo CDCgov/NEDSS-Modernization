@@ -1,8 +1,15 @@
+import { request } from 'generated/core/request';
 import { Configuration } from './configuration';
-import { ConfigurationControllerService } from 'generated';
+import { CancelablePromise, OpenAPI } from 'generated';
 
-const currentConfiguration = () =>
-    ConfigurationControllerService.getConfiguration().then((response) => response as Configuration);
+const fetchConfig = (): CancelablePromise<Configuration> => {
+    return request(OpenAPI, {
+        method: 'GET',
+        url: '/nbs/api/configuration'
+    });
+};
+
+const currentConfiguration = () => fetchConfig().then((response) => response as Partial<Configuration>);
 
 type CurrentConfigurationResponse = Awaited<ReturnType<typeof currentConfiguration>>;
 

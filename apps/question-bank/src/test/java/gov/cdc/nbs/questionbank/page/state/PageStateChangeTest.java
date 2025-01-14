@@ -1,21 +1,9 @@
 package gov.cdc.nbs.questionbank.page.state;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import gov.cdc.nbs.questionbank.entity.*;
+import gov.cdc.nbs.questionbank.entity.PageCondMapping;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
 import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WARDBMetadataRepository;
@@ -26,7 +14,22 @@ import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 class PageStateChangeTest {
 
   @Mock
@@ -53,14 +56,9 @@ class PageStateChangeTest {
   PageStateChanger pageStateChanger;
 
 
-  public PageStateChangeTest() {
-    MockitoAnnotations.openMocks(this);
-  }
-
-
   @Test
   void pageStateUpdateTest() {
-    Long requestId = 1l;
+    Long requestId = 1L;
     WaTemplate before = getTemplate(requestId, "TestPage", "Pblished");
     when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(before));
     when(templateRepository.save(Mockito.any())).thenReturn(before);
@@ -71,7 +69,7 @@ class PageStateChangeTest {
 
   @Test
   void pageStateExceptionTest() {
-    Long requestId = 1l;
+    Long requestId = 1L;
     when(templateRepository.findById(Mockito.anyLong())).thenThrow(new IllegalArgumentException());
     var exception = assertThrows(PageUpdateException.class, () -> pageStateChanger.savePageAsDraft(requestId));
     assertEquals(PageConstants.SAVE_DRAFT_FAIL, exception.getMessage());
@@ -79,7 +77,7 @@ class PageStateChangeTest {
 
   @Test
   void pageStateNotFoundTest() {
-    Long requestId = 1l;
+    Long requestId = 1L;
     when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
     var exception = assertThrows(PageUpdateException.class, () -> pageStateChanger.savePageAsDraft(requestId));
     assertEquals(PageConstants.SAVE_DRAFT_FAIL, exception.getMessage());
@@ -88,9 +86,9 @@ class PageStateChangeTest {
 
   @Test
   void testCreateDraftCopy() {
-    WaTemplate oldPage = getTemplate(10l, "testName", "Published");
+    WaTemplate oldPage = getTemplate(10L, "testName", "Published");
     WaTemplate newPage = pageStateChanger.createDraftCopy(oldPage);
-    assertEquals(newPage.getTemplateNm(), newPage.getTemplateNm());
+
     assertEquals("Draft", newPage.getTemplateType());
     assertEquals(0, newPage.getPublishVersionNbr().intValue());
     assertEquals('F', newPage.getPublishIndCd().charValue());
@@ -98,39 +96,39 @@ class PageStateChangeTest {
 
   @Test
   void testCopyWaTemplateUIMetaData() {
-    WaTemplate oldPage = getTemplate(10l, "testName", "Published");
+    WaTemplate oldPage = getTemplate(10L, "testName", "Published");
     when(waUiMetadataRepository.findAllByWaTemplateUid(Mockito.any()))
         .thenReturn(List.of(getwaUiMetaDtum(oldPage)));
     WaTemplate newPage = pageStateChanger.createDraftCopy(oldPage);
     List<WaUiMetadata> result = pageStateChanger.copyWaTemplateUIMetaData(oldPage, newPage);
     assertNotNull(result);
-    assertEquals(newPage.getId(), result.get(0).getWaTemplateUid().getId());
+    assertEquals(newPage.getId(), result.getFirst().getWaTemplateUid().getId());
 
   }
 
   @Test
   void testCopyRules() {
-    WaTemplate oldPage = getTemplate(10l, "testName", "Published");
+    WaTemplate oldPage = getTemplate(10L, "testName", "Published");
 
     when(waRuleMetaDataRepository.findByWaTemplateUid(Mockito.any()))
         .thenReturn(List.of(getWaRuleMetadata(oldPage)));
 
-    List<WaRuleMetadata> result = pageStateChanger.copyRules(oldPage.getId(), 11l);
+    List<WaRuleMetadata> result = pageStateChanger.copyRules(oldPage.getId(), 11L);
     assertNotNull(result);
   }
 
 
   private WaUiMetadata getwaUiMetaDtum(WaTemplate aPage) {
-    WaUiMetadata record = new WaUiMetadata();
-    record.setWaTemplateUid(aPage);
-    record.setQuestionIdentifier("identifier");
-    return record;
+    WaUiMetadata metadata = new WaUiMetadata();
+    metadata.setWaTemplateUid(aPage);
+    metadata.setQuestionIdentifier("identifier");
+    return metadata;
   }
 
   private WaRuleMetadata getWaRuleMetadata(WaTemplate aPage) {
-    WaRuleMetadata record = new WaRuleMetadata();
-    record.setWaTemplateUid(aPage.getId());
-    return record;
+    WaRuleMetadata metadata = new WaRuleMetadata();
+    metadata.setWaTemplateUid(aPage.getId());
+    return metadata;
   }
 
   private WaTemplate getTemplate(Long id, String templateName, String templateType) {
@@ -144,9 +142,9 @@ class PageStateChangeTest {
     template.setPublishIndCd('T');
 
     one.setAddTime(Instant.now());
-    one.setAddUserId(2l);
+    one.setAddUserId(2L);
     one.setLastChgTime(Instant.now());
-    one.setLastChgUserId(2l);
+    one.setLastChgUserId(2L);
     one.setWaTemplateUid(template);
 
     template.setConditionMappings(Set.of(one));

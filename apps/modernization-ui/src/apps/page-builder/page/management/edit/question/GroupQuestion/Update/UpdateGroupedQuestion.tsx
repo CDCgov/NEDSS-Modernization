@@ -103,7 +103,11 @@ export const UpdateGroupedQuestion = ({ page, subsection, onSuccess, onCancel }:
                 <Button onClick={handleCancel} type="button" outline>
                     Cancel
                 </Button>
-                <Button onClick={handleSubmit} type="button" disabled={!valid || !form.formState.isValid}>
+                <Button
+                    onClick={handleSubmit}
+                    type="button"
+                    data-testid="subsection-submit-btn"
+                    disabled={!valid || !form.formState.isValid}>
                     Submit
                 </Button>
             </ButtonBar>

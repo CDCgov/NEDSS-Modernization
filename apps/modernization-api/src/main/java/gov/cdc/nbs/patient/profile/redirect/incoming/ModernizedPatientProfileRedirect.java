@@ -16,6 +16,10 @@ public sealed interface ModernizedPatientProfileRedirect {
     return new ForPatient(incoming.identifier());
   }
 
+  static ModernizedPatientProfileRedirect forPatient(final IncomingPatient incoming, final String tab) {
+    return new ForPatient(incoming.identifier(), tab);
+  }
+
   static ModernizedPatientProfileRedirect fallback() {
     return new Fallback();
   }
@@ -26,20 +30,22 @@ public sealed interface ModernizedPatientProfileRedirect {
   static ResponseEntity<Void> redirectTo(final URI location) {
     return ResponseEntity.status(HttpStatus.SEE_OTHER)
         .location(location)
-        .headers(
-            ReturningPatientCookie.empty().apply()
-                .andThen(removeCookie(PatientActionCookie.empty().name()))
-        )
+        .headers(removeCookie(ReturningPatientCookie.empty().name()))
+        .headers(removeCookie(PatientActionCookie.empty().name()))
         .build();
   }
 
-  record ForPatient(long identifier) implements ModernizedPatientProfileRedirect {
+  record ForPatient(long identifier, String tab) implements ModernizedPatientProfileRedirect {
+
+    ForPatient(long identifier) {
+      this(identifier, "summary");
+    }
 
     @Override
     public ResponseEntity<Void> redirect() {
       URI uri = UriComponentsBuilder.fromPath("/")
-          .path("patient-profile/{identifier}")
-          .buildAndExpand(identifier())
+          .path("patient-profile/{identifier}/{tab}")
+          .buildAndExpand(identifier(), tab())
           .toUri();
 
       return redirectTo(uri);
@@ -52,7 +58,7 @@ public sealed interface ModernizedPatientProfileRedirect {
     @Override
     public ResponseEntity<Void> redirect() {
       URI uri = UriComponentsBuilder.fromPath("/")
-          .path("advanced-search")
+          .path("search")
           .build()
           .toUri();
       return redirectTo(uri);

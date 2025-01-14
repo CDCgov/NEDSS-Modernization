@@ -7,8 +7,10 @@ query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortableP
             jurisdictionCodeDescTxt
             localId
             addTime
+            startedOn
             investigationStatusCd
             notificationRecordStatusCd
+            investigatorLastName
             personParticipations{
                 birthTime
                 currSexCd
@@ -21,5 +23,7 @@ query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortableP
             }
         }
         total
+        page
+        size
     }
 }

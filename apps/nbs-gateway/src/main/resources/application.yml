@@ -15,10 +15,6 @@ spring:
             - Path=/nbs/**
           filters:
             - RemoveRequestHeader=Referer
-        - id: nbs-logo
-          uri: ${nbs.gateway.classic}
-          predicates:
-            - Path=/images/nedssLogo.jpg
 
 nbs:
   gateway:
@@ -28,6 +24,11 @@ nbs:
     home:
       uri: ${nbs.gateway.classic}
       base: '/nbs/HomePage.do?method=loadHomePage'
+    landing:
+      uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
+      base: '/welcome'
+    welcome:
+      enabled: true
     ui:
       service: 'localhost:3000'
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.ui.service}'
@@ -39,7 +40,7 @@ nbs:
         enabled: true
         service: 'localhost:8080'
       profile:
-        enabled: true
+        enabled: false
         service: 'localhost:8080'
     pagebuilder:
       enabled: false
@@ -60,4 +61,4 @@ logging:
     org:
       springframework:
         security: ${nbs.gateway.security.log.level:INFO}
-        cloud.gateway.handler.RoutePredicateHandlerMapping: ${nbs.gateway.log.level:DEBUG}
+        cloud.gateway.handler.RoutePredicateHandlerMapping: ${nbs.gateway.log.level:INFO}

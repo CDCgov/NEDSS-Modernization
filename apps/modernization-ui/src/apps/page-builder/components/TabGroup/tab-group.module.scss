@@ -3,7 +3,7 @@
 .tabs {
     display: flex;
     list-style-type: none;
-    gap: 2.5rem;
+    gap: 1rem;
     margin: 0;
     padding: 0;
 
@@ -20,9 +20,9 @@
             cursor: pointer;
             line-height: 1;
             display: inline-block;
-            font-weight: 400;
+            font-weight: 700;
             height: 3rem;
-            padding: 1rem;
+            padding: 1rem 0;
             position: relative;
             text-decoration: none;
         }

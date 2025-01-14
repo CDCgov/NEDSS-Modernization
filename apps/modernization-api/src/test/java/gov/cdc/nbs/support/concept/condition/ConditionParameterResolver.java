@@ -28,7 +28,7 @@ class ConditionParameterResolver {
     return this.template.query(
         QUERY,
         statement -> {
-          statement.setString(DESCRIPTION_INDEX, value);;
+          statement.setString(DESCRIPTION_INDEX, value);
         },
         (rs, row) -> rs.getString(CODE_COLUMN)
     ).stream().findFirst();

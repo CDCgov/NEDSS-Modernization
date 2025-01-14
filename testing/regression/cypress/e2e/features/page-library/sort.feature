@@ -1,7 +1,7 @@
-Feature: User can view existing page library sorting here.
+Feature: Page Builder - User can view existing page library sorting here.
 
     Background:
-        Given I am logged in as "superuser" and password ""
+        Given I am logged in as secure user
         When User navigates to Page Library and views the Page library
 
     Scenario: User list Page name in descending and ascending order

@@ -1,7 +1,6 @@
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Heading } from 'components/heading';
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
@@ -31,9 +30,7 @@ export const MessagingFields = () => {
 
     return (
         <>
-            <Heading className={styles.heading} level={4}>
-                Messaging
-            </Heading>
+            <h4>Messaging</h4>
             <label htmlFor="messagingInfo.includedInMessage" className={styles.toggleLabel}>
                 Included in message? <span className={styles.mandatory}>*</span>
             </label>
@@ -138,6 +135,7 @@ export const MessagingFields = () => {
                                 className="requiredInMessage"
                                 checked={value === true}
                                 name="includedInMessage"
+                                id="includedInMessage"
                                 disabled={!includedInMessage}
                                 onChange={onChange}
                             />

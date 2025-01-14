@@ -14,9 +14,8 @@ import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.patient.event.PatientEventEmitter;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,11 +46,11 @@ class PatientCreatedEmitter {
             resolveGender(patient.getCurrSexCd()),
             resolveDeceased(patient.getDeceasedIndCd()),
             patient.getDeceasedTime(),
-            patient.getMaritalStatusCd(),
+            patient.getGeneralInformation().maritalStatus(),
             patient.getEthnicity().ethnicGroup(),
-            patient.getAsOfDateGeneral(),
+            patient.getGeneralInformation().asOf(),
             patient.getDescription(),
-            patient.getEharsId(),
+            patient.getGeneralInformation().stateHIVCase(),
             resolveNames(patient.getNames()),
             resolveRaces(patient.getRaces()),
             resolveAddresses(patient.addresses()),
@@ -64,11 +63,11 @@ class PatientCreatedEmitter {
     }
 
     private LocalDate resolveBirthday(final Person patient) {
-        Instant value = patient.getBirthTime();
+        LocalDateTime value = patient.getBirthTime();
 
         return value == null
             ? null
-            : value.atZone(ZoneOffset.UTC).toLocalDate();
+            : value.toLocalDate();
     }
 
     private String resolveGender(final Gender gender) {

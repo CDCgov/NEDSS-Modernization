@@ -5,13 +5,11 @@ import { DatePickerInput } from './DatePickerInput';
 describe('DatePickerInput component tests', () => {
     describe('when default date value is provided', () => {
         it('should render DatePicker which has a label as Test DP Label and an input box with the provided default date value', () => {
-            const { container, getByTestId } = render(
+            const { container, getByTestId, getByText } = render(
                 <DatePickerInput
-                    id="test-dp-id"
                     name="test-dp-name"
                     label="Test DP Label"
                     className="test-dp-class-name"
-                    htmlFor="test-dp-id"
                     defaultValue="12/31/2022"
                 />
             );
@@ -21,43 +19,29 @@ describe('DatePickerInput component tests', () => {
             expect(component).toBeTruthy();
             expect(component).not.toHaveClass('error');
 
-            const label = getByTestId('label');
-            expect(label).toHaveTextContent('Test DP Label');
+            expect(getByText('Test DP Label')).toBeInTheDocument();
 
             const input = getByTestId('date-picker-internal-input');
             expect(input).toHaveValue('2022-12-31');
         });
 
         it('should not pass invalid dates to the DatePicker', () => {
-            const { container, getByTestId } = render(
+            const { getByText } = render(
                 <DatePickerInput
-                    id="test-dp-id"
                     name="test-dp-name"
                     label="Test DP Label"
                     className="test-dp-class-name"
-                    htmlFor="test-dp-id"
-                    defaultValue="12/21/1"
+                    errorMessage="test error message"
                 />
             );
 
-            const component = container.firstChild;
-
-            expect(component).toHaveClass('error');
-
-            const input = getByTestId('date-picker-internal-input');
-            expect(input).toHaveValue('');
+            expect(getByText('test error message')).toBeInTheDocument();
         });
     });
     describe('when default date value is not provided', () => {
         it('should render DatePicker which has a label as Test DP Label and an empty input box', () => {
             const { container, getByTestId } = render(
-                <DatePickerInput
-                    id="test-dp-id"
-                    name="test-dp-name"
-                    label="Test DP Label"
-                    className="test-dp-class-name"
-                    htmlFor="test-dp-id"
-                />
+                <DatePickerInput name="test-dp-name" label="Test DP Label" className="test-dp-class-name" />
             );
             const component = container.firstChild;
 
@@ -74,19 +58,17 @@ describe('DatePickerInput component tests', () => {
 
             const { getByTestId } = render(
                 <DatePickerInput
-                    id="test-dp-id"
                     name="test-dp-name"
                     label="Test DP Label"
                     className="test-dp-class-name"
-                    htmlFor="test-dp-id"
                     onChange={onChange}
                 />
             );
 
             const input = getByTestId('date-picker-external-input');
-            await userEvent.type(input, '2/15/2023');
+            await userEvent.type(input, '02/15/2023');
 
-            expect(onChange).toHaveBeenCalledWith('2/15/2023');
+            expect(onChange).toHaveBeenCalledWith('02/15/2023');
         });
 
         it('should alert value changes when a date is selected', async () => {
@@ -94,11 +76,9 @@ describe('DatePickerInput component tests', () => {
 
             const { getByTestId, getByText } = render(
                 <DatePickerInput
-                    id="test-dp-id"
                     name="test-dp-name"
                     label="Test DP Label"
                     className="test-dp-class-name"
-                    htmlFor="test-dp-id"
                     defaultValue="12/23/2023"
                     onChange={onChange}
                 />
@@ -117,17 +97,15 @@ describe('DatePickerInput component tests', () => {
         it('should clear the previous error state', async () => {
             const { getByTestId, container } = render(
                 <DatePickerInput
-                    id="test-dp-id"
                     name="test-dp-name"
                     label="Test DP Label"
                     className="test-dp-class-name"
-                    htmlFor="test-dp-id"
                     defaultValue="invalid"
                 />
             );
 
             const input = getByTestId('date-picker-external-input');
-            await userEvent.type(input, '2/1/2022');
+            await userEvent.type(input, '02/01/2022');
             input.blur();
 
             const component = container.firstChild;
@@ -136,13 +114,11 @@ describe('DatePickerInput component tests', () => {
         });
 
         it('should add slashes automatically while user types', async () => {
-            const { getByTestId, container } = render(
+            const { getByTestId } = render(
                 <DatePickerInput
-                    id="test-dp-id"
                     name="test-dp-name"
                     label="Test DP Label"
                     className="test-dp-class-name"
-                    htmlFor="test-dp-id"
                     defaultValue="invalid"
                 />
             );
@@ -157,13 +133,7 @@ describe('DatePickerInput component tests', () => {
     describe('when an invalid date value is entered', () => {
         it('should show an error state', async () => {
             const { getByTestId, container } = render(
-                <DatePickerInput
-                    id="test-dp-id"
-                    name="test-dp-name"
-                    label="Test DP Label"
-                    className="test-dp-class-name"
-                    htmlFor="test-dp-id"
-                />
+                <DatePickerInput name="test-dp-name" label="Test DP Label" className="test-dp-class-name" />
             );
 
             const input = getByTestId('date-picker-external-input');
@@ -172,25 +142,24 @@ describe('DatePickerInput component tests', () => {
 
             const component = container.firstChild;
 
-            expect(component).toHaveClass('error');
+            expect(component).toHaveTextContent(
+                'Test DP LabelPlease enter a valid date (mm/dd/yyyy) using only numeric characters (0-9) or choose a date from the calendar by clicking on the calendar icon.'
+            );
         });
     });
 
     describe('when required is provided', () => {
         it('should render DatePicker which has a label as Test DP Label*', () => {
-            const { container, getByTestId } = render(
+            const { getByText } = render(
                 <DatePickerInput
-                    id="test-dp-id"
                     name="test-dp-name"
                     label="Test DP Label"
                     className="test-dp-class-name"
-                    htmlFor="test-dp-id"
                     defaultValue="12/31/2022"
                     required
                 />
             );
-            const label = getByTestId('label');
-            expect(label).toHaveTextContent('Test DP Label');
+            const label = getByText('Test DP Label');
             expect(label).toHaveClass('required');
         });
     });

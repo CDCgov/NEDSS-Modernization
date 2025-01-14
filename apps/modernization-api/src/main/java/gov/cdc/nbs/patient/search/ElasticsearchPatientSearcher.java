@@ -5,9 +5,10 @@ import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
+import gov.cdc.nbs.search.SearchResolver;
+import gov.cdc.nbs.search.SearchResult;
+import gov.cdc.nbs.search.SearchResultResolver;
 import graphql.com.google.common.collect.Ordering;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -15,33 +16,34 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-class ElasticsearchPatientSearcher implements PatientSearcher {
+class ElasticsearchPatientSearcher implements SearchResolver<PatientFilter, PatientSearchResult> {
 
   private final ElasticsearchClient client;
   private final PatientSearchResultFinder finder;
   private final PatientSearchCriteriaFilterResolver filterResolver;
   private final PatientSearchCriteriaQueryResolver queryResolver;
   private final PatientSearchCriteriaSortResolver sortResolver;
+  private final SearchResultResolver resultResolver;
 
   ElasticsearchPatientSearcher(
       final ElasticsearchClient client,
       final PatientSearchResultFinder finder,
       final PatientSearchCriteriaFilterResolver filterResolver,
       final PatientSearchCriteriaQueryResolver queryResolver,
-      final PatientSearchCriteriaSortResolver sortResolver
-  ) {
+      final PatientSearchCriteriaSortResolver sortResolver,
+      final SearchResultResolver resultResolver) {
     this.client = client;
     this.finder = finder;
     this.filterResolver = filterResolver;
     this.queryResolver = queryResolver;
     this.sortResolver = sortResolver;
+    this.resultResolver = resultResolver;
   }
 
   @Override
-  public Page<PatientSearchResult> search(
+  public SearchResult<PatientSearchResult> search(
       final PatientFilter criteria,
-      final Pageable pageable
-  ) {
+      final Pageable pageable) {
 
     Query filter = filterResolver.resolve(criteria);
     Query query = queryResolver.resolve(criteria);
@@ -56,8 +58,7 @@ class ElasticsearchPatientSearcher implements PatientSearcher {
               .sort(sorting)
               .from((int) pageable.getOffset())
               .size(pageable.getPageSize()),
-          SearchablePatient.class
-      );
+          SearchablePatient.class);
 
       HitsMetadata<SearchablePatient> hits = response.hits();
 
@@ -65,17 +66,16 @@ class ElasticsearchPatientSearcher implements PatientSearcher {
 
       return total > 0
           ? paged(hits, pageable)
-          : Page.empty(pageable);
+          : resultResolver.empty(pageable);
 
     } catch (RuntimeException | IOException exception) {
       throw new IllegalStateException("An unexpected error occurred when searching for patients.", exception);
     }
   }
 
-  private Page<PatientSearchResult> paged(
+  private SearchResult<PatientSearchResult> paged(
       final HitsMetadata<SearchablePatient> hits,
-      final Pageable pageable
-  ) {
+      final Pageable pageable) {
     List<Long> ids = hits.hits()
         .stream()
         .map(hit -> Long.parseLong(hit.id()))
@@ -86,10 +86,9 @@ class ElasticsearchPatientSearcher implements PatientSearcher {
         .sorted(Ordering.explicit(ids).onResultOf(PatientSearchResult::patient))
         .toList();
 
-    return new PageImpl<>(
+    return resultResolver.resolve(
         results,
         pageable,
-        hits.total().value()
-    );
+        hits.total().value());
   }
 }

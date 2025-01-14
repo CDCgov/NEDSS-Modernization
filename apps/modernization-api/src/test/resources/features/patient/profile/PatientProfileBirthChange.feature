@@ -14,4 +14,3 @@ Feature: Patient Profile Birth Changes
     Given I am logged into NBS
     And I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     Then I am unable to change a patient's birth
-    And a patient event is not emitted

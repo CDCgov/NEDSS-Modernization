@@ -31,21 +31,44 @@ logging:
           search: INFO
 
 nbs:
+  primary-language: English
   security:
     oidc:
       enabled: false
   ui:
     features:
       address:
-          autocomplete: false
-          verification: false
+        autocomplete: false
+        verification: false
       pageBuilder:
         enabled: true
         page:
-          library: 
+          library:
             enabled: true
-          management: 
+          management:
             create:
               enabled: true
             edit:
               enabled: true
+      search:
+        events:
+          enabled: true
+        investigations:
+          enabled: true
+        laboratory-reports:
+          enabled: true
+        view:
+          enabled: true
+          table:
+            enabled: true
+      patient:
+        search:
+          filters:
+            enabled: true
+        profile:
+          enabled: true
+        add:
+          enabled: true
+          extended:
+            enabled: true
+

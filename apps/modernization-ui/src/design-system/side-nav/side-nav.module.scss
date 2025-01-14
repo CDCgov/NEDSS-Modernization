@@ -1,0 +1,82 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.sideNav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem;
+    gap: 1.5rem;
+    @extend %thin;
+
+    .navEntries {
+        min-width: 14rem;
+        & > ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+
+            & > li {
+                position: relative;
+                border-top: 1px solid #e6e6e6;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+
+                & > a,
+                span {
+                    flex-grow: 1;
+                    padding: 0;
+                    font-weight: 400;
+                    font-size: 1rem;
+                    color: colors.$base-darkest;
+                    padding: 0.62rem 0 0.62rem 0.75rem;
+
+                    &:visited {
+                        color: colors.$base-darkest;
+                    }
+
+                    &:focus {
+                        outline: 0.25rem solid #2491ff;
+                    }
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+
+                .active {
+                    background-color: colors.$primary-lightest;
+                    font-weight: 700;
+                    color: colors.$primary;
+
+                    &:visited {
+                        color: colors.$primary;
+                    }
+
+                    &::before {
+                        background-color: colors.$primary;
+                        border-radius: 1.875rem;
+                        content: '';
+                        position: absolute;
+                        top: 0rem;
+                        left: 0;
+                        width: 0.25rem;
+                        height: 100%;
+                    }
+                }
+
+                & > a {
+                    &:hover {
+                        color: colors.$primary;
+                        font-weight: 700;
+                    }
+                }
+
+                &:last-of-type {
+                    @extend %thin-bottom;
+                }
+            }
+        }
+    }
+}

@@ -16,6 +16,8 @@
         "isolatedModules": true,
         "declaration": true,
         "emitDeclarationOnly": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
         "jsx": "react-jsx",
         "types": ["node"],
         "plugins": [{ "name": "typescript-plugin-css-modules" }]

@@ -40,14 +40,14 @@ const initialCoded = {
     detailedEthnicities: []
 };
 
-type PatietnEthnicityCodedValue = {
+type PatientEthnicityCodedValue = {
     ethnicGroups: CodedValue[];
     ethnicityUnknownReasons: CodedValue[];
     detailedEthnicities: CodedValue[];
 };
 
 const usePatientEthnicityCodedValues = () => {
-    const [coded, setCoded] = useState<PatietnEthnicityCodedValue>(initialCoded);
+    const [coded, setCoded] = useState<PatientEthnicityCodedValue>(initialCoded);
 
     const handleComplete = (data: Result) => {
         setCoded({
@@ -65,4 +65,4 @@ const usePatientEthnicityCodedValues = () => {
 };
 
 export { usePatientEthnicityCodedValues };
-export type { PatietnEthnicityCodedValue };
+export type { PatientEthnicityCodedValue };

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-class ClassicPatientSearchPreparer {
+public class ClassicPatientSearchPreparer {
 
   private static final String LOCATION = "/HomePage.do?method=patientSearchSubmit";
   private final RestTemplate template;
@@ -15,7 +15,10 @@ class ClassicPatientSearchPreparer {
     this.template = classic;
   }
 
-  void prepare() {
+  /**
+   * Issues a request to the NBS6 home page search on behalf of the current user.
+   */
+  public void prepare() {
 
     RequestEntity<Void> request = RequestEntity
         .get(LOCATION)

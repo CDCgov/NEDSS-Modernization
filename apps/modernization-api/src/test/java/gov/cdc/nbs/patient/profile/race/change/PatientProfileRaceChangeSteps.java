@@ -67,25 +67,4 @@ public class PatientProfileRaceChangeSteps {
     ;
   }
 
-//  @When("a patient's race is changed")
-  //  @Transactional
-  //  public void a_patient_race_is_changed() {
-  //    PatientIdentifier patient = patients.one();
-  //
-  //    PersonRace existing = this.entityManager.find(Person.class, patients.one().id())
-  //        .getRaces()
-  //        .stream()
-  //        .findFirst()
-  //        .orElseThrow();
-  //
-  //    input.active(
-  //        current ->
-  //            current.setPatient(patient.id())
-  //                .setAsOf(RandomUtil.getRandomDateInPast())
-  //                .setCategory(existing.getRaceCategoryCd())
-  //    );
-  //
-  //    input.maybeActive().ifPresent(controller::update);
-  //  }
-
 }

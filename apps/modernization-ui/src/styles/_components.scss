@@ -1,0 +1,16 @@
+@use 'styles/colors';
+
+$compact-font-size: 0.875rem;
+$compact-height: 2rem;
+
+%compact {
+    line-height: normal;
+    font-size: $compact-font-size;
+}
+
+%compact-input {
+    height: $compact-height;
+    width: unset;
+
+    @extend %compact;
+}

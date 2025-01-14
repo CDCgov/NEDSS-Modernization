@@ -3,19 +3,27 @@ set -e
 
 BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
+source $BASE/check_env.sh
+
+if [ -z "$DATABASE_PASSWORD" ]
+then
+    echo "DATABASE_PASSWORD is required"
+    exit 1
+fi
+
+
 CLASSIC_PATH=$BASE/nbs-classic/builder/NEDSSDev
-CLASSIC_VERSION=NBS_6.0.15
+CLASSIC_VERSION=NBS_6.0.16
 
-# Clone NEDSSDev
-rm -rf $CLASSIC_PATH
-git clone -b $CLASSIC_VERSION git@github.com:cdcent/NEDSSDev.git $CLASSIC_PATH
+./db/build.sh "$@"
 
-# Build and deploy database and wildfly containers
-echo "Building SQL Server database and WildFly"
-docker-compose -f $BASE/docker-compose.yml up nbs-mssql wildfly --build -d
+echo "Building NBS6 Application"
 
-# Cleanup 
-rm -rf $CLASSIC_PATH
+rm -rf $CLASSIC_PATH && \
+  git clone -b $CLASSIC_VERSION git@github.com:cdcent/NEDSSDev.git $CLASSIC_PATH && \
+  docker compose -f $BASE/docker-compose.yml up wildfly --build -d && \
+  rm -rf $CLASSIC_PATH
+
 
 echo "**** Classic build complete ****"
 echo "http://localhost:7001/nbs/login"

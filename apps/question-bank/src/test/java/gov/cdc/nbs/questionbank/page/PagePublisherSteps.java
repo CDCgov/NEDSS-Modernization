@@ -1,24 +1,5 @@
 package gov.cdc.nbs.questionbank.page;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import jakarta.persistence.EntityManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.test.web.client.response.DefaultResponseCreator;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.request.PagePublishRequest;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
@@ -27,30 +8,58 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import jakarta.persistence.EntityManager;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.test.web.client.response.DefaultResponseCreator;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 public class PagePublisherSteps {
 
-  @Value("${nbs.wildfly.url:http://wildfly:7001}")
-  String classicUrl;
 
-  @Autowired
-  @Qualifier("classicRestService")
-  MockRestServiceServer server;
+  private final String classicUrl;
 
-  @Autowired
-  private EntityManager entityManager;
 
-  @Autowired
-  private PageRequest pageRequest;
+  private final MockRestServiceServer server;
 
-  private Active<ActiveUser> user;
-  private Active<ResultActions> response = new Active<>();
-  private Active<PagePublishRequest> request = new Active<>();
-  private Active<PageIdentifier> page;
 
-  public PagePublisherSteps(final Active<PageIdentifier> page,
-      final Active<ActiveUser> user) {
+  private final  EntityManager entityManager;
+
+  private final  PageRequest pageRequest;
+
+  private final Active<ActiveUser> user;
+  private final Active<ResultActions> activeResponse = new Active<>();
+  private final Active<PagePublishRequest> request = new Active<>();
+  private final Active<PageIdentifier> page;
+
+  PagePublisherSteps(
+      @Value("${nbs.wildfly.url:http://wildfly:7001}")
+      final String classicUrl,
+      @Qualifier("classicRestService")
+      final MockRestServiceServer server,
+      final EntityManager entityManager,
+      final PageRequest pageRequest,
+      final Active<PageIdentifier> page,
+      final Active<ActiveUser> user
+  ) {
+    this.classicUrl = classicUrl;
+    this.server = server;
+    this.entityManager = entityManager;
+    this.pageRequest = pageRequest;
     this.page = page;
     this.user = user;
   }
@@ -61,8 +70,8 @@ public class PagePublisherSteps {
   }
 
   @When("I send the publish page request")
-  public void i_send_the_publish_page_request() throws Exception {
-    response.active(classic(page.active().id(), request.active()));
+  public void i_send_the_publish_page_request() {
+    activeResponse.active(classic(page.active().id(), request.active()));
   }
 
   private ResultActions classic(final long page, final PagePublishRequest request) {
@@ -102,7 +111,7 @@ public class PagePublisherSteps {
 
   @Then("the response of request is success")
   public void the_response_of_request_is_success() throws Exception {
-    this.response.active().andExpect(status().isOk());
+    this.activeResponse.active().andExpect(status().isOk());
   }
 
 }

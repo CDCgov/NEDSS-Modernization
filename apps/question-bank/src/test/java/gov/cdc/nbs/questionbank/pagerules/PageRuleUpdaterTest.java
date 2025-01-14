@@ -1,19 +1,5 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import java.time.Instant;
-import java.util.Arrays;
-import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
@@ -25,6 +11,21 @@ import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
+import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.Instant;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PageRuleUpdaterTest {
@@ -51,34 +52,34 @@ class PageRuleUpdaterTest {
 
   @Test
   void should_fail_invalid_rule() {
-    when(entityManager.find(WaRuleMetadata.class, 1l)).thenReturn(null);
+    when(entityManager.find(WaRuleMetadata.class, 1L)).thenReturn(null);
 
-    assertThrows(RuleException.class, () -> updater.updatePageRule(1l, null, 3l));
+    assertThrows(RuleException.class, () -> updater.updatePageRule(1L, null, 3L));
   }
 
   @Test
   void should_fail_null_page() {
     WaRuleMetadata mockRule = Mockito.mock(WaRuleMetadata.class);
-    when(mockRule.getWaTemplateUid()).thenReturn(78l);
-    when(entityManager.find(WaRuleMetadata.class, 1l)).thenReturn(mockRule);
+    when(mockRule.getWaTemplateUid()).thenReturn(78L);
+    when(entityManager.find(WaRuleMetadata.class, 1L)).thenReturn(mockRule);
 
-    when(entityManager.find(WaTemplate.class, 78l)).thenReturn(null);
+    when(entityManager.find(WaTemplate.class, 78L)).thenReturn(null);
 
-    assertThrows(RuleException.class, () -> updater.updatePageRule(1l, null, 3l));
+    assertThrows(RuleException.class, () -> updater.updatePageRule(1L, null, 3L));
   }
 
   @Test
   void should_fail_published_page() {
     WaRuleMetadata mockRule = Mockito.mock(WaRuleMetadata.class);
-    when(mockRule.getWaTemplateUid()).thenReturn(78l);
-    when(entityManager.find(WaRuleMetadata.class, 1l)).thenReturn(mockRule);
+    when(mockRule.getWaTemplateUid()).thenReturn(78L);
+    when(entityManager.find(WaRuleMetadata.class, 1L)).thenReturn(mockRule);
 
 
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Published");
-    when(entityManager.find(WaTemplate.class, 78l)).thenReturn(template);
+    when(entityManager.find(WaTemplate.class, 78L)).thenReturn(template);
 
-    assertThrows(RuleException.class, () -> updater.updatePageRule(1l, null, 3l));
+    assertThrows(RuleException.class, () -> updater.updatePageRule(1L, null, 3L));
   }
 
   @Test
@@ -95,7 +96,7 @@ class PageRuleUpdaterTest {
         null,
         null);
 
-    when(conceptFinder.findByQuestionIdentifier("source", 1l)).thenReturn(Arrays.asList(new Concept(
+    when(conceptFinder.findByQuestionIdentifier("source", 1L)).thenReturn(List.of(new Concept(
         null,
         "localCode",
         null,
@@ -108,7 +109,7 @@ class PageRuleUpdaterTest {
         null,
         null,
         null)));
-    RuleRequest updatedRequest = updater.addSourceValues(request, 1l);
+    RuleRequest updatedRequest = updater.addSourceValues(request, 1L);
     assertThat(updatedRequest.sourceValues()).isNotEmpty();
   }
 
@@ -116,190 +117,190 @@ class PageRuleUpdaterTest {
   @Test
   void enable() {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
-    when(rule.getId()).thenReturn(99l);
-    when(rule.getWaTemplateUid()).thenReturn(66l);
-    when(entityManager.find(WaRuleMetadata.class, 99l)).thenReturn(rule);
+    when(rule.getId()).thenReturn(99L);
+    when(rule.getWaTemplateUid()).thenReturn(66L);
+    when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
-    when(entityManager.find(WaTemplate.class, 66l)).thenReturn(template);
+    when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
     RuleRequest request = new RuleRequest(
         RuleFunction.ENABLE,
         "desc",
         "source",
         false,
-        Arrays.asList(new SourceValue("A", "B")),
+        List.of(new SourceValue("A", "B")),
         Comparator.EQUAL_TO,
         TargetType.QUESTION,
-        Arrays.asList("INV123"),
+        List.of("INV123"),
         "Source question",
-        Arrays.asList("Target quest"));
+        List.of("Target quest"));
 
-    when(enableDisableCreator.update(99l, request, 1l)).thenReturn(command(99l));
-    updater.updatePageRule(99l, request, 1l);
+    when(enableDisableCreator.update(99L, request, 1L)).thenReturn(command());
+    updater.updatePageRule(99L, request, 1L);
     verify(entityManager).flush();
   }
 
   @Test
   void disable() {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
-    when(rule.getId()).thenReturn(99l);
-    when(rule.getWaTemplateUid()).thenReturn(66l);
-    when(entityManager.find(WaRuleMetadata.class, 99l)).thenReturn(rule);
+    when(rule.getId()).thenReturn(99L);
+    when(rule.getWaTemplateUid()).thenReturn(66L);
+    when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
-    when(entityManager.find(WaTemplate.class, 66l)).thenReturn(template);
+    when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
     RuleRequest request = new RuleRequest(
         RuleFunction.DISABLE,
         "desc",
         "source",
         false,
-        Arrays.asList(new SourceValue("A", "B")),
+        List.of(new SourceValue("A", "B")),
         Comparator.EQUAL_TO,
         TargetType.QUESTION,
-        Arrays.asList("INV123"),
+        List.of("INV123"),
         "Source question",
-        Arrays.asList("Target quest"));
-    when(enableDisableCreator.update(99l, request, 1l)).thenReturn(command(99l));
+        List.of("Target quest"));
+    when(enableDisableCreator.update(99L, request, 1L)).thenReturn(command());
 
-    updater.updatePageRule(99l, request, 1l);
+    updater.updatePageRule(99L, request, 1L);
     verify(entityManager).flush();
   }
 
   @Test
   void date() {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
-    when(rule.getId()).thenReturn(99l);
-    when(rule.getWaTemplateUid()).thenReturn(66l);
-    when(entityManager.find(WaRuleMetadata.class, 99l)).thenReturn(rule);
+    when(rule.getId()).thenReturn(99L);
+    when(rule.getWaTemplateUid()).thenReturn(66L);
+    when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
-    when(entityManager.find(WaTemplate.class, 66l)).thenReturn(template);
+    when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
     RuleRequest request = new RuleRequest(
         RuleFunction.DATE_COMPARE,
         "desc",
         "source",
         false,
-        Arrays.asList(new SourceValue("A", "B")),
+        List.of(new SourceValue("A", "B")),
         Comparator.EQUAL_TO,
         TargetType.QUESTION,
-        Arrays.asList("INV123"),
+        List.of("INV123"),
         "Source question",
-        Arrays.asList("Target quest"));
-    when(dateCompareCreator.update(99l, request, 1l)).thenReturn(command(99l));
+        List.of("Target quest"));
+    when(dateCompareCreator.update(99L, request, 1L)).thenReturn(command());
 
-    updater.updatePageRule(99l, request, 1l);
+    updater.updatePageRule(99L, request, 1L);
     verify(entityManager).flush();
   }
 
   @Test
   void hide() {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
-    when(rule.getId()).thenReturn(99l);
-    when(rule.getWaTemplateUid()).thenReturn(66l);
-    when(entityManager.find(WaRuleMetadata.class, 99l)).thenReturn(rule);
+    when(rule.getId()).thenReturn(99L);
+    when(rule.getWaTemplateUid()).thenReturn(66L);
+    when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
-    when(entityManager.find(WaTemplate.class, 66l)).thenReturn(template);
+    when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
     RuleRequest request = new RuleRequest(
         RuleFunction.HIDE,
         "desc",
         "source",
         false,
-        Arrays.asList(new SourceValue("A", "B")),
+        List.of(new SourceValue("A", "B")),
         Comparator.EQUAL_TO,
         TargetType.QUESTION,
-        Arrays.asList("INV123"),
+        List.of("INV123"),
         "Source question",
-        Arrays.asList("Target quest"));
-    when(hideUnhideCreator.update(99l, request, 1l)).thenReturn(command(99l));
+        List.of("Target quest"));
+    when(hideUnhideCreator.update(99L, request, 1L)).thenReturn(command());
 
-    updater.updatePageRule(99l, request, 1l);
+    updater.updatePageRule(99L, request, 1L);
     verify(entityManager).flush();
   }
 
   @Test
   void unhide() {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
-    when(rule.getId()).thenReturn(99l);
-    when(rule.getWaTemplateUid()).thenReturn(66l);
-    when(entityManager.find(WaRuleMetadata.class, 99l)).thenReturn(rule);
+    when(rule.getId()).thenReturn(99L);
+    when(rule.getWaTemplateUid()).thenReturn(66L);
+    when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
-    when(entityManager.find(WaTemplate.class, 66l)).thenReturn(template);
+    when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
     RuleRequest request = new RuleRequest(
         RuleFunction.UNHIDE,
         "desc",
         "source",
         false,
-        Arrays.asList(new SourceValue("A", "B")),
+        List.of(new SourceValue("A", "B")),
         Comparator.EQUAL_TO,
         TargetType.QUESTION,
-        Arrays.asList("INV123"),
+        List.of("INV123"),
         "Source question",
-        Arrays.asList("Target quest"));
-    when(hideUnhideCreator.update(99l, request, 1l)).thenReturn(command(99l));
+        List.of("Target quest"));
+    when(hideUnhideCreator.update(99L, request, 1L)).thenReturn(command());
 
-    updater.updatePageRule(99l, request, 1l);
+    updater.updatePageRule(99L, request, 1L);
     verify(entityManager).flush();
   }
 
   @Test
   void require_if() {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
-    when(rule.getId()).thenReturn(99l);
-    when(rule.getWaTemplateUid()).thenReturn(66l);
-    when(entityManager.find(WaRuleMetadata.class, 99l)).thenReturn(rule);
+    when(rule.getId()).thenReturn(99L);
+    when(rule.getWaTemplateUid()).thenReturn(66L);
+    when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
-    when(entityManager.find(WaTemplate.class, 66l)).thenReturn(template);
+    when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
     RuleRequest request = new RuleRequest(
         RuleFunction.REQUIRE_IF,
         "desc",
         "source",
         false,
-        Arrays.asList(new SourceValue("A", "B")),
+        List.of(new SourceValue("A", "B")),
         Comparator.EQUAL_TO,
         TargetType.QUESTION,
-        Arrays.asList("INV123"),
+        List.of("INV123"),
         "Source question",
-        Arrays.asList("Target quest"));
-    when(requireIfCreator.update(99l, request, 1l)).thenReturn(command(99l));
+        List.of("Target quest"));
+    when(requireIfCreator.update(99L, request, 1L)).thenReturn(command());
 
-    updater.updatePageRule(99l, request, 1l);
+    updater.updatePageRule(99L, request, 1L);
     verify(entityManager).flush();
   }
 
-  private PageContentCommand.UpdateRuleCommand command(long id) {
+  private PageContentCommand.UpdateRuleCommand command() {
     return new PageContentCommand.UpdateRuleCommand(
         "QUESTION",
         "description",
@@ -311,7 +312,7 @@ class PageRuleUpdaterTest {
         "javascript",
         "js name",
         "expression",
-        1l,
+        1L,
         Instant.now());
   }
 

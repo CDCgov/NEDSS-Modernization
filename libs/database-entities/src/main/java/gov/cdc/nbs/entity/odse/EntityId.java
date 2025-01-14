@@ -16,6 +16,10 @@ import java.util.function.Predicate;
 @Getter
 @Entity
 @Table(name = "Entity_id")
+@SuppressWarnings(
+    //  The PatientIdentificationHistoryListener is an entity listener specifically for instances of this class
+    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
+)
 @EntityListeners(PatientIdentificationHistoryListener.class)
 public class EntityId {
 
@@ -29,6 +33,10 @@ public class EntityId {
     @MapsId("entityUid")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "entity_uid", nullable = false)
+    @SuppressWarnings(
+        //  Bidirectional mappings require knowledge of each other
+        "javaarchitecture:S7027"
+    )
     private NBSEntity nbsEntityUid;
 
     @Column(name = "assigning_authority_cd", length = 199)

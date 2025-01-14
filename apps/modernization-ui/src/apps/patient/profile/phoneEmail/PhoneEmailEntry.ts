@@ -19,6 +19,6 @@ type PhoneEmailEntry = NewPhoneEmailEntry | UpdatePhoneEmailEntry;
 const isAdd = (obj: PhoneEmailEntry): obj is NewPhoneEmailEntry => !('id' in obj);
 const isUpdate = (obj: PhoneEmailEntry): obj is NewPhoneEmailEntry => 'id' in obj;
 
-export type { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry };
+export type { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, PhoneEmailFields };
 
 export { isAdd, isUpdate };

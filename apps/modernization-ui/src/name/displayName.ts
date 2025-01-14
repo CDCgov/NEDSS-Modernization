@@ -1,13 +1,5 @@
 import { exists } from 'utils';
-
-type DisplayableName = {
-    first?: string | null;
-    middle?: string | null;
-    last?: string | null;
-    suffix?: string | null;
-};
-
-type Format = 'full' | 'short';
+import { DisplayableName, NameFormat } from './types';
 
 /**
  * Displays a name in a 'full' or 'short' format.  Where the 'short' format will
@@ -22,16 +14,33 @@ type Format = 'full' | 'short';
  *      suffix: 'Jr.'
  * }
  *
- * The 'full' format would produce "Martin Seamus McFly, Jr." and the 'short' format
- * would produce "Martin McFly"
+ * The 'full' format would produce "Martin Seamus McFly, Jr.", the 'short' format
+ * would produce "Martin McFly", and the 'fullLastFirst' format would produce "McFly, Martin Seamus, Jr."
  *
- * @param {string} format The format to display names in, either 'full' or 'short'
+ * @param {string} format The format to display names in, either 'full', 'short' or 'fullLastFirst'
  * @return {string}
  */
-const displayName = (format: Format = 'full') => (format === 'full' ? displayFullName : displayShortName);
+const displayName = (format: NameFormat = 'full') => {
+    switch (format) {
+        case 'full':
+            return displayFullName;
+
+        case 'short':
+            return displayShortName;
+
+        case 'fullLastFirst':
+            return displayFullNameLastFirst;
+    }
+};
 
 const displayFullName = ({ first, middle, last, suffix }: DisplayableName) => {
     const name = [first, middle, last].filter(exists).join(' ');
+    return [name, suffix].filter(exists).join(', ');
+};
+
+const displayFullNameLastFirst = ({ first, middle, last, suffix }: DisplayableName) => {
+    const firstMiddle = [first || '--', middle].filter(exists).join(' ');
+    const name = [last || '--', firstMiddle].filter(exists).join(', ');
     return [name, suffix].filter(exists).join(', ');
 };
 

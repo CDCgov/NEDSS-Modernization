@@ -14,6 +14,10 @@ public class PatientEntityLocatorHistoryListener {
     }
 
     @PreUpdate
+    @SuppressWarnings(
+        //  The PatientEntityLocatorHistoryListener is an entity listener specifically for instances of EntityLocatorParticipation
+        {"javaarchitecture:S7027", "javaarchitecture:S7091"}
+    )
     void preUpdate(final EntityLocatorParticipation entityLocatorParticipation) {
         int version = entityLocatorParticipation.getVersionCtrlNbr() - 1;
         this.creator.createEntityLocatorHistory(entityLocatorParticipation.getId().getEntityUid(),

@@ -12,38 +12,44 @@ import java.util.Optional;
 class PatientSearchResultLegalNameFinder {
 
   private static final String QUERY = """
-      select
-          [name].first_nm,
-          [name].middle_nm,
-          [name].last_nm,
-          [suffix].code_desc_txt
-      from Person_name [name]
-          left join NBS_SRTE..Code_value_general [suffix] on
-                  [suffix].[code_set_nm] = 'P_NM_SFX'
-              and [suffix].[code] = [name].nm_suffix
-
-      where   [name].person_uid = ?
-          and [name].nm_use_cd = 'L'
-          and [name].record_status_cd = 'ACTIVE'
-          and [name].as_of_date = (
-              select
-                  max(eff_name.as_of_date)
-              from person_name [eff_name]\s
-              where   [eff_name].person_uid       = [name].[person_uid]
-                  and [eff_name].nm_use_cd        = [name].nm_use_cd
-                  and [eff_name].record_status_cd = [name].record_status_cd
-                  and [eff_name].as_of_date       <= ?
-          )
-          and [name].person_name_seq = (
-              select
-                  max(seq_name.person_name_seq)
-              from person_name [seq_name]
-              where   [seq_name].[person_uid] = [name].person_uid
-                  and [seq_name].nm_use_cd = [name].nm_use_cd
-                  and [seq_name].record_status_cd = [name].record_status_cd
-                  and [seq_name].[as_of_date] = [name].as_of_date
-          )
-            """;
+    select
+        [use].[code_short_desc_txt] as [type],
+        [name].first_nm,
+        [name].middle_nm,
+        [name].last_nm,
+        [suffix].code_short_desc_txt
+    from Person_name [name]
+    
+    join NBS_SRTE..Code_value_general [use] on
+               [use].[code_set_nm] = 'P_NM_USE'
+           and [use].[code] = [name].nm_use_cd
+    
+        left join NBS_SRTE..Code_value_general [suffix] on
+                [suffix].[code_set_nm] = 'P_NM_SFX'
+            and [suffix].[code] = [name].nm_suffix
+    
+    where   [name].person_uid = ?
+        and [name].nm_use_cd = 'L'
+        and [name].record_status_cd = 'ACTIVE'
+        and [name].as_of_date = (
+            select
+                max(eff_name.as_of_date)
+            from person_name [eff_name]
+            where   [eff_name].person_uid       = [name].[person_uid]
+                and [eff_name].nm_use_cd        = [name].nm_use_cd
+                and [eff_name].record_status_cd = [name].record_status_cd
+                and [eff_name].as_of_date       <= ?
+        )
+        and [name].person_name_seq = (
+            select
+                max(seq_name.person_name_seq)
+            from person_name [seq_name]
+            where   [seq_name].[person_uid] = [name].person_uid
+                and [seq_name].nm_use_cd = [name].nm_use_cd
+                and [seq_name].record_status_cd = [name].record_status_cd
+                and [seq_name].[as_of_date] = [name].as_of_date
+        )
+    """;
 
   private static final int PATIENT_PARAMETER = 1;
   private static final int AS_OF_PARAMETER = 2;
@@ -53,11 +59,7 @@ class PatientSearchResultLegalNameFinder {
 
   PatientSearchResultLegalNameFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new PatientSearchResultNameMapper(
-        new PatientSearchResultNameMapper.Columns(
-            1, 2, 3, 4
-        )
-    );
+    this.mapper = new PatientSearchResultNameMapper();
   }
 
   Optional<PatientSearchResultName> find(final long patient, final Instant asOf) {

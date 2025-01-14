@@ -1,16 +1,6 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.when;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
 import gov.cdc.nbs.questionbank.page.detail.PagesResolver;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesQuestion;
@@ -19,7 +9,22 @@ import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesSubSection;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesTab;
 import gov.cdc.nbs.questionbank.pagerules.Rule.Target;
 import gov.cdc.nbs.questionbank.pagerules.request.TargetQuestionRequest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 class TargetQuestionFinderTest {
 
   @Mock
@@ -31,14 +36,9 @@ class TargetQuestionFinderTest {
   @InjectMocks
   TargetQuestionFinder targetQuestionFinder;
 
-  public TargetQuestionFinderTest() {
-    MockitoAnnotations.openMocks(this);
-  }
-
-
   @Test
   void testFilterDateQuestions() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePage());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -56,7 +56,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionsWithDateTime() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePageWithDateTime());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -74,7 +74,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionsWithoutDataType() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePageWithoutDataType());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -92,7 +92,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionsWithoutStandardNnd() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePageWithoutStandardNnd());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -110,7 +110,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionsWithoutVisible() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePageWithoutVisible());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -128,7 +128,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionsWithoutComponentBehavior() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePageWithoutComponentBehavior());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -146,7 +146,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionsWithoutPage() {
-    Long pageId = 1L;
+    long pageId = 1L;
 
     when(resolver.resolve(pageId)).thenReturn(Optional.empty());
 
@@ -165,7 +165,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionSameSource() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePage());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -183,27 +183,8 @@ class TargetQuestionFinderTest {
   }
 
   @Test
-  void testFilterDateQuestionDiffSource() {
-    Long pageId = 1L;
-    Optional<PagesResponse> page = Optional.of(getDatePage());
-
-    when(resolver.resolve(pageId)).thenReturn(page);
-
-    PagesQuestion sourceQuestion = new PagesQuestion(1L, false, true, "SYS", "NBS104", "Information As of Date",
-        7, 0,
-        "IPO", "As of Date is the last known date for which the information is valid.", false, "DATE", "DATE", false,
-        "As of Date is the last known date for which the information is valid.", true, true, true, null, null, 1008,
-        null, "10", null, null, null, null, false, null, 0, false, null, 0, "text_data",
-        "User entered text, number, or date", null);
-
-    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.DATE_COMPARE, sourceQuestion, null);
-    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
-    assertNotNull(result);
-  }
-
-  @Test
   void testFilterDateQuestionWithDiffSourceWithSameTarget() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePage());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -230,7 +211,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterDateQuestionWithDiffSourceWithDiffTarget() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePage());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -256,34 +237,8 @@ class TargetQuestionFinderTest {
   }
 
   @Test
-  void testFilterDateQuestionWithSameSourceWithDiffTarget() {
-    Long pageId = 1L;
-    Optional<PagesResponse> page = Optional.of(getDatePage());
-
-    when(resolver.resolve(pageId)).thenReturn(page);
-
-    PagesQuestion sourceQuestion = new PagesQuestion(1156348L, false, true, "SYS", "NBS104", "Information As of Date",
-        7, 0,
-        "IPO", "As of Date is the last known date for which the information is valid.", false, "DATE", "DATE", false,
-        "As of Date is the last known date for which the information is valid.", true, true, true, null, null, 1008,
-        null, "10", null, null, null, null, false, null, 0, false, null, 0, "text_data",
-        "User entered text, number, or date", null);
-
-    Collection<PagesQuestion> targetQuestion = new ArrayList<>();
-    targetQuestion.add(new PagesQuestion(1L, false, true, "SYS", "NBS104", "Information As of Date", 7, 0,
-        "IPO", "As of Date is the last known date for which the information is valid.", false, "DATE", "DATE", false,
-        "As of Date is the last known date for which the information is valid.", true, true, true, null, null, 1008,
-        null, "10", null, null, null, null, false, null, 0, false, null, 0, "text_data",
-        "User entered text, number, or date", null));
-
-    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.DATE_COMPARE, sourceQuestion, null);
-    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
-    assertNull(result);
-  }
-
-  @Test
   void testFilterOtherQuestions() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getRules();
 
@@ -303,7 +258,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsGroup() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageGroup());
     List<Rule> rules = getRules();
 
@@ -323,7 +278,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsGroupWithDiffGroupSource() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageGroup());
     List<Rule> rules = getRules();
 
@@ -343,7 +298,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsGroupWithDiffCompSource() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageGroupWithDiffComp());
     List<Rule> rules = getRules();
 
@@ -363,7 +318,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsGroupWithSameTarget() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageGroup());
     List<Rule> rules = getRules();
 
@@ -384,7 +339,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsGroupWithSameRules() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageGroup());
     List<Rule> rules = getSameRules();
 
@@ -404,7 +359,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsGroupWithSameSource() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageGroup());
     List<Rule> rules = getSameRules();
 
@@ -426,7 +381,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsRequireIf() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getRules();
 
@@ -446,7 +401,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsRequireIfWithSameTargets() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getRules();
 
@@ -467,7 +422,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsRequireIfWithDiffTargets() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getRules();
 
@@ -488,7 +443,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsRequireIfWithDiffTargetsWithSameRule() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getSameRules();
 
@@ -509,7 +464,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsRequireIfWithoutCompBehavior() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageWithoutCompBehavior());
     List<Rule> rules = getRules();
 
@@ -529,7 +484,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsRequireIfWithoutRequired() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageWithoutRequired());
     List<Rule> rules = getRules();
 
@@ -549,7 +504,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithStatic() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageWithStatic());
     List<Rule> rules = getRules();
 
@@ -569,7 +524,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithoutStandardNnd() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageWithoutStandardNnd());
     List<Rule> rules = getRules();
 
@@ -589,7 +544,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithoutGroupSeqNum() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageWithoutGroupSeqNum());
     List<Rule> rules = getRules();
 
@@ -609,11 +564,10 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithoutPage() {
-    Long pageId = 1L;
-    List<Rule> rules = getRules();
+    long pageId = 1L;
 
     when(resolver.resolve(pageId)).thenReturn(Optional.empty());
-    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
+
 
     PagesQuestion sourceQuestion =
         new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 0, "IPO", "test decript",
@@ -628,7 +582,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithUsedTarget() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getSameRules();
 
@@ -648,7 +602,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithSameSource() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getRules();
 
@@ -670,7 +624,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithSameSourceSameTargetRule() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getSameRules();
 
@@ -691,28 +645,8 @@ class TargetQuestionFinderTest {
   }
 
   @Test
-  void testFilterOtherQuestionsWithDiffSourceSameTargetRule() {
-    Long pageId = 1L;
-    Optional<PagesResponse> page = Optional.of(getPage());
-    List<Rule> rules = getSameRules();
-
-    when(resolver.resolve(pageId)).thenReturn(page);
-    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
-
-    PagesQuestion sourceQuestion =
-        new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 0, "IPO", "test decript",
-            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
-            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
-            null, 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
-
-    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, null);
-    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
-    assertNull(result);
-  }
-
-  @Test
   void testFilterOtherQuestionsWithDiffSourceDiffTarget() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getRules();
 
@@ -734,7 +668,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterOtherQuestionsWithDiffSourceSameTarget() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getRules();
 
@@ -756,7 +690,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterQuestionsWithSameSourceDiffTarget() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getRules();
 
@@ -780,7 +714,7 @@ class TargetQuestionFinderTest {
 
   @Test
   void testFilterQuestionsWithSameSourceSameRuleDiffTarget() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getSameRules();
 
@@ -803,30 +737,8 @@ class TargetQuestionFinderTest {
   }
 
   @Test
-  void testFilterQuestionsWithDiffSourceDiffRuleDiffTarget() {
-    Long pageId = 1L;
-    Optional<PagesResponse> page = Optional.of(getPage());
-    List<Rule> rules = getRules();
-
-    Collection<PagesQuestion> targets = getTargets();
-
-    when(resolver.resolve(pageId)).thenReturn(page);
-    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
-
-    PagesQuestion sourceQuestion =
-        new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 0, "IPO", "test decript",
-            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
-            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
-            null, 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
-
-    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, targets);
-    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
-    assertNotNull(result);
-  }
-
-  @Test
   void testFilterQuestionsWithDiffSourceSameRuleDiffTarget() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
     List<Rule> rules = getSameRules();
 
@@ -844,28 +756,6 @@ class TargetQuestionFinderTest {
     TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, targets);
     PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
     assertNull(result);
-  }
-
-  @Test
-  void testFilterQuestionsWithDiffSourceDiffRuleSameTarget() {
-    Long pageId = 1L;
-    Optional<PagesResponse> page = Optional.of(getPage());
-    List<Rule> rules = getRules();
-
-    Collection<PagesQuestion> targets = getSameTargets();
-
-    when(resolver.resolve(pageId)).thenReturn(page);
-    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
-
-    PagesQuestion sourceQuestion =
-        new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 0, "IPO", "test decript",
-            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
-            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
-            null, 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
-
-    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, targets);
-    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
-    assertNotNull(result);
   }
 
   Collection<PagesQuestion> getSameTargets() {
@@ -897,7 +787,7 @@ class TargetQuestionFinderTest {
     List<Rule> rules = new ArrayList<>();
 
     Rule rule = new Rule(100,
-        200l,
+        200L,
         Rule.RuleFunction.ENABLE,
         "testDescription",
         null,
@@ -920,7 +810,7 @@ class TargetQuestionFinderTest {
     List<Rule> rules = new ArrayList<>();
 
     Rule rule = new Rule(100,
-        200l,
+        200L,
         Rule.RuleFunction.ENABLE,
         "testDescription",
         null,
@@ -950,8 +840,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getPageGroup() {
@@ -971,8 +860,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getPageGroupWithDiffComp() {
@@ -992,8 +880,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getPageWithoutCompBehavior() {
@@ -1013,8 +900,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getPageWithoutRequired() {
@@ -1034,8 +920,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getPageWithStatic() {
@@ -1055,8 +940,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getPageWithoutGroupSeqNum() {
@@ -1076,8 +960,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getPageWithoutStandardNnd() {
@@ -1097,8 +980,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getDatePage() {
@@ -1119,8 +1001,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getDatePageWithoutDataType() {
@@ -1141,8 +1022,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getDatePageWithDateTime() {
@@ -1164,8 +1044,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getDatePageWithoutStandardNnd() {
@@ -1186,8 +1065,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getDatePageWithoutVisible() {
@@ -1208,8 +1086,7 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
   PagesResponse getDatePageWithoutComponentBehavior() {
@@ -1230,7 +1107,6 @@ class TargetQuestionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 }

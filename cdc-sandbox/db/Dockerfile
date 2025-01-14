@@ -1,22 +1,24 @@
-FROM mcr.microsoft.com/azure-sql-edge:latest
+FROM mcr.microsoft.com/mssql/server:2022-latest
+
+ARG DATABASE_PASSWORD
+
+ENV ACCEPT_EULA=Y \
+    MSSQL_PID='Developer' \
+    SQLCMDPASSWORD=${DATABASE_PASSWORD} \
+    MSSQL_SA_PASSWORD=${DATABASE_PASSWORD} 
+
 USER root
 
-# Install sqlcmd, see https://docs.microsoft.com/en-us/sql/tools/go-sqlcmd-utility?view=sql-server-ver16
-RUN apt-get update
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/20.04/prod.list)"
-RUN apt-get install -y sqlcmd
+RUN apt-get update \
+    && apt-get install mssql-tools18 unixodbc-dev -y 
+
+COPY --chown=mssql ./initialize /var/opt/database/initialize/
 
 USER mssql
 
-ADD ./restore /var/opt/db-restore/
+# Start the database and execute initialization scripts so the data becomes part of the image
+# This is intended for development only
+RUN /opt/mssql/bin/sqlservr & /var/opt/database/initialize/initialize.sh
 
-# docker-compose environment variables are only visible at runtime
-ENV ACCEPT_EULA=1
-ENV SQLCMDPASSWORD=fake.fake.fake.1234
-ENV SA_PASSWORD=fake.fake.fake.1234
-
-# Start the database and execute restore scripts
-RUN /opt/mssql/bin/sqlservr & /var/opt/db-restore/restore.sh
 
 ENTRYPOINT [ "/opt/mssql/bin/sqlservr" ]

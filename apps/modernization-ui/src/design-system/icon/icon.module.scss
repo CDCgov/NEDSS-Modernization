@@ -1,0 +1,26 @@
+$size-small: 1.25rem;
+$size-medium: 2rem;
+$size-large: 2.5rem;
+
+@mixin sized($height: $size-small, $width: $size-small) {
+    height: $height;
+    width: $width;
+}
+
+.icon {
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor;
+
+    &.small {
+        @include sized;
+    }
+
+    &.medium {
+        @include sized($size-medium, $size-medium);
+    }
+
+    &.large {
+        @include sized($size-large, $size-large);
+    }
+}

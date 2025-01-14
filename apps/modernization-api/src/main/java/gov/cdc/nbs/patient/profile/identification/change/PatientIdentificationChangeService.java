@@ -1,26 +1,23 @@
 package gov.cdc.nbs.patient.profile.identification.change;
 
-import gov.cdc.nbs.entity.odse.EntityId;
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientNotFoundException;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
-@Transactional
 public class PatientIdentificationChangeService {
-    private final PatientProfileService patientProfileService;
+  private final PatientProfileService service;
 
-    public PatientIdentificationChangeService(PatientProfileService patientProfileService) {
-        this.patientProfileService = patientProfileService;
-    }
+  PatientIdentificationChangeService(final PatientProfileService service) {
+    this.service = service;
+  }
 
-    public PatientIdentificationAdded add(final RequestContext context, final NewPatientIdentificationInput input) {
-        Person patient = patientProfileService.findPatientById(input.patient());
-
-        EntityId added = patient.add(
+  public PatientIdentificationAdded add(final RequestContext context, final NewPatientIdentificationInput input) {
+    return service.with(
+        input.patient(),
+        found -> found.add(
             new PatientCommand.AddIdentification(
                 input.patient(),
                 input.asOf(),
@@ -28,15 +25,15 @@ public class PatientIdentificationChangeService {
                 input.authority(),
                 input.type(),
                 context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                context.requestedAt())))
+        .map(added -> new PatientIdentificationAdded(added.getId().getEntityUid(), added.getId().getEntityIdSeq()))
+        .orElseThrow(() -> new PatientNotFoundException(input.patient()));
+  }
 
-        return new PatientIdentificationAdded(input.patient(), added.getId().getEntityIdSeq());
-    }
-
-    public void update(final RequestContext context, final UpdatePatientIdentificationInput input) {
-        this.patientProfileService.using(input.patient(), found -> found.update(
+  void update(final RequestContext context, final UpdatePatientIdentificationInput input) {
+    this.service.using(
+        input.patient(),
+        found -> found.update(
             new PatientCommand.UpdateIdentification(
                 input.patient(),
                 input.sequence(),
@@ -45,19 +42,17 @@ public class PatientIdentificationChangeService {
                 input.authority(),
                 input.type(),
                 context.requestedBy(),
-                context.requestedAt()
-            )
-        ));
-    }
+                context.requestedAt())));
+  }
 
-    public void delete(final RequestContext context, final DeletePatientIdentificationInput input) {
-        this.patientProfileService.using(input.patient(), found -> found.delete(
+  void delete(final RequestContext context, final DeletePatientIdentificationInput input) {
+    this.service.using(
+        input.patient(),
+        found -> found.delete(
             new PatientCommand.DeleteIdentification(
                 input.patient(),
                 input.sequence(),
                 context.requestedBy(),
-                context.requestedAt()
-            )
-        ));
-    }
+                context.requestedAt())));
+  }
 }

@@ -28,27 +28,52 @@ public class Act {
   @Column(name = "mood_cd", nullable = false, length = 10)
   private String moodCd;
 
+  @SuppressWarnings(
+      //  Bidirectional mappings require knowledge of each other
+      "javaarchitecture:S7027"
+  )
   @OneToMany(mappedBy = "actUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<Participation> participations;
 
-  @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<PublicHealthCase> publicHealthCases;
-
+  @SuppressWarnings(
+      //  Bidirectional mappings require knowledge of each other
+      "javaarchitecture:S7027"
+  )
   @OneToMany(mappedBy = "id.actUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<ActId> actIds;
 
+  @SuppressWarnings(
+      //  Bidirectional mappings require knowledge of each other
+      "javaarchitecture:S7027"
+  )
   @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
   private List<Observation> observations;
 
+  @SuppressWarnings(
+      //  Bidirectional mappings require knowledge of each other
+      "javaarchitecture:S7027"
+  )
   @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
   private List<Intervention> interventions;
 
+  @SuppressWarnings(
+      //  Bidirectional mappings require knowledge of each other
+      "javaarchitecture:S7027"
+  )
   @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
   private List<Treatment> treatments;
 
+  @SuppressWarnings(
+      //  Bidirectional mappings require knowledge of each other
+      "javaarchitecture:S7027"
+  )
   @OneToMany(mappedBy = "targetActUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<ActRelationship> targetActRelationships;
 
+  @SuppressWarnings(
+      //  Bidirectional mappings require knowledge of each other
+      "javaarchitecture:S7027"
+  )
   @OneToMany(mappedBy = "sourceActUid", fetch = FetchType.LAZY, cascade = {
       CascadeType.PERSIST,
       CascadeType.MERGE,

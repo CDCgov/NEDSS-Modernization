@@ -34,7 +34,7 @@ class AssociatedWithTupleMapperTest {
         Optional<AssociatedWith> actual = mapper.maybeMap(tuple);
 
         assertThat(actual).hasValueSatisfying(
-                actual_associated -> assertThat(actual_associated)
+                actualAssociated -> assertThat(actualAssociated)
                         .returns(4127L, AssociatedWith::id)
                         .returns("investigation-local", AssociatedWith::local)
                         .returns("investigation-condition", AssociatedWith::condition));

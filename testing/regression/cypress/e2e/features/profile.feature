@@ -1,7 +1,7 @@
 Feature: User can view existing and add/edit certain patient demographic data here.
 
     Background:
-        Given I am logged in as "superuser" and password ""
+        Given I am logged in as secure user
 
     Scenario: User accesses a patient profile
         Given create a new patient profile
@@ -13,9 +13,10 @@ Feature: User can view existing and add/edit certain patient demographic data he
 
     Scenario: User accesses printable patient demographics page
         Given create a new patient profile
+        Then I set patient id profile ENV
         When the user clicks on the Print button
         Then the user is directed to the printable patient demographics page
-
+        
     Scenario: User deletes patient profile
         Given create a new patient profile
         When the user clicks on the Delete Patient button
@@ -41,7 +42,7 @@ Feature: User can view existing and add/edit certain patient demographic data he
 
 
     Scenario: Data remains displayed after selecting the patient profile summary
-        Given the user navigate to the patient profile page for "154594"
+        Given the user navigate to a new patient profile page
         Then user clicks on a patient's profile "Summary" tab
         Then I should see the following elements
             | Patient ID    |
@@ -54,7 +55,7 @@ Feature: User can view existing and add/edit certain patient demographic data he
             | RACE          |
 
     Scenario: Data remains displayed after selecting patient profile events
-        Given the user navigate to the patient profile page for "154594"
+        Given the user navigate to a new patient profile page
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following elements
             | Patient ID    |
@@ -118,13 +119,12 @@ Feature: User can view existing and add/edit certain patient demographic data he
         Then user adds the general patient info with the mother's name as "Araceli"
         Then general information as "Araceli" is displayed
 
-
     Scenario: Edit ethnicity for a patient
         Given create a new patient profile
         Then user clicks on a patient's profile "Demographics" tab
         When User clicks on the edit button under "Ethnicity"
         Then user adds ethnicity as "Hispanic or latino"
-        Then ethnicity information "Hispanic or latino" is displayed
+        Then ethnicity information "Hispanic or Latino" is displayed
 
     Scenario: Edit the sex and birth of a patient
         Given create a new patient profile

@@ -1,0 +1,13 @@
+$header-height: 3.75rem;
+$pagination-height: 4.75rem;
+
+.results {
+    height: 100%;
+    .header {
+        min-height: #{$header-height};
+    }
+
+    .pagination {
+        height: #{$pagination-height};
+    }
+}

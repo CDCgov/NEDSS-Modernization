@@ -8,10 +8,12 @@ import java.util.Collection;
 @Component
 class PatientSearchResultPhoneFinder {
 
-  private static final String QUERY =
-      """
+  private static final String QUERY = """
           select distinct
-              [phone_number].phone_nbr_txt    as [phone_number]
+              [phone_number].phone_nbr_txt    as [phone_number],
+              [phone_number].extension_txt    as [extension],
+              IsNull([locators].cd, '')       as [type_cd],
+              IsNull([locators].use_cd,'')    as [use_cd]
           from Entity_locator_participation [locators]
 
               join Tele_locator [phone_number] on
@@ -22,7 +24,7 @@ class PatientSearchResultPhoneFinder {
 
           where   [locators].entity_uid = ?
               and [locators].[class_cd] = 'TELE'
-              and [locators].cd <> 'NET'              
+              and ([locators].cd is null or [locators].cd <> 'NET')
               and [locators].record_status_cd = 'ACTIVE'
       """;
   private static final int PATIENT_PARAMETER = 1;
@@ -38,7 +40,6 @@ class PatientSearchResultPhoneFinder {
     return this.template.query(
         QUERY,
         statement -> statement.setLong(PATIENT_PARAMETER, patient),
-        (rs, row) -> rs.getString(PHONE_COLUMN)
-    );
+        (rs, row) -> rs.getString(PHONE_COLUMN));
   }
 }

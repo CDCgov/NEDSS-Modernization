@@ -68,19 +68,19 @@ class PatientRaceAccumulatorTest {
 
 
         assertThat(actual).satisfiesExactlyInAnyOrder(
-            actual_race -> assertAll(
-                () -> assertThat(actual_race.category()).extracting(PatientRace.Race::id).isEqualTo("category-id"),
-                () -> assertThat(actual_race.detailed()).extracting(PatientRace.Race::id)
+            actualRace -> assertAll(
+                () -> assertThat(actualRace.category()).extracting(PatientRace.Race::id).isEqualTo("category-id"),
+                () -> assertThat(actualRace.detailed()).extracting(PatientRace.Race::id)
                     .contains(
                         "a",
                         "b",
                         "c"
                     )
             ),
-            actual_race -> assertAll(
-                () -> assertThat(actual_race.category()).extracting(PatientRace.Race::id)
+            actualRace -> assertAll(
+                () -> assertThat(actualRace.category()).extracting(PatientRace.Race::id)
                     .isEqualTo("category-id-other"),
-                () -> assertThat(actual_race.detailed()).extracting(PatientRace.Race::id)
+                () -> assertThat(actualRace.detailed()).extracting(PatientRace.Race::id)
                     .contains(
                         "d"
                     )

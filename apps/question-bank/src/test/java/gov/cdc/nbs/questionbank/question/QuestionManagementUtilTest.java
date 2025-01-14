@@ -76,7 +76,7 @@ class QuestionManagementUtilTest {
     CodeValueGeneral cvg = new CodeValueGeneral();
     cvg.setCodeDescTxt("2.16.840.1.113883.12.78");
     cvg.setCodeShortDescTxt("Abnormal flags (HL7)");
-    when(codeValueGeneralRepository.findByCode(Mockito.anyString())).thenReturn(Optional.of(cvg));
+    when(codeValueGeneralRepository.findCodeSystemByCode(Mockito.anyString())).thenReturn(Optional.of(cvg));
 
     // when I generate the question oid
     QuestionOid oid = questionManagementUtil.getQuestionOid(true, "", CodeSet.LOCAL);
@@ -122,7 +122,7 @@ class QuestionManagementUtilTest {
   void should_throw_exception_failed_to_find_code_system() {
     // given a request with an invalid code_system
     CreateTextQuestionRequest request = QuestionRequestMother.localTextRequest();
-    when(codeValueGeneralRepository.findByCode(request.getMessagingInfo().codeSystem()))
+    when(codeValueGeneralRepository.findCodeSystemByCode(request.getMessagingInfo().codeSystem()))
         .thenReturn(Optional.empty());
 
     // when retrieving the question oid

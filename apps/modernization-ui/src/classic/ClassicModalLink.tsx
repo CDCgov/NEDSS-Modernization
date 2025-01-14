@@ -1,6 +1,6 @@
 import { Status, useClassicModal } from 'classic';
 import { useRedirect } from './useRedirect';
-import { KeyboardEvent, MouseEvent, useEffect } from 'react';
+import { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent, useEffect } from 'react';
 import { Destination } from './Destination';
 
 type Props = {
@@ -14,12 +14,12 @@ export const ClassicModalLink = ({ url, destination = 'current', onClose, childr
 
     const { state, open, reset } = useClassicModal();
 
-    const handleClick = (event: MouseEvent) => {
+    const handleClick = (event: ReactMouseEvent) => {
         event.preventDefault();
         redirect(url);
     };
 
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: ReactKeyboardEvent) => {
         switch (event.key) {
             case 'enter':
             case 'space': {

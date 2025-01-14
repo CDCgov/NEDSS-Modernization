@@ -5,7 +5,6 @@ import { Spinner } from 'components/Spinner/Spinner';
 import React, { useEffect, useState } from 'react';
 import { AlertBanner } from '../AlertBanner/AlertBanner';
 import './ImportTemplate.scss';
-import { Heading } from 'components/heading';
 
 type ImportTemplateProps = {
     onTemplateCreated: (template: Template) => void;
@@ -77,7 +76,7 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
                 )}
 
                 <div className="heading">
-                    <Heading level={3}>Import a new template</Heading>
+                    <h2>Import a new template</h2>
                 </div>
                 <label htmlFor="importTempId">
                     <input

@@ -42,11 +42,12 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "WA_template", catalog = "NBS_ODSE")
+@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
 public class WaTemplate {
   private static final String DRAFT = "Draft";
-  private static final long TAB = 1010l;
-  private static final long SECTION = 1015l;
-  private static final long SUB_SECTION = 1016l;
+  private static final long TAB = 1010L;
+  private static final long SECTION = 1015L;
+  private static final long SUB_SECTION = 1016L;
   private static final List<Long> containers = Arrays.asList(TAB, SECTION, SUB_SECTION);
   private static final String FAILED_TO_FIND_SUBSECTION_WITH_ID = "Failed to find subsection with id: ";
 

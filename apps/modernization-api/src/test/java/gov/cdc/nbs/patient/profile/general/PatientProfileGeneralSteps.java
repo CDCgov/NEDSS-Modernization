@@ -1,42 +1,34 @@
 package gov.cdc.nbs.patient.profile.general;
 
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
-import gov.cdc.nbs.support.util.RandomUtil;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import io.cucumber.java.en.When;
+import org.springframework.test.web.servlet.ResultActions;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
-@Transactional
 public class PatientProfileGeneralSteps {
 
-    @Autowired
-    Active<PatientInput> input;
+  private final Active<PatientIdentifier> activePatient;
+  private final Active<ResultActions> response;
+  private final PatientGeneralRequester requester;
 
-    @Autowired
-    Active<Person> patient;
 
-    @Autowired
-    PatientGeneralResolver resolver;
+  PatientProfileGeneralSteps(
+      final Active<PatientIdentifier> activePatient,
+      final Active<ResultActions> response,
+      final PatientGeneralRequester requester
+  ) {
+    this.activePatient = activePatient;
+    this.response = response;
+    this.requester = requester;
+  }
 
-    @Given("the new patient's marital status is entered")
-    public void the_new_patient_marital_status_is_entered() {
-        PatientInput active = this.input.active();
+  @When("I view the Patient Profile General Information")
+  @When("I view the patient's general information")
+  public void i_view_the_patient_profile_general_information() {
+    this.activePatient.maybeActive()
+        .map(this.requester::general)
+        .ifPresent(this.response::active);
+  }
 
-        active.setAsOf(RandomUtil.getRandomDateInPast());
-        active.setMaritalStatus(RandomUtil.getRandomString());
-    }
-
-    @Then("the new patient has the entered marital status")
-    public void the_new_patient_has_the_entered_martial_status() {
-        Person actual = patient.active();
-        PatientInput expected = this.input.active();
-
-        assertThat(actual)
-            .returns(expected.getMaritalStatus(), Person::getMaritalStatusCd);
-    }
 }
