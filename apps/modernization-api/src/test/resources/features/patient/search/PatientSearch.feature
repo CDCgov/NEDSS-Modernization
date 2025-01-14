@@ -61,6 +61,20 @@ Feature: Patient Search
     And search result 1 has a "last name" of "Smith"
     And there are 1 patient search results
 
+  Scenario: I can filter search results with the patient's short ID and name
+    Given I have a patient
+    And the patient has the legal name "Joe" "Other"
+    And I have another patient
+    And the patient has the legal name "Joe" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a first name that equals "Joe"
+    And I would like to filter search results with the patient's short ID
+    And I would like to filter search results with name "mit"
+    When I search for patients
+    Then search result 1 has a "first name" of "Joe"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results
+
   Scenario: I can filter search results by last name
     Given I have a patient
     And the patient has the legal name "Joe" "Other"
