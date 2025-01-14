@@ -41,15 +41,25 @@ public class PatientFilter {
     private String identificationType;
   }
 
-  @Getter
-  @Setter
-  @AllArgsConstructor
-  @NoArgsConstructor
-  @EqualsAndHashCode
-  @JsonInclude(Include.NON_NULL)
-  public static class Filter {
-    private String id;
+  public record Filter(String id, String name) {
+
+    Optional<String> maybeId() {
+      return Optional.ofNullable(id());
+    }
+
+    Filter withId(final String id) {
+      return new Filter(id, name());
+    }
+
+    Optional<String> maybeName() {
+      return Optional.ofNullable(name());
+    }
+
+    Filter withName(final String name) {
+      return new Filter(id(), name);
+    }
   }
+
 
   public record NameCriteria(TextCriteria first, TextCriteria last) {
 
@@ -152,7 +162,7 @@ public class PatientFilter {
 
   public Filter getFilter() {
     if (this.filter == null) {
-      this.filter = new Filter();
+      this.filter = new Filter(null, null);
     }
     return filter;
   }
@@ -177,8 +187,22 @@ public class PatientFilter {
   }
 
   public PatientFilter withIdFilter(final String idFilter) {
-    this.filter = new Filter(idFilter);
+    if (this.filter == null) {
+      this.filter = new Filter(idFilter, null);
+    } else {
+      this.filter = this.filter.withId(idFilter);
+    }
     return this;
+  }
+
+  public PatientFilter withNameFilter(final String nameFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, nameFilter);
+    } else {
+      this.filter = this.filter.withName(nameFilter);
+    }
+    return this;
+
   }
 
   public PatientFilter withMorbidity(final String identifier) {

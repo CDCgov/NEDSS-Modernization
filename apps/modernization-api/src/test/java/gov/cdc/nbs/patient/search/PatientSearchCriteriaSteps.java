@@ -119,6 +119,13 @@ public class PatientSearchCriteriaSteps {
             .active(criteria -> criteria.withId(found.local()).withIdFilter(Long.toString(found.shortId()))));
   }
 
+  @Given("I would like to filter search results with name {string}")
+  public void i_would_like_to_filter_search_results_with_name(String name) {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria
+            .active(criteria -> criteria.withNameFilter(name)));
+  }
+
   @Given("I would like to search for a patient using multiple local IDs")
   public void i_would_like_to_search_for_a_patient_using_multiple_local_IDs() {
     this.patient.maybeActive().ifPresent(

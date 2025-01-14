@@ -19,16 +19,17 @@ import gov.cdc.nbs.search.WildCards;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.date.DateCriteria.Between;
 import gov.cdc.nbs.search.criteria.date.DateCriteria.Equals;
+import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import org.apache.commons.codec.language.Soundex;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import static gov.cdc.nbs.search.criteria.text.TextCriteriaNestedQueryResolver.*;
 
 @Component
 @SuppressWarnings("squid:S3516")
@@ -47,6 +48,8 @@ class PatientDemographicQueryResolver {
   private final PatientNameDemographicQueryResolver nameQueryResolver;
   private final PatientLocationQueryResolver locationQueryResolver;
   private final Soundex soundex;
+  private static final String FIRST_NAME = "name.firstNm";
+
 
   PatientDemographicQueryResolver(
       final PatientSearchSettings settings,
@@ -70,6 +73,7 @@ class PatientDemographicQueryResolver {
     return Stream.of(
         applyPatientIdentifierCriteria(criteria),
         applyPatientIdFilterCriteria(criteria),
+        applyPatientNameFilterCriteria(criteria),
         applyFirstNameCriteria(criteria),
         applyLastNameCriteria(criteria),
         applyPhoneNumberCriteria(criteria),
@@ -85,17 +89,26 @@ class PatientDemographicQueryResolver {
   }
 
   private Optional<QueryVariant> applyPatientIdFilterCriteria(final PatientFilter criteria) {
-    if (criteria.getFilter() == null || criteria.getFilter().getId() == null) {
+    if (criteria.getFilter() == null || criteria.getFilter().id() == null) {
       return Optional.empty();
     }
 
-    String adjusted = WildCards.contains(criteria.getFilter().getId());
+    String adjusted = WildCards.contains(criteria.getFilter().id());
     return Optional.of(BoolQuery.of(
         bool -> bool.must(
             query -> query.queryString(
                 simple -> simple.fields(LOCAL_ID)
                     .query(adjusted)))));
 
+  }
+
+  private Optional<QueryVariant> applyPatientNameFilterCriteria(final PatientFilter criteria) {
+    if (criteria.getFilter() == null || criteria.getFilter().name() == null) {
+      return Optional.empty();
+    }
+    return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().name(), null))
+        .flatMap(TextCriteria::maybeContains)
+        .map(value -> containsInOneOfTwoFields(NAMES, FIRST_NAME, LAST_NAME, value));
   }
 
   private Optional<QueryVariant> applyPatientIdentifierCriteria(final PatientFilter criteria) {

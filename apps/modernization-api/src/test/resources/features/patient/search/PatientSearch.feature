@@ -61,6 +61,43 @@ Feature: Patient Search
     And search result 1 has a "last name" of "Smith"
     And there are 1 patient search results
 
+  Scenario: I can filter search results by last name
+    Given I have a patient
+    And the patient has the legal name "Joe" "Other"
+    And I have another patient
+    And the patient has the legal name "Joe" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a first name that equals "Joe"
+    And I would like to filter search results with name "mit"
+    When I search for patients
+    Then search result 1 has a "first name" of "Joe"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results
+
+  Scenario: I can filter search results by first name
+    Given I have a patient
+    And the patient has the legal name "Joe" "Smith"
+    And I have another patient
+    And the patient has the legal name "Joel" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith"
+    And I would like to filter search results with name "oel"
+    When I search for patients
+    Then search result 1 has a "first name" of "Joel"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results
+
+  Scenario: I can filter search results by a non-existent name
+    Given I have a patient
+    And the patient has the legal name "Joe" "Smith"
+    And I have another patient
+    And the patient has the legal name "Ron" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith"
+    And I would like to filter search results with name "Paul"
+    When I search for patients
+    Then there are 0 patient search results
+
   Scenario: I can find a patient by Patient ID using multiple local ids
     Given patients are available for search
     And I would like to search for a patient using multiple local IDs
