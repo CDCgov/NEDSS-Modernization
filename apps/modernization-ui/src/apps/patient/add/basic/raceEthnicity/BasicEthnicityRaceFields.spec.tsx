@@ -3,12 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BasicRaceEthnicityFields } from './BasicEthnicityRaceFields';
 import { BasicEthnicityRace } from '../entry';
+import { Selectable } from 'options';
 
-const mockRaceCategories = [
-    { value: 'asian', name: 'Asian' },
-    { value: 'white', name: 'White' },
-    { value: 'black', name: 'Black or African American' }
-];
+let mockRaceCategories: Selectable[] = [];
 
 const mockEthnicityValues = {
     ethnicGroups: [
@@ -41,6 +38,10 @@ const FormWrapper = () => {
 };
 
 describe('BasicRaceEthnicityFields', () => {
+    beforeEach(() => {
+        mockRaceCategories = [];
+    });
+
     it('should allows selecting an ethnicity option', async () => {
         const { getByLabelText, getByText } = render(<FormWrapper />);
 
@@ -54,6 +55,12 @@ describe('BasicRaceEthnicityFields', () => {
     });
 
     it('should allows selecting multiple race options', async () => {
+        mockRaceCategories = [
+            { value: 'asian', name: 'Asian' },
+            { value: 'white', name: 'White' },
+            { value: 'black', name: 'Black or African American' }
+        ];
+
         const { getByLabelText } = render(<FormWrapper />);
 
         const asianCheckbox = getByLabelText(/asian/i);
@@ -67,10 +74,6 @@ describe('BasicRaceEthnicityFields', () => {
     });
 
     it('should not render race field when no race options are available', () => {
-        jest.mock('coded/race/useRaceCodedValues', () => ({
-            useRaceCodedValues: () => []
-        }));
-
         const { queryByLabelText } = render(<FormWrapper />);
 
         expect(queryByLabelText(/race/i)).not.toBeInTheDocument();
