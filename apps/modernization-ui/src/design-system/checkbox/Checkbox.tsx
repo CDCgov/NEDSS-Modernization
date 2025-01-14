@@ -17,6 +17,7 @@ const Checkbox = ({ id, label, className, selected = false, onChange, ...inputPr
                 id={id}
                 type="checkbox"
                 checked={selected}
+                aria-hidden
                 onChange={(e) => handleChange(e.target.checked)}
                 {...inputProps}
             />
