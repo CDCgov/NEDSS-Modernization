@@ -1,7 +1,7 @@
 import { OverlayPanel } from 'overlay';
 import { Icon } from 'design-system/icon';
 import { ColumnPreferencesPanel } from 'design-system/table/preferences';
-import { Button, LinkButton } from 'components/button';
+import { Button } from 'components/button';
 
 import styles from './search-results-table-options.module.scss';
 import { useFilterPreferences } from 'design-system/sorting/preferences/useFilterPreferences';
