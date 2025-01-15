@@ -17,20 +17,17 @@ import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientIn
 import { useShowCancelModal } from './useShowCancelModal';
 
 import styles from './add-patient-extended.module.scss';
-import { useConfiguration } from 'configuration';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient();
     const { initialize } = useAddPatientExtendedDefaults();
     const { value: bypassModal } = useShowCancelModal();
-    const { toNewBasic, toBasic } = useBasicExtendedTransition();
+    const { toBasic } = useBasicExtendedTransition();
 
     const created = useMemo<CreatedPatient | undefined>(
         () => (interaction.status === 'created' ? interaction.created : undefined),
         [interaction.status]
     );
-
-    const { features } = useConfiguration();
 
     const form = useForm<ExtendedNewPatientEntry>({
         defaultValues: initialize(),
@@ -43,11 +40,7 @@ export const AddPatientExtended = () => {
     const handleSave = form.handleSubmit(interaction.create);
 
     const handleCancel = () => {
-        if (features.patient.add.enabled) {
-            toNewBasic();
-        } else {
-            toBasic();
-        }
+        toBasic();
     };
 
     // Setup navigation blocking for back button
