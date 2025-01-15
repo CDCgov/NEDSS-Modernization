@@ -1,0 +1,17 @@
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+
+    input {
+        padding-right: 1.5rem;
+    }
+
+    .icon {
+        position: absolute;
+        top: 1.15rem;
+        right: 0.15rem;
+        cursor: pointer;
+    }
+}

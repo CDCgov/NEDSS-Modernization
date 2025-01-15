@@ -1,7 +1,7 @@
 import { RefObject, ChangeEvent as ReactChangeEvent, useState, useEffect } from 'react';
 import classNames from 'classnames';
 
-type TextOnChange = (value?: string) => void;
+export type TextOnChange = (value?: string) => void;
 
 type TextInputProps = {
     id: string;

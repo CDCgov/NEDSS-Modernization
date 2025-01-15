@@ -13,6 +13,7 @@ import { PatientSearchActions } from './PatientSearchActions';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { usePatientSearch } from './usePatientSearch';
 import { Direction } from 'sorting';
+import { FilterPreferencesProvider } from 'design-system/sorting/preferences/useFilterPreferences';
 
 const PatientSearch = () => {
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
@@ -22,6 +23,11 @@ const PatientSearch = () => {
     });
 
     const interaction = usePatientSearch({ form });
+
+    const handleSearch = () => {
+        form.setValue('filter', undefined);
+        interaction.search();
+    };
 
     return (
         <ColumnPreferenceProvider id="search.patients.preferences.columns" defaults={preferences}>
@@ -33,23 +39,27 @@ const PatientSearch = () => {
                     direction: Direction.Descending
                 }}>
                 <SearchInteractionProvider interaction={interaction}>
-                    <FormProvider {...form}>
-                        <SearchLayout
-                            actions={() => <PatientSearchActions disabled={interaction.status !== 'completed'} />}
-                            criteria={() => <PatientCriteria />}
-                            resultsAsList={() => (
-                                <SearchResultList<PatientSearchResult>
-                                    results={interaction.results.content}
-                                    render={(result) => <PatientSearchResultListItem result={result} />}
-                                />
-                            )}
-                            resultsAsTable={() => <PatientSearchResultTable results={interaction.results.content} />}
-                            searchEnabled={interaction.enabled}
-                            onSearch={interaction.search}
-                            noResults={() => <NoPatientResults />}
-                            onClear={interaction.clear}
-                        />
-                    </FormProvider>
+                    <FilterPreferencesProvider value={form} interaction={interaction}>
+                        <FormProvider {...form}>
+                            <SearchLayout
+                                actions={() => <PatientSearchActions disabled={interaction.status !== 'completed'} />}
+                                criteria={() => <PatientCriteria />}
+                                resultsAsList={() => (
+                                    <SearchResultList<PatientSearchResult>
+                                        results={interaction.results.content}
+                                        render={(result) => <PatientSearchResultListItem result={result} />}
+                                    />
+                                )}
+                                resultsAsTable={() => (
+                                    <PatientSearchResultTable results={interaction.results.content} />
+                                )}
+                                searchEnabled={interaction.enabled}
+                                onSearch={handleSearch}
+                                noResults={() => <NoPatientResults />}
+                                onClear={interaction.clear}
+                            />
+                        </FormProvider>
+                    </FilterPreferencesProvider>
                 </SearchInteractionProvider>
             </SortingPreferenceProvider>
         </ColumnPreferenceProvider>

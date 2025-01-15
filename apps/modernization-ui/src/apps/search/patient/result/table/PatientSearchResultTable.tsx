@@ -11,6 +11,8 @@ import {
     displayIdentifications
 } from 'apps/search/patient/result';
 import styles from './patient-search-result-table.module.scss';
+import { useFilterPreferences } from 'design-system/sorting/preferences/useFilterPreferences';
+import { TableHeaderFilter } from './TableHeaderFilter';
 
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
@@ -29,7 +31,8 @@ const columns: Column<PatientSearchResult>[] = [
         fixed: true,
         sortable: true,
         className: styles['col-patientid'],
-        render: (result) => displayProfileLink(result.patient, result.shortId)
+        render: (result) => displayProfileLink(result.patient, result.shortId),
+        filter: <TableHeaderFilter id={PATIENT_ID.id} />
     },
     {
         ...PATIENT_NAME,
@@ -68,6 +71,7 @@ type Props = {
 
 const PatientSearchResultTable = ({ results }: Props) => {
     const { apply } = useColumnPreferences();
+    const { activeFilter } = useFilterPreferences();
 
     return (
         <DataTable<PatientSearchResult>
@@ -75,6 +79,7 @@ const PatientSearchResultTable = ({ results }: Props) => {
             className={styles.patient_results}
             columns={apply(columns)}
             data={results}
+            filterable={activeFilter}
         />
     );
 };
