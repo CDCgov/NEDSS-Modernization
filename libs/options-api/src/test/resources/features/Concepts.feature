@@ -27,7 +27,7 @@ Feature: Concept Options REST API
     And the concept named "rhombos" is included
     And the concept named "silesia" is not included
     And the concept named "regreet" is not included
-    
+
   Scenario: I cannot find concepts that do not exist
     When I request all concepts for the "non-existing" value set
     Then there aren't any concepts available

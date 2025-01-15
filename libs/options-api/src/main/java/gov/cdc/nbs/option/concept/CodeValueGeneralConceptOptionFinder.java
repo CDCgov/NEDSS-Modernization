@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.util.Collection;
 
 
-class JDBCConceptOptionFinder implements ConceptOptionFinder {
+class CodeValueGeneralConceptOptionFinder implements ConceptOptionFinder {
 
   private static final int VALUE_SET_PARAMETER = 1;
   private static final String QUERY = """
@@ -24,7 +24,7 @@ class JDBCConceptOptionFinder implements ConceptOptionFinder {
   private final JdbcTemplate template;
   private final RowMapper<ConceptOption> mapper;
 
-  JDBCConceptOptionFinder(final JdbcTemplate template) {
+  CodeValueGeneralConceptOptionFinder(final JdbcTemplate template) {
     this.template = template;
     this.mapper = new ConceptOptionRowMapper();
   }
