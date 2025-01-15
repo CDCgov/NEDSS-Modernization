@@ -10,7 +10,7 @@ assertj = '3.25.3'
 testcontainers = '1.20.1'
 
 [libraries]
-guava = { module = 'com.google.guava:guava', version = '33.3.1-jre' }
+guava = { module = 'com.google.guava:guava', version = '33.4.0-jre' }
 springBoot = { module = 'org.springframework.boot:spring-boot-starter', version.ref = 'springBoot' }
 springBoot-jdbc = { module = 'org.springframework.boot:spring-boot-starter-jdbc', version.ref = 'springBoot' }
 springBoot-jpa = { module = 'org.springframework.boot:spring-boot-starter-data-jpa', version.ref = 'springBoot' }

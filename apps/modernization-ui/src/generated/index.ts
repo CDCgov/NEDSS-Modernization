@@ -40,6 +40,7 @@ export { PatientProfileService } from './services/PatientProfileService';
 export { PatientRaceService } from './services/PatientRaceService';
 export { ProgramAreaOptionsService } from './services/ProgramAreaOptionsService';
 export { ProviderOptionsService } from './services/ProviderOptionsService';
+export { RaceOptionsService } from './services/RaceOptionsService';
 export { ResultedTestOptionsService } from './services/ResultedTestOptionsService';
 export { UserService } from './services/UserService';
 export { UserOptionsService } from './services/UserOptionsService';
