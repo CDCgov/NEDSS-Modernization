@@ -2,11 +2,13 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Changed;
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 class PersonNameTest {
 
@@ -14,12 +16,14 @@ class PersonNameTest {
     void should_inactivate_existing_name() {
 
         Person patient = new Person(117L, "local-id-value");
+        SoundexResolver resolver = mock(SoundexResolver.class);
 
         PersonNameId identifier = new PersonNameId(117L, (short)2);
 
         PersonName name = new PersonName(
             identifier,
             patient,
+            resolver,
             new PatientCommand.AddName(
                 117L,
                 Instant.parse("2021-05-15T10:00:00Z"),
@@ -62,5 +66,96 @@ class PersonNameTest {
             .returns(117L, PersonNameId::getPersonUid)
             .returns((short) 2, PersonNameId::getPersonNameSeq)
             ;
+    }
+
+    @Test
+    void should_create_name_with_first_name_and_soundex() {
+        Person patient = new Person(117L, "local-id-value");
+        SoundexResolver resolver = value -> value + "_encoded";
+
+        PersonNameId identifier = new PersonNameId(117L, (short)2);
+
+        PersonName actual = new PersonName(
+            identifier,
+            patient,
+            resolver,
+            new PatientCommand.AddName(
+                117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
+                "First",
+                null,
+                null,
+                null,
+                "L",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(actual)
+            .returns("First", PersonName::getFirstNm)
+            .returns("First_encoded", PersonName::getFirstNameSoundex);
+    }
+
+    @Test
+    void should_create_name_with_last_name_and_soundex() {
+        Person patient = new Person(117L, "local-id-value");
+        SoundexResolver resolver = value -> value + "_encoded";
+
+        PersonNameId identifier = new PersonNameId(117L, (short)2);
+
+        PersonName actual = new PersonName(
+            identifier,
+            patient,
+            resolver,
+            new PatientCommand.AddName(
+                117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
+                null,
+                null,
+                "Last",
+                null,
+                "L",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(actual)
+            .returns("Last", PersonName::getLastNm)
+            .returns("Last_encoded", PersonName::getLastNameSoundex);
+    }
+
+    @Test
+    void should_create_name_with_second_last_name_and_soundex() {
+        Person patient = new Person(117L, "local-id-value");
+        SoundexResolver resolver = value -> value + "_encoded";
+
+        PersonNameId identifier = new PersonNameId(117L, (short)2);
+
+        PersonName actual = new PersonName(
+            identifier,
+            patient,
+            resolver,
+            new PatientCommand.AddName(
+                117L,
+                Instant.parse("2023-05-15T10:00:00Z"),
+                null,
+                null,
+                null,
+                null,
+                null,
+                "Second-Last",
+                null,
+                null,
+                "L",
+                131L,
+                Instant.parse("2020-03-03T10:15:30Z")
+            )
+        );
+
+        assertThat(actual)
+            .returns("Second-Last", PersonName::getLastNm2)
+            .returns("Second-Last_encoded", PersonName::getSecondLastNameSoundex);
     }
 }

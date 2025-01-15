@@ -15,6 +15,7 @@ import gov.cdc.nbs.patient.demographic.GeneralInformation;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
 import gov.cdc.nbs.patient.demographic.name.PatientLegalNameResolver;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -282,7 +283,7 @@ public class Person {
     this.birthTimeCalc = this.birthTime;
   }
 
-  public PersonName add(final PatientCommand.AddName added) {
+  public PersonName add(final PatientCommand.AddName added, final SoundexResolver resolver) {
 
     Collection<PersonName> existing = ensureNames();
 
@@ -299,7 +300,9 @@ public class Person {
     PersonName personName = new PersonName(
         identifier,
         this,
-        added);
+        resolver,
+        added
+    );
 
     existing.add(personName);
 

@@ -13,6 +13,7 @@ import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.GeneralInformation;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
@@ -99,6 +100,7 @@ class PersonTest {
   @Test
   void should_add_name() {
     Person patient = new Person(117L, "local-id-value");
+    SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
         new PatientCommand.AddName(
@@ -115,7 +117,7 @@ class PersonTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30Z")
-        )
+        ), resolver
     );
 
     assertThat(patient)
@@ -155,6 +157,7 @@ class PersonTest {
   @Test
   void should_add_another_name() {
     Person patient = new Person(117L, "local-id-value");
+    SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
         new PatientCommand.AddName(
@@ -167,7 +170,7 @@ class PersonTest {
             "L",
             171L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        )
+        ), resolver
     );
 
     patient.add(
@@ -185,7 +188,7 @@ class PersonTest {
             "A",
             131L,
             Instant.parse("2021-02-03T04:05:06Z")
-        )
+        ), resolver
     );
 
     assertThat(patient.getNames()).satisfiesExactly(
@@ -233,6 +236,7 @@ class PersonTest {
   @Test
   void should_update_existing_name() {
     Person patient = new Person(117L, "local-id-value");
+    SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
         new PatientCommand.AddName(
@@ -245,7 +249,7 @@ class PersonTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        )
+        ), resolver
     );
 
     patient.update(
@@ -302,6 +306,7 @@ class PersonTest {
   @Test
   void should_remove_existing_name() {
     Person patient = new Person(117L, "local-id-value");
+    SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
         new PatientCommand.AddName(
@@ -314,7 +319,7 @@ class PersonTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        )
+        ), resolver
     );
 
     patient.add(
@@ -328,7 +333,7 @@ class PersonTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        )
+        ), resolver
     );
 
     patient.delete(
@@ -356,6 +361,7 @@ class PersonTest {
   @Test
   void should_add_minimal_name_at_sequence_one() {
     Person actual = new Person(117L, "local-id-value");
+    SoundexResolver resolver = mock(SoundexResolver.class);
 
     actual.add(
         new PatientCommand.AddName(
@@ -368,7 +374,7 @@ class PersonTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        )
+        ), resolver
     );
 
     assertThat(actual.getNames()).satisfiesExactly(
@@ -389,6 +395,7 @@ class PersonTest {
   void should_add_secondary_name() {
 
     Person actual = new Person(117L, "local-id-value");
+    SoundexResolver resolver = mock(SoundexResolver.class);
 
     actual.add(
         new PatientCommand.AddName(
@@ -400,7 +407,9 @@ class PersonTest {
             "JR",
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")));
+            Instant.parse("2020-03-03T10:15:30.00Z")
+        ), resolver
+    );
 
     actual.add(
         new PatientCommand.AddName(
@@ -412,7 +421,9 @@ class PersonTest {
             "SR",
             "AL",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")));
+            Instant.parse("2020-03-03T10:15:30.00Z")
+        ), resolver
+    );
 
     assertThat(actual.getFirstNm()).isEqualTo("First");
     assertThat(actual.getMiddleNm()).isEqualTo("Middle");

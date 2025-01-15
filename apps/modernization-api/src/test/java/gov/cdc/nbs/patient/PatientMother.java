@@ -5,6 +5,7 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
@@ -41,6 +42,7 @@ public class PatientMother {
   private final PatientCleaner cleaner;
   private final RevisionPatientCreator revisionCreator;
   private final JdbcClient jdbcClient;
+  private final SoundexResolver encoder;
 
   PatientMother(
       final MotherSettings settings,
@@ -53,7 +55,8 @@ public class PatientMother {
       final Active<PatientIdentifier> active,
       final PatientCleaner cleaner,
       final RevisionPatientCreator revisionCreator,
-      final JdbcClient jdbcClient
+      final JdbcClient jdbcClient,
+      final SoundexResolver encoder
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
@@ -66,6 +69,7 @@ public class PatientMother {
     this.cleaner = cleaner;
     this.revisionCreator = revisionCreator;
     this.jdbcClient = jdbcClient;
+    this.encoder = encoder;
     this.faker = new Faker(Locale.of("en-us"));
   }
 
@@ -344,7 +348,7 @@ public class PatientMother {
             type,
             this.settings.createdBy(),
             this.settings.createdOn()
-        )
+        ), this.encoder
     );
   }
 

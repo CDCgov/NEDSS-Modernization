@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.profile.names.change;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientNotFoundException;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +12,14 @@ import org.springframework.stereotype.Component;
 class PatientNameChangeService {
 
   private final PatientProfileService service;
+  private final SoundexResolver resolver;
 
-  PatientNameChangeService(PatientProfileService service) {
+  PatientNameChangeService(
+      final PatientProfileService service,
+      final SoundexResolver resolver
+  ) {
     this.service = service;
+    this.resolver = resolver;
   }
 
   PatientNameAdded add(final RequestContext context, final NewPatientNameInput request) {
@@ -34,7 +40,7 @@ class PatientNameChangeService {
                     request.type(),
                     context.requestedBy(),
                     context.requestedAt()
-                )
+                ),this.resolver
             )
         )
         .map(added -> new PatientNameAdded(added.getId().getPersonUid(), added.getId().getPersonNameSeq()))
