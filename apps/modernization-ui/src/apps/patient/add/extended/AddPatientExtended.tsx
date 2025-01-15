@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from 'components/button';
 import { Shown } from 'conditional-render';
@@ -24,8 +23,7 @@ export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient();
     const { initialize } = useAddPatientExtendedDefaults();
     const { value: bypassModal } = useShowCancelModal();
-    const { toNewBasic } = useBasicExtendedTransition();
-    const navigate = useNavigate();
+    const { toNewBasic, toBasic } = useBasicExtendedTransition();
 
     const created = useMemo<CreatedPatient | undefined>(
         () => (interaction.status === 'created' ? interaction.created : undefined),
@@ -46,9 +44,9 @@ export const AddPatientExtended = () => {
 
     const handleCancel = () => {
         if (features.patient.add.enabled) {
-            navigate('/patient/add');
+            toNewBasic();
         } else {
-            navigate('/add-patient');
+            toBasic();
         }
     };
 
@@ -68,7 +66,6 @@ export const AddPatientExtended = () => {
 
     const handleModalConfirm = () => {
         blocker.unblock();
-        toNewBasic();
     };
 
     const handleModalClose = blocker.reset;

@@ -16,7 +16,6 @@ const useAddPatientBasicDefaults = (): Interaction => {
 
     const initialize = useCallback(() => {
         if (location.state?.defaults) {
-            console.log('returning');
             return location.state?.defaults;
         } else {
             return initialEntry();

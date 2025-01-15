@@ -45,7 +45,6 @@ function BasicExtendedTransitionProvider({ children }: BasicExtendedTransitionPr
     };
 
     const toNewBasic = () => {
-        console.log({ newTransitionData });
         navigate('/patient/add', { state: { defaults: newTransitionData } });
     };
 

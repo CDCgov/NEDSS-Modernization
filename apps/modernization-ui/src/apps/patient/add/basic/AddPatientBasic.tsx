@@ -14,7 +14,6 @@ import { useConfiguration } from 'configuration';
 import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
 
 import styles from './add-patient-basic.module.scss';
-import { useEffect } from 'react';
 
 export const AddPatientBasic = () => {
     const { initialize } = useAddPatientBasicDefaults();
@@ -25,10 +24,6 @@ export const AddPatientBasic = () => {
         defaultValues: initialize(),
         mode: 'onBlur'
     });
-
-    useEffect(() => {
-        console.log({ form });
-    }, []);
 
     const { toExtendedNew } = useBasicExtendedTransition();
 
