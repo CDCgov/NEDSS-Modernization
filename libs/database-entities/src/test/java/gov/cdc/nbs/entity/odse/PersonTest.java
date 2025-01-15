@@ -103,6 +103,7 @@ class PersonTest {
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
+        resolver,
         new PatientCommand.AddName(
             117L,
             Instant.parse("2023-05-15T10:00:00Z"),
@@ -117,7 +118,7 @@ class PersonTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30Z")
-        ), resolver
+        )
     );
 
     assertThat(patient)
@@ -160,6 +161,7 @@ class PersonTest {
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
+        resolver,
         new PatientCommand.AddName(
             117L,
             Instant.parse("2021-05-15T10:00:00Z"),
@@ -170,10 +172,11 @@ class PersonTest {
             "L",
             171L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        ), resolver
+        )
     );
 
     patient.add(
+        resolver,
         new PatientCommand.AddName(
             117L,
             Instant.parse("2023-05-15T10:00:00Z"),
@@ -188,7 +191,7 @@ class PersonTest {
             "A",
             131L,
             Instant.parse("2021-02-03T04:05:06Z")
-        ), resolver
+        )
     );
 
     assertThat(patient.getNames()).satisfiesExactly(
@@ -239,6 +242,7 @@ class PersonTest {
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
+        resolver,
         new PatientCommand.AddName(
             117L,
             Instant.parse("2021-05-15T10:00:00Z"),
@@ -249,10 +253,11 @@ class PersonTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        ), resolver
+        )
     );
 
     patient.update(
+        resolver,
         new PatientCommand.UpdateNameInfo(
             117L,
             (short) 1,
@@ -309,6 +314,7 @@ class PersonTest {
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
+        resolver,
         new PatientCommand.AddName(
             117L,
             Instant.parse("2021-05-15T10:00:00Z"),
@@ -319,10 +325,11 @@ class PersonTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        ), resolver
+        )
     );
 
     patient.add(
+        resolver,
         new PatientCommand.AddName(
             117L,
             Instant.parse("2021-05-15T10:00:00Z"),
@@ -333,7 +340,7 @@ class PersonTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        ), resolver
+        )
     );
 
     patient.delete(
@@ -364,6 +371,7 @@ class PersonTest {
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     actual.add(
+        resolver,
         new PatientCommand.AddName(
             117L,
             Instant.parse("2021-05-15T10:00:00Z"),
@@ -374,7 +382,7 @@ class PersonTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        ), resolver
+        )
     );
 
     assertThat(actual.getNames()).satisfiesExactly(
@@ -398,6 +406,7 @@ class PersonTest {
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     actual.add(
+        resolver,
         new PatientCommand.AddName(
             117L,
             Instant.parse("2021-05-15T10:00:00Z"),
@@ -408,10 +417,11 @@ class PersonTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        ), resolver
+        )
     );
 
     actual.add(
+        resolver,
         new PatientCommand.AddName(
             117L,
             Instant.parse("2021-05-15T10:00:00Z"),
@@ -422,7 +432,7 @@ class PersonTest {
             "AL",
             131L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        ), resolver
+        )
     );
 
     assertThat(actual.getFirstNm()).isEqualTo("First");

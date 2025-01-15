@@ -31,7 +31,7 @@ import java.util.function.Predicate;
 @Table(name = "Person_name")
 @SuppressWarnings(
     //  The PatientNameHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027","javaarchitecture:S7091"}
+    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
 )
 @EntityListeners(PatientNameHistoryListener.class)
 public class PersonName {
@@ -41,7 +41,7 @@ public class PersonName {
   }
 
   public static Predicate<PersonName> havingType(final String use) {
-    return input -> Objects.equals(input.type(),use);
+    return input -> Objects.equals(input.type(), use);
   }
 
   @EmbeddedId
@@ -164,19 +164,21 @@ public class PersonName {
     return this.nmUseCd;
   }
 
-  public void update(final PatientCommand.UpdateNameInfo info) {
+  public PersonName update(final SoundexResolver resolver, final PatientCommand.UpdateNameInfo info) {
     this.asOfDate = info.asOf();
     this.nmPrefix = info.prefix();
-    this.firstNm = info.first();
+    applyFirstName(info.first(), resolver);
     this.middleNm = info.middle();
     this.middleNm2 = info.secondMiddle();
-    this.lastNm = info.last();
-    this.lastNm2 = info.secondLast();
+    applyLastName(info.last(), resolver);
+    applySecondLastName(info.secondLast(), resolver);
     this.nmSuffix = Suffix.resolve(info.suffix());
     this.nmDegree = info.degree();
     this.nmUseCd = info.type();
 
     this.audit.changed(info.requester(), info.requestedOn());
+
+    return this;
   }
 
   public void delete(final PatientCommand.DeleteNameInfo deleted) {

@@ -35,41 +35,41 @@ public class PatientMother {
   private final SequentialIdentityGenerator idGenerator;
   private final PatientLocalIdentifierGenerator localIdentifierGenerator;
   private final AddressIdentifierGenerator addressIdentifierGenerator;
-  private final PatientShortIdentifierResolver resolver;
+  private final PatientShortIdentifierResolver shortIdentifierResolver;
   private final EntityManager entityManager;
   private final Available<PatientIdentifier> available;
   private final Active<PatientIdentifier> active;
   private final PatientCleaner cleaner;
   private final RevisionPatientCreator revisionCreator;
   private final JdbcClient jdbcClient;
-  private final SoundexResolver encoder;
+  private final SoundexResolver soundexResolver;
 
   PatientMother(
       final MotherSettings settings,
       final SequentialIdentityGenerator idGenerator,
       final PatientLocalIdentifierGenerator localIdentifierGenerator,
       final AddressIdentifierGenerator addressIdentifierGenerator,
-      final PatientShortIdentifierResolver resolver,
+      final PatientShortIdentifierResolver shortIdentifierResolver,
       final EntityManager entityManager,
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
       final PatientCleaner cleaner,
       final RevisionPatientCreator revisionCreator,
       final JdbcClient jdbcClient,
-      final SoundexResolver encoder
+      final SoundexResolver soundexResolver
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.localIdentifierGenerator = localIdentifierGenerator;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
-    this.resolver = resolver;
+    this.shortIdentifierResolver = shortIdentifierResolver;
     this.entityManager = entityManager;
     this.available = available;
     this.active = active;
     this.cleaner = cleaner;
     this.revisionCreator = revisionCreator;
     this.jdbcClient = jdbcClient;
-    this.encoder = encoder;
+    this.soundexResolver = soundexResolver;
     this.faker = new Faker(Locale.of("en-us"));
   }
 
@@ -101,7 +101,7 @@ public class PatientMother {
 
     this.entityManager.persist(patient);
 
-    long shortId = this.resolver.resolve(local).orElse(0L);
+    long shortId = this.shortIdentifierResolver.resolve(local).orElse(0L);
 
     return new PatientIdentifier(patient.getId(), shortId, local);
   }
@@ -334,6 +334,7 @@ public class PatientMother {
     Person patient = managed(identifier);
 
     patient.add(
+        this.soundexResolver,
         new PatientCommand.AddName(
             identifier.id(),
             asOf,
@@ -348,7 +349,7 @@ public class PatientMother {
             type,
             this.settings.createdBy(),
             this.settings.createdOn()
-        ), this.encoder
+        )
     );
   }
 

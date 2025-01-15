@@ -283,7 +283,7 @@ public class Person {
     this.birthTimeCalc = this.birthTime;
   }
 
-  public PersonName add(final PatientCommand.AddName added, final SoundexResolver resolver) {
+  public PersonName add(final SoundexResolver resolver, final PatientCommand.AddName added ) {
 
     Collection<PersonName> existing = ensureNames();
 
@@ -310,13 +310,13 @@ public class Person {
     return personName;
   }
 
-  public void update(final PatientCommand.UpdateNameInfo updated) {
+  public void update(final SoundexResolver resolver, final PatientCommand.UpdateNameInfo updated) {
     PersonNameId identifier = PersonNameId.from(updated.person(), updated.sequence());
 
     ensureNames().stream()
         .filter(name -> Objects.equals(name.getId(), identifier))
         .findFirst()
-        .ifPresent(name -> name.update(updated));
+        .ifPresent(name -> name.update(resolver, updated));
 
     changed(updated);
   }

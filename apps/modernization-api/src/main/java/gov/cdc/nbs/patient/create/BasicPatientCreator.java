@@ -47,7 +47,7 @@ public class BasicPatientCreator {
 
         input.getNames().stream()
             .map(name -> asName(context, identifier, asOf, name))
-            .forEach(name -> person.add(name, resolver));
+            .forEach(name -> person.add(resolver, name));
 
         input.getRaces().stream()
             .map(race -> asRace(context, identifier, asOf, race))

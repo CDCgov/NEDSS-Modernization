@@ -84,7 +84,7 @@ class PatientCreatedEmitterTest {
 
     PatientEventEmitter emitter = mock(PatientEventEmitter.class);
     PatientCreatedEmitter createdEmitter = new PatientCreatedEmitter(emitter);
-    SoundexResolver encoder = mock(SoundexResolver.class);
+    SoundexResolver resolver = mock(SoundexResolver.class);
 
     Person patient = new Person(
         new PatientCommand.CreatePatient(
@@ -96,6 +96,7 @@ class PatientCreatedEmitterTest {
     );
 
     patient.add(
+        resolver,
         new PatientCommand.AddName(
             117L,
             Instant.parse("2021-05-15T10:00:00Z"),
@@ -106,7 +107,7 @@ class PatientCreatedEmitterTest {
             "L",
             131L,
             Instant.parse("2020-03-03T10:15:30.00Z")
-        ), encoder
+        )
     );
 
     createdEmitter.created(patient);

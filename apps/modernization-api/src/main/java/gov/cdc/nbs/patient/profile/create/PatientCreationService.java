@@ -99,7 +99,7 @@ class PatientCreationService {
     newPatient.names()
         .stream()
         .map(demographic -> asAddName(identifier.id(), context, demographic))
-        .forEach(name -> patient.add(name, this.soudexResolver));
+        .forEach(name -> patient.add(this.soudexResolver, name));
 
     newPatient.maybeMortality()
         .map(demographic -> asUpdateMortality(identifier.id(), context, demographic))

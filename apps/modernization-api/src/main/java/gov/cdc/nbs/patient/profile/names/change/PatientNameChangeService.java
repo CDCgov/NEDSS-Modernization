@@ -26,6 +26,7 @@ class PatientNameChangeService {
     return service.with(
             request.patient(),
             found -> found.add(
+                this.resolver,
                 new PatientCommand.AddName(
                     request.patient(),
                     request.asOf(),
@@ -40,7 +41,7 @@ class PatientNameChangeService {
                     request.type(),
                     context.requestedBy(),
                     context.requestedAt()
-                ),this.resolver
+                )
             )
         )
         .map(added -> new PatientNameAdded(added.getId().getPersonUid(), added.getId().getPersonNameSeq()))
@@ -49,6 +50,7 @@ class PatientNameChangeService {
 
   void update(final RequestContext context, final UpdatePatientNameInput input) {
     this.service.using(input.patient(), found -> found.update(
+            resolver,
             new PatientCommand.UpdateNameInfo(
                 input.patient(),
                 input.sequence(),
