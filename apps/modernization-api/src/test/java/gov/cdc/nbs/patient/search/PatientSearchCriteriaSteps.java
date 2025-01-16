@@ -126,6 +126,13 @@ public class PatientSearchCriteriaSteps {
             .active(criteria -> criteria.withNameFilter(name)));
   }
 
+  @Given("I would like to filter search results with age or dob {string}")
+  public void i_would_like_to_filter_search_results_with_age_or_dob(String ageOrDateOfBirth) {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria
+            .active(criteria -> criteria.withAgeOrDateOfBirthFilter(ageOrDateOfBirth)));
+  }
+
   @Given("I would like to search for a patient using multiple local IDs")
   public void i_would_like_to_search_for_a_patient_using_multiple_local_IDs() {
     this.patient.maybeActive().ifPresent(

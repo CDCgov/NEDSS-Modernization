@@ -41,13 +41,17 @@ public class PatientFilter {
     private String identificationType;
   }
 
-  public record Filter(String id, String name) {
+  public record Filter(String id, String name, String ageOrDateOfBirth) {
     Filter withId(final String id) {
-      return new Filter(id, name());
+      return new Filter(id, name(), ageOrDateOfBirth());
     }
 
     Filter withName(final String name) {
-      return new Filter(id(), name);
+      return new Filter(id(), name, ageOrDateOfBirth());
+    }
+
+    Filter withAgeOrDateOfBirth(final String ageOrDateOfBirth) {
+      return new Filter(id(), name(), ageOrDateOfBirth);
     }
   }
 
@@ -153,7 +157,7 @@ public class PatientFilter {
 
   public Filter getFilter() {
     if (this.filter == null) {
-      this.filter = new Filter(null, null);
+      this.filter = new Filter(null, null, null);
     }
     return filter;
   }
@@ -179,7 +183,7 @@ public class PatientFilter {
 
   public PatientFilter withIdFilter(final String idFilter) {
     if (this.filter == null) {
-      this.filter = new Filter(idFilter, null);
+      this.filter = new Filter(idFilter, null, null);
     } else {
       this.filter = this.filter.withId(idFilter);
     }
@@ -188,9 +192,19 @@ public class PatientFilter {
 
   public PatientFilter withNameFilter(final String nameFilter) {
     if (this.filter == null) {
-      this.filter = new Filter(null, nameFilter);
+      this.filter = new Filter(null, nameFilter, null);
     } else {
       this.filter = this.filter.withName(nameFilter);
+    }
+    return this;
+
+  }
+
+  public PatientFilter withAgeOrDateOfBirthFilter(final String ageOrDateOfBirthFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, null, ageOrDateOfBirthFilter);
+    } else {
+      this.filter = this.filter.withAgeOrDateOfBirth(ageOrDateOfBirthFilter);
     }
     return this;
 

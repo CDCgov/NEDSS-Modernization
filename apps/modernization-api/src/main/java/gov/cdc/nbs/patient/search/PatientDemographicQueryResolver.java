@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.search;
 
 import co.elastic.clients.elasticsearch._types.FieldValue;
+import co.elastic.clients.elasticsearch._types.Script;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.ChildScoreMode;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
@@ -44,6 +45,7 @@ class PatientDemographicQueryResolver {
   private static final String LAST_NAME = "name.lastNm";
   private static final String LOCAL_ID = "local_id";
   private static final String FIRST_NAME = "name.firstNm";
+  private static final String PAINLESS = "painless";
   private final PatientSearchSettings settings;
   private final PatientLocalIdentifierResolver resolver;
   private final PatientNameDemographicQueryResolver nameQueryResolver;
@@ -80,6 +82,7 @@ class PatientDemographicQueryResolver {
         applyEmailCriteria(criteria),
         applyIdentificationCriteria(criteria),
         applyDateOfBirthCriteria(criteria),
+        applyPatientAgeOrDateOfBirthFilterCriteria(criteria),
         applyStreetAddressCriteria(criteria),
         applyCityCriteria(criteria),
         applyDateOfBirthHighRangeCriteria(criteria),
@@ -366,6 +369,46 @@ class PatientDemographicQueryResolver {
     }
 
     return Optional.empty();
+  }
+
+  private Script searchDateOfBirthScript(String value) {
+    return Script.of(t -> t.inline(inline -> inline
+        .source(
+            "doc['birth_time'].size()!=0 && (doc['birth_time'].value.toString().substring(5,10)+'-'+doc['birth_time'].value.toString().substring(0,4)).contains('"
+                + value + "')")
+        .lang(PAINLESS)));
+  }
+
+  Integer ageInYears(String value) {
+    Integer age = 0;
+    try {
+      age = Integer.parseInt(value);
+    } catch (NumberFormatException e) {
+      return null;
+    }
+    return age;
+  }
+
+  private Optional<QueryVariant> applyPatientAgeOrDateOfBirthFilterCriteria(final PatientFilter criteria) {
+    String ageOrDateOfBirth = criteria.getFilter().ageOrDateOfBirth();
+    if (ageOrDateOfBirth == null) {
+      return Optional.empty();
+    }
+
+    final String value = ageOrDateOfBirth.replaceAll("/", "-");
+    Integer age = ageInYears(value);
+    if (value.contains("-") || age == null) {
+      return Optional.of(BoolQuery.of(
+          bool -> bool.should(
+              should -> should.script(s -> s.script(searchDateOfBirthScript(value))))));
+    }
+
+    return Optional.of(BoolQuery.of(
+        bool -> bool.should(
+            should -> should.script(s -> s.script(searchDateOfBirthScript(value)))).should(
+                s -> s.range(RangeQuery.of(
+                    range -> range.field(BIRTHDAY)
+                        .gt(JsonData.of("now-" + (age + 1) + "y/d")).lt(JsonData.of("now-" + (age - 1) + "y/d")))))));
   }
 
   private Optional<QueryVariant> applyDateOfBirthLowRangeCriteria(final PatientFilter criteria) {
