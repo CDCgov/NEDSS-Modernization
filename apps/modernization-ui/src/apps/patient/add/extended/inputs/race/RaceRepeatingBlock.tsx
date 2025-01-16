@@ -1,10 +1,10 @@
+import { ReactNode } from 'react';
 import { Column } from 'design-system/table';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
-import { useRaceCategoryOptions } from 'options/race/useRaceCategoryOptions';
+import { useRaceCategoryOptions } from 'options/race';
 import { RaceEntryFields, RaceEntry, initial } from 'apps/patient/data/race';
 import { DetailedRaceDisplay } from './DetailedRaceDisplay';
 import { RaceEntryView } from './RaceEntryView';
-import { ReactNode } from 'react';
 import { categoryValidator } from './categoryValidator';
 
 const columns: Column<RaceEntry>[] = [
@@ -26,7 +26,7 @@ type Props = {
 };
 
 const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty }: Props) => {
-    const { categories } = useRaceCategoryOptions();
+    const categories = useRaceCategoryOptions();
 
     const renderForm = (entry?: RaceEntry) => (
         <RaceEntryFields categories={categories} categoryValidator={categoryValidator(values)} entry={entry} />

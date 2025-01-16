@@ -9,7 +9,7 @@ class ConceptOptionModuleConfiguration {
 
   @Bean
   ConceptOptionFinder conceptFinder(final JdbcTemplate template) {
-    return new JDBCConceptOptionFinder(template);
+    return new CodeValueGeneralConceptOptionFinder(template);
   }
 
 }

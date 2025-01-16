@@ -16,10 +16,9 @@ public class FeaturesSteps {
       case "patient add extended" -> "features.patient.add.extended.enabled";
       case "modernized patient profile" -> "features.patient.profile.enabled";
       case "patient search filters" -> "features.patient.search.filters.enabled";
+      case "deduplication" -> "features.deduplication.enabled";
       default -> value;
     };
   }
-
-
 
 }

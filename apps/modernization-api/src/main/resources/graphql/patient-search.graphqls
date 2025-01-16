@@ -40,6 +40,7 @@ input LocationCriteria {
 
 input Filter {
   id: String
+  name: String
 }
 
 input PersonFilter {

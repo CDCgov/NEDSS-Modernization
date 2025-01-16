@@ -1,0 +1,13 @@
+@use 'styles/colors';
+
+.fieldCheckbox {
+    padding: 0.75rem 1rem;
+    border-radius: 0.125rem;
+    border: 2px solid colors.$base-light;
+    width: 13rem;
+
+    &.selected {
+        border: 2px solid colors.$primary-light;
+        background: colors.$primary-lighter;
+    }
+}
