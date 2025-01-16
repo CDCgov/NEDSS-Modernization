@@ -13,7 +13,7 @@ import { PatientSearchActions } from './PatientSearchActions';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { usePatientSearch } from './usePatientSearch';
 import { Direction } from 'sorting';
-import { FilterPreferencesProvider } from 'design-system/sorting/preferences/useFilterPreferences';
+import { FilterProvider } from 'design-system/filter/useFilter';
 
 const PatientSearch = () => {
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
@@ -39,7 +39,7 @@ const PatientSearch = () => {
                     direction: Direction.Descending
                 }}>
                 <SearchInteractionProvider interaction={interaction}>
-                    <FilterPreferencesProvider value={form} interaction={interaction}>
+                    <FilterProvider value={form} interaction={interaction}>
                         <FormProvider {...form}>
                             <SearchLayout
                                 actions={() => <PatientSearchActions disabled={interaction.status !== 'completed'} />}
@@ -59,7 +59,7 @@ const PatientSearch = () => {
                                 onClear={interaction.clear}
                             />
                         </FormProvider>
-                    </FilterPreferencesProvider>
+                    </FilterProvider>
                 </SearchInteractionProvider>
             </SortingPreferenceProvider>
         </ColumnPreferenceProvider>

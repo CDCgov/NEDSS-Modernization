@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { SearchLayout } from './SearchLayout';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { SearchResultDisplayProvider } from '../useSearchResultDisplay';
-import { FilterPreferencesProvider } from 'design-system/sorting/preferences/useFilterPreferences';
+import { FilterProvider } from 'design-system/filter/useFilter';
 
 jest.mock('page', () => ({
     usePage: () => ({
@@ -35,7 +35,7 @@ jest.mock('apps/search', () => ({
         view: 'list'
     }),
     useSearchInteraction: () => ({ status: 'no-input', results: { total: 1, terms: [] } }),
-    useFilterPreferences: () => ({
+    useFilter: () => ({
         filterable: false,
         toggleFilterable: jest.fn(),
         applyFilter: jest.fn()
@@ -48,7 +48,7 @@ describe('when a search is performed without ', () => {
             <MemoryRouter>
                 <SkipLinkProvider>
                     <SearchResultDisplayProvider>
-                        <FilterPreferencesProvider>
+                        <FilterProvider>
                             <SearchLayout
                                 criteria={jest.fn()}
                                 resultsAsList={jest.fn()}
@@ -56,7 +56,7 @@ describe('when a search is performed without ', () => {
                                 onSearch={jest.fn()}
                                 onClear={jest.fn()}
                             />
-                        </FilterPreferencesProvider>
+                        </FilterProvider>
                     </SearchResultDisplayProvider>
                 </SkipLinkProvider>
             </MemoryRouter>

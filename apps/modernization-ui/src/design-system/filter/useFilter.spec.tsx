@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
-import { FilterPreferencesProvider, useFilterPreferences } from './useFilterPreferences';
+import { FilterProvider, useFilter } from './useFilter';
 
 const TestComponent = () => {
-    const { activeFilter, toggleFilter } = useFilterPreferences();
+    const { activeFilter, toggleFilter } = useFilter();
     const formMethods = useForm();
 
     return (
@@ -19,13 +19,13 @@ const TestComponent = () => {
 
 const renderWrapper = () => {
     return render(
-        <FilterPreferencesProvider>
+        <FilterProvider>
             <TestComponent />
-        </FilterPreferencesProvider>
+        </FilterProvider>
     );
 };
 
-describe('FilterPreferencesProvider', () => {
+describe('FilterProvider', () => {
     it('should provide default filterable state as false', () => {
         const { getByTestId } = renderWrapper();
 

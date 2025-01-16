@@ -4,14 +4,14 @@ import { ColumnPreferencesPanel } from 'design-system/table/preferences';
 import { Button } from 'components/button';
 
 import styles from './search-results-table-options.module.scss';
-import { useFilterPreferences } from 'design-system/sorting/preferences/useFilterPreferences';
+import { useFilter } from 'design-system/filter/useFilter';
 
 type Props = {
     disabled?: boolean;
 };
 
 const SearchResultsTableOptions = ({ disabled = false }: Props) => {
-    const { activeFilter, toggleFilter, resetFilter } = useFilterPreferences();
+    const { activeFilter, toggleFilter, resetFilter } = useFilter();
 
     return (
         <>

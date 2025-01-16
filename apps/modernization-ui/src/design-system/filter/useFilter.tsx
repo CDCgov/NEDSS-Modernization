@@ -3,7 +3,7 @@ import { createContext, useContext, ReactNode, useState, useEffect } from 'react
 import { UseFormReturn } from 'react-hook-form';
 import { isEmpty } from 'utils';
 
-type FilterPreferencesContextType = {
+type FilterContextType = {
     activeFilter: boolean;
     toggleFilter: () => void;
     form?: UseFormReturn<any>;
@@ -11,9 +11,9 @@ type FilterPreferencesContextType = {
     resetFilter: () => void;
 };
 
-const FilterableContext = createContext<FilterPreferencesContextType | undefined>(undefined);
+const FilterableContext = createContext<FilterContextType | undefined>(undefined);
 
-export const FilterPreferencesProvider = ({
+export const FilterProvider = ({
     children,
     value: form,
     interaction
@@ -47,10 +47,10 @@ export const FilterPreferencesProvider = ({
     );
 };
 
-export const useFilterPreferences = () => {
+export const useFilter = () => {
     const context = useContext(FilterableContext);
     if (!context) {
-        throw new Error('useFilterPreferencesContext must be used within a FilterPreferencesProvider');
+        throw new Error('useFilterContext must be used within a FilterProvider');
     }
     return context;
 };

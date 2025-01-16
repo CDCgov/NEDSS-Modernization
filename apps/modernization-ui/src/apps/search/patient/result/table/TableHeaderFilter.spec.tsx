@@ -2,7 +2,7 @@ import { render, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { TableHeaderFilter } from './TableHeaderFilter';
-import { FilterPreferencesProvider } from 'design-system/sorting/preferences/useFilterPreferences';
+import { FilterProvider } from 'design-system/filter/useFilter';
 
 const Fixture = ({ id }: { id: string }) => {
     const form = useForm<FieldValues>({
@@ -15,11 +15,11 @@ const Fixture = ({ id }: { id: string }) => {
     });
 
     return (
-        <FilterPreferencesProvider value={form}>
+        <FilterProvider value={form}>
             <FormProvider {...form}>
                 <TableHeaderFilter id={id} />
             </FormProvider>
-        </FilterPreferencesProvider>
+        </FilterProvider>
     );
 };
 

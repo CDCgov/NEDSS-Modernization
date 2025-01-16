@@ -11,7 +11,7 @@ import {
     displayIdentifications
 } from 'apps/search/patient/result';
 import styles from './patient-search-result-table.module.scss';
-import { useFilterPreferences } from 'design-system/sorting/preferences/useFilterPreferences';
+import { useFilter } from 'design-system/filter/useFilter';
 import { TableHeaderFilter } from './TableHeaderFilter';
 
 // column definitions
@@ -71,7 +71,7 @@ type Props = {
 
 const PatientSearchResultTable = ({ results }: Props) => {
     const { apply } = useColumnPreferences();
-    const { activeFilter } = useFilterPreferences();
+    const { activeFilter } = useFilter();
 
     return (
         <DataTable<PatientSearchResult>

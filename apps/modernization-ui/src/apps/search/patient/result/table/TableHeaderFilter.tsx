@@ -1,5 +1,5 @@
+import { useFilter } from 'design-system/filter/useFilter';
 import { TextInputWithClear } from 'design-system/input/text/TextInputWithClear';
-import { useFilterPreferences } from 'design-system/sorting/preferences/useFilterPreferences';
 import { Controller } from 'react-hook-form';
 
 type Filter = {
@@ -9,7 +9,7 @@ type Filter = {
 };
 
 export const TableHeaderFilter = ({ id }: { id: string }) => {
-    const { form, applyFilter } = useFilterPreferences();
+    const { form, applyFilter } = useFilter();
 
     const handleKeyPress = (event: { key: string }) => {
         if (event.key === 'Enter') {
