@@ -31,10 +31,11 @@ export const AddPatientBasic = () => {
 
     const { toSearch } = useSearchFromAddPatient();
     const location = useLocation();
+
     const handleCancel = () => {
         toSearch(location.state.criteria);
     };
-    const handleExtended = form.handleSubmit(toExtendedNew);
+    const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state.criteria));
 
     const working = !form.formState.isValid || interaction.status !== 'waiting';
 
