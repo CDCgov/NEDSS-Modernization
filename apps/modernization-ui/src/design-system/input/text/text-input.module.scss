@@ -1,0 +1,16 @@
+.text-input {
+    position: relative;
+
+    &.clearable {
+        input {
+            padding-right: 1.5rem;
+        }
+
+        .icon {
+            position: absolute;
+            top: 1.15rem;
+            right: 0.15rem;
+            cursor: pointer;
+        }
+    }
+}
