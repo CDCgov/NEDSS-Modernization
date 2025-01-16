@@ -395,7 +395,7 @@ class PatientDemographicQueryResolver {
       return Optional.empty();
     }
 
-    final String value = ageOrDateOfBirth.replaceAll("/", "-");
+    final String value = ageOrDateOfBirth.replace("/", "-");
     Integer age = ageInYears(value);
     if (value.contains("-") || age == null) {
       return Optional.of(BoolQuery.of(

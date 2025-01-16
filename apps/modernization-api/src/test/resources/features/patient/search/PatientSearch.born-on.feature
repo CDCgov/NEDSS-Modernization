@@ -140,3 +140,16 @@ Feature: Patient Search by Date of birth
     And I would like to filter search results with age or dob "10"
     When I search for patients
     Then there are 2 patient search results
+
+
+  Scenario: I can filter patients by age and dob and name filter
+    Given the patient was born on 10/15/1987
+    And the patient has the legal name "Joe" "Smith"
+    And I have another patient
+    And the patient has the legal name "Smith" "Jared"
+    And the patient was born 10 years ago
+    And patients are available for search
+    And I would like to filter search results with name "smith"
+    And I would like to filter search results with age or dob "10"
+    When I search for patients
+    Then there are 2 patient search results
