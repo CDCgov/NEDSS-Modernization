@@ -7,6 +7,7 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientIdentifierGenerator;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.ethnicity.EthnicityDemographic;
 import jakarta.persistence.EntityManager;
@@ -29,19 +30,23 @@ import static gov.cdc.nbs.patient.profile.mortality.MortalityDemographicPatientC
 @Component
 class PatientCreationService {
 
+  private final SoundexResolver soudexResolver;
   private final PatientIdentifierGenerator patientIdentifierGenerator;
   private final AddressIdentifierGenerator addressIdentifierGenerator;
-  private final PermissionScopeResolver resolver;
+  private final PermissionScopeResolver permissionScopeResolver;
   private final EntityManager entityManager;
 
   PatientCreationService(
+      final SoundexResolver soudexResolver,
       final PatientIdentifierGenerator patientIdentifierGenerator,
       final AddressIdentifierGenerator addressIdentifierGenerator,
-      final PermissionScopeResolver resolver,
-      final EntityManager entityManager) {
+      final PermissionScopeResolver permissionScopeResolver,
+      final EntityManager entityManager
+  ) {
+    this.soudexResolver = soudexResolver;
     this.patientIdentifierGenerator = patientIdentifierGenerator;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
-    this.resolver = resolver;
+    this.permissionScopeResolver = permissionScopeResolver;
     this.entityManager = entityManager;
   }
 
@@ -89,12 +94,12 @@ class PatientCreationService {
 
     newPatient.maybeGeneralInformation()
         .flatMap(demographic -> maybeAsAssociateStateHIVCase(identifier.id(), context, demographic))
-        .ifPresent(association -> patient.associate(resolver, association));
+        .ifPresent(association -> patient.associate(permissionScopeResolver, association));
 
     newPatient.names()
         .stream()
         .map(demographic -> asAddName(identifier.id(), context, demographic))
-        .forEach(patient::add);
+        .forEach(name -> patient.add(this.soudexResolver, name));
 
     newPatient.maybeMortality()
         .map(demographic -> asUpdateMortality(identifier.id(), context, demographic))

@@ -6,6 +6,7 @@ import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientNameHistoryListener;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embedded;
@@ -30,7 +31,7 @@ import java.util.function.Predicate;
 @Table(name = "Person_name")
 @SuppressWarnings(
     //  The PatientNameHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027","javaarchitecture:S7091"}
+    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
 )
 @EntityListeners(PatientNameHistoryListener.class)
 public class PersonName {
@@ -40,7 +41,7 @@ public class PersonName {
   }
 
   public static Predicate<PersonName> havingType(final String use) {
-    return input -> Objects.equals(input.type(),use);
+    return input -> Objects.equals(input.type(), use);
   }
 
   @EmbeddedId
@@ -54,11 +55,20 @@ public class PersonName {
   @Column(name = "first_nm", length = 50)
   private String firstNm;
 
+  @Column(name = "first_nm_sndx", length = 50)
+  private String firstNameSoundex;
+
   @Column(name = "last_nm", length = 50)
   private String lastNm;
 
+  @Column(name = "last_nm_sndx", length = 50)
+  private String lastNameSoundex;
+
   @Column(name = "last_nm2", length = 50)
   private String lastNm2;
+
+  @Column(name = "last_nm2_sndx", length = 50)
+  private String secondLastNameSoundex;
 
   @Column(name = "middle_nm", length = 50)
   private String middleNm;
@@ -104,7 +114,9 @@ public class PersonName {
   public PersonName(
       final PersonNameId identifier,
       final Person person,
-      final PatientCommand.AddName added) {
+      final SoundexResolver resolver,
+      final PatientCommand.AddName added
+  ) {
     this.asOfDate = added.asOf();
 
     this.statusCd = 'A';
@@ -117,16 +129,31 @@ public class PersonName {
     this.personUid = person;
 
     this.nmPrefix = added.prefix();
-    this.firstNm = added.first();
+    applyFirstName(added.first(), resolver);
     this.middleNm = added.middle();
     this.middleNm2 = added.secondMiddle();
-    this.lastNm = added.last();
-    this.lastNm2 = added.secondLast();
+    applyLastName(added.last(), resolver);
+    applySecondLastName(added.secondLast(), resolver);
     this.nmSuffix = Suffix.resolve(added.suffix());
     this.nmDegree = added.degree();
     this.nmUseCd = added.type();
 
     this.audit = new Audit(added.requester(), added.requestedOn());
+  }
+
+  private void applyFirstName(final String value, final SoundexResolver resolver) {
+    this.firstNm = value;
+    this.firstNameSoundex = resolver.resolve(value);
+  }
+
+  private void applyLastName(final String value, final SoundexResolver resolver) {
+    this.lastNm = value;
+    this.lastNameSoundex = resolver.resolve(value);
+  }
+
+  private void applySecondLastName(final String value, final SoundexResolver resolver) {
+    this.lastNm2 = value;
+    this.secondLastNameSoundex = resolver.resolve(value);
   }
 
   public LocalDate asOf() {
@@ -137,19 +164,21 @@ public class PersonName {
     return this.nmUseCd;
   }
 
-  public void update(final PatientCommand.UpdateNameInfo info) {
+  public PersonName update(final SoundexResolver resolver, final PatientCommand.UpdateNameInfo info) {
     this.asOfDate = info.asOf();
     this.nmPrefix = info.prefix();
-    this.firstNm = info.first();
+    applyFirstName(info.first(), resolver);
     this.middleNm = info.middle();
     this.middleNm2 = info.secondMiddle();
-    this.lastNm = info.last();
-    this.lastNm2 = info.secondLast();
+    applyLastName(info.last(), resolver);
+    applySecondLastName(info.secondLast(), resolver);
     this.nmSuffix = Suffix.resolve(info.suffix());
     this.nmDegree = info.degree();
     this.nmUseCd = info.type();
 
     this.audit.changed(info.requester(), info.requestedOn());
+
+    return this;
   }
 
   public void delete(final PatientCommand.DeleteNameInfo deleted) {
