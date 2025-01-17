@@ -3,7 +3,6 @@ import { Column } from 'design-system/table';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { useRaceCategoryOptions } from 'options/race';
 import { RaceEntryFields, RaceEntry, initial } from 'apps/patient/data/race';
-import { DetailedRaceDisplay } from './DetailedRaceDisplay';
 import { RaceEntryView } from './RaceEntryView';
 import { categoryValidator } from './categoryValidator';
 
@@ -13,7 +12,7 @@ const columns: Column<RaceEntry>[] = [
     {
         id: 'race-detailed',
         name: 'Detailed race',
-        render: (v) => <DetailedRaceDisplay entry={v} />
+        render: (v) => v.detailed?.map((v) => v.name).join(', ')
     }
 ];
 
