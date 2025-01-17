@@ -12,14 +12,14 @@ type Props = {
 };
 
 const SearchResultsTableOptions = ({ disabled = false }: Props) => {
-    const { activeFilter, toggleFilter, resetFilter, filterApplied } = useFilter();
+    const { activeFilter, toggleFilter, resetFilter, appliedFilter } = useFilter();
     const { features } = useConfiguration();
 
     return (
         <>
             {features.patient.search.filters.enabled && (
                 <div className={styles['filter-options']}>
-                    {filterApplied && (
+                    {appliedFilter && (
                         <Button unpadded unstyled onClick={resetFilter}>
                             Reset sort/filters
                         </Button>
