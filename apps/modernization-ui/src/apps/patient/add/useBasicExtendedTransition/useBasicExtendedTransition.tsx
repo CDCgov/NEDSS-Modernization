@@ -15,7 +15,7 @@ type BasicExtendedTransitionContextType = {
     newTransitionData: BasicNewPatientEntry | null;
     setNewTransitionData: (data: BasicNewPatientEntry) => void;
     toExtended: (initial: NewPatientEntry) => void;
-    toExtendedNew: (initial: BasicNewPatientEntry) => void;
+    toExtendedNew: (initial: BasicNewPatientEntry, searchCriteria: string) => void;
     toBasic: () => void;
 };
 
@@ -32,6 +32,7 @@ function BasicExtendedTransitionProvider({ children }: BasicExtendedTransitionPr
     const navigate = useNavigate();
     const nameCodes = usePatientNameCodedValues();
     const raceCategories = useConceptOptions('P_RACE_CAT', { lazy: false }).options;
+    const [criteria, setCriteria] = useState<string | null>(null);
 
     const toExtended = (initial: NewPatientEntry) => {
         setTransitionData(initial);
@@ -39,17 +40,18 @@ function BasicExtendedTransitionProvider({ children }: BasicExtendedTransitionPr
         navigate('/patient/add/extended', { state: { defaults: defaults } });
     };
 
-    const toExtendedNew = (initial: BasicNewPatientEntry) => {
+    const toExtendedNew = (initial: BasicNewPatientEntry, searchCriteria: string) => {
         setNewTransitionData(initial);
+        setCriteria(searchCriteria);
         const defaults: ExtendedNewPatientEntry = asNewExtendedPatientEntry(initial);
         navigate('/patient/add/extended', { state: { defaults: defaults } });
     };
 
     const toBasic = () => {
         if (features.patient.add.enabled) {
-            navigate('/patient/add', { state: { defaults: newTransitionData } });
+            navigate('/patient/add', { state: { defaults: newTransitionData, criteria: criteria } });
         } else {
-            navigate('/add-patient', { state: { defaults: transitionData } });
+            navigate('/add-patient', { state: { defaults: transitionData, criteria: criteria } });
         }
     };
 
