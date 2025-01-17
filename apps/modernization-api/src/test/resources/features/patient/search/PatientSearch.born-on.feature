@@ -113,7 +113,7 @@ Feature: Patient Search by Date of birth
     When I search for patients
     And there are 0 patient search results
 
-  Scenario: I can filter patients by age that equals
+  Scenario: I can filter patients by age that equals an existing one
     Given the patient was born on 01/15/1987
     And I have another patient
     And the patient was born 10 years ago
@@ -123,10 +123,19 @@ Feature: Patient Search by Date of birth
     Then the patient is in the search results
     And there is only one patient search result
 
-  Scenario: I can filter patients by age that does not exist
+  Scenario: I can filter patients by age that does not exist because it is one year more than an existing one
     Given the patient was born on 01/15/1987
     And I have another patient
-    And the patient was born 38 years ago
+    And the patient was born 39 years ago
+    And patients are available for search
+    And I would like to filter search results with age or dob "40"
+    When I search for patients
+    Then there are 0 patient search results
+
+  Scenario: I can filter patients by age that does not exist because it is one year less than an existing one
+    Given the patient was born on 01/15/1987
+    And I have another patient
+    And the patient was born 41 years ago
     And patients are available for search
     And I would like to filter search results with age or dob "40"
     When I search for patients

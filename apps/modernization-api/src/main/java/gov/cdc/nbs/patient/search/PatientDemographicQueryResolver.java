@@ -408,7 +408,7 @@ class PatientDemographicQueryResolver {
             should -> should.script(s -> s.script(searchDateOfBirthScript(value)))).should(
                 s -> s.range(RangeQuery.of(
                     range -> range.field(BIRTHDAY)
-                        .gt(JsonData.of("now-" + (age + 1) + "y/d")).lt(JsonData.of("now-" + (age - 1) + "y/d")))))));
+                        .gt(JsonData.of("now-" + (age + 1) + "y/d")).lt(JsonData.of("now-" + age + "y/d")))))));
   }
 
   private Optional<QueryVariant> applyDateOfBirthLowRangeCriteria(final PatientFilter criteria) {
