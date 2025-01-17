@@ -26,9 +26,10 @@ testing {
 }
 
 dependencies {
+    implementation libs.guava
     implementation libs.springBoot.web
-    implementation libs.bundles.swagger
     implementation libs.springBoot.jdbc
+    implementation libs.bundles.swagger
 }
 
 test {
