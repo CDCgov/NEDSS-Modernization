@@ -5,6 +5,7 @@ import { isEmpty } from 'utils';
 
 type FilterContextType = {
     activeFilter: boolean;
+    filterApplied: boolean;
     toggleFilter: () => void;
     form?: UseFormReturn<any>;
     applyFilter: () => void;
@@ -23,17 +24,20 @@ export const FilterProvider = ({
     interaction?: SearchInteraction<any>;
 }) => {
     const [activeFilter, setActiveFilter] = useState(false);
+    const [filterApplied, setFilterApplied] = useState(false);
     const filterValue = form?.watch('filter');
 
     const toggleFilter = () => setActiveFilter((prev) => !prev);
 
     const applyFilter = () => {
         interaction?.search();
+        setFilterApplied(true);
     };
 
     const resetFilter = () => {
         form?.setValue('filter', undefined);
         interaction?.search();
+        setFilterApplied(false);
     };
 
     useEffect(() => {
@@ -41,7 +45,8 @@ export const FilterProvider = ({
     }, [filterValue]);
 
     return (
-        <FilterableContext.Provider value={{ activeFilter, toggleFilter, applyFilter, form, resetFilter }}>
+        <FilterableContext.Provider
+            value={{ activeFilter, filterApplied, toggleFilter, applyFilter, form, resetFilter }}>
             {children}
         </FilterableContext.Provider>
     );

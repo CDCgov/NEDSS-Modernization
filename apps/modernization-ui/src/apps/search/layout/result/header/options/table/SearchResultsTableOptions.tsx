@@ -5,30 +5,36 @@ import { Button } from 'components/button';
 
 import styles from './search-results-table-options.module.scss';
 import { useFilter } from 'design-system/filter/useFilter';
+import { useConfiguration } from 'configuration';
 
 type Props = {
     disabled?: boolean;
 };
 
 const SearchResultsTableOptions = ({ disabled = false }: Props) => {
-    const { activeFilter, toggleFilter, resetFilter } = useFilter();
+    const { activeFilter, toggleFilter, resetFilter, filterApplied } = useFilter();
+    const { features } = useConfiguration();
 
     return (
         <>
-            <div className={styles['filter-options']}>
-                <Button unpadded unstyled onClick={resetFilter}>
-                    Reset sort/filters
-                </Button>
-                <Button
-                    aria-label="Filter"
-                    data-tooltip-position="top"
-                    data-tooltip-offset="center"
-                    outline={!activeFilter}
-                    disabled={disabled}
-                    icon={<Icon name="filter_alt" aria-label={`Filter`} className={styles['option-icon']} />}
-                    onClick={toggleFilter}
-                />
-            </div>
+            {features.patient.search.filters.enabled && (
+                <div className={styles['filter-options']}>
+                    {filterApplied && (
+                        <Button unpadded unstyled onClick={resetFilter}>
+                            Reset sort/filters
+                        </Button>
+                    )}
+                    <Button
+                        aria-label="Filter"
+                        data-tooltip-position="top"
+                        data-tooltip-offset="center"
+                        outline={!activeFilter}
+                        disabled={disabled}
+                        icon={<Icon name="filter_alt" aria-label={`Filter`} className={styles['option-icon']} />}
+                        onClick={toggleFilter}
+                    />
+                </div>
+            )}
             <OverlayPanel
                 className={styles.overlay}
                 position="right"
