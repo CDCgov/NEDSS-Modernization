@@ -15,11 +15,11 @@ springBoot = { module = 'org.springframework.boot:spring-boot-starter', version.
 springBoot-jdbc = { module = 'org.springframework.boot:spring-boot-starter-jdbc', version.ref = 'springBoot' }
 springBoot-jpa = { module = 'org.springframework.boot:spring-boot-starter-data-jpa', version.ref = 'springBoot' }
 springBoot-web = { module = 'org.springframework.boot:spring-boot-starter-web', version.ref = 'springBoot' }
-graphql = { module = 'com.graphql-java:graphql-java', version = '20.9' }
+graphql = { module = 'com.graphql-java:graphql-java', version = '22.3' }
 springBoot-graphql = { module = 'org.springframework.boot:spring-boot-starter-graphql', version.ref = 'springBoot' }
 spring-kafka = { module = 'org.springframework.kafka:spring-kafka', version.ref = 'spring-kafka' }
 spring-kafka-test = { module = 'org.springframework.kafka:spring-kafka-test', version.ref = 'spring-kafka' }
-elasticsearch-java = { module = 'co.elastic.clients:elasticsearch-java', version = '7.17.27' }
+elasticsearch-java = { module = 'co.elastic.clients:elasticsearch-java', version = '8.15.5' }
 parsson = { module = 'org.eclipse.parsson:parsson', version = '1.1.7' }
 spring-test = { module = 'org.springframework.boot:spring-boot-starter-test', version.ref = 'springBoot' }
 spring-security = { module = 'org.springframework.boot:spring-boot-starter-security', version.ref = 'springBoot' }
