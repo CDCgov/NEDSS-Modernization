@@ -19,8 +19,10 @@ type DateBetweenCriteria = {
 
 type DateCriteria = DateEqualsCriteria | DateBetweenCriteria;
 
-const isDateEqualsCriteria = (criteria: DateCriteria): criteria is DateEqualsCriteria => 'equals' in criteria;
-const isDateBetweenCriteria = (criteria: DateCriteria): criteria is DateBetweenCriteria => 'between' in criteria;
+const isDateEqualsCriteria = (criteria?: DateCriteria): criteria is DateEqualsCriteria =>
+    !!criteria && 'equals' in criteria;
+const isDateBetweenCriteria = (criteria?: DateCriteria): criteria is DateBetweenCriteria =>
+    !!criteria && 'between' in criteria;
 
 /**
  * Resolves the string representation of date equals criteria if the
@@ -36,7 +38,11 @@ const resolveDate = (criteria?: DateCriteria) => {
     }
 };
 
+const initialDateEqualsCriteria: DateEqualsCriteria = { equals: {} };
+const initialDateBetweenCriteria: DateBetweenCriteria = { between: {} };
+
 export { isDateEqualsCriteria, isDateBetweenCriteria, resolveDate };
+export { initialDateEqualsCriteria, initialDateBetweenCriteria };
 export type { DateCriteria, DateBetweenCriteria, DateEqualsCriteria };
 
 const maybeNumber = maybeMap(Number);
