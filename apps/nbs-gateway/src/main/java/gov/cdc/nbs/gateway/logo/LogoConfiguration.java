@@ -10,9 +10,10 @@ class LogoConfiguration {
   @Bean
   LogoSettings logoSettings(
       @Value("${nbs.gateway.logo.path:/images/nedssLogo.jpg}") final String path,
+      @Value("${nbs.gateway.logo.resource:/nedssLogo.jpeg}") final String resource,
       @Value("${nbs.gateway.logo.file:}") final String file
   ) {
-    return new LogoSettings(path, file);
+    return new LogoSettings(path, resource, file);
   }
 
 }
