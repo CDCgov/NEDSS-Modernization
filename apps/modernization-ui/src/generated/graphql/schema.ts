@@ -204,6 +204,7 @@ export type FacilityProviders = {
 };
 
 export type Filter = {
+  ageOrDateOfBirth?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
 };
