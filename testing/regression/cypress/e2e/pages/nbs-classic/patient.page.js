@@ -24,6 +24,33 @@ class ClassicPatientSearchPage {
     cy.contains('Patient profile').eq(0)
   }
 
+  goToNewPatientExtendedForm() {
+    cy.get('#homePageAdvancedSearch').click()
+    cy.get('input[id="name.last"]').type("Simpson")
+    cy.get('button[type="button"]').contains("Search").eq(0).click()
+    cy.wait(2000)
+    cy.get('button[data-testid="button"]').eq(0).click()
+    cy.contains("button", "Add new patient").click()
+    cy.contains("button", "Add extended data").click()
+  }
+
+  fillExtendedFormDetails() {
+    cy.get('select[id="birthAndSex.current"]').select("M")
+    cy.get('select[id="general.maritalStatus"]').select("M")
+  }
+
+  clickSaveExtendedForm() {
+    cy.contains("button", "Save").click()
+  }
+
+  VerifySuccessfulFormSubmit() {
+    cy.contains("Success")
+  }
+
+  verifyConfirmationMessage() {
+    cy.contains("You have successfully added a new patient")
+  }
+
 }
 
 export default new ClassicPatientSearchPage();
