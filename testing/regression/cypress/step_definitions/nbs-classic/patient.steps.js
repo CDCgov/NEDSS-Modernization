@@ -20,3 +20,23 @@ Then("Select a patient to edit through classic search", () => {
 Then("Edit patient details showing on the page", () => {
     classicSearchPatientPage.viewPatientDetails()
 });
+
+Then("I am on the New patient Extended form", () => {
+    classicSearchPatientPage.goToNewPatientExtendedForm()
+});
+
+Then("I have filled out all required fields in all sections", () => {
+    classicSearchPatientPage.fillExtendedFormDetails()
+});
+
+Then("I click the Save button", () => {
+    classicSearchPatientPage.clickSaveExtendedForm()
+});
+
+Then("Form should be submitted successfully without errors", () => {
+    classicSearchPatientPage.VerifySuccessfulFormSubmit()
+});
+
+Then("I should receive a confirmation message", () => {
+    classicSearchPatientPage.verifyConfirmationMessage()
+});
