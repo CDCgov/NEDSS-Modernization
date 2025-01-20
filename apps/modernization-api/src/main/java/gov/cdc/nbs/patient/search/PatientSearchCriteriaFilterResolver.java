@@ -29,6 +29,7 @@ class PatientSearchCriteriaFilterResolver {
   private static final String PERSON_TYPE = "cd";
   private static final String PERSON_TYPE_PATIENT = "PAT";
   private static final String PAINLESS = "painless";
+  private static final String NOT_FOUND_GENDER_CODE = "x";
 
   Query resolve(final PatientFilter criteria) {
     return Stream.of(
@@ -74,14 +75,45 @@ class PatientSearchCriteriaFilterResolver {
     return Optional.of(statuses);
   }
 
+  private String getImpliedGenderFromSexFilter(String sexFilter) {
+    if (sexFilter == null)
+      return null;
+    String lowerSexFilter = sexFilter.toLowerCase();
+    if (lowerSexFilter.equals(Gender.F.display().toLowerCase())
+        || lowerSexFilter.equals(Gender.F.value().toLowerCase())) {
+      return Gender.F.value();
+    }
+    if (lowerSexFilter.equals(Gender.M.display().toLowerCase())
+        || lowerSexFilter.equals(Gender.M.value().toLowerCase())) {
+      return Gender.M.value();
+    }
+    if (lowerSexFilter.equals(Gender.U.display().toLowerCase())
+        || lowerSexFilter.equals(Gender.U.value().toLowerCase())) {
+      return Gender.U.value();
+    }
+    return NOT_FOUND_GENDER_CODE;
+  }
+
   private Optional<QueryVariant> applyGenderCriteria(final PatientFilter criteria) {
 
     Gender gender = Gender.resolve(criteria.getGender());
-
-    return (gender == null) ? Optional.empty()
+    String genderValue = gender == null ? null : gender.value();
+    String sexFilter = criteria.getFilter().sex();
+    if (sexFilter != null) {
+      String impliedSex = getImpliedGenderFromSexFilter(sexFilter);
+      if (impliedSex != null) {
+        if (genderValue == null) {
+          genderValue = impliedSex;
+        } else if (!genderValue.equals(impliedSex)) {
+          genderValue = NOT_FOUND_GENDER_CODE;
+        }
+      }
+    }
+    final String termValue = genderValue;
+    return (termValue == null) ? Optional.empty()
         : Optional.of(
             TermQuery.of(
-                query -> query.field(CURRENT_GENDER).value(gender.value())));
+                query -> query.field(CURRENT_GENDER).value(termValue)));
   }
 
   private Optional<QueryVariant> applyDeceasedCriteria(final PatientFilter criteria) {
