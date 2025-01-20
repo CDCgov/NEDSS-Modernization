@@ -481,7 +481,7 @@ Feature: Patient Search
     And I add the patient criteria for sex filter of "u"
     When I search for patients
     Then the search results have a patient with a "gender" equal to "Unknown"
-    And there is only one patient search result    
+    Then there is only one patient search result    
 
   Scenario: I can search for a Patient when sex filter does not match gender
     Given the patient has the gender Male
@@ -494,7 +494,26 @@ Feature: Patient Search
     And I add the patient criteria for a gender of Unknown
     And I add the patient criteria for sex filter of "F"
     When I search for patients
-    And there are 0 patient search results
+    Then there are 0 patient search results
+
+  Scenario: I can search for a patient with a sex filter and name filter
+    Given the patient has the gender Male
+    And the patient has a "first name" of "Eva"
+    And patients are available for search
+    And I add the patient criteria for an "first name" equal to "Eva"
+    And I would like to filter search results with name "eva"
+    And I add the patient criteria for sex filter of "M"
+    When I search for patients
+    And there are 1 patient search results
+
+  Scenario: I can search for a patient with a sex filter that does not exist
+    Given the patient has the gender Male
+    And the patient has a "first name" of "Eva"
+    And patients are available for search
+    And I add the patient criteria for an "first name" equal to "Eva"
+    And I add the patient criteria for sex filter of "Q"
+    When I search for patients
+    Then there are 0 patient search results
 
   Scenario: BUG: CNFT1-1560 Patients with only a country code are searchable
     Given the patient has a "country code" of "+32"

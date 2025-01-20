@@ -76,8 +76,6 @@ class PatientSearchCriteriaFilterResolver {
   }
 
   private String getImpliedGenderFromSexFilter(String sexFilter) {
-    if (sexFilter == null)
-      return null;
     String lowerSexFilter = sexFilter.toLowerCase();
     if (lowerSexFilter.equals(Gender.F.display().toLowerCase())
         || lowerSexFilter.equals(Gender.F.value().toLowerCase())) {
