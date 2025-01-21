@@ -1,9 +1,9 @@
 services:
   nbs-mssql:
-    build: 
+    build:
       context: ./db
       args:
-          - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+        - DATABASE_PASSWORD=${DATABASE_PASSWORD}
     container_name: nbs-mssql
     ports:
       - 1433:1433
@@ -25,6 +25,8 @@ services:
       - "9990:9990"
       - "7001:7001"
       - "8787:8787"
+    volumes:
+      - ./nbs-classic/data/iis:/usr/nbs/iis
     networks:
       - nbs
   reverse-proxy:
@@ -109,6 +111,7 @@ services:
 volumes:
   nbs-mssql-data:
   nbs-mssql-working:
+  nbs6-iis-data:
 networks:
   nbs:
     name: nbs
