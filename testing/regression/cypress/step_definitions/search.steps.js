@@ -92,7 +92,7 @@ Then("click on clear all button", () => {
 });
 
 When("I last name should be {string}", (string) => {
-  cy.get("#name.last").should('have.text', string);
+  cy.get('input[id="name.last"]').should('have.text', string);
 });
 
 When("I first name should be {string}", (string) => {
@@ -104,11 +104,11 @@ When("I dob should be {string}", (string) => {
 });
 
 Then("I should see Results with the last name {string}", (string) => {
-  cy.get("a").contains(string).should("be.visible");
+  cy.get("main p").contains(string).should("be.visible");
 });
 
 Then("I should see Results with the first name {string}", (string) => {
-  cy.get("a").contains(string).should("be.visible");
+  cy.get("main p").contains(string).should("be.visible");
 });
 
 Then("I should see Results with for text {string}", (string) => {

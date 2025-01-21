@@ -93,19 +93,19 @@ When("I Seed HL7 {string} messages to api", (string) => {
         }).then((response) => {
           cy.wait(2000);
           expect(response.status).to.eq(200);
-
+          // debugger
           if (
-            response.body.nbsInfo.nbsInterfaceStatus === "QUEUED" ||
-            response.body.nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS"
+            response.body[0].nbsInfo.nbsInterfaceStatus === "QUEUED" ||
+            response.body[0].nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS"
           ) {
             cy.wait(20000).then(checkStatusRequest);
           } else if (
-            response.body.nbsInfo.nbsInterfaceStatus === "Success" &&
-            response.body.nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED"
+            response.body[0].nbsInfo.nbsInterfaceStatus === "Success" &&
+            response.body[0].nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED"
           ) {
             UtilityFunctions.checkELRActivityLog(fakeRandomData);
           } else if (
-            response.body.validatedInfo.validatedPipeLineStatus === "FAILED"
+            response.body[0].validatedInfo.validatedPipeLineStatus === "FAILED"
           ) {
             expect(response.status).to.eq(424);
           } else {

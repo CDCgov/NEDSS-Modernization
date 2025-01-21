@@ -119,11 +119,11 @@ class SearchPage {
   }
 
   enterDob(dateOfBirth) {
-    cy.get("#dateOfBirth").focus().clear();
+    // cy.get("#dateOfBirth").focus().clear();
     cy.get("#bornOn-exact-date-month").type("1")
     cy.get("#bornOn-exact-date-day").type("1")
     cy.get("#bornOn-exact-date-year").type("1982")
-    const cleanedDateOfBirth = dateOfBirth.replace(/\//g, "");
+    // const cleanedDateOfBirth = dateOfBirth.replace(/\//g, "");
     // cy.get("#dateOfBirth").type(cleanedDateOfBirth);
   }
 
