@@ -62,15 +62,15 @@ export const BasicPhoneEmailFields = ({
                 rules={{
                     pattern: {
                         value: /^\+?\d{1,20}$/,
-                        message: 'An Extension should be 1 to 20 digits'
+                        message: 'An Extension should be 1 to 8 digits'
                     }
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <MaskedTextInputField
                         id={name}
                         label="Work phone extension"
-                        mask="____________________"
-                        pattern="^\+?\d{1,20}$"
+                        mask="________"
+                        pattern="^\+?\d{1,8}$"
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
