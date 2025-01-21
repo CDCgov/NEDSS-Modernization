@@ -56,7 +56,7 @@ const AddressSuggestionInput = (props: Props): ReactElement => {
         suggest({ search: value ?? '', ...adjustedCriteria });
 
         if (props.onChange) {
-            props.onChange(value);
+            props.onChange(value ?? '');
         }
     };
 
