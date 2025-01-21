@@ -1,52 +1,35 @@
-import { SearchInteraction } from 'apps/search';
-import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
-import { UseFormReturn } from 'react-hook-form';
-import { isEmpty } from 'utils';
+import { createContext, useContext, ReactNode, useState } from 'react';
+import { Filter } from './FilterEntry';
 
 type FilterContextType = {
     activeFilter: boolean;
-    appliedFilter: boolean;
+    filterEntry: Filter | undefined;
     toggleFilter: () => void;
-    form?: UseFormReturn<any>;
-    applyFilter: () => void;
-    resetFilter: () => void;
+    onApply: (value: Filter) => void;
+    onReset: () => void;
+    setActiveFilter: (value: boolean) => void;
 };
 
 const FilterableContext = createContext<FilterContextType | undefined>(undefined);
 
-export const FilterProvider = ({
-    children,
-    value: form,
-    interaction
-}: {
-    children: ReactNode;
-    value?: UseFormReturn<any>;
-    interaction?: SearchInteraction<any>;
-}) => {
+export const FilterProvider = ({ children }: { children: ReactNode }) => {
     const [activeFilter, setActiveFilter] = useState(false);
-    const [appliedFilter, setAppliedFilter] = useState(false);
-    const filterValue = form?.watch('filter');
+    const [filterEntry, setFilterEntry] = useState<Filter>();
 
     const toggleFilter = () => setActiveFilter((prev) => !prev);
 
-    const applyFilter = () => {
-        interaction?.search();
-        setAppliedFilter(true);
+    const onApply = (value: Filter) => {
+        setFilterEntry(value);
     };
 
-    const resetFilter = () => {
-        form?.setValue('filter', undefined);
-        interaction?.search();
-        setAppliedFilter(false);
+    const onReset = () => {
+        setFilterEntry(undefined);
+        setActiveFilter(false);
     };
-
-    useEffect(() => {
-        !isEmpty(filterValue) && setActiveFilter(true);
-    }, [filterValue]);
 
     return (
         <FilterableContext.Provider
-            value={{ activeFilter, appliedFilter, toggleFilter, applyFilter, form, resetFilter }}>
+            value={{ activeFilter, filterEntry, toggleFilter, onApply, onReset, setActiveFilter }}>
             {children}
         </FilterableContext.Provider>
     );

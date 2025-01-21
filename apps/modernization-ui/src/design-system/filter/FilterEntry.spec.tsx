@@ -1,7 +1,7 @@
 import { render, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FieldValues, FormProvider, useForm } from 'react-hook-form';
-import { TableHeaderFilter } from './TableHeaderFilter';
+import { FilterEntry } from './FilterEntry';
 import { FilterProvider } from 'design-system/filter/useFilter';
 
 const Fixture = ({ id }: { id: string }) => {
@@ -15,15 +15,15 @@ const Fixture = ({ id }: { id: string }) => {
     });
 
     return (
-        <FilterProvider value={form}>
+        <FilterProvider>
             <FormProvider {...form}>
-                <TableHeaderFilter id={id} />
+                <FilterEntry id={id} property="text" />
             </FormProvider>
         </FilterProvider>
     );
 };
 
-describe('TableHeaderFilter', () => {
+describe('FilterEntry', () => {
     it('should render the TextInput component', () => {
         const { getByRole } = render(<Fixture id="test-id" />);
         const inputElement = getByRole('textbox');

@@ -11,8 +11,8 @@ import {
     displayIdentifications
 } from 'apps/search/patient/result';
 import styles from './patient-search-result-table.module.scss';
+import { FilterEntry } from '../../../../../design-system/filter/FilterEntry';
 import { useFilter } from 'design-system/filter/useFilter';
-import { TableHeaderFilter } from './TableHeaderFilter';
 
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
@@ -32,7 +32,7 @@ const columns: Column<PatientSearchResult>[] = [
         sortable: true,
         className: styles['col-patientid'],
         render: (result) => displayProfileLink(result.patient, result.shortId),
-        filter: <TableHeaderFilter id={PATIENT_ID.id} />
+        filter: <FilterEntry id={PATIENT_ID.id} property="text" />
     },
     {
         ...PATIENT_NAME,
