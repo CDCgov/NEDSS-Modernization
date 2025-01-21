@@ -41,17 +41,21 @@ public class PatientFilter {
     private String identificationType;
   }
 
-  public record Filter(String id, String name, String ageOrDateOfBirth) {
+  public record Filter(String id, String name, String ageOrDateOfBirth, String sex) {
     Filter withId(final String id) {
-      return new Filter(id, name(), ageOrDateOfBirth());
+      return new Filter(id, name(), ageOrDateOfBirth(), sex());
     }
 
     Filter withName(final String name) {
-      return new Filter(id(), name, ageOrDateOfBirth());
+      return new Filter(id(), name, ageOrDateOfBirth(), sex());
     }
 
     Filter withAgeOrDateOfBirth(final String ageOrDateOfBirth) {
-      return new Filter(id(), name(), ageOrDateOfBirth);
+      return new Filter(id(), name(), ageOrDateOfBirth, sex());
+    }
+
+    Filter withSex(final String sex) {
+      return new Filter(id(), name(), ageOrDateOfBirth(), sex);
     }
   }
 
@@ -157,7 +161,7 @@ public class PatientFilter {
 
   public Filter getFilter() {
     if (this.filter == null) {
-      this.filter = new Filter(null, null, null);
+      this.filter = new Filter(null, null, null, null);
     }
     return filter;
   }
@@ -183,7 +187,7 @@ public class PatientFilter {
 
   public PatientFilter withIdFilter(final String idFilter) {
     if (this.filter == null) {
-      this.filter = new Filter(idFilter, null, null);
+      this.filter = new Filter(idFilter, null, null, null);
     } else {
       this.filter = this.filter.withId(idFilter);
     }
@@ -192,7 +196,7 @@ public class PatientFilter {
 
   public PatientFilter withNameFilter(final String nameFilter) {
     if (this.filter == null) {
-      this.filter = new Filter(null, nameFilter, null);
+      this.filter = new Filter(null, nameFilter, null, null);
     } else {
       this.filter = this.filter.withName(nameFilter);
     }
@@ -202,9 +206,19 @@ public class PatientFilter {
 
   public PatientFilter withAgeOrDateOfBirthFilter(final String ageOrDateOfBirthFilter) {
     if (this.filter == null) {
-      this.filter = new Filter(null, null, ageOrDateOfBirthFilter);
+      this.filter = new Filter(null, null, ageOrDateOfBirthFilter, null);
     } else {
       this.filter = this.filter.withAgeOrDateOfBirth(ageOrDateOfBirthFilter);
+    }
+    return this;
+
+  }
+
+  public PatientFilter withSexFilter(final String sexFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, null, null, sexFilter);
+    } else {
+      this.filter = this.filter.withSex(sexFilter);
     }
     return this;
 
