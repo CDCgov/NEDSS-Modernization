@@ -61,6 +61,11 @@ public class PatientSearchCriteriaSteps {
     this.activeCriteria.maybeActive().ifPresent(found -> found.withGender(Gender.resolve(value).value()));
   }
 
+  @Given("I add the patient criteria for sex filter of {string}")
+  public void i_add_the_patient_criteria_for_sex_filter(final String value) {
+    this.activeCriteria.maybeActive().ifPresent(found -> found.withSexFilter(value));
+  }
+
   @Given("I would like patients that are {string}")
   public void i_add_the_partial_patient_criteria_record_status_of(final String status) {
     RecordStatus recordStatus = PatientStatusCriteriaResolver.resolve(status);
