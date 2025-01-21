@@ -124,4 +124,25 @@ describe('when adding patients with extended data', () => {
             expect(validationErrors.dirtySections.race).toBeTruthy();
         }
     });
+
+    it('should revalidate when dirty state changed', async () => {
+        const { result } = setup();
+
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017', comment: 'entered' }
+        };
+
+        await act(async () => {
+            result.current.setSubFormState({ race: true });
+            result.current.create(entry);
+        });
+
+        expect(result.current.status).toBe('invalid');
+
+        await act(async () => {
+            result.current.setSubFormState({ race: false });
+        });
+
+        expect(result.current.status).toBe('waiting');
+    });
 });
