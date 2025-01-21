@@ -44,7 +44,7 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
     GITHUB_ZIP_FILE_NAME="<version>.NEDSS.NBS.Modernized.Documentation.zip" \
     JAVA_MEMORY="4096M" \
     # Task names for tasks to be disabled correspond to filename in tasks.csv (suggested removal SendAlertEMail.bat)
-    DISABLED_SCHEDULED_TASKS="SendAlertEMail.bat"
+    DISABLED_SCHEDULED_TASKS=""
 
 # Configure NBS from Local Directory
 # NOTE: 
