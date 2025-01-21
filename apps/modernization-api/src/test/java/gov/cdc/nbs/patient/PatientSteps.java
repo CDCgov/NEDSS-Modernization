@@ -53,6 +53,15 @@ public class PatientSteps {
 
   }
 
+  @Given("the patient was born {int} years ago")
+  public void the_patient_was_born_on(final int value) {
+    this.patient.maybeActive().ifPresent(
+        found -> mother.withBirthday(
+            found,
+            LocalDate.now().minusYears(value).minusDays(100)));
+
+  }
+
   @Given("the patient has a(n) {string} of {string}")
   public void the_patient_has_a_field_with_a_value_of(
       final String field,

@@ -20,7 +20,7 @@ class LogoEndpoint {
       final LogoSettings settings
   ) {
     FileSystemResource logo = new FileSystemResource(settings.file());
-    return route(GET(settings.path()), request -> ok().bodyValue(logo));
+    return route(GET(settings.path()).or(GET(settings.resource())), request -> ok().bodyValue(logo));
   }
 
 }

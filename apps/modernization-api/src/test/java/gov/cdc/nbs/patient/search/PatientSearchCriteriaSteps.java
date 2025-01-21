@@ -61,6 +61,11 @@ public class PatientSearchCriteriaSteps {
     this.activeCriteria.maybeActive().ifPresent(found -> found.withGender(Gender.resolve(value).value()));
   }
 
+  @Given("I add the patient criteria for sex filter of {string}")
+  public void i_add_the_patient_criteria_for_sex_filter(final String value) {
+    this.activeCriteria.maybeActive().ifPresent(found -> found.withSexFilter(value));
+  }
+
   @Given("I would like patients that are {string}")
   public void i_add_the_partial_patient_criteria_record_status_of(final String status) {
     RecordStatus recordStatus = PatientStatusCriteriaResolver.resolve(status);
@@ -124,6 +129,13 @@ public class PatientSearchCriteriaSteps {
     this.patient.maybeActive().ifPresent(
         found -> this.activeCriteria
             .active(criteria -> criteria.withNameFilter(name)));
+  }
+
+  @Given("I would like to filter search results with age or dob {string}")
+  public void i_would_like_to_filter_search_results_with_age_or_dob(String ageOrDateOfBirth) {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria
+            .active(criteria -> criteria.withAgeOrDateOfBirthFilter(ageOrDateOfBirth)));
   }
 
   @Given("I would like to search for a patient using multiple local IDs")

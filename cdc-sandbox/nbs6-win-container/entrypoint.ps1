@@ -2,7 +2,9 @@
 # Prepare NBS Configuration and Start NBS 6.0
 
 #Disable specific scheduled tasks (all enabled by default)
-$disabledTasksArray= $env:DISABLED_SCHEDULED_TASKS.split(',') | ForEach-Object {$_.Trim()}
+if ($env:DISABLED_SCHEDULED_TASKS -ne $null) {
+    $disabledTasksArray= $env:DISABLED_SCHEDULED_TASKS.split(',') | ForEach-Object {$_.Trim()}
+}
 
 foreach ($item in $disabledTasksArray) {
     Write-Output "Disabling TaskName: $item Task"

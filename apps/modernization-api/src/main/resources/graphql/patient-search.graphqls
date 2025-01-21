@@ -41,6 +41,8 @@ input LocationCriteria {
 input Filter {
   id: String
   name: String
+  ageOrDateOfBirth: String
+  sex: String
 }
 
 input PersonFilter {
