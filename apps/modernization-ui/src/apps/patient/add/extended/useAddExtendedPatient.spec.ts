@@ -6,7 +6,35 @@ const setup = () => {
     return renderHook(() => useAddExtendedPatient());
 };
 
+const mockCreate = jest.fn();
+jest.mock('../useAddPatient', () => ({
+    useAddPatient: () => {
+        return {
+            status: 'waiting',
+            create: mockCreate
+        };
+    }
+}));
+
 describe('when adding patients with extended data', () => {
+    beforeAll(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should validate when attempting to create', async () => {
+        const { result } = setup();
+
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017', comment: 'entered' }
+        };
+
+        await act(async () => {
+            result.current.create(entry);
+        });
+
+        expect(mockCreate).toBeCalledWith(entry);
+    });
+
     it('should validate name sub form is not dirty when attempting to create', async () => {
         const { result } = setup();
 
