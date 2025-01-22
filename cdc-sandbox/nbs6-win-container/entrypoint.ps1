@@ -16,6 +16,10 @@ $env:JAVA_OPTS="-Xms$env:JAVA_MEMORY -Xmx$env:JAVA_MEMORY -XX:MetaspaceSize=96M 
 $env:JAVA_OPTS="$env:JAVA_OPTS -Djava.net.preferIPv4Stack=true"
 $env:JAVA_OPTS="$env:JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman"
 
+# Set global variables and paths
+[Environment]::SetEnvironmentVariable("JAVA_OPTS", $env:JAVA_OPTS, "Machine")
+[Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\executables\sqlcmd", "Machine")
+
 # Initialize hastable for data sources
 # NOTE: Provide DATABASE_ENDPOINT when running Container
 
