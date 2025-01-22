@@ -40,3 +40,7 @@ Then("Form should be submitted successfully without errors", () => {
 Then("I should receive a confirmation message", () => {
     classicSearchPatientPage.verifyConfirmationMessage()
 });
+
+Then("I have filled out all Information as of Date field", () => {
+    classicSearchPatientPage.fillInformationAsOfDateField()
+});
