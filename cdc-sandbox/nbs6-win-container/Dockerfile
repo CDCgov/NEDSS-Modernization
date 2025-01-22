@@ -51,6 +51,8 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
 # 1) Verify Zip File is downloaded from S3 and place in same directory, example: wildfly-10.0.0.Final-6.0.15.1.zip
 # 2) Delete wildfly*/bin/hs_err_pid2604.mdmp and/or any file name containing "err"
 
+RUN [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Users\ContainerAdministrator\AppData\Local\Microsoft\WindowsApps\", "Machine")
+
 USER ContainerAdministrator
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
