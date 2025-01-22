@@ -51,5 +51,6 @@ export type MatchingMethodOption = {
 
 export const MATCHING_METHOD_OPTIONS: MatchingMethodOption[] = [
     { value: '', name: '- Select -' },
+    { value: 'exact', name: 'Exact match' },
     { value: 'jarowinkler', name: 'JaroWinkler' }
 ];
