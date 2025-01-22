@@ -118,12 +118,15 @@ class SearchPage {
     cy.get("#dateOfBirth");
   }
 
-  enterDob(dateOfBirth) {
-    cy.get("#dateOfBirth").focus().clear();
-    cy.get("#bornOn-exact-date-month").type("1")
-    cy.get("#bornOn-exact-date-day").type("1")
-    cy.get("#bornOn-exact-date-year").type("1982")
-    const cleanedDateOfBirth = dateOfBirth.replace(/\//g, "");
+  enterDob(dateOfBirth) { 
+    const [month, day, year] = dateOfBirth.split('/');
+    cy.get("#bornOn-exact-date-month").focus().clear();
+    cy.get("#bornOn-exact-date-day").focus().clear();
+    cy.get("#bornOn-exact-date-year").focus().clear();
+    cy.get("#bornOn-exact-date-month").type(month);
+    cy.get("#bornOn-exact-date-day").type(day);
+    cy.get("#bornOn-exact-date-year").type(year);
+    // const cleanedDateOfBirth = dateOfBirth.replace(/\//g, "");
     // cy.get("#dateOfBirth").type(cleanedDateOfBirth);
   }
 

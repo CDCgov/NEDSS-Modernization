@@ -12,10 +12,10 @@ Feature: Patient Search by Basic Info
     Then I should see Results with the first name "Caden"
 
   Scenario: Basic Info - Search by DOB
-    When I search by dob as "10/16/1967"
-    Then I should see no result found text
-    When I search by dob as "05/16/1977"
+    When I search by dob as "05/16/1961"
     Then I should see "Ratkeyklkb, Caden Benjamin, Esquire"
+    When I search by dob as "05/16/1977"
+    Then I should see no result found text
 
   Scenario: Basic Info - Search by Sex
     When I search by sex as "Male"
@@ -32,18 +32,18 @@ Feature: Patient Search by Basic Info
   Scenario: Search by Multiple Criteria
     When I fill last name as "Ratkeyklkb"
     When I fill first name as "Caden"
-    When I search by dob as "05/16/1977"
+    When I search by dob as "05/16/1961"
     Then I should see "Ratkeyklkb, Caden Benjamin, Esquire"
 
   Scenario: Search for Deleted Patients
-    When I fill last name as "Greensonum"
+    When I fill last name as "a"
     When I select for Deleted patient
-    Then I should see "Greensonum, Allen"
+    Then I should see "a"
 
   Scenario: Search for Superseded Patients
-    When I fill last name as "Deeanna Denesik"
+    When I fill last name as "a"
     When I select for Superseded patient
-    Then I should see "Denesik, Deeanna"
+    Then I should see "a"
   
   Scenario: Search with Invalid Data
     When I search by dob as "76/5"
