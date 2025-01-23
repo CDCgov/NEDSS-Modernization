@@ -1,36 +1,35 @@
-import { ButtonGroup, Icon } from '@trussworks/react-uswds';
 import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
-import { Icon as IconComponent } from 'components/Icon/Icon';
+import { Icon } from 'design-system/icon';
 import classNames from 'classnames';
 import { Button } from 'components/button';
 
 import styles from './toggle-view.module.scss';
+import { ButtonGroup } from 'components/buttonGroup/ButtonGroup';
 
 export const ToggleView = () => {
     const { view, asList, asTable } = useSearchResultDisplay();
 
     return (
         <div className={classNames(styles.toggle)}>
-            <strong>View as: </strong>
-            <ButtonGroup type="segmented">
+            <ButtonGroup>
                 <Button
-                    labelPosition="right"
+                    aria-label="Table view"
+                    data-tooltip-position="top"
+                    data-tooltip-offset="center"
                     className={view === 'table' ? styles.active : ''}
-                    icon={view === 'table' ? <Icon.Check /> : <IconComponent name="table" />}
+                    outline={view !== 'table'}
+                    icon={<Icon name="table" className={styles.icon} />}
                     onClick={asTable}
-                    type="button"
-                    outline={view !== 'table'}>
-                    Table
-                </Button>
+                />
                 <Button
-                    labelPosition="right"
+                    aria-label="List view"
+                    data-tooltip-position="top"
+                    data-tooltip-offset="center"
                     className={view === 'list' ? styles.active : ''}
-                    icon={view === 'list' ? <Icon.Check /> : <Icon.List />}
+                    icon={<Icon name="list" className={styles.icon} />}
                     onClick={asList}
                     outline={view !== 'list'}
-                    type="button">
-                    List
-                </Button>
+                />
             </ButtonGroup>
         </div>
     );

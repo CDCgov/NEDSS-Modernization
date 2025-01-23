@@ -51,6 +51,10 @@ class ClassicPatientSearchPage {
     cy.contains("You have successfully added a new patient")
   }
 
+  fillInformationAsOfDateField() {
+    cy.get('input[id="administrative.asOf"]').type("01/20/2025")
+  }
+
 }
 
 export default new ClassicPatientSearchPage();
