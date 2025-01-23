@@ -10,23 +10,25 @@
     flex-direction: column;
     gap: 0.5rem;
 
-    .content {
-        .view {
-            color: brown;
-        }
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        color: transparent;
 
-        .editing,
-        .view {
-            margin: 0;
-            padding: 0;
-
+        .highlight {
+            background-color: rgb(199 210 254);
             position: absolute;
-            left: 0;
-            top: 0;
-
-            overflow: auto;
-            white-space: nowrap;
-            resize: none;
+            width: 100%;
+        }
+        .mirror {
+        }
+        .editing {
+            background: transparent;
+            position: relative;
         }
     }
 

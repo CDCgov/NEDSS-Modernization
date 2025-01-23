@@ -27,7 +27,39 @@ const ProtoTextarea = ({
     ...props
 }: ProtoTextareaProps) => {
     const view = useRef<HTMLDivElement>(null);
-    const textarea = useRef<HTMLTextAreaElement>(null);
+    const text = useRef<HTMLTextAreaElement>(null);
+
+    const containerEle = document.getElementById('container');
+    const textarea = document.querySelector('textarea');
+
+    const overlayEle = document.createElement('div');
+    overlayEle.classList.add(styles.overlay);
+    containerEle?.prepend(overlayEle);
+
+    const highlightEle = document.createElement('div');
+    highlightEle.classList.add(styles.highlight);
+    overlayEle.appendChild(highlightEle);
+
+    const mirroredEle = document.createElement('div');
+    mirroredEle.textContent = textarea?.textContent ?? '';
+    mirroredEle.classList.add(styles.mirror);
+    overlayEle.appendChild(mirroredEle);
+
+    const cursorPos = textarea?.selectionStart;
+    const textBeforeCursor = textarea?.textContent?.substring(0, cursorPos);
+    const textAfterCursor = textarea?.textContent?.substring(cursorPos ?? 0);
+
+    const pre = document.createTextNode(textBeforeCursor ?? '');
+    const post = document.createTextNode(textAfterCursor ?? '');
+    const caretEle = document.createElement('span');
+    caretEle.innerHTML = '&nbsp;';
+
+    mirroredEle.innerHTML = '';
+    mirroredEle.append(pre, caretEle, post);
+
+    const rect = caretEle.getBoundingClientRect();
+    highlightEle.style.height = `${rect.height}px`;
+    highlightEle.style.top = `${rect.top + (textarea?.scrollTop ?? 0)}px`;
 
     const [current, setCurrent] = useState<string>(value ?? '');
     // const [display, setDisplay] = useState<string>();
@@ -37,7 +69,7 @@ const ProtoTextarea = ({
     }, [value]);
 
     const handleInput = () => {
-        const next = textarea.current?.value;
+        const next = text.current?.value;
 
         if (next) {
             setCurrent(next);
@@ -56,10 +88,15 @@ const ProtoTextarea = ({
 
     return (
         <div className={styles.area}>
-            <div className={styles.content}>
-                <div className={styles.view} ref={view} aria-hidden dangerouslySetInnerHTML={{ __html: current }}></div>
+            <div className={styles.overlay}>
+                <div
+                    className={styles.highlight}
+                    ref={view}
+                    aria-hidden
+                    dangerouslySetInnerHTML={{ __html: current }}></div>
+                <div className={styles.mirror}></div>
                 <textarea
-                    ref={textarea}
+                    ref={text}
                     autoComplete="off"
                     id={id}
                     name={props.name ?? id}
