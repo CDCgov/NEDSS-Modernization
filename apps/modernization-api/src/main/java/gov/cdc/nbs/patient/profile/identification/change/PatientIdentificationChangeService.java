@@ -14,18 +14,18 @@ public class PatientIdentificationChangeService {
     this.service = service;
   }
 
-  public PatientIdentificationAdded add(final RequestContext context, final NewPatientIdentificationInput input) {
+  PatientIdentificationAdded add(final RequestContext context, final NewPatientIdentificationInput input) {
     return service.with(
-        input.patient(),
-        found -> found.add(
-            new PatientCommand.AddIdentification(
-                input.patient(),
-                input.asOf(),
-                input.value(),
-                input.authority(),
-                input.type(),
-                context.requestedBy(),
-                context.requestedAt())))
+            input.patient(),
+            found -> found.add(
+                new PatientCommand.AddIdentification(
+                    input.patient(),
+                    input.asOf(),
+                    input.value(),
+                    input.authority(),
+                    input.type(),
+                    context.requestedBy(),
+                    context.requestedAt())))
         .map(added -> new PatientIdentificationAdded(added.getId().getEntityUid(), added.getId().getEntityIdSeq()))
         .orElseThrow(() -> new PatientNotFoundException(input.patient()));
   }

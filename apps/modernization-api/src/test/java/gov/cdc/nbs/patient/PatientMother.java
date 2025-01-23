@@ -235,7 +235,7 @@ public class PatientMother {
     patient.add(
         new PatientCommand.AddIdentification(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             value,
             RandomUtil.maybeOneFrom("GA"),
             type,

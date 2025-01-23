@@ -5,7 +5,7 @@ import gov.cdc.nbs.audit.Changed;
 import gov.cdc.nbs.patient.PatientCommand;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +23,7 @@ class EntityIdTest {
         identifier,
         new PatientCommand.AddIdentification(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "identification-value",
             "authority-value",
             "identification-type",
@@ -42,8 +42,10 @@ class EntityIdTest {
     );
 
     assertThat(identification)
-        .returns("INACTIVE", EntityId::getRecordStatusCd)
-        .returns(LocalDateTime.parse("2020-03-13T13:15:30"), EntityId::getRecordStatusTime)
+        .satisfies(removed -> assertThat(removed)
+            .extracting(EntityId::recordStatus)
+            .satisfies(RecordStatusAssertions.inactive("2020-03-13T13:15:30"))
+        )
         .extracting(EntityId::getAudit)
         .extracting(Audit::changed)
         .returns(191L, Changed::changedBy)

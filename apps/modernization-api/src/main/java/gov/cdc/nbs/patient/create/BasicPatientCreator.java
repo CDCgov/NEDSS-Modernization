@@ -69,7 +69,7 @@ public class BasicPatientCreator {
         .forEach(person::add);
 
     input.getIdentifications().stream()
-        .map(identification -> asIdentification(context, identifier, asOf, identification))
+        .map(identification -> asIdentification(context, identifier, localAsOf, identification))
         .forEach(person::add);
 
     this.entityManager.persist(person);
@@ -200,7 +200,7 @@ public class BasicPatientCreator {
   private PatientCommand.AddIdentification asIdentification(
       final RequestContext context,
       final PatientIdentifier identifier,
-      final Instant asOf,
+      final LocalDate asOf,
       final PatientInput.Identification identification
   ) {
     return new PatientCommand.AddIdentification(

@@ -1,19 +1,26 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Audit;
-import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.audit.RecordStatus;
+import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientIdentificationHistoryListener;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
 import lombok.Getter;
 
-import jakarta.persistence.*;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Objects;
+import java.time.LocalDate;
 import java.util.function.Predicate;
 
-@AllArgsConstructor
+
 @Getter
 @Entity
 @Table(name = "Entity_id")
@@ -24,117 +31,90 @@ import java.util.function.Predicate;
 @EntityListeners(PatientIdentificationHistoryListener.class)
 public class EntityId {
 
-    public static Predicate<EntityId> active() {
-        return input -> Objects.equals(input.getRecordStatusCd(), RecordStatus.ACTIVE.name());
-    }
+  public static Predicate<EntityId> active() {
+    return input -> input.recordStatus.isActive();
+  }
 
-    @EmbeddedId
-    private EntityIdId id;
+  @EmbeddedId
+  private EntityIdId id;
 
-    @MapsId("entityUid")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "entity_uid", nullable = false)
-    @SuppressWarnings(
-        //  Bidirectional mappings require knowledge of each other
-        "javaarchitecture:S7027"
-    )
-    private NBSEntity nbsEntityUid;
+  @MapsId("entityUid")
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "entity_uid", nullable = false)
+  @SuppressWarnings(
+      //  Bidirectional mappings require knowledge of each other
+      "javaarchitecture:S7027"
+  )
+  private NBSEntity nbsEntityUid;
 
-    @Column(name = "assigning_authority_cd", length = 199)
-    private String assigningAuthorityCd;
+  @Column(name = "assigning_authority_cd", length = 199)
+  private String assigningAuthorityCd;
+  
+  @Column(name = "root_extension_txt", length = 100)
+  private String rootExtensionTxt;
 
-    @Column(name = "assigning_authority_desc_txt", length = 100)
-    private String assigningAuthorityDescTxt;
+  @Column(name = "type_cd", length = 50)
+  private String typeCd;
 
-    @Column(name = "duration_amt", length = 20)
-    private String durationAmt;
+  @Column(name = "as_of_date")
+  private LocalDate asOfDate;
 
-    @Column(name = "duration_unit_cd", length = 20)
-    private String durationUnitCd;
+  @Embedded
+  private Audit audit;
 
-    @Column(name = "effective_from_time")
-    private Instant effectiveFromTime;
+  @Embedded
+  private RecordStatus recordStatus;
 
-    @Column(name = "effective_to_time")
-    private Instant effectiveToTime;
+  @Embedded
+  private Status status;
 
-    @Column(name = "record_status_cd", length = 20)
-    private String recordStatusCd;
+  protected EntityId() {
 
-    @Column(name = "record_status_time")
-    private LocalDateTime recordStatusTime;
+  }
 
-    @Column(name = "root_extension_txt", length = 100)
-    private String rootExtensionTxt;
+  public EntityId(
+      final NBSEntity nbs,
+      final EntityIdId identifier,
+      final PatientCommand.AddIdentification added
+  ) {
+    this.nbsEntityUid = nbs;
+    this.id = identifier;
 
-    @Column(name = "status_cd")
-    private Character statusCd;
+    this.asOfDate = added.asOf();
+    this.typeCd = added.identificationType();
+    this.assigningAuthorityCd = added.assigningAuthority();
+    this.rootExtensionTxt = added.identificationNumber();
 
-    @Column(name = "status_time")
-    private LocalDateTime statusTime;
+    this.status = new Status(added.requestedOn());
+    this.recordStatus = new RecordStatus(added.requestedOn());
 
-    @Column(name = "type_cd", length = 50)
-    private String typeCd;
+    this.audit = new Audit(added.requester(), added.requestedOn());
+  }
 
-    @Column(name = "type_desc_txt", length = 100)
-    private String typeDescTxt;
+  public void update(final PatientCommand.UpdateIdentification info) {
+    this.asOfDate = info.asOf();
+    this.assigningAuthorityCd = info.assigningAuthority();
+    this.rootExtensionTxt = info.identificationNumber();
+    this.typeCd = info.identificationType();
 
-    @Column(name = "user_affiliation_txt", length = 20)
-    private String userAffiliationTxt;
+    this.audit.changed(info.requester(), info.requestedOn());
+  }
 
-    @Column(name = "valid_from_time")
-    private Instant validFromTime;
+  public void delete(final PatientCommand.DeleteIdentification deleted) {
+    this.recordStatus.inactivate(deleted.requestedOn());
 
-    @Column(name = "valid_to_time")
-    private Instant validToTime;
+    this.audit.changed(deleted.requester(), deleted.requestedOn());
+  }
 
-    @Column(name = "as_of_date")
-    private Instant asOfDate;
+  public Audit audit() {
+    return audit;
+  }
 
-    @Column(name = "assigning_authority_id_type", length = 50)
-    private String assigningAuthorityIdType;
+  public RecordStatus recordStatus() {
+    return recordStatus;
+  }
 
-    @Embedded
-    private Audit audit;
-
-    protected EntityId() {
-
-    }
-
-    public EntityId(
-            final NBSEntity nbs,
-            final EntityIdId identifier,
-            final PatientCommand.AddIdentification added) {
-        this.nbsEntityUid = nbs;
-        this.id = identifier;
-
-        this.asOfDate = added.asOf();
-        this.typeCd = added.identificationType();
-        this.assigningAuthorityCd = added.assigningAuthority();
-        this.rootExtensionTxt = added.identificationNumber();
-
-        this.statusCd = 'A';
-        this.statusTime = added.requestedOn();
-
-        this.recordStatusCd = "ACTIVE";
-        this.recordStatusTime = added.requestedOn();
-
-        this.audit = new Audit(added.requester(), added.requestedOn());
-    }
-
-    public void update(final PatientCommand.UpdateIdentification info) {
-        this.asOfDate = info.asOf();
-        this.assigningAuthorityCd = info.assigningAuthority();
-        this.rootExtensionTxt = info.identificationNumber();
-        this.typeCd = info.identificationType();
-
-        this.audit.changed(info.requester(), info.requestedOn());
-    }
-
-    public void delete(final PatientCommand.DeleteIdentification deleted) {
-        this.recordStatusCd = RecordStatus.INACTIVE.name();
-        this.recordStatusTime = deleted.requestedOn();
-
-        this.audit.changed(deleted.requester(), deleted.requestedOn());
-    }
+  public Status status() {
+    return status;
+  }
 }

@@ -341,7 +341,7 @@ class PatientCreatedEmitterTest {
     patient.add(
         new PatientCommand.AddIdentification(
             117L,
-            Instant.parse("2017-05-16T11:13:19Z"),
+            LocalDate.parse("2017-05-16"),
             "identification-value",
             "authority-value",
             "identification-type",
@@ -362,7 +362,7 @@ class PatientCreatedEmitterTest {
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .returns(1, PatientEvent.Created.Identification::identifier)
-                .returns(Instant.parse("2017-05-16T11:13:19Z"), PatientEvent.Created.Identification::asOf)
+                .returns(LocalDate.parse("2017-05-16"), PatientEvent.Created.Identification::asOf)
                 .returns("identification-type", PatientEvent.Created.Identification::type)
                 .returns("authority-value", PatientEvent.Created.Identification::authority)
                 .returns("identification-value", PatientEvent.Created.Identification::value)

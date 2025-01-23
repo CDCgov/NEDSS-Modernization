@@ -248,7 +248,7 @@ type PatientIdentification {
     patient: Int!
     sequence: Int!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: PatientIdentificationType!
     authority: PatientIdentificationAuthority
     value: String

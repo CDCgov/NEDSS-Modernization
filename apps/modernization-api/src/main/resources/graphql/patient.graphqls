@@ -321,7 +321,7 @@ type PatientPhoneChangeResult {
 
 input NewPatientIdentificationInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     authority: String
     value: String!
@@ -330,7 +330,7 @@ input NewPatientIdentificationInput {
 input UpdatePatientIdentificationInput {
     patient: Int!
     sequence: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     authority: String
     value: String!

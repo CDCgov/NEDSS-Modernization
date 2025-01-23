@@ -33,7 +33,7 @@ class PatientSummaryIdentificationFinder {
     return query.from(ENTITY_ID_TABLE)
         .where(
             ENTITY_ID_TABLE.id.entityUid.eq(patient),
-            ENTITY_ID_TABLE.recordStatusCd.eq(ACTIVE_CODE),
+            ENTITY_ID_TABLE.recordStatus.status.eq(ACTIVE_CODE),
             ENTITY_ID_TABLE.rootExtensionTxt.isNotNull()
         )
         .join(CODE_VALUE_GENERAL_TABLE).on(

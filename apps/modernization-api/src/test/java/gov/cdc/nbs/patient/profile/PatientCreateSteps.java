@@ -11,9 +11,9 @@ import gov.cdc.nbs.patient.profile.address.AddressDemographic;
 import gov.cdc.nbs.patient.profile.create.CreatedPatient;
 import gov.cdc.nbs.patient.profile.create.NewPatient;
 import gov.cdc.nbs.patient.profile.create.PatientCreateController;
+import gov.cdc.nbs.patient.profile.identification.IdentificationDemographic;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.support.util.RandomUtil;
-import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -21,7 +21,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.datafaker.Faker;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
@@ -32,25 +31,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 public class PatientCreateSteps {
-  @Autowired
-  PatientCreateController controller;
 
-  @Autowired
-  PersonRepository repository;
+  private final PatientCreateController controller;
 
-  @Autowired
-  Active<ActiveUser> activeUser;
+  private final PersonRepository repository;
 
-  @Autowired
-  Active<Person> patient;
+  private final Active<Person> patient;
 
-  @Autowired
-  Active<NewPatient> input;
+  private final Active<NewPatient> input;
 
-  @Autowired
-  Active<PatientIdentifier> activePatient;
+  private final Active<PatientIdentifier> activePatient;
 
   private final Faker faker = new Faker(Locale.of("en-us"));
+
+  PatientCreateSteps(
+      final PatientCreateController controller,
+      final PersonRepository repository,
+      final Active<Person> patient,
+      final Active<NewPatient> input,
+      final Active<PatientIdentifier> activePatient
+  ) {
+    this.controller = controller;
+    this.repository = repository;
+    this.patient = patient;
+    this.input = input;
+    this.activePatient = activePatient;
+  }
 
   @Before("@patient_profile_create")
   public void reset() {
@@ -127,11 +133,14 @@ public class PatientCreateSteps {
   public void i_am_adding_a_new_patient_with_identifications() {
     this.input.active(
         current -> current.withIdentification(
-            new NewPatient.Identification(
+            new IdentificationDemographic(
                 RandomUtil.dateInPast(),
                 "DL",
                 "TX",
-                "value")));
+                "value"
+            )
+        )
+    );
   }
 
   @When("I send a create patient request")
@@ -202,10 +211,10 @@ public class PatientCreateSteps {
   @Then("the patient created has the entered identifications")
   public void the_patient_created_has_the_entered_identifications() {
     EntityId actual = patient.active().identifications().getFirst();
-    NewPatient.Identification expected = this.input.active().identifications().getFirst();
+    IdentificationDemographic expected = this.input.active().identifications().getFirst();
 
     assertThat(actual)
-        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(), EntityId::getAsOfDate)
+        .returns(expected.asOf(), EntityId::getAsOfDate)
         .returns(expected.type(), EntityId::getTypeCd)
         .returns(expected.issuer(), EntityId::getAssigningAuthorityCd)
         .returns(expected.id(), EntityId::getRootExtensionTxt);

@@ -5,8 +5,6 @@ import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.profile.address.change.NewPatientAddressInput;
 import gov.cdc.nbs.patient.profile.address.change.PatientAddressChangeService;
-import gov.cdc.nbs.patient.profile.identification.change.NewPatientIdentificationInput;
-import gov.cdc.nbs.patient.profile.identification.change.PatientIdentificationChangeService;
 import gov.cdc.nbs.patient.profile.phone.change.NewPatientPhoneInput;
 import gov.cdc.nbs.patient.profile.phone.change.PatientPhoneChangeService;
 import gov.cdc.nbs.patient.profile.race.change.PatientRaceChangeService;
@@ -36,7 +34,6 @@ public class PatientCreateController {
   private final PatientAddressChangeService addressService;
   private final PatientPhoneChangeService phoneService;
   private final PatientRaceChangeService raceService;
-  private final PatientIdentificationChangeService identificationService;
 
   PatientCreateController(
       final Clock clock,
@@ -44,14 +41,13 @@ public class PatientCreateController {
       final PatientAddressChangeService addressService,
       final PatientPhoneChangeService phoneService,
       final PatientRaceChangeService raceService,
-      final PatientIdentificationChangeService identificationService,
-      final PatientIndexer indexer) {
+      final PatientIndexer indexer
+  ) {
     this.clock = clock;
     this.service = service;
     this.addressService = addressService;
     this.phoneService = phoneService;
     this.raceService = raceService;
-    this.identificationService = identificationService;
     this.indexer = indexer;
   }
 
@@ -112,17 +108,7 @@ public class PatientCreateController {
         raceService.add(context, newRaceInput);
       });
     }
-    if (newPatient.identifications() != null) {
-      newPatient.identifications().forEach(identification -> {
-        NewPatientIdentificationInput newPatientIdentificationInput = new NewPatientIdentificationInput(
-            created.id(),
-            identification.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(),
-            identification.type(),
-            identification.issuer(),
-            identification.id());
-        identificationService.add(context, newPatientIdentificationInput);
-      });
-    }
+
     this.indexer.index(created.id());
     return created;
   }

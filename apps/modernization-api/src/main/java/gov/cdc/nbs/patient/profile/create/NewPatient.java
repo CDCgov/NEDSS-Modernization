@@ -8,6 +8,7 @@ import gov.cdc.nbs.patient.profile.birth.BirthDemographic;
 import gov.cdc.nbs.patient.profile.ethnicity.EthnicityDemographic;
 import gov.cdc.nbs.patient.profile.gender.GenderDemographic;
 import gov.cdc.nbs.patient.profile.general.GeneralInformationDemographic;
+import gov.cdc.nbs.patient.profile.identification.IdentificationDemographic;
 import gov.cdc.nbs.patient.profile.mortality.MortalityDemographic;
 import gov.cdc.nbs.patient.profile.names.NameDemographic;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
@@ -27,7 +28,7 @@ public record NewPatient(
     List<AddressDemographic> addresses,
     List<Phone> phoneEmails,
     List<Race> races,
-    List<Identification> identifications
+    List<IdentificationDemographic> identifications
 ) {
 
   public record Phone(
@@ -49,14 +50,6 @@ public record NewPatient(
       List<String> detailed) {
   }
 
-
-  public record Identification(
-      @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
-      String type,
-      String issuer,
-      String id) {
-  }
-
   public NewPatient(
       Administrative administrative,
       BirthDemographic birth,
@@ -68,7 +61,7 @@ public record NewPatient(
       List<AddressDemographic> addresses,
       List<Phone> phoneEmails,
       List<Race> races,
-      List<Identification> identifications
+      List<IdentificationDemographic> identifications
   ) {
     this.administrative = administrative;
     this.birth = birth;
@@ -178,7 +171,7 @@ public record NewPatient(
     );
   }
 
-  public NewPatient withIdentification(final Identification value) {
+  public NewPatient withIdentification(final IdentificationDemographic value) {
     return new NewPatient(
         administrative(),
         birth(),

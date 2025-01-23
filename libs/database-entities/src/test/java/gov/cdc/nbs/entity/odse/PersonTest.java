@@ -1077,7 +1077,7 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddIdentification(
             117L,
-            Instant.parse("1999-09-09T11:59:13Z"),
+            LocalDate.parse("1999-09-09"),
             "identification-value",
             "authority-value",
             "identification-type",
@@ -1099,7 +1099,7 @@ class PersonTest {
                     .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
             )
             .returns("identification-type", EntityId::getTypeCd)
-            .returns(Instant.parse("1999-09-09T11:59:13Z"), EntityId::getAsOfDate)
+            .returns(LocalDate.parse("1999-09-09"), EntityId::getAsOfDate)
             .returns("authority-value", EntityId::getAssigningAuthorityCd)
             .returns("identification-value", EntityId::getRootExtensionTxt)
             .satisfies(
@@ -1118,7 +1118,7 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddIdentification(
             117L,
-            Instant.parse("1999-09-09T11:59:13Z"),
+            LocalDate.parse("1999-09-09"),
             "identification-value",
             "authority-value",
             "identification-type",
@@ -1131,7 +1131,7 @@ class PersonTest {
         new PatientCommand.UpdateIdentification(
             117L,
             1,
-            Instant.parse("2001-05-19T11:59:00Z"),
+            LocalDate.parse("2001-05-19"),
             "updated-identification-value",
             "updated-authority-value",
             "updated-identification-type",
@@ -1153,7 +1153,7 @@ class PersonTest {
                     .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30"))
             )
             .returns("updated-identification-type", EntityId::getTypeCd)
-            .returns(Instant.parse("2001-05-19T11:59:00Z"), EntityId::getAsOfDate)
+            .returns(LocalDate.parse("2001-05-19"), EntityId::getAsOfDate)
             .returns("updated-authority-value", EntityId::getAssigningAuthorityCd)
             .returns("updated-identification-value", EntityId::getRootExtensionTxt)
 
@@ -1167,7 +1167,7 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddIdentification(
             117L,
-            Instant.parse("1999-09-09T11:59:13Z"),
+            LocalDate.parse("1999-09-09"),
             "identification-value",
             "authority-value",
             "identification-type",
@@ -1179,7 +1179,7 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddIdentification(
             117L,
-            Instant.parse("2001-05-19T11:59:00Z"),
+            LocalDate.parse("2001-05-19"),
             "other-identification-value",
             "other-authority-value",
             "other-identification-type",
@@ -1198,14 +1198,17 @@ class PersonTest {
     );
 
     assertThat(patient)
-        .returns(171L, person -> person.audit().changed().changedBy())
-        .returns(LocalDateTime.parse("2020-03-13T13:15:30"), person -> person.audit().changed().changedOn());
+        .extracting(Person::audit)
+            .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30"));
 
     assertThat(patient.identifications()).satisfiesExactly(
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
-                    .returns("INACTIVE", EntityId::getRecordStatusCd)
+                    .satisfies(id -> assertThat(id)
+                        .extracting(EntityId::recordStatus)
+                        .satisfies(RecordStatusAssertions.inactive("2020-03-13T13:15:30"))
+                    )
                     .extracting(EntityId::getId)
                     .returns((short) 1, EntityIdId::getEntityIdSeq)
 
@@ -1213,7 +1216,10 @@ class PersonTest {
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
-                    .returns("ACTIVE", EntityId::getRecordStatusCd)
+                    .satisfies(id -> assertThat(id)
+                        .extracting(EntityId::recordStatus)
+                        .satisfies(RecordStatusAssertions.active("2023-03-03T10:15:30"))
+                    )
                     .extracting(EntityId::getId)
                     .returns((short) 2, EntityIdId::getEntityIdSeq)
             )

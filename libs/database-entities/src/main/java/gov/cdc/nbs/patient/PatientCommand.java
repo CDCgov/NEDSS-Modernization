@@ -395,7 +395,7 @@ public sealed interface PatientCommand {
 
   record AddIdentification(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       String identificationNumber,
       String assigningAuthority,
       String identificationType,
@@ -409,7 +409,7 @@ public sealed interface PatientCommand {
   record UpdateIdentification(
       long person,
       int id,
-      Instant asOf,
+      LocalDate asOf,
       String identificationNumber,
       String assigningAuthority,
       String identificationType,
