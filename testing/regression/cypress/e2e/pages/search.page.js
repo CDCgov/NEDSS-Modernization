@@ -14,18 +14,15 @@ class SearchPage {
 
   enterCity(city) {
     cy.get('input[id="location.city"]').type(city,{force: true});
-    // cy.get("#city").type(city,{force: true});
   }
 
   enterZipCode(zip) {
     cy.get("#zip").type(zip,{force: true});
     cy.get('input[id="location.city"]').click({force: true});
-    // cy.get("#city").click({force: true});
   }
 
   enterStreetAddress(address) {
     cy.get('input[name="location.street"]').type(address,{force: true});
-    // cy.get("#address").type(address,{force: true});
   }
 
   enterPhone(phone) {
@@ -80,8 +77,7 @@ class SearchPage {
   }
 
   search() {
-    cy.get('button').contains("Search").click();
-    // cy.get('div.bottom-search button[type="submit"]').click();
+    cy.get('button').contains("Search").click();    
     cy.wait(100);
     cy.get('button').contains("List").click();
   }
@@ -118,13 +114,14 @@ class SearchPage {
     cy.get("#dateOfBirth");
   }
 
-  enterDob(dateOfBirth) {
-    cy.get("#dateOfBirth").focus().clear();
-    cy.get("#bornOn-exact-date-month").type("1")
-    cy.get("#bornOn-exact-date-day").type("1")
-    cy.get("#bornOn-exact-date-year").type("1982")
-    const cleanedDateOfBirth = dateOfBirth.replace(/\//g, "");
-    // cy.get("#dateOfBirth").type(cleanedDateOfBirth);
+  enterDob(dateOfBirth) { 
+    const [month, day, year] = dateOfBirth.split('/');
+    cy.get("#bornOn-exact-date-month").focus().clear();
+    cy.get("#bornOn-exact-date-day").focus().clear();
+    cy.get("#bornOn-exact-date-year").focus().clear();
+    cy.get("#bornOn-exact-date-month").type(month);
+    cy.get("#bornOn-exact-date-day").type(day);
+    cy.get("#bornOn-exact-date-year").type(year);
   }
 
   clearAll() {
