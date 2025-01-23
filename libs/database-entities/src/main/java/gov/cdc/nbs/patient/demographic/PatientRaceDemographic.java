@@ -91,7 +91,7 @@ public class PatientRaceDemographic {
     races().stream()
         .filter(
             inCategory(category)
-                .and(race -> Objects.equals(race.getRecordStatusCd(), "ACTIVE")))
+                .and(race -> Objects.equals(race.recordStatus().status(), "ACTIVE")))
         .findFirst()
         .ifPresent(existing -> existingRaceCategoryError(existing.getRaceCategoryCd()));
   }

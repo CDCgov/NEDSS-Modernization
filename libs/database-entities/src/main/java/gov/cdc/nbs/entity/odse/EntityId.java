@@ -9,6 +9,7 @@ import lombok.Getter;
 
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -61,7 +62,7 @@ public class EntityId {
     private String recordStatusCd;
 
     @Column(name = "record_status_time")
-    private Instant recordStatusTime;
+    private LocalDateTime recordStatusTime;
 
     @Column(name = "root_extension_txt", length = 100)
     private String rootExtensionTxt;
@@ -70,7 +71,7 @@ public class EntityId {
     private Character statusCd;
 
     @Column(name = "status_time")
-    private Instant statusTime;
+    private LocalDateTime statusTime;
 
     @Column(name = "type_cd", length = 50)
     private String typeCd;

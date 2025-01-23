@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.stream.Stream;
 
@@ -32,7 +33,7 @@ class PatientChangeHashTest {
             Instant.parse("2023-06-01T03:21:00Z"),
             "comments",
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         )
     );
 
@@ -44,7 +45,7 @@ class PatientChangeHashTest {
             Instant.parse("2023-06-01T03:21:00Z"),
             "comments",
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         )
     );
 
@@ -61,7 +62,7 @@ class PatientChangeHashTest {
                 Instant.now(),
                 "comments",
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -70,7 +71,7 @@ class PatientChangeHashTest {
                 Instant.parse("2023-06-01T03:21:00Z"),
                 "changed comments",
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         )
     );
@@ -92,7 +93,7 @@ class PatientChangeHashTest {
             Instant.parse("2023-06-01T03:21:00Z"),
             "comments",
             131L,
-            Instant.now()
+            LocalDateTime.now()
         )
     );
 
@@ -125,7 +126,7 @@ class PatientChangeHashTest {
             "prim language",
             "speaks english",
             12L,
-            Instant.parse("2019-03-03T10:15:30.00Z"))
+            LocalDateTime.parse("2019-03-03T10:15:30"))
     );
 
     long before = PatientChangeHash.compute(patient);
@@ -143,7 +144,7 @@ class PatientChangeHashTest {
             "prim language",
             "speaks english",
             12L,
-            Instant.parse("2019-03-03T10:15:30.00Z"))
+            LocalDateTime.parse("2019-03-03T10:15:30"))
     );
 
     long after = PatientChangeHash.compute(patient);
@@ -166,7 +167,7 @@ class PatientChangeHashTest {
                 "prim language",
                 "speaks english",
                 12L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -182,7 +183,7 @@ class PatientChangeHashTest {
                 "prim language",
                 "speaks english",
                 12L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -198,7 +199,7 @@ class PatientChangeHashTest {
                 "prim language",
                 "speaks english",
                 12L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -214,7 +215,7 @@ class PatientChangeHashTest {
                 "prim language",
                 "speaks english",
                 12L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -230,7 +231,7 @@ class PatientChangeHashTest {
                 "prim language",
                 "speaks english",
                 12L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -246,7 +247,7 @@ class PatientChangeHashTest {
                 "prim language",
                 "speaks english",
                 12L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -262,7 +263,7 @@ class PatientChangeHashTest {
                 "prim language",
                 "speaks english",
                 12L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -278,7 +279,7 @@ class PatientChangeHashTest {
                 "changed prim language",
                 "speaks english",
                 12L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -294,7 +295,7 @@ class PatientChangeHashTest {
                 "prim language",
                 "changed speaks english",
                 12L,
-                Instant.now()
+                LocalDateTime.now()
             )
         )
     );
@@ -321,7 +322,7 @@ class PatientChangeHashTest {
             "prim language",
             "speaks english",
             12L,
-            Instant.now()
+            LocalDateTime.now()
         )
 
     );
@@ -355,7 +356,7 @@ class PatientChangeHashTest {
             null,
             null,
             131L,
-            Instant.now()
+            LocalDateTime.now()
         ),
         generator
     );
@@ -373,7 +374,7 @@ class PatientChangeHashTest {
             null,
             null,
             131L,
-            Instant.now()
+            LocalDateTime.now()
         ),
         generator
     );
@@ -396,7 +397,7 @@ class PatientChangeHashTest {
                 null,
                 null,
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -410,7 +411,7 @@ class PatientChangeHashTest {
                 null,
                 null,
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -424,7 +425,7 @@ class PatientChangeHashTest {
                 null,
                 null,
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         )
     );
@@ -451,7 +452,7 @@ class PatientChangeHashTest {
             null,
             null,
             131L,
-            Instant.now()
+            LocalDateTime.now()
         ),
         generator
     );
@@ -479,7 +480,7 @@ class PatientChangeHashTest {
             "ethnic-group-value",
             "unknown-reason-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -492,7 +493,7 @@ class PatientChangeHashTest {
             "ethnic-group-value",
             "unknown-reason-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -510,7 +511,7 @@ class PatientChangeHashTest {
                 "ethnic-group-value",
                 "unknown-reason-value",
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -520,7 +521,7 @@ class PatientChangeHashTest {
                 "ethnic-group-value",
                 "changed unknown-reason-value",
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         )
     );
@@ -541,7 +542,7 @@ class PatientChangeHashTest {
             "ethnic-group-value",
             "unknown-reason-value",
             131L,
-            Instant.now()
+            LocalDateTime.now()
         )
     );
 
@@ -570,7 +571,7 @@ class PatientChangeHashTest {
             "gender-preferred",
             "gender-additional",
             131L,
-            Instant.now()
+            LocalDateTime.now()
         )
     );
 
@@ -585,7 +586,7 @@ class PatientChangeHashTest {
             "gender-preferred",
             "gender-additional",
             131L,
-            Instant.now()
+            LocalDateTime.now()
         )
     );
 
@@ -605,7 +606,7 @@ class PatientChangeHashTest {
                 "gender-preferred",
                 "gender-additional",
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -617,7 +618,7 @@ class PatientChangeHashTest {
                 "gender-preferred",
                 "gender-additional",
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -629,7 +630,7 @@ class PatientChangeHashTest {
                 "gender-preferred",
                 "gender-additional",
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -641,7 +642,7 @@ class PatientChangeHashTest {
                 "changed gender-preferred",
                 "gender-additional",
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -653,7 +654,7 @@ class PatientChangeHashTest {
                 "gender-preferred",
                 "changed gender-additional",
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         )
     );
@@ -676,7 +677,7 @@ class PatientChangeHashTest {
             "gender-preferred",
             "gender-additional",
             131L,
-            Instant.now()
+            LocalDateTime.now()
         )
     );
 
@@ -711,7 +712,7 @@ class PatientChangeHashTest {
             null,
             null,
             131L,
-            Instant.now()
+            LocalDateTime.now()
         ),
         generator
     );
@@ -731,7 +732,7 @@ class PatientChangeHashTest {
             null,
             null,
             131L,
-            Instant.now()
+            LocalDateTime.now()
         ),
         generator
     );
@@ -756,7 +757,7 @@ class PatientChangeHashTest {
                 null,
                 null,
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -772,7 +773,7 @@ class PatientChangeHashTest {
                 null,
                 null,
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -788,7 +789,7 @@ class PatientChangeHashTest {
                 null,
                 null,
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -804,7 +805,7 @@ class PatientChangeHashTest {
                 null,
                 null,
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         ),
         arguments(
@@ -820,7 +821,7 @@ class PatientChangeHashTest {
                 null,
                 null,
                 131L,
-                Instant.now()
+                LocalDateTime.now()
             )
         )
     );
@@ -849,7 +850,7 @@ class PatientChangeHashTest {
             null,
             null,
             131L,
-            Instant.now()
+            LocalDateTime.now()
         ),
         generator
     );

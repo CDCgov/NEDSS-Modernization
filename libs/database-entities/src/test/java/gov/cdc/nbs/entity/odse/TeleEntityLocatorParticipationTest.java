@@ -4,6 +4,7 @@ import gov.cdc.nbs.patient.PatientCommand;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,7 +31,7 @@ class TeleEntityLocatorParticipationTest {
                 "url",
                 "comment",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")
+                LocalDateTime.parse("2020-03-03T10:15:30")
             )
         );
 
@@ -39,16 +40,20 @@ class TeleEntityLocatorParticipationTest {
                 117L,
                 5347L,
                 293L,
-                Instant.parse("2023-03-03T10:15:30.00Z")
+                LocalDateTime.parse("2023-03-10T10:15:30")
             )
         );
 
+        assertThat(participation.audit())
+            .describedAs("expected audit state")
+            .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+            .satisfies(AuditAssertions.changed(293L, "2023-03-10T10:15:30"));
+
         assertThat(participation)
             .returns(5347L, p -> p.getId().getLocatorUid())
-            .returns("INACTIVE", EntityLocatorParticipation::getRecordStatusCd)
-            .returns(Instant.parse("2023-03-03T10:15:30.00Z"), EntityLocatorParticipation::getRecordStatusTime)
-            .returns(293L, EntityLocatorParticipation::getLastChgUserId)
-            .returns(Instant.parse("2023-03-03T10:15:30.00Z"), EntityLocatorParticipation::getLastChgTime)
+            .extracting(EntityLocatorParticipation::recordStatus)
+            .satisfies(RecordStatusAssertions.inactive("2023-03-10T10:15:30"))
+
         ;
     }
 }

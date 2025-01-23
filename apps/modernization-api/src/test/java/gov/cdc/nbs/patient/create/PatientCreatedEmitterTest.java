@@ -12,6 +12,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -41,7 +42,7 @@ class PatientCreatedEmitterTest {
             "comments",
             "HIV-Case",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -68,7 +69,7 @@ class PatientCreatedEmitterTest {
         .returns("comments", PatientEvent.Created::comments)
         .returns("HIV-Case", PatientEvent.Created::stateHIVCase)
         .returns(131L, PatientEvent.Created::createdBy)
-        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PatientEvent.Created::createdOn)
+        .returns(LocalDateTime.parse("2020-03-03T10:15:30"), PatientEvent.Created::createdOn)
     ;
 
     assertThat(actual.names()).isEmpty();
@@ -91,7 +92,7 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -106,7 +107,7 @@ class PatientCreatedEmitterTest {
             "JR",
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -141,7 +142,7 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -151,7 +152,7 @@ class PatientCreatedEmitterTest {
             Instant.parse("2022-05-12T11:15:17Z"),
             "race-category-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -179,7 +180,7 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -197,7 +198,7 @@ class PatientCreatedEmitterTest {
             "country-code",
             "Census Tract",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -237,7 +238,7 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -251,7 +252,7 @@ class PatientCreatedEmitterTest {
             "Phone Number",
             "Extension",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -287,7 +288,7 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -298,7 +299,7 @@ class PatientCreatedEmitterTest {
             Instant.parse("2017-05-16T11:13:19Z"),
             "AnEmail@email.com",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -333,7 +334,7 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -345,7 +346,7 @@ class PatientCreatedEmitterTest {
             "authority-value",
             "identification-type",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 

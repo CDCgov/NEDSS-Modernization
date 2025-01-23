@@ -148,6 +148,9 @@ processResources {
 }
 
 bootRun {
+
+    jvmArgs(['-Duser.timezone=America/Denver'])
+
     systemProperty('spring.profiles.active', 'default,development,local')
 }
 

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +47,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "AD",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -62,7 +63,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "MO",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             )
         ),
@@ -93,7 +94,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -109,7 +110,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -125,7 +126,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -141,7 +142,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             )
         ),
@@ -175,7 +176,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -191,7 +192,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -207,7 +208,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -223,7 +224,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             )
         ),
@@ -257,7 +258,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -273,7 +274,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -289,7 +290,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -305,7 +306,7 @@ class PatientLegalNameResolverTest {
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             )
         ),

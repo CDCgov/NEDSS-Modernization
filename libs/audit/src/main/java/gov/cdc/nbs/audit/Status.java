@@ -2,7 +2,8 @@ package gov.cdc.nbs.audit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import java.time.Instant;
+
+import java.time.LocalDateTime;
 
 @Embeddable
 public class Status {
@@ -11,16 +12,16 @@ public class Status {
   private Character statusCd;
 
   @Column(name = "status_time", nullable = false)
-  private Instant statusTime;
+  private LocalDateTime statusTime;
 
-  protected Status() {
+  public Status() {
   }
 
-  public Status(final Instant applied) {
+  public Status(final LocalDateTime applied) {
     this('A', applied);
   }
 
-  public Status(final Character statusCd, final Instant statusTime) {
+  public Status(final Character statusCd, final LocalDateTime statusTime) {
     this.statusCd = statusCd;
     this.statusTime = statusTime;
   }
@@ -29,7 +30,7 @@ public class Status {
     return statusCd;
   }
 
-  public Instant appliedOn() {
+  public LocalDateTime appliedOn() {
     return statusTime;
   }
 

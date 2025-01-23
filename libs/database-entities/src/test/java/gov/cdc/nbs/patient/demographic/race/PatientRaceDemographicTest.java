@@ -9,6 +9,7 @@ import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +32,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -48,8 +49,8 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -57,12 +58,12 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.added())
                             .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Added::addedOn)
                     )
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -84,7 +85,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of("race-one", "race-two"),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -101,8 +102,8 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -110,12 +111,12 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.added())
                             .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Added::addedOn)
                     )
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             ),
         actual -> assertThat(actual)
@@ -130,8 +131,8 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -139,12 +140,12 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.added())
                             .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Added::addedOn)
                     )
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             ),
         actual -> assertThat(actual)
@@ -159,8 +160,8 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -168,12 +169,12 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.added())
                             .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Added::addedOn)
                     )
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -193,7 +194,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -204,7 +205,7 @@ class PatientRaceDemographicTest {
             "another-race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -213,7 +214,7 @@ class PatientRaceDemographicTest {
             117L,
             "race-category-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -224,7 +225,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2023-04-12T00:00:00.00Z")
+            LocalDateTime.parse("2023-04-12T00:00:00")
         )
     );
 
@@ -250,7 +251,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -260,7 +261,7 @@ class PatientRaceDemographicTest {
         "race-category-value",
         List.of(),
         131L,
-        Instant.parse("2020-03-03T10:15:30.00Z")
+        LocalDateTime.parse("2020-03-03T10:15:30")
     );
     assertThatThrownBy(() -> raceDemographic.add(duplicate))
         .hasMessageContaining("race demographic for race-category-value already exists")
@@ -283,7 +284,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -294,7 +295,7 @@ class PatientRaceDemographicTest {
             "another-race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -306,7 +307,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -327,8 +328,8 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -336,7 +337,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -356,7 +357,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of("race-one", "race-two"),
             171L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -367,7 +368,7 @@ class PatientRaceDemographicTest {
             "another-race-category-value",
             List.of(),
             191L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -379,7 +380,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of("race-one", "race-two"),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -403,7 +404,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             ),
         updated -> assertThat(updated)
@@ -421,7 +422,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             ),
         updated -> assertThat(updated)
@@ -439,7 +440,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -458,7 +459,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of(),
             171L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -470,7 +471,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of("race-one"),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -489,7 +490,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             ),
         added -> assertThat(added)
@@ -504,8 +505,8 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -513,12 +514,12 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.added())
                             .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Added::addedOn)
                     )
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -537,7 +538,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of("race-one"),
             171L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -549,7 +550,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -568,7 +569,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -588,7 +589,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -599,7 +600,7 @@ class PatientRaceDemographicTest {
             "another-race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -608,7 +609,7 @@ class PatientRaceDemographicTest {
             117L,
             "race-category-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -632,7 +633,7 @@ class PatientRaceDemographicTest {
             "race-category-value",
             List.of("race-category-one", "race-category-two"),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -643,7 +644,7 @@ class PatientRaceDemographicTest {
             "another-race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -652,7 +653,7 @@ class PatientRaceDemographicTest {
             117L,
             "race-category-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 

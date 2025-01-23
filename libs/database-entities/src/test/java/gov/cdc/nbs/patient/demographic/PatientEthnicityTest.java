@@ -7,6 +7,7 @@ import gov.cdc.nbs.patient.PatientCommand;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,13 +25,13 @@ class PatientEthnicityTest {
             "ethnic-group-value",
             "unknown-reason-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     assertThat(patient)
-        .returns(131L, Person::getLastChgUserId)
-        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime)
+        .returns(131L, p -> p.audit().changed().changedBy())
+        .returns(LocalDateTime.parse("2020-03-03T10:15:30"), p -> p.audit().changed().changedOn())
         .extracting(Person::getEthnicity)
         .returns(Instant.parse("2012-03-03T10:15:30.00Z"), PatientEthnicity::asOf)
         .returns("ethnic-group-value", PatientEthnicity::ethnicGroup)
@@ -48,7 +49,7 @@ class PatientEthnicityTest {
                 "ethnic-group-value",
                 null,
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")
+                LocalDateTime.parse("2020-03-03T10:15:30")
             )
         );
 
@@ -57,14 +58,14 @@ class PatientEthnicityTest {
             121L,
             "ethnicity-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     assertThat(patient.getEthnicity().ethnicities())
         .satisfiesExactlyInAnyOrder(
             detail -> assertThat(detail)
-                .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
+                .returns("ACTIVE", e -> e.recordStatus().status())
                 .extracting(PersonEthnicGroup::getId)
                 .returns(121L, PersonEthnicGroupId::getPersonUid)
                 .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
@@ -82,7 +83,7 @@ class PatientEthnicityTest {
             121L,
             "ethnicity-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -102,7 +103,7 @@ class PatientEthnicityTest {
                 "ethnic-group-value",
                 null,
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")
+                LocalDateTime.parse("2020-03-03T10:15:30")
             )
         )
         .add(
@@ -110,7 +111,7 @@ class PatientEthnicityTest {
                 121L,
                 "ethnicity-value",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")
+                LocalDateTime.parse("2020-03-03T10:15:30")
             )
         );
 
@@ -119,19 +120,19 @@ class PatientEthnicityTest {
             121L,
             "next-ethnicity-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     assertThat(patient.getEthnicity().ethnicities())
         .satisfiesExactlyInAnyOrder(
             actual -> assertThat(actual)
-                .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
+                .returns("ACTIVE", group -> group.recordStatus().status())
                 .extracting(PersonEthnicGroup::getId)
                 .returns(121L, PersonEthnicGroupId::getPersonUid)
                 .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd),
             actual -> assertThat(actual)
-                .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
+                .returns("ACTIVE", group -> group.recordStatus().status())
                 .extracting(PersonEthnicGroup::getId)
                 .returns(121L, PersonEthnicGroupId::getPersonUid)
                 .returns("next-ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
@@ -150,21 +151,21 @@ class PatientEthnicityTest {
                 "ethnic-group-value",
                 null,
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")
+                LocalDateTime.parse("2020-03-03T10:15:30")
             )
         ).add(
             new PatientCommand.AddDetailedEthnicity(
                 121L,
                 "ethnicity-value",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")
+                LocalDateTime.parse("2020-03-03T10:15:30")
             )
         ).add(
             new PatientCommand.AddDetailedEthnicity(
                 121L,
                 "next-ethnicity-value",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")
+                LocalDateTime.parse("2020-03-03T10:15:30")
             )
         );
 
@@ -173,14 +174,14 @@ class PatientEthnicityTest {
             121L,
             "next-ethnicity-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     assertThat(patient.getEthnicity().ethnicities())
         .satisfiesExactly(
             actual -> assertThat(actual)
-                .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
+                .returns("ACTIVE", group -> group.recordStatus().status())
                 .extracting(PersonEthnicGroup::getId)
                 .returns(121L, PersonEthnicGroupId::getPersonUid)
                 .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)

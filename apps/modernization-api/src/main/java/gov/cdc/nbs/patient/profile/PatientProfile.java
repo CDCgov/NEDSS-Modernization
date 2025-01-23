@@ -1,11 +1,13 @@
 package gov.cdc.nbs.patient.profile;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
-
 public record PatientProfile(long id, String local, short version, String status) {
 
-    public PatientProfile(long id, String local, short version) {
-        this(id, local, version, RecordStatus.ACTIVE.display());
-    }
+  public static String STATUS_ACTIVE = "ACTIVE";
+  public static String STATUS_INACTIVE = "INACTIVE";
+  public static String STATUS_SUPERSEDED = "SUPERSEDED";
+
+  public PatientProfile(long id, String local, short version) {
+    this(id, local, version, STATUS_ACTIVE);
+  }
 
 }

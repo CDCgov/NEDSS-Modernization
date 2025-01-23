@@ -91,7 +91,7 @@ public class PatientProfileRaceSteps {
   public void the_profile_has_no_associated_races() {
     long patient = this.activePatient.active().id();
 
-    PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.display());
+    PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
 
     GraphQLPage page = new GraphQLPage(1);
 

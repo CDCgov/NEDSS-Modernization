@@ -34,6 +34,7 @@ public class PatientSteps {
     mother.create();
   }
 
+  @Given("the patient has been deleted")
   @Given("the patient is inactive")
   public void the_patient_is_inactive() {
     mother.deleted(patient.active());

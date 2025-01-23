@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Clock;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 @RestController
@@ -63,7 +63,7 @@ public class PatientCreateController {
   @ResponseStatus(HttpStatus.CREATED)
   public CreatedPatient create(@RequestBody final NewPatient newPatient) {
     var user = SecurityUtil.getUserDetails();
-    RequestContext context = new RequestContext(user.getId(), Instant.now(this.clock));
+    RequestContext context = new RequestContext(user.getId(), LocalDateTime.now(this.clock));
 
     CreatedPatient created = service.create(context, newPatient);
 

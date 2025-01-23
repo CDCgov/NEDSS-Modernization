@@ -1,7 +1,9 @@
 package gov.cdc.nbs.entity.odse;
 
+import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.audit.RecordStatus;
+import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
@@ -167,42 +169,23 @@ public class Person {
   }, orphanRemoval = true)
   private List<PersonName> names;
 
-  @Column(name = "add_reason_cd", length = 20)
-  private String addReasonCd;
+  @Embedded
+  private Audit audit;
 
-  @Column(name = "add_time")
-  private Instant addTime;
+  @Embedded
+  private RecordStatus recordStatus;
 
-  @Column(name = "add_user_id")
-  private Long addUserId;
-
-  @Column(name = "last_chg_reason_cd", length = 20)
-  private String lastChgReasonCd;
-
-  @Column(name = "last_chg_time")
-  private Instant lastChgTime;
-
-  @Column(name = "last_chg_user_id")
-  private Long lastChgUserId;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "record_status_cd", length = 20)
-  private RecordStatus recordStatusCd;
-
-  @Column(name = "record_status_time")
-  private Instant recordStatusTime;
-
-  @Column(name = "status_cd")
-  private Character statusCd;
-
-  @Column(name = "status_time")
-  private Instant statusTime;
+  @Embedded
+  private Status status;
 
   @Embedded
   private PatientRaceDemographic race;
 
   protected Person() {
     this.versionCtrlNbr = 1;
+    this.audit = new Audit();
+    this.recordStatus = new RecordStatus();
+    this.status = new Status();
     this.race = new PatientRaceDemographic(this);
     this.generalInformation = new GeneralInformation();
     this.ethnicity = new PatientEthnicity();
@@ -219,27 +202,18 @@ public class Person {
     this.cd = "PAT";
     this.electronicInd = 'N';
     this.edxInd = "Y";
-    this.statusCd = 'A';
-    this.recordStatusCd = RecordStatus.ACTIVE;
 
   }
 
   public Person(final PatientCommand.CreatePatient patient) {
     this(patient.person(), patient.localId());
 
-    this.statusTime = patient.requestedOn();
-
-    this.recordStatusTime = patient.requestedOn();
-
-    this.addTime = patient.requestedOn();
-    this.addUserId = patient.requester();
-
-    this.lastChgTime = patient.requestedOn();
-    this.lastChgUserId = patient.requester();
+    this.status = new Status(patient.requestedOn());
+    this.recordStatus = new RecordStatus(patient.requestedOn());
+    this.audit = new Audit(patient.requester(), patient.requestedOn());
   }
 
   public Person(final PatientCommand.AddPatient patient) {
-
     this(patient.person(), patient.localId());
 
     this.nbsEntity = new NBSEntity(patient);
@@ -262,15 +236,9 @@ public class Person {
 
     this.ethnicity = new PatientEthnicity(patient);
 
-    this.statusTime = patient.requestedOn();
-
-    this.recordStatusTime = patient.requestedOn();
-
-    this.addTime = patient.requestedOn();
-    this.addUserId = patient.requester();
-
-    this.lastChgTime = patient.requestedOn();
-    this.lastChgUserId = patient.requester();
+    this.status = new Status(patient.requestedOn());
+    this.recordStatus = new gov.cdc.nbs.audit.RecordStatus(patient.requestedOn());
+    this.audit = new Audit(patient.requester(), patient.requestedOn());
 
   }
 
@@ -283,7 +251,7 @@ public class Person {
     this.birthTimeCalc = this.birthTime;
   }
 
-  public PersonName add(final SoundexResolver resolver, final PatientCommand.AddName added ) {
+  public PersonName add(final SoundexResolver resolver, final PatientCommand.AddName added) {
 
     Collection<PersonName> existing = ensureNames();
 
@@ -528,8 +496,7 @@ public class Person {
       throw new PatientHasAssociatedEventsException(this.id);
     }
 
-    this.recordStatusCd = RecordStatus.LOG_DEL;
-    this.recordStatusTime = delete.requestedOn();
+    this.recordStatus.change("LOG_DEL", delete.requestedOn());
 
     changed(delete);
   }
@@ -558,8 +525,7 @@ public class Person {
   private void changed(final PatientCommand command) {
     this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
 
-    this.lastChgUserId = command.requester();
-    this.lastChgTime = command.requestedOn();
+    this.audit.changed(command.requester(), command.requestedOn());
   }
 
   public GeneralInformation getGeneralInformation() {
@@ -578,6 +544,18 @@ public class Person {
       return false;
     Person person = (Person) o;
     return Objects.equals(id, person.id);
+  }
+
+  public Audit audit() {
+    return audit;
+  }
+
+  public RecordStatus recordStatus() {
+    return recordStatus;
+  }
+
+  public Status status() {
+    return status;
   }
 
   @Override

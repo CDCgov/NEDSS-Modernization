@@ -57,8 +57,8 @@ class PatientCreatedEmitter {
             resolvePhones(patient.phoneNumbers()),
             resolveEmails(patient.emailAddresses()),
             resolveIdentifications(patient.identifications()),
-            patient.getAddUserId(),
-            patient.getAddTime()
+            patient.audit().added().addedBy(),
+            patient.audit().added().addedOn()
         );
     }
 

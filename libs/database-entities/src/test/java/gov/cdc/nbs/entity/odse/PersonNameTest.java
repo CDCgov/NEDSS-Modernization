@@ -6,6 +6,7 @@ import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -33,7 +34,7 @@ class PersonNameTest {
             null,
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -42,7 +43,7 @@ class PersonNameTest {
             117L,
             (short) 2,
             171L,
-            Instant.parse("2021-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -53,14 +54,14 @@ class PersonNameTest {
                 .satisfies(
                     audit -> assertThat(audit.changed())
                         .returns(171L, Changed::changedBy)
-                        .returns(Instant.parse("2021-03-03T10:15:30.00Z"), Changed::changedOn)
+                        .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                 )
         )
         .satisfies(
             removed -> assertThat(removed)
                 .describedAs("expected name is inactive")
-                .returns("INACTIVE", PersonName::getRecordStatusCd)
-                .returns(Instant.parse("2021-03-03T10:15:30.00Z"), PersonName::getRecordStatusTime)
+                .returns("INACTIVE", s -> s.recordStatus().status())
+                .returns(LocalDateTime.parse("2020-03-03T10:15:30"), s -> s.recordStatus().appliedOn())
         )
         .extracting(PersonName::getId)
         .returns(117L, PersonNameId::getPersonUid)
@@ -88,7 +89,7 @@ class PersonNameTest {
             null,
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -117,7 +118,7 @@ class PersonNameTest {
             null,
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -150,7 +151,7 @@ class PersonNameTest {
             null,
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -179,7 +180,7 @@ class PersonNameTest {
             null,
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     ).update(
         resolver,
@@ -197,7 +198,7 @@ class PersonNameTest {
             null,
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -226,7 +227,7 @@ class PersonNameTest {
             null,
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     ).update(
         resolver,
@@ -244,7 +245,7 @@ class PersonNameTest {
             null,
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -273,7 +274,7 @@ class PersonNameTest {
             null,
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     ).update(
         resolver,
@@ -291,7 +292,7 @@ class PersonNameTest {
             null,
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 

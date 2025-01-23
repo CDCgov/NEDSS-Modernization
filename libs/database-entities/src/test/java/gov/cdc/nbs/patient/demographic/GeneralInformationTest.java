@@ -8,6 +8,7 @@ import gov.cdc.nbs.patient.PatientCommand;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,12 +35,12 @@ class GeneralInformationTest {
             "prim language",
             "speaks english",
             12L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         )
     );
 
     assertThat(actual)
-        .returns(Instant.parse("2010-03-03T10:15:30.00Z"), GeneralInformation::asOf)
+        .returns(Instant.parse("2010-03-03T10:15:30Z"), GeneralInformation::asOf)
         .returns("marital status", GeneralInformation::maritalStatus)
         .returns("mothers maiden name", GeneralInformation::mothersMaidenName)
         .returns(1, GeneralInformation::adultsInHouse)
@@ -67,7 +68,7 @@ class GeneralInformationTest {
             263L,
             "case-number",
             12L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         )
     );
 
@@ -91,7 +92,7 @@ class GeneralInformationTest {
             263L,
             "case-number",
             12L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         )
     );
 

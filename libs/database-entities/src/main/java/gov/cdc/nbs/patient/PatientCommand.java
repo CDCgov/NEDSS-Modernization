@@ -5,6 +5,7 @@ import gov.cdc.nbs.message.enums.Gender;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public sealed interface PatientCommand {
@@ -13,13 +14,13 @@ public sealed interface PatientCommand {
 
   long requester();
 
-  Instant requestedOn();
+  LocalDateTime requestedOn();
 
   record CreatePatient(
       long person,
       String localId,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {}
 
   record AddPatient(
@@ -36,7 +37,7 @@ public sealed interface PatientCommand {
       String comments,
       String stateHIVCase,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -47,7 +48,7 @@ public sealed interface PatientCommand {
       String category,
       List<String> detailed,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
 
     public AddRace(
@@ -55,7 +56,7 @@ public sealed interface PatientCommand {
         Instant asOf,
         String category,
         long requester,
-        Instant requestedOn
+        LocalDateTime requestedOn
     ) {
       this(person, asOf, category, List.of(), requester, requestedOn);
     }
@@ -68,7 +69,7 @@ public sealed interface PatientCommand {
       Instant asOf,
       String category,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
 
   }
@@ -80,7 +81,7 @@ public sealed interface PatientCommand {
       String category,
       String race,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
 
   }
@@ -92,7 +93,7 @@ public sealed interface PatientCommand {
       String category,
       List<String> detailed,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -101,7 +102,7 @@ public sealed interface PatientCommand {
       long person,
       String category,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -122,7 +123,7 @@ public sealed interface PatientCommand {
       String censusTract,
       String comments,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
 
     public AddAddress(
@@ -138,7 +139,7 @@ public sealed interface PatientCommand {
         String country,
         String censusTract,
         long requester,
-        Instant requestedOn
+        LocalDateTime requestedOn
     ) {
       this(
           person,
@@ -179,7 +180,7 @@ public sealed interface PatientCommand {
       String censusTract,
       String comments,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -188,7 +189,7 @@ public sealed interface PatientCommand {
       long person,
       long id,
       long requester,
-      Instant requestedOn) implements PatientCommand {
+      LocalDateTime requestedOn) implements PatientCommand {
   }
 
 
@@ -201,7 +202,7 @@ public sealed interface PatientCommand {
       String number,
       String extension,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -212,7 +213,7 @@ public sealed interface PatientCommand {
       Instant asOf,
       String email,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -222,7 +223,7 @@ public sealed interface PatientCommand {
       long id,
       String email,
       long requester,
-      Instant requestedOn) implements PatientCommand {
+      LocalDateTime requestedOn) implements PatientCommand {
   }
 
 
@@ -230,7 +231,7 @@ public sealed interface PatientCommand {
       long person,
       long id,
       long requester,
-      Instant requestedOn) implements PatientCommand {
+      LocalDateTime requestedOn) implements PatientCommand {
   }
 
 
@@ -247,7 +248,7 @@ public sealed interface PatientCommand {
       String url,
       String comment,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
 
   }
@@ -266,7 +267,7 @@ public sealed interface PatientCommand {
       String url,
       String comment,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
 
   }
@@ -276,7 +277,7 @@ public sealed interface PatientCommand {
       long person,
       long id,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
 
   }
@@ -292,7 +293,7 @@ public sealed interface PatientCommand {
       String county,
       String country,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -304,7 +305,7 @@ public sealed interface PatientCommand {
       String unknownReason,
 
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -313,7 +314,7 @@ public sealed interface PatientCommand {
       long person,
       String ethnicity,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -322,7 +323,7 @@ public sealed interface PatientCommand {
       long person,
       String ethnicity,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -332,7 +333,7 @@ public sealed interface PatientCommand {
       Instant asOf,
       String comment,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -349,7 +350,7 @@ public sealed interface PatientCommand {
       String primaryLanguageCode,
       String speaksEnglishCode,
       long requester,
-      Instant requestedOn) implements PatientCommand {
+      LocalDateTime requestedOn) implements PatientCommand {
   }
 
 
@@ -365,7 +366,7 @@ public sealed interface PatientCommand {
       String county,
       String country,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -378,7 +379,7 @@ public sealed interface PatientCommand {
       String preferred,
       String additional,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -386,7 +387,7 @@ public sealed interface PatientCommand {
   record Delete(
       long person,
       long requester,
-      Instant requestedOn) implements PatientCommand {
+      LocalDateTime requestedOn) implements PatientCommand {
   }
 
 
@@ -397,7 +398,7 @@ public sealed interface PatientCommand {
       String assigningAuthority,
       String identificationType,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
 
   }
@@ -411,7 +412,7 @@ public sealed interface PatientCommand {
       String assigningAuthority,
       String identificationType,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -420,7 +421,7 @@ public sealed interface PatientCommand {
       long person,
       int id,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -438,7 +439,7 @@ public sealed interface PatientCommand {
       String degree,
       String type,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
 
     public AddName(
@@ -450,7 +451,7 @@ public sealed interface PatientCommand {
         String suffix,
         String type,
         long requester,
-        Instant requestedOn
+        LocalDateTime requestedOn
     ) {
       this(
           person,
@@ -486,7 +487,7 @@ public sealed interface PatientCommand {
       String degree,
       String type,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -495,7 +496,7 @@ public sealed interface PatientCommand {
       long person,
       int sequence,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 
@@ -503,7 +504,7 @@ public sealed interface PatientCommand {
       long person,
       String stateHIVCase,
       long requester,
-      Instant requestedOn
+      LocalDateTime requestedOn
   ) implements PatientCommand {
   }
 }

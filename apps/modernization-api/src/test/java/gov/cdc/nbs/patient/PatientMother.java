@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.message.enums.Deceased;
@@ -23,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -97,7 +97,14 @@ public class PatientMother {
     long identifier = idGenerator.next();
     String local = localIdentifierGenerator.generate();
 
-    Person patient = new Person(identifier, local);
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            identifier,
+            local,
+            settings.createdBy(),
+            settings.createdOn()
+        )
+    );
 
     this.entityManager.persist(patient);
 
@@ -128,9 +135,9 @@ public class PatientMother {
   }
 
   public void superseded(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.setRecordStatusCd(RecordStatus.SUPERCEDED);
+    managed(identifier)
+        .recordStatus()
+        .change("SUPERCEDED", LocalDateTime.now());
   }
 
   public void withAddress(

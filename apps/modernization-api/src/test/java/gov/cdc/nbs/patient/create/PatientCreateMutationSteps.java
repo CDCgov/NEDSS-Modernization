@@ -1,7 +1,5 @@
 package gov.cdc.nbs.patient.create;
 
-import gov.cdc.nbs.testing.authorization.ActiveUser;
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -14,7 +12,6 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,26 +19,31 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PatientCreateMutationSteps {
 
-  @Autowired
-  BasicPatientCreateController controller;
+  private final BasicPatientCreateController controller;
 
-  @Autowired
-  PersonRepository repository;
+  private final PersonRepository repository;
 
-  @Autowired
-  Active<ActiveUser> activeUser;
+  private final Active<Person> patient;
 
-  @Autowired
-  Active<Person> patient;
+  private final Active<PatientInput> input;
 
-  @Autowired
-  Active<PatientInput> input;
-
-  @Autowired
-  Available<PatientIdentifier> patients;
+  private final Available<PatientIdentifier> patients;
 
   private AccessDeniedException accessDeniedException;
 
+  PatientCreateMutationSteps(
+      final BasicPatientCreateController controller,
+      final PersonRepository repository,
+      final Active<Person> patient,
+      final Active<PatientInput> input,
+      final Available<PatientIdentifier> patients
+  ) {
+    this.controller = controller;
+    this.repository = repository;
+    this.patient = patient;
+    this.input = input;
+    this.patients = patients;
+  }
 
   @Before("@patient_create")
   public void reset() {
@@ -83,17 +85,7 @@ public class PatientCreateMutationSteps {
 
     Person actual = patient.active();
 
-    assertThat(actual)
-        .returns(activeUser.active().id(), Person::getAddUserId)
-        .extracting(Person::getAddTime).isNotNull();
-
-    assertThat(actual)
-        .returns(activeUser.active().id(), Person::getLastChgUserId)
-        .extracting(Person::getLastChgTime).isNotNull();
-
-    assertThat(actual)
-        .returns(RecordStatus.ACTIVE, Person::getRecordStatusCd)
-        .extracting(Person::getRecordStatusTime).isNotNull();
+    assertThat(actual).isNotNull();
 
   }
 

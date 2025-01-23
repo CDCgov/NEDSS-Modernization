@@ -1,6 +1,5 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientPostalLocatorHistoryListener;
 import jakarta.persistence.CascadeType;
@@ -86,7 +85,7 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     }
 
     public void delete(final PatientCommand.DeleteAddress deleted) {
-        changeStatus(RecordStatus.INACTIVE, deleted.requestedOn());
+        this.recordStatus().inactivate(deleted.requestedOn());
         changed(deleted);
     }
 

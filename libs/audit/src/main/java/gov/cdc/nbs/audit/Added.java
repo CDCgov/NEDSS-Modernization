@@ -2,44 +2,45 @@ package gov.cdc.nbs.audit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import java.time.Instant;
+
+import java.time.LocalDateTime;
 
 @Embeddable
 public class Added {
 
-    @Column(name = "add_reason_cd", length = 20)
-    private String addReasonCd;
+  @Column(name = "add_reason_cd", length = 20)
+  private String addReasonCd;
 
-    @Column(name = "add_time")
-    private Instant addTime;
+  @Column(name = "add_time")
+  private LocalDateTime addTime;
 
-    @Column(name = "add_user_id")
-    private Long addUserId;
+  @Column(name = "add_user_id")
+  private Long addUserId;
 
-    protected Added() {
-    }
+  protected Added() {
+  }
 
-    public Added(final long who, final Instant when) {
-        this(who, when, "Add");
-    }
+  public Added(final long who, final LocalDateTime when) {
+    this(who, when, "Add");
+  }
 
-    public Added(final long who, final Instant when, final String why) {
-        this.addReasonCd = why;
-        this.addTime = when;
-        this.addUserId = who;
-    }
+  public Added(final long who, final LocalDateTime when, final String why) {
+    this.addReasonCd = why;
+    this.addTime = when;
+    this.addUserId = who;
+  }
 
-    public String reason() {
-        return addReasonCd;
-    }
+  public String reason() {
+    return addReasonCd;
+  }
 
-    public Instant addedOn() {
-        return addTime;
-    }
+  public LocalDateTime addedOn() {
+    return addTime;
+  }
 
-    public Long addedBy() {
-        return addUserId;
-    }
+  public Long addedBy() {
+    return addUserId;
+  }
 
 
 }
