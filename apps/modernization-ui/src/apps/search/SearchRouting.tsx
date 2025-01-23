@@ -4,6 +4,7 @@ import { PatientSearch } from './patient/PatientSearch';
 import { LaboratoryReportSearch } from './laboratory-report';
 import { InvestigationSearch } from './investigation';
 import { SimpleSearch } from './simple';
+import { FilterProvider } from 'design-system/filter/useFilter';
 
 const routing = [
     {
@@ -13,7 +14,11 @@ const routing = [
             { index: true, element: <Navigate to="patients" /> },
             {
                 path: 'patients',
-                element: <PatientSearch />
+                element: (
+                    <FilterProvider>
+                        <PatientSearch />
+                    </FilterProvider>
+                )
             },
             {
                 path: 'lab-reports',

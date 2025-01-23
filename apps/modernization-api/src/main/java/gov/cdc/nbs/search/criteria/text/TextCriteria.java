@@ -12,8 +12,7 @@ public record TextCriteria(
     String not,
     String startsWith,
     String contains,
-    String soundsLike
-) {
+    String soundsLike) {
 
   public static TextCriteria equals(final String value) {
     return new TextCriteria(value, null, null, null, null);
@@ -55,7 +54,7 @@ public record TextCriteria(
     return maybeText(soundsLike);
   }
 
-  private static Optional<String> maybeText(String value) {
+  public static Optional<String> maybeText(String value) {
     return Optional.ofNullable(value)
         .filter(Predicate.not(String::isEmpty))
         .map(AdjustStrings::withoutHyphens);

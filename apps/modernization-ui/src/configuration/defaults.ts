@@ -39,8 +39,16 @@ const defaultFeatures: Features = {
             }
         }
     },
+    deduplication: {
+        enabled: false
+    },
     search,
     patient: {
+        search: {
+            filters: {
+                enabled: false
+            }
+        },
         profile: {
             enabled: false
         },

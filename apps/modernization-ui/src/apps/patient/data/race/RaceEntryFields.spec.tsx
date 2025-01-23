@@ -7,8 +7,8 @@ import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
 
 const mockDetailResolver = jest.fn();
 
-jest.mock('coded/race', () => ({
-    useDetailedRaceCodedValues: (category: string) => mockDetailResolver(category)
+jest.mock('options/race', () => ({
+    useDetailedRaceOptions: (category?: string) => mockDetailResolver(category)
 }));
 
 type Props = Partial<RaceEntryFieldsProps> & { entry?: RaceEntry } & { isDirty?: boolean };

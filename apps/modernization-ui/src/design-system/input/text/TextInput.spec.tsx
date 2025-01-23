@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { TextInput, TextInputProps } from './TextInput';
+import { RefObject } from 'react';
 
 const Fixture = ({ id = 'testing-text', ...remaining }: Partial<TextInputProps>) => (
     <div>
@@ -51,5 +52,27 @@ describe('when entering text values', () => {
         const input = getByRole('textbox', { name: 'Text input test' });
 
         expect(input).toHaveValue('given value');
+    });
+
+    it('should use ref value when changed', () => {
+        const mockInputRef: RefObject<HTMLInputElement> = {
+            current: document.createElement('input', { is: 'mockInputRef' })
+        };
+        const { getByRole } = render(<Fixture value={'given value'} inputRef={mockInputRef} />);
+
+        const input = getByRole('textbox', { name: 'Text input test' });
+
+        expect(input).toHaveValue('given value');
+
+        mockInputRef.current!.value = 'ref value';
+        expect(input).toHaveValue('ref value');
+    });
+
+    it('clears input and calls onClear when icon is clicked', () => {
+        const onClearMock = jest.fn();
+        const { getByRole } = render(<Fixture value={'given value'} clearable onClear={onClearMock} />);
+        const svgIcon = getByRole('img', { hidden: true });
+        userEvent.click(svgIcon);
+        expect(onClearMock).toHaveBeenCalled();
     });
 });

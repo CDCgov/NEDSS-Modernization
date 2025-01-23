@@ -41,6 +41,25 @@ public class PatientFilter {
     private String identificationType;
   }
 
+  public record Filter(String id, String name, String ageOrDateOfBirth, String sex) {
+    Filter withId(final String id) {
+      return new Filter(id, name(), ageOrDateOfBirth(), sex());
+    }
+
+    Filter withName(final String name) {
+      return new Filter(id(), name, ageOrDateOfBirth(), sex());
+    }
+
+    Filter withAgeOrDateOfBirth(final String ageOrDateOfBirth) {
+      return new Filter(id(), name(), ageOrDateOfBirth, sex());
+    }
+
+    Filter withSex(final String sex) {
+      return new Filter(id(), name(), ageOrDateOfBirth(), sex);
+    }
+  }
+
+
   public record NameCriteria(TextCriteria first, TextCriteria last) {
 
     Optional<TextCriteria> maybeLast() {
@@ -111,6 +130,7 @@ public class PatientFilter {
   private String investigation;
   private String labReport;
   private String accessionNumber;
+  private Filter filter;
 
   private boolean disableSoundex;
   @JsonIgnore
@@ -139,6 +159,13 @@ public class PatientFilter {
     return identification;
   }
 
+  public Filter getFilter() {
+    if (this.filter == null) {
+      this.filter = new Filter(null, null, null, null);
+    }
+    return filter;
+  }
+
   public List<RecordStatus> adjustedStatus() {
     return adjustedStatus == null ? List.copyOf(this.recordStatus) : List.copyOf(this.adjustedStatus);
   }
@@ -156,6 +183,45 @@ public class PatientFilter {
   public PatientFilter withId(final String id) {
     this.id = id;
     return this;
+  }
+
+  public PatientFilter withIdFilter(final String idFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(idFilter, null, null, null);
+    } else {
+      this.filter = this.filter.withId(idFilter);
+    }
+    return this;
+  }
+
+  public PatientFilter withNameFilter(final String nameFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, nameFilter, null, null);
+    } else {
+      this.filter = this.filter.withName(nameFilter);
+    }
+    return this;
+
+  }
+
+  public PatientFilter withAgeOrDateOfBirthFilter(final String ageOrDateOfBirthFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, null, ageOrDateOfBirthFilter, null);
+    } else {
+      this.filter = this.filter.withAgeOrDateOfBirth(ageOrDateOfBirthFilter);
+    }
+    return this;
+
+  }
+
+  public PatientFilter withSexFilter(final String sexFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, null, null, sexFilter);
+    } else {
+      this.filter = this.filter.withSex(sexFilter);
+    }
+    return this;
+
   }
 
   public PatientFilter withMorbidity(final String identifier) {

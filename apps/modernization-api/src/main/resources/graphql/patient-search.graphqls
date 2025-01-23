@@ -38,6 +38,13 @@ input LocationCriteria {
   city: TextCriteria
 }
 
+input Filter {
+  id: String
+  name: String
+  ageOrDateOfBirth: String
+  sex: String
+}
+
 input PersonFilter {
   id: String
   name: PatientNameCriteria
@@ -73,6 +80,7 @@ input PersonFilter {
   accessionNumber: String
   disableSoundex: Boolean
   recordStatus: [RecordStatus!]!
+  filter: Filter
 }
 
 enum Gender {

@@ -125,8 +125,8 @@ When(
               cy.contains("Home").click();
               // Advanced search
               cy.get("#homePageAdvancedSearch").click();
-              cy.get("#lastName").type(fakeRandomData.randomLastName);
-              cy.get("#firstName").type(fakeRandomData.randomFirstName);
+              cy.get("input[id=lastName]").type(fakeRandomData.randomLastName);
+              cy.get("input[id=firstName]").type(fakeRandomData.randomFirstName);
               cy.get("h3").contains("ID").click();
               cy.get("#identificationType").select("Social Security");
               cy.get("input[name='identification']").type(fakeFormattedSSN);
@@ -180,13 +180,13 @@ When(
             expect(response.status).to.eq(200);
 
             if (
-              response.body.nbsInfo.nbsInterfaceStatus === "QUEUED" ||
-              response.body.nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS"
+              response.body[0].nbsInfo.nbsInterfaceStatus === "QUEUED" ||
+              response.body[0].nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS"
             ) {
               cy.wait(20000).then(checkStatusRequest);
             } else if (
-              response.body.nbsInfo.nbsInterfaceStatus === "Success" &&
-              response.body.nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED"
+              response.body[0].nbsInfo.nbsInterfaceStatus === "Success" &&
+              response.body[0].nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED"
             ) {
               navigateAndSearchDocuments();
               cy.wait(2000);

@@ -11,6 +11,7 @@ import { ExtendedNewPatientEntry, initial } from './entry';
 import { FormProvider, useForm } from 'react-hook-form';
 import { internalizeDate } from 'date';
 import { ValidationErrors } from './useAddExtendedPatientInteraction';
+import { Selectable } from 'options';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -35,6 +36,8 @@ const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
 jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => ({
     usePatientSexBirthCodedValues: () => mockSexBirthCodedValues
 }));
+
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 const mockCountyCodedValues: CountiesCodedValues = { counties: [{ name: 'CountyA', value: 'A', group: 'G' }] };
 
@@ -72,19 +75,16 @@ jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
     usePatientPhoneCodedValues: () => mockPatientPhoneCodedValues
 }));
 
-const mockRaceCodedValues: CodedValue[] = [{ value: '1', name: 'race name' }];
+const mockRaceCategories: Selectable[] = [{ value: '1', name: 'race name' }];
 
-jest.mock('coded/race/useRaceCodedValues', () => ({
-    useRaceCodedValues: () => mockRaceCodedValues
-}));
-
-const mockDetailedOptions: CodedValue[] = [
+const mockDetailedRaces: Selectable[] = [
     { value: '2', name: 'detailed race1' },
     { value: '3', name: 'detailed race2' }
 ];
 
-jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
-    useDetailedRaceCodedValues: () => mockDetailedOptions
+jest.mock('options/race', () => ({
+    useRaceCategoryOptions: () => mockRaceCategories,
+    useDetailedRaceOptions: () => mockDetailedRaces
 }));
 
 const mockPatientNameCodedValues = {
@@ -240,7 +240,7 @@ describe('AddPatientExtendedForm', () => {
         expect(errors).toHaveLength(5);
         // Name error
         expect(errors[0]).toHaveTextContent(
-            'Data has been entered in the Name section. Please press Add or clear the data and submit again.'
+            'Data have been entered in the Name section. Please press Add or clear the data and submit again.'
         );
         let link = within(errors[0]).getByRole('link');
         expect(link).toHaveTextContent('Name');
@@ -248,7 +248,7 @@ describe('AddPatientExtendedForm', () => {
 
         // Address
         expect(errors[1]).toHaveTextContent(
-            'Data has been entered in the Address section. Please press Add or clear the data and submit again.'
+            'Data have been entered in the Address section. Please press Add or clear the data and submit again.'
         );
         link = within(errors[1]).getByRole('link');
         expect(link).toHaveTextContent('Address');
@@ -256,7 +256,7 @@ describe('AddPatientExtendedForm', () => {
 
         // Phone & Email
         expect(errors[2]).toHaveTextContent(
-            'Data has been entered in the Phone & Email section. Please press Add or clear the data and submit again.'
+            'Data have been entered in the Phone & Email section. Please press Add or clear the data and submit again.'
         );
         link = within(errors[2]).getByRole('link');
         expect(link).toHaveTextContent('Phone & Email');
@@ -264,7 +264,7 @@ describe('AddPatientExtendedForm', () => {
 
         // Identification
         expect(errors[3]).toHaveTextContent(
-            'Data has been entered in the Identification section. Please press Add or clear the data and submit again.'
+            'Data have been entered in the Identification section. Please press Add or clear the data and submit again.'
         );
         link = within(errors[3]).getByRole('link');
         expect(link).toHaveTextContent('Identification');
@@ -272,7 +272,7 @@ describe('AddPatientExtendedForm', () => {
 
         // Race
         expect(errors[4]).toHaveTextContent(
-            'Data has been entered in the Race section. Please press Add or clear the data and submit again.'
+            'Data have been entered in the Race section. Please press Add or clear the data and submit again.'
         );
         link = within(errors[4]).getByRole('link');
         expect(link).toHaveTextContent('Race');

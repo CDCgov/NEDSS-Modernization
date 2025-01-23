@@ -1,5 +1,5 @@
 class ClassicManagePagesPage {
-
+    
   navigateToPageLibrary() {
     cy.contains('System Management').click()
     cy.get('#systemAdmin5 a').eq(0).click()
@@ -12,6 +12,22 @@ class ClassicManagePagesPage {
             cy.get('input[type="button"][value="Add New"]').eq(0).click()
         }
     })
+  }
+
+  clickAddNewTabImg() {
+    cy.get('body').then(($body) => {
+        if($body.find('img[title="Add New Tab"]').length > 0) {
+            cy.get('img[title="Add New Tab"]').eq(0).click()
+        }
+    })
+  }  
+
+  clickAddSection() {
+    cy.get(".addSection").eq(0).click();
+  }
+
+  clickAddSubSection() {
+    cy.get(".addSubSection").eq(0).click();
   }
 
   selectPageType(pageType) {

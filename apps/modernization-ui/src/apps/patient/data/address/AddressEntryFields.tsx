@@ -121,7 +121,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                             state: selectedState?.value ?? undefined,
                             zip: enteredZip ?? undefined
                         }}
-                        defaultValue={value ?? ''}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         onSelection={handleSuggestionSelection}

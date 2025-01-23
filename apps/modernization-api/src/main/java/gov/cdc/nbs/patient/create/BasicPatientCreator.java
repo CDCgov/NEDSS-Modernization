@@ -6,6 +6,7 @@ import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientIdentifierGenerator;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +17,20 @@ import java.time.Instant;
 @Component
 public class BasicPatientCreator {
 
+    private final SoundexResolver resolver;
     private final PatientIdentifierGenerator patientIdentifierGenerator;
     private final IdGeneratorService idGeneratorService;
     private final EntityManager entityManager;
     private final PatientCreatedEmitter emitter;
 
     BasicPatientCreator(
+        final SoundexResolver resolver,
         final PatientIdentifierGenerator patientIdentifierGenerator,
         final IdGeneratorService idGenerator,
         final EntityManager entityManager,
         final PatientCreatedEmitter emitter
     ) {
+        this.resolver = resolver;
         this.patientIdentifierGenerator = patientIdentifierGenerator;
         this.idGeneratorService = idGenerator;
         this.entityManager = entityManager;
@@ -43,7 +47,7 @@ public class BasicPatientCreator {
 
         input.getNames().stream()
             .map(name -> asName(context, identifier, asOf, name))
-            .forEach(person::add);
+            .forEach(name -> person.add(resolver, name));
 
         input.getRaces().stream()
             .map(race -> asRace(context, identifier, asOf, race))

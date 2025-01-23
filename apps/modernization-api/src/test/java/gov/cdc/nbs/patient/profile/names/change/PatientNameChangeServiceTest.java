@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.profile.names.change;
 
 import gov.cdc.nbs.patient.PatientException;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +25,10 @@ class PatientNameChangeServiceTest {
 
     when(profileService.with(anyLong(), any())).thenReturn(Optional.empty());
 
+    SoundexResolver encoder = mock(SoundexResolver.class);
+
     PatientNameChangeService service =
-        new PatientNameChangeService(profileService);
+        new PatientNameChangeService(profileService, encoder);
 
     NewPatientNameInput input = mock(NewPatientNameInput.class);
 

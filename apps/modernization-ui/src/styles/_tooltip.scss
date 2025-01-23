@@ -58,6 +58,9 @@ $bubbleWidth: calc($arrowWidth + 100%);
             right: 100%;
         } @else if $offset == 'right' {
             right: 0;
+        } @else if $offset == 'center' {
+            left: 50%;
+            transform: translateX(-50%);
         } @else {
             right: 50%;
         }
@@ -100,6 +103,12 @@ $bubbleWidth: calc($arrowWidth + 100%);
     &[data-tooltip-offset='right'] {
         &::before {
             @include bubble(bottom, right);
+        }
+    }
+
+    &[data-tooltip-offset='center'] {
+        &::before {
+            @include bubble(bottom, center);
         }
     }
 

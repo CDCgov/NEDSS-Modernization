@@ -1,8 +1,7 @@
-import { RecordStatus, PersonFilter, IdentificationCriteria } from 'generated/graphql/schema';
+import { RecordStatus, PersonFilter, IdentificationCriteria, Filter } from 'generated/graphql/schema';
 
 import { asValue, asValues } from 'options/selectable';
 import { PatientCriteriaEntry } from './criteria';
-import { externalizeDate } from 'date';
 
 const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriteria | undefined =>
     data.identification && data.identificationType
@@ -12,6 +11,13 @@ const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriter
           }
         : undefined;
 
+const resolveFilter = (data: PatientCriteriaEntry): Filter | undefined => {
+    if (data.filter?.patientid) {
+        return { id: data.filter.patientid };
+    }
+    return undefined;
+};
+
 export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     const {
         name,
@@ -19,7 +25,6 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         location,
         phoneNumber,
         email,
-        dateOfBirth,
         morbidity,
         document,
         stateCase,
@@ -37,6 +42,7 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     return {
         name,
         location,
+        bornOn,
         id,
         phoneNumber,
         email,
@@ -58,7 +64,6 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         race: asValue(remaining.race),
         ethnicity: asValue(remaining.ethnicity),
         identification: resolveIdentification(remaining),
-        dateOfBirth: externalizeDate(dateOfBirth),
-        bornOn
+        filter: resolveFilter(remaining)
     };
 };

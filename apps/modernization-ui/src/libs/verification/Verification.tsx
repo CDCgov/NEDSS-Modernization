@@ -1,20 +1,27 @@
-import { Validator } from 'validation';
-import { useVerification } from './useVerification';
+import { FieldPath, FieldValues } from 'react-hook-form';
+import { useVerification, VerificationOptions } from './useVerification';
 
-type VerificationRenderProps<T> = {
+type VerificationRenderProps = {
     violation?: string;
-    verify: (value?: T) => void;
+    verify: () => void;
 };
 
-type VerificationProps<T> = {
-    constraint: Validator<T>;
-    render: (result: VerificationRenderProps<T>) => JSX.Element;
+type VerificationProps<
+    Values extends FieldValues = FieldValues,
+    Name extends FieldPath<Values> = FieldPath<Values>
+> = VerificationOptions<Values, Name> & {
+    render: (result: VerificationRenderProps) => JSX.Element;
 };
 
-const Verification = <T,>({ constraint, render }: VerificationProps<T>) => {
-    const { violation, verify } = useVerification({ constraint });
+const Verification = <V extends FieldValues = FieldValues, N extends FieldPath<V> = FieldPath<V>>({
+    name,
+    control,
+    constraint,
+    render
+}: VerificationProps<V, N>) => {
+    const { violation, verify } = useVerification({ name, control, constraint });
 
-    return render({ violation, verify });
+    return render({ verify, violation: violation?.message });
 };
 
 export { Verification };

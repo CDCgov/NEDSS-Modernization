@@ -4,11 +4,13 @@ Feature: Frontend Feature Configuration
     When I request the frontend configuration
     Then the search view feature is enabled
     And the tabular search results feature is enabled
+    And the patient search filters feature is disabled
     And the patient add feature is disabled
     And the patient add extended feature is disabled
     And the NBS6 event search feature is enabled
     And the investigation search feature is disabled
     And the laboratory report search feature is disabled
+    And the deduplication feature is disabled
 
   Scenario Outline: I can configure Frontend features
     Given I <toggle> the <feature> feature
@@ -21,6 +23,8 @@ Feature: Frontend Feature Configuration
       | search view                | disabled |
       | tabular search results     | enabled  |
       | tabular search results     | disabled |
+      | patient search filters     | enabled  |
+      | patient search filters     | disabled  |
       | patient add                | enabled  |
       | patient add                | disabled |
       | patient add extended       | enabled  |
@@ -33,3 +37,5 @@ Feature: Frontend Feature Configuration
       | laboratory report search   | disabled |
       | modernized patient profile | enabled  |
       | modernized patient profile | disabled |
+      | deduplication              | disabled |
+      | deduplication              | enabled  |

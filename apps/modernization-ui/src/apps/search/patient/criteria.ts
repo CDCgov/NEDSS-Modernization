@@ -66,9 +66,15 @@ type EventIds = {
     vaccination?: string;
 };
 
-type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification & EventIds;
+type Filter = {
+    filter?: {
+        patientid?: string;
+    };
+};
 
-export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact, NameCriteria };
+type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification & EventIds & Filter;
+
+export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact, NameCriteria, Filter };
 
 const initial: PatientCriteriaEntry = {
     status: [ACTIVE],

@@ -31,6 +31,7 @@ logging:
           search: INFO
 
 nbs:
+  primary-language: English
   security:
     oidc:
       enabled: false
@@ -49,6 +50,8 @@ nbs:
               enabled: true
             edit:
               enabled: true
+      deduplication:
+        enabled: true
       search:
         events:
           enabled: true
@@ -61,6 +64,9 @@ nbs:
           table:
             enabled: true
       patient:
+        search:
+          filters:
+            enabled: true
         profile:
           enabled: true
         add:

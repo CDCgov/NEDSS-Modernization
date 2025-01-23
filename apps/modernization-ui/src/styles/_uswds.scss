@@ -182,6 +182,7 @@ input.usa-input--error:focus {
 .usa-date-picker__wrapper {
     .usa-date-picker__external-input {
         flex-grow: 1;
+        margin-right: 4px;
     }
     .usa-date-picker__button {
         margin: 0;

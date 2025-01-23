@@ -1,14 +1,20 @@
-import { useConceptOptions } from 'options/concepts';
-import { Selectable } from 'options/selectable';
+import { RaceOptionsService } from 'generated';
 
-type Interaction = {
-    categories: Selectable[];
+import { Selectable, useSelectableOptions } from 'options';
+import { Predicate } from 'utils';
+
+const resolver = () => RaceOptionsService.races().then((options) => options as Selectable[]);
+
+type Settings = {
+    filter?: Predicate<Selectable>;
 };
 
-const useRaceCategoryOptions = (): Interaction => {
-    const { options: categories } = useConceptOptions('RACE_CALCULATED', { lazy: false });
+const useRaceCategoryOptions = (settings?: Settings): Selectable[] => {
+    const { options } = useSelectableOptions({ resolver, lazy: false });
 
-    return { categories };
+    const categories = settings?.filter ? options.filter(settings.filter) : options;
+
+    return categories;
 };
 
 export { useRaceCategoryOptions };

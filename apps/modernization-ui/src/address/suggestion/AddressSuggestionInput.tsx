@@ -1,7 +1,7 @@
-import { Input } from 'components/FormInputs/Input';
+import { ReactElement, KeyboardEvent, useRef, useState, useEffect, ChangeEvent } from 'react';
+import { TextInputField, TextInputFieldProps } from 'design-system/input/text';
 import { Suggestions } from 'suggestion/Suggestions';
 import { AddressSuggestion, useAddressAutocomplete } from './useAddressAutocomplete';
-import { ReactElement, KeyboardEvent, ChangeEvent, useRef, useState, useEffect } from 'react';
 import { LocationCodedValues } from 'location';
 import { Orientation, Sizing } from 'components/Entry';
 
@@ -34,10 +34,9 @@ type Props = {
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
     onSelection?: (suggestion: AddressSuggestion) => void;
-};
+} & TextInputFieldProps;
 
 const AddressSuggestionInput = (props: Props): ReactElement => {
-    const orientation = props.flexBox ? 'horizontal' : props.orientation;
     const suggestionRef = useRef<HTMLUListElement>(null);
 
     const { suggestions, suggest, reset } = useAddressAutocomplete({ locations: props.locations });
@@ -64,13 +63,11 @@ const AddressSuggestionInput = (props: Props): ReactElement => {
         }
     };
 
-    const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const search = event.target.value;
-
-        suggest({ search, ...adjustedCriteria });
+    const handleOnChange = (value?: string) => {
+        suggest({ search: value ?? '', ...adjustedCriteria });
 
         if (props.onChange) {
-            props.onChange(event);
+            props.onChange(value);
         }
     };
 
@@ -90,17 +87,14 @@ const AddressSuggestionInput = (props: Props): ReactElement => {
 
     return (
         <>
-            <Input
+            <TextInputField
                 id={props.id}
                 label={props.label}
-                htmlFor={props.label}
-                type="text"
                 className={props.className}
-                defaultValue={props.defaultValue}
+                value={props.value}
                 placeholder={props.placeholder}
-                autoComplete="off"
                 sizing={props.sizing}
-                orientation={orientation}
+                orientation={props.orientation}
                 error={props.error}
                 onChange={handleOnChange}
                 onBlur={props.onBlur}
