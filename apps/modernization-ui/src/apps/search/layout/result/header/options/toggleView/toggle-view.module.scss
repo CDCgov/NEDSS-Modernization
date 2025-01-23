@@ -15,8 +15,6 @@
         display: flex;
         gap: 0.25rem;
         margin: 0;
-        padding: 0.75rem 1.25rem !important;
-        width: max-content !important;
         &:hover {
             border-color: colors.$primary-dark;
             color: colors.$primary-dark;
@@ -31,4 +29,9 @@
             }
         }
     }
+}
+
+.icon {
+    width: 1.75rem;
+    height: 1.75rem;
 }

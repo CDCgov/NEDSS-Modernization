@@ -16,9 +16,9 @@ const SearchResultsOptionsBar = ({ view, disabled = false }: Props) => {
 
     return (
         <div className={style.options}>
-            {settings.allowToggle && <ToggleView />}
             {view === 'list' && <SearchResultsListOptions disabled={disabled} />}
             {view === 'table' && <SearchResultsTableOptions disabled={disabled} />}
+            {settings.allowToggle && <ToggleView />}
         </div>
     );
 };

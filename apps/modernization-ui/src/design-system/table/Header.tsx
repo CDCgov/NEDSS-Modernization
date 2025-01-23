@@ -8,29 +8,38 @@ import styles from './header.module.scss';
 type Props<V> = {
     className?: string;
     children: Column<V>;
+    filterable?: boolean;
 };
 
-const Header = <V,>({ children, ...remaining }: Props<V>) => {
+const Header = <V,>({ children, filterable, ...remaining }: Props<V>) => {
     const sorting = maybeUseSorting();
 
     const isSortable = sorting && children.sortable;
 
     return isSortable ? (
-        <SortableHeader sorting={sorting} {...remaining}>
+        <SortableHeader sorting={sorting} {...remaining} filterable={filterable}>
             {children}
         </SortableHeader>
     ) : (
-        <StandardHeader {...remaining}>{children}</StandardHeader>
+        <StandardHeader {...remaining} filterable={filterable}>
+            {children}
+        </StandardHeader>
     );
 };
 
-const StandardHeader = <V,>({ className, children }: Props<V>) => (
-    <th className={classNames(styles.header, className, { [styles.fixed]: children.fixed })}>{children.name}</th>
+const StandardHeader = <V,>({ className, children, filterable }: Props<V>) => (
+    <th className={classNames(styles.header, className, { [styles.fixed]: children.fixed })}>
+        {children.name}
+        {filterable && children.filter}
+    </th>
 );
 
-type SortableProps<V> = Props<V> & { sorting: SortingInteraction };
+type SortableProps<V> = Props<V> & {
+    sorting: SortingInteraction;
+    filterable?: boolean;
+};
 
-const SortableHeader = <V,>({ className, sorting, children }: SortableProps<V>) => {
+const SortableHeader = <V,>({ className, sorting, children, filterable }: SortableProps<V>) => {
     const direction = sorting.property === children.id ? ensureDirection(sorting.direction) : Direction.None;
     const ariaSort = resolveSortAria(direction);
     const icon = resolveSortIcon(direction);
@@ -48,6 +57,7 @@ const SortableHeader = <V,>({ className, sorting, children }: SortableProps<V>) 
                     <use xlinkHref={`${sprite}#${icon}`}></use>
                 </svg>
             </div>
+            {filterable && children.filter}
         </th>
     );
 };

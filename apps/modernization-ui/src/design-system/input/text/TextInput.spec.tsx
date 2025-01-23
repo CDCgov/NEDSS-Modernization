@@ -67,4 +67,12 @@ describe('when entering text values', () => {
         mockInputRef.current!.value = 'ref value';
         expect(input).toHaveValue('ref value');
     });
+
+    it('clears input and calls onClear when icon is clicked', () => {
+        const onClearMock = jest.fn();
+        const { getByRole } = render(<Fixture value={'given value'} clearable onClear={onClearMock} />);
+        const svgIcon = getByRole('img', { hidden: true });
+        userEvent.click(svgIcon);
+        expect(onClearMock).toHaveBeenCalled();
+    });
 });

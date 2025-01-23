@@ -335,6 +335,27 @@ describe('when the PatientCriteria contains Identification criteria', () => {
     });
 });
 
+describe('when the PatientCriteria contains filter criteria', () => {
+    it('should transform with patient id', () => {
+        const input: PatientCriteriaEntry = {
+            filter: {
+                patientid: 'patient-id-value'
+            },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                filter: {
+                    id: 'patient-id-value'
+                }
+            })
+        );
+    });
+});
+
 describe('when the PatientCriteria contains event id criteria', () => {
     it.each([
         'morbidity',
