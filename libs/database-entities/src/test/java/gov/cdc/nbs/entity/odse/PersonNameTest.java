@@ -5,7 +5,7 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +27,7 @@ class PersonNameTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "Other-First",
             "Other-Middle",
             "Other-Last",
@@ -82,7 +82,7 @@ class PersonNameTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             null,
             null,
@@ -111,7 +111,7 @@ class PersonNameTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             null,
             null,
             "Last",
@@ -140,7 +140,7 @@ class PersonNameTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2023-05-15T10:00:00Z"),
+            LocalDate.parse("2023-05-15"),
             null,
             null,
             null,
@@ -173,7 +173,7 @@ class PersonNameTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             null,
             null,
             null,
@@ -187,7 +187,7 @@ class PersonNameTest {
         new PatientCommand.UpdateNameInfo(
             117L,
             1,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             null,
             "update_first_name",
             null,
@@ -220,7 +220,7 @@ class PersonNameTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             null,
             null,
             null,
@@ -234,7 +234,7 @@ class PersonNameTest {
         new PatientCommand.UpdateNameInfo(
             117L,
             1,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             null,
             null,
             null,
@@ -267,7 +267,7 @@ class PersonNameTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             null,
             null,
             null,
@@ -281,7 +281,7 @@ class PersonNameTest {
         new PatientCommand.UpdateNameInfo(
             117L,
             1,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             null,
             null,
             null,

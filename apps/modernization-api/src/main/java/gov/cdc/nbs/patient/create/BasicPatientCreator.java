@@ -49,7 +49,7 @@ public class BasicPatientCreator {
     LocalDate localAsOf = input.getAsOf().atZone(ZoneId.systemDefault()).toLocalDate();
 
     input.getNames().stream()
-        .map(name -> asName(context, identifier, asOf, name))
+        .map(name -> asName(context, identifier, localAsOf, name))
         .forEach(name -> person.add(resolver, name));
 
     input.getRaces().stream()
@@ -105,7 +105,7 @@ public class BasicPatientCreator {
   private PatientCommand.AddName asName(
       final RequestContext context,
       final PatientIdentifier identifier,
-      final Instant asOf,
+      final LocalDate asOf,
       final PatientInput.Name name
   ) {
     String suffix = name.getSuffix() == null ? null : name.getSuffix().value();

@@ -203,7 +203,7 @@ union PatientRaceAddResult = PatientRaceChangeSuccessful | PatientRaceChangeFail
 input NewPatientNameInput {
     patient: Int!
     type: String!
-    asOf: DateTime
+    asOf: Date!
     prefix: String
     first: String
     middle: String
@@ -218,7 +218,7 @@ input UpdatePatientNameInput {
     patient: Int!
     sequence: Int!
     type: String!
-    asOf: DateTime
+    asOf: Date!
     prefix: String
     first: String
     middle: String

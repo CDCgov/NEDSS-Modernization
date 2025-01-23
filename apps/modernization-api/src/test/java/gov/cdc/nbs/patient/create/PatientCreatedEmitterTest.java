@@ -100,7 +100,7 @@ class PatientCreatedEmitterTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",

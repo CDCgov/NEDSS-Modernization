@@ -91,7 +91,7 @@ public class PersonName {
   private String nmUseCd;
 
   @Column(name = "as_of_date")
-  private Instant asOfDate;
+  private LocalDate asOfDate;
 
   @Embedded
   private Audit audit;
@@ -148,7 +148,7 @@ public class PersonName {
   }
 
   public LocalDate asOf() {
-    return this.asOfDate.atZone(ZoneOffset.UTC).toLocalDate();
+    return this.asOfDate;
   }
 
   public String type() {

@@ -9,6 +9,8 @@ import gov.cdc.nbs.entity.odse.QTeleEntityLocatorParticipation;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @Component
@@ -44,20 +46,23 @@ class PatientSummaryFinder {
   }
 
   Optional<PatientSummary> find(final long identifier, final Instant asOf) {
+
+    LocalDate localAsOf = asOf.atZone(ZoneId.systemDefault()).toLocalDate();
+
     return this.factory.selectDistinct(
-        this.tables.patient().personParentUid.id,
-        this.tables.prefix().codeShortDescTxt,
-        this.tables.name().firstNm,
-        this.tables.name().middleNm,
-        this.tables.name().lastNm,
-        this.tables.name().nmSuffix,
-        this.tables.patient().currSexCd,
-        this.tables.patient().birthTime,
-        this.tables.ethnicity().codeShortDescTxt,
-        this.tables.phoneNumber().phoneNbrTxt,
-        this.tables.phoneUse().codeShortDescTxt,
-        this.tables.email().emailAddress,
-        this.tables.emailUse().codeShortDescTxt).from(this.tables.patient())
+            this.tables.patient().personParentUid.id,
+            this.tables.prefix().codeShortDescTxt,
+            this.tables.name().firstNm,
+            this.tables.name().middleNm,
+            this.tables.name().lastNm,
+            this.tables.name().nmSuffix,
+            this.tables.patient().currSexCd,
+            this.tables.patient().birthTime,
+            this.tables.ethnicity().codeShortDescTxt,
+            this.tables.phoneNumber().phoneNbrTxt,
+            this.tables.phoneUse().codeShortDescTxt,
+            this.tables.email().emailAddress,
+            this.tables.emailUse().codeShortDescTxt).from(this.tables.patient())
         //  Most effective Legal name for the as of
         .leftJoin(this.tables.name()).on(
             this.tables.name().id.personUid.eq(this.tables.patient().id),
@@ -70,7 +75,7 @@ class PatientSummaryFinder {
                         EFF_NAME.id.personUid.eq(this.tables.name().id.personUid),
                         EFF_NAME.recordStatus.status.eq(this.tables.name().recordStatus.status),
                         EFF_NAME.nmUseCd.eq(this.tables.name().nmUseCd),
-                        EFF_NAME.asOfDate.loe(asOf))),
+                        EFF_NAME.asOfDate.loe(localAsOf))),
             this.tables.name().id.personNameSeq.eq(
                 JPAExpressions.select(SEQ_NAME.id.personNameSeq.max())
                     .from(SEQ_NAME)

@@ -20,7 +20,6 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -287,7 +286,7 @@ public class PatientMother {
   public void withName(final PatientIdentifier identifier) {
     withName(
         identifier,
-        RandomUtil.getRandomDateInPast(),
+        RandomUtil.dateInPast(),
         "L",
         faker.name().firstName(),
         faker.name().firstName(),
@@ -304,7 +303,7 @@ public class PatientMother {
   ) {
     withName(
         identifier,
-        RandomUtil.getRandomDateInPast(),
+        RandomUtil.dateInPast(),
         type,
         first,
         last
@@ -313,7 +312,7 @@ public class PatientMother {
 
   public void withName(
       final PatientIdentifier identifier,
-      final Instant asOf,
+      final LocalDate asOf,
       final String type,
       final String first,
       final String last
@@ -331,7 +330,7 @@ public class PatientMother {
 
   public void withName(
       final PatientIdentifier identifier,
-      final Instant asOf,
+      final LocalDate asOf,
       final String type,
       final String first,
       final String middle,

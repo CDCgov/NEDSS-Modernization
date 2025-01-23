@@ -430,7 +430,7 @@ public sealed interface PatientCommand {
 
   record AddName(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       String prefix,
       String first,
       String middle,
@@ -446,7 +446,7 @@ public sealed interface PatientCommand {
 
     public AddName(
         long person,
-        Instant asOf,
+        LocalDate asOf,
         String first,
         String middle,
         String last,
@@ -478,7 +478,7 @@ public sealed interface PatientCommand {
   record UpdateNameInfo(
       long person,
       int sequence,
-      Instant asOf,
+      LocalDate asOf,
       String prefix,
       String first,
       String middle,

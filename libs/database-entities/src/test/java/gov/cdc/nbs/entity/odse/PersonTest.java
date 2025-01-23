@@ -105,7 +105,7 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2023-05-15T10:00:00Z"),
+            LocalDate.parse("2023-05-15"),
             "prefix",
             "First",
             "Middle",
@@ -126,7 +126,7 @@ class PersonTest {
 
     assertThat(patient.getNames()).satisfiesExactly(
         actual -> assertThat(actual)
-            .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
+            .returns(LocalDate.parse("2023-05-15"), PersonName::getAsOfDate)
             .returns("prefix", PersonName::getNmPrefix)
             .returns("First", PersonName::getFirstNm)
             .returns("Second-Middle", PersonName::getMiddleNm2)
@@ -163,7 +163,7 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",
@@ -178,7 +178,7 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2023-05-15T10:00:00Z"),
+            LocalDate.parse("2023-05-15"),
             "Another-Prefix",
             "Another-First",
             "Another-Middle",
@@ -199,7 +199,7 @@ class PersonTest {
             .returns(117L, PersonNameId::getPersonUid)
             .returns((short) 1, PersonNameId::getPersonNameSeq),
         actual -> assertThat(actual)
-            .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
+            .returns(LocalDate.parse("2023-05-15"), PersonName::getAsOfDate)
             .returns("Another-Prefix", PersonName::getNmPrefix)
             .returns("Another-First", PersonName::getFirstNm)
             .returns("Another-Second-Middle", PersonName::getMiddleNm2)
@@ -234,7 +234,7 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",
@@ -250,7 +250,7 @@ class PersonTest {
         new PatientCommand.UpdateNameInfo(
             117L,
             (short) 1,
-            Instant.parse("2023-05-15T10:00:00Z"),
+            LocalDate.parse("2023-05-15"),
             "prefix",
             "First",
             "Middle",
@@ -271,7 +271,7 @@ class PersonTest {
 
     assertThat(patient.getNames()).satisfiesExactly(
         actual -> assertThat(actual)
-            .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
+            .returns(LocalDate.parse("2023-05-15"), PersonName::getAsOfDate)
             .returns("prefix", PersonName::getNmPrefix)
             .returns("First", PersonName::getFirstNm)
             .returns("Second-Middle", PersonName::getMiddleNm2)
@@ -306,7 +306,7 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",
@@ -321,7 +321,7 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "Other-First",
             "Other-Middle",
             "Other-Last",
@@ -363,7 +363,7 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",
@@ -376,7 +376,7 @@ class PersonTest {
 
     assertThat(actual.getNames()).satisfiesExactly(
         actualPrimary -> assertThat(actualPrimary)
-            .returns(Instant.parse("2021-05-15T10:00:00Z"), PersonName::getAsOfDate)
+            .returns(LocalDate.parse("2021-05-15"), PersonName::getAsOfDate)
             .returns("First", PersonName::getFirstNm)
             .returns("Middle", PersonName::getMiddleNm)
             .returns("Last", PersonName::getLastNm)
@@ -398,7 +398,7 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",
@@ -413,7 +413,7 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "Other",
             "OtherMiddle",
             "OtherLast",
