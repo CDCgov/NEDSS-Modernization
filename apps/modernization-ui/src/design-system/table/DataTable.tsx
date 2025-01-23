@@ -11,6 +11,7 @@ type Column<V> = {
     sortable?: boolean;
     className?: string;
     render: (value: V, index: number) => ReactNode | undefined;
+    filter?: ReactNode;
 };
 
 type Props<V> = {
@@ -18,16 +19,17 @@ type Props<V> = {
     className?: string;
     columns: Column<V>[];
     data: V[];
+    filterable?: boolean;
 };
 
-const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
+const DataTable = <V,>({ id, className, columns, filterable, data }: Props<V>) => {
     return (
         <div id={id} className={classNames('usa-table--borderless', styles.table)}>
             <table className={classNames('usa-table', className)}>
                 <thead>
                     <tr>
                         {columns.map((column, index) => (
-                            <Header key={index} className={column.className}>
+                            <Header key={index} className={column.className} filterable={filterable}>
                                 {column}
                             </Header>
                         ))}
