@@ -2,6 +2,7 @@
 
 $compact-font-size: 0.875rem;
 $compact-height: 2rem;
+$compact-textarea-height: 7.5rem;
 
 %compact {
     line-height: normal;
@@ -10,6 +11,13 @@ $compact-height: 2rem;
 
 %compact-input {
     height: $compact-height;
+    width: unset;
+
+    @extend %compact;
+}
+
+%compact-textarea {
+    height: $compact-textarea-height;
     width: unset;
 
     @extend %compact;
