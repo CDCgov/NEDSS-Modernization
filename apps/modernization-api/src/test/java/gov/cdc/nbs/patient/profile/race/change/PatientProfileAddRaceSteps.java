@@ -7,7 +7,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -32,8 +32,8 @@ public class PatientProfileAddRaceSteps {
     this.response = response;
   }
 
-  @When("I add a patient's race as of {date}")
-  public void i_add_the_patient_race_as_of(final Instant asOf) {
+  @When("I add a patient's race as of {localDate}")
+  public void i_add_the_patient_race_as_of(final LocalDate asOf) {
     this.patient.maybeActive().flatMap(current -> withInput(current, asOf))
         .map(this.requester::add)
         .ifPresent(this.response::active);
@@ -41,7 +41,7 @@ public class PatientProfileAddRaceSteps {
 
   private Optional<RaceInput> withInput(
       final PatientIdentifier identifier,
-      final Instant asOf
+      final LocalDate asOf
   ) {
     return this.input.maybeActive()
         .map(current -> current.setPatient(identifier.id()).setAsOf(asOf));

@@ -162,12 +162,18 @@ public class Person {
   @Column(name = "nm_suffix", length = 20)
   private Suffix nmSuffix;
 
-  @OneToMany(mappedBy = "personUid", fetch = FetchType.EAGER, cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, orphanRemoval = true)
+  @OneToMany(
+      mappedBy = "personUid",
+      fetch = FetchType.EAGER,
+      cascade = {
+          CascadeType.PERSIST,
+          CascadeType.MERGE,
+          CascadeType.REMOVE
+      }, orphanRemoval = true)
   private List<PersonName> names;
+
+  @Embedded
+  private PatientRaceDemographic race;
 
   @Embedded
   private Audit audit;
@@ -177,9 +183,6 @@ public class Person {
 
   @Embedded
   private Status status;
-
-  @Embedded
-  private PatientRaceDemographic race;
 
   protected Person() {
     this.versionCtrlNbr = 1;

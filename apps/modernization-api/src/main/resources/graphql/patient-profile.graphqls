@@ -358,7 +358,7 @@ type PatientRace {
     patient: Int!
     id: Int!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     category: PatientRaceCategory!
     detailed: [PatientRaceDetail!]!
 }

@@ -106,7 +106,7 @@ public class PatientCreateController {
       newPatient.races().forEach(race -> {
         RaceInput newRaceInput = new RaceInput();
         newRaceInput.setPatient(created.id());
-        newRaceInput.setAsOf(race.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        newRaceInput.setAsOf(race.asOf());
         newRaceInput.setCategory(race.race());
         newRaceInput.setDetailed(race.detailed());
         raceService.add(context, newRaceInput);

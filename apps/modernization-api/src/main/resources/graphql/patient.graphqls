@@ -179,7 +179,7 @@ type PatientEthnicityChangeResult {
 
 input RaceInput {
     patient: Int!
-    asOf: DateTime
+    asOf: Date
     category: String!
     detailed: [String!]
 }

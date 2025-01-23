@@ -259,7 +259,7 @@ public class PatientMother {
     patient.add(
         new PatientCommand.AddRace(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             race,
             this.settings.createdBy(),
             this.settings.createdOn()));
@@ -275,7 +275,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateRaceInfo(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             race,
             List.of(detail),
             this.settings.createdBy(),

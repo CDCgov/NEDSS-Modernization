@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -50,7 +50,7 @@ public class PersonRace {
   private String userAffiliationTxt;
 
   @Column(name = "as_of_date")
-  private Instant asOfDate;
+  private LocalDate asOfDate;
 
   @Embedded
   private Audit audit;
@@ -64,7 +64,8 @@ public class PersonRace {
 
   public PersonRace(
       final Person person,
-      final PatientCommand.AddRaceCategory added) {
+      final PatientCommand.AddRaceCategory added
+  ) {
     this.personUid = person;
     this.asOfDate = added.asOf();
     this.raceCategoryCd = added.category();

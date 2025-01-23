@@ -21,7 +21,9 @@ public sealed interface PatientCommand {
       String localId,
       long requester,
       LocalDateTime requestedOn
-  ) implements PatientCommand {}
+  ) implements PatientCommand {
+  }
+
 
   record AddPatient(
       long person,
@@ -44,7 +46,7 @@ public sealed interface PatientCommand {
 
   record AddRace(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       String category,
       List<String> detailed,
       long requester,
@@ -53,7 +55,7 @@ public sealed interface PatientCommand {
 
     public AddRace(
         long person,
-        Instant asOf,
+        LocalDate asOf,
         String category,
         long requester,
         LocalDateTime requestedOn
@@ -66,7 +68,7 @@ public sealed interface PatientCommand {
 
   record AddRaceCategory(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       String category,
       long requester,
       LocalDateTime requestedOn
@@ -77,7 +79,7 @@ public sealed interface PatientCommand {
 
   record AddDetailedRace(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       String category,
       String race,
       long requester,
@@ -89,7 +91,7 @@ public sealed interface PatientCommand {
 
   record UpdateRaceInfo(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       String category,
       List<String> detailed,
       long requester,
@@ -499,6 +501,7 @@ public sealed interface PatientCommand {
       LocalDateTime requestedOn
   ) implements PatientCommand {
   }
+
 
   record AssociateStateHIVCase(
       long person,

@@ -166,7 +166,8 @@ public class PatientCreateSteps {
     NewPatient.Phone expected = this.input.active().phoneEmails().getFirst();
 
     assertThat(actualElp)
-        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(), TeleEntityLocatorParticipation::getAsOfDate);
+        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(),
+            TeleEntityLocatorParticipation::getAsOfDate);
     assertThat(actualLocator)
         .returns(expected.url(), TeleLocator::getUrlAddress)
         .returns(expected.email(), TeleLocator::getEmailAddress);
@@ -179,7 +180,8 @@ public class PatientCreateSteps {
     NewPatient.Phone expected = this.input.active().phoneEmails().getFirst();
 
     assertThat(actualElp)
-        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(), TeleEntityLocatorParticipation::getAsOfDate);
+        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(),
+            TeleEntityLocatorParticipation::getAsOfDate);
     assertThat(actualLocator)
         .returns(expected.phoneNumber(), TeleLocator::getPhoneNbrTxt)
         .returns(expected.countryCode(), TeleLocator::getCntryCd)
@@ -193,7 +195,7 @@ public class PatientCreateSteps {
     NewPatient.Race expected = this.input.active().races().getFirst();
 
     assertThat(actual)
-        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(), PersonRace::getAsOfDate)
+        .returns(expected.asOf(), PersonRace::getAsOfDate)
         .returns(expected.race(), PersonRace::getRaceCategoryCd);
   }
 

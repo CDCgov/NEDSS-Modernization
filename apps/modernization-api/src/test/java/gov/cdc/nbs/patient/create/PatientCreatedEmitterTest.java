@@ -149,7 +149,7 @@ class PatientCreatedEmitterTest {
     patient.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30")
