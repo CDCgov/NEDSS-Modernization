@@ -18,6 +18,15 @@ describe('DateCriteriaEntry Component', () => {
         expect(getByLabelText('Date Range')).toBeInTheDocument();
     });
 
+    it('should render with default options when value is null', () => {
+        const { getByLabelText, getByRole } = render(<DateCriteriaEntry {...defaultProps} value={null} />);
+        const exactDateRadio = getByLabelText('Exact Date');
+        expect(exactDateRadio).toBeChecked();
+        expect(getByRole('spinbutton', { name: 'month' })).toBeInTheDocument();
+        expect(getByRole('spinbutton', { name: 'day' })).toBeInTheDocument();
+        expect(getByRole('spinbutton', { name: 'year' })).toBeInTheDocument();
+    });
+
     it('should call onChange when a exact date is selected', async () => {
         const { getByLabelText } = render(<DateCriteriaEntry {...defaultProps} />);
 
