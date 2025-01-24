@@ -126,6 +126,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         onBlur={onBlur}
                         onSelection={handleSuggestionSelection}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />

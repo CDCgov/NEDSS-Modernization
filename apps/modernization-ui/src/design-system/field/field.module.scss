@@ -49,6 +49,10 @@
         select {
             @extend %compact-input;
         }
+
+        textarea {
+            @extend %compact-textarea;
+        }
     }
 
     &.error {
