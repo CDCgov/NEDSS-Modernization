@@ -3,7 +3,7 @@ import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import { PatientRace, useDeletePatientRaceMutation, useUpdatePatientRaceMutation } from 'generated/graphql/schema';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { Direction, sortByNestedProperty, withDirection } from 'sorting';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { externalizeDate, internalizeDate } from 'date';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { TableBody, TableComponent } from 'components/Table';
@@ -109,7 +109,7 @@ const RacesTable = ({ patient }: RacesTableProps) => {
                 variables: {
                     input: {
                         patient: Number(patient.id),
-                        asOf: externalizeDateTime(entry.asOf),
+                        asOf: externalizeDate(entry.asOf),
                         category: entry.category,
                         detailed: entry.detailed
                     }

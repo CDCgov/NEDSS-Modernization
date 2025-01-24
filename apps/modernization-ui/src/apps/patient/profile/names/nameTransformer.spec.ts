@@ -18,7 +18,7 @@ describe('transform function', () => {
                         prefix: {
                             id: 'BSHP',
                             description: 'Bishop'
-                        },                        
+                        },
                         use: {
                             id: 'AD',
                             description: 'Adopted Name'
@@ -26,12 +26,12 @@ describe('transform function', () => {
                         first: 'Mike',
                         middle: 'John',
                         secondMiddle: 'David',
-                        last: "Smith",
-                        secondLast: 'Sarah', 
+                        last: 'Smith',
+                        secondLast: 'Sarah',
                         suffix: {
                             id: 'ESQ',
                             description: 'Esquire'
-                        },                                            
+                        },
                         degree: {
                             id: 'PHD',
                             description: 'Doctor of Philosophy'
@@ -52,11 +52,11 @@ describe('transform function', () => {
                     patient: 10014282,
                     sequence: 20,
                     version: 7,
-                    asOf: new Date('2023-01-17T05:00:00Z'),
+                    asOf: new Date('2023-01-17T00:00:00Z'),
                     prefix: {
                         id: 'BSHP',
                         description: 'Bishop'
-                    },                        
+                    },
                     use: {
                         id: 'AD',
                         description: 'Adopted Name'
@@ -64,12 +64,12 @@ describe('transform function', () => {
                     first: 'Mike',
                     middle: 'John',
                     secondMiddle: 'David',
-                    last: "Smith",
-                    secondLast: 'Sarah', 
+                    last: 'Smith',
+                    secondLast: 'Sarah',
                     suffix: {
                         id: 'ESQ',
                         description: 'Esquire'
-                    },                                            
+                    },
                     degree: {
                         id: 'PHD',
                         description: 'Doctor of Philosophy'

@@ -1,13 +1,12 @@
 import { PatientName } from 'generated/graphql/schema';
 import { PatientNameResult } from './useFindPatientProfileNames';
-import { asLocalDate } from 'date';
 import { Name } from './NameEntry';
 
 const internalized = (content: PatientName): Name | null => {
     return (
         content && {
             ...content,
-            asOf: content.asOf && asLocalDate(content.asOf)
+            asOf: content.asOf && new Date(content.asOf)
         }
     );
 };
