@@ -51,8 +51,32 @@ class ClassicPatientSearchPage {
     cy.contains("You have successfully added a new patient")
   }
 
-  fillInformationAsOfDateField() {
-    cy.get('input[id="administrative.asOf"]').type("01/20/2025")
+  fillInformationAsOfDateField(date) {
+    const field = cy.get('input[id="administrative.asOf"]')
+    field.invoke('val', date || "01/20/2024").trigger('change')
+    field.click()
+    cy.contains("Administrative").eq(0).click()
+  }
+
+  errorMessageInformationAsOfField() {
+    cy.contains("The Information as of date should occur before or within the current year")
+  }
+
+  fillCommentsField(type) {
+    let commentText;
+    if(type === 'empty') {
+      return commentText = ''
+    } if('invalid') {
+        commentText = 'A'.repeat(2001)
+    } else {
+        commentText = 'Comments about the new patient'
+    }
+    cy.get('textarea[id="administrative.comment"]').type(commentText)
+    cy.contains("Administrative").eq(0).click()
+  }
+
+  errorMessageCommentsField() {
+    cy.contains("The Comments only allows 2000 characters")
   }
 
 }
