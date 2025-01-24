@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type Race = {
+export type RaceDemographic = {
     asOf?: string;
     race?: string;
     detailed?: Array<string>;
