@@ -62,7 +62,7 @@ public class PatientCreateMutationSteps {
   @Given("I am adding a new patient")
   public void i_am_adding_a_new_patient() {
     PatientInput newPatient = new PatientInput();
-    newPatient.setAsOf(RandomUtil.getRandomDateInPast());
+    newPatient.setAsOf(RandomUtil.dateInPast());
     this.input.active(newPatient);
   }
 

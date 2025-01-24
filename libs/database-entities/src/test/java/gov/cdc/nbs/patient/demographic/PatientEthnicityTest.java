@@ -6,7 +6,7 @@ import gov.cdc.nbs.entity.odse.PersonEthnicGroupId;
 import gov.cdc.nbs.patient.PatientCommand;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +21,7 @@ class PatientEthnicityTest {
     patient.update(
         new PatientCommand.UpdateEthnicityInfo(
             121L,
-            Instant.parse("2012-03-03T10:15:30.00Z"),
+            LocalDate.parse("2010-03-03"),
             "ethnic-group-value",
             "unknown-reason-value",
             131L,
@@ -33,7 +33,7 @@ class PatientEthnicityTest {
         .returns(131L, p -> p.audit().changed().changedBy())
         .returns(LocalDateTime.parse("2020-03-03T10:15:30"), p -> p.audit().changed().changedOn())
         .extracting(Person::getEthnicity)
-        .returns(Instant.parse("2012-03-03T10:15:30.00Z"), PatientEthnicity::asOf)
+        .returns(LocalDate.parse("2010-03-03"), PatientEthnicity::asOf)
         .returns("ethnic-group-value", PatientEthnicity::ethnicGroup)
         .returns("unknown-reason-value", PatientEthnicity::unknownReason);
   }
@@ -45,7 +45,7 @@ class PatientEthnicityTest {
         .update(
             new PatientCommand.UpdateEthnicityInfo(
                 121L,
-                Instant.parse("2012-03-03T10:15:30.00Z"),
+                LocalDate.parse("2010-03-03"),
                 "ethnic-group-value",
                 null,
                 131L,
@@ -99,7 +99,7 @@ class PatientEthnicityTest {
         .update(
             new PatientCommand.UpdateEthnicityInfo(
                 121L,
-                Instant.parse("2012-03-03T10:15:30.00Z"),
+                LocalDate.parse("2010-03-03"),
                 "ethnic-group-value",
                 null,
                 131L,
@@ -147,7 +147,7 @@ class PatientEthnicityTest {
         .update(
             new PatientCommand.UpdateEthnicityInfo(
                 121L,
-                Instant.parse("2012-03-03T10:15:30.00Z"),
+                LocalDate.parse("2010-03-03"),
                 "ethnic-group-value",
                 null,
                 131L,

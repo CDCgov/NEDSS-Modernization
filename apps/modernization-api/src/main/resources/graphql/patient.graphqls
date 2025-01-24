@@ -108,7 +108,7 @@ input PersonInput {
     birthGender: Gender
     currentGender: Gender
     deceased: Deceased
-    deceasedTime: DateTime
+    deceasedTime: Date
     maritalStatus: String
     addresses: [NewPatientAddress!]
     phoneNumbers: [NewPatientPhoneNumber!]
@@ -116,14 +116,14 @@ input PersonInput {
     identifications: [NewPatientIdentification!]
     ethnicity: String
     races: [String]
-    asOf: DateTime
+    asOf: Date
     comments: String
     stateHIVCase: String
 }
 
 input GeneralInfoInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     maritalStatus: String
     maternalMaidenName: String
     adultsInHouse: Int
@@ -141,7 +141,7 @@ type PatientGeneralChangeResult {
 
 input MortalityInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     deceased: String
     deceasedOn: Date
     city: String
@@ -156,7 +156,7 @@ type PatientMortalityChangeResult {
 
 input AdministrativeInput {
     patient: Int!
-    asOf: DateTime
+    asOf: Date!
     comment: String
 }
 
@@ -167,7 +167,7 @@ type PatientAdministrativeChangeResult {
 
 input EthnicityInput {
     patient: String!
-    asOf: DateTime!
+    asOf: Date!
     ethnicGroup: String
     unknownReason: String
     detailed: [String!]
@@ -348,7 +348,7 @@ type PatientIdentificationChangeResult {
 
 input UpdateBirthAndGenderInput {
     patient: ID!
-    asOf: DateTime!
+    asOf: Date!
     birth: UpdateBirthInput
     gender: UpdateGenderInput
 }

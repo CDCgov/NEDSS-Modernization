@@ -54,7 +54,7 @@ type PatientAdministrative {
     patient: ID!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     comment: String
 }
 
@@ -194,7 +194,7 @@ type PatientBirth {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     bornOn: Date
     age: Int
     multipleBirth: PatientIndicatorCodedValue
@@ -224,7 +224,7 @@ type PatientGender {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     birth: PatientGenderCodedValue
     current: PatientGenderCodedValue
     unknownReason: PatientGenderUnknownReason
@@ -265,7 +265,7 @@ type PatientMortality {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     deceased: PatientIndicatorCodedValue
     deceasedOn: Date
     city: String
@@ -307,7 +307,7 @@ type PatientGeneral {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     maritalStatus: PatientMaritalStatus
     maternalMaidenName: String
     adultsInHouse: Int
@@ -338,7 +338,7 @@ type PatientEthnicity {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     ethnicGroup: PatientEthnicGroup!
     unknownReason: PatientEthnicityUnknownReason
     detailed: [PatientDetailedEthnicity!]!
@@ -377,7 +377,7 @@ type PatientProfile {
     version: Int!
     status: String!
     deletable: Boolean!
-    summary(asOf: DateTime): PatientSummary
+    summary(asOf: Date): PatientSummary
     names(page: Page): PatientNameResults!
     administrative(page: Page): PatientAdministrativeResults!
     addresses(page: Page): PatientAddressResults!

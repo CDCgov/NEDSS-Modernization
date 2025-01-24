@@ -36,10 +36,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -75,17 +73,19 @@ public class Person {
   private String edxInd;
 
   @MapsId
-  @OneToOne(fetch = FetchType.EAGER, cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, optional = false)
+  @OneToOne(
+      fetch = FetchType.EAGER,
+      cascade = {
+          CascadeType.PERSIST,
+          CascadeType.MERGE,
+          CascadeType.REMOVE
+      }, optional = false)
   @JoinColumn(name = "person_uid", nullable = false)
   private NBSEntity nbsEntity;
 
   // administrative
   @Column(name = "as_of_date_admin")
-  private Instant asOfDateAdmin;
+  private LocalDate asOfDateAdmin;
 
   @Column(name = "description", length = 2000)
   private String description;
@@ -96,7 +96,7 @@ public class Person {
 
   // Mortality
   @Column(name = "as_of_date_morbidity")
-  private Instant asOfDateMorbidity;
+  private LocalDate asOfDateMorbidity;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "deceased_ind_cd", length = 20)
@@ -104,7 +104,7 @@ public class Person {
   private Deceased deceasedIndCd;
 
   @Column(name = "deceased_time")
-  private Instant deceasedTime;
+  private LocalDate deceasedTime;
 
   // Ethnicity
   @Embedded
@@ -112,7 +112,7 @@ public class Person {
 
   // Sex & birth
   @Column(name = "as_of_date_sex")
-  private Instant asOfDateSex;
+  private LocalDate asOfDateSex;
 
   @Column(name = "birth_time")
   private LocalDateTime birthTime;
@@ -448,7 +448,8 @@ public class Person {
 
   public void update(
       final PatientCommand.UpdateBirth birth,
-      final AddressIdentifierGenerator identifierGenerator) {
+      final AddressIdentifierGenerator identifierGenerator
+  ) {
     this.asOfDateSex = birth.asOf();
     resolveDateOfBirth(birth.bornOn());
     this.birthGenderCd = Gender.resolve(birth.gender());
@@ -473,14 +474,13 @@ public class Person {
 
   public void update(
       final PatientCommand.UpdateMortality info,
-      final AddressIdentifierGenerator identifierGenerator) {
+      final AddressIdentifierGenerator identifierGenerator
+  ) {
     this.asOfDateMorbidity = info.asOf();
     this.deceasedIndCd = Deceased.resolve(info.deceased());
 
     if (Objects.equals(Deceased.Y, this.deceasedIndCd)) {
-      this.deceasedTime = info.deceasedOn() == null
-          ? null
-          : info.deceasedOn().atStartOfDay(ZoneOffset.UTC).toInstant();
+      this.deceasedTime = info.deceasedOn();
     } else {
       this.deceasedTime = null;
     }

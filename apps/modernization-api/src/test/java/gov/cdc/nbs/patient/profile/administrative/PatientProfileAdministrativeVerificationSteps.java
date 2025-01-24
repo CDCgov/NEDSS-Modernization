@@ -4,7 +4,7 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -16,8 +16,8 @@ public class PatientProfileAdministrativeVerificationSteps {
     this.response = response;
   }
 
-  @Then("the patient profile administrative has the as of date {date}")
-  public void the_patient_profile_administrative_has_an_as_of_date_of(final Instant value) throws Exception {
+  @Then("the patient profile administrative has the as of date {localDate}")
+  public void the_patient_profile_administrative_has_an_as_of_date_of(final LocalDate value) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath("$.data.findPatientProfile.administrative.content[*].asOf")

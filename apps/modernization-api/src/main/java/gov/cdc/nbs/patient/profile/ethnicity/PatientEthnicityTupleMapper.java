@@ -4,7 +4,7 @@ import com.querydsl.core.Tuple;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,7 +50,7 @@ class PatientEthnicityTupleMapper {
                 "An ethnicity version is required"
             );
 
-        Instant asOf = tuple.get(this.tables.patient().ethnicity.asOfDateEthnicity);
+        LocalDate asOf = tuple.get(this.tables.patient().ethnicity.asOfDateEthnicity);
 
         PatientEthnicity.EthnicGroup ethnicGroup = mapEthnicGroup(tuple);
 

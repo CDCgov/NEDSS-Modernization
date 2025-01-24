@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 @Component
 public class BasicPatientCreator {
@@ -44,7 +43,7 @@ public class BasicPatientCreator {
 
     Person person = new Person(asAdd(context, identifier, input));
 
-    LocalDate asOf = input.getAsOf().atZone(ZoneId.systemDefault()).toLocalDate();
+    LocalDate asOf = input.getAsOf();
 
     input.getNames().stream()
         .map(name -> asName(context, identifier, asOf, name))

@@ -5,15 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class PatientSummaryResolverTest {
 
@@ -31,13 +30,13 @@ class PatientSummaryResolverTest {
 
         when(profile.id()).thenReturn(2963L);
 
-        Optional<PatientSummary> actual = resolver.resolve(profile, Instant.parse("2023-04-01T00:01:02Z"));
+        Optional<PatientSummary> actual = resolver.resolve(profile, LocalDate.parse("2023-04-01"));
 
         assertThat(actual)
             .as("The resolved patient summary comes from the finder")
             .isPresent();
 
-        verify(finder).find(2963L, Instant.parse("2023-04-01T00:01:02Z"));
+        verify(finder).find(2963L, LocalDate.parse("2023-04-01"));
 
     }
 
@@ -61,7 +60,7 @@ class PatientSummaryResolverTest {
             .as("The resolved patient summary comes from the finder")
             .isPresent();
 
-        verify(finder).find(2963L, Instant.parse("2023-04-04T02:03:04Z"));
+        verify(finder).find(2963L, LocalDate.parse("2023-04-04"));
 
     }
 }

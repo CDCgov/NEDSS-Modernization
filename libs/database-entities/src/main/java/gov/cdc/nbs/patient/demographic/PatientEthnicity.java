@@ -3,14 +3,13 @@ package gov.cdc.nbs.patient.demographic;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonEthnicGroup;
 import gov.cdc.nbs.patient.PatientCommand;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +19,7 @@ import java.util.Optional;
 public class PatientEthnicity {
 
   @Column(name = "as_of_date_ethnicity")
-  private Instant asOfDateEthnicity;
+  private LocalDate asOfDateEthnicity;
   @Column(name = "ethnic_group_ind", length = 20)
   private String ethnicGroupInd;
 
@@ -46,7 +45,7 @@ public class PatientEthnicity {
     }
   }
 
-  public Instant asOf() {
+  public LocalDate asOf() {
     return asOfDateEthnicity;
   }
 

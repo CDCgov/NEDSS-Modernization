@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.profile.ethnicity;
 
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
-import gov.cdc.nbs.time.LocalDateInstantMapper;
 
 public class EthnicityPatientCommandMapper {
 
@@ -13,7 +12,7 @@ public class EthnicityPatientCommandMapper {
   ) {
     return new PatientCommand.UpdateEthnicityInfo(
         patient,
-        LocalDateInstantMapper.from(ethnicity.asOf()),
+        ethnicity.asOf(),
         ethnicity.ethnicGroup(),
         ethnicity.unknownReason(),
         context.requestedBy(),

@@ -9,10 +9,8 @@ import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
@@ -59,7 +57,7 @@ class PatientSummaryTupleMapper {
     this.tables = tables;
   }
 
-  PatientSummary map(final Instant asOf, final Tuple tuple) {
+  PatientSummary map(final LocalDate asOf, final Tuple tuple) {
 
     long patient = Objects.requireNonNull(
         tuple.get(this.tables.patient().personParentUid.id),
@@ -126,12 +124,10 @@ class PatientSummaryTupleMapper {
 
   }
 
-  private Integer resolveAge(final Instant asOf, final LocalDate birthday) {
-    LocalDate now = LocalDate.ofInstant(asOf, ZoneId.systemDefault());
-
+  private Integer resolveAge(final LocalDate asOf, final LocalDate birthday) {
     return birthday == null
         ? null
-        : (int) ChronoUnit.YEARS.between(birthday, now);
+        : (int) ChronoUnit.YEARS.between(birthday, asOf);
   }
 
   private Collection<PatientSummary.Phone> maybeMapPhone(final Tuple tuple) {

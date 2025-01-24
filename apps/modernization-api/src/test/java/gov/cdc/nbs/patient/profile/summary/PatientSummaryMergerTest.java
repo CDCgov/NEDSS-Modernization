@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.profile.summary;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
@@ -18,7 +17,7 @@ class PatientSummaryMergerTest {
 
     PatientSummary actual = merger.merge(
         new PatientSummary(
-            Instant.parse("2017-08-17T14:17:20Z"),
+            LocalDate.parse("2017-08-17"),
             2459L,
             new PatientSummary.Name("left-prefix", "left-first", "left-middle", "left-last", "left-suffix"),
             LocalDate.of(2011, Month.FEBRUARY, 21),
@@ -29,7 +28,7 @@ class PatientSummaryMergerTest {
             List.of()
         ),
         new PatientSummary(
-            Instant.parse("2017-08-17T14:17:20Z"),
+            LocalDate.parse("2017-08-17"),
             2459L,
             new PatientSummary.Name("right-prefix", "right-first", "right-middle", "right-last", "right-suffix"),
             LocalDate.of(1987, Month.JULY, 17),
@@ -66,7 +65,7 @@ class PatientSummaryMergerTest {
 
     PatientSummary merged = merger.merge(
         new PatientSummary(
-            Instant.now(),
+            LocalDate.now(),
             2459L,
             null,
             LocalDate.of(2011, Month.FEBRUARY, 21),
@@ -80,7 +79,7 @@ class PatientSummaryMergerTest {
             List.of()
         ),
         new PatientSummary(
-            Instant.now(),
+            LocalDate.now(),
             2459L,
             null,
             LocalDate.of(1987, Month.JULY, 17),
@@ -111,7 +110,7 @@ class PatientSummaryMergerTest {
 
     PatientSummary merged = merger.merge(
         new PatientSummary(
-            Instant.now(),
+            LocalDate.now(),
             2459L,
             null,
             LocalDate.of(2011, Month.FEBRUARY, 21),
@@ -125,7 +124,7 @@ class PatientSummaryMergerTest {
             )
         ),
         new PatientSummary(
-            Instant.now(),
+            LocalDate.now(),
             2459L,
             null,
             LocalDate.of(1987, Month.JULY, 17),

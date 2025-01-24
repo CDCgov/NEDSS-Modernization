@@ -6,12 +6,11 @@ import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
 import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
-import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,25 +22,33 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 public class PatientProfileMortalitySteps {
 
-    @Autowired
-    Active<PatientInput> input;
+    private final Active<PatientInput> input;
 
-    @Autowired
-    Available<PatientIdentifier> patients;
+    private final Available<PatientIdentifier> patients;
 
-    @Autowired
-    PersonRepository repository;
+    private final PersonRepository repository;
 
-    @Autowired
-    PatientMortalityResolver resolver;
+    private final PatientMortalityResolver resolver;
+
+    PatientProfileMortalitySteps(
+        final Active<PatientInput> input,
+        final Available<PatientIdentifier> patients,
+        final PersonRepository repository,
+        final PatientMortalityResolver resolver
+    ) {
+        this.input = input;
+        this.patients = patients;
+        this.repository = repository;
+        this.resolver = resolver;
+    }
 
     @Given("the new patient's mortality is entered")
     public void the_new_patient_mortality_is_entered() {
         PatientInput active = this.input.active();
 
-        active.setAsOf(RandomUtil.getRandomDateInPast());
+        active.setAsOf(RandomUtil.dateInPast());
         active.setDeceased(RandomUtil.deceased());
-        active.setDeceasedTime(RandomUtil.getRandomDateInPast());
+        active.setDeceasedTime(RandomUtil.dateInPast());
     }
 
     @Then("the new patient has the entered mortality")

@@ -3,7 +3,6 @@ package gov.cdc.nbs.message.patient.event;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,10 +33,10 @@ public sealed interface PatientEvent {
       String birthGender,
       String currentGender,
       String deceased,
-      Instant deceasedOn,
+      LocalDate deceasedOn,
       String maritalStatus,
       String ethnicGroup,
-      Instant asOf,
+      LocalDate asOf,
       String comments,
       String stateHIVCase,
       List<Name> names,
@@ -93,7 +92,7 @@ public sealed interface PatientEvent {
   record EthnicityChanged(
       long patient,
       String localId,
-      Instant asOf,
+      LocalDate asOf,
       String ethnicGroup,
       String unknownReason,
       List<String> detailed,
@@ -106,11 +105,11 @@ public sealed interface PatientEvent {
   record RaceAdded(
       long patient,
       String localId,
-      Instant asOf,
+      LocalDate asOf,
       String category,
       List<String> detailed,
       long addedBy,
-      Instant addedOn
+      LocalDate addedOn
   ) implements PatientEvent {
   }
 
@@ -118,11 +117,11 @@ public sealed interface PatientEvent {
   record RaceChanged(
       long patient,
       String localId,
-      Instant asOf,
+      LocalDate asOf,
       String category,
       List<String> detailed,
       long changedBy,
-      Instant changedOn
+      LocalDate changedOn
   ) implements PatientEvent {
   }
 
@@ -131,7 +130,7 @@ public sealed interface PatientEvent {
       long patient,
       String localId,
       long changedBy,
-      Instant changedOn
+      LocalDate changedOn
   ) implements PatientEvent {
 
   }

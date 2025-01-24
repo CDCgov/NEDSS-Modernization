@@ -461,7 +461,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateBirth(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             birthday,
             null,
             RandomUtil.maybeIndicator(),
@@ -483,7 +483,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateBirth(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             RandomUtil.dateInPast(),
             RandomUtil.maybeGender(),
             RandomUtil.maybeIndicator(),
@@ -510,7 +510,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateGender(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             gender,
             null,
             null,
@@ -543,7 +543,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateMortality(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             indicator.value(),
             deceasedOn,
             null,
@@ -566,7 +566,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateEthnicityInfo(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             ethnicity,
             null,
             this.settings.createdBy(),
@@ -585,7 +585,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateEthnicityInfo(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             ethnicity,
             null,
             this.settings.createdBy(),

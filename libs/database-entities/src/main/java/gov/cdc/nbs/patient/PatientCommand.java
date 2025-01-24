@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,10 +31,10 @@ public sealed interface PatientCommand {
       Gender birthGender,
       Gender currentGender,
       Deceased deceased,
-      Instant deceasedTime,
+      LocalDate deceasedTime,
       String maritalStatus,
       String ethnicityCode,
-      Instant asOf,
+      LocalDate asOf,
       String comments,
       String stateHIVCase,
       long requester,
@@ -289,7 +288,7 @@ public sealed interface PatientCommand {
 
   record UpdateMortality(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       String deceased,
       LocalDate deceasedOn,
       String city,
@@ -304,7 +303,7 @@ public sealed interface PatientCommand {
 
   record UpdateEthnicityInfo(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       String ethnicGroup,
       String unknownReason,
 
@@ -334,7 +333,7 @@ public sealed interface PatientCommand {
 
   record UpdateAdministrativeInfo(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       String comment,
       long requester,
       LocalDateTime requestedOn
@@ -344,7 +343,7 @@ public sealed interface PatientCommand {
 
   record UpdateGeneralInfo(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       String maritalStatus,
       String mothersMaidenName,
       Integer adultsInHouseNumber,
@@ -360,7 +359,7 @@ public sealed interface PatientCommand {
 
   record UpdateBirth(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       LocalDate bornOn,
       String gender,
       String multipleBirth,
@@ -377,7 +376,7 @@ public sealed interface PatientCommand {
 
   record UpdateGender(
       long person,
-      Instant asOf,
+      LocalDate asOf,
       String current,
       String unknownReason,
       String preferred,

@@ -48,7 +48,7 @@ class PatientCreatedEmitter {
             patient.getDeceasedTime(),
             patient.getGeneralInformation().maritalStatus(),
             patient.getEthnicity().ethnicGroup(),
-            patient.getGeneralInformation().asOf(),
+            patient.getAsOfDateAdmin(),
             patient.getDescription(),
             patient.getGeneralInformation().stateHIVCase(),
             resolveNames(patient.getNames()),

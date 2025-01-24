@@ -8,9 +8,7 @@ import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.odse.QTeleEntityLocatorParticipation;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Optional;
 
 @Component
@@ -45,10 +43,7 @@ class PatientSummaryFinder {
     this.merger = new PatientSummaryMerger();
   }
 
-  Optional<PatientSummary> find(final long identifier, final Instant asOf) {
-
-    LocalDate localAsOf = asOf.atZone(ZoneId.systemDefault()).toLocalDate();
-
+  Optional<PatientSummary> find(final long identifier, final LocalDate asOf) {
     return this.factory.selectDistinct(
             this.tables.patient().personParentUid.id,
             this.tables.prefix().codeShortDescTxt,
@@ -75,7 +70,7 @@ class PatientSummaryFinder {
                         EFF_NAME.id.personUid.eq(this.tables.name().id.personUid),
                         EFF_NAME.recordStatus.status.eq(this.tables.name().recordStatus.status),
                         EFF_NAME.nmUseCd.eq(this.tables.name().nmUseCd),
-                        EFF_NAME.asOfDate.loe(localAsOf))),
+                        EFF_NAME.asOfDate.loe(asOf))),
             this.tables.name().id.personNameSeq.eq(
                 JPAExpressions.select(SEQ_NAME.id.personNameSeq.max())
                     .from(SEQ_NAME)
@@ -105,7 +100,7 @@ class PatientSummaryFinder {
                     .where(
                         EFF_PHONE.id.entityUid.eq(this.tables.phone().id.entityUid),
                         this.tables.phone().cd.isNull().or(EFF_PHONE.cd.eq(this.tables.phone().cd)),
-                        EFF_PHONE.asOfDate.loe(localAsOf))))
+                        EFF_PHONE.asOfDate.loe(asOf))))
         .leftJoin(this.tables.phoneNumber()).on(
             this.tables.phoneNumber().id.eq(this.tables.phone().id.locatorUid),
             this.tables.phoneNumber().phoneNbrTxt.isNotNull())
@@ -127,7 +122,7 @@ class PatientSummaryFinder {
                     .where(
                         EFF_EMAIL.id.entityUid.eq(this.tables.net().id.entityUid),
                         EFF_EMAIL.cd.eq(this.tables.net().cd),
-                        EFF_EMAIL.asOfDate.loe(localAsOf))))
+                        EFF_EMAIL.asOfDate.loe(asOf))))
         .leftJoin(this.tables.email()).on(
             this.tables.email().id.eq(this.tables.net().id.locatorUid),
             this.tables.email().emailAddress.isNotNull())

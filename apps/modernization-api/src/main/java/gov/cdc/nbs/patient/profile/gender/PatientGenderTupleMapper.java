@@ -5,7 +5,7 @@ import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import gov.cdc.nbs.message.enums.Gender;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 class PatientGenderTupleMapper {
@@ -51,8 +51,7 @@ class PatientGenderTupleMapper {
                 "A gender version is required"
             );
 
-        Instant asOf = tuple.get(this.tables.patient().asOfDateSex);
-
+        LocalDate asOf = tuple.get(this.tables.patient().asOfDateSex);
 
         PatientGender.Gender birth = resolveGender(tuple.get(this.tables.patient().birthGenderCd));
 

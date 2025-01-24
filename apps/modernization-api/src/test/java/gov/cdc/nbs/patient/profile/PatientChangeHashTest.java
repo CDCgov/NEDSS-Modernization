@@ -10,7 +10,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -30,7 +29,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateAdministrativeInfo(
             967L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             "comments",
             131L,
             LocalDateTime.parse("2019-03-03T10:15:30")
@@ -42,7 +41,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateAdministrativeInfo(
             967L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             "comments",
             131L,
             LocalDateTime.parse("2019-03-03T10:15:30")
@@ -59,7 +58,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateAdministrativeInfo(
                 967L,
-                Instant.now(),
+                LocalDate.now(),
                 "comments",
                 131L,
                 LocalDateTime.now()
@@ -68,7 +67,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateAdministrativeInfo(
                 967L,
-                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.parse("2023-06-01"),
                 "changed comments",
                 131L,
                 LocalDateTime.now()
@@ -90,7 +89,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateAdministrativeInfo(
             967L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             "comments",
             131L,
             LocalDateTime.now()
@@ -116,7 +115,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateGeneralInfo(
             967L,
-            Instant.parse("2010-03-03T10:15:30.00Z"),
+            LocalDate.parse("2010-03-03"),
             "marital status",
             "mothers maiden name",
             1,
@@ -134,7 +133,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateGeneralInfo(
             967L,
-            Instant.parse("2010-03-03T10:15:30.00Z"),
+            LocalDate.parse("2010-03-03"),
             "marital status",
             "mothers maiden name",
             1,
@@ -157,7 +156,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
-                Instant.now(),
+                LocalDate.now(),
                 "marital status",
                 "mothers maiden name",
                 1,
@@ -173,7 +172,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
-                Instant.parse("2010-03-03T10:15:30.00Z"),
+                LocalDate.parse("2010-03-03"),
                 "changed marital status",
                 "mothers maiden name",
                 1,
@@ -189,7 +188,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
-                Instant.parse("2010-03-03T10:15:30.00Z"),
+                LocalDate.parse("2010-03-03"),
                 "marital status",
                 "changed mothers maiden name",
                 1,
@@ -205,7 +204,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
-                Instant.parse("2010-03-03T10:15:30.00Z"),
+                LocalDate.parse("2010-03-03"),
                 "marital status",
                 "mothers maiden name",
                 113,
@@ -221,7 +220,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
-                Instant.parse("2010-03-03T10:15:30.00Z"),
+                LocalDate.parse("2010-03-03"),
                 "marital status",
                 "mothers maiden name",
                 1,
@@ -237,7 +236,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
-                Instant.parse("2010-03-03T10:15:30.00Z"),
+                LocalDate.parse("2010-03-03"),
                 "marital status",
                 "mothers maiden name",
                 1,
@@ -253,7 +252,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
-                Instant.parse("2010-03-03T10:15:30.00Z"),
+                LocalDate.parse("2010-03-03"),
                 "marital status",
                 "mothers maiden name",
                 1,
@@ -269,7 +268,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
-                Instant.parse("2010-03-03T10:15:30.00Z"),
+                LocalDate.parse("2010-03-03"),
                 "marital status",
                 "mothers maiden name",
                 1,
@@ -285,7 +284,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
-                Instant.parse("2010-03-03T10:15:30.00Z"),
+                LocalDate.parse("2010-03-03"),
                 "marital status",
                 "mothers maiden name",
                 1,
@@ -312,7 +311,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateGeneralInfo(
             967L,
-            Instant.parse("2010-03-03T10:15:30.00Z"),
+            LocalDate.parse("2010-03-03"),
             "marital status",
             "mothers maiden name",
             1,
@@ -348,7 +347,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateMortality(
             1157,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.of(2023, Month.JUNE, 1),
             "Y",
             LocalDate.of(1987, Month.NOVEMBER, 17),
             null,
@@ -366,7 +365,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateMortality(
             1157,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.of(2023, Month.JUNE, 1),
             "Y",
             LocalDate.of(1987, Month.NOVEMBER, 17),
             null,
@@ -389,7 +388,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateMortality(
                 1157,
-                Instant.now(),
+                LocalDate.now(),
                 "Y",
                 LocalDate.of(1987, Month.NOVEMBER, 17),
                 null,
@@ -403,7 +402,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateMortality(
                 1157,
-                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(2023, Month.JUNE, 1),
                 "N",
                 LocalDate.of(1987, Month.NOVEMBER, 17),
                 null,
@@ -417,7 +416,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateMortality(
                 1157,
-                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(2023, Month.JUNE, 1),
                 "Y",
                 LocalDate.now(),
                 null,
@@ -444,7 +443,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateMortality(
             1157,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.of(2023, Month.JUNE, 1),
             "Y",
             LocalDate.of(1987, Month.NOVEMBER, 17),
             null,
@@ -476,7 +475,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateEthnicityInfo(
             121L,
-            Instant.parse("2012-03-03T10:15:30.00Z"),
+            LocalDate.parse("2012-03-03"),
             "ethnic-group-value",
             "unknown-reason-value",
             131L,
@@ -489,7 +488,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateEthnicityInfo(
             967L,
-            Instant.parse("2012-03-03T10:15:30.00Z"),
+            LocalDate.parse("2012-03-03"),
             "ethnic-group-value",
             "unknown-reason-value",
             131L,
@@ -507,7 +506,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateEthnicityInfo(
                 121L,
-                Instant.now(),
+                LocalDate.now(),
                 "ethnic-group-value",
                 "unknown-reason-value",
                 131L,
@@ -517,7 +516,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateEthnicityInfo(
                 121L,
-                Instant.parse("2012-03-03T10:15:30.00Z"),
+                LocalDate.parse("2012-03-03"),
                 "ethnic-group-value",
                 "changed unknown-reason-value",
                 131L,
@@ -538,7 +537,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateEthnicityInfo(
             121L,
-            Instant.parse("2012-03-03T10:15:30.00Z"),
+            LocalDate.parse("2012-03-03"),
             "ethnic-group-value",
             "unknown-reason-value",
             131L,
@@ -565,7 +564,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateGender(
             967L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.of(2023, Month.JUNE, 1),
             Gender.U.value(),
             "gender-unknown-reason",
             "gender-preferred",
@@ -580,7 +579,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateGender(
             967L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.of(2023, Month.JUNE, 1),
             Gender.U.value(),
             "gender-unknown-reason",
             "gender-preferred",
@@ -600,7 +599,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGender(
                 967L,
-                Instant.now(),
+                LocalDate.now(),
                 Gender.U.value(),
                 "gender-unknown-reason",
                 "gender-preferred",
@@ -612,7 +611,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGender(
                 967L,
-                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(2023, Month.JUNE, 1),
                 Gender.M.value(),
                 "gender-unknown-reason",
                 "gender-preferred",
@@ -624,7 +623,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGender(
                 967L,
-                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(2023, Month.JUNE, 1),
                 Gender.U.value(),
                 "changed gender-unknown-reason",
                 "gender-preferred",
@@ -636,7 +635,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGender(
                 967L,
-                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(2023, Month.JUNE, 1),
                 Gender.U.value(),
                 "gender-unknown-reason",
                 "changed gender-preferred",
@@ -648,7 +647,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateGender(
                 967L,
-                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(2023, Month.JUNE, 1),
                 Gender.U.value(),
                 "gender-unknown-reason",
                 "gender-preferred",
@@ -671,7 +670,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateGender(
             967L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.of(2023, Month.JUNE, 1),
             Gender.U.value(),
             "gender-unknown-reason",
             "gender-preferred",
@@ -702,7 +701,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateBirth(
             967L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.of(2023, Month.JUNE, 1),
             LocalDate.of(1949, 10, 15),
             Gender.U.value(),
             Indicator.NO.getId(),
@@ -722,7 +721,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateBirth(
             967L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.of(2023, Month.JUNE, 1),
             LocalDate.of(1949, 10, 15),
             Gender.U.value(),
             Indicator.NO.getId(),
@@ -747,7 +746,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateBirth(
                 967L,
-                Instant.now(),
+                LocalDate.now(),
                 LocalDate.of(1949, 10, 15),
                 Gender.U.value(),
                 Indicator.NO.getId(),
@@ -763,7 +762,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateBirth(
                 967L,
-                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(2023, Month.JUNE, 1),
                 LocalDate.now(),
                 Gender.U.value(),
                 Indicator.NO.getId(),
@@ -779,7 +778,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateBirth(
                 967L,
-                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(2023, Month.JUNE, 1),
                 LocalDate.of(1949, 10, 15),
                 Gender.F.value(),
                 Indicator.NO.getId(),
@@ -795,7 +794,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateBirth(
                 967L,
-                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(2023, Month.JUNE, 1),
                 LocalDate.of(1949, 10, 15),
                 Gender.U.value(),
                 Indicator.YES.getId(),
@@ -811,7 +810,7 @@ class PatientChangeHashTest {
         arguments(
             new PatientCommand.UpdateBirth(
                 967L,
-                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(2023, Month.JUNE, 1),
                 LocalDate.of(1949, 10, 15),
                 Gender.U.value(),
                 Indicator.NO.getId(),
@@ -840,7 +839,7 @@ class PatientChangeHashTest {
     patient.update(
         new PatientCommand.UpdateBirth(
             967L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.of(2023, Month.JUNE, 1),
             LocalDate.of(1949, 10, 15),
             Gender.U.value(),
             Indicator.NO.getId(),

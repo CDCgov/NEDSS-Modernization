@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.general.change;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public class GeneralInformationPendingChanges {
 
@@ -95,7 +95,7 @@ public class GeneralInformationPendingChanges {
     return this;
   }
 
-  UpdateGeneralInformation applied(final long patient, final Instant asOf) {
+  UpdateGeneralInformation applied(final long patient, final LocalDate asOf) {
     return new UpdateGeneralInformation(
         patient,
         asOf,

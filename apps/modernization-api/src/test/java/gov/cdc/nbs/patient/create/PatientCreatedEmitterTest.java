@@ -10,7 +10,6 @@ import gov.cdc.nbs.patient.event.PatientEventEmitter;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -35,10 +34,10 @@ class PatientCreatedEmitterTest {
             Gender.M,
             Gender.F,
             Deceased.Y,
-            Instant.parse("2085-09-07T13:09:07Z"),
+            LocalDate.parse("2085-09-07"),
             "Marital Status",
             "EthCode",
-            Instant.parse("2019-03-03T10:15:30Z"),
+            LocalDate.parse("2019-03-03"),
             "comments",
             "HIV-Case",
             131L,
@@ -62,10 +61,10 @@ class PatientCreatedEmitterTest {
         .returns("M", PatientEvent.Created::birthGender)
         .returns("F", PatientEvent.Created::currentGender)
         .returns("Y", PatientEvent.Created::deceased)
-        .returns(Instant.parse("2085-09-07T13:09:07Z"), PatientEvent.Created::deceasedOn)
+        .returns(LocalDate.parse("2085-09-07"), PatientEvent.Created::deceasedOn)
         .returns("Marital Status", PatientEvent.Created::maritalStatus)
         .returns("EthCode", PatientEvent.Created::ethnicGroup)
-        .returns(Instant.parse("2019-03-03T10:15:30Z"), PatientEvent.Created::asOf)
+        .returns(LocalDate.parse("2019-03-03"), PatientEvent.Created::asOf)
         .returns("comments", PatientEvent.Created::comments)
         .returns("HIV-Case", PatientEvent.Created::stateHIVCase)
         .returns(131L, PatientEvent.Created::createdBy)
