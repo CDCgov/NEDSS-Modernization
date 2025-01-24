@@ -188,7 +188,7 @@ class PatientCreatedEmitterTest {
         new PatientCommand.AddAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:06:09Z"),
+            LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
             "city-description",
@@ -214,7 +214,7 @@ class PatientCreatedEmitterTest {
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .returns(4861L, PatientEvent.Created.Address::identifier)
-                .returns(Instant.parse("2021-07-07T03:06:09Z"), PatientEvent.Created.Address::asOf)
+                .returns(LocalDate.parse("2021-07-07"), PatientEvent.Created.Address::asOf)
                 .returns("SA1", PatientEvent.Created.Address::streetAddress1)
                 .returns("SA2", PatientEvent.Created.Address::streetAddress2)
                 .returns("city-description", PatientEvent.Created.Address::city)
@@ -246,7 +246,7 @@ class PatientCreatedEmitterTest {
         new PatientCommand.AddPhoneNumber(
             117L,
             5347L,
-            Instant.parse("2017-05-16T11:13:19Z"),
+            LocalDate.parse("2017-05-16"),
             "CP",
             "MC",
             "Phone Number",
@@ -268,7 +268,7 @@ class PatientCreatedEmitterTest {
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .returns(5347L, PatientEvent.Created.Phone::identifier)
-                .returns(Instant.parse("2017-05-16T11:13:19Z"), PatientEvent.Created.Phone::asOf)
+                .returns(LocalDate.parse("2017-05-16"), PatientEvent.Created.Phone::asOf)
                 .returns("CP", PatientEvent.Created.Phone::type)
                 .returns("MC", PatientEvent.Created.Phone::use)
                 .returns("Phone Number", PatientEvent.Created.Phone::number)
@@ -296,7 +296,7 @@ class PatientCreatedEmitterTest {
         new PatientCommand.AddEmailAddress(
             117L,
             5333L,
-            Instant.parse("2017-05-16T11:13:19Z"),
+            LocalDate.parse("2017-05-16"),
             "AnEmail@email.com",
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30")
@@ -315,7 +315,7 @@ class PatientCreatedEmitterTest {
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .returns(5333L, PatientEvent.Created.Email::identifier)
-                .returns(Instant.parse("2017-05-16T11:13:19Z"), PatientEvent.Created.Email::asOf)
+                .returns(LocalDate.parse("2017-05-16"), PatientEvent.Created.Email::asOf)
                 .returns("NET", PatientEvent.Created.Email::type)
                 .returns("H", PatientEvent.Created.Email::use)
                 .returns("AnEmail@email.com", PatientEvent.Created.Email::address)

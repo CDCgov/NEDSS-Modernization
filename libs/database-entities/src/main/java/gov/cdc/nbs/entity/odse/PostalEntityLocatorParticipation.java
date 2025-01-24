@@ -11,6 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 
+import java.time.ZoneId;
+
 @Entity
 @DiscriminatorValue(PostalEntityLocatorParticipation.POSTAL_CLASS_CODE)
 @SuppressWarnings(
@@ -37,7 +39,8 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     public PostalEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddAddress address) {
+            final PatientCommand.AddAddress address
+    ) {
 
         super(address, nbs, identifier);
 
@@ -52,11 +55,12 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     public PostalEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.UpdateBirth birth) {
+            final PatientCommand.UpdateBirth birth
+    ) {
         super(birth, nbs, identifier);
         this.cd = "F";
         this.useCd = "BIR";
-        this.asOfDate = birth.asOf();
+        this.asOfDate = birth.asOf().atZone(ZoneId.systemDefault()).toLocalDate();
 
         this.locator = new PostalLocator(identifier.getLocatorUid(), birth);
     }
@@ -64,11 +68,12 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     public PostalEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.UpdateMortality mortality) {
+            final PatientCommand.UpdateMortality mortality
+    ) {
         super(mortality, nbs, identifier);
         this.cd = "U";
         this.useCd = "DTH";
-        this.asOfDate = mortality.asOf();
+        this.asOfDate = mortality.asOf().atZone(ZoneId.systemDefault()).toLocalDate();
 
         this.locator = new PostalLocator(identifier.getLocatorUid(), mortality);
     }
@@ -90,13 +95,13 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     }
 
     public void update(final PatientCommand.UpdateBirth birth) {
-        this.asOfDate = birth.asOf();
+        this.asOfDate = birth.asOf().atZone(ZoneId.systemDefault()).toLocalDate();
         this.locator.update(birth);
         changed(birth);
     }
 
     public void update(final PatientCommand.UpdateMortality mortality) {
-        this.asOfDate = mortality.asOf();
+        this.asOfDate = mortality.asOf().atZone(ZoneId.systemDefault()).toLocalDate();
         this.locator.update(mortality);
         changed(mortality);
     }

@@ -27,6 +27,7 @@ import static gov.cdc.nbs.patient.profile.general.GeneralInformationDemographicP
 import static gov.cdc.nbs.patient.profile.identification.IdentificationDemographicPatientCommandMapper.asAddIdentification;
 import static gov.cdc.nbs.patient.profile.names.NameDemographicPatientCommandMapper.asAddName;
 import static gov.cdc.nbs.patient.profile.mortality.MortalityDemographicPatientCommandMapper.asUpdateMortality;
+import static gov.cdc.nbs.patient.profile.race.RaceDemographicPatientCommandMapper.asAddRace;
 
 @Component
 class PatientCreationService {
@@ -110,7 +111,11 @@ class PatientCreationService {
         .stream()
         .map(demographic -> asAddIdentification(identifier.id(), context, demographic))
         .forEach(patient::add);
-    ;
+
+    newPatient.races()
+        .stream()
+        .map(demographic -> asAddRace(identifier.id(), context, demographic))
+        .forEach(patient::add);
 
     this.entityManager.persist(patient);
 

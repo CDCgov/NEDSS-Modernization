@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.profile.create;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.accumulation.Including;
 import gov.cdc.nbs.patient.profile.address.AddressDemographic;
 import gov.cdc.nbs.patient.profile.administrative.Administrative;
@@ -11,9 +10,9 @@ import gov.cdc.nbs.patient.profile.general.GeneralInformationDemographic;
 import gov.cdc.nbs.patient.profile.identification.IdentificationDemographic;
 import gov.cdc.nbs.patient.profile.mortality.MortalityDemographic;
 import gov.cdc.nbs.patient.profile.names.NameDemographic;
-import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
+import gov.cdc.nbs.patient.profile.phone.PhoneDemographic;
+import gov.cdc.nbs.patient.profile.race.RaceDemographic;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,29 +25,10 @@ public record NewPatient(
     GeneralInformationDemographic general,
     List<NameDemographic> names,
     List<AddressDemographic> addresses,
-    List<Phone> phoneEmails,
-    List<Race> races,
+    List<PhoneDemographic> phoneEmails,
+    List<RaceDemographic> races,
     List<IdentificationDemographic> identifications
 ) {
-
-  public record Phone(
-      @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
-      String type,
-      String use,
-      String countryCode,
-      String phoneNumber,
-      String extension,
-      String email,
-      String url,
-      String comment) {
-  }
-
-
-  public record Race(
-      @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
-      String race,
-      List<String> detailed) {
-  }
 
   public NewPatient(
       Administrative administrative,
@@ -59,8 +39,8 @@ public record NewPatient(
       GeneralInformationDemographic general,
       List<NameDemographic> names,
       List<AddressDemographic> addresses,
-      List<Phone> phoneEmails,
-      List<Race> races,
+      List<PhoneDemographic> phoneEmails,
+      List<RaceDemographic> races,
       List<IdentificationDemographic> identifications
   ) {
     this.administrative = administrative;
@@ -140,7 +120,7 @@ public record NewPatient(
     );
   }
 
-  public NewPatient withPhoneEmail(final Phone value) {
+  public NewPatient withPhoneEmail(final PhoneDemographic value) {
     return new NewPatient(
         administrative(),
         birth(),
@@ -155,7 +135,7 @@ public record NewPatient(
         identifications());
   }
 
-  public NewPatient withRace(final Race value) {
+  public NewPatient withRace(final RaceDemographic value) {
     return new NewPatient(
         administrative(),
         birth(),

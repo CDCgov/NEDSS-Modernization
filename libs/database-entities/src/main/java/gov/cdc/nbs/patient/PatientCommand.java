@@ -112,7 +112,7 @@ public sealed interface PatientCommand {
   record AddAddress(
       long person,
       long id,
-      Instant asOf,
+      LocalDate asOf,
       String type,
       String use,
       String address1,
@@ -131,7 +131,7 @@ public sealed interface PatientCommand {
     public AddAddress(
         long person,
         long id,
-        Instant asOf,
+        LocalDate asOf,
         String address1,
         String address2,
         String city,
@@ -169,7 +169,7 @@ public sealed interface PatientCommand {
   record UpdateAddress(
       long person,
       long id,
-      Instant asOf,
+      LocalDate asOf,
       String type,
       String use,
       String address1,
@@ -198,7 +198,7 @@ public sealed interface PatientCommand {
   record AddPhoneNumber(
       long person,
       long id,
-      Instant asOf,
+      LocalDate asOf,
       String type,
       String use,
       String number,
@@ -212,7 +212,7 @@ public sealed interface PatientCommand {
   record AddEmailAddress(
       long person,
       long id,
-      Instant asOf,
+      LocalDate asOf,
       String email,
       long requester,
       LocalDateTime requestedOn
@@ -225,7 +225,8 @@ public sealed interface PatientCommand {
       long id,
       String email,
       long requester,
-      LocalDateTime requestedOn) implements PatientCommand {
+      LocalDateTime requestedOn
+  ) implements PatientCommand {
   }
 
 
@@ -233,7 +234,8 @@ public sealed interface PatientCommand {
       long person,
       long id,
       long requester,
-      LocalDateTime requestedOn) implements PatientCommand {
+      LocalDateTime requestedOn
+  ) implements PatientCommand {
   }
 
 
@@ -242,7 +244,7 @@ public sealed interface PatientCommand {
       long id,
       String type,
       String use,
-      Instant asOf,
+      LocalDate asOf,
       String countryCode,
       String number,
       String extension,
@@ -261,7 +263,7 @@ public sealed interface PatientCommand {
       long id,
       String type,
       String use,
-      Instant asOf,
+      LocalDate asOf,
       String countryCode,
       String number,
       String extension,

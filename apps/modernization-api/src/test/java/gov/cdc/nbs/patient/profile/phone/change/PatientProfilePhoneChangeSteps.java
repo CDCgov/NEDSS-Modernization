@@ -1,21 +1,20 @@
 package gov.cdc.nbs.patient.profile.phone.change;
 
-import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityManager;
+import net.datafaker.Faker;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,18 +24,25 @@ public class PatientProfilePhoneChangeSteps {
 
   private final Faker faker = new Faker(Locale.of("en-us"));
 
-  @Autowired
-  Available<PatientIdentifier> patients;
+  private final Available<PatientIdentifier> patients;
 
-  @Autowired
-  PatientPhoneChangeController controller;
+  private final PatientPhoneChangeController controller;
 
-  @Autowired
-  EntityManager entityManager;
+  private final EntityManager entityManager;
 
   private NewPatientPhoneInput newRequest;
   private UpdatePatientPhoneInput updateRequest;
   private DeletePatientPhoneInput deleteRequest;
+
+  PatientProfilePhoneChangeSteps(
+      final Available<PatientIdentifier> patients,
+      final PatientPhoneChangeController controller,
+      final EntityManager entityManager
+  ) {
+    this.patients = patients;
+    this.controller = controller;
+    this.entityManager = entityManager;
+  }
 
   @Before("@patient-profile-phone-change")
   public void reset() {
@@ -51,7 +57,7 @@ public class PatientProfilePhoneChangeSteps {
 
     newRequest = new NewPatientPhoneInput(
         patient,
-        RandomUtil.getRandomDateInPast(),
+        RandomUtil.dateInPast(),
         RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
         RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
         RandomUtil.getRandomString(19),
@@ -102,7 +108,7 @@ public class PatientProfilePhoneChangeSteps {
     updateRequest = new UpdatePatientPhoneInput(
         existing.getId().getEntityUid(),
         existing.getId().getLocatorUid(),
-        RandomUtil.getRandomDateInPast(),
+        RandomUtil.dateInPast(),
         RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
         RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
         RandomUtil.getRandomString(15),

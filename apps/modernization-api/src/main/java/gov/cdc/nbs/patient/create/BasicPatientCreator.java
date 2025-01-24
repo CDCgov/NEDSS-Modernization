@@ -12,7 +12,6 @@ import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
@@ -45,15 +44,14 @@ public class BasicPatientCreator {
 
     Person person = new Person(asAdd(context, identifier, input));
 
-    Instant asOf = input.getAsOf();
-    LocalDate localAsOf = input.getAsOf().atZone(ZoneId.systemDefault()).toLocalDate();
+    LocalDate asOf = input.getAsOf().atZone(ZoneId.systemDefault()).toLocalDate();
 
     input.getNames().stream()
-        .map(name -> asName(context, identifier, localAsOf, name))
+        .map(name -> asName(context, identifier, asOf, name))
         .forEach(name -> person.add(resolver, name));
 
     input.getRaces().stream()
-        .map(race -> asRace(context, identifier, localAsOf, race))
+        .map(race -> asRace(context, identifier, asOf, race))
         .forEach(person::add);
 
     input.getAddresses().stream()
@@ -69,7 +67,7 @@ public class BasicPatientCreator {
         .forEach(person::add);
 
     input.getIdentifications().stream()
-        .map(identification -> asIdentification(context, identifier, localAsOf, identification))
+        .map(identification -> asIdentification(context, identifier, asOf, identification))
         .forEach(person::add);
 
     this.entityManager.persist(person);
@@ -141,7 +139,7 @@ public class BasicPatientCreator {
   private PatientCommand.AddAddress asAddress(
       final RequestContext context,
       final PatientIdentifier identifier,
-      final Instant asOf,
+      final LocalDate asOf,
       final PatientInput.PostalAddress address
   ) {
     return new PatientCommand.AddAddress(
@@ -164,7 +162,7 @@ public class BasicPatientCreator {
   private PatientCommand.AddPhoneNumber asPhoneNumber(
       final RequestContext context,
       final PatientIdentifier identifier,
-      final Instant asOf,
+      final LocalDate asOf,
       final PatientInput.PhoneNumber phoneNumber
   ) {
 
@@ -184,7 +182,7 @@ public class BasicPatientCreator {
   private PatientCommand.AddEmailAddress asEmailAddress(
       final RequestContext context,
       final PatientIdentifier identifier,
-      final Instant asOf,
+      final LocalDate asOf,
       final String emailAddress
   ) {
     return new PatientCommand.AddEmailAddress(

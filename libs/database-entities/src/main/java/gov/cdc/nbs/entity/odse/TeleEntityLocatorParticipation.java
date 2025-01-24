@@ -37,7 +37,8 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     public TeleEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddPhoneNumber phoneNumber) {
+            final PatientCommand.AddPhoneNumber phoneNumber
+    ) {
         super(phoneNumber, nbs, identifier);
 
         this.cd = phoneNumber.type();
@@ -49,7 +50,8 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     public TeleEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddEmailAddress emailAddress) {
+            final PatientCommand.AddEmailAddress emailAddress
+    ) {
         super(emailAddress, nbs, identifier);
 
         this.cd = "NET";
@@ -62,7 +64,8 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     public TeleEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddPhone phone) {
+            final PatientCommand.AddPhone phone
+    ) {
         super(phone, nbs, identifier);
 
         this.cd = phone.type();

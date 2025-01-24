@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.function.Predicate;
 
 @AllArgsConstructor
@@ -65,13 +66,13 @@ public abstract class EntityLocatorParticipation {
   private String durationUnitCd;
 
   @Column(name = "from_time")
-  private Instant fromTime;
+  private LocalDate fromTime;
 
   @Column(name = "locator_desc_txt", length = 2000)
   protected String locatorDescTxt;
 
   @Column(name = "to_time")
-  private Instant toTime;
+  private LocalDate toTime;
 
   @Column(name = "use_cd", length = 20)
   protected String useCd;
@@ -86,7 +87,7 @@ public abstract class EntityLocatorParticipation {
   private Short versionCtrlNbr;
 
   @Column(name = "as_of_date")
-  protected Instant asOfDate;
+  protected LocalDate asOfDate;
 
   @Embedded
   private Audit audit;

@@ -4,7 +4,7 @@ import gov.cdc.nbs.patient.PatientCommand;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +22,7 @@ class PostalEntityLocatorParticipationTest {
         new PatientCommand.AddAddress(
             117L,
             5331L,
-            Instant.parse("2021-07-07T03:06:09Z"),
+            LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
             "city-description",

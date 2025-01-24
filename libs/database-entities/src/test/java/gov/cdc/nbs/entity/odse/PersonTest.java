@@ -461,7 +461,7 @@ class PersonTest {
         new PatientCommand.AddAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:35:13Z"),
+            LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
             "city-description",
@@ -481,7 +481,7 @@ class PersonTest {
                 .returns(4861L, p -> p.getId().getLocatorUid())
                 .returns("H", EntityLocatorParticipation::getCd)
                 .returns("H", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2021-07-07T03:35:13Z"), EntityLocatorParticipation::getAsOfDate)
+                .returns(LocalDate.parse("2021-07-07"), EntityLocatorParticipation::getAsOfDate)
                 .extracting(PostalEntityLocatorParticipation::getLocator)
                 .returns(4861L, PostalLocator::getId)
                 .returns("SA1", PostalLocator::getStreetAddr1)
@@ -505,7 +505,7 @@ class PersonTest {
         new PatientCommand.AddAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:35:13Z"),
+            LocalDate.parse("2021-07-07"),
             "type-value",
             "use-value",
             "SA1",
@@ -533,7 +533,7 @@ class PersonTest {
                 .returns(4861L, p -> p.getId().getLocatorUid())
                 .returns("type-value", EntityLocatorParticipation::getCd)
                 .returns("use-value", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2021-07-07T03:35:13Z"), EntityLocatorParticipation::getAsOfDate)
+                .returns(LocalDate.parse("2021-07-07"), EntityLocatorParticipation::getAsOfDate)
                 .returns("Comments", EntityLocatorParticipation::getLocatorDescTxt)
                 .satisfies(
                     added -> assertThat(added.audit())
@@ -570,7 +570,7 @@ class PersonTest {
         new PatientCommand.AddAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:06:09Z"),
+            LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
             "city-description",
@@ -588,7 +588,7 @@ class PersonTest {
         new PatientCommand.UpdateAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:35:13Z"),
+            LocalDate.parse("2021-07-07"),
             "type-value",
             "use-value",
             "SA1",
@@ -616,7 +616,7 @@ class PersonTest {
                 .returns(4861L, p -> p.getId().getLocatorUid())
                 .returns("type-value", EntityLocatorParticipation::getCd)
                 .returns("use-value", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2021-07-07T03:35:13Z"), EntityLocatorParticipation::getAsOfDate)
+                .returns(LocalDate.parse("2021-07-07"), EntityLocatorParticipation::getAsOfDate)
                 .returns("Comments", EntityLocatorParticipation::getLocatorDescTxt)
                 .satisfies(
                     added -> assertThat(added.audit())
@@ -652,7 +652,7 @@ class PersonTest {
         new PatientCommand.AddAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:06:09Z"),
+            LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
             "city-description",
@@ -670,7 +670,7 @@ class PersonTest {
         new PatientCommand.AddAddress(
             117L,
             5331L,
-            Instant.parse("2021-07-07T03:06:09Z"),
+            LocalDate.parse("2021-07-07"),
             "Other-SA1",
             "Other-SA2",
             "Other-city",
@@ -693,10 +693,10 @@ class PersonTest {
         )
     );
 
-    assertThat(patient)
-        .returns(191L, person -> person.audit().changed().changedBy())
-        .returns(LocalDateTime.parse("2021-05-24T11:01:17"), person -> person.audit().changed().changedOn());
-
+    assertThat(patient).satisfies(
+        added -> assertThat(added.audit())
+            .satisfies(AuditAssertions.changed(191L, "2021-05-24T11:01:17"))
+    );
 
     assertThat(patient.addresses())
         .satisfiesExactly(
@@ -716,7 +716,7 @@ class PersonTest {
         new PatientCommand.AddEmailAddress(
             117L,
             5333L,
-            Instant.parse("2017-05-16T11:13:19Z"),
+            LocalDate.parse("2017-05-16"),
             "AnEmail@email.com",
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30.00")
@@ -729,7 +729,7 @@ class PersonTest {
                 .returns(5333L, p -> p.getId().getLocatorUid())
                 .returns("NET", EntityLocatorParticipation::getCd)
                 .returns("H", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2017-05-16T11:13:19Z"), EntityLocatorParticipation::getAsOfDate)
+                .returns(LocalDate.parse("2017-05-16"), EntityLocatorParticipation::getAsOfDate)
                 .extracting(TeleEntityLocatorParticipation::getLocator)
                 .returns(5333L, TeleLocator::getId)
                 .returns("AnEmail@email.com", TeleLocator::getEmailAddress)
@@ -747,7 +747,7 @@ class PersonTest {
         new PatientCommand.AddPhoneNumber(
             117L,
             5347L,
-            Instant.parse("2017-05-16T11:13:19Z"),
+            LocalDate.parse("2017-05-16"),
             "CP",
             "MC",
             "Phone Number",
@@ -757,16 +757,16 @@ class PersonTest {
         )
     );
 
-    assertThat(actual)
-        .returns(131L, person -> person.audit().changed().changedBy())
-        .returns(LocalDateTime.parse("2020-03-03T10:15:30"), person -> person.audit().changed().changedOn());
-
+    assertThat(actual).satisfies(
+        added -> assertThat(added.audit())
+            .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
+    );
 
     assertThat(actual.phoneNumbers())
         .satisfiesExactly(
             actualPhoneLocator -> assertThat(actualPhoneLocator)
                 .returns(5347L, p -> p.getId().getLocatorUid())
-                .returns(Instant.parse("2017-05-16T11:13:19Z"), EntityLocatorParticipation::getAsOfDate)
+                .returns(LocalDate.parse("2017-05-16"), EntityLocatorParticipation::getAsOfDate)
                 .returns("CP", EntityLocatorParticipation::getCd)
                 .returns("MC", EntityLocatorParticipation::getUseCd)
                 .extracting(TeleEntityLocatorParticipation::getLocator)
@@ -793,7 +793,7 @@ class PersonTest {
             5347L,
             "type-value",
             "use-value",
-            Instant.parse("2023-11-27T22:53:07Z"),
+            LocalDate.parse("2023-11-27"),
             "country-code",
             "number",
             "extension",
@@ -816,7 +816,7 @@ class PersonTest {
                 .returns(5347L, p -> p.getId().getLocatorUid())
                 .returns("type-value", EntityLocatorParticipation::getCd)
                 .returns("use-value", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2023-11-27T22:53:07Z"), EntityLocatorParticipation::getAsOfDate)
+                .returns(LocalDate.parse("2023-11-27"), EntityLocatorParticipation::getAsOfDate)
                 .returns("comment", EntityLocatorParticipation::getLocatorDescTxt)
                 .satisfies(
                     added -> assertThat(added.audit())
@@ -848,7 +848,7 @@ class PersonTest {
             5347L,
             "type-value",
             "use-value",
-            Instant.parse("2023-11-27T22:53:07Z"),
+            LocalDate.parse("2023-11-27"),
             "country-code",
             "number",
             "extension",
@@ -866,7 +866,7 @@ class PersonTest {
             5347L,
             "updated-type-value",
             "updated-use-value",
-            Instant.parse("2023-11-27T22:53:07Z"),
+            LocalDate.parse("2023-11-27"),
             "updated-country-code",
             "updated-number",
             "updated-extension",
@@ -878,10 +878,10 @@ class PersonTest {
         )
     );
 
-    assertThat(patient)
-        .returns(171L, person -> person.audit().changed().changedBy())
-        .returns(LocalDateTime.parse("2023-07-01T13:17:00"), person -> person.audit().changed().changedOn());
-
+    assertThat(patient).satisfies(
+        added -> assertThat(added.audit())
+            .satisfies(AuditAssertions.changed(171L, "2023-07-01T13:17:00"))
+    );
 
     assertThat(patient.phoneNumbers())
         .satisfiesExactly(
@@ -891,7 +891,7 @@ class PersonTest {
                 .returns(5347L, p -> p.getId().getLocatorUid())
                 .returns("updated-type-value", EntityLocatorParticipation::getCd)
                 .returns("updated-use-value", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2023-11-27T22:53:07Z"), EntityLocatorParticipation::getAsOfDate)
+                .returns(LocalDate.parse("2023-11-27"), EntityLocatorParticipation::getAsOfDate)
                 .satisfies(
                     added -> assertThat(added.audit())
                         .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
@@ -923,7 +923,7 @@ class PersonTest {
             5347L,
             "type-value",
             "use-value",
-            Instant.parse("2023-11-27T22:53:07Z"),
+            LocalDate.parse("2023-11-27"),
             "country-code",
             "number",
             "extension",
@@ -941,7 +941,7 @@ class PersonTest {
             1567L,
             "type-value",
             "use-value",
-            Instant.parse("2023-11-27T22:53:07Z"),
+            LocalDate.parse("2023-11-27"),
             "country-code",
             "number",
             "extension",
@@ -962,10 +962,10 @@ class PersonTest {
         )
     );
 
-    assertThat(patient)
-        .returns(293L, person -> person.audit().changed().changedBy())
-        .returns(LocalDateTime.parse("2023-03-03T10:15:30"), person -> person.audit().changed().changedOn());
-
+    assertThat(patient).satisfies(
+        added -> assertThat(added.audit())
+            .satisfies(AuditAssertions.changed(293L, "2023-03-03T10:15:30"))
+    );
 
     assertThat(patient.phones())
         .satisfiesExactly(
@@ -1199,7 +1199,7 @@ class PersonTest {
 
     assertThat(patient)
         .extracting(Person::audit)
-            .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30"));
+        .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30"));
 
     assertThat(patient.identifications()).satisfiesExactly(
         actual -> assertThat(actual)

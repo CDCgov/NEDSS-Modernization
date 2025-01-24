@@ -241,7 +241,7 @@ type PatientNameChangeResult {
 
 input NewPatientAddressInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     address1: String
@@ -258,7 +258,7 @@ input NewPatientAddressInput {
 input UpdatePatientAddressInput {
     patient: Int!
     id: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     address1: String
@@ -284,7 +284,7 @@ type PatientAddressChangeResult {
 
 input NewPatientPhoneInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     countryCode: String
@@ -298,7 +298,7 @@ input NewPatientPhoneInput {
 input UpdatePatientPhoneInput {
     patient: Int!
     id: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     countryCode: String

@@ -137,7 +137,7 @@ type PatientAddress {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: PatientAddressType!
     use: PatientAddressUse!
     address1: String
@@ -172,7 +172,7 @@ type PatientPhone {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: PatientPhoneType
     use: PatientPhoneUse
     countryCode: String

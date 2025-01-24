@@ -3,7 +3,7 @@ package gov.cdc.nbs.entity.odse;
 import gov.cdc.nbs.patient.PatientCommand;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +23,7 @@ class TeleEntityLocatorParticipationTest {
                 5347L,
                 "type-value",
                 "use-value",
-                Instant.parse("2023-11-27T22:53:07Z"),
+                LocalDate.parse("2023-11-27"),
                 "country-code",
                 "number",
                 "extension",

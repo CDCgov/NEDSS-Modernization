@@ -12,6 +12,8 @@ import gov.cdc.nbs.patient.profile.create.CreatedPatient;
 import gov.cdc.nbs.patient.profile.create.NewPatient;
 import gov.cdc.nbs.patient.profile.create.PatientCreateController;
 import gov.cdc.nbs.patient.profile.identification.IdentificationDemographic;
+import gov.cdc.nbs.patient.profile.phone.PhoneDemographic;
+import gov.cdc.nbs.patient.profile.race.RaceDemographic;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
@@ -23,7 +25,6 @@ import io.cucumber.java.en.When;
 import net.datafaker.Faker;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -91,7 +92,7 @@ public class PatientCreateSteps {
   public void i_am_adding_a_new_patient_with_emails() {
     this.input.active(
         current -> current.withPhoneEmail(
-            new NewPatient.Phone(
+            new PhoneDemographic(
                 RandomUtil.dateInPast(),
                 "type-value",
                 "use-value",
@@ -107,7 +108,7 @@ public class PatientCreateSteps {
   public void i_am_adding_a_new_patient_with_phones() {
     this.input.active(
         current -> current.withPhoneEmail(
-            new NewPatient.Phone(
+            new PhoneDemographic(
                 RandomUtil.dateInPast(),
                 "type-value",
                 "use-value",
@@ -123,7 +124,7 @@ public class PatientCreateSteps {
   public void i_am_adding_a_new_patient_with_races() {
     this.input.active(
         current -> current.withRace(
-            new NewPatient.Race(
+            new RaceDemographic(
                 RandomUtil.dateInPast(),
                 "category-value",
                 Arrays.asList("detail1", "detail2"))));
@@ -172,11 +173,10 @@ public class PatientCreateSteps {
   public void the_patient_created_has_the_entered_emails() {
     TeleEntityLocatorParticipation actualElp = patient.active().phoneNumbers().getFirst();
     TeleLocator actualLocator = patient.active().phoneNumbers().getFirst().getLocator();
-    NewPatient.Phone expected = this.input.active().phoneEmails().getFirst();
+    PhoneDemographic expected = this.input.active().phoneEmails().getFirst();
 
     assertThat(actualElp)
-        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(),
-            TeleEntityLocatorParticipation::getAsOfDate);
+        .returns(expected.asOf(), TeleEntityLocatorParticipation::getAsOfDate);
     assertThat(actualLocator)
         .returns(expected.url(), TeleLocator::getUrlAddress)
         .returns(expected.email(), TeleLocator::getEmailAddress);
@@ -186,11 +186,10 @@ public class PatientCreateSteps {
   public void the_patient_created_has_the_entered_phones() {
     TeleEntityLocatorParticipation actualElp = patient.active().phoneNumbers().getFirst();
     TeleLocator actualLocator = patient.active().phoneNumbers().getFirst().getLocator();
-    NewPatient.Phone expected = this.input.active().phoneEmails().getFirst();
+    PhoneDemographic expected = this.input.active().phoneEmails().getFirst();
 
     assertThat(actualElp)
-        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(),
-            TeleEntityLocatorParticipation::getAsOfDate);
+        .returns(expected.asOf(), TeleEntityLocatorParticipation::getAsOfDate);
     assertThat(actualLocator)
         .returns(expected.phoneNumber(), TeleLocator::getPhoneNbrTxt)
         .returns(expected.countryCode(), TeleLocator::getCntryCd)
@@ -201,7 +200,7 @@ public class PatientCreateSteps {
   @Then("the patient created has the entered races")
   public void the_patient_created_has_the_entered_races() {
     PersonRace actual = patient.active().getRaces().getFirst();
-    NewPatient.Race expected = this.input.active().races().getFirst();
+    RaceDemographic expected = this.input.active().races().getFirst();
 
     assertThat(actual)
         .returns(expected.asOf(), PersonRace::getAsOfDate)

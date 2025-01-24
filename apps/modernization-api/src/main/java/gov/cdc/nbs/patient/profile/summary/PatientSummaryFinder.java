@@ -105,7 +105,7 @@ class PatientSummaryFinder {
                     .where(
                         EFF_PHONE.id.entityUid.eq(this.tables.phone().id.entityUid),
                         this.tables.phone().cd.isNull().or(EFF_PHONE.cd.eq(this.tables.phone().cd)),
-                        EFF_PHONE.asOfDate.loe(asOf))))
+                        EFF_PHONE.asOfDate.loe(localAsOf))))
         .leftJoin(this.tables.phoneNumber()).on(
             this.tables.phoneNumber().id.eq(this.tables.phone().id.locatorUid),
             this.tables.phoneNumber().phoneNbrTxt.isNotNull())
@@ -127,7 +127,7 @@ class PatientSummaryFinder {
                     .where(
                         EFF_EMAIL.id.entityUid.eq(this.tables.net().id.entityUid),
                         EFF_EMAIL.cd.eq(this.tables.net().cd),
-                        EFF_EMAIL.asOfDate.loe(asOf))))
+                        EFF_EMAIL.asOfDate.loe(localAsOf))))
         .leftJoin(this.tables.email()).on(
             this.tables.email().id.eq(this.tables.net().id.locatorUid),
             this.tables.email().emailAddress.isNotNull())

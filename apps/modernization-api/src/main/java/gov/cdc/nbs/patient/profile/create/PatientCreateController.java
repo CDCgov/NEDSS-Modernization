@@ -1,13 +1,11 @@
 package gov.cdc.nbs.patient.profile.create;
 
 import gov.cdc.nbs.config.security.SecurityUtil;
-import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.profile.address.change.NewPatientAddressInput;
 import gov.cdc.nbs.patient.profile.address.change.PatientAddressChangeService;
 import gov.cdc.nbs.patient.profile.phone.change.NewPatientPhoneInput;
 import gov.cdc.nbs.patient.profile.phone.change.PatientPhoneChangeService;
-import gov.cdc.nbs.patient.profile.race.change.PatientRaceChangeService;
 import gov.cdc.nbs.patient.search.indexing.PatientIndexer;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/nbs/api/profile")
@@ -33,21 +30,18 @@ public class PatientCreateController {
   private final PatientIndexer indexer;
   private final PatientAddressChangeService addressService;
   private final PatientPhoneChangeService phoneService;
-  private final PatientRaceChangeService raceService;
 
   PatientCreateController(
       final Clock clock,
       final PatientCreationService service,
       final PatientAddressChangeService addressService,
       final PatientPhoneChangeService phoneService,
-      final PatientRaceChangeService raceService,
       final PatientIndexer indexer
   ) {
     this.clock = clock;
     this.service = service;
     this.addressService = addressService;
     this.phoneService = phoneService;
-    this.raceService = raceService;
     this.indexer = indexer;
   }
 
@@ -67,7 +61,7 @@ public class PatientCreateController {
       newPatient.addresses().forEach(address -> {
         NewPatientAddressInput newPatientAddressInput = new NewPatientAddressInput(
             created.id(),
-            address.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(),
+            address.asOf(),
             address.type(),
             address.use(),
             address.address1(),
@@ -86,7 +80,7 @@ public class PatientCreateController {
       newPatient.phoneEmails().forEach(phone -> {
         NewPatientPhoneInput newPatientPhoneInput = new NewPatientPhoneInput(
             created.id(),
-            phone.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(),
+            phone.asOf(),
             phone.type(),
             phone.use(),
             phone.countryCode(),
@@ -96,16 +90,6 @@ public class PatientCreateController {
             phone.url(),
             phone.comment());
         phoneService.add(context, newPatientPhoneInput);
-      });
-    }
-    if (newPatient.races() != null) {
-      newPatient.races().forEach(race -> {
-        RaceInput newRaceInput = new RaceInput();
-        newRaceInput.setPatient(created.id());
-        newRaceInput.setAsOf(race.asOf());
-        newRaceInput.setCategory(race.race());
-        newRaceInput.setDetailed(race.detailed());
-        raceService.add(context, newRaceInput);
       });
     }
 
