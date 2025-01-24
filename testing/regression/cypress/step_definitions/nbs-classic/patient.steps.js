@@ -44,3 +44,23 @@ Then("I should receive a confirmation message", () => {
 Then("I have filled out all Information as of Date field", () => {
     classicSearchPatientPage.fillInformationAsOfDateField()
 });
+
+Then("I have filled out future date in Information as of Date field", () => {
+    classicSearchPatientPage.fillInformationAsOfDateField("01/23/2055")
+});
+
+Then("Error message should appear right above Information as of Date field", () => {
+    classicSearchPatientPage.errorMessageInformationAsOfField()
+});
+
+Then("I have filled out invalid text in Comments field", () => {
+    classicSearchPatientPage.fillCommentsField('invalid')
+});
+
+Then("Error message should appear right above Comments field", () => {
+    classicSearchPatientPage.errorMessageCommentsField()
+});
+
+Then("I have filled out empty text in Comments field", () => {
+    classicSearchPatientPage.fillCommentsField("empty")
+});
