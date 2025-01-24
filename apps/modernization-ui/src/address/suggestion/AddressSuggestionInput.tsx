@@ -1,8 +1,9 @@
-import { ReactElement, KeyboardEvent, useRef, useState, useEffect } from 'react';
+import { ReactElement, KeyboardEvent, useRef, useState, useEffect, ChangeEvent } from 'react';
 import { TextInputField, TextInputFieldProps } from 'design-system/input/text';
 import { Suggestions } from 'suggestion/Suggestions';
 import { AddressSuggestion, useAddressAutocomplete } from './useAddressAutocomplete';
 import { LocationCodedValues } from 'location';
+import { Orientation, Sizing } from 'components/Entry';
 
 const renderSuggestion = (suggestion: AddressSuggestion) => (
     <>
@@ -22,6 +23,16 @@ type Props = {
     id: string;
     locations: LocationCodedValues;
     criteria?: Criteria;
+    label?: string;
+    className?: string;
+    placeholder?: string;
+    defaultValue?: string;
+    flexBox?: boolean;
+    orientation?: Orientation;
+    error?: string;
+    sizing?: Sizing | undefined;
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
     onSelection?: (suggestion: AddressSuggestion) => void;
 } & TextInputFieldProps;
 
@@ -82,8 +93,8 @@ const AddressSuggestionInput = (props: Props): ReactElement => {
                 className={props.className}
                 value={props.value}
                 placeholder={props.placeholder}
-                orientation={props.orientation}
                 sizing={props.sizing}
+                orientation={props.orientation}
                 error={props.error}
                 onChange={handleOnChange}
                 onBlur={props.onBlur}
