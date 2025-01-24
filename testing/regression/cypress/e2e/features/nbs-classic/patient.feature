@@ -19,10 +19,15 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Patient Search Page
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
-  Scenario: Scenario: Valid "Information as of Date"
+  Scenario: Valid "Information as of Date"
     Given I am on the New patient Extended form
     And I have filled out all Information as of Date field
     When I click the Save button
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
+
+  Scenario: Invalid "Information as of Date"
+    Given I am on the New patient Extended form
+    And I have filled out future date in Information as of Date field
+    Then Error message should appear right above Information as of Date field
 
