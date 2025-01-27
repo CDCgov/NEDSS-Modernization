@@ -1,10 +1,10 @@
 package gov.cdc.nbs.patient.profile.general.change;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 record UpdateGeneralInformation(
      long patient,
-     Instant asOf,
+     LocalDate asOf,
      String maritalStatus,
      String maternalMaidenName,
      Integer adultsInHouse,

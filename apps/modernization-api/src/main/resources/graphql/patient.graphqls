@@ -108,7 +108,7 @@ input PersonInput {
     birthGender: Gender
     currentGender: Gender
     deceased: Deceased
-    deceasedTime: DateTime
+    deceasedTime: Date
     maritalStatus: String
     addresses: [NewPatientAddress!]
     phoneNumbers: [NewPatientPhoneNumber!]
@@ -116,14 +116,14 @@ input PersonInput {
     identifications: [NewPatientIdentification!]
     ethnicity: String
     races: [String]
-    asOf: DateTime
+    asOf: Date
     comments: String
     stateHIVCase: String
 }
 
 input GeneralInfoInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     maritalStatus: String
     maternalMaidenName: String
     adultsInHouse: Int
@@ -141,7 +141,7 @@ type PatientGeneralChangeResult {
 
 input MortalityInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     deceased: String
     deceasedOn: Date
     city: String
@@ -156,7 +156,7 @@ type PatientMortalityChangeResult {
 
 input AdministrativeInput {
     patient: Int!
-    asOf: DateTime
+    asOf: Date!
     comment: String
 }
 
@@ -167,7 +167,7 @@ type PatientAdministrativeChangeResult {
 
 input EthnicityInput {
     patient: String!
-    asOf: DateTime!
+    asOf: Date!
     ethnicGroup: String
     unknownReason: String
     detailed: [String!]
@@ -179,7 +179,7 @@ type PatientEthnicityChangeResult {
 
 input RaceInput {
     patient: Int!
-    asOf: DateTime
+    asOf: Date
     category: String!
     detailed: [String!]
 }
@@ -203,7 +203,7 @@ union PatientRaceAddResult = PatientRaceChangeSuccessful | PatientRaceChangeFail
 input NewPatientNameInput {
     patient: Int!
     type: String!
-    asOf: DateTime
+    asOf: Date!
     prefix: String
     first: String
     middle: String
@@ -218,7 +218,7 @@ input UpdatePatientNameInput {
     patient: Int!
     sequence: Int!
     type: String!
-    asOf: DateTime
+    asOf: Date!
     prefix: String
     first: String
     middle: String
@@ -241,7 +241,7 @@ type PatientNameChangeResult {
 
 input NewPatientAddressInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     address1: String
@@ -258,7 +258,7 @@ input NewPatientAddressInput {
 input UpdatePatientAddressInput {
     patient: Int!
     id: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     address1: String
@@ -284,7 +284,7 @@ type PatientAddressChangeResult {
 
 input NewPatientPhoneInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     countryCode: String
@@ -298,7 +298,7 @@ input NewPatientPhoneInput {
 input UpdatePatientPhoneInput {
     patient: Int!
     id: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     countryCode: String
@@ -321,7 +321,7 @@ type PatientPhoneChangeResult {
 
 input NewPatientIdentificationInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     authority: String
     value: String!
@@ -330,7 +330,7 @@ input NewPatientIdentificationInput {
 input UpdatePatientIdentificationInput {
     patient: Int!
     sequence: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     authority: String
     value: String!
@@ -348,7 +348,7 @@ type PatientIdentificationChangeResult {
 
 input UpdateBirthAndGenderInput {
     patient: ID!
-    asOf: DateTime!
+    asOf: Date!
     birth: UpdateBirthInput
     gender: UpdateGenderInput
 }

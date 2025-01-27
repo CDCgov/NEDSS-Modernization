@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Component
@@ -79,12 +79,12 @@ class PatientSummaryHomeAddressFinder {
     this.mapper = new AddressRowMapper(new AddressRowMapper.Columns());
   }
 
-  Optional<Address> find(final long patient, final Instant asOf) {
+  Optional<Address> find(final long patient, final LocalDate asOf) {
     return this.template.query(
         QUERY,
         statement -> {
           statement.setLong(PATIENT_PARAMETER, patient);
-          statement.setTimestamp(AS_OF_PARAMETER, Timestamp.from(asOf));
+          statement.setTimestamp(AS_OF_PARAMETER, Timestamp.valueOf(asOf.atStartOfDay()));
         },
         this.mapper).stream()
         .findFirst();

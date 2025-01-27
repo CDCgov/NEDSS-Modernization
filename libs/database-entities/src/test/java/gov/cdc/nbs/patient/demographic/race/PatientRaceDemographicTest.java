@@ -8,7 +8,8 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,11 +28,11 @@ class PatientRaceDemographicTest {
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -41,15 +42,15 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(Instant.parse("2022-05-12T11:15:17Z"), PersonRace::getAsOfDate)
+                    .returns(LocalDate.parse("2022-05-12"), PersonRace::getAsOfDate)
                     .returns("race-category-value", PersonRace::getRaceCd)
                     .returns("race-category-value", PersonRace::getRaceCategoryCd)
             )
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -57,12 +58,12 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.added())
                             .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Added::addedOn)
                     )
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -80,11 +81,11 @@ class PatientRaceDemographicTest {
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of("race-one", "race-two"),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -94,15 +95,15 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(Instant.parse("2022-05-12T11:15:17Z"), PersonRace::getAsOfDate)
+                    .returns(LocalDate.parse("2022-05-12"), PersonRace::getAsOfDate)
                     .returns("race-category-value", PersonRace::getRaceCategoryCd)
                     .returns("race-category-value", PersonRace::getRaceCd)
             )
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -110,12 +111,12 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.added())
                             .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Added::addedOn)
                     )
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             ),
         actual -> assertThat(actual)
@@ -123,15 +124,15 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(Instant.parse("2022-05-12T11:15:17Z"), PersonRace::getAsOfDate)
+                    .returns(LocalDate.parse("2022-05-12"), PersonRace::getAsOfDate)
                     .returns("race-category-value", PersonRace::getRaceCategoryCd)
                     .returns("race-one", PersonRace::getRaceCd)
             )
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -139,12 +140,12 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.added())
                             .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Added::addedOn)
                     )
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             ),
         actual -> assertThat(actual)
@@ -152,15 +153,15 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(Instant.parse("2022-05-12T11:15:17Z"), PersonRace::getAsOfDate)
+                    .returns(LocalDate.parse("2022-05-12"), PersonRace::getAsOfDate)
                     .returns("race-category-value", PersonRace::getRaceCategoryCd)
                     .returns("race-two", PersonRace::getRaceCd)
             )
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -168,12 +169,12 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.added())
                             .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Added::addedOn)
                     )
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -189,22 +190,22 @@ class PatientRaceDemographicTest {
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "another-race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -213,18 +214,18 @@ class PatientRaceDemographicTest {
             117L,
             "race-category-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2023-06-12T11:02:19Z"),
+            LocalDate.parse("2023-06-12"),
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2023-04-12T00:00:00.00Z")
+            LocalDateTime.parse("2023-04-12T00:00:00")
         )
     );
 
@@ -246,21 +247,21 @@ class PatientRaceDemographicTest {
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     PatientCommand.AddRace duplicate = new PatientCommand.AddRace(
         117L,
-        Instant.parse("2022-05-13T14:10:13Z"),
+        LocalDate.parse("2022-05-13"),
         "race-category-value",
         List.of(),
         131L,
-        Instant.parse("2020-03-03T10:15:30.00Z")
+        LocalDateTime.parse("2020-03-03T10:15:30")
     );
     assertThatThrownBy(() -> raceDemographic.add(duplicate))
         .hasMessageContaining("race demographic for race-category-value already exists")
@@ -279,22 +280,22 @@ class PatientRaceDemographicTest {
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "another-race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -302,11 +303,11 @@ class PatientRaceDemographicTest {
         patient,
         new PatientCommand.UpdateRaceInfo(
             117L,
-            Instant.parse("2022-06-09T13:00:03Z"),
+            LocalDate.parse("2022-06-09"),
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -320,15 +321,15 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(Instant.parse("2022-06-09T13:00:03Z"), PersonRace::getAsOfDate)
+                    .returns(LocalDate.parse("2022-06-09"), PersonRace::getAsOfDate)
                     .returns("race-category-value", PersonRace::getRaceCd)
                     .returns("race-category-value", PersonRace::getRaceCategoryCd)
             )
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -336,7 +337,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -352,22 +353,22 @@ class PatientRaceDemographicTest {
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of("race-one", "race-two"),
             171L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "another-race-category-value",
             List.of(),
             191L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -375,11 +376,11 @@ class PatientRaceDemographicTest {
         patient,
         new PatientCommand.UpdateRaceInfo(
             117L,
-            Instant.parse("2022-06-09T13:00:03Z"),
+            LocalDate.parse("2022-06-09"),
             "race-category-value",
             List.of("race-one", "race-two"),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -393,7 +394,7 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(Instant.parse("2022-06-09T13:00:03Z"), PersonRace::getAsOfDate)
+                    .returns(LocalDate.parse("2022-06-09"), PersonRace::getAsOfDate)
                     .returns("race-category-value", PersonRace::getRaceCd)
                     .returns("race-category-value", PersonRace::getRaceCategoryCd)
             )
@@ -403,7 +404,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             ),
         updated -> assertThat(updated)
@@ -411,7 +412,7 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(Instant.parse("2022-06-09T13:00:03Z"), PersonRace::getAsOfDate)
+                    .returns(LocalDate.parse("2022-06-09"), PersonRace::getAsOfDate)
                     .returns("race-category-value", PersonRace::getRaceCategoryCd)
                     .returns("race-one", PersonRace::getRaceCd)
             )
@@ -421,7 +422,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             ),
         updated -> assertThat(updated)
@@ -429,7 +430,7 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(Instant.parse("2022-06-09T13:00:03Z"), PersonRace::getAsOfDate)
+                    .returns(LocalDate.parse("2022-06-09"), PersonRace::getAsOfDate)
                     .returns("race-category-value", PersonRace::getRaceCategoryCd)
                     .returns("race-two", PersonRace::getRaceCd)
             )
@@ -439,7 +440,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -454,11 +455,11 @@ class PatientRaceDemographicTest {
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of(),
             171L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -466,11 +467,11 @@ class PatientRaceDemographicTest {
         patient,
         new PatientCommand.UpdateRaceInfo(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of("race-one"),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -489,7 +490,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             ),
         added -> assertThat(added)
@@ -497,15 +498,15 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(Instant.parse("2022-05-12T11:15:17Z"), PersonRace::getAsOfDate)
+                    .returns(LocalDate.parse("2022-05-12"), PersonRace::getAsOfDate)
                     .returns("race-category-value", PersonRace::getRaceCategoryCd)
                     .returns("race-one", PersonRace::getRaceCd)
             )
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race record status state")
-                    .returns("ACTIVE", PersonRace::getRecordStatusCd)
-                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
+                    .returns("ACTIVE", r -> r.recordStatus().status())
+                    .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
                 race -> assertThat(race.getAudit())
@@ -513,12 +514,12 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.added())
                             .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Added::addedOn)
                     )
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -533,11 +534,11 @@ class PatientRaceDemographicTest {
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of("race-one"),
             171L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -545,11 +546,11 @@ class PatientRaceDemographicTest {
         patient,
         new PatientCommand.UpdateRaceInfo(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -568,7 +569,7 @@ class PatientRaceDemographicTest {
                     .satisfies(
                         audit -> assertThat(audit.changed())
                             .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
+                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )
     );
@@ -584,22 +585,22 @@ class PatientRaceDemographicTest {
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "another-race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -608,7 +609,7 @@ class PatientRaceDemographicTest {
             117L,
             "race-category-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -628,22 +629,22 @@ class PatientRaceDemographicTest {
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             List.of("race-category-one", "race-category-two"),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     raceDemographic.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "another-race-category-value",
             List.of(),
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -652,7 +653,7 @@ class PatientRaceDemographicTest {
             117L,
             "race-category-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 

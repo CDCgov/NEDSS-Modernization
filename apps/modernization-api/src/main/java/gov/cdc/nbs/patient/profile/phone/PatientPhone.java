@@ -1,12 +1,12 @@
 package gov.cdc.nbs.patient.profile.phone;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 record PatientPhone(
     long patient,
     long id,
     short version,
-    Instant asOf,
+    LocalDate asOf,
     Type type,
     Use use,
     String countryCode,
@@ -16,16 +16,16 @@ record PatientPhone(
     String url,
     String comment
 ) {
-    record Type(
-        String id,
-        String description
-    ) {
-    }
+  record Type(
+      String id,
+      String description
+  ) {
+  }
 
 
-    record Use(
-        String id,
-        String description
-    ) {
-    }
+  record Use(
+      String id,
+      String description
+  ) {
+  }
 }

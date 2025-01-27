@@ -138,7 +138,7 @@ class PatientInvestigationFinder {
         .where(
             PATIENT.personParentUid.id.eq(criteria.patient()),
             PATIENT.cd.eq(PATIENT_CODE),
-            PATIENT.recordStatusCd.ne(RecordStatus.LOG_DEL),
+            PATIENT.recordStatus.status.ne(DELETED),
             // only return investigations where the user has access to program area / jurisdiction
             this.tables.investigation().programJurisdictionOid.in(criteria.scope().any()));
   }

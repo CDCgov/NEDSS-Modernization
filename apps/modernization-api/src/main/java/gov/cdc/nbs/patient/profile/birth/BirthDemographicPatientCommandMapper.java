@@ -3,9 +3,6 @@ package gov.cdc.nbs.patient.profile.birth;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 
-import java.time.Instant;
-import java.time.ZoneId;
-
 public class BirthDemographicPatientCommandMapper {
 
   public static PatientCommand.UpdateBirth asUpdateBirth(
@@ -14,11 +11,9 @@ public class BirthDemographicPatientCommandMapper {
       final BirthDemographic demographic
   ) {
 
-    Instant asOf = demographic.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant();
-
     return new PatientCommand.UpdateBirth(
         patient,
-        asOf,
+        demographic.asOf(),
         demographic.bornOn(),
         demographic.sex(),
         demographic.multiple(),

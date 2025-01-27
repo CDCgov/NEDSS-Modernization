@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type Identification = {
+export type IdentificationDemographic = {
     asOf?: string;
     type?: string;
     issuer?: string;

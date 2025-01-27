@@ -8,11 +8,11 @@ import type { BirthDemographic } from './BirthDemographic';
 import type { EthnicityDemographic } from './EthnicityDemographic';
 import type { GenderDemographic } from './GenderDemographic';
 import type { GeneralInformationDemographic } from './GeneralInformationDemographic';
-import type { Identification } from './Identification';
+import type { IdentificationDemographic } from './IdentificationDemographic';
 import type { MortalityDemographic } from './MortalityDemographic';
 import type { NameDemographic } from './NameDemographic';
-import type { Phone } from './Phone';
-import type { Race } from './Race';
+import type { PhoneDemographic } from './PhoneDemographic';
+import type { RaceDemographic } from './RaceDemographic';
 export type NewPatient = {
     administrative?: Administrative;
     birth?: BirthDemographic;
@@ -22,8 +22,8 @@ export type NewPatient = {
     general?: GeneralInformationDemographic;
     names?: Array<NameDemographic>;
     addresses?: Array<AddressDemographic>;
-    phoneEmails?: Array<Phone>;
-    races?: Array<Race>;
-    identifications?: Array<Identification>;
+    phoneEmails?: Array<PhoneDemographic>;
+    races?: Array<RaceDemographic>;
+    identifications?: Array<IdentificationDemographic>;
 };
 

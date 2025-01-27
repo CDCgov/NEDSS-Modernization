@@ -2,9 +2,7 @@ package gov.cdc.nbs.patient.profile.general;
 
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
-import gov.cdc.nbs.time.LocalDateInstantMapper;
 
-import java.time.Instant;
 import java.util.Optional;
 
 public class GeneralInformationDemographicPatientCommandMapper {
@@ -15,11 +13,9 @@ public class GeneralInformationDemographicPatientCommandMapper {
       final GeneralInformationDemographic demographic
   ) {
 
-    Instant asOf = LocalDateInstantMapper.from(demographic.asOf());
-
     return new PatientCommand.UpdateGeneralInfo(
         patient,
-        asOf,
+        demographic.asOf(),
         demographic.maritalStatus(),
         demographic.maternalMaidenName(),
         demographic.adultsInResidence(),

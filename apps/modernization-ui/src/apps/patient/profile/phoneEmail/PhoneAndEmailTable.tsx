@@ -7,7 +7,7 @@ import {
     useUpdatePatientPhoneMutation
 } from 'generated/graphql/schema';
 import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { externalizeDate, internalizeDate } from 'date';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { orNull } from 'utils/orNull';
 import { TableBody, TableComponent } from 'components/Table';
@@ -130,7 +130,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     input: {
                         ...entry,
                         patient: entry.patient,
-                        asOf: externalizeDateTime(entry.asOf),
+                        asOf: externalizeDate(entry.asOf),
                         use: entry.use,
                         type: entry.type
                     }
@@ -158,7 +158,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         ...entry,
                         patient: updated.patient,
                         id: +updated.id,
-                        asOf: externalizeDateTime(entry.asOf),
+                        asOf: externalizeDate(entry.asOf),
                         use: entry.use,
                         type: entry.type
                     }

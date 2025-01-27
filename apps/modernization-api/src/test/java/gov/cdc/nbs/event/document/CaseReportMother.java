@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
+import java.time.ZoneOffset;
 
 @Component
 @Transactional
@@ -81,7 +82,7 @@ public class CaseReportMother {
     document.setSharedInd('F');
     document.setVersionCtrlNbr((short) 1);
     document.setRecordStatusCd("ACTIVE");
-    document.setRecordStatusTime(settings.createdOn());
+    document.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
 
     document.setCd(condition);
 
@@ -90,9 +91,9 @@ public class CaseReportMother {
     document.setJurisdictionCd("999999");
     document.setProgramJurisdictionOid(1300200015L);   //  STD Out of System
 
-    document.setAddTime(settings.createdOn());
+    document.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     document.setAddUserId(settings.createdBy());
-    document.setLastChgTime(settings.createdOn());
+    document.setLastChgTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     document.setLastChgUserId(settings.createdBy());
 
     document.setNbsDocumentMetadataUid(metadatum());
@@ -136,8 +137,8 @@ public class CaseReportMother {
     participation.setSubjectClassCd(PERSON_CLASS);
 
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 

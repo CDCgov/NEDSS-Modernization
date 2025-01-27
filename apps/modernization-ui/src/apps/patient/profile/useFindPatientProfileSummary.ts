@@ -3,7 +3,7 @@ import * as Apollo from '@apollo/client';
 import { PatientSummary } from 'generated/graphql/schema';
 
 export const Query = gql`
-    query findPatientProfile($asOf: DateTime, $patient: ID, $shortId: Int) {
+    query findPatientProfile($asOf: Date, $patient: ID, $shortId: Int) {
         findPatientProfile(patient: $patient, shortId: $shortId) {
             id
             local

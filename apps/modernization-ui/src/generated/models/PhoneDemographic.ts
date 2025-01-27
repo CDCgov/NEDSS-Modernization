@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type Phone = {
+export type PhoneDemographic = {
     asOf?: string;
     type?: string;
     use?: string;

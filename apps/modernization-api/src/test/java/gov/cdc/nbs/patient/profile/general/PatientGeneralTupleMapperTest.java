@@ -8,7 +8,7 @@ import gov.cdc.nbs.message.enums.Indicator;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -26,7 +26,7 @@ class PatientGeneralTupleMapperTest {
     when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
     when(tuple.get(tables.patient().id)).thenReturn(433L);
     when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
-    when(tuple.get(tables.patient().generalInformation.asOf)).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
+    when(tuple.get(tables.patient().generalInformation.asOf)).thenReturn(LocalDate.parse("2023-01-17"));
 
     when(tuple.get(tables.patient().generalInformation.mothersMaidenName)).thenReturn("maternal-maiden-name");
 
@@ -42,7 +42,7 @@ class PatientGeneralTupleMapperTest {
     assertThat(actual.patient()).isEqualTo(2357L);
     assertThat(actual.id()).isEqualTo(433L);
     assertThat(actual.version()).isEqualTo((short) 227);
-    assertThat(actual.asOf()).isEqualTo("2023-01-17T22:54:43Z");
+    assertThat(actual.asOf()).isEqualTo("2023-01-17");
 
     assertThat(actual.maritalStatus()).isNull();
 

@@ -1,5 +1,5 @@
 import { Button, ButtonGroup } from '@trussworks/react-uswds';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { externalizeDate, internalizeDate } from 'date';
 import { FormProvider, useForm } from 'react-hook-form';
 import { orNull } from 'utils';
 import { EthnicityEntryFields } from './EthnicityEntryFields';
@@ -19,7 +19,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
 
     const onSubmit = (entered: EthnicityEntry) => {
         onChanged({
-            asOf: externalizeDateTime(entered.asOf),
+            asOf: externalizeDate(entered.asOf),
             ethnicGroup: orNull(entered.ethnicGroup),
             unknownReason: orNull(entered.unknownReason),
             detailed: entered.detailed ? entered.detailed : []

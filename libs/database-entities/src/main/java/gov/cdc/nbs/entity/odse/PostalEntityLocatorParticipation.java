@@ -1,6 +1,5 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientPostalLocatorHistoryListener;
 import jakarta.persistence.CascadeType;
@@ -38,7 +37,8 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     public PostalEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddAddress address) {
+            final PatientCommand.AddAddress address
+    ) {
 
         super(address, nbs, identifier);
 
@@ -53,7 +53,8 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     public PostalEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.UpdateBirth birth) {
+            final PatientCommand.UpdateBirth birth
+    ) {
         super(birth, nbs, identifier);
         this.cd = "F";
         this.useCd = "BIR";
@@ -65,7 +66,8 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     public PostalEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.UpdateMortality mortality) {
+            final PatientCommand.UpdateMortality mortality
+    ) {
         super(mortality, nbs, identifier);
         this.cd = "U";
         this.useCd = "DTH";
@@ -86,7 +88,7 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     }
 
     public void delete(final PatientCommand.DeleteAddress deleted) {
-        changeStatus(RecordStatus.INACTIVE, deleted.requestedOn());
+        this.recordStatus().inactivate(deleted.requestedOn());
         changed(deleted);
     }
 

@@ -1,11 +1,12 @@
 package gov.cdc.nbs.patient.profile.identification.change;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public record NewPatientIdentificationInput(
     long patient,
-    Instant asOf,
+    LocalDate asOf,
     String type,
     String authority,
-    String value) {
+    String value
+) {
 }

@@ -6,7 +6,7 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 
 public class PatientProfileUpdateRaceSteps {
@@ -28,8 +28,8 @@ public class PatientProfileUpdateRaceSteps {
     this.requester = requester;
   }
 
-  @When("I update a patient's race category of {raceCategory} as of {date}")
-  public void i_update_the_patient_race(final String category, final Instant asOf) {
+  @When("I update a patient's race category of {raceCategory} as of {localDate}")
+  public void i_update_the_patient_race(final String category, final LocalDate asOf) {
     this.patient.maybeActive().flatMap(current -> withInput(current, category, asOf))
         .map(this.requester::update)
         .ifPresent(this.response::active);
@@ -38,7 +38,7 @@ public class PatientProfileUpdateRaceSteps {
   private Optional<RaceInput> withInput(
       final PatientIdentifier identifier,
       final String category,
-      final Instant asOf
+      final LocalDate asOf
   ) {
     return this.input.maybeActive()
         .map(

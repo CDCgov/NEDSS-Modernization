@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.administrative;
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.entity.odse.QPerson;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 class PatientAdministrativeTupleMapper {
@@ -40,7 +40,7 @@ class PatientAdministrativeTupleMapper {
                 "An administrative version is required"
             );
 
-        Instant asOf = tuple.get(this.tables.patient().asOfDateAdmin);
+        LocalDate asOf = tuple.get(this.tables.patient().asOfDateAdmin);
 
         String comment = tuple.get(this.tables.patient().description);
 

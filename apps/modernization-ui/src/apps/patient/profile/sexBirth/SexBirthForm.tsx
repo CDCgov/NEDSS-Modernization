@@ -1,5 +1,5 @@
 import { Button, ButtonGroup } from '@trussworks/react-uswds';
-import { externalizeDate, externalizeDateTime } from 'date';
+import { externalizeDate } from 'date';
 import { FormProvider, useForm } from 'react-hook-form';
 import { maybeNumber, orNull } from 'utils';
 import { BirthAndGenderEntryFields } from './BirthAndGenderEntryFields';
@@ -16,7 +16,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
 
     const onSubmit = (entered: BirthAndGenderEntry) => {
         onChanged({
-            asOf: externalizeDateTime(entered.asOf),
+            asOf: externalizeDate(entered.asOf),
             birth: {
                 bornOn: externalizeDate(entered.birth.bornOn),
                 gender: orNull(entered.birth.gender),

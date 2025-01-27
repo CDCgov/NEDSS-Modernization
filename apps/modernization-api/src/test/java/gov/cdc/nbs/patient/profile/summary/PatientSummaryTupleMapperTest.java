@@ -5,7 +5,7 @@ import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +31,7 @@ class PatientSummaryTupleMapperTest {
 
     PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-    PatientSummary actual = mapper.map(Instant.now(), tuple);
+    PatientSummary actual = mapper.map(LocalDate.now(), tuple);
 
     assertThat(actual.patient()).isEqualTo(113L);
 
@@ -64,7 +64,7 @@ class PatientSummaryTupleMapperTest {
 
 
 
-    PatientSummary.Name actual = mapper.map(Instant.now(), tuple).legalName();
+    PatientSummary.Name actual = mapper.map(LocalDate.now(), tuple).legalName();
 
     assertThat(actual.prefix()).isEqualTo("prefix-name-value");
     assertThat(actual.first()).isEqualTo("first-name-value");
@@ -88,7 +88,7 @@ class PatientSummaryTupleMapperTest {
 
 
 
-    PatientSummary.Name actual = mapper.map(Instant.now(), tuple).legalName();
+    PatientSummary.Name actual = mapper.map(LocalDate.now(), tuple).legalName();
 
     assertThat(actual.prefix()).isEqualTo("prefix-name-value");
   }
@@ -108,7 +108,7 @@ class PatientSummaryTupleMapperTest {
 
 
 
-    PatientSummary.Name actual = mapper.map(Instant.now(), tuple).legalName();
+    PatientSummary.Name actual = mapper.map(LocalDate.now(), tuple).legalName();
 
     assertThat(actual.first()).isEqualTo("first-name-value");
   }
@@ -128,7 +128,7 @@ class PatientSummaryTupleMapperTest {
 
 
 
-    PatientSummary.Name actual = mapper.map(Instant.now(), tuple).legalName();
+    PatientSummary.Name actual = mapper.map(LocalDate.now(), tuple).legalName();
 
     assertThat(actual.middle()).isEqualTo("middle-name-value");
   }
@@ -148,7 +148,7 @@ class PatientSummaryTupleMapperTest {
 
 
 
-    PatientSummary.Name actual = mapper.map(Instant.now(), tuple).legalName();
+    PatientSummary.Name actual = mapper.map(LocalDate.now(), tuple).legalName();
 
     assertThat(actual.last()).isEqualTo("last-name-value");
   }
@@ -167,7 +167,7 @@ class PatientSummaryTupleMapperTest {
 
 
 
-    PatientSummary actual = mapper.map(Instant.now(), tuple);
+    PatientSummary actual = mapper.map(LocalDate.now(), tuple);
 
     assertThat(actual.legalName().suffix()).isEqualTo("Esquire");
   }
@@ -187,7 +187,7 @@ class PatientSummaryTupleMapperTest {
 
 
 
-    PatientSummary actual = mapper.map(Instant.now(), tuple);
+    PatientSummary actual = mapper.map(LocalDate.now(), tuple);
 
     assertThat(actual.gender()).isEqualTo("Male");
   }
@@ -205,7 +205,7 @@ class PatientSummaryTupleMapperTest {
 
     PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-    PatientSummary actual = mapper.map(Instant.parse("2023-06-07T10:15:20Z"), tuple);
+    PatientSummary actual = mapper.map(LocalDate.parse("2023-06-07"), tuple);
 
     assertThat(actual.birthday()).isEqualTo("2001-07-07");
 
@@ -223,7 +223,7 @@ class PatientSummaryTupleMapperTest {
 
     PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-    PatientSummary actual = mapper.map(Instant.parse("2023-06-07T10:15:20Z"), tuple);
+    PatientSummary actual = mapper.map(LocalDate.parse("2023-06-07"), tuple);
 
     assertThat(actual.age()).isNull();
   }
@@ -242,7 +242,7 @@ class PatientSummaryTupleMapperTest {
 
     PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-    PatientSummary summary = mapper.map(Instant.now(), tuple);
+    PatientSummary summary = mapper.map(LocalDate.now(), tuple);
 
     assertThat(summary.phone()).satisfiesExactly(
         actual -> assertAll(
@@ -266,7 +266,7 @@ class PatientSummaryTupleMapperTest {
 
     PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-    PatientSummary summary = mapper.map(Instant.now(), tuple);
+    PatientSummary summary = mapper.map(LocalDate.now(), tuple);
 
     assertThat(summary.email()).satisfiesExactly(
         actual -> assertAll(
@@ -286,7 +286,7 @@ class PatientSummaryTupleMapperTest {
 
     PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-    assertThatThrownBy(() -> mapper.map(Instant.now(), tuple))
+    assertThatThrownBy(() -> mapper.map(LocalDate.now(), tuple))
         .hasMessageContaining("patient is required");
 
   }

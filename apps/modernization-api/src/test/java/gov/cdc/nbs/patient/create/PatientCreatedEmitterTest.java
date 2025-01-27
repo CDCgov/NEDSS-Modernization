@@ -10,8 +10,8 @@ import gov.cdc.nbs.patient.event.PatientEventEmitter;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -34,14 +34,14 @@ class PatientCreatedEmitterTest {
             Gender.M,
             Gender.F,
             Deceased.Y,
-            Instant.parse("2085-09-07T13:09:07Z"),
+            LocalDate.parse("2085-09-07"),
             "Marital Status",
             "EthCode",
-            Instant.parse("2019-03-03T10:15:30Z"),
+            LocalDate.parse("2019-03-03"),
             "comments",
             "HIV-Case",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -61,14 +61,14 @@ class PatientCreatedEmitterTest {
         .returns("M", PatientEvent.Created::birthGender)
         .returns("F", PatientEvent.Created::currentGender)
         .returns("Y", PatientEvent.Created::deceased)
-        .returns(Instant.parse("2085-09-07T13:09:07Z"), PatientEvent.Created::deceasedOn)
+        .returns(LocalDate.parse("2085-09-07"), PatientEvent.Created::deceasedOn)
         .returns("Marital Status", PatientEvent.Created::maritalStatus)
         .returns("EthCode", PatientEvent.Created::ethnicGroup)
-        .returns(Instant.parse("2019-03-03T10:15:30Z"), PatientEvent.Created::asOf)
+        .returns(LocalDate.parse("2019-03-03"), PatientEvent.Created::asOf)
         .returns("comments", PatientEvent.Created::comments)
         .returns("HIV-Case", PatientEvent.Created::stateHIVCase)
         .returns(131L, PatientEvent.Created::createdBy)
-        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PatientEvent.Created::createdOn)
+        .returns(LocalDateTime.parse("2020-03-03T10:15:30"), PatientEvent.Created::createdOn)
     ;
 
     assertThat(actual.names()).isEmpty();
@@ -91,7 +91,7 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -99,14 +99,14 @@ class PatientCreatedEmitterTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",
             "JR",
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -141,17 +141,17 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     patient.add(
         new PatientCommand.AddRace(
             117L,
-            Instant.parse("2022-05-12T11:15:17Z"),
+            LocalDate.parse("2022-05-12"),
             "race-category-value",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -179,7 +179,7 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -187,7 +187,7 @@ class PatientCreatedEmitterTest {
         new PatientCommand.AddAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:06:09Z"),
+            LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
             "city-description",
@@ -197,7 +197,7 @@ class PatientCreatedEmitterTest {
             "country-code",
             "Census Tract",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -213,7 +213,7 @@ class PatientCreatedEmitterTest {
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .returns(4861L, PatientEvent.Created.Address::identifier)
-                .returns(Instant.parse("2021-07-07T03:06:09Z"), PatientEvent.Created.Address::asOf)
+                .returns(LocalDate.parse("2021-07-07"), PatientEvent.Created.Address::asOf)
                 .returns("SA1", PatientEvent.Created.Address::streetAddress1)
                 .returns("SA2", PatientEvent.Created.Address::streetAddress2)
                 .returns("city-description", PatientEvent.Created.Address::city)
@@ -237,7 +237,7 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -245,13 +245,13 @@ class PatientCreatedEmitterTest {
         new PatientCommand.AddPhoneNumber(
             117L,
             5347L,
-            Instant.parse("2017-05-16T11:13:19Z"),
+            LocalDate.parse("2017-05-16"),
             "CP",
             "MC",
             "Phone Number",
             "Extension",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -267,7 +267,7 @@ class PatientCreatedEmitterTest {
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .returns(5347L, PatientEvent.Created.Phone::identifier)
-                .returns(Instant.parse("2017-05-16T11:13:19Z"), PatientEvent.Created.Phone::asOf)
+                .returns(LocalDate.parse("2017-05-16"), PatientEvent.Created.Phone::asOf)
                 .returns("CP", PatientEvent.Created.Phone::type)
                 .returns("MC", PatientEvent.Created.Phone::use)
                 .returns("Phone Number", PatientEvent.Created.Phone::number)
@@ -287,7 +287,7 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -295,10 +295,10 @@ class PatientCreatedEmitterTest {
         new PatientCommand.AddEmailAddress(
             117L,
             5333L,
-            Instant.parse("2017-05-16T11:13:19Z"),
+            LocalDate.parse("2017-05-16"),
             "AnEmail@email.com",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -314,7 +314,7 @@ class PatientCreatedEmitterTest {
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .returns(5333L, PatientEvent.Created.Email::identifier)
-                .returns(Instant.parse("2017-05-16T11:13:19Z"), PatientEvent.Created.Email::asOf)
+                .returns(LocalDate.parse("2017-05-16"), PatientEvent.Created.Email::asOf)
                 .returns("NET", PatientEvent.Created.Email::type)
                 .returns("H", PatientEvent.Created.Email::use)
                 .returns("AnEmail@email.com", PatientEvent.Created.Email::address)
@@ -333,19 +333,19 @@ class PatientCreatedEmitterTest {
             117L,
             "patient-local-id",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     patient.add(
         new PatientCommand.AddIdentification(
             117L,
-            Instant.parse("2017-05-16T11:13:19Z"),
+            LocalDate.parse("2017-05-16"),
             "identification-value",
             "authority-value",
             "identification-type",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -361,7 +361,7 @@ class PatientCreatedEmitterTest {
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .returns(1, PatientEvent.Created.Identification::identifier)
-                .returns(Instant.parse("2017-05-16T11:13:19Z"), PatientEvent.Created.Identification::asOf)
+                .returns(LocalDate.parse("2017-05-16"), PatientEvent.Created.Identification::asOf)
                 .returns("identification-type", PatientEvent.Created.Identification::type)
                 .returns("authority-value", PatientEvent.Created.Identification::authority)
                 .returns("identification-value", PatientEvent.Created.Identification::value)

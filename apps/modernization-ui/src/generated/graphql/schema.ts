@@ -21,7 +21,7 @@ export type Scalars = {
 };
 
 export type AdministrativeInput = {
-  asOf?: InputMaybe<Scalars['DateTime']['input']>;
+  asOf: Scalars['Date']['input'];
   comment?: InputMaybe<Scalars['String']['input']>;
   patient: Scalars['Int']['input'];
 };
@@ -173,7 +173,7 @@ export type EthnicityId = {
 };
 
 export type EthnicityInput = {
-  asOf: Scalars['DateTime']['input'];
+  asOf: Scalars['Date']['input'];
   detailed?: InputMaybe<Array<Scalars['String']['input']>>;
   ethnicGroup?: InputMaybe<Scalars['String']['input']>;
   patient: Scalars['String']['input'];
@@ -218,7 +218,7 @@ export enum Gender {
 
 export type GeneralInfoInput = {
   adultsInHouse?: InputMaybe<Scalars['Int']['input']>;
-  asOf: Scalars['DateTime']['input'];
+  asOf: Scalars['Date']['input'];
   childrenInHouse?: InputMaybe<Scalars['Int']['input']>;
   educationLevel?: InputMaybe<Scalars['String']['input']>;
   maritalStatus?: InputMaybe<Scalars['String']['input']>;
@@ -488,7 +488,7 @@ export type MaterialParticipation2 = {
 };
 
 export type MortalityInput = {
-  asOf: Scalars['DateTime']['input'];
+  asOf: Scalars['Date']['input'];
   city?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   county?: InputMaybe<Scalars['String']['input']>;
@@ -713,7 +713,7 @@ export type NewPatientAddress = {
 export type NewPatientAddressInput = {
   address1?: InputMaybe<Scalars['String']['input']>;
   address2?: InputMaybe<Scalars['String']['input']>;
-  asOf: Scalars['DateTime']['input'];
+  asOf: Scalars['Date']['input'];
   censusTract?: InputMaybe<Scalars['String']['input']>;
   city?: InputMaybe<Scalars['String']['input']>;
   comment?: InputMaybe<Scalars['String']['input']>;
@@ -733,7 +733,7 @@ export type NewPatientIdentification = {
 };
 
 export type NewPatientIdentificationInput = {
-  asOf: Scalars['DateTime']['input'];
+  asOf: Scalars['Date']['input'];
   authority?: InputMaybe<Scalars['String']['input']>;
   patient: Scalars['Int']['input'];
   type: Scalars['String']['input'];
@@ -749,7 +749,7 @@ export type NewPatientName = {
 };
 
 export type NewPatientNameInput = {
-  asOf?: InputMaybe<Scalars['DateTime']['input']>;
+  asOf: Scalars['Date']['input'];
   degree?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['String']['input']>;
   last?: InputMaybe<Scalars['String']['input']>;
@@ -763,7 +763,7 @@ export type NewPatientNameInput = {
 };
 
 export type NewPatientPhoneInput = {
-  asOf: Scalars['DateTime']['input'];
+  asOf: Scalars['Date']['input'];
   comment?: InputMaybe<Scalars['String']['input']>;
   countryCode?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
@@ -850,7 +850,7 @@ export type PatientAddress = {
   __typename?: 'PatientAddress';
   address1?: Maybe<Scalars['String']['output']>;
   address2?: Maybe<Scalars['String']['output']>;
-  asOf: Scalars['DateTime']['output'];
+  asOf: Scalars['Date']['output'];
   censusTract?: Maybe<Scalars['String']['output']>;
   city?: Maybe<Scalars['String']['output']>;
   comment?: Maybe<Scalars['String']['output']>;
@@ -893,7 +893,7 @@ export type PatientAddressUse = {
 
 export type PatientAdministrative = {
   __typename?: 'PatientAdministrative';
-  asOf: Scalars['DateTime']['output'];
+  asOf: Scalars['Date']['output'];
   comment?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   patient: Scalars['ID']['output'];
@@ -916,7 +916,7 @@ export type PatientAdministrativeResults = {
 export type PatientBirth = {
   __typename?: 'PatientBirth';
   age?: Maybe<Scalars['Int']['output']>;
-  asOf: Scalars['DateTime']['output'];
+  asOf: Scalars['Date']['output'];
   birthOrder?: Maybe<Scalars['Int']['output']>;
   bornOn?: Maybe<Scalars['Date']['output']>;
   city?: Maybe<Scalars['String']['output']>;
@@ -1024,7 +1024,7 @@ export type PatientEthnicGroup = {
 
 export type PatientEthnicity = {
   __typename?: 'PatientEthnicity';
-  asOf: Scalars['DateTime']['output'];
+  asOf: Scalars['Date']['output'];
   detailed: Array<PatientDetailedEthnicity>;
   ethnicGroup: PatientEthnicGroup;
   id: Scalars['ID']['output'];
@@ -1047,7 +1047,7 @@ export type PatientEthnicityUnknownReason = {
 export type PatientGender = {
   __typename?: 'PatientGender';
   additional?: Maybe<Scalars['String']['output']>;
-  asOf: Scalars['DateTime']['output'];
+  asOf: Scalars['Date']['output'];
   birth?: Maybe<PatientGenderCodedValue>;
   current?: Maybe<PatientGenderCodedValue>;
   id: Scalars['ID']['output'];
@@ -1072,7 +1072,7 @@ export type PatientGenderUnknownReason = {
 export type PatientGeneral = {
   __typename?: 'PatientGeneral';
   adultsInHouse?: Maybe<Scalars['Int']['output']>;
-  asOf: Scalars['DateTime']['output'];
+  asOf: Scalars['Date']['output'];
   childrenInHouse?: Maybe<Scalars['Int']['output']>;
   educationLevel?: Maybe<PatientEducationLevel>;
   id: Scalars['ID']['output'];
@@ -1093,7 +1093,7 @@ export type PatientGeneralChangeResult = {
 
 export type PatientIdentification = {
   __typename?: 'PatientIdentification';
-  asOf: Scalars['DateTime']['output'];
+  asOf: Scalars['Date']['output'];
   authority?: Maybe<PatientIdentificationAuthority>;
   patient: Scalars['Int']['output'];
   sequence: Scalars['Int']['output'];
@@ -1260,7 +1260,7 @@ export type PatientMorbidityResults = {
 
 export type PatientMortality = {
   __typename?: 'PatientMortality';
-  asOf: Scalars['DateTime']['output'];
+  asOf: Scalars['Date']['output'];
   city?: Maybe<Scalars['String']['output']>;
   country?: Maybe<PatientCountry>;
   county?: Maybe<PatientCounty>;
@@ -1279,7 +1279,7 @@ export type PatientMortalityChangeResult = {
 
 export type PatientName = {
   __typename?: 'PatientName';
-  asOf: Scalars['DateTime']['output'];
+  asOf: Scalars['Date']['output'];
   degree?: Maybe<PatientNameDegree>;
   first?: Maybe<Scalars['String']['output']>;
   last?: Maybe<Scalars['String']['output']>;
@@ -1352,7 +1352,7 @@ export type PatientOccupation = {
 
 export type PatientPhone = {
   __typename?: 'PatientPhone';
-  asOf: Scalars['DateTime']['output'];
+  asOf: Scalars['Date']['output'];
   comment?: Maybe<Scalars['String']['output']>;
   countryCode?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
@@ -1458,12 +1458,12 @@ export type PatientProfileRacesArgs = {
 
 
 export type PatientProfileSummaryArgs = {
-  asOf?: InputMaybe<Scalars['DateTime']['input']>;
+  asOf?: InputMaybe<Scalars['Date']['input']>;
 };
 
 export type PatientRace = {
   __typename?: 'PatientRace';
-  asOf: Scalars['DateTime']['output'];
+  asOf: Scalars['Date']['output'];
   category: PatientRaceCategory;
   detailed: Array<PatientRaceDetail>;
   id: Scalars['Int']['output'];
@@ -1708,13 +1708,13 @@ export type PersonFilter = {
 
 export type PersonInput = {
   addresses?: InputMaybe<Array<NewPatientAddress>>;
-  asOf?: InputMaybe<Scalars['DateTime']['input']>;
+  asOf?: InputMaybe<Scalars['Date']['input']>;
   birthGender?: InputMaybe<Gender>;
   comments?: InputMaybe<Scalars['String']['input']>;
   currentGender?: InputMaybe<Gender>;
   dateOfBirth?: InputMaybe<Scalars['Date']['input']>;
   deceased?: InputMaybe<Deceased>;
-  deceasedTime?: InputMaybe<Scalars['DateTime']['input']>;
+  deceasedTime?: InputMaybe<Scalars['Date']['input']>;
   emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   ethnicity?: InputMaybe<Scalars['String']['input']>;
   identifications?: InputMaybe<Array<NewPatientIdentification>>;
@@ -1975,7 +1975,7 @@ export type RaceId = {
 };
 
 export type RaceInput = {
-  asOf?: InputMaybe<Scalars['DateTime']['input']>;
+  asOf?: InputMaybe<Scalars['Date']['input']>;
   category: Scalars['String']['input'];
   detailed?: InputMaybe<Array<Scalars['String']['input']>>;
   patient: Scalars['Int']['input'];
@@ -2097,7 +2097,7 @@ export type TracedCondition = {
 };
 
 export type UpdateBirthAndGenderInput = {
-  asOf: Scalars['DateTime']['input'];
+  asOf: Scalars['Date']['input'];
   birth?: InputMaybe<UpdateBirthInput>;
   gender?: InputMaybe<UpdateGenderInput>;
   patient: Scalars['ID']['input'];
@@ -2124,7 +2124,7 @@ export type UpdateGenderInput = {
 export type UpdatePatientAddressInput = {
   address1?: InputMaybe<Scalars['String']['input']>;
   address2?: InputMaybe<Scalars['String']['input']>;
-  asOf: Scalars['DateTime']['input'];
+  asOf: Scalars['Date']['input'];
   censusTract?: InputMaybe<Scalars['String']['input']>;
   city?: InputMaybe<Scalars['String']['input']>;
   comment?: InputMaybe<Scalars['String']['input']>;
@@ -2139,7 +2139,7 @@ export type UpdatePatientAddressInput = {
 };
 
 export type UpdatePatientIdentificationInput = {
-  asOf: Scalars['DateTime']['input'];
+  asOf: Scalars['Date']['input'];
   authority?: InputMaybe<Scalars['String']['input']>;
   patient: Scalars['Int']['input'];
   sequence: Scalars['Int']['input'];
@@ -2148,7 +2148,7 @@ export type UpdatePatientIdentificationInput = {
 };
 
 export type UpdatePatientNameInput = {
-  asOf?: InputMaybe<Scalars['DateTime']['input']>;
+  asOf: Scalars['Date']['input'];
   degree?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['String']['input']>;
   last?: InputMaybe<Scalars['String']['input']>;
@@ -2163,7 +2163,7 @@ export type UpdatePatientNameInput = {
 };
 
 export type UpdatePatientPhoneInput = {
-  asOf: Scalars['DateTime']['input'];
+  asOf: Scalars['Date']['input'];
   comment?: InputMaybe<Scalars['String']['input']>;
   countryCode?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
@@ -2561,7 +2561,7 @@ export type FindPatientNamedByContactQueryVariables = Exact<{
 export type FindPatientNamedByContactQuery = { __typename?: 'Query', findPatientNamedByContact?: { __typename?: 'PatientNamedByContactResults', total: number, number: number, content: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, namedOn: any, priority?: string | null, disposition?: string | null, event: string, condition: { __typename?: 'TracedCondition', id?: string | null, description?: string | null }, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
 
 export type FindPatientProfileQueryVariables = Exact<{
-  asOf?: InputMaybe<Scalars['DateTime']['input']>;
+  asOf?: InputMaybe<Scalars['Date']['input']>;
   page?: InputMaybe<Page>;
   page1?: InputMaybe<Page>;
   page2?: InputMaybe<Page>;
@@ -4952,7 +4952,7 @@ export type FindPatientNamedByContactLazyQueryHookResult = ReturnType<typeof use
 export type FindPatientNamedByContactSuspenseQueryHookResult = ReturnType<typeof useFindPatientNamedByContactSuspenseQuery>;
 export type FindPatientNamedByContactQueryResult = Apollo.QueryResult<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>;
 export const FindPatientProfileDocument = gql`
-    query findPatientProfile($asOf: DateTime, $page: Page, $page1: Page, $page2: Page, $page3: Page, $page4: Page, $page5: Page, $patient: ID, $shortId: Int) {
+    query findPatientProfile($asOf: Date, $page: Page, $page1: Page, $page2: Page, $page3: Page, $page4: Page, $page5: Page, $patient: ID, $shortId: Int) {
   findPatientProfile(patient: $patient, shortId: $shortId) {
     id
     local

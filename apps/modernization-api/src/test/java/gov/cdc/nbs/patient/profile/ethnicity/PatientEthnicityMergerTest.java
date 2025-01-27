@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.ethnicity;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +19,7 @@ class PatientEthnicityMergerTest {
                 2L,
                 73L,
                 (short) 283,
-                Instant.parse("1970-04-09T09:53:00Z"),
+                LocalDate.parse("1970-04-09"),
                 new PatientEthnicity.EthnicGroup("ethnic-group-id", "ethnic-group-description"),
                 new PatientEthnicity.UnknownReason("unknown-reason-id", "unknown-reason-description"),
                 List.of()
@@ -28,7 +28,7 @@ class PatientEthnicityMergerTest {
                 3L,
                 79L,
                 (short) 293,
-                Instant.parse("2003-09-05T10:09:30Z"),
+                LocalDate.parse("2003-09-05"),
                 new PatientEthnicity.EthnicGroup("ethnic-group-other-id", "ethnic-group-other-description"),
                 new PatientEthnicity.UnknownReason("unknown-reason-other-id", "unknown-reason-other-description"),
                 List.of()
@@ -39,7 +39,7 @@ class PatientEthnicityMergerTest {
         assertThat(actual.patient()).isEqualTo(2L);
         assertThat(actual.id()).isEqualTo(73L);
         assertThat(actual.version()).isEqualTo((short) 283);
-        assertThat(actual.asOf()).isEqualTo("1970-04-09T09:53:00Z");
+        assertThat(actual.asOf()).isEqualTo("1970-04-09");
 
         assertThat(actual.ethnicGroup().id()).isEqualTo("ethnic-group-id");
         assertThat(actual.ethnicGroup().description()).isEqualTo("ethnic-group-description");

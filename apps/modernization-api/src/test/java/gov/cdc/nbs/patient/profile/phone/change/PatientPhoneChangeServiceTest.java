@@ -6,7 +6,7 @@ import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -31,7 +31,7 @@ class PatientPhoneChangeServiceTest {
 
     when(input.patient()).thenReturn(1021L);
 
-    RequestContext context = new RequestContext(523L, Instant.now());
+    RequestContext context = new RequestContext(523L, LocalDateTime.now());
 
     assertThatThrownBy(
         () -> service.add(context, input)

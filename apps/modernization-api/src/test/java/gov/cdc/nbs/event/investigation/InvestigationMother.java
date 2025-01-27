@@ -16,10 +16,11 @@ import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
+import java.time.ZoneOffset;
 
 @Component
 public class InvestigationMother {
@@ -78,7 +79,8 @@ public class InvestigationMother {
         identifier,
         local,
         settings.createdBy(),
-        settings.createdOn());
+        settings.createdOn().toInstant(ZoneOffset.UTC)
+    );
 
     investigation.within(
         // out of system
@@ -112,7 +114,8 @@ public class InvestigationMother {
         identifier,
         local,
         settings.createdBy(),
-        settings.createdOn());
+        settings.createdOn().toInstant(ZoneOffset.UTC)
+    );
 
     investigation.condition("42060"); // other injury
 
@@ -145,8 +148,8 @@ public class InvestigationMother {
     participation.setSubjectClassCd(PERSON_CODE);
 
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 
@@ -295,8 +298,8 @@ public class InvestigationMother {
     participation.setActClassCd(act.getClassCd());
     participation.setSubjectClassCd("ORG");
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 
@@ -321,8 +324,8 @@ public class InvestigationMother {
     participation.setSubjectClassCd("PSN");
 
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 
@@ -341,8 +344,8 @@ public class InvestigationMother {
     participation.setSubjectClassCd("PSN");
 
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 

@@ -1,10 +1,10 @@
 package gov.cdc.nbs.patient.profile.phone.change;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public record NewPatientPhoneInput(
     long patient,
-    Instant asOf,
+    LocalDate asOf,
     String type,
     String use,
     String countryCode,

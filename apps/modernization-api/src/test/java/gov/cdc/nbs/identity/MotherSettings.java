@@ -1,19 +1,19 @@
 package gov.cdc.nbs.identity;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class MotherSettings {
 
   private final long starting;
   private final String suffix;
   private final long createedBy;
-  private final Instant createdOn;
+  private final LocalDateTime createdOn;
 
   public MotherSettings(long starting, String suffix, long createdBy) {
     this.starting = starting;
     this.suffix = suffix;
     this.createedBy = createdBy;
-    this.createdOn = Instant.now();
+    this.createdOn = LocalDateTime.now();
   }
 
   public long starting() {
@@ -28,7 +28,7 @@ public class MotherSettings {
     return createedBy;
   }
 
-  public Instant createdOn() {
+  public LocalDateTime createdOn() {
     return createdOn;
   }
 }

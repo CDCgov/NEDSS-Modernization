@@ -4,30 +4,35 @@ import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.EntityIdId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
-
-import jakarta.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PatientProfileIdentificationChangeSteps {
 
-    @Autowired
-    Available<PatientIdentifier> patients;
+    private final Available<PatientIdentifier> patients;
 
-    @Autowired
-    PatientIdentificationChangeController controller;
+    private final PatientIdentificationChangeController controller;
 
-    @Autowired
-    EntityManager entityManager;
+    private final EntityManager entityManager;
+
+    PatientProfileIdentificationChangeSteps(
+        final Available<PatientIdentifier> patients,
+        final PatientIdentificationChangeController controller,
+        final EntityManager entityManager
+    ) {
+        this.patients = patients;
+        this.controller = controller;
+        this.entityManager = entityManager;
+    }
 
     private NewPatientIdentificationInput newRequest;
     private UpdatePatientIdentificationInput updateRequest;
@@ -46,7 +51,7 @@ public class PatientProfileIdentificationChangeSteps {
 
         newRequest = new NewPatientIdentificationInput(
             patient,
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             RandomUtil.oneFrom("AN", "APT", "CI", "DL"),
             RandomUtil.oneFrom("OTH", "SC", "SD", "TN", "TX"),
             RandomUtil.getRandomNumericString(15)
@@ -88,7 +93,7 @@ public class PatientProfileIdentificationChangeSteps {
         updateRequest = new UpdatePatientIdentificationInput(
             existing.getId().getEntityUid(),
             existing.getId().getEntityIdSeq(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             RandomUtil.oneFrom("AN", "APT", "CI", "DL"),
             RandomUtil.oneFrom("OTH", "SC", "SD", "TN", "TX"),
             RandomUtil.getRandomNumericString(15)

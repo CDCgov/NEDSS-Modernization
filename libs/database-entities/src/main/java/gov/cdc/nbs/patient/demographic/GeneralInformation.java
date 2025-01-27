@@ -7,8 +7,7 @@ import gov.cdc.nbs.patient.PatientCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
-
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Embeddable
@@ -18,7 +17,7 @@ public class GeneralInformation {
 
 
   @Column(name = "as_of_date_general")
-  private Instant asOf;
+  private LocalDate asOf;
 
   @Column(name = "marital_status_cd", length = 20)
   private String maritalStatus;
@@ -78,7 +77,7 @@ public class GeneralInformation {
     }
   }
 
-  public Instant asOf() {
+  public LocalDate asOf() {
     return asOf;
   }
 

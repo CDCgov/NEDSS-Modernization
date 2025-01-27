@@ -1,13 +1,13 @@
 package gov.cdc.nbs.patient.profile.ethnicity;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collection;
 
 record PatientEthnicity(
     long patient,
     long id,
     short version,
-    Instant asOf,
+    LocalDate asOf,
     EthnicGroup ethnicGroup,
     UnknownReason unknownReason,
     Collection<Ethnicity> detailed

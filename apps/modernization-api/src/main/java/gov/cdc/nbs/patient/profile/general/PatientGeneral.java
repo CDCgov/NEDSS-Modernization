@@ -3,13 +3,13 @@ package gov.cdc.nbs.patient.profile.general;
 import gov.cdc.nbs.data.sensitive.Sensitive;
 import gov.cdc.nbs.message.enums.Indicator;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 record PatientGeneral(
     long patient,
     long id,
     short version,
-    Instant asOf,
+    LocalDate asOf,
     MaritalStatus maritalStatus,
     String maternalMaidenName,
     Integer adultsInHouse,

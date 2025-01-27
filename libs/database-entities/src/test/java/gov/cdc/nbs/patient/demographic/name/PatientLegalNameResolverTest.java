@@ -6,8 +6,8 @@ import gov.cdc.nbs.entity.odse.PersonNameId;
 import gov.cdc.nbs.patient.PatientCommand;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 import java.util.Optional;
@@ -39,14 +39,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("1993-11-09T00:00:00Z"),
+                    LocalDate.parse("1933-11-09"),
                     null,
                     null,
                     null,
                     null,
                     "AD",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -55,14 +55,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("2003-06-04T00:00:00Z"),
+                    LocalDate.parse("2003-06-04"),
                     null,
                     null,
                     null,
                     null,
                     "MO",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             )
         ),
@@ -86,14 +86,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("1993-11-09T00:00:00Z"),
+                    LocalDate.parse("1933-11-09"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -102,14 +102,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("2003-06-04T00:00:00Z"),
+                    LocalDate.parse("2003-06-04"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -118,14 +118,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("2021-07-29T00:00:00Z"),
+                    LocalDate.parse("2021-07-29"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -134,14 +134,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("2024-03-19T00:00:00Z"),
+                    LocalDate.parse("2024-03-19"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             )
         ),
@@ -168,14 +168,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("1993-11-09T00:00:00Z"),
+                    LocalDate.parse("1933-11-09"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -184,14 +184,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("2003-06-04T00:00:00Z"),
+                    LocalDate.parse("2003-06-04"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -200,14 +200,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("2021-07-29T00:00:00Z"),
+                    LocalDate.parse("2021-07-29"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -216,14 +216,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("2024-03-19T00:00:00Z"),
+                    LocalDate.parse("2024-03-19"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             )
         ),
@@ -250,14 +250,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("1993-11-09T00:00:00Z"),
+                    LocalDate.parse("1933-11-09"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -266,14 +266,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("2021-07-29T00:00:00Z"),
+                    LocalDate.parse("2021-07-29"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -282,14 +282,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("2021-07-29T00:00:00Z"),
+                    LocalDate.parse("2021-07-29"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             ),
             new PersonName(
@@ -298,14 +298,14 @@ class PatientLegalNameResolverTest {
                 encoder,
                 new PatientCommand.AddName(
                     457L,
-                    Instant.parse("2017-03-19T00:00:00Z"),
+                    LocalDate.parse("2017-03-19"),
                     null,
                     null,
                     null,
                     null,
                     "L",
                     743L,
-                    Instant.MIN
+                    LocalDateTime.MIN
                 )
             )
         ),

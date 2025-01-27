@@ -1,10 +1,11 @@
 package gov.cdc.nbs.patient.profile.identification;
 
+import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
+import java.time.LocalDate;
 
 class PatientIdentificationRowMapper implements RowMapper<PatientIdentification> {
 
@@ -20,6 +21,7 @@ class PatientIdentificationRowMapper implements RowMapper<PatientIdentification>
       int value
   ) {
   }
+
 
   private final Column columns;
 
@@ -39,7 +41,7 @@ class PatientIdentificationRowMapper implements RowMapper<PatientIdentification>
 
     short sequence = resultSet.getShort(this.columns.sequence());
 
-    Instant asOf = resultSet.getTimestamp(this.columns.asOf()).toInstant();
+    LocalDate asOf = LocalDateColumnMapper.map(resultSet, this.columns.asOf());
 
     PatientIdentification.Type type = mapType(resultSet);
 

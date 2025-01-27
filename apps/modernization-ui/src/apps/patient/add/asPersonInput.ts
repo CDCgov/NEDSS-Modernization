@@ -1,4 +1,4 @@
-import { externalizeDate, externalizeDateTime } from 'date';
+import { externalizeDate } from 'date';
 import { NameUseCd, NewPatientIdentification, NewPatientPhoneNumber, PersonInput } from 'generated/graphql/schema';
 import { EmailEntry, NewPatientEntry } from 'apps/patient/add';
 import { maybeMapAll } from 'utils/mapping';
@@ -68,10 +68,10 @@ export const asPersonInput = (data: NewPatientEntry) => {
     const names = isEmpty(name) ? [] : [{ ...name, use: NameUseCd.L }];
 
     const payload: PersonInput = {
-        asOf: externalizeDateTime(data.asOf),
+        asOf: externalizeDate(data.asOf),
         comments: data.comments,
         dateOfBirth: externalizeDate(data.dateOfBirth),
-        deceasedTime: externalizeDateTime(data.deceasedTime),
+        deceasedTime: externalizeDate(data.deceasedTime),
         birthGender: data.birthGender,
         currentGender: data.currentGender,
         deceased: data.deceased,

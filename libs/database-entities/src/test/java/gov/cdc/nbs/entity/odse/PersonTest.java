@@ -1,8 +1,5 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.audit.Added;
-import gov.cdc.nbs.audit.Changed;
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Indicator;
@@ -17,7 +14,6 @@ import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -45,11 +41,11 @@ class PersonTest {
         null,
         "Marital Status",
         "EthCode",
-        Instant.parse("2019-03-03T10:15:30.00Z"),
+        LocalDate.parse("2019-03-03"),
         "comments",
         "HIV-Case",
         131L,
-        Instant.parse("2020-03-03T10:15:30.00Z")
+        LocalDateTime.parse("2020-03-03T10:15:30")
     );
 
     Person actual = new Person(request);
@@ -62,16 +58,18 @@ class PersonTest {
     assertThat(actual.getElectronicInd()).isEqualTo('N');
     assertThat(actual.getEdxInd()).isEqualTo("Y");
 
-    assertThat(actual.getAddUserId()).isEqualTo(131L);
-    assertThat(actual.getAddTime()).isEqualTo("2020-03-03T10:15:30.00Z");
-    assertThat(actual.getLastChgUserId()).isEqualTo(131L);
-    assertThat(actual.getLastChgTime()).isEqualTo("2020-03-03T10:15:30.00Z");
+    assertThat(actual)
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"));
 
-    assertThat(actual.getStatusCd()).isEqualTo('A');
-    assertThat(actual.getStatusTime()).isEqualTo("2020-03-03T10:15:30.00Z");
+    assertThat(actual)
+        .extracting(Person::status)
+        .satisfies(StatusAssertions.active("2020-03-03T10:15:30"));
 
-    assertThat(actual.getRecordStatusCd()).isEqualTo(RecordStatus.ACTIVE);
-    assertThat(actual.getRecordStatusTime()).isEqualTo("2020-03-03T10:15:30.00Z");
+    assertThat(actual)
+        .extracting(Person::recordStatus)
+        .satisfies(RecordStatusAssertions.active("2020-03-03T10:15:30"));
 
     assertThat(actual.getBirthTime()).isEqualTo("2000-09-03T00:00");
     assertThat(actual.getBirthGenderCd()).isEqualTo(Gender.M);
@@ -79,9 +77,9 @@ class PersonTest {
     assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
     assertThat(actual.getGeneralInformation().maritalStatus()).isEqualTo("Marital Status");
 
-    assertThat(actual.getGeneralInformation().asOf()).isEqualTo("2019-03-03T10:15:30.00Z");
-    assertThat(actual.getAsOfDateAdmin()).isEqualTo("2019-03-03T10:15:30.00Z");
-    assertThat(actual.getAsOfDateSex()).isEqualTo("2019-03-03T10:15:30.00Z");
+    assertThat(actual.getGeneralInformation().asOf()).isEqualTo("2019-03-03");
+    assertThat(actual.getAsOfDateAdmin()).isEqualTo("2019-03-03");
+    assertThat(actual.getAsOfDateSex()).isEqualTo("2019-03-03");
     assertThat(actual.getDescription()).isEqualTo("comments");
 
     assertThat(actual.getGeneralInformation().stateHIVCase()).isEqualTo("HIV-Case");
@@ -89,7 +87,7 @@ class PersonTest {
     assertThat(actual)
         .extracting(Person::getEthnicity)
         .returns("EthCode", PatientEthnicity::ethnicGroup)
-        .returns(Instant.parse("2019-03-03T10:15:30.00Z"), PatientEthnicity::asOf);
+        .returns(LocalDate.parse("2019-03-03"), PatientEthnicity::asOf);
 
     assertThat(actual.getPersonParentUid())
         .as("Master Patient Record set itself as parent")
@@ -106,7 +104,7 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2023-05-15T10:00:00Z"),
+            LocalDate.parse("2023-05-15"),
             "prefix",
             "First",
             "Middle",
@@ -117,17 +115,17 @@ class PersonTest {
             "Degree",
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     assertThat(patient)
-        .returns(131L, Person::getLastChgUserId)
-        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"));
 
     assertThat(patient.getNames()).satisfiesExactly(
         actual -> assertThat(actual)
-            .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
+            .returns(LocalDate.parse("2023-05-15"), PersonName::getAsOfDate)
             .returns("prefix", PersonName::getNmPrefix)
             .returns("First", PersonName::getFirstNm)
             .returns("Second-Middle", PersonName::getMiddleNm2)
@@ -147,8 +145,8 @@ class PersonTest {
             .satisfies(
                 added -> assertThat(added.getAudit())
                     .describedAs("expected name audit state")
-                    .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
-                    .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
+                    .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+                    .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
             )
 
 
@@ -164,14 +162,14 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",
             "JR",
             "L",
             171L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -179,7 +177,7 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2023-05-15T10:00:00Z"),
+            LocalDate.parse("2023-05-15"),
             "Another-Prefix",
             "Another-First",
             "Another-Middle",
@@ -190,7 +188,7 @@ class PersonTest {
             "Another-Degree",
             "A",
             131L,
-            Instant.parse("2021-02-03T04:05:06Z")
+            LocalDateTime.parse("2021-02-03T04:05:06")
         )
     );
 
@@ -200,7 +198,7 @@ class PersonTest {
             .returns(117L, PersonNameId::getPersonUid)
             .returns((short) 1, PersonNameId::getPersonNameSeq),
         actual -> assertThat(actual)
-            .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
+            .returns(LocalDate.parse("2023-05-15"), PersonName::getAsOfDate)
             .returns("Another-Prefix", PersonName::getNmPrefix)
             .returns("Another-First", PersonName::getFirstNm)
             .returns("Another-Second-Middle", PersonName::getMiddleNm2)
@@ -220,19 +218,9 @@ class PersonTest {
             .satisfies(
                 added -> assertThat(added.getAudit())
                     .describedAs("expected name audit state")
-                    .satisfies(
-                        audit -> assertThat(audit.added())
-                            .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2021-02-03T04:05:06Z"), Added::addedOn)
-                    )
-                    .satisfies(
-                        audit -> assertThat(audit.changed())
-                            .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2021-02-03T04:05:06Z"), Changed::changedOn)
-                    )
+                    .satisfies(AuditAssertions.added(131L, "2021-02-03T04:05:06"))
+                    .satisfies(AuditAssertions.changed(131L, "2021-02-03T04:05:06"))
             )
-
-
     );
   }
 
@@ -245,14 +233,14 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",
             "JR",
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -261,7 +249,7 @@ class PersonTest {
         new PatientCommand.UpdateNameInfo(
             117L,
             (short) 1,
-            Instant.parse("2023-05-15T10:00:00Z"),
+            LocalDate.parse("2023-05-15"),
             "prefix",
             "First",
             "Middle",
@@ -272,17 +260,17 @@ class PersonTest {
             "Degree",
             "L",
             171L,
-            Instant.parse("2021-04-05T06:07:08Z")
+            LocalDateTime.parse("2021-04-05T06:07:08")
         )
     );
 
     assertThat(patient)
-        .returns(171L, Person::getLastChgUserId)
-        .returns(Instant.parse("2021-04-05T06:07:08Z"), Person::getLastChgTime);
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(171L, "2021-04-05T06:07:08"));
 
     assertThat(patient.getNames()).satisfiesExactly(
         actual -> assertThat(actual)
-            .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
+            .returns(LocalDate.parse("2023-05-15"), PersonName::getAsOfDate)
             .returns("prefix", PersonName::getNmPrefix)
             .returns("First", PersonName::getFirstNm)
             .returns("Second-Middle", PersonName::getMiddleNm2)
@@ -302,7 +290,7 @@ class PersonTest {
             .satisfies(
                 added -> assertThat(added.getAudit())
                     .describedAs("expected name audit state")
-                    .satisfies(AuditAssertions.changed(171L, "2021-04-05T06:07:08Z")
+                    .satisfies(AuditAssertions.changed(171L, "2021-04-05T06:07:08")
                     )
             )
     );
@@ -317,14 +305,14 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",
             "JR",
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -332,14 +320,14 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "Other-First",
             "Other-Middle",
             "Other-Last",
             null,
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -348,13 +336,13 @@ class PersonTest {
             117L,
             (short) 2,
             171L,
-            Instant.parse("2021-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2021-03-03T10:15:30")
         )
     );
 
     assertThat(patient)
-        .returns(171L, Person::getLastChgUserId)
-        .returns(Instant.parse("2021-03-03T10:15:30.00Z"), Person::getLastChgTime);
+        .returns(171L, person -> person.audit().changed().changedBy())
+        .returns(LocalDateTime.parse("2021-03-03T10:15:30"), person -> person.audit().changed().changedOn());
 
     assertThat(patient.getNames()).satisfiesExactlyInAnyOrder(
         actual -> assertThat(actual)
@@ -374,20 +362,20 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",
             "JR",
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     assertThat(actual.getNames()).satisfiesExactly(
         actualPrimary -> assertThat(actualPrimary)
-            .returns(Instant.parse("2021-05-15T10:00:00Z"), PersonName::getAsOfDate)
+            .returns(LocalDate.parse("2021-05-15"), PersonName::getAsOfDate)
             .returns("First", PersonName::getFirstNm)
             .returns("Middle", PersonName::getMiddleNm)
             .returns("Last", PersonName::getLastNm)
@@ -409,14 +397,14 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "First",
             "Middle",
             "Last",
             "JR",
             "L",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -424,14 +412,14 @@ class PersonTest {
         resolver,
         new PatientCommand.AddName(
             117L,
-            Instant.parse("2021-05-15T10:00:00Z"),
+            LocalDate.parse("2021-05-15"),
             "Other",
             "OtherMiddle",
             "OtherLast",
             "SR",
             "AL",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -472,7 +460,7 @@ class PersonTest {
         new PatientCommand.AddAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:35:13Z"),
+            LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
             "city-description",
@@ -482,7 +470,7 @@ class PersonTest {
             "country-code",
             "Census Tract",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -492,7 +480,7 @@ class PersonTest {
                 .returns(4861L, p -> p.getId().getLocatorUid())
                 .returns("H", EntityLocatorParticipation::getCd)
                 .returns("H", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2021-07-07T03:35:13Z"), EntityLocatorParticipation::getAsOfDate)
+                .returns(LocalDate.parse("2021-07-07"), EntityLocatorParticipation::getAsOfDate)
                 .extracting(PostalEntityLocatorParticipation::getLocator)
                 .returns(4861L, PostalLocator::getId)
                 .returns("SA1", PostalLocator::getStreetAddr1)
@@ -516,7 +504,7 @@ class PersonTest {
         new PatientCommand.AddAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:35:13Z"),
+            LocalDate.parse("2021-07-07"),
             "type-value",
             "use-value",
             "SA1",
@@ -529,14 +517,14 @@ class PersonTest {
             "Census Tract",
             "Comments",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2023-03-03T10:15:30")
         )
     );
 
     assertThat(patient)
-        .returns(131L, Person::getLastChgUserId)
-        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
-
+        .extracting(Person::audit)
+        .describedAs("expected patient audit state")
+        .satisfies(AuditAssertions.changed(131L, "2023-03-03T10:15:30"));
 
     assertThat(patient.addresses())
         .satisfiesExactly(
@@ -544,12 +532,14 @@ class PersonTest {
                 .returns(4861L, p -> p.getId().getLocatorUid())
                 .returns("type-value", EntityLocatorParticipation::getCd)
                 .returns("use-value", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2021-07-07T03:35:13Z"), EntityLocatorParticipation::getAsOfDate)
-                .returns(131L, EntityLocatorParticipation::getAddUserId)
-                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getAddTime)
-                .returns(131L, EntityLocatorParticipation::getLastChgUserId)
-                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getLastChgTime)
+                .returns(LocalDate.parse("2021-07-07"), EntityLocatorParticipation::getAsOfDate)
                 .returns("Comments", EntityLocatorParticipation::getLocatorDescTxt)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .describedAs("expected participation audit state")
+                        .satisfies(AuditAssertions.added(131L, "2023-03-03T10:15:30"))
+                        .satisfies(AuditAssertions.changed(131L, "2023-03-03T10:15:30"))
+                )
                 .extracting(PostalEntityLocatorParticipation::getLocator)
                 .returns(4861L, PostalLocator::getId)
                 .returns("SA1", PostalLocator::getStreetAddr1)
@@ -562,9 +552,9 @@ class PersonTest {
                 .returns("Census Tract", PostalLocator::getCensusTract)
                 .satisfies(
                     added -> assertThat(added.audit())
-                        .describedAs("expected name audit state")
-                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
-                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
+                        .describedAs("expected address audit state")
+                        .satisfies(AuditAssertions.added(131L, "2023-03-03T10:15:30"))
+                        .satisfies(AuditAssertions.changed(131L, "2023-03-03T10:15:30"))
                 )
         );
 
@@ -579,7 +569,7 @@ class PersonTest {
         new PatientCommand.AddAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:06:09Z"),
+            LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
             "city-description",
@@ -589,7 +579,7 @@ class PersonTest {
             "country-code",
             "Census Tract",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -597,7 +587,7 @@ class PersonTest {
         new PatientCommand.UpdateAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:35:13Z"),
+            LocalDate.parse("2021-07-07"),
             "type-value",
             "use-value",
             "SA1",
@@ -610,13 +600,13 @@ class PersonTest {
             "Census Tract",
             "Comments",
             171L,
-            Instant.parse("2020-03-04T00:00:00Z")
+            LocalDateTime.parse("2020-03-04T00:00")
         )
     );
 
     assertThat(patient)
-        .returns(171L, Person::getLastChgUserId)
-        .returns(Instant.parse("2020-03-04T00:00:00Z"), Person::getLastChgTime);
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(171L, "2020-03-04T00:00"));
 
 
     assertThat(patient.addresses())
@@ -625,12 +615,13 @@ class PersonTest {
                 .returns(4861L, p -> p.getId().getLocatorUid())
                 .returns("type-value", EntityLocatorParticipation::getCd)
                 .returns("use-value", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2021-07-07T03:35:13Z"), EntityLocatorParticipation::getAsOfDate)
-                .returns(131L, EntityLocatorParticipation::getAddUserId)
-                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getAddTime)
-                .returns(171L, EntityLocatorParticipation::getLastChgUserId)
-                .returns(Instant.parse("2020-03-04T00:00:00Z"), EntityLocatorParticipation::getLastChgTime)
+                .returns(LocalDate.parse("2021-07-07"), EntityLocatorParticipation::getAsOfDate)
                 .returns("Comments", EntityLocatorParticipation::getLocatorDescTxt)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+                        .satisfies(AuditAssertions.changed(171L, "2020-03-04T00:00:00"))
+                )
                 .extracting(PostalEntityLocatorParticipation::getLocator)
                 .returns(4861L, PostalLocator::getId)
                 .returns("SA1", PostalLocator::getStreetAddr1)
@@ -643,8 +634,8 @@ class PersonTest {
                 .returns("Census Tract", PostalLocator::getCensusTract)
                 .satisfies(
                     added -> assertThat(added.audit())
-                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
-                        .satisfies(AuditAssertions.changed(171L, "2020-03-04T00:00:00Z"))
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+                        .satisfies(AuditAssertions.changed(171L, "2020-03-04T00:00:00"))
                 )
 
         );
@@ -660,7 +651,7 @@ class PersonTest {
         new PatientCommand.AddAddress(
             117L,
             4861L,
-            Instant.parse("2021-07-07T03:06:09Z"),
+            LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
             "city-description",
@@ -670,7 +661,7 @@ class PersonTest {
             "country-code",
             "Census Tract",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -678,7 +669,7 @@ class PersonTest {
         new PatientCommand.AddAddress(
             117L,
             5331L,
-            Instant.parse("2021-07-07T03:06:09Z"),
+            LocalDate.parse("2021-07-07"),
             "Other-SA1",
             "Other-SA2",
             "Other-city",
@@ -688,7 +679,7 @@ class PersonTest {
             "Other-country-code",
             null,
             171L,
-            Instant.parse("2020-03-04T08:45:23Z")
+            LocalDateTime.parse("2020-03-04T08:45:23")
         )
     );
 
@@ -697,14 +688,14 @@ class PersonTest {
             117L,
             5331L,
             191L,
-            Instant.parse("2021-05-24T11:01:17Z")
+            LocalDateTime.parse("2021-05-24T11:01:17")
         )
     );
 
-    assertThat(patient)
-        .returns(191L, Person::getLastChgUserId)
-        .returns(Instant.parse("2021-05-24T11:01:17Z"), Person::getLastChgTime);
-
+    assertThat(patient).satisfies(
+        added -> assertThat(added.audit())
+            .satisfies(AuditAssertions.changed(191L, "2021-05-24T11:01:17"))
+    );
 
     assertThat(patient.addresses())
         .satisfiesExactly(
@@ -724,10 +715,10 @@ class PersonTest {
         new PatientCommand.AddEmailAddress(
             117L,
             5333L,
-            Instant.parse("2017-05-16T11:13:19Z"),
+            LocalDate.parse("2017-05-16"),
             "AnEmail@email.com",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30.00")
         )
     );
 
@@ -737,7 +728,7 @@ class PersonTest {
                 .returns(5333L, p -> p.getId().getLocatorUid())
                 .returns("NET", EntityLocatorParticipation::getCd)
                 .returns("H", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2017-05-16T11:13:19Z"), EntityLocatorParticipation::getAsOfDate)
+                .returns(LocalDate.parse("2017-05-16"), EntityLocatorParticipation::getAsOfDate)
                 .extracting(TeleEntityLocatorParticipation::getLocator)
                 .returns(5333L, TeleLocator::getId)
                 .returns("AnEmail@email.com", TeleLocator::getEmailAddress)
@@ -755,25 +746,26 @@ class PersonTest {
         new PatientCommand.AddPhoneNumber(
             117L,
             5347L,
-            Instant.parse("2017-05-16T11:13:19Z"),
+            LocalDate.parse("2017-05-16"),
             "CP",
             "MC",
             "Phone Number",
             "Extension",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
-    assertThat(actual)
-        .returns(131L, Person::getLastChgUserId)
-        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+    assertThat(actual).satisfies(
+        added -> assertThat(added.audit())
+            .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
+    );
 
     assertThat(actual.phoneNumbers())
         .satisfiesExactly(
             actualPhoneLocator -> assertThat(actualPhoneLocator)
                 .returns(5347L, p -> p.getId().getLocatorUid())
-                .returns(Instant.parse("2017-05-16T11:13:19Z"), EntityLocatorParticipation::getAsOfDate)
+                .returns(LocalDate.parse("2017-05-16"), EntityLocatorParticipation::getAsOfDate)
                 .returns("CP", EntityLocatorParticipation::getCd)
                 .returns("MC", EntityLocatorParticipation::getUseCd)
                 .extracting(TeleEntityLocatorParticipation::getLocator)
@@ -782,8 +774,8 @@ class PersonTest {
                 .returns("Extension", TeleLocator::getExtensionTxt)
                 .satisfies(
                     added -> assertThat(added.audit())
-                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
-                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
                 )
 
         );
@@ -800,7 +792,7 @@ class PersonTest {
             5347L,
             "type-value",
             "use-value",
-            Instant.parse("2023-11-27T22:53:07Z"),
+            LocalDate.parse("2023-11-27"),
             "country-code",
             "number",
             "extension",
@@ -808,13 +800,14 @@ class PersonTest {
             "url",
             "comment",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
-    assertThat(patient)
-        .returns(131L, Person::getLastChgUserId)
-        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+    assertThat(patient).satisfies(
+        added -> assertThat(added.audit())
+            .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
+    );
 
     assertThat(patient.phoneNumbers())
         .satisfiesExactly(
@@ -822,12 +815,13 @@ class PersonTest {
                 .returns(5347L, p -> p.getId().getLocatorUid())
                 .returns("type-value", EntityLocatorParticipation::getCd)
                 .returns("use-value", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2023-11-27T22:53:07Z"), EntityLocatorParticipation::getAsOfDate)
-                .returns(131L, EntityLocatorParticipation::getAddUserId)
-                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getAddTime)
-                .returns(131L, EntityLocatorParticipation::getLastChgUserId)
-                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getLastChgTime)
+                .returns(LocalDate.parse("2023-11-27"), EntityLocatorParticipation::getAsOfDate)
                 .returns("comment", EntityLocatorParticipation::getLocatorDescTxt)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
+                )
                 .extracting(TeleEntityLocatorParticipation::getLocator)
                 .returns(5347L, TeleLocator::getId)
                 .returns("country-code", TeleLocator::getCntryCd)
@@ -837,8 +831,8 @@ class PersonTest {
                 .returns("url", TeleLocator::getUrlAddress)
                 .satisfies(
                     added -> assertThat(added.audit())
-                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
-                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
                 )
         );
   }
@@ -853,7 +847,7 @@ class PersonTest {
             5347L,
             "type-value",
             "use-value",
-            Instant.parse("2023-11-27T22:53:07Z"),
+            LocalDate.parse("2023-11-27"),
             "country-code",
             "number",
             "extension",
@@ -861,7 +855,7 @@ class PersonTest {
             "url",
             "comment",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
@@ -871,7 +865,7 @@ class PersonTest {
             5347L,
             "updated-type-value",
             "updated-use-value",
-            Instant.parse("2023-11-27T22:53:07Z"),
+            LocalDate.parse("2023-11-27"),
             "updated-country-code",
             "updated-number",
             "updated-extension",
@@ -879,13 +873,14 @@ class PersonTest {
             "updated-url",
             "updated-comment",
             171L,
-            Instant.parse("2023-07-01T13:17:00Z")
+            LocalDateTime.parse("2023-07-01T13:17:00")
         )
     );
 
-    assertThat(patient)
-        .returns(171L, Person::getLastChgUserId)
-        .returns(Instant.parse("2023-07-01T13:17:00Z"), Person::getLastChgTime);
+    assertThat(patient).satisfies(
+        added -> assertThat(added.audit())
+            .satisfies(AuditAssertions.changed(171L, "2023-07-01T13:17:00"))
+    );
 
     assertThat(patient.phoneNumbers())
         .satisfiesExactly(
@@ -895,11 +890,12 @@ class PersonTest {
                 .returns(5347L, p -> p.getId().getLocatorUid())
                 .returns("updated-type-value", EntityLocatorParticipation::getCd)
                 .returns("updated-use-value", EntityLocatorParticipation::getUseCd)
-                .returns(Instant.parse("2023-11-27T22:53:07Z"), EntityLocatorParticipation::getAsOfDate)
-                .returns(131L, EntityLocatorParticipation::getAddUserId)
-                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getAddTime)
-                .returns(171L, EntityLocatorParticipation::getLastChgUserId)
-                .returns(Instant.parse("2023-07-01T13:17:00Z"), EntityLocatorParticipation::getLastChgTime)
+                .returns(LocalDate.parse("2023-11-27"), EntityLocatorParticipation::getAsOfDate)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+                        .satisfies(AuditAssertions.changed(171L, "2023-07-01T13:17:00"))
+                )
                 .returns("updated-comment", EntityLocatorParticipation::getLocatorDescTxt)
                 .extracting(TeleEntityLocatorParticipation::getLocator)
                 .returns(5347L, TeleLocator::getId)
@@ -910,8 +906,8 @@ class PersonTest {
                 .returns("updated-url", TeleLocator::getUrlAddress)
                 .satisfies(
                     added -> assertThat(added.audit())
-                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
-                        .satisfies(AuditAssertions.changed(171L, "2023-07-01T13:17:00Z"))
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+                        .satisfies(AuditAssertions.changed(171L, "2023-07-01T13:17:00"))
                 )
         );
   }
@@ -926,7 +922,7 @@ class PersonTest {
             5347L,
             "type-value",
             "use-value",
-            Instant.parse("2023-11-27T22:53:07Z"),
+            LocalDate.parse("2023-11-27"),
             "country-code",
             "number",
             "extension",
@@ -934,7 +930,7 @@ class PersonTest {
             "url",
             "comment",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2023-03-03T10:15:30")
         )
     );
 
@@ -944,7 +940,7 @@ class PersonTest {
             1567L,
             "type-value",
             "use-value",
-            Instant.parse("2023-11-27T22:53:07Z"),
+            LocalDate.parse("2023-11-27"),
             "country-code",
             "number",
             "extension",
@@ -952,7 +948,7 @@ class PersonTest {
             "url",
             "comment",
             171L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2023-03-03T10:15:30")
         )
     );
 
@@ -961,13 +957,14 @@ class PersonTest {
             117L,
             1567L,
             293L,
-            Instant.parse("2023-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2023-03-03T10:15:30")
         )
     );
 
-    assertThat(patient)
-        .returns(293L, Person::getLastChgUserId)
-        .returns(Instant.parse("2023-03-03T10:15:30.00Z"), Person::getLastChgTime);
+    assertThat(patient).satisfies(
+        added -> assertThat(added.audit())
+            .satisfies(AuditAssertions.changed(293L, "2023-03-03T10:15:30"))
+    );
 
     assertThat(patient.phones())
         .satisfiesExactly(
@@ -992,16 +989,23 @@ class PersonTest {
         new PatientCommand.Delete(
             117L,
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2023-03-03T10:15:30")
         ),
         finder
     );
 
-    assertThat(actual.getRecordStatusCd()).isEqualTo(RecordStatus.LOG_DEL);
-    assertThat(actual.getRecordStatusTime()).isEqualTo("2020-03-03T10:15:30.00Z");
-    assertThat(actual.getVersionCtrlNbr()).isEqualTo((short) 2);
-    assertThat(actual.getLastChgUserId()).isEqualTo((short) 131L);
-    assertThat(actual.getLastChgTime()).isEqualTo("2020-03-03T10:15:30.00Z");
+    assertThat(actual)
+        .returns((short) 2, Person::getVersionCtrlNbr)
+        .satisfies(
+            updated -> assertThat(updated)
+                .extracting(Person::audit)
+                .satisfies(AuditAssertions.changed(131L, "2023-03-03T10:15:30"))
+        ).satisfies(
+            updated -> assertThat(updated)
+                .extracting(Person::recordStatus)
+                .satisfies(RecordStatusAssertions.status("LOG_DEL", "2023-03-03T10:15:30"))
+        );
+
   }
 
   @Test
@@ -1012,7 +1016,7 @@ class PersonTest {
 
     Person actual = new Person(117L, "local-id-value");
 
-    Instant deletedOn = Instant.parse("2020-03-03T10:15:30.00Z");
+    LocalDateTime deletedOn = LocalDateTime.parse("2023-03-03T10:15:30");
     var deleteCommand = new PatientCommand.Delete(
         117L,
         131L,
@@ -1034,7 +1038,7 @@ class PersonTest {
     Person actual = new Person(121L, "local-id-value");
     var command = new PatientCommand.UpdateGeneralInfo(
         121L,
-        Instant.parse("2010-03-03T10:15:30.00Z"),
+        LocalDate.parse("2010-03-03"),
         "marital status",
         "mothers maiden name",
         1,
@@ -1044,15 +1048,17 @@ class PersonTest {
         "prim language",
         "speaks english",
         12L,
-        Instant.parse("2019-03-03T10:15:30.00Z"));
+        LocalDateTime.parse("2019-03-03T10:15:30"));
 
     actual.update(command);
 
     assertThat(actual)
-        .returns(12L, Person::getLastChgUserId)
-        .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+        .returns(12L, person -> person.audit().changed().changedBy())
+        .returns(LocalDateTime.parse("2019-03-03T10:15:30"), person -> person.audit().changed().changedOn());
+
+    assertThat(actual)
         .extracting(Person::getGeneralInformation)
-        .returns(Instant.parse("2010-03-03T10:15:30.00Z"), GeneralInformation::asOf)
+        .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf)
         .returns("marital status", GeneralInformation::maritalStatus)
         .returns("mothers maiden name", GeneralInformation::mothersMaidenName)
         .returns(1, GeneralInformation::adultsInHouse)
@@ -1070,29 +1076,29 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddIdentification(
             117L,
-            Instant.parse("1999-09-09T11:59:13Z"),
+            LocalDate.parse("1999-09-09"),
             "identification-value",
             "authority-value",
             "identification-type",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         )
     );
 
     assertThat(patient)
-        .returns(131L, Person::getLastChgUserId)
-        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"));
 
     assertThat(patient.identifications()).satisfiesExactly(
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
                     .extracting(EntityId::getAudit)
-                    .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
-                    .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
+                    .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+                    .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
             )
             .returns("identification-type", EntityId::getTypeCd)
-            .returns(Instant.parse("1999-09-09T11:59:13Z"), EntityId::getAsOfDate)
+            .returns(LocalDate.parse("1999-09-09"), EntityId::getAsOfDate)
             .returns("authority-value", EntityId::getAssigningAuthorityCd)
             .returns("identification-value", EntityId::getRootExtensionTxt)
             .satisfies(
@@ -1111,12 +1117,12 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddIdentification(
             117L,
-            Instant.parse("1999-09-09T11:59:13Z"),
+            LocalDate.parse("1999-09-09"),
             "identification-value",
             "authority-value",
             "identification-type",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2023-03-03T10:15:30")
         )
     );
 
@@ -1124,29 +1130,29 @@ class PersonTest {
         new PatientCommand.UpdateIdentification(
             117L,
             1,
-            Instant.parse("2001-05-19T11:59:00Z"),
+            LocalDate.parse("2001-05-19"),
             "updated-identification-value",
             "updated-authority-value",
             "updated-identification-type",
             171L,
-            Instant.parse("2020-03-13T13:15:30Z")
+            LocalDateTime.parse("2020-03-13T13:15:30")
         )
     );
 
     assertThat(patient)
-        .returns(171L, Person::getLastChgUserId)
-        .returns(Instant.parse("2020-03-13T13:15:30Z"), Person::getLastChgTime);
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30"));
 
     assertThat(patient.identifications()).satisfiesExactly(
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
                     .extracting(EntityId::getAudit)
-                    .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
-                    .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30Z"))
+                    .satisfies(AuditAssertions.added(131L, "2023-03-03T10:15:30"))
+                    .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30"))
             )
             .returns("updated-identification-type", EntityId::getTypeCd)
-            .returns(Instant.parse("2001-05-19T11:59:00Z"), EntityId::getAsOfDate)
+            .returns(LocalDate.parse("2001-05-19"), EntityId::getAsOfDate)
             .returns("updated-authority-value", EntityId::getAssigningAuthorityCd)
             .returns("updated-identification-value", EntityId::getRootExtensionTxt)
 
@@ -1160,24 +1166,24 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddIdentification(
             117L,
-            Instant.parse("1999-09-09T11:59:13Z"),
+            LocalDate.parse("1999-09-09"),
             "identification-value",
             "authority-value",
             "identification-type",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2023-03-03T10:15:30")
         )
     );
 
     patient.add(
         new PatientCommand.AddIdentification(
             117L,
-            Instant.parse("2001-05-19T11:59:00Z"),
+            LocalDate.parse("2001-05-19"),
             "other-identification-value",
             "other-authority-value",
             "other-identification-type",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2023-03-03T10:15:30")
         )
     );
 
@@ -1186,19 +1192,22 @@ class PersonTest {
             117,
             1,
             171L,
-            Instant.parse("2020-03-13T13:15:30Z")
+            LocalDateTime.parse("2020-03-13T13:15:30")
         )
     );
 
     assertThat(patient)
-        .returns(171L, Person::getLastChgUserId)
-        .returns(Instant.parse("2020-03-13T13:15:30Z"), Person::getLastChgTime);
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30"));
 
     assertThat(patient.identifications()).satisfiesExactly(
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
-                    .returns("INACTIVE", EntityId::getRecordStatusCd)
+                    .satisfies(id -> assertThat(id)
+                        .extracting(EntityId::recordStatus)
+                        .satisfies(RecordStatusAssertions.inactive("2020-03-13T13:15:30"))
+                    )
                     .extracting(EntityId::getId)
                     .returns((short) 1, EntityIdId::getEntityIdSeq)
 
@@ -1206,7 +1215,10 @@ class PersonTest {
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
-                    .returns("ACTIVE", EntityId::getRecordStatusCd)
+                    .satisfies(id -> assertThat(id)
+                        .extracting(EntityId::recordStatus)
+                        .satisfies(RecordStatusAssertions.active("2023-03-03T10:15:30"))
+                    )
                     .extracting(EntityId::getId)
                     .returns((short) 2, EntityIdId::getEntityIdSeq)
             )
@@ -1223,7 +1235,7 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateMortality(
             121L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             "Y",
             LocalDate.of(1987, Month.NOVEMBER, 17),
             null,
@@ -1231,17 +1243,17 @@ class PersonTest {
             null,
             null,
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         ),
         generator
     );
 
     assertThat(patient)
-        .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateMorbidity)
+        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateMorbidity)
         .returns(Deceased.Y, Person::getDeceasedIndCd)
-        .returns(Instant.parse("1987-11-17T00:00:00Z"), Person::getDeceasedTime)
-        .returns(131L, Person::getLastChgUserId)
-        .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime);
+        .returns(LocalDate.parse("1987-11-17"), Person::getDeceasedTime)
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
   }
 
   @Test
@@ -1254,7 +1266,7 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateMortality(
             121L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             "Y",
             LocalDate.of(1987, Month.NOVEMBER, 17),
             "city",
@@ -1262,7 +1274,7 @@ class PersonTest {
             "county",
             "country",
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         ),
         generator
     );
@@ -1270,8 +1282,8 @@ class PersonTest {
     assertThat(patient)
         .satisfies(
             changed -> assertThat(changed)
-                .returns(131L, Person::getLastChgUserId)
-                .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+                .extracting(Person::audit)
+                .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"))
         )
         .satisfies(
             actual -> assertThat(actual.addresses())
@@ -1299,15 +1311,15 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateMortality(
             121L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             "Y",
             LocalDate.of(1987, Month.NOVEMBER, 17),
             "city",
             "state",
             "county",
             "country",
-            131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            121L,
+            LocalDateTime.parse("2019-03-03T10:15:30")
         ),
         generator
     );
@@ -1315,7 +1327,7 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateMortality(
             121L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             "N",
             LocalDate.of(1987, Month.NOVEMBER, 17),
             "city",
@@ -1323,19 +1335,19 @@ class PersonTest {
             "county",
             "country",
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2020-03-03T10:15:30")
         ),
         generator
     );
 
     assertThat(patient)
-        .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateMorbidity)
+        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateMorbidity)
         .returns(Deceased.N, Person::getDeceasedIndCd)
         .returns(null, Person::getDeceasedTime)
         .satisfies(
             changed -> assertThat(changed)
-                .returns(131L, Person::getLastChgUserId)
-                .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+                .extracting(Person::audit)
+                .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
         )
         .satisfies(
             actual -> assertThat(actual.addresses())
@@ -1363,7 +1375,7 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateMortality(
             121L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             "Y",
             LocalDate.of(1987, Month.NOVEMBER, 17),
             "city",
@@ -1371,7 +1383,7 @@ class PersonTest {
             "county",
             "country",
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         ),
         generator
     );
@@ -1379,7 +1391,7 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateMortality(
             121L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             "UNK",
             LocalDate.of(1987, Month.NOVEMBER, 17),
             "city",
@@ -1387,20 +1399,15 @@ class PersonTest {
             "county",
             "country",
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         ),
         generator
     );
 
     assertThat(patient)
-        .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateMorbidity)
+        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateMorbidity)
         .returns(Deceased.UNK, Person::getDeceasedIndCd)
         .returns(null, Person::getDeceasedTime)
-        .satisfies(
-            changed -> assertThat(changed)
-                .returns(131L, Person::getLastChgUserId)
-                .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
-        )
         .satisfies(
             actual -> assertThat(actual.addresses())
                 .satisfiesExactly(
@@ -1414,7 +1421,8 @@ class PersonTest {
                         .returns(null, PostalLocator::getCntryCd)
                 )
         )
-    ;
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
   }
 
   @Test
@@ -1427,7 +1435,7 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateMortality(
             121L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             "Y",
             null,
             "city",
@@ -1435,7 +1443,7 @@ class PersonTest {
             null,
             null,
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         ),
         generator
     );
@@ -1443,7 +1451,7 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateMortality(
             121L,
-            Instant.parse("2023-06-21T03:21:00Z"),
+            LocalDate.parse("2023-06-21"),
             "Y",
             LocalDate.of(1986, Month.NOVEMBER, 16),
             "changed",
@@ -1451,19 +1459,14 @@ class PersonTest {
             null,
             null,
             171L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         ),
         generator
     );
 
     assertThat(patient)
-        .returns(Instant.parse("2023-06-21T03:21:00Z"), Person::getAsOfDateMorbidity)
-        .returns(Instant.parse("1986-11-16T00:00:00Z"), Person::getDeceasedTime)
-        .satisfies(
-            changed -> assertThat(changed)
-                .returns(171L, Person::getLastChgUserId)
-                .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
-        )
+        .returns(LocalDate.parse("2023-06-21"), Person::getAsOfDateMorbidity)
+        .returns(LocalDate.parse("1986-11-16"), Person::getDeceasedTime)
         .satisfies(
             actual -> assertThat(actual.addresses())
                 .satisfiesExactly(
@@ -1473,7 +1476,8 @@ class PersonTest {
                         .extracting(PostalEntityLocatorParticipation::getLocator)
                         .returns("changed", PostalLocator::getCityDescTxt)
                 )
-        )
+        ).extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(171L, "2019-03-03T10:15:30"))
     ;
   }
 
@@ -1485,28 +1489,24 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateGender(
             121L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             Gender.U.value(),
             "gender-unknown-reason",
             "gender-preferred",
             "gender-additional",
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         )
     );
 
     assertThat(patient)
-        .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateSex)
+        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateSex)
         .returns(Gender.U, Person::getCurrSexCd)
         .returns("gender-unknown-reason", Person::getSexUnkReasonCd)
         .returns("gender-preferred", Person::getPreferredGenderCd)
         .returns("gender-additional", Person::getAdditionalGenderCd)
-        .satisfies(
-            changed -> assertThat(changed)
-                .returns(131L, Person::getLastChgUserId)
-                .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
-        )
-    ;
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
 
   }
 
@@ -1519,7 +1519,7 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateBirth(
             121L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             LocalDate.of(1949, 10, 15),
             Gender.U.value(),
             Indicator.NO.getId(),
@@ -1529,22 +1529,18 @@ class PersonTest {
             null,
             null,
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         ),
         generator
     );
 
     assertThat(patient)
-        .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateSex)
+        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateSex)
         .returns(LocalDateTime.parse("1949-10-15T00:00:00"), Person::getBirthTime)
         .returns(Gender.U, Person::getBirthGenderCd)
         .returns((short) 17, Person::getBirthOrderNbr)
-        .satisfies(
-            changed -> assertThat(changed)
-                .returns(131L, Person::getLastChgUserId)
-                .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
-        )
-    ;
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
   }
 
   @Test
@@ -1556,7 +1552,7 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateBirth(
             121L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             null,
             null,
             null,
@@ -1566,7 +1562,7 @@ class PersonTest {
             "county",
             "country",
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         ),
         generator
     );
@@ -1585,12 +1581,8 @@ class PersonTest {
                         .returns("country", PostalLocator::getCntryCd)
                 )
         )
-        .satisfies(
-            changed -> assertThat(changed)
-                .returns(131L, Person::getLastChgUserId)
-                .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
-        )
-    ;
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
   }
 
   @Test
@@ -1601,20 +1593,17 @@ class PersonTest {
     patient.update(
         new PatientCommand.UpdateAdministrativeInfo(
             121L,
-            Instant.parse("2023-06-01T03:21:00Z"),
+            LocalDate.parse("2023-06-01"),
             "comments",
             131L,
-            Instant.parse("2019-03-03T10:15:30.00Z")
+            LocalDateTime.parse("2019-03-03T10:15:30")
         )
     );
 
     assertThat(patient)
-        .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateAdmin)
+        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateAdmin)
         .returns("comments", Person::getDescription)
-        .satisfies(
-            changed -> assertThat(changed)
-                .returns(131L, Person::getLastChgUserId)
-                .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
-        );
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
   }
 }

@@ -1,12 +1,12 @@
 package gov.cdc.nbs.patient.profile.gender;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 record PatientGender(
     long patient,
     long id,
     short version,
-    Instant asOf,
+    LocalDate asOf,
 
     Gender birth,
     Gender current,

@@ -1,7 +1,8 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Audit;
-import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.audit.RecordStatus;
+import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientCommand;
@@ -20,9 +21,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -37,7 +36,7 @@ import java.util.function.Predicate;
 public class PersonName {
 
   public static Predicate<PersonName> active() {
-    return input -> Objects.equals(input.recordStatusCd, RecordStatus.ACTIVE.name());
+    return input -> input.recordStatus.status().equals("ACTIVE");
   }
 
   public static Predicate<PersonName> havingType(final String use) {
@@ -89,23 +88,17 @@ public class PersonName {
   @Column(name = "nm_use_cd", length = 20)
   private String nmUseCd;
 
-  @Column(name = "record_status_cd", length = 20)
-  private String recordStatusCd;
-
-  @Column(name = "record_status_time")
-  private Instant recordStatusTime;
-
-  @Column(name = "status_cd", nullable = false)
-  private Character statusCd;
-
-  @Column(name = "status_time", nullable = false)
-  private Instant statusTime;
-
   @Column(name = "as_of_date")
-  private Instant asOfDate;
+  private LocalDate asOfDate;
 
   @Embedded
   private Audit audit;
+
+  @Embedded
+  private RecordStatus recordStatus;
+
+  @Embedded
+  private Status status;
 
   protected PersonName() {
 
@@ -118,12 +111,6 @@ public class PersonName {
       final PatientCommand.AddName added
   ) {
     this.asOfDate = added.asOf();
-
-    this.statusCd = 'A';
-    this.statusTime = added.requestedOn();
-
-    this.recordStatusCd = "ACTIVE";
-    this.recordStatusTime = added.requestedOn();
 
     this.id = identifier;
     this.personUid = person;
@@ -138,6 +125,8 @@ public class PersonName {
     this.nmDegree = added.degree();
     this.nmUseCd = added.type();
 
+    this.recordStatus = new RecordStatus(added.requestedOn());
+    this.status = new Status(added.requestedOn());
     this.audit = new Audit(added.requester(), added.requestedOn());
   }
 
@@ -157,7 +146,7 @@ public class PersonName {
   }
 
   public LocalDate asOf() {
-    return this.asOfDate.atZone(ZoneOffset.UTC).toLocalDate();
+    return this.asOfDate;
   }
 
   public String type() {
@@ -182,16 +171,16 @@ public class PersonName {
   }
 
   public void delete(final PatientCommand.DeleteNameInfo deleted) {
-    this.recordStatusCd = RecordStatus.INACTIVE.name();
-    this.recordStatusTime = deleted.requestedOn();
+    this.recordStatus.inactivate(deleted.requestedOn());
     this.audit.changed(deleted.requester(), deleted.requestedOn());
+  }
+
+  public RecordStatus recordStatus() {
+    return recordStatus;
   }
 
   @Override
   public String toString() {
-    return "PersonName{" +
-        "id=" + id +
-        ", recordStatusCd='" + recordStatusCd + '\'' +
-        '}';
+    return "PersonName{" + "id=" + id + '}';
   }
 }

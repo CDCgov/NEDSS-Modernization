@@ -3,7 +3,7 @@ package gov.cdc.nbs.message.patient.input;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class EthnicityInput {
     private long patient;
-    private Instant asOf;
+    private LocalDate asOf;
     private String ethnicGroup;
     private String unknownReason;
     private List<String> detailed = new ArrayList<>();
