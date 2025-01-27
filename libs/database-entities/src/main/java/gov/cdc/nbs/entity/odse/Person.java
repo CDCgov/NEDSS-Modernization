@@ -47,7 +47,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @Entity
-@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
+@SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7027"}) //  Bidirectional mappings require knowledge of each other
 public class Person {
   @Id
   @Column(name = "person_uid", nullable = false)
