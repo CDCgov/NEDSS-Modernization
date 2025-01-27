@@ -2,7 +2,6 @@ package gov.cdc.nbs.audit;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
