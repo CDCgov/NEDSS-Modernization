@@ -121,7 +121,7 @@ export default function NavBar() {
                                     alt="NBS Logo"
                                     height="32"
                                     width="80"
-                                    src="/nedssLogo.jpeg"
+                                    src="/images/nedssLogo.jpg"
                                 />
                             </td>
                         </tr>
@@ -132,7 +132,7 @@ export default function NavBar() {
                                     padding: '0px',
                                     margin: '0px',
                                     height: '9px',
-                                    backgroundImage: 'url(dropshadow.gif)',
+                                    backgroundImage: 'url(/dropshadow.gif)',
                                     backgroundRepeat: 'repeat-x'
                                 }}></td>
                         </tr>
