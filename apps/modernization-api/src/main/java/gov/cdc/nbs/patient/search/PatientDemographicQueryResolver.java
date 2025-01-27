@@ -481,7 +481,7 @@ class PatientDemographicQueryResolver {
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
                       query -> query.simpleQueryString(
-                          queryString -> queryString.fields("address.streetAddr1")
+                          queryString -> queryString.fields(STREET)
                               .defaultOperator(Operator.And)
                               .query(WildCards.startsWith(result))))));
     }
@@ -500,7 +500,7 @@ class PatientDemographicQueryResolver {
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
                       query -> query.simpleQueryString(
-                          queryString -> queryString.fields("address.city")
+                          queryString -> queryString.fields(CITY)
                               .defaultOperator(Operator.And)
                               .query(WildCards.startsWith(city))))));
     }
@@ -515,10 +515,10 @@ class PatientDemographicQueryResolver {
 
       QueryVariant q = zipcode.length() < 5
           ? PrefixQuery.of(
-              prefix -> prefix.field("address.zip")
+              prefix -> prefix.field(ZIP_CODE)
                   .value(zipcode))
           : MatchQuery.of(
-              match -> match.field("address.zip")
+              match -> match.field(ZIP_CODE)
                   .query(zipcode));
 
       return Optional.of(
