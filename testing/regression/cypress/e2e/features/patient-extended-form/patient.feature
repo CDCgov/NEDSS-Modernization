@@ -31,3 +31,10 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Patient Search Page
     And I have filled out future date in Information as of Date field
     Then Error message should appear right above Information as of Date field
 
+  Scenario: Comments Text Field Accepts Text Up to 2000 Characters
+    Given I am on the New patient Extended form
+    And I have filled out text in Comments field up to 2000 characters
+    When I click the Save button
+    Then Form should be submitted successfully without errors
+    And I should receive a confirmation message
+

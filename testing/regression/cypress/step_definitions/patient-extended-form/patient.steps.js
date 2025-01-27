@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicSearchPatientPage from "cypress/e2e/pages/nbs-classic/patient.page";
+import classicSearchPatientPage from "cypress/e2e/pages/patient-extended-form/patient.page";
 
 Then("Navigate to classic Patient Search pane", () => {
     classicSearchPatientPage.navigateToClassicPatientSearchPane()
@@ -63,4 +63,8 @@ Then("Error message should appear right above Comments field", () => {
 
 Then("I have filled out empty text in Comments field", () => {
     classicSearchPatientPage.fillCommentsField("empty")
+});
+
+Then("I have filled out text in Comments field up to 2000 characters", () => {
+    classicSearchPatientPage.fillCommentsField("2000")
 });
