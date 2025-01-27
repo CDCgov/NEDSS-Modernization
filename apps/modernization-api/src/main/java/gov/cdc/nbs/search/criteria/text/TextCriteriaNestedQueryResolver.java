@@ -68,6 +68,44 @@ public class TextCriteriaNestedQueryResolver {
                                     .defaultOperator(Operator.And))))));
   }
 
+  public static BoolQuery containsInAtLeastOneField(final String path, final String name1, final String name2,
+      final String name3, final String name4, final String value) {
+    String adjusted = WildCards.contains(value);
+    return BoolQuery.of(
+        bool -> bool.should(
+            should -> should.nested(
+                nested -> nested.path(path)
+                    .query(
+                        query -> query.queryString(
+                            simple -> simple.fields(name1)
+                                .query(adjusted)
+                                .defaultOperator(Operator.And)))))
+            .should(
+                should -> should.nested(
+                    nested -> nested.path(path)
+                        .query(
+                            query -> query.queryString(
+                                simple -> simple.fields(name2)
+                                    .query(adjusted)
+                                    .defaultOperator(Operator.And)))))
+            .should(
+                should -> should.nested(
+                    nested -> nested.path(path)
+                        .query(
+                            query -> query.queryString(
+                                simple -> simple.fields(name3)
+                                    .query(adjusted)
+                                    .defaultOperator(Operator.And)))))
+            .should(
+                should -> should.nested(
+                    nested -> nested.path(path)
+                        .query(
+                            query -> query.queryString(
+                                simple -> simple.fields(name4)
+                                    .query(adjusted)
+                                    .defaultOperator(Operator.And))))));
+  }
+
   public static BoolQuery startsWith(final String path, final String name, final String value) {
     String adjusted = WildCards.startsWith(value);
     return BoolQuery.of(
