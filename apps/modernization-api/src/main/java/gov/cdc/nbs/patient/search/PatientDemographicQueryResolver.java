@@ -116,7 +116,7 @@ class PatientDemographicQueryResolver {
     }
     return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().name(), null))
         .flatMap(TextCriteria::maybeContains)
-        .map(value -> containsInOneOfTwoFields(NAMES, FIRST_NAME, LAST_NAME, value));
+        .map(value -> containsInAtLeastOneField(NAMES, value, FIRST_NAME, LAST_NAME));
   }
 
   private Optional<QueryVariant> applyPatientIdentifierCriteria(final PatientFilter criteria) {
@@ -160,7 +160,7 @@ class PatientDemographicQueryResolver {
     }
     return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().address(), null))
         .flatMap(TextCriteria::maybeContains)
-        .map(value -> containsInAtLeastOneField(ADDRESSES, STREET, CITY, STATE, ZIP_CODE, value));
+        .map(value -> containsInAtLeastOneField(ADDRESSES, value, STREET, CITY, STATE, ZIP_CODE));
 
   }
 
