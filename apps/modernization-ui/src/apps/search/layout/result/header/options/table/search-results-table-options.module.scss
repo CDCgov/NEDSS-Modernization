@@ -13,4 +13,10 @@
     display: flex;
     gap: 0.5rem;
     align-items: center;
+
+    .activeFilter {
+        background-color: colors.$primary-darker;
+    }
 }
+
+

@@ -24,7 +24,6 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
 
     const onReset = () => {
         setFilterEntry(undefined);
-        setActiveFilter(false);
     };
 
     return (
