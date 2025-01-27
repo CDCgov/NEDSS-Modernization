@@ -77,6 +77,7 @@ const SortingPreferenceProvider = ({ id, children, available = [], defaultSort }
             dispatch({ type: 'load', active: value });
         } else if (defaultSort) {
             dispatch({ type: 'load', active: defaultSort });
+            save(defaultSort);
         }
     }, [value]);
 
