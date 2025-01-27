@@ -31,6 +31,7 @@ table.usa-table {
     max-height: 100vh;
     .usa-modal-overlay {
         max-height: 100vh;
+        z-index: 10001;
         .usa-modal--lg {
             max-height: 85vh;
             .usa-modal__content {

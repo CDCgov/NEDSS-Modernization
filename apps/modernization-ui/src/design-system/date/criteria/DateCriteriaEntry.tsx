@@ -1,14 +1,14 @@
 import { Radio } from '@trussworks/react-uswds';
 import { ChangeEvent } from 'react';
 import { EntryWrapper, Sizing } from 'components/Entry';
-import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from '../entry';
+import { DateCriteria, initialDateEqualsCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from '../entry';
 import { ExactDateEntry } from './exact-date';
 import { DateRangeEntry } from './date-range';
 import styles from './date-criteria.module.scss';
 
 export type DateCriteriaEntryProps = {
     id: string;
-    value: DateCriteria | undefined;
+    value: DateCriteria | null | undefined;
     label: string;
     sizing?: Sizing;
     orientation?: 'vertical' | 'horizontal';
@@ -40,7 +40,7 @@ export const DateCriteriaEntry = ({
                     label={'Exact Date'}
                     value={'equals'}
                     onChange={handleDateOperationChange}
-                    checked={value && isDateEqualsCriteria(value)}
+                    checked={!value || isDateEqualsCriteria(value)}
                 />
                 <Radio
                     id={'between'}
@@ -48,12 +48,17 @@ export const DateCriteriaEntry = ({
                     label={'Date Range'}
                     value={'between'}
                     onChange={handleDateOperationChange}
-                    checked={value && isDateBetweenCriteria(value)}
+                    checked={!!value && isDateBetweenCriteria(value)}
                 />
             </div>
             <div className="margin-bottom-1">
-                {value && isDateEqualsCriteria(value) && (
-                    <ExactDateEntry id={`${id}-exact-date`} value={value} onChange={onChange} onBlur={onBlur} />
+                {(!value || isDateEqualsCriteria(value)) && (
+                    <ExactDateEntry
+                        id={`${id}-exact-date`}
+                        value={value || initialDateEqualsCriteria}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                    />
                 )}
                 {value && isDateBetweenCriteria(value) && (
                     <DateRangeEntry id={`${id}-range-entry`} value={value} onChange={onChange} onBlur={onBlur} />
