@@ -4,6 +4,22 @@ import { ResultRequest, SearchInteraction, useSearchResultsFormAdapter } from 'a
 import { transform as transformer } from './transformer';
 import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
 import { patientTermsResolver as termResolver } from './patientTermsResolver';
+import { maybeMap } from 'utils/mapping';
+import { filterResolver } from './filterResolver';
+
+const maybeFilter = maybeMap(filterResolver);
+
+const asSearchRequest = (request: ResultRequest<PersonFilter>) => {
+    const filter = maybeFilter(request.filter);
+
+    return filter ? { ...request.parameters, filter } : request.parameters;
+};
+
+const asSortablePage = <A>(request: ResultRequest<A>) => ({
+    pageNumber: request.page.number - 1,
+    pageSize: request.page.size,
+    sort: request.sort
+});
 
 type Settings = {
     form: UseFormReturn<PatientCriteriaEntry>;
@@ -15,12 +31,8 @@ const usePatientSearch = ({ form }: Settings): SearchInteraction<PatientSearchRe
     const resultResolver = (request: ResultRequest<PersonFilter>) =>
         fetch({
             variables: {
-                filter: request.parameters,
-                page: {
-                    pageNumber: request.page.number - 1,
-                    pageSize: request.page.size,
-                    sort: request.sort
-                }
+                filter: asSearchRequest(request),
+                page: asSortablePage(request)
             },
             notifyOnNetworkStatusChange: true
         }).then((response) => {

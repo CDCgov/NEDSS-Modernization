@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button } from 'components/button';
 import { Loading } from 'components/Spinner';
 import { CollapsiblePanel } from 'design-system/collapsible-panel';
@@ -45,21 +45,15 @@ const SearchLayout = <R,>({
 
     const { view } = useSearchResultDisplay();
 
-    const handleKeyPress = (event: { key: string }) => {
+    const handleKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
+            console.log('enta!');
             onSearch();
         }
     };
 
-    useEffect(() => {
-        document.addEventListener('keypress', handleKeyPress);
-        return () => {
-            document.removeEventListener('keypress', handleKeyPress);
-        };
-    }, [onSearch]);
-
     return (
-        <section className={styles.search}>
+        <section className={styles.search} onKeyDown={handleKey}>
             <FeatureToggle
                 guard={(features) => features?.search?.events?.enabled}
                 fallback={<SearchNavigation className={styles.navigation} actions={actions} />}>

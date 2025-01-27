@@ -1,27 +1,26 @@
+import classNames from 'classnames';
 import { OverlayPanel } from 'overlay';
 import { Icon } from 'design-system/icon';
 import { ColumnPreferencesPanel } from 'design-system/table/preferences';
+import { useFilter } from 'design-system/filter';
 import { Button } from 'components/button';
 
 import styles from './search-results-table-options.module.scss';
-import { useFilter } from 'design-system/filter/useFilter';
-import { useConfiguration } from 'configuration';
-import classNames from 'classnames';
+import { FeatureToggle } from 'feature';
 
 type Props = {
     disabled?: boolean;
 };
 
 const SearchResultsTableOptions = ({ disabled = false }: Props) => {
-    const { activeFilter, toggleFilter, onReset, filterEntry } = useFilter();
-    const { features } = useConfiguration();
+    const { active, toggle, reset, filter } = useFilter();
 
     return (
         <>
-            {features.patient.search.filters.enabled && (
+            <FeatureToggle guard={(features) => features.patient.search.filters.enabled}>
                 <div className={styles['filter-options']}>
-                    {filterEntry && (
-                        <Button unpadded unstyled onClick={onReset}>
+                    {filter && (
+                        <Button unpadded unstyled onClick={reset}>
                             Reset sort/filters
                         </Button>
                     )}
@@ -29,14 +28,14 @@ const SearchResultsTableOptions = ({ disabled = false }: Props) => {
                         aria-label="Filter"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
-                        className={classNames({ [styles.activeFilter]: activeFilter })}
-                        outline={!activeFilter}
+                        className={classNames({ [styles.activeFilter]: active })}
+                        outline={!active}
                         disabled={disabled}
                         icon={<Icon name="filter_alt" aria-label={`Filter`} className={styles['option-icon']} />}
-                        onClick={toggleFilter}
+                        onClick={toggle}
                     />
                 </div>
-            )}
+            </FeatureToggle>
             <OverlayPanel
                 className={styles.overlay}
                 position="right"

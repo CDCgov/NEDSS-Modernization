@@ -69,10 +69,12 @@ describe('when entering text values', () => {
     });
 
     it('clears input and calls onClear when icon is clicked', () => {
-        const onClearMock = jest.fn();
-        const { getByRole } = render(<Fixture value={'given value'} clearable onClear={onClearMock} />);
+        const onChange = jest.fn();
+        const { getByRole } = render(<Fixture value={'given value'} clearable onChange={onChange} />);
+
         const svgIcon = getByRole('img', { hidden: true });
         userEvent.click(svgIcon);
-        expect(onClearMock).toHaveBeenCalled();
+
+        expect(onChange).toHaveBeenCalledWith();
     });
 });

@@ -1,7 +1,8 @@
 import { RefObject, ChangeEvent as ReactChangeEvent, useState, useEffect } from 'react';
 import classNames from 'classnames';
-import styles from './text-input.module.scss';
 import { Icon } from 'design-system/icon';
+
+import styles from './text-input.module.scss';
 
 export type TextOnChange = (value?: string) => void;
 
@@ -13,7 +14,6 @@ type TextInputProps = {
     inputRef?: RefObject<HTMLInputElement>;
     onChange?: TextOnChange;
     onBlur?: () => void;
-    onClear?: () => void;
     clearable?: boolean;
 } & Omit<
     JSX.IntrinsicElements['input'],
@@ -28,7 +28,6 @@ const TextInput = ({
     value,
     onChange,
     onBlur,
-    onClear,
     className,
     inputRef,
     clearable = false,
@@ -52,8 +51,13 @@ const TextInput = ({
         }
     };
 
+    const handleClear = () => {
+        setCurrent('');
+        onChange?.();
+    };
+
     return (
-        <div className={classNames(styles['text-input'], clearable && styles['clearable'])}>
+        <span className={classNames({ [styles.grouped]: clearable })}>
             <input
                 autoComplete="off"
                 id={id}
@@ -68,18 +72,20 @@ const TextInput = ({
                 ref={inputRef}
                 {...props}
             />
-            {clearable && current && (
-                <Icon
-                    role="img"
-                    aria-label="Clear input"
-                    aria-describedby="clear-input-with-x-icon"
-                    name="close"
-                    size="small"
-                    className={styles.icon}
-                    onClick={onClear}
-                />
+            {clearable && (
+                <span className={styles.suffix}>
+                    {current && (
+                        <Icon
+                            role="img"
+                            aria-label={`Clear the ${props.name} value`}
+                            name="close"
+                            size="small"
+                            onClick={handleClear}
+                        />
+                    )}
+                </span>
             )}
-        </div>
+        </span>
     );
 };
 

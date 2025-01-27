@@ -1,0 +1,6 @@
+@use 'styles/components';
+
+.filter {
+    font-size: components.$medium-font-size;
+    height: components.$medium-height !important;
+}
