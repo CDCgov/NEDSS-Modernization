@@ -329,5 +329,12 @@ class AddPatientPage {
     this.clickSumbitSaveButton();
     this.clickViewPatientLink();    
   }
+
+  addInvalidComment(){
+    cy.get("#comment").type("long comment long comment long comment long commentlong comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long commentlong comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long commentlong comment long comment long comment long long comment long comment long comment long commentlong comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long commentcommentlong comment long long comment long comment long comment long commentlong comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long commentcomment long comment long long comment long comment long comment long commentlong comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long commentlong comment long comment long comment long commentlong comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long commentlong comment long comment long comment long commentlong comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long commentlong comment long comment long comment long commentlong comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long commentlong comment long comment long comment long commentlong comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long comment long commentcomment long comment long comment long comment long comment long comment long comment long comment long comment");
+    this.clickSumbitSaveButton();
+    cy.get("#form-error").contains("You have some invalid inputs. Please correct the invalid inputs before moving forward.")
+    cy.get("#comment-error").contains("Only allows 2000 characters")
+  }
 }
 export default new AddPatientPage();

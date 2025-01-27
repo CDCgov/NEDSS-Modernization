@@ -72,3 +72,7 @@ Then("I create a new patient to select Add another ID in the Identification", ()
 Then("delete the patient profile", () => {
     addPatientPage.addPatientAndDelete()
 });
+
+Then("the user adds invalid long comment", () => {
+    addPatientPage.addInvalidComment()
+});
