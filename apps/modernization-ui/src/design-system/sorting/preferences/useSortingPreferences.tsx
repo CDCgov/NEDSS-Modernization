@@ -69,7 +69,7 @@ type Props = {
 const SortingPreferenceProvider = ({ id, children, available = [], defaultSort }: Props) => {
     const [state, dispatch] = useReducer(reducer, { status: 'unsorted' });
 
-    const { value, save, remove } = useLocalStorage<ActiveSorting>({ key: id });
+    const { value, save, remove } = useLocalStorage<ActiveSorting>({ key: id, initial: defaultSort });
 
     useEffect(() => {
         if (value) {
@@ -77,7 +77,6 @@ const SortingPreferenceProvider = ({ id, children, available = [], defaultSort }
             dispatch({ type: 'load', active: value });
         } else if (defaultSort) {
             dispatch({ type: 'load', active: defaultSort });
-            save(defaultSort);
         }
     }, [value]);
 
