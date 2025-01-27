@@ -46,6 +46,10 @@ class PatientDemographicQueryResolver {
   private static final String LOCAL_ID = "local_id";
   private static final String FIRST_NAME = "name.firstNm";
   private static final String PAINLESS = "painless";
+  private static final String STREET = "address.streetAddr1";
+  private static final String CITY = "address.city";
+  private static final String STATE = "address.stateText";
+  private static final String ZIP_CODE = "address.zip";
   private final PatientSearchSettings settings;
   private final PatientLocalIdentifierResolver resolver;
   private final PatientNameDemographicQueryResolver nameQueryResolver;
@@ -84,6 +88,7 @@ class PatientDemographicQueryResolver {
         applyDateOfBirthCriteria(criteria),
         applyPatientAgeOrDateOfBirthFilterCriteria(criteria),
         applyStreetAddressCriteria(criteria),
+        applyAddressFilterCriteria(criteria),
         applyCityCriteria(criteria),
         applyDateOfBirthHighRangeCriteria(criteria),
         applyDateOfBirthLowRangeCriteria(criteria),
@@ -111,7 +116,7 @@ class PatientDemographicQueryResolver {
     }
     return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().name(), null))
         .flatMap(TextCriteria::maybeContains)
-        .map(value -> containsInOneOfTwoFields(NAMES, FIRST_NAME, LAST_NAME, value));
+        .map(value -> containsInAtLeastOneField(NAMES, value, FIRST_NAME, LAST_NAME));
   }
 
   private Optional<QueryVariant> applyPatientIdentifierCriteria(final PatientFilter criteria) {
@@ -147,6 +152,16 @@ class PatientDemographicQueryResolver {
     }
 
     return Optional.empty();
+  }
+
+  private Optional<QueryVariant> applyAddressFilterCriteria(final PatientFilter criteria) {
+    if (criteria.getFilter().address() == null) {
+      return Optional.empty();
+    }
+    return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().address(), null))
+        .flatMap(TextCriteria::maybeContains)
+        .map(value -> containsInAtLeastOneField(ADDRESSES, value, STREET, CITY, STATE, ZIP_CODE));
+
   }
 
   private Optional<QueryVariant> applyLocalIds(final List<String> localIds) {
@@ -466,7 +481,7 @@ class PatientDemographicQueryResolver {
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
                       query -> query.simpleQueryString(
-                          queryString -> queryString.fields("address.streetAddr1")
+                          queryString -> queryString.fields(STREET)
                               .defaultOperator(Operator.And)
                               .query(WildCards.startsWith(result))))));
     }
@@ -485,7 +500,7 @@ class PatientDemographicQueryResolver {
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
                       query -> query.simpleQueryString(
-                          queryString -> queryString.fields("address.city")
+                          queryString -> queryString.fields(CITY)
                               .defaultOperator(Operator.And)
                               .query(WildCards.startsWith(city))))));
     }
@@ -500,10 +515,10 @@ class PatientDemographicQueryResolver {
 
       QueryVariant q = zipcode.length() < 5
           ? PrefixQuery.of(
-              prefix -> prefix.field("address.zip")
+              prefix -> prefix.field(ZIP_CODE)
                   .value(zipcode))
           : MatchQuery.of(
-              match -> match.field("address.zip")
+              match -> match.field(ZIP_CODE)
                   .query(zipcode));
 
       return Optional.of(
