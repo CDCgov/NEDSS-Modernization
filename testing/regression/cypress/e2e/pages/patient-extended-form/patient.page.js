@@ -66,8 +66,12 @@ class ClassicPatientSearchPage {
     let commentText;
     if(type === 'empty') {
       return commentText = ''
-    } if('invalid') {
+    }
+
+    if(type === 'invalid') {
         commentText = 'A'.repeat(2001)
+    } else if(type === '2000') {
+        commentText = 'A'.repeat(2000)
     } else {
         commentText = 'Comments about the new patient'
     }
