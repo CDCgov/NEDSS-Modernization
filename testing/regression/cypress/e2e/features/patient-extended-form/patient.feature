@@ -38,3 +38,10 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Patient Search Page
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
+  Scenario: Error message if Comments Text field over 2000 Characters and no error with optional comment
+    Given I am on the New patient Extended form
+    And I have filled out invalid text in Comments field
+    Then Error message should appear right above Comments field
+    Then I clear Comments sections field
+    Then I click the Save button
+    Then Form should be submitted successfully without errors

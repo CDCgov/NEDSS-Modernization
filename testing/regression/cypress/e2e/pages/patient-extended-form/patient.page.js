@@ -83,6 +83,10 @@ class ClassicPatientSearchPage {
     cy.contains("The Comments only allows 2000 characters")
   }
 
+  clearCommentsField() {
+    cy.get('textarea[id="administrative.comment"]').clear().blur()
+  }
+
 }
 
 export default new ClassicPatientSearchPage();
