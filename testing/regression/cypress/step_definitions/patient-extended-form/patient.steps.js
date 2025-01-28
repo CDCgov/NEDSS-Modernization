@@ -68,3 +68,7 @@ Then("I have filled out empty text in Comments field", () => {
 Then("I have filled out text in Comments field up to 2000 characters", () => {
     classicSearchPatientPage.fillCommentsField("2000")
 });
+
+Then("I clear Comments sections field", () => {
+    classicSearchPatientPage.clearCommentsField()
+});
