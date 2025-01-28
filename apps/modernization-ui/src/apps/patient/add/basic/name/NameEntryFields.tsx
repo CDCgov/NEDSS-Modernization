@@ -6,9 +6,7 @@ import { validateExtendedNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
 
-type NameEntryFieldsProps = EntryFieldsProps;
-
-export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsProps) => {
+export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<{ name: NameInformationEntry }>();
     const coded = usePatientNameCodedValues();
     return (
@@ -20,7 +18,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Last"
-                        sizing="compact"
+                        sizing={sizing}
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -40,7 +38,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="First"
-                        sizing="compact"
+                        sizing={sizing}
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -60,7 +58,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Middle"
-                        sizing="compact"
+                        sizing={sizing}
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -80,7 +78,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                     <SingleSelect
                         label="Suffix"
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}

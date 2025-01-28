@@ -33,7 +33,7 @@ export const PassForm = ({ activePass, dataElements }: Props) => {
                                     name={name}
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    sizing="compact"
+                                    sizing="medium"
                                 />
                             )}
                         />

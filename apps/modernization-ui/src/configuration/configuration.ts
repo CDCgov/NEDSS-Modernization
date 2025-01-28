@@ -2,7 +2,7 @@ import { Sizing } from 'design-system/field';
 
 type Toggle = { enabled: boolean };
 
-type Interface = {
+type Defaults = {
     sizing: Sizing;
 };
 
@@ -18,7 +18,7 @@ type Settings = {
         key: string;
         host: string;
     };
-    interface: Interface;
+    defaults: Defaults;
 };
 
 type SearchView = Toggle & {

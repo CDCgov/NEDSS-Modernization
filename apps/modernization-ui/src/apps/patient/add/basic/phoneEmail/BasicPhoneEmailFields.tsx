@@ -11,12 +11,7 @@ const WORK_PHONE_LABEL = 'Work phone';
 const CELL_PHONE_LABEL = 'Cell phone';
 const EMAIL_LABEL = 'Email';
 
-type BasicPhoneEmailFieldsProps = EntryFieldsProps;
-
-export const BasicPhoneEmailFields = ({
-    orientation = 'horizontal',
-    sizing = 'compact'
-}: BasicPhoneEmailFieldsProps) => {
+export const BasicPhoneEmailFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<{ phoneEmail: BasicPhoneEmail }>();
 
     return (

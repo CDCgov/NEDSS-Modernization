@@ -7,14 +7,9 @@ import { usePatientEthnicityCodedValues } from 'apps/patient/profile/ethnicity';
 import { BasicEthnicityRace } from 'apps/patient/add/basic/entry';
 import { Selectable } from 'options';
 
-type BasicRaceEthnicityFieldsProps = EntryFieldsProps;
-
 const categoryFilter = (race: Selectable) => race.value !== MULTI_RACE.value;
 
-export const BasicRaceEthnicityFields = ({
-    orientation = 'horizontal',
-    sizing = 'compact'
-}: BasicRaceEthnicityFieldsProps) => {
+export const BasicRaceEthnicityFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const codedEthnicity = usePatientEthnicityCodedValues();
     const categories = useRaceCategoryOptions({ filter: categoryFilter });
     const { control } = useFormContext<{ ethnicityRace: BasicEthnicityRace }>();

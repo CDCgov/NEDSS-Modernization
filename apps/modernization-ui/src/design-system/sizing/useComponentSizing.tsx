@@ -2,9 +2,9 @@ import { createContext, ReactNode, useContext } from 'react';
 import { Sizing } from 'design-system/field';
 import { useConfiguration } from 'configuration';
 
-const DEFAULT_SIZING = 'standard';
+const FALLBACK_SIZING = 'large';
 
-const ComponentSizingContext = createContext<Sizing>(DEFAULT_SIZING);
+const ComponentSizingContext = createContext<Sizing>(FALLBACK_SIZING);
 
 type ComponentSizingProviderProps = {
     children: ReactNode;
@@ -13,7 +13,7 @@ type ComponentSizingProviderProps = {
 const ComponentSizingProvider = ({ children }: ComponentSizingProviderProps) => {
     const { settings } = useConfiguration();
 
-    const sizing = settings.interface.sizing ?? DEFAULT_SIZING;
+    const sizing = settings.defaults.sizing ?? FALLBACK_SIZING;
 
     return <ComponentSizingContext.Provider value={sizing}>{children}</ComponentSizingContext.Provider>;
 };
