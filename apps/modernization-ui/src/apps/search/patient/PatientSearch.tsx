@@ -36,8 +36,6 @@ const PatientSearch = () => {
         if (filterEntry) {
             form.setValue('filter', filterEntry);
             interaction.search();
-        } else {
-            handleSearch();
         }
     }, [filterEntry]);
 
