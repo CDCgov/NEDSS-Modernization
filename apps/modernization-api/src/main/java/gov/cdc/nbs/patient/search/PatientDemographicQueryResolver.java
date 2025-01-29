@@ -38,6 +38,7 @@ class PatientDemographicQueryResolver {
   private static final String NAMES = "name";
   private static final String PHONES = "phone";
   private static final String EMAILS = "email";
+  private static final String EMAIL_ADDRESS = "email.emailAddress";
   private static final String IDENTIFICATIONS = "entity_id";
   private static final String BIRTHDAY = "birth_time";
   private static final String ADDRESSES = "address";
@@ -84,6 +85,7 @@ class PatientDemographicQueryResolver {
         applyLastNameCriteria(criteria),
         applyPhoneNumberCriteria(criteria),
         applyEmailCriteria(criteria),
+        applyEmailFilter(criteria),
         applyIdentificationCriteria(criteria),
         applyDateOfBirthCriteria(criteria),
         applyPatientAgeOrDateOfBirthFilterCriteria(criteria),
@@ -303,6 +305,18 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
+
+  private Optional<QueryVariant> applyEmailFilter(final PatientFilter criteria) {
+
+    if (criteria.getFilter().name() == null) {
+      return Optional.empty();
+    }
+
+    return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().email(), null))
+        .flatMap(TextCriteria::maybeContains)
+        .map(value -> contains(EMAILS, EMAIL_ADDRESS, value));
+  }
+
   private Optional<QueryVariant> applyEmailCriteria(final PatientFilter criteria) {
 
     String email = criteria.getEmail();
@@ -314,7 +328,7 @@ class PatientDemographicQueryResolver {
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
                       query -> query.simpleQueryString(
-                          queryString -> queryString.fields("email.emailAddress")
+                          queryString -> queryString.fields(EMAIL_ADDRESS)
                               .defaultOperator(Operator.And)
                               .query(email)))));
     }

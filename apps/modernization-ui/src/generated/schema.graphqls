@@ -1138,6 +1138,7 @@ input Filter {
   ageOrDateOfBirth: String
   name: String
   sex: String
+  email: String
 }
 
 input PersonFilter {
