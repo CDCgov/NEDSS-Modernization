@@ -1,6 +1,6 @@
 import { FocusEventHandler, useState } from 'react';
 import Select, { MultiValue } from 'react-select';
-import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
+import { Field, Orientation, Sizing } from 'design-system/field';
 import { Selectable, asValue as asSelectableValue } from 'options';
 import classNames from 'classnames';
 
@@ -57,13 +57,7 @@ export const MultiSelect = ({
     };
 
     return (
-        <EntryWrapper
-            orientation={orientation}
-            sizing={sizing}
-            label={label}
-            htmlFor={id}
-            required={required}
-            error={error}>
+        <Field orientation={orientation} sizing={sizing} label={label} htmlFor={id} required={required} error={error}>
             <Select<Selectable, true>
                 theme={theme}
                 styles={styles}
@@ -76,7 +70,7 @@ export const MultiSelect = ({
                 onBlur={onBlur}
                 placeholder={placeholder}
                 isDisabled={disabled}
-                className={classNames('multi-select', { 'multi-select__compact': sizing === 'compact' })}
+                className={classNames('multi-select', { 'multi-select__medium': sizing === 'medium' })}
                 classNamePrefix="multi-select"
                 hideSelectedOptions={false}
                 closeMenuOnSelect={false}
@@ -87,7 +81,7 @@ export const MultiSelect = ({
                 getOptionLabel={asDisplay}
                 components={{ Option: CheckboxOption }}
             />
-        </EntryWrapper>
+        </Field>
     );
 };
 

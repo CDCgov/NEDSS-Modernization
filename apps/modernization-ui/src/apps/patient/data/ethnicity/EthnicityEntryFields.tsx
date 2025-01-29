@@ -12,9 +12,7 @@ const HISPANIC = '2135-2';
 
 const AS_OF_DATE_LABEL = 'Ethnicity information as of';
 
-type EthnicityEntryFieldsProps = EntryFieldsProps;
-
-export const EthnicityEntryFields = ({ orientation = 'horizontal' }: EthnicityEntryFieldsProps) => {
+export const EthnicityEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control, setValue } = useFormContext<{ ethnicity: EthnicityEntry }>();
     const coded = usePatientEthnicityCodedValues();
     const selectedEthnicity = useWatch({ control, name: 'ethnicity.ethnicGroup' });
@@ -40,7 +38,7 @@ export const EthnicityEntryFields = ({ orientation = 'horizontal' }: EthnicityEn
                         onChange={onChange}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -57,7 +55,7 @@ export const EthnicityEntryFields = ({ orientation = 'horizontal' }: EthnicityEn
                         name={name}
                         value={value}
                         options={coded.ethnicGroups}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -77,7 +75,7 @@ export const EthnicityEntryFields = ({ orientation = 'horizontal' }: EthnicityEn
                             name={name}
                             value={value}
                             options={coded.detailedEthnicities}
-                            sizing="compact"
+                            sizing={sizing}
                         />
                     )}
                 />
@@ -97,7 +95,7 @@ export const EthnicityEntryFields = ({ orientation = 'horizontal' }: EthnicityEn
                             id={name}
                             name={name}
                             options={coded.ethnicityUnknownReasons}
-                            sizing="compact"
+                            sizing={sizing}
                         />
                     )}
                 />

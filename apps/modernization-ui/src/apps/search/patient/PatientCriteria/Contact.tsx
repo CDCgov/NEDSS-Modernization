@@ -1,10 +1,11 @@
 import { Input } from 'components/FormInputs/Input';
 import { Controller, useFormContext } from 'react-hook-form';
 import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
-import { PatientCriteriaEntry } from '../criteria';
+import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 import { SearchCriteria } from 'apps/search/criteria';
+import { EntryFieldsProps } from 'design-system/entry';
 
-export const Contact = () => {
+export const Contact = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
     return (
         <SearchCriteria>
@@ -13,7 +14,8 @@ export const Contact = () => {
                 name="phoneNumber"
                 render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
                     <PhoneNumberInput
-                        sizing="compact"
+                        sizing={sizing}
+                        orientation={orientation}
                         placeholder="333-444-555"
                         onChange={onChange}
                         onBlur={onBlur}
@@ -44,7 +46,8 @@ export const Contact = () => {
                         label="Email"
                         htmlFor={name}
                         id={name}
-                        sizing="compact"
+                        sizing={sizing}
+                        orientation={orientation}
                         error={error?.message}
                     />
                 )}

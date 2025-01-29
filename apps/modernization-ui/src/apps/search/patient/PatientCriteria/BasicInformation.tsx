@@ -9,8 +9,9 @@ import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
 import { DateCriteriaEntry } from 'design-system/date/criteria/DateCriteriaEntry';
 import { validateDateCriteria } from 'design-system/date/criteria/validateDateCriteria';
+import { EntryFieldsProps } from 'design-system/entry';
 
-export const BasicInformation = () => {
+export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     return (
@@ -24,7 +25,8 @@ export const BasicInformation = () => {
                         id={name}
                         value={value}
                         label="Last name"
-                        sizing="compact"
+                        sizing={sizing}
+                        orientation={orientation}
                         error={error?.message}
                         onChange={onChange}
                     />
@@ -39,7 +41,8 @@ export const BasicInformation = () => {
                         id={name}
                         value={value}
                         label="First name"
-                        sizing="compact"
+                        sizing={sizing}
+                        orientation={orientation}
                         error={error?.message}
                         onChange={onChange}
                     />
@@ -56,7 +59,8 @@ export const BasicInformation = () => {
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        sizing="compact"
+                        sizing={sizing}
+                        orientation={orientation}
                         error={error?.message}
                     />
                 )}
@@ -72,7 +76,8 @@ export const BasicInformation = () => {
                         label="Current sex"
                         id={name}
                         options={genders}
-                        sizing="compact"
+                        sizing={sizing}
+                        orientation={orientation}
                     />
                 )}
             />
@@ -89,7 +94,8 @@ export const BasicInformation = () => {
                         name={name}
                         htmlFor={name}
                         id={name}
-                        sizing="compact"
+                        sizing={sizing}
+                        orientation={orientation}
                         error={error?.message}
                     />
                 )}
@@ -104,7 +110,8 @@ export const BasicInformation = () => {
                     <CheckboxGroup
                         name={name}
                         label={'Include records that are'}
-                        sizing="compact"
+                        sizing={sizing}
+                        orientation={orientation}
                         required
                         options={statusOptions}
                         value={value}

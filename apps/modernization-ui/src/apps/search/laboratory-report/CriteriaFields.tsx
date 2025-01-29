@@ -3,8 +3,9 @@ import { LabReportFilterEntry } from 'apps/search/laboratory-report/labReportFor
 import { CodedResultsAutocomplete } from 'options/autocompete/CodedResultsAutocomplete';
 import { SearchCriteria } from 'apps/search/criteria';
 import { ResultedTestsAutocomplete } from 'options/autocompete/ResultedTestsAutocomplete';
+import { EntryFieldsProps } from 'design-system/entry';
 
-export const CriteriaFields = () => {
+export const CriteriaFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
     const form = useFormContext<LabReportFilterEntry, Partial<LabReportFilterEntry>>();
 
     return (
@@ -17,7 +18,7 @@ export const CriteriaFields = () => {
                         value={value}
                         id={name}
                         label="Resulted test"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                     />
                 )}
@@ -31,7 +32,7 @@ export const CriteriaFields = () => {
                         value={value}
                         id={name}
                         label="Coded result/organism"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                     />
                 )}

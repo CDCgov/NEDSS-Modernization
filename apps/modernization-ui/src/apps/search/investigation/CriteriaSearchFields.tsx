@@ -9,8 +9,9 @@ import {
 import { SingleSelect, MultiSelect } from 'design-system/select';
 import { ConceptMultiSelect } from 'options/concepts/ConceptMultiSelect';
 import { SearchCriteria } from 'apps/search/criteria';
+import { EntryFieldsProps } from 'design-system/entry';
 
-const CriteriaSearchFields = () => {
+const CriteriaSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
 
     return (
@@ -25,7 +26,7 @@ const CriteriaSearchFields = () => {
                         value={value}
                         onChange={onChange}
                         label="Investigation status"
-                        sizing="compact"
+                        sizing={sizing}
                         options={investigationStatusOptions}
                     />
                 )}
@@ -41,7 +42,7 @@ const CriteriaSearchFields = () => {
                         onChange={onChange}
                         valueSet="OUTBREAK_NM"
                         label="Outbreak name"
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -54,7 +55,7 @@ const CriteriaSearchFields = () => {
                         id={name}
                         name={name}
                         label="Case status"
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         options={caseStatusOptions}
@@ -70,7 +71,7 @@ const CriteriaSearchFields = () => {
                         name={name}
                         value={value}
                         label="Current processing status"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         options={processingStatusOptions}
                     />
@@ -85,7 +86,7 @@ const CriteriaSearchFields = () => {
                         name={name}
                         value={value}
                         label="Notification status"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         options={notificationStatusOptions}
                     />

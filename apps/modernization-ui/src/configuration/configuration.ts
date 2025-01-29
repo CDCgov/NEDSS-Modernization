@@ -1,4 +1,10 @@
+import { Sizing } from 'design-system/field';
+
 type Toggle = { enabled: boolean };
+
+type Defaults = {
+    sizing: Sizing;
+};
 
 type Settings = {
     session: {
@@ -12,6 +18,7 @@ type Settings = {
         key: string;
         host: string;
     };
+    defaults: Defaults;
 };
 
 type SearchView = Toggle & {

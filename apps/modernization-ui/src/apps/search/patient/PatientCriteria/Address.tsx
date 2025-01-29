@@ -5,8 +5,9 @@ import { SingleSelect } from 'design-system/select';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 import { OperatorInput } from 'design-system/input/operator';
+import { EntryFieldsProps } from 'design-system/entry';
 
-export const Address = () => {
+export const Address = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
     return (
         <SearchCriteriaProvider>
@@ -19,7 +20,8 @@ export const Address = () => {
                             id={name}
                             value={value}
                             label="Street address"
-                            sizing="compact"
+                            sizing={sizing}
+                            orientation={orientation}
                             operationMode="alpha"
                             onChange={onChange}
                         />
@@ -33,7 +35,8 @@ export const Address = () => {
                             id={name}
                             value={value}
                             label="City"
-                            sizing="compact"
+                            sizing={sizing}
+                            orientation={orientation}
                             operationMode="alpha"
                             onChange={onChange}
                         />
@@ -50,7 +53,8 @@ export const Address = () => {
                                     onChange={onChange}
                                     label="State"
                                     id={name}
-                                    sizing="compact"
+                                    sizing={sizing}
+                                    orientation={orientation}
                                     options={searchCriteria.states.map((state) => ({
                                         name: state.name,
                                         label: state.name,
@@ -73,7 +77,8 @@ export const Address = () => {
                     }}
                     render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                         <Input
-                            sizing="compact"
+                            sizing={sizing}
+                            orientation={orientation}
                             onBlur={onBlur}
                             onChange={onChange}
                             defaultValue={value?.toString()}

@@ -14,9 +14,7 @@ const MATERNAL_MAIDEN_NAME_LABEL = "Mother's maiden name";
 const STATE_HIV_CASE_LABEL = 'State HIV case ID';
 const ENTRY_FIELD_PLACEHOLDER = '';
 
-type GeneralInformationEntryFieldsProps = EntryFieldsProps;
-
-export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: GeneralInformationEntryFieldsProps) => {
+export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<{ general: GeneralInformationEntry }>();
     const { hivAccess } = usePatientProfilePermissions();
     const coded = usePatientGeneralCodedValues();
@@ -37,7 +35,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         onBlur={onBlur}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -54,7 +52,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         id={name}
                         name={name}
                         options={coded.maritalStatuses}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -75,7 +73,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         name={name}
                         htmlFor={name}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -95,7 +93,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         name={name}
                         min="0"
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -115,7 +113,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         name={name}
                         min="0"
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -132,7 +130,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         options={coded.primaryOccupations}
                         id={name}
                         name={name}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -149,7 +147,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         id={name}
                         name={name}
                         options={coded.educationLevels}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -166,7 +164,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         id={name}
                         name={name}
                         options={coded.primaryLanguages}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -183,7 +181,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         id={name}
                         name={name}
                         options={coded.speaksEnglish}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -206,7 +204,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                             id={name}
                             name={name}
                             error={error?.message}
-                            sizing="compact"
+                            sizing={sizing}
                         />
                     )}
                 />
