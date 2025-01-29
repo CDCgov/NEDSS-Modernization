@@ -53,3 +53,8 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Patient Search Page
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
+Scenario: Required Name Fields
+    Given I am on the New patient Extended form
+    When I leave the Type field empty
+    Then the system should display an error message indicating that the field is required
+    

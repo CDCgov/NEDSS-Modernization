@@ -19,6 +19,17 @@ class NameEntryPage {
     // Click the "Add name" button
     cy.contains("button", "Add name").click();
   }
+
+  verifyRequiredFieldError() {
+    // Click the "Add name" button
+    cy.contains("button", "Add name").click({ force: true });
+
+    // Verify that the error message is displayed
+    cy.get(".alert-message_title__UqoEz")
+      .should("be.visible")
+      .and("contain.text", "Please fix the following errors:");
+  }
+
 }
 
 export default new NameEntryPage();
