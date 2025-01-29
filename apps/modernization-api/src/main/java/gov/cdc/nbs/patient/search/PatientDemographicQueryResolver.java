@@ -308,7 +308,7 @@ class PatientDemographicQueryResolver {
 
   private Optional<QueryVariant> applyEmailFilter(final PatientFilter criteria) {
 
-    if (criteria.getFilter().name() == null) {
+    if (criteria.getFilter().email() == null) {
       return Optional.empty();
     }
 
