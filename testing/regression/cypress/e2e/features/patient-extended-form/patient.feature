@@ -45,3 +45,11 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Patient Search Page
     Then I clear Comments sections field
     Then I click the Save button
     Then Form should be submitted successfully without errors
+
+  Scenario: Valid Name Input
+    Given I am on the New patient Extended form
+    When I enter a valid name in the First and Last name fields
+    When I click the Save button
+    Then Form should be submitted successfully without errors
+    And I should receive a confirmation message
+
