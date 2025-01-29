@@ -1,5 +1,7 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import classicSearchPatientPage from "cypress/e2e/pages/patient-extended-form/patient.page";
+import NameEntryPage from "cypress/e2e/pages/patient-extended-form/patient-extended.page";
+
 
 Then("Navigate to classic Patient Search pane", () => {
     classicSearchPatientPage.navigateToClassicPatientSearchPane()
@@ -72,3 +74,7 @@ Then("I have filled out text in Comments field up to 2000 characters", () => {
 Then("I clear Comments sections field", () => {
     classicSearchPatientPage.clearCommentsField()
 });
+
+When("I enter a valid name in the First and Last name fields", () => {
+    NameEntryPage.enterValidFirstAndLastName();
+  });
