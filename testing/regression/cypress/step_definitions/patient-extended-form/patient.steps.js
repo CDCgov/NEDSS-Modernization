@@ -78,3 +78,11 @@ Then("I clear Comments sections field", () => {
 When("I enter a valid name in the First and Last name fields", () => {
     NameEntryPage.enterValidFirstAndLastName();
   });
+
+Then("the system should display an error message indicating that the field is required", () => {
+    NameEntryPage.verifyRequiredFieldError();
+  });
+
+When("I leave the Type field empty", () => {
+  });
+
