@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext } from 'react';
 import { Sizing } from 'design-system/field';
 import { useConfiguration } from 'configuration';
 
-const FALLBACK_SIZING = 'large';
+const FALLBACK_SIZING = 'medium';
 
 const ComponentSizingContext = createContext<Sizing>(FALLBACK_SIZING);
 
