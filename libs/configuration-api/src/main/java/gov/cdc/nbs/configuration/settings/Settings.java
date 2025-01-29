@@ -1,10 +1,8 @@
 package gov.cdc.nbs.configuration.settings;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import gov.cdc.nbs.configuration.settings.analytics.Analytics;
+import gov.cdc.nbs.configuration.settings.defautls.Defaults;
+import gov.cdc.nbs.configuration.settings.smarty.Smarty;
 
-@ConfigurationProperties("nbs.ui.settings")
-public record Settings(Smarty smarty, Analytics analytics) {
-
-  public record Smarty(String key) {}
-  public record Analytics(String key, String host) {}
+public record Settings(Smarty smarty, Analytics analytics, Defaults defaults) {
 }

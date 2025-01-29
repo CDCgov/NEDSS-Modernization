@@ -23,7 +23,7 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
     classes = ConfigurationTestContext.class,
     properties = {"spring.mvc.pathmatch.matching-strategy=ant_path_matcher"}
 )
-@ActiveProfiles({"test", "local","settings"})
+@ActiveProfiles({"test", "local"})
 @EmbeddedNbsDatabase
 @AutoConfigureMockMvc
 public class RunCucumber {
