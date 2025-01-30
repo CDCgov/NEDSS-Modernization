@@ -318,9 +318,9 @@ Feature: Patient Search
 
   Scenario: I can search for a Patient using a phone number two filters
     Given the patient has a "phone number" of "888-240-2200"
-    And the patient has an "email address" of "emailaddress@mail.com"
     And I have another patient
     And the patient has a "phone number" of "613-240-2200"
+    And the patient has an "email address" of "emailaddress@mail.com"
     And patients are available for search
     And I add the patient criteria for an "phone number" equal to "613-240-2200"
     And I would like to filter search results with email "address"
