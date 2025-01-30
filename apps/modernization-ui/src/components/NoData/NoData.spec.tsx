@@ -18,7 +18,7 @@ describe('NoData Component', () => {
 
     it('should display dashes when display prop is "dashes"', () => {
         const { getByText } = render(<NoData display="dashes" />);
-        expect(getByText('--')).toBeInTheDocument();
+        expect(getByText('---')).toBeInTheDocument();
     });
 
     it('should display whitespace when display prop is "whitespace"', () => {

@@ -7,7 +7,7 @@ type NoDataProps = {
 };
 
 const NoData = ({ className = '', display = 'text' }: NoDataProps) => {
-    const noDataText = display === 'dashes' ? '--' : display === 'whitespace' ? <>&nbsp;</> : 'No Data';
+    const noDataText = display === 'dashes' ? '---' : display === 'whitespace' ? <>&nbsp;</> : 'No Data';
     return <span className={classNames('no-data', className)}>{noDataText}</span>;
 };
 
