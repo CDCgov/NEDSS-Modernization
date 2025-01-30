@@ -83,6 +83,7 @@ class PatientDemographicQueryResolver {
         applyPatientNameFilterCriteria(criteria),
         applyFirstNameCriteria(criteria),
         applyLastNameCriteria(criteria),
+        applyPhoneFilter(criteria),
         applyPhoneNumberCriteria(criteria),
         applyEmailCriteria(criteria),
         applyEmailFilter(criteria),
@@ -305,6 +306,17 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
+  private Optional<QueryVariant> applyPhoneFilter(final PatientFilter criteria) {
+
+    if (criteria.getFilter().phone() == null) {
+      return Optional.empty();
+    }
+
+    String phoneDigits = criteria.getFilter().phone().replaceAll("[^\\d]", "");
+    return Optional.ofNullable(new TextCriteria(null, null, null, phoneDigits, null))
+        .flatMap(TextCriteria::maybeContains)
+        .map(value -> contains(PHONES, "phone.telephoneNbr", value));
+  }
 
   private Optional<QueryVariant> applyEmailFilter(final PatientFilter criteria) {
 
