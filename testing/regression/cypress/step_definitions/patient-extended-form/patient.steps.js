@@ -86,3 +86,14 @@ Then("the system should display an error message indicating that the field is re
 When("I leave the Type field empty", () => {
   });
 
+Then("I have filled out Address input fields", () => {
+    classicSearchPatientPage.fillExtendedAddressFormDetails()
+});
+
+Then("I have not filled out all Address input fields", () => {
+    classicSearchPatientPage.fillExtendedAddressFormDetails('invalid')
+});
+
+Then("Error message should appear right above Address fields", () => {
+    classicSearchPatientPage.errorMessageAddressField()
+});

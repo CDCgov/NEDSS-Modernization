@@ -57,4 +57,11 @@ Scenario: Required Name Fields
     Given I am on the New patient Extended form
     When I leave the Type field empty
     Then the system should display an error message indicating that the field is required
-    
+
+  Scenario: Valid Address Input
+    Given I am on the New patient Extended form
+    And I have filled out Address input fields
+    When I click the Save button
+    Then Form should be submitted successfully without errors
+    And I should receive a confirmation message
+

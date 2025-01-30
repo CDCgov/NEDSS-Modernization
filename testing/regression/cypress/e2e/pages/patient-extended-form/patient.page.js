@@ -87,6 +87,21 @@ class ClassicPatientSearchPage {
     cy.get('textarea[id="administrative.comment"]').clear().blur()
   }
 
+  fillExtendedAddressFormDetails(type) {
+    if(type === 'invalid') {
+        cy.contains('button', 'Add address').click()
+        return
+    }
+
+    cy.get('#address-type').select('H')
+    cy.get('#address-use').select('BDL')
+    cy.contains('button', 'Add address').click()
+  }
+
+  errorMessageAddressField() {
+    cy.contains('The Type is required')
+    cy.contains('The Use is required')
+  }
 }
 
 export default new ClassicPatientSearchPage();
