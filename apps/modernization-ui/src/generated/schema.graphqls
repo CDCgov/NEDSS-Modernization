@@ -1139,6 +1139,7 @@ input Filter {
   name: String
   sex: String
   email: String
+  phone: String
 }
 
 input PersonFilter {

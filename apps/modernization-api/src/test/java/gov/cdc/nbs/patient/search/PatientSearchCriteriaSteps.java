@@ -145,6 +145,13 @@ public class PatientSearchCriteriaSteps {
             .active(criteria -> criteria.withEmailFilter(email)));
   }
 
+  @Given("I would like to filter search results with phone {string}")
+  public void i_would_like_to_filter_search_results_with_phone(String phone) {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria
+            .active(criteria -> criteria.withPhoneFilter(phone)));
+  }
+
   @Given("I would like to filter search results with age or dob {string}")
   public void i_would_like_to_filter_search_results_with_age_or_dob(String ageOrDateOfBirth) {
     this.patient.maybeActive().ifPresent(
