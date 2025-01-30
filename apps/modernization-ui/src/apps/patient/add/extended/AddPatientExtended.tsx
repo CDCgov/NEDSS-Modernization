@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from 'components/button';
 import { Shown } from 'conditional-render';
@@ -24,7 +23,6 @@ export const AddPatientExtended = () => {
     const { initialize } = useAddPatientExtendedDefaults();
     const { value: bypassModal } = useShowCancelModal();
     const { toBasic } = useBasicExtendedTransition();
-    const navigate = useNavigate();
 
     const created = useMemo<CreatedPatient | undefined>(
         () => (interaction.status === 'created' ? interaction.created : undefined),
@@ -41,7 +39,9 @@ export const AddPatientExtended = () => {
 
     const handleSave = form.handleSubmit(interaction.create);
 
-    const handleCancel = () => navigate('/add-patient');
+    const handleCancel = () => {
+        toBasic();
+    };
 
     // Setup navigation blocking for back button
     const blocker = useNavigationBlock({ activated: !bypassModal });
@@ -59,7 +59,6 @@ export const AddPatientExtended = () => {
 
     const handleModalConfirm = () => {
         blocker.unblock();
-        toBasic();
     };
 
     const handleModalClose = blocker.reset;

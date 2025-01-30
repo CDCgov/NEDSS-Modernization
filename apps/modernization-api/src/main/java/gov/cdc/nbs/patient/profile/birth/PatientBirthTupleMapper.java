@@ -15,7 +15,6 @@ import gov.cdc.nbs.geo.state.SimpleState;
 import gov.cdc.nbs.geo.state.SimpleStateTupleMapper;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -103,7 +102,7 @@ class PatientBirthTupleMapper {
                 "A birth version is required"
             );
 
-        Instant asOf = tuple.get(this.tables.patient().asOfDateSex);
+        LocalDate asOf = tuple.get(this.tables.patient().asOfDateSex);
 
         LocalDate birthday = resolveBirthday(tuple);
 

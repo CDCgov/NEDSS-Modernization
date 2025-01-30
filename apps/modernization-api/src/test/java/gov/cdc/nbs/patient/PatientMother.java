@@ -1,10 +1,10 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
@@ -20,8 +20,8 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,38 +34,41 @@ public class PatientMother {
   private final SequentialIdentityGenerator idGenerator;
   private final PatientLocalIdentifierGenerator localIdentifierGenerator;
   private final AddressIdentifierGenerator addressIdentifierGenerator;
-  private final PatientShortIdentifierResolver resolver;
+  private final PatientShortIdentifierResolver shortIdentifierResolver;
   private final EntityManager entityManager;
   private final Available<PatientIdentifier> available;
   private final Active<PatientIdentifier> active;
   private final PatientCleaner cleaner;
   private final RevisionPatientCreator revisionCreator;
   private final JdbcClient jdbcClient;
+  private final SoundexResolver soundexResolver;
 
   PatientMother(
       final MotherSettings settings,
       final SequentialIdentityGenerator idGenerator,
       final PatientLocalIdentifierGenerator localIdentifierGenerator,
       final AddressIdentifierGenerator addressIdentifierGenerator,
-      final PatientShortIdentifierResolver resolver,
+      final PatientShortIdentifierResolver shortIdentifierResolver,
       final EntityManager entityManager,
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
       final PatientCleaner cleaner,
       final RevisionPatientCreator revisionCreator,
-      final JdbcClient jdbcClient
+      final JdbcClient jdbcClient,
+      final SoundexResolver soundexResolver
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.localIdentifierGenerator = localIdentifierGenerator;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
-    this.resolver = resolver;
+    this.shortIdentifierResolver = shortIdentifierResolver;
     this.entityManager = entityManager;
     this.available = available;
     this.active = active;
     this.cleaner = cleaner;
     this.revisionCreator = revisionCreator;
     this.jdbcClient = jdbcClient;
+    this.soundexResolver = soundexResolver;
     this.faker = new Faker(Locale.of("en-us"));
   }
 
@@ -93,11 +96,18 @@ public class PatientMother {
     long identifier = idGenerator.next();
     String local = localIdentifierGenerator.generate();
 
-    Person patient = new Person(identifier, local);
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            identifier,
+            local,
+            settings.createdBy(),
+            settings.createdOn()
+        )
+    );
 
     this.entityManager.persist(patient);
 
-    long shortId = this.resolver.resolve(local).orElse(0L);
+    long shortId = this.shortIdentifierResolver.resolve(local).orElse(0L);
 
     return new PatientIdentifier(patient.getId(), shortId, local);
   }
@@ -124,9 +134,9 @@ public class PatientMother {
   }
 
   public void superseded(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.setRecordStatusCd(RecordStatus.SUPERCEDED);
+    managed(identifier)
+        .recordStatus()
+        .change("SUPERCEDED", LocalDateTime.now());
   }
 
   public void withAddress(
@@ -168,7 +178,7 @@ public class PatientMother {
         new PatientCommand.AddAddress(
             patient.getId(),
             idGenerator.next(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             type,
             use,
             address,
@@ -193,7 +203,7 @@ public class PatientMother {
         new PatientCommand.AddAddress(
             patient.getId(),
             idGenerator.next(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             faker.address().streetAddress(),
             null,
             faker.address().city(),
@@ -225,7 +235,7 @@ public class PatientMother {
     patient.add(
         new PatientCommand.AddIdentification(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             value,
             RandomUtil.maybeOneFrom("GA"),
             type,
@@ -248,7 +258,7 @@ public class PatientMother {
     patient.add(
         new PatientCommand.AddRace(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             race,
             this.settings.createdBy(),
             this.settings.createdOn()));
@@ -264,7 +274,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateRaceInfo(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             race,
             List.of(detail),
             this.settings.createdBy(),
@@ -276,7 +286,7 @@ public class PatientMother {
   public void withName(final PatientIdentifier identifier) {
     withName(
         identifier,
-        RandomUtil.getRandomDateInPast(),
+        RandomUtil.dateInPast(),
         "L",
         faker.name().firstName(),
         faker.name().firstName(),
@@ -293,7 +303,7 @@ public class PatientMother {
   ) {
     withName(
         identifier,
-        RandomUtil.getRandomDateInPast(),
+        RandomUtil.dateInPast(),
         type,
         first,
         last
@@ -302,7 +312,7 @@ public class PatientMother {
 
   public void withName(
       final PatientIdentifier identifier,
-      final Instant asOf,
+      final LocalDate asOf,
       final String type,
       final String first,
       final String last
@@ -320,7 +330,7 @@ public class PatientMother {
 
   public void withName(
       final PatientIdentifier identifier,
-      final Instant asOf,
+      final LocalDate asOf,
       final String type,
       final String first,
       final String middle,
@@ -330,6 +340,7 @@ public class PatientMother {
     Person patient = managed(identifier);
 
     patient.add(
+        this.soundexResolver,
         new PatientCommand.AddName(
             identifier.id(),
             asOf,
@@ -357,7 +368,7 @@ public class PatientMother {
             idGenerator.next(),
             RandomUtil.oneFrom("AN", "BP", "CP", "FAX", "PH"),
             RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             RandomUtil.getRandomString(15),
             faker.phoneNumber().cellPhone(),
             faker.phoneNumber().extension(),
@@ -402,7 +413,7 @@ public class PatientMother {
             idGenerator.next(),
             type,
             use,
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             countryCode,
             number,
             extension,
@@ -428,7 +439,7 @@ public class PatientMother {
             idGenerator.next(),
             "NET",
             RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             null,
             null,
             null,
@@ -450,7 +461,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateBirth(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             birthday,
             null,
             RandomUtil.maybeIndicator(),
@@ -472,7 +483,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateBirth(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             RandomUtil.dateInPast(),
             RandomUtil.maybeGender(),
             RandomUtil.maybeIndicator(),
@@ -499,7 +510,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateGender(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             gender,
             null,
             null,
@@ -532,7 +543,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateMortality(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             indicator.value(),
             deceasedOn,
             null,
@@ -555,7 +566,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateEthnicityInfo(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             ethnicity,
             null,
             this.settings.createdBy(),
@@ -574,7 +585,7 @@ public class PatientMother {
     patient.update(
         new PatientCommand.UpdateEthnicityInfo(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             ethnicity,
             null,
             this.settings.createdBy(),

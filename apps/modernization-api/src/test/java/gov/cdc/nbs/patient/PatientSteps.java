@@ -34,6 +34,7 @@ public class PatientSteps {
     mother.create();
   }
 
+  @Given("the patient has been deleted")
   @Given("the patient is inactive")
   public void the_patient_is_inactive() {
     mother.deleted(patient.active());
@@ -50,6 +51,15 @@ public class PatientSteps {
         found -> mother.withBirthday(
             found,
             value));
+
+  }
+
+  @Given("the patient was born {int} years ago")
+  public void the_patient_was_born_on(final int value) {
+    this.patient.maybeActive().ifPresent(
+        found -> mother.withBirthday(
+            found,
+            LocalDate.now().minusYears(value).minusDays(100)));
 
   }
 

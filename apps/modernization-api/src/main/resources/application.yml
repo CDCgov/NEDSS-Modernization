@@ -73,8 +73,6 @@ spring:
       hibernate:
         default_schema: dbo
         format_sql: true
-        jdbc:
-          time_zone: UTC
         timezone:
           default_storage: NORMALIZE
   datasource:

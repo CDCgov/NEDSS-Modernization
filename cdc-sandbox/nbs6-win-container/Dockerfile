@@ -13,7 +13,7 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 ARG S3_ZIP_NAME 
 
 COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
-USER ContainerAdministrator
+# USER ContainerAdministrator
 RUN Expand-Archive -Path C:\$env:S3_ZIP_NAME.zip; mv C:\$env:S3_ZIP_NAME\wildfly-10.0.0.Final\* C:\wildfly-10.0.0.Final\/
 
 # Downloads
@@ -43,22 +43,26 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
     # Full zip file name and file format to be downloaded from latest Release Assets in Modernization Repository. <version> will be replaced in entrypoint script.
     GITHUB_ZIP_FILE_NAME="<version>.NEDSS.NBS.Modernized.Documentation.zip" \
     JAVA_MEMORY="4096M" \
-    DISABLED_SCHEDULED_TASKS="SendAlertEMail.bat,DeDuplicationSimilarBatchProcess.bat,UserProfileUpdateProcess.bat"
+    # Task names for tasks to be disabled correspond to filename in tasks.csv (suggested removal SendAlertEMail.bat)
+    DISABLED_SCHEDULED_TASKS=""
 
 # Configure NBS from Local Directory
 # NOTE: 
 # 1) Verify Zip File is downloaded from S3 and place in same directory, example: wildfly-10.0.0.Final-6.0.15.1.zip
 # 2) Delete wildfly*/bin/hs_err_pid2604.mdmp and/or any file name containing "err"
 
-USER ContainerAdministrator
+RUN mkdir C:\executables\sqlcmd
+
+# RUN [Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\executables\sqlcmd", "Machine")
+
+# USER ContainerAdministrator
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
 RUN New-Item -ItemType directory -Path C:\wildfly-10.0.0.Final ; \
     New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\DOS Devices' -Name 'D:'  -Value '\??\C:\' -PropertyType String
-
     
 COPY --from=builder C:\\wildfly-10.0.0.Final C:\\wildfly-10.0.0.Final
-COPY --from=builder C:\\executables\\sqlcmd\\/ C:\\Users\\ContainerAdministrator\\AppData\\Local\\Microsoft\\WindowsApps\\/
+COPY --from=builder C:\\executables\\sqlcmd\\/ C:\\executables\\sqlcmd\\/
 
 # Configure Task Schedular. Requires Administrator Permissions
 COPY task-scheduler.ps1 task-scheduler.ps1

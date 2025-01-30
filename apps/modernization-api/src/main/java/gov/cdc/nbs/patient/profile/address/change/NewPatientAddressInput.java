@@ -1,10 +1,10 @@
 package gov.cdc.nbs.patient.profile.address.change;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public record NewPatientAddressInput(
     long patient,
-    Instant asOf,
+    LocalDate asOf,
     String type,
     String use,
     String address1,

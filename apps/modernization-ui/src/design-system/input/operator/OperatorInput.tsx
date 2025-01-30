@@ -1,7 +1,8 @@
+import { ChangeEvent, useCallback } from 'react';
 import { Grid } from '@trussworks/react-uswds';
-import { EntryWrapper, Sizing } from 'components/Entry';
-import { Input } from 'components/FormInputs/Input';
+import { Field, Orientation, Sizing } from 'design-system/field';
 import { OperatorSelect } from 'design-system/select';
+import { Input } from 'components/FormInputs/Input';
 import { Selectable } from 'options';
 import {
     asTextCriteriaOrString,
@@ -11,7 +12,6 @@ import {
     asTextCriteriaValue,
     asTextCriteria
 } from 'options/operator';
-import { ChangeEvent, useCallback } from 'react';
 import styles from './operator.module.scss';
 
 export type OperatorInputProps = {
@@ -23,7 +23,7 @@ export type OperatorInputProps = {
     label: string;
     helperText?: string;
     sizing?: Sizing;
-    orientation?: 'vertical' | 'horizontal';
+    orientation?: Orientation;
     error?: string;
     /** When invoked, will pass either a string (if no operator selected) or an TextCriteria object */
     onChange: (value?: string | TextCriteria | null) => void;
@@ -52,8 +52,8 @@ export const OperatorInput = ({
     operator = operationMode === 'alpha' ? 'equals' : 'startsWith',
     label,
     helperText,
-    sizing = 'compact',
-    orientation = 'vertical',
+    sizing,
+    orientation,
     error,
     onChange
 }: OperatorInputProps) => {
@@ -82,7 +82,7 @@ export const OperatorInput = ({
     );
 
     return (
-        <EntryWrapper orientation={orientation} label={label} helperText={helperText} htmlFor={id} sizing={sizing}>
+        <Field orientation={orientation} label={label} helperText={helperText} htmlFor={id} sizing={sizing}>
             <Grid col={12}>
                 <Grid row>
                     <Grid col={5} className={styles.left}>
@@ -108,6 +108,6 @@ export const OperatorInput = ({
                     </Grid>
                 </Grid>
             </Grid>
-        </EntryWrapper>
+        </Field>
     );
 };

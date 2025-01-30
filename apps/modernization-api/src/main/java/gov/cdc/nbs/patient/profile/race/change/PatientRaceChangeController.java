@@ -12,7 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import java.time.Clock;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Controller
 class PatientRaceChangeController {
@@ -68,6 +68,6 @@ class PatientRaceChangeController {
 
   private RequestContext resolveContext() {
     NbsUserDetails user = SecurityUtil.getUserDetails();
-    return new RequestContext(user.getId(), Instant.now(this.clock));
+    return new RequestContext(user.getId(), LocalDateTime.now(this.clock));
   }
 }

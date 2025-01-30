@@ -13,6 +13,8 @@ const handleExternalKeyUp = (event: Event) => {
     input.value = maskedAsDate(input.value);
 };
 
+const asDateOrMinimum = mapOr(asStrictISODate, '1875-01-01');
+
 const today = () => new Date().toISOString().substring(0, 10);
 
 const asDateOrToday = mapOr(asStrictISODate, today);
@@ -34,7 +36,7 @@ const DatePicker = ({ id, label, maxDate, minDate, value, onChange, onBlur, ...r
     const externalInputRef = useRef<HTMLInputElement | null>(null);
 
     const adjustedMaxValue = asDateOrToday(maxDate);
-    const adjustedMinValue = asStrictISODate(minDate);
+    const adjustedMinValue = asDateOrMinimum(minDate);
 
     useEffect(() => {
         initialize(value);
@@ -55,7 +57,7 @@ const DatePicker = ({ id, label, maxDate, minDate, value, onChange, onBlur, ...r
             onChange?.(event.target.value);
         } else {
             clear();
-            onChange?.();
+            onChange?.('');
         }
     };
 

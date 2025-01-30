@@ -1,11 +1,12 @@
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { SingleSelect } from 'design-system/select';
+import { EntryFieldsProps } from 'design-system/entry';
 import { useConceptOptions } from 'options/concepts';
 import { Input } from 'components/FormInputs/Input';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 
-export const Id = () => {
+export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
     const identificationType = useWatch({ control: control, name: 'identificationType' });
 
@@ -21,7 +22,8 @@ export const Id = () => {
                         name={name}
                         label="ID type"
                         id={name}
-                        sizing="compact"
+                        sizing={sizing}
+                        orientation={orientation}
                         options={useConceptOptions('EI_TYPE_PAT', { lazy: false }).options}
                     />
                 )}
@@ -35,7 +37,8 @@ export const Id = () => {
                     }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
-                            sizing="compact"
+                            sizing={sizing}
+                            orientation={orientation}
                             type="text"
                             defaultValue={value}
                             onBlur={onBlur}

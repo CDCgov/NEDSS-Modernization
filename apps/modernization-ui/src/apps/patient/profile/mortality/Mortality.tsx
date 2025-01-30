@@ -3,7 +3,7 @@ import { Grid } from '@trussworks/react-uswds';
 import { FindPatientProfileQuery, PatientMortality, useUpdatePatientMortalityMutation } from 'generated/graphql/schema';
 import { useFindPatientProfileMortality } from './useFindPatientProfileMortality';
 import { Data, EditableCard } from 'components/EditableCard';
-import { externalizeDate, externalizeDateTime, internalizeDate } from 'date';
+import { externalizeDate, internalizeDate } from 'date';
 import { MortalityForm } from './MortalityForm';
 import { MortalityEntry } from './MortalityEntry';
 import { maybeDescription, maybeId } from '../coded';
@@ -94,7 +94,7 @@ export const Mortality = ({ patient }: Props) => {
                     input: {
                         ...updated,
                         patient: +patient.id,
-                        asOf: externalizeDateTime(updated.asOf),
+                        asOf: externalizeDate(updated.asOf),
                         deceasedOn: externalizeDate(updated.deceasedOn)
                     }
                 }

@@ -11,9 +11,7 @@ const AS_OF_DATE_LABEL = 'Identification as of';
 const TYPE_LABEL = 'Type';
 const ID_VALUE_LABEL = 'ID value';
 
-type IdentificationEntryFieldsProps = EntryFieldsProps;
-
-export const IdentificationEntryFields = ({ orientation = 'horizontal' }: IdentificationEntryFieldsProps) => {
+export const IdentificationEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<IdentificationEntry>();
 
     const coded = usePatientIdentificationCodedValues();
@@ -34,7 +32,7 @@ export const IdentificationEntryFields = ({ orientation = 'horizontal' }: Identi
                         onChange={onChange}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -53,7 +51,7 @@ export const IdentificationEntryFields = ({ orientation = 'horizontal' }: Identi
                         options={coded.types}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -69,7 +67,7 @@ export const IdentificationEntryFields = ({ orientation = 'horizontal' }: Identi
                         onBlur={onBlur}
                         id={name}
                         options={coded.authorities}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -89,7 +87,7 @@ export const IdentificationEntryFields = ({ orientation = 'horizontal' }: Identi
                         id={name}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />

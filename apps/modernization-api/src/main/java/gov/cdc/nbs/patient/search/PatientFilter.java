@@ -41,15 +41,38 @@ public class PatientFilter {
     private String identificationType;
   }
 
-  @Getter
-  @Setter
-  @AllArgsConstructor
-  @NoArgsConstructor
-  @EqualsAndHashCode
-  @JsonInclude(Include.NON_NULL)
-  public static class Filter {
-    private String id;
+  public record Filter(String id, String name, String ageOrDateOfBirth, String sex, String address, String email,
+      String phone) {
+    Filter withId(final String id) {
+      return new Filter(id, name(), ageOrDateOfBirth(), sex(), address(), email(), null);
+    }
+
+    Filter withName(final String name) {
+      return new Filter(id(), name, ageOrDateOfBirth(), sex(), address(), email(), null);
+    }
+
+    Filter withAgeOrDateOfBirth(final String ageOrDateOfBirth) {
+      return new Filter(id(), name(), ageOrDateOfBirth, sex(), address(), email(), null);
+    }
+
+    Filter withSex(final String sex) {
+      return new Filter(id(), name(), ageOrDateOfBirth(), sex, address(), email(), null);
+    }
+
+    Filter withAddress(final String address) {
+      return new Filter(id(), name(), ageOrDateOfBirth(), sex(), address, email(), null);
+    }
+
+    Filter withEmail(final String email) {
+      return new Filter(id(), name(), ageOrDateOfBirth(), sex(), address(), email, null);
+    }
+
+    Filter withPhone(final String phone) {
+      return new Filter(id(), name(), ageOrDateOfBirth(), sex(), address(), email(), phone);
+    }
+
   }
+
 
   public record NameCriteria(TextCriteria first, TextCriteria last) {
 
@@ -152,7 +175,7 @@ public class PatientFilter {
 
   public Filter getFilter() {
     if (this.filter == null) {
-      this.filter = new Filter();
+      this.filter = new Filter(null, null, null, null, null, null, null);
     }
     return filter;
   }
@@ -177,8 +200,72 @@ public class PatientFilter {
   }
 
   public PatientFilter withIdFilter(final String idFilter) {
-    this.filter = new Filter(idFilter);
+    if (this.filter == null) {
+      this.filter = new Filter(idFilter, null, null, null, null, null, null);
+    } else {
+      this.filter = this.filter.withId(idFilter);
+    }
     return this;
+  }
+
+  public PatientFilter withNameFilter(final String nameFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, nameFilter, null, null, null, null, null);
+    } else {
+      this.filter = this.filter.withName(nameFilter);
+    }
+    return this;
+
+  }
+
+  public PatientFilter withAddressFilter(final String addressFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, null, null, null, addressFilter, null, null);
+    } else {
+      this.filter = this.filter.withAddress(addressFilter);
+    }
+    return this;
+
+  }
+
+  public PatientFilter withEmailFilter(final String emailFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, null, null, null, null, emailFilter, null);
+    } else {
+      this.filter = this.filter.withEmail(emailFilter);
+    }
+    return this;
+
+  }
+
+  public PatientFilter withPhoneFilter(final String phoneFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, null, null, null, null, null, phoneFilter);
+    } else {
+      this.filter = this.filter.withPhone(phoneFilter);
+    }
+    return this;
+
+  }
+
+  public PatientFilter withAgeOrDateOfBirthFilter(final String ageOrDateOfBirthFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, null, ageOrDateOfBirthFilter, null, null, null, null);
+    } else {
+      this.filter = this.filter.withAgeOrDateOfBirth(ageOrDateOfBirthFilter);
+    }
+    return this;
+
+  }
+
+  public PatientFilter withSexFilter(final String sexFilter) {
+    if (this.filter == null) {
+      this.filter = new Filter(null, null, null, sexFilter, null, null, null);
+    } else {
+      this.filter = this.filter.withSex(sexFilter);
+    }
+    return this;
+
   }
 
   public PatientFilter withMorbidity(final String identifier) {

@@ -7,7 +7,7 @@ import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Transactional
 public class PatientGeneralInformationChangeSteps {
@@ -69,13 +69,14 @@ public class PatientGeneralInformationChangeSteps {
     this.activeChanges.active(current -> current.speaksEnglish(value));
   }
 
-  @Given("I want to change the patient's general information to include that the patient is associated with state HIV case {string}")
+  @Given(
+      "I want to change the patient's general information to include that the patient is associated with state HIV case {string}")
   public void i_want_to_change_the_state_HIV_case(final String value) {
     this.activeChanges.active(current -> current.stateHIVCase(value));
   }
 
-  @When("the patient profile general information changes are submitted as of {date}")
-  public void the_patient_profile_general_information_changes_are_submitted(final Instant asOf) {
+  @When("the patient profile general information changes are submitted as of {localDate}")
+  public void the_patient_profile_general_information_changes_are_submitted(final LocalDate asOf) {
     this.activePatient.maybeActive().flatMap(
             patient -> this.activeChanges.maybeActive().map(pending -> pending.applied(patient.id(), asOf))
         ).map(this.requester::change)

@@ -1,9 +1,10 @@
 package gov.cdc.nbs.patient.profile;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
+
+import static gov.cdc.nbs.patient.profile.PatientProfile.STATUS_INACTIVE;
 
 @Controller
 class PatientProfileDeletableResolver {
@@ -16,6 +17,6 @@ class PatientProfileDeletableResolver {
 
   @SchemaMapping("deletable")
   boolean resolve(final PatientProfile profile) {
-    return !profile.status().equals(RecordStatus.LOG_DEL.display()) && finder.count(profile.id()) == 0;
+    return !profile.status().equals(STATUS_INACTIVE) && finder.count(profile.id()) == 0;
   }
 }

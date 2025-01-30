@@ -3,16 +3,14 @@ package gov.cdc.nbs.patient.profile.birth.change;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
-
-import jakarta.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,16 +18,23 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 public class PatientGenderChangeSteps {
 
-    @Autowired
-    Available<PatientIdentifier> patients;
+    private final Available<PatientIdentifier> patients;
 
-    @Autowired
-    PatientBirthAndGenderController controller;
+    private final PatientBirthAndGenderController controller;
 
-    @Autowired
-    EntityManager entityManager;
+    private final EntityManager entityManager;
 
     private UpdateBirthAndGender changes;
+
+    PatientGenderChangeSteps(
+        final Available<PatientIdentifier> patients,
+        final PatientBirthAndGenderController controller,
+        final EntityManager entityManager
+    ) {
+        this.patients = patients;
+        this.controller = controller;
+        this.entityManager = entityManager;
+    }
 
     @Before("@patient-profile-gender-change")
     public void reset() {
@@ -42,7 +47,7 @@ public class PatientGenderChangeSteps {
 
         this.changes = new UpdateBirthAndGender(
             patient.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             null,
             new UpdateBirthAndGender.Gender(
                 RandomUtil.maybeGender(),

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class PatientInput {
     private Gender birthGender;
     private Gender currentGender;
     private Deceased deceased;
-    private Instant deceasedTime;
+    private LocalDate deceasedTime;
     private String maritalStatus;
     private String stateHIVCase;
     private List<PostalAddress> addresses = new ArrayList<>();
@@ -29,7 +28,7 @@ public class PatientInput {
     private List<Identification> identifications = new ArrayList<>();
     private String ethnicity;
     private List<String> races = new ArrayList<>();
-    private Instant asOf;
+    private LocalDate asOf;
     private String comments;
 
 

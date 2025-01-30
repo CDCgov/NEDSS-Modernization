@@ -4,9 +4,19 @@
     --modal-min-width: 17.1875rem;
 }
 
-.gear {
-    fill: currentColor;
-
+.option-icon {
     width: 1.75rem;
     height: 1.75rem;
 }
+
+.filter-options {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+
+    .activeFilter {
+        background-color: colors.$primary-darker;
+    }
+}
+
+

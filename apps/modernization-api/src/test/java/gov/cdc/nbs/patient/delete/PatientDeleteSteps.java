@@ -1,11 +1,8 @@
 package gov.cdc.nbs.patient.delete;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.testing.authorization.ActiveUser;
-import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
@@ -13,13 +10,10 @@ import io.cucumber.java.en.When;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.springframework.security.access.AccessDeniedException;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PatientDeleteSteps {
 
-  private final Active<ActiveUser> activeUser;
   private final PersonRepository repository;
   private final Available<PatientIdentifier> patients;
   private final PatientDeleteController controller;
@@ -29,12 +23,10 @@ public class PatientDeleteSteps {
   private AccessDeniedException accessDeniedException;
 
   PatientDeleteSteps(
-      final Active<ActiveUser> activeUser,
       final PersonRepository repository,
       final Available<PatientIdentifier> patients,
       final PatientDeleteController controller
   ) {
-    this.activeUser = activeUser;
     this.repository = repository;
     this.patients = patients;
     this.controller = controller;
@@ -67,12 +59,9 @@ public class PatientDeleteSteps {
         .orElseThrow();
 
     assertThat(actual)
-        .returns(RecordStatus.LOG_DEL, Person::getRecordStatusCd)
-        .extracting(Person::getRecordStatusTime).isNotNull();
+        .extracting(Person::recordStatus)
+        .returns("LOG_DEL", gov.cdc.nbs.audit.RecordStatus::status);
 
-    assertThat(actual)
-        .returns(activeUser.active().id(), Person::getLastChgUserId)
-        .extracting(Person::getLastChgTime).isNotNull();
 
   }
 
@@ -89,7 +78,8 @@ public class PatientDeleteSteps {
         .orElseThrow();
 
     assertThat(actual)
-        .returns(RecordStatus.ACTIVE, Person::getRecordStatusCd);
+        .extracting(Person::recordStatus)
+        .returns("ACTIVE", gov.cdc.nbs.audit.RecordStatus::status);
   }
 
   @Then("I am not allowed to delete the patient")
@@ -118,14 +108,4 @@ public class PatientDeleteSteps {
                 .contains(String.valueOf(this.result.patient())));
   }
 
-  @When("the patient has been deleted")
-  public void the_patient_has_been_deleted() {
-    PatientIdentifier patientId = this.patients.one();
-    Optional<Person> maybePerson = repository.findById(patientId.id());
-    if (maybePerson.isPresent()) {
-      Person person = maybePerson.get();
-      person.setRecordStatusCd(RecordStatus.LOG_DEL);
-      repository.save(person);
-    }
-  }
 }

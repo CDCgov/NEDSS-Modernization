@@ -2,7 +2,7 @@ package gov.cdc.nbs.audit;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -14,7 +14,7 @@ class AuditTest {
 
     Audit actual = new Audit(
         311L,
-        Instant.parse("2021-01-17T01:45:30Z"),
+        LocalDateTime.parse("2021-01-17T01:45:30"),
         "reason-value"
     );
 
@@ -23,7 +23,7 @@ class AuditTest {
         .satisfies(
             added -> assertAll(
                 () -> assertThat(added.addedBy()).isEqualTo(311L),
-                () -> assertThat(added.addedOn()).isEqualTo("2021-01-17T01:45:30Z"),
+                () -> assertThat(added.addedOn()).isEqualTo("2021-01-17T01:45:30"),
                 () -> assertThat(added.reason()).isEqualTo("reason-value")
             )
         );
@@ -34,7 +34,7 @@ class AuditTest {
 
     Audit actual = new Audit(
         311L,
-        Instant.parse("2021-01-17T01:45:30Z"),
+        LocalDateTime.parse("2021-01-17T01:45:30"),
         "reason-value"
     );
 
@@ -43,7 +43,7 @@ class AuditTest {
         .satisfies(
             changed -> assertAll(
                 () -> assertThat(changed.changedBy()).isEqualTo(311L),
-                () -> assertThat(changed.changedOn()).isEqualTo("2021-01-17T01:45:30Z"),
+                () -> assertThat(changed.changedOn()).isEqualTo("2021-01-17T01:45:30"),
                 () -> assertThat(changed.reason()).isNull()
             )
         );
@@ -55,13 +55,13 @@ class AuditTest {
 
     Audit actual = new Audit(
         311L,
-        Instant.parse("2021-01-17T01:45:30Z"),
+        LocalDateTime.parse("2021-01-17T01:45:30"),
         "reason-value"
     );
 
     actual.changed(
         701L,
-        Instant.parse("2022-03-19T00:00:00Z"),
+        LocalDateTime.parse("2022-03-19T00:00:00"),
         "changed"
     );
 
@@ -70,7 +70,7 @@ class AuditTest {
         .satisfies(
             added -> assertAll(
                 () -> assertThat(added.addedBy()).isEqualTo(311L),
-                () -> assertThat(added.addedOn()).isEqualTo("2021-01-17T01:45:30Z"),
+                () -> assertThat(added.addedOn()).isEqualTo("2021-01-17T01:45:30"),
                 () -> assertThat(added.reason()).isEqualTo("reason-value")
             )
         );
@@ -80,7 +80,7 @@ class AuditTest {
         .satisfies(
             changed -> assertAll(
                 () -> assertThat(changed.changedBy()).isEqualTo(701L),
-                () -> assertThat(changed.changedOn()).isEqualTo("2022-03-19T00:00:00Z"),
+                () -> assertThat(changed.changedOn()).isEqualTo("2022-03-19T00:00:00"),
                 () -> assertThat(changed.reason()).isEqualTo("changed")
             )
         );

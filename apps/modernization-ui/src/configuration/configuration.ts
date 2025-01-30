@@ -1,4 +1,10 @@
+import { Sizing } from 'design-system/field';
+
 type Toggle = { enabled: boolean };
+
+type Defaults = {
+    sizing: Sizing;
+};
 
 type Settings = {
     session: {
@@ -12,6 +18,7 @@ type Settings = {
         key: string;
         host: string;
     };
+    defaults: Defaults;
 };
 
 type SearchView = Toggle & {
@@ -23,6 +30,29 @@ type Search = {
     investigations: Toggle;
     laboratoryReports: Toggle;
     view: SearchView;
+};
+
+type PatientProfileFeatures = {
+    enabled: boolean;
+};
+
+type PatientAddFeatures = {
+    enabled: boolean;
+    extended: {
+        enabled: boolean;
+    };
+};
+
+type PatientSearchFeatures = {
+    filters: {
+        enabled: boolean;
+    };
+};
+
+type PatientFeatures = {
+    search: PatientSearchFeatures;
+    profile: PatientProfileFeatures;
+    add: PatientAddFeatures;
 };
 
 type Features = {
@@ -46,18 +76,11 @@ type Features = {
             };
         };
     };
-    search: Search;
-    patient: {
-        profile: {
-            enabled: boolean;
-        };
-        add: {
-            enabled: boolean;
-            extended: {
-                enabled: boolean;
-            };
-        };
+    deduplication: {
+        enabled: boolean;
     };
+    search: Search;
+    patient: PatientFeatures;
 };
 
 type Properties = {

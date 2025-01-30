@@ -6,7 +6,35 @@ const setup = () => {
     return renderHook(() => useAddExtendedPatient());
 };
 
+const mockCreate = jest.fn();
+jest.mock('../useAddPatient', () => ({
+    useAddPatient: () => {
+        return {
+            status: 'waiting',
+            create: mockCreate
+        };
+    }
+}));
+
 describe('when adding patients with extended data', () => {
+    beforeAll(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should validate when attempting to create', async () => {
+        const { result } = setup();
+
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017', comment: 'entered' }
+        };
+
+        await act(async () => {
+            result.current.create(entry);
+        });
+
+        expect(mockCreate).toBeCalledWith(entry);
+    });
+
     it('should validate name sub form is not dirty when attempting to create', async () => {
         const { result } = setup();
 
@@ -123,5 +151,26 @@ describe('when adding patients with extended data', () => {
             expect(validationErrors.dirtySections.identification).toBeFalsy();
             expect(validationErrors.dirtySections.race).toBeTruthy();
         }
+    });
+
+    it('should revalidate when dirty state changed', async () => {
+        const { result } = setup();
+
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017', comment: 'entered' }
+        };
+
+        await act(async () => {
+            result.current.setSubFormState({ race: true });
+            result.current.create(entry);
+        });
+
+        expect(result.current.status).toBe('invalid');
+
+        await act(async () => {
+            result.current.setSubFormState({ race: false });
+        });
+
+        expect(result.current.status).toBe('waiting');
     });
 });

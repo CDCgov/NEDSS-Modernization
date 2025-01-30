@@ -61,6 +61,57 @@ Feature: Patient Search
     And search result 1 has a "last name" of "Smith"
     And there are 1 patient search results
 
+  Scenario: I can filter search results with the patient's short ID and name
+    Given I have a patient
+    And the patient has the legal name "Joe" "Other"
+    And I have another patient
+    And the patient has the legal name "Joe" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a first name that equals "Joe"
+    And I would like to filter search results with the patient's short ID
+    And I would like to filter search results with name "mit"
+    When I search for patients
+    Then search result 1 has a "first name" of "Joe"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results
+
+  Scenario: I can filter search results by last name
+    Given I have a patient
+    And the patient has the legal name "Joe" "Other"
+    And I have another patient
+    And the patient has the legal name "Joe" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a first name that equals "Joe"
+    And I would like to filter search results with name "mit"
+    When I search for patients
+    Then search result 1 has a "first name" of "Joe"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results
+
+  Scenario: I can filter search results by first name
+    Given I have a patient
+    And the patient has the legal name "Joe" "Smith"
+    And I have another patient
+    And the patient has the legal name "Joel" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith"
+    And I would like to filter search results with name "oel"
+    When I search for patients
+    Then search result 1 has a "first name" of "Joel"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results
+
+  Scenario: I can filter search results by a non-existent name
+    Given I have a patient
+    And the patient has the legal name "Joe" "Smith"
+    And I have another patient
+    And the patient has the legal name "Ron" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith"
+    And I would like to filter search results with name "Paul"
+    When I search for patients
+    Then there are 0 patient search results
+
   Scenario: I can find a patient by Patient ID using multiple local ids
     Given patients are available for search
     And I would like to search for a patient using multiple local IDs
@@ -245,12 +296,76 @@ Feature: Patient Search
     When I search for patients
     Then the search results have a patient with an "phone number" equal to "613-240-2200"
 
+  Scenario: I can search for a Patient using a phone number and filter
+    Given the patient has a "phone number" of "888-240-2200"
+    And I have another patient
+    And the patient has a "phone number" of "613-240-2200"
+    And patients are available for search
+    And I add the patient criteria for an "phone number" equal to "613-240-2200"
+    And I would like to filter search results with phone "32402"
+    When I search for patients
+    Then the search results have a patient with an "phone number" equal to "613-240-2200"
+
+  Scenario: I can search for a Patient using a phone number and a filter that doesn't exist
+    Given the patient has a "phone number" of "888-240-2200"
+    And I have another patient
+    And the patient has a "phone number" of "613-240-2200"
+    And patients are available for search
+    And I add the patient criteria for an "phone number" equal to "613-240-2200"
+    And I would like to filter search results with phone "111111"
+    When I search for patients
+    Then there are 0 patient search results
+
+  Scenario: I can search for a Patient using a phone number two filters
+    Given the patient has a "phone number" of "888-240-2200"
+    And I have another patient
+    And the patient has a "phone number" of "613-240-2200"
+    And the patient has an "email address" of "emailaddress@mail.com"
+    And patients are available for search
+    And I add the patient criteria for an "phone number" equal to "613-240-2200"
+    And I would like to filter search results with email "address"
+    And I would like to filter search results with phone "3-240-2"
+    When I search for patients
+    Then the search results have a patient with an "phone number" equal to "613-240-2200"
+
   Scenario: I can search for a Patient using an email address
     Given the patient has an "email address" of "emailaddress@mail.com"
     And I have another patient
     And the patient has an "email address" of "other@mail.com"
     And patients are available for search
     And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
+    When I search for patients
+    Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
+
+  Scenario: I can search for a Patient using an email address and an email filter
+    Given the patient has an "email address" of "emailaddress@mail.com"
+    And I have another patient
+    And the patient has an "email address" of "other@mail.com"
+    And patients are available for search
+    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
+    And I would like to filter search results with email "address"
+    When I search for patients
+    Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
+
+  Scenario: I can search for a Patient using an email address and a non-matching email filter
+    Given the patient has an "email address" of "emailaddress@mail.com"
+    And I have another patient
+    And the patient has an "email address" of "other@mail.com"
+    And patients are available for search
+    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
+    And I would like to filter search results with email "QQQ"
+    When I search for patients
+    Then there are 0 patient search results
+
+  Scenario: I can search for a Patient using an email address and two filters
+    Given the patient has an "email address" of "emailaddress@mail.com"
+    And the patient has the gender Unknown
+    And I have another patient
+    And the patient has an "email address" of "other@mail.com"
+    And patients are available for search
+    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
+    And I add the patient criteria for sex filter of "u"
+    And I would like to filter search results with email "address"
     When I search for patients
     Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
 
@@ -358,9 +473,111 @@ Feature: Patient Search
     And I add the patient criteria for a gender of Unknown
     When I search for patients
     Then the search results have a patient with a "gender" equal to "Unknown"
-    And the search results have a patient without a "gender" equal to "Female"
-    And the search results have a patient without a "gender" equal to "Male"
     And there is only one patient search result
+
+  Scenario: I can find the Patient with a short sex filter
+    Given the patient has the gender <gender>
+    And the patient has a "first name" of "Eva"
+    And patients are available for search
+    And I add the patient criteria for an "first name" equal to "Eva"
+    And I add the patient criteria for sex filter of "<code>"
+    When I search for patients
+    Then there is only one patient search result    
+
+    Examples:
+      | gender  | code |
+      | Male    | M    |
+      | Female  | F    |
+      | Unknown | U    |
+
+  Scenario: I can find the Patient with a long sex filter
+    Given the patient has the gender <gender>
+    And the patient has a "first name" of "Eva"
+    And patients are available for search
+    And I add the patient criteria for an "first name" equal to "Eva"
+    And I add the patient criteria for sex filter of "<gender>"
+    When I search for patients
+    Then there is only one patient search result    
+
+    Examples:
+      | gender  |
+      | Male    |
+      | Female  |
+      | Unknown |   
+
+  Scenario: I can search for a Patient when expanded sex filter matches gender
+    Given the patient has the gender <gender>
+    And patients are available for search
+    And I add the patient criteria for a gender of <gender>
+    And I add the patient criteria for sex filter of "<gender>"
+    When I search for patients
+    Then there is only one patient search result      
+
+    Examples:
+      | gender  |
+      | Male    |
+      | Female  |
+      | Unknown |
+
+  Scenario: I can search for a Patient when short sex filter matches gender
+    Given the patient has the gender <gender>
+    And patients are available for search
+    And I add the patient criteria for a gender of <gender>
+    And I add the patient criteria for sex filter of "<code>"
+    When I search for patients
+    Then there is only one patient search result      
+
+    Examples:
+      | gender  | code |
+      | Male    | M    |
+      | Female  | F    |
+      | Unknown | U    |
+
+  Scenario: I can search for a Patient when sex filter matches gender
+    Given the patient has the gender Male
+    And I have another patient
+    And the patient has the gender Female
+    And I have another patient
+    And the patient has the gender Unknown
+    And I have another patient
+    And patients are available for search
+    And I add the patient criteria for a gender of Unknown
+    And I add the patient criteria for sex filter of "u"
+    When I search for patients
+    Then the search results have a patient with a "gender" equal to "Unknown"
+    Then there is only one patient search result    
+
+  Scenario: I can search for a Patient when sex filter does not match gender
+    Given the patient has the gender Male
+    And I have another patient
+    And the patient has the gender Female
+    And I have another patient
+    And the patient has the gender Unknown
+    And I have another patient
+    And patients are available for search
+    And I add the patient criteria for a gender of Unknown
+    And I add the patient criteria for sex filter of "F"
+    When I search for patients
+    Then there are 0 patient search results
+
+  Scenario: I can search for a patient with a sex filter and name filter
+    Given the patient has the gender Male
+    And the patient has a "first name" of "Eva"
+    And patients are available for search
+    And I add the patient criteria for an "first name" equal to "Eva"
+    And I would like to filter search results with name "eva"
+    And I add the patient criteria for sex filter of "M"
+    When I search for patients
+    And there are 1 patient search results
+
+  Scenario: I can search for a patient with a sex filter that does not exist
+    Given the patient has the gender Male
+    And the patient has a "first name" of "Eva"
+    And patients are available for search
+    And I add the patient criteria for an "first name" equal to "Eva"
+    And I add the patient criteria for sex filter of "Q"
+    When I search for patients
+    Then there are 0 patient search results
 
   Scenario: BUG: CNFT1-1560 Patients with only a country code are searchable
     Given the patient has a "country code" of "+32"

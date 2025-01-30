@@ -29,7 +29,7 @@ public class PatientCreateMutationGeneralSteps {
   public void the_new_patient_marital_status_is_entered() {
     PatientInput active = this.input.active();
 
-    active.setAsOf(RandomUtil.getRandomDateInPast());
+    active.setAsOf(RandomUtil.dateInPast());
     active.setMaritalStatus(RandomUtil.getRandomString());
   }
 

@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
+import java.time.ZoneOffset;
 
 @Component
 @Transactional
@@ -95,9 +96,9 @@ public class LabReportMother {
 
     within(observation, programArea, jurisdiction);
 
-    observation.setAddTime(settings.createdOn());
+    observation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     observation.setAddUserId(settings.createdBy());
-    observation.setLastChgTime(settings.createdOn());
+    observation.setLastChgTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     observation.setLastChgUserId(settings.createdBy());
 
     forPatient(observation, revision.id());
@@ -131,8 +132,8 @@ public class LabReportMother {
     participation.setSubjectClassCd(PERSON_CLASS);
 
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 
@@ -150,8 +151,8 @@ public class LabReportMother {
     participation.setActClassCd(act.getClassCd());
     participation.setSubjectClassCd(ORGANIZATION_CLASS);
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 
@@ -199,8 +200,8 @@ public class LabReportMother {
     participation.setActClassCd(act.getClassCd());
     participation.setSubjectClassCd(ORGANIZATION_CLASS);
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 
@@ -220,8 +221,8 @@ public class LabReportMother {
     participation.setSubjectClassCd(PERSON_CLASS);
 
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 

@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
 
+import java.time.ZoneOffset;
+
 @Component
 @Transactional
 public class MorbidityReportMother {
@@ -89,8 +91,8 @@ public class MorbidityReportMother {
     observation.setProgramJurisdictionOid(1300200015L);
 
     observation.setRecordStatusCd("ACTIVE");
-    observation.setRecordStatusTime(settings.createdOn());
-    observation.setAddTime(settings.createdOn());
+    observation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    observation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     observation.setAddUserId(settings.createdBy());
 
     forPatient(observation, revision.id());
@@ -127,8 +129,8 @@ public class MorbidityReportMother {
     participation.setSubjectClassCd(PERSON_CLASS);
 
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 
@@ -146,8 +148,8 @@ public class MorbidityReportMother {
     participation.setActClassCd(act.getClassCd());
     participation.setSubjectClassCd(ORGANIZATION_CLASS);
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 
@@ -166,8 +168,8 @@ public class MorbidityReportMother {
     participation.setSubjectClassCd(PERSON_CLASS);
 
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
+    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 

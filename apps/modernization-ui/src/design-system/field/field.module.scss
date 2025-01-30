@@ -38,16 +38,20 @@
         margin: 0;
     }
 
-    &.compact {
-        @extend %compact;
+    &.medium {
+        @extend %medium;
 
         label {
-            @extend %compact;
+            @extend %medium;
         }
 
         input,
         select {
-            @extend %compact-input;
+            @extend %medium-input;
+        }
+
+        textarea {
+            @extend %medium-textarea;
         }
     }
 

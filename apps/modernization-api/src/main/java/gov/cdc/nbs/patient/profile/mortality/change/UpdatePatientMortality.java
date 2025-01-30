@@ -1,11 +1,10 @@
 package gov.cdc.nbs.patient.profile.mortality.change;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 record UpdatePatientMortality(
      long patient,
-     Instant asOf,
+     LocalDate asOf,
      String deceased,
      LocalDate deceasedOn,
      String city,

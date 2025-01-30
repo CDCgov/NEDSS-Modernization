@@ -64,14 +64,14 @@
         box-shadow: 0 0 0 2px colors.$disabled-darker;
     }
 
-    &.compact {
+    &.medium {
         height: 1.125rem;
         min-height: 1.125rem;
 
-        @extend %compact;
+        @extend %medium;
 
         label {
-            @extend %compact;
+            @extend %medium;
             padding-left: 1.75rem;
             &::before {
                 height: 1.125rem;

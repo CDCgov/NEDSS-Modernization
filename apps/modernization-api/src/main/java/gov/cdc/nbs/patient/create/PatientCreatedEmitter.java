@@ -48,7 +48,7 @@ class PatientCreatedEmitter {
             patient.getDeceasedTime(),
             patient.getGeneralInformation().maritalStatus(),
             patient.getEthnicity().ethnicGroup(),
-            patient.getGeneralInformation().asOf(),
+            patient.getAsOfDateAdmin(),
             patient.getDescription(),
             patient.getGeneralInformation().stateHIVCase(),
             resolveNames(patient.getNames()),
@@ -57,8 +57,8 @@ class PatientCreatedEmitter {
             resolvePhones(patient.phoneNumbers()),
             resolveEmails(patient.emailAddresses()),
             resolveIdentifications(patient.identifications()),
-            patient.getAddUserId(),
-            patient.getAddTime()
+            patient.audit().added().addedBy(),
+            patient.audit().added().addedOn()
         );
     }
 

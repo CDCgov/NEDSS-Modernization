@@ -8,7 +8,7 @@ import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.odse.QTeleEntityLocatorParticipation;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Component
@@ -43,32 +43,32 @@ class PatientSummaryFinder {
     this.merger = new PatientSummaryMerger();
   }
 
-  Optional<PatientSummary> find(final long identifier, final Instant asOf) {
+  Optional<PatientSummary> find(final long identifier, final LocalDate asOf) {
     return this.factory.selectDistinct(
-        this.tables.patient().personParentUid.id,
-        this.tables.prefix().codeShortDescTxt,
-        this.tables.name().firstNm,
-        this.tables.name().middleNm,
-        this.tables.name().lastNm,
-        this.tables.name().nmSuffix,
-        this.tables.patient().currSexCd,
-        this.tables.patient().birthTime,
-        this.tables.ethnicity().codeShortDescTxt,
-        this.tables.phoneNumber().phoneNbrTxt,
-        this.tables.phoneUse().codeShortDescTxt,
-        this.tables.email().emailAddress,
-        this.tables.emailUse().codeShortDescTxt).from(this.tables.patient())
+            this.tables.patient().personParentUid.id,
+            this.tables.prefix().codeShortDescTxt,
+            this.tables.name().firstNm,
+            this.tables.name().middleNm,
+            this.tables.name().lastNm,
+            this.tables.name().nmSuffix,
+            this.tables.patient().currSexCd,
+            this.tables.patient().birthTime,
+            this.tables.ethnicity().codeShortDescTxt,
+            this.tables.phoneNumber().phoneNbrTxt,
+            this.tables.phoneUse().codeShortDescTxt,
+            this.tables.email().emailAddress,
+            this.tables.emailUse().codeShortDescTxt).from(this.tables.patient())
         //  Most effective Legal name for the as of
         .leftJoin(this.tables.name()).on(
             this.tables.name().id.personUid.eq(this.tables.patient().id),
             this.tables.name().nmUseCd.eq(LEGAL_NAME_CODE),
-            this.tables.name().recordStatusCd.eq(ACTIVE_CODE),
+            this.tables.name().recordStatus.status.eq(ACTIVE_CODE),
             this.tables.name().asOfDate.eq(
                 JPAExpressions.select(EFF_NAME.asOfDate.max())
                     .from(EFF_NAME)
                     .where(
                         EFF_NAME.id.personUid.eq(this.tables.name().id.personUid),
-                        EFF_NAME.recordStatusCd.eq(this.tables.name().recordStatusCd),
+                        EFF_NAME.recordStatus.status.eq(this.tables.name().recordStatus.status),
                         EFF_NAME.nmUseCd.eq(this.tables.name().nmUseCd),
                         EFF_NAME.asOfDate.loe(asOf))),
             this.tables.name().id.personNameSeq.eq(
@@ -76,7 +76,7 @@ class PatientSummaryFinder {
                     .from(SEQ_NAME)
                     .where(
                         SEQ_NAME.id.personUid.eq(this.tables.name().id.personUid),
-                        SEQ_NAME.recordStatusCd.eq(this.tables.name().recordStatusCd),
+                        SEQ_NAME.recordStatus.status.eq(this.tables.name().recordStatus.status),
                         SEQ_NAME.nmUseCd.eq(this.tables.name().nmUseCd),
                         SEQ_NAME.asOfDate.eq(this.tables.name().asOfDate))))
         .leftJoin(this.tables.prefix()).on(
@@ -89,7 +89,7 @@ class PatientSummaryFinder {
         //  Most effective Phone number for the as of
         .leftJoin(this.tables.phone()).on(
             this.tables.phone().id.entityUid.eq(this.tables.patient().id),
-            this.tables.phone().recordStatusCd.eq(ACTIVE_CODE),
+            this.tables.phone().recordStatus.status.eq(ACTIVE_CODE),
             this.tables.phone().cd.isNull().or(this.tables.phone().cd.ne(EMAIL_CODE)),
             this.tables.phone().asOfDate.eq(
                 JPAExpressions.select(EFF_PHONE.asOfDate.max())
@@ -110,7 +110,7 @@ class PatientSummaryFinder {
         //  Most effective email for the as of
         .leftJoin(this.tables.net()).on(
             this.tables.net().id.entityUid.eq(this.tables.patient().id),
-            this.tables.net().recordStatusCd.eq(ACTIVE_CODE),
+            this.tables.net().recordStatus.status.eq(ACTIVE_CODE),
             this.tables.net().cd.eq(EMAIL_CODE),
             this.tables.net().asOfDate.eq(
                 JPAExpressions.select(EFF_EMAIL.asOfDate.max())

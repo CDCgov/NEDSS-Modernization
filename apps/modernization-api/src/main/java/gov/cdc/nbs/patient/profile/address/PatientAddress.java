@@ -4,13 +4,13 @@ import gov.cdc.nbs.geo.country.SimpleCountry;
 import gov.cdc.nbs.geo.county.SimpleCounty;
 import gov.cdc.nbs.geo.state.SimpleState;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public record PatientAddress(
     long patient,
     long id,
     short version,
-    Instant asOf,
+    LocalDate asOf,
     Type type,
     Use use,
     String address1,

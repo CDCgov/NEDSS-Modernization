@@ -1,27 +1,27 @@
 package gov.cdc.nbs.patient.profile.identification;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 record PatientIdentification(
     long patient,
     long sequence,
     short version,
-    Instant asOf,
+    LocalDate asOf,
     Type type,
     Authority authority,
     String value
 
 ) {
-    record Type(
-        String id,
-        String description
-    ) {
-    }
+  record Type(
+      String id,
+      String description
+  ) {
+  }
 
 
-    record Authority(
-        String id,
-        String description
-    ) {
-    }
+  record Authority(
+      String id,
+      String description
+  ) {
+  }
 }

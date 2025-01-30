@@ -16,8 +16,9 @@ import {
     investigationEventTypeOptions,
     pregnancyStatusOptions
 } from './InvestigationFormTypes';
+import { EntryFieldsProps } from 'design-system/entry';
 
-const GeneralSearchFields = () => {
+const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
     const { all: jurisdictions } = useJurisdictionOptions();
     const { all: programAreas } = useProgramAreaOptions();
     const { options: conditions } = useConditionOptions();
@@ -37,7 +38,7 @@ const GeneralSearchFields = () => {
                     <MultiSelect
                         id={name}
                         label="Conditions"
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         name={name}
@@ -53,7 +54,7 @@ const GeneralSearchFields = () => {
                     <MultiSelect
                         id={name}
                         label="Program area"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         value={value}
                         name={name}
@@ -67,7 +68,7 @@ const GeneralSearchFields = () => {
                 render={({ field: { onChange, name, value } }) => (
                     <MultiSelect
                         label="Jurisdiction"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         value={value}
                         name={name}
@@ -85,7 +86,7 @@ const GeneralSearchFields = () => {
                         value={value}
                         id="pregnancyStatus"
                         label="Pregnancy status"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         options={pregnancyStatusOptions}
                     />
@@ -99,7 +100,7 @@ const GeneralSearchFields = () => {
                     <SingleSelect
                         label="Event ID type"
                         id={name}
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         options={investigationEventTypeOptions}
@@ -124,7 +125,7 @@ const GeneralSearchFields = () => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            sizing="compact"
+                            sizing={sizing}
                             error={error?.message}
                             required
                         />
@@ -142,7 +143,7 @@ const GeneralSearchFields = () => {
                         onChange={onChange}
                         id={name}
                         label="Event date type"
-                        sizing="compact"
+                        sizing={sizing}
                         options={dateTypeOptions}
                     />
                 )}
@@ -164,7 +165,7 @@ const GeneralSearchFields = () => {
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 label="From"
-                                sizing="compact"
+                                sizing={sizing}
                                 required
                                 name={name}
                                 errorMessage={error?.message}
@@ -187,7 +188,7 @@ const GeneralSearchFields = () => {
                                 onBlur={onBlur}
                                 name={name}
                                 label="To"
-                                sizing="compact"
+                                sizing={sizing}
                                 required
                                 errorMessage={error?.message}
                             />
@@ -203,7 +204,7 @@ const GeneralSearchFields = () => {
                     <UserAutocomplete
                         id={name}
                         label="Event created by"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         value={value}
                     />
@@ -216,7 +217,7 @@ const GeneralSearchFields = () => {
                     <UserAutocomplete
                         id={name}
                         label="Event updated by"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         value={value}
                     />
@@ -232,7 +233,7 @@ const GeneralSearchFields = () => {
                         <ProviderAutocomplete
                             id={name}
                             label="Reporting provider"
-                            sizing="compact"
+                            sizing={sizing}
                             value={value}
                             onChange={onChange}
                             onBlur={onBlur}
@@ -250,7 +251,7 @@ const GeneralSearchFields = () => {
                         <FacilityAutocomplete
                             id={name}
                             label="Reporting Facility"
-                            sizing="compact"
+                            sizing={sizing}
                             value={value}
                             onChange={(e) => onChange(e)}
                             onBlur={onBlur}

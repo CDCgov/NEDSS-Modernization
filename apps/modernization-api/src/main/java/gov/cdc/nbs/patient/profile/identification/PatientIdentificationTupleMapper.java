@@ -5,7 +5,7 @@ import gov.cdc.nbs.entity.odse.QEntityId;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 class PatientIdentificationTupleMapper {
@@ -50,7 +50,7 @@ class PatientIdentificationTupleMapper {
             "An identification sequence is required"
         );
 
-        Instant asOf = tuple.get(this.tables.identification().asOfDate);
+        LocalDate asOf = tuple.get(this.tables.identification().asOfDate);
 
         PatientIdentification.Type type = mapUse(tuple);
 

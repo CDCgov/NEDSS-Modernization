@@ -6,7 +6,7 @@ import { VerticalField } from './VerticalField';
 import styles from './field.module.scss';
 
 type Orientation = 'horizontal' | 'vertical';
-type Sizing = 'compact' | 'standard';
+type Sizing = 'small' | 'medium' | 'large';
 
 type FieldProps = {
     orientation?: Orientation;
@@ -24,12 +24,12 @@ type Props = {
     children: ReactNode;
 } & FieldProps;
 
-const Field = ({ sizing = 'standard', orientation = 'vertical', className, children, ...remaining }: Props) => {
+const Field = ({ sizing = 'large', orientation = 'vertical', className, children, ...remaining }: Props) => {
     const resolvedClasses = classNames(
         styles.entry,
         className,
         styles.vertical,
-        { [styles.compact]: sizing === 'compact' },
+        { [styles.medium]: sizing === 'medium' },
         { [styles.warn]: remaining.warning && !remaining.error },
         { [styles.error]: remaining.error }
     );

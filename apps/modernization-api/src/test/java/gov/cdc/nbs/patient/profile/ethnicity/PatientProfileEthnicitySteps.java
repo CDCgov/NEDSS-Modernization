@@ -80,7 +80,7 @@ public class PatientProfileEthnicitySteps {
 
     this.updates = new EthnicityInput();
     this.updates.setPatient(patient.id());
-    this.updates.setAsOf(RandomUtil.getRandomDateInPast());
+    this.updates.setAsOf(RandomUtil.dateInPast());
     this.updates.setEthnicGroup(RandomUtil.getRandomString());
     this.updates.setUnknownReason(RandomUtil.getRandomString());
 
@@ -93,7 +93,7 @@ public class PatientProfileEthnicitySteps {
 
     this.updates = new EthnicityInput();
     this.updates.setPatient(patient.id());
-    this.updates.setAsOf(RandomUtil.getRandomDateInPast());
+    this.updates.setAsOf(RandomUtil.dateInPast());
     this.updates.setEthnicGroup(ethnicity);
     this.updates.setDetailed(List.of(detail));
 

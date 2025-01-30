@@ -16,12 +16,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PatientProfileRaceSteps {
@@ -91,7 +89,7 @@ public class PatientProfileRaceSteps {
   public void the_profile_has_no_associated_races() {
     long patient = this.activePatient.active().id();
 
-    PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.display());
+    PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
 
     GraphQLPage page = new GraphQLPage(1);
 
@@ -113,8 +111,8 @@ public class PatientProfileRaceSteps {
             .value(not(hasItem(equalTo(category)))));
   }
 
-  @Then("the patient's race as of {date} includes the category {raceCategory}")
-  public void the_patients_race_as_of_includes_the_category(final Instant asOf, final String category)
+  @Then("the patient's race as of {localDate} includes the category {raceCategory}")
+  public void the_patients_race_as_of_includes_the_category(final LocalDate asOf, final String category)
       throws Exception {
     this.response.active()
         .andExpect(jsonPath("$.data.findPatientProfile.races.content[?(@.category.id=='%s')].asOf", category)
@@ -133,7 +131,8 @@ public class PatientProfileRaceSteps {
   }
 
   @Then("the patient's race does not include {raceDetail} within the category {raceCategory}")
-  public void the_patients_race_does_not_include_the_detail(final String detail, final String category) throws Exception {
+  public void the_patients_race_does_not_include_the_detail(final String detail, final String category)
+      throws Exception {
     this.response.active()
         .andExpect(
             jsonPath(

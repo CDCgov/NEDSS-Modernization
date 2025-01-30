@@ -39,8 +39,16 @@ const defaultFeatures: Features = {
             }
         }
     },
+    deduplication: {
+        enabled: false
+    },
     search,
     patient: {
+        search: {
+            filters: {
+                enabled: false
+            }
+        },
         profile: {
             enabled: false
         },
@@ -62,6 +70,9 @@ const defaultSettings: Settings = {
     session: {
         warning: 1000 * 60 * 15,
         expiration: 1000 * 60 * 20
+    },
+    defaults: {
+        sizing: 'large'
     }
 };
 

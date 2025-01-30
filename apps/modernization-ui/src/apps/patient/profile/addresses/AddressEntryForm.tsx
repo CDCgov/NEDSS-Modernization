@@ -1,5 +1,5 @@
 import { EntryFooter } from 'apps/patient/profile/entry';
-import { externalizeDateTime } from 'date';
+import { externalizeDate } from 'date';
 import { FormProvider, useForm } from 'react-hook-form';
 import { orNull } from 'utils';
 
@@ -19,7 +19,7 @@ export const AddressEntryForm = ({ entry, onChange, onDelete }: EntryProps) => {
     const onSubmit = (entered: AddressEntry) => {
         onChange({
             ...entry,
-            asOf: externalizeDateTime(entered.asOf),
+            asOf: externalizeDate(entered.asOf),
             use: orNull(entered.use),
             type: orNull(entered.type),
             address1: entered.address1,

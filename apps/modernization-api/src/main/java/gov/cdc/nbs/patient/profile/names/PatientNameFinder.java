@@ -35,7 +35,7 @@ class PatientNameFinder {
                                                 this.tables.patient().cd.eq(PATIENT_CODE))
                                 .join(this.tables.name()).on(
                                                 this.tables.name().id.personUid.eq(this.tables.patient().id),
-                                                this.tables.name().recordStatusCd.eq(ACTIVE_CODE))
+                                                this.tables.name().recordStatus.status.eq(ACTIVE_CODE))
                                 .join(this.tables.use()).on(
                                                 this.tables.use().id.codeSetNm.eq(NAME_USE_CODE_SET),
                                                 this.tables.use().id.code.eq(tables.name().nmUseCd));

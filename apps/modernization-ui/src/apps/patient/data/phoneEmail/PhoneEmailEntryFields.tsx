@@ -18,9 +18,7 @@ const EMAIL_LABEL = 'Email';
 const URL_LABEL = 'URL';
 const COMMENTS_LABEL = 'Phone & email comments';
 
-type PhoneEmailEntryFieldsProps = EntryFieldsProps;
-
-export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmailEntryFieldsProps) => {
+export const PhoneEmailEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<PhoneEmailEntry>();
     const coded = usePatientPhoneCodedValues();
 
@@ -40,7 +38,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         onChange={onChange}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -60,7 +58,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         options={coded.types}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -80,7 +78,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         options={coded.uses}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -105,7 +103,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         onBlur={onBlur}
                         orientation={orientation}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -122,7 +120,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         onChange={onChange}
                         orientation={orientation}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -146,7 +144,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         onChange={onChange}
                         orientation={orientation}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -173,7 +171,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                                 orientation={orientation}
                                 error={error?.message}
                                 warning={violation}
-                                sizing="compact"
+                                sizing={sizing}
                             />
                         )}
                     />
@@ -192,7 +190,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         value={value}
                         orientation={orientation}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -210,7 +208,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         name={`phone-${name}`}
                         id={`phone-${name}`}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />

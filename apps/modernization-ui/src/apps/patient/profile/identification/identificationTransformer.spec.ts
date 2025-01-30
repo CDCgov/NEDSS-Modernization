@@ -38,7 +38,7 @@ describe('transform function', () => {
         expect(result).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
-                    asOf: new Date('2023-01-17T05:00:00Z'),
+                    asOf: new Date('2023-01-17T00:00:00Z'),
                     type: {
                         id: 'AN',
                         description: 'Account number'

@@ -1,5 +1,5 @@
 @patient_extended_create
-  Feature: Creation of Patients with extended administrative data
+  Feature: Creation of Patients with extended name data
 
     Background:
       Given I am logged into NBS

@@ -22,9 +22,7 @@ const ZIP_LABEL = 'Zip';
 const CENSUS_TRACT_LABEL = 'Census tract';
 const COMMENTS_LABEL = 'Address comments';
 
-type AddressEntryFieldsProps = EntryFieldsProps;
-
-export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryFieldsProps) => {
+export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control, reset } = useFormContext<AddressEntry>();
     const coded = usePatientAddressCodedValues();
     const location = useLocationCodedValues();
@@ -62,7 +60,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         orientation={orientation}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -82,7 +80,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         options={coded.types}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -102,7 +100,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         options={coded.uses}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -126,6 +124,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         onBlur={onBlur}
                         onSelection={handleSuggestionSelection}
                         error={error?.message}
+                        sizing={sizing}
                     />
                 )}
             />
@@ -145,7 +144,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         htmlFor={name}
                         id={name}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -165,7 +164,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         htmlFor={name}
                         id={name}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -181,7 +180,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         id={name}
                         name={name}
                         options={location.states.all}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -198,7 +197,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         onBlur={onBlur}
                         orientation={orientation}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -214,7 +213,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         id={name}
                         name={name}
                         options={counties}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -231,7 +230,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         onBlur={onBlur}
                         orientation={orientation}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -247,7 +246,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         id={name}
                         name={name}
                         options={location.countries}
-                        sizing="compact"
+                        sizing={sizing}
                         autoComplete="off"
                     />
                 )}
@@ -267,7 +266,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         name={name}
                         id={name}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />

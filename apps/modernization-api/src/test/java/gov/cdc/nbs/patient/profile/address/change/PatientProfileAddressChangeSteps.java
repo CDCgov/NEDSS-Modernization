@@ -1,21 +1,20 @@
 package gov.cdc.nbs.patient.profile.address.change;
 
-import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
-import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityManager;
+import net.datafaker.Faker;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,137 +22,148 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PatientProfileAddressChangeSteps {
 
-    private final Faker faker = new Faker(Locale.of("en-us"));
+  private final Faker faker = new Faker(Locale.of("en-us"));
 
-    @Autowired
-    Available<PatientIdentifier> patients;
+  private final Available<PatientIdentifier> patients;
 
-    @Autowired
-    PatientAddressChangeController controller;
+  private final PatientAddressChangeController controller;
 
-    @Autowired
-    EntityManager entityManager;
+  private final EntityManager entityManager;
 
-    @Autowired
-    Active<NewPatientAddressInput> newRequest;
+  private final Active<NewPatientAddressInput> newRequest;
 
-    @Autowired
-    Active<UpdatePatientAddressInput> updateRequest;
-    @Autowired
-    Active<DeletePatientAddressInput> deleteRequest;
+  private final Active<UpdatePatientAddressInput> updateRequest;
 
-    @Before("@patient-profile-address-change")
-    public void reset() {
-        newRequest.reset();
-        updateRequest.reset();
-        deleteRequest.reset();
-    }
+  private final Active<DeletePatientAddressInput> deleteRequest;
 
-    @When("a patient's address is added")
-    public void a_patient_address_is_added() {
-        long patient = patients.one().id();
+  PatientProfileAddressChangeSteps(
+      final Available<PatientIdentifier> patients,
+      final PatientAddressChangeController controller,
+      final EntityManager entityManager,
+      final Active<NewPatientAddressInput> newRequest,
+      final Active<UpdatePatientAddressInput> updateRequest,
+      final Active<DeletePatientAddressInput> deleteRequest
+  ) {
+    this.patients = patients;
+    this.controller = controller;
+    this.entityManager = entityManager;
+    this.newRequest = newRequest;
+    this.updateRequest = updateRequest;
+    this.deleteRequest = deleteRequest;
+  }
 
-        newRequest.active(
-                new NewPatientAddressInput(
-                        patient,
-                        RandomUtil.getRandomDateInPast(),
-                        "H",
-                        "H",
-                        faker.address().streetAddress(),
-                        RandomUtil.getRandomString(),
-                        faker.address().city(),
-                        RandomUtil.getRandomStateCode(),
-                        RandomUtil.getRandomNumericString(15),
-                        RandomUtil.getRandomString(),
-                        RandomUtil.getRandomString(10),
-                        RandomUtil.country(),
-                        RandomUtil.getRandomString()));
+  @Before("@patient-profile-address-change")
+  public void reset() {
+    newRequest.reset();
+    updateRequest.reset();
+    deleteRequest.reset();
+  }
 
-        controller.add(newRequest.active());
-    }
+  @When("a patient's address is added")
+  public void a_patient_address_is_added() {
+    long patient = patients.one().id();
 
-    @When("a patient's address is changed")
-    @Transactional
-    public void a_patient_address_is_changed() {
-        PostalEntityLocatorParticipation existing = this.entityManager.find(Person.class, patients.one().id())
-                .addresses()
-                .stream()
-                .findFirst()
-                .orElseThrow();
+    newRequest.active(
+        new NewPatientAddressInput(
+            patient,
+            RandomUtil.dateInPast(),
+            "H",
+            "H",
+            faker.address().streetAddress(),
+            RandomUtil.getRandomString(),
+            faker.address().city(),
+            RandomUtil.getRandomStateCode(),
+            RandomUtil.getRandomNumericString(15),
+            RandomUtil.getRandomString(),
+            RandomUtil.getRandomString(10),
+            RandomUtil.country(),
+            RandomUtil.getRandomString()));
 
-        updateRequest.active(
-                new UpdatePatientAddressInput(
-                        existing.getId().getEntityUid(),
-                        existing.getId().getLocatorUid(),
-                        RandomUtil.getRandomDateInPast(),
-                        "EC",
-                        "TMP",
-                        faker.address().streetAddress(),
-                        RandomUtil.getRandomString(),
-                        faker.address().city(),
-                        RandomUtil.getRandomStateCode(),
-                        RandomUtil.getRandomNumericString(15),
-                        RandomUtil.getRandomString(),
-                        RandomUtil.getRandomString(10),
-                        RandomUtil.country(),
-                        RandomUtil.getRandomString()));
+    controller.add(newRequest.active());
+  }
 
-        controller.update(updateRequest.active());
-    }
+  @When("a patient's address is changed")
+  @Transactional
+  public void a_patient_address_is_changed() {
+    PostalEntityLocatorParticipation existing = this.entityManager.find(Person.class, patients.one().id())
+        .addresses()
+        .stream()
+        .findFirst()
+        .orElseThrow();
 
-    @When("a patient's address is removed")
-    @Transactional
-    public void a_patient_address_is_removed() {
+    updateRequest.active(
+        new UpdatePatientAddressInput(
+            existing.getId().getEntityUid(),
+            existing.getId().getLocatorUid(),
+            RandomUtil.dateInPast(),
+            "EC",
+            "TMP",
+            faker.address().streetAddress(),
+            RandomUtil.getRandomString(),
+            faker.address().city(),
+            RandomUtil.getRandomStateCode(),
+            RandomUtil.getRandomNumericString(15),
+            RandomUtil.getRandomString(),
+            RandomUtil.getRandomString(10),
+            RandomUtil.country(),
+            RandomUtil.getRandomString()));
 
-        Person patient = this.entityManager.find(Person.class, patients.one().id());
+    controller.update(updateRequest.active());
+  }
 
-        this.deleteRequest.active(
-                patient.addresses()
-                        .stream()
-                        .findFirst()
-                        .map(PostalEntityLocatorParticipation::getId)
-                        .map(id -> new DeletePatientAddressInput(id.getEntityUid(), id.getLocatorUid()))
-                        .orElseThrow());
+  @When("a patient's address is removed")
+  @Transactional
+  public void a_patient_address_is_removed() {
 
-        this.controller.delete(this.deleteRequest.active());
-    }
+    Person patient = this.entityManager.find(Person.class, patients.one().id());
 
-    @Then("the patient does not have the expected address")
-    @Transactional
-    public void the_patient_does_not_have_the_expected_address() {
-        PatientIdentifier patient = this.patients.one();
+    this.deleteRequest.active(
+        patient.addresses()
+            .stream()
+            .findFirst()
+            .map(PostalEntityLocatorParticipation::getId)
+            .map(id -> new DeletePatientAddressInput(id.getEntityUid(), id.getLocatorUid()))
+            .orElseThrow());
 
-        Person actual = this.entityManager.find(Person.class, patient.id());
+    this.controller.delete(this.deleteRequest.active());
+  }
 
-        DeletePatientAddressInput request = deleteRequest.active();
+  @Then("the patient does not have the expected address")
+  @Transactional
+  public void the_patient_does_not_have_the_expected_address() {
+    PatientIdentifier patient = this.patients.one();
 
-        assertThat(actual.addresses())
-                .noneSatisfy(
-                        address -> assertThat(address)
-                                .extracting(PostalEntityLocatorParticipation::getId)
-                                .returns(request.patient(), EntityLocatorParticipationId::getEntityUid)
-                                .returns(request.id(), EntityLocatorParticipationId::getLocatorUid));
-    }
+    Person actual = this.entityManager.find(Person.class, patient.id());
 
-    @Then("I am unable to add a patient's address")
-    public void i_am_unable_to_add_a_patient_ethnicity() {
-        NewPatientAddressInput input = newRequest.maybeActive().orElse(null);
-        assertThatThrownBy(() -> controller.add(input))
-                .isInstanceOf(AccessDeniedException.class);
-    }
+    DeletePatientAddressInput request = deleteRequest.active();
 
-    @Then("I am unable to change a patient's address")
-    public void i_am_unable_to_change_a_patient_ethnicity() {
-        UpdatePatientAddressInput input = updateRequest.maybeActive().orElse(null);
-        assertThatThrownBy(() -> controller.update(input))
-                .isInstanceOf(AccessDeniedException.class);
-    }
+    assertThat(actual.addresses())
+        .noneSatisfy(
+            address -> assertThat(address)
+                .extracting(PostalEntityLocatorParticipation::getId)
+                .returns(request.patient(), EntityLocatorParticipationId::getEntityUid)
+                .returns(request.id(), EntityLocatorParticipationId::getLocatorUid));
+  }
 
-    @Then("I am unable to remove a patient's address")
-    public void i_am_unable_to_remove_a_patient_ethnicity() {
-        DeletePatientAddressInput input = deleteRequest.maybeActive().orElse(null);
+  @Then("I am unable to add a patient's address")
+  public void i_am_unable_to_add_a_patient_ethnicity() {
+    NewPatientAddressInput input = newRequest.maybeActive().orElse(null);
+    assertThatThrownBy(() -> controller.add(input))
+        .isInstanceOf(AccessDeniedException.class);
+  }
 
-        assertThatThrownBy(() -> controller.delete(input))
-                .isInstanceOf(AccessDeniedException.class);
-    }
+  @Then("I am unable to change a patient's address")
+  public void i_am_unable_to_change_a_patient_ethnicity() {
+    UpdatePatientAddressInput input = updateRequest.maybeActive().orElse(null);
+    assertThatThrownBy(() -> controller.update(input))
+        .isInstanceOf(AccessDeniedException.class);
+  }
+
+  @Then("I am unable to remove a patient's address")
+  public void i_am_unable_to_remove_a_patient_ethnicity() {
+    DeletePatientAddressInput input = deleteRequest.maybeActive().orElse(null);
+
+    assertThatThrownBy(() -> controller.delete(input))
+        .isInstanceOf(AccessDeniedException.class);
+  }
 }

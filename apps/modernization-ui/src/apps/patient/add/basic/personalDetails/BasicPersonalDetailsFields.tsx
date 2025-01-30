@@ -18,9 +18,7 @@ const DECEASED_ON_LABEL = 'Date of death';
 const STATE_HIV_CASE_LABEL = 'State HIV case ID';
 const ENTRY_FIELD_PLACEHOLDER = '';
 
-type BasicPersonalDetailsProps = EntryFieldsProps;
-
-export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: BasicPersonalDetailsProps) => {
+export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control, formState, getFieldState } = useFormContext<{ personalDetails: BasicPersonalDetailsEntry }>();
     const currentBirthday = useWatch({ control, name: 'personalDetails.bornOn' });
     const selectedDeceased = useWatch({ control, name: 'personalDetails.deceased' });
@@ -40,7 +38,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     <DatePickerInput
                         label={BORN_ON_LABEL}
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -57,7 +55,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     <SingleSelect
                         label="Current sex"
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -74,7 +72,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     <SingleSelect
                         label="Birth sex"
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -91,7 +89,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     <SingleSelect
                         label="Is the patient deceased?"
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -112,7 +110,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                             id={name}
                             label={DECEASED_ON_LABEL}
                             orientation={orientation}
-                            sizing="compact"
+                            sizing={sizing}
                             value={value}
                             onChange={onChange}
                             onBlur={onBlur}
@@ -128,7 +126,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     <SingleSelect
                         label="Marital status"
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -147,7 +145,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                         <Input
                             label={STATE_HIV_CASE_LABEL}
                             orientation={orientation}
-                            sizing="compact"
+                            sizing={sizing}
                             placeholder={ENTRY_FIELD_PLACEHOLDER}
                             onBlur={onBlur}
                             onChange={onChange}

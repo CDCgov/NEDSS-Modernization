@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.address;
 import com.querydsl.core.Tuple;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -21,7 +21,7 @@ class PatientAddressTupleMapperTest {
         when(tuple.get(tables.patient().id)).thenReturn(59L);
         when(tuple.get(tables.locators().id.locatorUid)).thenReturn(157L);
         when(tuple.get(tables.locators().versionCtrlNbr)).thenReturn((short) 269);
-        when(tuple.get(tables.locators().asOfDate)).thenReturn(Instant.parse("1993-11-09T00:58:26Z"));
+        when(tuple.get(tables.locators().asOfDate)).thenReturn(LocalDate.parse("1993-11-09"));
         when(tuple.get(tables.locators().cd)).thenReturn("type-id");
         when(tuple.get(tables.type().codeShortDescTxt)).thenReturn("type-description");
         when(tuple.get(tables.locators().useCd)).thenReturn("use-id");
@@ -43,7 +43,7 @@ class PatientAddressTupleMapperTest {
         assertThat(actual.id()).isEqualTo(157L);
         assertThat(actual.version()).isEqualTo((short) 269);
 
-        assertThat(actual.asOf()).isEqualTo("1993-11-09T00:58:26Z");
+        assertThat(actual.asOf()).isEqualTo("1993-11-09");
 
         assertThat(actual.type().id()).isEqualTo("type-id");
         assertThat(actual.type().description()).isEqualTo("type-description");

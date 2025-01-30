@@ -6,7 +6,7 @@ import gov.cdc.nbs.entity.odse.QTeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.QTeleLocator;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 class PatientPhoneTupleMapper {
@@ -55,7 +55,7 @@ class PatientPhoneTupleMapper {
                 "A phone version is required"
             );
 
-        Instant asOf = tuple.get(this.tables.locators().asOfDate);
+        LocalDate asOf = tuple.get(this.tables.locators().asOfDate);
 
         PatientPhone.Type type = mapType(tuple);
 

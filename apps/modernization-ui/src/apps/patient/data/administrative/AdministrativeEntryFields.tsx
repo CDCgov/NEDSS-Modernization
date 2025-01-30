@@ -6,11 +6,9 @@ import { EntryFieldsProps } from 'design-system/entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 
 const AS_OF_DATE_LABEL = 'Information as of date';
-const COMMENTS_LABEL = 'General comments';
+const COMMENTS_LABEL = 'Comments';
 
-type AdministrativeEntryFieldsProps = EntryFieldsProps;
-
-export const AdministrativeEntryFields = ({ orientation = 'horizontal' }: AdministrativeEntryFieldsProps) => {
+export const AdministrativeEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
@@ -29,7 +27,7 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal' }: Admini
                         name={name}
                         orientation={orientation}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                         required
                     />
                 )}
@@ -42,7 +40,7 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal' }: Admini
                     <TextAreaField
                         label={COMMENTS_LABEL}
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
