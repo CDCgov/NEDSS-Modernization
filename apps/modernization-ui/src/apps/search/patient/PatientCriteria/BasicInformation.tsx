@@ -89,7 +89,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
-                        label="Patient ID"
+                        label="Patient ID(s)"
                         helperText="Separate IDs by commas, semicolons, or spaces"
                         name={name}
                         htmlFor={name}
