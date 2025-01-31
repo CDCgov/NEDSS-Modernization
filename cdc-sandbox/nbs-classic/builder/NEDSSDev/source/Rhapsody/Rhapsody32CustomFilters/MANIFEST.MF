@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Service-Component: META-INF/Service.xml
+Bundle-ClassPath: lib/ojdbc6.jar,lib/sqljdbc4.jar,.
+Bundle-Version: 3.3.0
+Bundle-Name: Nedss Plug-in
+Bundle-ManifestVersion: 2
+Import-Package: com.orchestral.rhapsody.configuration.auxiliaryfiles,c
+ om.orchestral.rhapsody.configuration.definition,com.orchestral.rhapso
+ dy.configuration.repository,com.orchestral.rhapsody.configuration.sec
+ urity,com.orchestral.rhapsody.configuration.variables,com.orchestral.
+ rhapsody.idgenerator,com.orchestral.rhapsody.initialisation,com.orche
+ stral.rhapsody.message,com.orchestral.rhapsody.messageparsing,com.orc
+ hestral.rhapsody.messageparsing.definition,com.orchestral.rhapsody.me
+ ssageparsing.format,com.orchestral.rhapsody.messageparsing.xpath,com.
+ orchestral.rhapsody.model.definition,com.orchestral.rhapsody.module,c
+ om.orchestral.rhapsody.module.communicationpoint,com.orchestral.rhaps
+ ody.module.filter,com.orchestral.rhapsody.persistentmap,com.orchestra
+ l.rhapsody.security,org.apache.log4j,org.openrdf.util,org.osgi.framew
+ ork;version="1.3.0",org.osgi.service.component;version="1.0.0"
+Bundle-SymbolicName: gov.cdc.nedss.rhapsody.customfilters
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+

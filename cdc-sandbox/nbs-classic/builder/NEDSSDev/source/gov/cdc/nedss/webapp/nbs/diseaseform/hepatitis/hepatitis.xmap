@@ -1,0 +1,944 @@
+<?xml version="1.0"?>
+<map:sitemap xmlns:map="http://apache.org/cocoon/sitemap/1.0">
+	<!-- =========================== Components ================================ -->
+	<map:components>
+		<map:generators default="file">
+			<map:generator label="content,data" logger="sitemap.generator.file" name="file" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.FileGenerator"/>
+			<map:generator label="content,data" logger="sitemap.generator.serverpages" name="serverpages" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.ServerPagesGenerator"/>
+		</map:generators>
+		<map:transformers default="xslt">
+			<map:transformer logger="sitemap.transformer.xslt" name="xslt" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.transformation.TraxTransformer">
+				<use-request-parameters>false</use-request-parameters>
+				<use-browser-capabilities-db>false</use-browser-capabilities-db>
+				<use-deli>false</use-deli>
+			</map:transformer>
+		</map:transformers>
+		<map:readers default="resource">
+			<map:reader logger="sitemap.reader.resource" name="resource" pool-max="76" src="org.apache.cocoon.reading.ResourceReader"/>
+			<map:reader name="jsp" src="org.apache.cocoon.reading.JSPReader"/>
+		</map:readers>
+		<map:serializers default="html">
+			<map:serializer logger="sitemap.serializer.links" name="links" src="org.apache.cocoon.serialization.LinkSerializer"/>
+			<map:serializer logger="sitemap.serializer.xml" mime-type="text/xml" name="xml" src="org.apache.cocoon.serialization.XMLSerializer"/>
+			<map:serializer mime-type="application/pdf" name="fo2pdf" src="org.apache.cocoon.serialization.FOPSerializer"/>
+			<map:serializer logger="sitemap.serializer.html" mime-type="text/html" name="html" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.serialization.HTMLSerializer">
+				<buffer-size>1024</buffer-size>
+			</map:serializer>
+		</map:serializers>
+		<map:selectors default="browser"/>
+		<map:matchers default="wildcard">
+			<map:matcher logger="sitemap.matcher.wildcard" name="wildcard" src="org.apache.cocoon.matching.WildcardURIMatcher"/>
+			<map:matcher logger="sitemap.matcher.regexp" name="regexp" src="org.apache.cocoon.matching.RegexpURIMatcher"/>
+		</map:matchers>
+	</map:components>
+	<!-- =========================== Pipelines ================================= -->
+	<map:pipelines>
+		<map:pipeline>
+			<!--	preview -->
+			<map:match pattern="hepatitis_preview_int">
+				<map:generate type="serverpages" src="xsp/hep-core.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hepatitis_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/hepatitis_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Hepatitis Investigation Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hepatitis_acute_a_preview_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-a.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hepatitis_acute_a_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/hepatitis_acute_a_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Hepatitis A Acute  Investigation Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hepatitis_acute_b_preview_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-b.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hepatitis_acute_b_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/hepatitis_acute_b_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Hepatitis B Acute Investigation Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hepatitis_b_perinatal_preview_int">
+				<map:generate type="serverpages" src="xsp/hep-perinatal-HBV-infection.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hepatitis_b_perinatal_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/hepatitis_b_perinatal_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Hepatitis B Viral Infection Perinatal Investigation Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hepatitis_acute_c_preview_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-c.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hepatitis_acute_c_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/hepatitis_acute_c_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Hepatitis C Acute Investigation Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hepatitis_c_virus_preview_int">
+				<map:generate type="serverpages" src="xsp/hep-HCV-infection.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hepatitis_c_virus_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/hepatitis_c_virus_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Hepatitis C Virus Infection Investigation Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_core_input_src">
+				<map:generate type="serverpages" src="xsp/hep-core.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_core_view_src">
+				<map:generate type="serverpages" src="xsp/hep-core.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<!--		ext source		-->
+			<!--map:match pattern="hep_core_input_ext">
+				<map:generate type="serverpages" src="xsp/ext/ext.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize/>
+			</map:match-->
+			<!--map:match pattern="hep_view_ext">
+				<map:generate type="serverpages" src="xsp/ext/ext.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize/>
+			</map:match-->
+			<map:match pattern="hep_core_input_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/hep_core_input_src"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_core_view_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/hep_core_view_src"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_core_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_core_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_core_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_core_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!--	view ext source	-->
+			<!--map:match pattern="hep_core_view_ext">
+				<map:generate type="serverpages" src="xsp/ext/ext.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize/>
+			</map:match-->
+			<map:match pattern="hep_core_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_core_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!--		HEP A ACUTE		-->
+			<map:match pattern="hep_acute_a_view_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-a.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_acute_a_input_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-a.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_acute_a_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_a_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_add"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_a_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_a_input_int"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_add"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_a_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+					<map:part src="cocoon:/hep_acute_a_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_view"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_a_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+					<map:part src="cocoon:/hep_acute_a_view_int"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_view"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_a_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_a_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_edit"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_a_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_a_input_int"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_edit"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!--		HEP B ACUTE		-->
+			<map:match pattern="hep_acute_b_input_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-b.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_acute_b_view_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-b.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_acute_b_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_b_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_add"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_b_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_b_input_int"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_add"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_b_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+					<map:part src="cocoon:/hep_acute_b_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_view"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_b_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+					<map:part src="cocoon:/hep_acute_b_view_int"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_view"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_b_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_b_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_edit"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_b_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_b_input_int"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_edit"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!--		HEP C ACUTE		-->
+			<map:match pattern="hep_acute_c_input_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-c.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_acute_c_view_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-c.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_acute_c_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_c_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_c_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_c_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_c_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+					<map:part src="cocoon:/hep_acute_c_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_c_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+					<map:part src="cocoon:/hep_acute_c_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_c_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_c_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_acute_c_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_acute_c_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!--		HEP HCV		-->
+			<map:match pattern="hep_HCV_infection_input_int">
+				<map:generate type="serverpages" src="xsp/hep-HCV-infection.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_HCV_infection_view_int">
+				<map:generate type="serverpages" src="xsp/hep-HCV-infection.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_HCV_infection_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_HCV_infection_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_HCV_infection_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_HCV_infection_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_HCV_infection_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_HCV_infection_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_HCV_infection_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_HCV_infection_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_HCV_infection_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+					<map:part src="cocoon:/hep_HCV_infection_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_HCV_infection_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+					<map:part src="cocoon:/hep_HCV_infection_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!--		HEP PERINATAL		-->
+			<map:match pattern="hep_perinatal_HBV_infection_input_int">
+				<map:generate type="serverpages" src="xsp/hep-perinatal-HBV-infection.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_perinatal_HBV_infection_view_int">
+				<map:generate type="serverpages" src="xsp/hep-perinatal-HBV-infection.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_perinatal_HBV_infection_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_perinatal_HBV_infection_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_add"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation - Hepatitis"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_perinatal_HBV_infection_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_perinatal_HBV_infection_input_int"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_add"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Investigation - Hepatitis"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_perinatal_HBV_infection_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_perinatal_HBV_infection_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_edit"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation - Hepatitis"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_perinatal_HBV_infection_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/hep_core_input_int"/>
+					<map:part src="cocoon:/hep_perinatal_HBV_infection_input_int"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_edit"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Investigation - Hepatitis"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_perinatal_HBV_infection_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+					<map:part src="cocoon:/hep_perinatal_HBV_infection_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_view"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hep_perinatal_HBV_infection_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/hep_core_view_int"/>
+					<map:part src="cocoon:/hep_perinatal_HBV_infection_view_int"/>
+					<!--                    <map:part src="cocoon://vaccine/int_vaccine_view"/>-->
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!--		resources - gif, css, jpg, js		-->
+			<map:match pattern="**.css">
+				<map:read src="../../resource/style/{1}.css" mime-type="text/css"/>
+			</map:match>
+			<map:match pattern="**.gif">
+				<map:read src="../../resource/image/{1}.gif" mime-type="image/gif"/>
+			</map:match>
+			<map:match pattern="**.js">
+				<map:read src="../../resource/javascript/{1}.js" mime-type="image/gif"/>
+			</map:match>
+			<map:match pattern="**.jpg">
+				<map:read src="../../resource/image/{1}.jpg" mime-type="image/jpg"/>
+			</map:match>
+		<!-- ====================== MAPPINGS FOR PRINTABLE FORMS ============================== -->
+			<map:match pattern="hep_core_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_core_print_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis Generic"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hep_core_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_core_print_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis Generic"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hep_acute_a_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_acute_a_print_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis A"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hep_acute_a_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_acute_a_print_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis A"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hep_acute_b_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_acute_b_print_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis B"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hep_acute_b_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_acute_b_print_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis B"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hep_acute_c_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_acute_c_print_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis C"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hep_acute_c_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_acute_c_print_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis C"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hep_perinatal_HBV_infection_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_perinatal_HBV_print_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis B virus"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hep_perinatal_HBV_infection_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_perinatal_HBV_print_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis B virus"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hep_HCV_infection_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_HCV_infection_print_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis C virus"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hep_HCV_infection_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/hep_HCV_infection_print_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - Hepatitis C virus"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+
+			<map:match pattern="hep_acute_a_print_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/hep_core_print_int"/>
+					<map:part src="cocoon:/hep_a_print_int"/>
+				</map:aggregate>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_acute_b_print_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/hep_core_print_int"/>
+					<map:part src="cocoon:/hep_b_print_int"/>
+				</map:aggregate>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_acute_c_print_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/hep_core_print_int"/>
+					<map:part src="cocoon:/hep_c_print_int"/>
+				</map:aggregate>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_HCV_infection_print_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/hep_core_print_int"/>
+					<map:part src="cocoon:/hep_HCV_print_int"/>
+				</map:aggregate>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_perinatal_HBV_print_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/hep_core_print_int"/>
+					<map:part src="cocoon:/hep_HBV_print_int"/>
+				</map:aggregate>
+				<map:serialize type="xml"/>
+			</map:match>
+
+			<map:match pattern="hep_core_print_int">
+				<map:generate type="serverpages" src="xsp/hep-core.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_a_print_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-a.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_b_print_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-b.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hep_c_print_int">
+				<map:generate type="serverpages" src="xsp/hep-acute-c.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>			
+			<map:match pattern="hep_HCV_print_int">
+				<map:generate type="serverpages" src="xsp/hep-HCV-infection.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>			
+			<map:match pattern="hep_HBV_print_int">
+				<map:generate type="serverpages" src="xsp/hep-perinatal-HBV-infection.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>			
+			
+		</map:pipeline>
+	</map:pipelines>
+</map:sitemap>

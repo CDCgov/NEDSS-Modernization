@@ -1,0 +1,51 @@
+<project name="TransportqOutFilterProject" default="buildFilter" basedir=".">
+  
+    <property name="src.dir"     value="src"/>
+    <property name="lib.dir"     value="lib"/>
+    <property name="classes.dir" value="build"/>
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar" />
+    </path>
+	
+	<target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="${src.dir}" destdir="build/classes" classpathref="classpath"/>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+		<copy todir="build/classes/META-INF" includeEmptyDirs="no">
+			<fileset dir=".">
+				<include name="config.xml"/>
+			</fileset>
+		</copy>
+		<copy todir="build/classes" includeEmptyDirs="no">
+			<fileset dir=".">
+				<include name="*.bmp"/>
+			</fileset>
+		</copy>
+		<copy todir="build/classes/lib" includeEmptyDirs="no">
+			<fileset dir="./lib">
+				<include name="*.jar"/>
+				<exclude name="rt.jar"/>
+				<exclude name="rhapsody.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="build/classes" includeEmptyDirs="no">
+			<fileset dir="./src">
+				<include name="**/*.java"/>
+			</fileset>
+		</copy>
+        <jar destfile="build/jar/TransportqOutFilter.jar" 
+        	 basedir="build/classes" 
+        	 includes="**/*.class,META-INF/config.xml, lib/sqljdbc4.jar, lib/ojdbc6.jar, **/*.bmp"/>
+    </target>
+
+  <target name="buildFilter" depends="compile,jar" />
+
+</project>

@@ -1,0 +1,135 @@
+The following steps should be performed after SAS system has been installed.
+To install SAS see installation guide come with package
+
+
+********************************************************
+
+	Report SAS Program
+
+********************************************************
+
+
+
+Step 1. === setting up NBS SAS Report Environment ===
+Set up these environment variables and appropricate directories:
+
+	SAS_HOME		- where sas is installed, example, c:\sas;
+	SAS_REPORT_HOME 	- where report is to be installed, example, c:\nbs\report\sas.
+	SAS_REPORT_DBTYPE 	- type of the database.  Either SQLSERVER or ORACLE
+
+Step 2. === Installing NBS Report ====
+
+Report build has been integrated as part of the nbs build.  So you do not need to do anything extra 
+to install the beta 1 sas reports except to make sure SAS_HOME parameter in the build.xml script 
+to match the SAS installed location and the SAS_REPORT_HOME parameter in the build.xml script to match
+the %SAS_REPORT_HOME% location before you run ant.
+
+If installation is correct, you should see a list of .sas programs as shown below:
+
+1.  %SAS_HOME%/autoexec.sas
+
+    To see whether autoexec work properly, start SAS and look for the libref nbs_ods and fileref
+    (rptutil and nbspgm).  If the libref and fileref are assigned successfully then the 
+    autoexec is correct.
+ 
+
+
+2.  %SAS_REPORT_HOME%/pgm:
+
+	NBSSR00002.sas
+	NBSSR00005.sas
+	NBSSR00007.sas
+	NBSSR00008.sas
+	NBSSR00009.sas
+	NBSSR00010.sas
+	NBSSR00011.sas
+	NBSSR00012.sas
+	NBSCUSTOM.sas
+
+3.  %SAS_REPORT_HOME%/util:
+	export.sas,
+	odsmarkup.sas,
+	chk_mv.sas,
+	footnote.sas,
+	ascii.sas,
+	reportenv.sas
+	
+	
+Step 3. === Starting SAS Spawner  ===
+
+SAS spawner is located at sas root directory or %SAS_HOME%, 
+to start, issue this command at command prompt:
+
+%SAS_HOME%\spawner.exe -c tcp -telnet 2323
+
+I normally make this command a short cut on the desktop.
+If you have problem starting spawner, make sure it is not already running as a service.
+
+
+Note: spawner can be installed as NT service.  
+For detail, see http://ftp.sas.com/techsup/download/technote/ts638/ts638.html. 
+
+
+Step 4. === Check cmd.prop on SilverStream machine===
+
+For NBS application to find the SAS server, make sure the cmd.prop file contains these two entries:
+	
+	SASServerIP=localhost		(or the actual sas server IP if sas is on a different machine)
+	SASServerArchitecture=PC 	(for NT SAS server)
+
+
+
+
+********************************************************
+
+	Data mart SAS Programs and Scheduled Job
+
+********************************************************
+
+During report installation (see step 2 above) or the ant process, additional data mart programs 
+should be installed at:	%SAS_REPORT_HOME%/dm/etl:
+
+	etlconstants.sas,
+	phcconfirmation.sas,
+	phcmartETL.sas,
+   	phcnotification.sas,
+   	phcpersonrace.sas,
+	phcsubject.sas,
+	phcsummary.sas,
+	phcreporter.sas
+
+For scheduling the data mart etl proccess, a batch script is provided at:
+	C:\BLDC_Dev_Development\development\source\sas\dm\PhcMartEtl.bat.
+Following this path to schedule the batch job with NT scheduler:
+	Start, Settings, Control Panel, Scheduled Tasks, Add Scheduled Task ...
+Then follow the scheduler wizard.
+
+
+
+********************************************************
+
+	A Note on Report Module Access Scope
+
+********************************************************
+Reporting and Etl SAS programms only use the following tables/Views from the database
+
+	PHC_TO_PERSON_View
+	PHC_TO_Summary_View
+	CountyName_v
+	PHCDemographic
+	PublicHealthCaseFact
+	SubjectRaceInfo.
+
+So, a special user account with read and write privilege to the above views/tables should be
+sufficient for reporting and etl.
+
+
+	
+	 
+
+
+
+
+
+
+

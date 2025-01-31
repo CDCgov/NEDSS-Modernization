@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT NEDSS-vos (vo+)>
+<!ELEMENT comparison-field EMPTY>
+<!ATTLIST comparison-field	name CDATA #REQUIRED	sort-by-field CDATA #IMPLIED>
+<!ELEMENT vo (comparison-field+)>
+<!ATTLIST vo	classname CDATA #REQUIRED	name CDATA #REQUIRED>

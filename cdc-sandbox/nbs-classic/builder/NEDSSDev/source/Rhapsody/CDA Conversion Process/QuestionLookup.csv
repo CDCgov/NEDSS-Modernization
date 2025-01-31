@@ -1,0 +1,604 @@
+SubjectArea,QuestionIdentifier,QuestionDisplayName,CodeSystemCd,CodeSystemDescTxt,DataType,HL7DataType
+AUTHOR,AUT101,Author System Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+AUTHOR,AUT102,Author System  Name,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,AUTHOR,Record Author,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,DEM197,Investigation Patient Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CASE,DEM197,Patient Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CASE,EFFECTIVE_TIME,Record Effective Time,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,HIS100,History Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CASE,INV099,Investigation Co-Infection Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CASE,INV109,Investigation Status,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV110,Investigation Date Assigned,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV111,Investigation Date of Report,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV112,Investigation Reporting Source Type,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV120,Investigation Earliest Date Reported County,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV121,Investigation Earliest Date Reported State,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV128,Investigation Patient Hospitalized,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV132,Investigation Hospital Admission Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV133,Investigation Hospital Discharge Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV134,Investigation Hospital Duration of Stay,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,INV136,Investigation Diagnosis Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV137,Investigation Illness Onset Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV138,Investigation Illness End Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV139,Investigation Illness Duration,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,INV140,Investigation Illness Duration Unit,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV143,Investigation Age at Onset,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,INV144,Investigation Age at Onset Unit,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV145,Investigation Patient Death,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV146,Investigation Date of Death,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV147,Investigation Start Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV148,Investigation Day Care Facility,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV149,Investigation Person Food Handler,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV150,Investigation Case Part of Outbreak,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV151,Investigation Outbreak Name,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV152,Investigation Disease Acquired Location,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV153,Investigation Imported Country,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV154,Investigation Imported State,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV155,Investigation Imported City,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,INV156,Investigation Imported County,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV157,Investigation Transmission Mode,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV159,Investigation Detection Method,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV161,Investigation Confirmation Method,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV162,Investigation Confirmation Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV163,Investigation Case Status,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV165,Investigation MMWR Week,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,INV166,Investigation MMWR Year,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,INV167,Investigation General Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,INV168,Investigation Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CASE,INV169,Investigation Condition Code,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV173,Investigation State Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CASE,INV178,Investigation Pregnancy Status,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV179,Investigation PID Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV180,Investigator of Investigation UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,INV181,Investigation Reporter UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,INV182,Investigation Physician UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,INV183,Investigation Reporting Source UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,INV184,Investigation Hospital UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,INV200,Investigation Legacy Case ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CASE,INV2006,Investigation Close Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,INV272,Investigation Sign/Symptom,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV361,Investigation Conjunctivitis Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV501,Investigation Country of Usual Residence,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV502,Investigation Country of Exposure,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV503,Investigation State or Province of Exposure,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV504,Investigation City of Exposure,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,INV505,Investigation County of Exposure,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,INV515,Investigation Binational Reporting Criteria,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS012,Investigation Shared Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS055,Contact Investigation Priority,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS056,Contact Investigation Infectious From Time,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS057,Contact Investigation Infectious To Time,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS058,Contact Investigation Status,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS059,Contact Investigation Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS110,Investigation Referral Basis,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS111,Investigation Initiating Agency,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS112,Date OOJ Contact Received from Init. Agency,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS113,Date OOJ Outcome Due to Initiating Agency,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS114,Date OOJ Outcome Sent to Initiating Agency,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS115,Investigation Current Process Stage,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS118,Investigation First Sexual Exposure (OOJ),2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS119,Investigation Sexual Frequency (OOJ),2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS120,Investigation Last Sexual Exposure (OOJ),2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS121,Investigation First Needle-Sharing Exposure (OOJ),2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS122,Investigation Needle-Sharing Frequency (OOJ),2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS123,Investigation Last Needle-Sharing Exposure (OOJ),2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS124,Investigation Cluster Relationship (OOJ),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS125,Investigation Patient is OP Spouse? (OOJ),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS126,Investigation Patient Met OP via Internet? (OOJ),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS127,Investigation Internet Info Elicited? (OOJ),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS128,Investigation Pregnancy Weeks,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS129,Investigation Female Period Partner Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS130,Investigation Number Female Period Partners,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS131,Investigation Male Period Partner Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS132,Investigation Number Male Period Partners,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS133,Investigation Transgender Period Partner Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS134,Investigation Number Transgender Period Partners,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS135,Investigation Source/Spread,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS136,Investigation Diagnosis,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS137,Investigation Disseminated Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS138,Investigation Gonorrhea Resistant to,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS139,Initial Follow-Up Investigator UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS140,Initial Follow-Up,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS141,Initial Follow-up Date Closed,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS142,Internet Follow-Up,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS143,Patient eligible for notification of exposure,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS144,Clinic Code,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS145,Surveillance Assigned To UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS146,Date Surveillance Assigned,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS147,Date Surveillance Closed,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS148,Surveillance Provider Contact,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS149,Surveillance Reporting Provider Exam Reason,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS150,Surveillance Reporting Provider Diagnosis,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS151,Surveillance Patient Follow-Up,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS152,Investigation Surveillance Notes,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS153,900 (HIV) Status,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS155,Patient Height,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS156,Patient Size/Build,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS157,Patient Hair,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS158,Patient Complexion,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS159,Patient Other Identifying Info,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS160,Field Record Number,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS161,Investigator Field Follow-Up UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS162,Date Assigned Field Follow-Up,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS163,Initially Assigned Field Follow-Up UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS164,Initial Assignment Date for Field Follow Up,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS165,Field Follow-Up Reporting Provider Exam Reason,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS166,Field Follow-Up Reporting Provider Diagnosis,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS167,Field Follow-Up Notification Plan,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS168,Field Follow-Up Expected In,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS169,Field Follow-Up Expected Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS170,Field Follow-Up Exam Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS171,Provider for Field Follow-Up UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS172,Facility for Field Follow-Up UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS173,Disposition of Field Follow-up,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS174,Disposition Date of Field Follow-up,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS175,Field Follow-up Dispositioned By UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS176,Supervisor of Field Follow-Up UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS177,Field Follow-up Actual Referral Type,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS178,Field Follow-up Internet Outcome,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS179,Field Follow-up OOJ Agency,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS180,Field Follow-up OOJ Number,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS181,Field Follow-up OOJ Due Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS182,Field Follow-up OOJ Outcome,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS185,Field Follow-Up Note,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS185,Investigation Field Follow-Up Notes,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS186,Interviewer Assigned UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS187,Date Assigned to Interviewer,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS188,Initially Assigned to Interviewer UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS189,Initial Assignment Date for Interview,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS190,Supervisor of Case Assignment UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS191,Epi Link ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS192,Patient Interview Status,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS195,Investigation Field Supervisor Notes,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS196,Date Case Closed,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS197,Investigation Closed By UID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS200,Investigation Field Supervisor Notes,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS201,Investigation Living With,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS202,Investigation Type of Residence,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS203,Investigation Time at Address,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS204,Investigation Time at Address Units,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS205,Investigation Time in State,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS206,Investigation Time in State Units,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS207,Investigation Time in Country,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS208,Investigation Time in Country Units,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS209,Investigation Currently institutionalized,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS210,Investigation Name of Institutition,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS211,Investigation Type of Institutition,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS216,Investigation Pregnant at Exam,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS217,Investigation Weeks Pregnant at Exam,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS218,Investigation Pregnant at Interview,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS219,Investigation Weeks Pregnant at Interview,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS220,Investigation Currently in Prenatal Care,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS221,Investigation Pregnant in Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS222,Investigation Pregnancy Outcome,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS223,Investigation Female Partners Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS224,Investigation Number Female Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS225,Investigation Male Partners Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS226,Investigation Number Male Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS227,Investigation Transgender Partners Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS228,Investigation Number Transgender Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS229,Investigation Was Behavioral Risk Assessed,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS230,Investigation Had Sex with Transgender Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS231,Investigation Had Sex Without a Condom Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS232,Investigation Shared Injection Equipment Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS242,Investigation Places to Meet Partners,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS243,Investigation Meetup Place,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS244,Investigation Places to Have Sex,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS246,Investigation Source of Sign/Symptom,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS247,Investigation Observation/Onset Date of Sign/Symptom,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS248,Investigation Anatomic Site Other Specified,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS249,Investigation Duration (Days) of Sign/Symptom,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,NBS250,Investigation Previous Condition,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS251,Investigation Previous Diagnosis Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS252,Investigation Previous Treatment Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS253,Investigation Previous Confirmed Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS254,Investigation Previous 900 Test,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS255,Investigation Anti-viral Therapy - Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS256,Investigation Anti-viral Therapy - Ever,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS257,Investigation Enrolled in Partner Services,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS259,Investigation Date last 900 Test,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS260,Investigation Refer for 900 Test,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS261,Investigation Referral Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,NBS262,Investigation 900 Test,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS263,Investigation 900 Result,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS264,Investigation Post-test Counselling,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS265,Investigation Result provided,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS266,Investigation Refer for Care,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS267,Investigation Keep Appointment,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS268,Investigation Field Supervisor Notes,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS270,Investigation Referral Basis OOJ,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS271,Investigation Target Populations,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS275,Investigation Tests Performed?,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS290,Investigation Sex Place,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CASE,NBS291,Investigation Cocaine,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS292,Investigation Crack Cocaine,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS293,Investigation Erectile dysfunction medications,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS294,Investigation Methamphetamine,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS295,Investigation Nitrates/Poppers,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS296,Investigation No drug use reported,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS297,Investigation Other drug used,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NBS298,Investigation Specify Other Drug Used,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CASE,NBS299,Investigation Heroin,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,NOT113,Investigation Reporting County,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,RPT100,Repeat Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CASE,SGN100,Signs Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CASE,STD099,Investigation Date of initial health exam associated with case,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,STD102,Investigation Neurosyphillis Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD105,Investigation Treatment Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CASE,STD106,Investigation Self-reported 900 Result,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD107,Investigation Had Sex with Male Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD108,Investigation Had Sex with Female Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD109,Investigation Had Sex with Anonymous Partner Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD110,Investigation Had Sex with Known IDU Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD111,Investigation Had Sex While Intoxicated/High Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD112,Investigation Exchanged Drugs/Money for Sex Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD113,Investigation Females - Had Sex with Known MSM Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD114,Investigation Injection Drug Use Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD117,Investigation Previous STD history?,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD118,Investigation Been Incarcerated Past 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD119,Investigation Met Sex Partners through the Internet,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD120,Investigation Total number of sex partners last 12 months?,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CASE,STD121,Investigation Anatomic Site of Sign/Symptom,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD122,Investigation Type of Nontreponemal Serologic Test for Syphilis,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD123,Investigation Nontreponemal Serologic Syphilis Test Result (Quant),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD124,Investigation Type of Treponemal SerologicTest for Syphilis,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD125,Investigation Treponemal Serologic Syphilis Test Result  (Qual),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD126,Investigation Nontreponemal serologic syphilis test result (Qual),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD888,Investigation Patient refused to answer questions regarding number,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CASE,STD999,Investigation Unknown number of sex partners in last 12 months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,AUTHOR,Record Author,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,CON001,Contact Notes,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,CON096,Contact Record Original Patient Investigation Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CONTACT_RECORD,CON097,Contact Record Condition,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON098,Contact Record Original Patient Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CONTACT_RECORD,CON099,Contact Record Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CONTACT_RECORD,CON101,Contact Record Date Named,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,CON103,Contact Record Contact Relationship,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON104,Contact Record Exposure Type,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON105,Contact Record Exposure Site Type,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON106,Contact Record Exposure Site,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CONTACT_RECORD,CON107,Contact Record First Exposure Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,CON108,Contact Record Last Exposure Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,CON112,Contact Record Priority,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON114,Contact Record Disposition,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON115,Contact Record Contact Health Status,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON117,Contact Record Testing and Evaluation,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON118,Contact Record Date of Evaluation,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,CON119,Contact Record Evaluation Findings,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,CON120,Contact Record Treatment Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON121,Contact Record Treatment Start Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,CON122,Contact Record Reason Treatment Not Started,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON123,Contact Record Treatment Completed,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON124,Contact Record Treatment End Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,CON125,Contact Record Reason Treatment Not Completed,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON126,Contact Record Treatment Notes,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,CON127,Contact Record Group Lot ID,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,II
+CONTACT_RECORD,CON128,Contact Record Signs and Symptoms Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON129,Contact Record Symptom Onset Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,CON130,Contact Record Signs and Symptoms Notes,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,CON131,Contact Record Risk Factors Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON132,Contact Record Risk Factor Notes,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,CON133,Contact Record General Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,CON134,Contact Record Jurisdiction,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON135,Contact Record Program Area,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON136,Contact Record Shared Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CE
+CONTACT_RECORD,CON137,Contact Record Investigator,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CONTACT_RECORD,CON138,Contact Record Date Assigned,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,CON139,Contact Record Status,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON140,Contact Record Disposition Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,CON141,Contact Record Relationship with Patient or Other infected Patient,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON142,Contact Record Other Infected Patient,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CONTACT_RECORD,CON143,Contact Record Named Interview ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CONTACT_RECORD,CON144,Contact Record Referral Basis,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON145,Contact Record Processing Decision,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,CON146,Contact Record Initiate Follow-up Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,CON147,Contact Record Dispositioned By,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CONTACT_RECORD,DEM197,Investigation Patient Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CONTACT_RECORD,DEM197,Patient Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CONTACT_RECORD,EFFECTIVE_TIME,Record Effective Time,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,INV099,Investigation Co-Infection Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CONTACT_RECORD,INV168,Investigation Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CONTACT_RECORD,NBS118,Contact Record Contact First Sexual Exposure,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,NBS119,Contact Record Contact Sexual Frequency,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,NBS120,Contact Record Contact Last Sexual Exposure,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,NBS121,Contact Record Contact First Needle-Sharing Exposure,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,NBS122,Contact Record Contact Needle-Sharing Frequency,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,NBS123,Contact Record Contact Last Needle-Sharing Exposure,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+CONTACT_RECORD,NBS125,Contact Record Contact OP Spouse,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,NBS126,Contact Record Contact Met OP via Internet,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,NBS127,Contact Record Contact Internet Info Elicited,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,NBS135,Contact Record Source/Spread,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+CONTACT_RECORD,NBS155,Contact Record Contact Height,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,NBS156,Contact Record Contact Size/Build,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,NBS157,Contact Record Contact Hair,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,NBS158,Contact Record Contact Complexion,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,NBS159,Contact Record Contact Other Identifying Information,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CONTACT_RECORD,RPT100,Repeat Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+CUSTODIAN,CUS101,Custodian Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+CUSTODIAN,CUS102,Custodian Name,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,PN
+CUSTODIAN,CUS103,Custodian Street Address 1,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CUSTODIAN,CUS104,Custodian Street Address 2,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CUSTODIAN,CUS105,Custodian City,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+CUSTODIAN,CUS106,Custodian State,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CE
+CUSTODIAN,CUS107,Custodian Zip,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+CUSTODIAN,CUS108,Custodian Country,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CE
+CUSTODIAN,CUS109,Custodian Telephone Work,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,TEL
+INTERIVEW,AUTHOR,Record Author,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+INTERIVEW,EFFECTIVE_TIME,Record Effective Time,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+INTERIVEW,INV099,Investigation Co-Infection Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+INTERIVEW,INV168,Investigation Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+INTERIVEW,IXS098,Interview Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+INTERIVEW,IXS100,Interview Status,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+INTERIVEW,IXS101,Date of Interview,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+INTERIVEW,IXS102,Interviewer,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+INTERIVEW,IXS103,Interviewee Role,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+INTERIVEW,IXS104,Interview Patient Local ID (Interviewee),2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+INTERIVEW,IXS105,Interviewee Type,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+INTERIVEW,IXS106,Interview Location,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+INTERIVEW,IXS107,900 Site ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+INTERIVEW,IXS108,900 Site Zip Code,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+INTERIVEW,IXS109,900 Site Type,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+INTERIVEW,IXS110,Interventions,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+INTERIVEW,IXS111,Interview Notes,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+INTERIVEW,RPT100,Repeat Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+LAB_REPORT,AUTHOR,Record Author,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+LAB_REPORT,DEM197,Lab Report Patient Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+LAB_REPORT,EFFECTIVE_TIME,,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+LAB_REPORT,INV099,Lab Report Investigation Co-Infection Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+LAB_REPORT,INV168,Lab Report Investigation Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+LAB_REPORT,LAB099,Lab Report Condition,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB104,Lab Result Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+LAB_REPORT,LAB113,Lab Result Numeric (Quantitative) Operator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB114,Lab Result Numeric Value 1,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+LAB_REPORT,LAB115,Lab Result Numeric Units,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB116,Lab Result Numeric Ratio,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB117,Lab Result Numeric Value 2,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+LAB_REPORT,LAB118,Lab Result Interpretation Flag,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB119,Lab Result Reference Range From,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+LAB_REPORT,LAB120,Lab Result Reference Range To,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+LAB_REPORT,LAB121,Lab Result Coded (Qualitative),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB125,Lab Specimen Accession Number,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+LAB_REPORT,LAB163,Lab Specimen Collection Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+LAB_REPORT,LAB165,Lab Specimen Source,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB166,Lab Specimen Site,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB197,Lab Report Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+LAB_REPORT,LAB201,Lab Report Date Received by Public Health,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+LAB_REPORT,LAB207,Lab Result Status,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB208,Lab Result Text Value,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+LAB_REPORT,LAB269,Lab Ordered Test (NOTE: LAB112 on front end - but mismap),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB272,Lab Ordered Test (Alternate),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB278,Lab Result Organism,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB279,Lab Testing Method,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB283,Lab Result Coded (Qualitative) (Alternate),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB287,Lab Resulted Test (Alternate),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB293,Lab Resulted Test (NOTE: LAB220 on front end - but mismap),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+LAB_REPORT,LAB317,Lab Report Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+LAB_REPORT,LAB365,Lab Report Reporting Facility Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+LAB_REPORT,LAB366,Lab Report Ordering Provider Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+LAB_REPORT,LAB367,Lab Report Ordering Facility Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+LAB_REPORT,LAB368,Lab Report Performing Facility Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+MORBIDITY_REPORT,AUTHOR,Record Author,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+MORBIDITY_REPORT,DEM197,Morbidity Report Patient Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+MORBIDITY_REPORT,EFFECTIVE_TIME,Record Effective Time,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+MORBIDITY_REPORT,INV099,Morbidity Report Investigation Co-Infection Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+MORBIDITY_REPORT,INV128,Morbidity Report Hospitialized for Illness,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,INV143,Morbidity Report Illness Onset Age,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+MORBIDITY_REPORT,INV144,Morbidity Report Illness Onset Age Unit,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,INV145,Morbidity Report Die From Illness,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,INV148,Morbidity Report Associated with Day Care Facility,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,INV149,Morbidity Report Food Handler,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,INV168,Morbidity Report Investigation Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+MORBIDITY_REPORT,INV178,Morbidity Report Pregnant,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,INV218,Morbidity Report Reporting Facility Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+MORBIDITY_REPORT,INV225,Morbidity Report Reporter Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+MORBIDITY_REPORT,INV233,Morbidity Report Hospitial Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+MORBIDITY_REPORT,INV247,Morbidity Report Provider Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+MORBIDITY_REPORT,MRB100,Morbidity Report Type,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,MRB101,Morbidity Report Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+MORBIDITY_REPORT,MRB102,Morbidity Report Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+MORBIDITY_REPORT,MRB121,Morbidity Report Condition,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,MRB122,Morbidity Report Illness Onset Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+MORBIDITY_REPORT,MRB129,Morbidity Report Nursing Home,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,MRB130,Morbidity Report Health Care,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,MRB136,Morbidity Report Program Area,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,MRB137,Morbidity Report Jurisdiction,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,MRB142,Morbidity Report Shared Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CE
+MORBIDITY_REPORT,MRB161,Morbidity Report Delivery Method,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,MRB162,Morbidity Report Date Received by Public Health,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+MORBIDITY_REPORT,MRB165,Morbidity Report Diagnosis Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+MORBIDITY_REPORT,MRB166,Morbidity Report Hospital Admission Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+MORBIDITY_REPORT,MRB167,Morbidity Report Hospital Discharge Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+MORBIDITY_REPORT,MRB168,Morbidity Report Suspected Food or Waterborne Illness,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT,MRB169,"Morbidity Report Other, specify",2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+MORBIDITY_REPORT,MRB183,Morbidity Report Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+MORBIDITY_REPORT,NBS128,Morbidity Report Pregnancy Weeks,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+MORBIDITY_REPORT_STD,AUTHOR,Record Author,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+MORBIDITY_REPORT_STD,DEM197,Morbidity Report Patient Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+MORBIDITY_REPORT_STD,EFFECTIVE_TIME,Record Effective Time,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+MORBIDITY_REPORT_STD,INV099,Morbidity Report Investigation Co-Infection Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+MORBIDITY_REPORT_STD,INV168,Morbidity Report Investigation Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+MORBIDITY_REPORT_STD,INV179,Morbidity Report Pelvic Inflammatory Disease,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,INV361,Morbidity Report Conjuntivitis,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,MRB183,Morbidity Report Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+MORBIDITY_REPORT_STD,NBS137,Morbidity Report Disseminated,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS149,Morbidity Report Exam Reason,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS229,Morbidity Report Patient Risk Profile,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS230,Morbidity Report Sex with Transgender Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS231,Morbidity Report Sex without Condom Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS232,Morbidity Report Shared Injection Equipment Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS262,Morbidity Report HIV Tested at This Event,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS263,Morbidity Report Current HIV Test Results,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS264,Morbidity Report Post-Test Counseled,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS278,Morbidity Report Pre-Test Counseled,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS291,Morbidity Report Cocaine,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS292,Morbidity Report Crack,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS293,Morbidity Report Erectile Dysfunction Medications,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS294,Morbidity Report Meth,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS295,Morbidity Report Nitrates,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS296,Morbidity Report No Drug Use,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS297,Morbidity Report Other Drug Used,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,NBS298,Morbidity Report Specify Other Drug Used,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+MORBIDITY_REPORT_STD,NBS299,Morbidity Report Heroin,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,STD102,Morbidity Report Nuero Syphilis Involvement,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,STD107,Morbidity Report Sex with Male Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,STD108,Morbidity Report Sex with Female Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,STD109,Morbidity Report Sex with Anonymous Partner Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,STD110,Morbidity Report Sex with IV Drug User Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,STD111,Morbidity Report Sex while High or Intoxicated Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,STD112,Morbidity Report Exchanged Drugs/Money for Sex Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,STD113,Morbidity Report Sex with MSM Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,STD114,Morbidity Report Used Injection Drugs Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+MORBIDITY_REPORT_STD,STD118,Morbidity Report Incarcerated Last 12 Months,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+NOTIFICATION,INV886,Notification Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+NOTIFICATION,NOT103,Date Notification Submitted,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+NOTIFICATION,NOT106,Notification Date Sent,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+NOTIFICATION,NOT108,Notification Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+NOTIFICATION,NOT109,Notification Reporting State,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+NOTIFICATION,NOT116,National Reporting Jurisdiction,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+NOTIFICATION,NOT120,Immediate National Notifiable Condition,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+NOTIFICATION,NOT120SPEC,"If Yes, describe",2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,AUTHOR,Record Author,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,EFFECTIVE_TIME,Record Effective Time,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+ORGANIZATION,ORD103,Organization Name,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD110,Organization Street Address 1,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD111,Organization Street Address 2,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD112,Organization City,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD113,Organization State,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+ORGANIZATION,ORD114,Organization Zip,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD115,Organization County,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+ORGANIZATION,ORD116,Organization Country,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+ORGANIZATION,ORD117,Organization Address Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD120,Organization Telephone Country Code,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD121,Organization Telephone,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD122,Organization Telephone Extension,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD123,Organization Email,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD124,Organization URL,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD126,Organization Telephone Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD127,Organization Role,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+ORGANIZATION,ORD128,Organization Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD129,Sending System Organization Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+ORGANIZATION,ORD137,Organization Quick Code,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD144,Organization Standard Industry Class,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+ORGANIZATION,ORD148,Organization CLIA (Clinical Laboratory Improvement Amendments) Number,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+ORGANIZATION,ORD149,Organization Facility ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,AUTHOR,Record Author,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM101,Patient Name Prefix,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM102,Patient Last Name,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,PN
+PATIENT,DEM104,Patient First Name,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,PN
+PATIENT,DEM105,Patient Middle Name,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,PN
+PATIENT,DEM107,Patient Name Suffix,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM108,Patient Name Degree,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM113,Patient Current Sex,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM115,Patient Date of Birth,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+PATIENT,DEM126,Country of Birth,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM127,Patient Deceased Indicator,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM128,Patient Deceased Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+PATIENT,DEM133,Patient Social Security Number,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM140,Patient Marital Status,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM142,Patient Primary Language,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM152,Patient High-Level Race,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM154,Patient Other Race Description,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM155,Patient Hispanic Indicator (Ethnicity),2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM159,Patient Street Address 1,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM160,Patient Street Address 2,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM161,Patient City,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM162,Patient State,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM163,Patient Zip,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM165,Patient County,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM167,Patient Country,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,DEM168,Patient Census Tract,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM175,Patient Address Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM180,Patient Telephone Country Code,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+PATIENT,DEM182,Patient E-mail Address,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM183,Patient URL,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM189,Patient Telephone Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM196,Patient Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM197,Patient Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+PATIENT,DEM206,Patient Name Information As Of Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+PATIENT,DEM213,Patient Address Information As Of Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+PATIENT,DEM214,Patient Telephone Information As Of Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+PATIENT,DEM238,Patient Telephone Home,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM240,Patient Telephone Work,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM241,Patient Telephone Work Extension,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,DEM250,Patient Alias Name,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,PN
+PATIENT,DEM251,Patient Cell Phone Number,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,EFFECTIVE_TIME,Record Effective Time,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+PATIENT,INV2001,Patient Age Reported,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+PATIENT,INV2002,Patient Age Reported Unit,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,NBS104,Patient Information As Of Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+PATIENT,NBS213,Patient Gender (Transgender Information),2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,NBS214,Patient Speaks English,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,NBS269,Patient State HIV Case Number,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PATIENT,NBS272,Patient Sex Unknown Reason,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,NBS273,Patient Ethnicity Unknown Reason,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,NBS274,Patient Other (Additional) Gender,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PATIENT,NBS291,Patient Medical Record Number,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA103,Place (Code) Type,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PLACE,PLA105,Place General Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA112,Place Name,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA226,Place Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+PLACE,PLA228,Place Street Address 2,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA229,Place Street Address 1,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA230,Place State,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PLACE,PLA231,Place County,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PLACE,PLA232,Place Zip,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA233,Place Country,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PLACE,PLA234,Place City,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA236,Place Phone Number,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA237,Place Phone Country Code,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA238,Place Address Information As Of Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+PLACE,PLA239,Place Census Tract,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,ST
+PLACE,PLA240,Place Address Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA241,Place Contact Information As Of Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+PLACE,PLA244,Place Phone Extension,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA245,Place Email,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA246,Place URL,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA247,Place Contact Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PLACE,PLA248,Place Quick Code,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,AUTHOR,Record Author,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,EFFECTIVE_TIME,Record Effective Time,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+PROVIDER,NPP003,Provider Role,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PROVIDER,NPP004,Provider General Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP006,Provider Name Prefix,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,PN
+PROVIDER,NPP007,Provider Last Name,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,PN
+PROVIDER,NPP008,Provider First Name,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,PN
+PROVIDER,NPP009,Provider Middle Name,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,PN
+PROVIDER,NPP010,Provider Name Suffix,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,PN
+PROVIDER,NPP011,Sending System  Provider Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+PROVIDER,NPP018,Provider Street Address 1,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP019,Provider Street Address 2,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP020,Provider City,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP021,Provider State,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PROVIDER,NPP022,Provider Zip,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP023,Provider County,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PROVIDER,NPP024,Provider Country,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+PROVIDER,NPP026,Provider Address Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP029,Provider Telephone Country Code,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP030,Provider Work Telephone,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP031,Provider Work Telephone Extension,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP032,Provider E-mail Address,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP033,Provider URL,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP036,Provider Telephone Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP059,Provider Quick Code,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP060,Provider Name Degree,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,PN
+PROVIDER,NPP065,Provider NPI (National Provider Identifier),2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+PROVIDER,NPP066,Provider ID (Provider Number),2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+TREATMENT,AUTHOR,Record Author,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+TREATMENT,EFFECTIVE_TIME,Record Effective Time,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+TREATMENT,INV099,Investigation Co-Infection Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+TREATMENT,INV168,Investigation Case Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+TREATMENT,TRT100,Treatment Date,2.16.840.1.114222.4.5.1,NEDSS Base System,DATE,TS
+TREATMENT,TRT101,Treatment Composite,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+TREATMENT,TRT102,Treatment Drug,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+TREATMENT,TRT103,Treatment Dosage/Strength,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+TREATMENT,TRT104,Treatment Dosage/Strength Unit,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+TREATMENT,TRT105,Treatment Frequency,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+TREATMENT,TRT107,Treatment Duration,2.16.840.1.114222.4.5.1,NEDSS Base System,NUMERIC,SN
+TREATMENT,TRT108,Treatment Duration Unit,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+TREATMENT,TRT109,Treatment Comments,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+TREATMENT,TRT110,Treatment Route,2.16.840.1.114222.4.5.1,NEDSS Base System,CODED,CWE
+TREATMENT,TRT111,Custom Treatment,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,ST
+TREATMENT,TRT112,Treatment Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,TEXT,II
+TREATMENT,TRT113,Treatment Patient Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+TREATMENT,TRT114,Treatment Provider Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II
+TREATMENT,TRT115,Treatment Reporting Facility Local ID,2.16.840.1.114222.4.5.1,NEDSS Base System,PART,II

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0"  xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0">
+	<content>
+		<link-bar>
+			<link name="Home">
+				<xsp-request:get-attribute name="homeHref"/>
+			</link>
+		</link-bar>
+		<button-bar/>
+		<tab>
+			<group>
+				<line>
+					<element type="raw">
+						<span>
+							<b>The Observation you entered has been saved.</b>
+							<br/>
+							<br/>
+						</span>
+					</element>
+				</line>
+				<xsp:logic>
+				
+
+				String contextAction = (String)request.getAttribute("LabReport");
+				
+				if (contextAction == null)
+				    contextAction ="";
+				  if(!(contextAction.equals("LabReport"))){  
+				</xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<b>You cannot create an Investigation for this Program Area.</b>
+							<br/>
+							<br/>
+						</span>
+					</element>
+				</line>
+				<xsp:logic>}</xsp:logic>
+				<line>
+					<element type="text" label="Observation ID" indented="yes">
+						<value><xsp-request:get-attribute name="ObservationUid"/></value>
+					</element>
+				</line>
+				<line>
+					<element type="select" label="Program Area" indented="yes">
+						<srt-options-string>
+							<srt-codes:getProgramAreaCodedValue/>
+						</srt-options-string>					
+						<value><xsp-request:get-attribute name="programArea"/></value>
+					</element>
+				</line>
+				<line>
+					<element type="select" label="Jurisdiction" indented="yes">
+						<srt-options-string>
+							<srt-codes:getJurisdictionCodedSortedValues/>
+						</srt-options-string>					
+						<value><xsp-request:get-attribute name="jurisdiction"/></value>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

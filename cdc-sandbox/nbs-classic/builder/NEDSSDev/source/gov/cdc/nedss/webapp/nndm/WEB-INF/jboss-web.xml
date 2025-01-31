@@ -1,0 +1,12 @@
+<jboss-web>
+	<!-- Uncomment the security-domain to enable security. You will
+      need to edit the htmladaptor login configuration to setup the
+      login modules used to authentication users.
+   <security-domain>java:/jaas/jmx-console</security-domain>
+   -->
+	<resource-ref>
+		<res-ref-name>datasources/MsgOutDataSource</res-ref-name>
+		<!-- Server-specific JNDI name.  Ex: "java:/"+ "ejip.datasource.name" -->
+		<jndi-name>java:jboss/datasources/MsgOutDataSource</jndi-name>
+		</resource-ref>
+</jboss-web>

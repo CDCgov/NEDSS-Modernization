@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>getMMWRWeeks Test</title>
+        <style type="text/css">
+            body
+            {
+                background-color: #FFFFFF;
+                color: #000000;
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+                font-weight: normal;
+                margin-left: 0px;
+                margin-top: 0px;
+            }
+            label
+            {
+                color: #000000;
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+                font-weight: bold;
+                vertical-align: top;
+            }
+            td
+            {
+                color: #000000;
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+                font-weight: normal;
+            }
+            .TextBold
+            {
+                font-weight: bold;
+            }
+            .Hidden
+            {
+                display: none;
+                visibility: none;
+            }
+            .Invisible
+            {
+                display: "";
+                visibility: hidden;
+            }
+            .Visible
+            {
+                display: "";
+                visibility: visible;
+            }
+        </style>
+        <script type="text/JavaScript" src="nedss.js">;</script>
+        <script type="text/JavaScript">
+            function body_onload()
+            {
+                var d = new Date();
+                var varFirstYear = 1950;
+                var varCurrentYear = d.getFullYear();
+                var e = null;
+                var t = null;
+                var varID = null;
+                var varName = null;
+                var varValue = null;
+                var x = 0;
+                var y = 0;
+                var varList = document.frm.id_year;
+                y = varList.options.length;
+                for(x=y-1; x>-1; x--)
+                {
+                    varList.remove(x);
+                }
+                e = document.createElement("option");
+                e.setAttribute("id", "id_year_blank");
+                e.setAttribute("value", "");
+                t = document.createTextNode("");
+                e.appendChild(t);
+                varList.appendChild(e);
+                y = varCurrentYear + 1;
+                for(x=varFirstYear; x!=y; x++)
+                {
+                    varName = "" + x;
+                    varID = "id_year_" + varName;
+                    varValue = varName;
+                    e = document.createElement("option");
+                    e.setAttribute("id", varID);
+                    e.setAttribute("value", varValue);
+                    if(x == varCurrentYear)
+                    {
+                        e.setAttribute("selected", "selected");
+                    }
+                    t = document.createTextNode(varName);
+                    e.appendChild(t);
+                    varList.appendChild(e);
+                }
+                id_year_onchange();
+                varList.focus();
+            }
+            function id_year_onchange()
+            {
+                var varYear = document.frm.id_year.value;
+                if(varYear == null)
+                {
+                    return;
+                }
+                if(varYear == "")
+                {
+                    return;
+                }
+                var varWeeks = getMMWRWeeks(varYear);
+                var e = null;
+                var t = null;
+                var varID = null;
+                var varName = null;
+                var varValue = null;
+                var x = 0;
+                var y = 0;
+                var a = null;
+                var varList = document.frm.id_week;
+                y = varList.options.length;
+                for(x=y-1; x>-1; x--)
+                {
+                    varList.remove(x);
+                }
+                y = varWeeks.length;
+                for(x=0; x!=y; x++)
+                {
+                    a = varWeeks[x];
+                    varValue = a[0];
+                    varName = a[1];
+                    if(varValue == "")
+                    {
+                        continue;
+                    }
+                    varID = "id_week_" + varValue;
+                    e = document.createElement("option");
+                    e.setAttribute("id", varID);
+                    e.setAttribute("value", varValue);
+//                    e.setAttribute("selected", "selected");
+                    t = document.createTextNode(varName);
+                    e.appendChild(t);
+                    varList.appendChild(e);
+                }
+            }
+            function id_submit_onclick()
+            {
+                var y = document.frm.id_year.value;
+                var w = document.frm.id_week.value;
+                var s = getSaturdayForMMWR(y, w);
+                window.alert(s);
+            }
+        </script>
+    </head>
+    <body onload="body_onload();">
+        <form action="http://atldev_3:8080/nedss/debug" id="frm" name="frm">
+            <table cellspacing="2">
+                <tbody>
+                    <tr>
+                        <td>
+                            <label for="id_year">MMWR Year:</label>
+                        </td>
+                        <td>
+                            <select id="id_year" name="year" size="1" style="width: 200px;" onchange="id_year_onchange();">
+                                <option id="id_year_blank" value=""/>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="id_week">MMWR Week:</label>
+                        </td>
+                        <td>
+                            <select id="id_week" name="week" size="1" style="width: 200px;">
+                                <option id="id_week_blank" value=""/>
+                        </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="button" id="id_submit" value="Submit" onclick="id_submit_onclick();"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </body>
+</html>

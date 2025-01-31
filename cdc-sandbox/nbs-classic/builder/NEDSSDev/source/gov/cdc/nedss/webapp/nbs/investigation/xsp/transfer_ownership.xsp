@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbscontext.NBSConstantUtil</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<xsp:logic><![CDATA[    
+		String operationType= (String)request.getAttribute("OperationType");
+		
+		TreeMap objStore = (TreeMap) request.getSession().getAttribute("NBSObjectStore");
+		
+		String typeOfAction = request.getParameter("ContextAction");   
+
+		String localIdInv = (String)request.getAttribute("DSInvestigationLocalID");	
+		//String localIdObs = (String)request.getAttribute("DSObservationLocalID");
+		String localIdObs = (String)request.getParameter("");
+		////##!! System.out.println("-------localIdObsId from Session ---------" + localIdObs);
+		////##!! System.out.println("-------localIdInvId from Session ---------" + localIdInv);
+
+
+		if(localIdObs == null) {
+			localIdObs = (String) objStore.get(NBSConstantUtil.DSObservationLocalID);
+			////##!! System.out.println("-------localIdObsId from objectStore---------" + localIdObs);
+		}
+
+		if(localIdInv == null) {
+			localIdInv = (String) objStore.get(NBSConstantUtil.DSInvestigationLocalID);
+			////##!! System.out.println("-------localInvId from objectStore---------" + localIdInv);
+		}
+
+		
+		
+
+		String jurisdiction =  objStore.get(NBSConstantUtil.DSJurisdiction) == null ? "" :  (String) objStore.get(NBSConstantUtil.DSJurisdiction);
+		String programArea = objStore.get(NBSConstantUtil.DSProgramArea) == null ? "" : (String) objStore.get(NBSConstantUtil.DSProgramArea);		
+
+		String programAreaInv = (String) objStore.get("DSInvestigationProgramArea");
+		String jurisdictionInv = (String) objStore.get("DSInvestigationJurisdiction");
+		
+
+
+		////##!! System.out.println("!!!!!!!!!----------------" + operationType);
+		
+		ArrayList errorMessages = (ArrayList)request.getAttribute("ErrorMessages");
+		//System.out.println("errorMessages from Transfer Ownership xsp =" +errorMessages);
+
+/*
+		private ArrayList getErrorMessages() {
+			ArrayList errorMessages = (ArrayList)request.getAttribute("ErrorMessages");
+			System.out.println("errorMessages from Transfer Ownership xsp =" +errorMessages);
+			return errorMessages;
+		}		
+*/
+		]]></xsp:logic>
+		<id-bar>
+			<xsp:logic>
+	if (operationType.equalsIgnoreCase("investigation")) {
+	</xsp:logic>
+			<id name="Investigation ID">
+				<value>
+					<xsp:expr>
+						localIdInv 
+					</xsp:expr>
+				</value>
+			</id>
+			<xsp:logic>
+	} else if (operationType.equalsIgnoreCase("LabReport") || operationType.equalsIgnoreCase("morbReport")){
+     System.out.println("\n\n Are we in if morb Lab local ID " +localIdObs );
+	</xsp:logic>
+			<id name="Observation ID">
+				<value>
+					<xsp:expr>
+						localIdObs
+					</xsp:expr>
+				</value>
+			</id>
+			<xsp:logic>			
+	}
+	</xsp:logic>
+		</id-bar>
+		<link-bar/>
+		<button-bar>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="submitButton"/>
+				</xsp:attribute>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="cancelButtonHref"/>');</javascript-action>
+			</right>
+		</button-bar>
+		<tab>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(errorMessages, NEDSSConstants.ERROR_MESSAGES)</xsp:expr>
+			</script>
+			<group name=""/>
+			<group colspan="off">
+				<!--		struts specific		-->
+				<line>
+					<element name="ContextAction" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="ContextAction"/>
+						</value>
+					</element>
+					<element name="caseType" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="caseType"/>
+						</value>
+					</element>
+				</line>
+				<!--		struts specific		-->
+				<xsp:logic/>
+				<line>
+					<element type="raw">
+						<span>
+							<i>
+								<font class="boldTenRed"> * Indicates a required field </font>
+							</i>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<b>Transfer to:</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<xsp:logic>
+				if (operationType.equals("LabReport")){
+				</xsp:logic>
+					<element name="orderedTest.theObservationDT.progAreaCd" type="select" label="* Program Area" align="left">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="setAccessPermission"/>
+						</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getProgramAreaCodedValue/>
+						</srt-options-string>
+						<validation type="requiredForSelect" name="Program Area"/>
+						<srt-options-string>
+							<srt-codes:getProgramAreaCodedValue/>
+						</srt-options-string>
+						<value>
+							<xsp:expr>
+								programArea
+							</xsp:expr>
+						</value>
+						<validation type="requiredForSelect" name="Program Area"/>
+					</element>
+					<xsp:logic>			
+				} else if  (operationType.equalsIgnoreCase("morbReport")){
+				</xsp:logic>
+					<element name="orderedTest.theObservationDT.progAreaCd" type="plain-text" label="Program Area" align="left">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="setAccessPermission"/>
+						</xsp:attribute>
+						<!--srt-options-string>
+							<srt-codes:getProgramAreaCodedValue/>
+						</srt-options-string-->
+						<validation type="requiredForSelect" name="Program Area"/>
+						<value>
+							<xsp:expr>
+									programArea								
+							</xsp:expr>
+						</value>
+						<validation type="requiredForSelect" name="Program Area"/>
+					</element>
+					<xsp:logic>}else if (operationType.equals("investigation")){
+				</xsp:logic>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.progAreaCd" type="plain-text" label="Program Area">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="setAccessPermission"/>
+						</xsp:attribute>
+						<validation type="requiredForSelect" name="Program Area"/>
+						<value>
+							<xsp:expr>
+									programAreaInv 								
+								</xsp:expr>
+						</value>
+						<validation type="requiredForSelect" name="Program Area"/>
+					</element>
+					<xsp:logic>			
+						} 
+					</xsp:logic>
+				</line>
+				<line>
+					<element/>
+				</line>
+				<line>
+					<xsp:logic>
+						if (operationType.equals("LabReport") || operationType.equals("morbReport") ){
+					</xsp:logic>
+					<element name="orderedTest.theObservationDT.jurisdictionCd" type="select" label="* Jurisdiction">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="setAccessPermission"/>
+						</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getJurisdictionCodedSortedValuesNoExport/>
+						</srt-options-string>
+						<value>
+							<xsp:expr>
+									jurisdiction								
+							</xsp:expr>
+						</value>
+						<validation type="requiredForSelect" name="Jurisdiction"/>
+					</element>
+					<xsp:logic>			
+						} else if (operationType.equals("investigation")){
+					</xsp:logic>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.jurisdictionCd" type="select" label="* Jurisdiction">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="setAccessPermission"/>
+						</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getJurisdictionCodedSortedValues/>
+						</srt-options-string>
+						<value>
+							<xsp:expr>
+									jurisdictionInv							
+							</xsp:expr>
+						</value>
+						<validation type="requiredForSelect" name="Jurisdiction"/>
+					</element>
+					<xsp:logic>			
+						} 
+					</xsp:logic>
+				</line>
+			</group>
+			<group>
+				<xsp:logic>			
+					if (operationType.equals("investigation")){
+					</xsp:logic>
+				<line>
+					<element/>
+					<element/>
+					<element/>
+					<element type="raw">
+						<span>
+							<b>If this investigation has any associated observations, the Jurisdiction for<br/>
+							 these observations will be transferred automatically to this new Jurisdiction <br/>
+							 as well.</b>
+						</span>
+					</element>
+				</line>
+				<xsp:logic>			
+					} 
+					</xsp:logic>
+				<xsp:logic>			
+					if (operationType.equals("LabReport") || operationType.equals("morbReport")){
+					</xsp:logic>
+				<line>
+					<element name="associatedObs" type="plain-text" label="">
+						<value>
+							<xsp-request:get-attribute name="associatedObs"/>
+						</value>
+					</element>
+				</line>
+				<xsp:logic>			
+					} 
+					</xsp:logic>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

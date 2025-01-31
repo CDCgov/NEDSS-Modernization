@@ -1,0 +1,840 @@
+/**********************************************/
+/* Reference CSS stylesheet for NEDDS phase 2 */
+/**********************************************/
+
+/* MASTER CLASSES (for top-level HTML tags) -----------------------------------------*/
+BODY
+{
+	margin: 0px;
+	background-color: #EDEDED;
+}
+A
+{
+	color: #0000E0;
+	text-decoration: underline;
+}
+A:hover
+{
+	text-decoration: underline;
+}
+LEGEND
+{
+	font-family: arial;
+	font-size: 10pt;
+	color: #0000A0;
+	font-weight: bold;
+}
+
+TABLE
+{
+	border-collapse: collapse;
+	margin: 0px;
+	border: 0px;
+}
+TD
+{
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+
+FIELDSET{
+ border:1px solid #717D7D;
+}
+
+/* HEADER LINKS ---------------------------------------------------------------------*/
+TABLE.HeaderLinks TD.Label
+{
+	font-family: arial;
+	font-size: 9pt;
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+TABLE.HeaderLinks TD.Link
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-weight: bold;
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+TABLE.HeaderLinks TD.Link A
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-weight: bold;
+}
+TABLE.HeaderLinks TD.Separator
+{
+	font-family: verdana;
+	font-size: 9pt;
+	font-weight: bold;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+/* FRAMING for DROP-DOWN MENUS ------------------------------------------------------*/
+TD.MenuCorner
+{
+	background-color: #003470;
+	width: 5px;
+	height: 5px;
+}
+TD.MenuTopBorder
+{
+	background-image: url(../Images/menu_top_border.gif);
+	background-repeat: repeat-x;
+	background-color: #003470;
+	height: 5px;
+}
+TD.MenuBottomBorder
+{
+	background-image: url(../Images/menu_bottom_border.gif);
+	background-repeat: repeat-x;
+	background-color: #003470;
+	height: 5px;
+}
+TD.MenuLeftBorder
+{
+	background-image: url(../Images/menu_left_border.gif);
+	background-repeat: repeat-y;
+	background-color: #003470;
+	width: 5px;
+}
+TD.MenuRightBorder
+{
+	background-image: url(../Images/menu_right_border.gif);
+	background-repeat: repeat-y;
+	background-color: #003470;
+	width: 5px;
+}
+.MenuBarArea
+{
+	background-color: #003470;
+	padding: 5px 5px 5px 10px;
+}
+
+/* DROP-DOWN MENUS ------------------------------------------------------------------*/
+.GlobalNavOption
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	text-decoration: none;
+	color: #FFFFFF;
+}
+.GlobalNavOptionActive
+{
+	color: #F17C09;
+	text-decoration: underline;
+}
+.GlobalNavOption:hover
+{
+	color: #F17C09;
+}
+.GlobalNavSeparator
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	text-decoration: none;
+	color: #D0D0D0;
+	padding-left: 7px;
+	padding-right: 7px;
+}
+DIV.SubMenu
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-style: normal;
+	font-weight: normal;
+	color: #000000;
+	background-color: transparent;
+	border: none;
+	padding: 4px 2px 2px 2px;
+	position: absolute;
+	visibility: hidden;
+	z-index: 101;
+}
+TABLE.SubMenu
+{
+	background-color: #D0D0D0;
+	border: 1px solid #A0A0A0;
+}
+.SubMenuItem
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-style: normal;
+	font-weight: bold;
+	color: #000000;
+	display: block;
+	padding: 2px 4em 2px 1em;
+	text-decoration: none;
+	white-space: nowrap;
+}
+.SubMenuItem:hover
+{
+	color: #FFFFFF;
+	background-color: #3366CC;
+	text-decoration: none;
+}
+.SubMenuItemActive
+{
+	text-decoration: underline;
+}
+
+/* FRAMING for CONTENT AREA ---------------------------------------------------------*/
+TD.Content
+{
+	font-family: verdana;
+	font-size: 10pt;
+	color: #000000;
+	padding: 3px 10px 3px 10px;
+}
+TD.ContentSuper-Tabs
+{
+	padding: 10px; 
+	border-left: solid 1px black; 
+	border-right: solid 1px black;
+	border-bottom: solid 1px black;
+}
+TD.ContentSuper
+{
+	padding: 10px;
+}
+TD.ContentCorner
+{
+	width: 5px;
+	height: 5px;
+}
+TD.ContentTopBorder
+{
+	background-image: url(../Images/content_top_border.gif);
+	background-repeat: repeat-x;
+	background-color: #FFFFFF;
+	height: 5px;
+}
+TD.ContentBottomBorder
+{
+	background-image: url(../Images/content_bottom_border.gif);
+	background-repeat: repeat-x;
+	background-color: #FFFFFF;
+	height: 5px;
+}
+TD.ContentLeftBorder
+{
+	background-image: url(../Images/content_left_border.gif);
+	background-repeat: repeat-y;
+	background-color: #FFFFFF;
+	width: 5px;
+}
+TD.ContentRightBorder
+{
+	background-image: url(../Images/content_right_border.gif);
+	background-repeat: repeat-y;
+	background-color: #FFFFFF;
+	width: 5px;
+}
+.MasterContentArea
+{
+	background-color: #FFFFFF;
+	padding: 2px 8px 8px 8px;
+}
+
+/* BREADCRUMBS ----------------------------------------------------------------------*/
+TABLE.Breadcrumbs 
+{
+	margin-bottom: 4px;
+}
+TABLE.Breadcrumbs TD.Label
+{
+	font-family: arial;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #B0B0B0;
+}
+TABLE.Breadcrumbs TD.Separator
+{
+	font-family: arial;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #B0B0B0;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+TABLE.Breadcrumbs TD.Link A
+{
+	font-family: arial;
+	font-size: 8pt;
+	font-weight: bold;
+	text-decoration: none;
+	color: #B0B0B0;
+}
+TABLE.Breadcrumbs TD.Link A:hover
+{
+	color: #0000FF;
+}
+
+/* SECTION HEADERS ------------------------------------------------------------------*/
+TD.SectionHeader
+{
+	font-family: arial;
+	font-size: 11pt;
+	font-weight: bold;
+	font-style: italic;
+	color: #FFFFFF;
+	background-color: #0F4E8F;
+	padding: 3px 10px 3px 10px;
+	border-bottom: 1px solid #D0D0D0;
+	border-top: 1px solid #D0D0D0;
+}
+TD.SubSectionHeader
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	font-style: italic;
+	letter-spacing: 0.05em;
+	color: #000000;
+	padding: 10px 10px 2px 10px;
+	border-bottom: 1px solid #D0D0D0;
+}
+TD.FieldSet
+{
+	padding: 5px 0px 5px 0px;
+}
+
+/* FORMS and FIELDS -----------------------------------------------------------------*/
+TD.Buttons-Tabs
+{
+	padding: 10px 20px 10px 20px;
+}
+TD.Buttons
+{
+	padding: 10px 20px 10px 20px; 
+	border-top: solid 1px black;
+}
+INPUT.Button
+{
+	font-family: arial;
+	font-size: 9pt;
+}
+TD.Button
+{
+	padding-right: 7px;
+}
+TD.InputFieldLabel
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: right;
+	padding: 5px 5px 5px 3px;
+}
+TD.InputLabel
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: left;
+	padding: 5px 5px 5px 3px;
+}
+TD.InputFieldCenter
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: right;
+	padding: 5px 5px 5px 110px;
+}
+
+TD.InputViewField
+{
+	text-align: left;
+	padding: 5px 5px 5px 3px;
+	
+}
+TD.FieldLabel
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: left;
+	padding: 2px 5px 2px 3px;
+}
+TD.CheckboxGroupLabel
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: right;
+	padding: 3px 5px 3px 3px;
+}
+TD.CheckboxFieldLabel
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: left;
+	padding: 3px 3px 3px 3px;
+}
+TD.CheckboxField
+{
+	padding: 2px 3px 2px 3px;
+}
+TD.GlobalFieldLabel
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-weight: bold;
+	color: #003470;
+	text-align: left;
+	padding: 0px 4px 10px 6px;
+}
+TD.GlobalFieldValue
+{
+	font-family: verdana;
+	font-size: 9pt;
+	color: #003470;
+	text-align: left;
+	padding: 0px 4px 10px 0px;
+}
+TD.InputFieldLabel-Error
+{
+	font-family: verdana;
+	font-size: 9pt;
+	font-weight: bold;
+	text-align: right;
+	padding: 3px 5px 3px 3px;
+	border-left: 2px solid red;
+	border-top: 2px solid red;
+}
+TD.InputField
+{
+	padding: 5px 5px 5px 3px;
+	vertical-align: bottom;
+}
+
+TD.InputFieldReadOnly
+{
+	padding: 5px 5px 5px 3px;
+	color: #A0A0A0;
+}
+TD.InputField-Error
+{
+	padding: 3px 3px 3px 3px;
+	border-right: 2px solid red;
+	border-top: 2px solid red;
+}
+TD.InputField-ErrorMessage
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	font-style: italic;
+	color: #C00000;
+	text-align: center;
+	border-left: 2px solid red;
+	border-right: 2px solid red;
+	border-bottom: 2px solid red;
+}
+.visible
+{
+	display:;
+}
+.InVisible
+{
+      display:none;
+
+}
+
+
+.InputField
+{
+	font-family: verdana;
+	font-size: 9pt;
+}
+
+.InputFieldReadOnly
+{
+	font-family: verdana;
+	font-size: 9pt;
+}
+
+.OptionalFieldIndicator
+{
+	font-family: verdana;
+	font-size: 10pt;
+	font-weight: bold;
+	color: white;
+	padding: 0px 2px 0px 0px;
+}
+
+.OptionalFieldIndicatorDisabled
+{
+	font-family: verdana;
+	font-size: 10pt;
+	font-weight: bold;
+	color: white;
+	padding: 0px 2px 0px 0px;
+}
+
+.RequiredFieldIndicator
+{
+	font-family: verdana;
+	font-size: 10pt;
+	font-weight: bold;
+	color: red;
+	padding: 0px 2px 0px 0px;
+}
+
+.RequiredFieldIndicatorDisabled
+{
+	font-family: verdana;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #E08787;
+	padding: 0px 2px 0px 0px;
+}
+
+/* TABS -----------------------------------------------------------------------------*/
+TD.SelectedTab
+{
+	font-family: arial;
+	font-size: 9pt;
+	color: #000000;
+	font-weight: bold;
+	padding: 0px 5px 0px 5px;
+	white-space: nowrap;
+}
+TD.UnSelectedTab
+{
+	font-family: arial;
+	font-size: 9pt;
+	color: #F0F0F0;
+	font-weight: bold;
+	font-style: italic;
+	white-space: nowrap;
+	padding: 0px 5px 0px 5px;
+	text-decoration: none;
+}
+A.UnSelectedTab
+{
+	font-family: arial;
+	font-size: 9pt;
+	color: #F0F0F0;
+	font-weight: bold;
+	font-style: italic;
+	white-space: nowrap;
+	text-decoration: none;
+}
+A.UnSelectedTab:hover
+{
+	color: #F17C09;
+	text-decoration: underline;
+}
+
+/* WARNING MESSAGES -----------------------------------------------------------------*/
+TABLE.WarningMessage
+{
+	background-color: #FFE0E0;
+	border: solid 1px red;
+	margin-bottom: 10px;
+	width: 100%;
+}
+TABLE.WarningMessage TD.Icon
+{
+	padding-left: 10px; 
+}
+TABLE.WarningMessage TD.Message
+{
+	font-family: verdana;
+	font-size: 10pt;
+	padding: 5px 5px 5px 5px;
+	width: 100%;
+}
+
+/* BASIC GRIDS ----------------------------------------------------------------------*/
+TABLE.Grid
+{
+	border-top: 1px solid #A0A0A0;
+	border-right: 1px solid #A0A0A0;
+	border-left: 1px solid #A0A0A0;
+	border-bottom: 1px solid #A0A0A0;
+	margin-top: 5px;
+}
+TABLE.Grid TH
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	font-style: italic;
+	text-align: left;
+	background-color: #D0D0D0;
+	padding: 2px 6px 1px 6px;
+	border-bottom: 1px solid #A0A0A0;
+	white-space: nowrap;
+}
+TABLE.Grid TH.HeaderSmall
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-weight: bold;
+	font-style: italic;
+	text-align: left;
+	background-color: #D0D0D0;
+	padding: 2px 6px 1px 6px;
+	border-bottom: 1px solid #A0A0A0;
+	white-space: nowrap;
+}
+TABLE.Grid THEAD.Empty TH
+{
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	font-style: italic;
+	text-align: left;
+	color: #A0A0A0;
+	background-color: #D0D0D0;
+	padding: 1px 6px 1px 6px;
+	border-bottom: 1px solid #A0A0A0;
+	white-space: nowrap;
+}
+TABLE.Grid TD.Data
+{
+	font-family: verdana;
+	font-size: 8pt;
+	padding: 4px 6px 5px 6px;
+	white-space: nowrap;
+}
+TABLE.Grid TD.DataBorder
+{
+	font-family: arial;
+	font-size: 8pt;
+	padding: 4px 6px 5px 6px;
+	white-space: nowrap;
+    border-right: 1px solid #C0C0C0;
+}
+TABLE.Grid TR.CategoryBorder
+{
+	font-family: arial;
+	font-size: 8pt;
+	padding: 4px 6px 5px 6px;
+	white-space: nowrap;
+    border-bottom: 1px solid #000000;
+    border-top: 1px solid #000000;
+    background-color: #ECECEC;
+}
+TABLE.Grid TD.DataBorderRow
+{
+	font-family: arial;
+	font-size: 8pt;
+	padding: 4px 6px 5px 6px;
+	white-space: nowrap;
+    border-right: 1px solid #C0C0C0;
+    border-bottom: 1px solid #C0C0C0;
+}
+TABLE.Grid TD.Empty
+{
+	font-family: arial;
+	color: #A0A0A0;
+	font-size: 10pt;
+    padding: 5px 5px 5px 5px;
+	letter-spacing: 0.05em;
+}
+.GreenBarRow
+{
+	background-color: #ECECEC;
+}
+
+/* GRID PAGING ----------------------------------------------------------------------*/
+TABLE.Grid TABLE.PagingControl TD.ActiveLink
+{
+	padding-top: 1px;
+	padding-bottom: 2px;
+}
+TABLE.Grid TABLE.PagingControl TD.ActiveLink A
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-weight: bold;
+	white-space: nowrap;
+	color: #003470;
+}
+TABLE.Grid TABLE.PagingControl TD.Label
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-weight: bold;
+	white-space: nowrap;
+	color: #003470;
+	padding-top: 1px;
+	padding-bottom: 2px;
+}
+TABLE.Grid TABLE.PagingControl TD.InactiveLink
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-weight: bold;
+	white-space: nowrap;
+	color: #A0A0A0;
+	padding-top: 1px;
+	padding-bottom: 2px;
+}
+TABLE.Grid TABLE.PagingControl TD.CurrentPage
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-weight: bold;
+	white-space: nowrap;
+	color: #003470;
+	border: 1px #A0A0A0 solid;
+	padding-right: 1px;
+	padding-left: 1px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+TABLE.Grid TABLE.PagingControl TD.PageLink
+{
+	padding-right: 3px;
+	padding-left: 2px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+}
+TABLE.Grid TABLE.PagingControl TD.PageLink A
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-weight: bold;
+	white-space: nowrap;
+	color: #003470;
+}
+TABLE.Grid TABLE.PagingControl TD.Separator
+{
+	font-family: arial;
+	font-size: 9pt;
+	font-weight: bold;
+	white-space: nowrap;
+	color: #003470;
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+}
+
+/* SUMMARY/DETAIL -------------------------------------------------------------------*/
+TD.DetailTable-Fields
+{
+	padding: 7px 7px 7px 7px;
+	border-right: 1px solid #A0A0A0;
+	border-left: 1px solid #A0A0A0;
+}
+TD.DetailTable-Controls
+{
+    background: #F8F8F8;
+	padding: 7px 7px 7px 7px;
+    border-top: 1px solid #A0A0A0;
+	border-right: 1px solid #A0A0A0;
+	border-left: 1px solid #A0A0A0;
+	border-bottom: 1px solid #A0A0A0;
+}
+TABLE.Grid TR.Selected TD.Data
+{
+	font-family: verdana;
+	font-size: 8pt;
+	color: #FFFFFF;
+	background-color: #3366CC;
+	padding: 4px 6px 5px 6px;
+	white-space: nowrap;
+}
+TABLE.Grid TD.SelectLink
+{
+	font-family: verdana;
+	font-size: 7pt;
+	font-weight: bold;
+	text-align: center;
+	padding: 4px 6px 5px 6px;
+	white-space: nowrap;
+}
+
+/* MISCELLANEOUS --------------------------------------------------------------------*/
+.FooterText
+{
+	font-family: verdana;
+	font-size: 9pt;
+	font-style: italic;
+	letter-spacing: 0.3em;
+	color: #C0C0C0;
+	padding-top: 15px;
+	text-align: center;
+}
+.Text
+{
+	font-family: verdana;
+	font-size: 9pt;
+}
+.HeaderTitle
+{
+    font-family: arial;
+	font-size: 18pt;
+	font-weight: bold;
+}
+TD.PageTitle
+{
+	font-family: arial;
+	font-size: 18pt;
+	font-weight: bold;
+	padding: 2 px 0 px 0 px 0px;
+	border-top: 2px solid black;
+}
+.WorkListCategory
+{
+    background-color: #FFFFFF;
+    font-family: verdana;
+	font-size: 9pt;
+	font-weight: bold;
+	padding: 5px;
+	border-right: 2px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+.legacyinfo {
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	FONT-FAMILY: verdana; 
+	PADDING-RIGHT :  5px;
+
+}
+.legacyinfocb {
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	FONT-FAMILY: verdana; 
+	TEXT-ALIGN: center;z
+	padding-bottom:0px;
+	padding-left:2px;
+	padding-top:2px;
+	padding-right:10px;
+}
+TD.InputButton
+{
+	padding: 0px 5px 5px 3px;
+}
+
+span.InputFieldLabel 
+{
+    color:#000;
+}
+
+span.InputDisabledLabel 
+{
+    color:#666666;
+}
+
+div.bluebarsect table.bluebarsectHeader tr td a.anchorBack{
+	
+	color: white;
+}
+
+#xmlBlock span{
+	display: inline-block;
+}

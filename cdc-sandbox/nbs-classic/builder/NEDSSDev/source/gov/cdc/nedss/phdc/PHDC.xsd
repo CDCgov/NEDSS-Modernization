@@ -1,0 +1,2210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 sp1 (http://www.altova.com) by pradeep (SAIC) -->
+<!-- edited with XMLSPY v5 rel. 3 U (http://www.xmlspy.com) by Beau Bannerman (Computer Sciences Corp) -->
+<!-- PHDCMessage NBS Version 3.0 - August 18, 2009  -->
+<!-- Public Health Document Container -->
+<!-- edited with by pradeep Kumar Sharma(SAIC) -->
+<!-- PHDCMessage NBS Version 4.4 - Feb 13, 2012 contains PHDC with ELR -->
+<!-- Public Health Document Container -->
+<xs:schema xmlns:nbs="http://www.cdc.gov/NEDSS" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cdc.gov/NEDSS" elementFormDefault="qualified">
+	<xs:complexType name="AnswerType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="AnswerCode" type="nbs:CodedType" maxOccurs="unbounded"/>
+				<xs:element name="AnswerDate" type="xs:date"/>
+				<xs:element name="AnswerDateTime" type="xs:dateTime"/>
+				<xs:element name="AnswerNumeric" type="nbs:NumericType"/>
+				<xs:element name="AnswerText">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="AnswerSequence" type="xs:integer" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CaseType">
+		<xs:sequence>
+			<xs:element name="SectionHeader" type="nbs:SectionHeaderType"/>
+			<xs:element name="Condition" type="nbs:CodedType"/>
+			<xs:element name="Patient" type="nbs:PatientType"/>
+			<xs:element name="CommonQuestions" type="nbs:CommonQuestionsType" minOccurs="0"/>
+			<xs:element name="DiseaseSpecificQuestions" type="nbs:DiseaseSpecificQuestionsType" minOccurs="0"/>
+			<xs:element name="Participants" type="nbs:ParticipantsType" minOccurs="0"/>
+			<xs:element name="Notes" type="nbs:NoteType" minOccurs="0"/>
+			<xs:element name="LabReport" type="nbs:LabReportType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Unstructured" type="nbs:UnstructuredType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClinicalInformationType">
+		<xs:sequence>
+			<xs:element name="Physician" type="nbs:ProviderParticipantType" minOccurs="0"/>
+			<xs:element name="Hospital" type="nbs:OrganizationParticipantType" minOccurs="0"/>
+			<xs:element name="WasThePatientHospitalized" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="AdmissionDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="DischargeDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="DurationOfStay" type="xs:nonNegativeInteger" minOccurs="0"/>
+			<xs:element name="DiagnosisDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="IllnessOnsetDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="IllnessEndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="IllnessDuration" type="nbs:NumericType" minOccurs="0"/>
+			<xs:element name="AgeAtIllnessOnset" type="nbs:NumericType" minOccurs="0"/>
+			<xs:element name="DidThePatientDieFromIllness" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="DateOfDeath" type="xs:date" minOccurs="0"/>
+			<xs:element name="PregnancyStatus" type="nbs:CodedType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CodeDescTxtType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodeSystemVersionIDType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CodedType">
+		<xs:sequence>
+			<xs:element name="Code" type="nbs:CodeType" minOccurs="0"/>
+			<xs:element name="CodeDescTxt" type="nbs:CodeDescTxtType" minOccurs="0"/>
+			<xs:element name="CodeSystemCode" type="nbs:CodeSystemCodeType" minOccurs="0"/>
+			<xs:element name="AlternateCode" type="nbs:CodeType" minOccurs="0"/>
+			<xs:element name="AlternateCodeDescTxt" type="nbs:CodeDescTxtType" minOccurs="0"/>
+			<xs:element name="AlternateCodeSystemCode" type="nbs:CodeSystemCodeType" minOccurs="0"/>
+			<xs:element name="CodeSystemVersionID" type="nbs:CodeSystemVersionIDType" minOccurs="0"/>
+			<xs:element name="AlternateCodeSystemVersionID" type="nbs:CodeSystemVersionIDType" minOccurs="0"/>
+			<xs:element name="Text" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CodeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodeSystemCodeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="300"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CommentsType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CommonQuestionsType">
+		<xs:sequence>
+			<xs:element name="InvestigationInformation" type="nbs:InvestigationInformationType" minOccurs="0"/>
+			<xs:element name="ReportingInformation" type="nbs:ReportingInformationType" minOccurs="0"/>
+			<xs:element name="ClinicalInformation" type="nbs:ClinicalInformationType" minOccurs="0"/>
+			<xs:element name="EpidemiologicInformation" type="nbs:EpidemiologicInformationType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ComparatorCodeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DiseaseSpecificQuestionsType">
+		<xs:sequence>
+			<xs:element name="Observation" type="nbs:ObservationType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EpidemiologicInformationType">
+		<xs:sequence>
+			<xs:element name="IsAssociatedWithDayCare" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="IsFoodHandler" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="IsThisCasePartOfAnOutbreak" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="OutbreakName" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="WhereWasTheDiseaseAcquired" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="ImportedCountry" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="ImportedState" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="ImportedCity" type="xs:string" minOccurs="0"/>
+			<xs:element name="ImportedCounty" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="TransmissionMode" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="ConfirmationMethod" type="nbs:CodedType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ConfirmationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="DetectionMethod" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="CaseStatus" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="MMWRWeek" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[1-9]|[0-4][1-9]|[1-4][0]|[5][0-3]"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MMWRYear" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[1][9][0-9]{2}|[2][0-9]{3}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="GeneralComments" type="nbs:CommentsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HeaderType">
+		<xs:sequence>
+			<xs:element name="MessageType" type="nbs:CodedType"/>
+			<xs:element name="ResultStatus" type="nbs:CodedType"/>
+			<xs:element name="CreationTime" type="xs:dateTime"/>
+			<xs:element name="VersionID" type="xs:string"/>
+			<xs:element name="ProcessingID" type="xs:string"/>
+			<xs:element name="MessageControlID" type="xs:string"/>
+			<xs:element name="SendingApplication" type="nbs:HierarchicalDesignationType"/>
+			<xs:element name="SendingFacility" type="nbs:HierarchicalDesignationType"/>
+			<xs:element name="ReceivingApplication" type="nbs:HierarchicalDesignationType"/>
+			<xs:element name="ReceivingFacility" type="nbs:HierarchicalDesignationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HierarchicalDesignationType">
+		<xs:sequence>
+			<xs:element name="NamespaceID">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="UniversalID">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="199"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="UniversalIDType">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="6"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IdentifiersType">
+		<xs:sequence>
+			<xs:element name="Identifier" type="nbs:IdentifierType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IdentifierType">
+		<xs:sequence>
+			<xs:element name="IDNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="IDTypeCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="AssigningFacility" type="nbs:HierarchicalDesignationType" minOccurs="0"/>
+			<xs:element name="AssigningAuthority" type="nbs:HierarchicalDesignationType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvestigationInformationType">
+		<xs:sequence>
+			<xs:element name="Investigator" type="nbs:ProviderParticipantType" minOccurs="0"/>
+			<xs:element name="SendingApplicationJurisdiction" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="StateCaseID" type="xs:string" minOccurs="0"/>
+			<xs:element name="CityCountyCaseID" type="xs:string" minOccurs="0"/>
+			<xs:element name="InvestigationStatus" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="InvestigationStartDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="DateAssignedToInvestigation" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LabReportCommentsType">
+		<xs:sequence>
+			<xs:element name="Comment" type="nbs:CommentsType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LabReportType">
+		<xs:sequence>
+			<xs:element name="SectionHeader" type="nbs:SectionHeaderType"/>
+			<xs:element name="Patient" type="nbs:PatientType"/>
+			<xs:element name="ReportingFacility" type="nbs:OrganizationParticipantType" minOccurs="0"/>
+			<xs:element name="Tests" type="nbs:TestsType"/>
+			<xs:element name="Participants" type="nbs:ParticipantsType" minOccurs="0"/>
+			<xs:element name="Notes" type="nbs:NoteType" minOccurs="0"/>
+			<xs:element name="Unstructured" type="nbs:ObservationsType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RawMsg" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NameType">
+		<xs:sequence>
+			<xs:element name="First">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Middle" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Last">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NoteType">
+		<xs:sequence>
+			<xs:element name="Note" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NumericType">
+		<xs:sequence>
+			<xs:element name="ComparatorCode" type="nbs:ComparatorCodeType" minOccurs="0"/>
+			<xs:element name="Value1">
+				<xs:simpleType>
+					<xs:restriction base="xs:float"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SeperatorCode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="10"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Value2" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:float"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Unit" type="nbs:CodedType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObservationType">
+		<xs:sequence>
+			<xs:element name="Question" type="nbs:CodedType"/>
+			<xs:element name="Answer" type="nbs:AnswerType"/>
+			<xs:element name="BatchSequence" type="xs:integer" minOccurs="0"/>
+			<xs:element name="BatchTableHeader" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BatchTableColumnWidth" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObservationsType">
+		<xs:sequence>
+			<xs:element name="Observation" type="nbs:ObservationType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OrganizationParticipantType">
+		<xs:sequence>
+			<xs:element name="Identifiers" type="nbs:IdentifiersType" minOccurs="0"/>
+			<xs:element name="TypeCd" type="nbs:CodedType"/>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="PostalAddress" type="nbs:PostalAddressType" minOccurs="0"/>
+			<xs:element name="Telephone" type="nbs:TelephoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ParticipantsType">
+		<xs:sequence>
+			<xs:element name="Provider" type="nbs:ProviderParticipantType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Organization" type="nbs:OrganizationParticipantType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PatientType">
+		<xs:sequence>
+			<xs:element name="Identifiers" type="nbs:IdentifiersType" minOccurs="0"/>
+			<xs:element name="Name" type="nbs:NameType"/>
+			<xs:element name="DateOfBirth" type="xs:date" minOccurs="0"/>
+			<xs:element name="ReportedAge" type="nbs:NumericType" minOccurs="0"/>
+			<xs:element name="Sex" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="Race" type="nbs:CodedType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Ethnicity" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="PostalAddress" type="nbs:PostalAddressType" minOccurs="0"/>
+			<xs:element name="DeceasedIndicator" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="DeceasedDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="Telephone" type="nbs:TelephoneType" minOccurs="0"/>
+			<xs:element name="Notes" type="nbs:NoteType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PostalAddressType">
+		<xs:sequence>
+			<xs:element name="StreetAddressOne" type="xs:string" minOccurs="0"/>
+			<xs:element name="StreetAddressTwo" type="xs:string" minOccurs="0"/>
+			<xs:element name="City" type="xs:string" minOccurs="0"/>
+			<xs:element name="State" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="County" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="Country" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="ZipCode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[0-9]{5}(-[0-9]{4})?"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProviderNameType">
+		<xs:complexContent>
+			<xs:extension base="nbs:NameType">
+				<xs:sequence>
+					<xs:element name="Degree" type="nbs:CodedType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProviderParticipantType">
+		<xs:sequence>
+			<xs:element name="Identifiers" type="nbs:IdentifiersType" minOccurs="0"/>
+			<xs:element name="TypeCd" type="nbs:CodedType"/>
+			<xs:element name="Name" type="nbs:ProviderNameType"/>
+			<xs:element name="PostalAddress" type="nbs:PostalAddressType" minOccurs="0"/>
+			<xs:element name="Telephone" type="nbs:TelephoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReferenceRangeType">
+		<xs:sequence>
+			<xs:element name="Low" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="High" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReportingInformationType">
+		<xs:sequence>
+			<xs:element name="ReportingProvider" type="nbs:ProviderParticipantType" minOccurs="0"/>
+			<xs:element name="ReportingOrganization" type="nbs:OrganizationParticipantType" minOccurs="0"/>
+			<xs:element name="DateOfReport" type="xs:date" minOccurs="0"/>
+			<xs:element name="ReportingSourceType" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="EarliestDateReportedToCounty" type="xs:date" minOccurs="0"/>
+			<xs:element name="EarliestDateReportedToState" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SectionHeaderType">
+		<xs:sequence>
+			<xs:element name="DocumentType" type="nbs:CodedType"/>
+			<xs:element name="Purpose" type="nbs:CodedType"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="SendingApplicationEventIdentifier" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpecimenType">
+		<xs:choice>
+			<xs:element name="SpecimenCode" type="nbs:CodedType"/>
+			<xs:element name="Description">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SusceptibilityType">
+		<xs:sequence>
+			<xs:element name="Drug" type="nbs:CodedType"/>
+			<xs:choice>
+				<xs:element name="Numeric" type="nbs:NumericType" minOccurs="0"/>
+				<xs:element name="Coded" type="nbs:CodedType" minOccurs="0"/>
+			</xs:choice>
+			<xs:element name="Interpretation" type="nbs:CodedType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TelephoneType">
+		<xs:sequence>
+			<xs:element name="Number">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d{3}-\d{3}-\d{4}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Extension" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TestResultType">
+		<xs:sequence>
+			<xs:element name="PerformingFacility" type="nbs:OrganizationParticipantType" minOccurs="0"/>
+			<xs:element name="TestResultCode" type="nbs:CodedType"/>
+			<xs:element name="Values" type="nbs:ValuesType"/>
+			<xs:element name="ObservationDateTime" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="ReferenceRange" type="nbs:ReferenceRangeType" minOccurs="0"/>
+			<xs:element name="Comments" type="nbs:LabReportCommentsType" minOccurs="0"/>
+			<xs:element name="Susceptibility" type="nbs:SusceptibilityType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TestsType">
+		<xs:sequence>
+			<xs:element name="FillerOrderNumber" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ReportingFacility" type="nbs:OrganizationParticipantType"/>
+			<xs:element name="OrderingProvider" type="nbs:ProviderParticipantType" minOccurs="0"/>
+			<xs:element name="OrderingFacility" type="nbs:OrganizationParticipantType" minOccurs="0"/>
+			<xs:element name="ObservationDateTime" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="Specimen" type="nbs:SpecimenType" minOccurs="0"/>
+			<xs:element name="LaboratoryReportDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="RequestedObservation" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="ClinicalInformation" type="nbs:CommentsType" minOccurs="0"/>
+			<xs:element name="ResultStatus" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="TestResult" type="nbs:TestResultType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UnstructuredType">
+		<xs:sequence>
+			<xs:element name="SectionHeader" type="nbs:SectionHeaderType"/>
+			<xs:element name="Patient" type="nbs:PatientType"/>
+			<xs:element name="Observations" type="nbs:ObservationsType"/>
+			<xs:element name="Participants" type="nbs:ParticipantsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ValuesType">
+		<xs:sequence>
+			<xs:element name="Numeric" type="nbs:NumericType" minOccurs="0"/>
+			<xs:element name="Coded" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="Text" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7LabReportType">
+		<xs:sequence>
+			<xs:element name="HL7MSH" type="nbs:HL7MSHType"/>
+			<xs:element name="HL7SoftwareSegment" type="nbs:HL7SoftwareSegmentType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="HL7PATIENT_RESULT" type="nbs:HL7PATIENTRESULTType" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="HL7ContinuationPointer" type="nbs:HL7ContinuationPointerType" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7MSHType">
+		<xs:sequence>
+			<xs:element name="FieldSeparator" type="nbs:HL7STType"/>
+			<!--maximumLength="1"/-->
+			<xs:element name="EncodingCharacters" type="nbs:HL7STType"/>
+			<!--maxLength="4"/-->
+			<xs:element name="SendingApplication" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="SendingFacility" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ReceivingApplication" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ReceivingFacility" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="DateTimeOfMessage" type="nbs:HL7TSType"/>
+			<!--maxLength="26"/-->
+			<xs:element name="Security" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="40"/-->
+			<xs:element name="MessageType" type="nbs:HL7MSGType"/>
+			<xs:element name="MessageControlID" type="nbs:HL7STType"/>
+			<!-- maxLength="20"/-->
+			<xs:element name="ProcessingID" type="nbs:HL7PTType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="VersionID" type="nbs:HL7VIDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="SequenceNumber" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ContinuationPointer" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!-- maxLength="180"/-->
+			<xs:element name="AcceptAcknowledgmentType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!-- maxLength="2"/-->
+			<xs:element name="ApplicationAcknowledgmentType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!-- maxLength="2"/-->
+			<xs:element name="CountryCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!-- maxLength="3"/-->
+			<xs:element name="CharacterSet" type="nbs:HL7IDType" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- maxLength="16"/-->
+			<xs:element name="PrincipalLanguageOfMessage" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="AlternateCharacterSetHandlingScheme" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!-- maxLength="20"/-->
+			<xs:element name="MessageProfileIdentifier" type="nbs:HL7EIType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7SoftwareSegmentType">
+		<xs:sequence>
+			<xs:element name="SoftwareVendorOrganization" type="nbs:HL7XONType"/>
+			<!-- maxLength="567"/-->
+			<xs:element name="SoftwareCertifiedVersionOrReleaseNumber" type="nbs:HL7STType"/>
+			<!-- maxLength="15"/-->
+			<xs:element name="SoftwareProductName" type="nbs:HL7STType"/>
+			<!-- maxLength="20"/-->
+			<xs:element name="SoftwareBinaryID" type="nbs:HL7STType"/>
+			<!-- maxLength="20"/-->
+			<xs:element name="SoftwareProductInformation" type="nbs:HL7TXType" minOccurs="0" maxOccurs="1"/>
+			<!--  maxLength="1024"/-->
+			<xs:element name="SoftwareInstallDate" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!-- maxLength="26"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7PATIENTRESULTType">
+		<xs:sequence>
+			<xs:element name="PATIENT" type="nbs:HL7PATIENTType"/>
+			<xs:element name="ORDER_OBSERVATION" type="nbs:HL7OrderObservationType" minOccurs="1" maxOccurs="unbounded"/>
+			<!-- maxLength="15"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7PATIENTType">
+		<xs:sequence>
+			<xs:element name="PatientIdentification" type="nbs:HL7PIDType"/>
+			<xs:element name="PatientAdditionalDemographic" type="nbs:HL7PID1Type" minOccurs="0" />
+			<xs:element name="NotesandComments" type="nbs:HL7NTEType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="NextofKinAssociatedParties" type="nbs:HL7NK1Type" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Visit" type="nbs:HL7VisitType" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7VisitType">
+		<xs:sequence>
+			<xs:element name="PatientVisit" type="nbs:HL7PIV1Type" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="PatientVisitAdditionalInformation" type="nbs:HL7PIV2Type" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7PIV1Type">
+		<xs:sequence>
+			<xs:element name="SetIDPV1" type="nbs:HL7SIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="PatientClass" type="nbs:HL7ISType" minOccurs="1" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="AssignedPatientLocation" type="nbs:HL7PLType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1230"/-->
+			<xs:element name="AdmissionType" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="PreadmitNumber" type="nbs:HL7CXType" minOccurs="1" maxOccurs="1"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="PriorPatientLocation" type="nbs:HL7PLType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1230"/-->
+			<xs:element name="AttendingDoctor" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="ReferringDoctor" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="ConsultingDoctor" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="HospitalService" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="TemporaryLocation" type="nbs:HL7PLType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1230"/-->
+			<xs:element name="PreadmitTestIndicator" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="ReAdmissionIndicator" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="AdmitSource" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="AmbulatoryStatus" type="nbs:HL7ISType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2"/-->
+			<xs:element name="VIPIndicator" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="AdmittingDoctor" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="PatientType" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="VisitNumber" type="nbs:HL7CXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="FinancialClass" type="nbs:HL7FCType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="50"/-->
+			<xs:element name="ChargePriceIndicator" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="CourtesyCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="CreditRating" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="ContractCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2"/-->
+			<xs:element name="ContractEffectiveDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="8"/-->
+			<xs:element name="ContractAmount" type="nbs:HL7NMType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="3"/-->
+			<xs:element name="ContractPeriod" type="nbs:HL7NMType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="InterestCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="TransferToBadDebtCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="TransferToBadDebtDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="BadDebtAgencyCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="BadDebtTransferAmount" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="12"/-->
+			<xs:element name="BadDebtRecoveryAmount" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="12"/-->
+			<xs:element name="DeleteAccountIndicator" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="DeleteAccountDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="DischargeDisposition" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="DischargedToLocation" type="nbs:HL7DLDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="47"/-->
+			<xs:element name="DietType" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ServicingFacility" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="BedStatus" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="AccountStatus" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="PendingLocation" type="nbs:HL7PLType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1230"/-->
+			<xs:element name="PriorTemporaryLocation" type="nbs:HL7PLType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1230"/-->
+			<xs:element name="AdmitDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="DischargeDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="26"/-->
+			<xs:element name="CurrentPatientBalance" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="12"/-->
+			<xs:element name="TotalCharges" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="12"/-->
+			<xs:element name="TotalAdjustments" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="12"/-->
+			<xs:element name="TotalPayments" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="12"/-->
+			<xs:element name="AlternateVisitID" type="nbs:HL7CXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="VisitIndicator" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="OtherHealthcareProvider" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2945"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7PIV2Type">
+		<xs:sequence>
+			<xs:element name="PriorPendingLocation" type="nbs:HL7PLType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="AccommodationCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="AdmitReason" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="TransferReason" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="PatientValuables" type="nbs:HL7STType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PatientValuablesLocation" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="VisitUserCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ExpectedAdmitDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ExpectedDischargeDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="EstimatedLengthOfInpatientStay" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ActualLengthOfInpatientStay" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="VisitDescription" type="nbs:HL7STType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ReferralSourceCode" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PreviousServiceDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="EmploymentIllnessRelatedIndicator" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="PurgeStatusCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="PurgeStatusDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="SpecialProgramCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="RetentionIndicator" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ExpectedNumberOfInsurancePlans" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="VisitPublicityCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="VisitProtectionIndicator" type="nbs:HL7IDType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ClinicOrganizationName" type="nbs:HL7XONType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="PatientStatusCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="VisitPriorityCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="PreviousTreatmentDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ExpectedDischargeDisposition" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="SignatureOnFileDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="FirstSimilarIllnessDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="PatientChargeAdjustmentCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="RecurringServiceCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="BillingMediaCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ExpectedSurgeryDateAndTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="MilitaryPartnershipCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="MilitaryNonAvailabilityCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="NewbornBabyIndicator" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="BabyDetainedIndicator" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ModeOfArrivalCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RecreationalDrugUseCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="AdmissionLevelOfCareCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="PrecautionCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="PatientConditionCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="LivingWillCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="OrganDonorCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="AdvanceDirectiveCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PatientStatusEffectiveDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ExpectedLOAReturnDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ExpectedPreadmissionTestingDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="NotifyClergyCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7NK1Type">
+		<xs:sequence>
+			<xs:element name="SetIDNK1" type="nbs:HL7ISType" minOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="Name" type="nbs:HL7XPNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1044"/-->
+			<xs:element name="Relationship" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="Address" type="nbs:HL7XADType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="578"/-->
+			<xs:element name="PhoneNumber" type="nbs:HL7XTNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="651"/-->
+			<xs:element name="BusinessPhoneNumber" type="nbs:HL7XTNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="651"/-->
+			<xs:element name="ContactRole" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="StartDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="EndDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="NextOfKinAssociatedPartiesJobTitle" type="nbs:HL7STType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="60"/-->
+			<xs:element name="NextOfKinAssociatedPartiesJobCodeClass" type="nbs:HL7JCCType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="292"/-->
+			<xs:element name="NextOfKinAssociatedPartiesEmployeeNumber" type="nbs:HL7CXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="OrganizationNameNK1" type="nbs:HL7XONType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="563"/-->
+			<xs:element name="MaritalStatus" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="AdministrativeSex" type="nbs:HL7ISType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1"/-->
+			<xs:element name="DateTimeOfBirth" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="LivingDependency" type="nbs:HL7ISType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2"/-->
+			<xs:element name="AmbulatoryStatus" type="nbs:HL7ISType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2"/-->
+			<xs:element name="Citizenship" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="PrimaryLanguage" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="LivingArrangement" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="PublicityCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ProtectionIndicator" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="StudentIndicator" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="Religion" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="MothersMaidenName" type="nbs:HL7XPNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1044"/-->
+			<xs:element name="Nationality" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="EthnicGroup" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ContactReason" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ContactPersonsName" type="nbs:HL7XPNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1044"/-->
+			<xs:element name="ContactPersonsTelephoneNumber" type="nbs:HL7XTNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="651"/-->
+			<xs:element name="ContactPersonsAddress" type="nbs:HL7XADType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="578"/-->
+			<xs:element name="NextOfKinAssociatedPartysIdentifiers" type="nbs:HL7CXType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="JobStatus" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="Race" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="Handicap" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="ContactPersonSocialSecurityNumber" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="16"/-->
+			<xs:element name="NextOfKinBirthPlace" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="250"/-->
+			<xs:element name="VIPIndicator" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7PIDType">
+		<xs:sequence>
+			<xs:element name="SetIDPID" type="nbs:HL7SIType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="4"/-->
+			<xs:element name="PatientID" type="nbs:HL7CXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="PatientIdentifierList" type="nbs:HL7CXType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="AlternatePatientIDPID" type="nbs:HL7CXType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="PatientName" type="nbs:HL7XPNType" minOccurs="1" maxOccurs="unbounded"/>
+			<!--maxLength="1044"/-->
+			<xs:element name="MothersMaidenName" type="nbs:HL7XPNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1044"/-->
+			<xs:element name="DateTimeOfBirth" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="AdministrativeSex" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="PatientAlias" type="nbs:HL7XPNType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1044"/-->
+			<xs:element name="Race" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="PatientAddress" type="nbs:HL7XADType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="578"/-->
+			<xs:element name="CountyCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="PhoneNumberHome" type="nbs:HL7XTNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="651"/-->
+			<xs:element name="PhoneNumberBusiness" type="nbs:HL7XTNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="651"/-->
+			<xs:element name="PrimaryLanguage" type="nbs:HL7CEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="MaritalStatus" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="Religion" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="PatientAccountNumber" type="nbs:HL7CXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="SSNNumberPatient" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="16"/-->
+			<xs:element name="DriversLicenseNumberPatient" type="nbs:HL7DLNType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="66"/-->
+			<xs:element name="MothersIdentifier" type="nbs:HL7CXType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="EthnicGroup" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="BirthPlace" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="250"/-->
+			<xs:element name="MultipleBirthIndicator" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="BirthOrder" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="Citizenship" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="VeteransMilitaryStatus" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="Nationality" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="PatientDeathDateAndTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="PatientDeathIndicator" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="IdentityUnknownIndicator" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="IdentityReliabilityCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="20"/-->
+			<xs:element name="LastUpdateDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="LastUpdateFacility" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="241"/-->
+			<xs:element name="SpeciesCode" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="BreedCode" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="Strain" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="80"/-->
+			<xs:element name="ProductionClassCode" type="nbs:HL7CEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="TribalCitizenship" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7PID1Type">
+		<xs:sequence>
+			<xs:element name="LivingDependency" type="nbs:HL7ISType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2"/-->
+			<xs:element name="LivingArrangement" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="PatientPrimaryFacility" type="nbs:HL7XONType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="563"/-->
+			<xs:element name="PatientPrimaryCareProviderNameAndIDNo" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="StudentIndicator" type="nbs:HL7ISType" minOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="Handicap" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="LivingWillCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="OrganDonorCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="SeparateBill" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="DuplicatePatient" type="nbs:HL7CXType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="PublicityCode" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ProtectionIndicator" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="ProtectionIndicatorEffectiveDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="PlaceofWorship" type="nbs:HL7XONType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="563"/-->
+			<xs:element name="AdvanceDirectiveCode" type="nbs:HL7CEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ImmunizationRegistryStatus" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="ImmunizationRegistryStatusEffectiveDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="PublicityCodeEffectiveDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="MilitaryBranch" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="5"/-->
+			<xs:element name="MilitaryRankGrade" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="MilitaryStatus" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7OrderObservationType">
+		<xs:sequence>
+			<xs:element name="CommonOrder" type="nbs:HL7ORCType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ObservationRequest" type="nbs:HL7OBRType" minOccurs="1"/>
+			<xs:element name="NotesAndComments" type="nbs:HL7NTEType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="HL7TIMINGQuantiyType" type="nbs:HL7TIMINGQuantiyType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ContactData" type="nbs:HL7CTDType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="PatientResultOrderObservation" type="nbs:PatientResultOrderObservation" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="FinancialTransaction" type="nbs:HL7FT1Type" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2"/-->
+			<xs:element name="ClinicalTrialIdentification" type="nbs:HL7CTIType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2"/-->
+			<xs:element name="PatientResultOrderSPMObservation" type="nbs:HL7PatientResultSPMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7ORCType">
+		<xs:sequence>
+			<xs:element name="OrderControl" type="nbs:HL7IDType" minOccurs="1"/>
+			<xs:element name="PlacerOrderNumber" type="nbs:HL7EIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="427"/-->
+			<xs:element name="FillerOrderNumber" type="nbs:HL7EIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="427"/-->
+			<xs:element name="PlacerGroupNumber" type="nbs:HL7EIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="427"/-->
+			<xs:element name="OrderStatus" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="ResponseFlag" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="QuantityTiming" type="nbs:HL7TQType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1778"/-->
+			<xs:element name="Parent" type="nbs:HL7EIPType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="855"/-->
+			<xs:element name="DateTimeOfTransaction" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="EnteredBy" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="VerifiedBy" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="OrderingProvider" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="EnterersLocation" type="nbs:HL7PLType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1230"/-->
+			<xs:element name="CallBackPhoneNumber" type="nbs:HL7XTNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="651"/-->
+			<xs:element name="OrderEffectiveDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="OrderControlCodeReason" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="EnteringOrganization" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="EnteringDevice" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ActionBy" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="AdvancedBeneficiaryNoticeCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="OrderingFacilityName" type="nbs:HL7XONType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="563"/-->
+			<xs:element name="OrderingFacilityAddress" type="nbs:HL7XADType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="578"/-->
+			<xs:element name="OrderingFacilityPhoneNumber" type="nbs:HL7XTNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="651"/-->
+			<xs:element name="OrderingProviderAddress" type="nbs:HL7XADType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="578"/-->
+			<xs:element name="OrderStatusModifier" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="AdvancedBeneficiaryNoticeOverrideReason" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="FillersExpectedAvailabilityDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="ConfidentialityCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="OrderType" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="EntererAuthorizationMode" type="nbs:HL7CNEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="ParentUniversalServiceIdentifier" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7OBRType">
+		<xs:sequence>
+			<xs:element name="SetIDOBR" type="nbs:HL7SIType" minOccurs="1"/>
+			<xs:element name="PlacerOrderNumber" type="nbs:HL7EIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="427"/-->
+			<xs:element name="FillerOrderNumber" type="nbs:HL7EIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="427"/-->
+			<xs:element name="UniversalServiceIdentifier" type="nbs:HL7CWEType" minOccurs="1"/>
+			<!--maxLength="427"/-->
+			<xs:element name="PriorityOBR" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="RequestedDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="ObservationDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--axLength="26"/-->
+			<xs:element name="ObservationEndDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="CollectionVolume" type="nbs:HL7CQType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="500"/-->
+			<xs:element name="CollectorIdentifier" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="SpecimenActionCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="DangerCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="RelevantClinicalInformation" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="300"/-->
+			<xs:element name="SpecimenReceivedDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="SpecimenSource" type="nbs:HL7SPSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4436"/-->
+			<xs:element name="OrderingProvider" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="OrderCallbackPhoneNumber" type="nbs:HL7XTNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="651"/-->
+			<xs:element name="PlacerField1" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="60"/-->
+			<xs:element name="PlacerField2" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="60"/-->
+			<xs:element name="FillerField1" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="60"/-->
+			<xs:element name="FillerField2" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="60"/-->
+			<xs:element name="ResultsRptStatusChngDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="ChargeToPractice" type="nbs:HL7MOCType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="504"/-->
+			<xs:element name="DiagnosticServSectID" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="ResultStatus" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="ParentResult" type="nbs:HL7PRLType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="QuantityTiming" type="nbs:HL7TQType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1778"/-->
+			<xs:element name="ResultCopiesTo" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="Parent" type="nbs:HL7EIPType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="855"/-->
+			<xs:element name="TransportationMode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="ReasonforStudy" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="PrincipalResultInterpreter" type="nbs:HL7NDLType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="838"/-->
+			<xs:element name="AssistantResultInterpreter" type="nbs:HL7NDLType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="838"/-->
+			<xs:element name="Technician" type="nbs:HL7NDLType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="838"/-->
+			<xs:element name="Transcriptionist" type="nbs:HL7NDLType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="838"/-->
+			<xs:element name="ScheduledDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="NumberofSampleContainers" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="TransportLogisticsofCollectedSample" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="CollectorsComment" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="TransportArrangementResponsibility" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="TransportArranged" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="EscortRequired" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="PlannedPatientTransportComment" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ProcedureCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ProcedureCodeModifier" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="PlacerSupplementalServiceInformation" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="FillerSupplementalServiceInformation" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="MedicallyNecessaryDuplicateProcedureReason" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="ResultHandling" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="427"/-->
+			<xs:element name="ParentUniversalServiceIdentifier" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7TIMINGQuantiyType">
+		<xs:sequence>
+			<xs:element name="TIMING_QTY" type="nbs:HL7TIMINGQTYType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7TIMINGQTYType">
+		<xs:sequence>
+			<xs:element name="TimingQuantity" type="nbs:HL7TQ1Type" minOccurs="1"/>
+			<xs:element name="TimingQuantityRelationship" type="nbs:HL7TQ2Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7TQ1Type">
+		<xs:sequence>
+			<xs:element name="SetIDTQ1" type="nbs:HL7SIType" minOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="Quantity" type="nbs:HL7CQType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="500"/-->
+			<xs:element name="RepeatPattern" type="nbs:HL7RPTType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="984"/-->
+			<xs:element name="ExplicitTime" type="nbs:HL7TMType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="20"/-->
+			<xs:element name="RelativeTimeAndUnits" type="nbs:HL7CQType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="500"/-->
+			<xs:element name="ServiceDuration" type="nbs:HL7CQType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="500"/-->
+			<xs:element name="Startdatetime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="Enddatetime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="Priority" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+			<xs:element name="Conditiontext" type="nbs:HL7TXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="250"/-->
+			<xs:element name="Textinstruction" type="nbs:HL7TXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="250"/-->
+			<xs:element name="Conjunction" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="OccurrenceDuration" type="nbs:HL7CQType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="500"/-->
+			<xs:element name="TotalOccurrences" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7TQ2Type">
+		<xs:sequence>
+			<xs:element name="SetIDTQ2" type="nbs:HL7SIType" minOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="SequenceResultsFlag" type="nbs:HL7IDType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1"/-->
+			<xs:element name="RelatedPlacerNumber" type="nbs:HL7EIType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="427"/-->
+			<xs:element name="RelatedFillerNumber" type="nbs:HL7EIType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="427"/-->
+			<xs:element name="RelatedPlacerGroupNumber" type="nbs:HL7EIType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="427"/-->
+			<xs:element name="SequenceConditionCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2"/-->
+			<xs:element name="CyclicEntryExitIndicator" type="nbs:HL7IDType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1"/-->
+			<xs:element name="SequenceConditionTimeInterval" type="nbs:HL7CQType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="500"/-->
+			<xs:element name="CyclicGroupMaximumNumberofRepeats" type="nbs:HL7NMType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="10"/-->
+			<xs:element name="SpecialServiceRequestRelationship" type="nbs:HL7IDType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7CTDType">
+		<xs:sequence>
+			<xs:element name="ContactRole" type="nbs:HL7CEType" minOccurs="1" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ContactName" type="nbs:HL7XPNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1044"/-->
+			<xs:element name="ContactAddress" type="nbs:HL7XADType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="578"/-->
+			<xs:element name="ContactLocation" type="nbs:HL7PLType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1230"/-->
+			<xs:element name="ContactCommunicationInformation" type="nbs:HL7XTNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="651"/-->
+			<xs:element name="PreferredMethodOfContact" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ContactIdentifiers" type="nbs:HL7PLNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="101"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PatientResultOrderObservation">
+		<xs:sequence>
+			<xs:element name="OBSERVATION" type="nbs:HL7OBSERVATIONType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7PatientResultSPMType">
+		<xs:sequence>
+			<xs:element name="SPECIMEN" type="nbs:HL7SPECIMENType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7OBSERVATIONType">
+		<xs:sequence>
+			<xs:element name="ObservationResult" type="nbs:HL7OBXType" minOccurs="1"/>
+			<xs:element name="NotesAndComments" type="nbs:HL7NTEType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7FT1Type">
+		<xs:sequence>
+			<xs:element name="SetIDFT1" type="nbs:HL7SIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="TransactionID" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="12"/-->
+			<xs:element name="TransactionBatchID" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="TransactionDate" type="nbs:HL7DRType" minOccurs="1"/>
+			<!--maxLength="53"/-->
+			<xs:element name="TransactionPostingDate" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="TransactionType" type="nbs:HL7ISType" minOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="TransactionCode" type="nbs:HL7CEType" minOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="TransactionDescription" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="40"/-->
+			<xs:element name="TransactionDescriptionAlt" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="40"/-->
+			<xs:element name="TransactionQuantity" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="TransactionAmountExtended" type="nbs:HL7CPType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="543"/-->
+			<xs:element name="TransactionAmountUnit" type="nbs:HL7CPType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="543"/-->
+			<xs:element name="DepartmentCode" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="InsurancePlanID" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="InsuranceAmount" type="nbs:HL7CPType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="543"/-->
+			<xs:element name="AssignedPatientLocation" type="nbs:HL7PLType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1230"/-->
+			<xs:element name="FeeSchedule" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="PatientType" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="DiagnosisCodeFT1" type="nbs:HL7CEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483" /-->
+			<xs:element name="PerformedByCode" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- maxLength="2945"/-->
+			<xs:element name="OrderedByCode" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="UnitCost" type="nbs:HL7CPType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="543"/-->
+			<xs:element name="FillerOrderNumber" type="nbs:HL7EIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="427"/-->
+			<xs:element name="EnteredByCode" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="ProcedureCode" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ProcedureCodeModifier" type="nbs:HL7CEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="AdvancedBeneficiaryNoticeCode" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="MedicallyNecessaryDuplicateProcedureReason" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="NDCCode" type="nbs:HL7CNEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="PaymentReferenceID" type="nbs:HL7CXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1913"/-->
+			<xs:element name="TransactionReferenceKey" type="nbs:HL7SIType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="4"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7CTIType">
+		<xs:sequence>
+			<xs:element name="SponsorStudyID" type="nbs:HL7EIType" minOccurs="1"/>
+			<!--maxLength="427"/-->
+			<xs:element name="StudyPhaseIdentifier" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="StudyScheduledTimePoint" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7SPECIMENType">
+		<xs:sequence>
+			<xs:element name="SPECIMEN" type="nbs:HL7SPMType" minOccurs="1"/>
+			<xs:element name="ObservationResult" type="nbs:HL7OBXType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7SPMType">
+		<xs:sequence>
+			<xs:element name="SetIDSPM" type="nbs:HL7SIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="SpecimenID" type="nbs:HL7EIPType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="855"/-->
+			<xs:element name="SpecimenParentIDs" type="nbs:HL7EIPType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="855"/-->
+			<xs:element name="SpecimenType" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenTypeModifier" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenAdditives" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenCollectionMethod" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenSourceSite" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenSourceSiteModifier" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenCollectionSite" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenRole" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenCollectionAmount" type="nbs:HL7CQType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="500"/-->
+			<xs:element name="GroupedSpecimenCount" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="SpecimenDescription" type="nbs:HL7STType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="250"/-->
+			<xs:element name="SpecimenHandlingCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenRiskCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenCollectionDateTime" type="nbs:HL7DRType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="53"/-->
+			<xs:element name="SpecimenReceivedDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="SpecimenExpirationDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="SpecimenAvailability" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="SpecimenRejectReason" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenQuality" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenAppropriateness" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenCondition" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenCurrentQuantity" type="nbs:HL7CQType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="500"/-->
+			<xs:element name="NumberOfSpecimenContainers" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="ContainerType" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="ContainerCondition" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="SpecimenChildRole" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7OBXType">
+		<xs:sequence>
+			<xs:element name="SetIDOBX" type="nbs:HL7SIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="ValueType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="ObservationIdentifier" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ObservationSubID" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="ObservationValue" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="99999"/-->
+			<xs:element name="Units" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ReferencesRange" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="AbnormalFlags" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+			<xs:element name="Probability" type="nbs:HL7NMType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="705"/-->
+			<xs:element name="NatureOfAbnormalTest" type="nbs:HL7IDType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="500"/-->
+			<xs:element name="ObservationResultStatus" type="nbs:HL7IDType" minOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="EffectiveDateOfReferenceRangeValues" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="UserDefinedAccessChecks" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="DateTimeOftheObservation" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="ProducersReference" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ResponsibleObserver" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="2945"/-->
+			<xs:element name="ObservationMethod" type="nbs:HL7CEType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="483"/-->
+			<xs:element name="EquipmentInstanceIdentifier" type="nbs:HL7EIType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="1"/-->
+			<xs:element name="DateTimeOftheAnalysis" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="ReservedforHarmonizationWithV2_6_1" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ReservedForHarmonizationwithV2_6_2" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ReservedForHarmonizationWithV2_6_3" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="PerformingOrganizationName" type="nbs:HL7XONType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="567"/-->
+			<xs:element name="PerformingOrganizationAddress" type="nbs:HL7XADType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="631"/-->
+			<xs:element name="PerformingOrganizationMedicalDirector" type="nbs:HL7XCNType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3002"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7ContinuationPointerType">
+		<xs:sequence>
+			<xs:element name="ContinuationPointer" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="180"/-->
+			<xs:element name="ContinuationStyle" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="HL7IDType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="HL7OBXValueType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="HL7CEType" type="nbs:HL7CEType"/>
+				<xs:element name="HL7CWEType" type="nbs:HL7CWEType"/>
+				<xs:element name="HL7STType" type="nbs:HL7STType"/>
+				<xs:element name="HL7SNType" type="nbs:HL7SNType"/>
+				<xs:element name="HL7TXType" type="nbs:HL7TXType"/>
+				<xs:element name="HL7String" type="xs:string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7SNType">
+		<xs:sequence>
+			<xs:element name="HL7Comparator" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="HL7Num1" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="15"/-->
+			<xs:element name="HL7SeparatorSuffix" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7Num2" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="15"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7CEType">
+		<xs:sequence>
+			<xs:element name="HL7Identifier" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Text" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7NameofCodingSystem" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7AlternateIdentifier" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7AlternateText" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7NameofAlternateCodingSystem" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7CQType">
+		<xs:sequence>
+			<xs:element name="HL7Quantity" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="16"/-->
+			<xs:element name="HL7Units" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="493"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7CWEType">
+		<xs:sequence>
+			<xs:element name="HL7Identifier" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Text" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7NameofCodingSystem" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7AlternateIdentifier" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7AlternateText" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7NameofAlternateCodingSystem" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7CodingSystemVersionID" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="HL7AlternateCodingSystemVersionID" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="HL7OriginalText" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7CNEType">
+		<xs:sequence>
+			<xs:element name="HL7Identifier" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Text" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7NameofCodingSystem" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7AlternateIdentifier" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7AlternateText" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7NameofAlternateCodingSystem" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7CodingSystemVersionID" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="HL7AlternateCodingSystemVersionID" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="HL7OriginalText" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7CXType">
+		<xs:sequence>
+			<xs:element name="HL7IDNumber" type="nbs:HL7STType" minOccurs="1"/>
+			<!--maxLength="15"/-->
+			<xs:element name="HL7CheckDigit" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7CheckDigitScheme" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="HL7AssigningAuthority" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="227"/-->
+			<xs:element name="HL7IdentifierTypeCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="5"/-->
+			<xs:element name="HL7AssigningFacility" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="227"/-->
+			<xs:element name="HL7EffectiveDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="HL7ExpirationDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="HL7AssigningJurisdiction" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="HL7AssigningAgencyOrDepartment" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7DLNType">
+		<xs:sequence>
+			<xs:element name="HL7LicenseNumber" type="nbs:HL7STType" minOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7IssuingStateProvinceCountry" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7ExpirationDate" type="nbs:HL7DTType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="24"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7DRType">
+		<xs:sequence>
+			<xs:element name="HL7RangeStartDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="HL7RangeEndDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7EIType">
+		<xs:sequence>
+			<xs:element name="HL7EntityIdentifier" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7NamespaceID" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7UniversalID" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7UniversalIDType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7FNType">
+		<xs:sequence>
+			<xs:element name="HL7Surname" type="nbs:HL7STType" minOccurs="1"/>
+			<!--maxLength="50"/-->
+			<xs:element name="HL7OwnSurnamePrefix" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7OwnSurname" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="50"/-->
+			<xs:element name="HL7SurnamePrefixFromPartnerSpouse" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7SurnameFromPartnerSpouse" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="50"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7HDType">
+		<xs:sequence>
+			<xs:element name="HL7NamespaceID" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7UniversalID" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7UniversalIDType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7JCCType">
+		<xs:sequence>
+			<xs:element name="HL7JobCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7JobClass" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7JobDescriptionText" type="nbs:HL7TXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="250"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7NMType">
+		<xs:sequence>
+			<xs:element name="HL7Numeric" type="xs:float" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7PLType">
+		<xs:sequence>
+			<xs:element name="HL7PointofCare" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Room" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Bed" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="227"/-->
+			<xs:element name="HL7Facility" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7LocationStatus" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7PersonLocationType" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Building" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Floor" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7LocationDescription" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7ComprehensiveLocationIdentifier" type="nbs:HL7EIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="427"/-->
+			<xs:element name="HL7AssigningAuthorityforLocation" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="227"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7PTType">
+		<xs:sequence>
+			<xs:element name="HL7ProcessingID" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7ProcessingMode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7SIType">
+		<xs:sequence>
+			<xs:element name="HL7SequenceID" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<!--xs:complexType name="HL7STType"> 
+		<xs:sequence> 
+			<xs:element name="HL7String" type="xs:string" minOccurs="0" maxOccurs="1"/>			
+		</xs:sequence> 
+	</xs:complexType-->
+	<xs:simpleType name="HL7STType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="HL7TQType">
+		<xs:sequence>
+			<xs:element name="HL7Quantity" type="nbs:HL7CQType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="267"/-->
+			<xs:element name="HL7Interval" type="nbs:HL7RIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="206"/-->
+			<xs:element name="HL7Duration" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="HL7StartDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="HL7EndDateTime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="HL7Priority" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="HL7Condition" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7Text" type="nbs:HL7TXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="200"/-->
+			<xs:element name="HL7Conjunction" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7OrderSequencing" type="nbs:HL7OSDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="110"/-->
+			<xs:element name="HL7OccurrenceDuration" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="HL7TotalOccurrences" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7TXType">
+		<xs:sequence>
+			<xs:element name="HL7String" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="65536"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7RIType">
+		<xs:sequence>
+			<xs:element name="RepeatPattern" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="ExplicitTimeInterval" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7VIDType">
+		<xs:sequence>
+			<xs:element name="HL7VersionID" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="5"/-->
+			<xs:element name="HL7InternationalizationCode" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="HL7InternationalVersionID" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7XADType">
+		<xs:sequence>
+			<xs:element name="HL7StreetAddress" type="nbs:HL7SADType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="184"/-->
+			<xs:element name="HL7OtherDesignation" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="120"/-->
+			<xs:element name="HL7City" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="50"/-->
+			<xs:element name="HL7StateOrProvince" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="50"/-->
+			<xs:element name="HL7ZipOrPostalCode" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="12"/-->
+			<xs:element name="HL7Country" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="HL7AddressType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="HL7OtherGeographicDesignation" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="50"/-->
+			<xs:element name="HL7CountyParishCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7CensusTract" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7AddressRepresentationCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7AddressValidityRange" type="nbs:HL7DRType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="53"/-->
+			<xs:element name="HL7EffectiveDate" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="HL7ExpirationDate" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7XCNType">
+		<xs:sequence>
+			<xs:element name="HL7IDNumber" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="15"/-->
+			<xs:element name="HL7FamilyName" type="nbs:HL7FNType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="194"/-->
+			<xs:element name="HL7GivenName" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="30"/-->
+			<xs:element name="HL7SecondAndFurtherGivenNamesOrInitialsThereof" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="30"/-->
+			<xs:element name="HL7Suffix" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Prefix" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Degree" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="5"/-->
+			<xs:element name="HL7SourceTable" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="HL7AssigningAuthority" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="227"/-->
+			<xs:element name="HL7NameTypeCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7IdentifierCheckDigit" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7CheckDigitScheme" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="HL7IdentifierTypeCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="5"/-->
+			<xs:element name="HL7AssigningFacility" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="227"/-->
+			<xs:element name="HL7NameRepresentationCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7NameContext" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="HL7NameValidityRange" type="nbs:HL7DRType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="53"/-->
+			<xs:element name="HL7NameAssemblyOrder" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7EffectiveDate" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="HL7ExpirationDate" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="HL7ProfessionalSuffix" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7AssigningJurisdiction" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="HL7AssigningAgencyOrDepartment" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7XONType">
+		<xs:sequence>
+			<xs:element name="HL7OrganizationName" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="50"/-->
+			<xs:element name="HL7OrganizationNameTypeCode" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7IDNumber" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="HL7CheckDigit" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7CheckDigitScheme" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="HL7AssigningAuthority" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="227"/-->
+			<xs:element name="HL7IdentifierTypeCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="5"/-->
+			<xs:element name="HL7AssigningFacility" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="227"/-->
+			<xs:element name="HL7NameRepresentationCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7OrganizationIdentifier" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7XPNType">
+		<xs:sequence>
+			<xs:element name="HL7FamilyName" type="nbs:HL7FNType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="194"/-->
+			<xs:element name="HL7GivenName" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="30"/-->
+			<xs:element name="HL7SecondAndFurtherGivenNamesOrInitialsThereof" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="30"/-->
+			<xs:element name="HL7Suffix" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Prefix" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Degree" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="HL7NameTypeCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7NameRepresentationCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7NameContext" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="HL7NameValidityRange" type="nbs:HL7DRType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="53"/-->
+			<xs:element name="HL7NameAssemblyOrder" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7EffectiveDate" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="HL7ExpirationDate" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="HL7ProfessionalSuffix" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7XTNType">
+		<xs:sequence>
+			<xs:element name="HL7TelephoneNumber" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7TelecommunicationUseCode" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="HL7TelecommunicationEquipmentType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="HL7EmailAddress" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7CountryCode" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="HL7AreaCityCode" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="5"/-->
+			<xs:element name="HL7LocalNumber" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="9"/-->
+			<xs:element name="HL7Extension" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="5"/-->
+			<xs:element name="HL7AnyText" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="HL7ExtensionPrefix" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="HL7SpeedDialCode" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="HL7UnformattedTelephonenumber" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7NTEType">
+		<xs:sequence>
+			<xs:element name="HL7SetIDNTE" type="nbs:HL7SIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="HL7SourceOfComment" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="HL7Comment" type="nbs:HL7FTType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--maxLength="65536"/-->
+			<xs:element name="HL7CommentType" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="HL7ISType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="HL7DTType">
+		<xs:sequence>
+			<xs:element name="year" type="xs:integer" minOccurs="0"/>
+			<xs:element name="month" type="xs:integer" minOccurs="0"/>
+			<xs:element name="day" type="xs:integer" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7TSType">
+		<xs:sequence>
+			<xs:element name="year" type="xs:integer" minOccurs="0"/>
+			<xs:element name="month" type="xs:integer" minOccurs="0"/>
+			<xs:element name="day" type="xs:integer" minOccurs="0"/>
+			<xs:element name="hours" type="xs:integer" minOccurs="0"/>
+			<xs:element name="minutes" type="xs:integer" minOccurs="0"/>
+			<xs:element name="seconds" type="xs:integer" minOccurs="0"/>
+			<xs:element name="millis" type="xs:integer" minOccurs="0"/>
+			<xs:element name="gmtOffset" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="HL7FTType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="64000000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="HL7OSDType">
+		<xs:sequence>
+			<xs:element name="HL7SequenceResultsFlag" type="nbs:HL7IDType" minOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="HL7PlacerOrderNumberEntityIdentifier" type="nbs:HL7STType" minOccurs="1"/>
+			<!--maxLength="15"/-->
+			<xs:element name="HL7PlacerOrderNumberNamespaceID" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="HL7FillerOrderNumberEntityIdentifier" type="nbs:HL7STType" minOccurs="1"/>
+			<!--maxLength="15"/-->
+			<xs:element name="HL7FillerOrderNumberNamespaceID" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="HL7SequenceConditionValue" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="12"/-->
+			<xs:element name="HL7MaximumNumberOfRepeats" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="HL7PlacerOrderNumberUniversalID" type="nbs:HL7STType" minOccurs="1"/>
+			<!--maxLength="15"/-->
+			<xs:element name="HL7PlacerOrderNumberUniversalIDType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="HL7FillerOrderNumberUniversalID" type="nbs:HL7STType" minOccurs="1"/>
+			<!--maxLength="15"/-->
+			<xs:element name="HL7FillerOrderNumberUniversalIDType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7SADType">
+		<xs:sequence>
+			<xs:element name="HL7StreetOrMailingAddress" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="120"/-->
+			<xs:element name="HL7StreetName" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="50"/-->
+			<xs:element name="HL7DwellingNumber" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="12"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7MOType">
+		<xs:sequence>
+			<xs:element name="HL7Quantity" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="16"/-->
+			<xs:element name="HL7Denomination" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7MOCType">
+		<xs:sequence>
+			<xs:element name="HL7MonetaryAmount" type="nbs:HL7MOType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7ChargeCode" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7EIPType">
+		<xs:sequence>
+			<xs:element name="HL7PlacerAssignedIdentifier" type="nbs:HL7EIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="16"/-->
+			<xs:element name="HL7FillerAssignedIdentifier" type="nbs:HL7EIType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="3"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7SPSType">
+		<xs:sequence>
+			<xs:element name="HL7SpecimenSourceNameOrCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="HL7Additives" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="HL7SpecimenCollectionMethod" type="nbs:HL7TXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="200"/-->
+			<xs:element name="HL7BodySite" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="16"/-->
+			<xs:element name="HL7SiteModifier" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="HL7CollectionMethodModifierCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="HL7SpecimenRole" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7NDLType">
+		<xs:sequence>
+			<xs:element name="HL7Name" type="nbs:HL7CNNType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="406"/-->
+			<xs:element name="HL7StartDatetime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="HL7EndDatetime" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+			<xs:element name="HL7PointOfCare" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Room" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Bed" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Facility" type="nbs:HL7HDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="227"/-->
+			<xs:element name="HL7LocationStatus" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7PatientLocationType" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Building" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Floor" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7RPTType">
+		<xs:sequence>
+			<xs:element name="RepeatPatternCode" type="nbs:HL7CWEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="705"/-->
+			<xs:element name="CalendarAlignment" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="PhaseRangeBeginValue" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="PhaseRangeEndValue" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="PeriodQuantity" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="PeriodUnits" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="InstitutionSpecifiedTime" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+			<xs:element name="Event" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+			<xs:element name="EventOffsetQuantity" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="EventOffsetUnits" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="10"/-->
+			<xs:element name="GeneralTimingSpecification" type="nbs:HL7GTSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="200"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="HL7GTSType">
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:complexType name="HL7CNNType">
+		<xs:sequence>
+			<xs:element name="HL7IDNumber" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="15"/-->
+			<xs:element name="HL7FamilyName" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="50"/-->
+			<xs:element name="HL7GivenName" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="30"/-->
+			<xs:element name="HL7SecondAndFurtherGivenNamesOrInitialsThereof" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="30"/-->
+			<xs:element name="HL7Suffix" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Prefix" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7Degree" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="5"/-->
+			<xs:element name="HL7SourceTable" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="4"/-->
+			<xs:element name="HL7AssigningAuthorityNamespaceID" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="AssigningAuthorityUniversalID" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="199"/-->
+			<xs:element name="AssigningAuthorityUniversalIDType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="6"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7CPType">
+		<xs:sequence>
+			<xs:element name="HL7Price" type="nbs:HL7MOType" minOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="HL7PriceType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="2"/-->
+			<xs:element name="HL7FromValue" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="16"/-->
+			<xs:element name="HL7ToValue" type="nbs:HL7NMType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="16"/-->
+			<xs:element name="HL7RangeUnits" type="nbs:HL7CEType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="HL7RangeType" type="nbs:HL7IDType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="1"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7TMType">
+		<xs:sequence>
+			<xs:element name="hours" type="xs:integer" minOccurs="0"/>
+			<xs:element name="minutes" type="xs:integer" minOccurs="0"/>
+			<xs:element name="seconds" type="xs:integer" minOccurs="0"/>
+			<xs:element name="millis" type="xs:integer" minOccurs="0"/>
+			<xs:element name="gmtOffset" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7MSGType">
+		<xs:sequence>
+			<xs:element name="MessageCode" type="nbs:HL7IDType" minOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="TriggerEvent" type="nbs:HL7IDType" minOccurs="1"/>
+			<!--maxLength="3"/-->
+			<xs:element name="MessageStructure" type="nbs:HL7IDType" minOccurs="1"/>
+			<!--maxLength="7"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7PRLType">
+		<xs:sequence>
+			<xs:element name="ParentObservationIdentifier" type="nbs:HL7CEType" minOccurs="1"/>
+			<!--maxLength="483"/-->
+			<xs:element name="ParentObservationSubidentifier" type="nbs:HL7STType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="ParentObservationValueDescriptor" type="nbs:HL7TXType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="250"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HL7FCType">
+		<xs:sequence>
+			<xs:element name="FinancialClassCode" type="nbs:HL7ISType" minOccurs="1" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="EffectiveDate" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+		</xs:sequence>
+		<!--FC - financial class-->
+	</xs:complexType>
+	<xs:complexType name="HL7DLDType">
+		<xs:sequence>
+			<xs:element name="DischargeLocation" type="nbs:HL7ISType" minOccurs="1" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="EffectiveDate" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="26"/-->
+		</xs:sequence>
+		<!--FC - financial class-->
+	</xs:complexType>
+	<xs:complexType name="HL7PLNType">
+		<xs:sequence>
+			<xs:element name="IDNumber" type="nbs:HL7ISType" minOccurs="1" maxOccurs="1"/>
+			<!--maxLength="20"/-->
+			<xs:element name="TypeOfIDNumber" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+			<xs:element name="StateOtherQualifyingInformation" type="nbs:HL7ISType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="62"/-->
+			<xs:element name="ExpirationDate" type="nbs:HL7TSType" minOccurs="0" maxOccurs="1"/>
+			<!--maxLength="8"/-->
+		</xs:sequence>
+		<!--FC - financial class-->
+	</xs:complexType>
+	<xs:complexType name="HL7NumericType">
+		<xs:sequence>
+			<xs:element name="ComparatorCode" type="nbs:ComparatorCodeType" minOccurs="0"/>
+			<xs:element name="Value1">
+				<xs:simpleType>
+					<xs:restriction base="xs:float"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SeperatorCode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="10"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Value2" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:float"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Unit" type="nbs:CodedType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Container">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element name="HL7LabReport" type="nbs:HL7LabReportType"/>
+					<xs:sequence>
+						<xs:element name="Header" type="nbs:HeaderType"/>
+						<xs:element name="Case" type="nbs:CaseType"/>
+					</xs:sequence>
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

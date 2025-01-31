@@ -1,0 +1,319 @@
+<?xml version="1.0"?>
+<xsp:page xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" language="java" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+	</xsp:structure>
+	<xsp:logic><![CDATA[
+            LogUtils logger = new LogUtils((this.getClass()).getName());
+    ]]></xsp:logic>
+	<xsp:logic><![CDATA[
+     		String notificationsLink = NEDSSConstants.NND_NOTIFICATIONS_FOR_APPROVAL;
+     		String prgAreaInvest = NEDSSConstants.MY_PROGRAM_AREAS_INVESTIGATIONS;
+     		 
+    ]]></xsp:logic>
+	<xsp:logic><![CDATA[ 
+
+        private String getExtXSP() {
+
+		     String extXSP= (String)request.getAttribute(NEDSSConstants.HOME_PAGE_LDF+"extXSP");
+		     System.out.println("\n\n\n####extXSP is \n:" + extXSP);
+		     
+			return extXSP;
+        }
+
+        
+        /**
+         *  Gets a request attribute or a session attribute.
+         *  @param pName the name of the object to get.
+         *  @param pSession true to get the object from session
+         *  or false to get it from request.
+         *  @return the object, if found, or null if not found.
+         */
+        private Object getData(String pName, boolean pSession)
+        {
+            Object o = null;
+            if(pSession == true)
+            {
+                o = request.getSession().getAttribute(pName);
+            }
+            else
+            {
+                o = request.getAttribute(pName);
+            }
+            return o;
+        }
+
+        /**
+         *  Gets the user's full name.
+         *  @return the user's full name.
+         */
+        private String getUser()
+        {
+            //  Create return variable.
+            String s = "";
+            //  Get the security object.
+            NBSSecurityObj so = (NBSSecurityObj)getData("NBSSecurityObject", true);
+            if(so == null)
+            {
+                return s;
+            }
+            //  Get the user's full name.
+            s = so.getTheUserProfile().getTheUser().getFirstName() + " " + so.getTheUserProfile().getTheUser().getLastName();
+            //  Return value.
+            return s;
+        }
+
+    ]]></xsp:logic>
+	<content>
+		<tab>
+			<group>
+				<xsp:logic><![CDATA[
+
+					String notificationSize = (String)request.getAttribute(NEDSSConstants.NND_NOTIFICATIONS_FOR_APPROVAL + "Size");
+					
+					//Get the size of updated Notifications
+					String rejectedNotificationSize = (String)request.getAttribute(NEDSSConstants.NND_REJECTED_NOTIFICATIONS_FOR_APPROVAL + "Size");
+
+					String updatedNotificationSize = (String)request.getAttribute(NEDSSConstants.NND_UPDATED_NOTIFICATIONS_FOR_APPROVAL + "Size");
+
+					String newLabReportsForReviewCount = (String)request.getAttribute(NEDSSConstants.NEW_LAB_REPORTS_FOR_REVIEW + "Size");
+
+					String elrsNeedingProgramOrJursCount =  (String)request.getAttribute(NEDSSConstants.ELRS_NEEDING_PROGRAM_OR_JURISDICTION_ASSIGNMENT + "Size");
+
+					NBSSecurityObj so = (NBSSecurityObj)getData("NBSSecurityObject", true);
+
+					logger.info("Value of notificationSize is: " + notificationSize);
+
+					logger.info("Value of prgAreaInvestigationsSize is: " + newLabReportsForReviewCount );
+
+					logger.info("Value of prgAreaInvestigationsSize is: " + elrsNeedingProgramOrJursCount );
+					logger.debug("ERROR MESSAGE: " + so.getMessage());
+					int numOfRealizedRoles = so.getTheUserProfile().getTheRealizedRoleCollection().size();
+					logger.debug("NUMBER OF REALIZED ROLES FOR THIS USER IS: " + numOfRealizedRoles);
+					int notSizeAsInt = 0;
+					int notAuditSizeAsInt = 0;
+					int newLabReportsForReviewCountAsInt = 0;
+					int elrsNeedingProgramOrJursCountAsInt = 0;
+					int reviewSize = 0;
+					int rejectedNotifcationInt =0;
+
+					try
+					{
+						if(notificationSize!=null)
+						{
+							notSizeAsInt =Integer.parseInt(notificationSize);
+						}
+						
+						// Convert the String value to Integer value
+						if(rejectedNotificationSize != null)
+						{
+							rejectedNotifcationInt =Integer.parseInt(rejectedNotificationSize);
+							
+						}
+						// Convert the String value to Integer value
+						if(updatedNotificationSize != null)
+						{
+							notAuditSizeAsInt =Integer.parseInt(updatedNotificationSize);
+							
+						}
+						if(newLabReportsForReviewCount !=null)
+						{
+							newLabReportsForReviewCountAsInt = Integer.parseInt(newLabReportsForReviewCount );
+						}
+						if(elrsNeedingProgramOrJursCount !=null)
+						{
+							elrsNeedingProgramOrJursCountAsInt =Integer.parseInt(elrsNeedingProgramOrJursCount );
+						}
+					}
+					catch(Exception e)
+					{
+						logger.error("Error is: " + e);
+					}
+					if(notificationSize==null)
+					{
+						logger.debug("Notifications collection for taskList was returned as NULL");
+					}
+					if(notSizeAsInt >= 0 && so.getPermission(NBSBOLookup.NOTIFICATION, NBSOperationLookup.REVIEW))
+					{
+				 ]]></xsp:logic>
+				<line>
+					<element type="hyper-link">
+						<xsp:logic><![CDATA[
+								if( notSizeAsInt > 0 ) {
+							]]></xsp:logic>
+						<href>
+							<xsp:expr>request.getAttribute("NNDApprovalHref")</xsp:expr>
+						</href>
+						<text>
+							<xsp:expr>NEDSSConstants.NND_NOTIFICATIONS_FOR_APPROVAL</xsp:expr>
+							<xsp:expr>" (" + notSizeAsInt+")"</xsp:expr>
+						</text>
+						<xsp:logic><![CDATA[
+								} else {
+							]]></xsp:logic>
+						<text>
+							<xsp:expr>NEDSSConstants.NND_NOTIFICATIONS_FOR_APPROVAL</xsp:expr>
+							<xsp:expr>" (" + notSizeAsInt+")"</xsp:expr>
+						</text>
+						<xsp:logic><![CDATA[
+								}
+							]]></xsp:logic>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[
+					}
+					if(elrsNeedingProgramOrJursCountAsInt >= 0 &&((so.getPermission(NBSBOLookup.OBSERVATIONLABREPORT, NBSOperationLookup.ASSIGNSECURITY)) || (so.getPermission(NBSBOLookup.OBSERVATIONMORBIDITYREPORT, NBSOperationLookup.ASSIGNSECURITY))))
+						{
+						logger.debug("\n so.getPermission(NBSBOLookup.OBSERVATIONLABREPORT, NBSOperationLookup.ASSIGNSECURITY) " +so.getPermission(NBSBOLookup.OBSERVATIONLABREPORT, NBSOperationLookup.ASSIGNSECURITY));
+				]]></xsp:logic>
+				<line>
+					<element type="hyper-link">
+						<xsp:logic><![CDATA[
+							if( elrsNeedingProgramOrJursCountAsInt > 0 ) {
+							]]></xsp:logic>
+						<href>
+							<xsp:expr>request.getAttribute("ObsAssignHref")+"&amp;labReportsCount="+elrsNeedingProgramOrJursCountAsInt</xsp:expr>
+						</href>
+						<text>
+							<!--xsp:expr>NEDSSConstants.ELRS_NEEDING_PROGRAM_OR_JURISDICTION_ASSIGNMENT</xsp:expr-->
+							<xsp:expr>"Documents Requiring Security Assignment"</xsp:expr>
+							<xsp:expr>" (" + elrsNeedingProgramOrJursCountAsInt +")"</xsp:expr>
+						</text>
+						<xsp:logic><![CDATA[
+								} else {
+							]]></xsp:logic>
+						<text>
+							<!--xsp:expr>NEDSSConstants.ELRS_NEEDING_PROGRAM_OR_JURISDICTION_ASSIGNMENT</xsp:expr-->
+							<xsp:expr>" Documents Requiring Security Assignment "</xsp:expr>
+							<xsp:expr>" (" + elrsNeedingProgramOrJursCountAsInt +")"</xsp:expr>
+						</text>
+						<xsp:logic><![CDATA[
+								}
+							]]></xsp:logic>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[
+					}
+					if((elrsNeedingProgramOrJursCountAsInt >= 0) && ((so.getPermission(NBSBOLookup.OBSERVATIONLABREPORT, NBSOperationLookup.VIEW)) || (so.getPermission(NBSBOLookup.OBSERVATIONMORBIDITYREPORT, NBSOperationLookup.VIEW))))
+						{
+				]]></xsp:logic>
+				<line>
+					<element type="hyper-link">
+						<xsp:logic><![CDATA[
+								if( newLabReportsForReviewCountAsInt > 0 ) {
+								]]></xsp:logic>
+						<href>
+							<xsp:expr>request.getAttribute("ReviewHref")+"&amp;labReportsCount="+newLabReportsForReviewCountAsInt</xsp:expr>
+						</href>
+						<text>
+							<!--xsp:expr>NEDSSConstants.NEW_LAB_REPORTS_FOR_REVIEW</xsp:expr-->
+							<xsp:expr>" Documents Requiring Review "</xsp:expr>
+							<xsp:expr>" (" + newLabReportsForReviewCountAsInt +")"</xsp:expr>
+						</text>
+						<xsp:logic><![CDATA[
+								} else {
+							]]></xsp:logic>
+						<text>
+							<!--xsp:expr>NEDSSConstants.NEW_LAB_REPORTS_FOR_REVIEW</xsp:expr-->
+							<xsp:expr>" Documents Requiring Review "</xsp:expr>
+							<xsp:expr>" (" + newLabReportsForReviewCountAsInt +")"</xsp:expr>
+						</text>
+						<xsp:logic><![CDATA[
+								}
+							]]></xsp:logic>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[
+					}
+					if(rejectedNotifcationInt >= 0 && 
+					((so.getPermission(NBSBOLookup.NOTIFICATION, NBSOperationLookup.CREATENEEDSAPPROVAL) 
+					|| (so.getPermission(NBSBOLookup.NOTIFICATION, NBSOperationLookup.CREATE)))))
+					{
+				]]></xsp:logic>
+				<line>
+					<element type="hyper-link">
+						<xsp:logic><![CDATA[
+								if( rejectedNotifcationInt > 0 ) {
+							]]></xsp:logic>
+						<href>
+							<xsp:expr>request.getAttribute("NNDRejectedNotifications")</xsp:expr>
+						</href>
+						<text>
+							<xsp:expr>NEDSSConstants.NND_REJECTED_NOTIFICATIONS_FOR_APPROVAL</xsp:expr>
+							<xsp:expr>" (" + rejectedNotifcationInt +")"</xsp:expr>
+						</text>
+						<xsp:logic><![CDATA[
+								} else {
+							]]></xsp:logic>
+						<text>
+							<xsp:expr>NEDSSConstants.NND_REJECTED_NOTIFICATIONS_FOR_APPROVAL</xsp:expr>
+							<xsp:expr>" (" + rejectedNotifcationInt +")"</xsp:expr>
+						</text>
+						<xsp:logic><![CDATA[
+								}
+							]]></xsp:logic>
+					</element>
+				</line>
+				<!-- Rejected  Notifications Code End-->
+				<!-- Updated Notifications Code Start -->
+				<xsp:logic><![CDATA[
+					}
+					if(notAuditSizeAsInt >= 0 && so.getPermission(NBSBOLookup.NOTIFICATION, NBSOperationLookup.REVIEW))
+					{
+				]]></xsp:logic>
+				<line>
+					<element type="hyper-link">
+						<xsp:logic><![CDATA[
+								if( notAuditSizeAsInt > 0 ) {
+							]]></xsp:logic>
+						<href>
+							<xsp:expr>request.getAttribute("NNDUpdatedNotificationsAudit")</xsp:expr>
+						</href>
+						<text>
+							<xsp:expr>NEDSSConstants.NND_UPDATED_NOTIFICATIONS_FOR_APPROVAL</xsp:expr>
+							<xsp:expr>" (" + notAuditSizeAsInt+")"</xsp:expr>
+						</text>
+						<xsp:logic><![CDATA[
+								} else {
+							]]></xsp:logic>
+						<text>
+							<xsp:expr>NEDSSConstants.NND_UPDATED_NOTIFICATIONS_FOR_APPROVAL</xsp:expr>
+							<xsp:expr>" (" + notAuditSizeAsInt+")"</xsp:expr>
+						</text>
+						<xsp:logic><![CDATA[
+								}
+							]]></xsp:logic>
+					</element>
+				</line>
+				<!-- Updated Notifications Code End-->
+				<xsp:logic><![CDATA[
+					}
+					if(so.getMessage()!=null)
+					{
+						logger.debug("ERROR MESSAGE WAS NOT NULL");
+				]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<b>
+								<font color="red">*Important Note:  The reporting facility assigned to you has been inactivated.  
+									This will impact your Lab and Morbidity Report abilities.  Contact your administrator for assistance.</font>
+							</b>
+						</span>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[
+					}
+					]]></xsp:logic>
+				<util:include-expr>
+					<util:expr>
+						<xsp:expr>getExtXSP()</xsp:expr>
+					</util:expr>
+				</util:include-expr>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

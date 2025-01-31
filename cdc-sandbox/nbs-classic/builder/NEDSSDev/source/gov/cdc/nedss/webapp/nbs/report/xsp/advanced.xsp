@@ -1,0 +1,628 @@
+<?xml version="1.0"?>
+<!--DOCTYPE xsp:page SYSTEM "../../WEB-INF/xsp.dtd"-->
+<xsp:page xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:avr="http://www.cdc.gov/nedss/logicsheet/nedss/avr" language="java">
+	<nedss:import/>
+	<avr:import/>
+	<part>
+		<nedss:init/>
+		<nedss:SetHeaders/>
+		<parameters>
+			<parameter name="border">
+				<xsp:expr>strBorder</xsp:expr>
+			</parameter>
+			<parameter name="uids">
+				<xsp:expr>strUIDs</xsp:expr>
+			</parameter>
+			<parameter name="user">
+				<xsp:expr>strUser</xsp:expr>
+			</parameter>
+			<parameter name="usermode">
+				<xsp:expr>strUserMode</xsp:expr>
+			</parameter>
+			<parameter name="verbose">
+				<xsp:expr>strVerbose</xsp:expr>
+			</parameter>
+			<parameter name="title">Reports</parameter>
+		</parameters>
+		<avr:security/>
+		<xsp:logic><![CDATA[
+            String strSEC = "You must have permission to select filter criteria (private, public, template or reportingFacility) to view this page.";
+            if(booSECadvanced == false)
+            {
+                session.setAttribute("ErrorMessage", strSEC);
+                httpResponse.sendRedirect("error");
+            }
+        ]]></xsp:logic>
+		<xsp:logic><![CDATA[
+
+            //  Initialize variables for loops.
+            int intRecord = 0;
+            int intRecords = 0;
+            int intField = 0;
+            int intFields = 0;
+            String strUID = null;
+            String strDescription = null;
+
+            //  Get report title.
+            String strReportTitle = getReportTitle();
+
+            //  Get UIDs from the server.
+            String strDataSourceUID = (String)getData(rcu.DATASOURCE_UID, true);
+            String strReportUID = (String)getData(rcu.REPORT_UID, true);
+
+            //  Get data from the server.
+            String strNames = (String)getData(rcu.FILTERABLE_COLUMNS, true);
+            String strCriteria = (String)getData(rcu.CRITERIA_LIST, true);
+            String strSelectedColumns = (String)getData(rcu.SELECTED_COLUMNS, true);
+            
+            //Get all Filter Operators
+             String strAllFilterOperators = (String)getData(rcu.ALL_FILTER_OPERATORS, true);
+             
+             //Get all CodedValues
+             String strCodedValues = (String)getData(rcu.CODED_VALUES, true);
+
+
+            //  Parse the XML data into object trees.
+            ArrayList alNames= XMLRequestHelper.getTable(strNames);
+            ArrayList alCriteria = XMLRequestHelper.getTable(strCriteria);
+            ArrayList alSelectedColumns = XMLRequestHelper.getTable(strSelectedColumns);
+            ArrayList alCodedValues = XMLRequestHelper.getTable(strCodedValues);
+		  ArrayList al = null;
+
+
+            //  Find out whether this is a custom report or not and cache the flag.
+            boolean booCustom = isCustom();
+            
+            //For CustomReports, check if any basicFilters are entered.
+            String basicFiltersEntered = (String)getData(rcu.BASIC_FILTERS_ENTERED, true);
+		  boolean hasBasicFilters =  Boolean.valueOf(basicFiltersEntered).booleanValue();
+
+		 //For StandardReports to see if any basic Required Filters are not entered (to validate appropriately)
+		  String basicRequired =  (String)getData(rcu.BASIC_REQUIRED_ENTERED, true);
+		  boolean reqBasicFiltersEntered =  Boolean.valueOf(basicRequired).booleanValue();
+		  String anyBasicRequired = (String)getData(rcu.ANY_BASIC_REQUIRED, true);
+		  boolean anyBasicReq = Boolean.valueOf(anyBasicRequired).booleanValue();
+		  String isBasicDataVald = (String)getData(rcu.IS_BASICDATA_VALID, true);
+		  boolean isBasicDataValid = Boolean.valueOf(isBasicDataVald).booleanValue();
+
+        ]]></xsp:logic>
+		<head>
+			<nedss:InitializeSessionTimer frequency="1"/>
+			<script>
+				<nedss:GetConstants class="NEDSSConstants"/>
+			</script>
+			<script>
+				<nedss:GetConstants class="ReportConstantUtil"/>
+			</script>
+			<scriptfile>
+                avr.advanced.js
+            </scriptfile>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alNames, "aNames")</xsp:expr>
+			</script>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alCriteria, "aCriteria")</xsp:expr>
+			</script>
+			<script>
+				<xsp:expr>strAllFilterOperators</xsp:expr>
+			</script>
+			<xsp:logic><![CDATA[
+                if(booCustom == true)
+                {
+            ]]></xsp:logic>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alSelectedColumns, "aSelectedColumns")</xsp:expr>
+			</script>
+			<xsp:logic><![CDATA[
+                }
+            ]]></xsp:logic>
+		</head>
+		<toolbarDef>
+			<toolbarLeft>
+				<nedss:IfSHOW_DEBUG_BUTTON>
+					<nedss:IfServer>
+						<toolbarButton id="id_debug" name="Debug">
+							<event name="onclick">
+                                exportCriteria();
+                                OpenDebugWindow();
+                            </event>
+						</toolbarButton>
+					</nedss:IfServer>
+				</nedss:IfSHOW_DEBUG_BUTTON>
+			</toolbarLeft>
+			<toolbarRight>
+				<xsp:logic><![CDATA[
+                    if(booSEC171 == true)
+                    {
+                ]]></xsp:logic>
+				<toolbarButton id="id_run" name="Run">
+					<event name="onclick">
+					HideErrors();
+                         exportCriteria();
+                         var varMSG = ""; 
+                        <xsp:logic><![CDATA[
+                            if(!reqBasicFiltersEntered || !isBasicDataValid)
+                            {
+                        	]]></xsp:logic>
+		                    exportCriteria();
+		                    document.frm.id_mode.value = "edit";
+		                    document.frm.id_ObjectType.value = REPORT;
+		                    document.frm.id_OperationType.value = REPORT_BASIC;
+		                    post();								
+					<xsp:logic>}</xsp:logic>
+						<xsp:logic><![CDATA[
+                            if(!anyBasicReq)
+                            {
+						if(!hasBasicFilters) {
+                        	]]></xsp:logic>
+		                        if(aCriteria.length == 0) 
+		                        {
+								varMSG = "A minimum of one filter must be selected from either the Basic or Advanced Filter Tabs.";
+		                        }
+                        <xsp:logic><![CDATA[
+
+                        		}} if(booCustom == true && isBasicDataValid) {
+                        ]]></xsp:logic>
+                        if(!hasColumns())
+                        {	
+                        		if(varMSG.length != 0) varMSG+="|";
+                            	varMSG+= "Please select at least one column to display on this report.";
+                        }
+                        <xsp:logic>}</xsp:logic>
+                        
+					if(varMSG.length != 0)  {
+	                         ShowTopError(varMSG);
+	                         return;
+	                    }     
+	                    <xsp:logic><![CDATA[
+						if(reqBasicFiltersEntered && isBasicDataValid) {
+					]]></xsp:logic>
+	                        document.frm.id_mode.value = "edit";
+	                        document.frm.id_ObjectType.value = REPORT;
+	                        document.frm.id_OperationType.value = RUN_PAGE;
+	                        post();
+	                    <xsp:logic>}</xsp:logic>
+					</event>
+				</toolbarButton>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<xsp:logic><![CDATA[
+                    if(booSEC172 == true)
+                    {
+                ]]></xsp:logic>
+				<toolbarButton id="id_export" name="Export">
+					<event name="onclick">
+					HideErrors();
+                         exportCriteria();
+                         var varMSG = ""; 
+                        <xsp:logic><![CDATA[
+                            if(!reqBasicFiltersEntered || !isBasicDataValid)
+                            {
+                        	]]></xsp:logic>
+		                    exportCriteria();
+		                    document.frm.id_mode.value = "edit";
+		                    document.frm.id_ObjectType.value = REPORT;
+		                    document.frm.id_OperationType.value = REPORT_BASIC;
+		                    post();								
+					<xsp:logic>}</xsp:logic>
+						<xsp:logic><![CDATA[
+                            if(!anyBasicReq)
+                            {
+						if(!hasBasicFilters) {
+                        	]]></xsp:logic>
+		                        if(aCriteria.length == 0) 
+		                        {
+								varMSG = "A minimum of one filter must be selected from either the Basic or Advanced Filter Tabs.";
+		                        }
+                        <xsp:logic><![CDATA[
+                        		}} if(booCustom == true && isBasicDataValid) {
+                        ]]></xsp:logic>
+                        if(!hasColumns())
+                        {	
+                        		if(varMSG.length != 0) varMSG+="|";
+                            	varMSG+= "Please select at least one column to export for this report.";
+                        }
+                        <xsp:logic>}</xsp:logic>
+                        
+					if(varMSG.length != 0)  {
+	                         ShowTopError(varMSG);
+	                         return;
+	                    }     
+	                    <xsp:logic><![CDATA[
+						if(reqBasicFiltersEntered && isBasicDataValid) {
+					]]></xsp:logic>
+	                        document.frm.id_mode.value = "edit";
+	                        document.frm.id_ObjectType.value = REPORT;
+	                        document.frm.id_OperationType.value = EXPORT_REPORT;
+	                        post();
+	                    <xsp:logic>}</xsp:logic>
+					</event>
+				</toolbarButton>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<toolbarButton id="id_cancel" name="Cancel">
+					<event name="onclick">
+                        exportCriteria();
+                        document.frm.id_mode.value = "edit";
+                        document.frm.id_ObjectType.value = REPORT;
+                        document.frm.id_OperationType.value = REPORT_LIST;
+                        post();
+                    </event>
+				</toolbarButton>
+			</toolbarRight>
+		</toolbarDef>
+		<tabDef active="id_advanced">
+			<tab id="id_basic" name="Basic Filter">
+				<event name="onclick">
+                    exportCriteria();
+                    document.frm.id_mode.value = "edit";
+                    document.frm.id_ObjectType.value = REPORT;
+                    document.frm.id_OperationType.value = REPORT_BASIC;
+                    post();
+                </event>
+			</tab>
+			<tab id="id_advanced" name="Advanced Filter">
+				<event name="onclick">
+                    exportCriteria();
+                    document.frm.id_mode.value = "edit";
+                    document.frm.id_ObjectType.value = REPORT;
+                    document.frm.id_OperationType.value = REPORT_ADVANCED;
+                    post();
+                </event>
+			</tab>
+			<xsp:logic><![CDATA[
+                if(booCustom == true)
+                {
+            ]]></xsp:logic>
+			<tab id="id_column" name="Column Selection">
+				<event name="onclick">
+	                    exportCriteria();
+	                    document.frm.id_mode.value = "edit";
+	                    document.frm.id_ObjectType.value = REPORT;
+	                    document.frm.id_OperationType.value = REPORT_COLUMN;
+	                    post();
+	                </event>
+			</tab>
+			<xsp:logic><![CDATA[
+                }
+            ]]></xsp:logic>
+		</tabDef>
+		<body>
+			<part>
+				<attributes>
+					<style>nedss</style>
+				</attributes>
+				<event name="onload">
+                    aNames.sort(sortByTitle);
+                    loadValueTypes();
+                    importNames();
+                    reloadOperators();
+                    importCriteria();
+                </event>
+				<nedss:CheckSessionTimer/>
+			</part>
+			<section>
+				<part>
+					<attributes>
+						<id>HiddenFields</id>
+						<name/>
+						<linked>false</linked>
+						<width>1</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column display="Hidden">
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.DATASOURCE_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.DATASOURCE_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strDataSourceUID</xsp:expr>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.REPORT_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.REPORT_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strReportUID</xsp:expr>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.CRITERIA</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.CRITERIA</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strCriteria</xsp:expr>
+							</xsp:element>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<linkbar>
+				<ids>
+                </ids>
+				<hyperlinks>
+                </hyperlinks>
+			</linkbar>
+			<toolbar location="top"/>
+			<errorbar/>
+			<tabs location="top"/>
+			<section>
+				<part>
+					<attributes>
+						<id>id_Proxy</id>
+						<name/>
+						<linked>false</linked>
+						<width>1</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column display="Invisible" align="left" width="2">
+							<iframe id="id_ProxyFrame" name="proxy" align="left" frameborder="0" height="1" scrolling="no" url="proxy" width="620"/>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<section>
+				<part>
+					<attributes>
+						<id>id_Reports</id>
+						<name>
+							<xsp:expr>strReportTitle</xsp:expr>
+						</name>
+						<linked>false</linked>
+						<width>4</width>
+					</attributes>
+				</part>
+				<subsection name="Statements" line="true">
+					<row>
+						<column width="1">
+							<label ref="id_name" name="Field:"/>
+						</column>
+						<column width="1">
+							<label ref="id_operator" name="Logic:"/>
+						</column>
+						<column width="1">
+							<label ref="id_value" name="Value:"/>
+						</column>
+						<column width="1">
+							<empty/>
+						</column>
+					</row>
+					<row>
+						<column width="1">
+							<combobox id="id_name" name="name" length="30">
+								<xsp:attribute name="error">true</xsp:attribute>
+								<event name="onchange">                                                                       
+                                    reloadOperators();                                
+                                    loadValueTypes();
+                                    document.frm.id_value.value = "";
+                                  	 document.frm.id_value2.value = "";
+                                </event>
+							</combobox>
+						</column>
+						<column width="1">
+							<combobox id="id_operator" name="operator" length="16">
+								<event name="onchange">
+							reloadValueTypes();
+							var selectedFld = document.getElementById("id_name").value;
+							var selectedOpr = document.getElementById("id_operator").value;
+							var fldDataType = getDataType(selectedFld);
+							var codesetNm  = getCodeSet(selectedFld);
+							var codeOrDesc = getCodeOrDesc(selectedFld);
+							if((fldDataType=='CODED') &amp;&amp; (selectedOpr=='EQ' || selectedOpr =='NE' ) ) {
+	                                    var d = window.frames[0].document;
+	                                    var f = d.forms[0];
+	                                    varInput = d.getElementById("id_ProxyInput");
+	                                    varOutput = d.getElementById("id_ProxyOutput");
+	                                    varMode = d.getElementById("id_mode");
+	                                    varObjectType = d.getElementById("id_ObjectType");
+	                                    varOperationType = d.getElementById("id_OperationType");                                   
+	                                    varInput.value = selectedFld+"|"+codesetNm+"|"+codeOrDesc;                                   
+	                                    varOutput.value = "";
+	                                    varMode.value = "edit";
+	                                    varObjectType.value = REPORT;
+	                                    varOperationType.value = GET_CODEDVALUES;
+	                                    f.action = "/nbs/nfc";
+	                                    f.target = "_self";
+	                                    f.submit(); 	
+	                                    document.frm.id_operator1.focus();
+
+							} else {
+								document.getElementById("id_operator1").className="none";
+									if(selectedOpr != 'IN' &amp;&amp; selectedOpr != 'NN') {
+										document.getElementById("id_value").disabled=false;
+										document.getElementById("id_value").focus();
+									} else {
+										document.getElementById("id_value").hideFocus=true;
+										document.getElementById("id_value").disabled=true;
+									}								
+							}
+                            	</event>
+							</combobox>
+						</column>
+						<column width="2" class="none">
+							<textbox id="id_value" name="value" size="10" max="255">
+								<event name="onkeydown">
+                                    return do_id_value_onkeydown(_this);
+                                </event>
+								<event name="onkeyup">
+                                    return do_id_value_onkeyup(_this);
+                                </event>
+								<event name="onkeypress">
+                                    return do_id_value_onkeypress(_this);
+                                </event>
+							</textbox>
+							<text/>
+							<text id="id_between" style="font-weight:bold">and</text>
+							<text/>
+							<textbox id="id_value2" name="value2" size="10" max="255">
+								<event name="onkeydown">
+                                    return do_id_value_onkeydown(_this);
+                                </event>
+								<event name="onkeyup">
+                                    return do_id_value_onkeyup(_this);
+                                </event>
+								<event name="onkeypress">
+                                    return do_id_value_onkeypress(_this);
+                                </event>
+							</textbox>
+							<xsp:element name="listbox">
+								<xsp:attribute name="id">id_operator1</xsp:attribute>
+								<xsp:attribute name="name">operator1</xsp:attribute>
+								<xsp:attribute name="type">multi</xsp:attribute>
+								<xsp:attribute name="width">300</xsp:attribute>
+								<options/>
+							</xsp:element>
+						</column>
+					</row>
+					<row>
+						<column width="2">
+							<empty/>
+						</column>
+						<column width="2">
+							<button id="id_insert" name="Insert">
+								<event name="onclick">
+                                    do_id_insert_onclick();
+                                </event>
+							</button>
+						</column>
+					</row>
+				</subsection>
+				<subsection name="Connectors" line="true">
+					<row>
+						<column width="4">
+							<text>
+                                Click on a button to start or end parenthetical statements
+                                and/or click a connector button to include or except statements.
+                            </text>
+						</column>
+					</row>
+					<row>
+						<column align="center" width="4">
+							<graphic id="id_open" name="imgOpen" url="list_paren_left.jpg" tooltip="Open Parentheses" width="40" height="25">
+								<event name="onclick">
+                                    insertOperator("(");
+                                </event>
+							</graphic>
+							<empty/>
+							<graphic id="id_close" name="imgClose" url="list_paren_right.jpg" tooltip="Close Parentheses" width="40" height="25">
+								<event name="onclick">
+                                    insertOperator(")");
+                                </event>
+							</graphic>
+							<empty/>
+							<graphic id="id_and" name="imgAnd" url="list_and.jpg" tooltip="AND" width="40" height="25">
+								<event name="onclick">
+                                    insertOperator("AND");
+                                </event>
+							</graphic>
+							<empty/>
+							<graphic id="id_or" name="imgOr" url="list_or.jpg" tooltip="OR" width="40" height="25">
+								<event name="onclick">
+                                    insertOperator("OR");
+                                </event>
+							</graphic>
+						</column>
+					</row>
+				</subsection>
+				<subsection name="Advanced Criteria List" line="true">
+					<row>
+						<column width="4">
+							<text id="id_criteria_help">
+                                Click one or more filters in the text area below to move them
+                                up or down or to remove them from the Advanced Filter list.
+                            </text>
+						</column>
+					</row>
+					<row>
+						<column width="4">
+							<empty/>
+						</column>
+					</row>
+					<row>
+						<column width="4">
+							<label ref="id_CriteriaList_list" name="Basic Filters selected plus:"/>
+						</column>
+					</row>
+					<row>
+						<column width="3">
+							<xsp:element name="listbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.CRITERIA</xsp:expr>_list</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.CRITERIA</xsp:expr>_list</xsp:attribute>
+								<xsp:attribute name="type">single</xsp:attribute>
+								<xsp:attribute name="size">10</xsp:attribute>
+								<xsp:attribute name="width">530</xsp:attribute>
+								<xsp:attribute name="blank">true</xsp:attribute>
+							</xsp:element>
+						</column>
+						<column align="center" width="1">
+							<grid id="id_move">
+								<row>
+									<column align="center" width="1">
+										<graphic id="id_MoveUp" name="imgMoveUp" url="list_move_up.jpg" tooltip="Move Up" width="24" height="25">
+											<event name="onclick">
+                                                do_id_MoveUp_onclick();
+                                            </event>
+										</graphic>
+									</column>
+								</row>
+								<row>
+									<column align="center" width="1">
+										<graphic id="id_Remove" name="imgRemove" url="list_remove.jpg" tooltip="Remove" width="24" height="25">
+											<event name="onclick">
+                                                removeCriteria();
+                                            </event>
+										</graphic>
+									</column>
+								</row>
+								<row>
+									<column align="center" width="1">
+										<graphic id="id_RemoveAll" name="imgRemoveAll" url="list_remove_all.jpg" tooltip="Remove All" width="24" height="25">
+											<event name="onclick">
+                                                removeAllCriteria();
+                                            </event>
+										</graphic>
+									</column>
+								</row>
+								<row>
+									<column align="center" width="1">
+										<graphic id="id_MoveDown" name="imgMoveDown" url="list_move_down.jpg" tooltip="Move Down" width="24" height="25">
+											<event name="onclick">
+                                                do_id_MoveDown_onclick();
+                                            </event>
+										</graphic>
+									</column>
+								</row>
+							</grid>
+						</column>
+					</row>
+				</subsection>
+				<subsection name="Current WHERE clause" line="true">
+					<row>
+						<column width="4">
+							<label ref="id_where" name="Basic Filters selected plus:"/>
+						</column>
+					</row>
+					<row>
+						<column width="4">
+							<textarea id="id_where" name="where" rows="4" cols="74" enabled="false">
+                                .
+                            </textarea>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<toolbar location="bottom"/>
+		</body>
+	</part>
+</xsp:page>

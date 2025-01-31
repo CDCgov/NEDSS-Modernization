@@ -1,0 +1,130 @@
+package gov.cdc.nedss.webapp.nbs.form.pam;
+
+import gov.cdc.nedss.webapp.nbs.form.pam.FieldState;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author habraham2
+ *
+ */
+public class FormField {
+
+	private Object defaultValue;
+	private Object value;
+	private Object fieldId;
+	private Object fieldType;
+	private ArrayList<Object> errorMessage = new ArrayList<Object> ();
+	private Integer tabId;
+	private String codeSetNm;
+	private String label;
+	private String tooltip;
+	private String errorStyleClass;
+	private String questionRequiredNnd;
+	private String fieldAutoCompId;
+	private String fieldAutoCompBtn;
+	private Long nbsUiMetadataUid;
+	private FieldState state = new FieldState();
+	ArrayList<Object> aList = new ArrayList<Object>();
+	
+	public Object getDefaultValue() {
+		return defaultValue;
+	}
+	public void setDefaultValue(Object defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+	public Object getValue() {
+		return value;
+	}
+	public void setValue(Object value) {
+		this.value = value;
+	}
+	public FieldState getState() {
+		return state;
+	}
+	public void setState(FieldState state) {
+		this.state = state;
+	}
+	public Object getFieldId() {
+		return fieldId;
+	}
+	public void setFieldId(Object fieldId) {
+		this.fieldId = fieldId;
+	}
+	public Object getFieldType() {
+		return fieldType;
+	}
+	public void setFieldType(Object fieldType) {
+		this.fieldType = fieldType;
+	}
+	public Integer getTabId() {
+		return tabId;
+	}
+	public void setTabId(Integer tabId) {
+		this.tabId = tabId;
+	}
+	public String getLabel() {
+		return label;
+	}
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	public String getTooltip() {
+		return tooltip;
+	}
+	public void setTooltip(String tooltip) {
+		this.tooltip = tooltip;
+	}
+	public String getCodeSetNm() {
+		return codeSetNm;
+	}
+	public void setCodeSetNm(String codeSetNm) {
+		this.codeSetNm = codeSetNm;
+	}
+	public String getErrorStyleClass() {
+		return errorStyleClass;
+	}
+	public void setErrorStyleClass(String errorStyleClass) {
+		this.errorStyleClass = errorStyleClass;
+	}
+	public void setErrorMessage(ArrayList<Object> errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+	public ArrayList<Object> getErrorMessage() {
+		return errorMessage;
+	}
+	public String getQuestionRequiredNnd() {
+		return questionRequiredNnd;
+	}
+	public void setQuestionRequiredNnd(String questionRequiredNnd) {
+		this.questionRequiredNnd = questionRequiredNnd;
+	}
+	public String getFieldAutoCompId() {
+		return fieldAutoCompId;
+	}
+	public void setFieldAutoCompId(String fieldAutoCompId) {
+		this.fieldAutoCompId = fieldAutoCompId;
+	}
+	public String getFieldAutoCompBtn() {
+		return fieldAutoCompBtn;
+	}
+	public void setFieldAutoCompBtn(String fieldAutoCompBtn) {
+		this.fieldAutoCompBtn = fieldAutoCompBtn;
+	}
+	public Long getNbsUiMetadataUid() {
+		return nbsUiMetadataUid;
+	}
+	public void setNbsUiMetadataUid(Long nbsUiMetadataUid) {
+		this.nbsUiMetadataUid = nbsUiMetadataUid;
+	}
+	public ArrayList<Object> getAList() {
+		return aList;
+	}
+	public void setAList(ArrayList<Object> list) {
+		aList = list;
+	}
+
+
+
+}

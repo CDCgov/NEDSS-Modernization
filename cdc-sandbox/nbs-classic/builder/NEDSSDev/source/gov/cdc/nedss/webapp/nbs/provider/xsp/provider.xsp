@@ -1,0 +1,676 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.action.person.util.PersonUtil</xsp:include>
+		<xsp:include>gov.cdc.nedss.ldf.subform.dt.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<element name="ContextAction" type="hidden">
+			<value>
+				<xsp-request:get-attribute name="ContextAction"/>
+			</value>
+		</element>
+		<xsp:logic><![CDATA[   
+		
+			
+			String typeOfAction = request.getParameter("ContextAction");   		
+			String test = (String)request.getAttribute("addButtonHref");
+			String sCurrTask = (String)request.getAttribute("sCurrTask");
+			String submitStayOnError =  (String)request.getAttribute("SubmitStayOnError");
+			if(submitStayOnError == null)
+			submitStayOnError = " ";
+			if(typeOfAction == null)
+			   typeOfAction = " ";
+			
+			
+			
+
+			
+            //begin ldf   
+              String previewXSP= (String)request.getAttribute("previewXSP");			
+		if(previewXSP==null)
+				previewXSP="<null></null>";
+		String extXSP= (String)request.getAttribute(NEDSSConstants.PROVIDER_LDF+"extXSP");
+		if (extXSP == null)
+		    extXSP = "<group></group>";
+		//System.out.println("\n\n\n####extXSP is \n:" + extXSP);
+		//end ldf
+		String sfValidationXSP = request.getAttribute("subformValidations") == null ? "<group></group>" : (String) request.getAttribute("subformValidations");
+
+		]]></xsp:logic>
+		<id-bar>
+			<id name="Provider ID" label="Provider ID">
+				<xsp-request:get-attribute name="personLocalID"/>
+			</id>
+		</id-bar>
+		<xsp:logic><![CDATA[   
+			
+				if ( sCurrTask != null && (sCurrTask.equals("ViewProvider1")))  { ]]></xsp:logic>
+		<link-bar>
+			<link name="Return to Search Results">
+				<xsp-request:get-attribute name="returnToSearchResultsHref"/>
+			</link>
+		</link-bar>
+		<xsp:logic>
+				}
+		</xsp:logic>
+		<link-bar/>
+		<button-bar>
+			<xsp:logic><![CDATA[   
+			
+				if((typeOfAction != null &&  typeOfAction.equals("Add"))||submitStayOnError.equals("AddProvider"))  { ]]></xsp:logic>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="submitButton"/>
+				</xsp:attribute>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="cancelButtonHref"/>&amp;providerUID=<xsp-request:get-parameter name="providerUID"/>');</javascript-action>
+			</right>
+			<xsp:logic>
+				}	else if (typeOfAction.equals("Edit")||submitStayOnError.equals("EditProvider"))	{
+			</xsp:logic>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="submitButton"/>
+				</xsp:attribute>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="cancelButtonHref"/>&amp;providerUID=<xsp-request:get-parameter name="providerUID"/>');</javascript-action>
+			</right>
+			<xsp:logic>}
+                
+				else if(request.getAttribute("err111")!=null)	{
+			</xsp:logic>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="submitButton"/>
+				</xsp:attribute>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="cancelButtonHref"/>&amp;uid=<xsp-request:get-parameter name="providerUID"/>');</javascript-action>
+			</right>
+			<xsp:logic>
+				}	else	{
+			</xsp:logic>
+			<!--<left>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="fileButton"/>
+				</xsp:attribute>
+				<label>View File</label>
+				<javascript-action>getPage('/nedss/loadWorkup.do?OperationType=view&amp;uid=<xsp-request:get-attribute name="organizationUID"/>');</javascript-action>
+			</left>-->
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="editButton"/>
+				</xsp:attribute>
+				<label>Edit</label>
+				<!--<javascript-action>getPage('/nedss/OrganizationEdit?type=edit&amp;ObjectType=<xsp:expr>NEDSSConstants.ORGANIZATION</xsp:expr>&amp;OperationType=<xsp:expr>NEDSSConstants.ORGANIZATION_EDIT</xsp:expr>');</javascript-action>-->
+				<javascript-action>getPage('<xsp-request:get-attribute name="editButtonHref"/>&amp;providerUID=<xsp-request:get-attribute name="providerUID"/>');</javascript-action>
+			</right>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="addButton"/>
+				</xsp:attribute>
+				<label>Add</label>
+				<javascript-action>getPage('<xsp-request:get-attribute name="addButtonHref"/>&amp;providerUID=<xsp-request:get-attribute name="providerUID"/>');</javascript-action>
+			</right>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="deleteButton"/>
+				</xsp:attribute>
+				<label>Inactivate</label>
+				<javascript-action>promptForm('<xsp-request:get-attribute name="deleteButtonHref"/>&amp;providerUID=<xsp-request:get-attribute name="providerUID"/>','If you continue with the Inactivate action, you will not be able to view or access the Provider data. Select OK to continue, or cancel to not continue');</javascript-action>
+			</right>
+			<xsp:logic>}</xsp:logic>
+		</button-bar>
+		<xsp:logic>
+			String customJavaScript= (String)request.getAttribute("customJavaScript");
+			String customJavaScriptPRO= (String)request.getAttribute(NEDSSConstants.PROVIDER_LDF+ "customJavaScript");
+		</xsp:logic>
+		<javascript-files>
+			<insert>
+				<xsp:expr>customJavaScript</xsp:expr>
+			</insert>
+			<insert>
+				<xsp:expr>customJavaScriptPRO</xsp:expr>
+			</insert>
+			<import>ProviderSpecific.js</import>
+		</javascript-files>
+		<tab name="Provider">
+			<nedss:writeErrorMessages/>
+			<group>
+				<!--		struts specific		-->
+				<line>
+					<element name="ContextAction" type="hidden">
+						<xsp:logic>
+		 		 		 		 		 		 if(request.getAttribute("ContextAction") != null){
+		 		 		 		 		 		 </xsp:logic>
+						<value>
+							<xsp-request:get-attribute name="ContextAction"/>
+						</value>
+						<xsp:logic>
+		 		 		 		 		 		 }else{
+		 		 		 		 		 		 
+		 		 		 		 		 </xsp:logic>
+						<value>
+							<xsp-request:get-parameter name="ContextAction"/>
+						</value>
+						<xsp:logic>
+		 		 		 		 		 		 
+
+		 		 		 		 		 		 }
+		 		 		 		 		 </xsp:logic>
+					</element>
+				</line>
+				<!--		struts specific		-->
+			</group>
+			<xsp:logic>
+		 		  if ( typeOfAction != null)
+		 		 	{
+		 		  if(typeOfAction.startsWith("Edit") || request.getAttribute("editErr") != null )
+		 		 		{
+     		 		 </xsp:logic>
+			<group>
+				<line>
+					<element align-label="left" label="[-r-nc] *Indicates a required field"/>
+				</line>
+				<line>
+					<element align-label="left" label="[-r-nc] *Reason for Edit"/>
+				</line>
+				<!--element type="raw">
+						<span>
+							<br/>
+							<font class="boldTenArial">
+								<p align="left">
+									<b>*Indicates a required field<br/>*Reason for Edit:</b>
+								</p>
+							</font>
+						</span>
+					</element>
+				</line-->
+				<line>
+					<element name="tba" type="radio">
+						<options layout="vertical">
+							<option align-label="left" label="[-r-nc] Typographical error correction or additional information" subText="[-nb] If you choose this option the information  will be overwritten." value="c"/>
+							<option align-label="left" label="[-r-nc] A change to existing information for non typographical reasons" subText="[-nb] If you choose this option a new Provider will be created." value="n"/>
+						</options>
+					</element>
+				</line>
+			</group>
+			<xsp:logic>
+                   			}
+                		}
+               </xsp:logic>
+			<group name="Administrative Information">
+				<line>
+					<element name="quickCodeIdDT.rootExtensionTxt" type="text" label="Quick Code" maxlength="10" size="10" id="test">
+						<value>
+							<xsp-request:get-attribute name="quickCode"/>
+						</value>
+						<validation type="reg-expr" error-code="ERR104" name="Quick Code">
+							<pattern><![CDATA[^([a-zA-Z0-9-])*$]]></pattern>
+						</validation>
+						<!--validation type="quickCd" name="Quick Code"/-->
+					</element>
+				</line>
+				<xsp:logic>
+				 	
+				  	if( request.getAttribute("err111")!=null)
+				  		{
+				</xsp:logic>
+				<line>
+					<element type="join">
+						<line>
+							<element label="[-r-nc] Quick Code must be a unique Code. The code you have entered already exists. Please enter a different code and try again"/>
+						</line>
+					</element>
+				</line>
+				<xsp:logic>
+				  		}
+				</xsp:logic>
+				<line>
+					<element name="quickCodeHide" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="quickCode"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="rolesList" type="select" label="Role" size="5">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="roleSecurity"/>
+						</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>RL_TYPE_PRV</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="roleList"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="provider.thePersonDT.description" type="textarea" label="General Comments" maxlength="1000">
+						<validation type="lengthLimit" fieldLength="1000" name="General Comments"/>
+						<value>
+							<xsp-request:get-attribute name="description"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<group name="Name">
+				<line>
+					<element name="provider.nmPrefix" type="select" label="Prefix" length="10">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>P_NM_PFX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="prefix"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="provider.lastNm" type="text" label="Last Name">
+						<header>Last</header>
+						<xsp-request:get-attribute name="lastName"/>
+						<value>
+							<xsp-request:get-attribute name="lastNameOne"/>
+						</value>
+					</element>
+					<element name="provider.firstNm" type="text" label="First Name">
+						<header>First</header>
+						<value>
+							<xsp-request:get-attribute name="firstNameOne"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="provider.middleNm" type="text" label="Middle Name">
+						<header>Middle</header>
+						<value>
+							<xsp-request:get-attribute name="middleName"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="provider.nmSuffix" type="select" label="Suffix" length="15">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>P_NM_SFX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="suffix"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="provider.nmDegree" type="select" label="Degree" length="3">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>P_NM_DEG</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="degree"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<group name="Identification Information">
+				<line>
+					<element name="Identification" type="batch-entry">
+						<value>
+							<xsp-request:get-attribute name="ids"/>
+						</value>
+						<line>
+							<element type="conditional-entry" name="provider.entityIdDT_s[i].typeCdc">
+								<controller name="provider.entityIdDT_s[i].typeCd" type="select" label="Type" trigger="OTH" exclude="SS" length="31">
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>EI_TYPE_PRV</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<validation type="required" name="Type"/>
+									<header>Type</header>
+									<value>
+										<xsp-request:get-attribute name="typeOne"/>
+									</value>
+								</controller>
+								<line>
+									<element/>
+									<element/>
+									<element/>
+									<element name="provider.entityIdDT_s[i].typeDescTxt" type="text" label="Description" size="36" indented="yes" align-label="right"/>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element name="provider.entityIdDT_s[i].assigningAuthorityCd" type="conditional-entry" label="Assigning Authority">
+								<controller name="provider.entityIdDT_s[i].assigningAuthorityCd" type="select" label="Assigning Authority" trigger="OTH" exclude="SS" length="12">
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>EI_AUTH_PRV</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<header>Authority</header>
+								</controller>
+								<line>
+									<element/>
+									<element/>
+									<element/>
+									<element name="provider.entityIdDT_s[i].assigningAuthorityDescTxt" type="text" label="Description" size="36" indented="yes" align-label="right"/>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element name="provider.entityIdDT_s[i].rootExtensionTxt" type="text" label="ID Value">
+								<validation type="acctIdSearchCheck" nameRef="provider.entityIdDT_s[i].typeCd" name="ID Value">
+									<required/>
+								</validation>
+								<header>Value</header>
+								<value>
+									<xsp-request:get-attribute name="idValueOne"/>
+								</value>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element name="provider.entityIdDT_s[i].statusCd" type="hidden"/>
+							<element name="provider.entityIdDT_s[i].entityIdSeq" type="hidden"/>
+							<element name="provider.entityIdDT_s[i].entityUid" type="hidden"/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Address Information">
+				<line>
+					<element name="defaultStateFlagEx" type="hidden" label="" default="">
+						<value>
+							<xsp-request:get-attribute name="defaultStateFlag"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="defaultState" type="hidden" label="">
+						<value>
+							<xsp:expr>PersonUtil.getDefaultStateCd()</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="Address" type="batch-entry">
+						<value>
+							<xsp-request:get-attribute name="addresses"/>
+						</value>
+						<line>
+							<element name="address[i].useCd" type="select" label="Use" length="20">
+								<header>Use</header>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>EL_USE_PST_PRV</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<validation type="required" name="Use"/>
+							</element>
+						</line>
+						<line>
+							<element type="conditional-entry" name="address[i].cd">
+								<controller name="address[i].cd" type="select" label="Type" trigger="OTH" length="14">
+									<validation type="required" name="Type"/>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>EL_TYPE_PST_PRV</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</controller>
+								<line>
+									<element name="address[i].cdDescTxt" type="text" label="Description" size="36" indented="yes"/>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element name="address[i].thePostalLocatorDT_s.streetAddr1" type="text" label="Street Address 1" size="36">
+								<header>Address</header>
+								<value>
+									<xsp-request:get-attribute name="addressOne"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<element name="address[i].thePostalLocatorDT_s.streetAddr2" type="text" label="Street Address 2" size="36"/>
+						</line>
+						<line>
+							<element name="address[i].thePostalLocatorDT_s.cityDescTxt" type="text" label="City">
+								<header>City</header>
+								<value>
+									<xsp-request:get-attribute name="cityOne"/>
+								</value>
+							</element>
+							<element name="address[i].thePostalLocatorDT_s.stateCd" type="select" label="State" onchange="setDefaultStateFlagToFalse();getData(this, 'address[i].thePostalLocatorDT_s.cntyCd', 'Address');defaultcountry('extended');" length="25">
+								<header>State</header>
+								<xsp:attribute name="default">
+									<xsp:expr>PersonUtil.getDefaultStateCd()</xsp:expr>
+								</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="stateOne"/>
+								</value>
+								<srt-options-string>
+									<srt-codes:getStateCodes>
+										<type>USA</type>
+									</srt-codes:getStateCodes>
+								</srt-options-string>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element name="address[i].thePostalLocatorDT_s.zipCd" type="text" label="Zip" size="10">
+								<header>Zip</header>
+								<value>
+									<xsp-request:get-attribute name="zipOne"/>
+								</value>
+								<validation type="reg-expr" error-code="ERR103" name="Zip">
+									<pattern><![CDATA[^((\d{5})|(\d{5}-\d{4}))?$]]></pattern>
+								</validation>
+							</element>
+							<element name="address[i].thePostalLocatorDT_s.cntyCd" type="select" label="County" length="32">
+								<srt-options-string>
+									<xsp-request:get-attribute name="addressCounties"/>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="address[i].thePostalLocatorDT_s.cntryCd" type="select" default="" label="Country" length="48" onload="setDefaultStateFlagToTrue();getData('address[i].thePostalLocatorDT_s.stateCd', 'address[i].thePostalLocatorDT_s.cntyCd', 'Address');defaultcountry('extended');">
+								<srt-options-string>
+									<srt-codes:getCountryCodesAsString/>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="address[i].locatorDescTxt" type="textarea" label="Address Comments">
+								<validation type="lengthLimit" fieldLength="2000" name="Address Comments"/>
+							</element>
+						</line>
+						<line>
+							<element name="address[i].statusCd" type="hidden">
+								<srt-options-string>+|A+Active|I+Inactive|</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="address[i].thePostalLocatorDT_s.postalLocatorUid" type="hidden"/>
+						</line>
+						<line>
+							<element name="address[i].locatorUid" type="hidden"/>
+						</line>
+						<line>
+							<element name="address[i].entityUid" type="hidden"/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Telephone Information">
+				<line>
+					<element name="Telephone" type="batch-entry">
+						<value>
+							<xsp-request:get-attribute name="parsedTelephoneString"/>
+						</value>
+						<line>
+							<element name="telephone[i].useCd" type="select" label="Use" length="20">
+								<header>Use</header>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>EL_USE_TELE_PRV</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<validation type="required" name="Use"/>
+							</element>
+						</line>
+						<line>
+							<element name="telephone[i].cd" type="select" label="Type" length="17">
+								<header>Type</header>
+								<validation type="required" name="Type"/>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>EL_TYPE_TELE_PRV</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<line>
+									<element name="telephone[i].cdDescTxt" type="text" label="Description" size="36" indented="yes"/>
+								</line>
+							</element>
+						</line>
+					<!--	<line>
+							<element type="conditional-entry" name="telephone[i].cdc">
+								<controller name="telephone[i].cd" type="select" label="Type" trigger="OTH" length="17">
+									<validation type="required" name="Type"/>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>EL_TYPE_TELE_PRV</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</controller>
+								<line>
+									<element name="telephone[i].cdDescTxt" type="text" label="Description" size="36" indented="yes"/>
+								</line>
+							</element>
+						</line>-->
+						<line>
+							<element name="telephone[i].theTeleLocatorDT_s.cntryCd" type="text" label="Country Code" size="10">
+								<validation type="reg-expr" error-code="ERR021" name="Country Code">
+									<pattern><![CDATA[^(\d{0,})?$]]></pattern>
+								</validation>
+							</element>
+							<element name="telephone[i].theTeleLocatorDT_s.phoneNbrTxt" type="telephone" label="Telephone" mask="(###)###-####" size="10">
+								<header>Telephone</header>
+								<value>
+									<xsp-request:get-attribute name="telephoeOne"/>
+								</value>
+								<validation type="telephone"  error-code="ERR187" name="Telephone" requiredPartner="telephone[i].theTeleLocatorDT_s.extensionTxt"/>
+								<partner  name="telephone[i].theTeleLocatorDT_s.extensionTxt" type="text" label="Ext" size="3">
+									<value>
+										<xsp-request:get-attribute name="telephoeOne"/>
+									</value>
+									<validation type="numeric" name="Ext"/>
+								</partner>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element name="telephone[i].theTeleLocatorDT_s.emailAddress" type="text" label="Email"/>
+						</line>
+						<line>
+							<element name="telephone[i].theTeleLocatorDT_s.urlAddress" type="text" label="URL"/>
+						</line>
+						<line>
+							<element name="telephone[i].locatorDescTxt" type="textarea" label="Telephone Comments">
+								<validation type="lengthLimit" fieldLength="2000" name="Telephone Comments"/>
+							</element>
+						</line>
+						<line>
+							<element name="telephone[i].theTeleLocatorDT_s.teleLocatorUid" type="hidden"/>
+						</line>
+						<line>
+							<element name="telephone[i].locatorUid" type="hidden"/>
+						</line>
+						<line>
+							<element name="telephone[i].entityUid" type="hidden"/>
+						</line>
+						<line>
+							<element name="telephone[i].statusCd" type="hidden">
+								<srt-options-string>+|A+Active|I+Inactive|</srt-options-string>
+							</element>
+						</line>
+					</element>
+				</line>
+			</group>
+			<!--group name="Locally Defined Fields">
+			<line>
+			<element label="ProviderTest1" name="ldf[0].ldfValue" type="text" size="20">
+			<validation type=""/>
+			<value/>
+			</element>
+			<element name="ldf[0].ldfUid" type="hidden">
+			<value>312732011</value>
+			</element>
+			</line>
+			</group-->
+			<!--begin ldf-->
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>previewXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>extXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<xsp:logic>
+				ArrayList subformList = (ArrayList)request.getAttribute(NEDSSConstants.PROVIDER_LDF+"SubformList" );				
+				if(subformList != null) {
+			          for(Iterator anIter = subformList .iterator(); anIter.hasNext();)  {
+				            CustomSubformMetadataDT dt = (CustomSubformMetadataDT) anIter.next();			
+			</xsp:logic>
+			<group>
+				<xsp:attribute name="name">
+					<xsp:expr>dt.getSubformNm()</xsp:expr>
+				</xsp:attribute>
+				<line>
+					<element type="raw">
+						<span>
+							<util:include-expr>
+								<util:expr>
+									<xsp:expr>dt.getHtmlData()</xsp:expr>
+								</util:expr>
+							</util:include-expr>
+						</span>
+					</element>
+				</line>
+			</group>
+			<xsp:logic> }} </xsp:logic>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>sfValidationXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+		</tab>
+	</content>
+</xsp:page>

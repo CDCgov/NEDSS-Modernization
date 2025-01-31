@@ -1,0 +1,284 @@
+/* Base style for document text  The base font size is 10 points. The base font color is black. Base styles have been created for text in the document body and in table header and data cels. Classes are used to define other sizes and colors. */
+/* Be sure to name your classes similar to this: .normalTenBlue  This means the font weight is normal the text is 10 points and the color is blue. */
+/* There are blocks for each type size. Be sure to put 10 point styles in the 10 point block etc. */
+
+/* Here are some color definitions most usable first. */
+/* Dark Blue #003470  This is the color of the main parts of the interface */
+/* White #FFFFFF */
+/* Yellow #FFF200 */
+/* Orange #F7941D */
+/* Light Purple #9CAFD0 */
+/* Medium Blue #00AEEF */
+/* Green #39B54A */
+/* Gold #ABA000 */
+/* Dk Red #790000 */
+/* Light Gray #DCDCDC  Used for sub menu space*/
+
+BODY {
+	background-color : #FFFFFF;
+	font-size : 10pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	color : #000000;
+	margin-left : 0px;
+	margin-top : 0px;
+}
+/* Start TD Definitions */
+/* Base style for type in data cells */
+TD {
+	font-size : 10pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	color : #000000;
+}
+
+/* END TD Definitions */
+
+/* START TH Definitions */
+/* Base style for type in header cells */
+TH {
+	font-size : 10pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #000000;
+	text-align : left;
+}
+/* END TH Definitions */
+
+LABEL{
+	font-size : 8pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #000000;
+}
+
+/* START 12 point definitions */
+.normalTwelveBlack{
+	font-size : 12pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	color : #000000;
+}
+
+.boldTwelveBlack{
+	font-size : 12pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #000000;
+ }
+.boldTwelveYellow{
+	font-size : 12pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #FFF200;
+}
+
+ .boldTwelveOrange{
+	font-size : 12pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #F7941D;
+}
+.boldTwelveDkRed{
+	font-size : 12pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #790000;
+}
+/* END 12 point definitions */
+
+/* START 10 point definitions */
+.boldTenWhite{
+	font-size : 10pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #FFFFFF;
+}
+.boldTenDkBlue{
+	font-size : 10pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #003470;
+}
+.boldTenDkRed{
+	font-size : 10pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #790000;
+}
+.boldTenBlack{
+	font-size : 10pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #000000;
+}
+.boldTenYellow{
+	font-size : 10pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #FFF200;
+}
+.normalTenYellow{
+	font-size : 10pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	color : #FFF200;
+}
+/* END 10 point definitions */
+
+/* START 9 point definitions */
+.normalNineBlack{
+	font-size : 9pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	color : #000000;
+}
+.boldNineYellow{
+	font-size : 9pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #FFF200;
+}
+.boldNineWhite{
+	font-size : 9pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #FFFFFF;
+}
+
+/* END 9 point definitions */
+
+/* START 8 point definitions */
+.normalEightBlack{
+	font-size : 8pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	color : #000000;
+}
+.boldEightBlack{
+	font-size : 8pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : bold;
+	color : #000000;
+}
+/* END 8 point definitions */
+
+/* START cursor definitions for form submit and cancel buttons */
+.cursorHand{
+    cursor: hand;
+}
+.cursorDefault{
+    cursor: default;
+}
+.none{
+    display: none;
+    visibility: none;
+}
+.hidden{
+    display: "";
+    visibility: hidden;
+}
+.visible{
+    display: "";
+    visibility: visible;
+}
+/* END   cursor definitions for form submit and cancel buttons */
+
+/* START new classes for XHTML compliance */
+.NoBorder
+{
+    border: none;
+}
+.Blue
+{
+    background-color: #003470;
+}
+.Blue110px
+{
+    background-color: #003470;
+    width: 10px;
+}
+.BoldTenWhiteOnBlue
+{
+    background-color: #003470;
+    color: #FFFFFF;
+    font-size: 10pt;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+.BoldTwelveBlack2
+{
+    background-color: #DCDCDC;
+    color: #000000;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+    font-size: 12pt;
+    font-weight: bold;
+    width: 300px;
+}
+.BoldTenYellow2
+{
+    background-color: #003470;
+    color : #FFF200;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-size : 10pt;
+    font-weight : bold;
+}
+.NavButton
+{
+    cursor: hand;
+}
+.Spacer3px
+{
+    width: 3px;
+}
+.Spacer10px
+{
+    width: 10px;
+}
+.Toolbar
+{
+    background: url("image/task_button/tb_cel_bak.jpg");
+}
+.Toolbar207px
+{
+    background: url("image/task_button/tb_cel_bak.jpg");
+    width: 207px;
+}
+.Toolbar415px
+{
+    background: url("image/task_button/tb_cel_bak.jpg");
+    width: 415px;
+}
+/* END   new classes for XHTML compliance */
+
+/* START new classes for error messages */
+.error
+{
+    border: thick solid red;
+    display: "";
+    font-weight: bold;
+    visibility: visible;
+}
+.errorMessage
+{
+    display: "";
+    font-weight: bold;
+    visibility: visible;
+    color: red;
+}
+.errorRange
+{
+	border: none;
+   /* border: thick solid red;*/
+    display: "";
+    font-weight: bold;
+    color: red;
+    visibility: visible;
+}
+
+/* END   new classes for error messages */
+
+
+
+
+

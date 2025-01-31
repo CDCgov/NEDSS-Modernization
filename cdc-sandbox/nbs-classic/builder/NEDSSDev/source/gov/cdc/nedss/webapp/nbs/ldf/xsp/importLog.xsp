@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>java.sql.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.elr.helper.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.ldf.importer.*</xsp:include>
+	</xsp:structure>
+	<xsp:logic>
+		    private String formatDate(java.sql.Timestamp timestamp)
+		    {
+			Date date = null;
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss ");
+			if(timestamp != null) date = new Date(timestamp.getTime());
+			if(date == null)
+			return "";
+			else
+			return 	formatter.format(date);
+		    }
+	</xsp:logic>
+	<!--xsp:logic>
+		String sCurrentTask= request.getParameter("CurrentTask");
+	</xsp:logic-->
+	<content form="/nbs/ImportLogLoad.do">
+		<javascript-files>
+			<import>cdfSubformSpecific.js</import>
+			<import>validate.js</import>
+		</javascript-files>
+		<!-- Sree 02/23/2005 -->
+		<!--nedss:If task=""-->
+		<link-bar>
+			<link>
+				<xsp:attribute name="name">
+						Return to Custom Field Administration
+					</xsp:attribute>
+					LDFAdminLoad.do
+				</link>
+		</link-bar>
+		<!--/nedss:If-->
+		<!-- Sree 02/23/2005 -->
+		<button-bar>
+			<!--left>
+				<label>POSTED</label>
+				<javascript-action>document.forms[0].action="/nbs/posted";submitForm();</javascript-action>
+			</left-->
+			<right>
+				<label>Import</label>
+				<javascript-action>getPage('FileImportLoad.do');</javascript-action>
+			</right>
+		</button-bar>
+		<tab>
+			<group name="Import Summary">
+				<line>
+					<element autocomplete="disable" name="logVersion" type="select" label="Log Version" onchange="submitForm();" length="100" align-label="left" noblank="true">
+						<xsp:attribute name="default">
+							<xsp-request:get-attribute name="maxVersionNbr"/>
+						</xsp:attribute>
+						<srt-options-string>
+							<xsp-request:get-attribute name="versionNbrColl"/>
+						</srt-options-string>
+					</element>
+					<element name="dummyforAlignment" type="raw" label=" ">
+						<span>
+							<table border="0" width="300">
+								<tr>
+									<td/>
+								</tr>
+							</table>
+						</span>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[
+					String logStatus = (String)request.getAttribute("logStatus");
+					System.out.println("logStatus:" + logStatus);
+					if((logStatus != null) && (!logStatus.equalsIgnoreCase(ImportConstants.SUCCESS_CODE)))
+					{
+					]]></xsp:logic>
+				<line>
+					<element type="plain-text" label="* Log Error" width="10">
+						<value>
+							<xsp-request:get-attribute name="logError"/>
+						</value>
+					</element>
+				</line>
+				<xsp:logic>
+					}
+					</xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<b> Import Date :</b>
+							<xsp-request:get-attribute name="importDate"/>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<b> Comments: </b>
+							<xsp-request:get-attribute name="adminComments"/>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="plain-text" label="  " name="dummy">
+					</element>
+				</line>
+				<line>
+					<element type="plain-text" label="  " name="dummy">
+					</element>
+				</line>
+				<line>
+					<element type="plain-text" label="  " name="dummy">
+					</element>
+				</line>
+				<line>
+					<element type="plain-text" label="  " name="dummy">
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<b>
+								<xsp-request:get-attribute name="cdfCount"/> Collaborative field found</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							Successful: <xsp-request:get-attribute name="cdfSuccessCount"/>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<xsp:logic>
+							Integer cdfFail = (Integer) request.getAttribute("cdfFailureCount");
+							if( cdfFail.intValue() > 0) {
+						</xsp:logic>
+						<span>
+							<font color="red">
+								<b>Failed: </b>
+							</font>
+							<xsp-request:get-attribute name="cdfFailureCount"/>
+						</span>
+						<xsp:logic>
+							} else {
+						</xsp:logic>
+						<span>
+							Failed: <xsp-request:get-attribute name="cdfFailureCount"/>
+						</span>
+						<xsp:logic>
+							}
+						</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<b>
+								<xsp-request:get-attribute name="subformCount"/> Subforms found</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							Successful: <xsp-request:get-attribute name="subformSuccessCount"/>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<xsp:logic>
+							Integer csfFail = (Integer) request.getAttribute("subformFailureCount");
+							if( csfFail.intValue() > 0) {
+						</xsp:logic>
+						<span>
+							<font color="red">
+								<b>Failed: </b>
+							</font>
+							<xsp-request:get-attribute name="subformFailureCount"/>
+						</span>
+						<xsp:logic>
+							} else {
+						</xsp:logic>
+						<span>
+								Failed: <xsp-request:get-attribute name="subformFailureCount"/>
+						</span>
+						<xsp:logic>
+							}
+						</xsp:logic>
+					</element>
+				</line>
+			</group>
+			<group name="Collaborative Fields">
+				<line>
+					<element type="data-table" page-size="12">
+						<header width="20%">Status</header>
+						<header width="20%">Label</header>
+						<header width="20%">Page Set</header>
+						<header width="20%">Error</header>
+						<header width="20%">OID</header>
+						<footer width="20%"/>
+						<value>
+							<xsp-request:get-attribute name="CDFResultList"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<group name="Subforms">
+				<line>
+					<element type="data-table" page-size="12">
+						<header width="20%">Status</header>
+						<header width="20%">Name</header>
+						<header width="20%">Page Set</header>
+						<header width="20%">Error</header>
+						<header width="20%">OID</header>
+						<footer width="20%"/>
+						<value>
+							<xsp-request:get-attribute name="SubfromResultList"/>
+						</value>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

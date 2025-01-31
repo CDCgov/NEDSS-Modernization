@@ -1,0 +1,49 @@
+/* alternative styles */
+table.its thead th{
+	background-color: #CCCCCC;
+	height: 25px;
+	text-decoration: underline;
+	text-align: center;
+	border: 1px solid #000000;
+}
+
+table.its tr.even {
+	background-color: #DCDCDC;
+	vertical-align: top;
+	border: 1px solid #000000;
+}
+table.its tr.odd td.dstag {
+	border: 1px solid #000000;
+	width: auto;
+	padding-left:2px;
+}
+
+table.its tr.even td.dstag {
+	border: 1px solid #000000;
+	width: auto;
+	padding-left:2px;
+}
+
+table.its tr.odd {
+	height: 15px;
+	vertical-align: top;
+	border: 1px solid #000000;
+}
+
+table.its tr.hodd {
+	height: 25px;
+	vertical-align: top;
+	border: 1px solid #000000;
+	display: none;
+    visibility: none;			
+}
+table.its tr.visible {
+	height: 15px;
+	vertical-align: top;
+	border: 1px solid #000000;
+}
+table.its tr.visible td.dstag {
+	border: 1px solid #000000;
+	width: auto;
+}
+

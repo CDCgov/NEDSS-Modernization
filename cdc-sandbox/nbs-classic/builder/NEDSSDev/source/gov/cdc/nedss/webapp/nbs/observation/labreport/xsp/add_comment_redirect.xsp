@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.action.person.util.PersonUtil</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<id-bar>
+			
+		</id-bar>
+		<link-bar>	
+		</link-bar>
+		<button-bar></button-bar>
+		<javascript-files>
+			<import>PatientFromEventSpecific.js</import>
+			<import>AddComment.js</import>
+		</javascript-files>
+		<tab name="Add Comments">
+			<nedss:writeErrorMessages/>
+			<group>			
+				<line>
+					<element type="textarea" label="Add Comment"  onload="addCommentSubmit();">
+						<xsp:attribute name="name">comment</xsp:attribute>
+						<note>Add Comment</note>
+						<value>					
+						</value>
+					</element>
+				</line>
+			</group>								
+		</tab>
+	</content>
+</xsp:page>

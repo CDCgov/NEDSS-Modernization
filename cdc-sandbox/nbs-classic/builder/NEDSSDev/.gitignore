@@ -1,0 +1,10 @@
+/classfiles/
+
+# Ignore the build directory
+/buildclasses
+
+# Ignore the build directory
+/dist
+
+# Ignore the target directory
+/target*/*

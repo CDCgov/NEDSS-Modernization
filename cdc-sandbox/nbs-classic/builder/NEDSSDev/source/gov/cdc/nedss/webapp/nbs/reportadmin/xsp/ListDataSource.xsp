@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+    <xsp:structure>
+   	   <xsp:include>gov.cdc.nedss.util.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.reportadmin.dt.*</xsp:include>
+        <xsp:include>java.util.ArrayList</xsp:include>
+        <xsp:include>java.util.Iterator</xsp:include>
+    </xsp:structure>
+    <content form="/nbs/NewDataSource.do">
+        <link-bar>
+            <link>
+                <xsp:attribute name="name">
+                    <xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+                </xsp:attribute>
+                <xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+            </link>
+        </link-bar>
+        <button-bar>
+            <right>
+                <label>Register Data Source</label>
+                <javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/NewDataSource.do");
+                    document.forms[0].submit();
+                </javascript-action>
+            </right>
+        </button-bar>
+        <tab>
+            <group>
+                <line>
+                    <element type="raw">
+                        <span style="color: red; font-weight: bold;">
+                            <value><xsp:expr>request.getAttribute("error")</xsp:expr></value>
+                        </span>
+                    </element>
+                </line>
+            </group>
+			
+			<group>
+                <line>
+                    <element type="raw">
+                        <span id="errorMessageNotValidDataSource" style="color: red; font-weight: bold;">
+                            <value><xsp:expr>request.getAttribute("errorMessageNotValidDataSource")</xsp:expr></value>
+                        </span>
+                    </element>
+                </line>
+            </group>
+			
+			
+            <group name="Data Sources">
+			<line>
+				<element type="queue-data-table" pagenumbers="false">
+					<sortHref>ListDataSource.do?ContextAction=Sort</sortHref>
+					<sortDirection><xsp-request:get-attribute name="sortDirection"/></sortDirection>
+					<header width="20%" methodName="getDataSourceName">Data Source Name</header>
+					<header width="30%" methodName="getDataSourceTitle">Title</header>
+					<header width="30%" methodName="getDescTxt">Description</header>
+					<header width="8%" methodName="getJurisdictionSecurity">Secure</header>
+					<header width="12%" methodName="getStatus_time">Create Date</header>
+            
+		                <xsp:logic>
+		                    ArrayList alDataSource = (ArrayList)session.getAttribute("ReportAdmin.alDataSource");
+		                    Iterator iDataSource = alDataSource.iterator();
+		                    while(iDataSource.hasNext())
+		                    {
+	                        		DataSourceDT dtDataSource = (DataSourceDT)iDataSource.next();
+  		                         String link1URL = "/nbs/ViewDataSource.do?data_source_uid=" + dtDataSource.getDataSourceUID_s();                        
+	                	</xsp:logic>
+						<record>
+							<link1>
+								<xsp:expr>link1URL</xsp:expr>
+							</link1>
+							<column link1="">
+								<value><xsp:expr>dtDataSource.getDataSourceName()</xsp:expr></value>
+							</column>
+							<column>
+								<value><xsp:expr>dtDataSource.getDataSourceTitle()</xsp:expr></value>
+							</column>
+							<column>
+								<value><xsp:expr>dtDataSource.getDescTxt()</xsp:expr></value>
+							</column>
+							<column>
+								<value><xsp:expr>dtDataSource.getJurisdictionSecurity()</xsp:expr></value>
+								<srt-options-string><srt-codes:getCodedValues><type>YNU</type></srt-codes:getCodedValues></srt-options-string>
+							</column>
+							<column>
+								<value><xsp:expr>StringUtils.formatDate(dtDataSource.getStatus_time())</xsp:expr></value>
+							</column>							
+						</record>	
+                <xsp:logic>
+                    }
+                </xsp:logic>
+					</element>
+				</line>                
+            </group>
+        </tab>
+    </content>
+</xsp:page>

@@ -1,0 +1,113 @@
+.multiSelect {
+	background-image: url(dropdown.gif);
+	background-repeat: no-repeat;	
+	float: right;
+}
+
+.multiSelect.hover {
+	background: url(dropdown_hover.gif) right center no-repeat;
+}
+
+.multiSelect.active, 
+.multiSelect.focus {
+}
+
+.multiSelect.active {
+	background: url(dropdown_active.gif) right center no-repeat;
+}
+
+.multiSelectOptions {
+   position:absolute;
+   z-index:230;
+	margin-top: -1px;
+	margin-left: expression(- (this.parentNode.offsetLeft > 99 ? 170 : 85) +"px"); 
+	overflow: auto;
+	height:250px;
+	text-align:left;
+	width:190 px;	
+   BORDER-TOP: #E3E3E3 3px solid;
+   BORDER-LEFT: #E3E3E3 3px solid;
+   BACKGROUND-COLOR: #FFFFFF;	
+}
+.multiTextOptions {
+   position:absolute;
+   z-index:230;
+	margin-top: -1px;
+	margin-left: expression(- (this.parentNode.offsetLeft > 9 ? 170 : 85) +"px"); 
+	overflow: auto;
+	height:130px;
+	text-align:left;
+	width:190 px;	
+   BORDER-TOP: #E3E3E3 3px solid;
+   BORDER-LEFT: #E3E3E3 3px solid;
+   BACKGROUND-COLOR: #FFFFFF;	
+}
+
+/*Queue filters: position of Contains*/
+.multiTextOptions .pText input{
+	display:block;
+}
+  
+/*Queue filters: Contains on bold*/
+.multiTextOptions label b{
+	font-weight:bold;
+}
+
+.multiSelectOptions LABEL {
+	padding: 2px 5px;
+	display: block;
+}
+
+.multiSelectOptions LABEL.checked {
+	background: #FFFFFF;
+}
+
+.multiSelectOptions LABEL.selectAll {
+	border-bottom: dotted 1px #CCC;
+	font-size : 9pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+}
+
+.multiSelectOptions LABEL.hover {
+	background: #CFCFCF;
+}
+
+.pText {
+	font-size : 9pt;
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-weight : normal;
+	color : #000000;
+	white-space:nowrap;
+}
+
+#blockparent {
+	display:none;
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:100%;
+	height:550%;
+	background:gray;
+	filter:alpha(Opacity=80);
+	opacity:0.5;
+	-moz-opacity:0.5;
+	-khtml-opacity:0.5;
+}
+
+div.printexport { 
+	width:100%; 
+	border:1px solid #DDD; 
+	margin:0.5em 0em 0.5em 0em;
+	background: #efefef; 
+	border-color:none; 
+	border-style:solid; 
+	font: bold 78% verdana;
+	font-size:12px; 
+	font-weight:bold;
+	padding: 2px;
+	border-left-style: outset;
+	border-bottom-style: outset
+}
+
+.tip { FONT-WEIGHT: bold; CURSOR: hand; COLOR: green }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NBSMorbMap>
+	<InvestigationFormCodes>
+		<InvestigationFormCode name="INV_FRM_GEN">
+			<InvestigationFieldMapping mappingFromField="MRB162" mappingToField="INV111" description="Report Date"/>
+			<InvestigationFieldMapping mappingFromField="INV183UID" mappingToField="INV183UID" description="Reporting Source UID"/>
+			<InvestigationFieldMapping mappingFromField="INV183ORG" mappingToField="INV183ORG" description="Reporting Source Details"/>
+			<InvestigationFieldMapping mappingFromField="INV182UID" mappingToField="INV182UID" description="Physician_UID"/>
+			<InvestigationFieldMapping mappingFromField="INV182PRV" mappingToField="INV182PRV" description="Physician Details"/>
+			<InvestigationFieldMapping mappingFromField="INV181UID" mappingToField="INV181UID" description="Reporter_UID"/>
+			<InvestigationFieldMapping mappingFromField="INV181PRV" mappingToField="INV181PRV" description="Reporter Details"/>
+			<InvestigationFieldMapping mappingFromField="INV184UID" mappingToField="INV184UID" description="Hospital_UID"/>
+			<InvestigationFieldMapping mappingFromField="INV184ORG" mappingToField="INV184ORG" description="Hospital Details"/>
+			<InvestigationFieldMapping mappingFromField="INV128" mappingToField="INV128" description="Hospitalized"/>
+			<InvestigationFieldMapping mappingFromField="MRB121" mappingToField="PHC108Condition" description="Condition"/>
+			<InvestigationFieldMapping mappingFromField="MRB121Condition_Desc_txt" mappingToField="PHC108Condition_Desc_txt" description="Condition_Desc_txt"/>
+			<InvestigationFieldMapping mappingFromField="MRB122" mappingToField="INV137" description="IllnessOnsetDate"/>
+			<InvestigationFieldMapping mappingFromField="MRB123" mappingToField="INV163" description="CaseStatus"/>
+			<InvestigationFieldMapping mappingFromField="INV145" mappingToField="INV145" description="DidPatientDie"/>
+			<InvestigationFieldMapping mappingFromField="MRB125" mappingToField="INV146" description="DateOfDeath"/>
+			<InvestigationFieldMapping mappingFromField="INV178" mappingToField="INV178" description="Pregnant"/>
+			<InvestigationFieldMapping mappingFromField="pregnantWeek" mappingToField="NBS128" description="Number of weeks pregnant at the time of diagnosis."/>
+			<InvestigationFieldMapping mappingFromField="INV149" mappingToField="INV149" description="FoodHandler"/>
+			<InvestigationFieldMapping mappingFromField="INV148" mappingToField="INV148" description="DayCareFacility"/>
+			<InvestigationFieldMapping mappingFromField="MRB166" mappingToField="INV132" description="Admission_Date"/>
+			<InvestigationFieldMapping mappingFromField="MRB167" mappingToField="INV133" description="Discharge_Date"/>
+			<InvestigationFieldMapping mappingFromField="MRB165" mappingToField="INV136" description="Diagnosis_Date"/>
+			<InvestigationFieldMapping mappingFromField="ProcessingDecision" mappingToField="ProcessingDecision" description="Processing Decision"/>
+		</InvestigationFormCode>
+	</InvestigationFormCodes>
+</NBSMorbMap>

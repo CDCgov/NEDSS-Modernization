@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<content form="/nedss/storeObservationGeneralLab.do">
+		<xsp:logic><![CDATA[    
+			int i = 0;
+			String operationType= request.getParameter("ContextAction");
+			String observationUID= request.getParameter("observationUID");
+			//##!! System.out.println("xsp: operationType= " + operationType);
+			//##!! System.out.println("xsp: observationUID= " + observationUID);
+
+		]]></xsp:logic>
+		<id-bar>
+			<id name="Patient ID">
+				<xsp-request:get-attribute name="personLocalId"/>
+			</id>
+			<!--id name="Observation ID">
+				<xsp-request:get-attribute name="localUID"/>
+			</id-->
+		</id-bar>
+		<link-bar>
+			<xsp:logic>if(request.getAttribute("linkName")!=null)
+			{
+			</xsp:logic>
+			<link>
+				<xsp:attribute name="name">
+					<xsp-request:get-attribute name="linkName"/>
+				</xsp:attribute>
+				<xsp-request:get-attribute name="linkValue"/>
+			</link>
+			<xsp:logic>} else {</xsp:logic>
+			<link name="Return to View Observation">
+				/nedss/LoadViewObservationLab3.do?ContextAction=view&amp;observationUID=<xsp-request:get-attribute name="observationUID"/>
+			</link>
+			<xsp:logic>}</xsp:logic>
+		</link-bar>
+		<button-bar>
+		</button-bar>
+		<tab>
+			<group>
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+                        	Your request to delete this Observation is not possible.<br/>
+                        	It may be linked to another investigation.<!-- or may be an Electronic Laboratory Report.-->
+							<br/>
+							<br/>
+						</span>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

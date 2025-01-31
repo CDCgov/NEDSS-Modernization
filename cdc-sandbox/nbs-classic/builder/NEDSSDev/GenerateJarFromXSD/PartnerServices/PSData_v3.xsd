@@ -1,0 +1,725 @@
+<!-- Standalone PS Version 3.0 July 2018 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="xpemsPSData">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HeaderInformation" type="typeHeader"/>
+				<!--
+				 These show in EvaluationWeb within the PS Sites views in reflexx, and not in Manage Agencies 
+				-->
+				<xs:element name="sites" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="site" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="siteId" type="typeId"/>
+										<!--  S01  -->
+										<xs:element name="siteTypeValueCode" type="typeSiteType"/>
+										<!--  S04  -->
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="clients" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="client" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="birthYear" type="typeYear" minOccurs="0"/>
+										<!--  G112  -->
+										<xs:element name="ethnicity" type="typeEthnicity" minOccurs="0"/>
+										<!--  G114  -->
+										<xs:element name="eHarsStateNumber" type="typeId"/>
+										<!--  H04c  -->
+										<xs:element name="eHarsCityCountyNumber" type="typeId"/>
+										<!--  H04d  -->
+										<xs:element name="races" type="typeRaces"/>
+										<!-- G116 -->
+										<xs:element name="birthGenderValueCode" type="typeBirthGender" minOccurs="0"/>
+										<!--  G123  -->
+										<xs:element name="currentGenderValueCode" type="typeCurrentGender" minOccurs="0"/>
+										<!--  G124  -->
+										<xs:element name="clientRiskProfiles" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="clientRiskProfile" type="typeRiskProfile" minOccurs="0" maxOccurs="unbounded"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="asAnIndex" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="agencyId" type="typeId"/>
+													<!--  A01a  -->
+													<xs:element name="progAnnouncementProgStrategy" type="typeProgramAnnouncement" minOccurs="0"/>
+													<!--  X137  -->
+													<xs:element name="partnerServiceCaseNumber" type="typeId"/>
+													<!--  PCR101  -->
+													<xs:element name="indexDateDemographicsCollected" type="typeDate" minOccurs="0"/>
+													<!--  G101  -->
+													<xs:element name="clientHIVStatus" type="typePSClientHIVStatus" minOccurs="0"/>
+													<!--  X138 -->
+													<xs:element name="hivStage" type="typeHIVStage" minOccurs="0"/>
+													<!--  X224 -->
+													<xs:element name="formId" type="typeId"/>
+													<!--  H04a  -->
+													<xs:element name="partnerServiceCases" minOccurs="1" maxOccurs="1">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="partnerServiceCase" type="typeCase" minOccurs="1" maxOccurs="unbounded"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="attemptsToLocate" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="attemptToLocate" type="typeAttemptToLocate" maxOccurs="unbounded"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="elicitPartners" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="elicitPartner" type="typeElicitPartner" maxOccurs="unbounded"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="sessions" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="session" type="typeSession" minOccurs="0" maxOccurs="unbounded"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<!-- End as an Index -->
+										<!--  This client as a Partner  -->
+										<xs:element name="asAPartner" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="partner" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="agencyId" type="typeId"/>
+																<!--  A01a  -->
+																<xs:element name="partnerServiceCaseNumber" type="typeId" maxOccurs="unbounded"/>
+																<!--  PCR101  -->
+																<xs:element name="partnerDateDemographicsCollected" type="typeDate" minOccurs="0"/>
+																<!--  G101  -->
+																<xs:element name="partnerType" type="typePartnerType" minOccurs="0"/>
+																<!--  PCR207  -->
+																<xs:element name="attemptsToLocate" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="attemptToLocate" type="typeAttemptToLocate" maxOccurs="unbounded"/>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="exposureNotifications" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="exposureNotification" type="typePartnerNotification" minOccurs="0" maxOccurs="unbounded"/>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="sessions" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="session" type="typeSession" minOccurs="0" maxOccurs="unbounded"/>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="partnerTestingAndReferrals" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="partnerTestingAndReferral" type="typeTestingAndReferral" minOccurs="0" maxOccurs="unbounded"/>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<!-- End as a partner -->
+									</xs:sequence>
+									<xs:attribute name="localClientId" type="typeId" use="required"/>
+									<xs:attribute name="lastModifiedDate" type="typeDate" use="required"/>
+									<!--  G103  -->
+									<!--  G103  -->
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="typeSession">
+		<xs:all>
+			<xs:element name="siteId" type="typeId" minOccurs="0"/>
+			<!--  S01  -->
+			<xs:element name="sessionDate" type="typeDate" minOccurs="0"/>
+			<!--  H06  -->
+			<xs:element name="careStatusAtInterview" type="typeCareStatus" minOccurs="0"/>
+			<!--  X725b  -->
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="typeAttemptToLocate">
+		<xs:sequence>
+			<xs:element name="attemptToLocateOutcome" type="typeAttemptToLocateOutcome" minOccurs="0"/>
+			<!--  X302  -->
+			<xs:element name="reasonForUnsuccessfulAttempt" type="typeReasonForUnsuccessfulAttempt" minOccurs="0"/>
+			<!--  X303  -->
+			<xs:element name="enrollmentStatus" type="typeEnrollmentStatus" minOccurs="0"/>
+			<!--  X306  -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeElicitPartner">
+		<xs:sequence>
+			<xs:element name="totalNumberOfPartnersClaimed" type="xs:nonNegativeInteger" minOccurs="0"/>
+			<!--  X503  -->
+			<xs:element name="totalNumberOfNamedPartners" type="xs:nonNegativeInteger" minOccurs="0"/>
+			<!--  X511  -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeRiskProfile">
+		<xs:sequence>
+			<xs:element name="dateCollectedForRiskProfile" type="typeDate" minOccurs="0"/>
+			<!--  G200  -->
+			<xs:element name="vaginalOrAnalSexInLast12Mnths" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="withMale" type="typeRiskResponse" minOccurs="0"/>
+						<!--  G216a  -->
+						<xs:element name="withFemale" type="typeRiskResponse" minOccurs="0"/>
+						<!--  G216b  -->
+						<xs:element name="withTransgender" type="typeRiskResponse" minOccurs="0"/>
+						<!--  G216c  -->
+						<xs:element name="vaginalOrAnalSexWithoutCondomPS" type="typeRiskResponse" minOccurs="0"/>
+						<!--  G222  -->
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="injectionDrugUse" type="typeRiskResponse" minOccurs="0"/>
+			<!--  G211_01  -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeCase">
+		<xs:all>
+			<xs:element name="caseOpenDate" type="typeDate"/>
+			<!--  PCR103  -->
+			<xs:element name="caseCloseDate" type="typeDate" minOccurs="0"/>
+			<!--  PCR104  -->
+			<xs:element name="careStatusAtCaseClose" type="typeCareStatus" minOccurs="0"/>
+			<!--  PCR104a  -->
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="typePartnerNotification">
+		<xs:sequence>
+			<xs:element name="partnerNotifiability" type="typeNotifiability" minOccurs="0"/>
+			<!--  X600  -->
+			<xs:element name="actualNotificationMethod" type="typeNotificationMethod" minOccurs="0"/>
+			<!--  X601  -->
+			<xs:element name="previousHivTestValueCode" type="typePreviousHIVTest" minOccurs="0"/>
+			<!--  G204  -->
+			<xs:element name="previousHIVTestResult" type="typePreviousHIVTestResult" minOccurs="0"/>
+			<!--  G205a  -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeTestingAndReferral">
+		<xs:sequence>
+			<xs:element name="hivTestPerformed" type="typeHIVTestPerformed" minOccurs="0"/>
+			<!--  X712  -->
+			<xs:element name="sampleDate" type="typeDate" minOccurs="0"/>
+			<!--  X105  -->
+			<xs:element name="formId" type="typeId"/>
+			<!--  H04a -->
+			<xs:element name="hivTestResult" type="typeHIVTestResult" minOccurs="0"/>
+			<!--  X125  -->
+			<xs:element name="provisionOfResultValueCode" type="typeProvisionOfResult" minOccurs="0"/>
+			<!--  X111  -->
+			<xs:element name="syphilisTest" type="typeYesNo" minOccurs="0"/>
+			<!--  X712a -->
+			<xs:element name="syphilisTestResult" type="typeSyphilisTestResult" minOccurs="0"/>
+			<!--  X712b -->
+			<xs:element name="currentHIVMedicalCareStatus" type="typeCurrentHIVMedicalCareStatus" minOccurs="0"/>
+			<!--  X706c  -->
+			<xs:element name="firstMedicalCareAppointmentDate" type="typeDate" minOccurs="0"/>
+			<!--  X706d  -->
+			<xs:element name="currentlyOnPrEP" type="typeYesNo" minOccurs="0"/>
+			<!--  X731  -->
+			<xs:element name="referredToPrEP" type="typeReferredToPrEP" minOccurs="0"/>
+			<!--  X731a -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="typeId">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeYear">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="((18|19|20)\d\d)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDate">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="([0-1]?\d/[0-3]?\d/(18|19|20)\d\d)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDateTime">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="([0-1]?\d/[0-3]?\d/(19|20)\d\d( [ 012]\d:[0-5]\d:[0-5]\d)?)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeEthnicity">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="E1"/>
+			<xs:enumeration value="E2"/>
+			<xs:enumeration value="77"/>
+			<xs:enumeration value="99"/>
+			<!-- Hispanic or Latino -->
+			<!-- Not Hispanic or Latino -->
+			<!-- Declined to answer -->
+			<!-- Don't know -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeRaces">
+		<xs:sequence>
+			<xs:element name="race" maxOccurs="7">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="raceValueCode">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="R1"/>
+									<xs:enumeration value="R2"/>
+									<xs:enumeration value="R3"/>
+									<xs:enumeration value="R4"/>
+									<xs:enumeration value="R5"/>
+									<xs:enumeration value="55"/>
+									<xs:enumeration value="77"/>
+									<xs:enumeration value="99"/>
+									<!-- American Indian or Alaska Native -->
+									<!-- Asian -->
+									<!-- Black or African American -->
+									<!-- Native Hawaiian or Pacific Islander -->
+									<!-- White -->
+									<!-- Not specified -->
+									<!-- Declined to answer -->
+									<!-- Don't know -->
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="raceId" use="optional"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="typeBirthGender">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="77"/>
+			<!-- Male -->
+			<!-- Female -->
+			<!-- Declined to answer -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCurrentGender">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="77"/>
+			<!-- Male -->
+			<!-- Female -->
+			<!-- Transgender - MTF -->
+			<!-- Transgender - FTM -->
+			<!-- Transgender Unspecified -->
+			<!-- Another Gender -->
+			<!-- Declined to answer -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeProgramAnnouncement">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="19"/>
+			<xs:enumeration value="20"/>
+			<xs:enumeration value="21"/>
+			<xs:enumeration value="22"/>
+			<xs:enumeration value="98"/>
+			<xs:enumeration value="99"/>
+			<!-- PS17-1711 -->
+			<!-- PS18-1802 -->
+			<!-- PS18-1802 Demonstration -->
+			<!-- PS19-1901 CDC STD -->
+			<!-- Other - CDC Funding -->
+			<!-- Other - Non CDC Funding -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typePSClientHIVStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<!-- New Diagnosis, verified -->
+			<!-- New Diagnosis, not verified -->
+			<!-- Previous Diagnosis -->
+			<!-- Unable to Determine -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeHIVStage">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+			<xs:enumeration value="13"/>
+			<xs:enumeration value="99"/>
+			<!-- HIV Stage 0 -->
+			<!-- HIV Stage 1 -->
+			<!-- HIV Stage 2 -->
+			<!-- HIV Stage 3 -->
+			<!-- HIV Unknown -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typePartnerType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<!-- Sex partner -->
+			<!-- Needle-sharing partner -->
+			<!-- Both sex and needle sharing partner -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCareStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="77"/>
+			<xs:enumeration value="99"/>
+			<!-- In Care -->
+			<!-- Not In Care -->
+			<!-- Pending -->
+			<!-- Declined to Answer -->
+			<!-- Don't Know -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeAttemptToLocateOutcome">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<!-- Unable to locate -->
+			<!-- Located -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeReasonForUnsuccessfulAttempt">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="89"/>
+			<!-- Deceased -->
+			<!-- Out of Jurisdiction -->
+			<!-- Other -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeEnrollmentStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<!-- Accepted -->
+			<!-- Declined -->
+			<!-- Client not Located -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeRiskResponse">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="77"/>
+			<!-- No -->
+			<!-- Yes -->
+			<!-- Not Asked -->
+			<!-- Declined to Answer -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeNotifiability">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="88"/>
+			<!-- No - Partner is deceased -->
+			<!-- No - Partner is out of jurisdiction -->
+			<!-- No - Partner has a risk of domestic violence -->
+			<!-- No - Partner is known to be previously positive -->
+			<!-- Yes - Partner is notifiable -->
+			<!-- Yes - Partner is notifiable and known to be previously positive -->
+			<!-- No - other -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeNotificationMethod">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<!-- Client notification -->
+			<!-- Provider notification -->
+			<!-- Dual notification -->
+			<!-- Third-party notification -->
+			<!-- Refused notification -->
+			<!-- Partner not notified -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typePreviousHIVTest">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="99"/>
+			<!-- No -->
+			<!-- Yes -->
+			<!-- Don't know -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typePreviousHIVTestResult">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<!-- Record Found- Positive -->
+			<!-- Record Found-Negative -->
+			<!-- Record Found- Preliminary Positive -->
+			<!-- Record Found-Indeterminate -->
+			<!-- No Record Found-Self Report Negative -->
+			<!-- No Record Found-Self Report Positive -->
+			<!-- No Record Found- No Self Report  -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeYesNo">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<!-- No -->
+			<!--Yes -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeSyphilisTestResult">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<!-- Newly Identified Infection -->
+			<!-- Not Infected -->
+			<!-- Not Known -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeHIVTestResult">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+			<xs:enumeration value="9"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+			<xs:enumeration value="13"/>
+			<!-- Preliminiary positive -->
+			<!-- Positive -->
+			<!-- Negative -->
+			<!-- Discordant -->
+			<!-- Invalid -->
+			<!-- HIV-1 Positive -->
+			<!-- HIV-1 Positive, Possible acute -->
+			<!-- HIV-2 Positive -->
+			<!-- HIV Positive, undifferentiated -->
+			<!-- HIV-1 Negative, HIV-2 inconclusive -->
+			<!-- HIV-1 Negative -->
+			<!-- HIV Negative -->
+			<!-- Inconclusive, further testing needed -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeProvisionOfResult">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<!-- No -->
+			<!-- Yes -->
+			<!-- Yes, client obtained the result from another agency -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCurrentHIVMedicalCareStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+			<!-- Appointment pending -->
+			<!-- Confirmed - Partner Accessed Service Within 14 Days of Positive Test -->
+			<!-- Confirmed - Partner Accessed Service Within 30 Days of Positive test -->
+			<!-- Confirmed - Partner Accessed Service After 30 Days of Positive Test -->
+			<!-- Confirmed - Partner Did Not Access Service -->
+			<!-- Partner Lost to Follow-Up -->
+			<!-- No Appointment Necessary - Negative Test Result -->
+			<!-- No Appointment Necessary-Partner Previous Positive and Engaged in Medical Care -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeReferredToPrEP">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<!-- No -->
+			<!-- Yes -->
+			<!-- Partner Declined -->
+			<!-- Partner on PREP-->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeHIVTestPerformed">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<!-- No -->
+			<!-- Yes -->
+			<!-- No, Client is known to be HIV-positive -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeSiteType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="F01.01"/>
+			<xs:enumeration value="F02.12"/>
+			<xs:enumeration value="F02.19"/>
+			<xs:enumeration value="F02.51"/>
+			<xs:enumeration value="F03"/>
+			<xs:enumeration value="F04.05"/>
+			<xs:enumeration value="F06.02"/>
+			<xs:enumeration value="F06.03"/>
+			<xs:enumeration value="F06.04"/>
+			<xs:enumeration value="F06.05"/>
+			<xs:enumeration value="F06.07"/>
+			<xs:enumeration value="F06.08"/>
+			<xs:enumeration value="F06.12"/>
+			<xs:enumeration value="F06.88"/>
+			<xs:enumeration value="F07"/>
+			<xs:enumeration value="F08"/>
+			<xs:enumeration value="F09"/>
+			<xs:enumeration value="F10"/>
+			<xs:enumeration value="F11"/>
+			<xs:enumeration value="F12"/>
+			<xs:enumeration value="F13"/>
+			<xs:enumeration value="F14"/>
+			<xs:enumeration value="F15"/>
+			<xs:enumeration value="F40"/>
+			<xs:enumeration value="F88"/>
+			<!--  Clinical - Inpatient hospital  -->
+			<!--  Clinical - TB clinic  -->
+			<!--  Clinical - Substance abuse treatment facility  -->
+			<!--  Clinical - Community health center  -->
+			<!--  Clinical - Emergency department  -->
+			<!--  Non-clinical - HIV testing site  -->
+			<!-- Non-clinical - Community setting - School/educational facility -->
+			<!-- Non-clinical - Community setting - Church/mosque/synagogue/temple -->
+			<!-- Non-clinical - Community Setting - Shelter/transitional housing -->
+			<!-- Non-clinical - Community setting - Commercial facility -->
+			<!-- Non-clinical - Community setting - Bar/club/adult entertainment -->
+			<!--  Non-clinical - Community setting - Public area  -->
+			<!-- Non-clinical – Community setting – Individual residence -->
+			<!--  Non-clinical - Community setting - Other  -->
+			<!-- Non-clinical - Correctional facility - Non-healthcare -->
+			<!--  Clinical - Primary care clinic (other than CHC)  -->
+			<!--  Clinical - Pharmacy or other retail-based clinic  -->
+			<!--  Clinical - STD clinic  -->
+			<!--  Clinical - Dental clinic  -->
+			<!--  Clinical - Correctional facility clinic  -->
+			<!--  Clinical - Other  -->
+			<!--  Non-clinical - Health department - field visit  -->
+			<!-- Non-clinical - Community Setting - Syringe exchange program -->
+			<!-- Mobile Unit -->
+			<!--  Non-clinical - Other  -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeHeader">
+		<xs:sequence>
+			<xs:element name="dataType">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="PS"/>
+						<!--  Partner Services  -->
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SchemaVersionNumber" type="xs:string"/>
+			<xs:element name="senderAgencyId" type="xs:string" minOccurs="0"/>
+			<xs:element name="firstDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="lastDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="contactPersonInformation" type="xs:string"/>
+			<xs:element name="agencyIDs" type="xs:string" minOccurs="0"/>
+			<xs:element name="dateCreated" type="typeDateTime" minOccurs="0"/>
+			<xs:element name="fileLastModifiedDate" type="typeDateTime" minOccurs="0"/>
+			<xs:element name="specialInstructions" type="xs:string" minOccurs="0"/>
+			<xs:element name="dataOwnerAgencyName" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

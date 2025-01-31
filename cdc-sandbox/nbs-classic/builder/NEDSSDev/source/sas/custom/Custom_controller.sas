@@ -1,0 +1,33 @@
+/* CUSTOM SAS PROCEDURE TEMPLATE */
+
+
+/* DELETE THE EXISTING CONTENT OF THE TABLE/VIEW BEING POPULATED USING %DBDELETE ();  */
+
+
+/*
+%dbdelete (TABLE_NAME); 
+*/
+
+
+/* CALL THE CUSTOM SAS PROCEDURE (.SAS) THAT RESIDES IN %SAS_REPORT_HOME%\custom\*/
+
+/*
+%include "&SAS_REPORT_HOME\custom\NAME_OF_FILE.SAS";
+*/
+
+/* LOAD THE RDBDATA INTO THE SPECIFIED TABLE USING %DBLOAD();*/
+
+/*
+%dbload (NAME OF TABLE, rdbdata.DATA_SET_NAME)'
+checkerr; 
+*/
+
+
+/* DELETE THE RDBDATA AND QUIT THE PROCEDURE */
+
+/*
+proc datasets lib=rdbdata nolist;
+delete 	NAME_OF_DATASET;
+run;
+quit;
+*/

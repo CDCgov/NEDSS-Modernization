@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<application>
+<display-name>cocoon2</display-name>
+
+<module>
+<web>
+<web-uri>nbs.war</web-uri> 
+<context-root>/cocoon</context-root>
+</web>
+</module>
+
+</application>

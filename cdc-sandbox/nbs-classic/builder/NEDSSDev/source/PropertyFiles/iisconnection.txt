@@ -1,0 +1,29 @@
+Connection
+
+Label: NE NESIIS
+
+Type: SOAP
+
+URL: https://testnesiis-dhhs-testwebservice.ne.gov/uat-webservices/cdc?wsdl
+
+User Id: CDCT
+
+Password: CDCT1
+
+Facility Id: CDCT
+
+Other Id: CDCT
+
+Transfer Type: NEAR_REAL_TIME_LINK
+
+Custom Transformations: 
+
+ + MSH-3=CDCT
+
+ + MSH-4=[OTHERID]
+
+ + ORC-17.1*=
+
+ + ORC-17.2*=
+
+ + ORC-17.3*=

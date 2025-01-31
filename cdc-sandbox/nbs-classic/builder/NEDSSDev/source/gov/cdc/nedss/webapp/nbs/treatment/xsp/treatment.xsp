@@ -1,0 +1,462 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>java.text.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.ldf.subform.dt.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<javascript-files>
+			<import>Coinfection.js</import>
+		</javascript-files>		
+		<xsp:logic><![CDATA[   
+		 //begin ldf   
+              String previewXSP= (String)request.getAttribute("previewXSP");			
+		if(previewXSP==null)
+				previewXSP="<null></null>";
+		String extXSP= (String)request.getAttribute(NEDSSConstants.TREATMENT_LDF+"extXSP");
+		if(extXSP == null)
+		    extXSP = "<group></group>";
+		String sfValidationXSP = request.getAttribute("subformValidations") == null ? "<group></group>" : (String) request.getAttribute("subformValidations");		
+		//end ldf
+	]]></xsp:logic>
+		<xsp:logic><![CDATA[	
+		
+			String fullName = "";
+			try {
+					NBSSecurityObj so = (NBSSecurityObj) request.getSession().getAttribute("NBSSecurityObject");
+					
+	
+					if (so != null) {
+						
+						 fullName = so.getTheUserProfile().getTheUser().getFirstName() + " " + so.getTheUserProfile().getTheUser().getLastName();
+						 
+					}   
+					
+			}
+		
+			catch (Exception e) {
+				
+			}
+		]]></xsp:logic>
+		<xsp:logic>
+				//To display complete date and time on the Printable Forms
+			    Date today = new Date();
+			    DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.FULL, new Locale("en","US"));
+			    DateFormat timeFormatter = DateFormat.getTimeInstance(DateFormat.DEFAULT,new Locale("en","US"));
+			    String dateOut = dateFormatter.format(today);
+			    String timeOut = timeFormatter.format(today);			
+			    //System.out.println("dateOut ===" + dateOut );
+			    //System.out.println("timeOut ===" + timeOut );			
+			</xsp:logic>
+		<xsp:logic>
+			String customJavaScript= (String)request.getAttribute("customJavaScript");
+
+			String customJavaScriptTRT= (String)request.getAttribute(NEDSSConstants.TREATMENT_LDF+ "customJavaScript");
+		</xsp:logic>
+
+		<javascript-files>
+			<insert>
+				<xsp:expr>customJavaScript</xsp:expr>
+			</insert>
+			<insert>
+				<xsp:expr>customJavaScriptTRT</xsp:expr>
+			</insert>
+			<import>TreatmentSpecific.js</import>
+			<import>EntitySearch.js</import>
+		</javascript-files>
+		<id-bar>
+			<id name="Patient ID">
+				<xsp-request:get-attribute name="patientPersonLocalID"/>
+			</id>
+			<id tie-to="Edit|View" name="Treatment ID">
+				<xsp-request:get-attribute name="treatmentLocalID"/>
+			</id>
+			<element id="printUser" type="hidden">
+				<value>
+					<xsp:expr>fullName</xsp:expr>
+				</value>
+			</element>
+		</id-bar>
+		<link-bar>
+			<xsp:attribute name="authorized">
+				<xsp-request:get-attribute name="checkWorkup"/>
+			</xsp:attribute>
+			<link name="Return to File: Events">
+				<xsp-request:get-attribute name="ReturnToFileEvents"/>
+			</link>
+			<link name="Return to Manage Treatments">
+				<xsp-request:get-attribute name="ReturnToManageTreatments"/>
+			</link>
+			<link name="Return to View Investigation">
+				<xsp-request:get-attribute name="ReturnToViewInvestigation"/>
+			</link>
+			<link name="Return to Manage Associations">
+				<xsp-request:get-attribute name="ManageEvents"/>
+			</link>
+		</link-bar>
+		<button-bar>
+			<right tie-to="Add|Create|Edit">
+				<label>Submit</label>
+				<javascript-action>CheckIfCoinfectionsShouldBeAssociated();</javascript-action>
+			</right>
+			<right tie-to="Add|Create|Edit">
+				<label>Cancel</label>
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="cancelButtonHref"/>');</javascript-action>
+			</right>
+			<right tie-to="View">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="editPerm"/>
+				</xsp:attribute>
+				<label>Edit</label>
+				<!-- <javascript-action>getPage('/nedss/loadTreatment.do?OperationType=edit&amp;treatmentUID=<xsp-request:get-attribute name="treatmentUID"/>');</javascript-action> //-->
+				<javascript-action>getPage('<xsp-request:get-attribute name="editButtonHref"/>');</javascript-action>
+			</right>
+			<right tie-to="View">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="deletePerm"/>
+				</xsp:attribute>
+				<label>Delete</label>
+				<javascript-action>promptForm('<xsp-request:get-attribute name="deleteButtonHref"/>','If you continue with the Delete action, you will delete the information. Select OK to continue, or Cancel to not continue.');</javascript-action>
+			</right>
+			<right tie-to="View">
+				<label>Print</label>
+				<javascript-action>window.open('<xsp-request:get-attribute name="PrintPage"/>');</javascript-action>
+			</right>
+			<right tie-to="View">
+				<label>Associate Investigations</label>
+				<javascript-action>ManageInvestigationAssociations();</javascript-action>
+			</right>			
+		</button-bar>
+		<topgroup anchor="yes">
+			<line>
+				<element name="topGroupPatientFirstName" type="plain-text" label="Name">
+					<value>
+						<xsp-request:get-attribute name="legalFirstName"/>
+					</value>
+				</element>
+				<element name="topGroupPatientLastName" type="plain-text">
+					<value>
+						<xsp-request:get-attribute name="legalLastName"/>
+					</value>
+				</element>
+				<element name="dateOfBirth" type="plain-text" label="DOB">
+					<value>
+						<xsp-request:get-attribute name="birthTime"/>
+					</value>
+				</element>
+				<!-- comment out printAge as treatment doesnt show up age(patient associated with treatment ie MPR's reported age is null. so.... -->
+				<!--element id="printAge" type="hidden">
+					<value>
+						<xsp-request:get-attribute name="printAge"/>
+						<xsp:expr>' '</xsp:expr>
+						<xsp-request:get-attribute name="printAgeUnits"/>
+					</value>
+				</element-->
+				<element name="patientCurrentSex" type="select" label="Current Sex">
+					<readonly/>
+					<srt-options-string>
+						<srt-codes:getCodedValues>
+							<type>SEX</type>
+						</srt-codes:getCodedValues>
+					</srt-options-string>
+					<value>
+						<xsp-request:get-attribute name="currSexCd"/>
+					</value>
+				</element>
+				<element name="COINFECTION_INV_EXISTS" type="hidden">
+					<value>
+						<xsp-request:get-attribute name="COINFECTION_INV_EXISTS"/>
+					</value>
+				</element>
+				
+			</line>
+		</topgroup>
+		<tab name="Treatment">
+			<nedss:writeErrorMessages/>
+			<group name="Treatment">
+				<line>
+					<element name="ContextAction" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="ContextAction"/>
+						</value>
+					</element>
+					<element name="theTreatmentUid" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="DSTreatmentUID"/>
+						</value>
+					</element>					
+					<element name="treatmentUID" type="hidden">
+						<value>edit</value>
+					</element>
+				</line>
+				<line>
+					<element id="printDate" type="hidden">
+						<value>
+							<xsp:expr>dateOut</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element id="printTime" type="hidden">
+						<value>
+							<xsp:expr>timeOut</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<!-- BEGIN TREATMENT -->
+				<line tie-to="Edit|Create|Add|">
+					<!--element label="[-r-nc]* Indicates a required field" align-label="left"/-->
+					<element type="raw">
+						<span>
+							<i>
+								<font class="boldTenRed"> * Indicates a required field </font>
+							</i>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Facility and Provider Information"/>
+				</line>
+				<line tie-to="Edit|Create|Add|">
+					<element type="raw">
+						<span>
+							<i>(One of the following is required: Provider or Reporting Facility)</i>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="entity-search" name="Prov-entity.entityProvUID" entity-type="provider" alignment="left" code-lookup="code">
+						<xsp:attribute name="authorized">
+							
+						</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="providerUID"/>
+						</value>
+						<line>
+							<element label="Provider" align-label="left" valign-label="top" name="entity.completePersonSearchResult" type="plain-text">
+								<readonly/>
+								<value>
+									<xsp-request:get-attribute name="providerSourceDetails"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element type="entity-search" name="Org-ReportingOrganizationUID" entity-type="organization" alignment="left" code-lookup="code">
+						<xsp:attribute name="authorized">
+							
+						</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="reportingFacilityUID"/>
+						</value>
+						<line>
+							<element label="Reporting Facility" valign-label="top" align-label="left" name="entity.completeOrgSearchResult" type="plain-text" alignment="left">
+								<readonly/>
+								<value>
+									<xsp-request:get-attribute name="reportingSourceDetails"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+			</group>
+			<group>
+				<line>
+					<element type="text" label="* Treatment Date" mask="##/##/####">
+						<!-- <xsp:attribute name="name">labResults_s[i].observationVO_s[0].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">labResults_s[i].observationVO_s[0].theObservationDT.cd</xsp:attribute> -->
+						<xsp:attribute name="name">treatmentVO.theTreatmentDT.activityFromTime_s</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="dateAdministered"/>
+						</value>
+						<validation type="date" mask="mm/dd/yyyy" name="Treatment Date" required="true"/>
+					</element>
+				</line>
+				<line>
+					<element name="TRT101" type="conditional-entry">
+						<controller name="treatmentVO.theTreatmentDT.cd" trigger="OTH" type="select" label="* Treatment" length="25">
+							<!-- Commented out the dropdown values for the Rel1.1.3srtFiltering as it has been rolled back -->
+							<!--srt-options-string>
+								<xsp-request:get-attribute name="treatmentdropdown"/>
+							</srt-options-string-->
+							<srt-options-string>
+								<srt-codes:getTreatmentDesc/>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="treatmentId"/>
+							</value>
+							<validation type="required" name="Treatment"/>
+						</controller>
+						<line>
+							<element id="TRT111" type="text" label="* Custom Treatment">
+								<xsp:attribute name="name">treatmentVO.theTreatmentDT.cdDescTxt</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="treatmentVO.theTreatmentDT.cdDescTxt"/>
+								</value>
+								<!--validation type="required" name="Custom Treatment"/-->
+							</element>
+						</line>
+						<line>
+							<element type="select" label="Drug" length="25">
+								<xsp:attribute name="name">treatmentVO.treatmentAdministeredDT_s[0].cd</xsp:attribute>
+								<!-- Commented out the dropdown values for the Rel1.1.3srtFiltering as it has been rolled back-->
+								<!--srt-options-string>
+									<xsp-request:get-attribute name="teatmentDrugDropdown"/>
+								</srt-options-string-->
+								<srt-options-string>
+									<srt-codes:getTreatmentDrug/>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="treatmentVO.treatmentAdministeredDT_s[0].cd"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="Dosage/Strength" size="6">
+								<xsp:attribute name="name">treatmentVO.treatmentAdministeredDT_s[0].doseQty</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="treatmentVO.treatmentAdministeredDT_s[0].doseQty"/>
+								</value>
+								<validation type="age" name="Dosage/Strength" requiredPartner="TRT104"/>
+								<partner id="TRT104" name="treatmentVO.treatmentAdministeredDT_s[0].doseQtyUnitCd" type="select" length="30">
+									<value>
+										<xsp-request:get-attribute name="treatmentVO.treatmentAdministeredDT_s[0].doseQtyUnitCd"/>
+									</value>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>TREAT_DOSE_UNIT</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</partner>
+							</element>
+						</line>
+						<line>
+							<element type="select" label="Route" length="12">
+								<xsp:attribute name="name">treatmentVO.treatmentAdministeredDT_s[0].routeCd</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="treatmentVO.treatmentAdministeredDT_s[0].routeCd"/>
+								</value>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>TREAT_ROUTE</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="select" label="Frequency" length="17">
+								<xsp:attribute name="name">treatmentVO.treatmentAdministeredDT_s[0].intervalCd</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>TREAT_FREQ_UNIT</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="treatmentVO.treatmentAdministeredDT_s[0].intervalCd"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="Duration" size="6">
+								<xsp:attribute name="name">treatmentVO.treatmentAdministeredDT_s[0].effectiveDurationAmt</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="treatmentVO.treatmentAdministeredDT_s[0].effectiveDurationAmt"/>
+								</value>
+								<validation type="age" name="Duration" requiredPartner="TRT108"/>
+								<partner id="TRT108" name="treatmentVO.treatmentAdministeredDT_s[0].effectiveDurationUnitCd" type="select" length="5">
+									<value>
+										<xsp-request:get-attribute name="treatmentVO.treatmentAdministeredDT_s[0].effectiveDurationUnitCd"/>
+									</value>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>TREAT_DUR_UNIT</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</partner>
+							</element>
+						</line>
+					</element>
+					<element/>
+				</line>
+				<line>
+					<element type="textarea" label="Treatment Comments">
+						<xsp:attribute name="name">treatmentVO.theTreatmentDT.txt</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="txt"/>
+						</value>
+					</element>
+				<element name="coinfectionAssocList" id="coinfList" type="hidden"/>
+						
+				</line>
+				<!-- </element> -->
+				<!-- </line> -->
+			</group>
+			<!--begin ldf-->
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>previewXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>extXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<xsp:logic>
+				ArrayList subformList = (ArrayList)request.getAttribute(NEDSSConstants.TREATMENT_LDF+"SubformList" );				
+				if(subformList != null) {
+			          for(Iterator anIter = subformList .iterator(); anIter.hasNext();)  {
+				            CustomSubformMetadataDT dt = (CustomSubformMetadataDT) anIter.next();			
+				            
+			</xsp:logic>
+			<group>
+				<xsp:attribute name="name">
+					<xsp:expr>dt.getSubformNm()</xsp:expr>
+				</xsp:attribute>
+				<line>
+					<element type="raw">
+						<span>
+							<util:include-expr>
+								<util:expr>
+									<xsp:expr>dt.getHtmlData()</xsp:expr>
+								</util:expr>
+							</util:include-expr>
+						</span>
+					</element>
+				</line>
+			</group>
+			<xsp:logic> }} </xsp:logic>
+			<!-- display subform xsp in Printable forms -->
+			<xsp:logic><![CDATA[
+				ArrayList printXSPList = (ArrayList) request.getAttribute(NEDSSConstants.TREATMENT_LDF+"printSubformXSP");
+				if(printXSPList != null && printXSPList.size() > 0) {
+					for(Iterator anIter = printXSPList.iterator(); anIter.hasNext();) {
+					
+			]]></xsp:logic>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>(String)anIter.next()</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<xsp:logic>  }} </xsp:logic>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>sfValidationXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+		</tab>
+	</content>
+</xsp:page>

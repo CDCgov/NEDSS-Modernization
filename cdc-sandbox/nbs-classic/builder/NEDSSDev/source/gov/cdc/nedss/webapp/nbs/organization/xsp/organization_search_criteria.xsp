@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.organization.vo.OrganizationSearchVO</xsp:include>
+	</xsp:structure>
+	<xsp:logic>
+		private String getTitle(){
+			String OrganizationName = (String)request.getAttribute("OrganizationName");
+			if(OrganizationName != null)  {				
+				request.setAttribute("OrganizationName ", OrganizationName);
+				String displayName = OrganizationName +" Search Criteria";				
+				return displayName;
+			}	else
+				return "Organization Search Criteria";
+		}
+		private String getName() {
+			String oT = (String)request.getAttribute("ContextAction");	
+			if(!oT.equals("EntitySearch"))
+				return "Search Criteria";
+			else
+				return "";
+		}	
+		private String storeOrgName() {
+			return (String)request.getAttribute("OrganizationName");
+		}
+	</xsp:logic>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<xsp:attribute name="title">
+			<xsp:expr>getTitle()</xsp:expr>
+		</xsp:attribute>
+		<!--content form="/nedss/posted"-->
+		<xsp:logic><![CDATA[
+				String sDebug = "";
+				
+				String searchType = request.getParameter("searchType");				
+				OrganizationSearchVO organizationFind = null;
+				String sOperationType=(String)request.getAttribute("ContextAction");				
+				organizationFind = (OrganizationSearchVO)request.getAttribute("DSSearchCriteria");
+				
+			
+
+		]]></xsp:logic>
+		<javascript-files>
+			<import>OrganizationSearchSpecific.js</import>
+			<import>EntitySearch.js</import>
+		</javascript-files>
+		<button-bar>
+			<right>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<xsp:logic>if(sOperationType.equals("EntitySearch")) {</xsp:logic>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>window.close();</javascript-action>
+			</right>
+			<xsp:logic> } </xsp:logic>
+		</button-bar>
+		<tab name="search">
+			<nedss:writeErrorMessages/>
+			<group>
+				<line>
+					<element name="ContextAction" type="hidden">
+						<value>
+							<xsp:expr>sOperationType</xsp:expr>
+						</value>
+					</element>
+				</line>
+			</group>
+			<!--group name="Search Criteria"-->
+			<group>
+				<xsp:attribute name="name">
+					<xsp:expr>getName()</xsp:expr>
+				</xsp:attribute>
+				<line>
+					<element type="raw"/>
+					<element type="raw">
+						<span>
+							<left>
+								<b>Operators</b>
+							</left>
+						</span>
+					</element>
+					<element type="raw">
+						<span>
+							<left>
+								<b>Search Criteria</b>
+							</left>
+						</span>
+					</element>
+					<element type="hidden" name="orgTitle">
+						<value>
+							<xsp:expr>storeOrgName()</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<xsp:logic>if(PropertyUtil.getInstance().getOrganizationSearchNameOperatorDefault().equals("CT")){</xsp:logic>
+					<element name="organizationSearch.nmTxtOperator" type="select" background="Shaded" label="Name" default="CT" noblank="true" length="11">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_SNDX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind .getNmTxtOperator()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+					<xsp:logic>} else {</xsp:logic>
+					<element name="organizationSearch.nmTxtOperator" type="select" background="Shaded" label="Name" default="SW" noblank="true" length="11">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_SNDX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind .getNmTxtOperator()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+					<xsp:logic>}</xsp:logic>
+					<element name="organizationSearch.nmTxt" type="text">
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind .getNmTxt()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element name="organizationSearch.streetAddr1Operator" type="select" background="Shaded" align="left" label="Street Address" default="CT" noblank="true" length="9">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_ALPHA</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind .getStreetAddr1Operator()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+					<element name="organizationSearch.streetAddr1" type="text">
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind .getStreetAddr1()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element name="organizationSearch.cityDescTxtOperator" type="select" background="Shaded" label="City" default="CT" noblank="true" length="9">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_ALPHA</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind .getCityDescTxtOperator()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+					<element name="organizationSearch.cityDescTxt" type="text">
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind .getCityDescTxt()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="State"/>
+					<element name="organizationSearch.stateCd" type="select" length="25">
+						<srt-options-string>
+							<srt-codes:getStateCodes>
+								<type>USA</type>
+							</srt-codes:getStateCodes>
+						</srt-options-string>
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind.getStateCd()</xsp:expr>
+						</value>
+						<xsp:logic> 
+								
+									}
+						</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="Zip"/>
+					<element name="organizationSearch.zipCd" type="text">
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind .getZipCd()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+						<validation type="reg-expr" error-code="ERR103" name="Zip">
+							<pattern><![CDATA[^((\d{5})|(\d{5}-\d{4}))?$]]></pattern>
+						</validation>
+						<!--validation type="reg-expr" name="organizationSearch.zipCd" error-message="Please enter a number into the Zip field">
+							<pattern><![CDATA[^(((\d+)?(\.{1}\d+)?))?$]]></pattern>
+						</validation-->
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="Telephone"/>
+					<element name="organizationSearch.phoneNbrTxt" type="telephone" mask="(###)###-####" size="10">
+						<validation type="reg-expr" error-code="ERR107" name="Telephone">
+							<pattern><![CDATA[^((\d{3})?-(\d{3})?-(\d{4})?)?$]]></pattern>
+						</validation>
+						<xsp:logic>if (organizationFind != null) { 
+						//System.out.println("\n organizationFind .getPhoneNbrTxt() index = " + organizationFind .getPhoneNbrTxt().lastIndexOf("-")); 
+						//System.out.println("\n organizationFind .getPhoneNbrTxt()  length  = " + organizationFind .getPhoneNbrTxt().substring(5,9)); 
+						                                                                                                     
+						</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind .getPhoneNbrTxt()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="ID Type"/>
+					<element name="organizationSearch.typeCd" type="select" length="42">
+						<validation type="acctIdSearchCheck" nameRef="organizationSearch.rootExtensionTxt" name="ID Type"/>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>EI_TYPE_ORG</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind.getTypeCd()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element name="organizationSearch.rootExtensionTxtOperator" type="select " background="Shaded" label="ID Value" default="CT" noblank="true">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_ALPHA</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind .getRootExtensionTxtOperator()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+					<element name="organizationSearch.rootExtensionTxt" type="text">
+						<validation type="acctIdSearchCheck" nameRef="organizationSearch.typeCd" name="ID Value"/>
+						<xsp:logic>if (organizationFind != null) {</xsp:logic>
+						<value>
+							<xsp:expr>organizationFind .getRootExtensionTxt()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="hidden" name="organizationSearch.active">
+						<value>true</value>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

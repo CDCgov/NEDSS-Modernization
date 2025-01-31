@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+    <xsp:structure>
+        <xsp:include>java.util.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.util.NEDSSConstants</xsp:include>
+        <xsp:include>gov.cdc.nedss.entity.person.vo.PersonSearchVO</xsp:include>
+        <xsp:include>gov.cdc.nedss.util.*</xsp:include>
+    </xsp:structure>
+    <!--nedss:getTitle>
+	</nedss:getTitle-->
+    <xsp:logic>
+		private String getTitle(){
+			String PersonName = (String)request.getAttribute("PersonName");
+			//##!! System.out.println("PersonName in Search.xsp = " + PersonName);
+			if(PersonName  != null)  {
+				request.setAttribute("PersonName ", PersonName);
+				String test = null;
+				if (PersonName.equals("Ordered") || PersonName.equals("Resulted")){
+					PersonName = PersonName + " Test";
+				}
+				String displayName = PersonName + " Name Search Criteria";
+				return displayName;
+			}else
+				return "Observation Search Criteria";
+		}
+
+	</xsp:logic>
+
+	
+    <!--nedss:getName>
+	</nedss:getName-->
+    <xsp:logic>
+		private String getName() {
+			String oT = (String)request.getAttribute("ContextAction");
+			if(!oT.equals("EntitySearch"))
+				return "Simple Search";
+			else
+				return "";
+		}
+	</xsp:logic>
+    <!--nedss:storePerName>
+	</nedss:storePerName-->
+    <xsp:logic>
+		private String storePerName() {
+			//##!! System.out.println("What is the PersonName = " +request.getAttribute("PersonName"));
+			return (String)request.getAttribute("PersonName");
+		}
+         </xsp:logic>
+    <content>
+        <xsp:attribute name="title">
+            <xsp:expr>getTitle()</xsp:expr>
+        </xsp:attribute>
+        <xsp:attribute name="form">
+            <xsp-request:get-attribute name="formHref"/>
+        </xsp:attribute>
+        <!--content form="/nedss/posted"-->
+        <!-- nedss:RequestvaluesFind/ -->
+        <xsp:logic><![CDATA[
+				
+//System.out.println("HELLLLLLLLLLLLLLLLLLO");
+				String sDebug = null;
+
+				PersonSearchVO personFind = null;
+				String labId = null;
+				String clia = null;
+				String method = null;
+				String searchName = "";
+				String searchType = "";
+
+				if ((String)request.getAttribute("SearchType") != null ){
+//System.out.println("<======= chk 1=============>" + request.getAttribute("SearchType"));
+					searchType = (String)request.getAttribute("SearchType");
+				}
+				
+				
+				if ((String)request.getAttribute("SearchString") != null ){
+					searchName = (String)request.getAttribute("SearchString");
+				}
+				
+				
+				if ((String)request.getAttribute("method") != null ){
+//System.out.println("<======= chk 1=============>" + request.getAttribute("method"));
+					method = (String)request.getAttribute("method");
+
+				}
+
+				if ((String)request.getAttribute("Org-ReportingOrganizationUID") != null ){
+//System.out.println("<======= chk 2=============>" + request.getAttribute("Org-ReportingOrganizationUID"));
+					clia = (String)request.getAttribute("Org-ReportingOrganizationUID");
+				}
+
+				if ((String)request.getAttribute("labId") != null ){
+//System.out.println("<======= chk 2=============>" + request.getAttribute("labId"));
+					labId = (String)request.getAttribute("labId");
+				}
+				String sOperationType=(String)request.getAttribute("ContextAction");
+				if(sOperationType==null)
+					sOperationType=(String)request.getParameter("ContextAction");
+				 //personFind = (PersonSearchVO) request.getAttribute("DSSearchCriteria");
+			]]></xsp:logic>
+        <button-bar>
+            <right>
+                <label>Submit</label>
+                <javascript-action>submitForm();</javascript-action>
+            </right>
+            <nedss:ifEntitySearch>
+                <right>
+                    <label>Cancel</label>
+                    <javascript-action>window.close();</javascript-action>
+                </right>
+            </nedss:ifEntitySearch>
+            <!--xsp:logic> } </xsp:logic-->
+        </button-bar>
+        <javascript-files>
+            <import>EntitySearch.js</import>
+        </javascript-files>
+        <tab name="search">
+            <nedss:writeErrorMessages/>
+            <group>
+                <line>
+                    <element type="hidden" name="perTitle">
+                        <value>
+                            <xsp:expr>storePerName()</xsp:expr>
+                        </value>
+                    </element>
+                    <element type="hidden" name="labId">
+                        <value>
+                            <xsp:expr>labId</xsp:expr>
+                        </value>
+                    </element>
+                    <element type="hidden" name="clia">
+                        <value>
+                            <xsp:expr>clia</xsp:expr>
+                        </value>
+                    </element>
+                    <element type="hidden" name="method">
+                        <value>
+                            <xsp:expr>method</xsp:expr>
+                        </value>
+                    </element>
+                    <element name="ContextAction" type="hidden">
+                        <value>
+                            <xsp:expr>sOperationType</xsp:expr>
+                        </value>
+                    </element>
+                </line>
+            </group>
+            <!--group name="Simple Search"-->
+            <group>
+                <xsp:attribute name="name">
+                    <xsp:expr>getName()</xsp:expr>
+                </xsp:attribute>
+                <line>
+                    <element type="raw"/>
+                    <element type="raw">
+                        <span>
+                            <!--b>Search Criteria</b-->
+                        </span>
+                    </element>
+                </line>
+               
+		<line>
+	               <xsp:logic>
+					String type2 = "";
+					if (request.getAttribute("PersonName") != null){
+					  type2 = (String)request.getAttribute("PersonName");
+					}
+
+					if (type2.equals("Ordered") || type2.equals("Resulted") )
+					{
+			</xsp:logic>
+						<element label="Test Name" type="raw"/>
+			<xsp:logic>
+					}else if (type2.equals("Drug")){
+			</xsp:logic>
+						<element label="Drug Name" type="raw"/>
+			<xsp:logic>
+					}else if (type2.equals("Organism")){
+			</xsp:logic>
+						<element label="Organism Name" type="raw"/>
+			<xsp:logic>
+					}else{
+			</xsp:logic>
+						<element label="Name" type="raw"/>
+			<xsp:logic>
+					}
+			</xsp:logic>
+
+                    <element name="observationSearch.lastName" type="text">
+			<value>
+				<xsp:expr>searchName</xsp:expr>
+			</value>
+			<validation type="required" error-code="ERR011" name="Test Name"/>
+		    </element>
+                </line>
+                <xsp:logic>
+					String type = (String)request.getAttribute("PersonName");
+				
+					if (!(type.equals("Organism")))
+					{
+				</xsp:logic>
+                <line>
+                    <element name="observationSearch.searchType" type="radio" label="Search" default="LOCAL">
+                        <options layout="vertical">
+                            <option align-label="left" label="[-nc] Short list, includes generic names of tests" value="LOCAL"/>
+                            <option align-label="left" label="[-nc] Long list, provides detailed names of tests" value="LOINC"/>
+                        </options>
+			<value>
+				<xsp:expr>searchType</xsp:expr>
+			</value>
+                    </element>
+                </line>
+                <xsp:logic>
+					}
+				</xsp:logic>
+                <nedss:ifEntitySearch>
+                    <line>
+                        <element type="hidden" name="observationSearch.active">
+                            <value>true</value>
+                        </element>
+                    </line>
+                </nedss:ifEntitySearch>
+            </group>
+        </tab>
+    </content>
+</xsp:page>

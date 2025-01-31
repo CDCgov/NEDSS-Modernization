@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 3 U (http://www.xmlspy.com) by CSC Employee (Computer Sciences Corp) -->
+<project name="GenMsg" default="all" basedir=".">
+	<import file="build.properties.xml"/>
+	<target name="all" depends="compile">
+		<jar jarfile="${libraries_dest_dir}/nndMasterMsgFrameWork/NedssMasterMessageFramework.jar" basedir="${message_build_dir}">
+			<fileset dir="${message_build_dir}/gov">
+				<include name="gov/cdc/nedss/messageframework/notificationmastermessage/**"/>
+				<exclude name="*.java"/>
+			</fileset>
+		</jar>
+	</target>
+	<target name="replicate" depends="">
+		<copy todir="${message_build_dir}">
+			<fileset dir="." includes="*.xsd"/>
+		</copy>
+	</target>
+	<target name="gen_source" depends="replicate">
+		<java classname="org.exolab.castor.builder.SourceGenerator">
+			<classpath refid="class.path"/>
+			<arg value="-i"/>
+			<arg value="${message_build_dir}/NotificationMasterMessage.xsd"/>
+			<arg value="-dest"/>
+			<arg value="${message_build_dir}"/>
+			<arg value="-types"/>
+			<arg value="j2"/>
+			<arg value="-f"/>
+			<arg value="-package"/>
+			<arg value="gov.cdc.nedss.messageframework.notificationmastermessage"/>
+		</java>
+	</target>
+	<target name="compile" depends="add_includes">
+		<javac srcdir="${message_build_dir}" destdir="${message_build_dir}">
+					<classpath refid="class.path"/>
+		</javac>
+	</target>
+	<target name="add_includes" depends="gen_source">
+		<replace dir="${message_build_dir}/gov/cdc/nedss/messageframework/notificationmastermessage" token="import org.exolab.castor.mapping.ClassDescriptor;">
+			<replacevalue><![CDATA[]]></replacevalue>
+		</replace>
+	</target>
+</project>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.NEDSSConstants</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+	</xsp:structure>
+	<content title="Import Collaborative Fields and Subforms" form="/nbs/FileImportSubmit.do">
+		<xsp:logic><![CDATA[    	               
+			String DSImportFilenames= (String)request.getAttribute("DSImportFilenames");
+		]]></xsp:logic>
+		<button-bar>
+			<!--left>
+				<label>POSTED</label>
+				<javascript-action>document.forms[0].action="/nbs/posted";submitForm();</javascript-action>
+			</left-->
+			<right>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>cancelImport('<xsp-request:get-attribute name="cancelButtonHref"/>');</javascript-action>
+			</right>
+		</button-bar>
+		<javascript-files>
+			<import>cdfSubformSpecific.js</import>
+		</javascript-files>
+		<tab>
+			<nedss:writeErrorMessages/>
+			<group>
+				<!--line>
+					<element name="filemap" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="filemap"/>
+						</value>
+					</element>
+				</line-->
+				<line>
+					<element type="raw">
+						<span>
+							<b>Accept the default Filename or select an alternate, and click Submit to continue.</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<i>
+								<font class="boldTenRed"> * Indicates a Required Field </font>
+							</i>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element id="123" name="source" type="select" label="*Filename" length="50">
+						<xsp:attribute name="default">0</xsp:attribute>
+						<srt-options-string>
+							<xsp:expr>DSImportFilenames</xsp:expr>
+						</srt-options-string>
+						<validation type="required" name="Filename"/>
+					</element>
+					<element id="1" name="dummy" type="plaint" label="" length="50">
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+	<tab>
+	</tab>
+</xsp:page>

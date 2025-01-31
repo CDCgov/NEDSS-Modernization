@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug">
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="=%-4r %d{date} [%t] %-5p %c %x - %m%n"/>
+		</Console>
+		<RollingFile name="nedss" fileName="${sys:jboss.server.home.dir}/log/nedss.log" filePattern="${sys:jboss.server.home.dir}/log/nedss-%d{MM-dd-yyyy}-%i.log">
+			<PatternLayout>
+				<Pattern>=%-4r %d{date} [%t] %-5p %c %x - %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy/>
+				<SizeBasedTriggeringPolicy size="100000KB"/>
+			</Policies>
+			<DefaultRolloverStrategy max="1"/>
+		</RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+			<AppenderRef ref="nedss"/>
+			<AppenderRef ref="STDOUT"/>
+		</Root>
+    </Loggers>
+</Configuration>

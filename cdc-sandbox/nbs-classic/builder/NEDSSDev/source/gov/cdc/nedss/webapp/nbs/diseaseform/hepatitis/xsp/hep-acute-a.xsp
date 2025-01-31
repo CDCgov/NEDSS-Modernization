@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0">
+	<xsp:structure>
+		<nedss:Include/>
+		<xsp:include>gov.cdc.nedss.ldf.subform.dt.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:logic><![CDATA[
+		
+			String customJavaScript= (String)request.getAttribute("customJavaScript");
+		//System.out.println("customJavaScript is :" + customJavaScript);
+		String customJavaScriptHEP= (String)request.getAttribute(NEDSSConstants.INVESTIGATION_HEP_LDF + "customJavaScript");
+		//System.out.println("customJavaScriptHEP is :" + customJavaScriptHEP);
+
+
+            String sCurrentTask= request.getParameter("CurrentTask");
+            if(sCurrentTask==null)
+                sCurrentTask="";
+                
+              //begin ldf   
+              String previewXSP= (String)request.getAttribute("previewXSP");			
+		if(previewXSP==null)
+				previewXSP="<null></null>";
+		String conditionCd= (String)request.getAttribute("conditionCd");
+		//System.out.println("\n\n\n####conditionCdis \n:" + conditionCd);
+		String extXSP= (String)request.getAttribute("conditionextXSP");
+		if(extXSP == null)
+		    extXSP = "<group></group>";
+		//System.out.println("\n\n\n####HepAcuteA extXSP is \n:" + extXSP);
+		//end ldf
+		String sfValidationXSP = request.getAttribute("subformValidations") == null ? "<group></group>" : (String) request.getAttribute("subformValidations");
+		
+        ]]></xsp:logic>
+		<javascript-files>
+			<insert>
+				<xsp:expr>customJavaScript</xsp:expr>
+			</insert>
+			<insert>
+				<xsp:expr>customJavaScriptHEP</xsp:expr>
+			</insert>
+			<import>HepatitisAcuteASpecific.js</import>
+		</javascript-files>
+		<topgroup anchor="yes">
+			<line>
+				<element name="topGroupPatientFirstName" type="plain-text" label="Name">
+					<value>
+						<xsp-request:get-attribute name="legalFirstName"/>
+					</value>
+				</element>
+				<element name="topGroupPatientLastName" type="plain-text">
+					<value>
+						<xsp-request:get-attribute name="legalLastName"/>
+					</value>
+				</element>
+				<element name="dateOfBirth" type="plain-text" label="DOB">
+					<value>
+						<xsp-request:get-attribute name="birthTime"/>
+					</value>
+				</element>
+				<element id="printAge" type="hidden">
+					<value>
+						<xsp-request:get-attribute name="printAge"/>
+						<xsp:expr>' '</xsp:expr>
+						<xsp-request:get-attribute name="printAgeUnits"/>
+					</value>
+				</element>
+				<element name="patientCurrentSex" type="plain-text" label="Current Sex">
+					<value>
+						<xsp-request:get-attribute name="currSexCd"/>
+					</value>
+				</element>
+			</line>
+		</topgroup>
+		<button-bar/>
+		<tab name="Acute Hepatitis A">
+			<xsp:attribute name="view">
+				<xsp-request:get-attribute name="hepAShow"/>
+			</xsp:attribute>
+			<nedss:writeErrorMessages/>
+			<group name="Medical History">
+				<xsp:attribute name="warnMessage">
+					Please note, the diagnosis cannot be changed if the form has responses to supplemental questions and has been submitted.
+				</xsp:attribute>			
+				<line>
+					<element type="blue-bar" text="During the 2 to 6 WEEKS prior to onset of symptoms was the patient"/>
+				</line>
+				<line>
+					<element type="conditional-entry" name="HEP129c">
+						<controller type="select" align-label="left" length="7" trigger="Y" label="A contact of a person with confirmed or suspected hepatitis A virus infection?">
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS000</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS000</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">HEP129</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="HEP129"/>
+							</value>
+						</controller>
+						<line>
+							<element type="conditional-entry" name="HEP130c">
+								<controller type="select" size="5" label="Type of contact" trigger="O">
+									<xsp:attribute name="name">HEP130</xsp:attribute>
+									<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS001</xsp:expr>].theObservationDT.cd</xsp:attribute>
+									<!--			<xsp:attribute name="observation-value">typeOfContact</xsp:attribute>-->
+									<xsp:attribute name="observation-value">HEP130</xsp:attribute>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>H_CONTACT_TY</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<value>
+										<!--		<xsp-request:get-attribute name="typeOfContact"/>-->
+										<xsp-request:get-attribute name="HEP130"/>
+									</value>
+								</controller>
+								<line>
+									<element type="text" label="Specify other" align-label="right">
+										<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS002</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+										<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS002</xsp:expr>].theObservationDT.cd</xsp:attribute>
+										<xsp:attribute name="observation-value">HEP131</xsp:attribute>
+										<value>
+											<xsp-request:get-attribute name="HEP131-valueTxt"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="blue-bar" text="During the 2 to 6 WEEKS prior to onset of symptoms was the patient" colspan="2"/>
+				</line>
+				<line>
+					<element type="conditional-entry" name="HEP132c">
+						<controller type="select" align-label="left" length="7" colspan="1" label="A child or employee in a daycare center, nursery, or preschool?" trigger="Y">
+							<xsp:attribute name="check">HEP133()</xsp:attribute>
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS003</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS003</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">HEP132</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="HEP132"/>
+							</value>
+						</controller>
+						<controller type="select" align-label="left" length="7" trigger="Y" label="A household contact of a child or employee in a daycare center, nursery, or preschool?">
+							<xsp:attribute name="check">HEP133()</xsp:attribute>
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS004</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS004</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">HEP133</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="HEP133"/>
+							</value>
+						</controller>
+						<line id="trHEP134">
+							<element type="select" align-label="right" length="7" label="If yes for either of these, was there an identified hepatitis A case in the child care facility?">
+								<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS005</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS005</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">HEP134</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>YNU</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="HEP134"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="blue-bar" text="ASK BOTH OF THE FOLLOWING QUESTIONS REGARDLESS OF THE PATIENTS GENDER" subtext="In the 2 to 6 WEEKS before symptom onset, how many"/>
+				</line>
+				<line>
+					<element type="select" align-label="left" colspan="1" length="7" label="Male sex partners did the patient have?">
+						<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS006</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS006</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">HEP135</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>H_NUM_SEX_PART</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="HEP135"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" align-label="left" colspan="1" length="7" label="Female sex partners did the patient have?">
+						<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS007</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS007</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">HEP136</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>H_NUM_SEX_PART</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="HEP136"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="blue-bar" colspan="2" text="In the 2 to 6 WEEKS prior to onset of symptoms did the patient"/>
+				</line>
+				<line>
+					<element type="select" align-label="left" length="7" label="Inject street drugs not prescribed by a doctor?">
+						<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS008</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS008</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">HEP137</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="HEP137"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" colspan="1" align-label="left" length="7" label="Use street drugs but not inject?">
+						<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS009</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS009</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">HEP138</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="HEP138"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="conditional-entry" name="139c">
+						<controller type="select" colspan="1" align-label="left" length="7" label="Travel outside the U.S.A. or Canada?" trigger="Y">
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS010</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS010</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">HEP139</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="HEP139"/>
+							</value>
+						</controller>
+						<line>
+							<element type="select" size="5" label="Where did they travel?" childalign="yes">
+								<xsp:attribute name="name">HEP140</xsp:attribute>
+								<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS011</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">HEP140</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCountryCodesAsString/>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="HEP140"/>
+								</value>
+							</element>
+							<!--			<element type="hidden">
+								<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS012</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<value>HEP140</value>
+							</element>-->
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="blue-bar" colspan="2" text="In the 3 MONTHS prior to symptom onset"/>
+				</line>
+				<line>
+					<element type="conditional-entry" name="141c">
+						<controller type="select" colspan="1" align-label="left" length="7" trigger="Y" label="Did anyone in the patient's household travel outside the U.S.A or Canada?">
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS012</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS012</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">HEP141</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="HEP141"/>
+							</value>
+						</controller>
+						<line>
+							<element type="select" size="5" label="Where did they travel?" childalign="yes">
+								<xsp:attribute name="name">HEP142</xsp:attribute>
+								<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS013</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">HEP142</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCountryCodesAsString/>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="HEP142"/>
+								</value>
+							</element>
+							<!--			<element type="hidden">
+								<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS015</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<value>HEP142</value>
+							</element>-->
+						</line>
+					</element>
+				</line>
+				<line>
+					<element colspan="2" type="line-separator"/>
+				</line>
+				<line>
+					<element type="conditional-entry" name="HEP143c">
+						<controller type="select" colspan="1" align-label="left" length="7" label="Is the patient suspected of being part of a common source outbreak?" trigger="Y">
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS014</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS014</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">HEP143</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="HEP143"/>
+							</value>
+						</controller>
+						<line>
+							<element type="conditional-entry" name="HEP144c">
+								<controller type="select" label="Type of outbreak" trigger="FNA" indented="yes" length="45">
+									<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS015</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+									<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS015</xsp:expr>].theObservationDT.cd</xsp:attribute>
+									<xsp:attribute name="observation-value">HEP144</xsp:attribute>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>H_OUTBREAK_TY</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<value>
+										<xsp-request:get-attribute name="HEP144"/>
+									</value>
+								</controller>
+								<line>
+									<element type="text" label="Specify food item">
+										<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS016</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+										<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS016</xsp:expr>].theObservationDT.cd</xsp:attribute>
+										<xsp:attribute name="observation-value">HEP145</xsp:attribute>
+										<value>
+											<xsp-request:get-attribute name="HEP145-valueTxt"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="select" colspan="1" align-label="left" length="7" label="Was the patient employed as a food handler during the TWO WEEKS prior to onset of symptoms or while ill?">
+						<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS017</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS017</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">HEP146</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="HEP146"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<group name="Vaccine Information">
+				<line>
+					<element type="conditional-entry" name="HEP147c">
+						<controller type="select" align-label="left" length="7" label="Has the patient ever received hepatitis A vaccine?" trigger="Y">
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS018</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS018</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">HEP147</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="HEP147"/>
+							</value>
+						</controller>
+						<line>
+							<element type="select" length="7" label="Number of doses" childalign="yes">
+								<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS019</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS019</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">HEP148</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="HEP148"/>
+								</value>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>H_VAC_DOSE_NUM</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="Year last shot received" size="5" maxlength="4">
+								<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS020</xsp:expr>].obsValueNumericDT_s[0].numericValue1_s</xsp:attribute>
+								<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS020</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">HEP149</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="HEP149-numericValue1"/>
+								</value>
+								<validation type="HEP149" mask="yyyy" name="Year last shot received"/>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="conditional-entry" name="HEP150c">
+						<controller type="select" align-label="left" length="7" label="Has the patient ever received immune globulin?" trigger="Y">
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS021</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS021</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">HEP150</xsp:attribute>
+							<value>
+								<xsp-request:get-attribute name="HEP150"/>
+							</value>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+						</controller>
+						<line>
+							<element type="text" label="Date last dose received" size="10" mask="##/##/####" indented="yes" childalign="yes">
+								<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS022</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS022</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">HEP151</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="HEP151-fromTime"/>
+								</value>
+								<validation type="HEP151" mask="mm/dd/yyyy" name="Date last dose received"/>
+							</element>
+							<element/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Vaccination Record">
+				<line>
+					<element name="vaccine" type="batch-entry">
+						<readonly/>
+						<value>
+							<xsp-request:get-attribute name="vaccinationRecordList"/>
+						</value>
+						<line>
+							<element type="text" name="dateAdministered" label="Date Administered">
+								<header>Date Administered</header>
+							</element>
+							<element type="text" name="ageAtVaccination" label="Age at Vaccination">
+								<partner type="select" length="7" name="ageAtVaccinationUnits">
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>AGE_UNIT</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</partner>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element type="select" name="vaccinationAnatomicalSite" label="Vaccination Anatomical Site">
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>ANATOMIC_SITE</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator" title="Given By"/>
+						</line>
+						<line>
+							<element type="text" name="lastName" label="Last Name"/>
+							<element type="text" name="firstName" label="First Name"/>
+						</line>
+						<line>
+							<element type="text" name="personID" label="Person ID"/>
+						</line>
+						<line>
+							<element type="text" name="organizationName" label="Organization Name"/>
+						</line>
+						<line>
+							<element type="text" name="organizationID1" label="Organization ID"/>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element type="select" name="vaccineAdministered" label="Vaccine Administered">
+								<header>Vaccine Administered</header>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>VAC_NM</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="text" name="vaccinationID" label="Vaccination ID">
+								<header>Vaccination ID</header>
+							</element>
+						</line>
+						<line>
+							<element type="text" name="manufacturer" label="Manufacturer">
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>VAC_MFGR</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="text" name="lotNumber" label="Lot Number"/>
+							<element type="text" name="expirationDate" label="Expiration Date"/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<!--begin ldf-->
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>previewXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>extXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<xsp:logic><![CDATA[
+				ArrayList conditionSubformList = (ArrayList)request.getAttribute(NEDSSConstants.INVESTIGATION_HEP_LDF+"conditionSubformList" );
+				if(conditionSubformList !=null) {				
+		          for(Iterator anIter = conditionSubformList .iterator(); anIter.hasNext();)  {
+			            CustomSubformMetadataDT dt = (CustomSubformMetadataDT) anIter.next();
+			]]></xsp:logic>
+			<group>
+				<xsp:attribute name="name">
+					<xsp:expr>dt.getSubformNm()</xsp:expr>
+				</xsp:attribute>
+				<line>
+					<element type="raw">
+						<span>
+							<util:include-expr>
+								<util:expr>
+									<xsp:expr>dt.getHtmlData()</xsp:expr>
+								</util:expr>
+							</util:include-expr>
+						</span>
+					</element>
+				</line>
+			</group>
+			<xsp:logic> }} </xsp:logic>
+			<!-- display subform xsp in Printable forms -->
+			<xsp:logic><![CDATA[
+				ArrayList printConditionXSPList = (ArrayList) request.getAttribute(NEDSSConstants.INVESTIGATION_HEP_LDF+"printConditionSubformXSP");
+				if(printConditionXSPList != null && printConditionXSPList .size() > 0) {
+					for(Iterator anIter = printConditionXSPList .iterator(); anIter.hasNext();) {
+					
+			]]></xsp:logic>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>(String)anIter.next()</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<xsp:logic>  }} </xsp:logic>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>sfValidationXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+		</tab>
+	</content>
+</xsp:page>

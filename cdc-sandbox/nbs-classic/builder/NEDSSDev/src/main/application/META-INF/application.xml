@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<application xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             version="6"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_6.xsd">	<display-name>cocoon2</display-name>
+  <initialize-in-order>false</initialize-in-order>
+	<module>
+		<web>
+			<web-uri>nbs.war</web-uri>
+			<context-root>/nbs</context-root>
+		</web>
+	</module>
+	<module>
+		<web>
+			<web-uri>nndm.war</web-uri>
+			<context-root>/nndm</context-root>
+		</web>
+	</module>
+	<module>
+		<ejb>NEDSSEJB.jar</ejb>
+	</module>
+</application>

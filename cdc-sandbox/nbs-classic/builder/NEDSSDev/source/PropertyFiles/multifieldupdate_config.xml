@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MPR-update-fields SYSTEM "multifieldupdate_config.dtd">
+<MPR-update-fields>
+
+	<!-- Name Section -->
+	<field source-id="PersonName" collection-name="ThePersonNameDTCollection" description="Person Names">
+		<sub-field name="NmUseCd" description="Type"/>
+		<sub-field name="NmPrefix" description="Prefix"/>
+		<sub-field name="LastNm" description="Last Name"/>
+		<sub-field name="LastNm2" description="Second Last Name"/>
+		<sub-field name="MiddleNm" description="Middle Name"/>
+		<sub-field name="MiddleNm2" description="Second Middle Name"/>
+		<sub-field name="FirstNm" description="First Name"/>
+		<sub-field name="NmSuffix" description="Suffix"/>
+		<sub-field name="NmDegree" description="Degree"/>
+		<aod-field name="AsOfDate"/>
+	</field>
+	
+	<!-- Entity ID Section -->
+	<field source-id="NormalEntityID" collection-name="TheEntityIdDTCollection" description="Person IDs except SSN">
+		<sub-field name="TypeCd" description="The ID Type"/>
+		<sub-field name="AssigningAuthorityCd" description="Assigning Authority"/>
+		<sub-field name="RootExtensionTxt" description="The ID value"/>
+		<aod-field name="AsOfDate"/>
+	</field>
+	
+	<!-- Race Section -->
+	<field source-id="Race" collection-name="ThePersonRaceDTCollection" description="Race">
+		<sub-field name="RaceCategoryCd" description="Race Code"/>
+		<sub-field name="RaceCd" description="Sub Race Code"/>
+		<aod-field name="AsOfDate"/>
+	</field>
+	
+	<!-- Address Section -->
+	<field source-id="NormalAddress" collection-name="TheEntityLocatorParticipationDTCollection" description="Person Addresses">
+		<sub-field name="UseCd" description="The Use Code"/>
+		<sub-field name="Cd" description="The Type Code"/>
+		<sub-field name="CdDescTxt" description="The Type Code Description"/>
+		<sub-field name="StreetAddr1" container-name="ThePostalLocatorDT"/>
+		<sub-field name="StreetAddr2" container-name="ThePostalLocatorDT"/>
+		<sub-field name="CityDescTxt" container-name="ThePostalLocatorDT"/>
+		<sub-field name="StateCd" container-name="ThePostalLocatorDT"/>
+		<sub-field name="ZipCd" container-name="ThePostalLocatorDT"/>
+		<sub-field name="CntyCd" container-name="ThePostalLocatorDT"/>
+		<sub-field name="CensusTract" container-name="ThePostalLocatorDT"/>
+		<sub-field name="CntryCd" container-name="ThePostalLocatorDT"/>
+		<sub-field name="LocatorDescTxt" description="Address Comments"/>
+		<aod-field name="AsOfDate"/>
+	</field>
+	
+	<!-- Telephone Section -->
+	<field source-id="Telephone" collection-name="TheEntityLocatorParticipationDTCollection" description="Person Addresses">
+		<sub-field name="UseCd" description="The Use Code"/>
+		<sub-field name="Cd" description="The Type Code"/>
+		<sub-field name="CdDescTxt" description="The Type Code Description"/>
+		<sub-field name="CntryCd" container-name="TheTeleLocatorDT"/>
+		<sub-field name="PhoneNbrTxt" container-name="TheTeleLocatorDT"/>
+		<sub-field name="ExtensionTxt" container-name="TheTeleLocatorDT"/>
+		<sub-field name="EmailAddress" container-name="TheTeleLocatorDT"/>
+		<sub-field name="UrlAddress" container-name="TheTeleLocatorDT"/>
+		<sub-field name="LocatorDescTxt" description="Telephone Comments"/>
+		<aod-field name="AsOfDate"/>
+	</field>
+
+	
+</MPR-update-fields>

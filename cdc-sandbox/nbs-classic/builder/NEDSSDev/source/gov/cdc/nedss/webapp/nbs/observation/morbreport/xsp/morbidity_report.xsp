@@ -1,0 +1,1774 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.NEDSSConstants</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.diseaseform.util.InvestigationFieldConstants</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.action.person.util.PersonUtil</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.ldf.subform.dt.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="Submit"/>
+		</xsp:attribute>
+		<xsp:logic><![CDATA[    
+			int i = 0;
+			String labId = "DEFAULT";
+			String clia = "";
+			
+			String contextAction = (String)request.getParameter("ContextAction");
+			if (contextAction == null)
+			    contextAction =" ";
+               
+            
+			String addObservationMorb134= (String)request.getAttribute("addObservationMorb134");
+			if (addObservationMorb134== null)
+			    addObservationMorb134="false";
+			    
+			String fromNavBar= (String)request.getAttribute("fromNavBar");
+			if (fromNavBar== null)
+			    fromNavBar="false";
+			    
+			String viewEdit= (String)request.getAttribute("viewEdit");
+			if (viewEdit== null)
+			    viewEdit="false";
+			    
+			String addMorb= (String)request.getAttribute("addMorb");
+			if (addMorb== null)
+			    addMorb="false";
+			    
+			String jurisdictionPermission= (String)request.getAttribute("jurisdictionPermission");
+			if (jurisdictionPermission == null)
+			    jurisdictionPermission="true";
+			    
+			String strReportExternalUser= (String)request.getAttribute("strReportExternalUser");
+			if (strReportExternalUser== null)
+			    strReportExternalUser="false";
+			    
+			String mode = (String)request.getAttribute("mode");
+			if (mode == null)
+			    mode =" ";    
+
+
+			String electronicInd = (String) request.getAttribute("electronicInd");
+			if (electronicInd== null)
+			    electronicInd="false";
+			    
+				 //LDF
+			String previewXSP= (String)request.getAttribute("previewXSP");
+			if(previewXSP==null)
+				previewXSP="<null></null>";
+			String extXSP= (String)request.getAttribute(NEDSSConstants.MORBREPORT_LDF+"extXSP");
+				if(extXSP==null)
+				extXSP="<null></null>";
+			String sfValidationXSP = request.getAttribute("subformValidations") == null ? "<group></group>" : (String) request.getAttribute("subformValidations");
+
+			
+		]]></xsp:logic>
+		<xsp:logic><![CDATA[	
+			//To display User Name on the Printable Forms
+			String fullName = "";
+			String userId = "";
+			
+			try {
+					NBSSecurityObj so = (NBSSecurityObj) request.getSession().getAttribute("NBSSecurityObject");
+					
+	
+					if (so != null) {
+						
+						 fullName = so.getTheUserProfile().getTheUser().getFirstName() + " " + so.getTheUserProfile().getTheUser().getLastName();
+						 userId = so.getTheUserProfile().getTheUser().getEntryID();
+					}   
+					
+			}
+		
+			catch (Exception e) {
+				
+			}
+		]]></xsp:logic>
+		<!-- ID BAR -->
+		<id-bar>
+			<id name="Observation ID">
+				<xsp-request:get-attribute name="observationLocalUID"/>
+			</id>
+		</id-bar>
+		<!-- BUTTON BAR -->
+		<button-bar>
+			<!--nedss:If task="AddMorb"-->
+			<!-- left>
+				<label>POSTED</label>
+				<javascript-action>document.forms[0].action="/nbs/posted";submitForm();</javascript-action>
+			</left -->
+			<!--<xsp:logic>if(!fromNavBar.equals("true")){</xsp:logic>
+			<left tie-to="Add|Create">
+				<label>Submit and Mark as Reviewed</label>
+				<javascript-action>OpenMarkAsReviewed('Morb');</javascript-action>
+			</left>
+			<xsp:logic>
+				}
+			</xsp:logic>-->
+			<right tie-to="Add|Create|Edit">
+				<label>Submit</label>
+				<javascript-action>submitMorb();</javascript-action>
+			</right>
+			<right tie-to="Add|Create">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="fromFile"/>
+				</xsp:attribute>&amp;	
+				<label>Submit and Create Investigation</label>
+				<!--<javascript-action>getPage('<xsp-request:get-attribute name="SubmitAndCreateInvestigationHref"/>');</javascript-action>-->
+				<!--<javascript-action>submitAndCreateInvestigation();</javascript-action>-->
+				<javascript-action>OpenProcessingDecisionForCreateSubmit('MorbReport');</javascript-action>
+			</right>
+			<right tie-to="Add|Create|Edit">
+				<label>Cancel</label>
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="cancelButtonHref"/>');</javascript-action>
+			</right>
+			<!--/nedss:If-->
+			<!--nedss:ElseIf task="ViewMorb"-->
+			<left tie-to="View">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="checkMarkAsReview"/>
+				</xsp:attribute>&amp;
+					<label>Mark as Reviewed</label>
+					<xsp:logic>
+					String PDLogic = (String) request.getAttribute("PDLogic");
+					if(PDLogic != null){
+						if (PDLogic.equals(NEDSSConstants.STD_PROCESSING_DECISION_NOT_APPLICABLE)){
+				</xsp:logic>
+					<javascript-action>
+						getPage('<xsp-request:get-attribute name="markAsReviewButtonHref"/>');
+					</javascript-action>
+				<xsp:logic>}else{</xsp:logic>
+					<javascript-action>OpenMarkAsReviewed('MorbReport');</javascript-action>
+				<xsp:logic>}}</xsp:logic>
+			</left>
+			<left tie-to="View">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="checkClearMarkAsReview"/>
+				</xsp:attribute>&amp;
+					<label>Clear Mark as Reviewed</label>
+				<javascript-action>getPage('<xsp-request:get-attribute name="clearMarkAsReviewButtonHref"/>');</javascript-action>
+			</left>
+			<left tie-to="View">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="checkTransfer"/>
+				</xsp:attribute>&amp;
+					<label>Transfer Ownership</label>
+				<javascript-action>getPage('<xsp-request:get-attribute name="transferOwnership"/>');</javascript-action>
+			</left>
+			<right tie-to="View">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="checkEdit"/>
+				</xsp:attribute>&amp;
+				<label>Edit</label>
+				<javascript-action>notificationCheck('<xsp-request:get-attribute name="editButtonHref"/>');</javascript-action>
+			</right>
+			<right tie-to="View">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="checkDelete"/>
+				</xsp:attribute>&amp;
+				<label>Delete</label>
+				<!--<javascript-action>getPage('<xsp-request:get-attribute name="deleteButtonHref"/>');</javascript-action>-->
+				<javascript-action>deleteForm('<xsp-request:get-attribute name="deleteButtonHref"/>');</javascript-action>
+			</right>
+			<right tie-to="View">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="checkCreateInvestigation"/>
+				</xsp:attribute>&amp;
+				<label>Create Investigation</label>
+				<xsp:logic>
+					if(PDLogic != null){
+						if (PDLogic.equals(NEDSSConstants.STD_PROCESSING_DECISION_NOT_APPLICABLE)){
+				</xsp:logic>
+					<javascript-action>
+						getPage('<xsp-request:get-attribute name="creatInvestigationButtonHref"/>');
+					</javascript-action>
+				<xsp:logic>}else{</xsp:logic>
+					<javascript-action>OpenProcessingDecisionForViewSubmit('MorbReport-InvCreate');</javascript-action>
+				<xsp:logic>}}</xsp:logic>				
+				<!--<javascript-action>getPage('<xsp-request:get-attribute name="creatInvestigationButtonHref"/>');</javascript-action>-->
+			</right>
+			<right tie-to="View">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="checkCreateInvestigation"/>
+				</xsp:attribute>&amp;
+				<label>Associate Investigation</label>
+				<javascript-action>
+					getPage('<xsp-request:get-attribute name="associateToInvestigationsButtonHref"/>');
+				</javascript-action>
+			</right>			
+			<!--/nedss:ElseIf-->
+			<!--nedss:ElseIf task="EditInvestigation">
+				<right>
+					<label>Submit</label>
+					<javascript-action>submitForm();</javascript-action>
+				</right>
+				<right>
+					<label>Cancel</label>
+					<javascript-action>cancelForm('<xsp-request:get-attribute name="Cancel"/>');</javascript-action>
+				</right>
+			</nedss:ElseIf-->
+			<right tie-to="View">
+				<label>Print</label>
+				<javascript-action>window.open('<xsp-request:get-attribute name="PrintPage"/>');</javascript-action>
+			</right>
+		</button-bar>
+		<!-- LINK BAR  -->
+		<link-bar>
+		    <link>
+				<xsp:attribute name="name">
+					<xsp-request:get-attribute name="linkName1"/>
+				</xsp:attribute>
+				<xsp-request:get-attribute name="linkValue1"/>
+			</link>|
+			<link tie-to="View">
+				<xsp:attribute name="name">
+					<xsp-request:get-attribute name="linkName"/>
+				</xsp:attribute>
+				<xsp-request:get-attribute name="linkValue"/>
+			</link>
+			<link>
+				<xsp:attribute name="name">
+					<xsp-request:get-attribute name="linkNameViewEvents"/>
+				</xsp:attribute>
+				<xsp-request:get-attribute name="linkValueViewEvents"/>
+			</link>
+		</link-bar>
+		<xsp:logic>
+			String customJavaScript= (String)request.getAttribute("customJavaScript");
+
+			String customJavaScriptMORB= (String)request.getAttribute(NEDSSConstants.MORBREPORT_LDF+"customJavaScript");
+			
+		</xsp:logic>
+		<javascript-files>
+			<insert>
+				<xsp:expr>customJavaScript</xsp:expr>
+			</insert>
+			<insert>
+				<xsp:expr>customJavaScriptMORB</xsp:expr>
+			</insert>
+			<import>EntitySearch.js</import>
+			<import>LabReportSpecific.js</import>
+			
+			<import>AddComment.js</import>
+			<import>DisplayInfoCheck.js</import>
+			<import>ProcessingDecision.js</import>
+			<import>/nbs/dwr/engine.js</import>
+			<import>/nbs/dwr/util.js</import>
+			<import>/nbs/dwr/interface/JMorbidityReport.js</import>
+			<import>MorbiditySpecific.js</import>
+		</javascript-files>
+		<topgroup anchor="yes">
+			<line>
+				<element name="patientName" type="plain-text" label="Name">
+					<value>
+						<xsp-request:get-attribute name="patientName"/>
+					</value>
+				</element>
+				<element name="dateOfBirth" type="plain-text" label="DOB">
+					<value>
+						<xsp-request:get-attribute name="birthTime"/>
+					</value>
+				</element>
+				<element id="printAge" type="hidden">
+					<value>
+						<xsp-request:get-attribute name="printAge"/>
+						<xsp:expr>' '</xsp:expr>
+						<xsp-request:get-attribute name="printAgeUnits"/>
+					</value>
+				</element>			
+				<element name="patientCurrentSex" type="select" label="Current Sex">
+					<readonly/>
+					<srt-options-string>
+						<srt-codes:getCodedValues>
+							<type>SEX</type>
+						</srt-codes:getCodedValues>
+					</srt-options-string>
+					<value>
+						<xsp-request:get-attribute name="currSexCd"/>
+					</value>
+				</element>
+			</line>
+			<xsp:logic>
+			String fromNav = (String) request.getAttribute("fromNav");
+			if(fromNav!=null)
+			{
+				if(fromNav.equals("true"))
+				{
+			</xsp:logic>
+			<line>
+				<element name="streetAddr1" type="plain-text" label="Address">
+					<value>
+						<xsp-request:get-attribute name="patientAddress"/>
+					</value>
+				</element>
+			</line>
+			<line>
+				<element name="ssn" type="plain-text" label="SSN">
+					<value>
+						<xsp-request:get-attribute name="patientSSN"/>
+					</value>
+				</element>
+			</line>	
+			<xsp:logic>
+				}
+			}
+			</xsp:logic>
+			
+				
+			<xsp:logic>
+				
+			if(viewEdit.equalsIgnoreCase("true"))
+			{
+				if(electronicInd.equalsIgnoreCase("true"))
+				{
+			</xsp:logic>
+			<line>
+				<element type="raw">
+					<span>
+						<i>
+							Submitted by Outside Facility
+						</i>
+					</span>
+				</element>
+			</line>
+			<xsp:logic>
+				}
+			</xsp:logic>
+			<xsp:logic>
+			}
+			</xsp:logic>
+			
+			
+			
+		</topgroup>
+		<topgroup anchor="yes">
+			<xsp:logic>if(!fromNavBar.equals("true")){
+			if(PDLogic != null){
+						if (!PDLogic.equals(NEDSSConstants.STD_PROCESSING_DECISION_NOT_APPLICABLE)){
+			
+			</xsp:logic>
+				<line>
+					<element name="processingDecision" type="plain-text" label="Processing Decision">
+						<value>
+							<xsp-request:get-attribute name="markAsReviewReasonDesc"/>
+						</value>
+					</element>
+					<element/>
+					<element/>
+					<element/>
+					<element/>
+				</line>
+			<xsp:logic>}}}</xsp:logic>		
+		</topgroup>
+		<tab name="Report Information">
+			<nedss:writeErrorMessages/>
+			<group>
+				<line tie-to="Edit">
+					<element type="hidden" name="morbidityProxy.observationVO_s[0].obsValueCodedDT_s[0].code">
+						<value>
+							<xsp-request:get-attribute name="MRB100"/>
+						</value>
+						<!-- value>INIT</value -->
+					</element>
+				</line>
+					<line>
+							<element type="hidden" label="" size="52">
+							
+								<xsp:attribute name="name">maxFileSizeInMB</xsp:attribute> <value>	<xsp-request:get-attribute name="maxFileSizeInMB"/></value>
+							</element>
+							<element type="hidden" label="" size="52">
+							
+								<xsp:attribute name="name">allowedExtensions</xsp:attribute> <value>	<xsp-request:get-attribute name="allowedExtensions"/></value>
+							</element>
+						</line>
+				<line>
+					<element type="hidden" name="investigationType"/>
+					<element type="hidden" name="morbtype">
+						<value>morbType</value>
+					</element>
+					<element type="hidden" name="labId" default="DEFAULT">
+						<value>
+							<xsp:expr>labId</xsp:expr>
+						</value>
+					</element>
+					<element type="hidden" name="clia">
+						<value>
+							<xsp:expr>clia</xsp:expr>
+						</value>
+					</element>
+					<element name="ContextAction" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="ContextAction"/>
+						</value>
+					</element>
+					<element name="observationUID" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="observationUID"/>
+						</value>
+					</element>
+					<element name="NBSSecurityJurisdictions" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="NBSSecurityJurisdictions"/>
+						</value>
+					</element>
+					<element type="hidden" name="PDLogic">
+						<value>
+							<xsp-request:get-attribute name="PDLogic"/>
+						</value>
+					</element>
+					<element type="hidden" name="PDLogicCreateInv">
+						<value>
+							<xsp-request:get-attribute name="PDLogicCreateInv"/>
+						</value>
+					</element>
+					<element name="ProgramArea" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="MRB136"/>
+						</value>
+					</element>
+					<element name="morbidityReport.theObservationDT.progAreaCd" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="MRB136"/>
+						</value>
+					</element>
+					<element type="hidden" name="STD_PA_LIST">
+						<value>
+							<xsp-request:get-attribute name="STD_PA_LIST"/>
+						</value>
+					</element>
+					<element name="conditionCdDesc" type="hidden"/>
+					<element name="morbidityReport.theObservationDT.cd" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="MRB121"/>
+						</value>
+					</element>
+					<element name="programAreaCodeFromMorbidity" type="hidden"/>
+					<!-- Hidden element for Mark as Review Processing Decision-->
+					<element type="hidden" label="" id="markAsReviewReason">
+						<xsp:attribute name="name">morbidityReport.theObservationDT.processingDecisionCd</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="markAsReviewReason"/>
+								</value>
+					</element>
+				</line>
+			</group>
+			<group name="Report Information">
+				<line>
+					<element type="raw">
+						<span>
+							<i>
+								<font class="boldTenRed"> * Indicates a required field </font>
+							</i>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="select" label="* Condition" name="conditionCd" onchange="getProgramAreaFromCondition(this);labTestFilterFromMorb();">
+						<!--xsp:attribute name="name">morbidityReport.theObservationDT.cd</xsp:attribute-->
+						<!--xsp:attribute name="name">morbidityReport.obsValueCodedDT_s[0].displayName</xsp:attribute-->
+						<validation type="required" name="Condition"/>
+						<srt-options-string>
+							<xsp-request:get-attribute name="DSConditionCdDescString"/>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="conditionProgArea"/>
+						</value>
+						<xsp:logic>
+						if(viewEdit.equalsIgnoreCase("true"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+						</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="plain-text" label="Program Area" name="programAreaDesc">
+						<validation type="required" name="Program Area"/>
+						<value>
+							<xsp-request:get-attribute name="programAreaDesc"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<xsp:logic>
+				if(jurisdictionPermission.equalsIgnoreCase("true")) 
+				{
+				</xsp:logic>
+					<element type="select" label="* Jurisdiction" default="NONE">
+						<xsp:attribute name="name">morbidityReport.theObservationDT.jurisdictionCd</xsp:attribute>
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="setAccessPermission"/>
+						</xsp:attribute>
+						<validation type="JurisdictionCheckForObs" name="Jurisdiction"/>
+						<srt-options-string>
+							<xsp:logic>
+								if(fromNavBar.equals("true"))
+								{
+								</xsp:logic>
+							<srt-codes:getJurisdictionWithUnknown/>
+							<xsp:logic>
+								}
+								else
+								{
+								</xsp:logic>
+							<srt-codes:getJurisdictionCodedSortedValues/>
+							<xsp:logic>
+								}
+								</xsp:logic>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MRB137"/>
+						</value>
+						<xsp:logic>
+								if(mode.equalsIgnoreCase("edit") || viewEdit.equalsIgnoreCase("true") || addObservationMorb134.equalsIgnoreCase("true")) 
+								{
+								</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+								}
+								</xsp:logic>
+					</element>
+					<xsp:logic>
+					}
+					else
+					{
+					</xsp:logic>
+					<element type="hidden">
+						<xsp:attribute name="name">morbidityReport.theObservationDT.jurisdictionCd</xsp:attribute>
+						<value>
+										NONE
+									</value>
+					</element>
+					<xsp:logic>
+					}
+					</xsp:logic>
+				</line>
+				<line>
+					<element type="hidden"/>
+					<element type="checkbox">
+						<xsp:attribute name="name">sharedInd</xsp:attribute>
+						<xsp:logic>
+						if(jurisdictionPermission.equalsIgnoreCase("false") || addObservationMorb134.equalsIgnoreCase("true")) 
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+						</xsp:logic>
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="sec-status"/>
+						</xsp:attribute>
+						<options>
+							<option label="Share record with Guests for this Program Area and Jurisdiction" value="T">
+								<xsp:attribute name="name">morbidityReport.theObservationDT.sharedInd</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="MRB142"/>
+								</value>
+							</option>
+						</options>
+					</element>
+					<element type="hidden"/>
+				</line>
+				<!--line-->
+				<!--element-->
+				<line>
+					<element type="select" label="* Morbidity Report Type" default="INIT" length="7">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[0].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[0].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MRB100</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>MORB_RPT_TYPE</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MRB100"/>
+						</value>
+						<xsp:logic>
+						if(viewEdit.equalsIgnoreCase("true"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+						</xsp:logic>
+						<validation type="required" name="Morbidity Report Type"/>
+					</element>
+					<xsp:logic>
+					if(viewEdit.equalsIgnoreCase("true"))
+						{
+						</xsp:logic>
+									<element id="markAsReviewReason" name="markAsReviewReason" type="hidden"/>
+									<element id="markAsReviewButtonHref" name="markAsReviewButtonHref" type="hidden">
+										<value>
+											<xsp-request:get-attribute name="markAsReviewButtonHref"/>
+										</value>
+									</element>
+									<element id="creatInvestigationButtonHref" name="creatInvestigationButtonHref" type="hidden">
+										<value>
+											<xsp-request:get-attribute name="creatInvestigationButtonHref"/>
+										</value>
+									</element>
+						<xsp:logic>
+						}
+						</xsp:logic>
+				</line>
+				<line>
+					<xsp:logic>
+					if(strReportExternalUser.equalsIgnoreCase("true"))
+					{
+					</xsp:logic>
+					<element type="plain-text" label="Report Delivery Method">
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[1].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MRB161</xsp:attribute>
+						<value>
+							Web Entry
+						</value>
+					</element>
+					<xsp:logic>
+					}
+					else
+					{
+					</xsp:logic>
+					<element type="select" label="Report Delivery Method" length="12">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[1].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[1].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MRB161</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>MRB_RPT_METH</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MRB161"/>
+						</value>
+					</element>
+					<xsp:logic>
+					}
+					</xsp:logic>
+				</line>
+				<line>
+					<element type="text" label="* Date of Morbidity Report" size="10" mask="##/##/####">
+						<xsp:attribute name="name">morbidityReport.theObservationDT.activityToTime_s</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="MRB101"/>
+						</value>
+						<validation type="date" required="true" mask="mm/dd/yyyy" name="Date of Morbidity Report" error-code="ERR023"/>
+						<!--validation type="required" name="Date of Morbidity Report"/>
+						<validation type="date" mask="mm/dd/yyyy" name="Report Date"/-->
+					</element>
+				</line>
+				
+									
+					
+					
+				<line>
+					<xsp:logic>
+							
+					if(!strReportExternalUser.equalsIgnoreCase("true"))
+					{
+					</xsp:logic>
+					<element type="text" label="Date Received by Public Health" size="10" mask="##/##/####">
+						<xsp:attribute name="name">morbidityReport.theObservationDT.rptToStateTime_s</xsp:attribute>
+						<xsp:attribute name="default">
+							<xsp:expr>PersonUtil.formatCurrentDate()</xsp:expr>
+						</xsp:attribute>
+						<validation type="date" mask="mm/dd/yyyy" name="Date Received by Public Health"/>
+						<value>
+							<xsp-request:get-attribute name="MRB162"/>
+						</value>
+					</element>
+					<xsp:logic>
+					}
+					</xsp:logic>
+				</line>
+				<line>
+					<element type="line-separator" title="Facility and Provider Information" alignment="left"/>
+				</line>
+				<line>
+					<xsp:logic>
+					if(strReportExternalUser.equalsIgnoreCase("false"))
+					{
+					</xsp:logic>
+					<element type="entity-search" name="Org-ReportingOrganizationUID" entity-type="organizationReportMorb" alignment="right" code-lookup="code">
+						<value>
+							<xsp-request:get-attribute name="reportingOrgUID"/>
+						</value>
+						<line>
+							<element label="* Reporting Facility" valign-label="top" name="entity.completeOrgSearchResult" type="plain-text" align-label="left">
+								<value>
+									<xsp-request:get-attribute name="reportingSourceDetails"/>
+								</value>
+							</element>
+						</line>
+						<validation type="required" name="Reporting Facility"/>
+					</element>
+					<xsp:logic>
+					}
+					else
+					{
+					</xsp:logic>
+					<element type="plain-text" label="Reporting Facility" align-label="left" name="repOrgUID" alignment="left">
+						<value>
+							<xsp-request:get-attribute name="reportingSourceDetails"/>
+						</value>
+					</element>
+					<element type="hidden" name="Org-ReportingOrganizationUID">
+						<value>
+							<xsp-request:get-attribute name="reportingOrgUID"/>
+						</value>
+					</element>
+					<xsp:logic>
+					}
+					</xsp:logic>
+				</line>
+				<line>
+					<element type="line-separator" alignment="left"/>
+				</line>
+				<line>
+					<element type="entity-search" name="Prov-entity.providerUID" entity-type="provider" alignment="left" code-lookup="code">
+						<value>
+							<xsp-request:get-attribute name="providerUID"/>
+						</value>
+						<line>
+							<element label="Provider" valign-label="top" name="entity.completePersonSearchResult" type="plain-text" align-label="left">
+								<value>
+									<xsp-request:get-attribute name="providerSourceDetails"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" alignment="left"/>
+				</line>
+				<line>
+					<element type="entity-search" name="Prov-entity.reporterUID" entity-type="provider" alignment="left" code-lookup="code">
+						<value>
+							<xsp-request:get-attribute name="reporterUID"/>
+						</value>
+						<line>
+							<element label="Reporter" valign-label="top" name="entity.reporterPersonSearchResult" type="plain-text" align-label="left">
+								<value>
+									<xsp-request:get-attribute name="reporterSourceDetails"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<!--/element-->
+				<!--/line-->
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element type="line-separator" title="Clinical Information"/>
+				</line>
+				<line>
+					<element type="text" label="Date of Onset" size="10" mask="##/##/####">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[2].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[2].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MRB122</xsp:attribute>
+						<validation type="date" mask="mm/dd/yyyy" name="Date of Onset"/>
+						<value>
+							<xsp-request:get-attribute name="MRB122"/>
+						</value>
+					</element>
+				</line>
+				
+				
+					
+					
+					
+				<line>
+					<element type="text" label="Date of Diagnosis" size="10" mask="##/##/####">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[3].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[3].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MRB165</xsp:attribute>
+						<validation type="date" mask="mm/dd/yyyy" name="Date of Diagnosis"/>
+						<value>
+							<xsp-request:get-attribute name="MRB165"/>
+						</value>
+					</element>
+					<!--element type="hidden"/-->
+					<!--element type="hidden"/-->
+				</line>
+				<line>
+					<element type="select" label="Did patient die from this illness?" length="7">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[4].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[4].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">INV145</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="INV145"/>
+						</value>
+					</element>
+				</line>
+				<!-- fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff Hospitalized ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff-->
+				<line>
+					<element name="cINV128" type="conditional-entry">
+						<controller trigger="Y" type="select" default="n" label="Was the patient hospitalized for this illness?" width="20" length="7">
+							<xsp:attribute name="name">morbidityProxy.observationVO_s[5].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[5].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">INV128</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="INV128"/>
+							</value>
+						</controller>
+						<line>
+							<xsp:logic>
+							if (contextAction.equals("Cancel") || contextAction.equals("ObservationMorbIDOnEvents") || contextAction.equals("ObservationMorbID"))
+							{
+							</xsp:logic>
+							<element/>
+							<xsp:logic>
+							}
+							</xsp:logic>
+							<element type="text" label="Admission Date" size="10" mask="##/##/####" alignment="left">
+								<xsp:attribute name="name">morbidityProxy.observationVO_s[6].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[6].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MRB166</xsp:attribute>
+								<validation type="date" mask="mm/dd/yyyy" name="Admission Date"/>
+								<value>
+									<xsp-request:get-attribute name="MRB166"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<xsp:logic>
+							if (contextAction.equals("Cancel") || contextAction.equals("ObservationMorbIDOnEvents") || contextAction.equals("ObservationMorbID"))
+							{
+							</xsp:logic>
+							<element/>
+							<xsp:logic>
+							}
+							</xsp:logic>
+							<element type="text" label="Discharge Date" size="10" mask="##/##/####" alignment="left">
+								<xsp:attribute name="name">morbidityProxy.observationVO_s[7].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[7].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MRB167</xsp:attribute>
+								<validation type="validDeceasedDate" mask="mm/dd/yyyy" name="Discharge Date" dateBeforeReference="morbidityProxy.observationVO_s[6].obsValueDateDT_s[0].fromTime_s"/>
+								<value>
+									<xsp-request:get-attribute name="MRB167"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element type="entity-search" name="Org-HospitalUID" entity-type="organization" alignment="left" code-lookup="code">
+								<value>
+									<xsp-request:get-attribute name="HospitalOrgUID"/>
+								</value>
+								<line>
+									<element label="Hospital" valign-label="top" name="entity.completeOrgSearchResult" type="plain-text" align-label="left">
+										<readonly/>
+										<value>
+											<xsp-request:get-attribute name="hospitalDetails"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<!-- /group -->
+				<!-- ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff Epidemiologic fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff-->
+				<!-- group name="Epidemiologic" -->
+				<line>
+					<element type="line-separator" title="Epidemiological Information"/>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<b>Which of the following apply to this patient?</b>
+						</span>
+					</element>
+				</line>
+				<line>
+                    <element name="pregnantIndCd" type="conditional-entry">
+                        <controller trigger="Y" type="select" label="Pregnant"  length="7">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[8].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[8].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">INV178</xsp:attribute>
+                            <validation type="pregnantMale" name="Is Patient Pregnant" />
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="INV178"/>
+						</value>
+                        </controller>
+                        <line>
+                            <element type="text" label="Weeks" size="2" length="2"> 
+                                <xsp:attribute name="name">
+                                   morbidityReport.theObservationDT.pregnantWeek
+                                </xsp:attribute>
+                                <validation type="reg-expr" error-code="ERR191" name="Weeks">
+                                    <pattern>
+                                        <![CDATA[^$|^[1-3]?[0-9]?$|^[4][0]$|^[4][1]$|^[4][2]$|^[4][3]$|^[4][4]$|^[4][5]$|^[9][9]$]]>
+                                    </pattern>
+                                </validation>
+                                <value>
+                                    <xsp-request:get-attribute name="pregnantWeek" />
+                                </value>
+					</element>
+				</line>
+                    </element>
+                </line>
+				<line>
+					<element type="select" label="Food Handler" length="7">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[9].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[9].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">INV149</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="INV149"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" label="Associated with Day Care Facility" length="7">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[10].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[10].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">INV148</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="INV148"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" label="Affiliated with Nursing Home" length="7">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[11].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[11].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MRB129</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MRB129"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" label="Affiliated with Health Care Organization" length="7">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[12].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[12].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MRB130</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MRB130"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" label="Suspected Food or Waterborne Illness" length="7">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[13].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[13].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MRB168</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MRB168"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="text" label="Other, specify">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[14].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[14].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MRB169</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="MRB169"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="NotificationExists" type="hidden" validate="NotificationCheck">
+						<value>
+							<xsp-request:get-attribute name="NotificationExists"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="DisplayInformationExists" type="hidden" onload="displayInfoCheck();">
+						<value>
+							<xsp-request:get-attribute name="displayInformationExists"/>
+						</value>
+					</element>
+				</line>	 
+			</group>
+			<!--WWWWWWWWWWWWWWWWWW               Laboratory Information           START          WWWWWWWWWWWWWWWWWWWw-->
+			<group name="Lab Report Information">
+				<line>
+					<element name="Lab Report" type="batch-entry" alignment="left">
+						<value>
+							<xsp-request:get-attribute name="labResultsBatch"/>
+						</value>
+						<line>
+							<element type="text" label="Collection Date" mask="##/##/####" alignment="left">
+								<xsp:attribute name="name">labResults_s[i].observationVO_s[0].theObservationDT.effectiveFromTime_s</xsp:attribute>
+								<validation type="date" mask="mm/dd/yyyy" name="Collection Date"/>
+							</element>
+							<element type="text" label="Lab Report Date" mask="##/##/####" alignment="left">
+								<xsp:attribute name="name">labResults_s[i].observationVO_s[0].theObservationDT.activityToTime_s</xsp:attribute>
+								<validation type="date" mask="mm/dd/yyyy" name="Lab Report Date"/>
+							</element>
+							<element/>
+							<element/>
+							<element/>
+						</line>
+						<!-- xxxxxxxxxxxxxxxxxxxxx Resulted Test Name BEGIN xxxxxxxxxxxxxxxxxxxxx  -->
+						<!--%%%%%%%%%%%%%%%%%%%working on this section%%%%%%%%%%%%%%%%%%%%-->
+						<!--line>
+						<element type="raw">
+						<span>
+							<i>(Required for Add Lab Report)</i>
+						</span>
+					</element>
+
+						</line-->
+						<line>
+							<element type="entity-search" name="ResultedTestName" entity-type="ResultedTestName">
+								<line id="resultedTestNameInd">
+									<element type="select" label="Resulted Test" name="labResults_s[i].observationVO_s[1].theObservationDT.cdDescTxt" onchange="getOrganismIndicatorMorb();">
+										<header>Resulted Test</header>
+										<srt-options-string>
+											<xsp-request:get-attribute name="ResultedTestNameCollection"/>
+										</srt-options-string>
+										<validation type="required" name="Resulted Test Name"/>
+									</element>
+									<element type="text" size="15" name="ResultedDisplay">
+										<readonly/>
+									</element>
+								</line>
+								<line>
+									<element type="hidden" name="labResults_s[i].observationVO_s[1].theObservationDT.searchResultRT">
+										<header>Resulted Test</header>
+									</element>
+									<element type="hidden" name="labResults_s[i].observationVO_s[1].theObservationDT.cdSystemCdRT">
+										<value>DEFAULT</value>
+									</element>
+									<element type="hidden" name="organismInd">
+										<value>N</value>
+									</element>
+									<element type="hidden" name="labResults_s[i].observationVO_s[1].theObservationDT.hiddenCd"/>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element type="text" label="Specimen Information">
+								<xsp:attribute name="name">labResults_s[i].observationVO_s[0].theObservationDT.txt</xsp:attribute>
+							</element>
+						</line>
+						<line id="organismIndicator">
+							<element type="entity-search" name="Organism Name" entity-type="OrganismName" onloadview="hideObjectsOnMorbidityLoad();">
+								<value>
+									<xsp-request:get-attribute name=""/>
+								</value>
+								<line>
+									<element type="select" label="* Organism Name" name="labResults_s[i].observationVO_s[1].obsValueCodedDT_s[0].displayName">
+										<xsp:attribute name="name">labResults_s[i].observationVO_s[1].obsValueCodedDT_s[0].displayName</xsp:attribute>
+										<header>Result(s)</header>
+										<validation name="Organism Name"/>
+										<srt-options-string>
+											<srt-codes:getOrganismList/>
+										</srt-options-string>
+									</element>
+									<element type="text" size="15" name="OrganismDisplay">
+										<readonly/>
+									</element>
+									<element type="hidden" name="labResults_s[i].observationVO_s[1].obsValueCodedDT_s[0].searchResultRT"/>
+									<element type="hidden" name="labResults_s[i].observationVO_s[1].obsValueCodedDT_s[0].hiddenCd">
+										<header>Result(s)</header>
+									</element>
+									<element type="hidden" name="labResults_s[i].observationVO_s[1].theObservationDT.ctrlCdUserDefined1"/>
+								</line>
+							</element>
+						</line>
+						<line id="codedResultIndicatorMessage" tie-to="Add|Create|Edit|">
+							<element/>
+							<element type="raw">
+								<span>
+									<i>(One of the following is required for Add Lab Report: Coded Result Value,Numeric Result Value, or Text Result Value)</i>
+								</span>
+							</element>
+						</line>
+						<line id="codedResultIndicator">
+							<element type="select" label="Coded Result" onload="getOrgLoadOnCondition();" length="44" name="labResults_s[i].observationVO_s[1].obsValueCodedDT_s[0].code">
+								<header>Result(s)</header>
+								<srt-options-string>
+									<srt-codes:getCodedResultValue/>
+								</srt-options-string>
+								<validation name="Coded Result Value"/>
+							</element>
+						</line>
+						<!--	%%%%%%%%%%%%%%%%%%%working on this section%%%%%%%%%%%%%%%%%%%%-->
+						<!-- xxxxxxxxxxxxxxxxxxxxx Resulted Test Name xxxxxxxxxxxxxxxxxxxxx  -->
+						<line id="numericResult">
+							<element type="text" label="Numeric Result" size="27" name="labResults_s[i].observationVO_s[1].obsValueNumericDT_s[0].numericValue" onload="hideObjectsOnLoad();" onkeyup="enableValueCd(this);">
+								<header>Result(s)</header>
+								<validation type="reg-expr" error-message="" name="Numeric Result">
+									<pattern><![CDATA[^([<>=]|[<][=]|[>][=]|[<][>])?(((((\d){0,10})|((\d){1,10})([\.]{1})((\d){1,5}))?)|(((((\d){1,10})([\.]{1})((\d){1,5})[+])|(((\d){1,10})[+]))|((((\d){1,10})|(((\d){1,10})([\.]{1})((\d){1,5})))[-:\/](((\d){1,11})|(((\d){1,10})([\.]{1})((\d){1,5})))))?)?$]]></pattern>
+								</validation>
+								<partner type="select" length="16" name="labResults_s[i].observationVO_s[1].obsValueNumericDT_s[0].numericUnitCd">
+									<header>Result(s)</header>
+									<value>
+										<xsp-request:get-attribute name="numericResultValueUnits"/>
+									</value>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>UNIT_ISO</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</partner>
+							</element>
+						</line>
+						<line id="textResult">
+							<element type="textarea" label="Text Result">
+								<xsp:attribute name="name">labResults_s[i].observationVO_s[1].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+								<header>Result(s)</header>
+								<validation name="Text Result Value"/>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element type="textarea" label="Result Comments">
+								<xsp:attribute name="name">labResults_s[i].observationVO_s[1].obsValueTxtDT_s[1].valueTxt</xsp:attribute>
+								<!--header>Lab Comments</header-->
+							</element>
+						</line>
+						<line>
+							<element type="hidden" name="labResults_s[i].statusCd"/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<!--WWWWWWWWWWWWWWWWWW                      Laboratory Information         END                     WWWWWWWWWWWWWWWWWWWw-->
+			<!--WWWWWWWWWWWWWWWWWW                      Treatment Information           START                   WWWWWWWWWWWWWWWWWWWw -->
+			<group name="Treatment Information">
+				<line>
+					<element name="Treatment" type="batch-entry">
+						<value>
+							<xsp-request:get-attribute name="treatmentResultsBatch"/>
+						</value>
+						<line tie-to="Add|Create|Edit|">
+							<element/>
+							<element type="raw">
+								<span>
+									<i>(Required for Add/Update Treatment)</i>
+								</span>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="Treatment Date" mask="##/##/####" alignment="left">
+								<xsp:attribute name="name">treatment_s[i].treatmentVO_s[0].treatmentAdministeredDT_s[0].effectiveFromTime_s</xsp:attribute>
+								<validation type="date" mask="mm/dd/yyyy" name="Treatment Date" required="true"/>
+								<header>Date</header>
+							</element>
+						</line>
+						<line>
+							<element type="hidden" name="treatment_s[i].treatmentVO_s[0].theTreatmentDT.statusCd"/>
+						</line>
+						<!--line>
+ 					<element/>
+						<element type="raw">
+						<span>
+							<i>(Required for Add/Update Treatment)</i>
+						</span>
+					</element>
+					</line-->
+						<line>
+							<element name="TRT101" type="conditional-entry" alignment="left">
+								<controller trigger="OTH" type="select" label="Treatment" alignment="left" length="80">
+									<!-- id="treatmentId" -->
+									<xsp:attribute name="name">treatment_s[i].treatmentVO_s[0].theTreatmentDT.cd</xsp:attribute>
+									<!--srt-options-string>
+										<xsp-request:get-attribute name="TreatmentTestNameCollection"/>
+									</srt-options-string-->
+									<srt-options-string>
+										<srt-codes:getTreatmentDesc/>
+									</srt-options-string>
+									<validation type="required" name="Treatment"/>
+									<header>Treatment</header>
+								</controller>
+								<line tie-to="Add|Create|Edit|">
+									<element/>
+									<element type="raw">
+										<span>
+											<i>(Required for Add/Update Treatment)</i>
+										</span>
+									</element>
+								</line>
+								<line>
+									<element type="text" label="Custom Treatment" alignment="left">
+										<xsp:attribute name="name">treatment_s[i].treatmentVO_s[0].theTreatmentDT.cdDescTxt</xsp:attribute>
+										<header>Treatment</header>
+										<!--validation type="required" name="Custom Treatment"/-->
+									</element>
+								</line>
+								<line>
+									<element type="select" label="Drug" alignment="left" length="25">
+										<!-- id="drug" -->
+										<xsp:attribute name="name">treatment_s[i].treatmentVO_s[0].treatmentAdministeredDT_s[0].cd</xsp:attribute>
+										<!--srt-options-string>
+											<xsp-request:get-attribute name="teatmentDrugDropdown"/>
+										</srt-options-string-->
+										<srt-options-string>
+											<srt-codes:getTreatmentDrug/>
+										</srt-options-string>
+									</element>
+								</line>
+								<line>
+									<element type="text" label="Dosage/Strength" size="6" alignment="left">
+										<!--  id="dosage" -->
+										<xsp:attribute name="name">treatment_s[i].treatmentVO_s[0].treatmentAdministeredDT_s[0].doseQty</xsp:attribute>
+										<partner type="select" length="30">
+											<!--  id="strength" -->
+											<xsp:attribute name="name">treatment_s[i].treatmentVO_s[0].treatmentAdministeredDT_s[0].doseQtyUnitCd</xsp:attribute>
+											<srt-options-string>
+												<srt-codes:getCodedValues>
+													<type>TREAT_DOSE_UNIT</type>
+												</srt-codes:getCodedValues>
+											</srt-options-string>
+										</partner>
+									</element>
+								</line>
+								<line>
+									<element type="select" label="Route" length="12">
+										<!--  id="route" -->
+										<xsp:attribute name="name">treatment_s[i].treatmentVO_s[0].treatmentAdministeredDT_s[0].routeCd</xsp:attribute>
+										<srt-options-string>
+											<srt-codes:getCodedValues>
+												<type>TREAT_ROUTE</type>
+											</srt-codes:getCodedValues>
+										</srt-options-string>
+									</element>
+								</line>
+								<line>
+									<element type="select" label="Frequency" length="17">
+										<!--  id="frequency" -->
+										<xsp:attribute name="name">treatment_s[i].treatmentVO_s[0].treatmentAdministeredDT_s[0].intervalCd</xsp:attribute>
+										<srt-options-string>
+											<srt-codes:getCodedValues>
+												<type>TREAT_FREQ_UNIT</type>
+											</srt-codes:getCodedValues>
+										</srt-options-string>
+									</element>
+								</line>
+								<line>
+									<element type="text" label="Duration" size="6">
+										<!--  id="duration" -->
+										<xsp:attribute name="name">treatment_s[i].treatmentVO_s[0].treatmentAdministeredDT_s[0].effectiveDurationAmt</xsp:attribute>
+										<partner type="select" length="5">
+											<!--  name="durationUnit" -->
+											<xsp:attribute name="name">treatment_s[i].treatmentVO_s[0].treatmentAdministeredDT_s[0].effectiveDurationUnitCd</xsp:attribute>
+											<srt-options-string>
+												<srt-codes:getCodedValues>
+													<type>TREAT_DUR_UNIT</type>
+												</srt-codes:getCodedValues>
+											</srt-options-string>
+										</partner>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element type="textarea" label="Treatment Comments" alignment="left">
+								<xsp:attribute name="name">treatment_s[i].treatmentVO_s[0].theTreatmentDT.txt</xsp:attribute>
+							</element>
+						</line>
+						<line>
+							<element type="hidden" name="treatment_s[i].statusCd"/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<!--WWWWWWWWWWWWWWWWWW                      Treatment          END                    WWWWWWWWWWWWWWWWWWWw-->
+			<!--WWWWWWWWWWWWWWWWWW                      Attachment Information           START                   WWWWWWWWWWWWWWWWWWWw -->
+			
+				
+					
+						
+			<group name="Attachment Information">
+			
+			
+			
+	
+					
+					
+				
+					
+					
+					
+					
+				<line>
+					<element name="Attachment" type="batch-entry" onload="hideErrorMessagesAndLines(); setEnctype();">
+						<value>
+							<xsp-request:get-attribute name="attachmentsBatch"/>
+						</value>
+
+					
+					
+						
+						
+						
+						
+					
+								
+					
+					
+					<xsp:logic>
+								if(addMorb.equalsIgnoreCase("true")) 
+								{
+					</xsp:logic>
+					
+<line tie-to="Add|Create|Edit|">
+						<element/>
+						<element type="raw" name="requiredAttachment">
+							<span style="font-size:9pt">
+								<i>(Required for Add/Update Attachment)</i>
+							</span>
+						</element>
+					</line>
+								<line id="fileAttachmentLine0">
+			
+			
+						<element type="inputFile">
+							
+							<name>fileAttachment0</name>
+							<id>fileAttachment0</id>
+							<parent>Attachment</parent>
+							<fieldLabel>Choose File</fieldLabel>
+							<validate>required</validate>
+							<isnested>yes</isnested>
+							<onload>this.value='yes'; </onload>
+							<errorcode></errorcode>
+							<size>52</size>
+							<onchange>handleNewFileSelection();</onchange>
+							
+						</element> 
+					</line>
+					
+						
+						
+						
+						
+					
+					
+					<line id="fileAttachmentLine1">
+						<element type="inputFileHidden">
+							
+							<name>fileAttachment1</name>
+							<id>fileAttachment1</id>
+							<parent>Attachment</parent>
+							<fieldLabel>Choose File</fieldLabel>
+							<validate>required</validate>
+							<isnested>yes</isnested>
+							<onload>this.value='yes'</onload>
+							<errorcode></errorcode>
+							<size>52</size>
+							<onchange>handleNewFileSelection();</onchange>
+							
+						</element> 
+					</line>
+					
+					<line id="fileAttachmentLine2">
+						<element type="inputFileHidden">
+							
+							<name>fileAttachment2</name>
+							<id>fileAttachment2</id>
+							<parent>Attachment</parent>
+							<fieldLabel>Choose File</fieldLabel>
+							<validate>required</validate>
+							<isnested>yes</isnested>
+							<onload>this.value='yes'</onload>
+							<errorcode></errorcode>
+							<size>52</size>
+							<onchange>handleNewFileSelection();</onchange>
+							
+						</element> 
+					</line>
+					
+					<line id="fileAttachmentLine3">
+						<element type="inputFileHidden">
+							
+							<name>fileAttachment3</name>
+							<id>fileAttachment3</id>
+							<parent>Attachment</parent>
+							<fieldLabel>Choose File</fieldLabel>
+							<validate>required</validate>
+							<isnested>yes</isnested>
+							<onload>this.value='yes'</onload>
+							<errorcode></errorcode>
+							<size>52</size>
+							<onchange>handleNewFileSelection();</onchange>
+							
+						</element> 
+					</line>
+													<line id="fileAttachmentLine4">
+						<element type="inputFileHidden">
+							
+							<name>fileAttachment4</name>
+							<id>fileAttachment4</id>
+							<parent>Attachment</parent>
+							<fieldLabel>Choose File</fieldLabel>
+							<validate>required</validate>
+							<isnested>yes</isnested>
+							<onload>this.value='yes'</onload>
+							<errorcode></errorcode>
+							<size>52</size>
+							<onchange>handleNewFileSelection();</onchange>
+							
+						</element> 
+					</line>
+										<line id="fileAttachmentLine5">
+						<element type="inputFileHidden">
+							
+							<name>fileAttachment5</name>
+							<id>fileAttachment5</id>
+							<parent>Attachment</parent>
+							<fieldLabel>Choose File</fieldLabel>
+							<validate>required</validate>
+							<isnested>yes</isnested>
+							<onload>this.value='yes'</onload>
+							<errorcode></errorcode>
+							<size>52</size>
+							<onchange>handleNewFileSelection();</onchange>
+							
+						</element> 
+					</line>
+										<line id="fileAttachmentLine6">
+						<element type="inputFileHidden">
+							
+							<name>fileAttachment6</name>
+							<id>fileAttachment6</id>
+							<parent>Attachment</parent>
+							<fieldLabel>Choose File</fieldLabel>
+							<validate>required</validate>
+							<isnested>yes</isnested>
+							<onload>this.value='yes'</onload>
+							<errorcode></errorcode>
+							<size>52</size>
+							<onchange>handleNewFileSelection();</onchange>
+							
+						</element> 
+					</line>
+										<line id="fileAttachmentLine7">
+						<element type="inputFileHidden">
+							
+							<name>fileAttachment7</name>
+							<id>fileAttachment7</id>
+							<parent>Attachment</parent>
+							<fieldLabel>Choose File</fieldLabel>
+							<validate>required</validate>
+							<isnested>yes</isnested>
+							<onload>this.value='yes'</onload>
+							<errorcode></errorcode>
+							<size>52</size>
+							<onchange>handleNewFileSelection();</onchange>
+							
+						</element> 
+					</line>
+										<line id="fileAttachmentLine8">
+						<element type="inputFileHidden">
+							
+							<name>fileAttachment8</name>
+							<id>fileAttachment8</id>
+							<parent>Attachment</parent>
+							<fieldLabel>Choose File</fieldLabel>
+							<validate>required</validate>
+							<isnested>yes</isnested>
+							<onload>this.value='yes'</onload>
+							<errorcode></errorcode>
+							<size>52</size>
+							<onchange>handleNewFileSelection();</onchange>
+							
+						</element> 
+					</line>
+					<line id="fileAttachmentLine9">
+						<element type="inputFileHidden">
+							
+							<name>fileAttachment9</name>
+							<id>fileAttachment9</id>
+							<parent>Attachment</parent>
+							<fieldLabel>Choose File</fieldLabel>
+							<validate>required</validate>
+							<isnested>yes</isnested>
+							<onload>this.value='yes'</onload>
+							<errorcode></errorcode>
+							<size>52</size>
+							<onchange>handleNewFileSelection();</onchange>
+							
+						</element> 
+					</line>
+					
+			<line id="fileAttachmentLine10">
+						<element type="inputFileHidden">
+							
+							<name>fileAttachment10</name>
+							<id>fileAttachment10</id>
+							<parent>Attachment</parent>
+							<fieldLabel>Choose File</fieldLabel>
+							<validate>required</validate>
+							<isnested>yes</isnested>
+							<onload>this.value='yes'</onload>
+							<errorcode></errorcode>
+							<size>52</size>
+							<onchange>handleNewFileSelection();</onchange>
+							
+						</element> 
+					</line>
+					
+					
+					
+					
+					<xsp:logic>
+								}else {
+					</xsp:logic>
+					<line>
+								<element name="ImportButton" type="text" label = "Choose File" align="left">
+								<xsp:attribute name="name">attachment_s[i].attachmentVO_s[0].theAttachmentDT.attachment</xsp:attribute>
+								<validation type="required" name="Choose File"/>
+								</element>
+					</line>
+					<xsp:logic>
+								}
+					</xsp:logic>
+								
+								
+							
+						<line>
+							<element type="hidden" label="" size="52">
+								<xsp:attribute name="name">attachment_s[i].attachmentVO_s[0].theAttachmentDT.inputFile</xsp:attribute>
+								
+							</element>
+						</line>
+					
+					<line>
+							<element type="hidden" label="" size="52">
+								<xsp:attribute name="name">attachment_s[i].attachmentVO_s[0].theAttachmentDT.attachmentPath</xsp:attribute>
+								
+							</element>
+						</line>
+					
+						<line>
+							<element type="text" label="Name" size="52">
+								<xsp:attribute name="name">attachment_s[i].attachmentVO_s[0].theAttachmentDT.fileNmTxt</xsp:attribute>
+								<header>File Name</header>
+								<value>
+							<xsp-request:get-attribute name="fileNmTxt"/>
+						</value>
+								<validation type="required" name="Name"/>
+							</element>
+						</line>
+						
+
+						<line>
+							<element type="textarea" label="Description" alignment="left">
+								<xsp:attribute name="name">attachment_s[i].attachmentVO_s[0].theAttachmentDT.descTxt</xsp:attribute>
+									<header>Description</header>
+							</element>
+						</line>
+						
+						<line>
+							<element type="hidden" label="" size="52">
+								<xsp:attribute name="name">attachment_s[i].attachmentVO_s[0].theAttachmentDT.lastChangeTime</xsp:attribute>
+								<header>Date Added</header>
+								<xsp:attribute name="default">
+								<xsp:expr>PersonUtil.formatCurrentDate()</xsp:expr>
+							</xsp:attribute>
+						
+							</element>
+						</line>
+						
+						
+						<line>
+							<element type="hidden" label="" size="52">
+								<xsp:attribute name="name">attachment_s[i].attachmentVO_s[0].theAttachmentDT.lastChgUserNm</xsp:attribute>
+								<xsp:attribute name="default">
+									<xsp:expr>fullName</xsp:expr>
+								</xsp:attribute>
+								<header>Added By</header>
+							</element>
+							<element type="hidden" label="" size="52">
+								<xsp:attribute name="name">attachment_s[i].attachmentVO_s[0].theAttachmentDT.lastChangeUserId</xsp:attribute>
+								<xsp:attribute name="default">
+									<xsp:expr>userId</xsp:expr>
+								</xsp:attribute>
+							</element>
+						</line>
+							
+						<line>
+							<element type="hidden" label="" size="52">
+								<xsp:attribute name="name">attachment_s[i].attachmentVO_s[0].theAttachmentDT.nbsAttachmentUid</xsp:attribute>
+								
+							
+							</element>
+						</line>
+						
+					    <line>
+							<element type="hidden" name="attachment_s[i].statusCd"/>
+						</line><line>
+						<element type="raw" name="errorV">
+							
+						</element></line>
+						
+					</element>
+				</line>
+			</group>
+			<!--WWWWWWWWWWWWWWWWWW                      Attachment          END                    WWWWWWWWWWWWWWWWWWWw-->
+	
+			<group name="Administrative">
+				<line>
+					<element type="textarea" label="Comments">
+						<xsp:attribute name="name">morbidityProxy.observationVO_s[15].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+						<xsp:attribute name="observation-name">morbidityProxy.observationVO_s[15].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MRB102</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="MRB102"/>
+						</value>
+						<!-- validation name="Treatment" -->
+						<type>lengthLimit2000</type>
+						<fieldLength>2000</fieldLength>
+						<!-- /validation -->
+					</element>
+				</line>
+				<xsp:logic>
+				if(fromNavBar.equals("true"))
+				{
+				</xsp:logic>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element type="checkbox">
+						<options>
+							<option name="retainPatient" label="Retain Patient for next entry" value="T" class="boldTenBlack">
+								<value>
+									<xsp-request:get-attribute name="retainPatient"/>
+								</value>
+							</option>
+						</options>
+					</element>
+				</line>
+				<xsp:logic>
+				}
+				</xsp:logic>
+			</group>
+			<group>
+				<xsp:logic>
+					String checkAddComment = (String) request.getAttribute("checkAddComment");
+					
+					if(checkAddComment !=null){
+						if (checkAddComment.equals("true")){ 
+				</xsp:logic>
+				<line tie-to="View">
+					<element type="line-separator" title="Morb Report Comments"/>
+				</line>
+				<line tie-to="View">
+					<element name="addUserComments" type="button" onclick="addComment(2);">
+						<value>Add Comment</value>
+					</element>
+				</line>
+				<line tie-to="View">
+					<element type="data-table" name="data-table-comment">
+						<header width="15%"/>
+						<header width="15%"/>
+						<header width="70%"/>
+						<!--value>01/11/2003$vinegar~bukcets~$INT310002000INT$|no date$linteler$INT342334444INT$|</value-->
+						<value>
+							<xsp-request:get-attribute name="AddUserComments"/>
+						</value>
+					</element>
+				</line>
+				<xsp:logic>}}</xsp:logic>
+			</group>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>previewXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>extXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<xsp:logic>
+				ArrayList subformList = (ArrayList)request.getAttribute(NEDSSConstants.MORBREPORT_LDF+"SubformList" );				
+				if(subformList != null) {
+			          for(Iterator anIter = subformList .iterator(); anIter.hasNext();)  {
+				            CustomSubformMetadataDT dt = (CustomSubformMetadataDT) anIter.next();			
+			 </xsp:logic>
+			<group>
+				<xsp:attribute name="name">
+					<xsp:expr>dt.getSubformNm()</xsp:expr>
+				</xsp:attribute>
+				<line>
+					<element type="raw">
+						<span>
+							<util:include-expr>
+								<util:expr>
+									<xsp:expr>dt.getHtmlData()</xsp:expr>
+								</util:expr>
+							</util:include-expr>
+						</span>
+					</element>
+				</line>
+			</group>
+			<xsp:logic> }} </xsp:logic>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>sfValidationXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+		</tab>
+	</content>
+</xsp:page>

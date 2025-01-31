@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 (http://www.altova.com) by Maninder Jit Singh (DHHS (C/O SAIC)) -->
+<!-- edited with XMLSPY v5 rel. 3 U (http://www.xmlspy.com) by Beau Bannerman (Computer Sciences Corp) -->
+<!-- IntermediaryNotificationMessage NBS 3.0 - August 24, 2009 -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:nedss="http://www.cdc.gov/NEDSS" targetNamespace="http://www.cdc.gov/NEDSS" elementFormDefault="qualified" attributeFormDefault="unqualified" version="NBS x.x">
+	<element name="NBS_NND_Intermediary_Message">
+		<complexType>
+			<sequence>
+				<element name="MessageElement" type="nedss:MessageElement" maxOccurs="unbounded"/>
+				<element name="LabReportEvent" type="nedss:LabReportEvent" minOccurs="0" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<complexType name="MessageElement">
+		<sequence>
+			<element name="questionIdentifierNND" type="string"/>
+			<element name="questionLabelNND" type="string"/>
+			<element name="questionOID" type="string"/>
+			<element name="questionIdentifier" type="string" minOccurs="0"/>
+			<element name="questionLabel" type="string" minOccurs="0"/>
+			<element name="hl7SegmentField" type="string" minOccurs="0"/>
+			<element name="orderGroupId" type="string" minOccurs="0"/>
+			<element name="observationSubID" type="string" minOccurs="0"/>
+			<element name="questionGroupSeqNbr" type="string" minOccurs="0"/>
+			<element name="repeatGroupSeqNbr" type="string" minOccurs="0"/>
+			<element name="questionMap" type="string" minOccurs="0"/>
+			<element name="indicatorCd" type="string" minOccurs="0"/>
+			<element name="dataElement">
+				<complexType>
+					<sequence>
+						<element name="questionDataTypeNND" type="string"/>
+						<choice>
+							<element name="snDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="comparator" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="2"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="num1" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="15"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="separatorSuffix" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="1"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="num2" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="15"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="snunitDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="comparator" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="2"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="num1" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="15"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="separatorSuffix" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="1"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="num2" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="15"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="ceCodedValue">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="20"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="ceCodedValueDescription" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="ceCodedValueCodingSystem">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="ceLocalCodedValue" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="20"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="ceLocalCodedValueDescription" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="ceLocalCodedValueCodingSystem" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="stDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="stringData">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="txDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="textData" type="string"/>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="cxDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="cxData" type="string"/>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="idDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="idCodedValue">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="20"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="isDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="isCodedValue">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="20"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="cweDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="cweCodedValue">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="20"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="cweCodedValueDescription" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="cweCodedValueCodingSystem">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="cweLocalCodedValue" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="20"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="cweLocalCodedValueDescription" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="cweLocalCodedValueCodingSystem" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="cweOriginalText" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="ceDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="ceCodedValue">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="20"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="ceCodedValueDescription" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="ceCodedValueCodingSystem">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="ceLocalCodedValue" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="20"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="ceLocalCodedValueDescription" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="ceLocalCodedValueCodingSystem" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="tsDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="year" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<minLength value="4"/>
+													<maxLength value="4"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="time" type="dateTime" minOccurs="0"/>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="dtDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="year" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<minLength value="4"/>
+													<maxLength value="4"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="date" type="date" minOccurs="0"/>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="nmDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="num">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="15"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="xtnDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="telecommunicationUseCode">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="3"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="telecommunicationEquipmentType">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="8"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="emailAddress" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="areaOrCityCode" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="3"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="phoneNumber" minOccurs="0">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="9"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="xpnDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="familyName">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="194"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="givenName">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="30"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="eiDataType" type="nedss:eiDataType" minOccurs="0"/>
+							<element name="eipDataType">
+								<complexType>
+									<sequence>
+										<element name="placerAssignedIdentifier">
+											<complexType>
+												<sequence>
+													<element name="eiDataType" type="nedss:eiDataType" minOccurs="0"/>
+												</sequence>
+											</complexType>
+										</element>
+										<element name="fillerAssignedIdentifier">
+											<complexType>
+												<sequence>
+													<element name="eiDataType" type="nedss:eiDataType" minOccurs="0"/>
+												</sequence>
+											</complexType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="hdDataType" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="namespaceId">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="20"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="universalId">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="199"/>
+												</restriction>
+											</simpleType>
+										</element>
+										<element name="universalIdType">
+											<simpleType>
+												<restriction base="string">
+													<maxLength value="6"/>
+												</restriction>
+											</simpleType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+						</choice>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="eiDataType">
+		<sequence>
+			<element name="entityIdentifier">
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="199"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="namespaceId">
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="20"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="universalId">
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="199"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="universalIdType">
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="6"/>
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="LabReportEvent">
+		<sequence>
+			<element name="ResultedTest" maxOccurs="unbounded">
+				<complexType>
+					<sequence>
+						<element name="LabReportEvent" type="nedss:LabReportEvent" minOccurs="0" maxOccurs="unbounded"/>
+						<element name="MessageElement" type="nedss:MessageElement" maxOccurs="unbounded"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="MessageElement" type="nedss:MessageElement" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+</schema>

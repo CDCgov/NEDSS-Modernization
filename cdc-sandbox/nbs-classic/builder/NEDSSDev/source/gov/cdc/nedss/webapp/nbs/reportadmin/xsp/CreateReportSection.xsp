@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+    <xsp:structure>
+        <xsp:include>gov.cdc.nedss.reportadmin.dt.ReportSectionDT</xsp:include>
+    </xsp:structure>
+    <content form="/nbs/CreateReportSection.do">
+        <xsp:logic>
+        	ReportSectionDT dtReportSection = (ReportSectionDT)session.getAttribute("ReportAdmin.dtReportSection");
+        </xsp:logic>
+        <link-bar>
+            <!--link>
+                <xsp:attribute name="name">
+                    <xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+                </xsp:attribute>
+                <xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+            </link-->
+        </link-bar>
+        <button-bar>
+            <right>
+                <label>Submit</label>
+                <javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/CreateReportSection.do");
+                    document.forms[0].submit();
+                </javascript-action>
+            </right>
+            <right>
+                <label>Cancel</label>
+                <javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "<xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>");
+                    document.forms[0].submit();
+                </javascript-action>
+            </right>
+        </button-bar>
+        <tab>
+            <group>
+                <line>
+                    <element type="raw" id="rsError">
+                        <span style="color: red; font-weight: bold;">
+                            <value><xsp:expr>request.getAttribute("error")</xsp:expr></value>
+                        </span>
+                    </element>
+                </line>
+            </group>
+            <group name="">
+	            <xsp:attribute name="section_cd">
+					<xsp:expr>dtReportSection.getSectionCd()</xsp:expr>
+				</xsp:attribute>
+	            <line>
+		            <element type="raw">
+		                <span>
+		                    <i>
+		                        <font class="boldTenRed"> * Indicates a Required Field </font>
+		                    </i>
+		                </span>
+		            </element>
+		        </line>
+		        <line>
+		            <element name="report_section_uid" type="hidden">
+		                <value><xsp:expr>dtReportSection.getReportSectionUID()</xsp:expr></value>
+		            </element>
+		        </line>
+		        <line>
+		            <element name="section_cd" type="hidden">
+		                <value><xsp:expr>dtReportSection.getSectionCd()</xsp:expr></value>
+		            </element>
+		        </line>
+		        <line>
+		            <element name="context" type="hidden">
+		                <value><xsp:expr>request.getAttribute("context")</xsp:expr></value>
+		            </element>
+		        </line>
+				<line>
+					<element name="section_desc_txt" type="text" label="*Section Name"  size="50" maxlength="100">
+						<value><xsp:expr>dtReportSection.getSectionDescTxt()</xsp:expr></value>
+					</element>
+				</line>
+		        <line>
+		            <element name="comments" type="textarea" label="*Description" colspan="1">
+		            <validation type="lengthLimit" fieldLength="250" name="comments"/>
+		                <value><xsp:expr>dtReportSection.getComments()</xsp:expr></value>
+		            </element>
+		        </line>
+            </group>
+        </tab>
+    </content>
+</xsp:page>

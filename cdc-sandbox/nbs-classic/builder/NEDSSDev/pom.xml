@@ -1,0 +1,317 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>gov.cdc.nbs</groupId>
+    <artifactId>NBS</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+	<properties>
+        <JB_HOME>${env.JBOSS_HOME}</JB_HOME>
+        <NEDSS_DOMAIN_NAME>nedssdomain</NEDSS_DOMAIN_NAME>
+        <JB_SERVER>${JB_HOME}</JB_SERVER>
+        <JB_DOMAIN_HOME>${JB_SERVER}/${NEDSS_DOMAIN_NAME}</JB_DOMAIN_HOME>
+        <APPLICATIONS>${JB_DOMAIN_HOME}/deployments</APPLICATIONS>
+        <JAVA_HOME>${env.JAVA_HOME}</JAVA_HOME>
+        <nbs_development_dir>.</nbs_development_dir>
+        <Nedss_dir>${JB_DOMAIN_HOME}/Nedss</Nedss_dir>
+        <libraries_dest_dir>${JB_SERVER}/modules/system/layers/base/NBSLibraries/main</libraries_dest_dir>
+        <archived_libraries_dest_dir>${JB_SERVER}/modules/system/layers/base/NBSLibraries/archived</archived_libraries_dest_dir>
+        <sql_libraries_dest_dir>${JB_SERVER}/modules/system/layers/base/com/microsoft/main</sql_libraries_dest_dir>
+        <config_dir>${nbs_development_dir}/source/Configuration Files</config_dir>
+        <properties_dir>${Nedss_dir}/Properties</properties_dir>
+        <user_guide_dir>${Nedss_dir}/UserGuide</user_guide_dir>
+        <build_dir>${Nedss_dir}/classfiles</build_dir>
+        <eclipse_build_dir>${nbs_development_dir}/target-jar/classes</eclipse_build_dir>
+        <dist_dir>${nbs_development_dir}/dist</dist_dir>
+        <nbs_webapp_dir>${dist_dir}/webapp/nbs.war</nbs_webapp_dir>
+        <cdf-dir>${Nedss_dir}/CDF-Subform</cdf-dir>
+        <warFile>nbs.war</warFile>
+        <nndmWarFile>nndm.war</nndmWarFile>
+        <earFile>nbs.ear</earFile>
+        <jarFile>nbs.jar</jarFile>
+        <earDir>${eclipse_build_dir}/ear</earDir>
+        <warDir>${eclipse_build_dir}/war</warDir>
+        <nndmWarDir>${eclipse_build_dir}/nndmWar</nndmWarDir>
+        <jarDir>${eclipse_build_dir}/jar</jarDir>
+        <bin.jboss>${env.JBOSS_HOME}</bin.jboss>
+        <bin.jboss.exec>${bin.jboss}/bin/run.bat</bin.jboss.exec>
+        <bin.jboss.shutdown>${bin.jboss}/bin/shutdown.bat</bin.jboss.shutdown>
+        <bin.jboss.debug>${bin.jboss}/bin/debug.bat</bin.jboss.debug>
+        <bin.jboss.installservice.exec>${bin.jboss}/bin/InstallJBoss-NT.bat</bin.jboss.installservice.exec>
+        <bin.jboss.uninstallservice.exec>${bin.jboss}/bin/UninstallJBoss-NT.bat</bin.jboss.uninstallservice.exec>
+        <bin.jboss.restartservice.exec>${bin.jboss}/bin/RestartJBoss-NT.bat</bin.jboss.restartservice.exec>
+        <bin.jboss.startservice.exec>${bin.jboss}/bin/StartJBossService-NT.bat</bin.jboss.startservice.exec>
+        <bin.jboss.stopservice.exec>${bin.jboss}/bin/StopJBossService-NT.bat</bin.jboss.stopservice.exec>
+        <bin.jboss.console.exec>${bin.jboss}/bin/Jboss.bat</bin.jboss.console.exec>
+        <NNDM_APPLICATION_DIR>${APPLICATIONS}/nndm.war</NNDM_APPLICATION_DIR>
+        <userprofile_dir>${Nedss_dir}/UserProfile</userprofile_dir>
+        <SAS_HOME>${env.SAS_HOME}</SAS_HOME>
+        <SAS_REPORT_HOME>${env.SAS_REPORT_HOME}</SAS_REPORT_HOME>
+        <sasroot>${SAS_HOME}</sasroot>
+        <reportsrc.dir>${nbs_development_dir}/source/sas</reportsrc.dir>
+        <reportdest.dir>${Nedss_dir}/report</reportdest.dir>
+        <reportBatch.dir>${Nedss_dir}/BatchFiles</reportBatch.dir>
+    </properties>
+
+    <modules>
+        <module>pom-war.xml</module>
+        <module>pom-jar.xml</module>
+        <module>pom-nndm-jar.xml</module>
+        <module>pom-nndm-war.xml</module>
+        <module>pom-ear.xml</module>
+    </modules>
+    <build>
+    	<testSourceDirectory>source/test/gov/cdc/nedss/</testSourceDirectory>
+        <plugins>
+            <!-- Enable liberty-maven plugin -->
+            <plugin>
+                <groupId>io.openliberty.tools</groupId>
+                <artifactId>liberty-maven-plugin</artifactId>
+                <version>3.5.1</version>
+            </plugin>
+            <plugin>
+	            <artifactId>maven-antrun-plugin</artifactId>
+	            <version>1.8</version>
+	            <executions>
+	                <execution>
+	                    <id>copy</id>
+	                    <phase>package</phase>
+	                    <configuration>
+	                        <target name="nbs.ClassFiles" description="Copy files to the Nedss folder">
+	                        	<delete includeEmptyDirs="true" quiet="true" failonerror="false">
+									<fileset dir="${earDir}" includes="*.ear"/>
+									<fileset dir="${warDir}" includes="*.war"/>
+									<fileset dir="${jarDir}" includes="*.jar"/>
+									<fileset dir="${Nedss_dir}" includes="**/*"/>
+									<fileset dir="${dist_dir}" includes="**/*"/>
+									<fileset dir="${reportdest.dir}" includes="**/*"/>
+									<fileset dir="${APPLICATIONS}/nbs.ear" includes="**/*"/>
+									<fileset dir="${NNDM_APPLICATION_DIR}" includes="**/*"/>
+									<fileset dir="${libraries_dest_dir}" includes="**/*"/>
+								</delete>
+	                            <mkdir dir="${Nedss_dir}"/>
+								<mkdir dir="${userprofile_dir}"/>
+								<mkdir dir="${cdf-dir}/import"/>
+								<mkdir dir="${cdf-dir}/success"/>
+								<mkdir dir="${cdf-dir}/failure"/>
+								<mkdir dir="${cdf-dir}/xhtml"/>
+								<mkdir dir="${cdf-dir}/rawdata"/>
+								<mkdir dir="${properties_dir}"/>
+								<mkdir dir="${properties_dir}/xmltojsp"/>
+								<mkdir dir="${properties_dir}/LogConfig"/>
+								<mkdir dir="${user_guide_dir}"/>
+								<mkdir dir="${Nedss_dir}/BatchFiles"/>
+								<mkdir dir="${Nedss_dir}/classfiles"/>
+								<mkdir dir="${dist_dir}"/>
+								<mkdir dir="${earDir}/META-INF"/>
+								<mkdir dir="${warDir}/WEB-INF"/>
+								<mkdir dir="${jarDir}/META-INF"/>
+								<mkdir dir="${nndmWarDir}/WEB-INF"/>
+								<mkdir dir="${nndmWarDir}/WEB-INF/lib"/>
+								<mkdir dir="${Nedss_dir}/nndm"/>
+								<mkdir dir="${Nedss_dir}/nndm/styles"/>
+								<mkdir dir="${Nedss_dir}/jsptempfiles"/>
+	                            <copy todir="${eclipse_build_dir}/META-INF" includeEmptyDirs="no">
+									<fileset dir=".">
+										<include name="ejb-jar.xml"/>
+										<include name="application.xml"/>
+										<include name="NEDSSEJBManifest.MF"/>
+										<exclude name="build.xml"/>
+									</fileset>
+								</copy>
+								<copy todir="${properties_dir}">
+									<fileset dir="${nbs_development_dir}/source/PropertyFiles"/>
+								</copy>
+								<copy todir="${user_guide_dir}">
+									<fileset dir="${nbs_development_dir}/source/gov/cdc/nedss/webapp/nbs/pdf"/>
+								</copy>
+								<copy todir="${env.JBOSS_HOME}/nedssdomain/deployments" overwrite="yes">
+									<fileset dir="${nbs_development_dir}/target-ear">
+										<include name="nbs.ear"/>
+									</fileset>
+								</copy>
+								<copy todir="${libraries_dest_dir}" overwrite="no" includeEmptyDirs="no">
+									<fileset dir="${nbs_development_dir}/Libraries">
+										<include name="**/Apache/commons-codec-1.4.jar"/>
+										<include name="**/Apache/commons-collections-3.2.jar"/>
+										<include name="**/Apache/commons-pool-1.2.jar"/>
+										<include name="**/Apache/poi-3.17.jar"/>
+										<include name="**/Apache/poi-ooxml-3.17.jar"/>
+										<include name="**/Castor/castor-0.9.3.9.jar"/>
+										<include name="**/cda/**"/>
+										<include name="**/Centrus/ABClient.jar"/>
+										<include name="**/charts/**"/>
+										<include name="**/customSubformJaxbLibrary/**"/>
+										<include name="**/DMBPageSchema/**"/>
+										<include name="**/EndorsedLibs/jakarta-bcel-20040329.jar"/>
+										<include name="**/EndorsedLibs/jakarta-regexp-1.4.jar"/>
+										<include name="**/EndorsedLibs/xml-resolver-1.1.jar"/>
+										<include name="**/EndorsedLibs/xalan-2.7.0.jar"/>
+										<include name="**/EndorsedLibs/xsltc.jar"/>
+										<include name="**/Informa/**"/>
+										<include name="**/jaxb/**"/>
+										<include name="**/JustFormsPDF/JustFormsPDF.jar"/>
+										<include name="**/Log4J/log4j-1.2-api-2.19.0.jar"/>
+										<include name="**/Log4J/log4j-api-2.19.0.jar"/>
+										<include name="**/Log4J/log4j-core-2.19.0.jar"/>
+										<include name="**/mail/mail-1.4.jar"/>
+										<include name="**/nndMasterMsgFrameWork/**"/>
+										<include name="**/pdfbox/**"/>
+										<include name="**/struts/commons-beanutils-1.7.0.jar"/>
+										<include name="**/struts/commons-chain-1.1.jar"/>
+										<include name="**/struts/commons-digester-1.8.jar"/>
+										<include name="**/struts/commons-fileupload-1.1.1.jar"/>
+										<include name="**/struts/commons-io-1.1.jar"/>
+										<include name="**/struts/commons-logging-1.0.4.jar"/>
+										<include name="**/struts/commons-validator-1.3.1.jar"/>
+										<include name="**/struts/ditchnet-tabs-taglib.jar"/>
+										<include name="**/struts/jstl-1.0.2.jar"/>
+										<include name="**/struts/oro-2.0.8.jar"/>
+										<include name="**/struts/struts-core-1.3.8.jar"/>
+										<include name="**/struts/struts-el-1.3.8.jar"/>
+										<include name="**/struts/struts-extras-1.3.8.jar"/>
+										<include name="**/struts/struts-faces-1.3.8.jar"/>
+										<include name="**/struts/Struts-Layout-1.2.jar"/>
+										<include name="**/struts/struts-taglib-1.3.8.jar"/>
+										<include name="**/struts/dwr.jar"/>
+										<include name="**/tools/**"/>
+										<include name="**/PartnerServices/**"/>
+										<include name="**/PartnerServicesOld/**"/>
+										<include name="**/vads/**"/>
+										<include name="**/webAF/activation.jar"/>
+										<include name="**/webAF/sas.ads.core.jar"/>
+										<include name="**/webAF/sas.ads.misc.jar"/>
+										<include name="**/webAF/sas.ads.servlet.jar"/>
+										<include name="**/webAF/sas.core.jar"/>
+										<include name="**/webAF/sas.intrnet.javatools.jar"/>
+										<include name="**/webAF/sas.servlet.jar"/>
+										<include name="**/webAF/sas.text.jar"/>
+										<include name="**/webAF/sas.webEIS.jar"/>
+										<include name="**/webAF/webafutil.jar"/>
+										<include name="**/xmlbeans/**"/>
+										<include name="**/tidy/jtidy-r938.jar"/>
+										<include name="**/IISConnection/**"/>
+										<include name="**/OWASP/encoder-1.2.2.jar"/>
+										<include name="**/OWASP/owasp-java-html-sanitizer-20211018.1.jar"/>
+										<include name="**/OWASP/guava-31.0.1-jre.jar"/>
+										<include name="module.xml"/>
+										
+										<exclude name="**/jboss/**"/>
+										<exclude name="**/json/**"/>
+										<exclude name="**/servlet/**"/>
+										
+									</fileset>
+								</copy>
+								<copy todir="${archived_libraries_dest_dir}" overwrite="no" includeEmptyDirs="no">
+									<fileset dir="${nbs_development_dir}/Libraries/archived">
+										<include name="**/xmlbeans/**"/>
+										<include name="module.xml"/>
+									</fileset>
+								</copy>
+								<copy todir="${sql_libraries_dest_dir}" overwrite="no" includeEmptyDirs="no">
+									<fileset dir="${nbs_development_dir}/Libraries/SQLServer">
+										<include name="**/**"/>
+									</fileset>
+								</copy>
+								<copy todir="${properties_dir}/LogConfig" overwrite="no">
+									<fileset dir="${config_dir}/LogConfig"/>
+								</copy>
+								<copy todir="${Nedss_dir}/BatchFiles" overwrite="no">
+									<fileset dir="${nbs_development_dir}/source/BatchFiles"/>
+								</copy>
+								<copy todir="${properties_dir}/xmltojsp/">
+								<fileset dir="${nbs_development_dir}/source/gov/cdc/nedss/pagemanagement/wa/xml/transform" includes="**/*"/>
+								</copy>
+								<copy todir="${APPLICATIONS}/images" overwrite="no" file="${nbs_development_dir}/source/gov/cdc/nedss/webapp/nbs/resource/image/logo.jpg"/>
+								<move file="${APPLICATIONS}/images/logo.jpg" tofile="${APPLICATIONS}/images/nedssLogo.jpg"/>
+								<copy todir="${Nedss_dir}/nndm/styles/">
+									<fileset dir="${nbs_development_dir}/source/nndm/styles" includes="**/*"/>
+								</copy>
+								<zip destfile="${build_dir}/classfiles.zip" basedir="${eclipse_build_dir}" excludes="gov/cdc/nedss/webapp/**,**/META-INF/**,BatchFiles/**,ear/**,war/**,nndm/**,nndmWar/**,Rhapsody/**, jsptempfiles/**"/>
+								
+								<copy todir="${reportdest.dir}">
+									<fileset dir="${reportsrc.dir}" includes="autoexec.sas"/>
+								</copy>
+								<copy todir="${reportdest.dir}/pgm">
+									<fileset dir="${reportsrc.dir}/pgm" includes="*.sas"/>
+								</copy>
+								<copy todir="${reportdest.dir}/template">
+											<fileset dir="${reportsrc.dir}/template" includes="*.sas"/>
+										</copy>
+								<copy todir="${reportdest.dir}/phdc/src">
+													<fileset dir="${reportsrc.dir}/phdc/src" includes="*.sas"/>
+												</copy>
+								<copy todir="${reportdest.dir}/util">
+									<fileset dir="${reportsrc.dir}/util" includes="
+										export.sas,
+										odsmarkup.sas,
+										chk_mv.sas,
+									   	footnote.sas,
+									   	ascii.sas,
+										reportenv.sas,
+										Rpt_formats.sas"/>
+								</copy>
+								<copy todir="${reportdest.dir}/dm">
+									<fileset dir="${reportsrc.dir}/dm">
+										<exclude name="PhcMartEtl.bat"/>
+									</fileset>
+								</copy>
+								<copy todir="${reportdest.dir}/custom">
+									<fileset dir="${reportsrc.dir}/custom"/>
+								</copy>
+								<copy todir="${reportdest.dir}/metadata">
+									<fileset dir="${reportsrc.dir}/metadata" includes="FORMATS.SD2,FORMATS.SC2"/>
+								</copy>
+								<copy todir="${Nedss_dir}/BatchFiles" overwrite="no">
+									<fileset file="${nbs_development_dir}/source/sas/dw/etl/MasterEtl.bat"/>
+									<fileset file="${nbs_development_dir}/source/sas/dw/etl/MasterEtlIncremental.bat"/>
+									<!-- <fileset file="${nbs_development_dir}/source/sas/dw/etl/EtlProcessWithScheduler.bat"/>  -->
+									<fileset file="${nbs_development_dir}/source/sas/dw/etl/ClearPHCMartTableSQL.sql"/>
+									<fileset file="${nbs_development_dir}/source/sas/dw/etl/Refresh_SQL_RDB_tables.sql"/>
+									<fileset file="${nbs_development_dir}/source/sas/dw/etl/Incremental_Refresh_SQL_RDB_Tables.sql"/>
+									<fileset file="${nbs_development_dir}/source/sas/dw/etl/RedefineTablespace.sql"/>
+									<fileset file="${nbs_development_dir}/source/sas/dm/PhcMartEtl.bat"/>
+									<fileset file="${nbs_development_dir}/source/sas/dm/ClearPHCContent.sql"/>
+								</copy>
+								<copy todir="${reportdest.dir}/dw/etl">
+									<fileset dir="${reportsrc.dir}/dw/etl">
+										<exclude name="etldevenv.sas"/>
+										<exclude name="MasterEtl.bat"/>
+										<exclude name="MasterEtlIncremental.bat"/>
+										<!-- <exclude name="EtlProcessWithScheduler.bat"/> -->
+										<exclude name="ClearPHCMartTableORA.sql"/>
+										<exclude name="ClearPHCMartTableSQL.sql"/>
+										<exclude name="Refresh_SQL_RDB_tables.sql"/>
+										<exclude name="Refresh_Oracle_RDB_tables.sql"/>
+										<exclude name="Incremental_Refresh_Oracle_RDB_Tables.sql"/>
+										<exclude name="Incremental_Refresh_SQL_RDB_Tables.sql"/>
+										<exclude name="RedefineTablespace.sql"/>
+									</fileset>
+								</copy>
+								<copy todir="${reportdest.dir}/metadata">
+									<fileset dir="${reportsrc.dir}/metadata" includes="imRDBmapping.xls,totalidm.XLS"/>
+								</copy>
+								<mkdir dir="${reportdest.dir}/log"/>
+								<mkdir dir="${reportdest.dir}/dw/etl/rdbdata"/>
+								<mkdir dir="${reportdest.dir}/format"/>
+								<replace file="${reportdest.dir}/autoexec.sas" value="${reportdest.dir}" token="%sysget(SAS_REPORT_HOME)"/>
+								<replace file="${Nedss_dir}/BatchFiles/MasterEtl.bat" value="${reportdest.dir}" token="%SAS_REPORT_HOME%"/>
+								<replace file="${Nedss_dir}/BatchFiles/MasterEtl.bat" value="${reportBatch.dir}" token="%SQL_SCRIPT_HOME%"/>
+								<replace file="${Nedss_dir}/BatchFiles/PhcMartEtl.bat" value="${reportdest.dir}" token="%SAS_REPORT_HOME%"/>
+								<replace file="${reportdest.dir}/dm/etl/phcmartETL.sas" value="${reportdest.dir}" token="%sysget(SAS_REPORT_HOME)"/>
+	                        </target>
+	                    </configuration>
+	                    <goals>
+	                        <goal>run</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
+	        </plugin>
+        </plugins>
+    </build>
+</project>

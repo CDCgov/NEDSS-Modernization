@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ JBoss, Home of Professional Open Source.
+  ~ Copyright 2010, Red Hat, Inc., and individual contributors
+  ~ as indicated by the @author tags. See the copyright.txt file in the
+  ~ distribution for a full listing of individual contributors.
+  ~
+  ~ This is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU Lesser General Public License as
+  ~ published by the Free Software Foundation; either version 2.1 of
+  ~ the License, or (at your option) any later version.
+  ~
+  ~ This software is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ Lesser General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Lesser General Public
+  ~ License along with this software; if not, write to the Free
+  ~ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+  ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+  -->
+
+<module xmlns="urn:jboss:module:1.1" name="NBSLibraries" slot="archived">
+
+    <resources>
+		<resource-root path="../main/EndorsedLibs/jakarta-bcel-20040329.jar"/>
+		<resource-root path="../main/EndorsedLibs/jakarta-regexp-1.4.jar"/>
+		<resource-root path="../main/EndorsedLibs/resolver.jar"/>
+		<resource-root path="../main/EndorsedLibs/xalan-2.7.0.jar"/>
+		<resource-root path="../main/EndorsedLibs/xsltc.jar"/>
+        <resource-root path="../main/Castor/castor-0.9.3.9.jar"/>
+		<resource-root path="../main/Log4J/log4j-1.2-api-2.19.0.jar"/>
+		<resource-root path="../main/Log4J/log4j-api-2.19.0.jar"/>
+		<resource-root path="../main/Log4J/log4j-core-2.19.0.jar"/>	
+		<resource-root path="../main/webAF/webafutil.jar"/>
+		<resource-root path="../main/webAF/sas.core.jar"/>
+		<resource-root path="../main/webAF/sas.ads.core.jar"/>
+		<resource-root path="../main/webAF/sas.ads.misc.jar"/>
+		<resource-root path="../main/webAF/sas.ads.servlet.jar"/>
+		<resource-root path="../main/webAF/sas.servlet.jar"/>
+		<resource-root path="../main/webAF/sas.text.jar"/>
+		<resource-root path="../main/webAF/sas.webEIS.jar"/>
+		<resource-root path="../main/webAF/sas.intrnet.javatools.jar"/>
+		<resource-root path="../main/tidy/jtidy-r938.jar"/>
+		<resource-root path="../main/nndMasterMsgFrameWork/NedssMasterMessageFramework.jar"/>
+		<resource-root path="../main/customSubformJaxbLibrary/cdf-subform.jar"/>
+		<resource-root path="../main/jaxb/jaxb-api.jar"/>
+		<resource-root path="../main/jaxb/jaxb-impl.jar"/>
+		<resource-root path="../main/jaxb/jaxb-libs.jar"/>
+		<resource-root path="../main/jaxb/jaxb-xjc.jar"/>
+		<resource-root path="../main/jaxb/jax-qname.jar"/>
+		<resource-root path="../main/jaxb/namespace.jar"/>
+		<resource-root path="../main/jaxb/relaxngDatatype.jar"/>
+		<resource-root path="../main/jaxb/xsdlib.jar"/>
+		<resource-root path="../main/struts/commons-logging-1.0.4.jar"/>
+		<resource-root path="../main/struts/struts-core-1.3.8.jar"/>
+		<resource-root path="../main/struts/struts-el-1.3.8.jar"/>
+		<resource-root path="../main/struts/struts-extras-1.3.8.jar"/>
+		<resource-root path="../main/struts/struts-faces-1.3.8.jar"/>
+		<resource-root path="../main/struts/struts-taglib-1.3.8.jar"/>
+		<resource-root path="../main/struts/jstl-1.0.2.jar"/>
+		<resource-root path="../main/struts/commons-digester-1.8.jar"/>
+		<resource-root path="../main/struts/commons-chain-1.1.jar"/>
+		<resource-root path="../main/struts/commons-validator-1.3.1.jar"/>
+		<resource-root path="../main/struts/Struts-Layout-1.2.jar"/>
+		<resource-root path="../main/struts/oro-2.0.8.jar"/>
+		<resource-root path="../main/struts/ditchnet-tabs-taglib.jar"/>
+		<resource-root path="../main/struts/dwr.jar"/>
+		<resource-root path="../main/JustFormsPDF/JustFormsPDF.jar"/>
+		<resource-root path="../main/xmlbeans/xmlbeans-2.6.0.jar"/>
+		<resource-root path="../main/xmlbeans/jsr173_1.0_api.jar"/>
+		<resource-root path="../main/xmlbeans/xbean_xpath.jar"/>
+		<resource-root path="../main/xmlbeans/xmlbeans-qname.jar"/>
+		<resource-root path="../main/xmlbeans/xmlpublic.jar"/>
+		<resource-root path="xmlbeans/nndintermediarymessage.jar"/>
+		<resource-root path="../main/mail/mail.jar"/>
+		<resource-root path="../main/webAF/activation.jar"/>
+		<resource-root path="../main/xmlbeans/PHDCMessage.jar"/>
+		<resource-root path="../main/charts/jcommon-1.0.16.jar"/>
+		<resource-root path="../main/struts/commons-fileupload-1.1.1.jar"/>
+		<resource-root path="../main/charts/jfreechart-1.0.13.jar"/>
+		<resource-root path="../main/charts/nbs-charts.jar"/>
+		<resource-root path="../main/vads/hessian-3.1.3.jar"/>
+		<resource-root path="../main/vads/vocabServiceClient.jar"/>
+		<resource-root path="../main/DMBPageSchema/dmbPageSchema.jar"/>
+		<resource-root path="../main/DMBPageSchema/dmbTemplateExportSchema.jar"/>
+		<resource-root path="../main/xmlbeans/DSMAlgorithm.jar"/>
+		<resource-root path="../main/pdfbox/pdfbox-app-2.0.0.jar"/>
+		<resource-root path="../main/tools/concurrent-1.3.4.jar"/>
+		<resource-root path="../main/tools/tools.jar"/>
+		<resource-root path="../main/Apache/commons-codec-1.4.jar"/>
+		<resource-root path="../main/Apache/poi-3.17.jar"/>
+		<resource-root path="../main/Apache/poi-ooxml-3.17.jar"/>
+		<resource-root path="../main/struts/commons-beanutils-1.7.0.jar"/>
+		<resource-root path="../main/struts/commons-io-1.1.jar"/>
+		<resource-root path="../main/Apache/commons-pool-1.2.jar"/>
+		<resource-root path="../main/cda/CDA_SDTC.jar"/>
+		<resource-root path="../main/PartnerServicesOld/PartnerServices_v21.jar"/>
+		<resource-root path="../main/xmlbeans/PagePortMapping.jar"/>
+		
+        <!-- Insert resources here -->
+    </resources>
+	<dependencies>
+        <module name="javax.api"/>
+        <module name="javax.transaction.api"/>
+		<module name="javax.servlet.api"/>
+		<module name="org.apache.xerces"/>
+		<module name="javax.servlet.jsp.api"/>
+		<module name="javax.servlet.jstl.api"/>
+		<module name="io.undertow.jsp"/>
+		<module name="org.jboss.ejb-client"/>
+    </dependencies>
+</module>

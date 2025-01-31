@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+	<!-- The "nndmMgrDaemon" servlet, which serves as the repeatable process  -->
+	<!-- for the notifiable disease message processing.                       -->
+	<display-name>Notification Manager</display-name>
+	<description>Messaging application for the NEDSS Notify Disease Messages project.</description>
+	<servlet>
+		<servlet-name>nndmMgrDaemon</servlet-name>
+		<display-name>Notification Manager</display-name>
+		<description>The Manager Daemon servlet for NEDSS notifiable disease message processing.</description>
+		<servlet-class>nndm.nndmMgrDaemon</servlet-class>
+		<!--
+         This parameter points to the main configuration file for this Notification Manager.
+         Note that the path is specified in absolute notation but it will be
+         resolved relative to the servlets webapp context path
+       -->
+		<!--
+         This parameter allows for the startup of the Notification Manager 
+         immediately after startup of Tomcat.
+       -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<resource-ref>
+				<res-ref-name>datasources/MsgOutDataSource</res-ref-name>
+				<res-type>javax.sql.DataSource</res-type>
+				<res-auth>Container</res-auth>
+				<res-sharing-scope>Shareable</res-sharing-scope>
+			</resource-ref>
+ </web-app>

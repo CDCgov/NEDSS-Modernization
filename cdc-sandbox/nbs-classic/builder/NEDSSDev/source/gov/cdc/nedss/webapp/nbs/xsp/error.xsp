@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>gov.cdc.nedss.util.HTMLEncoder</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:logic><![CDATA[
+				String sDebug = "";
+				String sError = "";
+				
+				try {
+						sError = (String)]]><session:get-attribute name="error"/><![CDATA[;	
+						sError = HTMLEncoder.encodeHtml(sError);
+				}
+				catch (Exception e) {
+					sDebug += e.toString();
+				}
+				
+			
+				
+		]]></xsp:logic>
+		<session:remove-attribute name="error"/>
+		
+		<tab>
+			<group name="Error Message">
+				<line>
+					<element type="plain-text">
+						<value><xsp:expr>sError</xsp:expr></value>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+	
+</xsp:page>

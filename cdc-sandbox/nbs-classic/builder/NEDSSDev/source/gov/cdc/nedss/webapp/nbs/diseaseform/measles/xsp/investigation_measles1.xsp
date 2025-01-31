@@ -1,0 +1,2236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0">
+	<!--<content form="/nedss/servlet/gov.cdc.nedss.servlet.Servlet1">-->
+	<xsp:structure>
+		<nedss:Include/>
+		<xsp:include>gov.cdc.nedss.ldf.subform.dt.*</xsp:include>
+	</xsp:structure>
+	<xsp:logic><![CDATA[
+            LogUtils logger = new LogUtils((this.getClass()).getName());
+       ]]></xsp:logic>
+	<nedss:FormatDate/>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="Submit"/>
+		</xsp:attribute>
+		<nedss:CurrentTask/>
+		<nedss:SortDirections/>
+		<nedss:Index/>
+		<nedss:NotificationList/>
+		<xsp:logic>
+			String cAction= (String)request.getParameter("ContextAction");
+			String customJavaScript= (String)request.getAttribute("customJavaScript");
+			//System.out.println("customJavaScript is :" + customJavaScript);
+			String customJavaScriptNIP= (String)request.getAttribute(NEDSSConstants.INVESTIGATION_NIP_LDF+"customJavaScript");
+			//System.out.println("customJavaScriptNIP is :" + customJavaScriptNIP);
+		</xsp:logic>
+		<javascript-files>
+			<import>EntitySearch.js</import>
+			<import>QuickEntry.js</import>
+			<import>NotificationSpecific.js</import>
+			<insert>
+				<xsp:expr>customJavaScript</xsp:expr>
+			</insert>
+			<insert>
+				<xsp:expr>customJavaScriptNIP</xsp:expr>
+			</insert>
+		</javascript-files>
+		<id-bar>
+			<!--id name="Person ID">
+				<xsp-request:get-attribute name="personLocalID"/>
+			</id-->
+			<nedss:IfMultiple task1="ViewInvestigation" task2="EditInvestigation">
+				<!--xsp:logic>
+		if (sCurrentTask.startsWith("ViewInvestigation") || sCurrentTask.startsWith("EditInvestigation"))
+		{
+		</xsp:logic-->
+				<id name="Investigation ID">
+					<xsp-request:get-attribute name="publicHealthCaseLocalUid"/>
+				</id>
+			</nedss:IfMultiple>
+			<!--xsp:logic>
+		}
+		</xsp:logic-->
+			<xsp:logic><![CDATA[
+			String extXSP= (String)request.getAttribute(NEDSSConstants.INVESTIGATION_NIP_LDF+"extXSP" );
+			if(extXSP == null)
+			    extXSP = "<group></group>";
+			//System.out.println("\n\n\n####extXSP is \n:" + extXSP);
+			String previewXSP = (String)request.getAttribute("previewXSP");
+			if(previewXSP == null)
+			    previewXSP = "<group></group>";
+			String conditionextXSP= (String)request.getAttribute(NEDSSConstants.INVESTIGATION_NIP_LDF+"conditionextXSP");
+			if(conditionextXSP== null)
+			conditionextXSP = "<group></group>";
+			//System.out.println("\n\n\n####Hep conditionextXSP\n:" + conditionextXSP);
+			String sfValidationXSP = request.getAttribute("subformValidations") == null ? "<group></group>" : (String) request.getAttribute("subformValidations");
+       	 ]]></xsp:logic>
+		</id-bar>
+		<!--xsp:logic>
+		if (sCurrentTask.startsWith("ViewInvestigation"))
+		{
+		</xsp:logic-->
+		<nedss:If task="ViewInvestigation">
+			<link-bar>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="checkFile"/>
+				</xsp:attribute>
+				<link>
+					<xsp:attribute name="name">
+						<xsp-request:get-attribute name="linkName1"/>
+					</xsp:attribute>
+					<xsp-request:get-attribute name="linkValue1"/>
+				</link>|
+				<link>
+					<xsp:attribute name="name">
+						<xsp-request:get-attribute name="linkName"/>
+					</xsp:attribute>
+					<xsp-request:get-attribute name="linkValue"/>
+				</link>
+			</link-bar>
+		</nedss:If>
+		<!--xsp:logic>
+		}
+		</xsp:logic-->
+		<button-bar>
+			<nedss:If task="CreateInvestigation">
+				<!--xsp:logic>
+			if (sCurrentTask.startsWith("CreateInvestigation"))
+			{
+			</xsp:logic-->
+				<right>
+					<label>Submit</label>
+					<javascript-action>submitForm();</javascript-action>
+				</right>
+				<right>
+					<label>Cancel</label>
+					<javascript-action>cancelForm('<xsp-request:get-attribute name="Cancel"/>');</javascript-action>
+				</right>
+			</nedss:If>
+			<nedss:ElseIf task="ViewInvestigation">
+				<!--xsp:logic>
+			}
+			else if (sCurrentTask.startsWith("ViewInvestigation"))
+			{
+			 </xsp:logic-->
+				<left tie-to="View">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="checkManageEvents"/>
+				</xsp:attribute>
+				<label>Manage Associations</label>
+				<!--<javascript-action>getPage('<xsp-request:get-attribute name="ManageEvents"/>');</javascript-action>-->
+				<javascript-action>notificationCheck('<xsp-request:get-attribute name="ManageEvents"/>');</javascript-action>
+				</left>
+				<left>
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="checkManageNotific"/>
+					</xsp:attribute>&amp;
+					<label>Create Notifications</label>
+					<javascript-action>if(!checkIfNotificationExists('<xsp-request:get-attribute name="publicHealthCaseUid"/>')) getPage('<xsp-request:get-attribute name="createNotification"/>');
+				</javascript-action>
+				</left>
+				<left>
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="checkCaseReporting"/>
+					</xsp:attribute>&amp;
+						<label>Share Document</label>
+					<javascript-action>shareCase();NoOp('<xsp-request:get-attribute name="CaseReporting"/>')
+					</javascript-action>
+				</left>
+				<left>
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="checkTransfer"/>
+					</xsp:attribute>&amp;
+					<label>Transfer Ownership</label>
+					<javascript-action>transferInvestigationOwnership();</javascript-action>
+				</left>
+				<right>
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="editInv"/>
+					</xsp:attribute>
+					<label>Edit</label>
+					<!--<javascript-action>getPage('<xsp-request:get-attribute name="Edit"/>');</javascript-action>-->
+					<javascript-action>notificationCheck('<xsp-request:get-attribute name="Edit"/>');</javascript-action>
+				</right>
+			</nedss:ElseIf>
+			<nedss:ElseIf task="EditInvestigation">
+				<!--xsp:logic>
+			}
+			else if (sCurrentTask.startsWith("EditInvestigation"))
+			{
+			</xsp:logic-->
+				<right>
+					<label>Submit</label>
+					<javascript-action>submitForm();</javascript-action>
+				</right>
+				<right>
+					<label>Cancel</label>
+					<javascript-action>cancelForm('<xsp-request:get-attribute name="Cancel"/>');</javascript-action>
+				</right>
+			</nedss:ElseIf>
+			<!--xsp:logic>
+			}
+			 </xsp:logic-->
+			<right tie-to="View">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="deleteInvestigation"/>
+				</xsp:attribute>
+				<label>Delete</label>
+				<javascript-action>deleteInvestigationForm('<xsp-request:get-attribute name="deleteButtonHref"/>');</javascript-action>
+			</right>
+			<right tie-to="View">
+				<label>Print</label>
+				<javascript-action>window.open('<xsp-request:get-attribute name="PrintPage"/>');</javascript-action>
+			</right>
+		</button-bar>
+		<topgroup anchor="yes">
+			<line>
+				<element name="topGroupPatientFirstName" type="plain-text" label="Name">
+					<value>
+						<xsp-request:get-attribute name="legalFirstName"/>
+					</value>
+				</element>
+				<element name="topGroupPatientLastName" type="plain-text">
+					<value>
+						<xsp-request:get-attribute name="legalLastName"/>
+					</value>
+				</element>
+				<element name="dateOfBirth" type="plain-text" label="DOB">
+					<value>
+						<xsp-request:get-attribute name="birthTime"/>
+					</value>
+				</element>
+				<element id="printAge" type="hidden">
+					<value>
+						<xsp-request:get-attribute name="printAge"/>
+						<xsp:expr>' '</xsp:expr>
+						<xsp-request:get-attribute name="printAgeUnits"/>
+					</value>
+				</element>
+				<element name="patientCurrentSex" type="select" label="Current Sex">
+					<readonly/>
+					<srt-options-string>
+						<srt-codes:getCodedValues>
+							<type>SEX</type>
+						</srt-codes:getCodedValues>
+					</srt-options-string>
+					<value>
+						<xsp-request:get-attribute name="currSexCd"/>
+					</value>
+				</element>
+			</line>
+		</topgroup>
+		<topgroup>
+			<xsp:logic>if(request.getAttribute("pamShareConfMsg") != null) {</xsp:logic>
+			<line>
+				<element type="raw">
+					<nobr/>
+					<span>
+						<div class="boldTenGreen" style="width: 740">
+							<xsp:expr>request.getAttribute("pamShareConfMsg")</xsp:expr>
+						</div>
+					</span>
+					<nobr/>
+				</element>
+			</line>
+			<xsp:logic>}</xsp:logic>
+		</topgroup>
+		<!--separator>
+			<xsp:attribute name="name">
+				<xsp-request:get-attribute name="conditionCdDescTxt"/> Investigation
+			</xsp:attribute>
+		</separator-->
+		<tab name="Measles">
+			<!-- begin matt's struts element names -->
+			<nedss:writeErrorMessages/>
+			<group name="Investigation Summary">
+				<line>
+					<element type="hidden" name="deleteError">
+						<value>
+							<xsp-request:get-attribute name="deleteError"/>
+						</value>
+					</element>
+					<element name="struts" type="hidden">
+						<value>true</value>
+					</element>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.cdDescTxt" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="conditionCdDescTxt"/>
+						</value>
+					</element>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.progAreaCd" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="programAreaCd"/>
+						</value>
+					</element>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.cd" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="conditionCd"/>
+						</value>
+					</element>
+					<element name="viewInvestigation" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="viewInvestigation"/>
+						</value>
+					</element>
+					<element name="NBSSecurityJurisdictions" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="NBSSecurityJurisdictions"/>
+						</value>
+					</element>
+					<element name="hiddenDateOfBirth" type="hidden">
+						<xsp:attribute name="default">
+							<xsp-request:get-attribute name="patientDateOfBirth"/>
+						</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="patientDateOfBirth"/>
+						</value>
+					</element>
+					<nedss:If task="CreateInvestigation">
+						<!--xsp:logic>
+			    if (sCurrentTask.startsWith("CreateInvestigation"))
+			    {
+			    </xsp:logic-->
+						<element name="ContextAction" type="hidden">
+							<value>Submit</value>
+						</element>
+					</nedss:If>
+					<nedss:If task="EditInvestigation">
+						<!--xsp:logic>
+				}
+				else if  (sCurrentTask.startsWith("EditInvestigation"))
+			     {
+			      </xsp:logic-->
+						<element name="ContextAction" type="hidden">
+							<value>Submit</value>
+						</element>
+					</nedss:If>
+					<!--xsp:logic>
+			     }</xsp:logic-->
+				</line>
+				<line tie-to="Create">
+					<element/>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.jurisdictionCd" type="select" label="* Jurisdiction" length="15">
+						<!--xsp:logic>
+								if(sCurrentTask.startsWith("EditInvestigation")
+								      || sCurrentTask.equals("CreateInvestigation2")
+          							 || sCurrentTask.equals("CreateInvestigation3")
+          							 || sCurrentTask.equals("CreateInvestigation4")
+          							 || sCurrentTask.equals("CreateInvestigation5")
+          							 || sCurrentTask.equals("CreateInvestigation6"))
+								{
+								</xsp:logic-->
+						<nedss:GetJurisdictionConditions>
+							<readonly/>
+						</nedss:GetJurisdictionConditions>
+						<!--xsp:logic>
+								}
+								</xsp:logic-->
+						<srt-options-string>
+							<srt-codes:getJurisdictionCodedSortedValuesNoExport/>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="jurisdiction"/>
+						</value>
+						<validation type="JurisdictionCheck" error-code="ERR001" name="Jurisdiction"/>
+					</element>
+					<nedss:GetJurisdictionConditions>
+						<!--xsp:logic>
+								if(sCurrentTask.equals("CreateInvestigation2")
+          							 || sCurrentTask.equals("CreateInvestigation3")
+          							 || sCurrentTask.equals("CreateInvestigation4")
+          							 || sCurrentTask.equals("CreateInvestigation5")
+          							 || sCurrentTask.equals("CreateInvestigation6"))
+								{
+								</xsp:logic-->
+						<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.jurisdictionCd" type="hidden">
+							<value>
+								<xsp-request:get-attribute name="jurisdiction"/>
+							</value>
+							<validation type="JurisdictionCheck" name="Jurisdiction"/>
+						</element>
+					</nedss:GetJurisdictionConditions>
+					<!--xsp:logic>
+								}
+								</xsp:logic-->
+				</line>
+				<line tie-to="Edit|View">
+					<element/>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.jurisdictionCd" type="select" label="* Jurisdiction" length="15">
+						<nedss:GetJurisdictionConditions>
+							<readonly/>
+						</nedss:GetJurisdictionConditions>
+						<srt-options-string>
+							<srt-codes:getJurisdictionCodedSortedValues/>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="jurisdiction"/>
+						</value>
+						<validation type="JurisdictionCheck" error-code="ERR001" name="Jurisdiction"/>
+					</element>
+					<nedss:GetJurisdictionConditions>
+						<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.jurisdictionCd" type="hidden">
+							<value>
+								<xsp-request:get-attribute name="jurisdiction"/>
+							</value>
+							<validation type="JurisdictionCheck" name="Jurisdiction"/>
+						</element>
+					</nedss:GetJurisdictionConditions>
+				</line>
+				<line>
+					<element/>
+					<element name="programArea" type="select" label="Program Area" onloadview="loadErrorMessage();">
+						<readonly/>
+						<srt-options-string>
+							<srt-codes:getProgramAreaCodedValue/>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="programAreaCd"/>
+						</value>
+					</element>
+				</line>
+				<free/>
+				<line>
+					<element/>
+					<element type="text" size="10" maxlength="10" label="State Case ID">
+						<xsp:attribute name="name">proxy.publicHealthCaseVO_s.actIdDT_s[0].rootExtensionTxt</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="stateCaseID"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element/>
+					<element type="text" size="10" maxlength="10" label="Investigation Start Date" mask="##/##/####">
+						<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.activityFromTime_s</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="investigationStartDate"/>
+						</value>
+						<validation type="date" mask="mm/dd/yyyy" name="Investigation Start Date"/>
+					</element>
+				</line>
+				<line>
+					<element/>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.investigationStatusCd" type="select" noblank="true" default="O" label="Investigation Status" length="7">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>PHC_IN_STS</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="investigationStatus"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element/>
+					<element type="hidden"/>
+					<element type="checkbox">
+						<options>
+							<option name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.sharedInd" label="Share record with Guests for this Program Area and Jurisdiction" value="T">
+								<value>
+									<xsp-request:get-attribute name="sharedIndicator"/>
+								</value>
+							</option>
+						</options>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Investigator"/>
+				</line>
+				<line>
+					<element type="entity-search" name="investigator.personUid" entity-type="provider" alignment="left" quick-entry="code">
+						<value>
+							<xsp-request:get-attribute name="investigatorUID"/>
+						</value>
+						<line>
+							<element label="Investigator" valign-label="top" name="entity.completePersonSearchResult" type="quick-entry-text" align-label="left" onload="changeQuickEntryType('investigator.personUid');">
+								<value>
+									<xsp-request:get-attribute name="investigatorDemographics"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title=""/>
+				</line>
+				<line>
+					<element type="join">
+						<line>
+							<element name="dateAssignedToInvestigation" type="text" label="Date Assigned to Investigation" maxlength="10" size="10" mask="##/##/####" align-label="left">
+								<value>
+									<xsp-request:get-attribute name="dateAssignedToInvestigation"/>
+								</value>
+								<validation type="date" mask="mm/dd/yyyy" name="Date Assigned to Investigation"/>
+							</element>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Reporting Source">
+				<line>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.rptFormCmpltTime_s" type="text" label="Date of Report" size="10" mask="##/##/####">
+						<value>
+							<xsp-request:get-attribute name="dateOfReport"/>
+						</value>
+						<validation type="date" mask="mm/dd/yyyy" name="Date of Report"/>
+					</element>
+				</line>
+				<line>
+					<element autocomplete="disable" name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.rptSourceCd" type="select" label="Reporting Source">
+						<value>
+							<xsp-request:get-attribute name="reportingSourceType"/>
+						</value>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>PHC_RPT_SRC_T</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<!--srt-options-string>
+							<xsp-request:get-attribute name="reportingSourceCollection"/>
+						</srt-options-string>-->
+					</element>
+				</line>
+				<line>
+					<element type="entity-search" name="reportingOrg.organizationUID" entity-type="organization" alignment="left" quick-entry="code">
+						<value>
+							<xsp-request:get-attribute name="reportingOrgUID"/>
+						</value>
+						<line>
+							<element label="Reporting Source" valign-label="top" name="entity.completeOrgSearchResult" type="quick-entry-text" align-label="left" onload="changeQuickEntryType('reportingOrg.organizationUID');">
+								<value>
+									<xsp-request:get-attribute name="reportingOrgDemographics"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Earliest Date Reported to"/>
+				</line>
+				<line>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.rptToCountyTime_s" size="10" type="text" label="County" mask="##/##/####">
+						<value>
+							<xsp-request:get-attribute name="reportingCountyDate"/>
+						</value>
+						<validation type="date" mask="mm/dd/yyyy" name="County"/>
+					</element>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.rptToStateTime_s" size="10" type="text" label="State" mask="##/##/####">
+						<value>
+							<xsp-request:get-attribute name="reportingStateDate"/>
+						</value>
+						<validation type="date" mask="mm/dd/yyyy" name="State"/>
+					</element>
+					<element/>
+				</line>
+				<line>
+					<element type="line-separator" title="Reporter"/>
+				</line>
+				<line>
+					<element type="entity-search" name="reporter.personUid" entity-type="provider" alignment="left" quick-entry="code">
+						<value>
+							<xsp-request:get-attribute name="reporterPersonUid"/>
+						</value>
+						<line>
+							<element label="Reporter" valign-label="top" name="entity.completePersonSearchResult" type="quick-entry-text" align-label="left" onload="changeQuickEntryType('reporter.personUid');">
+								<value>
+									<xsp-request:get-attribute name="reporterDemographics"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Clinical">
+				<line>
+					<element type="line-separator" title="Physician"/>
+				</line>
+				<line>
+					<element type="entity-search" name="physician.personUid" entity-type="provider" alignment="left" quick-entry="code">
+						<value>
+							<xsp-request:get-attribute name="physicianPersonUid"/>
+						</value>
+						<line>
+							<element label="Physician" valign-label="top" name="entity.completePersonSearchResult" type="quick-entry-text" align-label="left" onload="changeQuickEntryType('physician.personUid');">
+								<value>
+									<xsp-request:get-attribute name="physicianDemographics"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Hospital"/>
+				</line>
+				<line>
+					<element name="INV128" type="conditional-entry">
+						<controller trigger="Y" type="select" align-label="left" length="7" default="n" label="Was the patient hospitalized for this illness?">
+							<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS000</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS000</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">INV128</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="INV128"/>
+							</value>
+						</controller>
+						<line>
+							<element type="entity-search" name="hospitalOrg.organizationUID" entity-type="organization" alignment="left" quick-entry="code">
+								<value>
+									<xsp-request:get-attribute name="hospitalOrgUID"/>
+								</value>
+								<line>
+									<element label="Hospital" valign-label="top" name="entity.completeOrgSearchResult" type="quick-entry-text" align-label="left" onload="changeQuickEntryType('hospitalOrg.organizationUID');">
+										<value>
+											<xsp-request:get-attribute name="hospitalDemographics"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element size="10" type="text" label="Admission Date" mask="##/##/####">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS048</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS048</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">INV132</xsp:attribute>
+								<validation type="dateRange" mask="mm/dd/yyyy" name="Admission Date">
+									<xsp:attribute name="dateAfterReference">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS049</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								</validation>
+								<!--validation type="date" mask="mm/dd/yyyy" name="Admission Date"/-->
+								<xsp:logic>
+								//System.out.println( "\n\n INV132-fromTime " +request.getAttribute("INV132-fromTime"));
+								</xsp:logic>
+								<value>
+									<xsp-request:get-attribute name="INV132-fromTime"/>
+								</value>
+							</element>
+							<element size="10" type="text" label="Discharge Date" mask="##/##/####">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS049</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS049</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">INV133</xsp:attribute>
+								<validation type="date" mask="mm/dd/yyyy" name="Discharge Date"/>
+								<!--validation type="dateRange" mask="mm/dd/yyyy" name="Discharge Date">
+									<xsp:attribute name="dateBeforeReference">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS048</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								</validation-->
+								<value>
+									<xsp-request:get-attribute name="INV133-fromTime"/>
+								</value>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element type="text" label="Total Duration of Stay within hospital" size="3" maxlength="3">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS050</xsp:expr>].obsValueNumericDT_s[0].numericValue1_s</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS050</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">INV134</xsp:attribute>
+								<validation type="numericErr128" name="Total Duration of Stay within hospital"/>
+								<!--validation type="numeric" error-code = "ERR128"  name="Duration of Stay"/-->
+								<value>
+									<xsp-request:get-attribute name="INV134-numericValue1"/>
+								</value>
+								<partner type="plain-text">
+									<value class="boldTenBlack">days</value>
+								</partner>
+							</element>
+							<!-- Use  NEDSS050 when it is ready -->
+							<element type="hidden">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS050</xsp:expr>].obsValueNumericDT_s[0].numericUnitCd</xsp:attribute>
+								<value>D</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Condition"/>
+				</line>
+				<line>
+					<element size="10" type="text" label="Diagnosis Date" maxlength="10" mask="##/##/####">
+						<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.diagnosisTime_s</xsp:attribute>
+						<validation type="date" mask="mm/dd/yyyy" name="Diagnosis Date"/>
+						<value>
+							<xsp-request:get-attribute name="diagnosisDate"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element size="10" type="text" label="Illness Onset Date" maxlength="10" mask="##/##/####">
+						<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.effectiveFromTime_s</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="illnessOnsetDate"/>
+						</value>
+						<validation type="dateRange" mask="mm/dd/yyyy" name="Illness Onset Date">
+							<xsp:attribute name="dateAfterReference">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.effectiveToTime_s</xsp:attribute>
+						</validation>
+						<validation type="date" mask="mm/dd/yyyy" name="Illness Onset Date"/>
+					</element><element></element>
+					<element size="10" type="text" label="Illness End  Date" maxlength="10" mask="##/##/####">
+						<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.effectiveToTime_s</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="illnessEndDate"/>
+						</value>
+						<validation type="date" mask="mm/dd/yyyy" name="Illness End Date"/>
+						<!--validation type="dateRange" mask="mm/dd/yyyy" name="Illness End  Date">
+							<xsp:attribute name="dateBeforeReference">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.effectiveFromTime_s</xsp:attribute>
+						</validation-->
+					</element>
+				</line>
+				<line>
+					<element type="text" size="3" label="Illness Duration">
+						<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.effectiveDurationAmt</xsp:attribute>
+						<validation type="Error097" name="Illness Duration"/>
+						<!--validation type="numeric" name="Illness Duration"/-->
+						<value>
+							<xsp-request:get-attribute name="illnessDuration"/>
+						</value>
+						<partner default="Days" type="select" length="7">
+							<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.effectiveDurationUnitCd</xsp:attribute>
+							<validation type="requiredIfOtherNotEmpty" name="Illness Duration" nameRef="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.effectiveDurationAmt"/>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>DUR_UNIT</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="illnessDurationUnitCd"/>
+							</value>
+						</partner>
+					</element>
+				</line>
+				<line>
+					<element name="MEA001" type="conditional-entry">
+						<controller trigger="Y" type="select" align-label="left" length="7" label="Did the patient have a rash?">
+							<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS001</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS001</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">MEA001</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="MEA001"/>
+							</value>
+						</controller>
+						<line>
+							<xsp:logic>
+							 if(sCurrentTask.startsWith("View"))
+	                				{
+				              </xsp:logic>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<xsp:logic>
+							} 
+						</xsp:logic>
+							<element size="10" type="text" label="Rash onset date" maxlength="10" mask="##/##/####">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS051</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS051</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA002</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="MEA002-fromTime"/>
+								</value>
+								<validation type="date" mask="mm/dd/yyyy" name="Rash onset date"/>
+							</element>
+						</line>
+						<line>
+							<xsp:logic>
+							 if(sCurrentTask.startsWith("View"))
+	                				{
+				              </xsp:logic>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<xsp:logic>
+							} 
+						</xsp:logic>
+							<element type="text" label="Rash Duration" size="2" maxlength="3">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS052</xsp:expr>].obsValueNumericDT_s[0].numericValue1_s</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS052</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA003</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="MEA003-numericValue1"/>
+								</value>
+								<validation type="numeric" name="Rash Duration"/>
+								<partner type="plain-text">
+									<value class="boldTenBlack">days</value>
+								</partner>
+							</element>
+							<element type="hidden">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS052</xsp:expr>].obsValueNumericDT_s[0].numericUnitCd</xsp:attribute>
+								<value>D</value>
+							</element>
+						</line>
+						<line>
+							<xsp:logic>
+							 if(sCurrentTask.startsWith("View"))
+	                				{
+				              </xsp:logic>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<xsp:logic>
+							} 
+						</xsp:logic>
+							<element type="select" length="7" label="Was the rash generalized?">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS002</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS002</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA004</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>YNU</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="MEA004"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element name="MEA005" type="conditional-entry">
+						<controller trigger="Y" type="select" align-label="left" length="7" label="Did the patient have a fever?">
+							<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS003</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS003</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">MEA005</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="MEA005"/>
+							</value>
+						</controller>
+						<line>
+							<xsp:logic>
+							 if(sCurrentTask.startsWith("View"))
+	                				{
+				              </xsp:logic>
+							<element/>
+							<xsp:logic>
+							} 
+						</xsp:logic>
+							<element size="10" type="text" label="Date of Fever Onset" maxlength="10" mask="##/##/####">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS053</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS053</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA071</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="MEA071-fromTime"/>
+								</value>
+								<validation type="date" mask="mm/dd/yyyy" name="Date of Fever Onset"/>
+							</element>
+						</line>
+						<line>
+							<xsp:logic>
+							 if(sCurrentTask.startsWith("View"))
+	                				{
+				              </xsp:logic>
+							<element/>
+							<xsp:logic>
+							} 
+						</xsp:logic>
+							<element type="text" size="5" label="Highest Measured Temperature" maxlength="5" keep-decimal="yes">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS054</xsp:expr>].obsValueNumericDT_s[0].numericValue1_s</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS054</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA006</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="MEA006-numericValue1"/>
+								</value>
+								<!--validation type="decimalValidation" name="Highest measured Temperature"/-->
+								<validation type="reg-expr" name="Highest Measured Temperature" error-code="ERR085">
+									<!--pattern><![CDATA[^(\d{3}\.{1}\d{1})?$]]></pattern-->
+									<pattern><![CDATA[^([0-9](\.{1}\d{1,1})?|[1-9][0-9](\.{1}\d{1,1})?|[1-9][0-4][0-9](\.{1}\d{1,1})?|150(\.{1}0{1,1})?)?$]]></pattern>
+								</validation>
+								<partner type="select" length="10">
+									<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS055</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+									<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS055</xsp:expr>].theObservationDT.cd</xsp:attribute>
+									<xsp:attribute name="observation-value">MEA007</xsp:attribute>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>TEMP_UNIT</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<value>
+										<xsp-request:get-attribute name="MEA007"/>
+									</value>
+									<validation type="requiredIfOtherNotEmpty" name="Highest Measured Temperature">
+										<xsp:attribute name="nameRef">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS054</xsp:expr>].obsValueNumericDT_s[0].numericValue1_s</xsp:attribute>
+									</validation>
+								</partner>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element name="" type="raw">
+						<span>
+							<b>Did the patient have any of the following:</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Symptoms"/>
+				</line>
+				<line>
+					<element type="select" length="7" label="Cough">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS004</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS004</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA008</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA008"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" length="7" label="Coryza
+					(runny nose)">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS005</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS005</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA010</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA010"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" length="7" label="Conjunctivitis">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS006</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS006</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA012</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA012"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Complications"/>
+				</line>
+				<line>
+					<element type="select" length="7" label="Croup">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS007</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS007</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA009</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA009"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" length="7" label="Otitis Media">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS008</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS008</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA013</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA013"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" length="7" label="Diarrhea">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS009</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS009</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA014</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA014"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" length="7" label="Pneumonia">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS010</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS010</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA015</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA015"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" length="7" label="Encephalitis">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS011</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS011</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA016</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA016"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" length="7" label="Thrombocytopenia">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS012</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS012</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA017</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA017"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="MEA018" type="conditional-entry">
+						<controller trigger="Y" type="select" length="7" label="Other Complications">
+							<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS013</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS013</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">MEA018</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="MEA018"/>
+							</value>
+						</controller>
+						<line>
+							<element size="25" type="text" label="Specify Other" maxlength="2000">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS056</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS056</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA019</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="MEA019-valueTxt"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element type="select" align-label="left" length="7" label="Did the patient develop hepatitis?">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS014</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS014</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA011</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA011"/>
+						</value>
+					</element>
+				</line>
+				<!--	<line>
+					<element name="MEA021" type="conditional-entry">
+						<controller trigger="Y" type="select"  label="Did the patient die from measles or complications(including a secondary infection) associated with measles ?">
+							<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.outcomeCd</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="didThePatientDie"/>
+							</value>
+						</controller> -->
+				<line>
+					<element name="MEA078" type="conditional-entry">
+						<controller trigger="Y" type="select" align-label="left" length="7" default="n" label="Did the patient die from measles or complications (including a secondary infection) associated with measles ?">
+							<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS046</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS046</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">MEA078</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="MEA078"/>
+							</value>
+						</controller>
+						<!--line>
+							<element type="hidden"    size="10" maxlength="10" mask="##/##/####">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS015</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS015</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">INV146</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="INV146-fromTime"/>
+								</value>
+								<validation type="dateRange" mask="mm/dd/yyyy" name="Date of Death">
+									<xsp:attribute name="dateBeforeReference">hiddenDateOfBirth</xsp:attribute>
+								</validation>
+							</element>
+						</line-->
+					</element>
+				</line>
+			</group>
+			<group name="Laboratory">
+				<line>
+					<element name="MEA027" type="conditional-entry">
+						<controller trigger="Y" type="select" align-label="left" length="7" label="Was laboratory testing done for measles?">
+							<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS016</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS016</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">MEA027</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="MEA027"/>
+							</value>
+						</controller>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="MEA073c" type="conditional-entry">
+								<controller trigger="Y" type="select" align-label="left" length="7" label="Was IgM testing performed?">
+									<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS017</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+									<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS017</xsp:expr>].theObservationDT.cd</xsp:attribute>
+									<xsp:attribute name="observation-value">MEA073</xsp:attribute>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>YNU</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<value>
+										<xsp-request:get-attribute name="MEA073"/>
+									</value>
+								</controller>
+								<line>
+									<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<xsp:logic>
+									} 
+								</xsp:logic>
+									<element type="text" label="Date IgM Specimen Taken?" size="10" maxlength="10" mask="##/##/####">
+										<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS018</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+										<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS018</xsp:expr>].theObservationDT.cd</xsp:attribute>
+										<xsp:attribute name="observation-value">MEA028</xsp:attribute>
+										<value>
+											<xsp-request:get-attribute name="MEA028-fromTime"/>
+										</value>
+										<validation type="date" mask="mm/dd/yyyy" name="Date IgM Specimen Taken"/>
+									</element>
+								</line>
+								<line>
+									<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<xsp:logic>
+									} 
+								</xsp:logic>
+									<element type="select" length="14" label="Result of IgM Test">
+										<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS019</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+										<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS019</xsp:expr>].theObservationDT.cd</xsp:attribute>
+										<xsp:attribute name="observation-value">MEA029</xsp:attribute>
+										<srt-options-string>
+											<srt-codes:getCodedValues>
+												<type>NIP_RSLT_QUAL</type>
+											</srt-codes:getCodedValues>
+										</srt-options-string>
+										<value>
+											<xsp-request:get-attribute name="MEA029"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="MEA073" type="conditional-entry">
+								<controller trigger="Y" type="select" align-label="left" length="7" label="Was IgG acute/convalescent testing performed?">
+									<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS020</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+									<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS020</xsp:expr>].theObservationDT.cd</xsp:attribute>
+									<xsp:attribute name="observation-value">MEA074</xsp:attribute>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>YNU</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<value>
+										<xsp-request:get-attribute name="MEA074"/>
+									</value>
+								</controller>
+								<line>
+									<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<xsp:logic>
+									} 
+								</xsp:logic>
+									<element type="text" label="Date IgG Acute Specimen Taken" size="10" maxlength="10" mask="##/##/####">
+										<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS021</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+										<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS021</xsp:expr>].theObservationDT.cd</xsp:attribute>
+										<xsp:attribute name="observation-value">MEA030</xsp:attribute>
+										<value>
+											<xsp-request:get-attribute name="MEA030-fromTime"/>
+										</value>
+										<validation type="date" mask="mm/dd/yyyy" name="Date IgG Acute Specimen Taken"/>
+									</element>
+								</line>
+								<line>
+									<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<xsp:logic>
+									} 
+								</xsp:logic>
+									<element type="text" label="Date IgG Convalescent Specimen Taken" size="10" maxlength="10" mask="##/##/####">
+										<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS022</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+										<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS022</xsp:expr>].theObservationDT.cd</xsp:attribute>
+										<xsp:attribute name="observation-value">MEA031</xsp:attribute>
+										<value>
+											<xsp-request:get-attribute name="MEA031-fromTime"/>
+										</value>
+										<validation type="date" mask="mm/dd/yyyy" name="Date IgG Convalescent Specimen Taken"/>
+									</element>
+								</line>
+								<line>
+									<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<xsp:logic>
+									} 
+								</xsp:logic>
+									<element type="select" label="Result of Acute/Convalescent IgG Tests" length="26">
+										<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS023</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+										<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS023</xsp:expr>].theObservationDT.cd</xsp:attribute>
+										<xsp:attribute name="observation-value">MEA032</xsp:attribute>
+										<srt-options-string>
+											<srt-codes:getCodedValues>
+												<type>NIP_IGG_DIFF</type>
+											</srt-codes:getCodedValues>
+										</srt-options-string>
+										<value>
+											<xsp-request:get-attribute name="MEA032"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="MEA33" type="conditional-entry">
+								<controller trigger="Y" type="select" align-label="left" length="7" label="Was other laboratory testing done?" default="u">
+									<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS024</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+									<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS024</xsp:expr>].theObservationDT.cd</xsp:attribute>
+									<xsp:attribute name="observation-value">MEA033</xsp:attribute>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>YNU</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<value>
+										<xsp-request:get-attribute name="MEA033"/>
+									</value>
+								</controller>
+								<line>
+									<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<xsp:logic>
+									} 
+								</xsp:logic>
+									<element type="text" label="Specify Other Test" maxlength="2000">
+										<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS025</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+										<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS025</xsp:expr>].theObservationDT.cd</xsp:attribute>
+										<xsp:attribute name="observation-value">MEA034</xsp:attribute>
+										<value>
+											<xsp-request:get-attribute name="MEA034-valueTxt"/>
+										</value>
+									</element>
+								</line>
+								<line>
+									<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<xsp:logic>
+									} 
+								</xsp:logic>
+									<element type="text" size="10" label="Date of Other Test" maxlength="10" mask="##/##/####">
+										<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS026</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+										<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS026</xsp:expr>].theObservationDT.cd</xsp:attribute>
+										<xsp:attribute name="observation-value">MEA035</xsp:attribute>
+										<value>
+											<xsp-request:get-attribute name="MEA035-fromTime"/>
+										</value>
+										<validation type="date" mask="mm/dd/yyyy" name="Date of Other Test"/>
+									</element>
+								</line>
+								<line>
+									<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<xsp:logic>
+									} 
+								</xsp:logic>
+									<element type="text" label="Other Laboratory Test Results" maxlength="20">
+										<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS027</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+										<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS027</xsp:expr>].theObservationDT.cd</xsp:attribute>
+										<xsp:attribute name="observation-value">MEA036</xsp:attribute>
+										<value>
+											<xsp-request:get-attribute name="MEA036-valueTxt"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element name="MEA038c" type="conditional-entry">
+						<controller trigger="Y" type="select" align-label="left" length="7" label="Were the clinical specimens sent to CDC for genotyping? (molecular typing)" default="n">
+							<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS028</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS028</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">MEA038</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="MEA038"/>
+							</value>
+						</controller>
+						<line>
+							<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+							<xsp:logic>
+									} 
+								</xsp:logic>
+							<element type="text" size="10" label="Date Sent for Genotyping" maxlength="10" mask="##/##/####" indented="yes">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS029</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS029</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA072</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="MEA072-fromTime"/>
+								</value>
+								<validation type="date" mask="mm/dd/yyyy" name="Date Sent for Genotyping"/>
+							</element>
+						</line>
+						<line>
+							<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+							<element/>
+							<xsp:logic>
+									} 
+								</xsp:logic>
+							<element/>
+							<element name="MEA079c" type="conditional-entry">
+								<controller trigger="Y" type="select" length="7" label="Was the (Measles) virus genotype sequenced?" default="n">
+									<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS057</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+									<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS057</xsp:expr>].theObservationDT.cd</xsp:attribute>
+									<xsp:attribute name="observation-value">MEA079</xsp:attribute>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>YNU</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<value>
+										<xsp-request:get-attribute name="MEA079"/>
+									</value>
+								</controller>
+								<line>
+									<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<xsp:logic>
+									} 
+								</xsp:logic>
+									<element name="MEA080c" type="conditional-entry">
+										<controller trigger="OTH" type="select" length="7" align-label="right" label="If 'Yes' identify the Genotype" default="n">
+											<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS058</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+											<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS058</xsp:expr>].theObservationDT.cd</xsp:attribute>
+											<xsp:attribute name="observation-value">MEA080</xsp:attribute>
+											<srt-options-string>
+												<srt-codes:getCodedValues>
+													<type>MSL_GENOTYPE</type>
+												</srt-codes:getCodedValues>
+											</srt-options-string>
+											<value>
+												<xsp-request:get-attribute name="MEA080"/>
+											</value>
+										</controller>
+										<line>
+											<element type="text" size="30" label="Specify Other Sequence" maxlength="30" indented="yes">
+												<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS059</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+												<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS059</xsp:expr>].theObservationDT.cd</xsp:attribute>
+												<xsp:attribute name="observation-value">MEA081</xsp:attribute>
+												<value>
+													<xsp-request:get-attribute name="MEA081-valueTxt"/>
+												</value>
+											</element>
+										</line>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="text" size="30" label="Specimen Type" maxlength="30">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS047</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS047</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA077</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="MEA077-valueTxt"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+			</group>
+			<free/>
+			<group name="Vaccine Information">
+				<line>
+					<element name="MEA039" type="conditional-entry">
+						<controller type="select" align-label="left" length="7" label="Did the patient receive a measles-containing vaccine?">
+							<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS030</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS030</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">MEA039</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="MEA039"/>
+							</value>
+						</controller>
+						<line trigger="N">
+							<element type="select" label="If no, reason">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS031</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS031</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA040</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>VAC_NOTG_RSN</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="MEA040"/>
+								</value>
+							</element>
+						</line>
+						<line trigger="Y">
+							<element type="text" size="2" label="Number of doses received BEFORE first birthday" maxlength="1">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS032</xsp:expr>].obsValueNumericDT_s[0].numericValue1_s</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS032</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA042</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="MEA042-numericValue1"/>
+								</value>
+								<validation type="numericValue" name="Number of doses received BEFORE first birthday"/>
+							</element>
+						</line>
+						<line trigger="Y">
+							<element type="text" size="2" label="Number of doses received ON or AFTER first birthday" maxlength="1">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS033</xsp:expr>].obsValueNumericDT_s[0].numericValue1_s</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS033</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA043</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="MEA043-numericValue1"/>
+								</value>
+								<validation type="numericValue" name="Number of doses received ON or AFTER first birthday"/>
+							</element>
+						</line>
+						<!--	<line>
+					<element type="join">-->
+						<line trigger="Y">
+							<element type="raw">
+								<span>
+									<b>If vaccinated BEFORE first birthday, but no doses given ON or AFTER first birthday, what is the reason?
+									</b>
+								</span>
+							</element>
+						</line>
+						<line trigger="Y">
+							<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<xsp:logic>
+									} 
+								</xsp:logic>
+							<free/>
+							<element type="select" label="Reason" length="37">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS034</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS034</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA044</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>VAC_NOTG_RSN</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="MEA044"/>
+								</value>
+							</element>
+						</line>
+						<line trigger="Y">
+							<element type="raw">
+								<span>
+									<b>If patient received one dose ON or AFTER first birthday, but never received a second dose after the first birthday, what is the reason?
+									</b>
+								</span>
+							</element>
+						</line>
+						<line trigger="Y">
+							<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<xsp:logic>
+									} 
+								</xsp:logic>
+							<free/>
+							<element type="select" label="Reason" length="37">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS035</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS035</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA045</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>VAC_NOTG_RSN</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="MEA045"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Vaccination Record">
+				<line>
+					<element name="vaccine" type="batch-entry">
+						<readonly/>
+						<value>
+							<xsp-request:get-attribute name="vaccinationRecordList"/>
+						</value>
+						<line>
+							<element type="text" name="dateAdministered" label="Date Administered">
+								<header>Date Administered</header>
+							</element>
+							<element type="text" name="ageAtVaccination" label="Age at Vaccination">
+								<partner type="select" length="7" name="ageAtVaccinationUnits">
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>AGE_UNIT</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</partner>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element type="select" name="vaccinationAnatomicalSite" label="Vaccination Anatomical Site">
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>ANATOMIC_SITE</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator" title="Given By"/>
+						</line>
+						<line>
+							<element type="text" name="lastName" label="Last Name"/>
+							<element type="text" name="firstName" label="First Name"/>
+						</line>
+						<line>
+							<element type="text" name="personID" label="Provider ID"/>
+						</line>
+						<line>
+							<element type="text" name="organizationName" label="Organization Name"/>
+						</line>
+						<line>
+							<element type="text" name="organizationID1" label="Organization ID"/>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element type="select" name="vaccineAdministered" label="Vaccine Administered">
+								<header>Vaccine Administered</header>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>VAC_NM</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="text" name="vaccinationID" label="Vaccination ID">
+								<header>Vaccination ID</header>
+							</element>
+						</line>
+						<line>
+							<element type="text" name="manufacturer" label="Manufacturer">
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>VAC_MFGR</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="text" name="lotNumber" label="Lot Number"/>
+							<element type="text" name="expirationDate" label="Expiration Date"/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Epidemiologic">
+				<!--===============================================================================-->
+				<!--<line>
+					 <element type="join"> -->
+				<line>
+					<element type="select" align-label="left" length="7" label="Does this patient reside in the USA?" default="y">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS036</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS036</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA060</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA060"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" align-label="left" length="7" label="Is this case epi-linked to another confirmed or probable case?" default="n">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS037</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS037</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA067</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA067"/>
+						</value>
+					</element>
+				</line>
+				<!--     </element>
+		 </line> -->
+				<!--<line>
+					 <element type="join">-->
+				<line>
+					<element type="select" align-label="left" label="Transmission Setting">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>PHC_TRAN_SETNG</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS015</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS015</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA057</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="MEA057"/>
+						</value>
+					</element>
+				</line>
+				<!--		</element>
+				</line> -->
+				<line>
+					<element type="select" align-label="left" length="7" label="Were age and setting verified?" default="n">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS043</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS043</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA059</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA059"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="outbreakInd" type="conditional-entry">
+						<controller trigger="Y" type="select" align-label="left" length="7" label="Is this case part of an outbreak of 3 or more cases?" default="n">
+							<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.outbreakInd</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="partOfOutbreak"/>
+							</value>
+						</controller>
+						<line>
+							<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<xsp:logic>
+									} 
+								</xsp:logic>
+							<!--element type="plain-text" label="Outbreak Name"/-->
+							<element/>
+							<element type="select" length="14" label="Outbreak Name">
+								<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.outbreakName</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>OUTBREAK_NM</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="outbreakName"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="text" align-label="left" size="30" label="Source of Infection (i.e. person ID, country,...)" makeItalic="(i.e. person ID, country,...)">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS044</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS044</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA076</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="MEA076-valueTxt"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="select" align-label="left" length="7" label="Did rash onset occur within 18 days of entering the USA, following any travel or living outside the USA ?" default="n">
+						<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS045</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS045</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">MEA075</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>YNU</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="MEA075"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="join">
+						<line>
+							<element type="select" align-label="left" length="7" label="Is this case traceable (linked) to an international import?">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS042</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS042</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">MEA068</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>YNU</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="MEA068"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element name="MEA88" type="conditional-entry" indented="yes">
+						<controller type="select" label="Where was the disease acquired?" align-label="left" length="19">
+							<!-- <element type="select"  label="Where was the disease acquired?"> -->
+							<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.diseaseImportedCd</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>PHC_IMPRT</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="diseaseImported"/>
+							</value>
+						</controller>
+						<line trigger="OOC|OOJ|OOS|">
+							<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<xsp:logic>
+									} 
+								</xsp:logic>
+							<element type="select" label="Imported Country" length="48">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS038</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS038</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">INV153</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCountryCodesAsString/>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="INV153"/>
+								</value>
+							</element>
+						</line>
+						<line trigger="OOC|OOJ|OOS|">
+							<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<xsp:logic>
+									} 
+								</xsp:logic>
+							<element type="select" label="Imported State" length="25">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS039</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS039</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">INV154</xsp:attribute>
+								<xsp:attribute name="onchange">getData(this, 'proxy.observationVO_s[<xsp:expr>String.valueOf(InvestigationFieldConstants.NEDSS040+1)</xsp:expr>].obsValueCodedDT_s[0].code', 'Address');</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getStateCodes>
+										<type>USA</type>
+									</srt-codes:getStateCodes>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="INV154"/>
+								</value>
+							</element>
+						</line>
+						<line trigger="OOC|OOJ|OOS|">
+							<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<xsp:logic>
+									} 
+								</xsp:logic>
+							<element type="text" label="Imported City">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS040</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS040</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">INV155</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="INV155-valueTxt"/>
+								</value>
+							</element>
+						</line>
+						<line trigger="OOC|OOJ|OOS|">
+							<xsp:logic>
+									 if(sCurrentTask.startsWith("View"))
+			                				{
+						              </xsp:logic>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<element/>
+							<xsp:logic>
+									} 
+								</xsp:logic>
+							<element type="select" label="Imported County" length="29">
+								<xsp:attribute name="name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS041</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">proxy.observationVO_s[<xsp:expr>InvestigationFieldConstants.NEDSS041</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">INV156</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="INV156"/>
+								</value>
+								<srt-options-string>
+									<xsp-request:get-attribute name="importedCountyInState"/>
+								</srt-options-string>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="select" length="14" label="Case Status" description="caseClassDescTxt" notification="true">
+						<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.caseClassCd</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>PHC_CLASS</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>
+						  if(request.getAttribute("NoReqNotificationCheck")!= null){
+				 		  if( request.getAttribute("NoReqNotificationCheck").equals("false")){						
+				            </xsp:logic>
+ 						<validation type="requiredForNotification" name="Case Status"/>
+						<xsp:logic>}}</xsp:logic>
+						<value>
+							<xsp-request:get-attribute name="caseStatus"/>
+						</value>
+					</element>
+					<element type="hidden">
+						<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.groupCaseCnt</xsp:attribute>
+						<value>1</value>
+					</element>
+				</line>
+				<line>
+					<!--element type="join">
+						<line-->
+					<element type="select" size="5" label="Confirmation Method">
+						<xsp:attribute name="name">confirmationMethods</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>NIP_CONF_M</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="confirmationMethodList"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="text" label="MMWR Week" size="13" maxlength="2" notification="true">
+						<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.mmwrWeek</xsp:attribute>
+						<validation type="numberRange53" name="MMWR Week"/>
+						<value>
+							<xsp-request:get-attribute name="MMWRWeek"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<xsp:logic>
+					    Date datMMWR = new Date();
+					    SimpleDateFormat sdfMMWR = new SimpleDateFormat("MM/dd/yyyy");
+					    String strMMWR = sdfMMWR.format(datMMWR);
+					</xsp:logic>
+					<element type="text" label="MMWR Year" size="13" maxlength="4" notification="true">
+						<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.mmwrYear</xsp:attribute>
+						<xsp:logic>
+                if(sCurrentTask.startsWith("Create"))
+                {
+            </xsp:logic>
+						<xsp:attribute name="onload">populateMMWR('proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.mmwrYear','proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.mmwrWeek','<xsp:expr>strMMWR</xsp:expr>');</xsp:attribute>
+						<xsp:logic>
+                }
+            </xsp:logic>
+						<validation type="Validate_MMWR_Year" mask="yyyy" name="MMWR Year"/>
+						<value>
+							<xsp-request:get-attribute name="MMWRYear"/>
+						</value>
+					</element>
+					<element name="NotificationExists" type="hidden" validate="NotificationCheck">
+						<value>
+							<xsp-request:get-attribute name="NotificationExists"/>
+						</value>
+					</element>
+					<element/>
+				</line>
+				<!--		</element>
+				</line>-->
+				<!--		this is causing javascript error on page load
+				<line>
+
+					<element type="raw">
+						<span>
+							<script for="window" language="JavaScript" event="onLoad()">
+						  var element;
+						  element = document.getElementById( "mmwrYear" );
+						  element.value = getYear();
+
+						  element = document.getElementById( "mmwrWeek" );
+						  element.value = getWeekNum();
+						</script>
+						</span>
+					</element>
+				</line>
+				-->
+				<line>
+					<element type="textarea" label="General Comments">
+						<validation type="lengthLimit" fieldLength="2000" name="General Comments"/>
+						<xsp:attribute name="name">proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.txt</xsp:attribute>
+						<note>General Comments</note>
+						<value>
+							<xsp-request:get-attribute name="generalComments"/>
+						</value>
+					</element>
+					<!--/line>
+					</element-->
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

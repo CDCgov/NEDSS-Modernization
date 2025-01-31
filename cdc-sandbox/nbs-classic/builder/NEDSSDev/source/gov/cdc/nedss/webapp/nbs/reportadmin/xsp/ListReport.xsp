@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+    <xsp:structure>
+   	   <xsp:include>gov.cdc.nedss.util.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.reportadmin.dt.ReportDT</xsp:include>
+        <xsp:include>java.util.ArrayList</xsp:include>
+        <xsp:include>java.util.Iterator</xsp:include>
+	</xsp:structure>
+    <content form="/nbs/NewReport.do">
+        <link-bar>
+            <link>
+                <xsp:attribute name="name">
+                    <xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+                </xsp:attribute>
+                <xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+            </link>
+        </link-bar>
+        <button-bar>
+            <right>
+                <label>Create</label>
+                <javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/NewReport.do");
+                    document.forms[0].submit();
+                </javascript-action>
+            </right>
+        </button-bar>
+        <tab>
+            <group>
+                <line>
+                    <element type="raw">
+                        <span style="color: red; font-weight: bold;">
+                            <value><xsp:expr>request.getAttribute("error")</xsp:expr></value>
+                        </span>
+                    </element>
+                </line>
+            </group>
+            <group name="Reports">
+			<line>
+				<element type="queue-data-table" pagenumbers="false">
+					<sortHref>ListReport.do?ContextAction=Sort</sortHref>
+					<sortDirection><xsp-request:get-attribute name="sortDirection"/></sortDirection>
+					<header methodName="getReportTitle">Report Name</header>
+					<header methodName="getDataSourceUID_s">Data Source Title</header>
+					<header methodName="getReportTypeCode">Type</header>
+					<header methodName="getShared">Group</header>        
+					<header methodName="getOwnerUID_s">Owner</header>   		
+					<header methodName="getAdd_time">Create Date</header>
+                <xsp:logic>
+                    ArrayList alReport = (ArrayList)session.getAttribute("ReportAdmin.alReport");
+                    Iterator iReport = alReport.iterator();
+                    while(iReport.hasNext())
+                    {
+                        ReportDT dtReport = (ReportDT)iReport.next();
+                        String link1URL = "/nbs/ViewReport.do?data_source_uid=" + dtReport.getDataSourceUID_s() + "&amp;report_uid=" + dtReport.getReportUID_s();                        
+
+                </xsp:logic>
+				<record>
+					<link1>
+						<xsp:expr>link1URL</xsp:expr>
+					</link1>
+					<column link1="">
+						<value><xsp:expr>dtReport.getReportTitle()</xsp:expr></value>
+					</column>
+					<column>
+						<value><xsp:expr>dtReport.getDataSourceUID_s()</xsp:expr></value>
+						<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.DataSourceTitleSRT")</xsp:expr></srt-options-string>
+					</column>
+					<column>
+						<value><xsp:expr>dtReport.getReportTypeCode()</xsp:expr></value>
+						<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.ReportTypeCodeSRT")</xsp:expr></srt-options-string>
+					</column>
+					<!--column>
+						<value><xsp:expr>dtReport.getLocation()</xsp:expr></value>
+						<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.SASProgramSRT")</xsp:expr></srt-options-string>
+					</column-->
+					<column>
+						<value><xsp:expr>dtReport.getShared()</xsp:expr></value>
+						<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.SharedSRT")</xsp:expr></srt-options-string>
+					</column>
+					<column>
+						<value><xsp:expr>dtReport.getOwnerUID_s()</xsp:expr></value>
+						<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.UserProfileSRT")</xsp:expr></srt-options-string>
+					</column>
+					<column>
+						<value><xsp:expr>StringUtils.formatDate(dtReport.getAdd_time())</xsp:expr></value>
+					</column>
+				</record>
+                <xsp:logic>
+                    }
+                </xsp:logic>
+					</element>
+				</line>                 
+            </group>
+        </tab>
+    </content>
+</xsp:page>

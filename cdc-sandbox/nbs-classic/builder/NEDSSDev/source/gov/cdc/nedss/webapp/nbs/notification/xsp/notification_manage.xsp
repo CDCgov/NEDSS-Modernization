@@ -1,0 +1,241 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<!--	<xsp:include>gov.cdc.nedss.wum.notification.*</xsp:include> -->
+		<!--	<xsp:include>gov.cdc.nedss.helpers.*</xsp:include> -->
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.NEDSSConstants</xsp:include>
+		<xsp:include>gov.cdc.nedss.proxy.ejb.notificationproxyejb.vo.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+	</xsp:structure>
+	<xsp:logic>
+    private String formatDate(java.sql.Timestamp timestamp)
+    {
+	Date date = null;
+	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+	if(timestamp != null) date = new Date(timestamp.getTime());
+	if(date == null)
+	return "";
+	else
+	return 	formatter.format(date);
+    }
+	</xsp:logic>
+	<content>
+		<xsp:logic><![CDATA[
+			String sPublicHealthCaseUID = request.getParameter("publicHealthCaseUID");
+			if(sPublicHealthCaseUID == null)
+			{
+			         Long publicHealthCaseUID =  (Long)request.getAttribute("publicHealthCaseUID");
+			         if(publicHealthCaseUID  != null)
+			         sPublicHealthCaseUID = publicHealthCaseUID.toString();
+			}
+			String notificationCreated = request.getParameter("notificationCreated");
+			String notificationLocalId = "";
+			String pending = (String)session.getAttribute("pending");
+			Long notUid= (Long)session.getAttribute("notificationUID");
+			Collection notificationColl= (Collection)request.getAttribute("notificationsummary");
+			NBSSecurityObj secObj = (NBSSecurityObj)session.getAttribute("NBSSecurityObject");
+			boolean hasCreate = secObj.getPermission(NBSBOLookup.NOTIFICATION, NBSOperationLookup.CREATE);
+			boolean needsApproval = secObj.getPermission(NBSBOLookup.NOTIFICATION, NBSOperationLookup.CREATENEEDSAPPROVAL);
+
+			if (notificationColl != null && notUid!=null)
+					{
+						for( Iterator anIterator = notificationColl.iterator(); anIterator.hasNext(); )
+						{
+							NotificationSummaryVO  notif = (NotificationSummaryVO) anIterator.next();
+							if(notif != null)
+							{
+								if(notif.getNotificationUid().longValue()==notUid.longValue())
+								{
+
+									notificationLocalId = notif.getLocalId().trim();
+
+								}
+							}
+						}
+					}
+
+		]]></xsp:logic>
+		<xsp:logic><![CDATA[
+		Boolean sortDirection = (Boolean) ]]><session:get-attribute name="sortDirection"/><![CDATA[;
+				String direction = null;
+				if(sortDirection!=null)
+					direction = sortDirection.toString();
+				else
+					direction = "true";
+
+		]]></xsp:logic>
+		<id-bar>
+			<id name="Patient ID">
+				<xsp-request:get-attribute name="personLocalID"/>
+			</id>
+			<id name="Investigation ID">
+				<xsp-request:get-attribute name="publicHealthCaseLocalUid"/>
+			</id>
+		</id-bar>
+		<button-bar>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="checkAddButton"/>
+				</xsp:attribute>
+				<label>Add</label>
+				<javascript-action>getPage('loadNotification.do?publicHealthCaseUID=<xsp:expr>sPublicHealthCaseUID</xsp:expr>');</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>getPage('/nedss/loadInvestigation.do?OperationType=view&amp;ObjectType=<xsp:expr>NEDSSConstants.INVESTIGATION</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>sPublicHealthCaseUID</xsp:expr>');</javascript-action>
+			</right>
+		</button-bar>
+		<tab>
+			<nedss:writeErrorMessages/>
+			<!-- NND NOTIFICATION SUBMITTED -->
+			<!-- One of two messages may appear: "Your notification has been submitted."-->
+			<!-- One of two messages may appear: "Your notification has been sent." -->
+			<group>
+				<xsp:logic><![CDATA[
+				if( notificationCreated != null && notificationCreated.equals("true"))
+				{
+					]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<font class="boldTenRed">
+								<p align="center">
+									<b>Your notification (<xsp:expr>notificationLocalId</xsp:expr>) has been sent.</b>
+								</p>
+							</font>
+						</span>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[
+				}
+				else if(notificationCreated !=null && notificationCreated.equals("false") && pending !=null && pending.equals("true"))
+				{
+					]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<font class="boldTenRed">
+								<p align="center">
+									<b>Your notification (<xsp:expr>notificationLocalId</xsp:expr>) has been submitted.</b>
+								</p>
+							</font>
+						</span>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[
+				}
+				else if(notificationCreated != null && notificationCreated.equals("false") && pending !=null && pending.equals("false"))
+				{
+				]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<font class="boldTenRed">
+								<p align="center">
+									<b>Your notification (<xsp:expr>notificationLocalId</xsp:expr>) was not processed.</b>
+								</p>
+							</font>
+						</span>
+					</element>
+				</line>
+				<xsp:logic>
+				}
+			</xsp:logic>
+				<line>
+					<xsp:logic><![CDATA[
+					String displayPageNumber = request.getParameter("enhancedTable_displayPage");
+					if( displayPageNumber==null || displayPageNumber.trim().length() < 1)
+						displayPageNumber = "1";
+					]]></xsp:logic>
+					<element type="enhanced-data-table" allowEdit="no" recordComments="yes" recordsPerPage="20">
+						<xsp:attribute name="displayPage">
+							<xsp:expr>displayPageNumber</xsp:expr>
+						</xsp:attribute>
+						<xsp:attribute name="pagingLinkBase">/nedss/manageNotification.do?publicHealthCaseUID=<xsp:expr>sPublicHealthCaseUID</xsp:expr>
+						</xsp:attribute>
+						<header>
+							<data>
+								<xsp:attribute name="link">/nedss/sortNotification.do?SortMethod=getAddTime&amp;direction=<xsp:expr>direction</xsp:expr>
+								</xsp:attribute>
+								Date Created
+							</data>
+							<data>
+								<xsp:attribute name="link">/nedss/sortNotification.do?SortMethod=getAddTime&amp;direction=<xsp:expr>direction</xsp:expr>
+								</xsp:attribute>
+								Date Sent
+							</data>
+							<data>
+								<xsp:attribute name="link">/nedss/sortNotification.do?SortMethod=getCdTxt&amp;direction=<xsp:expr>direction</xsp:expr>
+								</xsp:attribute>
+								Condition
+							</data>
+							<data>
+								<xsp:attribute name="link">/nedss/sortNotification.do?SortMethod=getCaseClassCdTxt&amp;direction=<xsp:expr>direction</xsp:expr>
+								</xsp:attribute>
+							Case Status
+							</data>
+							<data>
+								<xsp:attribute name="link">/nedss/sortNotification.do?SortMethod=getLocalId&amp;direction=<xsp:expr>direction</xsp:expr>
+								</xsp:attribute>
+							Notification ID
+							</data>
+						</header>
+						<xsp:logic>
+					if (notificationColl != null)
+					{
+						for( Iterator anIterator = notificationColl.iterator(); anIterator.hasNext(); )
+						{
+							NotificationSummaryVO  notif = (NotificationSummaryVO) anIterator.next();
+							if(notif != null)
+							{
+					</xsp:logic>
+						<record>
+							<data name="date-created">
+								<value>
+									<xsp:expr>formatDate(notif.getAddTime())</xsp:expr>
+								</value>
+							</data>
+							<data name="date-sent">
+								<value>
+									<xsp:expr>formatDate(notif.getRptSentTime())</xsp:expr>
+								</value>
+							</data>
+							<data name="condition">
+								<value>
+									<xsp:expr>notif.getCdTxt()</xsp:expr>
+								</value>
+							</data>
+							<data name="case-status">
+								<value>
+									<xsp:expr>notif.getCaseClassCdTxt()</xsp:expr>
+								</value>
+							</data>
+							<data name="notificationID">
+								<value>
+									<xsp:expr>notif.getLocalId()</xsp:expr>
+								</value>
+							</data>
+							<recordComments label="Comments">
+								<value>
+									<xsp:expr>notif.getTxt()</xsp:expr>
+								</value>
+							</recordComments>
+						</record>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic><![CDATA[
+						session.removeAttribute("notificationUid");
+						session.removeAttribute("pending");
+						]]></xsp:logic>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

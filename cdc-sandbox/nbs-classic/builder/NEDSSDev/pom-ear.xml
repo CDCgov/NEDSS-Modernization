@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>NBSEAR</groupId>
+    <artifactId>NBSEAR</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>ear</packaging>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!-- web and jar modules as dependencies -->
+        <dependency>
+            <groupId>gov.cdc.nbs</groupId>
+            <artifactId>nbs</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>gov.cdc.nbs</groupId>
+            <artifactId>NEDSSEJB</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>gov.cdc.nbs</groupId>
+            <artifactId>nndm</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+    	<directory>target-ear</directory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                	<finalName>nbs</finalName>
+                    <modules>
+                        <jarModule>
+                            <groupId>gov.cdc.nbs</groupId>
+                            <artifactId>NEDSSEJB</artifactId>
+                            <uri>NEDSSEJB.jar</uri>
+                        </jarModule>
+                        <webModule>
+                            <groupId>gov.cdc.nbs</groupId>
+                            <artifactId>nbs</artifactId>
+                            <uri>nbs.war</uri>
+                            <bundleFileName>nbs.war</bundleFileName>
+                            <contextRoot>/nbs</contextRoot>
+                        </webModule>
+                        <webModule>
+                            <groupId>gov.cdc.nbs</groupId>
+                            <artifactId>nndm</artifactId>
+                            <uri>nndm.war</uri>
+                            <bundleFileName>nndm.war</bundleFileName>
+                            <contextRoot>/nndm</contextRoot>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

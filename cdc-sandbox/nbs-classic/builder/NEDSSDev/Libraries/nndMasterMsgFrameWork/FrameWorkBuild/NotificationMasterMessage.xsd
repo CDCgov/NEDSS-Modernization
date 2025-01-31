@@ -1,0 +1,991 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 3 U (http://www.xmlspy.com) by CSC EMPLOYEE (Computer Sciences Corp) -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Aaron Aycock (Computer Sciences Corporation) -->
+<!-- NotificationMasterMessage NBS Version 1.1.3 January 16, 2004  -->
+<schema targetNamespace="http://www.cdc.gov/NEDSS" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:nedss="http://www.cdc.gov/NEDSS" elementFormDefault="qualified" attributeFormDefault="unqualified" version="NBS1.1.3">
+	<element name="Investigation_Message">
+		<complexType>
+			<sequence>
+				<element name="MessageHeader">
+					<complexType>
+						<sequence>
+							<element name="id" type="string" minOccurs="0"/>
+							<element name="creationTime" type="dateTime"/>
+							<element name="version" type="string"/>
+							<element name="interactionId" type="string"/>
+							<element name="nbsStateCode" type="string"/>
+							<element name="abcState" type="string" minOccurs="0"/>
+							<element name="firstReportedToCDC" type="dateTime" minOccurs="0"/>
+							<element name="messageIdAssigningAuthCode" type="string" minOccurs="0"/>
+							<element name="messageIdAssigningAuthDescText" type="string" minOccurs="0"/>
+							<element name="messageIdLocalId" type="string" minOccurs="0"/>
+							<element name="messageIdTypeCode" type="string" minOccurs="0"/>
+							<element name="messageIdTypeCodeDescText" type="string" minOccurs="0"/>
+							<element name="processingCode" type="string" minOccurs="0"/>
+							<element name="processingCodeDescText" type="string" minOccurs="0"/>
+							<element name="sendingApplicationAssigningAuthCode" type="string"/>
+							<element name="sendingApplicationAssigningDescText" type="string" minOccurs="0"/>
+							<element name="sendingApplicationUniqueId" type="string" minOccurs="0"/>
+							<element name="receivingApplicationAssigningAuthCode" type="string" minOccurs="0"/>
+							<element name="receivingApplicationAssigningDescText" type="string" minOccurs="0"/>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="NNDEvent" maxOccurs="unbounded">
+					<complexType>
+						<sequence>
+							<element name="NedssEvent">
+								<complexType>
+									<sequence>
+										<annotation>
+											<documentation> Note: Identifying information is never extracted for the Subject.</documentation>
+										</annotation>
+										<element name="Entity" minOccurs="0" maxOccurs="unbounded">
+											<complexType>
+												<sequence>
+													<element name="entityTempId" type="string" minOccurs="0"/>
+													<element name="classCd" type="string" minOccurs="0"/>
+													<element name="person" minOccurs="0">
+														<complexType name="personType">
+															<sequence>
+																<element name="participationTypeCd" type="string" minOccurs="0" maxOccurs="unbounded"/>
+																<element name="addReasonCd" type="string" minOccurs="0"/>
+																<element name="addTime" type="dateTime" minOccurs="0"/>
+																<element name="addUserId" type="string" minOccurs="0"/>
+																<element name="administrativeGenderCd" type="string" minOccurs="0"/>
+																<element name="ageCalc" type="string" minOccurs="0"/>
+																<element name="ageCalcTime" type="dateTime" minOccurs="0"/>
+																<element name="ageCalcUnitCd" type="string" minOccurs="0"/>
+																<element name="ageCategoryCd" type="string" minOccurs="0"/>
+																<element name="ageReported" type="string" minOccurs="0"/>
+																<element name="ageReportedTime" type="dateTime" minOccurs="0"/>
+																<element name="ageReportedUnitCd" type="string" minOccurs="0"/>
+																<element name="birthGenderCd" type="string" minOccurs="0"/>
+																<element name="birthOrderNbr" type="string" minOccurs="0"/>
+																<element name="birthTime" type="dateTime" minOccurs="0"/>
+																<element name="birthTimeCalc" type="dateTime" minOccurs="0"/>
+																<element name="cd" type="string" minOccurs="0"/>
+																<element name="cdDescTxt" type="string" minOccurs="0"/>
+																<element name="currSexCd" type="string" minOccurs="0"/>
+																<element name="deceasedIndCd" type="string" minOccurs="0"/>
+																<element name="deceasedTime" type="dateTime" minOccurs="0"/>
+																<element name="description" type="string" minOccurs="0"/>
+																<element name="educationLevelCd" type="string" minOccurs="0"/>
+																<element name="educationLevelDescTxt" type="string" minOccurs="0"/>
+																<element name="ethnicGroupInd" type="string" minOccurs="0"/>
+																<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgUserId" type="string" minOccurs="0"/>
+																<element name="localId" type="string" minOccurs="0"/>
+																<element name="maritalStatusCd" type="string" minOccurs="0"/>
+																<element name="maritalStatusDescTxt" type="string" minOccurs="0"/>
+																<element name="mothersMaidenNm" type="string" minOccurs="0"/>
+																<element name="multipleBirthInd" type="string" minOccurs="0"/>
+																<element name="occupationCd" type="string" minOccurs="0"/>
+																<element name="preferredGenderCd" type="string" minOccurs="0"/>
+																<element name="primLangCd" type="string" minOccurs="0"/>
+																<element name="primLangDescTxt" type="string" minOccurs="0"/>
+																<element name="recordStatusCd" type="string" minOccurs="0"/>
+																<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																<element name="statusCd" type="string" minOccurs="0"/>
+																<element name="statusTime" type="dateTime" minOccurs="0"/>
+																<element name="survivedIndCd" type="string" minOccurs="0"/>
+																<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																<element name="firstNm" type="string" minOccurs="0"/>
+																<element name="lastNm" type="string" minOccurs="0"/>
+																<element name="middleNm" type="string" minOccurs="0"/>
+																<element name="nmPrefix" type="string" minOccurs="0"/>
+																<element name="nmSuffix" type="string" minOccurs="0"/>
+																<element name="preferredNm" type="string" minOccurs="0"/>
+																<element name="hmStreetAddr1" type="string" minOccurs="0"/>
+																<element name="hmStreetAddr2" type="string" minOccurs="0"/>
+																<element name="hmCityCd" type="string" minOccurs="0"/>
+																<element name="hmCityDescTxt" type="string" minOccurs="0"/>
+																<element name="hmStateCd" type="string" minOccurs="0"/>
+																<element name="hmZIpCd" type="string" minOccurs="0"/>
+																<element name="hmCntyCd" type="string" minOccurs="0"/>
+																<element name="hmCntryCd" type="string" minOccurs="0"/>
+																<element name="hmPhoneNbr" type="string" minOccurs="0"/>
+																<element name="hmPhoneCntryCd" type="string" minOccurs="0"/>
+																<element name="hmEmailAddr" type="string" minOccurs="0"/>
+																<element name="cellPhoneNbr" type="string" minOccurs="0"/>
+																<element name="wkStreetAddr1" type="string" minOccurs="0"/>
+																<element name="wkStreetAddr2" type="string" minOccurs="0"/>
+																<element name="wkCityCd" type="string" minOccurs="0"/>
+																<element name="wkCityDescTx" type="string" minOccurs="0"/>
+																<element name="wkStateCd" type="string" minOccurs="0"/>
+																<element name="wkZIpCd" type="string" minOccurs="0"/>
+																<element name="wkCntyCd" type="string" minOccurs="0"/>
+																<element name="wkCntryCd" type="string" minOccurs="0"/>
+																<element name="wkPhoneNbr" type="string" minOccurs="0"/>
+																<element name="wkPhoneCntryCd" type="string" minOccurs="0"/>
+																<element name="wkEmailAddr" type="string" minOccurs="0"/>
+																<element name="SSN" type="string" minOccurs="0"/>
+																<element name="medicaidNum" type="string" minOccurs="0"/>
+																<element name="dlNum" type="string" minOccurs="0"/>
+																<element name="dlStateCd" type="string" minOccurs="0"/>
+																<element name="raceCd" type="string" minOccurs="0"/>
+																<element name="raceSeqNbr" type="string" minOccurs="0"/>
+																<element name="raceCategoryCd" type="string" minOccurs="0"/>
+																<element name="ethnicityGroupCd" type="string" minOccurs="0"/>
+																<element name="ethnicGroupSeqNbr" type="string" minOccurs="0"/>
+																<element name="adultsInHouseNbr" type="string" minOccurs="0"/>
+																<element name="childrenInHouseNbr" type="string" minOccurs="0"/>
+																<element name="birthCityCd" type="string" minOccurs="0"/>
+																<element name="birthCityDescTxt" type="string" minOccurs="0"/>
+																<element name="birthCntryCd" type="string" minOccurs="0"/>
+																<element name="birthStateCd" type="string" minOccurs="0"/>
+																<element name="raceDescTxt" type="string" minOccurs="0"/>
+																<element name="ethnicGroupDescTxt" type="string" minOccurs="0"/>
+																<element name="versionCtrlNbr" type="string" minOccurs="0"/>
+																<element name="asOfDateAdmin" type="dateTime" minOccurs="0"/>
+																<element name="asOfDateEthnicity" type="dateTime" minOccurs="0"/>
+																<element name="asOfDateGeneral" type="dateTime" minOccurs="0"/>
+																<element name="asOfDateMorbidity" type="dateTime" minOccurs="0"/>
+																<element name="asOfDateSex" type="dateTime" minOccurs="0"/>
+																<element name="electronicInd" type="string" minOccurs="0"/>
+																<element name="personParentTempId" type="string" minOccurs="0"/>
+																<element name="dedupMatchInd" type="string" minOccurs="0"/>
+																<element name="groupNbr" type="string" minOccurs="0"/>
+																<element name="groupTime" type="dateTime" minOccurs="0"/>
+																<element name="personName" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="personNameSeq" type="string" minOccurs="0"/>
+																			<element name="addReasonCd" type="string" minOccurs="0"/>
+																			<element name="addTime" type="dateTime" minOccurs="0"/>
+																			<element name="addUserId" type="string" minOccurs="0"/>
+																			<element name="defaultNmInd" type="string" minOccurs="0"/>
+																			<element name="durationAmt" type="string" minOccurs="0"/>
+																			<element name="durationUnitCd" type="string" minOccurs="0"/>
+																			<element name="firstNm" type="string" minOccurs="0"/>
+																			<element name="firstNmSndx" type="string" minOccurs="0"/>
+																			<element name="fromTime" type="dateTime" minOccurs="0"/>
+																			<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																			<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																			<element name="lastChgUserId" type="string" minOccurs="0"/>
+																			<element name="lastNm" type="string" minOccurs="0"/>
+																			<element name="lastNmSndx" type="string" minOccurs="0"/>
+																			<element name="lastNm2" type="string" minOccurs="0"/>
+																			<element name="lastNm2Sndx" type="string" minOccurs="0"/>
+																			<element name="middleNm" type="string" minOccurs="0"/>
+																			<element name="middleNm2" type="string" minOccurs="0"/>
+																			<element name="nmDegree" type="string" minOccurs="0"/>
+																			<element name="nmPrefix" type="string" minOccurs="0"/>
+																			<element name="nmSuffix" type="string" minOccurs="0"/>
+																			<element name="nmUseCd" type="string" minOccurs="0"/>
+																			<element name="recordStatusCd" type="string" minOccurs="0"/>
+																			<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																			<element name="statusCd" type="string" minOccurs="0"/>
+																			<element name="statusTime" type="dateTime" minOccurs="0"/>
+																			<element name="toTime" type="dateTime" minOccurs="0"/>
+																			<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																			<element name="asOfDate" type="dateTime" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+																<element name="personEthnicGroup" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="addReasonCd" type="string" minOccurs="0"/>
+																			<element name="addTime" type="dateTime" minOccurs="0"/>
+																			<element name="addUserId" type="string" minOccurs="0"/>
+																			<element name="ethnicGroupCd" type="string" minOccurs="0"/>
+																			<element name="ethnicGroupDescTxt" type="string" minOccurs="0"/>
+																			<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																			<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																			<element name="lastChgUserId" type="string" minOccurs="0"/>
+																			<element name="recordStatusCd" type="string" minOccurs="0"/>
+																			<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																			<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+																<element name="personRace" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="raceCd" type="string" minOccurs="0"/>
+																			<element name="addReasonCd" type="string" minOccurs="0"/>
+																			<element name="addTime" type="dateTime" minOccurs="0"/>
+																			<element name="addUserId" type="string" minOccurs="0"/>
+																			<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																			<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																			<element name="lastChgUserId" type="string" minOccurs="0"/>
+																			<element name="raceCategoryCd" type="string" minOccurs="0"/>
+																			<element name="raceDescTxt" type="string" minOccurs="0"/>
+																			<element name="recordStatusCd" type="string" minOccurs="0"/>
+																			<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																			<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																			<element name="asOfDate" type="dateTime" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+															</sequence>
+														</complexType>
+													</element>
+													<element name="organization" minOccurs="0">
+														<complexType name="organizationType">
+															<sequence>
+																<element name="participationTypeCd" type="string" minOccurs="0" maxOccurs="unbounded"/>
+																<element name="addReasonCd" type="string" minOccurs="0"/>
+																<element name="addTime" type="dateTime" minOccurs="0"/>
+																<element name="addUserId" type="string" minOccurs="0"/>
+																<element name="cd" type="string" minOccurs="0"/>
+																<element name="cdDescTxt" type="string" minOccurs="0"/>
+																<element name="description" type="string" minOccurs="0"/>
+																<element name="durationAmt" type="string" minOccurs="0"/>
+																<element name="durationUnitCd" type="string" minOccurs="0"/>
+																<element name="fromTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgUserId" type="string" minOccurs="0"/>
+																<element name="localId" type="string" minOccurs="0"/>
+																<element name="recordStatusCd" type="string" minOccurs="0"/>
+																<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																<element name="standardIndustryClassCd" type="string" minOccurs="0"/>
+																<element name="standardIndustryDescTxt" type="string" minOccurs="0"/>
+																<element name="statusCd" type="string" minOccurs="0"/>
+																<element name="statusTime" type="dateTime" minOccurs="0"/>
+																<element name="toTime" type="dateTime" minOccurs="0"/>
+																<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																<element name="displayNm" type="string" minOccurs="0"/>
+																<element name="streetAddr1" type="string" minOccurs="0"/>
+																<element name="streetAddr2" type="string" minOccurs="0"/>
+																<element name="cityCd" type="string" minOccurs="0"/>
+																<element name="cityDescTxt" type="string" minOccurs="0"/>
+																<element name="stateCd" type="string" minOccurs="0"/>
+																<element name="cntyCd" type="string" minOccurs="0"/>
+																<element name="cntryCd" type="string" minOccurs="0"/>
+																<element name="zipCd" type="string" minOccurs="0"/>
+																<element name="phoneNbr" type="string" minOccurs="0"/>
+																<element name="phoneCntryCd" type="string" minOccurs="0"/>
+																<element name="versionCtrlNbr" type="string" minOccurs="0"/>
+																<element name="organizationName" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="organizationNameSeq" type="string" minOccurs="0"/>
+																			<element name="nmTxt" type="string" minOccurs="0"/>
+																			<element name="nmUseCd" type="string" minOccurs="0"/>
+																			<element name="recordStatusCd" type="string" minOccurs="0"/>
+																			<element name="defaultNmInd" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+															</sequence>
+														</complexType>
+													</element>
+													<element name="material" minOccurs="0">
+														<complexType name="materialType">
+															<sequence>
+																<element name="participationTypeCd" type="string" minOccurs="0" maxOccurs="unbounded"/>
+																<element name="addReasonCd" type="string" minOccurs="0"/>
+																<element name="addTime" type="dateTime" minOccurs="0"/>
+																<element name="addUserId" type="string" minOccurs="0"/>
+																<element name="cd" type="string" minOccurs="0"/>
+																<element name="cdDescTxt" type="string" minOccurs="0"/>
+																<element name="description" type="string" minOccurs="0"/>
+																<element name="effectiveDurationAmt" type="string" minOccurs="0"/>
+																<element name="effectiveDurationUnitCd" type="string" minOccurs="0"/>
+																<element name="effectiveFromTime" type="dateTime" minOccurs="0"/>
+																<element name="effectiveToTime" type="dateTime" minOccurs="0"/>
+																<element name="formCd" type="string" minOccurs="0"/>
+																<element name="formDescTxt" type="string" minOccurs="0"/>
+																<element name="handlingCd" type="string" minOccurs="0"/>
+																<element name="handlingDescTxt" type="string" minOccurs="0"/>
+																<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgUserId" type="string" minOccurs="0"/>
+																<element name="localId" type="string" minOccurs="0"/>
+																<element name="nm" type="string" minOccurs="0"/>
+																<element name="qty" type="string" minOccurs="0"/>
+																<element name="qtyUnitCd" type="string" minOccurs="0"/>
+																<element name="recordStatusCd" type="string" minOccurs="0"/>
+																<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																<element name="riskCd" type="string" minOccurs="0"/>
+																<element name="riskDescTxt" type="string" minOccurs="0"/>
+																<element name="statusCd" type="string" minOccurs="0"/>
+																<element name="statusTime" type="dateTime" minOccurs="0"/>
+																<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																<element name="versionCtrlNbr" type="string" minOccurs="0"/>
+																<element name="ManufacturedMaterial" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="manufacturedMaterialSeq" type="string" minOccurs="0"/>
+																			<element name="addReasonCd" type="string" minOccurs="0"/>
+																			<element name="addTime" type="dateTime" minOccurs="0"/>
+																			<element name="addUserId" type="string" minOccurs="0"/>
+																			<element name="expirationTime" type="dateTime" minOccurs="0"/>
+																			<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																			<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																			<element name="lastChgUserId" type="string" minOccurs="0"/>
+																			<element name="lotNm" type="string" minOccurs="0"/>
+																			<element name="recordStatusCd" type="string" minOccurs="0"/>
+																			<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																			<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																			<element name="stabilityFromTime" type="dateTime" minOccurs="0"/>
+																			<element name="stabilityToTime" type="dateTime" minOccurs="0"/>
+																			<element name="stabilityDurationCd" type="string" minOccurs="0"/>
+																			<element name="stabilityDurationUnitCd" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+															</sequence>
+														</complexType>
+													</element>
+													<element name="entityId" minOccurs="0" maxOccurs="unbounded">
+														<complexType name="entityIdType">
+															<sequence>
+																<element name="entityIdSeq" type="string" minOccurs="0"/>
+																<element name="addReasonCd" type="string" minOccurs="0"/>
+																<element name="addTime" type="dateTime" minOccurs="0"/>
+																<element name="addUserId" type="string" minOccurs="0"/>
+																<element name="assigningAuthorityCd" type="string" minOccurs="0"/>
+																<element name="assigningAuthorityDescTxt" type="string" minOccurs="0"/>
+																<element name="durationAmt" type="string" minOccurs="0"/>
+																<element name="durationUnitCd" type="string" minOccurs="0"/>
+																<element name="effectiveFromTime" type="dateTime" minOccurs="0"/>
+																<element name="effectiveToTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgUserId" type="string" minOccurs="0"/>
+																<element name="recordStatusCd" type="string" minOccurs="0"/>
+																<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																<element name="rootExtensionTxt" type="string" minOccurs="0"/>
+																<element name="statusCd" type="string" minOccurs="0"/>
+																<element name="statusTime" type="dateTime" minOccurs="0"/>
+																<element name="typeCd" type="string" minOccurs="0"/>
+																<element name="typeDescTxt" type="string" minOccurs="0"/>
+																<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																<element name="validFromTime" type="dateTime" minOccurs="0"/>
+																<element name="validToTime" type="dateTime" minOccurs="0"/>
+																<element name="asOfDate" type="dateTime" minOccurs="0"/>
+															</sequence>
+														</complexType>
+													</element>
+													<element name="entityLocator" minOccurs="0" maxOccurs="unbounded">
+														<complexType name="entityLocatorParticipationType">
+															<sequence>
+																<element name="addReasonCd" type="string" minOccurs="0"/>
+																<element name="addTime" type="dateTime" minOccurs="0"/>
+																<element name="addUserId" type="string" minOccurs="0"/>
+																<element name="cd" type="string" minOccurs="0"/>
+																<element name="cdDescTxt" type="string" minOccurs="0"/>
+																<element name="classCd" type="string" minOccurs="0"/>
+																<element name="durationAmt" type="string" minOccurs="0"/>
+																<element name="durationUnitCd" type="string" minOccurs="0"/>
+																<element name="fromTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgUserId" type="string" minOccurs="0"/>
+																<element name="locatorDescTxt" type="string" minOccurs="0"/>
+																<element name="recordStatusCd" type="string" minOccurs="0"/>
+																<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																<element name="statusCd" type="string" minOccurs="0"/>
+																<element name="statusTime" type="dateTime" minOccurs="0"/>
+																<element name="toTime" type="dateTime" minOccurs="0"/>
+																<element name="useCd" type="string" minOccurs="0"/>
+																<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																<element name="validTimeTxt" type="string" minOccurs="0"/>
+																<element name="versionCtrlNbr" type="string" minOccurs="0"/>
+																<element name="asOfDate" type="dateTime" minOccurs="0"/>
+																<element name="teleLocatorType" minOccurs="0">
+																	<complexType>
+																		<sequence>
+																			<element name="addReasonCd" type="string" minOccurs="0"/>
+																			<element name="addTime" type="dateTime" minOccurs="0"/>
+																			<element name="addUserId" type="string" minOccurs="0"/>
+																			<element name="cntryCd" type="string" minOccurs="0"/>
+																			<element name="emailAddress" type="string" minOccurs="0"/>
+																			<element name="extensionTxt" type="string" minOccurs="0"/>
+																			<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																			<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																			<element name="lastChgUserId" type="string" minOccurs="0"/>
+																			<element name="phoneNbrTxt" type="string" minOccurs="0"/>
+																			<element name="recordStatusCd" type="string" minOccurs="0"/>
+																			<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																			<element name="urlAddress" type="string" minOccurs="0"/>
+																			<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+																<element name="postalLocatorType" minOccurs="0">
+																	<complexType>
+																		<sequence>
+																			<element name="addReasonCd" type="string" minOccurs="0"/>
+																			<element name="addTime" type="dateTime" minOccurs="0"/>
+																			<element name="addUserId" type="string" minOccurs="0"/>
+																			<element name="censusBlockCd" type="string" minOccurs="0"/>
+																			<element name="censusMinorCivilDivisionCd" type="string" minOccurs="0"/>
+																			<element name="censusTrackCd" type="string" minOccurs="0"/>
+																			<element name="cityCd" type="string" minOccurs="0"/>
+																			<element name="cityDescTxt" type="string" minOccurs="0"/>
+																			<element name="cntryCd" type="string" minOccurs="0"/>
+																			<element name="cntryDescTxt" type="string" minOccurs="0"/>
+																			<element name="cntyCd" type="string" minOccurs="0"/>
+																			<element name="cntyDescTxt" type="string" minOccurs="0"/>
+																			<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																			<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																			<element name="lastChgUserId" type="string" minOccurs="0"/>
+																			<element name="MSACongressDistrictCd" type="string" minOccurs="0"/>
+																			<element name="recordStatusCd" type="string" minOccurs="0"/>
+																			<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																			<element name="regionDistrictCd" type="string" minOccurs="0"/>
+																			<element name="stateCd" type="string" minOccurs="0"/>
+																			<element name="streetAddr1" type="string" minOccurs="0"/>
+																			<element name="streetAddr2" type="string" minOccurs="0"/>
+																			<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																			<element name="zipCd" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+																<element name="physicalLocatorType" minOccurs="0">
+																	<complexType>
+																		<sequence>
+																			<element name="addReasonCd" type="string" minOccurs="0"/>
+																			<element name="addTime" type="dateTime" minOccurs="0"/>
+																			<element name="addUserId" type="string" minOccurs="0"/>
+																			<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																			<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																			<element name="lastChgUserId" type="string" minOccurs="0"/>
+																			<element name="locatorTxt" type="string" minOccurs="0"/>
+																			<element name="recordStatusCd" type="string" minOccurs="0"/>
+																			<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																			<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+															</sequence>
+														</complexType>
+													</element>
+												</sequence>
+											</complexType>
+										</element>
+										<element name="Act" minOccurs="0" maxOccurs="unbounded">
+											<complexType>
+												<sequence>
+													<element name="actTempId" type="string" minOccurs="0"/>
+													<element name="classCd" type="string" minOccurs="0"/>
+													<element name="publicHealthCase" minOccurs="0">
+														<complexType name="publicHealthCaseType">
+															<sequence>
+																<element name="activityDurationAmt" type="string" minOccurs="0"/>
+																<element name="activityDurationUnitCd" type="string" minOccurs="0"/>
+																<element name="activityFromTime" type="dateTime" minOccurs="0"/>
+																<element name="activityToTime" type="dateTime" minOccurs="0"/>
+																<element name="addReasonCd" type="string" minOccurs="0"/>
+																<element name="addTime" type="dateTime" minOccurs="0"/>
+																<element name="addUserId" type="string" minOccurs="0"/>
+																<element name="caseClassCd" type="string" minOccurs="0"/>
+																<element name="caseTypeCd" type="string" minOccurs="0"/>
+																<element name="cd" type="string" minOccurs="0"/>
+																<element name="cdDescTxt" type="string" minOccurs="0"/>
+																<element name="cdSystemCd" type="string" minOccurs="0"/>
+																<element name="cdSystemDescTxt" type="string" minOccurs="0"/>
+																<element name="confidentialityCd" type="string" minOccurs="0"/>
+																<element name="confidentialityDescTxt" type="string" minOccurs="0"/>
+																<element name="detectionMethodCd" type="string" minOccurs="0"/>
+																<element name="detectionMethodDescTxt" type="string" minOccurs="0"/>
+																<element name="diagnosisTime" type="dateTime" minOccurs="0"/>
+																<element name="diseaseImportedCd" type="string" minOccurs="0"/>
+																<element name="diseaseImportedDescTxt" type="string" minOccurs="0"/>
+																<element name="effectiveDurationAmt" type="string" minOccurs="0"/>
+																<element name="effectiveDurationUnitCd" type="string" minOccurs="0"/>
+																<element name="effectiveFromTime" type="dateTime" minOccurs="0"/>
+																<element name="effectiveToTime" type="dateTime" minOccurs="0"/>
+																<element name="groupCaseCnt" type="string" minOccurs="0"/>
+																<element name="investigationStatusCd" type="string" minOccurs="0"/>
+																<element name="jurisdictionCd" type="string" minOccurs="0"/>
+																<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgUserId" type="string" minOccurs="0"/>
+																<element name="localId" type="string" minOccurs="0"/>
+																<element name="mmwrWeek" type="string" minOccurs="0"/>
+																<element name="mmwrYear" type="string" minOccurs="0"/>
+																<element name="outbreakInd" type="string" minOccurs="0"/>
+																<element name="outbreakFromTime" type="dateTime" minOccurs="0"/>
+																<element name="outbreakToTime" type="dateTime" minOccurs="0"/>
+																<element name="outbreakName" type="string" minOccurs="0"/>
+																<element name="outcomeCd" type="string" minOccurs="0"/>
+																<element name="patAgeAtOnset" type="string" minOccurs="0"/>
+																<element name="patAgeAtOnsetUnitCd" type="string" minOccurs="0"/>
+																<element name="patientGroupId" type="string" minOccurs="0"/>
+																<element name="progAreaCd" type="string" minOccurs="0"/>
+																<element name="recordStatusCd" type="string" minOccurs="0"/>
+																<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																<element name="repeatNbr" type="string" minOccurs="0"/>
+																<element name="rptCntyCd" type="string" minOccurs="0"/>
+																<element name="rptFormCmpltTime" type="dateTime" minOccurs="0"/>
+																<element name="rptSourceCd" type="string" minOccurs="0"/>
+																<element name="rptSourceCdDescTxt" type="string" minOccurs="0"/>
+																<element name="rptToCountyTime" type="dateTime" minOccurs="0"/>
+																<element name="rptToStateTime" type="dateTime" minOccurs="0"/>
+																<element name="statusCd" type="string" minOccurs="0"/>
+																<element name="statusTime" type="dateTime" minOccurs="0"/>
+																<element name="transmissionModeCd" type="string" minOccurs="0"/>
+																<element name="transmissionModeDescTxt" type="string" minOccurs="0"/>
+																<element name="txt" type="string" minOccurs="0"/>
+																<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																<element name="programJurisdictionOid" type="string" minOccurs="0"/>
+																<element name="sharedInd" type="string" minOccurs="0"/>
+																<element name="versionCtrlNbr" type="string" minOccurs="0"/>
+																<element name="confirmationMethod" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="confirmationMethodCd" type="string" minOccurs="0"/>
+																			<element name="confirmationMethodDescTxt" type="string" minOccurs="0"/>
+																			<element name="confirmationMethodTime" type="dateTime" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+															</sequence>
+														</complexType>
+													</element>
+													<element name="intervention" minOccurs="0">
+														<complexType name="interventionType">
+															<sequence>
+																<element name="activityDurationAmt" type="string" minOccurs="0"/>
+																<element name="activityDurationUnitCd" type="string" minOccurs="0"/>
+																<element name="activityFromTime" type="dateTime" minOccurs="0"/>
+																<element name="activityToTime" type="dateTime" minOccurs="0"/>
+																<element name="addReasonCd" type="string" minOccurs="0"/>
+																<element name="addTime" type="dateTime" minOccurs="0"/>
+																<element name="addUserId" type="string" minOccurs="0"/>
+																<element name="cd" type="string" minOccurs="0"/>
+																<element name="cdDescTxt" type="string" minOccurs="0"/>
+																<element name="cdSystemCd" type="string" minOccurs="0"/>
+																<element name="cdSystemDescTxt" type="string" minOccurs="0"/>
+																<element name="classCd" type="string" minOccurs="0"/>
+																<element name="confidentialityCd" type="string" minOccurs="0"/>
+																<element name="confidentialityDescTxt" type="string" minOccurs="0"/>
+																<element name="effectiveDurationAmt" type="string" minOccurs="0"/>
+																<element name="effectiveDurationUnitCd" type="string" minOccurs="0"/>
+																<element name="effectiveFromTime" type="dateTime" minOccurs="0"/>
+																<element name="effectiveToTime" type="dateTime" minOccurs="0"/>
+																<element name="jurisdictionCd" type="string" minOccurs="0"/>
+																<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgUserId" type="string" minOccurs="0"/>
+																<element name="localId" type="string" minOccurs="0"/>
+																<element name="methodCd" type="string" minOccurs="0"/>
+																<element name="methodDescTxt" type="string" minOccurs="0"/>
+																<element name="progAreaCd" type="string" minOccurs="0"/>
+																<element name="priorityCd" type="string" minOccurs="0"/>
+																<element name="priorityDescTxt" type="string" minOccurs="0"/>
+																<element name="qtyAmt" type="string" minOccurs="0"/>
+																<element name="qtyUnitCd" type="string" minOccurs="0"/>
+																<element name="reasonCd" type="string" minOccurs="0"/>
+																<element name="reasonDescTxt" type="string" minOccurs="0"/>
+																<element name="recordStatusCd" type="string" minOccurs="0"/>
+																<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																<element name="repeatNbr" type="string" minOccurs="0"/>
+																<element name="statusCd" type="string" minOccurs="0"/>
+																<element name="statusTime" type="dateTime" minOccurs="0"/>
+																<element name="targetSiteCd" type="string" minOccurs="0"/>
+																<element name="targetSiteDescTxt" type="string" minOccurs="0"/>
+																<element name="txt" type="string" minOccurs="0"/>
+																<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																<element name="programJurisdictionOid" type="string" minOccurs="0"/>
+																<element name="sharedInd" type="string" minOccurs="0"/>
+																<element name="versionCtrlNbr" type="string" minOccurs="0"/>
+																<element name="procedure1" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="approachSiteCd" type="string" minOccurs="0"/>
+																			<element name="approachSiteDescTxt" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+																<element name="substanceAdministration" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="doseQty" type="string" minOccurs="0"/>
+																			<element name="doseQtyUnitCd" type="string" minOccurs="0"/>
+																			<element name="formCd" type="string" minOccurs="0"/>
+																			<element name="formDescTxt" type="string" minOccurs="0"/>
+																			<element name="rateQty" type="string" minOccurs="0"/>
+																			<element name="rateQtyUnitCd" type="string" minOccurs="0"/>
+																			<element name="routeCd" type="string" minOccurs="0"/>
+																			<element name="routeDescTxt" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+															</sequence>
+														</complexType>
+													</element>
+													<element name="observation" minOccurs="0">
+														<complexType name="observationType">
+															<sequence>
+																<element name="activityDurationAmt" type="string" minOccurs="0"/>
+																<element name="activityDurationUnitCd" type="string" minOccurs="0"/>
+																<element name="activityFromTime" type="dateTime" minOccurs="0"/>
+																<element name="activityToTime" type="dateTime" minOccurs="0"/>
+																<element name="addReasonCd" type="string" minOccurs="0"/>
+																<element name="addTime" type="dateTime" minOccurs="0"/>
+																<element name="addUserId" type="string" minOccurs="0"/>
+																<element name="cd" type="string" minOccurs="0"/>
+																<element name="cdDescTxt" type="string" minOccurs="0"/>
+																<element name="cdSystemCd" type="string" minOccurs="0"/>
+																<element name="cdSystemDescTxt" type="string" minOccurs="0"/>
+																<element name="confidentialityCd" type="string" minOccurs="0"/>
+																<element name="confidentialityDescTxt" type="string" minOccurs="0"/>
+																<element name="ctrlCdDisplayForm" type="string" minOccurs="0"/>
+																<element name="ctrlCdUserDefined1" type="string" minOccurs="0"/>
+																<element name="ctrlCdUserDefined2" type="string" minOccurs="0"/>
+																<element name="ctrlCdUserDefined3" type="string" minOccurs="0"/>
+																<element name="ctrlCdUserDefined4" type="string" minOccurs="0"/>
+																<element name="derivationExp" type="string" minOccurs="0"/>
+																<element name="effectiveDurationAmt" type="string" minOccurs="0"/>
+																<element name="effectiveDurationUnitCd" type="string" minOccurs="0"/>
+																<element name="effectiveFromTime" type="dateTime" minOccurs="0"/>
+																<element name="effectiveToTime" type="dateTime" minOccurs="0"/>
+																<element name="electronicInd" type="string" minOccurs="0"/>
+																<element name="groupLevelCd" type="string" minOccurs="0"/>
+																<element name="jurisdictionCd" type="string" minOccurs="0"/>
+																<element name="labConditionCd" type="string" minOccurs="0"/>
+																<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgUserId" type="string" minOccurs="0"/>
+																<element name="localId" type="string" minOccurs="0"/>
+																<element name="methodCd" type="string" minOccurs="0"/>
+																<element name="methodDescTxt" type="string" minOccurs="0"/>
+																<element name="obsDomainCd" type="string" minOccurs="0"/>
+																<element name="obsDomainCdSt1" type="string" minOccurs="0"/>
+																<element name="pnuCd" type="string" minOccurs="0"/>
+																<element name="priorityCd" type="string" minOccurs="0"/>
+																<element name="priorityDescTxt" type="string" minOccurs="0"/>
+																<element name="progAreaCd" type="string" minOccurs="0"/>
+																<element name="recordStatusCd" type="string" minOccurs="0"/>
+																<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																<element name="repeatNbr" type="string" minOccurs="0"/>
+																<element name="statusCd" type="string" minOccurs="0"/>
+																<element name="statusTime" type="dateTime" minOccurs="0"/>
+																<element name="subjectPersonLocalId" type="string" minOccurs="0"/>
+																<element name="targetSiteCd" type="string" minOccurs="0"/>
+																<element name="targetSiteDescTxt" type="string" minOccurs="0"/>
+																<element name="txt" type="string" minOccurs="0"/>
+																<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																<element name="valueCd" type="string" minOccurs="0"/>
+																<element name="ynuCd" type="string" minOccurs="0"/>
+																<element name="programJurisdictionOid" type="string" minOccurs="0"/>
+																<element name="sharedInd" type="string" minOccurs="0"/>
+																<element name="versionCtrlNbr" type="string" minOccurs="0"/>
+																<element name="altCd" type="string" minOccurs="0"/>
+																<element name="altCdDescTxt" type="string" minOccurs="0"/>
+																<element name="altCdSystemCd" type="string" minOccurs="0"/>
+																<element name="altCdSystemDescTxt" type="string" minOccurs="0"/>
+																<element name="CdDerivedInd" type="string" minOccurs="0"/>
+																<element name="rptToStateTime" type="dateTime" minOccurs="0"/>
+																<element name="cdVersion" type="string" minOccurs="0"/>
+																<element name="obsValueCoded" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="code" type="string" minOccurs="0"/>
+																			<element name="codeSystemCd" type="string" minOccurs="0"/>
+																			<element name="codeSystemDescTxt" type="string" minOccurs="0"/>
+																			<element name="codeVersion" type="string" minOccurs="0"/>
+																			<element name="displayName" type="string" minOccurs="0"/>
+																			<element name="originalTxt" type="string" minOccurs="0"/>
+																			<element name="altCd" type="string" minOccurs="0"/>
+																			<element name="altCdDescTxt" type="string" minOccurs="0"/>
+																			<element name="altCdSystemCd" type="string" minOccurs="0"/>
+																			<element name="altCdSystemDescTxt" type="string" minOccurs="0"/>
+																			<element name="CodeDerivedInd" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+																<element name="obsValueNumeric" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="obsValueNumericSeq" type="string" minOccurs="0"/>
+																			<element name="highRange" type="string" minOccurs="0"/>
+																			<element name="lowRange" type="string" minOccurs="0"/>
+																			<element name="comparatorCd1" type="string" minOccurs="0"/>
+																			<element name="numericValue1" type="string" minOccurs="0"/>
+																			<element name="numericValue2" type="string" minOccurs="0"/>
+																			<element name="numericUnitCd" type="string" minOccurs="0"/>
+																			<element name="separatorCd" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+																<element name="obsValueText" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="obsValueTxtSeq" type="string" minOccurs="0"/>
+																			<element name="dataSubtypeCd" type="string" minOccurs="0"/>
+																			<element name="encodingTypeCd" type="string" minOccurs="0"/>
+																			<element name="txtTypeCd" type="string" minOccurs="0"/>
+																			<element name="valueImageTxt" type="string" minOccurs="0"/>
+																			<element name="valueTxt" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+																<element name="obsValueDate" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="obsValueDateSeq" type="string" minOccurs="0"/>
+																			<element name="durationAmt" type="string" minOccurs="0"/>
+																			<element name="durationUnitCd" type="string" minOccurs="0"/>
+																			<element name="fromTime" type="dateTime" minOccurs="0"/>
+																			<element name="toTime" type="dateTime" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+																<element name="ObservationReason" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="reasonCd" type="string" minOccurs="0"/>
+																			<element name="reasonDescTxt" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+																<element name="ObservationInterp" minOccurs="0" maxOccurs="unbounded">
+																	<complexType>
+																		<sequence>
+																			<element name="interpretationCd" type="string" minOccurs="0"/>
+																			<element name="interpretationDescTxt" type="string" minOccurs="0"/>
+																		</sequence>
+																	</complexType>
+																</element>
+															</sequence>
+														</complexType>
+													</element>
+													<element name="actId" minOccurs="0" maxOccurs="unbounded">
+														<complexType name="actIdType">
+															<sequence>
+																<element name="actIdSeq" type="string" minOccurs="0"/>
+																<element name="addReasonCd" type="string" minOccurs="0"/>
+																<element name="addTime" type="dateTime" minOccurs="0"/>
+																<element name="addUserId" type="string" minOccurs="0"/>
+																<element name="assigningAuthorityCd" type="string" minOccurs="0"/>
+																<element name="assigningAuthorityDescTxt" type="string" minOccurs="0"/>
+																<element name="durationAmt" type="string" minOccurs="0"/>
+																<element name="durationUnitCd" type="string" minOccurs="0"/>
+																<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgUserId" type="string" minOccurs="0"/>
+																<element name="recordStatusCd" type="string" minOccurs="0"/>
+																<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																<element name="rootExtensionTxt" type="string" minOccurs="0"/>
+																<element name="statusCd" type="string" minOccurs="0"/>
+																<element name="statusTime" type="dateTime" minOccurs="0"/>
+																<element name="typeCd" type="string" minOccurs="0"/>
+																<element name="typeDescTxt" type="string" minOccurs="0"/>
+																<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																<element name="validFromTime" type="dateTime" minOccurs="0"/>
+																<element name="validToTime" type="dateTime" minOccurs="0"/>
+															</sequence>
+														</complexType>
+													</element>
+													<element name="notification" minOccurs="0">
+														<complexType>
+															<sequence>
+																<element name="notificationTempId" type="string" minOccurs="0"/>
+																<element name="activityDurationAmt" type="string" minOccurs="0"/>
+																<element name="activityDurationUnitCd" type="string" minOccurs="0"/>
+																<element name="activityFromTime" type="dateTime" minOccurs="0"/>
+																<element name="activityToTime" type="dateTime" minOccurs="0"/>
+																<element name="addReasonCd" type="string" minOccurs="0"/>
+																<element name="addTime" type="dateTime" minOccurs="0"/>
+																<element name="addUserId" type="string" minOccurs="0"/>
+																<element name="caseClassCd" type="string" minOccurs="0"/>
+																<element name="caseConditionCd" type="string" minOccurs="0"/>
+																<element name="cd" type="string" minOccurs="0"/>
+																<element name="cdDescTxt" type="string" minOccurs="0"/>
+																<element name="confidentialityCd" type="string" minOccurs="0"/>
+																<element name="confidentialityDescTxt" type="string" minOccurs="0"/>
+																<element name="confirmationMethodCd" type="string" minOccurs="0"/>
+																<element name="effectiveDurationAmt" type="string" minOccurs="0"/>
+																<element name="effectiveDurationUnitCd" type="string" minOccurs="0"/>
+																<element name="effectiveFromTime" type="dateTime" minOccurs="0"/>
+																<element name="effectiveToTime" type="dateTime" minOccurs="0"/>
+																<element name="jurisdictionCd" type="string" minOccurs="0"/>
+																<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+																<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																<element name="lastChgUserId" type="string" minOccurs="0"/>
+																<element name="localId" type="string" minOccurs="0"/>
+																<element name="methodCd" type="string" minOccurs="0"/>
+																<element name="methodDescTxt" type="string" minOccurs="0"/>
+																<element name="mmwrWeek" type="string" minOccurs="0"/>
+																<element name="mmwrYear" type="string" minOccurs="0"/>
+																<element name="nedssVersionNbr" type="string" minOccurs="0"/>
+																<element name="progAreaCd" type="string" minOccurs="0"/>
+																<element name="reasonCd" type="string" minOccurs="0"/>
+																<element name="reasonDescTxt" type="string" minOccurs="0"/>
+																<element name="recordCount" type="string" minOccurs="0"/>
+																<element name="recordStatusCd" type="string" minOccurs="0"/>
+																<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+																<element name="repeatNbr" type="string" minOccurs="0"/>
+																<element name="rptSentTime" type="dateTime" minOccurs="0"/>
+																<element name="rptSourceCd" type="string" minOccurs="0"/>
+																<element name="rptSourceTypeCd" type="string" minOccurs="0"/>
+																<element name="statusCd" type="string" minOccurs="0"/>
+																<element name="statusTime" type="dateTime" minOccurs="0"/>
+																<element name="txt" type="string" minOccurs="0"/>
+																<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+																<element name="programJurisdictionOid" type="string" minOccurs="0"/>
+																<element name="sharedInd" type="string" minOccurs="0"/>
+																<element name="versionCtrlNbr" type="string" minOccurs="0"/>
+																<element name="autoResendInd" type="string" minOccurs="0"/>
+															</sequence>
+														</complexType>
+													</element>
+												</sequence>
+											</complexType>
+										</element>
+										<element name="Participation" minOccurs="0" maxOccurs="unbounded">
+											<complexType>
+												<sequence>
+													<element name="subjectEntityTempId" type="string" minOccurs="0"/>
+													<element name="actTempId" type="string" minOccurs="0"/>
+													<element name="typeCd" type="string" minOccurs="0"/>
+													<element name="actClassCd" type="string" minOccurs="0"/>
+													<element name="addReasonCd" type="string" minOccurs="0"/>
+													<element name="addTime" type="dateTime" minOccurs="0"/>
+													<element name="addUserId" type="string" minOccurs="0"/>
+													<element name="awarenessCd" type="string" minOccurs="0"/>
+													<element name="awarenessDescTxt" type="string" minOccurs="0"/>
+													<element name="cd" type="string" minOccurs="0"/>
+													<element name="durationAmt" type="string" minOccurs="0"/>
+													<element name="durationUnitCd" type="string" minOccurs="0"/>
+													<element name="fromTime" type="dateTime" minOccurs="0"/>
+													<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+													<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+													<element name="lastChgUserId" type="string" minOccurs="0"/>
+													<element name="recordStatusCd" type="string" minOccurs="0"/>
+													<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+													<element name="roleSeq" type="string" minOccurs="0"/>
+													<element name="statusCd" type="string" minOccurs="0"/>
+													<element name="statusTime" type="dateTime" minOccurs="0"/>
+													<element name="subjectClassCd" type="string" minOccurs="0"/>
+													<element name="toTime" type="dateTime" minOccurs="0"/>
+													<element name="typeDescTxt" type="string" minOccurs="0"/>
+													<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+												</sequence>
+											</complexType>
+										</element>
+										<element name="CDFData" minOccurs="0">
+											<complexType>
+												<sequence>
+													<element name="MetaDataObject" maxOccurs="unbounded">
+														<complexType>
+															<sequence>
+																<element name="ldfUid" type="string"/>
+																<element name="activeInd" type="string" minOccurs="0"/>
+																<element name="adminComment" type="string" minOccurs="0"/>
+																<element name="businessObjNm" type="string" minOccurs="0"/>
+																<element name="categoryType" type="string" minOccurs="0"/>
+																<element name="cdcNationalId" type="string" minOccurs="0"/>
+																<element name="classCd" type="string" minOccurs="0"/>
+																<element name="codeSetNm" type="string" minOccurs="0"/>
+																<element name="conditionCd" type="string" minOccurs="0"/>
+																<element name="conditionDescTxt" type="string" minOccurs="0"/>
+																<element name="dataType" type="string" minOccurs="0"/>
+																<element name="displayOrderNbr" type="string" minOccurs="0"/>
+																<element name="fieldSize" type="string" minOccurs="0"/>
+																<element name="labelTxt" type="string" minOccurs="0"/>
+																<element name="validationTxt" type="string" minOccurs="0"/>
+																<element name="ldfPageId" type="string" minOccurs="0"/>
+																<element name="recordStatusCd" type="string"/>
+																<element name="validationJscriptTxt" type="string" minOccurs="0"/>
+																<element name="requiredInd" type="string" minOccurs="0"/>
+																<element name="addTime" type="dateTime"/>
+																<element name="stateCd" type="string" minOccurs="0"/>
+																<element name="deploymentCd" type="string" minOccurs="0"/>
+																<element name="recordStatusTime" type="dateTime"/>
+																<element name="customSubformMetadataUid" type="string" minOccurs="0"/>
+																<element name="htmlTag" type="string" minOccurs="0"/>
+																<element name="importVersionNbr" type="string" minOccurs="0"/>
+																<element name="nndInd" type="string"/>
+																<element name="ldfOid" type="string" minOccurs="0"/>
+																<element name="versionCtrlNbr" type="string" minOccurs="0"/>
+															</sequence>
+														</complexType>
+													</element>
+													<element name="DataValue" maxOccurs="unbounded">
+														<complexType>
+															<sequence>
+																<element name="ldfUid" type="string"/>
+																<element name="businessObjNm" type="string"/>
+																<element name="addTime" type="dateTime" minOccurs="0"/>
+																<element name="businessObjectTempId" type="string"/>
+																<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+																<element name="ldfValue" type="string" minOccurs="0"/>
+																<element name="versionCtrlNbr" type="string" minOccurs="0"/>
+															</sequence>
+														</complexType>
+													</element>
+												</sequence>
+											</complexType>
+										</element>
+										<element name="ActRelationship" minOccurs="0" maxOccurs="unbounded">
+											<complexType>
+												<sequence>
+													<element name="targetActTempId" type="string" minOccurs="0"/>
+													<element name="sourceActTempId" type="string" minOccurs="0"/>
+													<element name="typeCd" type="string" minOccurs="0"/>
+													<element name="addReasonCd" type="string" minOccurs="0"/>
+													<element name="addTime" type="dateTime" minOccurs="0"/>
+													<element name="addUserId" type="string" minOccurs="0"/>
+													<element name="durationAmt" type="string" minOccurs="0"/>
+													<element name="durationUnitCd" type="string" minOccurs="0"/>
+													<element name="fromTime" type="dateTime" minOccurs="0"/>
+													<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+													<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+													<element name="lastChgUserId" type="string" minOccurs="0"/>
+													<element name="recordStatusCd" type="string" minOccurs="0"/>
+													<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+													<element name="sequenceNbr" type="string" minOccurs="0"/>
+													<element name="sourceClassCd" type="string" minOccurs="0"/>
+													<element name="statusCd" type="string" minOccurs="0"/>
+													<element name="statusTime" type="dateTime" minOccurs="0"/>
+													<element name="targetClassCd" type="string" minOccurs="0"/>
+													<element name="toTime" type="dateTime" minOccurs="0"/>
+													<element name="typeDescTxt" type="string" minOccurs="0"/>
+													<element name="userAffiliationTxt" type="string" minOccurs="0"/>
+												</sequence>
+											</complexType>
+										</element>
+										<element name="Role" minOccurs="0" maxOccurs="unbounded">
+											<complexType>
+												<sequence>
+													<element name="subjectEntityTempId" type="string" minOccurs="0"/>
+													<element name="cd" type="string" minOccurs="0"/>
+													<element name="roleSeq" type="string" minOccurs="0"/>
+													<element name="addReasonCd" type="string" minOccurs="0"/>
+													<element name="addTime" type="dateTime" minOccurs="0"/>
+													<element name="addUserId" type="string" minOccurs="0"/>
+													<element name="cdDescTxt" type="string" minOccurs="0"/>
+													<element name="effectiveDurationAmt" type="string" minOccurs="0"/>
+													<element name="effectiveDurationUnitCd" type="string" minOccurs="0"/>
+													<element name="effectiveFromTime" type="dateTime" minOccurs="0"/>
+													<element name="effectiveToTime" type="dateTime" minOccurs="0"/>
+													<element name="lastChgReasonCd" type="string" minOccurs="0"/>
+													<element name="lastChgTime" type="dateTime" minOccurs="0"/>
+													<element name="lastChgUserId" type="string" minOccurs="0"/>
+													<element name="recordStatusCd" type="string" minOccurs="0"/>
+													<element name="recordStatusTime" type="dateTime" minOccurs="0"/>
+													<element name="scopingClassCd" type="string" minOccurs="0"/>
+													<element name="scopingEntityTempId" type="string" minOccurs="0"/>
+													<element name="scopingRoleCd" type="string" minOccurs="0"/>
+													<element name="scopingRoleSeq" type="string" minOccurs="0"/>
+													<element name="statusCd" type="string" minOccurs="0"/>
+													<element name="statusTime" type="dateTime" minOccurs="0"/>
+													<element name="subjectClassCd" type="string" minOccurs="0"/>
+												</sequence>
+											</complexType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+							<element name="NedssEventType" type="string">
+								<annotation>
+									<documentation> Note: Valid types are: Investigation, LabReport,MorbReport Vaccination,SummaryReport. Notification </documentation>
+								</annotation>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+	</xsp:structure>
+	<template>
+		<xsp:logic><![CDATA[				
+				
+				
+				String sTabNumber = request.getParameter("DSFileTab");
+				String sPageName = "";
+				sPageName = (String) request.getAttribute("DSPageName");
+
+				
+			      if (sTabNumber == null)
+				 	sTabNumber = (String) request.getAttribute("DSFileTab");
+				 if (sTabNumber == null)
+				 	sTabNumber  = (String) session.getAttribute("DSFileTab");
+
+				
+				if (sTabNumber == null)
+					sTabNumber = "1";
+										
+				//	check the operation type and object type for when to get the person unique id from session object
+			
+
+				//	retrieve the security object from session and display the user name
+				String fullName = "";
+				String isTest = "";
+				
+				try {
+						NBSSecurityObj so = (NBSSecurityObj) request.getSession().getAttribute("NBSSecurityObject");
+						
+
+						if (so != null) {
+							
+							 fullName = so.getTheUserProfile().getTheUser().getFirstName() + " " + so.getTheUserProfile().getTheUser().getLastName();
+							 isTest = (String)request.getSession().getAttribute("isTest");
+						}   
+						
+				}
+			
+				catch (Exception e) {
+					
+				}
+		]]></xsp:logic>
+		<current-tab>
+			<xsp:expr>sTabNumber</xsp:expr>
+		</current-tab>
+		<user-name>
+			<xsp:expr>fullName</xsp:expr>
+		</user-name>
+		<page-name>
+			<xsp:expr>sPageName</xsp:expr>
+		</page-name>
+
+		<hiddenFieldIsTest>										
+				<value><xsp:expr>isTest</xsp:expr></value>
+				<id>isTestVar</id>
+		</hiddenFieldIsTest> 
+		
+		<!--xsp:logic>
+				response.setDateHeader("Expires",-1);
+				response.setHeader("Pragma","no-cache");
+				response.setHeader("cache-control","no-store");
+		</xsp:logic-->
+	</template>
+</xsp:page>

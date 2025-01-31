@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.NEDSSConstants</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.person.vo.ProviderSearchVO</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+	</xsp:structure>
+	<nedss:getProviderTitle>
+	</nedss:getProviderTitle>
+	<nedss:getNameProvider/>
+	<nedss:storePerName>
+		</nedss:storePerName>
+	<content>
+		<xsp:attribute name="title">
+			<xsp:expr>getProviderTitle()</xsp:expr>
+		</xsp:attribute>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<xsp:logic><![CDATA[
+					
+				String sDebug = "";
+				
+				//String searchType = request.getParameter("searchType");				
+				
+				String sOperationType=(String)request.getAttribute("ContextAction");				
+				////##!! System.out.println("sOperationType: " + sOperationType);
+				ProviderSearchVO provSearchVO  = (ProviderSearchVO)request.getAttribute("DSSearchCriteria");
+				
+				//System.out.println("Prov Search="+ProvSearchVO);
+		
+		]]></xsp:logic>
+		<xsp:logic>
+		</xsp:logic>
+		<javascript-files>
+			<import>EntitySearch.js</import>
+			<import>ProviderSearchSpecific.js</import>
+		</javascript-files>
+		<button-bar>
+			<right>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<xsp:logic>if(sOperationType.equals("EntitySearch")) {</xsp:logic>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>window.close();</javascript-action>
+			</right>
+			<xsp:logic> } </xsp:logic>
+		</button-bar>
+		<tab name="search">
+			<nedss:writeErrorMessages/>
+			<group>
+				<line>
+					<element type="hidden" name="perTitle">
+						<value/>
+					</element>
+					<element name="ContextAction" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="ContextAction"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<!--group name="Simple Search"-->
+			<group>
+				<xsp:attribute name="name">
+					<xsp:expr>getNameProvider()</xsp:expr>
+				</xsp:attribute>
+				<line>
+					<element type="raw"/>
+					<element type="raw">
+						<span>
+							<b>Operators</b>
+						</span>
+					</element>
+					<element type="raw">
+						<span>
+							<b>Search Criteria</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<xsp:logic>if(PropertyUtil.getInstance().getPersonSearchNameOperatorDefault().equals("CT")){</xsp:logic>
+					<element name="providerSearch.lastNameOperator" type="select" background="Shaded" label="Last Name" default="CT" noblank="true" length="11">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_SNDX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getLastNameOperator()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+					<xsp:logic>} else {</xsp:logic>
+					<element name="providerSearch.lastNameOperator" type="select" background="Shaded" label="Last Name" default="SW" noblank="true" length="11">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_SNDX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getLastNameOperator()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+					<xsp:logic>}</xsp:logic>
+					<element name="providerSearch.lastName" type="text">
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getLastName()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<xsp:logic>if(PropertyUtil.getInstance().getPersonSearchNameOperatorDefault().equals("CT")){</xsp:logic>
+					<element name="providerSearch.firstNameOperator" type="select" background="Shaded" align="left" label="First Name" default="CT" noblank="true" length="11">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_SNDX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getFirstNameOperator()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+					<xsp:logic>} else {</xsp:logic>
+					<element name="providerSearch.firstNameOperator" type="select" background="Shaded" align="left" label="First Name" default="SW" noblank="true" length="11">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_SNDX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getFirstNameOperator()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+					<xsp:logic>}</xsp:logic>
+					<element name="providerSearch.firstName" type="text">
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getFirstName()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element name="providerSearch.streetAddr1Operator" type="select" background="Shaded" align="left" label="Street Address" default="CT" noblank="true" length="9">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_ALPHA</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getStreetAddr1Operator()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+					<element name="providerSearch.streetAddr1" type="text">
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getStreetAddr1()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element name="providerSearch.cityDescTxtOperator" type="select" background="Shaded" label="City" default="CT" noblank="true" length="9">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_ALPHA</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getCityDescTxtOperator()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+					<element name="providerSearch.cityDescTxt" type="text">
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getCityDescTxt()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="State"/>
+					<element name="providerSearch.state" type="select" length="25">
+						<srt-options-string>
+							<srt-codes:getStateCodes>
+								<type>STATE_CCD</type>
+							</srt-codes:getStateCodes>
+						</srt-options-string>
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getState()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="Zip"/>
+					<element name="providerSearch.zipCd" type="text">
+						<validation type="reg-expr" error-code="ERR103" name="Zip">
+							<pattern><![CDATA[^((\d{5})|(\d{5}-\d{4}))?$]]></pattern>
+						</validation>
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getZipCd()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="Telephone"/>
+					<element name="providerSearch.phoneNbrTxt" type="telephone" mask="(###)###-####" size="10">
+						<validation type="reg-expr" error-code="ERR107" name="telephone">
+							<pattern><![CDATA[^((\d{3})?-(\d{3})?-(\d{4})?)?$]]></pattern>
+						</validation>
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getPhoneNbrTxt()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="ID Type"/>
+					<element name="providerSearch.typeCd" type="select" length="31">
+						<validation type="acctIdSearchCheck" nameRef="providerSearch.rootExtensionTxt" name="ID Type"/>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>EI_TYPE_PRV</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<xsp:logic>if (provSearchVO != null) { System.out.println(" \n\n provSearchVO  "+provSearchVO.getTypeCd() );</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getTypeCd()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="Value"/>
+					<element name="providerSearch.rootExtensionTxt" type="text">
+						<validation type="acctIdSearchCheck" nameRef="providerSearch.typeCd" name="ID Value"/>
+						<xsp:logic>if (provSearchVO != null) {</xsp:logic>
+						<value>
+							<xsp:expr>provSearchVO.getRootExtensionTxt()</xsp:expr>
+						</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

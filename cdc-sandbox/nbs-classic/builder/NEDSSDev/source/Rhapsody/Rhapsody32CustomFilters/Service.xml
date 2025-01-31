@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="Nedss Plug-in" immediate="true">
+	<implementation class="gov.cdc.nedss.rhapsody.customfilters.Activator"/>
+	<reference name="AUXILIARY_FILE" interface="com.orchestral.rhapsody.configuration.auxiliaryfiles.AuxiliaryFilesService" bind="setAuxiliaryFilesService" unbind="unsetAuxiliaryFilesService"/>
+	<reference name="DEFINITION" interface="com.orchestral.rhapsody.model.definition.DefinitionService" bind="setDefinitionService" unbind="unsetDefinitionService"/>
+	<reference name="MESSAGE_PARSING" interface="com.orchestral.rhapsody.messageparsing.MessageParsingService" bind="setMessageParsingService" unbind="unsetMessageParsingService"/>
+	<reference name="PERSISTENT_MAP" interface="com.orchestral.rhapsody.persistentmap.PersistentMapService" bind="setPersistentMapService" unbind="unsetPersistentMapService"/>
+	<reference name="SECURITY" interface="com.orchestral.rhapsody.configuration.security.SecurityObjectsService" bind="setSecurityObjectsService" unbind="unsetSecurityObjectsService"/>
+	<reference name="XML" interface="javax.xml.parsers.DocumentBuilderFactory" target="(&amp;(parser.namespaceAware=true)(parser.validating=false))" bind="setDocumentBuilderFactory" unbind="unsetDocumentBuilderFactory"/>
+	<reference name="ID" interface="com.orchestral.rhapsody.idgenerator.IdGeneratorFactory" unbind="unsetIdGeneratorFactory" bind="setIdGeneratorFactory"/>
+	<reference name="VARIABLES" interface="com.orchestral.rhapsody.configuration.variables.VariablesService" unbind="unsetVariablesService" bind="setVariablesService"/>
+</component>

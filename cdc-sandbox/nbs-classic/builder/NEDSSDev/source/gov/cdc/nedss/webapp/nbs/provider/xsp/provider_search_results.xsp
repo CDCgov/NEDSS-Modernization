@@ -1,0 +1,609 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.entityid.dt.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.locator.dt.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.person.dt.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.person.vo.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.person.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.logicsheet.helper.CachedDropDownValues</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbscontext.NBSContext</xsp:include>
+	</xsp:structure>
+	<nedss:Declarations/>
+	<nedss:StateDescTxt/>
+	<nedss:getProviderTitleForResults/>
+	<!--xsp:logic><![CDATA[
+
+		   	private CachedDropDownValues srtValues = new CachedDropDownValues();
+               private TreeMap treemap = srtValues.getStateCodes2("USA");
+
+		   private String getStateDescTxt(String sStateCd) {
+
+		   		String desc= null;
+		                  	if (treemap != null){
+
+		                      if(sStateCd!=null && treemap.get(sStateCd)!=null)
+		                      	desc = (String)treemap.get(sStateCd);
+
+		                   }
+		      			return desc;
+		    }
+
+		    String entityFirstNm = null;
+		    String entityLastNm = null;
+		    String entityEmail = null;
+		    String entityPhoneNbr = null;
+		    String entityPhoneExt = null;
+		    String entityPersonUID = null;
+		    String entityLocalID = null;
+
+
+	]]></xsp:logic-->
+	<content type="provider">
+		<xsp:attribute name="title">
+			<xsp:expr>getProviderTitleForResults()</xsp:expr>
+		</xsp:attribute>
+		<nedss:SearchResultRequestValues/>
+		<!--xsp:logic><![CDATA[
+
+				String sOperationType = request.getParameter("ContextAction");
+
+
+				int currentIndex = 0;
+				int maxRowCount = 10;
+				int numberOfRecords = 0;
+				//String temp = request.getParameter("currentIndex");
+
+
+				String temp = (String) request.getAttribute("DSFromIndex");
+
+				String sSearchCriteria = (String) session.getAttribute("DSSearchCriteriaString");
+
+				if (temp!=null) {
+					currentIndex = Integer.parseInt(temp);
+				}
+				ArrayList personList = new ArrayList();
+				ArrayList  person = new ArrayList();
+
+				PersonSearchVO personFind = null;
+
+			try {
+				numberOfRecords = 0;
+				//personList = (ArrayList) request.getSession().getAttribute("DSSearchResults");
+				personList = (ArrayList) request.getAttribute("DSSearchResults");
+
+				if(personList != null){
+					DisplayPersonList  list = (DisplayPersonList)personList.get(0);
+
+					if (list != null) {
+						person = list.getList();
+						numberOfRecords = person.size() ;
+					}
+				}
+			}
+			catch (Exception e) {
+				//##!! System.out.println("error occurred in person_search_results.xsp");
+			}
+
+
+			]]></xsp:logic-->
+		<button-bar>
+			<nedss:NotEntitySearch>
+				<!--xsp:logic><![CDATA[if(sOperationType !=null  && (!sOperationType.equals("EntitySearch"))) { ]]></xsp:logic-->
+				<right>
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="addButton"/>
+					</xsp:attribute>
+					<label>Add</label>
+					<javascript-action>getPage('<xsp-request:get-attribute name="addButtonHref"/>');</javascript-action>
+				</right>
+			</nedss:NotEntitySearch>
+			<!--xsp:logic> } </xsp:logic-->
+			<nedss:ifEntitySearch>
+				<!--xsp:logic>if(sOperationType.equals("EntitySearch")) {</xsp:logic-->
+				<right>
+					<label>Cancel</label>
+					<javascript-action>CancelEntitySearch();</javascript-action>
+				</right>
+			</nedss:ifEntitySearch>
+			<!--xsp:logic> } </xsp:logic-->
+		</button-bar>
+		<javascript-files>
+			<import>EntitySearch.js</import>
+			<import>searchResultsSpecific.js</import>
+		</javascript-files>
+		<!--	<submit location="localhost/cocoon/nedss/PersonSearchResult.xml"/>-->
+		<AddNewPersonHref location="/nedss/servlet/gov.cdc.nedss.cdm.ComparePersonServlet"/>
+		<!--	<ViewPersonHref location="/nedss/servlet/gov.cdc.nedss.cdm.ComparePersonServlet"/>-->
+		<xsp-request:get-uri as="xml"/>
+		<session:get-id as="xml"/>
+		<refineSearchHref>
+			<xsp-request:get-attribute name="refineSearchHref"/>
+		</refineSearchHref>
+		<newSearchHref>
+			<xsp-request:get-attribute name="newSearchHref"/>
+		</newSearchHref>
+		<viewHref>
+			<xsp-request:get-attribute name="viewHref"/>
+		</viewHref>
+		<!--viewFileHref>
+			<xsp-request:get-attribute name="viewFileHref"/>
+		</viewFileHref-->
+		<nextHref>
+			<xsp-request:get-attribute name="nextHref"/>
+		</nextHref>
+		<prevHref>
+			<xsp-request:get-attribute name="prevHref"/>
+		</prevHref>
+		<searchCriteria>
+			<xsp:expr>sSearchCriteria </xsp:expr>
+		</searchCriteria>
+		<header>
+			<column>
+				<name/>
+			</column>
+			<column>
+				<name>Full Name</name>
+			</column>
+			<column>
+				<name>Address</name>
+			</column>
+			<column>
+				<name>Telephone</name>
+			</column>
+			<column>
+				<name>ID</name>
+			</column>
+		</header>
+		<currentIndex>
+			<xsp:expr>currentIndex</xsp:expr>
+		</currentIndex>
+		<totalRecords>
+			<xsp:expr>numberOfRecords</xsp:expr>
+		</totalRecords>
+		<records>
+			<nedss:ProviderRecords>
+				<!--xsp:logic><![CDATA[
+						for( int i=currentIndex; (i >= currentIndex) && (i < currentIndex + maxRowCount) && (i < numberOfRecords); i++ ) {
+							PersonSrchResultVO pvo = (PersonSrchResultVO) person.get(i);
+
+							entityPersonUID = String.valueOf(pvo.getPersonUID());
+							entityLocalID = pvo.getPersonLocalID();
+				]]></xsp:logic -->
+				<record>
+					<uid>
+						<xsp:attribute name="type">
+							<xsp:expr>sOperationType</xsp:expr>
+						</xsp:attribute>
+						<xsp:expr>pvo.getPersonUID()</xsp:expr>
+					</uid>
+					<!--		code to gather all the person names		-->
+					<column>
+						<nedss:DisplayPersonNameArray>
+							<!--xsp:logic><![CDATA[
+											ArrayList personNames = (ArrayList) pvo.getPersonNameColl();
+											if(!(personNames == null)) {
+												for (int j =0; j < personNames.size(); j++)	{
+													PersonNameDT name = (PersonNameDT) personNames.get(j);
+													//	for entity search
+
+
+													if (name.getNmUseCd().trim().equals("Legal")){
+													  entityLastNm = name.getLastNm();
+													  entityFirstNm = name.getFirstNm();
+													} else {
+													  entityLastNm = null;
+													  entityFirstNm = null;
+													}
+												]]></xsp:logic-->
+							<name>
+								<use-code>
+									<xsp:expr>name.getNmUseCd()</xsp:expr>
+								</use-code>
+								<first-name>
+									<xsp:expr>name.getFirstNm()</xsp:expr>
+								</first-name>
+								<last-name>
+									<xsp:expr>name.getLastNm()</xsp:expr>
+								</last-name>
+							</name>
+						</nedss:DisplayPersonNameArray>
+						<!--xsp:logic><![CDATA[
+														}}
+												]]></xsp:logic-->
+					</column>
+					<!--column>
+						<xsp:expr>pvo.getPersonDOB()</xsp:expr>
+					</column>
+					<column>
+						<xsp:expr>pvo.getCurrentSex()</xsp:expr>
+					</column-->
+					<!--		code to gather all the person addresses		-->
+					<!--xsp:logic><![CDATA[
+						ArrayList personLocators = (ArrayList) pvo.getPersonLocatorsColl();
+							if(!(personLocators == null)) {
+								for (int k =0; k < personLocators.size(); k++)	{
+									EntityLocatorParticipationDT locator = (EntityLocatorParticipationDT) personLocators.get(k);
+		                          			]]></xsp:logic-->
+					<column>
+						<xsp:logic><![CDATA[
+								ArrayList locators = (ArrayList) pvo.getPersonLocatorsColl();
+									if(!(locators == null)) {
+										for (int k =0; k < locators.size(); k++)	{
+											EntityLocatorParticipationDT locator = (EntityLocatorParticipationDT) locators.get(k);
+				                          			]]></xsp:logic>
+					
+					
+					<xsp:logic><![CDATA[
+
+						   if(locator.getClassCd()!=null && locator.getClassCd().equals("PST")){
+							   if (locator.getThePostalLocatorDT() != null)	{
+								  PostalLocatorDT postal = locator.getThePostalLocatorDT();
+								  if (postal != null) { 
+								   if (postal.getStreetAddr1() != null || postal.getCityCd() != null || postal.getStateCd() != null || postal.getZipCd() != null)
+								   { 
+								   
+								   System.out.println("QSSSSS");
+								    if(locator.getClassCd()!=null && locator.getClassCd().equals("PST") &&  locator.getCd()!= null && locator.getCd().equalsIgnoreCase("O") && locator.getUseCd().equalsIgnoreCase("Primary Work Place") ){
+								
+									   entityAddress1 = postal.getStreetAddr1();
+									   entityCity = postal.getCityCd();
+									   entityState = getStateDescTxt(postal.getStateCd());
+									   entityCounty =  postal.getCntyCd();
+									   //System.out.println("\n\nlab report entityCounty Tthis is from xsl " + entityCounty );
+									   entitystateValue = postal.getStateCd();
+									   entityZip = postal.getZipCd();
+									   countyList = locator.getLocatorDescTxt();
+									 
+									   if (postal.getStreetAddr2() != null)
+										   entityAddress2 = postal.getStreetAddr2();
+									}
+								
+						  ]]></xsp:logic>
+
+					
+					
+					
+					
+					
+							<!--			if(locator.getClassCd().equals("PST")) {
+										if (locator.getThePostalLocatorDT() != null)	{
+											PostalLocatorDT postal = locator.getThePostalLocatorDT();
+											if (postal != null && (postal.getStreetAddr1() != null || postal.getCityCd() != null || postal.getStateCd() != null || postal.getZipCd() != null))
+											    { -->
+							<address>
+							
+								<use-code>
+									<xsp:expr>locator.getUseCd()</xsp:expr>
+								</use-code>
+								<!--type-code>
+									<xsp:expr>locator.getCdDescTxt()</xsp:expr>
+								</type-code-->
+								<street-address1>
+									<xsp:expr>postal.getStreetAddr1()</xsp:expr>
+								</street-address1>
+								<street-address2>
+									<xsp:expr>postal.getStreetAddr2()</xsp:expr>
+								</street-address2>
+								<city>
+									<xsp:expr>postal.getCityCd()</xsp:expr>
+								</city>
+								<state>
+									<xsp:expr>getStateDescTxt(postal.getStateCd())</xsp:expr>
+								</state>
+								<zip>
+									<xsp:expr>postal.getZipCd()</xsp:expr>
+								</zip>
+							</address>
+						
+						
+						<xsp:logic>
+						  } }}}
+						  </xsp:logic>
+
+						
+						
+						<xsp:logic>}}</xsp:logic>
+					</column>
+					<column>
+						<nedss:PersonEntityLocators>
+							<nedss:PersonTeleLocators>
+								<!--		}}} -->
+								<!--xsp:logic><![CDATA[			
+										if(locator.getClassCd().equals("TELE")) {
+											if (locator.getTheTeleLocatorDT() != null)	{
+												TeleLocatorDT tele = locator.getTheTeleLocatorDT();
+		
+													//gov.cdc.nedss.utils.VOTester.createReport(tele, "*****");
+													////##!! System.out.println("locator.getUseCd() :"+locator.getUseCd());
+													////##!! System.out.println("locator.getCd() :"+locator.getCd());
+													if(locator.getUseCd() != null && locator.getUseCd().equalsIgnoreCase("Work Place")  && locator.getCd().equalsIgnoreCase("PH") ) {
+		
+														////##!! System.out.println("tele.getPhoneNbrTxt(): " +tele.getPhoneNbrTxt());
+														////##!! System.out.println("tele.getExtensionTxt(): " +tele.getExtensionTxt());
+		
+														if(entityPhoneNbr.equals("") && entityPhoneExt.equals("") ) {
+														entityPhoneNbr = tele.getPhoneNbrTxt();
+														entityPhoneExt = tele.getExtensionTxt();
+														entityEmail = tele.getEmailAddress();
+		
+														}
+		
+													}
+														]]></xsp:logic-->
+								<telephone>
+									<use-code>
+										<xsp:expr>locator.getUseCd()</xsp:expr>
+									</use-code>
+									<!--type-code>
+										<xsp:expr>locator.getCdDescTxt()</xsp:expr>
+									</type-code-->
+									<telephone-number>
+										<xsp:expr>tele.getPhoneNbrTxt()</xsp:expr>
+									</telephone-number>
+									<email-address>
+										<xsp:expr>tele.getEmailAddress()</xsp:expr>
+									</email-address>
+								</telephone>
+							</nedss:PersonTeleLocators>
+						</nedss:PersonEntityLocators>
+					</column>
+					<!--	}}  -->
+					<!--xsp:logic><![CDATA[
+												}}
+										]]></xsp:logic-->
+					<!-- Code to gether the id's -->
+					<column>
+						<nedss:PersonIds>
+							<!--xsp:logic><![CDATA[
+						
+												Collection personIds =  pvo.getPersonIdColl();
+												//##!! System.out.println("10001: "+ pvo.getPersonIdColl());
+												if(!(personIds == null)) {
+						
+													for( Iterator anIterator = personIds .iterator(); anIterator.hasNext(); )
+													{
+														EntityIdDT ids  = (EntityIdDT) anIterator.next();
+														if(ids != null  && ids.getRootExtensionTxt().trim() != null  && !(ids.getRootExtensionTxt().trim().equals("")))
+				                               {
+						
+										]]></xsp:logic-->
+							<xsp:logic><![CDATA[
+                                              // System.out.println("\n\n\n\nids.getTypecd() ------- :"+ (ids.getTypeCd()));
+                                              // System.out.println("ids.getRootExtensionTxt() ------- :"+ (ids.getRootExtensionTxt()));											
+										 String  typeDesc = null;
+										  if (ids.getTypeCd() != null)
+          									  typeDesc =  ids.getTypeCd();  
+		          						  else	  
+		          							  typeDesc = "Quick Entry Code";
+		          							  
+		          							 if(ids.getTypeDescTxt() != null)
+												entityIdString.append("<br><b>").append(ids.getTypeDescTxt()).append(": </b>");
+											if(ids.getRootExtensionTxt() != null)
+												entityIdString.append(ids.getRootExtensionTxt());
+											if(ids.getAssigningAuthorityCd() != null)
+												entityIdString.append(" (").append(ids.getAssigningAuthorityCd());
+											if(ids.getAssigningAuthorityDescTxt() != null)
+												entityIdString.append(" (").append(ids.getAssigningAuthorityDescTxt()).append(")");
+											if(ids.getAssigningAuthorityCd() != null)
+												entityIdString.append( ")");
+											entityIds = entityIdString.toString();
+							]]></xsp:logic>
+							<id>
+								<use-code>
+									<xsp:expr>typeDesc</xsp:expr>
+								</use-code>
+								<local-id>
+									<xsp:expr>ids.getRootExtensionTxt()</xsp:expr>
+								</local-id>
+								<xsp:logic>//System.out.println("\n\n\n\nids.getTypeDescTxt() :"+ (ids.getTypeCd()));</xsp:logic>
+								<xsp:logic>//System.out.println("\n\n\n\nids.getRootExtensionTxt() :"+ ids.getRootExtensionTxt());</xsp:logic>
+								<nedss:IfTypeCdSSN>
+									<nedss:RootExtensionTxtIndexOf>
+										<!--xsp:logic>
+																if((ids.getTypeCd()).equals("Social Security"))
+																{  
+																	if((ids.getTypeCd())!= null &amp;&amp; ((ids.getRootExtensionTxt()).indexOf("-")!= -1))
+																	{ 
+											
+																		</xsp:logic-->
+										<local-id>
+											<xsp:expr>ids.getRootExtensionTxt()</xsp:expr>
+										</local-id>
+									</nedss:RootExtensionTxtIndexOf>
+									<nedss:RootExtensionTxtSubString>
+										<!--xsp:logic>
+																	     	}else{
+																			String newSSN = ids.getRootExtensionTxt().substring(0, 3);
+																              newSSN = newSSN.concat("-");
+																              newSSN = newSSN.concat(ids.getRootExtensionTxt().substring(3, 5));
+																              newSSN = newSSN.concat("-");
+																              newSSN = newSSN.concat(ids.getRootExtensionTxt().substring(5));
+																              //##!! System.out.println("The newSSN is "+ newSSN );
+																              //ids.getTypeCd()= newSSN;
+													                       </xsp:logic-->
+										<local-id>
+											<xsp:expr>newSSN</xsp:expr>
+										</local-id>
+									</nedss:RootExtensionTxtSubString>
+									<!--xsp:logic>
+												}
+											}else{</xsp:logic -->
+								</nedss:IfTypeCdSSN>
+								<nedss:ElseClause>
+									<local-id>
+										<xsp:expr>ids.getRootExtensionTxt()</xsp:expr>
+									</local-id>
+								</nedss:ElseClause>
+								<!--xsp:logic>
+											}</xsp:logic-->
+							</id>
+							<!--xsp:logic><![CDATA[
+			                    	}}}
+                 	              ]]></xsp:logic-->
+						</nedss:PersonIds>
+					</column>
+					<!--nested-records>
+										
+						<record>
+							<uid type="Submit">310086061</uid>
+							<column>
+								<name>
+									<use-code>Legal</use-code>
+									<first-name>Test</first-name>
+									<last-name>Performance</last-name>
+								</name>
+							</column>
+							<column>10/10/1920</column>
+							<column/>
+							<column>
+								<address>
+									<use-code>Home</use-code>
+									<type-code>Current</type-code>
+									<street>123 Weblogic Lane</street>
+									<city/>
+									<state>Kansas</state>
+									<zip>78906</zip>
+								</address>
+							</column>
+							<column>
+								<telephone>
+									<use-code>Home</use-code>
+									<type-code>Phone</type-code>
+									<telephone-number>123-333-3321</telephone-number>
+									<email-address/>
+								</telephone>
+							</column>
+							<column>
+								<id>
+									<use-code>Social Security</use-code>
+									<local-id>111-11-3333</local-id>
+								</id>
+							</column>
+						</record>
+						<record>
+							<uid type="Submit">310086061</uid>
+							<column>
+								<name>
+									<use-code>Legal</use-code>
+									<first-name>Test</first-name>
+									<last-name>Performance</last-name>
+								</name>
+							</column>
+							<column>10/10/1920</column>
+							<column/>
+							<column>
+								<address>
+									<use-code>Home</use-code>
+									<type-code>Current</type-code>
+									<street>123 Weblogic Lane</street>
+									<city/>
+									<state>Kansas</state>
+									<zip>78906</zip>
+								</address>
+							</column>
+							<column>
+								<telephone>
+									<use-code>Home</use-code>
+									<type-code>Phone</type-code>
+									<telephone-number>123-333-3321</telephone-number>
+									<email-address/>
+								</telephone>
+							</column>
+							<column>
+								<id>
+									<use-code>Social Security</use-code>
+									<local-id>111-11-3333</local-id>
+								</id>
+							</column>
+						</record>
+					</nested-records-->
+					<!--xsp:logic><![CDATA[
+				}}}
+			]]></xsp:logic-->
+					<entity-search>
+						<!--	using legal name and home tele		-->
+						<entity-element name="entity.lastNm">
+							<xsp:expr>entityLastNm</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.firstNm">
+							<xsp:expr>entityFirstNm</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.emailAddress">
+							<xsp:expr>entityEmail</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.phoneNbrTxt">
+							<xsp:expr>entityPhoneNbr</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.extensionTxt">
+							<xsp:expr>entityPhoneExt</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.personUID">
+							<xsp:expr>entityPersonUID</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.localID">
+							<xsp:expr>entityLocalID</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.city">
+							<xsp:expr>entityCity</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.state">
+							<xsp:expr>entityState</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.stateValue">
+							<xsp:expr>entitystateValue</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.zip">
+							<xsp:expr>entityZip</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.address1">
+							<xsp:expr>entityAddress1</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.address2">
+							<xsp:expr>entityAddress2</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.suffix">
+							<xsp:expr>entitySuffix</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.degree">
+							<xsp:expr>entityDegree</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.entityIds">
+							<xsp:expr>entityIds</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.completePersonSearchResult">
+							<xsp:expr>personSearchResult</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.reporterPersonSearchResult">
+							<xsp:expr>reporterPersonSearchResult</xsp:expr>
+						</entity-element>
+					</entity-search>
+					<xsp:logic>
+								entityLastNm=null;
+								entityFirstNm=null;
+								entityEmail=null;
+								entityPhoneNbr=null;
+								entityPhoneExt=null;
+								entityPersonUID=null;
+								entityLocalID=null;
+								entityCity=null;
+								entityState=null;
+								entitystateValue=null;
+								entityZip=null;
+								entityAddress1=null;
+								entityAddress2=null;
+								entitySuffix=null;
+								entityDegree=null;
+								personSearchResult=null;
+								reporterPersonSearchResult=null;
+								entityIds=null;
+							</xsp:logic>
+				</record>
+			</nedss:ProviderRecords>
+			<!--xsp:logic><![CDATA[
+				}
+			]]></xsp:logic-->
+		</records>
+	</content>
+</xsp:page>

@@ -1,0 +1,769 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<nedss:Include/>
+	</xsp:structure>
+	<content form="/nbs/storeUser.do">
+		<javascript-files>
+			<import>EntitySearch.js</import>
+			<import>ElementValidate.js</import>
+		</javascript-files>
+		<xsp:logic><![CDATA[
+				String sDebug = "";
+				String sError = "";
+				try {
+						sError = (String)]]><session:get-attribute name="error"/><![CDATA[;
+				}
+				catch (Exception e) {
+					sDebug += e.toString();
+				}
+				String clear = "";
+				String typeOfAction = "";
+				typeOfAction = request.getParameter("OperationType");
+				String opvalue = (String) request.getAttribute("createoperation");
+				String facOrgName =  (String)request.getAttribute("reportingSourceName");
+			
+				String  isUserMsa = "";
+				String  isUserPaa = "";
+			
+				if(request.getAttribute("IsUserMSA") != null)
+					isUserMsa  = (request.getAttribute("IsUserMSA")).toString();
+				if(request.getAttribute("IsUserPAA") != null)
+					isUserPaa = (request.getAttribute("IsUserPAA")).toString();
+		]]></xsp:logic>
+		<xsp:logic>
+						if ( typeOfAction.equals("view") )
+						{
+							String userId = (String)request.getAttribute("userID");
+							//System.out.println("userId  " + userId  );
+							String encodedUserId = null;
+							if(userId != null)
+							{
+							 	encodedUserId = java.net.URLEncoder.encode(userId );
+							 }
+							String encodedURLEdit = new String("/nbs/loadUser.do?OperationType=edit&amp;userID=" + encodedUserId);
+							String encodedURLView = new String("/nbs/loadUser.do?OperationType=view&amp;userID=" + encodedUserId);
+							//System.out.println("encodedURLEdit " + encodedURLEdit );
+
+		</xsp:logic>
+		<button-bar>
+			<right>
+				<label>Edit</label>
+				<javascript-action>getPage('<xsp:expr>encodedURLEdit</xsp:expr>');</javascript-action>
+			</right>
+		</button-bar>
+		<xsp:logic>
+						}
+						else
+						{
+							String userId = (String)request.getAttribute("userID");
+							//System.out.println("userId  " + userId  );
+							
+							String encodedUserId = null;
+							if(userId != null)
+							{
+								encodedUserId = java.net.URLEncoder.encode(userId );
+							}
+							String encodedURLEdit = new String("/nbs/loadUser.do?OperationType=edit&amp;userID=" + encodedUserId);
+							String encodedURLView = new String("/nbs/loadUser.do?OperationType=view&amp;userID=" + encodedUserId);
+
+		</xsp:logic>
+		<button-bar>
+			<!--left>
+				<label>POSTED</label>
+				<javascript-action>document.forms[0].action="/nbs/posted";submitForm();</javascript-action>
+			</left-->
+			<right>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<xsp:logic><![CDATA[
+									if (typeOfAction != null && (typeOfAction.equals("create"))) 
+									{ 
+				]]></xsp:logic>
+				<javascript-action>cancelForm('/nbs/userList.do');</javascript-action>
+				<xsp:logic><![CDATA[
+						                     }
+						                      else
+					                      	{
+				]]></xsp:logic>
+				<javascript-action>cancelForm('<xsp:expr>encodedURLView</xsp:expr>');</javascript-action>
+				<xsp:logic>}</xsp:logic>
+			</right>
+		</button-bar>
+		<xsp:logic><![CDATA[
+						                    }
+		]]></xsp:logic>
+		<javascript-files>
+			<import>SecuritySpecific.js</import>
+		</javascript-files>
+		<topgroup>
+			<line>
+				<element type="raw">
+					<xsp:logic><![CDATA[
+					  		String dupid = null;
+							String sError1 = null;
+							sError1 = (String)request.getAttribute("errorvalue");
+							dupid = (String)request.getAttribute("dupuserid");
+					]]></xsp:logic>
+					<xsp:logic>
+							if  (sError1!=null)
+							{
+		    						if (sError1.equals("true"))
+		    						{
+
+					</xsp:logic>
+					<span>
+						<b>
+							<font color="red">This User ID is already in use. </font>
+						</b>
+					</span>
+					<xsp:logic>
+								}
+           					}
+					</xsp:logic>
+				</element>
+			</line>
+		</topgroup>
+		<tab>
+			<nedss:writeErrorMessages/>
+			<xsp:logic>
+					if (typeOfAction.equals("view"))
+					{
+				</xsp:logic>
+			<group name="User Information">
+				<line>
+					<element name="userProfile.theUser_s.userID" type="text" label="User ID">
+						<value>
+							<xsp-request:get-attribute name="userID"/>
+						</value>
+						<xsp:logic>
+							<readonly/>
+						</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element name="userProfile.theUser_s.firstName" type="text" label="First Name">
+						<value>
+							<xsp-request:get-attribute name="FirstName"/>
+						</value>
+						<validation type="required" name="Firstname"/>
+					</element>
+					<element name="userProfile.theUser_s.lastName" type="text" label="Last Name">
+						<value>
+							<xsp-request:get-attribute name="LastName"/>
+						</value>
+						<validation type="required" name="Lastname"/>
+					</element>
+					<element/>
+				</line>
+				<line>
+					<element type="radio" label="Status" name="userProfile.theUser_s.status" default="ACTIVE">
+						<value>
+							<xsp-request:get-attribute name="Status"/>
+						</value>
+						<options layout="horizontal">
+							<option name="Active" label="[-nc]Active" align-label="left" value="ACTIVE"/>
+							<option name="Inactive" label="[-nc]Inactive" align-label="left" value="INACTIVE"/>
+						</options>
+					</element>
+				</line>
+				<line>
+					<element type="checkbox" label="External">
+						<header link="#">External </header>
+						<options>
+							<option name="userProfile.theUser_s.userType" value="Y">
+								<header>External </header>
+								<value>
+									<xsp-request:get-attribute name="ExternalString"/>
+								</value>
+							</option>
+						</options>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Facility Information"/>
+				</line>
+				<line>
+					<element type="entity-search" name="Org-ReportingOrganizationUID" entity-type="organization" alignment="left">
+						<line>
+							<element label="Reporting Facility" color="black">
+							</element>
+						</line>
+						<line>
+							<element type="plain-text">
+								<xsp:logic><![CDATA[
+									if(request.getAttribute("reportingSourceDetails")!=null && !request.getAttribute("reportingSourceDetails").equals("") )
+									{
+								]]></xsp:logic>
+								<value>
+									<xsp-request:get-attribute name="reportingSourceDetails"/>
+								</value>
+								<xsp:logic>
+									}
+								</xsp:logic>
+								<xsp:logic><![CDATA[
+
+									else{
+								]]></xsp:logic>
+								<value>
+									There is no Reporting Facility selected.
+								</value>
+								<xsp:logic>
+									}
+								</xsp:logic>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="checkbox" label="Append to Lab Jurisdiction Derivation">
+						<header link="#">Append to Lab Jurisdiction Derivation</header>
+						<options>
+							<option name="userProfile.theUser_s.jurisdictionDerivationInd" value="Y">
+								<header>Append to Lab Jurisdiction Derivation</header>
+								<value>
+									<xsp-request:get-attribute name="jurisdictionDerivationString"/>
+								</value>
+							</option>
+						</options>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<i>Note: Applies to externally entered Lab Report. If Jurisdiction cannot be derived using Patient, Ordering Provider or Facility Address, use the Reporting Facility Address.</i>
+						</span>
+					</element>
+				</line>				
+				<line>
+					<element type="line-separator" title="Provider Information"/>
+				</line>
+				<line>
+					<element type="entity-search" name="investigator.personUid" entity-type="provider" alignment="left">
+						<line>
+							<element label="Provider" color="black">
+							</element>
+						</line>
+						<line>
+							<element type="plain-text">
+								<xsp:logic><![CDATA[
+									if(request.getAttribute("investigatorDetails")!=null && !request.getAttribute("investigatorDetails").equals("") )
+									{
+								]]></xsp:logic>
+								<value>
+									<xsp-request:get-attribute name="investigatorDetails"/>
+								</value>
+								<xsp:logic>
+									}
+								</xsp:logic>
+								<xsp:logic><![CDATA[
+
+									else{
+								]]></xsp:logic>
+								<value>
+									There is no provider selected.
+								</value>
+								<xsp:logic>
+									}
+								</xsp:logic>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Administration Information"/>
+				</line>
+				<line>
+					<element type="checkbox" label="" name="MSA">
+						<options>
+							<option name="userProfile.theUser_s.msa" value="Y" label="Master Security Administrator">
+								<value>
+									<xsp-request:get-attribute name="msaString"/>
+								</value>
+							</option>
+						</options>
+					</element>
+				</line>
+				<line>
+					<element type="checkbox" label="" name="PAA">
+						<options>
+							<option name="userProfile.theUser_s.paa" value="Y" label="Program Area Administrator">
+								<value>
+									<xsp-request:get-attribute name="paaString"/>
+								</value>
+							</option>
+						</options>
+					</element>
+				</line>
+				<line>
+					<element type="text" label="Program Area">
+						<xsp:attribute name="name">paaProgramArea</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="paaProgramArea"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<group name="Role Setup">
+				<line>
+					<element type="data-table">
+						<header>Jurisdiction</header>
+						<header>Program Area</header>
+						<header>Permission Set</header>
+						<header>Guest</header>
+						<xsp-request:get-attribute name="userID"/>
+						<view-link>/nbs/loadPermissionSet.do?OperationType=view&amp;RoleName=</view-link>
+						<value>
+							<xsp-request:get-attribute name="roleList"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<i> Note: A Guest will only have access to shared records. </i>
+						</span>
+					</element>
+				</line>
+			</group>
+			<xsp:logic>
+				}
+ 				else  // if it is not view i.e it is edit or create
+				{
+				</xsp:logic>
+			<group name="User Information">
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<font color="red">
+								<i> * Indicates a required field</i>
+							</font>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="userProfile.theUser_s.userID" type="text" label="*User ID">
+						<value>
+							<xsp-request:get-attribute name="userID"/>
+						</value>
+						<validation type="required" error-code="ERR023" name="User ID"/>
+						<!--validation type="required" name="User ID"/-->
+						<xsp:logic>
+						if (typeOfAction.equals("create"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (typeOfAction.equals("edit"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element name="userProfile.theUser_s.firstName" type="text" label="*First Name">
+						<value>
+							<xsp-request:get-attribute name="FirstName"/>
+						</value>
+						<validation type="required" error-code="ERR023" name="First Name"/>
+					</element>
+					<element name="userProfile.theUser_s.lastName" type="text" label="*Last Name">
+						<value>
+							<xsp-request:get-attribute name="LastName"/>
+						</value>
+						<validation type="required" error-code="ERR023" name="Last Name"/>
+					</element>
+					<element/>
+				</line>
+				<line>
+					<element type="radio" label="Status" name="userProfile.theUser_s.status" default="ACTIVE" layout="horizontal" onclick="return alertActiveConfirm(this);">
+>
+						<value>
+							<xsp-request:get-attribute name="Status"/>
+						</value>
+						<options layout="horizontal">
+							<option name="Active" label="[-nc]Active" align-label="left" value="ACTIVE"/>
+							<option name="Inactive" label="[-nc]Inactive" align-label="left" value="INACTIVE"/>
+						</options>
+					</element>
+				</line>
+				<line>
+					<element type="checkbox" label="External" name="External">
+						<header link="#">External </header>
+						<options>
+							<option name="userProfile.theUser_s.userType" value="Y">
+								<header>External </header>
+								<value>
+									<xsp-request:get-attribute name="ExternalString"/>
+								</value>
+							</option>
+						</options>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<b>Facility Information </b>
+							<i>Required for external (outside agency) users</i>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element type="entity-search" name="Org-ReportingOrganizationUID" entity-type="organization" alignment="left">
+						<value>
+							<xsp-request:get-attribute name="reportingOrgUID"/>
+						</value>
+						<!--line>
+							<element label="Reporting Facility" color="black">
+							</element>
+						</line-->
+						<line>
+							<element name="entity.completeOrgSearchResult" type="plain-text" indented="yes" align-label="left" label="Reporting Facility">
+								<xsp:logic><![CDATA[
+									if(request.getAttribute("reportingSourceDetails")!=null && !request.getAttribute("reportingSourceDetails").equals("") ){
+									//System.out.println("REPORTING SOURCE WAS NOT NULL SO SHOW IT");
+								]]></xsp:logic>
+								<value>
+									<xsp-request:get-attribute name="reportingSourceDetails"/>
+								</value>
+								<xsp:logic>
+									}
+								</xsp:logic>
+								<xsp:logic><![CDATA[
+									else{
+								]]></xsp:logic>
+								<value>There is no Reporting Facility selected.</value>
+								<xsp:logic>
+									}
+								</xsp:logic>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="checkbox" label="Append to Lab Jurisdiction Derivation">
+						<header link="#">Append to Lab Jurisdiction Derivation</header>
+						<options>
+							<option name="userProfile.theUser_s.jurisdictionDerivationInd" value="Y">
+								<header>Append to Lab Jurisdiction Derivation</header>
+								<value>
+									<xsp-request:get-attribute name="jurisdictionDerivationString"/>
+								</value>
+							</option>
+						</options>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<i>Note: Applies to externally entered Lab Report. If Jurisdiction cannot be derived using Patient, Ordering Provider or Facility Address, use the Reporting Facility Address.</i>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<b>Provider Information </b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element type="entity-search" name="Prv-providerUID" entity-type="provider" alignment="left">
+						<value>
+							<xsp-request:get-attribute name="providerUID"/>
+						</value>
+						<line>
+							<element name="entity.completePersonSearchResult" type="plain-text" indented="yes" align-label="left" label="Provider">
+								<xsp:logic><![CDATA[
+									if(request.getAttribute("investigatorDetails")!=null && !request.getAttribute("investigatorDetails").equals("") ){
+								]]></xsp:logic>
+								<value>
+									<xsp-request:get-attribute name="investigatorDetails"/>
+								</value>
+								<xsp:logic>
+									}
+								</xsp:logic>
+								<xsp:logic><![CDATA[
+									else{
+								]]></xsp:logic>
+								<value>There is no provider selected.</value>
+								<xsp:logic>
+									}
+								</xsp:logic>
+							</element>
+						</line>
+					</element>
+				</line>
+
+				<!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+				<xsp:logic><![CDATA[
+				if(isUserMsa.equalsIgnoreCase("true"))
+				{
+				]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<b>Administration Information</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element name="MSA" type="conditional-entry">
+						<controller name="" type="checkbox">
+							<options>
+								<option name="userProfile.theUser_s.msa" value="Y" label="Master Security Administrator">
+									<value>
+										<xsp-request:get-attribute name="msaString"/>
+									</value>
+								</option>
+							</options>
+						</controller>
+					</element>
+				</line>
+				<line>
+					<element name="PAA" type="conditional-entry">
+						<controller name="" type="checkbox">
+							<options>
+								<option name="userProfile.theUser_s.paa" value="Y" label="Program Area Administrator">
+									<value>
+										<xsp-request:get-attribute name="paaString"/>
+									</value>
+								</option>
+							</options>
+						</controller>
+						<line>
+							<element type="select" size="5" label="*Program Area">
+								<xsp:attribute name="name">paaProgramArea</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getProgramAreaCodedValue>
+										<type>PHC_TYPE</type>
+									</srt-codes:getProgramAreaCodedValue>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="paaProgramArea"/>
+								</value>
+							</element>
+							<element/>
+						</line>
+					</element>
+				</line>
+				<!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+				<xsp:logic>
+				}else{
+				</xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<b>Administration Information</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element type="checkbox" label="" name="MSA">
+						<options>
+							<option name="userProfile.theUser_s.msa" value="Y" label="Master Security Administrator">
+								<value>
+									<xsp-request:get-attribute name="msaString"/>
+								</value>
+							</option>
+						</options>
+						<readonly/>
+					</element>
+				</line>
+				<line>
+					<element type="checkbox" label="" name="PAA">
+						<options>
+							<option name="userProfile.theUser_s.paa" value="Y" label="Program Area Administrator">
+								<value>
+									<xsp-request:get-attribute name="paaString"/>
+								</value>
+							</option>
+						</options>
+						<readonly/>
+					</element>
+				</line>
+				<line>
+					<element type="text" label="Program Area">
+						<xsp:attribute name="name">paaProgramArea</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="paaProgramArea"/>
+						</value>
+						<readonly/>
+					</element>
+				</line>
+				<xsp:logic>
+				}
+				</xsp:logic>
+			</group>
+			<!-- MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM -->
+			<xsp:logic>
+			if(isUserPaa.equalsIgnoreCase("true"))
+			{
+			</xsp:logic>
+			<group name="Role Setup">
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="Role" type="batch-entry">
+						<value>
+							<xsp-request:get-attribute name="realizedroles"/>
+						</value>
+						<line>
+							<element name="userProfile.theRealizedRole_s[i].jurisdictionCode" type="select" label="Jurisdiction" length="20">
+								<value>
+									<xsp-request:get-attribute name="Jurisdiction"/>
+								</value>
+								<header link="#">Jurisdiction</header>
+								<validation type="required" error-code="ERR023" name="Jurisdiction"/>
+								<srt-options-string>
+									<srt-codes:getJurisdictionCodedSortedValuesWithAll>
+										<type>S_JURDIC_C</type>
+									</srt-codes:getJurisdictionCodedSortedValuesWithAll>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="userProfile.theRealizedRole_s[i].programAreaCode" type="select" label="Program Area" length="20">
+								<value>
+									<xsp-request:get-attribute name="ProgramArea"/>
+								</value>
+								<header link="#">Program Area</header>
+								<validation type="jurisdictionConditionCodeDuplicateCheck" name="Program Area">
+									<required/>
+								</validation>
+								<srt-options-string>
+									<!--srt-codes:getProgramAreaCodedValue><type>PHC_TYPE</type></srt-codes:getProgramAreaCodedValue-->
+									<xsp-request:get-attribute name="paaProgramAreaList"/>
+									<!--CEDS$General Communicable Disease|HIV/AIDS$HIV/AIDS|-->
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="userProfile.theRealizedRole_s[i].roleName" type="select" label="Permission Set" length="29">
+								<value>
+									<xsp-request:get-attribute name="PermissionSet"/>
+								</value>
+								<header link="#">Permission Set</header>
+								<validation type="required" error-code="ERR023" name="Permission Set"/>
+								<srt-options-string>
+									<xsp-request:get-attribute name="AllPermissionSetsStr"/>
+								</srt-options-string>
+							</element>
+							<element type="checkbox" label="Guest" default="N">
+								<value>
+									<xsp-request:get-attribute name="GuestString"/>
+								</value>
+								<header link="#">Guest </header>
+								<options>
+									<option name="userProfile.theRealizedRole_s[i].guestString" value="Y">
+										<header>Guest </header>
+									</option>
+								</options>
+							</element>
+							<element/>
+							<element/>
+						</line>
+						<line>
+							<element type="raw">
+								<span>
+									<i> Note: A Guest will only have access to shared records. </i>
+								</span>
+							</element>
+						</line>
+						<line>
+							<element name="createoperation" type="hidden">
+								<value>
+									<xsp-request:get-attribute name="createoperation"/>
+								</value>
+							</element>
+							<element name="userProfile.theRealizedRole_s[i].seqNum" type="hidden"/>
+							<element name="userProfile.theRealizedRole_s[i].statusCd" type="hidden"/>
+							<element name="userProfile.theRealizedRole_s[i].oldJurisdictionCode" type="hidden"/>
+							<element name="userProfile.theRealizedRole_s[i].oldProgramAreaCode" type="hidden"/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<xsp:logic>
+			}else{
+			</xsp:logic>
+			<group name="Role Setup">
+				<line>
+					<element type="data-table">
+						<header>Jurisdiction</header>
+						<header>Program Area</header>
+						<header>Permission Set</header>
+						<header>Guest</header>
+						<xsp-request:get-attribute name="userID"/>
+						<view-link>/nbs/loadPermissionSet.do?OperationType=view&amp;RoleName=</view-link>
+						<value>
+							<xsp-request:get-attribute name="roleList"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<i> Note: A Guest will only have access to shared records. </i>
+						</span>
+					</element>
+				</line>
+			</group>
+			<xsp:logic>
+			} // - if not PAA
+			</xsp:logic>
+			<xsp:logic>
+			} // end of else - if create
+			</xsp:logic>
+			<!--XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx -->
+			<group>
+				<!--		struts specific		-->
+				<line>
+					<element name="OperationType" type="hidden">
+						<value>
+							<xsp:expr>typeOfAction</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<!--		struts specific		-->
+			</group>
+		</tab>
+	</content>
+</xsp:page>

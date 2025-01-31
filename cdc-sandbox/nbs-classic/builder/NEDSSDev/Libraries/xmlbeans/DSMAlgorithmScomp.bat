@@ -1,0 +1,1 @@
+../bin/scomp -javasource 1.5 -out DSMAlgorithm.jar DSMAlgorithm.xsd DSMAlgorithm.xsdconfig -compiler %JAVA_HOME%\bin\javac.exe

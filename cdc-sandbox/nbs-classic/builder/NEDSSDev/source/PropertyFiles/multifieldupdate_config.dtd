@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT MPR-update-fields (field+)>
+
+<!ELEMENT aod-field EMPTY>
+<!ATTLIST aod-field name CDATA #REQUIRED>
+
+<!ELEMENT field (sub-field+,aod-field)>
+<!ATTLIST field
+	collection-name CDATA #REQUIRED
+	description CDATA #IMPLIED
+	source-id CDATA #REQUIRED
+>
+
+<!ELEMENT sub-field EMPTY>
+<!ATTLIST sub-field
+	container-name CDATA #IMPLIED
+	description CDATA #IMPLIED
+	name CDATA #REQUIRED
+>
+

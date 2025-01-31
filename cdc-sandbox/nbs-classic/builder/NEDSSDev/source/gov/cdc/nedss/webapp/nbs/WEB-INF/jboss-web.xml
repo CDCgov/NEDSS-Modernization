@@ -1,0 +1,6 @@
+<jboss-web>
+	<resource-ref>
+		<res-ref-name>datasources/RdbDataSource</res-ref-name>
+		<jndi-name>java:jboss/datasources/RdbDataSource</jndi-name>
+	</resource-ref>
+</jboss-web>

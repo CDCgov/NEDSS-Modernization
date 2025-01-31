@@ -1,0 +1,65 @@
+TABLE {	border-collapse: collapse;	border: 0px;}
+	body {    background-color: #FFFFFF;    color: #000000;    font-family: Arial, sans-serif;    font-size: 10pt;    font-weight: normal;     margin-top: 0px;}
+	label {    color: #000000;    font-family: Arial, sans-serif;    font-size: 10pt;    font-weight: bold;    vertical-align: top;}
+	td {  color: #000000;    font-family: Arial, sans-serif;    font-size: 10pt;    font-weight: normal;  padding-left:5px;}
+	th { color: #000000;    font-family: Arial, sans-serif;    font-size: 10pt;    font-weight: bold;    text-align: left;}
+   TABLE.OrangeSection {border-width:0px 0px 1px 0px; border-color:#5F8DBF; border-style:solid; 
+        padding:0.20em 0em 0.20em 0.25em; text-transform:capitalize; color:#5F8DBF; margin-top: 10px;}
+       div.sect h2.sectHeader {border-width:0px 0px 1px 0px; border-color:#5F8DBF; border-style:solid; 
+               padding:0.20em 0em 0.20em 0.25em; text-transform:capitalize; color:#5F8DBF; margin-top:1em;}
+       div.sect h2.sectHeader a.anchor {text-decoration:none; /*color:#5F8DBF;*/ color:#a46322}
+       div.sect h2.sectHeader span.displayToggleIcon {background:#FFF;}
+       td.OrangeHeader {color:#CC3300; font-weight: bold; font-size:110%; }
+       div.sect table.sectHeader {width:100%; border-width:0px 0px 1px 0px; border-color:#5F8DBF; 
+               margin-top:1em; border-style:solid; padding:0.20em 0.20em 0.20em 0.25em;}
+               
+        div.sect table.sectHeader1 {width:100%; border-width:0px 0px 0px 0px; 
+               margin-top:1em; padding:0.20em 0.20em 0.20em 0.25em;}
+        div.sect table.sectHeader1 tr td.sectName {color:#151B8D; font-size: 110%; font-weight:bold; text-transform:capitalize;}
+        div.sect table.sectHeader1thead tr th.sectName {color:#151B8D; font-size: 110%; font-weight:bold; text-transform:capitalize;}
+               
+       div.sect table.sectHeader tr td.sectName {color:#a46322; font-size: 110%; font-weight:bold; text-transform:capitalize;}
+       div.sect table.sectHeader tr td.sectName a.anchor {text-decoration:none; /*color:#5F8DBF;*/ color:#a46322}
+       div.sect div.sectBody {text-align:center; margin-left:1em;}
+      table.sectionsToggler, table.subSectionsToggler, table.subSect {width:98%; margin:0 auto; border-width:0px; margin-top:0.5em; border-spacing:0px;}
+       table.subSect thead tr {background:#FFF;  }
+       table.subSect thead tr th {padding:0.15em; font-weight:bold; color:#185394; }
+       table.subSect tbody tr {/*background:#F2F2F2;*/ background:#EFF7FF;}
+       table.subSect tbody tr td { padding-top:5px; padding-bottom:5px; padding-left:3px; border-width:1px;background-color: #FFFFFF;border-width:1px; border-style: solid;
+    border-color: #808080 ; }
+       table.subSect tbody tr td.fieldName {text-align:right; width:40%; vertical-align:top; padding-right:0.20em; font-weight:bold; border-width:1px;background:#EFF7FF; }
+       table.subSect tbody tr td.InputFieldLabel {text-align:right; width:40%; vertical-align:top; padding-right:0.20em; font-weight:bold; border-width:1px;background:#EFF7FF; }
+ 		table.subSect tbody tr td span span table tbody tr td {border-style:none;}
+       
+       table.sectionsToggler, table.subSectionsToggler, table.subSect1 {width:98%; margin:0 auto; margin-top:1em; }
+       table.subSect1 thead tr th {padding:0.15em; font-weight:bold; color:#185394; }
+       
+        table.subSect1 thead tr th.sectName  {padding:0.15em; color:#151B8D; font-size: 110%; font-weight:bold; text-transform:capitalize;}
+
+       
+       table.subSect1 tbody tr td { border-style:solid; border-width: 1px; padding-top:5px; padding-bottom:5px;vertical-align:top; border-color: gray; width:30%}
+       table.subSect1 tbody tr td.fieldName {padding-left:5px; background:#EFF7FF; border-style:solid; border-width: 1px; text-align:left; width:25%; vertical-align:top; padding-right:0.20em; font-weight:bold; border-color: gray;}
+        table.subSect1 tbody tr td.fieldName1 {padding-left:5px; background:#EFF7FF; border-style:solid; border-width: 1px; text-align:left; width:30%; vertical-align:top; padding-right:0.20em; font-weight:bold; border-color: gray;}
+        
+	table.dtTable, table.privateDtTable {width:100%; border:1px solid #666666; padding:0.5em; margin:1em auto; margin-top:1em;}
+	table.dtTable thead tr th,table.privateDtTable thead tr th {text-decoration:none; border:1px solid #666666; 	font-weight:bold; background:#EFEFEF; padding:0em; text-align:center;}
+	table.dtTable tbody tr td, table.privateDtTable tbody tr td {vertical-align:top;} 
+	table.dtTable thead tr th, table.privateDtTable thead tr th {text-decoration:none; border:1px solid #666666; 	font-weight:bold; background:#EFEFEF; padding:0.1em 0 0.1em 0.1em; text-align:left;}
+	table.dtTable tbody tr.odd, table.privateDtTable tbody tr.odd, table.dtTable tbody tr.odd td table tr {background:#FFF;}
+	table.dtTable tbody tr.even, table.privateDtTable tbody tr.even, table.dtTable tbody tr.even td table tr {background:#EFF8FF;}
+	table.dtTable tbody tr td table tr td {border-width:0;}
+	table.dtTable tbody tr td, table.privateDtTable tbody tr td {padding:2px; border-width:0px 1px 1px 0px; border-style:solid; border-color:#DDD;}
+	table.dtTable tbody tr td.hoverDescLink a, table.privateDtTable tbody tr td.hoverDescLink a {text-decoration:none; color:#000; cursor:help;}
+	table.dtTable tbody tr td.hoverDescLink a:hover, table.privateDtTable tbody tr td.hoverDescLink a:hover {background:#FFE2BF;}
+	table.bluebardtTable thead tr th, table.privateDtTable thead tr th {text-decoration:none; border:1px solid #666666;  font-weight:bold; background:#EFEFEF; padding:0em; text-align:center;}
+	table.bluebardtTable tbody tr td, table.privateDtTable tbody tr td {vertical-align:top;} 
+	table.bluebardtTable thead tr th, table.privateDtTable thead tr th {text-decoration:none; border:1px solid #666666;  font-weight:bold; background:#EFEFEF; padding:0.1em 0 0.1em 0.1em; text-align:left;}
+	table.bluebardtTable tbody tr.odd, table.privateDtTable tbody tr.odd, table.dtTable tbody tr.odd td table tr {background:#FFF;}
+	table.bluebardtTable tbody tr.even, table.privateDtTable tbody tr.even, table.dtTable tbody tr.even td table tr {background:#EFF7FF;}
+	table.bluebardtTable tbody tr td table tr td {border-width:0;}
+	table.bluebardtTable tbody tr td, table.privateDtTable tbody tr td {padding:2px; border-width:0px 1px 1px 0px; border-style:solid; border-color:#C2D4EF;}
+	table.bluebardtTable tbody tr td.hoverDescLink a, table.privateDtTable tbody tr td.hoverDescLink a {text-decoration:none; color:#000; cursor:help;}
+	table.bluebardtTable tbody tr td.hoverDescLink a:hover, table.privateDtTable tbody tr td.hoverDescLink a:hover {background:#FFE2BF;}
+	table.bluebardtTable tbody tr td.dateField, table.dtTable tbody tr td.iconField {width:50px;}
+	table.bluebardtTable tbody tr td.nameField {width:150px;} 
+	table.bluebardtTable tbody tr td.iconField {text-align:center;}

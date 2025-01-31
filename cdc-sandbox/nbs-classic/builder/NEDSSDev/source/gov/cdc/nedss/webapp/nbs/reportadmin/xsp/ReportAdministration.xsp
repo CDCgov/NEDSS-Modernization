@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<tab>
+			<group>
+				<line>
+					<element type="raw">
+						<span style="color: red; font-weight: bold;">
+							<value>
+								<xsp:expr>request.getAttribute("error")</xsp:expr>
+							</value>
+						</span>
+					</element>
+				</line>
+			</group>
+			<group>
+				<!--line>
+					<element type="raw">
+						<span>
+							<br/>
+							<font class="boldTenArial">
+								<p align="left">
+									<i>Select  Data Sources or Reports to Add / Edit / View. </i>
+									<br/>
+								</p>
+							</font>
+						</span>
+					</element>
+				</line-->
+				<line>
+					<element type="hyper-link">
+						<href>/nbs/ListDataSource.do</href>
+						<text>Manage Data Sources</text>
+					</element>
+				</line>
+				<line>
+					<br/>
+				</line>
+				<line>
+					<br/>
+				</line>
+				<line>
+					<element type="hyper-link">
+						<href>/nbs/ListReport.do</href>
+						<text>Manage Reports</text>
+					</element>
+				</line>
+				<line>
+					<br/>
+				</line>
+				<line>
+					<br/>
+				</line>
+
+				<line>
+					<element type="hyper-link">
+						<href>/nbs/ListReportSections.do</href>
+						<text>Manage Report Sections</text>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

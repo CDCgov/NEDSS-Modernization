@@ -1,0 +1,308 @@
+<!-- edited with XMLSpy v2012 (x64) (http://www.altova.com) by Greg Tucker (DHHS (C/O SAIC)) -->
+<!-- Standalone PS Version 2.1 January 28, 2015 -->
+<!--  Luther Consulting  -->
+<!--
+ Modifications from PS Version 2.0:
+    switched to standard header.
+    switched to using definitions.xsd
+    removed PCR209, X303a, X503
+    removed status fields
+    added attemptsToLocate to partners
+    broke out child node definitions (attemptToLocate, elicitPartners, exposureNotifications, referrals,
+        session and clientRiskProfile) and moved to consistent handling where more than instance of
+        node is allowed
+    renamed partnerInformation and indexPatientInformation to clarify intent
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="definitions.xsd"/>
+	<xs:element name="xpemsPSData">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HeaderInformation" type="typeHeader"/>
+				<xs:element name="deletions" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="client" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="agencyId" type="typeId" use="required"/>
+									<xs:attribute name="localClientId" type="typeId" use="required"/>
+									<!--  A01a  -->
+									<!--  G103  -->
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!--
+ These show in EvaluationWeb within the PS Sites views in reflexx, and not in Manage Agencies 
+-->
+				<xs:element name="sites" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="site" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="siteId" type="typeId"/>
+										<!--  S01  -->
+										<xs:element name="siteTypeValueCode" type="typeSiteType"/>
+										<!--  S04  -->
+										<xs:element name="zip" type="typeZip" minOccurs="0"/>
+										<!--  S10  -->
+										<xs:element name="siteCounty" type="typeCode" minOccurs="0"/>
+										<!--  S08  -->
+										<xs:element name="siteState" type="typeState" minOccurs="0"/>
+										<!--  S09  -->
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="agency" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<!--
+                            <xs:element name="populatedAreaValueCode" type="typeJursidction" minOccurs="0"/> 
+-->
+							<!--
+ A02 removed - known by jurisdiction logged into at time of upload 
+-->
+							<xs:element name="clients" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="client" type="typeClient" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="agencyId" type="typeId" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="typeClient">
+		<xs:sequence>
+			<xs:element name="birthYear" type="typeYear" minOccurs="0"/>
+			<!--  G112  -->
+			<xs:element name="ethnicity" type="typeEthnicity" minOccurs="0"/>
+			<!--  G114  -->
+			<xs:element name="races" type="typeRaces"/>
+			<xs:element name="stateOfResidence" type="typeState" minOccurs="0"/>
+			<!--  G120  -->
+			<xs:element name="birthGenderValueCode" type="typeBirthGender" minOccurs="0"/>
+			<!--  G123  -->
+			<xs:element name="currentGenderValueCode" type="typeCurrentGender" minOccurs="0"/>
+			<!--  G124  -->
+			<xs:element name="otherCurrentGender" type="typeString50" minOccurs="0"/>
+			<!--  G124a  -->
+			<xs:element name="clientRiskProfiles" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="clientRiskProfile" type="typeRiskProfile" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="asAnIndex" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="collectedDateForClient" type="typeDate" minOccurs="0"/>
+						<!--  G101  -->
+						<xs:element name="partnerServiceCaseNumber" type="typeId"/>
+						<!--  PCR101  -->
+						<xs:element name="partnerServiceCases" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="partnerServiceCase" type="typeCase" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="attemptsToLocate" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="attemptToLocate" type="typeAttemptToLocate" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="elicitPartners" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="elicitPartner" type="typeElicitPartner" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="sessions" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="session" type="typeSession" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!--  This client as a Partner  -->
+			<xs:element name="asAPartner" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="partner" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="partnerDateCollected" type="typeDate" minOccurs="0"/>
+									<!--  PCR200  -->
+									<xs:element name="partnerServiceCaseNumber" type="typeId" maxOccurs="unbounded"/>
+									<!--  PCR101  -->
+									<xs:element name="partnerType" type="type123" minOccurs="0"/>
+									<!--  PCR207  -->
+									<xs:element name="attemptsToLocate" minOccurs="0">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="attemptToLocate" type="typeAttemptToLocate" maxOccurs="unbounded"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="exposureNotifications" minOccurs="0">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="exposureNotification" type="typePartnerNotification" minOccurs="0" maxOccurs="unbounded"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="referrals" minOccurs="0">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="referral" type="typeReferral" minOccurs="0" maxOccurs="unbounded"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="sessions" minOccurs="0">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="session" type="typeSession" minOccurs="0" maxOccurs="unbounded"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="lastModifiedDate" type="typeDate" use="optional"/>
+		<xs:attribute name="localClientId" type="typeId" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="typeSession">
+		<xs:all>
+			<xs:element name="interventionId" type="typeId" minOccurs="0"/>
+			<!--  H01  -->
+			<xs:element name="siteId" type="typeId" minOccurs="0"/>
+			<!--  S01  -->
+			<xs:element name="sessionDate" type="typeDate" minOccurs="0"/>
+			<!--  H06  -->
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="typeAttemptToLocate">
+		<xs:sequence>
+			<xs:element name="attemptToLocateOutcome" type="type12" minOccurs="0"/>
+			<!--  X302  -->
+			<xs:element name="reasonForUnsuccessfulAttempt" type="type1289" minOccurs="0"/>
+			<!--  X303  -->
+			<xs:element name="enrollmentStatus" type="type12" minOccurs="0"/>
+			<!--  X306  -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeReferral">
+		<xs:sequence>
+			<xs:element name="referralDate" type="typeDate" minOccurs="0"/>
+			<!--  X702  -->
+			<xs:element name="referredToHIVTesting" type="type0199" minOccurs="0"/>
+			<!--  X703_01  -->
+			<xs:element name="referredToMedicalCare" type="type0199" minOccurs="0"/>
+			<!--  X703_10  -->
+			<xs:element name="firstMedicalCareAppointment" type="typeReferralAttend" minOccurs="0"/>
+			<!--  X706  -->
+			<xs:element name="HIVTestPerformed" type="type01" minOccurs="0"/>
+			<!--  X712  -->
+			<xs:element name="HIVTestResult" type="typeHIVTestResult" minOccurs="0"/>
+			<!--  X713  -->
+			<xs:element name="HIVTestResultsProvided" type="type01" minOccurs="0"/>
+			<!--  X714z  -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeElicitPartner">
+		<xs:sequence>
+			<xs:element name="timePeriodForRecallInMonths" type="xs:nonNegativeInteger" minOccurs="0"/>
+			<!--  X502  -->
+			<xs:element name="totalNumberOfNamedPartners" type="xs:nonNegativeInteger" minOccurs="0"/>
+			<!--  X511  -->
+			<xs:element name="totalNumberOfNamedMalePartners" type="xs:nonNegativeInteger"/>
+			<!--  X511a  -->
+			<xs:element name="totalNumberOfNamedFemalePartners" type="xs:nonNegativeInteger"/>
+			<!--  X511b  -->
+			<xs:element name="totalNumberOfTransgenderPartners" type="xs:nonNegativeInteger"/>
+			<!--  X511c  -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeRiskProfile">
+		<xs:sequence>
+			<xs:element name="dateCollectedForRiskProfile" type="typeDate" minOccurs="0"/>
+			<!--  G200  -->
+			<xs:element name="noClientRiskFactors" type="typeClientRisk" minOccurs="0"/>
+			<!--  G200_1  -->
+			<xs:element name="vaginalOrAnalSexInLast12Mnths" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="withMale" type="type0199" minOccurs="0"/>
+						<!--  G216a  -->
+						<xs:element name="withFemale" type="type0199" minOccurs="0"/>
+						<!--  G216b  -->
+						<xs:element name="withTransgender" type="type0199" minOccurs="0"/>
+						<!--  G216c  -->
+						<xs:element name="vaginalOrAnalSexWithoutCondomPS" type="type0199" minOccurs="0"/>
+						<!--  G222  -->
+						<xs:element name="vaginalOrAnalSexWithIDUPS" type="type0199" minOccurs="0"/>
+						<!--  G223  -->
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="injectionDrugUse" type="type0199" minOccurs="0"/>
+			<!--  G211_01  -->
+			<xs:element name="shareDrugInjectionEquipment" type="type0199" minOccurs="0"/>
+			<!--  G211_08  -->
+			<xs:element name="otherRiskFactors" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="otherRiskFactor" type="typeOtherRisk" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeCase">
+		<xs:all>
+			<xs:element name="caseOpenDate" type="typeDate"/>
+			<!--  PCR103  -->
+			<xs:element name="caseCloseDate" type="typeDate" minOccurs="0"/>
+			<!--  PCR104  -->
+			<xs:element name="dateOfReport" type="typeDate" minOccurs="0"/>
+			<!--  PCR108  -->
+			<xs:element name="reportedToSurveillance" type="type0199" minOccurs="0"/>
+			<!--  PCR109  -->
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="typePartnerNotification">
+		<xs:sequence>
+			<xs:element name="partnerNotifiability" type="typeNotifiability" minOccurs="0"/>
+			<!--  X600  -->
+			<xs:element name="actualNotificationMethod" type="typeNotificationMethod" minOccurs="0"/>
+			<!--  X601  -->
+			<xs:element name="previousHIVTest" type="typeYesNoOther" minOccurs="0"/>
+			<!--  X602  -->
+			<xs:element name="selfReportedHIVTestResult" type="typeHivStatus" minOccurs="0"/>
+			<!--  X603  -->
+			<xs:element name="dateOfLastHIVTest" type="typeDate" minOccurs="0"/>
+			<!--  X604  -->
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

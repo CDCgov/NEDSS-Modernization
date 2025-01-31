@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<map:sitemap xmlns:map="http://apache.org/cocoon/sitemap/1.0">
+	<!-- =========================== Components ================================ -->
+	<map:components>
+		<map:generators default="file">
+			<map:generator label="content,data" logger="sitemap.generator.file" name="file" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.FileGenerator"/>
+			<map:generator label="content,data" logger="sitemap.generator.serverpages" name="serverpages" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.ServerPagesGenerator"/>
+		</map:generators>
+		<map:transformers default="xslt">
+			<map:transformer logger="sitemap.transformer.xslt" name="xslt" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.transformation.TraxTransformer">
+				<use-request-parameters>false</use-request-parameters>
+				<use-browser-capabilities-db>false</use-browser-capabilities-db>
+				<use-deli>false</use-deli>
+			</map:transformer>
+		</map:transformers>
+		<map:readers default="resource">
+			<map:reader logger="sitemap.reader.resource" name="resource" pool-max="76" src="org.apache.cocoon.reading.ResourceReader"/>
+			<map:reader name="jsp" src="org.apache.cocoon.reading.JSPReader"/>
+		</map:readers>
+		<map:serializers default="html">
+			<map:serializer logger="sitemap.serializer.links" name="links" src="org.apache.cocoon.serialization.LinkSerializer"/>
+			<map:serializer logger="sitemap.serializer.xml" mime-type="text/xml" name="xml" src="org.apache.cocoon.serialization.XMLSerializer"/>
+			<map:serializer logger="sitemap.serializer.html" mime-type="text/html" name="html" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.serialization.HTMLSerializer">
+				<encoding>ISO-8859-1</encoding>
+				<buffer-size>1024</buffer-size>
+			</map:serializer>
+		</map:serializers>
+		<map:selectors default="browser"/>
+		<map:matchers default="wildcard">
+			<map:matcher logger="sitemap.matcher.wildcard" name="wildcard" src="org.apache.cocoon.matching.WildcardURIMatcher"/>
+			<map:matcher logger="sitemap.matcher.regexp" name="regexp" src="org.apache.cocoon.matching.RegexpURIMatcher"/>
+		</map:matchers>
+	</map:components>
+	<!-- =========================== Pipelines ================================= -->
+	<map:pipelines>
+		<map:pipeline>
+			<!--map:match pattern="patientsearch/**">
+				<map:mount uri-prefix="patientsearch" src="patientsearch/labpatient.xmap" check-reload="no"/>
+			</map:match-->
+			<map:match pattern="patientsearch/**">
+				<map:mount uri-prefix="patientsearch" src="patientsearch/labpatient.xmap" check-reload="no"/>
+			</map:match>
+			<map:match pattern="labreport/**">
+				<map:mount uri-prefix="labreport" src="labreport/labreport.xmap" check-reload="no"/>
+			</map:match>
+			<map:match pattern="morbreport/**">
+				<map:mount uri-prefix="morbreport" src="morbreport/morbreport.xmap" check-reload="no"/>
+			</map:match>
+			<map:match pattern="manage/**">
+				<map:mount uri-prefix="manage" src="manage/manage.xmap" check-reload="no"/>
+			</map:match>
+			<map:match pattern="manuallab/**">
+				<map:mount uri-prefix="manuallab" src="manuallab/manuallab.xmap" check-reload="no"/>
+			</map:match>
+			<!--		OBSERVATIONS OBSERVATIONS OBSERVATIONS OBSERVATIONS OBSERVATIONS OBSERVATIONS	-->
+			<!--map:match pattern="ManageObservation">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/observation_manageXML"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Manage Observations"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match-->
+		</map:pipeline>
+	</map:pipelines>
+</map:sitemap>
+<!-- end of file -->

@@ -1,0 +1,1018 @@
+<!-- Common definitions Version 1.0  -->
+<!-- CDC QSDMB & Luther Consulting  -->
+<!--
+
+EvaluationWeb uses various IDs for a number of different purposes. First, they're used to uniquely identify a test event, client, site, intervention, agency, etc. Second, they're used to tie a record in an uploaded file to an agency, site, intervention, worker, or existing record.
+
+Generally, the term Local ID is used in the system for the value we will be attempting to match. For example, in the EvaluationWeb Agency Setup window in Manage Agencies, there is a field labeled �Local ID.� If you will never be uploading files for a particular agency, this field may be left blank (if you will never upload any files) or you may enter �0� in the field (indicating that records from this agency will not be in any files you do upload).
+
+If you will be uploading data for an agency, the Local ID in the EvaluationWeb Agency Setup window must match the AgencyID in the files you upload. The same is true for other ID types (sites, interventions, etc.). The ID can be whatever you want (an old PEMS ID, an internal numbering, etc.), but it should be consistent with IDs in files sent to CDC before EvaluationWeb was in use.
+
+For new agencies, sites, etc., the only ID requirements are that the EvaluationWeb database must reflect the ID you choose, and the ID cannot duplicate an existing ID for that type of record. For example, if there is an agency in the database with the AgencyID �123�, you cannot add a new agency also having the Agency ID �123.� (But note that Site and Intervention IDs only need to be unique within the agency they are in.)
+
+There are several terms that we may use to refer to an ID: localid, XXXXXid or localXXXXXid can refer to the same thing. For example, localid, clientid, and localclientid can all refer to the same thing.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:simpleType name="typeId">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCBOId">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="(\w\w\d\d\d)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeString50">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeString100">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDate">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="([0-1]?\d/[0-3]?\d/(18|19|20)\d\d)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDateTime">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="([0-1]?\d/[0-3]?\d/(19|20)\d\d( [ 012]\d:[0-5]\d:[0-5]\d)?)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeYear">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="((18|19|20)\d\d)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCode">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="\d?\d?\d?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeNotifiability">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="06"/>
+			<xs:enumeration value="88"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeNotificationMethod">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="06"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeHIVTestResult">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="06"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="type01">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="00"/>
+			<xs:enumeration value="01"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="type012">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="00"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="type12">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="type1289">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="89"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="type123">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="type0188">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="00"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="88"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="type0199">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="00"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="99"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="type016677">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="00"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="77"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeHousing">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="77"/>
+			<xs:enumeration value="99"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeHousingRevised">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="77"/>
+			<xs:enumeration value="99"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="type6677">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="77"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="type0177">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="00"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="77"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeYesNoOther">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="00"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="77"/>
+			<xs:enumeration value="99"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="U"/>
+			<!--  Update  -->
+			<xs:enumeration value="u"/>
+			<!--  Update  -->
+			<xs:enumeration value="D"/>
+			<!--
+ Delete - generally handle through specific sections 
+-->
+			<xs:enumeration value="d"/>
+			<!--
+ Delete - generally handle through specific sections 
+-->
+			<xs:enumeration value="N"/>
+			<!--  New  -->
+			<xs:enumeration value="n"/>
+			<!--  New  -->
+			<xs:enumeration value="A"/>
+			<!--  Additive: aggregate data only  -->
+			<xs:enumeration value="a"/>
+			<!--  Additive: aggregate data only  -->
+			<xs:enumeration value="R"/>
+			<!--  Resubmitted - not changed since last submission  -->
+			<xs:enumeration value="r"/>
+			<!--  Resubmitted - not changed since last submission  -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeHivStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="77"/>
+			<xs:enumeration value="99"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeOtherRisk">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<!--
+ Exchange sex for drugs/money/or something they needed 
+-->
+			<xs:enumeration value="01"/>
+			<!--
+ Exchange sex for drugs/money/or something they needed 
+-->
+			<xs:enumeration value="2"/>
+			<!--  While intoxicated and/or high on drugs  -->
+			<xs:enumeration value="02"/>
+			<!--  While intoxicated and/or high on drugs  -->
+			<xs:enumeration value="5"/>
+			<!--  With person of unknown HIV status  -->
+			<xs:enumeration value="05"/>
+			<!--  With person of unknown HIV status  -->
+			<xs:enumeration value="6"/>
+			<!--  With person who exchanges sex for drugs/money  -->
+			<xs:enumeration value="06"/>
+			<!--  With person who exchanges sex for drugs/money  -->
+			<xs:enumeration value="8"/>
+			<!--  With anonymous partner  -->
+			<xs:enumeration value="08"/>
+			<!--  With anonymous partner  -->
+			<xs:enumeration value="12"/>
+			<!--
+ Diagnosed with a sexually transmitted disease (STD) 
+-->
+			<xs:enumeration value="13"/>
+			<!--  Sex with multiple partners  -->
+			<xs:enumeration value="14"/>
+			<!--  Oral Sex (optional)  -->
+			<xs:enumeration value="15"/>
+			<!--
+ Unprotected vaginal/anal sex with a person who is an IDU 
+-->
+			<xs:enumeration value="16"/>
+			<!--
+ Unprotected vaginal/anal sex with a person who is HIV positive 
+-->
+			<xs:enumeration value="17"/>
+			<!--
+ Unprotected vaginal/anal sex in exchange for drugs/money/or something they needed 
+-->
+			<xs:enumeration value="18"/>
+			<!--
+ Unprotected vaginal/anal sex with person who exchanges sex for drugs/money 
+-->
+			<xs:enumeration value="19"/>
+			<!--  Unprotected sex with multiple partners  -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeReferralAttend">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="99"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeEthnicity">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="E1"/>
+			<xs:enumeration value="E2"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="77"/>
+			<xs:enumeration value="99"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeReasonNot">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="88"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeRaces">
+		<xs:sequence>
+			<xs:element name="race" maxOccurs="7">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="raceValueCode">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="R1"/>
+									<xs:enumeration value="R2"/>
+									<xs:enumeration value="R3"/>
+									<xs:enumeration value="R4"/>
+									<xs:enumeration value="R5"/>
+									<xs:enumeration value="66"/>
+									<xs:enumeration value="77"/>
+									<xs:enumeration value="99"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="raceId" use="optional"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="typeBirthGender">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="77"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCurrentGender">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="77"/>
+			<xs:enumeration value="89"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeAnnouncement">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="06"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="07"/>
+			<xs:enumeration value="8"/>
+			<xs:enumeration value="08"/>
+			<xs:enumeration value="9"/>
+			<xs:enumeration value="09"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="89"/>
+			<xs:enumeration value="11"/>
+			<!--  PS 13-1310  -->
+			<xs:enumeration value="12"/>
+			<!--  PS 14-1410  -->
+			<!--             <xs:enumeration value="13"/> NOT UPLOADABLE  -->
+			<!--  PS 15-1502A  -->
+			<!--             <xs:enumeration value="14"/> NOT UPLOADABLE  -->
+			<!--  PS 15-1502A  -->
+			<xs:enumeration value="15"/>
+			<!--  PS 15-1506  -->
+			<xs:enumeration value="16"/>
+			<!--  PS 15-1509  -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeTestTech">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="88"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeTestResult">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="06"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeClientRisk">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="77"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeState">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<!--  AL  -->
+			<xs:enumeration value="01"/>
+			<!--  AL  -->
+			<xs:enumeration value="2"/>
+			<!--  AK  -->
+			<xs:enumeration value="02"/>
+			<!--  AK  -->
+			<xs:enumeration value="4"/>
+			<!--  AZ  -->
+			<xs:enumeration value="04"/>
+			<!--  AZ  -->
+			<xs:enumeration value="5"/>
+			<!--  AR  -->
+			<xs:enumeration value="05"/>
+			<!--  AR  -->
+			<xs:enumeration value="6"/>
+			<!--  CA  -->
+			<xs:enumeration value="06"/>
+			<!--  CA  -->
+			<xs:enumeration value="8"/>
+			<!--  CO  -->
+			<xs:enumeration value="08"/>
+			<!--  CO  -->
+			<xs:enumeration value="9"/>
+			<!--  CT  -->
+			<xs:enumeration value="09"/>
+			<!--  CT  -->
+			<xs:enumeration value="10"/>
+			<!--  DE  -->
+			<xs:enumeration value="12"/>
+			<!--  FL  -->
+			<xs:enumeration value="13"/>
+			<!--  GA  -->
+			<xs:enumeration value="15"/>
+			<!--  HI  -->
+			<xs:enumeration value="16"/>
+			<!--  ID  -->
+			<xs:enumeration value="17"/>
+			<!--  IL  -->
+			<xs:enumeration value="18"/>
+			<!--  IN  -->
+			<xs:enumeration value="19"/>
+			<!--  IA  -->
+			<xs:enumeration value="20"/>
+			<!--  KS  -->
+			<xs:enumeration value="21"/>
+			<!--  KY  -->
+			<xs:enumeration value="22"/>
+			<!--  LA  -->
+			<xs:enumeration value="23"/>
+			<!--  ME  -->
+			<xs:enumeration value="24"/>
+			<!--  MD  -->
+			<xs:enumeration value="25"/>
+			<!--  MA  -->
+			<xs:enumeration value="26"/>
+			<!--  MI  -->
+			<xs:enumeration value="27"/>
+			<!--  MN  -->
+			<xs:enumeration value="28"/>
+			<!--  MS  -->
+			<xs:enumeration value="29"/>
+			<!--  MO  -->
+			<xs:enumeration value="30"/>
+			<!--  MT  -->
+			<xs:enumeration value="31"/>
+			<!--  NE  -->
+			<xs:enumeration value="32"/>
+			<!--  NV  -->
+			<xs:enumeration value="33"/>
+			<!--  NH  -->
+			<xs:enumeration value="34"/>
+			<!--  NJ  -->
+			<xs:enumeration value="35"/>
+			<!--  NM  -->
+			<xs:enumeration value="36"/>
+			<!--  NY  -->
+			<xs:enumeration value="37"/>
+			<!--  NC  -->
+			<xs:enumeration value="38"/>
+			<!--  ND  -->
+			<xs:enumeration value="39"/>
+			<!--  OH  -->
+			<xs:enumeration value="40"/>
+			<!--  OK  -->
+			<xs:enumeration value="41"/>
+			<!--  OR  -->
+			<xs:enumeration value="42"/>
+			<!--  PA  -->
+			<xs:enumeration value="44"/>
+			<!--  RI  -->
+			<xs:enumeration value="45"/>
+			<!--  SC  -->
+			<xs:enumeration value="46"/>
+			<!--  SD  -->
+			<xs:enumeration value="47"/>
+			<!--  TN  -->
+			<xs:enumeration value="48"/>
+			<!--  TX  -->
+			<xs:enumeration value="49"/>
+			<!--  UT  -->
+			<xs:enumeration value="50"/>
+			<!--  VT  -->
+			<xs:enumeration value="51"/>
+			<!--  VA  -->
+			<xs:enumeration value="53"/>
+			<!--  WA  -->
+			<xs:enumeration value="54"/>
+			<!--  WV  -->
+			<xs:enumeration value="55"/>
+			<!--  WI  -->
+			<xs:enumeration value="56"/>
+			<!--  WY  -->
+			<xs:enumeration value="11"/>
+			<!--  DC  -->
+			<xs:enumeration value="72"/>
+			<!--  PR  -->
+			<xs:enumeration value="60"/>
+			<!--  AS  -->
+			<xs:enumeration value="64"/>
+			<!--  FM  -->
+			<xs:enumeration value="66"/>
+			<!--  GU  -->
+			<xs:enumeration value="68"/>
+			<!--  MH  -->
+			<xs:enumeration value="69"/>
+			<!--  MP  -->
+			<xs:enumeration value="70"/>
+			<!--  PW  -->
+			<xs:enumeration value="78"/>
+			<!--  VI  -->
+			<xs:enumeration value="88"/>
+			<!--  Other  -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeSiteType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="F01.01"/>
+			<!--  Clinical - Inpatient hospital  -->
+			<xs:enumeration value="F02.12"/>
+			<!--  Clinical - TB clinic  -->
+			<xs:enumeration value="F02.19"/>
+			<!--  Clinical - Substance abuse treatment facility  -->
+			<xs:enumeration value="F02.51"/>
+			<!--  Clinical - Community health center  -->
+			<xs:enumeration value="F03"/>
+			<!--  Clinical - Emergency department  -->
+			<xs:enumeration value="F04.05"/>
+			<!--  Non-clinical - HIV testing site  -->
+			<xs:enumeration value="F06.02"/>
+			<!--
+ Non-clinical - Community setting - School/educational facility 
+-->
+			<xs:enumeration value="F06.03"/>
+			<!--
+ Non-clinical - Community setting - Church/mosque/synagogue/temple 
+-->
+			<xs:enumeration value="F06.04"/>
+			<!--
+ Non-clinical - Community Setting - Shelter/transitional housing 
+-->
+			<xs:enumeration value="F06.05"/>
+			<!--
+ Non-clinical - Community setting - Commercial facility 
+-->
+			<xs:enumeration value="F06.07"/>
+			<!--
+ Non-clinical - Community setting - Bar/club/adult entertainment 
+-->
+			<xs:enumeration value="F06.08"/>
+			<!--  Non-clinical - Community setting - Public area  -->
+			<xs:enumeration value="F06.12"/>
+			<!--
+ Non-clinical � Community setting � Individual residence 
+-->
+			<xs:enumeration value="F06.88"/>
+			<!--  Non-clinical - Community setting - Other  -->
+			<xs:enumeration value="F07"/>
+			<!--
+ Non-clinical - Correctional facility - Non-healthcare 
+-->
+			<xs:enumeration value="F08"/>
+			<!--  Clinical - Primary care clinic (other than CHC)  -->
+			<xs:enumeration value="F09"/>
+			<!--  Clinical - Pharmacy or other retail-based clinic  -->
+			<xs:enumeration value="F10"/>
+			<!--  Clinical - STD clinic  -->
+			<xs:enumeration value="F11"/>
+			<!--  Clinical - Dental clinic  -->
+			<xs:enumeration value="F12"/>
+			<!--  Clinical - Correctional facility clinic  -->
+			<xs:enumeration value="F13"/>
+			<!--  Clinical - Other  -->
+			<xs:enumeration value="F14"/>
+			<!--  Non-clinical - Health department - field visit  -->
+			<xs:enumeration value="F15"/>
+			<!--
+ Non-clinical - Community Setting - Syringe exchange program 
+-->
+			<xs:enumeration value="F88"/>
+			<!--  Non-clinical - Other  -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeJursidction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<!--  AL  -->
+			<xs:enumeration value="01"/>
+			<!--  AL  -->
+			<xs:enumeration value="2"/>
+			<!--  AK  -->
+			<xs:enumeration value="02"/>
+			<!--  AK  -->
+			<xs:enumeration value="4"/>
+			<!--  AZ  -->
+			<xs:enumeration value="04"/>
+			<!--  AZ  -->
+			<xs:enumeration value="5"/>
+			<!--  AR  -->
+			<xs:enumeration value="05"/>
+			<!--  AR  -->
+			<xs:enumeration value="6"/>
+			<!--  CA  -->
+			<xs:enumeration value="06"/>
+			<!--  CA  -->
+			<xs:enumeration value="8"/>
+			<!--  CO  -->
+			<xs:enumeration value="08"/>
+			<!--  CO  -->
+			<xs:enumeration value="9"/>
+			<!--  CT  -->
+			<xs:enumeration value="09"/>
+			<!--  CT  -->
+			<xs:enumeration value="10"/>
+			<!--  DE  -->
+			<xs:enumeration value="12"/>
+			<!--  FL  -->
+			<xs:enumeration value="13"/>
+			<!--  GA  -->
+			<xs:enumeration value="15"/>
+			<!--  HI  -->
+			<xs:enumeration value="16"/>
+			<!--  ID  -->
+			<xs:enumeration value="17"/>
+			<!--  IL  -->
+			<xs:enumeration value="18"/>
+			<!--  IN  -->
+			<xs:enumeration value="19"/>
+			<!--  IA  -->
+			<xs:enumeration value="20"/>
+			<!--  KS  -->
+			<xs:enumeration value="21"/>
+			<!--  KY  -->
+			<xs:enumeration value="22"/>
+			<!--  LA  -->
+			<xs:enumeration value="23"/>
+			<!--  ME  -->
+			<xs:enumeration value="24"/>
+			<!--  MD  -->
+			<xs:enumeration value="25"/>
+			<!--  MA  -->
+			<xs:enumeration value="26"/>
+			<!--  MI  -->
+			<xs:enumeration value="27"/>
+			<!--  MN  -->
+			<xs:enumeration value="28"/>
+			<!--  MS  -->
+			<xs:enumeration value="29"/>
+			<!--  MO  -->
+			<xs:enumeration value="30"/>
+			<!--  MT  -->
+			<xs:enumeration value="31"/>
+			<!--  NE  -->
+			<xs:enumeration value="32"/>
+			<!--  NV  -->
+			<xs:enumeration value="33"/>
+			<!--  NH  -->
+			<xs:enumeration value="34"/>
+			<!--  NJ  -->
+			<xs:enumeration value="35"/>
+			<!--  NM  -->
+			<xs:enumeration value="36"/>
+			<!--  NY  -->
+			<xs:enumeration value="37"/>
+			<!--  NC  -->
+			<xs:enumeration value="38"/>
+			<!--  ND  -->
+			<xs:enumeration value="39"/>
+			<!--  OH  -->
+			<xs:enumeration value="40"/>
+			<!--  OK  -->
+			<xs:enumeration value="41"/>
+			<!--  OR  -->
+			<xs:enumeration value="42"/>
+			<!--  PA  -->
+			<xs:enumeration value="44"/>
+			<!--  RI  -->
+			<xs:enumeration value="45"/>
+			<!--  SC  -->
+			<xs:enumeration value="46"/>
+			<!--  SD  -->
+			<xs:enumeration value="47"/>
+			<!--  TN  -->
+			<xs:enumeration value="48"/>
+			<!--  TX  -->
+			<xs:enumeration value="49"/>
+			<!--  UT  -->
+			<xs:enumeration value="50"/>
+			<!--  VT  -->
+			<xs:enumeration value="51"/>
+			<!--  VA  -->
+			<xs:enumeration value="53"/>
+			<!--  WA  -->
+			<xs:enumeration value="54"/>
+			<!--  WV  -->
+			<xs:enumeration value="55"/>
+			<!--  WI  -->
+			<xs:enumeration value="56"/>
+			<!--  WY  -->
+			<xs:enumeration value="11"/>
+			<!--  DC  -->
+			<xs:enumeration value="72"/>
+			<!--  PR  -->
+			<xs:enumeration value="60"/>
+			<!--  AS  -->
+			<xs:enumeration value="64"/>
+			<!--  FM  -->
+			<xs:enumeration value="66"/>
+			<!--  GU  -->
+			<xs:enumeration value="68"/>
+			<!--  MH  -->
+			<xs:enumeration value="69"/>
+			<!--  MP  -->
+			<xs:enumeration value="70"/>
+			<!--  PW  -->
+			<xs:enumeration value="78"/>
+			<!--  VI  -->
+			<xs:enumeration value="80"/>
+			<!--  San Francisco  -->
+			<xs:enumeration value="81"/>
+			<!--  Los Angeles  -->
+			<xs:enumeration value="82"/>
+			<!--  New York City  -->
+			<xs:enumeration value="83"/>
+			<!--  Houston  -->
+			<xs:enumeration value="84"/>
+			<!--  Chicago  -->
+			<xs:enumeration value="85"/>
+			<!--  Philadelphia  -->
+			<xs:enumeration value="86"/>
+			<!--  Atlanta  -->
+			<xs:enumeration value="87"/>
+			<!--  Baltimore  -->
+			<xs:enumeration value="88"/>
+			<!--  Dallas  -->
+			<xs:enumeration value="89"/>
+			<!--  Miami  -->
+			<xs:enumeration value="90"/>
+			<!--  San Juan  -->
+			<xs:enumeration value="91"/>
+			<!--  Fort Lauderdale  -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeEBI">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1.01"/>
+			<!--  Community PROMISE  -->
+			<xs:enumeration value="1.02"/>
+			<!--  Healthy Relationships  -->
+			<xs:enumeration value="1.03"/>
+			<!--  Holistic Health Recovery  -->
+			<xs:enumeration value="1.04"/>
+			<!--  Many Men, Many Voices  -->
+			<xs:enumeration value="1.05"/>
+			<!--  Mpowerment  -->
+			<xs:enumeration value="1.06"/>
+			<!--  Popular Opinion Leader  -->
+			<xs:enumeration value="1.07"/>
+			<!--  RAPP  -->
+			<xs:enumeration value="1.08"/>
+			<!--  Safety Counts  -->
+			<xs:enumeration value="1.09"/>
+			<!--  SISTA  -->
+			<xs:enumeration value="1.10"/>
+			<!--  Street Smart  -->
+			<xs:enumeration value="1.11"/>
+			<!--  Together Learning Choices  -->
+			<xs:enumeration value="1.12"/>
+			<!--  VOICES/VOCES  -->
+			<xs:enumeration value="1.13"/>
+			<!--  WiLLOW  -->
+			<xs:enumeration value="1.14"/>
+			<!--  SiHLE  -->
+			<xs:enumeration value="1.15"/>
+			<!--  CLEAR  -->
+			<xs:enumeration value="1.16"/>
+			<!--  OPTIONS  -->
+			<xs:enumeration value="1.17"/>
+			<!--  Focus on Youth with imPact  -->
+			<xs:enumeration value="1.18"/>
+			<!--  MIP  -->
+			<xs:enumeration value="1.19"/>
+			<!--  D-UP  -->
+			<xs:enumeration value="1.20"/>
+			<!--  Sister to Sister  -->
+			<xs:enumeration value="1.21"/>
+			<!--  Project START  -->
+			<xs:enumeration value="1.22"/>
+			<!--  Connect  -->
+			<xs:enumeration value="1.23"/>
+			<!--  SHIELD  -->
+			<xs:enumeration value="1.24"/>
+			<!--  Nia  -->
+			<xs:enumeration value="1.25"/>
+			<!--  Cuidate!  -->
+			<xs:enumeration value="1.26"/>
+			<!--  Partnership for Health  -->
+			<xs:enumeration value="1.27"/>
+			<!--  Personalized Cognitive Counseling (PCC)  -->
+			<xs:enumeration value="1.28"/>
+			<!--  Project AIM  -->
+			<xs:enumeration value="1.29"/>
+			<!--  Safe in the City  -->
+			<xs:enumeration value="1.30"/>
+			<!--  RESPECT  -->
+			<xs:enumeration value="1.31"/>
+			<!--  ARTAS  -->
+			<xs:enumeration value="2.01"/>
+			<!--  Comprehensive Risk Counseling Services  -->
+			<xs:enumeration value="2.02"/>
+			<!--  Condom Distribution  -->
+			<xs:enumeration value="2.03"/>
+			<!--  Referral / Linkage to Care  -->
+			<xs:enumeration value="3.01"/>
+			<!--  Study / Special Study (specify)  -->
+			<xs:enumeration value="3.02"/>
+			<!--  Other (specify)  -->
+			<xs:enumeration value="CT"/>
+			<!--  HIV Testing  -->
+			<xs:enumeration value="PS"/>
+			<!--  Partner Services  -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeHeader">
+		<xs:sequence>
+			<xs:element name="dataType">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="AI"/>
+						<!--  Agency Info  -->
+						<xs:enumeration value="CT"/>
+						<!--  Counseling and Testing  -->
+						<xs:enumeration value="PS"/>
+						<!--  Partner Services  -->
+						<xs:enumeration value="CBOCL"/>
+						<!--  Client level data, CBO variables  -->
+						<xs:enumeration value="HDCL"/>
+						<!--  Client level data, HD variables  -->
+						<xs:enumeration value="CBOAG"/>
+						<!--  Aggregate level data, CBO variables  -->
+						<xs:enumeration value="HDAG"/>
+						<!--  Aggregate level data, HD variables  -->
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SchemaVersionNumber" type="xs:string"/>
+			<xs:element name="senderAgencyId" type="xs:string" minOccurs="0"/>
+			<xs:element name="firstDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="lastDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="contactPersonInformation" type="xs:string"/>
+			<xs:element name="agencyIDs" type="xs:string" minOccurs="0"/>
+			<xs:element name="dateCreated" type="typeDateTime" minOccurs="0"/>
+			<xs:element name="fileLastModifiedDate" type="typeDateTime" minOccurs="0"/>
+			<!--
+ specialIntructions should include name of data source, such as STD*MIS,
+                PRISM, PartnerWeb, etc 
+-->
+			<xs:element name="specialInstructions" type="xs:string" minOccurs="0"/>
+			<xs:element name="dataOwnerAgencyName" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="typeZip">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeLocalVariables">
+		<xs:sequence>
+			<xs:element name="localVariableText1" type="typeString100" minOccurs="0"/>
+			<xs:element name="localVariableText2" type="typeString100" minOccurs="0"/>
+			<xs:element name="localVariableText3" type="typeString100" minOccurs="0"/>
+			<xs:element name="localVariableInt1" type="xs:integer" minOccurs="0"/>
+			<xs:element name="localVariableInt2" type="xs:integer" minOccurs="0"/>
+			<xs:element name="localVariableInt3" type="xs:integer" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

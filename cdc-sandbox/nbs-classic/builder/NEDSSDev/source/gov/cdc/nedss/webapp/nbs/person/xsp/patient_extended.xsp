@@ -1,0 +1,1481 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:xsp="http://apache.org/xsp" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.action.person.util.PersonUtil</xsp:include>
+		<xsp:include>gov.cdc.nedss.ldf.subform.dt.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<nedss:RequestValues/>
+		<xsp:logic><![CDATA[			
+			String aodOnCreate = "";
+			if (typeOfAction == null)
+			    typeOfAction = " ";
+			   if(typeOfAction!= null && typeOfAction.equals("AddExtended")) {
+				aodOnCreate = (String)request.getAttribute("asOfDateAdmin");
+			}
+            //begin ldf   
+              String previewXSP= (String)request.getAttribute("previewXSP");			
+		if(previewXSP==null)
+				previewXSP="<null></null>";
+		String extXSP= (String)request.getAttribute(NEDSSConstants.PATIENT_LDF+"extXSP");
+		if(extXSP == null)
+		     extXSP = "<group></group>";
+		//System.out.println("\n\n\n####extXSP is \n:" + extXSP);
+		//end ldf
+		String sfValidationXSP = request.getAttribute("subformValidations") == null ? "<group></group>" : (String) request.getAttribute("subformValidations");
+	      String eventCount = String.valueOf((request.getAttribute("EventCount")));
+		]]></xsp:logic>
+		<xsp:logic>
+			String customJavaScript= (String)request.getAttribute("customJavaScript");
+			String customJavaScriptPAT= (String)request.getAttribute(NEDSSConstants.PATIENT_LDF+ "customJavaScript");
+		</xsp:logic>
+		<id-bar>
+			<id name="Patient ID">
+				<xsp-request:get-attribute name="personLocalID"/>
+			</id>
+		</id-bar>
+		<link-bar>
+			<link>
+				<xsp:attribute name="name">
+					<xsp-request:get-attribute name="linkName"/>
+				</xsp:attribute>
+				<xsp-request:get-attribute name="linkValue"/>
+			</link>
+			<link name="Search Results">
+				<xsp-request:get-attribute name="returnToSearchResultsHref"/>
+			</link>
+		</link-bar>
+		<nedss:ViewPerson task="ViewPerson2">
+			<!--xsp:logic>		
+			if(sCurrTask != null) {
+			if (sCurrTask.startsWith(&quot;ViewPerson2&quot;))
+		{
+		</xsp:logic-->
+			<link-bar>
+				<link>
+					<xsp:attribute name="name">
+						<xsp-request:get-attribute name="linkName"/>
+					</xsp:attribute>
+					<xsp-request:get-attribute name="linkValue"/>
+				</link>
+			</link-bar>
+		</nedss:ViewPerson>
+		<!--xsp:logic>			
+		}}
+		</xsp:logic-->
+		<button-bar>
+			<!--left>
+				<label>POSTED</label>
+				<javascript-action>document.forms[0].action="/nbs/posted";submitForm();</javascript-action>
+			</left-->
+			<nedss:SpecifyEntityButtons>
+				<!--xsp:logic><![CDATA[
+				if (typeOfAction != null && typeOfAction.equals("entity")) { ]]></xsp:logic-->
+				<right>
+					<label>Select</label>
+					<javascript-action>selectedAnEntity();</javascript-action>
+				</right>
+				<right>
+					<label>Back</label>
+					<javascript-action/>
+				</right>
+			</nedss:SpecifyEntityButtons>
+			<xsp:logic><![CDATA[
+				else if (typeOfAction != null && (typeOfAction.startsWith("Edit") || typeOfAction.equals("AddExtended"))) { ]]></xsp:logic>
+			<!--nedss:SpecifyEditButtons-->
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="submitButton"/>
+				</xsp:attribute>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="cancelButtonHref"/>');</javascript-action>
+			</right>
+			<!--/nedss:SpecifyEditButtons-->
+			<xsp:logic><![CDATA[
+                        } 
+                       ]]></xsp:logic>
+			<nedss:SpecifyWorkupButtons>
+				<!--xsp:logic><![CDATA[
+			                           else {  if(isThisWorkup!=null && isThisWorkup.equals("true")){
+			                       ]]></xsp:logic-->
+				<right anchor="yes">
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="editButton"/>
+					</xsp:attribute>
+					<label>Edit</label>
+					<!--<javascript-action>getPage('/nedss/PersonEdit?type=edit&amp;ObjectType=<xsp:expr>NEDSSConstantUtil.PERSON</xsp:expr>&amp;OperationType=<xsp:expr>NEDSSConstantUtil.PERSON_EDIT</xsp:expr>');</javascript-action>-->
+					<javascript-action>getPage('<xsp-request:get-attribute name="editButtonHref"/>');</javascript-action>
+				</right>
+				<right anchor="yes">
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="deleteButton"/>
+					</xsp:attribute>
+					<label>Delete</label>
+					<xsp:logic><![CDATA[
+					  if(eventCount ==null || eventCount .equals("0")){
+						       ]]></xsp:logic>
+						<javascript-action>promptForm('<xsp-request:get-attribute name="deleteButtonHref"/>','You have indicated that you would like to delete this patient file. \nSelect OK to continue or Cancel to return to patient file.');</javascript-action>
+						<xsp:logic><![CDATA[
+							  }else{
+						 ]]></xsp:logic>
+						 <javascript-action>window.alert('This patient file has associated event records. The file cannot be deleted until all associated event records have have been deleted. If you are unable to see the associated event records due to your user permission settings, please contact your system administrator.');</javascript-action>
+					   <xsp:logic><![CDATA[
+							  }
+			                 ]]></xsp:logic>
+				</right>
+			</nedss:SpecifyWorkupButtons>
+			<nedss:ElseClause>
+				<!--xsp:logic>
+							}	else 	{
+						</xsp:logic-->
+				<!--left>
+							<label>View History</label>
+							<javascript-action>NoOp();</javascript-action>
+						</left-->
+				<left>
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="fileButton"/>
+					</xsp:attribute>
+					<label>View   File</label>
+					<javascript-action>getPage('<xsp-request:get-attribute name="viewFileButtonHref"/>');</javascript-action>
+				</left>
+				<right>
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="editButton"/>
+					</xsp:attribute>
+					<label>Edit</label>
+					<!--<javascript-action>getPage('/nedss/PersonEdit?type=edit&amp;ObjectType=<xsp:expr>NEDSSConstantUtil.PERSON</xsp:expr>&amp;OperationType=<xsp:expr>NEDSSConstantUtil.PERSON_EDIT</xsp:expr>');</javascript-action>-->
+					<javascript-action>getPage('<xsp-request:get-attribute name="editButtonHref"/>');</javascript-action>
+				</right>
+				<right>
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="addButton"/>
+					</xsp:attribute>
+					<label>Add</label>
+					<javascript-action>getPage('<xsp-request:get-attribute name="addButtonHref"/>');</javascript-action>
+				</right>
+				<right>
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="deleteButton"/>
+					</xsp:attribute>
+					<label>Delete</label>
+					<javascript-action>promptForm('<xsp-request:get-attribute name="deleteButtonHref"/>','Are you sure you want to delete this Patient Record?');</javascript-action>
+				</right>
+				<!-- Commented out Print functionality, if required, uncomment out below -->
+				<!--right tie-to="View">
+					<label>Print</label>
+					<javascript-action>window.open('<xsp-request:get-attribute name="PrintPage"/>');</javascript-action>
+				</right-->
+			</nedss:ElseClause>
+			<nedss:CloseParanthesis/>
+			<!--xsp:logic>}}</xsp:logic-->
+		</button-bar>
+		<javascript-files>
+			<!--import>EntitySearch.js</import-->
+			<insert>
+				<xsp:expr>customJavaScript</xsp:expr>
+			</insert>
+			<insert>
+				<xsp:expr>customJavaScriptPAT</xsp:expr>
+			</insert>
+			<import>PersonSpecific.js</import>
+		</javascript-files>
+		<tab name="Demographics">
+			<!--		entity search 		-->
+			<nedss:writeErrorMessages/>
+			<group>
+				<!--		struts specific		-->
+				<line>
+					<element id="calcDOB" name="person.thePersonDT.birthTimeCalc_s" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="birthTimeCalc"/>
+						</value>
+					</element>
+				</line>
+				<line tie-to="View">
+					<element id="patientDOB" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="birthTime"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element id="today" type="hidden">
+						<value>
+							<xsp:expr>PersonUtil.formatCurrentDate()</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="ContextAction" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="ContextAction"/>
+						</value>
+					</element>
+				</line>
+				<!--		struts specific		-->
+			</group>
+			<group>
+				<line tie-to="Add|Create|Edit|">
+					<element type="raw">
+						<span>
+							<i>The As Of Date is a required field when the Associated Information section contains data.</i>
+						</span>
+					</element>
+				</line>
+			</group>
+			<group name="Administrative Information" colspan="off">
+				<line>
+					<element type="join">
+						<line>
+							<element name="person.thePersonDT.asOfDateAdmin_s" type="text" label="Administrative Information As Of" size="10" mask="##/##/####">
+								<validation type="date" mask="mm/dd/yyyy" name="Administrative Information As Of"/>
+								<value>
+									<xsp-request:get-attribute name="asOfDateAdmin"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element name="person.thePersonDT.description" type="textarea" label="General Comments">
+						<validation type="lengthLimit" fieldLength="2000" name="Address Comments"/>
+						<value>
+							<xsp-request:get-attribute name="description"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<group name="Name">
+				<line>
+					<element name="Name" type="batch-entry">
+						<value>
+							<xsp-request:get-attribute name="names"/>
+						</value>
+						<line>
+							<element name="person.personNameDT_s[i].asOfDate_s" type="text" label="Name Information As Of" size="10" mask="##/##/####">
+								<xsp:attribute name="default">
+									<xsp:expr>aodOnCreate</xsp:expr>
+								</xsp:attribute>
+								<header>As Of</header>
+								<validation type="conditional-date" mask="mm/dd/yyyy" name="Name Information As Of"/>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="person.personNameDT_s[i].nmUseCd" type="select" label="Type" length="22">
+								<header>Type</header>
+								<validation type="required" name="Type"/>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>P_NM_USE</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="person.personNameDT_s[i].nmPrefix" type="select" label="Prefix" length="10">
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>P_NM_PFX</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="person.personNameDT_s[i].lastNm" type="text" label="Last">
+								<header>Last</header>
+								<xsp-request:get-attribute name="lastName"/>
+							</element>
+							<element name="person.personNameDT_s[i].lastNm2" type="text" label="Second Last">
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element name="person.personNameDT_s[i].firstNm" type="text" label="First">
+								<header>First</header>
+							</element>
+						</line>
+						<line>
+							<element name="person.personNameDT_s[i].middleNm" type="text" label="Middle">
+								<header>Middle</header>
+							</element>
+							<element name="person.personNameDT_s[i].middleNm2" type="text" label="Second Middle">
+							</element>
+						</line>
+						<line>
+							<element name="person.personNameDT_s[i].nmSuffix" type="select" label="Suffix" length="15">
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>P_NM_SFX</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="person.personNameDT_s[i].nmDegree" type="select" label="Degree" length="3">
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>P_NM_DEG</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line tie-to="Add|Edit">
+							<element name="person.personNameDT_s[i].statusCd" type="hidden">
+								<srt-options-string>+|A+Active|I+Inactive|</srt-options-string>
+							</element>
+							<element name="person.personNameDT_s[i].personNameSeq" type="hidden"/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Sex and Birth">
+				<line>
+					<element type="join">
+						<line>
+							<element id="asOfDateServer" name="person.thePersonDT.asOfDateSex_s" type="text" label="Sex and Birth Information As Of" size="10" mask="##/##/####">
+								<validation type="date" mask="mm/dd/yyyy" name="Sex and Birth Information As Of"/>
+								<xsp:attribute name="default">
+									<xsp:expr>aodOnCreate</xsp:expr>
+								</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="asOfDateSex"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element name="person.thePersonDT.currSexCd" type="select" label="Current Sex" length="7">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="currSexCd"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="person.thePersonDT.birthGenderCd" type="select" label="Birth Sex" length="7">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="birthGenderCd"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element id="patientDOB" name="person.thePersonDT.birthTime_s" type="text" label="DOB" size="10" mask="##/##/####" onchange="updatePatientDOBInfo(this);" onblur="updatePatientDOBInfo(this);">
+						<validation type="dateRange" mask="mm/dd/yyyy" name="DOB" dateAfterReference="asOfDateServer"/>
+						<value>
+							<xsp-request:get-attribute name="birthTime"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="multipleBirthInd" type="conditional-entry">
+						<controller name="person.thePersonDT.multipleBirthInd" type="select" label="Multiple Birth" trigger="Y" length="7">
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="multipleBirthInd"/>
+							</value>
+						</controller>
+						<line>
+							<element name="person.thePersonDT.birthOrderNbrStr" type="text" label="Birth Order" size="5" align="left">
+								<value>
+									<xsp-request:get-attribute name="birthOrderNbr"/>
+								</value>
+								<validation type="numericBirthOrder" name="Birth Order"/>
+							</element>
+							<element/>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element name="currentAge" type="text" label="Current Age" size="3" onchange="displayCalcAge()">
+						<readonly/>
+						<value/>
+						<partner name="currentAgeUnits" type="text">
+							<readonly/>
+							<xsp:attribute name="onloadview">displayCalcAge()</xsp:attribute>
+							<xsp:attribute name="onload">displayCalcAge()</xsp:attribute>
+							<!--value>							
+							</value>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>AGE_UNIT</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string-->
+						</partner>
+					</element>
+				</line>
+				<line>
+					<element name="birthAddress.thePostalLocatorDT_s.cityDescTxt" type="text" label="Birth City">
+						<value>
+							<xsp-request:get-attribute name="birthCity"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="birthAddress.thePostalLocatorDT_s.stateCd" type="select" label="Birth State" onchange="getData(this, 'birthAddress.thePostalLocatorDT_s.cntyCd');" length="25">
+						<value>
+							<xsp-request:get-attribute name="birthState"/>
+						</value>
+						<srt-options-string>
+							<srt-codes:getStateCodes>
+								<type>USA</type>
+							</srt-codes:getStateCodes>
+						</srt-options-string>
+					</element>
+				</line>
+				<line>
+					<element name="birthAddress.thePostalLocatorDT_s.cntyCd" type="select" label="Birth County" length="32">
+						<value>
+							<xsp-request:get-attribute name="birthCounty"/>
+						</value>
+						<srt-options-string>
+							<xsp-request:get-attribute name="birthCountiesInState"/>
+						</srt-options-string>
+					</element>
+				</line>
+				<line>
+					<element name="birthAddress.thePostalLocatorDT_s.cntryCd" type="select" label="Birth Country" length="48">
+						<srt-options-string>
+							<srt-codes:getCountryCodesAsString/>
+						</srt-options-string>
+						<!-- Their is not any business rule to default Birth Counrty to USA if it is null-->
+						<!--xsp:logic>
+						if (request.getAttribute("birthCountry") == null) {</xsp:logic>
+						<value>
+							<xsp:expr>840</xsp:expr>
+						</value>
+						<xsp:logic>} else {</xsp:logic!-->
+						<value>
+							<xsp-request:get-attribute name="birthCountry"/>
+						</value>
+						<!--xsp:logic>}</xsp:logic-->
+					</element>
+				</line>
+				<line>
+					<element name="birthAddress.thePostalLocatorDT_s.postalLocatorUid" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="birthPostalLocatorUid"/>
+						</value>
+					</element>
+					<element name="birthAddress.locatorUid" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="birthLocatorUid"/>
+						</value>
+					</element>
+					<element name="birthAddress.entityUid" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="birthEntityUid"/>
+						</value>
+					</element>
+					<element name="birthAddress.statusCd" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="birthStatusCd"/>
+						</value>
+					</element>
+					<element name="birthAddress.recordStatusCd" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="birthRecordStatusCd"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<group name="Mortality">
+				<line>
+					<element name="person.thePersonDT.asOfDateMorbidity_s" type="text" label="Mortality Information As Of" size="10" mask="##/##/####" align-label="left">
+						<xsp:attribute name="default">
+							<xsp:expr>aodOnCreate</xsp:expr>
+						</xsp:attribute>
+						<validation type="date" mask="mm/dd/yyyy" name="Mortality Information As Of"/>
+						<value>
+							<xsp-request:get-attribute name="asOfDateMorbidity"/>
+						</value>
+					</element>
+					<element/>
+					<element/>
+					<element/>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element name="patientDeceased" type="conditional-entry">
+						<controller trigger="Y" name="person.thePersonDT.deceasedIndCd" type="select" label="Is the patient deceased?" align-label="left" length="7">
+							<value>
+								<xsp-request:get-attribute name="deceasedIndCd"/>
+							</value>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+						</controller>
+						<line>
+							<element name="person.thePersonDT.deceasedTime_s" type="text" label="Deceased Date" size="10" mask="##/##/####">
+								<value>
+									<xsp-request:get-attribute name="deceasedDate"/>
+								</value>
+								<validation type="validDeceasedDate" mask="mm/dd/yyyy" dateBeforeReference="person.thePersonDT.birthTime_s" name="Deceased Date"/>
+							</element>
+						</line>
+						<line>
+							<element name="deceasedAddress.thePostalLocatorDT_s.cityDescTxt" type="text" label="Deceased City" size="15">
+								<value>
+									<xsp-request:get-attribute name="deathCity"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<element name="deceasedAddress.thePostalLocatorDT_s.stateCd" type="select" label="Deceased State" onchange="getData(this, 'deceasedAddress.thePostalLocatorDT_s.cntyCd');" length="25">
+								<value>
+									<xsp-request:get-attribute name="deathState"/>
+								</value>
+								<srt-options-string>
+									<srt-codes:getStateCodes>
+										<type>USA</type>
+									</srt-codes:getStateCodes>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="deceasedAddress.thePostalLocatorDT_s.cntyCd" type="select" label="Deceased County" length="32">
+								<value>
+									<xsp-request:get-attribute name="deathCounty"/>
+								</value>
+								<srt-options-string>
+									<xsp-request:get-attribute name="deathCountiesInState"/>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="deceasedAddress.thePostalLocatorDT_s.cntryCd" type="select" label="Deceased Country" length="48">
+								<srt-options-string>
+									<srt-codes:getCountryCodesAsString/>
+								</srt-options-string>
+								<!-- Their is not a business rule that says to default Deceased Country to USA if it is null-->
+								<!--xsp:logic>
+								if (request.getAttribute("deathCountry") == null) {</xsp:logic>
+								<value>
+									<xsp:expr>840</xsp:expr>
+								</value>
+								<xsp:logic>} else {</xsp:logic-->
+								<value>
+									<xsp-request:get-attribute name="deathCountry"/>
+								</value>
+								<!--xsp:logic>}</xsp:logic-->
+							</element>
+						</line>
+						<line>
+							<element name="deceasedAddress.thePostalLocatorDT_s.postalLocatorUid" type="hidden">
+								<value>
+									<xsp-request:get-attribute name="deathPostalLocatorUid"/>
+								</value>
+							</element>
+							<element name="deceasedAddress.locatorUid" type="hidden">
+								<value>
+									<xsp-request:get-attribute name="deathLocatorUid"/>
+								</value>
+							</element>
+							<element name="deceasedAddress.entityUid" type="hidden">
+								<value>
+									<xsp-request:get-attribute name="deathEntityUid"/>
+								</value>
+							</element>
+							<element name="deceasedAddress.statusCd" type="hidden">
+								<value>
+									<xsp-request:get-attribute name="deathStatusCd"/>
+								</value>
+							</element>
+							<element name="deceasedAddress.recordStatusCd" type="hidden">
+								<value>
+									<xsp-request:get-attribute name="deathRecordStatusCd"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="General">
+				<line>
+					<element name="person.thePersonDT.asOfDateGeneral_s" type="text" label="General Information As Of" size="10" mask="##/##/####">
+						<xsp:attribute name="default">
+							<xsp:expr>aodOnCreate</xsp:expr>
+						</xsp:attribute>
+						<validation type="date" mask="mm/dd/yyyy" name="General Information As Of"/>
+						<value>
+							<xsp-request:get-attribute name="asOfDateGeneral"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<element name="person.thePersonDT.mothersMaidenNm" type="text" label="Mother's Maiden Name">
+						<value>
+							<xsp-request:get-attribute name="mothersMaidenNm"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="person.thePersonDT.adultsInHouseNbrStr" type="text" label="Number of adults in residence" size="5">
+						<value>
+							<xsp-request:get-attribute name="adultsInHouseNbr"/>
+						</value>
+						<validation type="numeric" name="Number of adults in residence"/>
+						<partner name="person.thePersonDT.childrenInHouseNbrStr" type="text" label="Children" size="5">
+							<value>
+								<xsp-request:get-attribute name="childrenInHouseNbr"/>
+							</value>
+							<validation type="numeric" name="Children"/>
+						</partner>
+					</element>
+				</line>
+				<line>
+					<element type="conditional-entry" name="person.thePersonDT.educationLevelCdc">
+						<controller name="person.thePersonDT.educationLevelCd" type="select" label="Highest Level of Education Received" trigger="OTH" length="39">
+							<value>
+								<xsp-request:get-attribute name="educationLevelCd"/>
+							</value>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>P_EDUC_LVL</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+						</controller>
+						<line>
+							<element name="person.thePersonDT.educationLevelDescTxt" type="text" label="Description" size="36" indented="yes">
+								<value>
+									<xsp-request:get-attribute name="educationLevelDescTxt"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element name="person.thePersonDT.occupationCd" type="select" label="Primary Occupation" length="47">
+						<value>
+							<xsp-request:get-attribute name="occupationCd"/>
+						</value>
+						<srt-options-string>
+							<srt-codes:getIndustryCodes/>
+						</srt-options-string>
+					</element>
+				</line>
+				<line>
+					<element name="person.thePersonDT.maritalStatusCd" type="select" label="Marital Status" length="21">
+						<value>
+							<xsp-request:get-attribute name="maritalStatus"/>
+						</value>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>P_MARITAL</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+					</element>
+				</line>
+				<!--line>
+					<element type="conditional-entry" name="maritalStatus">
+						<controller name="person.thePersonDT.maritalStatusCd" type="select" label="Marital Status" trigger="OTH">
+							<value>
+								<xsp-request:get-attribute name="maritalStatus"/>
+							</value>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>P_MARITAL</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+						</controller>
+						<line>
+							<element name="person.thePersonDT.maritalStatusDescTxt" type="text" label="Description" size="36" indented="yes">
+								<value>
+									<xsp-request:get-attribute name="maritalStatusDescTxt"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line-->
+				<line>
+					<element type="conditional-entry" name="person.thePersonDT.primLangCdc">
+						<controller name="person.thePersonDT.primLangCd" type="select" label="Primary Language" trigger="OTH" length="50">
+							<value>
+								<xsp-request:get-attribute name="primLangCd"/>
+							</value>
+							<srt-options-string>
+								<srt-codes:getLanguageCodes/>
+							</srt-options-string>
+						</controller>
+						<line>
+							<element name="person.thePersonDT.primLangDescTxt" type="text" label="Description" indented="yes">
+								<value>
+									<xsp-request:get-attribute name="primLangDescTxt"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Identification Information">
+				<line>
+					<element id="DEM210" name="patientSSNAsOfDate" type="text" label="SSN As Of" size="10" mask="##/##/####" align="left">
+						<xsp:attribute name="default">
+							<xsp:expr>aodOnCreate</xsp:expr>
+						</xsp:attribute>
+						<validation type="date" mask="mm/dd/yyyy" name="SSN As Of"/>
+						<value>
+							<xsp-request:get-attribute name="ssnAsOfDate"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element id="DEM133" name="patientSSN" type="ssn" label="SSN" size="10">
+						<value>
+							<xsp-request:get-attribute name="ssn"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="ID" type="batch-entry">
+						<value>
+							<xsp-request:get-attribute name="ids"/>
+						</value>
+						<line>
+							<element name="person.entityIdDT_s[i].asOfDate_s" type="text" label="Identification Information As Of" size="10" mask="##/##/####">
+								<xsp:attribute name="default">
+									<xsp:expr>aodOnCreate</xsp:expr>
+								</xsp:attribute>
+								<validation type="conditional-date" mask="mm/dd/yyyy" name="Identification Information As Of"/>
+								<header>As Of</header>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element type="conditional-entry" name="person.entityIdDT_s[i].typeCd">
+								<controller name="person.entityIdDT_s[i].typeCd" type="select" label="Type" trigger="OTH" exclude="SS" length="37">
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>EI_TYPE_PAT</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<validation type="required" name="Type"/>
+									<header>Type</header>
+								</controller>
+								<line>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element name="person.entityIdDT_s[i].typeDescTxt" type="text" label="Description" size="36" indented="yes" align-label="right"/>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="conditional-entry" name="person.entityIdDT_s[i].assigningAuthorityCd">
+								<controller name="person.entityIdDT_s[i].assigningAuthorityCd" type="select" label="Assigning Authority" trigger="OTH" exclude="SSA" length="5">
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>EI_AUTH_PAT</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<header>Authority</header>
+								</controller>
+								<line>
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element name="person.entityIdDT_s[i].assigningAuthorityDescTxt" type="text" label="Description" size="36" indented="yes" align-label="right"/>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element name="person.entityIdDT_s[i].rootExtensionTxt" type="text" label="ID Value">
+								<validation type="acctIdSearchCheck" nameRef="person.entityIdDT_s[i].typeCd" name="ID Value">
+									<required/>
+								</validation>
+								<header>Value</header>
+							</element>
+							<element/>
+							<element/>
+							<element/>
+						</line>
+						<line tie-to="Edit|Add">
+							<element name="person.entityIdDT_s[i].statusCd" type="hidden">
+								<srt-options-string>+|A+Active|I+Inactive|</srt-options-string>
+							</element>
+							<element name="person.entityIdDT_s[i].entityIdSeq" type="hidden"/>
+							<element name="person.entityIdDT_s[i].entityUid" type="hidden"/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Ethnicity">
+				<line>
+					<element type="join">
+						<line>
+							<element name="person.thePersonDT.asOfDateEthnicity_s" type="text" label="Ethnicity Information As Of" size="10" mask="##/##/####">
+								<xsp:attribute name="default">
+									<xsp:expr>aodOnCreate</xsp:expr>
+								</xsp:attribute>
+								<validation type="date" mask="mm/dd/yyyy" name="Ethnicity Information As Of"/>
+								<value>
+									<xsp-request:get-attribute name="asOfDateEthnicity"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<nedss:inputEthnicity>
+					<line>
+						<element name="pEthnParseString" type="conditional-entry">
+							<controller name="person.thePersonDT.ethnicGroupInd" type="select" trigger="2135-2" label="Spanish Origin" align-label="left" length="22">
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>P_ETHN_GRP</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="CDM-spanishOrigin"/>
+								</value>
+							</controller>
+							<line>
+								<element name="ethnicitySelected" type="select" size="5">
+									<value>
+										<xsp-request:get-attribute name="parsedEthnicity"/>
+									</value>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>P_ETHN</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</element>
+							</line>
+						</element>
+					</line>
+				</nedss:inputEthnicity>
+				<!-- Use the below logicsheet template to display ethnicity for view patient / view file demographics -->
+				<nedss:displayEthnicity>
+					<line>
+						<element name="pEthnParseString" type="text" indented="yes">
+							<xsp:attribute name="label">
+								<xsp:expr>srtValues.getDescForCode("P_ETHN_GRP",spanishOrigin)</xsp:expr>
+							</xsp:attribute>
+							<value>
+								<xsp:expr>sb.toString()</xsp:expr>
+							</value>
+						</element>
+					</line>
+				</nedss:displayEthnicity>
+			</group>
+			<group name="Race">
+				<line>
+					<element name="race" type="conditional-entry">
+						<controller name="raceCategoryCd" type="checkbox">
+							<options>
+								<option name="unknownRace" value="y" label="Unknown">
+									<value>
+										<xsp-request:get-attribute name="unknownRace"/>
+									</value>
+								</option>
+							</options>
+						</controller>
+						<line>
+							<element type="join">
+								<line>
+									<element name="unknownRaceDate" type="text" label="Race Information As Of" size="10" mask="##/##/####">
+										<xsp:attribute name="default">
+											<xsp:expr>aodOnCreate</xsp:expr>
+										</xsp:attribute>
+										<validation type="date" mask="mm/dd/yyyy" name="Unknown Race As Of"/>
+										<value>
+											<xsp-request:get-attribute name="unknownRaceDate"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element name="indian" type="conditional-entry">
+						<controller name="" type="checkbox">
+							<options>
+								<option name="1002-5" value="y" label="American Indian or Alaska Native">
+									<value>
+										<xsp-request:get-attribute name="americanIndianController"/>
+									</value>
+								</option>
+							</options>
+						</controller>
+						<line>
+							<element type="join">
+								<line>
+									<element name="1002-5date" type="text" label="Race Information As Of" size="10" mask="##/##/####">
+										<xsp:attribute name="default">
+											<xsp:expr>aodOnCreate</xsp:expr>
+										</xsp:attribute>
+										<validation type="date" mask="mm/dd/yyyy" name="Race Information As Of"/>
+										<value>
+											<xsp-request:get-attribute name="americanIndianAsOfDate"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="raceAmericanIndian" type="select" size="5" label="">
+								<srt-options-string>
+									<srt-codes:getRaceCodes>
+										<type>1002-5</type>
+									</srt-codes:getRaceCodes>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="americanIndian"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element name="asian" type="conditional-entry">
+						<controller name="" type="checkbox">
+							<options>
+								<option name="2028-9" value="y" label="Asian">
+									<value>
+										<xsp-request:get-attribute name="asianController"/>
+									</value>
+								</option>
+							</options>
+						</controller>
+						<line>
+							<element type="join">
+								<line>
+									<element name="2028-9date" type="text" label="Race Information As Of" size="10" mask="##/##/####">
+										<xsp:attribute name="default">
+											<xsp:expr>aodOnCreate</xsp:expr>
+										</xsp:attribute>
+										<validation type="date" mask="mm/dd/yyyy" name="Race Information As Of"/>
+										<value>
+											<xsp-request:get-attribute name="asianAsOfDate"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="raceAsian" type="select" size="5" label="">
+								<value>
+									<xsp-request:get-attribute name="asian"/>
+								</value>
+								<srt-options-string>
+									<srt-codes:getRaceCodes>
+										<type>2028-9</type>
+									</srt-codes:getRaceCodes>
+								</srt-options-string>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element name="african" type="conditional-entry">
+						<controller name="" type="checkbox">
+							<options>
+								<option name="2054-5" value="y" label="Black or African American">
+									<value>
+										<xsp-request:get-attribute name="africanAmericanController"/>
+									</value>
+								</option>
+							</options>
+						</controller>
+						<line>
+							<element type="join">
+								<line>
+									<element name="2054-5date" type="text" label="Race Information As Of" size="10" mask="##/##/####">
+										<xsp:attribute name="default">
+											<xsp:expr>aodOnCreate</xsp:expr>
+										</xsp:attribute>
+										<validation type="date" mask="mm/dd/yyyy" name="Race Information As Of"/>
+										<value>
+											<xsp-request:get-attribute name="blackAfricanAmericanAsOfDate"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="raceAfricanAmerican" type="select" size="5" label="">
+								<srt-options-string>
+									<srt-codes:getRaceCodes>
+										<type>2054-5</type>
+									</srt-codes:getRaceCodes>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="africanAmerican"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element name="hawaiian" type="conditional-entry">
+						<controller name="" type="checkbox">
+							<options>
+								<option name="2076-8" value="y" label="Native Hawaiian or Other Pacific Islander">
+									<value>
+										<xsp-request:get-attribute name="hawaiianController"/>
+									</value>
+								</option>
+							</options>
+						</controller>
+						<line>
+							<element type="join">
+								<line>
+									<element name="2076-8date" type="text" label="Race Information As Of" size="10" mask="##/##/####">
+										<xsp:attribute name="default">
+											<xsp:expr>aodOnCreate</xsp:expr>
+										</xsp:attribute>
+										<validation type="date" mask="mm/dd/yyyy" name="Race Information As Of"/>
+										<value>
+											<xsp-request:get-attribute name="nativeHawaiianAsOfDate"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="raceHawaiian" type="select" size="5" label="">
+								<value>
+									<xsp-request:get-attribute name="hawaiian"/>
+								</value>
+								<srt-options-string>
+									<srt-codes:getRaceCodes>
+										<type>2076-8</type>
+									</srt-codes:getRaceCodes>
+								</srt-options-string>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element name="white" type="conditional-entry">
+						<controller name="" type="checkbox">
+							<options>
+								<option name="2106-3" value="y" label="White">
+									<value>
+										<xsp-request:get-attribute name="whiteController"/>
+									</value>
+								</option>
+							</options>
+						</controller>
+						<line>
+							<element type="join">
+								<line>
+									<element name="2106-3date" type="text" label="Race Information As Of" size="10" mask="##/##/####">
+										<xsp:attribute name="default">
+											<xsp:expr>aodOnCreate</xsp:expr>
+										</xsp:attribute>
+										<validation type="date" mask="mm/dd/yyyy" name="Race Information As Of"/>
+										<value>
+											<xsp-request:get-attribute name="whiteAsOfDate"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="raceWhite" type="select" size="5" label="">
+								<srt-options-string>
+									<srt-codes:getRaceCodes>
+										<type>2106-3</type>
+									</srt-codes:getRaceCodes>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="white"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<!--line>
+					<element name="otherRace" type="conditional-entry">
+						<controller name="" type="checkbox">
+							<options>
+								<option name="otherRaceCd" value="true" label="Other" onchange="isOtherRaceChecked();">
+									<value>
+										<xsp-request:get-attribute name="OtherRace"/>
+									</value>
+								</option>
+							</options>
+						</controller>
+						<line>
+							<element type="join">
+								<line>
+									<element name="otherRaceCdDate" type="text" label="Race Information As Of" size="10" mask="##/##/####">
+										<xsp:attribute name="default">
+											<xsp:expr>aodOnCreate</xsp:expr>
+										</xsp:attribute>
+										<validation type="date" mask="mm/dd/yyyy" name="Race Information As Of"/>
+										<value>
+											<xsp-request:get-attribute name="otherAsOfDate"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="raceDescTxt" type="text">
+								<value>
+									<xsp-request:get-attribute name="OtherRaceDescText"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line-->
+			</group>
+			<group name="Address Information">
+				<line>
+					<element name="defaultStateFlagEx" type="hidden" label="" default="">
+						<value>
+							<xsp-request:get-attribute name="defaultStateFlag"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="defaultState" type="hidden" label="">
+						<value>
+							<xsp:expr>PersonUtil.getDefaultStateCd()</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="Address" type="batch-entry">
+						<value>
+							<xsp-request:get-attribute name="addresses"/>
+						</value>
+						<line>
+							<element type="join">
+								<line>
+									<element name="address[i].asOfDate_s" type="text" label="Address Information As Of" size="10" mask="##/##/####">
+										<xsp:attribute name="default">
+											<xsp:expr>aodOnCreate</xsp:expr>
+										</xsp:attribute>
+										<header>As of</header>
+										<validation type="conditional-date" mask="mm/dd/yyyy" name="Address Information As Of"/>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="address[i].useCd" type="select" label="Use" exclude="BIR|DTH" length="22">
+								<header>Use</header>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>EL_USE_PST_PAT</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<validation type="required" name="Use"/>
+							</element>
+						</line>
+						<line>
+							<element type="conditional-entry" name="address[i].cdc">
+								<controller name="address[i].cd" type="select" label="Type" trigger="OTH" length="44">
+									<validation type="required" name="Type"/>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>EL_TYPE_PST_PAT</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</controller>
+								<line>
+									<element name="address[i].cdDescTxt" type="text" label="Description" size="36" indented="yes"/>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element name="address[i].thePostalLocatorDT_s.streetAddr1" type="text" label="Street Address 1" size="36">
+								<header>Address</header>
+							</element>
+						</line>
+						<line>
+							<element name="address[i].thePostalLocatorDT_s.streetAddr2" type="text" label="Street Address 2" size="36"/>
+						</line>
+						<line>
+							<element name="address[i].thePostalLocatorDT_s.cityDescTxt" type="text" label="City">
+								<header>City</header>
+							</element>
+							<element name="address[i].thePostalLocatorDT_s.stateCd" type="select" label="State" onchange="getData(this, 'address[i].thePostalLocatorDT_s.cntyCd', 'Address');defaultcountry('extended');setDefaultStateFlagToFalse();" length="25">
+								<header>State</header>
+								<xsp:attribute name="default">
+									<xsp:expr>PersonUtil.getDefaultStateCd()</xsp:expr>
+								</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="stateOne"/>
+								</value>
+								<srt-options-string>
+									<srt-codes:getStateCodes>
+										<type>USA</type>
+									</srt-codes:getStateCodes>
+								</srt-options-string>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element name="address[i].thePostalLocatorDT_s.zipCd" type="text" label="Zip" size="10">
+								<header>Zip</header>
+								<validation type="reg-expr" error-code="ERR103" name="Zip">
+									<pattern><![CDATA[^((\d{5})|(\d{5}-\d{4}))?$]]></pattern>
+								</validation>
+							</element>
+							<element name="address[i].thePostalLocatorDT_s.cntyCd" type="select" label="County" length="32">
+								<srt-options-string>
+									<xsp-request:get-attribute name="addressCounties"/>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="address[i].thePostalLocatorDT_s.cntryCd" type="select" default="" label="Country" onload="setDefaultStateFlagToTrue();getData('address[i].thePostalLocatorDT_s.stateCd', 'address[i].thePostalLocatorDT_s.cntyCd', 'Address');defaultcountry('extended');">
+								<srt-options-string>
+									<srt-codes:getCountryCodesAsString/>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element name="address[i].locatorDescTxt" type="textarea" label="Address Comments">
+								<validation type="lengthLimit" fieldLength="2000" name="Address Comments"/>
+							</element>
+						</line>
+						<line tie-to="Edit|Add">
+							<element name="address[i].statusCd" type="hidden">
+								<srt-options-string>+|A+Active|I+Inactive|</srt-options-string>
+							</element>
+						</line>
+						<line tie-to="Edit|Add">
+							<element name="address[i].thePostalLocatorDT_s.postalLocatorUid" type="hidden"/>
+						</line>
+						<line tie-to="Edit|Add">
+							<element name="address[i].locatorUid" type="hidden"/>
+						</line>
+						<line tie-to="Edit|Add">
+							<element name="address[i].entityUid" type="hidden"/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Telephone Information">
+				<line>
+					<element name="Telephone" type="batch-entry">
+						<value>
+							<xsp-request:get-attribute name="parsedTelephoneString"/>
+						</value>
+						<line>
+							<element type="join">
+								<line>
+									<element name="telephone[i].asOfDate_s" type="text" label="Telephone Information As Of" size="10" mask="##/##/####">
+										<xsp:attribute name="default">
+											<xsp:expr>aodOnCreate</xsp:expr>
+										</xsp:attribute>
+										<header>As of</header>
+										<validation type="conditional-date" mask="mm/dd/yyyy" name="Telephone Information As Of"/>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element name="telephone[i].useCd" type="select" label="Use" length="20">
+								<header>Use</header>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>EL_USE_TELE_PAT</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<validation type="required" name="Use"/>
+							</element>
+						</line>
+						<line>
+							<element name="telephone[i].cd" type="select" label="Type" length="17">
+								<header>Type</header>
+								<validation type="required" name="Type"/>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>EL_TYPE_TELE_PAT</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<line>
+									<element name="telephone[i].cdDescTxt" type="text" label="Description" size="36" indented="yes"/>
+								</line>
+							</element>
+						</line>
+						<!--line>
+							<element type="conditional-entry" name="telephone[i].cdc">
+								<controller name="telephone[i].cd" type="select" label="Type" trigger="OTH" length="17">
+									<validation type="required" name="Type"/>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>EL_TYPE_TELE_PAT</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</controller>
+								<line>
+									<element name="telephone[i].cdDescTxt" type="text" label="Description" size="36" indented="yes"/>
+								</line>
+							</element>
+						</line-->
+						<line>
+							<element name="telephone[i].theTeleLocatorDT_s.cntryCd" type="text" label="Country Code" size="3" maxlength="3">
+								<validation type="numeric" name="Country Code"/>
+							</element>
+							<element name="telephone[i].theTeleLocatorDT_s.phoneNbrTxt" type="telephone" label="Telephone" mask="(###)###-####" size="10">
+								<header>Telephone</header>
+								<value>
+									<xsp-request:get-attribute name="telephoeOne"/>
+								</value>
+								<validation type="telephone" error-code="ERR187" name="Telephone" requiredPartner="telephone[i].theTeleLocatorDT_s.extensionTxt"/>
+								<partner name="telephone[i].theTeleLocatorDT_s.extensionTxt" type="text" label="Ext" size="3" maxlength="20">
+									<value>
+										<xsp-request:get-attribute name="telephoeOne"/>
+									</value>
+									<validation type="numeric" name="Ext"/>
+								</partner>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element name="telephone[i].theTeleLocatorDT_s.emailAddress" type="text" label="Email"/>
+						</line>
+						<line>
+							<element name="telephone[i].theTeleLocatorDT_s.urlAddress" type="text" label="URL"/>
+						</line>
+						<line>
+							<element name="telephone[i].locatorDescTxt" type="textarea" label="Telephone Comments">
+								<validation type="lengthLimit" fieldLength="2000" name="Telephone Comments"/>
+							</element>
+						</line>
+						<line tie-to="Edit|Add">
+							<element name="telephone[i].theTeleLocatorDT_s.teleLocatorUid" type="hidden"/>
+						</line>
+						<line tie-to="Edit|Add">
+							<element name="telephone[i].locatorUid" type="hidden"/>
+						</line>
+						<line tie-to="Edit|Add">
+							<element name="telephone[i].entityUid" type="hidden"/>
+						</line>
+						<line tie-to="Edit|Add">
+							<element name="telephone[i].statusCd" type="hidden">
+								<srt-options-string>+|A+Active|I+Inactive|</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element id="patientExtended" type="hidden"/>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element name="person.thePersonDT.ageReported" type="hidden"/>
+				</line>
+				<line>
+					<element name="person.thePersonDT.ageReportedUnitCd" type="hidden"/>
+				</line>
+			</group>
+			<!--begin ldf-->
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>previewXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>extXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+			<xsp:logic>
+				ArrayList subformList = (ArrayList)request.getAttribute(NEDSSConstants.PATIENT_LDF+"SubformList" );
+				if(subformList != null) {
+		          for(Iterator anIter = subformList .iterator(); anIter.hasNext();)  {
+			            CustomSubformMetadataDT dt = (CustomSubformMetadataDT) anIter.next();			
+			            String subformName = dt.getSubformNm();
+			</xsp:logic>
+			<group>
+				<xsp:attribute name="name">
+					<xsp:expr>subformName</xsp:expr>
+				</xsp:attribute>
+				<line>
+					<element type="raw">
+						<span>
+							<util:include-expr>
+								<util:expr>
+									<xsp:expr>dt.getHtmlData()</xsp:expr>
+								</util:expr>
+							</util:include-expr>
+						</span>
+					</element>
+				</line>
+			</group>
+			<xsp:logic> }} </xsp:logic>
+			<util:include-expr>
+				<util:expr>
+					<xsp:expr>sfValidationXSP</xsp:expr>
+				</util:expr>
+			</util:include-expr>
+		</tab>
+	</content>
+</xsp:page>

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.NEDSSConstants</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.form.treatment.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.proxy.ejb.treatmentproxyejb.vo.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.logicsheet.helper.CachedDropDownValues</xsp:include>
+	</xsp:structure>
+	
+	<!-- <content form="/nedss/treatmentManageUpdate.do"> //-->
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		
+		<id-bar>
+			<id name="Patient ID">
+				<xsp-request:get-attribute name="patientPersonLocalID"/>
+			</id>
+			<id name="Investigation ID">
+				<xsp-request:get-attribute name="publicHealthCaseLocalID"/>
+			</id>
+		</id-bar>
+		<button-bar>
+		
+			<right>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			
+			<right>
+				<label>Cancel</label>
+				<!-- <javascript-action>cancelForm('/nedss/loadInvestigation.do?OperationType=view&amp;ObjectType=6&amp;publicHealthCaseUID=<xsp:expr>stringPHC</xsp:expr>');</javascript-action> //-->
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="cancelButtonHref"/>&amp;publicHealthCaseUID=<xsp-request:get-attribute name="publicHealthCaseUID"/>');</javascript-action>
+			</right>
+			
+			<right>
+				<label>Add</label>
+				<javascript-action>getPage('<xsp-request:get-attribute name="addButtonHref"/>&amp;publicHealthCaseUID=<xsp-request:get-attribute name="publicHealthCaseUID"/>');</javascript-action>
+			</right>
+			
+		</button-bar>
+		<tab>
+			<nedss:writeErrorMessages/>
+			
+			<group name="Treatments">
+				<line>
+					<element label="Associate with this Investigation?" align-label="left"></element>
+				</line>
+				<line>
+					<element type="data-table">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="ObsDisplay"/>
+						</xsp:attribute>
+						<header  sortonload="true" sortorder="ascending" >Yes No
+							<element name="record" type="radio" indented="yes" default="false" layout="horizontal" disable="true">
+								<readonly/>
+									<options>
+										<option name="record" value="true"/>
+									</options>								
+									<options>
+										<option name="record" value="false"/>
+									</options>			
+							</element>									
+						 </header>								 						
+						<header width="">Date</header>
+						<header width="50%">Treatment</header>
+						<header>Treatment ID</header>
+						<footer width="12%"></footer>
+						<footer></footer>
+
+						<view-link target="1"><xsp-request:get-attribute name="viewTreatmentHref"/>&amp;treatmentUID=</view-link>
+						<view-link target="2"><xsp-request:get-attribute name="viewMorbHref"/>&amp;observationUID=</view-link>
+						<value><xsp-request:get-attribute name="treatmentManage"/></value>
+					</element>
+				</line>
+			</group>
+
+				
+			
+		</tab>
+	</content>
+</xsp:page>

@@ -1,0 +1,36 @@
+
+/* TOC.CSS */
+
+BODY { font-family:Verdana,arial; cursor:default; font-size:70.5%; }
+H1 { font-size:12pt; color:navy; margin-bottom:0px; margin-top:10px; }
+TABLE { font-size:90%; }
+
+LI { list-style-type:none; vertical-align:middle; margin-top:0px; margin-bottom:1px; }
+
+LI IMG { cursor:hand; }
+IMG.clsNoHand, IMG.noHand { cursor:default; }
+
+UL { margin-left:15px; margin-right:15px; margin-top:5px; cursor:default;}
+UL#ulRoot { display:list-item; margin-top:5px; margin-left:8px; margin-right:15px; }
+UL.clsShown { display:list-item; }
+
+LI UL { margin-left:20px; margin-right:20px; margin-top:0px; vertical-align:middle;}
+A { color:"#003366"; text-decoration:none;vertical-align:middle;}
+A:hover { text-decoration:underline; color:#003366; }
+
+DIV.clsDocBody  { margin-left:10px; margin-right:10px; }
+DIV.clsLoadMsg  { padding-left:4px; background-color:ivory; border:1 solid black; width:150px; }
+
+A.clsCurrentLI { background-color: #DDEEFF; }
+
+/* tocnav_top and tocnav_bottom selectors */
+
+A IMG { margin-right:5px; margin-top:0px; margin-bottom:0px; vertical-align:middle; }
+
+DIV.clsProdDoc IMG { margin-right:5px; margin-top:0px; margin-bottom:0px; vertical-align:middle; }
+
+DIV.clsNavBottom IMG A{ margin-right:5px; vertical-align:middle; font-weight:bold; }
+
+DIV A { align:middle; }
+
+

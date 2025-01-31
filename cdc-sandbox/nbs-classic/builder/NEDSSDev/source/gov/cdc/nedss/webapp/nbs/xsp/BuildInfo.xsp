@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+<xsp:structure>
+	<xsp:include>gov.cdc.nedss.util.PropertyUtil</xsp:include>
+	<xsp:include>gov.cdc.nedss.exception.NEDSSAppException</xsp:include>
+</xsp:structure>
+
+	<content>
+		<button-bar>
+			<right>
+				<label>Close</label>
+					<javascript-action>window.close();</javascript-action>
+			</right>
+		</button-bar>
+		<xsp:logic>
+			String hostname = "unknown";
+			String sBuildDate = "unknown";
+			try {
+			  	java.net.InetAddress addr = java.net.InetAddress.getLocalHost();
+			  	hostname = addr.getHostName();
+			
+				java.net.URL url = NEDSSAppException.class.getResource("/gov/cdc/nedss/exception/NEDSSAppException.class");
+				java.util.Date buildDate = new java.util.Date(url.openConnection().getLastModified());
+				java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat ("yyyy-MM-dd hh:mm:ss aa");
+				sBuildDate = formatter.format(buildDate);
+			  } catch (Exception e) {
+			  
+			  }
+			  
+			  PropertyUtil props = PropertyUtil.getInstance();
+			  String databaseServerType = props.getDatabaseServerType();
+			  String databaseServerName = props.getDatabaseServerName();
+			  String relNum = props.getRelNum();
+			  String propToShowPage = "TEST_ENV_SHOW_APP_INFO";
+		</xsp:logic>
+		<tab>
+			<group name="Read From Nedss.Properties File">
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<p>
+								<table border="5" align="center" cellspacing="5">
+									<b><caption><b>Build Properties</b></caption></b>
+									<tr>
+										<td>Date of Last Build</td>
+										<td><b><i><xsp:expr>sBuildDate</xsp:expr></i></b></td>
+									</tr>
+									<tr>
+										<td bgcolor="aqua">Database Instance</td>
+										<td bgcolor="aqua"><b><i><xsp:expr>databaseServerName</xsp:expr></i></b></td>
+									</tr>
+									<tr>
+										<td>Database Type</td>
+										<td><b><i><xsp:expr>databaseServerType</xsp:expr></i></b></td>
+									</tr>
+									<tr>
+										<td bgcolor="aqua">Release Number</td>
+										<td bgcolor="aqua"><b><i><xsp:expr>relNum</xsp:expr></i></b></td>
+									</tr>
+									<tr>
+										<td>NEDSS.property to display this page</td>
+										<td><b><i><xsp:expr>propToShowPage</xsp:expr></i></b></td>
+									</tr>						
+								</table>
+							</p>
+						</span>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>
+

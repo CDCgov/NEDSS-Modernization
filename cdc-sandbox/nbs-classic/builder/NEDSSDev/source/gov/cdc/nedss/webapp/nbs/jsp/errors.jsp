@@ -1,0 +1,1 @@
+<% if(request.getAttribute("error") != null) { %>    <div class="infoBox errors">        <b> <a name="errorMessagesHref"></a> Please fix the following errors:</b> <br/>        <ul>            <li> ${fn:escapeXml(error)} </li>        </ul>    </div>    <% }%>

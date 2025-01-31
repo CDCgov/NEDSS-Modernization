@@ -1,0 +1,1117 @@
+/*
+The base font size is 10 points.
+The base font color is black.
+Be sure to name your classes similar to this:  .normalTenBlue
+This means the font weight is normal, the text is 10 points and the color is blue.
+Here are some color definitions most usable first.
+Dark Blue #003470  This is the color of the main parts of the interface.
+White #FFFFFF
+Yellow #FFF200
+Orange #F7941D
+Light Purple #9CAFD0
+Medium Blue #00AEEF
+Green #39B54A
+Gold #ABA000
+Dk Red #790000
+Light Gray #DCDCDC  Used for sub menu space
+*/
+
+body
+{
+    background-color : #FFFFFF;
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : normal;
+    color : #000000;
+    margin-left : 0px;
+    margin-top : 0px;
+   
+}
+
+td
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : normal;
+    color : #000000;
+}
+
+th
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #000000;
+    text-align : left;
+}
+
+label
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #000000;
+    vertical-align: top;
+}
+
+.normalTwelveBlack
+{
+    font-size : 12pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : normal;
+    color : #000000;
+}
+
+.boldElevenBlack
+{
+    font-size : 11pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #000000;
+}
+
+
+
+.boldTwelveBlack
+{
+    font-size : 12pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #000000;
+}
+
+.boldTwelveYellow
+{
+    font-size : 12pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #FFFFFF;
+}
+
+.boldTwelveWhite
+{
+    font-size : 12pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #FFFFFF;
+}
+
+.boldTwelveOrange
+{
+    font-size : 12pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #F7941D;
+}
+
+.boldTwelveDkRed
+{
+    font-size : 12pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #790000;
+}
+
+.boldTenRed
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #CC0000;
+}
+
+.boldTwelveDkBlue
+{
+    font-size : 12pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #003470;
+}
+
+.boldTenWhite
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #FFFFFF;
+}
+
+.boldTenDkBlue
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #003470;
+}
+
+.boldEightDkBlue
+{
+    font-size : 8pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #003470;
+}
+
+
+.boldTenDkRed
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #790000;
+}
+
+.boldTenRed
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #CC0000;
+}
+
+.boldTenBlack
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #000000;
+}
+
+.boldTenBlue
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #003470;
+}
+
+
+.boldSixteenBlack
+{
+    font-size : 16pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #000000;
+}
+
+
+.boldTenYellow
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #FFFFFF;
+}
+
+.normalTenYellow
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : normal;
+    color : #FFFFFF;
+}
+
+.normalNineBlack
+{
+    font-size : 9pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : normal;
+    color : #000000;
+}
+
+.normalNineRed
+{
+    font-size : 9pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : normal;
+    color : red;
+}
+
+.boldNineYellow
+{
+    font-size : 9pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #FFFFFF;
+}
+
+.boldNineWhite
+{
+    font-size : 9pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #FFFFFF;
+}
+
+.normalEightBlack
+{
+    font-size : 8pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : normal;
+    color : #000000;
+}
+
+.boldEightBlack
+{
+    font-size : 8pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #000000;
+}
+
+.boldEightBlue
+{
+    font-size : 8pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #003470;
+}
+
+
+
+.cursorHand
+{
+    cursor: hand;
+    border: none;
+}
+
+.cursorDefault
+{
+    cursor: default;
+    border: none;
+}
+
+.none
+{
+    display: none;
+    visibility: none;
+}
+
+.hidden
+{
+    display: "";
+    visibility: hidden;
+}
+
+.visible
+{
+    display: "";
+    visibility: visible;
+}
+
+.NoBorder
+{
+    border: none;
+}
+
+.Blue
+{
+    background-color: #003470;
+}
+
+
+.LightBlue
+{
+    background-color: #e4ebf8;
+}
+
+.BoldTenWhiteOnBlue
+{
+    background-color: #003470;
+    color: #FFFFFF;
+    font-size: 10pt;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    width: 126px;
+}
+
+.Title
+{
+    background-color: #DCDCDC;
+    color: #000000;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+    font-size: 12pt;
+    font-weight: bold;
+    padding-left: 8px;
+}
+
+.UserName
+{
+    background-color: #003470;
+    color : #FFF200;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-size : 10pt;
+    font-weight : bold;
+    padding-right: 8px;
+}
+
+.NavButton
+{
+    cursor: hand;
+}
+
+.Spacer3px
+{
+    width: 3px;
+}
+
+.Spacer10px
+{
+    width: 10px;
+}
+
+.Toolbar25px
+{
+    width: 25px;
+}
+
+.ToolbarLeft
+{
+    background: url("task_button/tb_cel_bak.jpg");
+    width: 400px;
+}
+
+.Toolbar3px
+{
+    width: 3px;
+}
+
+.ToolbarRight
+{
+    background: url("task_button/tb_cel_bak.jpg");
+    width: 196px;
+}
+
+.ToolbarButtonGraphic
+{
+    cursor: hand;
+}
+
+.ToolbarButtonLabel
+{
+    color : #000000;
+    cursor: hand;
+    font-size : 8pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+}
+
+.TD126px
+{
+    width: 126px;
+}
+
+.TD10px
+{
+    width: 10px;
+}
+
+.TD624px
+{
+    width: 624px;
+}
+
+.TableConditionalEntry
+{
+    border: 2px solid black;
+}
+
+.TableOuter
+{
+    background-color: #DCDCDC;
+    border: solid 1px black;
+}
+
+.TableInner
+{
+    background-color: #DCDCDC;
+}
+
+.TableInner tr.odd {background:#DCDCDC;}
+.TableInner tr.even {background:#C0C0C0;}
+
+.TD5percent
+{
+    width: 5%;
+}
+
+.TD10percent
+{
+    width: 10%;
+}
+
+.LabelText
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #000000;
+}
+
+.Table68h136w
+{
+    height: 68px;
+    width: 136px;
+}
+
+.TD126w
+{
+    width: 126px;
+}
+
+.Blue104w
+{
+    background-color: #003470;
+    width: 104px;
+}
+
+.GrayButton
+{
+    background-color: #DCDCDC;
+    width: 100%;
+}
+
+.DarkGray
+{
+    background-color: #B4B4B4;
+    width: 100%;
+}
+
+
+
+.NormalEightBlackOnGray
+{
+    background-color: #DCDCDC;
+    border-right: solid thin #003470;
+    color : #000000;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-size : 8pt;
+    font-weight : normal;
+    height: 31px;
+    padding-left: 8px;
+}
+
+.BoldTwelveYellow2
+{
+    font-size : 12pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    color : #FFFFFF;
+    padding-left: 8px;
+}
+
+.subsection
+{
+    color: #003470;
+    font-size : 12pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.Tabs
+{
+    background-color : #3A6295;
+}
+
+.ActiveTab
+{
+    background-color: #003470;
+    color : #FFFFFF;
+    font-size : 9pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    text-decoration: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.InactiveTab
+{
+    background-color: #3A6295;
+    color : #FFFFFF;
+    cursor: hand;
+    font-size : 9pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    text-decoration: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+a.BackToTop
+{
+    color : #FFFFFF;
+    font-weight : bold;
+    padding-right: 8px;
+    text-decoration: underline;
+}
+
+.LabelWithHelp
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : normal;
+    color : #000000;
+}
+
+.Button
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+}
+
+.Shaded
+{
+    background-color: #C0C0C0;
+}
+
+.NotShaded
+{
+    background-color: #DCDCDC;
+}
+
+
+
+.YellowShaded
+{
+    background-color: #FFFFCC;
+}
+
+
+.ThreeDDarkLeft
+{
+    border-top: thin #DCDCDC outset;
+    border-left: thin #DCDCDC outset;
+    border-bottom: thin gray inset;
+    border-right: none;
+}
+
+.ThreeDDarkMiddle
+{
+    border-top: thin #DCDCDC outset;
+    border-left: none;
+    border-bottom: thin gray inset;
+    border-right: none;
+}
+
+.ThreeDDarkRight
+{
+    border-top: thin #DCDCDC outset;
+    border-left: none;
+    border-bottom: thin gray inset;
+    border-right: thin gray inset;
+}
+
+.ThreeDLightLeft
+{
+    border-top: thin #DCDCDC outset;
+    border-left: thin #DCDCDC outset;
+    border-bottom: thin #C0C0C0 inset;
+    border-right: none;
+}
+
+.ThreeDLightMiddle
+{
+    border-top: thin #DCDCDC outset;
+    border-left: none;
+    border-bottom: thin #C0C0C0 inset;
+    border-right: none;
+}
+
+.ThreeDLightRight
+{
+    border-top: thin #DCDCDC outset;
+    border-left: none;
+    border-bottom: thin #C0C0C0 inset;
+    border-right: thin #C0C0C0 inset;
+}
+
+.ColumnHeaderThreeD
+{
+    background-color: #C0C0C0;
+    border-top: thin #DCDCDC outset;
+    border-left: thin #DCDCDC outset;
+    border-bottom: thin gray inset;
+    border-right: thin gray inset;
+    color : #000000;
+    cursor: hand;
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+}
+
+.GroupHeader
+{
+    background-color: #C0C0C0;
+    color : #000000;
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    text-align: center;
+}
+
+.ColumnHeaderLeft
+{
+    background-color: #C0C0C0;
+    color : #000000;
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    text-align: left;
+    text-decoration: underline;
+}
+
+.ColumnHeaderCenter
+{
+    background-color: #C0C0C0;
+    color : #000000;
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.ColumnHeaderRight
+{
+    background-color: #C0C0C0;
+    color : #000000;
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+    text-align: right;
+    text-decoration: underline;
+}
+
+.error
+{
+	 text-align: left;
+   	color:red;
+    display: "";
+    font-weight: bold;
+    visibility: visible;
+}
+
+div.info {background:#F5D0A9; border-color:#E47E7A;
+   	color:black;}
+
+
+.info
+{
+	 text-align: left;
+   	color:green;
+    display: "";
+    font-weight: bold;
+    visibility: visible;
+}
+
+.subformError
+{
+	background-color: #FFFF66;
+	text-align: left;
+	color:red;
+	display: "";
+	font-weight: bold;
+	visibility: visible;
+}
+
+.errorMessage
+{
+    display: "";
+    font-weight: bold;
+    visibility: visible;
+    color: red;
+}
+
+.errorMsg
+{
+    display: "";
+    font-weight: bold;
+    visibility: visible;
+    color: red;
+}
+
+.errorRange
+{
+	border: none;
+   /* border: solid red;*/
+    display: "";
+    font-weight: bold;
+    color: red;
+    visibility: visible;
+}
+
+.TabLine
+{
+    background-color: #003470;
+    line-height: 4px;
+}
+
+.Visible
+{
+    display: "";
+    visibility: visible;
+}
+
+.Invisible
+{
+    display: "";
+    visibility: hidden;
+}
+
+.Hidden
+{
+    display: none;
+    visibility: none;
+}
+
+.Show
+{
+    display: "";
+    visibility: visible;
+}
+
+.HideWithGap
+{
+    display: "";
+    visibility: hidden;
+}
+
+.HideWithoutGap
+{
+    display: none;
+    visibility: none;
+}
+
+.ContextInfoName
+{
+    color: #0033FF;
+    font-size: 8pt;
+}
+
+.ContextInfoValue
+{
+    font-size: 8pt;
+}
+
+a.navbar:link 
+{ 
+	color: #333333;
+	text-decoration: none;
+
+}
+a.navbar:visited 
+{ 
+	color: #FFFFFF;
+	text-decoration: none;
+}
+a.navbar:hover 
+{ 
+	color: #CCCCCC;
+	background-color: #DGDGDG;
+	text-decoration: none;
+}
+a.navbar:active 
+{ 
+	color: #333333;
+	text-decoration: none;
+}
+.errorTag 
+{ 
+	color: #CC0000;  
+	font-family: Verdana, Arial, Sans Serif, Helvetica;  
+	font-size: 8pt;  font-weight: bold 
+}
+
+
+DIV.nounderline A{
+	link.text-decoration:none;
+	color:#000000;
+}
+table.srtmanage {
+	margin: 5px 0 1px 0;
+}
+
+fieldset { margin-left: 6px; margin-bottom: 6px; border: 1px solid #000000;}
+
+#blockparent, div.modalWindowParent {
+	display:none;
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:100%;
+	height:450%;
+	background:gray;
+	filter:alpha(Opacity=80);
+	opacity:0.5;
+	-moz-opacity:0.5;
+	-khtml-opacity:0.5
+}
+
+.boldTenGreen
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+	 border: 2px solid green;
+	padding-left:2px; padding-right:2px; padding-top:2px; padding-bottom:2px; vertical-align:middle;
+}
+.infoGreen
+{
+    font-size : 10pt;
+    font-family : Geneva, Arial, Helvetica, sans-serif;
+    font-weight : bold;
+	 border: 2px solid green;
+	padding-left:2px; padding-right:2px; padding-top:2px; padding-bottom:2px; vertical-align:middle;
+    text-align: left;
+   	color:green;
+    display: "";
+    font-weight: bold;
+    visibility: visible;
+}
+
+#tabControlN10019 table table table tr:nth-child(3) td:nth-child(2) table{
+
+width:140px;
+}
+
+#cntyCd_ac_table input{
+width:250px;
+}
+
+#tabControlN100C0 table table table tr:nth-child(3) td:nth-child(2) table{
+
+width:130px;
+}
+
+#nestedElementsControllerPayloadP18i table table input{
+width:80%;
+}
+
+#nestedElementsControllerControllerTRT101 input{
+width:80%;
+}
+
+fieldset{
+padding: 0px;
+}
+
+tablerow{
+display:table-row;
+}
+/*
+#tabControlN100C9 table table table tr:nth-child(3) td:nth-child(2) table{
+width:130px;
+}*/
+
+#patSearch3 .subSectionsToggler {
+display:none;
+}
+
+#patientSearchByEvent .subSectionsToggler{
+	display:none;
+}
+
+#cntyCd_ac_table td{
+white-space: nowrap;
+}
+
+#stateCd_ac_table td{
+white-space: nowrap;
+}
+
+#tabControlN10017 table table table tr:nth-child(3) td:nth-child(2){
+width:13px;
+}
+
+/*Organization ID Type dropdown misaligned*/
+/*
+#tabControlN100C9 td:nth-child(3){
+width:90%;
+}*/
+
+.multiSelectOptions{
+width:10%;
+height:20%;
+min-width: 150px;
+}
+
+#tabControlN115CF td:nth-child(2) table td{
+white-space: nowrap;
+}
+
+#vformcomments p{
+margin:0px;
+}
+
+#id_Reports_Section table{
+white-space: nowrap;
+}
+
+.dtTable{
+	border-bottom: 0.1px solid;
+	
+}
+
+#nestedElementsControllerPayload td{
+	width:20%;
+}
+
+#GA24102 td{
+	white-space: nowrap;
+}
+/*
+#batchEntryFieldset table td{
+	white-space:nowrap;
+}*/
+
+#nestedElementsControllerControllerTRT101 table{
+	width:100%;
+}
+
+/*IE11 dropdown (input different height than the icon)*/
+input[type=text]{
+	height:22px;
+}
+
+/*For not modifying the User name textbox*/
+
+#id_UserName{
+height:16px;
+}
+
+/*IE11 buttons*/
+input[type=button]{
+
+	padding-left:7px;
+	padding-right:7px;
+	padding-top:2px;
+	padding-bottom:2px;
+}
+
+/*IE11 buttons*/
+input[type=reset]{
+
+	padding-left:7px;
+	padding-right:7px;
+	padding-top:2px;
+	padding-bottom:2px;
+}
+
+/*IE11 buttons*/
+input[type=submit]{
+
+	padding-left:7px;
+	padding-right:7px;
+	padding-top:2px;
+	padding-bottom:2px;
+}
+
+/*aggregate.xsl contains dynamic id from the method called generate-id(). This style applies to all the ids that start by tabControl*/
+[id^="tabControl"] table table table tr:nth-child(3) td:nth-child(2) table{
+  width:130px;
+}
+
+/*For fixing jurisdiction and condition in lab report and morb report*/
+[id$="_ac_table"] tbody:nth-child(1)  tr:nth-child(1)  td:nth-child(1){
+	white-space: nowrap;
+}
+
+/*For fixing vaccination*/
+#nedssForm table td span{
+	white-space:normal;
+}
+
+/*On Manage user > Edit: The Reporting Facility label changed because of the rule for vaccination*/
+#nedssForm #entity-table-Org-ReportingOrganizationUID table td span{
+	white-space:inherit;
+}
+
+/*On Manage user > Edit: Append to Lab Jurisdiction Derivation changed because of the rule for vaccination*/
+#nedssForm [id^="tabControlN100"] table:nth-child(4) tbody:nth-child(1) tr:nth-child(1) td:nth-child(1) table:nth-child(1) tbody:nth-child(1) tr:nth-child(3) td:nth-child(1) table:nth-child(1) tbody:nth-child(1) tr:nth-child(7) td:nth-child(1) nobr:nth-child(1) span:nth-child(1){
+	white-space:inherit;
+}
+
+/*For jumping to next line on text area*/
+textarea {
+		white-space: normal;
+}
+
+/*For fixing the dropdown Type on Provider form on Identification information section*/
+/*
+[id$="typeCd_ac_table"] td{
+	white-space: nowrap;
+}*/
+
+/*
+For fixing all the dropdowns without breaking the long comments on text areas in legacy pages
+*/
+[id$="_ac_table"] td{
+	white-space: nowrap;
+}
+
+/*Style added for not scrolling the window creating notification with Firefox*/
+#notificationRequiredFields{
+	width: 98%;
+}
+
+/*Queue filters: position of Contains*/
+.multiTextOptions1 .pText input{
+	display:block;
+}
+
+/*Queue filters: Contains on bold*/
+.multiTextOptions1 label b {
+	font-weight:bold;
+}
+
+/*For adding the scroll bar to multiselect dropdowns in IE11 when it's showing just 5 elements*/
+
+[multiple="multiple"]{
+	min-height:93px;
+}
+
+/*For fixing the "-" between dates on Merge patient manual*/
+
+[id^="tabControl"] [for="personSearch.afterBirthTime"]{
+	padding-left:15px;
+}
+
+.popup{
+	overflow-x: hidden; /*For hidding the horizontal scroll bar in pop up windows*/
+	padding-right: 20px; /*For having space for the vertical scroll bar in IE11*/
+}
+
+#NBS_VAC_UI_7 td + td{
+	
+	white-space: nowrap;
+}
+
+select[disabled] > option {
+    color: #666666;
+}
+
+
+.img-valign {
+  vertical-align: middle;
+}
+
+
+
+/* 
+    ----- NBS : Info Boxes -----
+*/
+
+/* These styles were added from common.css to prevent different style of back button feedback from reports: ND-24529*/
+
+div.infoBox { width:100%; border:1px solid #DDD; padding:3px; margin:0.15em 0.15em 0.5em 0.15em;}
+div.infoBox ul {list-style-type: none; margin-bottom:2px;}
+div.infoBox table tr td {padding:0px 3px 0px 3px;}
+div.infoBox span.label, div.infoBox span.value {font-size:110%;}
+
+div.infoBox { width:100%; border:1px solid #DDD; padding:3px; margin:0.35em 0.15em 0.5em 0.15em;}
+div.info {background:#F5D0A9; border-color:#E47E7A;}
+

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MPR-update-fields SYSTEM "singlefieldupdate_config.dtd">
+<MPR-update-fields>
+	
+	<!-- Sex and Birth Section -->
+	<field name="CurrSexCd" source-id="PersonRoot" description="Current Sex">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="SexUnkReasonCd" source-id="PersonRoot" description="Unknown Reason">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="PreferredGenderCd" source-id="PersonRoot" description="Transgender Information">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="AdditionalGenderCd" source-id="PersonRoot" description="Additional Gender">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="BirthGenderCd" source-id="PersonRoot" description="Birth Sex">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="BirthTime" source-id="PersonRoot" description="Date of Birth">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="MultipleBirthInd" source-id="PersonRoot" description="Multiple Birth">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="BirthOrderNbr" source-id="PersonRoot" description="Birth Order">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="CityDescTxt" source-id="BirthAddress" description="Birth City">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="StateCd" source-id="BirthAddress" description="Birth State">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="CntyCd" source-id="BirthAddress" description="Birth County">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="CntryCd" source-id="BirthAddress" description="Birth Country">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="eHARSId" source-id="PersonRoot" description="eHARS ID">
+		<aod-field name="AsOfDateSex" aod-source-id="PersonRoot"/>
+	</field>
+	<!-- Mortality Section -->
+	<field name="DeceasedIndCd" source-id="PersonRoot" description="Is Person Deceased">
+		<aod-field name="AsOfDateMorbidity" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="DeceasedTime" source-id="PersonRoot" description="Deceased Time">
+		<aod-field name="AsOfDateMorbidity" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="CityDescTxt" source-id="DeceasedAddress" description="Deceased City">
+		<aod-field name="AsOfDateMorbidity" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="StateCd" source-id="DeceasedAddress" description="Deceased State">
+		<aod-field name="AsOfDateMorbidity" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="CntyCd" source-id="DeceasedAddress" description="Deceased County">
+		<aod-field name="AsOfDateMorbidity" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="CntryCd" source-id="DeceasedAddress" description="Deceased Country">
+		<aod-field name="AsOfDateMorbidity" aod-source-id="PersonRoot"/>
+	</field>
+	
+	<!--General Section -->
+	<field name="MothersMaidenNm" source-id="PersonRoot" description="Mother Maiden Name">
+		<aod-field name="AsOfDateGeneral" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="AdultsInHouseNbr" source-id="PersonRoot" description="Number of Adults in House">
+		<aod-field name="AsOfDateGeneral" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="ChildrenInHouseNbr" source-id="PersonRoot" description="Number of Children in House">
+		<aod-field name="AsOfDateGeneral" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="EducationLevelCd" source-id="PersonRoot" description="Highest Education Level">
+		<aod-field name="AsOfDateGeneral" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="OccupationCd" source-id="PersonRoot" description="Primary Occupation">
+		<aod-field name="AsOfDateGeneral" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="MaritalStatusCd" source-id="PersonRoot" description="Marital Status">
+		<aod-field name="AsOfDateGeneral" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="PrimLangCd" source-id="PersonRoot" description="Primary Language">
+		<aod-field name="AsOfDateGeneral" aod-source-id="PersonRoot"/>
+	</field>
+	<field name="SpeaksEnglishCd" source-id="PersonRoot" description="Speaks English">
+		<aod-field name="AsOfDateGeneral" aod-source-id="PersonRoot"/>
+	</field>
+	
+	<!--SSN Section -->
+	<field name="RootExtensionTxt" source-id="SSN" description="Social Security Number">
+		<aod-field name="AsOfDate" aod-source-id="SSN"/>
+	</field>
+	
+	<!--Ethnicity Section -->
+	<field name="EthnicGroupInd" source-id="PersonRoot" description="Ethnicity">
+		<aod-field name="AsOfDateEthnicity" aod-source-id="PersonRoot"/>
+	</field>
+
+</MPR-update-fields>

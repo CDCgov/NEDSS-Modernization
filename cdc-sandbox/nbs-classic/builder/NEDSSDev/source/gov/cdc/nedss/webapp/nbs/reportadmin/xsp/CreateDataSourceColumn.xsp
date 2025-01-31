@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>gov.cdc.nedss.reportadmin.dt.DataSourceColumnDT</xsp:include>
+		<xsp:include>gov.cdc.nedss.reportadmin.dt.DataSourceDT</xsp:include>
+	</xsp:structure>
+	<content form="/nbs/CreateDataSourceColumn.do">
+		<xsp:logic>
+            DataSourceDT dtDataSource = (DataSourceDT)session.getAttribute("ReportAdmin.dtDataSource");
+            DataSourceColumnDT dtDataSourceColumn = (DataSourceColumnDT)request.getAttribute("ReportAdmin.dtDataSourceColumn");
+        </xsp:logic>
+		<link-bar>
+			<!--link>
+				<xsp:attribute name="name">
+					<xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+				</xsp:attribute>
+				<xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+			</link-->
+		</link-bar>
+		<button-bar>
+			<right>
+				<label>Submit</label>
+				<javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/CreateDataSourceColumn.do");
+                    validateDatasourceColumnForm();
+                    </javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/ViewDataSource.do?contextAction=Sort&amp;direction=<xsp:expr>session.getAttribute("direction")</xsp:expr>&amp;sortMethod=<xsp:expr>session.getAttribute("sortMethod")</xsp:expr>");
+                    document.forms[0].submit();
+                </javascript-action>
+			</right>
+		</button-bar>
+		<tab>
+			<group>
+				<line>
+					<element type="raw" name="dscError">
+						<span style="color: red; font-weight: bold;">
+							<value><xsp:expr>request.getAttribute("error")</xsp:expr></value>
+						</span>
+					</element>
+				</line>
+			</group>
+			<group>
+				<xsp:attribute name="name">
+					<xsp:expr>dtDataSourceColumn.getColumnName()</xsp:expr>
+				</xsp:attribute>
+				<line>
+					<element type="raw">
+						<span>
+							<i>
+								<font class="boldTenRed"> * Indicates a Required Field </font>
+							</i>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="data_source_uid" type="hidden">
+						<value><xsp:expr>dtDataSource.getDataSourceUID_s()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="column_uid" type="hidden">
+						<value><xsp:expr>dtDataSourceColumn.getColumnUID_s()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="availabeDSColumnMaxLength" type="hidden">
+						<value><xsp-request:get-attribute name="availabeDSColumnMaxLength"/></value>
+					</element>
+				</line>
+				<line>
+					<element name="codesetNm" type="hidden"/>
+				</line>				
+				<line>
+					<element name="column_name" type="select" label="*Name">
+						<xsp:attribute name="onkeyup">specialCharMask(this)</xsp:attribute>
+						<value><xsp:expr>dtDataSourceColumn.getColumnName()</xsp:expr></value>						
+						<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.AvailabeDSColumnList")</xsp:expr></srt-options-string>
+					</element>				
+				</line>
+				<line>
+					<element name="column_title" type="text" label="*Title" size="50">
+						<xsp:attribute name="onkeyup">specialCharMask(this)</xsp:attribute>
+						<value><xsp:expr>dtDataSourceColumn.getColumnTitle()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="desc_txt" type="text" label="Description" size="80">
+						<value><xsp:expr>dtDataSourceColumn.getDescTxt()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="column_type_code" type="select" length="40" label="*Type" noblank="true">
+						<xsp:attribute name="onchange">validateSRTAssociation(this)</xsp:attribute>
+						<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.ColumnTypeCodeSRT")</xsp:expr></srt-options-string>
+						<value/>
+						<!--value><xsp:expr>dtDataSourceColumn.getColumnTypeCode()</xsp:expr></value-->
+					</element>
+				</line>
+				<line>
+					<element type="conditional-entry" name="firstCE">
+						<controller type="checkbox" label="Associate with a Code Set" name="associateCSet" disable="true" id="associateCodeSet">
+						<readonly/>
+							<options>
+								<option name="report_filter_ind" value="F"/>
+							</options>
+						</controller>
+						<line trigger="T">
+							<element  type="conditional-entry" name="secondCE">
+							<controller name="srtTableNm" type="select" label="* SRT Table">								
+						<srt-options-string>CODE_VALUE_GENERAL$CODE_VALUE_GENERAL|CODE_VALUE_CLINICAL$CODE_VALUE_CLINICAL|CONDITION_CODE$CONDITION_CODE|COUNTRY_CODE$COUNTRY_CODE|JURISDICTION_CODE$JURISDICTION_CODE|LANGUAGE_CODE$LANGUAGE_CODE|NAICS_INDUSTRY_CODE$NAICS_INDUSTRY_CODE|PROGRAM_AREA_CODE$PROGRAM_AREA_CODE|STATE_CODE$STATE_CODE|STATE_COUNTY_CODE_VALUE$STATE_COUNTY_CODE_VALUE|V_CONDITION_CODE$V_CONDITION_CODE|V_JURISDICTION_CODE$V_JURISDICTION_CODE|V_RACE_CODE$V_RACE_CODE|V_STATE_COUNTY_CODE_VALUE$V_STATE_COUNTY_CODE_VALUE|</srt-options-string>
+							</controller>
+								<line trigger="CODE_VALUE_GENERAL">
+									<element name="codesetNm1" type="select" label="*Code Set" align-label="right" indented="yes">
+										<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.CodeValueGeneralSRT")</xsp:expr></srt-options-string>
+									</element>									
+								</line>
+								<line trigger="CODE_VALUE_CLINICAL">
+									<element name="codesetNm2" type="select" label="*Code Set" align-label="right" indented="yes">
+										<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.CodeValueClinicalSRT")</xsp:expr></srt-options-string>
+									</element>									
+								</line>
+							</element>
+						</line>
+						<line trigger="T">
+							<element type="select" label="* Store Code or Description"  name="CodeOrDesc" length="8">
+								<value><xsp:expr>dtDataSourceColumn.getCodeDescCd()</xsp:expr></value>
+								<srt-options-string>C$Code|D$Description|</srt-options-string>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element name="column_max_len" type="hidden">
+						<value><xsp:expr>dtDataSourceColumn.getColumnMaxLen_s()</xsp:expr></value>
+					</element>
+				</line>				
+				<line>
+					<element/>
+					<element type="checkbox">
+						<options>
+							<option name="filterable" label="Advanced Filter" value="Y">
+								<value><xsp:expr>dtDataSourceColumn.getFilterable()</xsp:expr></value>
+							</option>
+						</options>
+					</element>
+				</line>
+				<line>
+					<element/>
+					<element type="checkbox">
+						<options>
+							<option name="displayable" label="Column Selection" value="Y">
+								<value><xsp:expr>dtDataSourceColumn.getDisplayable()</xsp:expr></value>
+							</option>
+						</options>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

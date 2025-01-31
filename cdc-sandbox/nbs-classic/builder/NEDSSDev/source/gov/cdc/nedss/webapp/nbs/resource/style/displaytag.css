@@ -1,0 +1,71 @@
+table.its {
+	border: 1px solid #000000;
+	width: 98%;
+	margin: 2px 0 2px 0 !important;
+}
+
+tr.odd {
+	background-color: #fff;
+	border: 1px solid #C2D4EF;
+}
+
+tr.even {
+
+	border: 1px solid #C2D4EF;
+}
+
+tr.tableRowEven,tr.even {
+	background-color: #fea
+}
+th.sorted {
+	background-color: orange;
+}
+
+th a,th a:visited {
+	color: black;
+}
+
+th a:hover {
+	text-decoration: underline;
+	color: black;
+}
+th.sorted a,th.sortable a {
+	background-position: left;
+	display: inline;
+	width: auto;
+	color: black;
+	float: left;
+}
+th.sortable a {
+	background-image: url(arrow_off.gif);
+	background-repeat: no-repeat;
+	float: left;
+}
+/*
+th.order1 a {
+	background-image: url(SortDesc.gif);
+	background-repeat: no-repeat;
+}
+
+th.order2 a {
+	background-image: url(SortAsc.gif);
+	background-repeat: no-repeat;
+}
+th.sortOrder1 a {
+	background-image: url(FilterAndSortDesc.gif);
+	background-repeat: no-repeat;
+}
+th.sortOrder2 a {
+	background-image: url(FilterAndSortAsc.gif);
+	background-repeat: no-repeat;
+}
+th.filter a {
+	background-image: url(Filter.gif);
+	background-repeat: no-repeat;
+}
+*/
+
+div.exportlinks {
+	display: none;
+	visibility: none;
+}

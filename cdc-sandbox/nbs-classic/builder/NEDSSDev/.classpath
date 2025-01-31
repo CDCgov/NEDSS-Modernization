@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="Rhapsody/*" kind="src" path="source"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/JBoss 4.0 Runtime"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Castor/castor-0.9.3.9.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/nndMasterMsgFrameWork/NedssMasterMessageFramework.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/struts/struts-core-1.3.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/struts/struts-extras-1.3.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/struts/struts-taglib-1.3.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/struts/dwr.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/struts/displaytag-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/webAF/sas.core.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/webAF/sas.ads.core.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/webAF/sas.ads.misc.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/webAF/sas.servlet.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/tidy/jtidy-r938.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Apache/commons-pool-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/customSubformJaxbLibrary/cdf-subform.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Centrus/ABClient.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/struts/Struts-Layout-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/JustFormsPDF/JustFormsPDF.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/xmlbeans/jsr173_1.0_api.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/xmlbeans/resolver.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/xmlbeans/xbean_xpath.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/xmlbeans/xmlpublic.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/xmlbeans/nndintermediarymessage.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/xmlbeans/PHDCMessage.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/xmlbeans/DSMAlgorithm.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/xmlbeans/demo.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Informa/informa.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/charts/jcommon-1.0.16.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/charts/jfreechart-1.0.13.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Apache/commons-codec-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/json/gson-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/vads/vocabServiceClient.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/vads/hessian-3.1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/struts/commons-beanutils-1.7.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/DMBPageSchema/dmbTemplateExportSchema.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Apache/xalan.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/xmlbeans/xmlbeans-2.6.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/cda/CDA_SDTC.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/pdfbox/pdfbox-app-2.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/jboss/jboss-j2ee.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/struts/jsp-api-2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/xmlbeans/PagePortMapping.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/DMBPageSchema/dmbPageSchema.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PartnerServices/PartnerServices_v3.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Apache/poi-3.17.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Apache/poi-ooxml-3.17.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PartnerServicesOld/PartnerServices_v21.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/IISConnection/smm-tester-connector.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/IISConnection/hapi-base-2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/IISConnection/hapi-structures-v251-2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/IISConnection/commons-io-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/OWASP/encoder-1.2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/OWASP/owasp-java-html-sanitizer-20211018.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockJUnit/hamcrest-core-1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockApiMockito1.6.5/hamcrest-core-1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockApiMockito1.6.5/javassist-3.20.0-GA.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockApiMockito1.6.5/mockito-core-1.10.19.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockApiMockito1.6.5/objenesis-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockApiMockito1.6.5/powermock-api-mockito-1.6.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockApiMockito1.6.5/powermock-api-mockito-common-1.6.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockApiMockito1.6.5/powermock-api-support-1.6.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockApiMockito1.6.5/powermock-core-1.6.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockApiMockito1.6.5/powermock-reflect-1.6.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockJUnit/junit-4.12.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockJUnit/JUnitParams-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockJUnit/powermock-module-junit4-1.6.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockJUnit/powermock-module-junit4-common-1.6.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Log4J/log4j-1.2-api-2.19.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Log4J/log4j-api-2.19.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Log4J/log4j-core-2.19.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockApiMockito1.6.5/commons-validator-1.1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/servlet/javax.servlet-api-3.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/Informa/jdom-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/mail/mail-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockJUnit/javassist-3.21.0-GA.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockJUnit/junit.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockJUnit/objenesis-2.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockJUnit/powermock-core-1.6.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="Libraries/PowerMockJUnit/powermock-reflect-1.6.6.jar"/>
+	<classpathentry kind="lib" path="Libraries/jax-rpc/javax.xml.rpc-api-1.1.jar"/>
+	<classpathentry kind="output" path="classfiles"/>
+</classpath>

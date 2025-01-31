@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE NEDSS-vos SYSTEM "nedssvo_config.dtd">
+<NEDSS-vos>	
+<vo name="PersonVO" classname="gov.cdc.nedss.entity.person.vo.PersonVO">		
+<comparison-field name="getThePersonDT">		
+</comparison-field>				
+<comparison-field name="getThePersonNameDTCollection" sort-by-field="getPersonNameSeq">		
+</comparison-field>			
+</vo>	
+<vo name="PersonDT"	classname="gov.cdc.nedss.entity.person.dt.PersonDT">		
+<comparison-field name="getBirthTime">		
+</comparison-field>			
+</vo>	
+<vo name="PersonNameDT" classname="gov.cdc.nedss.entity.person.dt.PersonNameDT">		
+<comparison-field name="getFirstNm">		
+</comparison-field>		
+</vo>
+</NEDSS-vos> 

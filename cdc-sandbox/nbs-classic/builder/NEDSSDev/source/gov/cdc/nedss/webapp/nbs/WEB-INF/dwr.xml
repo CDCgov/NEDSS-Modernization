@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN"
+    "http://getahead.org/dwr/dwr20.dtd">
+<dwr>
+    <allow>
+
+   		<filter class="gov.cdc.nedss.webapp.nbs.servlet.XSSFilter"/>
+        <create creator="new" javascript="JDate">
+            <param name="class" value="java.util.Date"/>
+        </create>
+        <create creator="new" javascript="Person">
+            <param name="class" value="gov.cdc.nedss.webapp.nbs.action.person.Person"/>
+        </create>
+        
+        <create creator="new" javascript="JPropertyUtilClient">
+            <param name="class" value="gov.cdc.nedss.util.PropertyUtilClient"/>
+        </create>
+        
+        <create creator="new" javascript="JBaseForm">
+            <param name="class" value="gov.cdc.nedss.webapp.nbs.form.util.BaseForm"/>
+        </create>        
+        <create creator="struts" javascript="JManageRulesForm">
+            <param name="formBean" value="manageRulesForm"/>
+        </create>        
+        <create creator="struts" javascript="JPamForm">
+            <param name="formBean" value="PamForm"/>
+        </create>
+        <create creator="struts" javascript="JAddProviderForm">
+            <param name="formBean" value="addProviderForm"/>
+        </create>
+        <create creator="struts" javascript="JSRTForm">
+            <param name="formBean" value="SRTAdminManageForm"/>
+        </create>
+        <create creator="struts" javascript="JLocalFieldForm">
+            <param name="formBean" value="localFieldsForm"/>
+        </create>
+        <create creator="struts" javascript="JProgramAreaForm">
+            <param name="formBean" value="programAreaForm"/>
+        </create>
+        <create creator="struts" javascript="JPersonSearchForm">
+            <param name="formBean" value="personSearchForm"/>
+        </create>
+        <create creator="struts" javascript="JTriggerCodeForm">
+            <param name="formBean" value="triggerCodeForm"/>
+        </create>
+        <create creator="struts" javascript="JObservationReviewForm">
+            <param name="formBean" value="observationReviewForm"/>
+        </create>
+        <create creator="struts" javascript="JInvestigationForm">
+            <param name="formBean" value="investigationForm"/>
+        </create>
+        <create creator="struts" javascript="JExportAlgorithmForm">
+            <param name="formBean" value="exportAlgorithmForm"/>
+        </create>
+        <create creator="struts" javascript="JReceivingFacilityForm">
+            <param name="formBean" value="receivingFacilityForm"/>
+        </create>
+        <create creator="struts" javascript="JNbsDocumentForm">
+            <param name="formBean" value="nbsDocumentForm"/>
+        </create>
+        <create creator="struts" javascript="JAggregateForm">
+            <param name="formBean" value="aggregateSummaryForm"/>
+        </create>
+        <create creator="struts" javascript="JUpdatedNotificationsQueueForm">
+            <param name="formBean" value="updatedNotificationsQueueForm"/>
+        </create>
+        <create creator="struts" javascript="JObservationSecurityAssgnReviewForm">
+            <param name="formBean" value="observationSecurityReviewForm"/>
+        </create>
+        <create creator="new" javascript="JCharts">
+            <param name="class" value="gov.cdc.nedss.webapp.nbs.action.homepage.charts.ChartRenderer"/>
+        </create>        
+        <create creator="new" javascript="JFChart">
+            <param name="class" value="gov.cdc.nedss.webapp.nbs.form.homepage.ChartsForm"/>
+        </create>
+        <create creator="struts" javascript="JManageQuestionsForm">
+            <param name="formBean" value="manageQuestionsForm"/>
+        </create>
+        <create creator="struts" javascript="JPageElementForm">
+            <param name="formBean" value="pageElementForm"/>
+        </create>
+        <create creator="struts" javascript="JPageBuilder">
+         <param name="formBean" value="pageBuilderForm"/>            
+        </create>
+        <create creator="struts" javascript="JPortPage">
+         <param name="formBean" value="portPageForm"/>            
+        </create>
+        <create creator="struts" javascript="JMorbidityReport">
+         <param name="formBean" value="morbidityForm"/>            
+        </create>
+        
+        <create creator="struts" javascript="JDecisionSupport">
+         <param name="formBean" value="decisionSupportForm"/>            
+        </create>
+        <create creator="struts" javascript="JEpiLinkLogForm">
+         <param name="formBean" value="epiLinkLogForm"/>            
+        </create>
+        
+        <convert match="gov.cdc.nedss.pagemanagement.wa.dt.BatchEntry" converter="bean"/>
+        <convert match="gov.cdc.nedss.entity.person.dt.PersonDT" converter="bean"/>
+        <convert match="gov.cdc.nedss.webapp.nbs.action.client.ClientVO" converter="bean"/>
+        <convert converter="bean" match="gov.cdc.nedss.webapp.nbs.action.homepage.util.ChartObject"/>
+        <convert converter="bean" match="gov.cdc.nedss.systemservice.ejb.casenotificationejb.dt.ExportAlgorithmDT">
+            <param name="include" value="exTrDT, exADT, exTrDTset"/>
+        </convert>
+        <convert converter="bean" match="gov.cdc.nedss.systemservice.ejb.casenotificationejb.dt.ExportTriggerDT">
+            <param name="include" value="id,triggerField,triggerLogic,triggerFilter,triggerFieldDesc,triggerFilterDesc,triggerLogicDesc"/>
+        </convert>
+        <convert converter="bean" match="gov.cdc.nedss.systemservice.util.DropDownCodeDT"/>
+        <convert converter="bean" match="gov.cdc.nedss.pagemanagement.ejb.pagemanagementproxyejb.wa.dt.WaUiMetadataSummaryDT"/>
+           
+        <convert converter="bean" match="gov.cdc.nedss.webapp.nbs.form.pam.FormField">
+            <param name="include" value="defaultValue, value,state,fieldId,fieldType,fieldAutoCompId,fieldAutoCompBtn"/>
+        </convert>
+        <convert converter="bean" match="gov.cdc.nedss.webapp.nbs.form.pam.FieldState">
+            <param name="include" value="visible, enabled, disabled, disabledString, values, styles,multiSelVals"/>
+        </convert>
+        <convert converter="bean" match="gov.cdc.nedss.srtadmin.dt.CodeValueGeneralDT">
+            <param name="include" value="assigningAuthorityCd, assigningAuthorityDescTxt,codeSystemCd,seqNum"/>
+        </convert>
+            <convert converter="bean" match="gov.cdc.nedss.pagemanagement.wa.dt.WaQuestionDT">
+            <param name="include" value="questionIdentifier"/>
+        </convert>
+        <create creator="struts" javascript="JCTContactForm">
+            <param name="formBean" value="contactTracingForm"/>
+        </create>
+        <create creator="struts" javascript="JManageConditionForm">
+        	<param name="formBean" value="manageConditionForm"/>
+    	</create>
+    	<create creator="struts" javascript="JManageTemplateForm">
+        	<param name="formBean" value="manageTemplateForm"/>
+    	</create>    	
+    	<create creator="struts" javascript="JPageForm">
+        	<param name="formBean" value="PageForm"/>
+    	</create>
+    	<create creator="struts" javascript="JPageSubForm">
+        	<param name="formBean" value="PageSubForm"/>
+    	</create>
+    	<create creator="struts" javascript="JManageImportExportLogForm">
+        	<param name="formBean" value="manageImportExportLogForm"/>
+    	</create>
+    	<create creator="struts" javascript="JDSPersonForm">
+        	<param name="formBean" value="DSPersonForm"/>
+    	</create>  
+    	<create creator="struts" javascript="JFileForm">
+        	<param name="formBean" value="fileForm"/>
+    	</create>     	   	
+        	<create creator="struts" javascript="JDecisionSupportLibraryForm">
+        	<param name="formBean" value="decisionSupportLibraryForm"/>
+    	</create>
+    	<create creator="struts" javascript="JDsmActivityLogForm">
+        	<param name="formBean" value="dsmActivityLogForm"/>
+    	</create>
+    	<create creator="struts" javascript="JAssociateToInvestigationsForm">
+        	<param name="formBean" value="associateToInvestigationsForm"/>
+    	</create>
+    	<create creator="struts" javascript="JAssociateToCoinfectionForm">
+        	<param name="formBean" value="associateToCoinfectionForm"/>
+    	</create>
+    	<create creator="struts" javascript="JIISQueryForm">
+        	<param name="formBean" value="iisQueryForm"/>
+    	</create>  		
+    </allow>
+</dwr>

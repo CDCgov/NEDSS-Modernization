@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 (x64) (http://www.altova.com) by Greg Tucker (DHHS (C/O SAIC)) -->
+<!-- DSMAlgorithm NBS Version 4.2 - March 21, 2011 -->
+<!-- Decision Support Management - Algorithms -->
+<xs:schema xmlns:nbs="http://www.cdc.gov/NEDSS" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cdc.gov/NEDSS" elementFormDefault="qualified">
+	<xs:complexType name="ActionType">
+		<xs:choice>
+			<xs:element name="CreateInvestigation" type="nbs:CreateInvestigationType"/>
+			<xs:element name="MarkAsReviewed" type="nbs:MarkAsReviewedType"/>
+			<xs:element name="CreateInvestigationWithNND" type="nbs:CreateInvestigationWithNNDType"/>
+			<xs:element name="DeleteDocument" type="nbs:DeleteDocumentType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="AdvancedCriteriaType">
+		<xs:sequence>
+			<xs:element name="Criteria" type="nbs:CriteriaType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElrAdvancedCriteriaType">
+		<xs:sequence>
+			<xs:element name="EventDateLogic" type="nbs:EventDateLogicType" minOccurs="0"/>
+			<xs:element name="AndOrLogic" type="xs:string" default="AND" minOccurs="0"/>
+			<xs:element name="ElrCriteria" type="nbs:ElrCriteriaType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="InvCriteria" type="nbs:InvCriteriaType" minOccurs="0"/>
+			<xs:element name="InvLogic" type="nbs:InvLogicType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AlertType">
+		<xs:sequence>
+			<xs:element name="AlertSeverity" type="nbs:CodedType"/>
+			<xs:element name="SendToRecipients" type="nbs:SendToRecipientsType" maxOccurs="unbounded"/>
+			<xs:element name="Comment" type="nbs:CommentsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Algorithm">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AlgorithmName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="200"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Event" type="nbs:CodedType"/>
+				<xs:element name="Frequency" type="nbs:CodedType"/>
+				<xs:element name="AppliesToEntryMethods" type="nbs:EntryMethodType" minOccurs="0"/>
+				<xs:element name="InvestigationType" type="xs:string" minOccurs="0"/>
+				<xs:element name="ApplyToConditions" type="nbs:ApplyToConditionsType" minOccurs="0"/>
+				<xs:element name="ApplyToSendingSystems" type="nbs:SendingSystemType" minOccurs="0"/>
+				<xs:element name="ApplyToReportingFacilities" type="nbs:ReportingFacilityType" minOccurs="0"/>
+				<xs:element name="Comment" type="nbs:CommentsType" minOccurs="0"/>
+				<xs:element name="AdvancedCriteria" type="nbs:AdvancedCriteriaType" minOccurs="0"/>
+				<xs:element name="ElrAdvancedCriteria" type="nbs:ElrAdvancedCriteriaType" minOccurs="0"/>
+				<xs:element name="Action" type="nbs:ActionType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ApplyToConditionsType">
+		<xs:sequence>
+			<xs:element name="Condition" type="nbs:CodedType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodedType">
+		<xs:sequence>
+			<xs:element name="Code" type="nbs:CodeType" minOccurs="0"/>
+			<xs:element name="CodeDescTxt" type="nbs:CodeDescTxtType" minOccurs="0"/>
+			<xs:element name="CodeSystemCode" type="nbs:CodeSystemCodeType" nillable="true" minOccurs="0"/>
+			<xs:element name="AlternateCode" type="nbs:CodeType" minOccurs="0"/>
+			<xs:element name="AlternateCodeDescTxt" type="nbs:CodeDescTxtType" minOccurs="0"/>
+			<xs:element name="AlternateCodeSystemCode" type="nbs:CodeSystemCodeType" minOccurs="0"/>
+			<xs:element name="CodeSystemVersionID" type="nbs:CodeSystemVersionIDType" minOccurs="0"/>
+			<xs:element name="AlternateCodeSystemVersionID" type="nbs:CodeSystemVersionIDType" minOccurs="0"/>
+			<xs:element name="Text" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CodeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodeSystemCodeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="300"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodeDescTxtType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodeSystemVersionIDType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CommentsType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CreateInvestigationType">
+		<xs:sequence>
+			<xs:element name="UpdateAction" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="OnFailureToCreateInvestigation" type="nbs:CodedType"/>
+			<xs:element name="Alert" type="nbs:AlertType" minOccurs="0"/>
+			<xs:element name="InvestigationDefaultValues" type="nbs:InvestigationDefaultValuesType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MarkAsReviewedType">
+		<xs:sequence>
+			<xs:element name="OnFailureToMarkAsReviewed" type="nbs:CodedType"/>
+			<xs:element name="NoActionReason" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="AdditionalComment" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateInvestigationWithNNDType">
+		<xs:sequence>
+			<xs:element name="UpdateAction" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="OnFailureToCreateInvestigation" type="nbs:CodedType"/>
+			<xs:element name="Alert" type="nbs:AlertType" minOccurs="0"/>
+			<xs:element name="InvestigationDefaultValues" type="nbs:InvestigationDefaultValuesType" minOccurs="0"/>
+			<xs:element name="QueueForApproval" type="xs:boolean"/>
+			<xs:element name="OnFailureToCreateNND" type="nbs:CodedType"/>
+			<xs:element name="NNDComment" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CriteriaType">
+		<xs:sequence>
+			<xs:element name="CriteriaQuestion" type="nbs:CodedType"/>
+			<xs:element name="CriteriaLogic" type="nbs:CodedType"/>
+			<xs:choice>
+				<xs:element name="CriteriaStringValue" type="xs:string"/>
+				<xs:element name="CriteriaNumericValue" type="nbs:NumericType"/>
+				<xs:element name="CriteriaCodedValue" type="nbs:CodedType" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElrCriteriaType">
+		<xs:sequence>
+			<xs:element name="ResultedTest" type="nbs:CodedType"/>
+			<xs:choice>
+				<xs:element name="ElrCodedResultValue" type="nbs:CodedType"/>
+				<xs:element name="ElrTextResultValue" type="nbs:TextType"/>
+				<xs:element name="ElrNumericResultValue" type="nbs:ElrNumericType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TextType">
+		<xs:sequence>
+			<xs:element name="ComparatorCode" type="nbs:CodedType" minOccurs="1"/>
+			<xs:element name="TextValue" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DeleteDocumentType">
+		<xs:sequence>
+			<xs:element name="ReasonForDeletion" type="nbs:CodedType"/>
+			<xs:element name="Comment" type="nbs:CommentsType" minOccurs="0"/>
+			<xs:element name="Alert" type="nbs:AlertType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EntryMethodType">
+		<xs:sequence>
+			<xs:element name="EntryMethod" type="nbs:CodedType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvestigationDefaultValuesType">
+		<xs:sequence>
+			<xs:element name="DefaultValue" type="nbs:DefaultValueType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DefaultParticipationType">
+		<xs:sequence>
+			<xs:element name="ParticipationType" type="nbs:CodedType"/>
+			<xs:element name="EntityClass" type="xs:string" minOccurs="0"/>
+			<xs:element name="EntityUid" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DefaultValueType">
+		<xs:sequence>
+			<xs:element name="DefaultQuestion" type="nbs:CodedType"/>
+			<xs:element name="DefaultBehavior" type="nbs:CodedType"/>
+			<xs:choice>
+				<xs:element name="DefaultStringValue" type="xs:string"/>
+				<xs:element name="DefaultCommentValue" type="nbs:CommentsType"/>
+				<xs:element name="DefaultNumericValue" type="nbs:NumericType"/>
+				<xs:element name="DefaultCodedValue" type="nbs:CodedType" maxOccurs="unbounded"/>
+				<xs:element name="DefaultParticipation" type="nbs:DefaultParticipationType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Added in Release 5.4 -->
+	<xs:complexType name="InvCriteriaType">
+		<xs:sequence>
+			<xs:element name="InvValue" type="nbs:InvValueType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvParticipationType">
+		<xs:sequence>
+			<xs:element name="ParticipationType" type="nbs:CodedType"/>
+			<xs:element name="EntityClass" type="xs:string" minOccurs="0"/>
+			<xs:element name="EntityUid" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvValueType">
+		<xs:sequence>
+			<xs:element name="InvQuestion" type="nbs:CodedType"/>
+			<xs:element name="InvQuestionLogic" type="nbs:CodedType"/>
+			<xs:choice>
+				<xs:element name="InvStringValue" type="xs:string"/>
+				<xs:element name="InvCommentValue" type="nbs:CommentsType"/>
+				<xs:element name="InvNumericValue" type="nbs:NumericType"/>
+				<xs:element name="InvCodedValue" type="nbs:CodedType" maxOccurs="unbounded"/>
+				<xs:element name="InvParticipation" type="nbs:InvParticipationType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Finish added in Release 5.4 -->
+	<xs:complexType name="NumericType">
+		<xs:sequence>
+			<xs:element name="ComparatorCode" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="Value1">
+				<xs:simpleType>
+					<xs:restriction base="xs:float"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SeperatorCode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="10"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Value2" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:float"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Unit" type="nbs:CodedType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElrNumericType">
+		<xs:sequence>
+			<xs:element name="ComparatorCode" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="Value1">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SeperatorCode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="10"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Value2" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Unit" type="nbs:CodedType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReportingFacilityType">
+		<xs:sequence>
+			<xs:element name="ReportingFacility" type="nbs:CodedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SendingSystemType">
+		<xs:sequence>
+			<xs:element name="SendingSystem" type="nbs:CodedType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SendToRecipientsType">
+		<xs:sequence>
+			<xs:element name="SendToRecipient" type="nbs:CodedType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IntegerNumericType">
+		<xs:sequence>
+			<xs:element name="ComparatorCode" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="Value1">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Unit" type="nbs:CodedType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EventDateLogicType">
+		<xs:sequence>
+			<xs:element name="ElrTimeLogic" type="nbs:ElrTimeLogicType" minOccurs="0"/>
+			<xs:element name="ElrSourceElement" type="nbs:CodedType" minOccurs="0"/>
+			<xs:element name="WithinTimePeriod" type="nbs:IntegerNumericType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Added in Release 5.4 -->
+	<xs:complexType name="InvLogicType">
+		<xs:sequence>
+			<xs:element name="InvLogicInd" type="nbs:CodedType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElrTimeLogicType">
+		<xs:sequence>
+			<xs:element name="ElrTimeLogicInd" type="nbs:CodedType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Finish added in Release 5.4 -->
+</xs:schema>

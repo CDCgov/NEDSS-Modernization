@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<content form="/nbs/LDFSubmit.do">
+		<xsp:logic><![CDATA[
+			
+		]]></xsp:logic>
+		<id-bar/>
+		<xsp:logic>
+            	  	String PageID= request.getParameter("pageID");
+		   	request.setAttribute("PageID", PageID);
+		    	if(PageID== null)
+		     	{
+		     		PageID= (String)request.getSession().getAttribute("PageID");
+		     		request.setAttribute("PageID",PageID);
+		     	   	request.getSession().setAttribute("PageID", null);
+ 		     	}
+            	    	String sConditionCd= request.getParameter("conditionCd");
+            	    	request.setAttribute("sConditionCd",sConditionCd);
+	    	 	if(sConditionCd== null)
+		     	{
+		     		sConditionCd= (String)request.getSession().getAttribute("sConditionCd");
+		     		request.setAttribute("sConditionCd",sConditionCd);
+		     	   //	request.getSession().setAttribute("sConditionCd", null);
+ 		     	}
+		   	request.getSession().setAttribute("sConditionCd", sConditionCd);
+
+		    	String sBusinessObjectNm = request.getParameter("businessObjectNm");
+    		    	request.setAttribute("sBusinessObjectNm", sBusinessObjectNm);
+			if(sBusinessObjectNm == null)
+		     	{
+		     		sBusinessObjectNm = (String)request.getSession().getAttribute("sBusinessObjectNm");
+		     		request.setAttribute("sBusinessObjectNm",sBusinessObjectNm );
+		     	   	//request.getSession().setAttribute("pageName", null);
+ 		     	}
+		   	request.getSession().setAttribute("sBusinessObjectNm", sBusinessObjectNm );
+    		    			   
+		    	String pageName = request.getParameter("page");
+		     	request.setAttribute("pageName", pageName);
+			if(pageName == null)
+		     	{
+		     		pageName = (String)request.getSession().getAttribute("pageName");
+		     		request.setAttribute("pageName",pageName);
+		     	   	//request.getSession().setAttribute("pageName", null);
+ 		     	}
+		   	request.getSession().setAttribute("pageName", pageName);
+			String displayName = "Manage  "  + pageName ;
+	        	</xsp:logic>
+		<javascript-files/>
+		<!--separator>
+			<xsp:attribute name="name">
+				<xsp:expr>displayName</xsp:expr>
+			</xsp:attribute>
+		</separator-->
+		<javascript-files>
+			<!--import>LdfSpecific.js</import-->
+		</javascript-files>
+		<tab name="Legacy">
+			<group>
+				<line>
+					<element name="sBusinessObjectNm" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="sBusinessObjectNm"/>
+						</value>
+					</element>
+					<element name="sConditionCd" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="sConditionCd"/>
+						</value>
+					</element>
+					<element name="pageName" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="pageName"/>
+						</value>
+					</element>
+					<element name="PageID" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="PageID"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="legacy " type="batch-entry">
+						<xsp:logic>System.out.println("\n\n\n parsedLegacyString" + request.getAttribute("parsedLegacyString"));</xsp:logic>
+						<value>
+							<xsp-request:get-attribute name="parsedLegacyString"/>
+						</value>
+						<line>
+							<!-- VL: suffixLabel is used for text at the end of input field -->
+							<element type="text" label="Label" size="35" maxlength="300">
+								<xsp:attribute name="name">ldfk[k].labelTxt</xsp:attribute>
+								<xsp:attribute name="suffixLabel"/>
+								<header>Label</header>
+								<!--validation type="required" name="label"/-->
+								<partner name="" type="text">
+									<readonly/>
+									<value/>
+								</partner>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element type="text" label="Display Width" size="2" maxlength="2">
+								<xsp:attribute name="name">ldfk[k].fieldSize</xsp:attribute>
+								<xsp:attribute name="suffixLabel"/>
+								<partner name="" type="text">
+									<readonly/>
+									<value/>
+								</partner>
+							</element>
+						</line>
+						<line>
+							<element name="P18k" type="conditional-entry">
+								<controller type="select" label="Type" maxlength="50">
+									<xsp:attribute name="name">ldfk[k].dataType</xsp:attribute>
+									<header>Type</header>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>LDF_DATA_TYPE</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<value>null</value>
+								</controller>
+								<line trigger="CV">
+									<element/>
+									<element/>
+									<element type="select" label="*SRT Code Set">
+										<xsp:attribute name="name">ldfk[k].codeSetNm</xsp:attribute>
+										<srt-options-string>
+											<xsp-request:get-attribute name="SrtDropDownsSelects"/>
+										</srt-options-string>
+										<value>null</value>
+									</element>
+								</line>
+								<line trigger="ST">
+									<element/>
+									<element/>
+									<element/>
+									<element/>
+									<element name="LDF103k" type="conditional-entry">
+										<controller type="select" label="Validation Type">
+											<xsp:attribute name="name">ldfk[k].validationTxt</xsp:attribute>
+											<header>Validation Type</header>
+											<srt-options-string>
+												<srt-codes:getCodedValues>
+													<type>LDF_VALIDATION_TYPE</type>
+												</srt-codes:getCodedValues>
+											</srt-options-string>
+											<value>null</value>
+										</controller>
+										<line trigger="TS">
+											<element align="middle" name="LDF-103" type="plain-text">
+												<!--value>Timestamp</value-->
+												<!--value>
+													<xsp-request:get-attribute name="descCd"/>
+												</value-->
+											</element>
+										</line>
+										<line trigger="INT">
+											<element align="middle" name="LDF-103" type="plain-text">
+												<!--value>Integer</value-->
+												<value>
+													<xsp-request:get-attribute name="descCd"/>
+												</value>
+											</element>
+										</line>
+										<line trigger="JS">
+											<element align="middle" name="LDF-103" type="plain-text">
+												<!--value>Custom Validation Script</value-->
+												<!--value>
+													<xsp-request:get-attribute name="descCd"/>
+												</value-->
+											</element>
+										</line>
+										<line trigger="JS">
+											<element/>
+											<element type="textarea" label="Custom JavaScript" maxlength="3000">
+												<xsp:attribute name="name">ldfk[k].validationJscriptTxt</xsp:attribute>
+											</element>
+										</line>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<element type="checkbox" label="">
+								<options>
+									<option name="ldfk[k].requiredInd" label="Required" value="T">
+										</option>
+								</options>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="Display Order" size="4" maxlength="5">
+								<xsp:attribute name="name">ldfk[k].displayOrderNbr</xsp:attribute>
+								<header>Display Order</header>
+							</element>
+						</line>
+						<line>
+							<element type="textarea" label="Admin Comments" maxlength="300">
+								<xsp:attribute name="name">ldfk[k].adminComment</xsp:attribute>
+							</element>
+						</line>
+						<!-- Hidden variables are not required for Legacy fields and CDF-->
+						<!--line>
+							<element name="ldfk[k].statusCd" type="hidden"/>
+							<element name="ldfk[k].ldfUid" type="hidden"/-->
+							<!--element name="ldfk[k].nndInd" type="hidden"/-->
+							<!--element name="ldfk[k].versionCtrlNbr" type="hidden"/>
+							<element name="ldfk[k].classCd" type="hidden"/>
+						</line-->
+						<!--line>
+							<element type="text" label="National Identifier" size="4" maxlength="5">
+								<xsp:attribute name="name">ldfk[k].cdcNationalId</xsp:attribute>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="Object Identifier (OID)" size="10" maxlength="100">
+								<xsp:attribute name="name">ldfk[k].ldfOid</xsp:attribute>
+							</element>
+						</line-->
+						<line>
+							<element type="text" label="Messaging NND Indicator" size="4" maxlength="Y">
+								<xsp:attribute name="name">ldfk[k].nndInd</xsp:attribute>
+							</element>
+						</line>
+					</element>
+				</line>
+			</group>
+			<!--util:include-expr>
+				<util:expr>
+					<xsp:expr>
+					
+						<xsp-request:get-attribute name="jurisdiction"/>
+						<ldf:getPreview>
+							<xml/>
+						</ldf:getPreview>
+					</xsp:expr>
+				</util:expr>
+			</util:include-expr-->
+		</tab>
+	</content>
+</xsp:page>

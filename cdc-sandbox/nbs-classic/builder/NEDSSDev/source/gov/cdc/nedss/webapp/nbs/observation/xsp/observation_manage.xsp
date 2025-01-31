@@ -1,0 +1,425 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>java.util.TreeMap</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.NEDSSConstants</xsp:include>
+		<xsp:include>gov.cdc.nedss.proxy.ejb.observationproxyejb.vo.ObservationSummaryVO</xsp:include>
+	</xsp:structure>
+	<xsp:logic><![CDATA[
+
+	  private String displayRadioButtonStatus(boolean isAssociated ) {
+		if (isAssociated == true) {
+    	   			return( "Y" );
+    	   	}
+    		if (isAssociated == false) {
+    	   			return( "N" );
+    	  	}
+		return ( "" );
+	}
+
+    private String formatDate(java.sql.Timestamp timestamp)
+    {
+	Date date = null;
+	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+	if(timestamp != null) date = new Date(timestamp.getTime());
+	if(date == null)
+	return "";
+	else
+	return 	formatter.format(date);
+    }
+
+	]]></xsp:logic>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<!--xsp:attribute name="form">/nedss/updateObservation.do?publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>
+		</xsp:attribute-->
+		<xsp:logic><![CDATA[
+		Boolean sortDirection = (Boolean) ]]><session:get-attribute name="sortDirection"/><![CDATA[;
+				String sortMethod = null;
+				sortMethod = (String)request.getAttribute("sortMethod");
+				if (sortMethod == null)
+					sortMethod = "getIsRadioBtnAssociated";
+
+				String direction = null;
+				boolean currSortDirection = true;
+				if(sortDirection!=null)
+					direction = sortDirection.toString();
+				else
+					direction = "true";
+					//##!! System.out.println("---------" + request.getAttribute("personLocalID"));
+					//##!! System.out.println("---------" + request.getAttribute("publicHealthCaseLocalUid"));
+
+		]]></xsp:logic>
+		<!--javascript-files>
+			<import>BatchEntryStrutsElementGenerator.js</import>
+		</javascript-files-->
+		<id-bar>
+			<id name="Patient ID">
+				<xsp-request:get-attribute name="personLocalID"/>
+			</id>
+			<id name="Investigation ID">
+				<xsp-request:get-attribute name="publicHealthCaseLocalUid"/>
+			</id>
+		</id-bar>
+		<button-bar>
+			<right>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="cancelButtonHref"/>&amp;personUID=<xsp-request:get-attribute name="personUID"/>');</javascript-action>
+			</right>
+			<right>
+				<label>Add</label>
+				<javascript-action>getPage('<xsp-request:get-attribute name="AddHref"/>');</javascript-action>
+			</right>
+		</button-bar>
+		<tab>
+			<group/>
+			<group>
+				<line/>
+			</group>
+			<group name="Lab Reports">
+				<line>
+					<xsp:logic><![CDATA[
+					String displayPageNumber = request.getParameter("enhancedTable_displayPage");
+					if( displayPageNumber==null || displayPageNumber.trim().length() < 1)
+						displayPageNumber = "1";
+					]]></xsp:logic>
+					<element type="enhanced-data-table" name="data-table-33" showYesNoRadioButtons="true" yesNoLabel="Associate with this investigation?" recordsPerPage="20">
+						<xsp:attribute name="displayPage">
+							<xsp:expr>displayPageNumber</xsp:expr>
+						</xsp:attribute>
+						<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortLabYesNoHref"/>&amp;sortMethod=getIsRadioBtnAssociated&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();</xsp:attribute>
+						<xsp:attribute name="pagingLinkBase">/nedss/observationManagePaging.do?personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>
+						</xsp:attribute>
+						<header>
+							<data>
+								<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortLabAddTimeHref"/>&amp;sortMethod=getAddTime&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();
+							</xsp:attribute>
+								Date Received
+							</data>
+							<data>
+								<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortLabActivityTimeHref"/>&amp;sortMethod=getActivityFromTime&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();
+								</xsp:attribute>
+								Date Collected
+							</data>
+							<!--data>
+								<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='/nedss/<xsp-request:get-attribute name="SortLabTypeCdHref"/>&amp;sortMethod=getTypeCd&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();
+								</xsp:attribute>
+								Type
+							</data-->
+							<data>
+								<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortLabCdDescHref"/>&amp;sortMethod=getCdDescTxt&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();
+								</xsp:attribute>
+								Ordered Test Name</data>
+							<data>
+								<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortLabLocalIdHref"/>&amp;sortMethod=getLocalId&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();
+								</xsp:attribute>
+								Observation ID
+							</data>
+						</header>
+						<xsp:logic>
+					Collection observationColl= (Collection)request.getAttribute("observationsummary");
+
+					if (observationColl != null)
+					{
+						int i = 0;
+						for( Iterator anIterator = observationColl.iterator(); anIterator.hasNext(); )
+						{
+							ObservationSummaryVO  obs = (ObservationSummaryVO) anIterator.next();
+							if(obs != null)
+							{
+							if(obs .getCtrlCdDisplayForm().equals(NEDSSConstants.LAB_CTRLCD_DISPLAY))
+							{
+							i++;
+							Integer integerX = new Integer(i);
+							obs.setIndex(integerX.toString());
+					</xsp:logic>
+						<record>
+							<xsp:attribute name="yesNoValue">
+								<xsp:expr>displayRadioButtonStatus(obs.getIsAssociated())</xsp:expr>
+							</xsp:attribute>
+							<xsp:attribute name="name">record-<xsp:expr>obs.getIndex()</xsp:expr>
+							</xsp:attribute>
+							<data name="date_created">
+								<value>
+									<xsp:expr>formatDate(obs.getAddTime())</xsp:expr>
+								</value>
+							</data>
+							<data name="date_obs">
+								<value>
+									<xsp:expr>formatDate(obs.getActivityFromTime())</xsp:expr>
+								</value>
+							</data>
+							<!--data name="type">
+								<value>
+									<xsp:expr>obs.getCtrlCdDisplayForm()</xsp:expr>
+								</value>
+							</data-->
+							<xsp:logic/>
+							<data name="obs_name">
+								<value>
+									<xsp:expr>obs.getCdDescTxt()</xsp:expr>
+								</value>
+							</data>
+							<data name="id">
+								<xsp:attribute name="link">
+									<xsp-request:get-attribute name="ObservationLabIDHref"/>&amp;observationUID=<xsp:expr>obs.getObservationUid()</xsp:expr>
+								</xsp:attribute>
+								<value>
+									<xsp:expr>obs.getLocalId()</xsp:expr>
+								</value>
+							</data>
+						</record>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+			</group>
+			<group name="Morbidity Reports">
+				<line>
+					<xsp:logic><![CDATA[
+					String displayPageNumber1 = request.getParameter("enhancedTable_displayPage");
+					if( displayPageNumber1==null || displayPageNumber1.trim().length() < 1)
+						displayPageNumber1 = "1";
+					]]></xsp:logic>
+					<element type="enhanced-data-table" name="data-table-33" showYesNoRadioButtons="true" yesNoLabel="Associate with this investigation?" recordsPerPage="20">
+						<xsp:attribute name="displayPage">
+							<xsp:expr>displayPageNumber1</xsp:expr>
+						</xsp:attribute>
+						<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortMorbidityYesNoHref"/>&amp;sortMethod=getIsRadioBtnAssociated&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();</xsp:attribute>
+						<xsp:attribute name="pagingLinkBase">/nedss/observationManagePaging.do?personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>
+						</xsp:attribute>
+						<header>
+							<data>
+								<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortMorbidityAddTimeHref"/>&amp;sortMethod=getAddTime&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();
+							</xsp:attribute>
+								Date Received
+							</data>
+							<data>
+								<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortMorbidityFromTimeHref"/>&amp;sortMethod=getFromTime&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();
+								</xsp:attribute>
+								Report Date
+							</data>
+							<!--data>
+								<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortMorbidityTypeCdHref"/>&amp;sortMethod=getTypeCd&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();
+								</xsp:attribute>
+								Type
+							</data-->
+							<data>
+								<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortMorbidityReportTypeHref"/>&amp;sortMethod=getMorbidityReportType&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();
+								</xsp:attribute>
+								Report Type</data>
+							<data>
+								<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortMorbiditySRTHref"/>&amp;sortMethod=getMorbidityConditionSRTText&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();
+								</xsp:attribute>
+								Condition
+							</data>
+							<data>
+								<xsp:attribute name="link">javascript:document.forms['nedssForm'].action='<xsp-request:get-attribute name="SortMorbidityLocalIdHref"/>&amp;sortMethod=getLocalId&amp;direction=<xsp:expr>direction</xsp:expr>&amp;personUID=<xsp:expr>request.getParameter("personUID")</xsp:expr>&amp;publicHealthCaseUID=<xsp:expr>request.getParameter("publicHealthCaseUID")</xsp:expr>';document.forms['nedssForm'].submit();
+								</xsp:attribute>
+								Observation ID
+							</data>
+						</header>
+						<xsp:logic>
+
+
+						if (observationColl!= null)
+						{
+							int j = 50;
+							if (sortMethod.equals("getIsRadioBtnAssociated"))
+							{
+								if (direction.equals("false"))
+									currSortDirection = false;
+
+								for( Iterator anIterator = observationColl.iterator(); anIterator.hasNext(); )
+								{
+									ObservationSummaryVO  obs = (ObservationSummaryVO) anIterator.next();
+									if(obs != null)
+									{
+										if(obs.getCtrlCdDisplayForm().equals(NEDSSConstants.MOB_CTRLCD_DISPLAY))
+										{
+											if (obs.getIsAssociated() == currSortDirection)
+											{
+												j++;
+												Integer integerX = new Integer(j);
+												obs.setIndex(integerX.toString());
+												</xsp:logic>
+						<record>
+							<xsp:attribute name="yesNoValue">
+								<xsp:expr>displayRadioButtonStatus(obs.getIsAssociated())</xsp:expr>
+							</xsp:attribute>
+							<xsp:attribute name="name">record-<xsp:expr>obs.getIndex()</xsp:expr>
+							</xsp:attribute>
+							<data name="date_created">
+								<value>
+									<xsp:expr>formatDate(obs.getAddTime())</xsp:expr>
+								</value>
+							</data>
+							<data name="date_obs">
+								<value>
+									<xsp:expr>formatDate(obs.getFromTime())</xsp:expr>
+								</value>
+							</data>
+							<!--data name="type">
+														<value>
+															<xsp:expr>obs.getCtrlCdDisplayForm()</xsp:expr>
+														</value>
+													</data-->
+							<xsp:logic/>
+							<data name="type">
+								<value>
+									<xsp:expr>obs.getMorbidityReportType()</xsp:expr>
+								</value>
+							</data>
+							<data name="condition">
+								<value>
+									<xsp:expr>obs.getMorbidityConditionSRTText()</xsp:expr>
+								</value>
+							</data>
+							<data name="id">
+								<xsp:attribute name="link">
+									<xsp-request:get-attribute name="ObservationMorbIDHref"/>&amp;observationUID=<xsp:expr>obs.getObservationUid()</xsp:expr>
+								</xsp:attribute>
+								<value>
+									<xsp:expr>obs.getLocalId()</xsp:expr>
+								</value>
+							</data>
+						</record>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}
+
+								for( Iterator anIterator = observationColl.iterator(); anIterator.hasNext(); )
+								{
+									ObservationSummaryVO  obs = (ObservationSummaryVO) anIterator.next();
+									if(obs != null)
+									{
+										if(obs .getCtrlCdDisplayForm().equals(NEDSSConstants.MOB_CTRLCD_DISPLAY))
+										{
+											if (obs.getIsAssociated() != currSortDirection)
+											{
+												j++;
+												Integer integerX = new Integer(j);
+												obs.setIndex(integerX.toString());
+												</xsp:logic>
+						<record>
+							<xsp:attribute name="yesNoValue">
+								<xsp:expr>displayRadioButtonStatus(obs.getIsAssociated())</xsp:expr>
+							</xsp:attribute>
+							<xsp:attribute name="name">record-<xsp:expr>obs.getIndex()</xsp:expr>
+							</xsp:attribute>
+							<data name="date_created">
+								<value>
+									<xsp:expr>formatDate(obs.getAddTime())</xsp:expr>
+								</value>
+							</data>
+							<data name="date_obs">
+								<value>
+									<xsp:expr>formatDate(obs.getFromTime())</xsp:expr>
+								</value>
+							</data>
+							<!--data name="type">
+														<value>
+															<xsp:expr>obs.getCtrlCdDisplayForm()</xsp:expr>
+														</value>
+													</data-->
+							<xsp:logic/>
+							<data name="type">
+								<value>
+									<xsp:expr>obs.getMorbidityReportType()</xsp:expr>
+								</value>
+							</data>
+							<data name="condition">
+								<value>
+									<xsp:expr>obs.getMorbidityConditionSRTText()</xsp:expr>
+								</value>
+							</data>
+							<data name="id">
+								<xsp:attribute name="link">
+									<xsp-request:get-attribute name="ObservationMorbIDHref"/>&amp;observationUID=<xsp:expr>obs.getObservationUid()</xsp:expr>
+								</xsp:attribute>
+								<value>
+									<xsp:expr>obs.getLocalId()</xsp:expr>
+								</value>
+							</data>
+						</record>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}
+							else
+							{
+								for( Iterator anIterator = observationColl.iterator(); anIterator.hasNext(); )
+								{
+									ObservationSummaryVO  obs = (ObservationSummaryVO) anIterator.next();
+									if(obs != null)
+									{
+										if(obs.getCtrlCdDisplayForm().equals(NEDSSConstants.MOB_CTRLCD_DISPLAY))
+										{
+											//##!! System.out.println("Radio Button Status for Morbidity :"+obs.getIsAssociated());
+											j++;
+											Integer integerX = new Integer(j);
+											obs.setIndex(integerX.toString());
+											</xsp:logic>
+						<record>
+							<xsp:attribute name="yesNoValue">
+								<xsp:expr>displayRadioButtonStatus(obs.getIsAssociated())</xsp:expr>
+							</xsp:attribute>
+							<xsp:attribute name="name">record-<xsp:expr>obs.getIndex()</xsp:expr>
+							</xsp:attribute>
+							<data name="date_created">
+								<value>
+									<xsp:expr>formatDate(obs.getAddTime())</xsp:expr>
+								</value>
+							</data>
+							<data name="date_obs">
+								<value>
+									<xsp:expr>formatDate(obs.getFromTime())</xsp:expr>
+								</value>
+							</data>
+							<!--data name="type">
+													<value>
+														<xsp:expr>obs.getCtrlCdDisplayForm()</xsp:expr>
+													</value>
+												</data-->
+							<xsp:logic/>
+							<data name="type">
+								<value>
+									<xsp:expr>obs.getMorbidityReportType()</xsp:expr>
+								</value>
+							</data>
+							<data name="condition">
+								<value>
+									<xsp:expr>obs.getMorbidityConditionSRTText()</xsp:expr>
+								</value>
+							</data>
+							<data name="id">
+								<xsp:attribute name="link">
+									<xsp-request:get-attribute name="ObservationMorbIDHref"/>&amp;observationUID=<xsp:expr>obs.getObservationUid()</xsp:expr>
+								</xsp:attribute>
+								<value>
+									<xsp:expr>obs.getLocalId()</xsp:expr>
+								</value>
+							</data>
+						</record>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

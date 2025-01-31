@@ -1,0 +1,568 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.entityid.dt.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.locator.dt.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.person.dt.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.person.vo.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.person.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.logicsheet.helper.CachedDropDownValues</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbscontext.NBSContext</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.action.person.util.PersonUtil</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+	</xsp:structure>
+	<nedss:Declarations/>
+	<nedss:StateDescTxt/>
+	<nedss:getTitle/>
+	<content type="labspecificpatient">
+		<xsp:attribute name="title">
+			<xsp:expr>getTitle()</xsp:expr>
+		</xsp:attribute>
+		<xsp:logic>
+		//System.out.println("XSP:  this is the XSP labPatient_search_resultxsp");
+		</xsp:logic>
+		<nedss:SearchResultRequestValues/>
+		<button-bar>
+			<nedss:NotEntitySearch>
+				<right>
+					<xsp:attribute name="authorized">
+						<xsp-request:get-attribute name="addButton"/>
+					</xsp:attribute>
+					<label>Add</label>
+					<javascript-action>getPage('<xsp-request:get-attribute name="addButtonHref"/>');</javascript-action>
+				</right>
+			</nedss:NotEntitySearch>
+			<nedss:ifEntitySearch>
+				<right>
+					<label>Cancel</label>
+					<javascript-action>CancelEntitySearch();</javascript-action>
+				</right>
+			</nedss:ifEntitySearch>
+		</button-bar>
+		<javascript-files>
+			<import>LabPatientFromEventSpecific.js</import>
+			<import>EntitySearch.js</import>
+			<import>searchResultsSpecific.js</import>
+		</javascript-files>
+		<AddNewPersonHref location="/nedss/servlet/gov.cdc.nedss.cdm.ComparePersonServlet"/>
+		<xsp-request:get-uri as="xml"/>
+		<session:get-id as="xml"/>
+		<refineSearchHref>
+			<xsp-request:get-attribute name="refineSearchHref"/>
+		</refineSearchHref>
+		<newSearchHref>
+			<xsp-request:get-attribute name="newSearchHref"/>
+		</newSearchHref>
+		<viewHref>
+			<xsp-request:get-attribute name="viewHref"/>
+		</viewHref>
+		<viewFileHref>
+			<xsp-request:get-attribute name="viewFileHref"/>
+		</viewFileHref>
+		<nextHref>
+			<xsp-request:get-attribute name="nextHref"/>
+		</nextHref>
+		<prevHref>
+			<xsp-request:get-attribute name="prevHref"/>
+		</prevHref>
+		<searchCriteria>
+			<xsp:expr>sSearchCriteria </xsp:expr>
+		</searchCriteria>
+		<nedss:writeErrorMessages/>
+		<header>
+			<column>
+				<name/>
+			</column>
+			<column>
+				<name>Full Name</name>
+			</column>
+			<column>
+				<name>Age/DOB/Sex</name>
+			</column>
+			<column>
+				<name>Address</name>
+			</column>
+			<column>
+				<name>Telephone</name>
+			</column>
+			<column>
+				<name>ID</name>
+			</column>
+		</header>
+		<currentIndex>
+			<xsp:expr>currentIndex</xsp:expr>
+		</currentIndex>
+		<totalRecords>
+			<xsp:expr>numberOfRecords</xsp:expr>
+		</totalRecords>
+		<!--<xsp:logic>System.out.println("The total records are :" + <xsp:expr>numberOfRecords</xsp:expr>);</xsp:logic-->
+		<!-- Start here for displaying matching records -->
+		<records>
+			<nedss:PersonRecords>
+				<record>
+					<uid>
+						<xsp:attribute name="type">
+							<xsp:expr>sOperationType</xsp:expr>
+						</xsp:attribute>
+						<xsp:attribute name="VOLookup">
+							<xsp-request:get-attribute name="VOLookup"/>
+						</xsp:attribute>
+						<xsp:expr>pvo.getPersonUID()</xsp:expr>
+					</uid>
+					<column>
+						<nedss:DisplayPersonNameArray>
+							<name>
+								<use-code>
+									<xsp:expr>name.getNmUseCd()</xsp:expr>
+								</use-code>
+								<first-name>
+									<xsp:expr>name.getFirstNm()</xsp:expr>
+								</first-name>
+								<last-name>
+									<xsp:expr>name.getLastNm()</xsp:expr>
+								</last-name>
+							</name>
+						</nedss:DisplayPersonNameArray>
+					</column>
+					<column>
+						<xsp:logic><![CDATA[
+									if(pvo.getPersonDOB() != null) {
+	                      		]]></xsp:logic>
+						<xsp:expr>PersonUtil.displayAgeForPatientResults(pvo.getPersonDOB())</xsp:expr>
+						<xsp:logic><![CDATA[
+									}
+	                      		]]></xsp:logic>
+						<br/>
+						<xsp:expr>pvo.getPersonDOB()</xsp:expr>
+						<br/>
+						<xsp:expr>pvo.getCurrentSex()</xsp:expr>
+					</column>
+					<column>
+						<xsp:logic><![CDATA[
+								ArrayList locators = (ArrayList) pvo.getPersonLocatorsColl();
+									if(!(locators == null)) {
+										for (int k =0; k < locators.size(); k++)	{
+											EntityLocatorParticipationDT locator = (EntityLocatorParticipationDT) locators.get(k);
+				                          			]]></xsp:logic>
+						<nedss:PersonPostalLocators>
+							<address>
+								<use-code>
+									<xsp:expr>locator.getUseCd()</xsp:expr>
+								</use-code>
+								<type-code>
+									<xsp:expr>locator.getCdDescTxt()</xsp:expr>
+								</type-code>
+								<street-address1>
+									<xsp:expr>postal.getStreetAddr1()</xsp:expr>
+								</street-address1>
+								<city>
+									<xsp:expr>postal.getCityCd()</xsp:expr>
+								</city>
+								<state>
+									<xsp:expr>getStateDescTxt(postal.getStateCd())</xsp:expr>
+								</state>
+								<zip>
+									<xsp:expr>postal.getZipCd()</xsp:expr>
+								</zip>
+							</address>
+						</nedss:PersonPostalLocators>
+						<xsp:logic>}}</xsp:logic>
+					</column>
+					<column>
+						<nedss:PersonEntityLocators>
+							<nedss:PersonTeleLocators>
+								<telephone>
+									<use-code>
+										<xsp:expr>locator.getUseCd()</xsp:expr>
+									</use-code>
+									<type-code>
+										<xsp:expr>locator.getCdDescTxt()</xsp:expr>
+									</type-code>
+									<telephone-number>
+										<xsp:expr>tele.getPhoneNbrTxt()</xsp:expr>
+									</telephone-number>
+									<email-address>
+										<xsp:expr>tele.getEmailAddress()</xsp:expr>
+									</email-address>
+								</telephone>
+							</nedss:PersonTeleLocators>
+						</nedss:PersonEntityLocators>
+					</column>
+					<column>
+						<nedss:PersonIds>
+							<id>
+								<use-code>
+									<xsp:expr>ids.getTypeCd() </xsp:expr>
+								</use-code>
+								<xsp:logic>//System.out.println("\n\n\n\nids.getTypecd() ------- :"+ (ids.getTypeCd()));</xsp:logic>
+								<xsp:logic>//System.out.println("\n\n\n\nids.getRootExtensionTxt() :"+ ids.getRootExtensionTxt());</xsp:logic>
+								<!--nedss:IfTypeCdSSN-->
+								<nedss:RootExtensionTxtIndexOf>
+									<local-id>
+										<xsp:expr>ids.getRootExtensionTxt()</xsp:expr>
+									</local-id>
+								</nedss:RootExtensionTxtIndexOf>
+								<!--nedss:RootExtensionTxtSubString-->
+								<!--local-id>
+										<xsp:expr>newSSN</xsp:expr>
+									</local-id-->
+								<!--/nedss:RootExtensionTxtSubString-->
+								<!--/nedss:IfTypeCdSSN>
+								<nedss:ElseClause-->
+								<local-id>
+									<xsp:expr>ids.getRootExtensionTxt()</xsp:expr>
+								</local-id>
+								<!--/nedss:ElseClause-->
+							</id>
+						</nedss:PersonIds>
+					</column>
+					<nested-records>
+						<xsp:logic><![CDATA[
+
+						ArrayList revisions = (ArrayList) pvo.getRevisionColl();
+						//System.out.println("** revisions  size = " +  revisions.size());
+
+						if((revisions != null) && (revisions.size() > 0)) {
+							for (int r =0; r < revisions.size(); r++)	{
+								PatientRevisionSrchResultVO revisionPatient = (PatientRevisionSrchResultVO) revisions.get(r);		  	
+							//System.out.println("** revisionPatient.getPersonName() = " +  revisionPatient.getPersonName());
+							//System.out.println("** revisionPatient.getPersonUID() = " +  revisionPatient.getPersonUID());
+  	
+				  	]]></xsp:logic>
+						<record>
+							<uid>
+								<xsp:attribute name="type">
+									<xsp:expr>sOperationType</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>revisionPatient.getPersonUID()</xsp:expr>
+							</uid>
+							<column>
+								<xsp:logic><![CDATA[
+								ArrayList revisionNameList = (ArrayList) revisionPatient.getPersonNameColl();
+						      if((revisionNameList != null) && (revisionNameList.size() > 0)) {
+								  for (int j =0; j < revisionNameList.size(); j++)	{
+									PersonNameDT name = (PersonNameDT) revisionNameList.get(j);
+									//System.out.println("** name.getFirstNm()= " +  name.getFirstNm());
+
+									]]></xsp:logic>
+								<name>
+									<use-code>
+										<xsp:expr>name.getNmUseCd()</xsp:expr>
+									</use-code>
+									<first-name>
+										<xsp:expr>name.getFirstNm()</xsp:expr>
+									</first-name>
+									<last-name>
+										<xsp:expr>name.getLastNm()</xsp:expr>
+									</last-name>
+								</name>
+								<xsp:logic>
+						}
+					}
+					</xsp:logic>
+							</column>
+							<column>
+								<xsp:logic><![CDATA[
+										if(revisionPatient.getPersonDOB() != null) {
+		                      		]]></xsp:logic>
+								<xsp:expr>PersonUtil.displayAgeForPatientResults(revisionPatient.getPersonDOB())</xsp:expr>
+								<xsp:logic><![CDATA[
+										}
+		                      		]]></xsp:logic>
+		                      			<br/>
+									<xsp:expr>revisionPatient.getPersonDOB()</xsp:expr>
+								<br/>
+									<xsp:expr>revisionPatient.getCurrentSex()</xsp:expr>
+							</column>
+							<column>
+								<xsp:logic><![CDATA[
+								ArrayList revisionLocators = (ArrayList) revisionPatient.getPersonLocatorsColl();
+									if((revisionLocators != null) && (revisionLocators.size() > 0)) {
+										for (int k =0; k < revisionLocators.size(); k++)	{
+											EntityLocatorParticipationDT locator = (EntityLocatorParticipationDT) revisionLocators.get(k);
+
+											   if(locator.getClassCd().equals("PST")) {
+												   if (locator.getThePostalLocatorDT() != null)	{
+													  PostalLocatorDT postal = locator.getThePostalLocatorDT();
+													  if (postal != null) { 
+														   if (postal.getStreetAddr1() != null || postal.getCityCd() != null || postal.getStateCd() != null || postal.getZipCd() != null)
+														   { 
+															   entityAddress1 = postal.getStreetAddr1();
+															   entityCity = postal.getCityCd();
+															   entityState = getStateDescTxt(postal.getStateCd());
+															   //System.out.println("\n\nlab report  this is from xsl " + entityState);
+															   entityCounty =  postal.getCntyCd();
+															  // System.out.println("\n\nlab report entityCounty Tthis is from xsl " + entityCounty );
+															   entitystateValue = postal.getStateCd();
+															   entityZip = postal.getZipCd();
+															
+															   if (postal.getStreetAddr2() != null)
+																   entityAddress2 = postal.getStreetAddr2();
+											
+				                          			]]></xsp:logic>
+								<address>
+									<use-code>
+										<xsp:expr>locator.getUseCd()</xsp:expr>
+									</use-code>
+									<type-code>
+										<xsp:expr>locator.getCdDescTxt()</xsp:expr>
+									</type-code>
+									<street-address1>
+										<xsp:expr>postal.getStreetAddr1()</xsp:expr>
+									</street-address1>
+									<city>
+										<xsp:expr>postal.getCityCd()</xsp:expr>
+									</city>
+									<state>
+										<xsp:expr>getStateDescTxt(postal.getStateCd())</xsp:expr>
+									</state>
+									<zip>
+										<xsp:expr>postal.getZipCd()</xsp:expr>
+									</zip>
+								</address>
+								<xsp:logic>
+								  } }}}
+								  </xsp:logic>
+								<xsp:logic>}}</xsp:logic>
+							</column>
+							<column>
+								<xsp:logic><![CDATA[
+						    ArrayList revisionPersonList = (ArrayList) revisionPatient.getPersonLocatorsColl();
+							if((revisionPersonList != null) && (revisionPersonList.size() > 0)) {
+								for (int k =0; k < revisionPersonList.size(); k++)	{
+									EntityLocatorParticipationDT locator = (EntityLocatorParticipationDT) revisionPersonList.get(k);
+						]]></xsp:logic>
+								<nedss:PersonTeleLocators>
+									<telephone>
+										<use-code>
+											<xsp:expr>locator.getUseCd()</xsp:expr>
+										</use-code>
+										<type-code>
+											<xsp:expr>locator.getCdDescTxt()</xsp:expr>
+										</type-code>
+										<telephone-number>
+											<xsp:expr>tele.getPhoneNbrTxt()</xsp:expr>
+										</telephone-number>
+										<email-address>
+											<xsp:expr>tele.getEmailAddress()</xsp:expr>
+										</email-address>
+									</telephone>
+								</nedss:PersonTeleLocators>
+								<xsp:logic><![CDATA[
+							}}
+					     ]]></xsp:logic>
+							</column>
+							<column>
+								<xsp:logic><![CDATA[
+	
+							ArrayList personIdList =  (ArrayList)revisionPatient.getPersonIdColl();
+														
+							if((personIdList != null) && (personIdList.size() > 0))  {
+					
+								for( Iterator anIterator = personIdList.iterator(); anIterator.hasNext(); )
+								{
+									EntityIdDT ids  = (EntityIdDT) anIterator.next();
+									if(ids != null)
+									{
+	
+						]]></xsp:logic>
+								<id>
+									<use-code>
+										<xsp:expr>ids.getTypeCd() </xsp:expr>
+									</use-code>
+									<xsp:logic>//System.out.println("\n\n\n\nids.getTypecd() ------- :"+ (ids.getTypeCd()));</xsp:logic>
+									<xsp:logic>//System.out.println("\n\n\n\nids.getRootExtensionTxt() :"+ ids.getRootExtensionTxt());</xsp:logic>
+									<!--nedss:IfTypeCdSSN-->
+									<nedss:RootExtensionTxtIndexOf>
+										<local-id>
+											<xsp:expr>ids.getRootExtensionTxt()</xsp:expr>
+										</local-id>
+									</nedss:RootExtensionTxtIndexOf>
+									<!--nedss:RootExtensionTxtSubString-->
+									<!--local-id>
+											<xsp:expr>newSSN</xsp:expr>
+										</local-id-->
+									<!--/nedss:RootExtensionTxtSubString-->
+									<!--/nedss:IfTypeCdSSN>
+									<nedss:ElseClause-->
+									<local-id>
+										<xsp:expr>ids.getRootExtensionTxt()</xsp:expr>
+									</local-id>
+									<!--/nedss:ElseClause-->
+								</id>
+								<xsp:logic><![CDATA[
+					}}}
+					]]></xsp:logic>
+							</column>
+						</record>
+						<xsp:logic>
+  							}
+  						}
+			
+			</xsp:logic>
+					</nested-records>
+					<entity-search>
+						<entity-element name="entity.lastNm">
+							<xsp:expr>entityLastNm</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.firstNm">
+							<xsp:expr>entityFirstNm</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.middleNm">
+							<xsp:expr>entityMiddle</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.DOB">
+							<xsp:expr>entityDOB</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.ethnicity">
+							<xsp:expr>entityEthnicity</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.emailAddress">
+							<xsp:expr>entityEmail</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.phoneNbrTxt">
+							<xsp:expr>homePhoneNbr</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.extensionTxt">
+							<xsp:expr>entityPhoneExt</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.personUID">
+							<xsp:expr>entityPersonUID</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.personParentUID">
+							<xsp:expr>entityPersonParentUID</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.localID">
+							<xsp:expr>entityLocalID</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.city">
+							<xsp:expr>entityCity</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.state">
+							<xsp:expr>entityState</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.stateValue">
+							<xsp:expr>entitystateValue</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.countyList">
+							<xsp:expr>countyList</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.county">
+							<xsp:expr>entityCounty</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.zip">
+							<xsp:expr>entityZip</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.address1">
+							<xsp:expr>entityAddress1</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.address2">
+							<xsp:expr>entityAddress2</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.suffix">
+							<xsp:expr>entitySuffix</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.degree">
+							<xsp:expr>entityDegree</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.unknown">
+							<xsp:expr>entityUnknown</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.american">
+							<xsp:expr>entityAmerican </xsp:expr>
+						</entity-element>
+						<entity-element name="entity.asian">
+							<xsp:expr>entityAsian</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.black">
+							<xsp:expr>entityBlack</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.native">
+							<xsp:expr>entityNative</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.white">
+							<xsp:expr>entityWhite</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.other">
+							<xsp:expr>entityOther</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.otherDesc">
+							<xsp:expr>entityOtherDesc</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.asofdate">
+							<xsp:expr>entityAsOfDate</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.age">
+							<xsp:expr>entityAge</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.ageUnit">
+							<xsp:expr>entityAgeUnit</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.sex">
+							<xsp:expr>entitySex</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.dateOfDeath">
+							<xsp:expr>entityDateOfDeath</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.maritalStatus">
+							<xsp:expr>entityMaritalStatus</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.ssn">
+							<xsp:expr>entitySSN</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.completePersonSearchResult">
+							<xsp:expr>personSearchResult</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.reporterPersonSearchResult">
+							<xsp:expr>reporterPersonSearchResult</xsp:expr>
+						</entity-element>
+						<entity-element name="entity.displayLocalId">
+							<xsp:expr>PersonUtil.getDisplayLocalID(entityLocalID)</xsp:expr>
+						</entity-element>
+					</entity-search>
+					<xsp:logic>
+                                      	entityLastNm= null;
+								entityFirstNm=null;														
+								entityMiddle=null;
+								entityEmail=null;
+								entityPhoneNbr=null;
+								homePhoneNbr=null;
+								entityPhoneExt=null;
+								entityPersonUID=null;
+								entityPersonParentUID=null;
+								entityLocalID=null;
+								entityCity=null;
+								entityState=null;
+								entitystateValue=null;
+								entityZip=null;
+								entityAddress1=null;
+								entityAddress2=null;
+								entitySuffix=null;
+								entityDegree=null;
+								personSearchResult=null;
+								reporterPersonSearchResult=null;
+								entityEthnicity=null;
+								entityCounty=null;
+								entityAsOfDate=null;
+								entityDOB=null;
+		    						entityAge=null;
+		    						entityAgeUnit=null;
+								entitySex=null;
+								entityDateOfDeath=null;
+								entityMaritalStatus=null;
+								entitySSN=null;
+							     entityUnknown=null;
+							    entityAmerican =null;
+							    entityAsian=null;
+							    entityBlack=null;
+							   entityNative=null;
+							   entityWhite=null;
+							   entityOther=null;
+							   entityOtherDesc=null;
+							</xsp:logic>
+				</record>
+			</nedss:PersonRecords>
+		</records>
+	</content>
+</xsp:page>

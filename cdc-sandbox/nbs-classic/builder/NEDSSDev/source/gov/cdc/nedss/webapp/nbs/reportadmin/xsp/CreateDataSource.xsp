@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+    <xsp:structure>
+        <xsp:include>gov.cdc.nedss.reportadmin.dt.DataSourceDT</xsp:include>
+    </xsp:structure>
+    <content form="/nbs/CreateDataSource.do">
+        <xsp:logic>
+            DataSourceDT dtDataSource = (DataSourceDT)session.getAttribute("ReportAdmin.dtDataSource");
+        </xsp:logic>
+        <link-bar>
+            <!--link>
+                <xsp:attribute name="name">
+                    <xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+                </xsp:attribute>
+                <xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+            </link-->
+        </link-bar>
+        <button-bar>
+            <right>
+                <label>Submit</label>
+                <javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/CreateDataSource.do");
+                    validateReportAdminDS();
+                </javascript-action>
+            </right>
+            <right>
+                <label>Cancel</label>
+                <javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/ListDataSource.do");
+                    document.forms[0].submit();
+                </javascript-action>
+            </right>
+        </button-bar>
+        <tab>
+            <group>
+                <line>
+                    <element type="raw"  id="dsError">
+                        <span style="color: red; font-weight: bold;">
+                            <value><xsp:expr>request.getAttribute("error")</xsp:expr></value>
+                        </span>
+                    </element>
+                </line>
+            </group>
+            <group>
+                <!--xsp:attribute name="name">
+                    <xsp:expr>dtDataSource.getDataSourceName()</xsp:expr>
+                </xsp:attribute-->
+                <line>
+                    <element type="raw">
+                        <span>
+                            <i>
+                                <font class="boldTenRed"> * Indicates a Required Field </font>
+                            </i>
+                        </span>
+                    </element>
+                </line>
+                <line>
+                    <element name="data_source_uid" type="hidden">
+                        <value><xsp:expr>dtDataSource.getDataSourceUID_s()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+                    <element name="data_source_name" type="text" label="*Data Source Name" size="50">
+                        <value><xsp:expr>dtDataSource.getDataSourceName()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+                    <element name="data_source_title" type="text" label="*Data Source Title" size="50">
+                        <value><xsp:expr>dtDataSource.getDataSourceTitle()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+                    <element name="desc_txt" type="text" label="*Data Source Description" size="80" maxlength="300">
+                        <value><xsp:expr>dtDataSource.getDescTxt()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+                    <element/>
+                    <element type="checkbox">
+                        <options>
+                            <option name="jurisdiction_security" label="Secure by Program Area and Jurisdiction" value="Y">
+                                <value><xsp:expr>dtDataSource.getJurisdictionSecurity()</xsp:expr></value>
+                            </option>
+                        </options>
+                    </element>
+                </line>
+                <line>
+	                <element/>
+	                <element type="checkbox">
+	                    <options>
+	                        <option name="reporting_facility_security" label="Secure by Reporting Facility" value="Y">
+	                            <value><xsp:expr>dtDataSource.getReporting_facility_security()</xsp:expr></value>
+	                        </option>
+	                    </options>
+	                </element>
+	          </line>
+            </group>
+        </tab>
+    </content>
+</xsp:page>

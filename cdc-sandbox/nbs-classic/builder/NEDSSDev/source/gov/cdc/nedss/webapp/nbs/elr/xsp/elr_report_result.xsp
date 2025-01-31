@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>java.sql.*</xsp:include>
+		<!--<xsp:include>gov.cdc.nedss.wum.helpers.*</xsp:include>-->
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<!--<xsp:include>gov.cdc.nedss.helper.*</xsp:include>-->
+		<!--<xsp:include>gov.cdc.nedss.wum.commands.*</xsp:include>-->
+		<xsp:include>gov.cdc.nedss.elr.helper.*</xsp:include>
+	</xsp:structure>
+	<xsp:logic><![CDATA[
+            LogUtils logger = new LogUtils((this.getClass()).getName());
+            NEDSSConstants ncu = new NEDSSConstants();
+    ]]></xsp:logic>
+	<xsp:logic>
+    private String formatDate(java.sql.Timestamp timestamp)
+    {
+	Date date = null;
+	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm ");
+	if(timestamp != null) date = new Date(timestamp.getTime());
+	if(date == null)
+	return "";
+	else
+	return 	formatter.format(date);
+    }
+    private String getGroupName(){
+    return "Test Grup";
+    }
+	</xsp:logic>
+	<content>
+		<xsp:attribute name="title">ELR Activity Log</xsp:attribute>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<xsp:logic><![CDATA[
+
+				String today = formatDate(new Timestamp(new Date().getTime()));
+				String isToday =(String) ]]><xsp-request:get-attribute name="isToday"/><![CDATA[;
+				ArrayList resultList = new ArrayList();
+				Integer numberOfRecords=null;
+				int totalCount=0;
+				try {
+					resultList= (ArrayList) ]]><xsp-request:get-attribute name="resultList"/><![CDATA[;
+					numberOfRecords = (Integer)]]><xsp-request:get-attribute name="total"/><![CDATA[;
+					totalCount=numberOfRecords.intValue();
+
+				}
+				catch (Exception e)
+				{
+				       //##!! System.out.println("Error is: " + e.toString());
+				       //##!! System.out.println("error occurred in elr_report_result.xsp");
+				}
+		]]></xsp:logic>
+		<tab>
+			<group>
+				<xsp:attribute name="name">
+					<xsp-request:get-attribute name="groupName"/>
+				</xsp:attribute>
+				<line>
+					<element type="raw">
+						<span>
+							<table border="0" width="100%">
+								<tr><td width="40%"><h3><xsp-request:get-attribute name="totalELRs"/> Records Found.</h3></td><td width="60%"><h3>Filter Criteria used:</h3></td></tr>
+							
+							</table>
+							
+						</span>
+					</element>
+					
+				</line>
+			</group>
+			<group>
+				<line>
+					<element type="plain-text" label="Unsuccessfully migrated ELRs">
+						<value>
+							<xsp-request:get-attribute name="unsuccessfulELRs"/>
+						</value>
+					</element>
+					<element type="plain-text" label="Date Range" align-label="right">
+						<value>
+							<xsp-request:get-attribute name="dateRange"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<group>
+				<line>
+					<element type="plain-text" label="Successfully migrated ELRs">
+						<value>
+							<xsp-request:get-attribute name="successfulELRs"/>
+						</value>
+					</element>
+					<element type="plain-text" label="Records displayed" align-label="right">
+						<value>
+							<xsp-request:get-attribute name="recordsDisplayed"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<group>
+				<line>
+					<element type="data-table" page-size="12">
+						<header width="10%">Status</header>
+						<header width="10%">Migrated Data/Time</header>
+						<header width="10%">Message ID</header>
+						<header width="10%">Patient Name</header>
+						<header width="10%">Accession Number</header>
+						<header width="10%">Observation ID</header>
+						<header width="10%">Reporting Facility</header>
+						<footer width="12%"/>
+						<!--<value>Failure$xx/xx/xxxx 19:15:52$200004180449555600$Smith, John$10234343$OBS334324234Ts1$ABC Lab$[[$~-order test name not poputlated!-result test name not populated!~$]]|Failure$xx/xx/xxxx 19:15:52$200004180449555600$Smith, John$10234343$OBS334324234Ts1$ABC Lab$[[$~-order test name not poputlated!-result test name not populated!~$]]|</value>-->
+						<value>
+							<xsp-request:get-attribute name="resultList"/>
+						</value>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

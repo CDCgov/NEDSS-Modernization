@@ -1,0 +1,310 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+    <xsp:structure>
+        <xsp:include>java.util.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.entity.entityid.dt.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.locator.dt.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.entity.person.dt.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.entity.person.vo.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.entity.observation.dt.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.entity.observation.vo.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.entity.observation.util.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.entity.person.util.*</xsp:include>
+        <xsp:include>gov.cdc.nedss.webapp.nbs.logicsheet.helper.CachedDropDownValues</xsp:include>
+        <xsp:include>gov.cdc.nedss.systemservice.nbscontext.NBSContext</xsp:include>
+    </xsp:structure>
+    <!--nedss:Declarations/-->
+    <xsp:logic><![CDATA[
+
+			private CachedDropDownValues srtValues = new CachedDropDownValues();
+			private TreeMap treemap = srtValues.getStateCodes2("USA");
+
+			String labId = null;
+			String loincCd = null;
+			String loincComponentName = null;
+			String loincMethod = null;
+			String loincSystem = null;
+			String loincProperty = null;
+			String organismInd = "";
+
+
+		]]></xsp:logic>
+    <!-- nedss:StateDescTxt/ -->
+    <xsp:logic>    
+
+		private String getStateDescTxt(String sStateCd) {
+			String desc=null;
+			if (treemap != null){
+				if (sStateCd!=null){
+					if (treemap.get(sStateCd)!=null)
+						desc = (String)treemap.get(sStateCd);
+				} 
+			}
+			return desc;
+		}
+
+	 </xsp:logic>
+    <!-- nedss:getTitle/ -->
+    <xsp:logic>
+		
+		private String getTitle(){
+			
+			String PersonName = (String)request.getAttribute("PersonName");
+			if(PersonName  != null)  {
+				request.setAttribute("PersonName ", PersonName);
+				String displayName = PersonName + " Search Criteria";
+				return displayName;
+			}	
+			else
+				return "Observation Search Criteria";
+		}
+
+	</xsp:logic>
+    <content type="LabReportTestName">
+        <xsp:attribute name="title">
+            <xsp:expr>getTitle()</xsp:expr>
+        </xsp:attribute>
+        <!--nedss:SearchResultRequestValues/-->
+        <xsp:logic><![CDATA[
+
+							int currentIndex = 0;
+				int maxRowCount = 10;
+				int numberOfRecords = 0;
+				int totalCount = 0;
+				String sOperationType = request.getParameter("ContextAction");
+				String temp = (String) request.getAttribute("DSFromIndex");
+				String sSearchCriteria = (String) request.getAttribute("SearchString") + " ";
+
+
+				String searchType = (String)request.getAttribute("PersonName");
+
+				if (searchType  == null || searchType.equals(""))
+				{
+					searchType = (String)request.getParameter("PersonName");
+				}
+
+
+				if (request.getAttribute("PersonName") != null){
+					if ( searchType.equals("Ordered") || searchType.equals("Resulted") ){
+						searchType = searchType + " Test";
+					}
+					request.setAttribute("PersonName", request.getAttribute("PersonName"));
+				}else{
+					searchType= "";
+				}
+				
+				sSearchCriteria = searchType + " Name Contains '" + request.getAttribute("SearchString") + "',";
+
+
+				if (temp!=null) {
+					currentIndex = Integer.parseInt(temp);
+				}
+				ArrayList observationList = new ArrayList();
+				ArrayList  observation = new ArrayList();
+
+				ObservationSearchVO observationFind = null;
+
+				try {
+					numberOfRecords = 0;
+					observationList = (ArrayList) request.getAttribute("DSSearchResults");
+
+					if(observationList != null){
+						DisplayObservationList  list = (DisplayObservationList)observationList.get(0);
+
+						if (list != null) {
+							observation = list.getList();
+							numberOfRecords = observation.size();
+							totalCount = list.getTotalCounts();
+						}
+					}
+				}
+				catch (Exception e) {
+					System.out.println("error occurred in person_search_results.xsp");
+				}
+
+
+			]]></xsp:logic>
+        <button-bar>
+            <nedss:NotEntitySearch>
+                <right>
+                    <label>Add</label>
+                    <javascript-action>getPage('<xsp-request:get-attribute name="addButtonHref"/>');</javascript-action>
+                </right>
+            </nedss:NotEntitySearch>
+            <nedss:ifEntitySearch>
+                <right>
+                    <label>Cancel</label>
+                    <javascript-action>CancelEntitySearch();</javascript-action>
+                </right>
+            </nedss:ifEntitySearch>
+        </button-bar>
+        <javascript-files>
+            <import>EntitySearch.js</import>
+            <import>searchResultsSpecific.js</import>
+        </javascript-files>
+        <xsp-request:get-uri as="xml"/>
+        <session:get-id as="xml"/>
+        <refineSearchHref>
+            <xsp-request:get-attribute name="refineSearchHref"/>
+        </refineSearchHref>
+        <newSearchHref>
+            <xsp-request:get-attribute name="newSearchHref"/>
+        </newSearchHref>
+        <viewHref>
+            <xsp-request:get-attribute name="viewHref"/>
+        </viewHref>
+        <nextHref>
+            <xsp-request:get-attribute name="nextHref"/>
+        </nextHref>
+        <prevHref>
+            <xsp-request:get-attribute name="prevHref"/>
+        </prevHref>
+        <searchCriteria>
+            <xsp:expr>sSearchCriteria </xsp:expr>
+        </searchCriteria>
+        <header>
+            <column>
+                <name/>
+            </column>
+            <column>
+                <name>Code</name>
+            </column>
+            <column>
+                <name>Test Name</name>
+            </column>
+            <column>
+                <name>Method</name>
+            </column>
+            <column>
+                <name>System</name>
+            </column>
+            <column>
+                <name>Property</name>
+            </column>
+        </header>
+        <currentIndex>
+            <xsp:expr>currentIndex</xsp:expr>
+        </currentIndex>
+        <totalRecords>
+            <xsp:expr>numberOfRecords</xsp:expr>
+        </totalRecords>
+        <records>
+            <!--nedss:PersonRecords-->
+            <xsp:logic><![CDATA[
+					
+					for( int i=currentIndex; (i >= currentIndex) && (i < currentIndex + maxRowCount) && (i < numberOfRecords); i++ ) 
+					{
+						LoincSrchResultVO pvo = (LoincSrchResultVO) observation.get(i);
+						//String chris = "Chirs"
+//System.out.println("lab id ==>" + pvo.getLoincCd());
+				]]></xsp:logic>
+            <record>
+                <uid>
+                    <xsp:attribute name="type">
+                        <xsp:expr>
+							sOperationType
+						</xsp:expr>
+                    </xsp:attribute>
+                    <xsp:attribute name="labType">
+                        <xsp:expr>
+							pvo.getLabName()
+						</xsp:expr>
+                    </xsp:attribute>
+                    <xsp:expr>
+						pvo.getLoincCd()
+					</xsp:expr>
+                </uid>
+                <column>
+                    <xsp:expr>
+						pvo.getLoincCd()
+					</xsp:expr>
+                </column>
+                <column>
+                    <!--nedss:DisplayPersonNameArray-->
+                    <xsp:logic><![CDATA[
+							
+							ArrayList loincNames = (ArrayList) pvo.getLoincColl();
+							if(!(loincNames == null)) 
+							{
+								for (int j =0; j < loincNames.size(); j++)
+								{
+									LoincResultDT name = (LoincResultDT) loincNames.get(j);
+																	
+									if (name.getLoincCd().trim() != null){
+										labId = "LN";
+										loincCd = name.getLoincCd();
+										loincComponentName = name.getLoincComponentName();
+										loincMethod = name.getLoincMethod();
+										loincSystem = name.getLoincSystem();
+										loincProperty = name.getLoincProperty();
+										if (name.getLabOrganismIndicator() != null){
+											organismInd = name.getLabOrganismIndicator();
+										}else{
+											organismInd = "N";
+										}
+
+										
+
+										
+									}else{
+										loincCd = null;
+										loincComponentName = null;
+										loincMethod = null;
+										loincSystem = null;
+										loincProperty = null;
+										organismInd = null;
+
+									}							
+						]]></xsp:logic>
+                    <name>
+                        <last-name>
+                            <xsp:expr>name.getLoincComponentName()</xsp:expr>
+                        </last-name>
+                    </name>
+                    <!--/nedss:DisplayPersonNameArray-->
+                    <xsp:logic><![CDATA[
+								}
+							}
+						]]></xsp:logic>
+                </column>
+                <column>
+                    <xsp:expr>loincMethod</xsp:expr>
+                </column>
+                <column>
+                    <xsp:expr>loincSystem</xsp:expr>
+                </column>
+                <column>
+                    <xsp:expr>loincProperty</xsp:expr>
+                </column>
+                <entity-search>
+                    <!--	using legal name and home tele		-->
+                      <entity-element name="organismInd">
+                        <xsp:expr>organismInd</xsp:expr>
+                    </entity-element>
+                   <entity-element name="cdSystemCd">
+                        <xsp:expr>labId</xsp:expr>
+                    </entity-element>
+		    <entity-element name="name">
+                        <xsp:expr>loincComponentName</xsp:expr>
+                    </entity-element>
+                    <entity-element name="code">
+                        <xsp:expr>loincCd</xsp:expr>
+                    </entity-element>
+                </entity-search>
+                <xsp:logic>
+					labId = null;
+					loincCd = null;
+					loincComponentName = null;
+					loincMethod = null;
+					loincSystem = null;
+					organismInd = null;
+
+				</xsp:logic>
+            </record>
+            <!--/nedss:PersonRecords-->
+            <xsp:logic><![CDATA[
+					}
+				]]></xsp:logic>
+        </records>
+    </content>
+</xsp:page>

@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-session="http://apache.org/xsp/session/2.0">
+	<xsp:structure>
+		<nedss:Include/>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.act.ctcontact.dt.CTContactSummaryDT</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.logicsheet.helper.CachedDropDownValues</xsp:include>
+		<xsp:include> gov.cdc.nedss.ldf.dt.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<button-bar/>
+		<javascript-files>
+			<import>/nbs/dwr/engine.js</import>
+			<import>/nbs/dwr/util.js</import>
+			<import>/nbs/dwr/interface/JInvestigationForm.js</import>
+			<import>ctspecific.js</import>
+		</javascript-files>
+		<tab name="Contact Tracing">
+			<group>
+				<!--		context management specific		-->
+				<line>
+					<element name="ContextAction" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="ContextAction"/>
+						</value>
+					</element>
+				</line>
+				<!--		context management specific		-->
+			</group>
+			<group name="Contact Investigation">
+				<line>
+					<element type="line-separator" title="Risk Assessment"/>
+				</line>
+				<line>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.priorityCD" type="select" label="Contact Investigation Status">
+						<value>
+							<xsp-request:get-attribute name="contactPriorityCd"/>
+						</value>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>NBS_PRIORITY</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+					</element>
+				</line>
+				<line>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.infectiousFromDate_s" size="10" id="CON241" type="text" label="Infectious Period From" mask="##/##/####">
+						<value>
+							<xsp-request:get-attribute name="infectiousFromDate"/>
+						</value>
+						<validation type="date" mask="mm/dd/yyyy" name="Infectious Period From"/>
+					</element>
+				</line>
+				<line>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.infectiousToDate_s" size="10" type="text" label="Infectious Period To" maskF="##/##/####">
+						<value>
+							<xsp-request:get-attribute name="infectiousToDate"/>
+						</value>
+						<validation type="date" mask="mm/dd/yyyy" name="Infectious Period To">
+							<xsp:attribute name="dateBeforeReference">CON241</xsp:attribute>
+						</validation>
+						
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Administrative Information"/>
+				</line>
+				<line>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.contactInvStatus" type="select" label="Contact Investigation Status">
+						<value>
+							<xsp-request:get-attribute name="contactInvStatus"/>
+						</value>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>PHC_IN_STS</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+					</element>
+				</line>
+				<line>
+					<element name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.contactInvTxt" type="textarea" label="Contact Investigation Comments">
+						<validation type="lengthLimit" fieldLength="2000" name="Contact Investigation Comments"/>
+						<value>
+							<xsp-request:get-attribute name="contactInvTxt"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<group name="Contact Records">
+				<line>
+					<element type="raw">
+						<span>
+							<b>
+								<u>Contacts Named By Patient:</u>
+							</b>
+						</span>
+					</element>
+				</line>
+				<!-- Contacts named by patient -->
+				<xsp:logic><![CDATA[     
+                                 String strsubjectPhcCdforContact = "";
+                                       StringBuffer sb = new StringBuffer();
+                                       String link1URL ="";
+                                      String link2URL ="";
+                                      String link3URL ="";     
+                                      String link4URL ="";                     
+                                      StringBuffer sba = new StringBuffer();
+                                      CachedDropDownValues cachedDropDownValues =  new CachedDropDownValues();
+                                       String currentTask= (request.getAttribute("CurrentTask") == null) ? "" : ((String)request.getAttribute("CurrentTask"));
+                                       currentTask = currentTask.substring(0,4);
+                                       System.out.println("currentTask ="+currentTask );
+
+                                      
+                                      String contactUrl = (request.getAttribute("contactUrl") == null) ? "" : ((String)request.getAttribute("contactUrl"));
+                                      String PatientRevision = (request.getAttribute("PatientRevision") == null) ? "" : ((String)request.getAttribute("PatientRevision"));
+					    	String caseLocalId = (request.getAttribute("DSInvUid") == null) ? "" : ((String)request.getAttribute("DSInvUid"));
+					    	String perMprUid =  (request.getAttribute("DSPatientPersonUID") == null) ? "" : ((String)request.getAttribute("DSPatientPersonUID"));
+                                     
+                                            
+    
+                                             // System.out.println("ContactTracingHref "+(String)request.getAttribute("ContactTracingHref"));                 
+                                             CTContactSummaryDT contactSummary = new CTContactSummaryDT();
+                                          if(currentTask.equals("View") ){
+                                                ArrayList contactNamedByPatList = new ArrayList();
+                                                contactNamedByPatList = (ArrayList) request.getAttribute("contactNamedByPatList");     
+                                                 System.out.println("contactNamedByPatList  in 1"+contactNamedByPatList);
+                                                  if(contactNamedByPatList !=null && contactNamedByPatList.size()>0){
+                                                ]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+                                            The following contacts were named within <xsp:expr>
+								<xsp-request:get-attribute name="patientName"/>
+							</xsp:expr>'s    investigation:	
+						   </span>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[    
+				 
+				   ]]></xsp:logic>
+				<line>
+					<element type="queue-data-table-contacttracing">
+						<header width="15%" methodName="getNamedOnDate">Date Named</header>
+						<header width="20%" methodName="getLocalId"> Contact Record Id </header>
+						<header width="20%" methodName="getName">Name</header>
+						<header width="15%" methodName="getPriority">Priority</header>
+						<header width="25%" methodName="getDisposition">Disposition</header>
+						<header width="20%" methodName="getContactPhcLocalId">Investigation ID</header>
+						<xsp:logic><![CDATA[   
+						                    
+						                    String viewFileUrl = request.getParameter("viewFileUrl");
+						                    String contactCaseUrl = request.getParameter("contactCaseUrl");
+						                    String sCurrentTask = (String)request.getAttribute("sCurrentTask");
+    
+                                             for( int i=0; i < contactNamedByPatList.size(); i++ ) {                                                                    
+                                             contactSummary = (CTContactSummaryDT) contactNamedByPatList.get(i);         
+                                         
+                                             
+                                           //  sba.append((String)request.getAttribute("ContactTracingHref")).append("&");
+		                             sba.append("/nbs/ContactTracing.do").append("?method=viewContact").append("&");
+		                            sba.append("contactRecordUid=").append((contactSummary.getCtContactUid() == null) ?
+		                              "" : contactSummary.getCtContactUid().toString());
+		                               sba.append("&mode=View");
+		                                sba.append("&Action=DSInvestigationPath");
+		                                sba.append("&DSInvestigationCondition=").append(contactSummary.getSubjectPhcCd());   
+
+                                        sb.append("javascript:contactRecordPopUp('").append(sba).append("')");
+                                       //  link1URL = sba.toString();
+                                         link1URL = sb.toString();
+
+                                       System.out.println("link1URL  "+link1URL);
+                                               sba.delete(0, sba.length());
+                                                  sb.delete(0, sb.length());
+
+                                         sba.append("/nbs/"+ sCurrentTask+ ".do?ContextAction=").append((viewFileUrl == null)? "" : viewFileUrl).append("&");
+                                        sba.append("uid=").append((contactSummary.getContactMprUid()== null) ?
+                                          "" :contactSummary.getContactMprUid().toString());
+                                        link2URL = sba.toString();
+                                        sba.delete(0, sba.length());                                
+                                       
+                                        sba.append("/nbs/"+ sCurrentTask+ ".do?ContextAction=").append((contactCaseUrl== null)? "" : contactCaseUrl).append("&");
+                                        sba.append("publicHealthCaseUID=").append((contactSummary.getContactEntityPhcUid() == null) ?
+                                          "" :contactSummary.getContactEntityPhcUid().toString());
+                                        link3URL= sba.toString();
+                                        sba.delete(0, sba.length());          
+      
+                                         
+                                    ]]></xsp:logic>
+						<record>
+							<link1>
+								<xsp:expr>link1URL</xsp:expr>
+							</link1>
+							<link2>
+								<xsp:expr>link2URL</xsp:expr>
+							</link2>
+							<link3>
+								<xsp:expr>link3URL</xsp:expr>
+							</link3>
+							<column>
+								<value>
+									<xsp:expr>StringUtils.formatDate(contactSummary.getNamedOnDate())</xsp:expr>
+								</value>
+							</column>
+							<column link1="">
+								<value>
+									<xsp:expr>contactSummary.getLocalId()</xsp:expr>
+								</value>
+							</column>
+							<column link2="">
+								<value>
+									<xsp:expr>contactSummary.getName()</xsp:expr>
+								</value>
+							</column>
+							<column>
+								<value>
+									<xsp:expr>contactSummary.getPriority()</xsp:expr>
+								</value>
+							</column>
+							<column>
+								<value>
+									<xsp:expr>contactSummary.getDisposition()</xsp:expr>
+								</value>
+							</column>
+							<column link3="">
+								<value>
+									<xsp:expr>contactSummary.getContactPhcLocalId()</xsp:expr>
+								</value>
+							</column>
+						</record>
+						<xsp:logic><![CDATA[    }    ]]></xsp:logic>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[ }  else {  ]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+                                              The following contacts were named within <xsp:expr>
+								<xsp-request:get-attribute name="patientName"/>
+							</xsp:expr>'s    investigation:	                                            
+                           </span>
+					</element>
+				</line>
+				<line>
+					<element type="data-table">
+						<header width="15%">Date Named</header>
+						<header width="20%"> Contact Record Id </header>
+						<header width="20%">Name</header>
+						<header width="15%">Priority</header>
+						<header width="25%">Disposition</header>
+						<header width="20%">Investigation ID</header>
+						<value>
+							<xsp-request:get-attribute name="contactNamedByPatList"/>
+						</value>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[	}  } else{    System.out.println("Inside edit or create");      ]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+
+                                                The following contacts were named within <xsp:expr>
+								<xsp-request:get-attribute name="patientName"/>
+							</xsp:expr>'s    investigation:	
+                           </span>
+					</element>
+				</line>
+				<line>
+					<element type="data-table">
+						<header width="15%">Date Named</header>
+						<header width="20%"> Contact Record Id </header>
+						<header width="20%">Name</header>
+						<header width="15%">Priority</header>
+						<header width="25%">Disposition</header>
+						<header width="20%">Investigation ID</header>
+						<value>
+							<xsp-request:get-attribute name="contactNamedByPatList"/>
+						</value>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[                     
+                 
+                         }      ]]></xsp:logic>
+				<xsp:logic><![CDATA[
+                    String addPerm = request.getParameter("addPerm");
+					 if(addPerm != null && addPerm.equalsIgnoreCase("true")){]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span vlign="right" style="float:right;">
+							<input type="button" value="Add New Contact Record" onclick="SearchPatientPopUp()"/>
+						</span>
+					</element>
+				</line>
+				<xsp:logic>}</xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<b>
+								<u>Patient Named By Contacts:</u>
+							</b>
+						</span>
+					</element>
+				</line>
+				<!-- Patient Named By Contacts -->
+				<xsp:logic><![CDATA[      
+				    if(currentTask.equals("View") ){
+						    ArrayList patNamedByContactsList= new ArrayList();
+                                        patNamedByContactsList= (ArrayList) request.getAttribute("patNamedByContactsList");         
+                                  
+                                          if(patNamedByContactsList!=null && patNamedByContactsList.size()>0){
+                                       ]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+		                                            The following contacts  named  <xsp:expr>
+								<xsp-request:get-attribute name="patientName"/>
+							</xsp:expr> within their  investigation  and have been associated to <xsp:expr>
+								<xsp-request:get-attribute name="patientName"/>
+							</xsp:expr>'s investigation:			                           </span>
+					</element>
+				</line>
+				<line>
+					<element type="queue-data-table-contacttracing">
+						<header width="15%" methodName="getNamedOnDate">Date Named</header>
+						<header width="20%" methodName="getLocalId"> Contact Record Id </header>
+						<header width="20%" methodName="getName">Named By</header>
+						<header width="15%" methodName="getPriority">Priority</header>
+						<header width="25%" methodName="getDisposition">Disposition</header>
+						<header width="20%" methodName="getContactPhcLocalId">Investigation ID</header>
+						<xsp:logic><![CDATA[     
+									String viewFileUrl = request.getParameter("viewFileUrl");
+									String contactCaseUrl = request.getParameter("contactCaseUrl");
+     								      String sCurrentTask = (String)request.getAttribute("sCurrentTask");
+									
+                                    for( int i=0; i < patNamedByContactsList.size(); i++ ) {                                                                    
+                                       contactSummary = (CTContactSummaryDT) patNamedByContactsList.get(i);         
+                                         
+                                             
+	                                     //  sba.append((String)request.getAttribute("ContactTracingHref")).append("&");
+		                             sba.append("/nbs/ContactTracing.do").append("?method=viewContact").append("&");
+		                            sba.append("contactRecordUid=").append((contactSummary.getCtContactUid() == null) ?
+		                              "" : contactSummary.getCtContactUid().toString());
+		                             sba.append("&mode=View");
+		                                sba.append("&Action=DSInvestigationPath");
+		                                sba.append("&DSInvestigationCondition=").append(contactSummary.getSubjectPhcCd());   
+                                    	    sb.append("javascript:contactRecordPopUp('").append(sba).append("')");
+                     			    //  link1URL = sba.toString();
+                        			 	  link1URL = sb.toString();
+
+                        				   // System.out.println("link1URL  "+link1URL);
+                                               sba.delete(0, sba.length());
+                                                 sb.delete(0, sb.length());
+
+                                        sba.append("/nbs/"+ sCurrentTask+ ".do?ContextAction=").append((viewFileUrl == null)? "" : viewFileUrl).append("&");
+                                        sba.append("uid=").append((contactSummary.getSubjectMprUid() == null) ?
+                                          "" :contactSummary.getSubjectMprUid().toString());
+                                        link2URL = sba.toString();
+                                        sba.delete(0, sba.length());
+                                        
+                                        sba.append("/nbs/"+ sCurrentTask+ ".do?ContextAction=").append((contactCaseUrl== null)? "" : contactCaseUrl).append("&");
+                                        sba.append("publicHealthCaseUID=").append((contactSummary.getSubjectEntityPhcUid() == null) ?
+                                          "" :contactSummary.getSubjectEntityPhcUid().toString());
+                                        link3URL= sba.toString();
+                                        sba.delete(0, sba.length());          
+                                         
+                                    ]]></xsp:logic>
+						<record>
+							<link1>
+								<xsp:expr>link1URL</xsp:expr>
+							</link1>
+							<link2>
+								<xsp:expr>link2URL</xsp:expr>
+							</link2>
+							<link3>
+								<xsp:expr>link3URL</xsp:expr>
+							</link3>
+							<column>
+								<value>
+									<xsp:expr>StringUtils.formatDate(contactSummary.getNamedOnDate())</xsp:expr>
+								</value>
+							</column>
+							<column link1="">
+								<value>
+									<xsp:expr>contactSummary.getLocalId()</xsp:expr>
+								</value>
+							</column>
+							<column link2="">
+								<value>
+									<xsp:expr>contactSummary.getNamedBy()</xsp:expr>
+								</value>
+							</column>
+							<column>
+								<value>
+									<xsp:expr>contactSummary.getPriority()</xsp:expr>
+								</value>
+							</column>
+							<column>
+								<value>
+									<xsp:expr>contactSummary.getDisposition()</xsp:expr>
+								</value>
+							</column>
+							<column link3="">
+								<value>
+									<xsp:expr>contactSummary.getSubjectPhcLocalId()</xsp:expr>
+								</value>
+							</column>
+						</record>
+						<xsp:logic><![CDATA[    }    ]]></xsp:logic>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[   }   else{         ]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+                                             The following contacts  named  <xsp:expr>
+								<xsp-request:get-attribute name="patientName"/>
+							</xsp:expr> within their  investigation  and have been associated to <xsp:expr>
+								<xsp-request:get-attribute name="patientName"/>
+							</xsp:expr>'s investigation:	
+                                                                       </span>
+					</element>
+				</line>
+				<line>
+					<element type="data-table">
+						<header width="15%" methodName="getNamedOnDate">Date Named</header>
+						<header width="20%" methodName="getLocalId"> Contact Record Id </header>
+						<header width="20%" methodName="getNameBy">NamedBy</header>
+						<header width="15%" methodName="getPriority">Priority</header>
+						<header width="25%" methodName="getDisposition">Disposition</header>
+						<header width="20%" methodName="getContactPhcLocalId">Investigation ID</header>
+						<value>
+							<xsp-request:get-attribute name="patNamedByContactsList"/>
+						</value>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[                     
+                 
+                         } } else {     ]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+                                              The following contacts  named  <xsp:expr>
+								<xsp-request:get-attribute name="patientName"/>
+							</xsp:expr> within their  investigation  and have been associated to <xsp:expr>
+								<xsp-request:get-attribute name="patientName"/>
+							</xsp:expr>'s investigation:	
+                                                                       </span>
+					</element>
+				</line>
+				<line>
+					<element type="data-table">
+						<header width="15%" methodName="getNamedOnDate">Date Named</header>
+						<header width="20%" methodName="getLocalId"> Contact Record Id </header>
+						<header width="20%" methodName="getNameBy">NamedBy</header>
+						<header width="15%" methodName="getPriority">Priority</header>
+						<header width="25%" methodName="getDisposition">Disposition</header>
+						<header width="20%" methodName="getContactPhcLocalId">Investigation ID</header>
+						<value>
+							<xsp-request:get-attribute name="patNamedByContactsList"/>
+						</value>
+					</element>
+				</line>
+				<xsp:logic><![CDATA[
+                       }   String manageCTPerm= request.getParameter("manageCTPerm");
+					 if(manageCTPerm!= null && manageCTPerm.equalsIgnoreCase("true")){]]></xsp:logic>
+				<line>
+					<element type="raw">
+						<span vlign="right" style="float:right;">
+							<input type="button" value="Manage Contact Associations" onclick="ManageCtAssociationtPopUp()"/>
+						</span>
+					</element>
+				</line>
+				<xsp:logic>}</xsp:logic>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

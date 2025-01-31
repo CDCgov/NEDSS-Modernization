@@ -1,0 +1,417 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/3/2019 9:44:50 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="C1103879"
+  DTS:CreatorName="CORP\sahgalv"
+  DTS:DTSID="{FB1B6CB8-3A1E-4FC5-8D78-B92B5B89B21E}"
+  DTS:EnableConfig="True"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.0900.40"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="27"
+  DTS:VersionGUID="{58F353B0-476C-4C36-90BD-A80EF0550568}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[NBS_ETL_SERVER]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{01D0DBB0-D5F7-4305-98C4-FEA731720329}"
+      DTS:ObjectName="NBS_ETL_SERVER">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=fgfgfgfh;User ID=feeggg;Initial Catalog=ddd;Provider=SQLNCLI11.1;Persist Security Info=True;Auto Translate=False;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0fD+kp+1Ak6a0T5kanw4xAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAHEeAVrZZzzRXBDUjX5N+dAAAAAASAAACgAAAAEAAAAMINxgw+Z8NzmhXkJNVND0kIAAAAAsp5o1G8MXsUAAAANodnWi2zZW5x57sGVK9iXjq8LQI</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Configurations>
+    <DTS:Configuration
+      DTS:ConfigurationString="ssis_nbs_config_path"
+      DTS:ConfigurationType="5"
+      DTS:CreationName=""
+      DTS:DTSID="{5BBDD44B-139F-4E5F-9D56-4555418F1564}"
+      DTS:ObjectName="Configuration 1" />
+  </DTS:Configurations>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Completed SSIS NBS Page Case"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{3aa31fc6-d2c9-43f3-a2df-ccb15484779f}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Completed SSIS NBS Page Case"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{01D0DBB0-D5F7-4305-98C4-FEA731720329}"
+          SQLTask:SqlStatementSource="select current_timestamp" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Concurrent Processing Core 2 In-Progress"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{9d33faa3-4834-46f1-a66b-5cd8592f5a1d}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Concurrent Processing Core 2 In-Progress"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{01D0DBB0-D5F7-4305-98C4-FEA731720329}"
+          SQLTask:SqlStatementSource="select current_timestamp" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Concurrent Processing Core 3 In-Progress"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{76a06fd4-e2b0-42db-a507-24e7dee7cdd2}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Concurrent Processing Core 3 In-Progress"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{01D0DBB0-D5F7-4305-98C4-FEA731720329}"
+          SQLTask:SqlStatementSource="select current_timestamp" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Execute NBS Page Case Task"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{A139D393-9605-4E1B-BA98-E545C37F936A}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Execute NBS Page Case Task"
+      DTS:ThreadHint="2">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{01D0DBB0-D5F7-4305-98C4-FEA731720329}"
+          SQLTask:SqlStatementSource="EXEC rdb.[dbo].[sp_SLD_ALL]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Starting SSIS NBS Page Case"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{D35B301F-3FF2-4E25-91C2-715CAA276B7A}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Starting SSIS NBS Page Case"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{01D0DBB0-D5F7-4305-98C4-FEA731720329}"
+          SQLTask:SqlStatementSource="select current_timestamp" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{F247AA5E-DFF2-4229-804F-D4DC7B83BD87}"
+      DTS:From="Package\Starting SSIS NBS Page Case"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Execute NBS Page Case Task" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{D4FBA6F2-5852-4A60-B7AD-DA1BDBFC8661}"
+      DTS:From="Package\Execute NBS Page Case Task"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Completed SSIS NBS Page Case" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{A9C326F5-A93F-48D9-992E-FAF2A52E2599}"
+      DTS:From="Package\Starting SSIS NBS Page Case"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Concurrent Processing Core 2 In-Progress" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{8C90D519-F7DE-4935-B36E-03918223250F}"
+      DTS:From="Package\Concurrent Processing Core 2 In-Progress"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Completed SSIS NBS Page Case" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{B810828A-DC42-4869-8BF2-281A179D1286}"
+      DTS:From="Package\Concurrent Processing Core 3 In-Progress"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Completed SSIS NBS Page Case" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{2F143D48-9AF4-4369-BD0C-CDEA860A3B85}"
+      DTS:From="Package\Starting SSIS NBS Page Case"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Concurrent Processing Core 3 In-Progress" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="172,41.6"
+          Id="Package\Completed SSIS NBS Page Case"
+          TopLeft="213.714289353818,233.176473779909" />
+        <NodeLayout
+          Size="275.2,41.6"
+          Id="Package\Concurrent Processing Core 2 In-Progress"
+          TopLeft="344.571434439445,121.223531033341" />
+        <NodeLayout
+          Size="275.2,41.6"
+          Id="Package\Concurrent Processing Core 3 In-Progress"
+          TopLeft="633.371435529359,118.211764860318" />
+        <NodeLayout
+          Size="215.2,41.6"
+          Id="Package\Execute NBS Page Case Task"
+          TopLeft="163.428574211744,123.058825176727" />
+        <NodeLayout
+          Size="172,41.6"
+          Id="Package\Starting SSIS NBS Page Case"
+          TopLeft="200.571431987139,0.423529720636402" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="245.571431987139,42.0235297206364">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="25.457142224605,81.0352954560906"
+              Start="0,0"
+              End="25.457142224605,73.5352954560906">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.8365518742296" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.8365518742296"
+                    Point2="0,27.8365518742296"
+                    Point3="4,27.8365518742296" />
+                  <mssgle:LineSegment
+                    End="21.457142224605,27.8365518742296" />
+                  <mssgle:CubicBezierSegment
+                    Point1="21.457142224605,27.8365518742296"
+                    Point2="25.457142224605,27.8365518742296"
+                    Point3="25.457142224605,31.8365518742296" />
+                  <mssgle:LineSegment
+                    End="25.457142224605,73.5352954560906" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="271.028574211744,164.658825176727">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-12.314284857926,68.517648603182"
+              Start="0,0"
+              End="-12.314284857926,61.017648603182">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40.9810517547607" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,40.9810517547607"
+                    Point2="0,44.9810517547607"
+                    Point3="-4,44.9810517547607" />
+                  <mssgle:LineSegment
+                    End="-8.314284857926,44.9810517547607" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-8.314284857926,44.9810517547607"
+                    Point2="-12.314284857926,44.9810517547607"
+                    Point3="-12.314284857926,48.9810517547607" />
+                  <mssgle:LineSegment
+                    End="-12.314284857926,61.017648603182" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="286.571431987139,42.0235297206364">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="195.600002452306,79.2000013127046"
+              Start="0,0"
+              End="195.600002452306,71.7000013127046">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35.6000006563523" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,35.6000006563523"
+                    Point2="0,39.6000006563523"
+                    Point3="4,39.6000006563523" />
+                  <mssgle:LineSegment
+                    End="191.600002452306,39.6000006563523" />
+                  <mssgle:CubicBezierSegment
+                    Point1="191.600002452306,39.6000006563523"
+                    Point2="195.600002452306,39.6000006563523"
+                    Point3="195.600002452306,43.6000006563523" />
+                  <mssgle:LineSegment
+                    End="195.600002452306,71.7000013127046" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="482.171434439445,162.823531033341">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-182.457145085627,70.352942746568"
+              Start="0,0"
+              End="-182.457145085627,62.852942746568">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.176471373284" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,31.176471373284"
+                    Point2="0,35.176471373284"
+                    Point3="-4,35.176471373284" />
+                  <mssgle:LineSegment
+                    End="-178.457145085627,35.176471373284" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-178.457145085627,35.176471373284"
+                    Point2="-182.457145085627,35.176471373284"
+                    Point3="-182.457145085627,39.176471373284" />
+                  <mssgle:LineSegment
+                    End="-182.457145085627,62.852942746568" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="770.971435529359,159.811764860318">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-430.257146175541,73.364708919591"
+              Start="0,0"
+              End="-430.257146175541,65.864708919591">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,44.1630913517926" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,44.1630913517926"
+                    Point2="0,48.1630913517926"
+                    Point3="-4,48.1630913517926" />
+                  <mssgle:LineSegment
+                    End="-426.257146175541,48.1630913517926" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-426.257146175541,48.1630913517926"
+                    Point2="-430.257146175541,48.1630913517926"
+                    Point3="-430.257146175541,52.1630913517926" />
+                  <mssgle:LineSegment
+                    End="-430.257146175541,65.864708919591" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="327.571431987139,42.0235297206364">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="443.40000354222,76.1882351396816"
+              Start="0,0"
+              End="443.40000354222,68.6882351396816">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.1715311548525" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22.1715311548525"
+                    Point2="0,26.1715311548525"
+                    Point3="4,26.1715311548525" />
+                  <mssgle:LineSegment
+                    End="439.40000354222,26.1715311548525" />
+                  <mssgle:CubicBezierSegment
+                    Point1="439.40000354222,26.1715311548525"
+                    Point2="443.40000354222,26.1715311548525"
+                    Point3="443.40000354222,30.1715311548525" />
+                  <mssgle:LineSegment
+                    End="443.40000354222,68.6882351396816" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

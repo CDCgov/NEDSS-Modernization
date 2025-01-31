@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!DOCTYPE xsp:page SYSTEM "../../WEB-INF/xsp.dtd">
+<xsp:page
+xmlns:xsp="http://apache.org/xsp"
+xmlns:xsp-request="http://apache.org/xsp/request/2.0"
+xmlns:xsp-response="http://apache.org/xsp/response/2.0"
+xmlns:xsp-session="http://apache.org/xsp/session/2.0"
+xmlns:util="http://apache.org/xsp/util/2.0"
+xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss"
+language="java"
+>
+    <nedss:import/>
+    <part>
+        <nedss:init/>
+        <nedss:SetHeaders/>
+        <parameters>
+            <parameter name="border"><xsp:expr>strBorder</xsp:expr></parameter>
+            <parameter name="uids"><xsp:expr>strUIDs</xsp:expr></parameter>
+            <parameter name="user"><xsp:expr>strUser</xsp:expr></parameter>
+            <parameter name="usermode"><xsp:expr>strUserMode</xsp:expr></parameter>
+            <parameter name="verbose"><xsp:expr>strVerbose</xsp:expr></parameter>
+            <parameter name="title">Combobox Demo</parameter>
+        </parameters>
+        <head>
+            <nedss:InitializeSessionTimer frequency="1"/>
+        </head>
+        <toolbarDef>
+            <toolbarLeft>
+                <nedss:IfSHOW_DEBUG_BUTTON>
+                    <nedss:IfServer>
+                        <toolbarButton id="id_debug" name="Debug">
+                            <event name="onclick">
+                                OpenDebugWindow();
+                            </event>
+                        </toolbarButton>
+                    </nedss:IfServer>
+                </nedss:IfSHOW_DEBUG_BUTTON>
+            </toolbarLeft>
+            <toolbarRight/>
+        </toolbarDef>
+        <body>
+            <part>
+                <attributes>
+                    <style>nedss</style>
+                </attributes>
+                <nedss:CheckSessionTimer/>
+            </part>
+            <linkbar>
+                <ids>
+                </ids>
+                <hyperlinks>
+                </hyperlinks>
+            </linkbar>
+            <toolbar location="top"/>
+            <section>
+                <part>
+                    <attributes>
+                        <id>Example</id>
+                        <name>Example</name>
+                        <linked>false</linked>
+                        <width>2</width>
+                    </attributes>
+                </part>
+                <subsection name="" line="false">
+                    <row>
+                        <column align="right" valign="top" width="1">
+                            <xsp:element name="label">
+                                <xsp:attribute name="ref">cboState_textbox</xsp:attribute>
+                                <xsp:attribute name="name">State:</xsp:attribute>
+                            </xsp:element>
+                        </column>
+                        <column width="1">
+                            <combobox id="cboState" name="cboState" width="200">
+                                <options>
+                                    <xsp:logic>
+                                    <![CDATA[
+                                        CachedDropDownValues cdv = new CachedDropDownValues();
+                                        TreeMap map = cdv.getStateCodes1("STATE_CCD");
+                                        Set set = map.keySet();
+                                        Iterator i = set.iterator();
+                                        String strKey = null;
+                                        String strVal = null;
+                                        String strSel = "false";
+                                        while(i.hasNext())
+                                        {
+                                            strKey = (String)i.next();
+                                            strVal = (String)map.get(strKey);
+                                    ]]>
+                                    </xsp:logic>
+                                    <xsp:element name="option">
+                                        <xsp:attribute name="id">cboState_<xsp:expr>strVal</xsp:expr></xsp:attribute>
+                                        <xsp:attribute name="value"><xsp:expr>strVal</xsp:expr></xsp:attribute>
+                                        <xsp:attribute name="name"><xsp:expr>strKey</xsp:expr></xsp:attribute>
+                                        <xsp:attribute name="selected"><xsp:expr>strSel</xsp:expr></xsp:attribute>
+                                    </xsp:element>
+                                    <xsp:logic>
+                                    <![CDATA[
+                                        }
+                                    ]]>
+                                    </xsp:logic>
+                                </options>
+                            </combobox>
+                        </column>
+                    </row>
+                </subsection>
+            </section>
+            <toolbar location="bottom"/>
+        </body>
+    </part>
+</xsp:page>

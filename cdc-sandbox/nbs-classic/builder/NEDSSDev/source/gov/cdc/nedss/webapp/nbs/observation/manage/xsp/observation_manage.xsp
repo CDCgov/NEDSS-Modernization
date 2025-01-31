@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss">
+	<xsp:structure>
+		<xsp:include>java.util.ArrayList</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.XMLRequestHelper</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.NEDSSConstants</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<id-bar>
+			<id name="Patient ID">
+				<xsp-request:get-attribute name="personLocalID"/>
+			</id>
+			<id name="Investigation ID">
+				<xsp-request:get-attribute name="publicHealthCaseLocalUid"/>
+			</id>
+		</id-bar>
+		<button-bar>
+			<right>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="cancelButtonHref"/>&amp;personUID=<xsp-request:get-attribute name="personUID"/>');</javascript-action>
+			</right>
+		</button-bar>
+		<separator>
+			<xsp:attribute name="name">Manage Observation</xsp:attribute>
+		</separator>
+		<tab>
+			<nedss:writeErrorMessages/>
+			<group/>
+			<group>
+				<line/>
+			</group>
+			<xsp:logic>
+				boolean assoLab= true ;
+				if(request.getAttribute("assoLab") != null)
+				{
+					assoLab= (new Boolean(request.getAttribute("assoLab").toString())).booleanValue();
+				}
+				else
+					assoLab= true;
+
+			if(assoLab)
+			{
+			</xsp:logic>
+			
+			<group name="Lab Reports">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="assoLab"/>
+				</xsp:attribute>
+				<xsp:logic>
+					boolean hideAddBoolean = false;
+						if(request.getAttribute("hideAdd") != null)
+						{
+							hideAddBoolean = (new Boolean(request.getAttribute("hideAdd").toString())).booleanValue();
+						}
+		
+					if(!hideAddBoolean)
+					{
+				
+				</xsp:logic>
+					<button-bar>
+						<button>
+							<!--xsp:attribute name="authorized">
+								<xsp-request:get-attribute name="AddLab"/>
+							</xsp:attribute-->
+							<label>Add</label>
+							<javascript-action>getPage('<xsp-request:get-attribute name="AddLab"/>');</javascript-action>
+						</button>
+					</button-bar>
+				<xsp:logic>
+				}
+				</xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<b>Associate with this Investigation?</b>
+						</span>
+					</element>
+				</line>
+				<!--xsp:logic>System.out.println((String)request.getAttribute("observationSummaryLabList"));</xsp:logic-->
+				<line>
+					<element type="data-table">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="labDisplay"/>
+						</xsp:attribute>
+						<header width="">Yes No
+							<element name="record" type="radio" indented="yes" default="false" layout="horizontal">
+								<options>
+									<option name="record" value="true"/>
+								</options>
+								<options>
+									<option name="record" value="false"/>
+								</options>
+							</element>
+						</header>
+						<header sortonload="true" sortorder="decending" width="">Date Received</header>
+						<header width="">Date Collected</header>
+						<header width="40%">Ordered Test Name</header>
+						<header width="">Observation ID</header>
+						<footer width="8%"/>
+						<footer width="40%"/>
+						<footer width="30%"/>
+						<footer width="30%"/>
+						<view-link target="1">
+							<xsp-request:get-attribute name="ObservationLabIDHref"/>&amp;observationUID=<xsp-request:get-attribute name="observationUID"/>
+						</view-link>
+						<view-link target="2">
+							<xsp-request:get-attribute name="ObservationMorbIDHref"/>&amp;observationUID=<xsp-request:get-attribute name="observationUID"/>
+						</view-link>
+						<value>
+							<xsp-request:get-attribute name="observationSummaryLabList"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<xsp:logic>
+			}
+			boolean assoMorb= true ;
+			if(request.getAttribute("assoMorb") != null)
+			{
+				assoMorb= (new Boolean(request.getAttribute("assoMorb").toString())).booleanValue();
+			}
+			else
+				assoMorb= true;
+			if(assoMorb)
+			{
+			</xsp:logic>
+
+			<group name="Morbidity Reports">
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="assoMorb"/>
+				</xsp:attribute>
+				<xsp:logic>
+					boolean hideAddBoolean = false;
+						if(request.getAttribute("hideAdd") != null)
+						{
+							hideAddBoolean = (new Boolean(request.getAttribute("hideAdd").toString())).booleanValue();
+						}
+					if(!hideAddBoolean)
+					{
+				
+				</xsp:logic>
+				<button-bar>
+					<button>
+						<!--xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="AddMorb"/>
+						</xsp:attribute-->
+						<label>Add</label>
+						<javascript-action>getPage('<xsp-request:get-attribute name="AddMorb"/>');</javascript-action>
+					</button>
+				</button-bar>
+				<xsp:logic>
+				}
+				</xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<b>Associate with this Investigation?	</b>
+						</span>
+					</element>
+				</line>
+				<!--xsp:logic>
+			System.out.println((String)request.getAttribute("observationSummaryMorbList"));
+            </xsp:logic-->
+				<line>
+					<element type="data-table">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="morbDisplay"/>
+						</xsp:attribute>
+						<header>Yes No
+							<element name="record" type="radio" indented="yes" default="false" layout="horizontal">
+								<options>
+									<option name="record" value="true"/>
+								</options>
+								<options>
+									<option name="record" value="false"/>
+								</options>
+							</element>
+						</header>
+						<header sortonload="true" sortorder="decending" width="15%">Date Received</header>
+						<header width="">Condition</header>
+						<header width="10%">Report Date</header>
+						<header width="">Type</header>
+						<header width="">Observation ID</header>
+						<footer width="40%"/>
+						<footer width="30%"/>
+						<footer width="30%"/>
+						<view-link>
+							<xsp-request:get-attribute name="ObservationMorbIDHref"/>&amp;observationUID=<xsp-request:get-attribute name="observationUID"/>
+						</view-link>
+						<value>
+							<xsp-request:get-attribute name="observationSummaryMorbList"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<xsp:logic>}</xsp:logic>
+		</tab>
+	</content>
+</xsp:page>

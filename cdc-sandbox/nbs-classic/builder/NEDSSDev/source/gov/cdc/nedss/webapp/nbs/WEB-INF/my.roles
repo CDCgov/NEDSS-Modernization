@@ -1,0 +1,1 @@
+<?xml version="1.0"?><role-list>	<role name="org.apache.cocoon.components.jsp.JSPEngine" shorthand="jsp-engine" default-class="org.apache.cocoon.components.jsp.JSPEngineImplNamedDispatcherInclude"/></role-list>

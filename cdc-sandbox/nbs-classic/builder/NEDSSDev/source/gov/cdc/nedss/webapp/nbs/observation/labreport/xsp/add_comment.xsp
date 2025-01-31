@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.organization.vo.OrganizationSearchVO</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbscontext.*</xsp:include>
+		<xsp:include>javax.servlet.http.*</xsp:include>
+	</xsp:structure>
+	<xsp:logic><![CDATA[   
+	private String getUrl(){
+	String ot = (String)request.getParameter("observationType");
+		System.out.println("ot="+ot);
+		String url = null;
+		if(ot.equals("Lab"))
+		url = "/nbs/AddComment.do?ContextAction=Submit&observationType=Lab";
+		else
+		url =  "/nbs/AddComment.do?ContextAction=Submit&observationType=Morb";
+		
+		return url;
+		}
+			]]></xsp:logic>
+	<content>
+		<!--content form="/nedss/posted"-->
+		<javascript-files>
+			<import>Globals.js</import>
+			<import>AddComment.js</import>
+		</javascript-files>
+		<button-bar>
+			<right>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>window.close();</javascript-action>
+			</right>
+		</button-bar>
+		<xsp:attribute name="form">
+			<xsp:expr>this.getUrl()</xsp:expr>
+		</xsp:attribute>
+		<!--xsp:attribute name="form">url.toString()</xsp:attribute-->
+		<xsp:attribute name="title">Add Comment to Observation</xsp:attribute>
+		<tab name="search">
+			<nedss:writeErrorMessages/>
+			<group>
+				<line>
+					<element type="textarea" label="Add Comment">
+						<xsp:attribute name="name">comment</xsp:attribute>
+						<note>Add Comment</note>
+						<value>
+					
+						</value>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

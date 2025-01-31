@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>CalcMMWR Test</title>
+        <style type="text/css">
+            body
+            {
+                background-color: #FFFFFF;
+                color: #000000;
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+                font-weight: normal;
+                margin-left: 0px;
+                margin-top: 0px;
+            }
+            label
+            {
+                color: #000000;
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+                font-weight: bold;
+                vertical-align: top;
+            }
+            td
+            {
+                color: #000000;
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+                font-weight: normal;
+            }
+            .TextBold
+            {
+                font-weight: bold;
+            }
+            .Hidden
+            {
+                display: none;
+                visibility: none;
+            }
+            .Invisible
+            {
+                display: "";
+                visibility: hidden;
+            }
+            .Visible
+            {
+                display: "";
+                visibility: visible;
+            }
+        </style>
+        <script type="text/JavaScript" src="sniffer.js">;</script>
+        <script type="text/JavaScript" src="nedss.js">;</script>
+        <script type="text/JavaScript">
+            function body_onload()
+            {
+                document.frm.id_dob.value = "";
+                document.frm.id_dob.focus();
+            }
+            function id_dob_onblur(_this)
+            {
+                var varDate = _this.value;
+                var varMMWR = CalcMMWR(varDate);
+                var varYear =getElementByIdOrByName("id_year");
+                var varWeek =getElementByIdOrByName("id_week");
+                varYear.innerText = varMMWR[0];
+                varWeek.innerText = varMMWR[1];
+            }
+        </script>
+    </head>
+    <body onload="body_onload();">
+        <form action="" id="frm" name="frm">
+            <table cellspacing="2">
+                <tbody>
+                    <tr>
+                        <td>
+                            <label for="id_dob">Date Of Birth:</label>
+                        </td>
+                        <td>
+                            <input type="text" id="id_dob" name="dob" size="10" maxlength="10" value="" onkeyup="DateMask(this,null,event);" onblur="id_dob_onblur(this);"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TextBold">
+                            MMWR Year:
+                        </td>
+                        <td class="TextBold" id="id_year">
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TextBold">
+                            MMWR Week:
+                        </td>
+                        <td class="TextBold" id="id_week">
+                            &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </body>
+</html>

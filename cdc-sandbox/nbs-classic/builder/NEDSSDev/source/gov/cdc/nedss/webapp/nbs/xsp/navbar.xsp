@@ -1,0 +1,456 @@
+<?xml version="1.0"?>
+<xsp:page xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" language="java">
+	<xsp:include>javax.servlet.http.HttpServletResponse</xsp:include>
+	<nedss:import/>
+	<navbar>
+		<nedss:init/>
+		<sessioninfo>
+			<xsp:expr>session.getMaxInactiveInterval()</xsp:expr>
+		</sessioninfo>
+		<xsp:logic>
+        String pageName = request.getParameter("pageName");
+        String isTest = "";
+            String contextAction = request.getParameter("ContextAction");
+            boolean showAlert = false;
+            if(contextAction!=null &amp;&amp; (contextAction.equals("GlobalMP_SystemIndentified") || contextAction.equals("ReturnToMergeCandidateList") || contextAction.equals("NoMerge")))
+            {
+               showAlert = true;
+            }
+            if(pageName == null)
+            {
+                pageName = "";
+            }
+            NBSSecurityObj nbsSecObj = (NBSSecurityObj)session.getAttribute("NBSSecurityObject");
+                    if(request.isRequestedSessionIdValid() == false)
+                    {
+                        httpResponse.sendRedirect(PageConstants.TIMEOUTPAGE);
+                    }
+                    if(nbsSecObj == null)
+                    {
+                    httpResponse.sendRedirect(PageConstants.TIMEOUTPAGE);
+                    }
+            String myPAInvestigationsSecurity = PropertyUtil.getInstance().getMyProgramAreaSecurity();
+             isTest = (String)request.getSession().getAttribute("isTest");
+        </xsp:logic>
+		<top-graphic>
+			<image width="16" height="22" border="0" alt="">corner_right.gif</image>
+		</top-graphic>
+		<selections>
+			<heading label="Home">
+				<image width="126" height="31" border="0" alt="Home Button">navbar/home.jpg</image>
+				<xsp:logic>
+                if(showAlert){
+                </xsp:logic>
+				<reference>javascript:showAlert()</reference>
+				<xsp:logic>}else{</xsp:logic>
+				<reference>/nbs/HomePage.do?method=loadHomePage</reference>
+				<xsp:logic>}</xsp:logic>
+			</heading>
+			<xsp:logic>
+            if(nbsSecObj!=null)
+                if
+                (
+                    (nbsSecObj.getPermission(NBSBOLookup.PATIENT, NBSOperationLookup.FIND))
+                ||  (nbsSecObj.getPermission(NBSBOLookup.ORGANIZATION, NBSOperationLookup.MANAGE))
+                ||  (nbsSecObj.getPermission(NBSBOLookup.PROVIDER, NBSOperationLookup.MANAGE))
+                ||  (nbsSecObj.getPermission(NBSBOLookup.OBSERVATIONLABREPORT, NBSOperationLookup.ADD, "ANY", "ANY"))
+                ||  (nbsSecObj.getPermission(NBSBOLookup.OBSERVATIONMORBIDITYREPORT, NBSOperationLookup.ADD, "ANY", "ANY"))
+                )
+                {
+
+            </xsp:logic>
+            
+            <hiddenFieldIsTest>										
+						<value><xsp:expr>isTest</xsp:expr></value>
+						<id>isTestVar</id>
+			</hiddenFieldIsTest> 
+			
+			
+			<heading label="Data Entry">
+				<image width="126" height="31" border="0" alt="Data Entry Button">navbar/data_entry.jpg</image>
+				<xsp:logic>
+                if(showAlert){
+                </xsp:logic>
+				<reference>javascript:showAlert()</reference>
+				<xsp:logic>}else{</xsp:logic>
+				<reference>/nbs/LoadNavbar.do?ContextAction=DataEntry</reference>
+				<xsp:logic>}</xsp:logic>
+				<!--reference>/nbs/LoadNavbar.do?ContextAction=DataEntry</reference-->
+				<xsp:logic>
+                    if(pageName.equals("demographics"))
+                    {
+                </xsp:logic>
+				<xsp:logic>
+                        if(nbsSecObj!=null &amp;&amp; nbsSecObj.getPermission(NBSBOLookup.PATIENT, NBSOperationLookup.FIND))
+                        {
+                </xsp:logic>
+				<sub-heading>
+					<label>Patient</label>
+					<reference>
+						<xsp:expr>request.getAttribute("personHref")</xsp:expr>
+					</reference>
+				</sub-heading>
+				<xsp:logic>
+                        }
+                </xsp:logic>
+				<xsp:logic>
+                        if(nbsSecObj!=null &amp;&amp; nbsSecObj.getPermission(NBSBOLookup.ORGANIZATION, NBSOperationLookup.MANAGE))
+                        {
+                </xsp:logic>
+				<sub-heading>
+					<label>Organization</label>
+					<reference>
+						<xsp:expr>request.getAttribute("organizationHref")</xsp:expr>
+					</reference>
+				</sub-heading>
+				<xsp:logic>
+                        }
+                </xsp:logic>
+				<xsp:logic>
+                        if(nbsSecObj!=null &amp;&amp; nbsSecObj.getPermission(NBSBOLookup.PROVIDER, NBSOperationLookup.MANAGE))
+                        {
+                </xsp:logic>
+				<sub-heading>
+					<label>Provider</label>
+					<reference>
+						<xsp:expr>request.getAttribute("providerHref")</xsp:expr>
+					</reference>
+				</sub-heading>
+				<xsp:logic>
+                        }
+                </xsp:logic>
+                
+                <xsp:logic>
+                        if(nbsSecObj!=null &amp;&amp; nbsSecObj.getPermission(NBSBOLookup.PLACE, NBSOperationLookup.MANAGE))
+                        {
+                </xsp:logic>
+                <sub-heading>
+                    <label>Place</label>
+                    <reference>
+                        <xsp:expr>request.getAttribute("placeHref")</xsp:expr>
+                    </reference>
+                </sub-heading>
+                <xsp:logic>
+                        }
+                </xsp:logic>
+                
+				<xsp:logic>
+                            if(nbsSecObj!=null &amp;&amp; nbsSecObj.getPermission(NBSBOLookup.OBSERVATIONLABREPORT, NBSOperationLookup.ADD, "ANY", "ANY"))
+                            {
+
+                            String userTypeValue = nbsSecObj.getTheUserProfile().getTheUser().getUserType();
+                                if(userTypeValue.equalsIgnoreCase(NEDSSConstants.SEC_USERTYPE_EXTERNAL)){
+                                Long userReportingFacilityUid = nbsSecObj.getTheUserProfile().getTheUser().getReportingFacilityUid();
+                                    if( userReportingFacilityUid  != null){
+                                </xsp:logic>
+				<sub-heading>
+					<label>Lab Report </label>
+					<reference>
+						<xsp:expr>request.getAttribute("labReport")</xsp:expr>
+					</reference>
+				</sub-heading>
+				<xsp:logic>
+                        }
+                    }
+                    else{
+                  </xsp:logic>
+				<sub-heading>
+					<label>Lab Report </label>
+					<reference>
+						<xsp:expr>request.getAttribute("labReport")</xsp:expr>
+					</reference>
+				</sub-heading>
+				<xsp:logic>
+
+                        }
+                    }
+                 </xsp:logic>
+				<xsp:logic>
+                            if(nbsSecObj!=null &amp;&amp; nbsSecObj.getPermission(NBSBOLookup.OBSERVATIONMORBIDITYREPORT, NBSOperationLookup.ADD, "ANY", "ANY"))
+                            {
+                            String userTypeValue = nbsSecObj.getTheUserProfile().getTheUser().getUserType();
+                                if(userTypeValue.equalsIgnoreCase(NEDSSConstants.SEC_USERTYPE_EXTERNAL))
+                                {
+                                Long userReportingFacilityUid = nbsSecObj.getTheUserProfile().getTheUser().getReportingFacilityUid();
+                                    if( userReportingFacilityUid  != null)
+                                    {
+                                </xsp:logic>
+				<sub-heading>
+					<label>Morbidity Report </label>
+					<reference>
+						<xsp:expr>request.getAttribute("morbReport")</xsp:expr>
+					</reference>
+				</sub-heading>
+				<xsp:logic>
+                        }
+                    }
+                    else{
+                  </xsp:logic>
+				<sub-heading>
+					<label>Morbidity Report</label>
+					<reference>
+						<xsp:expr>request.getAttribute("morbReport")</xsp:expr>
+					</reference>
+				</sub-heading>
+				<xsp:logic>
+
+                        }
+                    }
+                 </xsp:logic>
+				<xsp:logic>
+                                    if(nbsSecObj!=null &amp;&amp; nbsSecObj.getPermission(NBSBOLookup.SUMMARYREPORT, NBSOperationLookup.VIEW))
+                                    {
+                                </xsp:logic>
+				<sub-heading>
+					<label>Summary Data</label>
+					<reference>/nbs/LoadManageSummary1.do?ContextAction=GlobalSummaryData</reference>
+				</sub-heading>
+				<xsp:logic>
+                                    }
+                                </xsp:logic>
+				<xsp:logic>
+                         }
+                      </xsp:logic>
+			</heading>
+			<xsp:logic>
+                }
+            </xsp:logic>
+			<xsp:logic>
+                if(nbsSecObj!=null &amp;&amp; nbsSecObj.getPermission(NBSBOLookup.PATIENT, NBSOperationLookup.MERGE))
+                {
+            </xsp:logic>
+			<heading label="Merge Patients">
+				<image width="126" height="31" border="0" alt="Merge Persons Button">navbar/merge_patients_button.jpg</image>
+				<xsp:logic>
+                if(showAlert){
+                </xsp:logic>
+				<reference>javascript:showAlert()</reference>
+				<xsp:logic>}else{</xsp:logic>
+				<reference>/nbs/LoadNavbar1.do?ContextAction=MergePerson</reference>
+				<xsp:logic>}</xsp:logic>
+				<!--reference>/nbs/LoadNavbar1.do?ContextAction=MergePerson</reference-->
+				<xsp:logic>
+                    if(pageName.equals("mergeperson"))
+                    {
+                    </xsp:logic>
+				<sub-heading>
+					<label>Manual Search</label>
+					<reference>
+						<xsp:expr>request.getAttribute("mergePersonHref")</xsp:expr>
+					</reference>
+				</sub-heading>
+				<sub-heading>
+					<label>System Identified</label>
+					<reference>
+						<xsp:expr>request.getAttribute("systemIdentifiedHref")</xsp:expr>
+					</reference>
+				</sub-heading>
+				<xsp:logic>
+                }
+                </xsp:logic>
+			</heading>
+			<xsp:logic>
+                }
+            </xsp:logic>
+			<xsp:logic>
+                if(nbsSecObj!=null &amp;&amp; nbsSecObj.getPermission(NBSBOLookup.INVESTIGATION, myPAInvestigationsSecurity))
+                {
+            </xsp:logic>
+			<heading label="Open Investigations">
+				<image width="126" height="31" border="0" alt="Investigations Button">navbar/investigations.jpg</image>
+				<xsp:logic>
+                if(showAlert){
+                </xsp:logic>
+				<reference>javascript:showAlert()</reference>
+				<xsp:logic>}else{</xsp:logic>
+				<reference>/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&amp;initLoad=true</reference>
+				<xsp:logic>}</xsp:logic>
+				<!--reference>/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations</reference-->
+			</heading>
+			<xsp:logic>
+                }
+            </xsp:logic>
+			<xsp:logic>
+               if(nbsSecObj!=null)
+                if
+                (
+                    (nbsSecObj.getPermission(NBSBOLookup.REPORTING, NBSOperationLookup.VIEWREPORTPRIVATE))
+                ||  (nbsSecObj.getPermission(NBSBOLookup.REPORTING, NBSOperationLookup.VIEWREPORTPUBLIC))
+                ||  (nbsSecObj.getPermission(NBSBOLookup.REPORTING, NBSOperationLookup.VIEWREPORTTEMPLATE))
+                ||  (nbsSecObj.getPermission(NBSBOLookup.REPORTING, NBSOperationLookup.VIEWREPORTREPORTINGFACILITY))
+                )
+                {
+            </xsp:logic>
+			<heading label="Reports">
+				<image width="126" height="31" border="0" alt="Reports Button">navbar/reports.jpg</image>
+				<xsp:logic>
+                if(showAlert){
+                </xsp:logic>
+				<reference>javascript:showAlert()</reference>
+				<xsp:logic>}else{</xsp:logic>
+				<reference>/nbs/ManageReports.do</reference>
+				<xsp:logic>}</xsp:logic>
+				<!--reference>/nbs/nfc?ObjectType=<xsp:expr>NEDSSConstants.REPORT</xsp:expr>&amp;amp;OperationType=<xsp:expr>NEDSSConstants.REPORT_LIST</xsp:expr>
+                </reference-->
+			</heading>
+			<xsp:logic>
+                }
+            </xsp:logic>
+			<xsp:logic>
+            if(nbsSecObj!=null)
+                if
+                (
+                    (nbsSecObj.getPermission(NBSBOLookup.OBSERVATIONLABREPORT, NBSOperationLookup.VIEWELRACTIVITY))
+                ||  (nbsSecObj.isUserMSA() || nbsSecObj.isUserPAA() || nbsSecObj.getPermission(NBSBOLookup.SYSTEM, NBSOperationLookup.LDFADMINISTRATION))
+                )
+                {
+             </xsp:logic>
+			<heading label="System Management" showFromBeginning="true">
+				<image width="126" height="31" border="0" alt="System Admin Button">navbar/system_admin.jpg</image>
+				<xsp:logic>
+                if(showAlert){
+                </xsp:logic>
+				<reference>javascript:showAlert()</reference>
+				<xsp:logic>}else{</xsp:logic>
+				<reference>/nbs/SystemAdmin.do</reference>
+				<xsp:logic>}</xsp:logic>
+			</heading>
+			<xsp:logic>
+                }
+            </xsp:logic>
+			<heading id="id_help" label="Help" new="true">
+				<image width="126" height="31" border="0" alt="Help Button">navbar/help.jpg</image>
+				<reference>/nbs/UserGuide.do?method=open</reference>
+			</heading>
+			<heading label="Logout">
+				<image width="126" height="31" border="0" alt="Logout Button">logout.jpg</image>
+				<xsp:logic>
+                if(showAlert){
+                </xsp:logic>
+				<reference>javascript:showAlert()</reference>
+				<xsp:logic>}else{</xsp:logic>
+				<reference>/nbs/logout</reference>
+				<xsp:logic>}</xsp:logic>
+				<!--reference>/nbs/logout</reference-->
+			</heading>
+			<xsp:logic>
+
+                PropertyUtil prop = PropertyUtil.getInstance();
+                logger.debug("Prod Ind = " + prop.getAppInfoTestEnv());
+                    if ("true".equals(prop.getAppInfoTestEnv()))
+                {
+            </xsp:logic>
+			<heading id="id_info" label="Id Info">
+				<image width="126" height="31" border="0" alt="Help Button">navbar/build_info_button.jpg</image>
+				<reference>javascript:openInfoWindow();</reference>
+			</heading>
+			<xsp:logic>
+                }
+            </xsp:logic>
+		</selections>
+		<bottom-graphic>
+			<image width="16" height="22" border="0" alt="">corner_lower_right.gif</image>
+		</bottom-graphic>
+		<nedss:IfSHOW_CONTEXT_INFO>
+			<nedss:ifServer>
+				<context>
+					<xsp:logic>
+
+
+                        TreeMap NBSObjectStore = (TreeMap)request.getSession().getAttribute(NBSConstantUtil.OBJECT_STORE);
+                        if(NBSObjectStore != null)
+                        {
+                            NBSContextSystemInfo contextSystemInfo = (NBSContextSystemInfo)NBSObjectStore.get(NBSConstantUtil.NBSCONTEXTINFO);
+                    </xsp:logic>
+					<info name="Page ID">
+						<xsp:attribute name="value">
+							<xsp:expr>contextSystemInfo.getCurrentPageID()</xsp:expr>
+						</xsp:attribute>
+					</info>
+					<info name="Page Name">
+						<xsp:attribute name="value">
+							<xsp:expr>contextSystemInfo.getCurrentPageName()</xsp:expr>
+						</xsp:attribute>
+					</info>
+					<info name="Task Name">
+						<xsp:attribute name="value">
+							<xsp:expr>contextSystemInfo.getCurrentTaskName()</xsp:expr>
+						</xsp:attribute>
+					</info>
+					<info name="Last Action">
+						<xsp:attribute name="value">
+							<xsp:expr>contextSystemInfo.getLastAction()</xsp:expr>
+						</xsp:attribute>
+					</info>
+					<info name="Prev Page ID">
+						<xsp:attribute name="value">
+							<xsp:expr>contextSystemInfo.getPrevPageID()</xsp:expr>
+						</xsp:attribute>
+					</info>
+					<info name="Prev Page Name">
+						<xsp:attribute name="value">
+							<xsp:expr>contextSystemInfo.getPrevPageName()</xsp:expr>
+						</xsp:attribute>
+					</info>
+					<info name="Prev Task Name">
+						<xsp:attribute name="value">
+							<xsp:expr>contextSystemInfo.getPrevTaskName()</xsp:expr>
+						</xsp:attribute>
+					</info>
+					<xsp:logic>
+                        }
+                    </xsp:logic>
+					<info name="IN OBJECT STORE"/>
+					<xsp:logic>
+                        TreeMap treemap = (TreeMap) request.getSession().getAttribute("NBSObjectStore");
+                        if(treemap != null)
+                        {
+                            Set set = treemap.keySet();
+                            Iterator itr = set.iterator();
+                            while(itr.hasNext())
+                            {
+                                String key = (String)itr.next();
+                                Object value = (Object)treemap.get(key);
+
+                     </xsp:logic>
+					<info>
+						<xsp:attribute name="value">
+							<xsp:expr>key</xsp:expr>
+						</xsp:attribute>
+					</info>
+					<xsp:logic>
+                                if(value.getClass().getName().equals("java.lang.Long")||value.getClass().getName().equals("java.lang.String")){
+                            </xsp:logic>
+					<info>
+						<xsp:attribute name="value">
+                                        -----<xsp:expr>value.toString()</xsp:expr>
+						</xsp:attribute>
+					</info>
+					<xsp:logic>
+                    }
+                            }
+                        }
+                     </xsp:logic>
+					<info name="IN SESSION"/>
+					<xsp:logic>
+                        Enumeration enumeration = request.getSession().getAttributeNames();
+                        while(enumeration.hasMoreElements())
+                        {
+                            String strSessionName = (String)enumeration.nextElement();
+                            if(!strSessionName.equals("org.apache.struts.action.LOCALE"))
+                            {
+                    </xsp:logic>
+					<info>
+						<xsp:attribute name="value">
+							<xsp:expr>strSessionName</xsp:expr>
+						</xsp:attribute>
+					</info>
+					<xsp:logic>
+                            }
+                        }
+                    </xsp:logic>
+				</context>
+			</nedss:ifServer>
+		</nedss:IfSHOW_CONTEXT_INFO>
+	</navbar>
+</xsp:page>

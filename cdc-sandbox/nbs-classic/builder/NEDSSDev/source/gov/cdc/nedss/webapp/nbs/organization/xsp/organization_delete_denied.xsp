@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+	<!--	<xsp:include>gov.cdc.nedss.wum.commands.*</xsp:include> -->
+		<xsp:include>java.util.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:logic><![CDATA[
+
+					String organizationUID = (String)request.getAttribute("organizationUID ");
+					if (organizationUID == null){
+						organizationUID = request.getParameter("organizationUID");
+						}
+			]]></xsp:logic>
+		<link-bar>
+			<link name="Return to Organization">
+				<xsp-request:get-attribute name="returnToViewOrganizationHref"/>&amp;organizationUID=<xsp:expr>organizationUID </xsp:expr>
+			</link>
+		</link-bar>
+		<button-bar/>
+		<tab>
+			<group>
+				<line>
+					<element type="raw">
+						<span>
+							<p>
+								<b>Your request to delete this organization is not possible.<br/>
+									<br/>It may be linked to an investigation or observation</b>
+							</p>
+						</span>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

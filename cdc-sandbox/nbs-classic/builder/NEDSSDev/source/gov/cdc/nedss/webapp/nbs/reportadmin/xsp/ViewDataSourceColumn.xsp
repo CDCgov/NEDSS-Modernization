@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>gov.cdc.nedss.reportadmin.dt.DataSourceColumnDT</xsp:include>
+		<xsp:include>gov.cdc.nedss.reportadmin.dt.DataSourceDT</xsp:include>
+		<xsp:include>java.util.StringTokenizer</xsp:include>
+	</xsp:structure>
+	<content form="/nbs/EditDataSourceColumn.do">
+		<xsp:logic>
+            DataSourceDT dtDataSource = (DataSourceDT)session.getAttribute("ReportAdmin.dtDataSource");
+            DataSourceColumnDT dtDataSourceColumn = (DataSourceColumnDT)request.getAttribute("ReportAdmin.dtDataSourceColumn");
+            String codesetNm = dtDataSourceColumn.getCodesetNm();
+            String srtTable = "";
+            String srtCodeset = "";
+			if(codesetNm != null) {
+				if(codesetNm.indexOf(".") != -1) {
+					srtTable = codesetNm.substring(0,codesetNm.indexOf("."));
+					srtCodeset  = codesetNm.substring(codesetNm.indexOf(".")+1 );
+				} else {
+					srtTable = codesetNm;      
+				}
+			}            
+        </xsp:logic>
+		<link-bar>
+			<link>
+				<xsp:attribute name="name">
+					<xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+				</xsp:attribute>
+				<xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+			</link>
+		</link-bar>
+		<button-bar>
+			<right>
+				<label>Edit</label>
+				<javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/EditDataSourceColumn.do");
+                    document.forms[0].submit();
+                </javascript-action>
+			</right>
+			<right>
+				<label>Delete</label>
+				<javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/DeleteDataSourceColumn.do");
+                    document.forms[0].submit();
+                </javascript-action>
+			</right>
+		</button-bar>
+		<tab>
+			<group>
+				<line>
+					<element type="raw">
+						<span style="color: red; font-weight: bold;">
+							<value>
+								<xsp:logic>	
+									String errorMsg = (String) request.getAttribute("error");
+									if(errorMsg != null) {
+								</xsp:logic>
+										<xsp:expr>request.getAttribute("error01")</xsp:expr>
+										<br/>
+								<xsp:logic>
+										StringTokenizer st = new StringTokenizer(errorMsg, "$");
+										while (st.hasMoreTokens()) {									
+								</xsp:logic>
+	
+									<li><xsp:expr>st.nextToken()</xsp:expr></li>
+							<xsp:logic>
+										}
+									}							
+							</xsp:logic>
+							</value>
+						</span>
+					</element>
+				</line>
+			</group>
+			<group>
+				<xsp:attribute name="name">
+					<xsp:expr>dtDataSourceColumn.getColumnName()</xsp:expr>
+				</xsp:attribute>
+				<line>
+					<element type="raw">
+						<span>
+							<i>
+								<font class="boldTenRed"> * Indicates a Required Field </font>
+							</i>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="data_source_uid" type="hidden">
+						<value><xsp:expr>dtDataSource.getDataSourceUID_s()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="column_uid" type="hidden">
+						<value><xsp:expr>dtDataSourceColumn.getColumnUID_s()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="column_name" type="text" label="*Name">
+						<value><xsp:expr>dtDataSourceColumn.getColumnName()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="column_title" type="raw" label="*Title">
+						<span><xsp:expr>dtDataSourceColumn.getColumnTitle()</xsp:expr></span>
+					</element>
+				</line>
+				<line>
+					<element name="desc_txt" type="raw" label="Description">
+						<span><xsp:expr>dtDataSourceColumn.getDescTxt()</xsp:expr></span>
+					</element>
+				</line>
+				<line>
+					<element name="column_type_code" type="select" length="40" label="*Type">
+						<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.ColumnTypeCodeSRT")</xsp:expr></srt-options-string>
+						<value><xsp:expr>dtDataSourceColumn.getColumnTypeCode()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element type="checkbox" name="firstCE" label="Associate with a Code Set">
+					
+							<options>
+								<option name="associateCdSetNm" value="T">
+									<value><xsp:logic>if (dtDataSourceColumn.getCodesetNm() != null)</xsp:logic>T<xsp:logic>else</xsp:logic>F</value>
+								</option>
+							</options>
+					
+					</element>
+				</line>
+				
+				<line>
+					<element  type="text" name="secondCE" label="* SRT Table">
+						<value><xsp:expr>srtTable</xsp:expr></value>
+					</element>
+				</line>
+				
+			
+				<line trigger="CODE_VALUE_GENERAL|CODE_VALUE_CLINICAL">
+							<element name="codesetNm" type="text" label="*Code Set" align-label="right" indented="yes">
+								<value><xsp:expr>srtCodeset</xsp:expr></value>
+							</element>
+						</line>
+				
+				<line trigger="T">
+					<element type="select" label="* Store Code or Description"  name="CodeOrDesc" length="8">
+								<value><xsp:expr>dtDataSourceColumn.getCodeDescCd()</xsp:expr></value>
+								<srt-options-string>C$Code|D$Description|</srt-options-string>
+					</element>
+				</line>						
+					
+			
+				<line>
+					<element name="filterable" type="text" label="Advanced Filter">
+						<xsp:logic>
+                            if(dtDataSourceColumn.getFilterable().equalsIgnoreCase("Y"))
+                            {
+                        </xsp:logic>
+						<value>Yes</value>
+						<xsp:logic>
+                            }
+                            else
+                            {
+                        </xsp:logic>
+						<value>No</value>
+						<xsp:logic>
+                            }
+                        </xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element name="displayable" type="text" label="Column Selection">
+						<xsp:logic>
+                            if(dtDataSourceColumn.getDisplayable().equalsIgnoreCase("Y"))
+                            {
+                        </xsp:logic>
+						<value>Yes</value>
+						<xsp:logic>
+                            }
+                            else
+                            {
+                        </xsp:logic>
+						<value>No</value>
+						<xsp:logic>
+                            }
+                        </xsp:logic>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

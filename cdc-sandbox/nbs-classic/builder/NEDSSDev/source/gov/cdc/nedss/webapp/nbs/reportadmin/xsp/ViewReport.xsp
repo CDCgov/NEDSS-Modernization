@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>gov.cdc.nedss.reportadmin.dt.ReportDT</xsp:include>
+		<xsp:include>gov.cdc.nedss.reportadmin.dt.ReportSortColumnDT</xsp:include>
+		<xsp:include>java.util.ArrayList</xsp:include>
+		<xsp:include>java.util.Iterator</xsp:include>
+		<xsp:include>java.util.Set</xsp:include>
+		<xsp:include>java.util.TreeMap</xsp:include>
+		<xsp:include>java.util.StringTokenizer</xsp:include>
+	</xsp:structure>
+	<content form="/nbs/EditReport.do">
+		<xsp:logic>
+            ReportDT dtReport = (ReportDT)session.getAttribute("ReportAdmin.dtReport");
+            ReportSortColumnDT dtReportSortColumn = (ReportSortColumnDT)session.getAttribute("ReportAdmin.dtReportSortColumn");
+        </xsp:logic>
+		<link-bar>
+			<link>
+				<xsp:attribute name="name">
+					<xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+				</xsp:attribute>
+				<xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+			</link>
+		</link-bar>
+		<button-bar>
+			<!--left>
+                <label>Manage Columns</label>
+                <javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/EditReportColumn.do");
+                    document.forms[0].submit();
+                </javascript-action>
+            </left>
+            <left>
+                <label>Manage Sorting</label>
+                <javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/EditReportSort.do");
+                    document.forms[0].submit();
+                </javascript-action>
+            </left-->
+			<left>
+				<label>Add Filter</label>
+				<javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/NewReportFilter.do");
+                    document.forms[0].submit();
+                </javascript-action>
+			</left>
+			<right>
+				<label>Edit</label>
+				<javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/EditReport.do");
+                    document.forms[0].submit();
+                </javascript-action>
+			</right>
+			<right>
+				<label>Delete</label>
+				<javascript-action>
+	                    var frm = document.getElementById("nedssForm");
+	                    frm.setAttribute("action", "/nbs/DeleteReport.do");
+	                    deleteReportConfirm();
+                   </javascript-action>
+			</right>
+		</button-bar>
+		<tab>
+			<group>
+				<line>
+					<element type="raw">
+						<span style="color: red; font-weight: bold;">
+							<value>
+								<xsp:expr>request.getAttribute("error")</xsp:expr>
+							</value>
+						</span>
+					</element>
+				</line>
+			</group>
+			<group>
+				<xsp:attribute name="name">
+					<xsp:expr>dtReport.getReportTitle()</xsp:expr>
+				</xsp:attribute>
+				<line>
+					<element type="raw">
+						<span>
+							<i>
+								<font class="boldTenRed"> * Indicates a Required Field </font>
+							</i>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="data_source_uid" type="hidden">
+						<value><xsp:expr>dtReport.getDataSourceUID_s()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="report_uid" type="hidden">
+						<value><xsp:expr>dtReport.getReportUID_s()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="context" type="hidden">
+						<value><xsp:expr>request.getAttribute("context")</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="report_title" type="raw" label="*Name" size="80" maxlength="100">
+						<span><xsp:expr>dtReport.getReportTitle()</xsp:expr></span>
+					</element>
+				</line>
+				<line>
+					<element name="desc_txt" type="raw" label="*Description" size="80" maxlength="150">
+						<span><xsp:expr>dtReport.getDescTxt()</xsp:expr></span>
+					</element>
+				</line>
+				<line>
+		            <element name="data_source_uid" type="select" length="40" label="*Data Source Title" noblank="true">
+	                    <srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.DataSourceTitleSRT")</xsp:expr></srt-options-string>
+	                    <value><xsp:expr>dtReport.getDataSourceUID_s()</xsp:expr></value>
+		            </element>
+		        </line>
+				<line>
+					<element name="data_source_uid" type="select" length="40" label="Data Source" noblank="true">
+						<srt-options-string>
+							<xsp:expr>session.getAttribute("ReportAdmin.DataSourceSRT")</xsp:expr>
+						</srt-options-string>
+						<value><xsp:expr>dtReport.getDataSourceUID_s()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="report_type_code" type="select" length="40" label="*Type" noblank="true">
+						<srt-options-string>
+							<xsp:expr>session.getAttribute("ReportAdmin.ReportTypeCodeSRT")</xsp:expr>
+						</srt-options-string>
+						<value><xsp:expr>dtReport.getReportTypeCode()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="location" type="select" length="40" label="*SAS Program" noblank="true">
+						<srt-options-string>
+							<xsp:expr>session.getAttribute("ReportAdmin.SASProgramSRT")</xsp:expr>
+						</srt-options-string>
+						<value><xsp:expr>dtReport.getLocation()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="shared" type="select" length="40" label="*Group" noblank="true">
+						<srt-options-string>
+							<xsp:expr>session.getAttribute("ReportAdmin.SharedSRT")</xsp:expr>
+						</srt-options-string>
+						<value><xsp:expr>dtReport.getShared()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="owner_uid" type="select" length="40" label="*Owner" noblank="true">
+						<srt-options-string>
+							<xsp:expr>session.getAttribute("ReportAdmin.UserProfileSRT")</xsp:expr>
+						</srt-options-string>
+						<value><xsp:expr>dtReport.getOwnerUID_s()</xsp:expr></value>
+					</element>
+				</line>
+				<line>
+					<element name="section_cd" type="select" length="40" label="*Section Name" noblank="true">
+						<srt-options-string>
+							<xsp:expr>session.getAttribute("ReportAdmin.ReportSectionCode")</xsp:expr>
+						</srt-options-string>
+						<value><xsp:expr>dtReport.getReportSectionCode()</xsp:expr></value>
+					</element>
+				</line>
+			</group>
+			<group name="Filters">
+				<line>
+					<element type="queue-data-table" pagenumbers="false">
+						<noLinkHeader width="5%"/>
+						<noLinkHeader width="5%"/>
+						<noLinkHeader width="25%">Filter Name</noLinkHeader>
+						<noLinkHeader width="25%">Type</noLinkHeader>
+						<noLinkHeader width="30%">Data Source Column</noLinkHeader>
+						<noLinkHeader width="10%">Required</noLinkHeader>
+						<xsp:logic><![CDATA[
+			                    String allReportFilters = (String) session.getAttribute("ReportAdmin.allReportFilters");
+			                    if(allReportFilters != null) {
+				                    StringTokenizer st = new StringTokenizer(allReportFilters, "|");
+								while(st.hasMoreTokens()) {
+			
+				                        String rowElmnt = st.nextToken();
+				                        StringTokenizer innerSt = new StringTokenizer(rowElmnt, "$");
+								    String reportFilterUid =  innerSt.nextToken();			                        			                        
+				                        String editLink = "/nbs/EditReportFilter.do?report_filter_uid=" + reportFilterUid;
+				                        String deleteLink = "/nbs/DeleteReportFilter.do?report_filter_uid=" + reportFilterUid;
+												
+			                ]]></xsp:logic>
+						<record>
+							<link1>
+								<xsp:expr>editLink</xsp:expr>
+							</link1>
+							<link2>
+								<javascript-action>javascript:doDoubleDareDelete('<xsp:expr>deleteLink</xsp:expr>','Are you sure you want to delete the filter?');</javascript-action>
+							</link2>						
+							<column link1=""><value>Edit</value></column>
+							<column link2=""><value>Delete</value></column>
+							<column>
+								<value><xsp:expr>innerSt.nextToken()</xsp:expr></value>
+							</column>
+							<column>
+								<value><xsp:expr>innerSt.nextToken()</xsp:expr></value>
+							</column>
+							<column>
+								<value><xsp:expr>innerSt.nextToken()</xsp:expr></value>
+								<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.FilterableColumnSRT")</xsp:expr></srt-options-string>
+							</column>
+							<column>
+								<value><xsp:expr>innerSt.nextToken()</xsp:expr></value>
+							</column>														
+						</record>
+						<xsp:logic>
+                    }}
+                </xsp:logic>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

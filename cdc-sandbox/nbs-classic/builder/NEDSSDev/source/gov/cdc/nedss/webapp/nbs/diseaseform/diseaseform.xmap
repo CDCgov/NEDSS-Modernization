@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<map:sitemap xmlns:map="http://apache.org/cocoon/sitemap/1.0">
+	<!-- =========================== Components ================================ -->
+	<map:components>
+		<map:generators default="file">
+			<map:generator label="content,data" logger="sitemap.generator.file" name="file" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.FileGenerator"/>
+			<map:generator label="content,data" logger="sitemap.generator.serverpages" name="serverpages" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.ServerPagesGenerator"/>
+		</map:generators>
+		<map:transformers default="xslt">
+			<map:transformer logger="sitemap.transformer.xslt" name="xslt" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.transformation.TraxTransformer">
+				<use-request-parameters>false</use-request-parameters>
+				<use-browser-capabilities-db>false</use-browser-capabilities-db>
+				<use-deli>false</use-deli>
+			</map:transformer>
+		</map:transformers>
+		<map:readers default="resource">
+			<map:reader logger="sitemap.reader.resource" name="resource" pool-max="76" src="org.apache.cocoon.reading.ResourceReader"/>
+			<map:reader name="jsp" src="org.apache.cocoon.reading.JSPReader"/>
+		</map:readers>
+		<map:serializers default="html">
+			<map:serializer logger="sitemap.serializer.links" name="links" src="org.apache.cocoon.serialization.LinkSerializer"/>
+			<map:serializer logger="sitemap.serializer.xml" mime-type="text/xml" name="xml" src="org.apache.cocoon.serialization.XMLSerializer"/>
+			<map:serializer logger="sitemap.serializer.html" mime-type="text/html" name="html" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.serialization.HTMLSerializer">
+				<buffer-size>1024</buffer-size>
+			</map:serializer>
+		</map:serializers>
+		<map:selectors default="browser"/>
+		<map:matchers default="wildcard">
+			<map:matcher logger="sitemap.matcher.wildcard" name="wildcard" src="org.apache.cocoon.matching.WildcardURIMatcher"/>
+			<map:matcher logger="sitemap.matcher.regexp" name="regexp" src="org.apache.cocoon.matching.RegexpURIMatcher"/>
+		</map:matchers>
+	</map:components>
+	<!-- =========================== Pipelines ================================= -->
+	<map:pipelines>
+		<map:pipeline>
+			<map:match pattern="generic/**">
+				<map:mount uri-prefix="generic" src="generic/generic.xmap" check-reload="no"/>
+			</map:match>
+			<map:match pattern="measles/**">
+				<map:mount uri-prefix="measles" src="measles/measles.xmap" check-reload="no"/>
+			</map:match>
+			<map:match pattern="bmird/**">
+				<map:mount uri-prefix="bmird" src="bmird/bmird.xmap" check-reload="no"/>
+			</map:match>
+			<map:match pattern="hepatitis/**">
+				<map:mount uri-prefix="hepatitis" src="hepatitis/hepatitis.xmap" check-reload="no"/>
+			</map:match>
+			<map:match pattern="nip/**">
+				<map:mount uri-prefix="nip" src="nip/nip.xmap" check-reload="no"/>
+			</map:match>
+			<map:match pattern="contacttracing/**">
+				<map:mount uri-prefix="contacttracing" src="contacttracing/contacttracing.xmap" check-reload="no"/>
+			</map:match>
+			
+			
+			
+			<!--		resources - gif, css, jpg, js		-->
+			<map:match pattern="**.css">
+				<map:read src="../resource/style/{1}.css" mime-type="text/css"/>
+			</map:match>
+			<map:match pattern="**.gif">
+				<map:read src="../resource/image/{1}.gif" mime-type="image/gif"/>
+			</map:match>
+			<map:match pattern="**.js">
+				<map:read src="../resource/javascript/{1}.js" mime-type="image/gif"/>
+			</map:match>
+			<map:match pattern="**.jpg">
+				<map:read src="../resource/image/{1}.jpg" mime-type="image/jpg"/>
+			</map:match>
+		</map:pipeline>
+	</map:pipelines>
+</map:sitemap>
+<!-- end of file -->

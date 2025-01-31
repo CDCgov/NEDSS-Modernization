@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<content>
+		<button-bar>
+		
+		</button-bar>
+
+		<tab>
+			<group name="">
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<b>You have successfully logged out.<br/><br/>Thank you for using NBS</b>
+						</span>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+	
+</xsp:page>

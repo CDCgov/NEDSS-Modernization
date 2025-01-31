@@ -2,33 +2,29 @@
 
 .area {
     position: relative;
-
-    height: 10rem;
-    max-width: 30rem;
-
-    display: flex;
-    flex-direction: column;
     gap: 0.5rem;
 
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-        color: transparent;
+    .container {
+        position: relative;
 
-        .highlight {
-            background-color: rgb(199 210 254);
-            position: absolute;
-            width: 100%;
-        }
         .mirror {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            color: transparent;
+            
+            box-sizing: border-box;
+            padding: 0.5rem;
+            border-width: 1px;
         }
-        .editing {
+
+        .textarea {
             background: transparent;
             position: relative;
+
         }
     }
 

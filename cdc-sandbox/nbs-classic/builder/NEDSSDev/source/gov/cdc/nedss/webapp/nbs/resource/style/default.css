@@ -1,0 +1,331 @@
+
+/*************
+ *   body    *
+ ************/
+
+/******************************
+ *    class used to display   *
+ *    the input field labels  *
+ *****************************/
+P.LABEL {
+     	           color : #FFFFFF;
+  	     font-weight : bold;
+}
+TH.LABEL {
+		text-align:right;
+}
+
+
+H3 {
+	color : #FFFFFF;	
+}
+
+/*******************************************
+ * class for the title of the subscription *
+ ******************************************/
+P.SUBSCRIPTION {
+		  color : #FFFFFF;
+		  font-family: arial;
+		  font-weight : bold;
+		  text-align : center;
+		  font-size : 16px;
+}
+/********************************************************
+ * color of the thin line surrounding the subscriptions *
+ *******************************************************/
+TABLE.SUBSCRIPTION {
+		background-color : #000000;
+}
+/*************************
+ * class for the headers *
+ ************************/
+TH.SUBSCRIPTION {
+		color      : #FFFFFF;
+		background-color : #274465;
+		font-weight: bold;			
+}
+/*******************************
+ * class for the subscriptions *
+ ******************************/
+TD.SUBSCRIPTION {
+		color      : #FFFFFF;
+		background-color : #336699;
+}
+
+
+P.SUBS {
+		  color : #FFFFFF;
+		  font-family: arial;
+		  font-weight : bold;
+		  text-align : center;
+		  font-size : 16px;
+}
+
+TABLE.SUBS {		
+		background-color : #274465;
+		border-collapse: collapse;	
+}
+TABLE.subs2 {
+		background-color : #000000;
+}
+
+
+
+TH.SUBS {
+		color      : #FFFFFF;
+		background-color : #274465;
+		font-weight: bold;			
+		text-align : left;
+		font-size : 16px;
+		font-family: arial;
+}
+
+TR.SUBS {
+		background-color : #3366A3;
+}
+
+
+TD.SUBS {
+		color      : #FFFFFF;
+		background-color : #3366A3;
+}
+
+
+
+/*******************************
+ *  background color to use to *
+ *  display the errors         *
+ ******************************/
+TD.ERROR {
+		background-color : #ED4F50;
+}
+
+/***********************************************
+ * color of the thin line surrounding the form *
+ **********************************************/
+TABLE.FORM {		
+		width:100%;
+		background-color : #000000;
+}
+/**************************************
+ * background color of the form title *
+ *************************************/
+TH.FORM {
+		color      : #FFFFFF;
+		background-color : #274465;
+		font-weight: bold;			
+}
+/********************************
+ * background color of the form *
+ *******************************/
+TD.FORM {
+		background-color :  #336699;
+}
+
+/*
+ * Style for the fixed header collection example.
+ */
+TABLE.COL {
+	cell-spacing: 2px;
+	background-color : #000000;
+}
+TH.COL {
+	color      : #FFFFFF;
+	background-color : #274465;
+	font-weight: bold;
+	padding : 2px;
+}
+TD.COL {
+	background-color :  #336699;
+}
+
+TD.PAGER {
+	background-color :  #3366A3;
+	text-align: center;
+}
+
+.ongletMain {
+	BORDER-RIGHT: #003470 2px solid; 
+	BORDER-TOP: medium none; 
+	BORDER-LEFT: #003470 2px solid; 
+	BORDER-BOTTOM: #003470 1px solid; 
+}
+
+.clsAction {
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 10px; 
+	COLOR: #053c6d; 
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+	width:100%;
+}
+
+
+.ongletTextEna {
+	BORDER-RIGHT: #003470 2px solid; 
+	BORDER-TOP: #003470 2px solid; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	COLOR:#000000;
+	BORDER-LEFT: #003470 2px solid; 
+	BORDER-BOTTOM: medium none; 
+	FONT-FAMILY: verdana; 
+	BACKGROUND-COLOR:#FFFFFF; 
+	TEXT-ALIGN: center;
+}
+
+.ongletTextDis {
+	BORDER-RIGHT: #3A6295 1px solid; 
+	BORDER-TOP: #3A6295 1px solid; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	BORDER-LEFT: #3A6295 1px solid; 
+	COLOR: #FFFFFF; 
+	BORDER-BOTTOM: #3A6295 2px solid; 
+	FONT-FAMILY: verdana; 
+	BACKGROUND-COLOR: #003470; 
+	TEXT-ALIGN: center;
+}
+
+.ongletTextEna1 {
+	BORDER-TOP: medium none; 
+	BORDER-BOTTOM: #003470 2px solid; 
+	BORDER-LEFT: #003470 2px solid; 
+	BORDER-RIGHT: #003470 2px solid; 
+	padding-left: 2PX;
+	padding-right: 2PX;
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	COLOR:#000000;
+	FONT-FAMILY: verdana; 
+	BACKGROUND-COLOR:#FFFFFF; 
+	TEXT-ALIGN: center;
+}
+
+.ongletTextDis1 {
+	BORDER-RIGHT: #3A6295 1px solid; 
+	BORDER-TOP: #3A6295 1px solid; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	BORDER-LEFT: #3A6295 1px solid; 
+	COLOR: #FFFFFF; 
+	BORDER-BOTTOM: #3A6295 2px solid; 
+	FONT-FAMILY: verdana; 
+	BACKGROUND-COLOR: #003470; 
+	TEXT-ALIGN: center;
+}
+
+.ongletTextErr {
+	BORDER-RIGHT: #3A6295 2px solid; 
+	BORDER-TOP: #3A6295 2px solid; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	BORDER-LEFT: #3A6295 2px solid; 
+	COLOR: #FFFFFF; 
+	BORDER-BOTTOM: #3A6295 2px solid; 
+	FONT-FAMILY: verdana; 
+	BACKGROUND-COLOR: #FF3333;
+	TEXT-ALIGN: center;
+}
+
+.ongletMiddle {
+	BORDER-RIGHT: #003470 2px solid; 
+	BORDER-TOP: medium none; 
+	FONT-SIZE: 1px; 
+	BORDER-LEFT: #003470 2px solid; 
+	BORDER-BOTTOM: medium none; 
+	BACKGROUND-COLOR: #FFFFF;
+}
+
+.ongletSpace {
+	BORDER-BOTTOM: #003470 2px solid;
+}
+
+/**
+ * Calendar classes
+ */
+
+TD.CALENDRIER {
+	background-color: #C2C2C2; 
+	font-weight: bold; 
+	text-align: center; 
+	font-size: 10px;
+}
+
+A.CALENDRIER {
+	text-decoration: none; 
+	color: #000000;
+}
+
+.CALENDARBORDER {
+	background-color: #000000; 
+}
+
+.CALENDARTITLE {
+	background-color: #336699; //#C9252C;
+}
+
+.CALENDARWEEK {
+	background-color: #FFFFFF;
+}
+
+.CALENDARWEEKEND {
+	background-color: #FFF4E5;
+}
+
+.CALENDARSELECTED {
+	background-color: #FF8F01;
+}
+
+
+
+
+
+/*/------------------------------------------------------------------\*/
+/*|                                                                  |*/
+/*|                      SUGGEST                    				 |*/
+/*|                                                                  |*/
+/*\------------------------------------------------------------------/*/
+
+
+
+div.suggestionList {
+	z-index:500;
+	position:absolute;
+	width:150px; 
+	border:1px solid #333333; 
+	background-color:#ffffff; 
+	font-family:Tahoma; 
+	font-size:11px; 
+	cursor:default; 
+	visibility:hidden;
+}
+div.suggestionList_element_off {
+	width: 148px;
+	background: #ffffff;
+	color: #333333;
+	padding-left: 2px;
+}
+div.suggestionList_element_on {
+	width: 148px;
+	background: #6D99C6;
+	color: #ffffff;
+	padding-left: 2px;
+}
+div#parentWindowDiv, 
+#pamview {
+	display:none;
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:100%;
+	height:1000%;
+	background:gray;
+	filter:alpha(Opacity=80);
+	opacity:0.5;
+	-moz-opacity:0.5;
+	-khtml-opacity:0.5;
+	z-index:2;
+}
+table.viewpam {
+	margin: 5px 0 1px 0 !important;
+}

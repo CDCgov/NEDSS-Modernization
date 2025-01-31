@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MPR-update-engine SYSTEM "mprupdateengine_config.dtd">
+<MPR-update-engine name="MPR Update Engine" version="1.0" description="Configuration Information for MPR Update Engine">
+	<handler id="default" name="default handler">
+		<actions>
+			<action name="single field update action">
+				<action-class>gov.cdc.nedss.systemservice.mprupdateengine.SingleFieldUpdateAction</action-class>
+				<init-id>single-update-action</init-id>
+			</action>
+			<action name="multi field update action">
+				<action-class>gov.cdc.nedss.systemservice.mprupdateengine.MultiFieldUpdateAction</action-class>
+				<init-id>multi-update-action</init-id>
+			</action>
+		</actions>
+	</handler>
+</MPR-update-engine>

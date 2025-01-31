@@ -1,0 +1,255 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>gov.cdc.nedss.reportadmin.dt.DataSourceColumnDT</xsp:include>
+		<xsp:include>gov.cdc.nedss.reportadmin.dt.DataSourceDT</xsp:include>
+		<xsp:include>gov.cdc.nedss.reportadmin.dt.ReportDT</xsp:include>
+		<xsp:include>java.util.ArrayList</xsp:include>
+		<xsp:include>java.util.Iterator</xsp:include>
+	</xsp:structure>
+	<content form="/nbs/EditDataSource.do">
+		<xsp:logic>
+            DataSourceDT dtDataSource = (DataSourceDT)session.getAttribute("ReportAdmin.dtDataSource");
+        </xsp:logic>
+		<link-bar>
+			<link>
+				<xsp:attribute name="name">
+					<xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+				</xsp:attribute>
+				<xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+			</link>
+		</link-bar>
+		<button-bar>
+			<left>
+				<label>Create Column</label>
+				<javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/NewDataSourceColumn.do");
+                    checkAvailableDSColumns();
+                </javascript-action>
+			</left>
+			<left>
+				<label>Create Report</label>
+				<javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/NewReport.do?context=ViewDataSource");
+                    document.forms[0].submit();
+                </javascript-action>
+			</left>
+			<right>
+				<label>Edit</label>
+				<javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/EditDataSource.do");
+                    document.forms[0].submit();
+                </javascript-action>
+			</right>
+			<right>
+				<label>Delete</label>
+				<javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/DeleteDataSource.do");
+                    deleteDataSourceConfirm();
+                </javascript-action>
+			</right>
+		</button-bar>
+		<tab>
+			<group>
+				<line>
+					<element type="raw">
+						<span style="color: red; font-weight: bold;">
+							<value>
+								<xsp:expr>request.getAttribute("error")</xsp:expr>
+							</value>
+						</span>
+					</element>
+				</line>
+			</group>
+			<group>
+				<xsp:attribute name="name">Data Source 
+					(<xsp:expr>dtDataSource.getDataSourceName()</xsp:expr>)
+				</xsp:attribute>
+				<!--line>
+					<element type="raw">
+						<span>
+							<i>
+								<font class="boldTenRed"> * Indicates a Required Field </font>
+							</i>
+						</span>
+					</element>
+				</line-->
+				<line>
+					<element name="data_source_uid" type="hidden">
+						<value>
+							<xsp:expr>dtDataSource.getDataSourceUID_s()</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="data_source_name" type="text" label="Name">
+						<value>
+							<xsp:expr>dtDataSource.getDataSourceName()</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="hidden" name="dsColumnsAvailable">
+						<value><xsp-request:get-attribute name="anyDsColumnsAvailable"/></value>
+					</element>
+				</line>				
+				<line>
+					<element name="data_source_title" type="raw" label="Title">
+						<span>
+							<xsp:expr>dtDataSource.getDataSourceTitle()</xsp:expr>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="desc_txt" type="raw" label="Description">
+						<span>
+							<xsp:expr>dtDataSource.getDescTxt()</xsp:expr>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="jurisdiction_security" type="text" label="Secure by Program Area and Jurisdiction">
+						<xsp:logic>
+                            if(dtDataSource.getJurisdictionSecurity().equalsIgnoreCase("Y"))
+                            {
+                        </xsp:logic>
+						<value>Yes</value>
+						<xsp:logic>
+                            }
+                            else
+                            {
+                        </xsp:logic>
+						<value>No</value>
+						<xsp:logic>
+                            }
+                        </xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element name="reporting_facility_security" type="text" label="Secure by Reporting Facility">
+						<xsp:logic>
+	                        if(dtDataSource.getReporting_facility_security().equalsIgnoreCase("Y"))
+	                        {
+	                    </xsp:logic>
+						<value>Yes</value>
+						<xsp:logic>
+	                        }
+	                        else
+	                        {
+	                    </xsp:logic>
+						<value>No</value>
+						<xsp:logic>
+	                        }
+	                    </xsp:logic>
+					</element>
+				</line>
+			</group>
+			<group name="Data Source Columns">
+				<line>
+					<element type="queue-data-table" pagenumbers="false">
+						<sortHref>ViewDataSource.do?ContextAction=Sort&amp;data_source_uid=<xsp:expr>dtDataSource.getDataSourceUID_s()</xsp:expr>
+						</sortHref>
+						<sortDirection>
+							<xsp-request:get-attribute name="sortDirection"/>
+						</sortDirection>
+						<noLinkHeader width="3%"/>
+						<noLinkHeader width="3%"/>						
+						<header width="20%" methodName="getColumnName">Column Name</header>
+						<header width="25%" methodName="getColumnTitle">Title</header>
+						<header width="25%" methodName="getDescTxt">Codeset</header>
+						<header width="10%" methodName="getColumnTypeCode">Type</header>
+						<!--header width="15%" methodName="getColumnMaxLen">Max Length</header-->
+						<header width="10%" methodName="getFilterable">Advanced Filter</header>
+						<header width="10%" methodName="getDisplayable">Column Selection</header>
+						<xsp:logic>
+			                    ArrayList alDataSourceColumn = (ArrayList)session.getAttribute("ReportAdmin.alDataSourceColumn");
+			                    Iterator iDataSourceColumn = alDataSourceColumn.iterator();
+			                    while(iDataSourceColumn.hasNext())
+			                    {
+			                        DataSourceColumnDT dtDataSourceColumn = (DataSourceColumnDT)iDataSourceColumn.next();
+			                        String link1URL = "/nbs/ViewDataSourceColumn.do?column_uid=" + dtDataSourceColumn.getColumnUID_s() + "&amp;data_source_uid=" +  													dtDataSource.getDataSourceUID_s();
+			                        String editLink = "/nbs/EditDataSourceColumn.do?column_uid=" + dtDataSourceColumn.getColumnUID_s() + "&amp;data_source_uid=" +  													dtDataSource.getDataSourceUID_s();
+			                        String deleteLink = "/nbs/DeleteDataSourceColumn.do?column_uid=" + dtDataSourceColumn.getColumnUID_s() + "&amp;data_source_uid=" +  													dtDataSource.getDataSourceUID_s();
+												
+			                </xsp:logic>
+						<record>
+							<link1>
+								<xsp:expr>editLink</xsp:expr>
+							</link1>
+							<link2>
+								<javascript-action>javascript:doDoubleDareDelete('<xsp:expr>deleteLink</xsp:expr>','Are you sure you want to delete the data source column?');</javascript-action>
+							</link2>		
+							<link3>
+								<xsp:expr>link1URL</xsp:expr>
+							</link3>											
+							<column link1=""><value>Edit</value></column>
+							<column link2=""><value>Delete</value></column>
+							<column link3="">
+								<value>
+									<xsp:expr>dtDataSourceColumn.getColumnName()</xsp:expr>
+								</value>
+							</column>
+							<column>
+								<value>
+									<xsp:expr>dtDataSourceColumn.getColumnTitle()</xsp:expr>
+								</value>
+							</column>
+							<column>
+								<value>
+									<xsp:expr>dtDataSourceColumn.getCodesetNm()</xsp:expr>
+								</value>
+							</column>
+							<column>
+								<value>
+									<xsp:expr>dtDataSourceColumn.getColumnTypeCode()</xsp:expr>
+								</value>
+							</column>
+							<!--column>
+								<value>
+									<xsp:expr>dtDataSourceColumn.getColumnMaxLen()</xsp:expr>
+								</value>
+							</column-->
+							<column>
+								<value>
+									<xsp:expr>dtDataSourceColumn.getFilterable()</xsp:expr>
+								</value>
+							</column>
+							<column>
+								<value>
+									<xsp:expr>dtDataSourceColumn.getDisplayable()</xsp:expr>
+								</value>
+							</column>
+						</record>
+						<xsp:logic>
+                    }
+                </xsp:logic>
+					</element>
+				</line>
+			</group>
+			<group name="Associated Reports">
+				<xsp:logic>
+                    ArrayList alReport = (ArrayList)session.getAttribute("ReportAdmin.alReport");
+                    Iterator iReport = alReport.iterator();
+                    while(iReport.hasNext())
+                    {
+                        ReportDT dtReport = (ReportDT)iReport.next();
+                </xsp:logic>
+				<line>
+					<element type="hyper-link">
+						<href>/nbs/ViewReport.do?data_source_uid=<xsp:expr>dtReport.getDataSourceUID_s()</xsp:expr>&amp;report_uid=<xsp:expr>dtReport.getReportUID_s()</xsp:expr>&amp;context=ViewDataSource</href>
+						<text>
+							<xsp:expr>dtReport.getReportTitle()</xsp:expr>
+						</text>
+					</element>
+				</line>
+				<xsp:logic>
+                    }
+                </xsp:logic>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

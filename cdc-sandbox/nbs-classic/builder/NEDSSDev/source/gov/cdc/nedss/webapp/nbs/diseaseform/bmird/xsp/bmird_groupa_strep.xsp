@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0">
+	<xsp:structure>
+		<nedss:Include/>
+	</xsp:structure>
+	<content>
+		<tab name="BMIRD">
+		<xsp:logic>
+		      if(request.getAttribute("doPreview") != null)
+		          if( request.getAttribute("doPreview").equals("yes"))
+		               request.setAttribute("abcsInd","T");
+		      // System.out.println(" \ndoPreview "+  request.getAttribute("doPreview"));      
+		      // System.out.println(" \nabcsInd "+  request.getAttribute("abcsInd"));		       
+		</xsp:logic>
+		<group label="THESE QUESTIONS REFER TO THE 7 DAYS PRIOR TO THE FIRST POSITIVE CULTURE.">
+	       		<xsp:attribute name="abc">
+					<xsp-request:get-attribute name="abcsInd"/>
+				</xsp:attribute>
+				<line>
+					<element type="conditional-entry" name="BMD145c">
+						<controller type="select"  align-label="left" length="7" label="Did the patient have surgery?" trigger="Y">
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS000</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS000</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">BMD145</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="BMD145"/>
+							</value>
+						</controller>
+						<line>
+							<element type="text" label="If yes, date of surgery" size="10" mask="##/##/####">
+								<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS001</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS001</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">BMD146</xsp:attribute>
+								<validation type="date" mask="mm/dd/yyyy" name="Date of surgery"/>
+								<value>
+									<xsp-request:get-attribute name="BMD146-fromTime"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="conditional-entry" name="BMD147c">
+						<controller type="select"  align-label="left"  length="7" label="Did the patient deliver a baby (vaginal or C-section)?" trigger="Y">
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS002</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS002</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">BMD147</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="BMD147"/>
+							</value>
+						</controller>
+						<line>
+							<element type="text" label="If yes, date of delivery" size="10" mask="##/##/####">
+								<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS003</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS003</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">BMD148</xsp:attribute>
+								<validation type="date" mask="mm/dd/yyyy" name="Date of delivery"/>
+								<value>
+									<xsp-request:get-attribute name="BMD148-fromTime"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="select" size="5" align-label="left" label="Did the patient have any of the following">
+						<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS004</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">BMD149</xsp:attribute>
+						<xsp:attribute name="name">BMD149</xsp:attribute>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>BM_GAS_COND</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="BMD149"/>
+						</value>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

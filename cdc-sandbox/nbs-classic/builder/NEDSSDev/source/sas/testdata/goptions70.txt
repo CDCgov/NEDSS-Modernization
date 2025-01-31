@@ -1,0 +1,166 @@
+NOTE: Copyright (c) 1999-2001 by SAS Institute Inc., Cary, NC, USA.
+NOTE: SAS (r) Proprietary Software Release 8.2 (TS2M0)
+      Licensed to COMPUTER SCIENCES CORP/CDC NEDSS, Site 0038838051.
+NOTE: This session is executing on the WIN_PRO  platform.
+
+
+
+NOTE: SAS initialization used:
+      real time           3.13 seconds
+      cpu time            0.65 seconds
+
+
+NOTE: AUTOEXEC processing beginning; file is C:\sas\autoexec.sas.
+
+NOTE: Libref NBS_ODS was successfully assigned as follows:
+      Engine:        ODBC
+      Physical Name: nedss1
+
+NOTE: AUTOEXEC processing completed.
+
+1    proc goptions; run;
+
+                            SAS/GRAPH software options and parameters
+                             (executing in DMS Process environment)
+
+NOADMGDF                     GDDM driver output an ADMGDF file
+ASPECT=                      Aspect ratio (width/height) for software characters
+NOAUTOCOPY                   Automatic hardcopy after display
+NOAUTOFEED                   Automatic paper feed after plot
+AUTOSIZE=                    Change character cell size to preserve device catalog rows and
+                             columns
+BAUD=                        Communications line speed
+BINDING=DEFAULTEDGE          Binding edge
+NOBORDER                     Draw a border around display or plot
+CBACK=                       Background color
+CBY=                         BY line color
+CELL                         Hardware characters must be on cell boundaries
+CHARACTERS                   Use hardware characters
+CHARTYPE=                    Default hardware font
+CIRCLEARC                    Use hardware circle/arc generator
+NOCOLLATE                    Collate output
+COLORS=( )                   Default color list
+CPATTERN=                    Default pattern color
+CSYMBOL=                     Default symbol color
+CTEXT=                       Default text color
+CTITLE=                      Default title, footnote and note color
+DASH                         Use hardware dashed line generator
+DASHSCALE=                   Dash pattern scale factor
+DELAY=                       Animation delay time in 100ths of a second
+DEVADDR=                     IBM Device address, qname, or node name
+DEVICE=                      Graphics output device
+DEVMAP=DEFAULT               Output character map for hardware text
+DISPLAY                      Display graph on device
+DISPOSAL=NONE                Image animation disposal method
+DRVINIT=                     Host command executed before driver initialization
+DRVTERM=                     Host command executed after driver termination
+NODUPLEX                     Duplex printing
+NOERASE                      Erase graph upon completion
+EXTENSION=                   Driver preferred file extension
+FASTTEXT                     Use quicker, less precise, integer font rendering routines;
+                             generally unsuitable for multiple device or templated replay
+                             situations.
+FBY=                         BY line font
+FCACHE=3                     Number of software fonts to keep in memory
+FILECLOSE=                   Close output file at driver termination or end of each graph
+FILEONLY                     File is default output destination
+FILL                         Use hardware rectangle fill generator
+FILLINC=                     Fill increment to use on software polygon fills.
+FONTRES=NORMAL               Use decreased resolution fonts (SASHELP.DRAFT).
+FTEXT=                       Default text font
+FTITLE=                      Default font for first title
+FTRACK=TIGHT                 Default spacing between characters for supplied Bitstream fonts.
+GACCESS=                     Output format for graphics stream
+GCLASS=G                     IBM3287 sysout class
+GCOPIES=(0, 20)              Number of output copies
+GDDMCOPY=FSCOPY              GDDM driver hardcopy type
+GDDMNICKNAME=                GDDM nickname
+GDDMTOKEN=                   GDDM token
+GDEST=LOCAL                  IBM3287 sysout destination
+GEND=                        Buffer termination string
+GEPILOG=                     Device termination string
+GFORMS=                      IBM3287 sysout forms code
+GOUTMODE=APPEND              GOUT catalog mode: APPEND or REPLACE
+GPROLOG=                     Device initialization string
+GPROTOCOL=                   Graphics protocol converter driver name
+GRAPHRC                      SAS/GRAPH is to issue step condition codes at exit
+GSFLEN=                      Length of Graphics Stream File records
+GSFMODE=PORT                 Graphics Stream File access mode
+GSFNAME=                     Graphics Stream File name
+NOGSFPROMPT                  Adds device driver prompts to GSASFILE
+GSIZE=                       Number of lines in graphics display area
+GSTART=                      Buffer initialization string
+GUNIT=CELLS                  Default text units
+GWAIT=                       Time delay after graphics display
+GWRITER=SASWTR               IBM3287 sysout writer name
+HANDSHAKE=                   ASCII device handshake protocol
+HBY=                         BY line height
+HORIGIN=                     Horizontal offset to graph origin
+HPOS=                        Character cells per line
+HSIZE=                       Horizontal plot size in inches
+HTEXT=                       Default text height
+HTITLE=                      Default height of first TITLE line
+IBACK=                       Path or fileref to background image
+IMAGEPRINT                   Specifies whether images will be output
+IMAGESTYLE=TILE              Background image style: FIT or TILE
+INTERPOL=                    Default symbol interpolation
+ITERATION=                   Iteration of animation
+NONINTERLACED                Image interlace selection
+KEYMAP=DEFAULT               Input character map for hardware and software text
+LFACTOR=                     Hardware line thickness factor
+OFFSHADOW=(0.0625 in., -0.0625 in.)
+                             X, Y offset for dropshadows
+PAPERDEST=                   Paper destination selection
+PAPERFEED=                   Amount of paper to feed on drum plotters
+PAPERLIMIT=                  Physical width of the plotting paper
+PAPERSIZE=                   Paper size selection
+PAPERSOURCE=                 Paper source selection
+PAPERTYPE=                   Paper type selection
+PENMOUNTS=                   Number of pens/colors to be used
+PENSORT                      Sort plotter colors
+PIEFILL                      Use hardware pie fill generator
+NOPCLIP                      Specifies whether a clipped polygon is stored with the graph in the
+                             catalog entry in its clipped or unclipped form.
+POLYGONCLIP                  Allows polygons with a device dependent pattern to be clipped.
+POLYGONFILL                  Use hardware polygon fill generator
+POSTGEPILOG=                 Data to send after the GEPILOG
+POSTGRAPH=                   Host command executed after each graph
+POSTGPROLOG=                 Data to send after the GPROLOG
+PPDFILE=                     Printer Product Description file
+NOPREFMT                     Pass formatted discrete values to ODS clients
+PREGEPILOG=                  Data to send before the GEPILOG
+PREGRAPH=                    Host command executed before each graph
+PREGPROLOG=                  Data to send before the GPROLOG
+PROMPT                       Allow/disallow user prompting by device driver
+PROMPTCHARS='000A010D05000000'X
+                             Terminal control characters
+RENDER=MEMORY                Rendering active: Do not check for existing font. Add to font
+                             definition in memory. Do not write modified font back to disk.
+RENDERLIB=WORK               Library to store pre-rendered SAS fonts.
+REPAINT=                     Number of passes made in drawing a graph
+NOREVERSE                    Reverse order of output
+NOROTATE                     Rotate plot ninety degrees
+SIMFONT=SIMULATE             Software font to use as simulated hardware font.
+SPEED=                       Plotter Pen speed
+NOSWAP                       Substitute BLACK for WHITE
+SYMBOL                       Use hardware symbol generator
+TARGETDEVICE=                Intended hardcopy device
+NOTRANSPARENCY               Image background transparency
+TRANTAB=                     Terminal translate table
+UCC=                         Driver specific option flags
+NOUSERINPUT                  Enable user input for image animation
+NOV5COMP                     Selects maximum version 5 compatibility
+NOV6COMP                     Selects maximum version 6 compatibility
+VORIGIN=                     Vertical offset to graph origin
+VPOS=                        Character cells per column
+VSIZE=                       Vertical plot size in inches
+XMAX=                        Maximum horizontal plot size in inches
+XPIXELS=                     Maximum number of horizontal pixels
+YMAX=                        Maximum vertical plot size in inches
+YPIXELS=                     Maximum number of vertical pixels
+
+NOTE: PROCEDURE GOPTIONS used:
+      real time           0.25 seconds
+      cpu time            0.14 seconds
+
+

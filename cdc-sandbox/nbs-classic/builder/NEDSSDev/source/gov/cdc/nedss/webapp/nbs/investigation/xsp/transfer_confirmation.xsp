@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbscontext.NBSConstantUtil</xsp:include>
+	</xsp:structure>
+	<content form="/nedss/transferConfirmation.do">
+		<xsp:logic><![CDATA[    
+		
+		String operationType= (String)request.getAttribute("OperationType");
+
+     		TreeMap objStore = (TreeMap) request.getSession().getAttribute("NBSObjectStore");
+		
+		String localIdInv = (String)session.getAttribute("DSInvestigationLocalID");	
+		String localIdObs = (String)session.getAttribute("DSObservationLocalID");
+		
+		if(localIdObs == null) {
+			localIdObs = (String) objStore.get(NBSConstantUtil.DSObservationLocalID);
+			////##!! System.out.println("-------localIdObsId from objectStore---------" + localIdObs);
+		}
+
+		if(localIdInv == null) {
+			localIdInv = (String) objStore.get(NBSConstantUtil.DSInvestigationLocalID);
+			////##!! System.out.println("-------localInvId from objectStore---------" + localIdInv);
+		}
+		
+
+		String jurisdiction = (String) objStore.get(NBSConstantUtil.DSJurisdiction);
+		String programArea = (String) objStore.get(NBSConstantUtil.DSProgramArea);
+		String programAreaInv = (String) objStore.get("DSInvestigationProgramArea");
+		String jurisdictionInv = (String) objStore.get("DSInvestigationJurisdiction");
+		String ViewFile = (String)request.getAttribute("ViewFile");
+
+		
+		////##!! System.out.println("VAlue of jurisdictionInv : " + jurisdictionInv );
+		////##!! System.out.println("VAlue of jurisdiction : " + jurisdiction + "programArea : " + programArea );
+		
+		]]></xsp:logic>
+		<javascript-files>
+			<import>ObservationSpecific.js</import>
+		</javascript-files>
+		<id-bar>
+			<xsp:logic>
+	if (operationType.equalsIgnoreCase("investigation")) {
+	</xsp:logic>
+			<id name="Investigation ID">
+				<value>
+					<xsp:expr>
+						localIdInv 
+					</xsp:expr>
+				</value>
+			</id>
+			<xsp:logic>
+	} else if (operationType.equalsIgnoreCase("observation") ){
+	</xsp:logic>
+			<id name="Observation ID">
+				<value>
+					<xsp:expr>
+						localIdObs
+					</xsp:expr>
+				</value>
+			</id>
+			<xsp:logic>			
+	}
+	</xsp:logic>
+		</id-bar>
+		<link-bar>
+		    <link>
+				<xsp:attribute name="name">
+					<xsp-request:get-attribute name="linkName"/>
+				</xsp:attribute>
+				<xsp-request:get-attribute name="linkValue"/>
+			</link>|
+			<link name="View File">
+				<xsp:expr>ViewFile</xsp:expr>
+			</link>
+		</link-bar>
+		<button-bar/>
+		<tab>
+			<group name=" ">
+				<line>
+					<element type="raw">nbsp;</element>
+				</line>
+				<line>
+					<element type="raw">nbsp;</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<b>This record has been successfully transferred to:</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">nbsp;</element>
+				</line>
+				<line>
+					<element type="raw">nbsp;</element>
+				</line>
+				<line>
+					<element type="text" label="Program Area">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="setAccessPermission"/>
+						</xsp:attribute>
+						<validation type="required" name="Program Area"/>
+						<xsp:logic>
+						if (operationType.equals("observation")){
+						
+																
+						</xsp:logic>
+						<readonly/>
+						<!--srt-options-string>
+							<srt-codes:getProgramAreaCodedValue/>
+						</srt-options-string-->
+						<value>
+							<xsp:expr>
+								programArea								
+							</xsp:expr>
+						</value>
+						<xsp:logic>				
+						} else if (operationType.equals("investigation")){
+						</xsp:logic>
+						<readonly/>
+						<!--srt-options-string>
+							<srt-codes:getProgramAreaCodedValue/>
+						</srt-options-string-->
+						<value>
+							<xsp:expr>
+								programAreaInv
+							</xsp:expr>
+						</value>
+						<xsp:logic>			
+						}
+						</xsp:logic>
+					</element>
+				</line>
+				<line>
+					<element type="raw">nbsp;</element>
+				</line>
+				<line>
+					<element type="raw">nbsp;</element>
+				</line>
+				<line>
+					<xsp:logic>
+							if (operationType.equals("observation")){
+						</xsp:logic>
+					<element type="select" label="Jurisdiction">
+						<readonly/>
+						<srt-options-string>
+							<srt-codes:getJurisdictionCodedSortedValues/>
+						</srt-options-string>
+						<value>
+							<xsp:expr>
+										jurisdiction								
+									</xsp:expr>
+						</value>
+					</element>
+					<xsp:logic>
+						} else if (operationType.equals("investigation")){
+						</xsp:logic>
+					<element type="select" label="Jurisdiction">
+						<readonly/>
+						<srt-options-string>
+							<srt-codes:getJurisdictionCodedSortedValues/>
+						</srt-options-string>
+						<value>
+							<xsp:expr>
+										jurisdictionInv							
+									</xsp:expr>
+						</value>
+						<xsp:logic>
+							//	//##!! System.out.println("VAlue of jurisdictionInv#### : " + jurisdictionInv );
+						</xsp:logic>
+					</element>
+					<xsp:logic>			
+						}
+						</xsp:logic>
+				</line>
+				<xsp:logic>									
+			if (operationType.equals("investigation")){
+			</xsp:logic>
+				<line>
+					<element type="raw">nbsp;</element>
+				</line>
+				<line>
+					<element type="raw">nbsp;</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<b>Any observations that were associated with this investigation have been automatically transferred <br/>
+							to the new Jurisdiction.</b>
+						</span>
+					</element>
+				</line>
+				<xsp:logic>}</xsp:logic>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

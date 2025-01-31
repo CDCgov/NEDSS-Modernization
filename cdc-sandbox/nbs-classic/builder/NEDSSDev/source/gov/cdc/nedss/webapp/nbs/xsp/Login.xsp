@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<!DOCTYPE xsp:page SYSTEM "../WEB-INF/xsp.dtd">
+<xsp:page xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" language="java">
+	<nedss:import/>
+	<page>
+		<part>
+		<xsp:logic>
+		String isLoginPageDisabled = gov.cdc.nedss.util.PropertyUtil.getInstance().getIsLoginPageDisabled();
+		if( isLoginPageDisabled==null || isLoginPageDisabled!=null &amp;&amp; !isLoginPageDisabled .equalsIgnoreCase("FALSE")){
+	             javax.servlet.http.HttpServletResponse httpResponse =	(javax.servlet.http.HttpServletResponse)this.objectModel.get(HttpEnvironment.HTTP_RESPONSE_OBJECT);
+			httpResponse .sendRedirect ( "/nbs/nbs/error" ) ; 
+ //DOES NOTHING
+}else {
+</xsp:logic>
+			<nedss:init/>
+			<nedss:SetHeaders/>
+			<parameters>
+				<parameter name="border">
+					<xsp:expr>strBorder</xsp:expr>
+				</parameter>
+				<parameter name="uids">
+					<xsp:expr>strUIDs</xsp:expr>
+				</parameter>
+				<parameter name="user">
+					<xsp:expr>strUser</xsp:expr>
+				</parameter>
+				<parameter name="usermode">edit</parameter>
+				<parameter name="verbose">
+					<xsp:expr>strVerbose</xsp:expr>
+				</parameter>
+				<parameter name="title">NBS Login</parameter>
+			</parameters>
+			<head>
+				<nedss:InitializeSessionTimer frequency="1"/>
+				<scriptfile>
+                avr.basic.js
+            </scriptfile>
+               <scriptfile>
+                jquery-1.2.6.min.js
+            </scriptfile>
+            <scriptfile>
+               jquery.tablesorter.js
+            </scriptfile>
+            <scriptfile>
+               jquery.blockUI.js
+            </scriptfile>
+		
+            
+				<script>
+			
+				
+				
+
+					jQuery(document).ready(function(){
+			
+
+							localStorage.setItem("innerDocClick","true");
+			
+					});
+	
+	
+	
+			
+			
+			</script>
+			
+			</head>
+			<toolbarDef>
+				<toolbarLeft>
+					<nedss:IfSHOW_DEBUG_BUTTON>
+						<nedss:IfServer>
+							<toolbarButton id="id_debug" name="Debug">
+								<event name="onclick">
+                                    OpenDebugWindow();
+                                </event>
+							</toolbarButton>
+						</nedss:IfServer>
+					</nedss:IfSHOW_DEBUG_BUTTON>
+				</toolbarLeft>
+				<toolbarRight>
+					<toolbarButton id="id_Submit" name="Submit">
+						<event name="onclick">
+							post("/nbs/nbslogin");
+							
+                        </event>
+					</toolbarButton>
+				</toolbarRight>
+			</toolbarDef>
+			<body>
+				<part>
+					<attributes>
+						<style>nedss-nonavbar</style>
+					</attributes>
+					<nedss:CheckSessionTimer/>
+				</part>
+				<linkbar>
+					<ids>
+                    </ids>
+					<hyperlinks>
+                    </hyperlinks>
+				</linkbar>
+				<toolbar location="top"/>
+				<errorbar/>
+				<section>
+					<part>
+						<attributes>
+							<id>id_Login</id>
+							<name/>
+							<linked>false</linked>
+							<width>2</width>
+						</attributes>
+					</part>
+					<subsection name="" line="false">
+						<row>
+							<column width="2">
+								<empty/>
+							</column>
+						</row>
+						<row>
+							<column align="right" width="1">
+								<label ref="id_UserName" name="User Name:"/>
+							</column>
+							<column width="1">
+								<textbox id="id_UserName" name="UserName" size="22" max="50">
+									<event name="onkeypress">
+                                        SubmitOnKeyPressEnter(_this, "/nbs/nbslogin");
+                                    </event>
+								</textbox>
+							</column>
+						</row>
+						<row>
+							<column align="right" width="1">
+								<label ref="id_Password" name="Password:"/>
+							</column>
+							<column width="1">
+								<textbox id="id_Password" name="Password" size="22" max="50" password="true">
+									<event name="onkeypress">
+                                        SubmitOnKeyPressEnter(_this, "/nbs/nbslogin");
+                                    </event>
+								</textbox>
+							</column>
+						</row>
+						<!--
+                        <row>
+                            <column align="right" width="1">
+                                <empty/>
+                            </column>
+                            <column width="1">
+                                <hyperlink id="id_ReleaseNotes" name="Release Notes">
+                                    <event name="onclick">
+                                        window.open("ReleaseNotes.txt", "ReleaseNotes", "width=700,height=500,resizable=1,scrollbars=1");
+                                    </event>
+                                </hyperlink>
+                            </column>
+                        </row>
+                        <row>
+                            <column align="right" width="1">
+                                <empty/>
+                            </column>
+                            <column width="1">
+                                <hyperlink id="id_KnownIssues" name="Known Issues">
+                                    <event name="onclick">
+                                        window.open("issues.txt", "KnownIssues", "width=700,height=500,resizable=1,scrollbars=1");
+                                    </event>
+                                </hyperlink>
+                            </column>
+                        </row>
+-->
+					</subsection>
+				</section>
+				<toolbar location="bottom"/>
+			</body>
+			<xsp:logic>
+			}</xsp:logic>
+		</part>
+	</page>
+</xsp:page>

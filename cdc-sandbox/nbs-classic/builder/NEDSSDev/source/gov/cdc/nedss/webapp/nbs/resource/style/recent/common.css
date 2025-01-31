@@ -1,0 +1,389 @@
+/**
+    ---------- TOC ----------
+* - Reset YUI base styles
+* - NBS - Misc Formatting Styles
+* - Reset tabs in investigation forms
+* - NBS - Top Button Bar & Botton Button Bar
+* - NBS - 100% Navigation Bar
+* - NBS - 100% Page Header and Logo Table
+* - NBS - DisplayTag Table
+* - NBS : Info Boxes
+* - NBS - sect, sectHeader, sectBody, subSect
+* - NBS - search table - Has 3 columns. Column1 = Field Name, column2 = condition control, column3 = search value
+*/
+
+/* 
+    ----- Reset YUI base styles -----
+*/
+#doc3 {margin:0 auto; padding:5px; min-width:750px}
+.yui-t4 .yui-b { width:11.8456em;}
+.yui-t4 #yui-main .yui-b { margin-right:11.8456em; }
+#hd {height:3em; margin-bottom:0.5em;}
+#bd {padding-top:0em;}
+#ft {width:98%; border-top:1px solid #EEE; padding-top:0.5em; margin-top:2em; text-align:center;}
+h1, h2, h3, h4, h5, h6, p {margin:0.15em 0 0.15em 0;}
+h1, h2, h3, h4, h5, h6 {color: #185394;} 
+h2 {border-top:0px;}
+padding:0.15em;
+a:hover {text-decoration:none; background:#185394;}
+
+/* 
+    ----- NBS - Misc Formatting Styles -----
+*/
+.desc {color:blue;font-style:italic;font-size:85%;}
+.hiddenElement {display:none;}
+body.childWindow {padding:0.75em; text-align:left;}
+a:active, a:visited {color:#663399;}
+a[href^="#top"] {color:#FFFFFF;}
+div.expander {clear:both;} 
+span.label {font:13px Arial; font-weight:bold; margin-left:0.2em;}
+span.value {margin-right:0.2em;font:13px Arial;}
+text.invisible {visibility:hidden;}
+table tr td.fieldName {text-align:right;}
+a.toggleHref, a.toggleIconHref {margin:0px 5px 0px 2px;}
+a.toggleIconHref {text-decoration:none;}
+ul.horizontalList { margin: 0; padding: 0; list-style: none;}
+ul.horizontalList li { float: left; padding: 0; list-style: none; margin:0px;}
+ul.horizontalList li.delimiter { margin:0px 3px 0px 3px; color:black; font-weight:bold; font-size:106%;}
+ul.horizontalList li a{white-space:nowrap;}
+div.requiredFieldIndicatorLink, div.returnToPageLink {width:100%; text-align:right;}
+a.backToTopLink {font-weight:normal; text-decoration:underline;}
+a.backToTopLinkforViewFile {font-weight:normal; text-decoration:underline;color:white}
+h2.printOnlyTabHeader {display:none;}
+div.multiSelectBlock {background:#D1DDEF; margin:0.1em 1em 0.1em 0.25em; padding:0.5em;}
+div.printerIconBlock {display:none; text-align:right; background:#DCE7F7; 
+        padding:0px; font-size:13px; font-weight:bold; text-align:center;}
+div.submissionStatusMsg {height:6em; border:2px solid #3670AF; text-align:left; width:500px; margin:0 auto;}  
+div.submissionStatusMsg div.header {height:1em; line-height:1em; font:13px bold Arial; 
+        width:100%; background:#3670AF; color:#FFF; text-align:left; padding:3px; font-weight:bold; margin-bottom:5px;}
+div.submissionStatusMsg div.body {padding:10px 10px 15px 10px; font:13px normal Arial;}
+span.boldRed {font-weight:bold; color:#CC0000;}
+/* 
+    ----- NBS - Summary Header -----
+*/
+span.valueTopLine {font:16px Arial; font-weight:bold; margin-left:0.2em;}
+table.style{width:100%; margin:0 auto; margin-top:1em;border:1px solid #AFAFAF;}
+table tr.cellColor {background:#FEF2BC;}
+table.Summary {width:100%; margin:0 auto; margin-top:1em;border:1px solid #AFAFAF;}
+table td.border {padding:0.15em;width:26%; border-style:solid; border-width:0px 0px 1px 0px; border-color:#AFAFAF;}
+table td.border1 {padding:0.15em;width:26%; border-style:solid; border-width:0px 1px 1px 0px; border-color:#AFAFAF;}
+table td.border2 {padding:0.15em;width:25%; border-style:solid; border-width:0px 0px 1px 0px; border-color:#AFAFAF;}
+table td.border3 {padding:0.15em;width:24%; border-style:solid; border-width:1px 1px 1px 1px; border-color:#AFAFAF;}
+table td.border4 {padding:0.15em;width:25%; border-style:solid; border-width:0px 0px 1px 0px; border-color:#AFAFAF;}
+
+
+/* 
+    ----- Reset tabs in investigation forms -----
+*/
+div.blockTab {display:block;}
+div.hiddenTab {display:none;}
+table tr td.ongletTextEna, table tr td.ongletTextDis, table tr td.ongletTextErr,
+table tr td.ongletTextEna1, table tr td.ongletTextDis1, table tr td.ongletTextErr1
+    {width:8em; padding:2px; font:normal 1em Arial; margin:0px 10px 0px 0px; border-style:solid;}
+table tr td.ongletTextEna, table tr td.ongletTextDis, table tr td.ongletTextErr {border-width:2px;}
+table tr td.ongletTextEna {border-bottom-width:0px;}
+table tr td.ongletTextEna1, table tr td.ongletTextDis1, table tr td.ongletTextErr1 {border-width:2px;}
+table tr td.ongletTextEna1 {border-top-width:0px;}    
+table tr td.ongletTextEna, table tr td.ongletTextEna1 {background:#FFF; color:#003470;}    
+table tr td.ongletTextErr, table tr td.ongletTextErr1 {color:#FFF; border-color:#990000; background:#990000;}
+table tr td.ongletTextDis, table tr td.ongletTextDis1 {background:#003470; color:#FFF; 
+        border-width:2px 1px 2px 1px; border-color:#003470; border-style:bold;}    
+table tr td.ongletSpace {border-width:0px 0px 2px 0px; border-color:#003470; border-style:solid;}
+table tr td.ongletSpace1 {border-width:0px;}
+table tr td.ongletMain {padding:3px; border-width:0px 2px 2px 2px; border-color:#003470; border-style:solid;}
+table tr td.ongletMiddle {border-width:0px 0px 0px 0px; border-color:#003470; border-style:solid; height:0px; padding:0px; display:none;}
+div.tabNavLinks {background:#FFF; border:solid 1px #FFF; text-align:center; 
+           width:98%; margin:5px 0px 5px 0px; padding:0.25em; font-weight:bold;}
+
+
+.tablecell{
+display:table-cell;
+}
+
+/*
+    ----- NBS - Top Button Bar & Botton Button Bar -----
+*/
+table.topButtonBar, table.bottomButtonBar { width:100%; margin:0px; }
+table.topButtonBar td, table.bottomButtonBar td { text-align:center; 
+        padding:3px; font: bold 11px Arial}
+div.grayButtonBar {width:100%; margin:0 auto; margin-top:3px; margin-bottom:3px; text-align:right; background:#EEE; padding:3px 0px;}        
+div.blueButtonBar {width:100%; margin:0 auto; margin-top:3px; margin-bottom:3px; text-align:right; background:"blue"; padding:3px 0px;} 
+
+div.reportTitle {width:100%; margin:0 auto; margin-top:5px; margin-bottom:3px; text-align:center; font-size:1.5em; font-weight:bold; padding:3px 0px;} 
+div.reportNoData {width:100%; margin:0 auto; margin-top:3px; margin-bottom:3px; text-align:center; background:#EEF2F6;; padding:3px 0px;} 
+div.reportCriteria {width:100%; margin:0 auto; margin-top:3px; margin-bottom:3px; text-align:center; background:#EEF2F6;; padding:3px 0px;} 
+/* 
+    ----- NBS - 100% Navigation Bar -----
+*/
+table.nedssNavTable { width:100%; cell-spacing:0; cell-padding:0; border:0; background:#003470;}
+table.nedssNavTable tr td {text-align:center; padding:3px;}
+table.nedssNavTable tr td a, table.nedssNavTable span {color:#FFF; text-decoration:none; font-weight:bold;}
+table.nedssNavTable a:hover { text-decoration:underline; }
+table.nedssNavTable tr td.logout a {color:orange;}
+table.nedssNavTable tr td.navLink a {color:#FFF;}
+
+/* 
+    ----- NBS - 100% Page Header and Logo Table -----
+*/
+table.nedssPageHeaderAndLogoTable { width:100%; cell-spacing:0; cell-padding:0; border:0; background:#003470; margin-bottom:0.5em;}
+table.nedssPageHeaderAndLogoTable tr td {text-align:right; color:#000; padding:0px 3px 0px 3px;}
+table.nedssPageHeaderAndLogoTable tr td.pageHeader {text-align:left; background:#DCDCDC; font-size:1.3em; font-weight:bold;}
+table.nedssPageHeaderAndLogoTable tr td.pageHeader a {color:#000; text-decoration:none;}
+table.nedssPageHeaderAndLogoTable tr td.currentUser {color:#FFF; text-align:right; font-weight:bold;}
+table.nedssPageHeaderAndLogoTable tr td.logo {text-align:right; width:100px;}
+
+/*
+    ----- NBS - DisplayTag Table -----
+*/
+/*table.dtTable, table.privateDtTable {width:100%; border:1px solid #666666; padding:0.5em; margin:1em auto; margin-top:1em;}*/
+ table.dtTable, table.privateDtTable {width:100%; border:1.2px solid #666666; padding:0.0em; margin:0em auto; margin-top:0em;}
+table.dtTable thead tr th,
+table.privateDtTable thead tr th {text-decoration:none; border:1.5px solid #666666; 
+        font-weight:bold; background:#EFEFEF; padding:0em; text-align:center;}
+table.dtTable tbody tr td, table.privateDtTable tbody tr td {vertical-align:top;} 
+table.dtTable thead tr th, table.privateDtTable thead tr th {text-decoration:none; border:1px solid #666666; 
+        font-weight:bold; background:#EFEFEF; padding:0.1em 0 0.1em 0.1em; text-align:left;}
+table.dtTable tbody tr.odd, table.privateDtTable tbody tr.odd, table.dtTable tbody tr.odd td table tr {background:#FFF;}
+table.dtTable tbody tr.even, table.privateDtTable tbody tr.even, table.dtTable tbody tr.even td table tr {background:#dce7f7;}
+table.dtTable tbody tr td table tr td {border-width:0;}
+table.dtTable tbody tr td, table.privateDtTable tbody tr td {padding:1.5px; border-width:0px 1px 1px 0px; border-style:solid; border-color:#C2D4EF;}
+table.dtTable tbody tr td.hoverDescLink a, table.privateDtTable tbody tr td.hoverDescLink a {text-decoration:none; color:#000; cursor:help;}
+table.dtTable tbody tr td.hoverDescLink a:hover, table.privateDtTable tbody tr td.hoverDescLink a:hover {background:#FFE2BF;}
+table.dtTable tbody tr td.dateField, table.dtTable tbody tr td.iconField {width:50px;}
+table.dtTable tbody tr td.nameField {width:150px;} 
+table.dtTable tbody tr td.iconField {text-align:center;}
+
+table.HomePageDT {border-color:#EEEEEE;border-style:solid;border-width:2px 0 0 2px;}
+table.HomePageDT {width:98%; margin:0 auto; align:center; margin-bottom:1em; font-size:12px;}
+table.HomePageDT thead tr th {text-decoration:none; background:#D9E1EA; padding:0em; text-align:center; border:solid 1px #CCC;}
+table.HomePageDT tbody tr td {vertical-align:top;}
+table.HomePageDT tbody tr.odd {background:#FFF;}
+table.HomePageDT tbody tr.even {background:#EEF2F6;}
+table.HomePageDT tbody tr td table tr td {border-width:0;}
+table.HomePageDT tbody tr td {padding:2px; border-width:0px 1px 1px 0px; border-style:solid; border-color:#C2D4EF;}
+table.HomePageDT tbody tr td.hoverDescLink a {text-decoration:none; color:#000; cursor:help;}
+table.HomePageDT tbody tr td.hoverDescLink a:hover {background:#FFE2BF;}
+
+/*
+    ----- JQuery TableSorter Plugin Table -----
+*/
+table.inpageSortable thead tr .header {cursor: pointer; text-decoration:underline;}
+table.inpageSortable thead tr .headerSortDown, table.inpageSortable thead tr .headerSortUp {background-color: #EED1B5;}
+
+/* 
+    ----- NBS : Info Boxes -----
+*/
+div.infoBox { width:100%; border:1px solid #DDD; padding:3px; margin:0.15em 0.15em 0.5em 0.15em;}
+div.infoBox ul {list-style-type: none; margin-bottom:2px;}
+div.infoBox table tr td {padding:0px 3px 0px 3px;}
+div.infoBox span.label, div.infoBox span.value {font-size:110%;}
+div.nedssLightYellowBg {background:#FFFFCF; border:1px solid #EFEFC2; font-size:130%;}
+
+div.infoBox { width:100%; border:1px solid #DDD; padding:3px; margin:0.35em 0.15em 0.5em 0.15em;}
+div.success, div.messages, div.errors,div.info { background:#E3EFD1; color:#000; padding:0.5em; border-color:#CFDFB5; border-style:solid; border-width:2px 0px 2px 0px; font-size:14px; text-align:left;}
+div.messages {background:#EFF6FF; border-color:#C2D7EF; text-align:center;}
+div.errors {background:#FFE4E3; border-color:#990000;}
+div.info {background:#F5D0A9; border-color:#E47E7A;}
+
+span.messages { background:#EFF6FF; color:#000; padding:0.5em; border-width:2px 0px 2px 0px; border-color:#C2D7EF; border-style:solid; font-size:110%;}
+span.errors { text-align:left;background:#FFE4E3; color:#000; padding:0.5em; border-width:2px 0px 2px 0px; border-color:#E47E7A; border-style:solid; font-size:110%;}
+span.success { background:#E0FFD3;color:#000; padding:0.5em; border-width:2px 0px 2px 0px; border-color:#8AD66A; border-style:solid; font-size:110%;}
+
+/*
+    ---- NBS - sect, sectHeader, sectBody, subSect ----
+*/
+div.sect h2.sectHeader {border-width:0px 0px 1px 0px; border-color:#5F8DBF; border-style:solid; 
+        padding:0.20em 0em 0.20em 0.25em; text-transform:capitalize; color:#5F8DBF; margin-top:1em;}
+div.sect h2.sectHeader a.anchor {text-decoration:none; /*color:#5F8DBF;*/ color:#CC3300}
+div.sect h2.sectHeader span.displayToggleIcon {background:#FFF;}
+
+div.sect table.sectHeader {width:100%; border-width:0px 0px 1px 0px; border-color:#5F8DBF; 
+        margin-top:1em; border-style:solid; padding:0.20em 0em 0.20em 0.25em;}
+div.sect table.sectHeader tr td.sectName {color:#a46322; font-size: 110%; font-weight:bold; text-transform:capitalize;}
+div.sect table.sectHeader tr td.sectName a.anchor {text-decoration:none; /*color:#5F8DBF;*/ color:#CC3300}
+div.sect div.sectBody {text-align:center;}
+/*table.sectionsToggler, table.subSectionsToggler, table.subSect {width:100%; margin:0 auto; border-width:0px; margin-top:0.5em; border-spacing:4px;}*/
+table.sectionsToggler, table.subSectionsToggler, table.subSect {width:100%; margin:0 auto; border-width:0px; margin-top:0.0em; border-spacing:0px;}
+table.subSect thead tr {background:#FFF;}
+table.subSect thead tr th {padding:0.15em; font-weight:bold; color:#185394; }
+table.subSect tbody tr {/*background:#F2F2F2;*/ background:#DCE7F7;}
+table.subSect tbody tr td {padding-top:2px; padding-bottom:2px;}
+table.subSect tbody tr td.fieldName {text-align:right; width:40%; vertical-align:center; padding-right:0.20em; font-weight:bold;}
+body.popup table.subSect tbody tr td.fieldName {width:40%;}
+table.subSect tbody tr td table.dtTable {margin-top:0.10em;}
+
+table.fieldName{width:98%; margin:0 auto; border-width:0px; margin-top:1em; border-spacing:4px;}
+table.fieldName tr {/*background:#F2F2F2;*/ background:#DCE7F7;}
+table.fieldName tr td.fieldName {text-align:right; width:40%; vertical-align:top; padding-right:0.20em; font-weight:bold;}
+
+/* NBS - Form table */
+table.formTable {width:98%; margin:0 auto; border:0px; margin-top:0.5em; margin-bottom:0.5em; padding:0.25em;}
+table.formTable tr td.tableHeader {font-size:1em; color:#185394; font-weight:bold; padding:6px;}
+table.formTable tr td {padding:0.2em;}
+table.formTable tr td.fieldName {text-align:right; font-weight:bold;}
+table.nedssBlueBG {background:#DCE7F7;}
+
+/* NBS - Form table- Notes and Attachments */
+table.formTableNA {width:98%; margin:0 auto; border:0px; margin-top:0.5em; margin-bottom:0.5em; padding:0.25em;}
+table.formTableNA tr td.tableHeader {font-size:1em; color:#185394; font-weight:bold; padding:6px;}
+table.formTableNA tr td {padding:0.2em;}
+table.formTableNA tr td.fieldName {text-align:right; font-weight:bold;}
+table.nedssBlueBG {background:white;}
+
+/* NBS - Preview page and Template */
+div.grayPageNameBar {width:100%; margin:0 auto; margin-top:3px; margin-bottom:3px; text-align:right; background:#EEE; padding:3px 0px;}
+
+/* NBS - Grid table */
+table.gridTable {width:auto; margin:0 auto; border:solid 1px #C2D4EF; margin-top:0.5em; margin-bottom:0.5em;}
+table.gridTable thead tr {background:#EEE;}
+table.gridTable tfoot {background:#FFF;}
+table.gridTable thead tr th, table.gridTable tbody tr td, table.gridTable tfoot tr td {border-width:0px 1px 1px 0px; border-color:#C2D4EF; border-style:solid; text-align:center; padding:2px;}
+table.gridTable thead tr th {color:#000; width:100px;}
+table.gridTable tfoot tr td {font-weight:bold;}
+table.gridTable tbody tr.odd, table.gridTable tbody tr td.odd {background:#dce7f7;}
+table.gridTable tbody tr.even, table.gridTable tbody tr td.even {background:#FFF;}
+table.gridTable thead tr th.selected, table.gridTable tbody tr td.selected {background:#CFE7FF;}
+
+
+/* NBS - Repeating Block table */
+table.repeatingTable {width:auto; margin:0 auto; border:solid 1px #C2D4EF; margin-top:0.5em; margin-bottom:0.5em;}
+table.repeatingTable thead tr {background:#EEE;}
+table.repeatingTable tfoot {background:#FFF;}
+table.repeatingTable thead tr th, table.repeatingTable tbody tr td, table.repeatingTable tfoot tr td {border-width:0px 1px 1px 0px; border-color:#C2D4EF; border-style:solid; text-align:center; padding:2px;}
+table.repeatingTable thead tr th {color:#000; width:100px;}
+table.repeatingTable tfoot tr td {font-weight:bold;}
+table.repeatingTable tbody tr, table.repeatingTable tbody tr td {background:#FFF;}
+table.repeatingTable thead tr th.selected, table.repeatingTable tbody tr td.selected {background:#CFE7FF;}
+
+/* NBS - search table - Has 3 columns. Column1 = Field Name, column2 = condition control, column3 = search value */ 
+table.searchTable {width:98%; margin:0 auto; margin-top:1em; border-spacing:4px; 
+        margin-bottom:5px; margin-top:5px;}
+table.searchTable thead tr {background:#FFF;}
+table.searchTable thead tr th {padding:0.15em; font-weight:bold; color:#185394; 
+    text-align:center;}
+table.searchTable tbody tr {background:#FFF;}
+table.searchTable tbody tr td {padding-top:5px; padding-bottom:5px; vertical-align:top;}
+table.searchTable tbody tr td.fieldName {text-align:right; padding-right:0.20em; font-weight:bold;}
+table.searchTable tbody tr td.conditionControl {background:#DCE7F7; text-align:center; padding:0px; width:10em; vertical-align:middle;}
+table.searchTable tbody tr td.conditionControl input {width:7em; margin:0px;}
+table.searchTable tbody tr td.conditionControl select {width:8em; margin:0px;}
+
+/* NBS - popup window */
+body.popup div.popupTitle {width:100%; background:#003470; padding:3px; color:#FFF; text-align:left;
+        font-size:110%; font-weight:bold; text-transform:capitalize;}
+body.popup div.popupButtonBar {text-align:right; width:100%; background:#EEE; border-bottom:1px solid #DDD; margin:0.5em 0em;}
+
+/*
+    ---- NBS BlueBar - sect, sectHeader, sectBody, subSect ----
+*/
+div.bluebarsect h2.bluebarsectHeader {width:100%; margin:0 auto; margin-top:0px; margin-bottom:0px;  background:"#2e6cb8"; padding:0px 0px; border-style:solid;}
+div.bluebarsect h2.bluebarsectHeader a.anchor {text-decoration:none; /*color:#5F8DBF;*/ color:#CC3300}
+div.bluebarsect h2.bluebarsectHeader span.displayToggleIcon {background:"white";}
+
+div.bluebarsect table.bluebarsectHeader {width:100%;  margin-top:0em; margin-bottom:0em;  background:#2e6cb8; padding:0px 0px; border-style:solid;}
+div.bluebarsect table.bluebarsectHeaderWhite {width:100%;  margin-top:0em; margin-bottom:0em;  background:white; padding:0px 0px; border-style:solid;}
+div.bluebarsect table.bluebarsectHeader tr td.bluebarsectName {color:white; font-size: 13px; font-weight:bold; text-transform:capitalize;}
+div.bluebarsect table.bluebarsectHeader tr td.bluebarsectName a.anchor {text-decoration:none; /*color:#5F8DBF;*/ color:white}
+table.bluebardtTable thead tr th,
+table.privateDtTable thead tr th {text-decoration:none; border:1px solid #666666; 
+        font-weight:bold; background:#EFEFEF; padding:0em; text-align:center;}
+table.bluebardtTable tbody tr td, table.privateDtTable tbody tr td {vertical-align:top;} 
+table.bluebardtTable thead tr th, table.privateDtTable thead tr th {text-decoration:none; border:1px solid #666666; 
+        font-weight:bold; background:#EFEFEF; padding:0.1em 0 0.1em 0.1em; text-align:left;}
+table.bluebardtTable tbody tr.odd, table.privateDtTable tbody tr.odd, table.dtTable tbody tr.odd td table tr {background:#FFF;}
+table.bluebardtTable tbody tr.even, table.privateDtTable tbody tr.even, table.dtTable tbody tr.even td table tr {background:#dce7f7;}
+table.bluebardtTable tbody tr td table tr td {border-width:0;}
+table.bluebardtTable tbody tr td, table.privateDtTable tbody tr td {padding:2px; border-width:0px 1px 1px 0px; border-style:solid; border-color:#C2D4EF;}
+table.bluebardtTable tbody tr td.hoverDescLink a, table.privateDtTable tbody tr td.hoverDescLink a {text-decoration:none; color:#000; cursor:help;}
+table.bluebardtTable tbody tr td.hoverDescLink a:hover, table.privateDtTable tbody tr td.hoverDescLink a:hover {background:#FFE2BF;}
+table.bluebardtTable tbody tr td.dateField, table.dtTable tbody tr td.iconField {width:50px;}
+table.bluebardtTable tbody tr td.nameField {width:150px;} 
+table.bluebardtTable tbody tr td.iconField {text-align:center;}
+table.bluebarsubSect thead tr {background:#FFF;}
+table.bluebarsubSect thead tr th {padding:0.15em; font-weight:bold; color:#185394; }
+/*table.bluebarsubSect tbody tr {background:#F2F2F2; background:#DCE7F7;}*/
+table.bluebarsubSect tbody tr {background:"white";}
+table.bluebarsubSect tbody tr td {padding-top:2px; padding-bottom:2px;}
+table.bluebarsubSect tbody tr td.fieldName {text-align:right; width:40%; vertical-align:center; padding-right:0.20em; font-weight:bold;}
+body.popup table.bluebarsubSect tbody tr td.fieldName {width:40%;}
+table.bluebarsubSect tbody tr td table.bluebardtTable {margin-top:0.10em;}
+ table.bluebarsectionsToggler, table.bluebarsubSectionsToggler, table.bluebarsubSect {width:100%; margin:0 auto; border-width:0px; margin-top:0.0em; border-spacing:0px;}
+ table.bluebardtTable, table.bluebarprivateDtTable {width:100%; border:1px solid #666666; padding:0.0em; margin:0em auto; margin-top:0em;}
+/*
+div.bluebarsect div.bluebarsectBody {text-align:center;}
+table.bluebarsubSect {width:98%; margin:0 auto; border-width:0px; margin-top:0.0em; border-spacing:1px;}
+table.bluebarsubSect thead tr {background:#FFF;}
+table.bluebarsubSect thead tr th {padding:0.15em; font-weight:bold; color:#185394; }
+table.bluebarsubSect tbody tr {background:#F2F2F2; background:#DCE7F7;}
+table.bluebarsubSect tbody tr td {padding-top:2px; padding-bottom:2px;}
+table.bluebarsubSect tbody tr td.fieldName {text-align:right; width:40%; vertical-align:center; padding-right:0.20em; font-weight:bold;}
+body.popup table.bluebarsubSect tbody tr td.fieldName {width:40%;}
+table.bluebarsubSect tbody tr td table.dtTable {margin-top:0.10em;}
+div.sect table.sectHeader {width:100%; border-width:0px 0px 1px 0px; border-color:#5F8DBF; 
+        margin-top:1em; border-style:solid; padding:0.20em 0em 0.20em 0.25em;}*/
+
+
+
+
+#backgroundPopup{  
+ display:none;  
+ position:fixed;  
+ _position:absolute;
+ height:100%;  
+ width:100%;  
+ top:0;  
+ left:0;  
+ background:#000000;  
+ border:1px solid #cecece;  
+ z-index:1;  
+ }  
+ #popupContact{  
+ display:none;  
+ position:fixed;  
+ _position:absolute;
+ height:530px;  
+ width:750px;  
+ background:#FFFFFF url('ajax-loader.gif') no-repeat center;  
+ border:2px solid #cecece;  
+ z-index:2;  
+ padding:12px;  
+ font-size:13px;  
+ overflow-y: scroll;
+ }  
+ #popupContact h1{  
+ text-align:left;  
+ color:#6FA5FD;  
+ font-size:22px;  
+ font-weight:700;  
+ border-bottom:1px dotted #D3D3D3;  
+ padding-bottom:2px;  
+ margin-bottom:20px;  
+ }  
+ #popupContactClose{  
+ font-size:14px;  
+ line-height:14px;  
+ right:6px;  
+ top:4px;  
+ position:absolute;  
+ color:#6fa5fd;  
+ font-weight:700;  
+ display:block;  
+ }  
+ #button{  
+ text-align:center;  
+ margin:100px;  
+ }
+ 
+div.grayBackground {
+	display:none;
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:100%;
+	height:1000%;
+	background:gray;
+	filter:alpha(Opacity=80);
+	opacity:0.5;
+	-moz-opacity:0.5;
+	-khtml-opacity:0.5
+}

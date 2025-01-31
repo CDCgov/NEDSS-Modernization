@@ -1,0 +1,285 @@
+<?xml version="1.0"?>
+<map:sitemap xmlns:map="http://apache.org/cocoon/sitemap/1.0">
+	<!-- =========================== Components ================================ -->
+	<map:components>
+		<map:generators default="file">
+			<map:generator label="content,data" logger="sitemap.generator.file" name="file" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.FileGenerator"/>
+			<map:generator label="content,data" logger="sitemap.generator.serverpages" name="serverpages" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.ServerPagesGenerator"/>
+		</map:generators>
+		<map:transformers default="xslt">
+			<map:transformer logger="sitemap.transformer.xslt" name="xslt" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.transformation.TraxTransformer">
+				<use-request-parameters>false</use-request-parameters>
+				<use-browser-capabilities-db>false</use-browser-capabilities-db>
+				<use-deli>false</use-deli>
+			</map:transformer>
+		</map:transformers>
+		<map:readers default="resource">
+			<map:reader logger="sitemap.reader.resource" name="resource" pool-max="76" src="org.apache.cocoon.reading.ResourceReader"/>
+			<map:reader name="jsp" src="org.apache.cocoon.reading.JSPReader"/>
+		</map:readers>
+		<map:serializers default="html">
+			<map:serializer logger="sitemap.serializer.links" name="links" src="org.apache.cocoon.serialization.LinkSerializer"/>
+			<map:serializer mime-type="application/pdf" name="fo2pdf" src="org.apache.cocoon.serialization.FOPSerializer"/>
+			<map:serializer logger="sitemap.serializer.xml" mime-type="text/xml" name="xml" src="org.apache.cocoon.serialization.XMLSerializer"/>
+			<map:serializer logger="sitemap.serializer.html" mime-type="text/html" name="html" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.serialization.HTMLSerializer">
+				<buffer-size>1024</buffer-size>
+			</map:serializer>
+		</map:serializers>
+		<map:selectors default="browser"/>
+		<map:matchers default="wildcard">
+			<map:matcher logger="sitemap.matcher.wildcard" name="wildcard" src="org.apache.cocoon.matching.WildcardURIMatcher"/>
+			<map:matcher logger="sitemap.matcher.regexp" name="regexp" src="org.apache.cocoon.matching.RegexpURIMatcher"/>
+		</map:matchers>
+	</map:components>
+	<!-- =========================== Pipelines ================================= -->
+	<map:pipelines>
+		<map:pipeline>
+			<!--	preview -->
+			<map:match pattern="person_preview_int">
+				<map:generate type="serverpages" src="xsp/patient_extended.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="person_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/person_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Patient Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- internal -->
+			<map:match pattern="person_input_src">
+				<map:generate type="serverpages" src="xsp/patient_extended.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="person_view_src">
+				<map:generate type="serverpages" src="xsp/patient_extended.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<!--		ext source		-->
+			<map:match pattern="patient_input_ext">
+				<map:generate type="serverpages" src="xsp/ext/ext.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="patient_extended_input_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/person_input_src"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<!--	view ext source	-->
+			<map:match pattern="patient_view_ext">
+				<map:generate type="serverpages" src="xsp/ext/ext.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<!--map:match pattern="person_view_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/person_view_src"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match-->
+			<map:match pattern="patient_extended_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/person_view_src"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Patient"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="demographics">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Data Entry"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			
+			<!--		patient find by case id		-->			
+			<map:match pattern="entity_patient_search_criteria">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/patient_search_criteria_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Find Patient"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!--		search results		-->
+	
+		
+			
+			<map:match pattern="patient_extended_view_file_int">
+				<map:generate type="serverpages" src="xsp/patient_extended.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<!--			<map:match pattern="patient_extended_input_int">
+				<map:generate type="serverpages" src="xsp/patient_extended.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match> -->
+			<map:match pattern="patient_basic_input_int">
+				<map:generate type="serverpages" src="xsp/patient_basic.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="patient_delete_denied_int">
+				<map:generate type="serverpages" src="xsp/patient_delete_denied.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<!-- =========================== AGGREGATES ================================= -->
+			<map:match pattern="person_delete_denied">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/patient_delete_denied_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Delete Denied"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!--map:match pattern="patient_extended_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/patient_extended_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Patient"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match-->
+			<map:match pattern="patient_extended_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/patient_extended_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Patient"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="patient_extended_add">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/patient_extended_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Add Patient - Extended"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="patient_basic">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/patient_basic_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Add Patient - Basic"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!--============================================================-->
+			<!--		patient from revision	-->
+			<!--		patient for event xml matcher , it is here because we use it downstream in other xmaps		-->
+			<map:match pattern="patient_from_event_input_int">
+				<map:generate type="serverpages" src="xsp/patient_from_event.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="patient_from_event_view_int">
+				<map:generate type="serverpages" src="xsp/patient_from_event.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<!--=============================  PersonHistoryItems===============================-->
+			<map:match pattern="person_history_items">
+				<map:generate type="serverpages" src="web/xsp/person_history_items.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="PersonHistoryItems">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/person_history_items"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="PersonHistorySummary"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="person_history_details">
+				<map:generate type="serverpages" src="web/xsp/person_history_details.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="PersonHistoryDetails">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/person_history_details"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="PersonHistoryDetails"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+	
+			<!--Locally Defined Fields preview	-->
+			<map:match pattern="patient_preview_int">
+				<map:generate type="serverpages" src="xsp/patient_extended.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="patient_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/patient_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Patient Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="patient_from_event_print_view">
+				<map:generate type="serverpages" src="xsp/patient_from_event.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<!-- ====================== MAPPING FOR PRINTABLE FORMS ============================== -->
+			<map:match pattern="view_patient_print">
+				<map:generate type="serverpages" src="xsp/patient_extended.xsp"/>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Patient"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+		</map:pipeline>
+	</map:pipelines>
+</map:sitemap>

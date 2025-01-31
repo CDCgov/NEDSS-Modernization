@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:util="http://apache.org/xsp/util/2.0">
+	<!--<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">-->
+	<xsp:structure>
+		<nedss:Include/>
+		<xsp:include>java.util.*</xsp:include>
+		<!--<xsp:include>gov.cdc.nedss.cdm.helpers.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.utils.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.nbssecurity.helpers.*</xsp:include>-->
+		<xsp:include>java.text.DateFormat</xsp:include>
+		<xsp:include>java.text.SimpleDateFormat</xsp:include>
+		<xsp:include>java.sql.Timestamp</xsp:include>
+	</xsp:structure>
+	<!--content form="/nedss/ELRActivityLogSubmit.do">
+		<xsp:attribute name="form"><xsp-request:get-attribute name="SubmitButton"/></xsp:attribute-->
+	<content>
+		<xsp:attribute name="form">
+			remove
+		</xsp:attribute>
+		<xsp:logic>			
+		
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+			String defaultTime = "00:00";
+
+			//getting today's date
+			Date dateToday = new Date();						
+			String formattedDefaultDate = formatter.format(dateToday);			
+			
+			//get tomorrow's date
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DAY_OF_YEAR,1);
+			Date dateTomorrow = cal.getTime();
+			String tomorrow = formatter.format(dateTomorrow );
+			
+		</xsp:logic>
+		<javascript-files>
+			<import>elrSpecific.js</import>
+			<import>ElementValidate.js</import>
+		</javascript-files>
+		<link-bar>
+	        <link>
+				<xsp:attribute name="name">
+					<xsp-request:get-attribute name="LinkName"/>
+				</xsp:attribute>
+				<xsp-request:get-attribute name="LinkAddr"/>
+			</link>
+	    </link-bar>
+		<button-bar>
+			<right>
+				<label>Refresh</label>
+				<javascript-action>getRefresh();</javascript-action>
+			</right>
+			<right>
+				<label>Submit</label>
+				<javascript-action>getELRActivityResult();</javascript-action>
+			</right>
+		</button-bar>
+		<tab name="">
+			<nedss:writeErrorMessages/>
+			<group name="ELR Activity Log Filter Selection">
+				<line>
+					<element name="ContextAction" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="ContextAction"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="fromDate" type="text" size="10" label="Time frame of ELR migration From" mask="##/##/####">
+						<validation type="date" mask="mm/dd/yyyy" name="From Date"/>
+						<value>
+							<xsp:expr>formattedDefaultDate </xsp:expr>
+						</value>
+					</element>
+					<element type="text" name="fromTime" size="5" maxlength="5">
+						<validation mask="hh:mm" type="reg-expr" name="Time" error-code="ERR019">
+							<pattern><![CDATA[^((0[0-9]|1[0-9]|2[0-4]):(0[0-9]|[1-5][0-9]|60))?$]]></pattern>
+						</validation>
+						<value>
+							<xsp:expr>defaultTime</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="toDate" type="text" size="10" label="To" mask="##/##/####">
+						<validation type="date" mask="mm/dd/yyyy" name="To Date"/>
+						<value>
+							<xsp:expr>tomorrow</xsp:expr>
+						</value>
+					</element>
+					<element type="text" name="toTime" size="5" maxlength="5">
+						<validation mask="hh:mm" type="reg-expr" name="To Time" error-code="ERR019">
+							<pattern><![CDATA[^((0[0-9]|1[0-9]|2[0-4]):(0[0-9]|[1-5][0-9]|60))?$]]></pattern>
+						</validation>
+						<value>
+							<xsp:expr> defaultTime </xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="checkbox" name="MessageType" label="Type of records to be displayed" >
+						<xsp:attribute name="onload">defaultCheckbox();</xsp:attribute>
+						<options>
+							<option name="SuccessMigrated" label="Successfully migrated " value="S" onclick="toggle1(this);">								
+								<!--<checked>yes</checked>-->
+							</option>
+							<option name="SuccessMigratedDetails" label="Successfully migrated with Details" value="I" onclick="toggle2(this);">								 
+								<!--	<value>F</value> -->
+								<!--<checked></checked>-->
+							</option>
+							<option name="UnsuccessfullyMigrated" label="Unsuccessfully Migrated" value="F">
+								<!--	<value>I</value> -->
+								<!--<checked>yes</checked>-->
+							</option>
+						</options>
+					</element>
+				</line>
+				<line>
+					<element name="sortResults" type="select" default="getStatusCd" noblank="true" label="Sort results by">
+						<header>Use</header>
+						<srt-options-string>getStatusCd$Status|getProcessTime$Migrated Date/Time|getId$Message Id|getSubjectNm$Patient Name|getFillerNbr$Accession Number|getOdsObservationUid$Observation Id|getReportingFacNm$Reporting Facility|</srt-options-string>
+						<!--<validation type="required" name="Use"/>-->
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Additional Filter Criteria"/>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<p align="left">
+							Enter additional criteria below to find specific ELR<br/>
+							</p>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="lastName" type="text" label="Patient Last Name">
+						<value>
+							<xsp-request:get-attribute name=""/>
+						</value>
+					</element>
+					<element name="msgId" type="text" label="Message ID">
+						<value>
+							<xsp-request:get-attribute name=""/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="accessionNumber" type="text" label="Accession Number">
+						<value>
+							<xsp-request:get-attribute name=""/>
+						</value>
+					</element>
+					<element name="observationID" type="text" label="Observation ID">
+						<value>
+							<xsp-request:get-attribute name=""/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="reportingFacility" type="text" label="Reporting Facility">
+						<value>
+							<xsp-request:get-attribute name=""/>
+						</value>
+					</element>
+					<element name="defaultDate" type="hidden">
+						<value>
+							<xsp:expr>formattedDefaultDate </xsp:expr>
+						</value>
+					</element>
+					<element name="defaultTomorrowDate" type="hidden">
+						<value>
+							<xsp:expr>tomorrow</xsp:expr>
+						</value>
+					</element>
+					<element name="defaultTime" type="hidden">
+						<value>
+							<xsp:expr>defaultTime </xsp:expr>
+						</value>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

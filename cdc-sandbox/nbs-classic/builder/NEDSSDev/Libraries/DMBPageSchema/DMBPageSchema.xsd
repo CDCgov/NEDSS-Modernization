@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by Maninder Jit Singh (DHHS (C/O SAIC)) -->
+<!-- Created by Gregory Tucker and Deepak Raj (CSC)  for CDC  -->
+<!-- NBS Page Builder Schema Feb 18th, 2010 Version  -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:util="http://www.cdc.gov/nedss/pagemanagement/wa/xml//util" targetNamespace="http://www.cdc.gov/nedss/pagemanagement/wa/xml//util" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+	<xs:element name="PageInfo" type="util:PageInfoType"/>
+	<xs:complexType name="PageInfoType">
+		<xs:annotation>
+			<xs:documentation>PageInfo is the root element. The schema is intended to hold the metadata for a single Page containing one or more Tabs.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Header" type="util:HeaderType"/>
+			<xs:element name="Page" type="util:PageType"/>
+			<xs:element name="Template" type="util:PageTemplateType"/>
+			<xs:element name="QuestionLibEntry" type="util:QuestionLibraryType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="UIMetaEntry" type="util:UserInterfaceMetadataType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="NNDEntry" type="util:MessagingInfoType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RDBEntry" type="util:DataMartInfoType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PageRule" type="util:PageRuleType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HeaderType">
+		<xs:annotation>
+			<xs:documentation>Specifies the Version of the Schema and high level information about the Page.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Status" type="xs:string" default="Published"/>
+			<xs:element name="VersionID" type="xs:string" default="May 18, 2010" minOccurs="0"/>
+			<xs:element name="PageTemplateUsed" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreateTime" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="CreatedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreateFacility" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PageTemplateType">
+		<xs:annotation>
+			<xs:documentation> Page Template. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TemplateNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplateFormCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplateConditionCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplateConditionCdDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplateType" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplatePublishVersionNbr" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplateBusinessObjectType" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplateDataMartNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplateMessageProfileId" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplateDescriptiveTxt" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplatePageName" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplateVersion" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplateDefaultEditLink" type="xs:string" minOccurs="0"/>
+			<xs:element name="TemplateDefaultViewLink" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QuestionLibraryType">
+		<xs:annotation>
+			<xs:documentation> Question Lib Entries facilitate Export/Import. All page questions with Question Identifiers (i.e. DEM111)  appear in this list. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QuestionIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionOID" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionOIDSystemText" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionVersionControlNbr" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionLocalId" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionType" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionTypeDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUIComponentType" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUIComponentTypeCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionRelatedUnitInd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionRelatedUnitIndDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUnitParentIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUnitIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUnitTypeCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUnitValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionOtherValueIndCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDataType" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDataTypeDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDataCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDataUseCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDataLocation" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionLegacyDataLocation" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionSecuredInd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionOrderNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionParticipationTypeCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionParticipationTypeDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionGroupSeqNbr" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionGroupNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionGroupDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionSubGroupNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionSubGroupDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionNNDMsgInd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionNNDMsgIndDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionIdentifierNND" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDataTypeNND" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDataTypeNNDDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionLabelNND" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionRequiredNND" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionRequiredNNDDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionHL7Segment" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionHL7SegmentDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionStandardNndIndCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionOrderGroupId" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionReportAdminColumnNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionRDBTableName" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUserDefinedColumnName" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionRDBColumnName" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDefaultValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionEntryMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionMask" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionMaskDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionFieldLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionFutureDateInd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionMinValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionMaxValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionRepeatsIndicatorCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDefaultViewLink" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDefaultEditLink" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionAdminComment" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionRecStatusCd" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserInterfaceMetadataType">
+		<xs:annotation>
+			<xs:documentation> UI Metadata is a customization of the Questions Lib kitchen sink. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MetaQuestionIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionCodeSetNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionOID" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionOIDSystemText" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionVersionControlNbr" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionType" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionTypeDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionLocalId" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionUnitIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionUnitTypeCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionUnitValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionUnitValueCodeSetNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionOtherValueIndCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionRequired" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionSecuredInd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionOrderNbr" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionTabName" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionTabOrder" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionHL7Segment" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionHL7SegmentDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionStandardNndIndCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionGroupNbr" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionGroupNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionSubGroupNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionEntryMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionPublishInd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionIncludeInDataMart" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionRDBTableName" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionUserDefinedColumnName" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionRDBColumnName" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionMask" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionFieldSize" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionMaxLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionDataTypeNND" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionRequiredNND" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionLabelNND" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionNNDMsgInd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionIdentifierNND" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionGroupSeqNbr" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionOrderGroupId" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionDataType" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionDefaultValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionDataUseCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionParticipationTypeCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionDataCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionDataLocation" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionAdminComment" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionFutureDateInd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionMinValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionMaxValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionRepeatsIndicatorCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionDefaultViewLink" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionDefaultEditLink" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionParticipationTypeDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionDefaultDisplayControl" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionUIComponentTypeCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionCSSStyle" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionDisplayInd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionEnableInd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionReportLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaQuestionRecStatusCd" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MessagingInfoType">
+		<xs:annotation>
+			<xs:documentation>Holds NND information for the Question Element.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MsgLabelInMessage" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgLocalId" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgRequiredInMessage" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgIncludeInMessage" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgDataType" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgQuestionIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgHl7SegmentField" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgOrderGroupId" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgElementTranslationTableNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgPartTypeCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgRecStatusCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgTriggerIndCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgELementXMLPath" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgELementXMLDataType" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgELementXMLTag" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgRepeatGroupSeqNbr" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgQuestionIdentifierNND" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgQuestionLabelNND" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgQuestionDataTypeNND" type="xs:string" minOccurs="0"/>
+			<xs:element name="MsgQuestionOrderNND" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DataMartInfoType">
+		<xs:annotation>
+			<xs:documentation>Holds RDB information for the Question Element. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DmRDBTableName" type="xs:string" minOccurs="0"/>
+			<xs:element name="DmRDBColumnName" type="xs:string" minOccurs="0"/>
+			<xs:element name="DmUserDefinedColumnName" type="xs:string" minOccurs="0"/>
+			<xs:element name="DmReportAdminColumnName" type="xs:string" minOccurs="0"/>
+			<xs:element name="DmQuestionIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="DmVersionControllNbr" type="xs:string" minOccurs="0"/>
+			<xs:element name="DmRecStatusCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="DmLocalId" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PageRuleType">
+		<xs:annotation>
+			<xs:documentation>Contains the Page Rule Metadata </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ruleCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="questionIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="javascriptFunctionName" type="xs:string" minOccurs="0"/>
+			<xs:element name="errorMessage" type="xs:string" minOccurs="0"/>
+			<xs:element name="javascriptFunction" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OnSubmitFunctionType">
+		<xs:annotation>
+			<xs:documentation>all onSubmit rule functions to call along with error message to display if edit fails </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FunctionName" type="xs:string" minOccurs="0"/>
+			<xs:element name="ErrorMessage" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FunctionToCallType">
+		<xs:annotation>
+			<xs:documentation>list of functions to call along with error message to display if edit fails </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FunctionName" type="xs:string" minOccurs="0"/>
+			<xs:element name="ErrorMessage" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OnBatchAddFunctionType">
+		<xs:annotation>
+			<xs:documentation>When adding another record to a batch subsection, call the following. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="BatchSubsectionIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="FunctionToCall" type="util:FunctionToCallType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PageType">
+		<xs:annotation>
+			<xs:documentation> Page Element containing one or more Tabs</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PageName" type="xs:string"/>
+			<xs:element name="PageDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="BusinessObject" type="xs:string" default="Investigation"/>
+			<xs:element name="FormCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="ConditionShortName" type="xs:string" minOccurs="0"/>
+			<xs:element name="ConditionCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="DataMart" type="xs:string" minOccurs="0"/>
+			<xs:element name="MessageProfileID" type="xs:string" minOccurs="0"/>
+			<xs:element name="PageSecurity" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnLoadFunctions" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnSubmitFunction" type="util:OnSubmitFunctionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="OnBatchAddFunction" type="util:OnBatchAddFunctionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="AddedJavaScriptFunction" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PageTab" type="util:TabType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TabType">
+		<xs:annotation>
+			<xs:documentation> Tab Element containing one or more Sections </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TabName" type="xs:string"/>
+			<xs:element name="TabDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="TabSecurity" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToggleSections" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+			<xs:element name="Section" type="util:SectionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SectionType">
+		<xs:annotation>
+			<xs:documentation>	Section Element containing one or more SubSections </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SectionName" type="xs:string"/>
+			<xs:element name="SectionIndex" type="xs:string" minOccurs="0"/>
+			<xs:element name="SectionClassType" type="xs:string" default="sect" minOccurs="0"/>
+			<xs:element name="SectionDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="SectionTemplateUsed" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+			<xs:element name="SubSection" type="util:SubSectionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubSectionType">
+		<xs:annotation>
+			<xs:documentation>	Subsection Element containing one or more Page Element widgets (i.e. textbox, select, checkbox..) </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SubSectionName" type="xs:string" minOccurs="0"/>
+			<xs:element name="SubSectionIndex" type="xs:string" minOccurs="0"/>
+			<xs:element name="SubSectionClassType" type="xs:string" default="subSect" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string" minOccurs="0"/>
+			<xs:element name="AllowBatchEntry" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+			<xs:element name="hasHIVQuestions" type="xs:string" minOccurs="0"/>
+			<xs:element name="PageElement" type="util:PageElementType" maxOccurs="unbounded"/>
+			<xs:element name="EntryMethod" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PageElementType">
+		<xs:annotation>
+			<xs:documentation>	Note this is a choice of the widgets. Display Sequence is not being used. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="CodedQuestion" type="util:CodedQuestionType"/>
+				<xs:element name="NumericQuestion" type="util:NumericQuestionType"/>
+				<xs:element name="TextQuestion" type="util:TextQuestionType"/>
+				<xs:element name="DateQuestion" type="util:DateQuestionType"/>
+				<xs:element name="ParticipationQuestion" type="util:ParticipationQuestionType"/>
+				<xs:element name="TextArea" type="util:TextAreaType"/>
+				<xs:element name="StaticLink" type="util:StaticLinkType"/>
+				<xs:element name="StaticInfoBar" type="util:StaticInfoBarType"/>
+				<xs:element name="StaticComment" type="util:StaticCommentType"/>
+				<xs:element name="StaticParticipantList" type="util:StaticParticipantListType"/>
+				<xs:element name="PatientSearch" type="util:PatientSearchType"/>
+				<xs:element name="ActionButton" type="util:ActionButtonType"/>
+				<xs:element name="SetValuesButton" type="util:SetValuesButtonType"/>
+				<xs:element name="OrigDocList" type="util:OrigDocListType"/>
+			</xs:choice>
+			<xs:element name="StatusCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="isHIVElement" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodedQuestionType">
+		<xs:annotation>
+			<xs:documentation>Single-select, multi-select, checkbox, and radio controls</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QuestionUID" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="DisplayLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="ValueSetName" type="xs:string" minOccurs="0"/>
+			<xs:element name="CodedValuesList" type="util:CodedValueType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="DefaultValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="AnswerValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="DisplayLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Disabled" type="xs:string" minOccurs="0"/>
+			<xs:element name="Secured" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+			<xs:element name="Required" type="xs:string" minOccurs="0"/>
+			<xs:element name="SourceField" type="xs:string" minOccurs="0"/>
+			<xs:element name="OtherEntryAllowed" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnChange" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyUp" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyDown" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnBlur" type="xs:string" minOccurs="0"/>
+			<xs:element name="EntryMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="MessagingInfo" type="util:MessagingInfoType" minOccurs="0"/>
+			<xs:element name="DataMartInfo" type="util:DataMartInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NumericQuestionType">
+		<xs:annotation>
+			<xs:documentation>Numeric textbox metadata</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QuestionUID" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="DisplayLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="DisplayMask" type="xs:string" minOccurs="0"/>
+			<xs:element name="MaskPattern" type="xs:string" minOccurs="0"/>
+			<xs:element name="DisplayLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="MaxLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="RelatedUnitsQuestionUniqueName" type="xs:string" minOccurs="0"/>
+			<xs:element name="RelatedUnitsValueSetName" type="xs:string" minOccurs="0"/>
+			<xs:element name="RelatedUnitsCodedValuesList" type="util:CodedValueType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="DefaultValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="AnswerValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="MinValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="MaxValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Secured" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+			<xs:element name="Required" type="xs:string" minOccurs="0"/>
+			<xs:element name="Disabled" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnChange" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyUp" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyDown" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnBlur" type="xs:string" minOccurs="0"/>
+			<xs:element name="EntryMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="FieldStyleClass" type="xs:string" minOccurs="0"/>
+			<xs:element name="MessagingInfo" type="util:MessagingInfoType" minOccurs="0"/>
+			<xs:element name="DataMartInfo" type="util:DataMartInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TextQuestionType">
+		<xs:annotation>
+			<xs:documentation>	Textbox control metadata</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QuestionUID" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="DisplayLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="DefaultValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="AnswerValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="DisplayLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="MaxLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Secured" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+			<xs:element name="Required" type="xs:string" minOccurs="0"/>
+			<xs:element name="Disabled" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnChange" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyUp" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyDown" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnBlur" type="xs:string" minOccurs="0"/>
+			<xs:element name="EntryMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="AjaxAutoComplete" type="xs:string" minOccurs="0"/>
+			<xs:element name="FieldStyleClass" type="xs:string" minOccurs="0"/>
+			<xs:element name="MessagingInfo" type="util:MessagingInfoType" minOccurs="0"/>
+			<xs:element name="DataMartInfo" type="util:DataMartInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DateQuestionType">
+		<xs:annotation>
+			<xs:documentation>Date control 	</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QuestionUID" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="DisplayLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="DisplayMask" type="xs:string" minOccurs="0"/>
+			<xs:element name="AllowFutureDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="DefaultValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="AnswerValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Secured" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+			<xs:element name="Required" type="xs:string" minOccurs="0"/>
+			<xs:element name="Disabled" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnChange" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyUp" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyDown" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnBlur" type="xs:string" minOccurs="0"/>
+			<xs:element name="EntryMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="MessagingInfo" type="util:MessagingInfoType" minOccurs="0"/>
+			<xs:element name="DataMartInfo" type="util:DataMartInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ParticipationQuestionType">
+		<xs:annotation>
+			<xs:documentation>Search control i.e. Ingestigator or Hospital </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QuestionUID" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="DisplayLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="ParticipationType" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="DefaultValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="AnswerValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Secured" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+			<xs:element name="Required" type="xs:string" minOccurs="0"/>
+			<xs:element name="Disabled" type="xs:string" minOccurs="0"/>
+			<xs:element name="SearchType" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnChange" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyUp" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyDown" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnBlur" type="xs:string" minOccurs="0"/>
+			<xs:element name="EntryMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="MessagingInfo" type="util:MessagingInfoType" minOccurs="0"/>
+			<xs:element name="DataMartInfo" type="util:DataMartInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TextAreaType">
+		<xs:annotation>
+			<xs:documentation>Multiline textbox - often used for comments and limited to 2,000 chars</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QuestionUID" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="DisplayLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="DefaultValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="AnswerValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="DisplayWidth" type="xs:string" minOccurs="0"/>
+			<xs:element name="DisplayHeight" type="xs:string" minOccurs="0"/>
+			<xs:element name="MaxLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Secured" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+			<xs:element name="Required" type="xs:string" minOccurs="0"/>
+			<xs:element name="Disabled" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnChange" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyUp" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnKeyDown" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnBlur" type="xs:string" minOccurs="0"/>
+			<xs:element name="EntryMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="MessagingInfo" type="util:MessagingInfoType" minOccurs="0"/>
+			<xs:element name="DataMartInfo" type="util:DataMartInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StaticLinkType">
+		<xs:sequence>
+			<xs:element name="DisplayLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="LinkDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="LinkValue" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Secured" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StaticInfoBarType">
+		<xs:sequence>
+			<xs:element name="InfoBarText" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="InfoBarDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="DisplayLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StaticCommentType">
+		<xs:sequence>
+			<xs:element name="CommentText" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="CommentDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="DisplayLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Secured" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StaticParticipantListType">
+		<xs:sequence>
+			<xs:element name="ParticipantListText" type="xs:string" minOccurs="0"/>
+			<xs:element name="ParticipantListDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="DisplayLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Secured" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+		<xs:complexType name="OrigDocListType">
+		<xs:sequence>
+			<xs:element name="OrigDocListText" type="xs:string" minOccurs="0"/>
+			<xs:element name="OrigDocDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="DisplayLength" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Secured" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PatientSearchType">
+		<xs:sequence>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="ClearAction" type="xs:string" minOccurs="0"/>
+			<xs:element name="SearchAction" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActionButtonType">
+		<xs:sequence>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="DisplayLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="Action" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+			<xs:element name="QuestionDefaultValue" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SetValuesButtonType">
+		<xs:sequence>
+			<xs:element name="QuestionUniqueName" type="xs:string"/>
+			<xs:element name="DisplayLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="Action" type="xs:string" minOccurs="0"/>
+			<xs:element name="ControlType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToolTip" type="xs:string" minOccurs="0"/>
+			<xs:element name="Visible" type="xs:string" minOccurs="0"/>
+			<xs:element name="DefaultValue" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>Coded values are currently not being used. The intent is to repeat in the coded element each code and value valid for an answer.
+				The options could then be generated by MarshalPage to speed up processing during runtime.	 </xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="CodedValueType">
+		<xs:sequence>
+			<xs:element name="codedValueCode" type="xs:string"/>
+			<xs:element name="codedValueDisplayName" type="xs:string" minOccurs="0"/>
+			<xs:element name="codedValueDescription" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

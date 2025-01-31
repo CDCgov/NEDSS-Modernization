@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GenMsg" default="all" basedir=".">
+	<import file="../../../BuildAndDeployment/build.properties.xml"/>
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+		<classpath refid="class.path"/>
+	</taskdef>
+
+	<target name="all" depends="generate-cdfsubform-library">
+	</target>
+	<target name="generate-cdfsubform-library" depends="init">
+		<echo message="Generate java files from schema for cdf sub form......"/>
+		<xjc target="${temp}" package="gov.cdc.nedss.ldf.imported.generated" schema="${properties_dir}/CDF_Subform_Import.xsd" extension="true"/>
+		<echo message="Compile jaxb-generated java files for CDF sub form......"/>
+		<javac srcdir="${temp}" destdir="${temp}" debug="on">
+			<classpath refid="class.path"/>
+		</javac>
+		<echo message="Jar phc java class files"/>
+		<jar jarfile="${libraries_dest_dir}/customSubformJaxbLibrary/cdf-subform.jar">
+			<fileset dir="${temp}">
+				<include name="gov/cdc/nedss/ldf/imported/generated/**"/>
+			</fileset>
+			<fileset dir="${temp}">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</jar>
+	</target>
+	<target name="clean">
+		<delete includeEmptyDirs="true" quiet="true">
+			<fileset dir="${temp}"/>
+			<fileset dir="${libraries_dest_dir}/customSubformJaxbLibrary"/>
+		</delete>
+	</target>
+	<target name="init" depends="clean">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile and copy the deployment descriptors into it-->
+		<mkdir dir="${temp}/customsubform/"/>
+		<mkdir dir="${libraries_dest_dir}/customSubformJaxbLibrary"/>
+	</target>
+</project>

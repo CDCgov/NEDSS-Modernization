@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ErrorLog>
+	<Error id="ID" value="Message"/>
+	<Error id="ERR001" value="Please select (Field Name) and try again."/>
+	<Error id="ERR002" value="(Field Name) Unit is a required field. Please make a unit selection and try again."/>
+	<Error id="ERR003" value="(Field Name) must be in the format of mm/dd/yyyy. Please correct the data and try again."/>
+	<Error id="ERR004" value="(Field Name) is not a valid date. The date must be greater than 12/31/1875 and less than or equal to today's date."/>
+	<Error id="ERR006" value="(Field Name) must be less than or equal to (Field Name). Please correct the data entry and try again."/>
+	<Error id="ERR007" value="(Field Name) must be a numeric entry in the format of nnn-nn-nnnn. Please correct the data and try again."/>
+	<Error id="ERR008" value="(Field Name) must be a whole number."/>
+	<Error id="ERR009" value="(Field Name) must be a whole number greater than 0 and less than 150. Please correct the data and try again."/>
+	<Error id="ERR010" value="(Field Name) must be less than or equal to (Maxlength) characters. Please correct the data and try again."/>
+	<Error id="ERR011" value="Please enter at least one item to search on and try again."/>
+	<Error id="ERR012" value="Please select at least one status code and try again."/>
+	<Error id="ERR013" value="If you continue with the Cancel action, you will lose any information you have entered. Select OK to continue, or Cancel to not continue."/>
+	<Error id="ERR014" value="If you continue with the Delete action, you will delete the information. Select OK to continue, or Cancel to not continue."/>
+	<Error id="ERR015" value="One or more fields are not valid. You may need to scroll down the page to see the fields and error messages. Please make the requested changes and try again."/>
+	<Error id="ERR017" value="Duplicate - Do Not Use! Replaced by ERR001! Please select a condition from the drop down list."/>
+	<Error id="ERR019" value="(Field Name) must be a numeric entry in the format of hh:mm (Hour Hour:Minute Minute). Please correct the data and try again."/>
+	<Error id="ERR020" value="(Field Name) must be a numeric entry in the format of nnn-nnn-nnnn. Please correct the data and try again."/>
+	<Error id="ERR021" value="(Field Name) must have a numeric entry. Please correct the data and try again."/>
+	<Error id="ERR023" value="(Field Name) is a required field. Please enter the data and try again."/>
+	<Error id="ERR024" value="A minimum of one disease must be selected in order to generate a report."/>
+	<Error id="ERR027" value="A minimum of one state must be selected in order to generate a report."/>
+	<Error id="ERR029" value="A minimum of one county must be selected in order to generate a report."/>
+	<Error id="ERR032" value="(Field Name) must be prior to (Field Name). Please correct the data selection and try again."/>
+	<Error id="ERR033" value="Please select at least one column to export for this report."/>
+	<Error id="ERR034" value="Please select at least one column to display on this report."/>
+	<Error id="ERR035" value="You do not have access to view the information on this tab."/>
+	<Error id="ERR036" value="This notification cannot be sent. The following fields are required for the investigation. Please enter data into: (Field Name) (Field Name) and resubmit the notification."/>
+	<Error id="ERR039" value="Please enter a reason for why Notification is being rejected and try again."/>
+	<Error id="ERR040" value="The Notification (Notification ID) has been rejected."/>
+	<Error id="ERR041" value="The Notification (Notification ID) has been approved."/>
+	<Error id="ERR043" value="There is no data for the criteria you selected. Please check your selection and try again."/>
+	<Error id="ERR044" value="The system could not generate your report at this time. Please contact your Site Administrator for further assistance."/>
+	<Error id="ERR045" value="Please enter data into at least one field to add a vaccination record."/>
+	<Error id="ERR047" value="Please edit the investigation criteria and resubmit the notification."/>
+	<Error id="ERR049" value="(Field Name) must be equal to or greater than 1 and less than or equal to 53. Please correct the data and try again."/>
+	<Error id="ERR050" value="(Field Name) must be equal to or greater than 1950 and less than or equal to (Current Year Plus One). Please correct the data and try again."/>
+	<Error id="ERR051" value="The system could not process the notification. Please create a new notification and try again."/>
+	<Error id="ERR052" value="If you save the Observation, you will not be able to view the data because it is outside your permitted Program Area/Jurisdiction. Select OK to continue, or Cancel to not continue."/>
+	<Error id="ERR053" value="You do not have access to create an investigation for the Program Area and Jurisdiction."/>
+	<Error id="ERR054" value="Please check at least one permission and try again."/>
+	<Error id="ERR055" value="This User ID is already in use."/>
+	<Error id="ERR056" value="This Permission Set Name is already in use."/>
+	<Error id="ERR057" value="This Program Area and Jurisdiction already has a Permission Set associated with it."/>
+	<Error id="ERR058" value="If you save the Investigation, you will not be able to view the data because it is outside your permitted Program Area/Jurisdiction. Select OK to continue, or Cancel to not continue."/>
+	<Error id="ERR059" value="Please select a county."/>
+	<Error id="ERR061" value="Please select two person-records to compare and try again."/>
+	<Error id="ERR063" value="Please select one of the two Person ID records to be the surviving record."/>
+	<Error id="ERR064" value="Are you sure you want to send a notification for a condition count of zero? Select OK to continue, or Cancel to not continue."/>
+	<Error id="ERR066" value="Please enter (Field Name) and try again."/>
+	<Error id="ERR067" value="(Field Name) must be equal to or greater than 1 and less than or equal to 24. Please correct the data and try again."/>
+	<Error id="ERR068" value="(Field Name) must be greater than 12/31/1875. Please correct the data and try again."/>
+	<Error id="ERR069" value="(Field Name) must be equal to or greater than 1 and less than or equal to 45 or 99 for unknown. Please correct the data and try again."/>
+	<Error id="ERR070" value="(Field Name) must be equal to or greater than 1 and less than or equal to 9. Please correct the data and try again."/>
+	<Error id="ERR071" value="(Field Name) must be equal to or greater than 1 and less than or equal to 30 or 99 for unknown. Please correct the data and try again."/>
+	<Error id="ERR072" value="The Notification can not be sent.  Investigation (#xxxxxxxxxxxxxx) requires data in the following fields. Please enter data into: (Field Name) (Field Name) and try again."/>
+	<Error id="ERR074" value="(Field Name) must be equal to or greater than (Field Name). Please correct the data and try again."/>
+	<Error id="ERR075" value="Duplicate - Do Not Use! Replaced by ERR082! (Field Name) must be from Year of Birth to Current Year. Please correct the data and try again."/>
+	<Error id="ERR076" value="(Field Name) must be a 4-digit numeric entry in the format of yyyy. Please correct the data and try again."/>
+	<Error id="ERR077" value="Duplicate - Do Not Use! Replaced by ERR092! (Field Name) must be from Date of Birth to today's date. Please correct the data and try again."/>
+	<Error id="ERR078" value="(Field Name) must be equal to or greater than both (Field Name) and (Field Name). Please correct the data and try again."/>
+	<Error id="ERR079" value="(Field Name) must be from 6 months to 6 weeks prior to (Field Name). Please correct the data and try again."/>
+	<Error id="ERR080" value="(Field Name) must be equal to or greater than 1 and less than or equal to 36. Please correct the data and try again."/>
+	<Error id="ERR081" value="Duplicate - Do Not Use! Replaced by ERR082! (Field Name) must be from year of birth to current year. Please correct the data and try again."/>
+	<Error id="ERR082" value="(Field Name) must be equal to or greater than year of birth and less than or equal to current year. Please correct the data and try again."/>
+	<Error id="ERR083" value="(Field Name) must be equal to or greater than 0.00 and less than or equal to 100.00. Please correct the data and try again."/>
+	<Error id="ERR084" value="(Field Name) must be equal to or greater than 0.000 and less than or equal to 999.999.  Please correct the data and try again."/>
+	<Error id="ERR085" value="(Field Name) must be a numeric entry in the format of nnn.n. Please correct the data and try again."/>
+	<Error id="ERR086" value="(Field Name) must be a whole number equal to or greater than 0 and less than or equal to 10000. Please correct the data and try again."/>
+	<Error id="ERR087" value="(Field Name) must be greater than 6 months."/>
+	<Error id="ERR088" value="Duplicate - Do Not Use! Replaced by ERR068! Please enter a date greater than 12/31/1875 in the (Field Name) field."/>
+	<Error id="ERR090" value="Duplicate - Do Not Use! Replaced by ERR068! Please enter a (Field Name) that is after 12/31/1875."/>
+	<Error id="ERR091" value="(Field Name) must be from 6 months to 2 weeks prior to (Field Name). Please correct the data and try again."/>
+	<Error id="ERR092" value="(Field Name) must be equal to or greater than (Field Name) and less than or equal to today's date. Please correct the data and try again."/>
+	<Error id="ERR093" value="The source already exists in the counts batch entry box."/>
+	<Error id="ERR094" value="(Field Name) must be equal to or greater than 0 and less than or equal to 300 or 999 for unknown. Please correct the data and try again."/>
+	<Error id="ERR095" value="(Field Name) must be less than or equal to the patient's current age."/>
+	<Error id="ERR096" value="Duplicate - Do Not Use! Replaced by ERR002! Please select (Field Name) unit and try again."/>
+	<Error id="ERR097" value="(Field Name) must be a whole number greater than or equal to one."/>
+	<Error id="ERR098" value="Please enter a name for this report and try again."/>
+	<Error id="ERR099" value=""/>
+	<Error id="ERR100" value="(Field Name) of (Field Value) does not match any found in the system. Please modify the entry and try again, or use the Search function to find the data you need."/>
+	<Error id="ERR101" value="Please enter a code into (Field Name) and try again, or use the Search function to find the data you need."/>
+	<Error id="ERR102" value="The system has found over 1000 records that match your criteria. The first 1000 records are being displayed for your review. If you want to reduce the number of matching records found, please refine your criteria and try again."/>
+	<Error id="ERR103" value="(Field Name) must be a numeric entry in the format of nnnnn or nnnnn-nnnn."/>
+	<Error id="ERR104" value="(Field Name)  must consist of the following characters: Alphabetic characters from 'A' through 'Z'; numeric characters '0' through '9'; or hyphen '-'.  Please correct the data and try again."/>
+	<Error id="ERR105" value="Please select a Reason for Edit before submitting your changes."/>
+	<Error id="ERR106" value="If you continue with the Inactivate action, you will not be able to view or access the data. Select OK to continue or Cancel to not continue."/>
+	<Error id="ERR107" value="(Field Name) must contain complete numeric entries from 0 through 9 in:  any one of the fields, any two of the fields, or all three of the fields."/>
+	<Error id="ERR108" value="If you continue with the View File link, you will not be able to return to the search results screen. Select OK to continue, or Cancel to not continue."/>
+	<Error id="ERR109" value="@dataerror"/>
+	<Error id="ERR110" value="Your search criteria has resulted in an abnormally large number of records found. Please refine your search criteria and try again."/>
+	<Error id="ERR111" value="(Field Name) must be a unique code. The code you have entered already exists. Please enter a different code and try again."/>
+	<Error id="ERR112" value="(Field Name) is a required field if the associated Information Section contains data entries or data selections. Please enter a date and try again."/>
+	<Error id="ERR113" value="One of the result value fields (Field Name) (Field Name) (Field Name) must contain data. Please enter a result value and try again."/>
+	<Error id="ERR114" value="One of the result value fields (Field Name) (Field Name) must contain data. Please enter a result value and try again."/>
+	<Error id="ERR115" value="If you continue with the Merge action, the selected patient records will be merged into a single patient record. Select OK to continue, or Cancel to not continue."/>
+	<Error id="ERR116" value="Please select two patients in order to compare the patient data."/>
+	<Error id="ERR117" value="Please select a minimum of two patients in order to merge the patient data."/>
+	<Error id="ERR118" value="Only two patients can be selected to Compare. Uncheck one of the two previously selected patients  before selecting another patient."/>
+	<Error id="ERR119" value="If you continue with the Edit action, the Quick Code entry will be cleared and you will have to enter a new unique Quick Code. Click OK to continue or Cancel to not continue."/>
+	<Error id="ERR120" value="If you continue with the Inactivate action, you will not be able to search for the organization, but it will remain associated with the events with which it is already associated. Click OK to continue or Cancel to not continue."/>
+	<Error id="ERR121" value="If you continue with the Inactivate action, you will not be able to search for the provider, and it will remain associated with the events with which it is already associated. Click OK to continue or Cancel to not continue."/>
+	<Error id="ERR122" value="One or more fields are not valid on page tabs marked with a graphic. Please review the marked page tabs and make the suggested changes on all affected fields before re-submitting."/>
+	<Error id="ERR123" value="(Field Name) must be a whole number  greater than or equal to 1 and less than or equal to 99. Please correct the data and try again."/>
+	<Error id="ERR124" value="If you continue with your change of the Reporting Facility, the Ordered Test, the Resulted Test Name and the Result(s) will be cleared. Select OK to continue, or Cancel to not continue."/>
+	<Error id="ERR125" value="(Field Name) must contain a valid separator after a number. Please correct the entry to contain  + (plus sign), - (dash),  / (forward slash), or : (colon)."/>
+	<Error id="ERR126" value="(Field Name) can contain whole numbers, decimal numbers, and the following characters: &lt; (less than), &gt; (greater than), = (equal), &lt;= (less than or equal), &gt;= (greater than or equal), &lt;&gt; (not equal), + (plus sign), - (dash), / (forward slash), : (colon)."/>
+	<Error id="ERR127" value="(Field Name) must contain only one decimal point in a numeric value. Please correct the data and try again."/>
+	<Error id="ERR128" value="(Field Name) must be a whole number, greater than or equal to 1 and less than or equal to 999."/>
+	<Error id="ERR129" value="You have entered or edited information and have not clicked Add or Edit in the multiple entry table. Please take the appropriate action and try again."/>
+	<Error id="ERR130" value="You have entered susceptibility information and have not clicked Add or Edit Susceptibilities. Please take the appropriate action and try again."/>
+	<Error id="ERR131" value="Valid comparators must be one of the following: &lt; (less than), &gt; (greater than), = (equal), &lt;= (less than or equal), &gt;= (greater than or equal), &lt;&gt; (not equal to). Please correct the data and try again."/>
+	<Error id="ERR132" value="The separators - (dash), / (forward slash), and : (colon) must have a numeric value both before and after the separator. Please correct the data and try again."/>
+	<Error id="ERR133" value="Separators and comparators must be used with numeric values. Please correct the data and try again."/>
+	<Error id="ERR134" value="(Field Name) must contain unique comparators and separators.  Duplicates are not allowed. Valid comparators are &lt; , &gt; , = , &lt;= , &gt;= , &lt;&gt; . Valid separators are + , - , / , : . Please correct the data and try again."/>
+	<Error id="ERR135" value="(Field Name) is required to send  a Notification. Please enter the data and try again."/>
+	<Error id="ERR136" value="All Merge checkboxes must be deselected before selecting the No Merge button. Please deselect the checkboxes and try again."/>
+	<Error id="ERR137" value="A notification message request exists against this event. If you continue with this action, you may change the content of the message. Select OK to continue or Cancel to not continue."/>
+	<Error id="ERR138" value="An NND notification message request exists against this investigation. (Field Name) is required to submit changes to this investigation. Please enter the data and try again."/>
+	<Error id="ERR139" value="Facility or Provider are required fields. Please enter the data and try again."/>
+	<Error id="ERR140" value="Facility or Provider, and  Treatment Date and  Custom Treatment are required fields. Please enter the data and try again."/>
+	<Error id="ERR141" value="(Field Name) is a required field in order to add a new user ID that is external. Please enter the data and try again."/>
+	<Error id="ERR142" value="@observationdelete"/>
+	<Error id="ERR143" value="You are not authorized to access the system because your assigned reporting facility has been inactivated. Please contact your system administrator."/>
+	<Error id="ERR144" value="You currently have 400+ items in your queue. If you reach the maximum limit of 500 items, you will not be able to receive new items without processing existing ones."/>
+	<Error id="ERR145" value="You must determine the status of the current Merge Candidate Group before leaving this page. Please select either the Merge, No Merge or Cancel button to continue."/>
+	<Error id="ERR146" value="Please select the Column Selection Tab to select the columns to generate the data for reports selected."/>
+	<Error id="ERR147" value="(Field Name) must be greater than 1875 and less than or equal to the current year. Please correct the data and try again."/>
+	<Error id="ERR148" value="The entry of (Field Name) is not contained in the SRT codeset of (Field Name)."/>
+	<Error id="ERR149" value="(Field Name) is required if (Field Name) contains data."/>
+	<Error id="ERR150" value="Conversion of the value (Field Name) to (Field Name) has failed."/>
+	<Error id="ERR151" value="The migration of field (Field Name) has failed because of the following reason: "/>
+	<Error id="ERR155" value="(Field Name) must be a 2-digit number that is greater than or equal to 1 and less than or equal to 12. Please
+correct the data and try again. "/>
+	<Error id="ERR156" value="(Field Name) must be a 2-digit number that is greater than or equal to 1 and less than or equal to 31. Please
+correct the data and try again. "/>
+	<Error id="ERR157" value="(Field Name) is incorrect for the month entered. Please correct the data and try again."/>
+	<Error id="ERR158" value="Both (Field Name) and (Field Name) must be entered. Please correct the data and try again."/>
+	<Error id="ERR159" value="(Field Name) may only contain alphabetic characters, symbols, and spaces. Please correct the data and try again."/>
+	<Error id="ERR161" value="Please select at least one Notification to be removed from the queue and try again."/>
+	<Error id="ERR162" value="Please select Cancel button to exit out of this screen."/>
+	<Error id="ERR174" value="You have indicated that you would like to delete this Investigation. By doing so, this record will no longer be available in the system, and all Contact Records and Interview Records that were created within this investigation will be deleted. Would you like to continue with this action?"/>
+	<Error id="ERR177" value="You have entered a Pregnant Male.  Please correct the data and try again."/>
+	<Error id="ERR178" value="(Field Name) must be equal to or greater than DOB."/>
+	<Error id="ERR179" value="Date Received by Public Health Official must be equal to or greater than Lab Report Date."/>
+	<Error id="ERR180" value="Diagnosis Date must be equal to or greater than Illness Onset Date."/>
+	<Error id="ERR187" value="Telephone is required for entry of a phone extension."/>
+	<Error id="ERR190" value="Please enter required field(s) and try again."/>
+	<Error id="ERR191" value="Number of Weeks is out of range.  Weeks must be less than or equal to 45, or 99 (indicating Unknown).  Please correct the data and try again."/>
+	<Error id="ERR192" value="Only one Surviving PatientId can be selected as Survivor. Please uncheck the previously selected Surviving PatientId before selecting another patient."/>
+	<Error id="ERR193" value="You selected a PatientId as the Survivor but you unchecked the associated Merge checkbox. Please recheck the merge checkbox or choose another Survivor."/>
+</ErrorLog>

@@ -1,0 +1,349 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.diseaseform.util.InvestigationFieldConstants</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.action.person.util.PersonUtil</xsp:include>
+	</xsp:structure>
+	<content>
+		<id-bar>
+			<id name="Patient ID" show="false" id="patient.ID">
+				<xsp-request:get-attribute name="patientDisplayLocalId"/>
+			</id>
+		</id-bar>
+		<button-bar>
+			<!-- left>
+				<label>POSTED</label>
+				<javascript-action>document.forms[0].action="/nbs/posted";submitForm();</javascript-action>
+			</left -->
+		</button-bar>
+		<javascript-files>
+			<import>LabPatientFromEventSpecific.js</import>
+		</javascript-files>
+		<tab name="Patient">
+			<nedss:writeErrorMessages/>
+			<group>
+				<line>
+					<element name="stateDesc" type="select" id="stateDesc">
+						<readonly/>
+						<srt-options-string>
+							<srt-codes:getStateCodes>
+								<type>USA</type>
+							</srt-codes:getStateCodes>
+						</srt-options-string>
+					</element>
+				</line>
+				<line>
+					<element type="entity-search" name="Patient.personUid" entity-type="person" alignment="left">
+						<xsp:attribute name="displaySearchButtons">
+							<xsp-request:get-attribute name="bSearchPatientButton"/>
+						</xsp:attribute>
+						<line>
+							<element type="group-separator" title="Patient"/>
+						</line>
+						<line>
+							<element type="join">
+								<line>
+									<element label="* Indicates a requried field"/>
+								</line>
+							</element>
+						</line>
+						<line alien="left">
+							<element type="text" size="10" maxlength="10" label="* As of Date" id="entity.asofdate" mask="##/##/####">
+								<xsp:attribute name="name">personVO.thePersonDT.asOfDateAdmin_s</xsp:attribute>
+								<xsp:attribute name="default">
+									<xsp:expr>PersonUtil.formatCurrentDate()</xsp:expr>
+								</xsp:attribute>
+								<validation type="date" mask="mm/dd/yyyy" name="As Of Date"/>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element type="raw">
+								<span>
+									<b>The name entered here will stored as a legal name and the address entered will be stored as a
+								home address.</b>
+								</span>
+							</element>
+						</line>
+						<line>
+							<element name="defaultStateFlag" type="hidden" label="">
+								<value>
+									<xsp-request:get-attribute name="defaultStateFlag"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="Last" size="15" id="entity.lastNm">
+								<xsp:attribute name="name">personVO.personNameDT_s[0].lastNm</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="DEM102"/>
+								</value>
+								<partner type="select" label="Suffix" id="entity.suffix">
+									<xsp:attribute name="name">personVO.personNameDT_s[0].nmSuffix</xsp:attribute>
+									<value>
+										<xsp-request:get-attribute name="DEM107"/>
+									</value>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>P_NM_SFX</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</partner>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="First" id="entity.firstNm">
+								<xsp:attribute name="name">personVO.personNameDT_s[0].firstNm</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="DEM104"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="Middle" id="entity.middleNm">
+								<xsp:attribute name="name">personVO.personNameDT_s[0].middleNm</xsp:attribute>
+								<header>Middle</header>
+								<value>
+									<xsp-request:get-attribute name="DEM105"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="Address" size="36" id="entity.streetAddr1">
+								<xsp:attribute name="name">personVO.entityLocatorParticipationDT_s[0].thePostalLocatorDT.streetAddr1</xsp:attribute>
+								<header>Address</header>
+								<value>
+									<xsp-request:get-attribute name="DEM159"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="City" id="entity.city">
+								<xsp:attribute name="name">personVO.entityLocatorParticipationDT_s[0].thePostalLocatorDT_s.cityDescTxt</xsp:attribute>
+								<header>City</header>
+								<value>
+									<xsp-request:get-attribute name="DEM161"/>
+								</value>
+							</element>
+							<element type="select" label="State" id="entity.state" onchange="getData(this, 'entity.county', '');setDefaultStateFlagToFalse();">
+								<xsp:attribute name="name">personVO.entityLocatorParticipationDT_s[0].thePostalLocatorDT_s.stateCd</xsp:attribute>
+								<header>State</header>
+								<value>
+									<xsp-request:get-attribute name="DEM162"/>
+								</value>
+								<srt-options-string>
+									<srt-codes:getStateCodes>
+										<type>USA</type>
+									</srt-codes:getStateCodes>
+								</srt-options-string>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element type="text" label="Zip" size="10" id="entity.zip">
+								<xsp:attribute name="name">personVO.entityLocatorParticipationDT_s[0].thePostalLocatorDT_s.zipCd</xsp:attribute>
+								<header>Zip</header>
+								<value>
+									<xsp-request:get-attribute name="DEM163"/>
+								</value>
+								<validation type="reg-expr" error-message="Please enter a whole number into the Zip field.">
+									<pattern><![CDATA[^((\d{5})|(\d{5}-\d{4}))?$]]></pattern>
+								</validation>
+								<partner type="select" label="County" id="entity.county">
+									<value>
+										<xsp-request:get-attribute name="DEM165"/>
+									</value>
+									<srt-options-string>
+										<xsp-request:get-attribute name="countiesInState"/>
+									</srt-options-string>
+								</partner>
+							</element>
+						</line>
+						<line>
+							<element label="Phone" type="telephone" mask="(###)###-####" size="10" id="entity.phoneNbrTxt">
+								<xsp:attribute name="name">personVO.entityLocatorParticipationDT_s[1].theTeleLocatorDT_s.phoneNbrTxt</xsp:attribute>
+								<header>Telephone</header>
+								<value>
+									<xsp-request:get-attribute name="DEM177"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="Date of Birth" size="15" id="entity.DOB" mask="##/##/####">
+								<xsp:attribute name="name">personVO.thePersonDT.birthTime_s</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="DEM115"/>
+								</value>
+								<validation type="date" mask="mm/dd/yyyy" name="DOB"/>
+								<partner type="text" label="Age" size="3" id="entity.age" maxlength="3">
+									<xsp:attribute name="name">personVO.thePersonDT.ageReported</xsp:attribute>
+									<value>
+										<xsp-request:get-attribute name="DEM216"/>
+									</value>
+									<validation type="numeric" name="age"/>
+								</partner>
+								<partner type="select" id="entity.ageUnit">
+									<xsp:attribute name="name">personVO.thePersonDT.ageReportedUnitCd</xsp:attribute>
+									<value>
+										<xsp-request:get-attribute name="DEM218"/>
+									</value>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>P_AGE_UNIT</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</partner>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="Date Of Death" id="Date Of Death" size="15" mask="##/##/####">
+								<xsp:attribute name="name">personVO.thePersonDT.deceasedTime_s</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="DEM128"/>
+								</value>
+								<validation type="date" mask="mm/dd/yyyy" name="Date Of Death"/>
+							</element>
+						</line>
+						<line>
+							<element type="select" label="Sex" id="entity.sex">
+								<xsp:attribute name="name">personVO.thePersonDT.currSexCd</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="DEM113"/>
+								</value>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>SEX</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="ssn" label="SSN" size="10" mask="###-##-####" id="entity.ssn">
+								<xsp:attribute name="name">personVO.entityIdDT_s[0].rootExtensionTxt</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="DEM133"/>
+								</value>
+							</element>
+						</line>
+						<line>
+							<element type="select" label="Ethnicity" id="entity.ethnicity">
+								<xsp:attribute name="name">personVO.thePersonDT.ethnicGroupInd</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>P_ETHN_GRP</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="DEM155"/>
+								</value>
+							</element>
+						</line>
+						<!-- MMMMMMMMMMMMMMMMMMMMMMMMMMM  =========  RACE   ======== MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM -->
+						<line>
+							<element type="checkbox" label="Race" id="unknownRace">
+								<options>
+									<option name="unknownRace" value="y" label="Unknown">
+										<value>
+											<xsp-request:get-attribute name="U"/>
+										</value>
+									</option>
+								</options>
+							</element>
+							<element type="checkbox" label="" id="indian">
+								<options>
+									<option name="1002-5" value="y" label="American Indian or Alaska Native">
+										<value>
+											<xsp-request:get-attribute name="1002-5"/>
+										</value>
+									</option>
+								</options>
+							</element>
+						</line>
+						<line>
+							<element type="checkbox" label="" id="asian">
+								<options>
+									<option name="2028-9" value="y" label="Asian">
+										<value>
+											<xsp-request:get-attribute name="2028-9"/>
+										</value>
+									</option>
+								</options>
+							</element>
+							<element type="checkbox" label="" id="african">
+								<options>
+									<option name="2054-5" value="y" label="Black or African American">
+										<value>
+											<xsp-request:get-attribute name="2054-5"/>
+										</value>
+									</option>
+								</options>
+							</element>
+						</line>
+						<line>
+							<element type="checkbox" label="" id="hawaiian">
+								<options>
+									<option name="2076-8" value="y" label="Native Hawaiian or Other Pacific Islander">
+										<value>
+											<xsp-request:get-attribute name="2076-8"/>
+										</value>
+									</option>
+								</options>
+							</element>
+							<element type="checkbox" label="" id="white">
+								<options>
+									<option name="2106-3" value="y" label="White">
+										<value>
+											<xsp-request:get-attribute name="2106-3"/>
+										</value>
+									</option>
+								</options>
+							</element>
+						</line>
+						<!--line>
+							<element type="checkbox" label="" id="otherRaceCd">
+								<options>
+									<option name="otherRaceCd" value="y" label="Other">
+										<value>
+											<xsp-request:get-attribute name="2131-1"/>
+										</value>
+									</option>
+								</options>
+							</element>
+							<element type="text" name="raceDescTxt">
+								<value>
+									<xsp-request:get-attribute name="DEM154"/>
+								</value>
+							</element>
+						</line-->
+						<!-- MMMMMMMMMMMMMMMMMMMMMMMMMMM ====== end of RACE   ========== MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM -->
+						<line>
+							<element type="select" label="Marital Status" id="entity.maritalStatus">
+								<xsp:attribute name="name">personVO.thePersonDT.maritalStatusCd</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>P_MARITAL</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<value>
+									<xsp-request:get-attribute name="DEM140"/>
+								</value>
+							</element>
+						</line>
+						<line alien="left">
+							<element type="textarea" size="10" maxlength="10" label="Patient Comments">
+								<xsp:attribute name="name">personVO.thePersonDT.description</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="DEM196"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

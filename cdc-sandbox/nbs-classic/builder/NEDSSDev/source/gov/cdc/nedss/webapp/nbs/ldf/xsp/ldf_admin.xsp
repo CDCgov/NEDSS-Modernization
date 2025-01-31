@@ -1,0 +1,304 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>gov.cdc.nedss.systemservice.ejb.srtmapejb.dao.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.ejb.srtmapejb.bean.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.ldf.dt.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.ldf.ejb.ldfmetadataejb.bean.*</xsp:include>
+		<!--xsp:include>gov.cdc.nedss.ldf.ejb.ldfmetadataejb.dao.StateDefinedFieldMetaDataDAOImpl.*</xsp:include-->
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>java.sql.*</xsp:include>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>javax.naming.*</xsp:include>
+		<xsp:include>javax.rmi.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<javascript-files>
+			<import>cdfSubformSpecific.js</import>
+			<import>validate.js</import>
+		</javascript-files>
+		<button-bar/>
+		<tab>
+			<group>
+				<line>
+					<element name="countMap" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="countMap"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<b>Click the Import button to import new Collaborative Fields and Subforms, click the Import Log button to view the log of previously imported Fields and Subforms, or click a link in the Manage Pages section to view and make changes to a specific page.</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="ImportButton" type="button" onclick="getPage('FileImportLoad.do');">
+						<value>    Import      </value>
+					</element>
+					<element name="ImportLogButton" type="button" onclick="getPage('ImportLogLoad.do');">
+						<value>Import Log</value>
+					</element>
+					<element name="dummy1" type="plain-text" label="">
+					</element>
+					<element name="dummy2" type="plain-text" label="" value="   ">
+					</element>
+					<element name="dummy3" type="plain-text" label="" value="   ">
+					</element>
+				</line>
+			</group>
+			<group name="Manage Pages">
+				<line>
+					<element type="raw">
+						<span>
+						(#) is the number of Custom Fields assigned to a page
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<xsp:logic>
+		            ArrayList pages = null;
+             		    pages = (ArrayList)request.getAttribute("pages");						        
+					
+			    // get the LDFMetaDataCount  fromt he request
+			    Map countMap = new HashMap();
+			    if(request.getAttribute("countMap") != null)
+			    countMap  = (HashMap)request.getAttribute("countMap");  
+			    
+			     Collection descColl10 = new ArrayList();
+		            Collection descColl17 = new ArrayList();
+		            Collection descColl24 = new ArrayList();
+		            Collection descColl30 = new ArrayList();
+		            Collection descColl400 = new ArrayList();
+		            descColl10  = (Collection)request.getAttribute("descColl10");
+      		            descColl17  = (Collection)request.getAttribute("descColl17");
+      		            descColl24 = (Collection)request.getAttribute("descColl24");
+		            descColl30 = (Collection)request.getAttribute("descColl30");
+		            descColl400 = (Collection)request.getAttribute("descColl400");
+		            request.getSession().setAttribute("metaDataColl", null);
+		 	      request.getSession().setAttribute("previewBack", "false");
+	 	            request.getSession().setAttribute("ldfForm", null);
+	 	            //System.out.println("\n\n\n\n\nThe parsed String is :" +request.getAttribute("parsedLDFString"));
+	 	           
+
+       		</xsp:logic>
+				<xsp:logic>
+			            	if(pages!=null){
+						
+						Iterator it = pages.iterator();
+						while (it.hasNext())
+						{
+						    LdfPageSetDT ldfPageSetDT= (LdfPageSetDT)it.next();
+                               if(ldfPageSetDT.getParentIsCd() != null)
+                               {
+                                 if(ldfPageSetDT.getParentIsCd().equals("1"))
+                                 {						    
+			                   if(ldfPageSetDT.getUiDisplay().equals("Link"))
+                                  {
+                         </xsp:logic>
+				<line>
+					<element type="hyper-link">
+						<href>
+	               /nbs/LDFLoad.do?page=<xsp:expr>ldfPageSetDT.getCodeShortDescTxt()</xsp:expr>&amp;PageID=<xsp:expr>ldfPageSetDT.getLdfPageId()</xsp:expr>&amp;businessObjectNm=<xsp:expr>ldfPageSetDT.getBusinessObjNm()</xsp:expr>&amp;conditionCd=<xsp:expr>ldfPageSetDT.getConditionCd()</xsp:expr>
+						</href>
+						<text>
+							<xsp:expr>ldfPageSetDT.getCodeShortDescTxt()+" ("+countMap.get(ldfPageSetDT .getLdfPageId()) +")"</xsp:expr>
+						</text>
+					</element>
+				</line>
+				<xsp:logic>
+				}
+				}
+				} // for null check getParentIsCd
+				if (ldfPageSetDT.getParentIsCd() == null)
+				{
+				if(ldfPageSetDT.getLdfPageId().equals("9"))
+				 {
+				  if(ldfPageSetDT.getUiDisplay().equals("Link"))
+				   {
+     			</xsp:logic>
+				<line>
+					<element type="hyper-link">
+						<href>
+	               /nbs/LDFLoad.do?page=<xsp:expr>ldfPageSetDT.getCodeShortDescTxt()</xsp:expr>&amp;PageID=<xsp:expr>ldfPageSetDT.getLdfPageId()</xsp:expr>&amp;businessObjectNm=<xsp:expr>ldfPageSetDT.getBusinessObjNm()</xsp:expr>&amp;conditionCd=<xsp:expr>ldfPageSetDT.getConditionCd()</xsp:expr>
+						</href>
+						<text>
+							<xsp:expr>ldfPageSetDT.getCodeShortDescTxt()+" ("+countMap.get(ldfPageSetDT .getLdfPageId()) +")"</xsp:expr>
+						</text>
+					</element>
+				</line>
+				<xsp:logic>
+				 }}}
+	    
+          	 if((ldfPageSetDT.getLdfPageId().equals("10")))
+			 { 	
+      		</xsp:logic>
+				<line>
+					<element type="tree-view">
+						<xsp:attribute name="name">
+							<xsp:expr>ldfPageSetDT.getCodeShortDescTxt()</xsp:expr>
+						</xsp:attribute>
+						<links>
+							<xsp:logic>
+					if(descColl10 != null)
+					{  
+      				    Iterator iter10 = descColl10.iterator();
+					    while(iter10.hasNext())
+					    {
+					         LdfPageSetDT ldfDT = (LdfPageSetDT)iter10.next();
+					  </xsp:logic>
+							<link>
+								<xsp:attribute name="href">/nbs/LDFLoad.do?page=<xsp:expr>ldfDT.getCodeShortDescTxt()</xsp:expr>&amp;PageID=<xsp:expr>ldfDT.getLdfPageId()</xsp:expr>&amp;businessObjectNm=<xsp:expr>ldfDT.getBusinessObjNm()</xsp:expr>&amp;conditionCd=<xsp:expr>ldfDT.getConditionCd()</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>ldfDT.getCodeShortDescTxt()+" ("+countMap.get(ldfDT.getLdfPageId()) +")"</xsp:expr>
+							</link>
+							<xsp:logic>
+                             }}
+				     </xsp:logic>
+						</links>
+					</element>
+				</line>
+				<xsp:logic>
+				 }
+			 if((ldfPageSetDT.getLdfPageId().equals("17")))
+			 { 	
+      		</xsp:logic>
+				<line>
+					<element type="tree-view">
+						<xsp:attribute name="name">
+							<xsp:expr>ldfPageSetDT.getCodeShortDescTxt()</xsp:expr>
+						</xsp:attribute>
+						<links>
+							<xsp:logic>
+					if(descColl17 != null)
+					{  
+      				    Iterator iter17 = descColl17.iterator();
+					    while(iter17.hasNext())
+					    {
+					         LdfPageSetDT ldfDT = (LdfPageSetDT)iter17.next();
+					  </xsp:logic>
+							<link>
+								<xsp:attribute name="href">/nbs/LDFLoad.do?page=<xsp:expr>ldfDT.getCodeShortDescTxt()</xsp:expr>&amp;PageID=<xsp:expr>ldfDT.getLdfPageId()</xsp:expr>&amp;businessObjectNm=<xsp:expr>ldfDT.getBusinessObjNm()</xsp:expr>&amp;conditionCd=<xsp:expr>ldfDT.getConditionCd()</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>ldfDT.getCodeShortDescTxt()+" ("+countMap.get(ldfDT.getLdfPageId()) +")"</xsp:expr>
+							</link>
+							<xsp:logic>
+                             }}
+				     </xsp:logic>
+						</links>
+					</element>
+				</line>
+				<xsp:logic>
+				 }
+          	 if((ldfPageSetDT.getLdfPageId().equals("400")))
+		       { 	
+      		 </xsp:logic>
+				<line>
+					<element type="tree-view">
+						<xsp:attribute name="name">
+							<xsp:expr>ldfPageSetDT.getCodeShortDescTxt()</xsp:expr>
+						</xsp:attribute>
+						<links>
+							<xsp:logic>
+					if(descColl400 != null)
+					{  
+      				    Iterator iter400 = descColl400.iterator();
+					    while(iter400.hasNext())
+					    {
+					         LdfPageSetDT ldfDT = (LdfPageSetDT)iter400.next();
+					  </xsp:logic>
+							<link>
+								<xsp:attribute name="href">/nbs/LDFLoad.do?page=<xsp:expr>ldfDT.getCodeShortDescTxt()</xsp:expr>&amp;PageID=<xsp:expr>ldfDT.getLdfPageId()</xsp:expr>&amp;businessObjectNm=<xsp:expr>ldfDT.getBusinessObjNm()</xsp:expr>&amp;conditionCd=<xsp:expr>ldfDT.getConditionCd()</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>ldfDT.getCodeShortDescTxt()+" ("+countMap.get(ldfDT.getLdfPageId()) +")"</xsp:expr>
+							</link>
+							<xsp:logic>
+                             }}
+				     </xsp:logic>
+						</links>
+					</element>
+				</line>				
+				<xsp:logic>
+				 }
+          	 if((ldfPageSetDT.getLdfPageId().equals("24")))
+		       { 	
+      		 </xsp:logic>
+				<line>
+					<element type="tree-view">
+						<xsp:attribute name="name">
+							<xsp:expr>ldfPageSetDT.getCodeShortDescTxt()</xsp:expr>
+						</xsp:attribute>
+						<links>
+							<xsp:logic>
+					if(descColl24 != null)
+					{  
+      				    Iterator iter24 = descColl24.iterator();
+					    while(iter24.hasNext())
+					    {
+					         LdfPageSetDT ldfDT = (LdfPageSetDT)iter24.next();
+					  </xsp:logic>
+							<link>
+								<xsp:attribute name="href">/nbs/LDFLoad.do?page=<xsp:expr>ldfDT.getCodeShortDescTxt()</xsp:expr>&amp;PageID=<xsp:expr>ldfDT.getLdfPageId()</xsp:expr>&amp;businessObjectNm=<xsp:expr>ldfDT.getBusinessObjNm()</xsp:expr>&amp;conditionCd=<xsp:expr>ldfDT.getConditionCd()</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>ldfDT.getCodeShortDescTxt()+" ("+countMap.get(ldfDT.getLdfPageId()) +")"</xsp:expr>
+							</link>
+							<xsp:logic>
+                             }}
+				     </xsp:logic>
+						</links>
+					</element>
+				</line>
+				<xsp:logic>
+            	 }
+	        	 if((ldfPageSetDT.getLdfPageId().equals("30")))
+		       { 	
+      		 </xsp:logic>
+				<line>
+					<element type="tree-view">
+						<xsp:attribute name="name">
+							<xsp:expr>ldfPageSetDT.getCodeShortDescTxt()</xsp:expr>
+						</xsp:attribute>
+						<links>
+							<xsp:logic>
+					if(descColl30 != null)
+					{  
+      				    Iterator iter30 = descColl30.iterator();
+					    while(iter30.hasNext())
+					    {
+					         LdfPageSetDT ldfDT = (LdfPageSetDT)iter30.next();
+					  </xsp:logic>
+							<link>
+								<xsp:attribute name="href">/nbs/LDFLoad.do?page=<xsp:expr>ldfDT.getCodeShortDescTxt()</xsp:expr>&amp;PageID=<xsp:expr>ldfDT.getLdfPageId()</xsp:expr>&amp;businessObjectNm=<xsp:expr>ldfDT.getBusinessObjNm()</xsp:expr>&amp;conditionCd=<xsp:expr>ldfDT.getConditionCd()</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>ldfDT.getCodeShortDescTxt()+" ("+countMap.get(ldfDT.getLdfPageId()) +")"</xsp:expr>
+							</link>
+							<xsp:logic>
+                             }}
+				     </xsp:logic>
+						</links>
+					</element>
+				</line>
+				<xsp:logic>
+				 }
+				</xsp:logic>
+				<xsp:logic>
+				//request.setAttribute("PageID" , (String)ldfPageSetDT.getLdfPageId());
+				//request.setAttribute("businessObjectNm" , (String)ldfPageSetDT.getBusinessObjNm());
+				//request.setAttribute("codeShortDescTxt", (String)ldfPageSetDT.getCodeShortDescTxt());
+		     	
+		     	}}
+				
+					else
+						System.out.println("pages = srtm.getLDFPageIDs() returned NULL !!!!!!!!!!!   ");
+
+					</xsp:logic>
+				<!--/table-->
+			</group>
+		</tab>
+	</content>
+</xsp:page>

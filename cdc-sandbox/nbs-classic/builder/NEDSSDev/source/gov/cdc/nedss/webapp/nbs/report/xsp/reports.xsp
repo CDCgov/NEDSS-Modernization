@@ -1,0 +1,804 @@
+<?xml version="1.0"?>
+<!DOCTYPE xsp:page SYSTEM "../../WEB-INF/xsp.dtd">
+<xsp:page xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:avr="http://www.cdc.gov/nedss/logicsheet/nedss/avr" language="java">
+	<nedss:import/>
+	<avr:import/>
+	<part>
+		<nedss:init/>
+		<nedss:SetHeaders/>
+		<parameters>
+			<parameter name="border">
+				<xsp:expr>strBorder</xsp:expr>
+			</parameter>
+			<parameter name="uids">
+				<xsp:expr>strUIDs</xsp:expr>
+			</parameter>
+			<parameter name="user">
+				<xsp:expr>strUser</xsp:expr>
+			</parameter>
+			<parameter name="usermode">
+				<xsp:expr>strUserMode</xsp:expr>
+			</parameter>
+			<parameter name="verbose">
+				<xsp:expr>strVerbose</xsp:expr>
+			</parameter>
+			<parameter name="title">Reports</parameter>
+		</parameters>
+		<avr:security/>
+		<xsp:logic><![CDATA[
+            String strSEC = "You must have permission to view reports (private, public, or template) to view this page.";
+            if(booSECreports == false)
+            {
+                session.setAttribute("ErrorMessage", strSEC);
+                httpResponse.sendRedirect("error");
+            }
+        ]]></xsp:logic>
+		<xsp:logic><![CDATA[
+
+            //  Initialize variables for loops.
+            int intRecord = 0;
+            int intRecords = 0;
+            ArrayList al = null;
+            String strRowBackground = null;
+
+            //  Create temp variables.
+            String strDataSourceUID = null;
+            String strReportUID = null;
+            String strTitle = null;
+            String strDescription = null;
+            String strDateCreated = null;
+            String strStatus = null;
+            String strReportType = null;
+            String strOwnerUID = null;
+            String strDateCreatedNum = null;
+
+            //  Get data from the server.
+            String strPrivateReports = (String)getData(rcu.PRIVATE_REPORT_LIST, true);
+            String strPublicReports = (String)getData(rcu.PUBLIC_REPORT_LIST, true);
+            String strReportTemplates = (String)getData(rcu.TEMPLATE_REPORT_LIST, true);
+
+            //  Parse the XML data into object trees.
+            ArrayList alPrivateReports = XMLRequestHelper.getTable(strPrivateReports);
+            ArrayList alPublicReports = XMLRequestHelper.getTable(strPublicReports);
+            ArrayList alReportTemplates = XMLRequestHelper.getTable(strReportTemplates);
+
+        ]]></xsp:logic>
+		<head>
+			<nedss:InitializeSessionTimer frequency="1"/>
+			<script>
+				<nedss:GetConstants class="NEDSSConstants"/>
+			</script>
+			<script>
+				<nedss:GetConstants class="ReportConstantUtil"/>
+			</script>
+			<script>
+                var varSEC148 = <xsp:expr>booSEC148</xsp:expr>;
+                var varSEC156 = <xsp:expr>booSEC156</xsp:expr>;
+                var varSEC147 = <xsp:expr>booSEC147</xsp:expr>;
+                var varSEC155 = <xsp:expr>booSEC155</xsp:expr>;
+                var varSEC142 = <xsp:expr>booSEC142</xsp:expr>;
+                var varSEC150 = <xsp:expr>booSEC150</xsp:expr>;
+                var varSEC170 = <xsp:expr>booSEC170</xsp:expr> ; 
+            </script>
+			<scriptfile>
+                avr.reports.js
+            </scriptfile>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alPrivateReports, "aPrivate")</xsp:expr>
+			</script>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alPublicReports, "aPublic")</xsp:expr>
+			</script>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alReportTemplates, "aTemplates")</xsp:expr>
+			</script>
+		</head>
+		<toolbarDef>
+			<toolbarLeft>
+				<nedss:IfSHOW_DEBUG_BUTTON>
+					<nedss:IfServer>
+						<toolbarButton id="id_debug" name="Debug">
+							<event name="onclick">
+                                OpenDebugWindow();
+                            </event>
+						</toolbarButton>
+					</nedss:IfServer>
+				</nedss:IfSHOW_DEBUG_BUTTON>
+			</toolbarLeft>
+			<toolbarRight>
+            </toolbarRight>
+		</toolbarDef>
+		<body>
+			<part>
+				<attributes>
+					<style>nedss</style>
+				</attributes>
+				<event name="onload">
+				
+                    id_PrivateReportsTable_NameColumn_onclick();
+                    
+                    id_PublicReportsTable_NameColumn_onclick();
+                    
+                    if (varSEC170){
+                    	id_ReportTemplatesTable_NameColumn_onclick();
+                   	}
+                </event>
+				<nedss:CheckSessionTimer/>
+			</part>
+			<section>
+				<part>
+					<attributes>
+						<id>HiddenFields</id>
+						<name/>
+						<linked>false</linked>
+						<width>1</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column display="Hidden">
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.DATASOURCE_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.DATASOURCE_UID</xsp:expr>
+								</xsp:attribute>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.REPORT_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.REPORT_UID</xsp:expr>
+								</xsp:attribute>
+							</xsp:element>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<linkbar>
+				<ids>
+                </ids>
+				<hyperlinks>
+                </hyperlinks>
+			</linkbar>
+			<toolbar location="top"/>
+			<errorbar/>
+			<section>
+				<part>
+					<attributes>
+						<id>ReportList</id>
+						<name>Report List</name>
+						<linked>false</linked>
+						<width>2</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column align="left" width="2">
+							<jumpers value="1"/>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<xsp:logic><![CDATA[
+                if(booSEC177 == true)
+                {
+            ]]></xsp:logic>
+			<section>
+				<part>
+					<attributes>
+						<id>MyReports</id>
+						<name>My Reports</name>
+						<linked>true</linked>
+						<width>2</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column width="2">
+							<table id="id_PrivateReportsTable">
+								<columnheaders>
+									<columnheader align="left" wrap="false"/>
+									<columnheader align="left" wrap="false"/>
+									<columnheader align="left" wrap="false"/>
+									<columnheader id="id_PrivateReportsTable_NameColumn" name="Report Name" align="left" wrap="false">
+										<event name="onclick">
+                                            if(varSortField[AVR_SORT_LIST_PRIVATE] == AVR_SORT_FIELD_NAME)
+                                            {
+                                                varSortDirection[AVR_SORT_LIST_PRIVATE] = ! varSortDirection[AVR_SORT_LIST_PRIVATE];
+                                            }
+                                            varSortField[AVR_SORT_LIST_PRIVATE] = AVR_SORT_FIELD_NAME;
+                                            if(varSortDirection[AVR_SORT_LIST_PRIVATE] == true)
+                                            {
+                                                aPrivate.sort(SortByNameAscending);
+                                            }
+                                            else
+                                            {
+                                                aPrivate.sort(SortByNameDescending);
+                                            }
+                                            UpdatePrivateTable();
+                                        </event>
+									</columnheader>
+									<columnheader id="id_PrivateReportsTable_DateColumn" name="Date Created" align="left" wrap="false">
+										<event name="onclick">
+                                            if(varSortField[AVR_SORT_LIST_PRIVATE] == AVR_SORT_FIELD_DATE)
+                                            {
+                                                varSortDirection[AVR_SORT_LIST_PRIVATE] = ! varSortDirection[AVR_SORT_LIST_PRIVATE];
+                                            }
+                                            varSortField[AVR_SORT_LIST_PRIVATE] = AVR_SORT_FIELD_DATE;
+                                            if(varSortDirection[AVR_SORT_LIST_PRIVATE] == true)
+                                            {
+                                                aPrivate.sort(SortByDateAscending);
+                                            }
+                                            else
+                                            {
+                                                aPrivate.sort(SortByDateDescending);
+                                            }
+                                            UpdatePrivateTable();
+                                        </event>
+									</columnheader>
+									<columnheader id="id_PrivateReportsTable_StatusColumn" name="Status" align="left" wrap="false">
+										<event name="onclick">
+                                            if(varSortField[AVR_SORT_LIST_PRIVATE] == AVR_SORT_FIELD_STATUS)
+                                            {
+                                                varSortDirection[AVR_SORT_LIST_PRIVATE] = ! varSortDirection[AVR_SORT_LIST_PRIVATE];
+                                            }
+                                            varSortField[AVR_SORT_LIST_PRIVATE] = AVR_SORT_FIELD_STATUS;
+                                            if(varSortDirection[AVR_SORT_LIST_PRIVATE] == true)
+                                            {
+                                                aPrivate.sort(SortByStatusAscending);
+                                            }
+                                            else
+                                            {
+                                                aPrivate.sort(SortByStatusDescending);
+                                            }
+                                            UpdatePrivateTable();
+                                        </event>
+									</columnheader>
+								</columnheaders>
+								<records>
+									<xsp:logic><![CDATA[
+                                        intRecords = alPrivateReports.size();
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            strRowBackground = ((intRecord % 2) == 0) ? "BackgroundGrayLight" : "BackgroundGrayDark";
+                                            al = (ArrayList)alPrivateReports.get(intRecord);
+                                            strDataSourceUID = (String)al.get(0);
+                                            strReportUID = (String)al.get(1);
+                                            strTitle = (String)al.get(2);
+                                            strDescription = (String)al.get(3);
+                                            strDateCreated = (String)al.get(4);
+                                            strStatus = (String)al.get(5);
+                                            strReportType = (String)al.get(6);
+                                            strOwnerUID = (String)al.get(7);
+                                            strDateCreatedNum = (String)al.get(8);
+                                    ]]></xsp:logic>
+									<xsp:element name="record">
+										<xsp:attribute name="background">
+											<xsp:expr>strRowBackground</xsp:expr>
+										</xsp:attribute>
+										<column>
+											<xsp:logic><![CDATA[
+                                                booSEC173 = false;
+                                                if(strStatus.equalsIgnoreCase("Public"))
+                                                {
+                                                    booSEC173 = booSEC148;
+                                                }
+                                                if(strStatus.equalsIgnoreCase("Private"))
+                                                {
+                                                    booSEC173 = booSEC156;
+                                                }
+                                            ]]></xsp:logic>
+											<xsp:element name="hyperlink">
+												<xsp:attribute name="id">id_PrivateReportsTable_Details_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="name">Details</xsp:attribute>
+												<xsp:attribute name="display">
+													<xsp:expr>(booSEC173 ? "Visible" : "Invisible")</xsp:expr>
+												</xsp:attribute>
+												<event name="onclick">
+                                                    ShowPrivateDetails(<xsp:expr>intRecord</xsp:expr>);
+                                                </event>
+											</xsp:element>
+										</column>
+										<column>
+											<xsp:logic><![CDATA[
+                                                booSEC186 = false;
+                                                if(strStatus.equalsIgnoreCase("Public"))
+                                                {
+                                                    booSEC186 = booSEC147;
+                                                }
+                                                if(strStatus.equalsIgnoreCase("Private"))
+                                                {
+                                                    booSEC186 = booSEC155;
+                                                }
+                                            ]]></xsp:logic>
+											<xsp:element name="hyperlink">
+												<xsp:attribute name="id">id_PrivateReportsTable_Run_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="name">Run</xsp:attribute>
+												<xsp:attribute name="display">
+													<xsp:expr>(booSEC186 ? "Visible" : "Invisible")</xsp:expr>
+												</xsp:attribute>
+												<event name="onclick">
+                                                    ShowPrivateDetails(<xsp:expr>intRecord</xsp:expr>);
+                                                    RunReportPrivate(<xsp:expr>intRecord</xsp:expr>);
+                                                </event>
+											</xsp:element>
+										</column>
+										<column>
+											<xsp:logic><![CDATA[
+                                                booSEC176 = false;
+                                                if(strStatus.equalsIgnoreCase("Public"))
+                                                {
+                                                    booSEC176 = booSEC142;
+                                                }
+                                                if(strStatus.equalsIgnoreCase("Private"))
+                                                {
+                                                    booSEC176 = booSEC150;
+                                                }
+                                            ]]></xsp:logic>
+											<xsp:element name="hyperlink">
+												<xsp:attribute name="id">id_PrivateReportsTable_Delete_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="name">Delete</xsp:attribute>
+												<xsp:attribute name="display">
+													<xsp:expr>(booSEC176 ? "Visible" : "Invisible")</xsp:expr>
+												</xsp:attribute>
+												<event name="onclick">
+                                                    ShowPrivateDetails(<xsp:expr>intRecord</xsp:expr>);
+                                                    var s = "id_PrivateReportsTable_Confirm_<xsp:expr>intRecord</xsp:expr>";
+                                                    var e = document.getElementById(s);
+                                                    e.className = "<xsp:expr>strRowBackground</xsp:expr>";
+                                                </event>
+											</xsp:element>
+										</column>
+										<column>
+											<xsp:element name="text">
+												<xsp:attribute name="id">id_PrivateReportsTable_Name_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:expr>strTitle</xsp:expr>
+											</xsp:element>
+										</column>
+										<column>
+											<xsp:element name="text">
+												<xsp:attribute name="id">id_PrivateReportsTable_Date_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:expr>strDateCreated</xsp:expr>
+											</xsp:element>
+										</column>
+										<column>
+											<xsp:element name="text">
+												<xsp:attribute name="id">id_PrivateReportsTable_Status_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:expr>strStatus</xsp:expr>
+											</xsp:element>
+										</column>
+									</xsp:element>
+									<xsp:element name="record">
+										<xsp:attribute name="background">
+											<xsp:expr>strRowBackground</xsp:expr>
+										</xsp:attribute>
+										<xsp:element name="column">
+											<xsp:attribute name="id">id_PrivateReportsTable_Confirm_<xsp:expr>intRecord</xsp:expr>
+											</xsp:attribute>
+											<xsp:attribute name="display">Hidden</xsp:attribute>
+											<xsp:attribute name="width">6</xsp:attribute>
+											<text format="Bold">
+                                                Are you sure you want to delete this report?
+                                            </text>
+											<empty/>
+											<xsp:element name="button">
+												<xsp:attribute name="id">id_PrivateReportsTable_Yes_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="name">Yes</xsp:attribute>
+												<event name="onclick">
+                                                    DeleteReport(<xsp:expr>intRecord</xsp:expr>);
+                                                </event>
+											</xsp:element>
+											<empty/>
+											<xsp:element name="button">
+												<xsp:attribute name="id">id_PrivateReportsTable_No_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="name">No</xsp:attribute>
+												<event name="onclick">
+                                                    var s = "id_PrivateReportsTable_Confirm_<xsp:expr>intRecord</xsp:expr>";
+                                                    var e = document.getElementById(s);
+                                                    e.className = "Hidden";
+                                                </event>
+											</xsp:element>
+										</xsp:element>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</records>
+							</table>
+						</column>
+					</row>
+				</subsection>
+				<subsection name="" line="false">
+					<row>
+						<column width="2">
+							<empty/>
+						</column>
+					</row>
+					<row>
+						<column>
+							<text format="Bold">Report Name:</text>
+						</column>
+						<column size="500">
+							<text id="id_Private_Name"/>
+						</column>
+					</row>
+					<row>
+						<column>
+							<text format="Bold">Description:</text>
+						</column>
+						<column size="500">
+							<text id="id_Private_Description"/>
+						</column>
+					</row>
+					<row>
+						<column>
+							<text format="Bold">Date Created:</text>
+						</column>
+						<column size="500">
+							<text id="id_Private_Created"/>
+						</column>
+					</row>
+					<row>
+						<column>
+							<text format="Bold">Status:</text>
+						</column>
+						<column size="500">
+							<text id="id_Private_Status"/>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<xsp:logic><![CDATA[
+                }
+            ]]></xsp:logic>
+			<xsp:logic><![CDATA[
+                if(booSEC178 == true)
+                {
+            ]]></xsp:logic>
+			<section>
+				<part>
+					<attributes>
+						<id>PublicReports</id>
+						<name>Public Reports</name>
+						<linked>true</linked>
+						<width>2</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column width="2">
+							<table id="id_PublicReportsTable">
+								<columnheaders>
+									<columnheader align="left" wrap="false"/>
+									<columnheader align="left" wrap="false"/>
+									<columnheader id="id_PublicReportsTable_NameColumn" name="Report Name" align="left" wrap="false">
+										<event name="onclick">
+                                            if(varSortField[AVR_SORT_LIST_PUBLIC] == AVR_SORT_FIELD_NAME)
+                                            {
+                                                varSortDirection[AVR_SORT_LIST_PUBLIC] = ! varSortDirection[AVR_SORT_LIST_PUBLIC];
+                                            }
+                                            varSortField[AVR_SORT_LIST_PUBLIC] = AVR_SORT_FIELD_NAME;
+                                            if(varSortDirection[AVR_SORT_LIST_PUBLIC] == true)
+                                            {
+                                                aPublic.sort(SortByNameAscending);
+                                            }
+                                            else
+                                            {
+                                                aPublic.sort(SortByNameDescending);
+                                            }
+                                            UpdatePublicTable();
+                                        </event>
+									</columnheader>
+									<columnheader id="id_PublicReportsTable_DateColumn" name="Date Created" align="left" wrap="false">
+										<event name="onclick">
+                                            if(varSortField[AVR_SORT_LIST_PUBLIC] == AVR_SORT_FIELD_DATE)
+                                            {
+                                                varSortDirection[AVR_SORT_LIST_PUBLIC] = ! varSortDirection[AVR_SORT_LIST_PUBLIC];
+                                            }
+                                            varSortField[AVR_SORT_LIST_PUBLIC] = AVR_SORT_FIELD_DATE;
+                                            if(varSortDirection[AVR_SORT_LIST_PUBLIC] == true)
+                                            {
+                                                aPublic.sort(SortByDateAscending);
+                                            }
+                                            else
+                                            {
+                                                aPublic.sort(SortByDateDescending);
+                                            }
+                                            UpdatePublicTable();
+                                        </event>
+									</columnheader>
+								</columnheaders>
+								<records>
+									<xsp:logic><![CDATA[
+                                        intRecords = alPublicReports.size();
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            strRowBackground = ((intRecord % 2) == 0) ? "BackgroundGrayLight" : "BackgroundGrayDark";
+                                            al = (ArrayList)alPublicReports.get(intRecord);
+                                            strDataSourceUID = (String)al.get(0);
+                                            strReportUID = (String)al.get(1);
+                                            strTitle = (String)al.get(2);
+                                            strDescription = (String)al.get(3);
+                                            strDateCreated = (String)al.get(4);
+                                            strStatus = (String)al.get(5);
+                                            strReportType = (String)al.get(6);
+                                            strOwnerUID = (String)al.get(7);
+                                            strDateCreatedNum = (String)al.get(8);
+                                    ]]></xsp:logic>
+									<xsp:element name="record">
+										<xsp:attribute name="background">
+											<xsp:expr>strRowBackground</xsp:expr>
+										</xsp:attribute>
+										<column>
+											<xsp:element name="hyperlink">
+												<xsp:attribute name="id">id_PublicReportsTable_Details_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="name">Details</xsp:attribute>
+												<xsp:attribute name="display">
+													<xsp:expr>(booSEC178 ? "Visible" : "Invisible")</xsp:expr>
+												</xsp:attribute>
+												<event name="onclick">
+                                                    ShowPublicDetails(<xsp:expr>intRecord</xsp:expr>);
+                                                </event>
+											</xsp:element>
+										</column>
+										<column>
+											<xsp:element name="hyperlink">
+												<xsp:attribute name="id">id_PublicReportsTable_Run_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="name">Run</xsp:attribute>
+												<xsp:attribute name="display">
+													<xsp:expr>(booSEC147 ? "Visible" : "Invisible")</xsp:expr>
+												</xsp:attribute>
+												<event name="onclick">
+                                                    ShowPublicDetails(<xsp:expr>intRecord</xsp:expr>);
+                                                    RunReportPublic(<xsp:expr>intRecord</xsp:expr>);
+                                                </event>
+											</xsp:element>
+										</column>
+										<column>
+											<xsp:element name="text">
+												<xsp:attribute name="id">id_PublicReportsTable_Name_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:expr>strTitle</xsp:expr>
+											</xsp:element>
+										</column>
+										<column>
+											<xsp:element name="text">
+												<xsp:attribute name="id">id_PublicReportsTable_Date_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:expr>strDateCreated</xsp:expr>
+											</xsp:element>
+										</column>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</records>
+							</table>
+						</column>
+					</row>
+				</subsection>
+				<subsection name="" line="false">
+					<row>
+						<column width="2">
+							<empty/>
+						</column>
+					</row>
+					<row>
+						<column>
+							<text format="Bold">Report Name:</text>
+						</column>
+						<column size="500">
+							<text id="id_Public_Name"/>
+						</column>
+					</row>
+					<row>
+						<column>
+							<text format="Bold">Description:</text>
+						</column>
+						<column size="500">
+							<text id="id_Public_Description"/>
+						</column>
+					</row>
+					<row>
+						<column>
+							<text format="Bold">Date Created:</text>
+						</column>
+						<column size="500">
+							<text id="id_Public_Created"/>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<xsp:logic><![CDATA[
+                }
+            ]]></xsp:logic>
+			<xsp:logic><![CDATA[
+                if(booSEC170 == true)
+                {
+            ]]></xsp:logic>
+			<section>
+				<part>
+					<attributes>
+						<id>ReportTemplates</id>
+						<name>Report Templates</name>
+						<linked>true</linked>
+						<width>2</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column width="2">
+							<text format="Normal">Use one of the templates listed below to create a custom report.</text>
+						</column>
+					</row>
+					<row>
+						<column width="2">
+							<empty/>
+						</column>
+					</row>
+					<row>
+						<column width="2">
+							<table id="id_ReportTemplatesTable">
+								<columnheaders>
+									<columnheader align="left" wrap="false"/>
+									<columnheader align="left" wrap="false"/>
+									<columnheader id="id_ReportTemplatesTable_NameColumn" name="Template Name" align="left" wrap="false">
+										<event name="onclick">
+                                            if(varSortField[AVR_SORT_LIST_TEMPLATE] == AVR_SORT_FIELD_NAME)
+                                            {
+                                                varSortDirection[AVR_SORT_LIST_TEMPLATE] = ! varSortDirection[AVR_SORT_LIST_TEMPLATE];
+                                            }
+                                            varSortField[AVR_SORT_LIST_TEMPLATE] = AVR_SORT_FIELD_NAME;
+                                            if(varSortDirection[AVR_SORT_LIST_TEMPLATE] == true)
+                                            {
+                                                aTemplates.sort(SortByNameAscending);
+                                            }
+                                            else
+                                            {
+                                                aTemplates.sort(SortByNameDescending);
+                                            }
+                                            UpdateTemplateTable();
+                                        </event>
+									</columnheader>
+									<columnheader id="id_ReportTemplatesTable_DateColumn" name="Date Created" align="left" wrap="false">
+										<event name="onclick">
+                                            if(varSortField[AVR_SORT_LIST_TEMPLATE] == AVR_SORT_FIELD_DATE)
+                                            {
+                                                varSortDirection[AVR_SORT_LIST_TEMPLATE] = ! varSortDirection[AVR_SORT_LIST_TEMPLATE];
+                                            }
+                                            varSortField[AVR_SORT_LIST_TEMPLATE] = AVR_SORT_FIELD_DATE;
+                                            if(varSortDirection[AVR_SORT_LIST_TEMPLATE] == true)
+                                            {
+                                                aTemplates.sort(SortByDateAscending);
+                                            }
+                                            else
+                                            {
+                                                aTemplates.sort(SortByDateDescending);
+                                            }
+                                            UpdateTemplateTable();
+                                        </event>
+									</columnheader>
+								</columnheaders>
+								<records>
+									<xsp:logic><![CDATA[
+                                        intRecords = alReportTemplates.size();
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            strRowBackground = ((intRecord % 2) == 0) ? "BackgroundGrayLight" : "BackgroundGrayDark";
+                                            al = (ArrayList)alReportTemplates.get(intRecord);
+                                            strDataSourceUID = (String)al.get(0);
+                                            strReportUID = (String)al.get(1);
+                                            strTitle = (String)al.get(2);
+                                            strDescription = (String)al.get(3);
+                                            strDateCreated = (String)al.get(4);
+                                            strStatus = (String)al.get(5);
+                                            strReportType = (String)al.get(6);
+                                            strOwnerUID = (String)al.get(7);
+                                            strDateCreatedNum = (String)al.get(8);
+                                    ]]></xsp:logic>
+									<xsp:element name="record">
+										<xsp:attribute name="background">
+											<xsp:expr>strRowBackground</xsp:expr>
+										</xsp:attribute>
+										<column>
+											<xsp:element name="hyperlink">
+												<xsp:attribute name="id">id_ReportTemplatesTable_Details_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="name">Details</xsp:attribute>
+												<xsp:attribute name="display">
+													<xsp:expr>(booSEC170 ? "Visible" : "Invisible")</xsp:expr>
+												</xsp:attribute>
+												<event name="onclick">
+                                                    ShowTemplateDetails(<xsp:expr>intRecord</xsp:expr>);
+                                                </event>
+											</xsp:element>
+										</column>
+										<column>
+											<xsp:element name="hyperlink">
+												<xsp:attribute name="id">id_ReportTemplatesTable_Run_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="name">Run</xsp:attribute>
+												<xsp:attribute name="display">
+													<xsp:expr>(booSEC169 ? "Visible" : "Invisible")</xsp:expr>
+												</xsp:attribute>
+												<event name="onclick">
+                                                    ShowTemplateDetails(<xsp:expr>intRecord</xsp:expr>);
+                                                    RunReportTemplate(<xsp:expr>intRecord</xsp:expr>);
+                                                </event>
+											</xsp:element>
+										</column>
+										<column>
+											<xsp:element name="text">
+												<xsp:attribute name="id">id_ReportTemplatesTable_Name_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:expr>strTitle</xsp:expr>
+											</xsp:element>
+										</column>
+										<column>
+											<xsp:element name="text">
+												<xsp:attribute name="id">id_ReportTemplatesTable_Date_<xsp:expr>intRecord</xsp:expr>
+												</xsp:attribute>
+												<xsp:expr>strDateCreated</xsp:expr>
+											</xsp:element>
+										</column>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</records>
+							</table>
+						</column>
+					</row>
+				</subsection>
+				<subsection name="" line="false">
+					<row>
+						<column width="2">
+							<empty/>
+						</column>
+					</row>
+					<row>
+						<column>
+							<text format="Bold">Report Name:</text>
+						</column>
+						<column size="500">
+							<text id="id_Templates_Name"/>
+						</column>
+					</row>
+					<row>
+						<column>
+							<text format="Bold">Description:</text>
+						</column>
+						<column size="500">
+							<text id="id_Templates_Description"/>
+						</column>
+					</row>
+					<row>
+						<column>
+							<text format="Bold">Date Created:</text>
+						</column>
+						<column size="500">
+							<text id="id_Templates_Created"/>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<xsp:logic><![CDATA[
+                }
+            ]]></xsp:logic>
+			<toolbar location="bottom"/>
+		</body>
+	</part>
+</xsp:page>

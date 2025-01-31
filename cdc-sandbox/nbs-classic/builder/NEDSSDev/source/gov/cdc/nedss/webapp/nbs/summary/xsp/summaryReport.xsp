@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.NEDSSConstants</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<xsp:logic><![CDATA[
+		
+	  	String typeOfAction = request.getParameter("ContextAction");   
+	  	
+	  	//##!! System.out.println("The Context Action is "+typeOfAction);
+
+					
+		  Boolean sortDirection = (Boolean) ]]><session:get-attribute name="sortDirection"/><![CDATA[;
+		  String direction = null;
+		  if(sortDirection!=null)
+			direction = sortDirection.toString();
+		  else
+			direction = "true";
+		
+		  
+		]]></xsp:logic>
+		<button-bar>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="submitButton"/>
+				</xsp:attribute>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="Cancel"/>');</javascript-action>
+			</right>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="notificationButton"/>
+				</xsp:attribute>
+				<label>Submit and Send Notification</label>
+				<javascript-action>submitSendNotification();</javascript-action>
+			</right>
+		</button-bar>
+		<javascript-files>
+			<import>SummaryNotificationSpecific.js</import>
+		</javascript-files>
+		<tab name="Summary">
+			<nedss:writeErrorMessages/>
+			<group>
+				<xsp:attribute name="name">
+					<xsp-request:get-attribute name="conditionSummaryReport"/>
+				</xsp:attribute>
+				<line>
+					<element type="hidden" name="ContextAction">
+						<value>
+							<xsp-request:get-attribute name="ContextAction"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Report Criteria"/>
+					<element type="hidden" name="ContextAction"/>
+					<value>
+						<xsp:expr>typeOfAction </xsp:expr>
+					</value>
+				</line>
+			</group>
+			<group>
+				<line>
+				</line>
+				<line>
+					<element/>
+					<element name="County" type="select" label="County">
+						<readonly/>
+						<srt-options-string>
+							<xsp-request:get-attribute name="counties"/>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="countyValue"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element/>
+					<element name="MMWRYear" type="plain-text" label="MMWR Year">
+						<value>
+							<xsp-request:get-attribute name="MMWRYear"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element/>
+					<element name="MMWRWeek" type="select" label="MMWR Week">
+						<readonly/>
+						<value>
+							<xsp-request:get-attribute name="MIN_MMWR_WEEK"/>
+						</value>
+						<srt-options-string>
+							<xsp-request:get-attribute name="MMWRWeekOptions"/>
+						</srt-options-string>
+						<xsp:attribute name="MMWRWeek"/>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Counts"/>
+				</line>
+			</group>
+			<!-- Security ....Revisit -->
+			<group>
+				<!--	<xsp:attribute name="authorized">
+								<xsp-request:get-attribute name="viewSumm"/>
+				</xsp:attribute>		 -->
+				<line>
+					<element name="Count" type="batch-entry">
+						<value>
+							<xsp-request:get-attribute name="batchEntryList"/>
+						</value>
+						<line>
+							<element name="report[i].observationVO_s[0].obsValueCodedDT_s[0].code" type="select" label="Source">
+								<xsp:attribute name="observation-name">report[i].observationVO_s[0].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">SUM103</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>SUMMARY_RPT_SRC</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+								<validation type="required" error-code="ERR023" name="Source"/>
+								<header>Source</header>
+							</element>
+							<element name="report[i].observationVO_s[1].obsValueNumericDT_s[0].numericValue1_s" type="text" label="Count" size="10" align-label="right">
+								<xsp:attribute name="observation-name">report[i].observationVO_s[1].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">SUM104</xsp:attribute>
+								<validation type="numeric" name="Count"/>
+								<header counter="on">Count</header>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element name="report[i].observationVO_s[2].obsValueTxtDT_s[0].valueTxt" type="textarea" label="Comments ">
+								<xsp:attribute name="observation-name">report[i].observationVO_s[2].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">SUM105</xsp:attribute>
+								<validation name="Comments">
+									<type>lengthLimit2000</type>
+									<fieldLength>2000</fieldLength>
+								</validation>
+								<header>Comments</header>
+							</element>
+							<element name="report[i].statusCd" type="hidden">
+								
+							</element>
+						</line>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

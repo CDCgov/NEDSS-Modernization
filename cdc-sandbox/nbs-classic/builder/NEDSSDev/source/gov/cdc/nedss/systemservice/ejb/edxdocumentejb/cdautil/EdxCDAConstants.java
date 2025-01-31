@@ -1,0 +1,40 @@
+package gov.cdc.nedss.systemservice.ejb.edxdocumentejb.cdautil;
+
+public interface EdxCDAConstants {
+	public static final String PROVIDER = "PRV";
+	public static final String ORGANIZATION = "ORG";
+	public static final String HOUSE_CD = "H";
+	public static final String TELE_CD = "TELE";
+	public static final String PHONE_CD = "PH";
+	public static final String CDA_PATIENT_DESC = "PHDC Subject";
+	public static final String CDA_NOK_DESC = "PHDC NOK Participant";
+	public static final String ANY = "ANY";
+	public static final String LOCAL_CD = "L";
+	public static final String LOCAL_DESC = "LOCAL";
+	public static final String EPI_INFO_CD = "55752-0";
+	public static final String INTERESTED_PARTY_CD = "123-4567";
+	public static final String SIGNS_SYMPTOMS_CD = "123-5897";
+	public static final String STD_HISTORY_CD = "123-5877";
+	public static final String REPEATING_QUESTIONS_CD = "1234567-RPT";
+	public static final String INTERVIEW_INFO_CD = "IXS";
+	public static final String TREATMENT_INFORMATION_CD = "55753-8";
+	public static final String LAB_INFORMATION_CD = "11502-2";
+	public static final String SOCIAL_HISTORY_CD = "29762-2";
+	public static final String CDA_NAMESPACE = "declare namespace cda='urn:hl7-org:v3'";
+	public static final String CDA_STRUCTURED_XML_SECTION = "$this/cda:component/cda:structuredBody/cda:component/cda:section";
+	public static final String CDA_STRUCTURED_XML_ENRTY = "$this/cda:component/cda:structuredBody/cda:component/cda:section/cda:entry";
+	public static final String CDA_STRUCTURED_XML_ENRTY_OBS = "$this/cda:component/cda:structuredBody/cda:component/cda:section/cda:entry/cda:observation"; 
+	public static final String CDA_STRUCTURED_XML_ENRTY_SA = "$this/cda:component/cda:structuredBody/cda:component/cda:section/cda:entry/cda:substanceAdministration";
+	public static final String CDA_EXTERNAL_DUCUMENT_WITHIN_SECTION = "$this/cda:entry/cda:observation/cda:reference/cda:externalDocument";
+	public static final String CDA_REFERENCE_DUCUMENT_WITHIN_SECTION = "$this/cda:entry/cda:observation/cda:reference";
+	public static final String INTERVIEWER_CD = "IXS102";
+	public static final String SUBJECT_INV="SubjectInv";
+	public static final String CONTACT_INV="ContactInv";
+	public static final String EXPOSURE_INFO_CD="123-EXPOSURE";
+	public static final String PATIENT_INFO_CD = "12345-PatientInfo";
+	public static final String NAMED_IN_INTEVIEW = "NAMED_IN_INTEVIEW";
+	public static final String LABORATORY_REPORT_CD = "11502-2";
+	public static final String MORBIDITY_REPORT_CD = "CMR";
+	public static final String CDA_STRUCTURED_XML_LAB_COMPONENT = "$this/cda:component/cda:structuredBody/cda:component/cda:section/cda:entry/cda:organizer/cda:component";
+	public static final String ORDER_IDENTIFIER="order-identifier-1";
+}

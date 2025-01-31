@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<content>
+		<xsp:logic><![CDATA[
+				String sDebug = "";
+				String sError = "";
+				
+				try {
+						sError = (String)]]><session:get-attribute name="error"/><![CDATA[;	
+				}
+				catch (Exception e) {
+					sDebug += e.toString();
+				}
+				
+			
+				
+		]]></xsp:logic>
+		<link-bar>
+			<xsp:attribute name="authorized">
+				<xsp-request:get-attribute name="filePermission"/>
+			</xsp:attribute>
+			<link name="Return to Home Page">/nbs/HomePage.do?method=loadHomePage</link>
+		</link-bar>
+		<button-bar/>
+		<tab>
+			<group name="Submit Error">
+				<line>
+					<element type="plain-text">
+						<value>
+							<xsp:expr>sError</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<free/>
+					<element type="raw">
+						<span>
+							<b>
+								<br/>
+				One or more of the records you have opened has been edited or deleted by another <br/>
+				user since you have opened it. Unfortunately, the system is unable to edit, merge, <br/>
+				or associate this record.
+				</b>
+						</span>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

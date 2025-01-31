@@ -26,40 +26,25 @@ const ProtoTextarea = ({
     className,
     ...props
 }: ProtoTextareaProps) => {
-    const view = useRef<HTMLDivElement>(null);
-    const text = useRef<HTMLTextAreaElement>(null);
+    const textarea = useRef<HTMLTextAreaElement>(null);
+    const mirroredEle = useRef<HTMLDivElement>(null);
 
-    const containerEle = document.getElementById('container');
-    const textarea = document.querySelector('textarea');
+    useEffect(() => {
+        const ro = new ResizeObserver(() => {
+            console.log(borderWidth);
+            if (mirroredEle.current) mirroredEle.current.style.width = `${textarea?.current?.clientWidth ?? 0}px`;
+            if (mirroredEle.current) mirroredEle.current.style.height = `${textarea?.current?.clientHeight ?? 0}px`;
+        });
+        if (textarea.current) ro.observe(textarea.current);
 
-    const overlayEle = document.createElement('div');
-    overlayEle.classList.add(styles.overlay);
-    containerEle?.prepend(overlayEle);
+        return () => ro.disconnect();
+    }, [textarea.current]);
 
-    const highlightEle = document.createElement('div');
-    highlightEle.classList.add(styles.highlight);
-    overlayEle.appendChild(highlightEle);
+    const parseValue = (v: string) => (v.endsWith('px') ? parseInt(v.slice(0, -2), 10) : 0);
 
-    const mirroredEle = document.createElement('div');
-    mirroredEle.textContent = textarea?.textContent ?? '';
-    mirroredEle.classList.add(styles.mirror);
-    overlayEle.appendChild(mirroredEle);
-
-    const cursorPos = textarea?.selectionStart;
-    const textBeforeCursor = textarea?.textContent?.substring(0, cursorPos);
-    const textAfterCursor = textarea?.textContent?.substring(cursorPos ?? 0);
-
-    const pre = document.createTextNode(textBeforeCursor ?? '');
-    const post = document.createTextNode(textAfterCursor ?? '');
-    const caretEle = document.createElement('span');
-    caretEle.innerHTML = '&nbsp;';
-
-    mirroredEle.innerHTML = '';
-    mirroredEle.append(pre, caretEle, post);
-
-    const rect = caretEle.getBoundingClientRect();
-    highlightEle.style.height = `${rect.height}px`;
-    highlightEle.style.top = `${rect.top + (textarea?.scrollTop ?? 0)}px`;
+    const borderWidth = textarea.current
+        ? parseValue(window.getComputedStyle(textarea.current).getPropertyValue('border-width'))
+        : undefined;
 
     const [current, setCurrent] = useState<string>(value ?? '');
     // const [display, setDisplay] = useState<string>();
@@ -69,7 +54,7 @@ const ProtoTextarea = ({
     }, [value]);
 
     const handleInput = () => {
-        const next = text.current?.value;
+        const next = textarea.current?.value;
 
         if (next) {
             setCurrent(next);
@@ -86,25 +71,27 @@ const ProtoTextarea = ({
         }
     };
 
+    const handleScroll = () => {
+        if (mirroredEle.current) mirroredEle.current.scrollTop = textarea.current?.scrollTop ?? 0;
+    };
+
     return (
         <div className={styles.area}>
-            <div className={styles.overlay}>
-                <div
-                    className={styles.highlight}
-                    ref={view}
-                    aria-hidden
-                    dangerouslySetInnerHTML={{ __html: current }}></div>
-                <div className={styles.mirror}></div>
+            <div className={styles.container} id="container">
+                <div className={styles.mirror} ref={mirroredEle}>
+                    {textarea?.current?.value}
+                </div>
                 <textarea
-                    ref={text}
+                    ref={textarea}
                     autoComplete="off"
                     id={id}
                     name={props.name ?? id}
                     inputMode={inputMode}
-                    className={classNames('usa-textarea', styles.editing, className)}
+                    className={classNames('usa-textarea', styles.textarea, className)}
                     onInput={handleInput}
                     onChange={handleChange}
                     onBlur={onBlur}
+                    onScroll={handleScroll}
                     placeholder={placeholder}
                     value={current}
                     {...props}

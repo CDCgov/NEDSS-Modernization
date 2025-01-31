@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by Gregory Tucker (private) -->
+<!-- Created by Gregory Tucker for CDC  -->
+<!-- NBS Page Builder Schema used for Export/Import May 11th, 2010 Version  -->
+<xs:schema targetNamespace="http://www.cdc.gov/nedss/pagemanagement/wa/xml//util" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:util="http://www.cdc.gov/nedss/pagemanagement/wa/xml//util" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+	<xs:element name="TemplateExport" type="util:TemplateExportType"/>
+	<xs:complexType name="TemplateExportType">
+		<xs:annotation>
+			<xs:documentation>TemplateExport is the root element. The schema is intended to hold all the page metadata and codeset information for a paticular template. This includes: ws_question, wa_template, wa_ui_metadata, wa_nnd_metadata, wa_rdb_metadata, wa_rule_metadata and the  codesets used in a single Page.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ExportHeader" type="util:ExportHeaderType"/>
+			<xs:element name="CodesetInsert" type="util:CodesetInsertType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="QuestionInsert" type="util:QuesInsertType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="TemplateInsert" type="util:TemplateInsertType"/>
+			<xs:element name="UIMetadataInsert" type="util:MetaInsertType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RDBInsert" type="util:MetaInsertTypeArray" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="NNDInsert" type="util:MetaInsertTypeArray" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RuleInsert" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExportHeaderType">
+		<xs:annotation>
+			<xs:documentation>The export type is only FULL at present. In the future we could support vocab and  questions, codesets only, and full which includes all metadata and code_sets..</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TemplateNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="ExportType" type="xs:string" default="FULL" minOccurs="0"/>
+			<xs:element name="ExportedFromState" type="xs:string" minOccurs="0"/>
+			<xs:element name="ExportedDateTime" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TemplateInsertType">
+		<xs:annotation>
+			<xs:documentation>Template metadatat Information. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TemplateName" type="xs:string"/>
+			<xs:element name="InsertStatement" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MetaInsertType">
+		<xs:annotation>
+			<xs:documentation>Page metadatat Information. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QuestionIdentifier" type="xs:string"/>
+			<xs:element name="InsertStatement" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QuesInsertType">
+		<xs:annotation>
+			<xs:documentation>Page metadatat Information. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QuestionIdentifier" type="xs:string"/>
+			<xs:element name="UniqueName" type="xs:string"/>
+                   <xs:element name="Type" type="xs:string"/>
+			<xs:element name="InsertStatement" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="MetaInsertTypeArray">
+		<xs:annotation>
+			<xs:documentation>Page metadatat Information. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QuestionIdentifier" type="xs:string"/>
+			<xs:element name="InsertStatement" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodesetInsertType">
+		<xs:annotation>
+			<xs:documentation>Codeset or valueset Information. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CodesetNm" type="xs:string"/>
+			<xs:element name="ValueSetNm" type="xs:string"/>
+                     <xs:element name="Type" type="xs:string"/>
+			<xs:element name="CodesetInsert" type="xs:string"/>
+			<xs:element name="CodesetGroupMetadataInsert" type="xs:string"/>
+			<xs:element name="CodeValuetInsert" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

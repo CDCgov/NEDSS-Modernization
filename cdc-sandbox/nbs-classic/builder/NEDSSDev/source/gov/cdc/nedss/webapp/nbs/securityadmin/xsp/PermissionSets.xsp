@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+	</xsp:structure>
+	<xsp:logic><![CDATA[
+            LogUtils logger = new LogUtils((this.getClass()).getName());
+
+       ]]></xsp:logic>
+	<content form="/loadPermissionSets.do">
+		<xsp:logic><![CDATA[
+	            String paaPermission=(String) request.getAttribute("paaPermission");
+	            Collection sysPerms= (Collection)]]><session:get-attribute name="SystemDefinedPermissionSets"/><![CDATA[;
+	            Collection userPerms= (Collection)]]><session:get-attribute name="UserDefinedPermissionSets"/><![CDATA[;
+	             Boolean sortDirection = (Boolean) ]]><session:get-attribute name="sortDirection"/><![CDATA[;
+				String direction = null;
+				if(sortDirection!=null)
+					direction = sortDirection.toString();
+				else
+					direction = "true";
+	       ]]></xsp:logic>
+		<xsp:logic><![CDATA[
+		       if(paaPermission != null && paaPermission.equalsIgnoreCase("true"))
+		       {
+	        ]]></xsp:logic>
+	    <link-bar>
+	        <link>
+	            <xsp:attribute name="name">
+	                <xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+	            </xsp:attribute>
+	            <xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+	        </link>
+	    </link-bar>
+		<button-bar>
+			<right>
+				<label>Add</label>
+				<javascript-action>getPage('selectPermissionSet.do?<xsp:expr>PageConstants.OPERATIONTYPE</xsp:expr>=<xsp:expr>NEDSSConstants.SELECT_PERMISSION_SET</xsp:expr>');</javascript-action>-->
+				</right>
+		</button-bar>
+		<xsp:logic><![CDATA[
+		      }
+	        ]]></xsp:logic>
+		<separator/>
+		<tab>
+			<group>
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<font class="boldTenArial">
+								<p align="left">
+									<b>Select a Permission Set Name to View or Edit an Existing Permission Set.</b>
+									<br/>
+									<i>Note:  System Defined Permission Sets cannot be modified.</i>
+								</p>
+							</font>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="System Defined Permission Sets"/>
+				</line>
+				<line>
+					<element type="data-table">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="viewMorb"/>
+						</xsp:attribute>
+						<header width="25%">Permission Set Name</header>
+						<header width="75%"> Description</header>
+						
+						<view-link>loadPermissionSet.do?<xsp:expr>PageConstants.OPERATIONTYPE</xsp:expr>=<xsp:expr>NEDSSConstants.VIEW</xsp:expr>&amp;ReadOnly=true&amp;RoleName=</view-link>
+						<value>
+							<xsp-request:get-attribute name="sysDefinedPermissionSets"/>
+						</value>
+					</element>
+				</line>
+				
+				
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="User Defined Permission Sets"/>
+				</line>
+				<line>
+					<element type="data-table">
+						<xsp:attribute name="authorized">
+							<xsp-request:get-attribute name="viewMorb"/>
+						</xsp:attribute>
+						<header width="25%">Permission Set Name</header>
+						<header width="75%"> Description</header>
+						
+						<view-link>loadPermissionSet.do?<xsp:expr>PageConstants.OPERATIONTYPE</xsp:expr>=<xsp:expr>NEDSSConstants.VIEW</xsp:expr>&amp;ReadOnly=false&amp;RoleName=</view-link>
+						<value>
+							<xsp-request:get-attribute name="userDefinedPermissionSets"/>
+						</value>
+					</element>
+				</line>
+				
+				
+				
+				
+				
+			</group>
+		</tab>
+	</content>
+</xsp:page>

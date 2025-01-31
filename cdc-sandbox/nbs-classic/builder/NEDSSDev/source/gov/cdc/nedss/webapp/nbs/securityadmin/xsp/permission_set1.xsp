@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+	</xsp:structure>
+	<xsp:logic><![CDATA[
+            LogUtils logger = new LogUtils((this.getClass()).getName());
+       ]]></xsp:logic>
+	<content form="/nbs/storePermissionSet.do">
+		<javascript-files>
+			<import>ElementValidate.js</import>
+			<import>Validate.js</import>
+		</javascript-files>
+		<!--content form="/nedss/posted"-->
+		<xsp:logic><![CDATA[
+				String operationType=(String) request.getAttribute("OperationType");
+				String psName = request.getParameter("RoleName");
+				
+				String  isUserPaa = "";
+				if(request.getAttribute("isUserPAA") != null)
+					isUserPaa = (request.getAttribute("isUserPAA")).toString();
+				//System.out.println("isUserPaa : " + isUserPaa );
+
+				if(request.getParameter("OperationType").equals(NEDSSConstants.EDIT))
+				{
+					operationType = NEDSSConstants.EDIT;
+				}
+				String readOnlyFlag = request.getParameter("ReadOnly");
+				if(readOnlyFlag==null)
+				{
+					readOnlyFlag="false";
+				}
+				String errorMessage = (String)request.getAttribute("errorMessage");
+		]]></xsp:logic>
+		<button-bar>
+			<xsp:logic><![CDATA[
+			if (operationType != null && (operationType.equals("create") || operationType.equals("edit")))
+			{
+			]]></xsp:logic>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="submitButton"/>
+				</xsp:attribute>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<xsp:logic><![CDATA[
+				if (operationType != null && (operationType.equals("create")))
+				{
+				]]></xsp:logic>
+				<javascript-action>cancelForm('/nbs/selectPermissionSet.do?OperationType=<xsp:expr>NEDSSConstants.SELECT_PERMISSION_SET</xsp:expr>');</javascript-action>
+				<xsp:logic><![CDATA[
+				}
+				else if (operationType != null && operationType.equals("edit"))
+				{
+			 	]]></xsp:logic>
+				<javascript-action>cancelForm('/nbs/loadPermissionSet.do?OperationType=view&amp;RoleName=<xsp:expr>XMLRequestHelper.urlEncode(psName)</xsp:expr>');</javascript-action>
+				<xsp:logic>
+				}
+				</xsp:logic>
+			</right>
+			<xsp:logic><![CDATA[
+			}
+			else if (operationType != null && operationType.equals("view") && (isUserPaa.equalsIgnoreCase("true")))
+			{
+				if(readOnlyFlag.equals("false")){
+				 ]]></xsp:logic>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="editButton"/>
+				</xsp:attribute>
+				<label>Edit</label>
+				<javascript-action>getPage('<xsp-request:get-attribute name="editButtonHref"/>&amp;RoleName=<xsp:expr>XMLRequestHelper.urlEncode(psName)</xsp:expr>');</javascript-action>
+			</right>
+			<xsp:logic>
+				}
+			</xsp:logic>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="addButton"/>
+				</xsp:attribute>
+				<!--<label>&lt;nobr&gt;Add From Template&lt;/nobr&gt;</label>-->
+				<label>Add From Template</label>
+				<javascript-action>getPage('loadPermissionSet.do?<xsp:expr>PageConstants.OPERATIONTYPE</xsp:expr>=<xsp:expr>NEDSSConstants.CREATE</xsp:expr>&amp;templateFlag=y&amp;permSetAsTemplate=<xsp:expr>XMLRequestHelper.urlEncode(psName)</xsp:expr>');</javascript-action>
+			</right>
+			<xsp:logic>
+			}
+			</xsp:logic>
+		</button-bar>
+		<javascript-files>
+			<import>PermissionSetSpecific.js</import>
+		</javascript-files>
+		<tab>
+			<nedss:writeErrorMessages/>
+			<group>
+				<line>
+					<element name="OperationType" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="OperationType"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<font class="boldTenRed">
+								<p align="left">
+									<b>
+										<xsp:expr>errorMessage</xsp:expr>
+									</b>
+								</p>
+							</font>
+						</span>
+					</element>
+				</line>
+			</group>
+			<!--=========================== Permission Set Information ============================== -->
+			<group name="Permission Set Information">
+				<line tie-to="Add|">
+					<element type="join">
+						<line>
+							<element type="raw">
+								<span class="normalNineRed">
+									<i>* Indicates a Required Field</i>
+								</span>
+							</element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<xsp:logic>
+						if (operationType.equals("create"))
+						{
+						</xsp:logic>
+					<element name="RoleName" type="text" label="*Permission Set Name">
+						<value>
+							<xsp-request:get-parameter name="RoleName"/>
+						</value>
+						<validation type="required" name="Permission Set Name" error-message="This is a required field. Please enter Permission Set Name and try again."/>
+					</element>
+					<xsp:logic>
+                				}
+						else
+						{
+						</xsp:logic>
+					<element name="RoleName" type="text" label="Permission Set Name">
+						<value>
+							<xsp-request:get-parameter name="RoleName"/>
+						</value>
+						<readonly/>
+					</element>
+					<xsp:logic>
+						}
+					</xsp:logic>
+					<element name="HiddenRoleName" type="hidden">
+						<value>
+							<xsp-request:get-parameter name="RoleName"/>
+						</value>
+					</element>
+				</line>
+				<xsp:logic>
+					String desc = (String)request.getAttribute("RoleDescription");
+					if(desc==null)
+						desc="";
+					else
+						desc = desc.trim();
+
+				</xsp:logic>
+				<line>
+					<element name="RoleDescription" type="text" label="Description" size="70">
+						<value>
+							<!--<xsp-request:get-attribute name="RoleDescription"/>-->
+							<xsp:expr>desc</xsp:expr>
+						</value>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

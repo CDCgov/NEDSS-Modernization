@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ReportAdmin" default="doc" basedir=".">
+    <target name="doc" description="generates API documentation" depends="">
+        <property name="ydoc" value="ydoc-2.2_05-jdk1.4"/>
+        <property name="packages" value="gov.cdc.nedss.reportadmin.dt,gov.cdc.nedss.reportadmin.dao,gov.cdc.nedss.webapp.nbs.action.reportadmin"/>
+        <path id="cp">
+            <fileset dir="C:/wildfly-10.0.0.Final/nedssdomain/lib">
+                <include name="log4j.jar"/>
+                <include name="javax.servlet.jar"/>
+                <include name="jboss.jar"/>
+            </fileset>
+            <fileset dir="Libraries/struts">
+                <include name="struts.jar"/>
+            </fileset>
+            <pathelement path="buildclasses"/>
+        </path>
+        <path id="ydoc">
+            <fileset dir="${ydoc}/lib">
+                <include name="class2svg.jar"/>
+                <include name="styleed.jar"/>
+                <include name="ydoc.jar"/>
+            </fileset>
+            <pathelement path="${ydoc}/resources"/>
+        </path>
+        <delete dir="ReportAdmin.api"/>
+        <delete file="ReportAdmin.api.chm"/>
+        <delete file="ReportAdmin.api.zip"/>
+        <mkdir dir="ReportAdmin.api"/>
+        <javadoc Header="ReportAdmin" access="private" author="true" destdir="ReportAdmin.api" doctitle="ReportAdmin" failonerror="true" linksource="yes" packagenames="${packages}" sourcepath="source" use="true" version="true" windowtitle="ReportAdmin">
+            <arg value="-quiet"/>
+            <arg value="-keywords"/>
+            <arg value="-license"/>
+            <arg value="ydoc.license.txt"/>
+            <link href="http://java.sun.com/j2se/1.4.2/docs/api/"/>
+            <link href="http://logging.apache.org/log4j/docs/api/"/>
+            <link href="http://xerces.apache.org/xerces2-j/javadocs/api/"/>
+            <link href="http://xerces.apache.org/xerces2-j/javadocs/other/"/>
+            <link href="http://xerces.apache.org/xerces2-j/javadocs/xerces2/"/>
+            <link href="http://xerces.apache.org/xerces2-j/javadocs/xni/"/>
+            <link href="http://xerces.apache.org/xerces2-j/javadocs/xs/"/>
+            <link href="http://xml.apache.org/xalan-j/apidocs/"/>
+            <group title="ReportAdmin" packages="${packages}"/>
+            <doclet name="ydoc.doclets.YStandard" pathref="ydoc">
+                <param name="-umlautogen" value=""/>
+            </doclet>
+            <classpath refid="cp"/>
+        </javadoc>
+        <exec executable="jd2chm.exe" dir="ReportAdmin.api" os="Windows 2000,Windows 2003,Windows XP" failonerror="true">
+            <arg value="-p"/>
+            <arg value="ReportAdmin"/>
+            <arg value="-t"/>
+            <arg value="ReportAdmin"/>
+        </exec>
+        <move file="ReportAdmin.api/ReportAdmin.chm" tofile="ReportAdmin.api.chm"/>
+        <zip compress="true" destfile="ReportAdmin.api.zip" duplicate="fail">
+            <fileset dir=".">
+                <include name="ReportAdmin.api/**"/>
+            </fileset>
+        </zip>
+    </target>
+</project>

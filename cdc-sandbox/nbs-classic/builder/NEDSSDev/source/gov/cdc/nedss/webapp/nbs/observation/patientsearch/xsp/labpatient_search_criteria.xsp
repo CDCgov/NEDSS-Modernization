@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.NEDSSConstants</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.person.vo.PatientSearchVO</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+	</xsp:structure>
+	<nedss:getTitle>
+	</nedss:getTitle>
+	<nedss:getName>
+		</nedss:getName>
+	<nedss:storePerName>
+		</nedss:storePerName>
+	<content>
+		<xsp:attribute name="title">
+			<xsp:expr>getTitle()</xsp:expr>
+		</xsp:attribute>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<nedss:RequestvaluesFind/>
+		<button-bar>
+			<right>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+			</right>
+			<nedss:ifEntitySearch>
+				<right>
+					<label>Cancel</label>
+					<javascript-action>window.close();</javascript-action>
+				</right>
+			</nedss:ifEntitySearch>
+		</button-bar>
+		<javascript-files>
+			<import>PersonSearchSpecific.js</import>
+			<import>EntitySearch.js</import>
+		</javascript-files>
+		<tab name="search">
+			<nedss:writeErrorMessages/>
+			<group>
+				<line>
+					<element type="hidden" name="perTitle">
+						<value>
+							<xsp:expr>storePerName()</xsp:expr>
+						</value>
+					</element>
+					<element name="ContextAction" type="hidden">
+						<value>
+							<xsp:expr>sOperationType</xsp:expr>
+						</value>
+					</element>
+					<element name="VOLookup" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="VOLookup"/>
+						</value>
+					</element>
+				</line>
+			</group>
+			<group>
+				<xsp:attribute name="name">Search Options</xsp:attribute>
+				<line>
+					<element type="raw"/>
+					<element type="raw">
+						<span>
+							<b>Operators</b>
+						</span>
+					</element>
+					<element type="raw">
+						<span>
+							<b>Search Criteria</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="personSearch.lastNameOperator" type="select" background="Shaded" label="Last Name" default="CT" noblank="true" length="11">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_SNDX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getLastNameOperator()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+					<element name="personSearch.lastName" type="text">
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getLastName()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<nedss:ifEntitySearch>
+					<line>
+						<element type="hidden" name="personSearch.active">
+							<value>true</value>
+						</element>
+					</line>
+				</nedss:ifEntitySearch>
+				<line>
+					<element name="personSearch.firstNameOperator" type="select" background="Shaded" align="left" label="First Name" default="CT" noblank="true" length="11">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_SNDX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getFirstNameOperator()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+					<element name="personSearch.firstName" type="text">
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getFirstName()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<line>
+					<element name="personSearch.birthTimeOperator" type="select" background="Shaded" label="DOB" default="=" noblank="true" onchange="flipDate(this);" length="7">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_DOB</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getBirthTimeOperator()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+					<element type="join" id="fulldate">
+						<line>
+							<element name="personSearch.birthTimeMonth" type="text" size="2" maxlength="2" onchange="roundOff(this);">
+								<validation type="validateDOBMonth" error-code="" name="Month" mask="mm"/>
+								<nedss:PersonFindNotNull>
+									<value>
+										<xsp:expr>personFind.getBirthTimeMonth()</xsp:expr>
+									</value>
+								</nedss:PersonFindNotNull>
+							</element>
+							<element name="personSearch.birthTimeDay" type="text" size="2" maxlength="2" onchange="roundOff(this);">
+								<validation type="validateDOBDay" error-code="" name="Day" mask="dd"/>
+								<nedss:PersonFindNotNull>
+									<value>
+										<xsp:expr>personFind.getBirthTimeDay()</xsp:expr>
+									</value>
+								</nedss:PersonFindNotNull>
+							</element>
+							<element name="personSearch.birthTimeYear" type="text" size="4" maxlength="4">
+								<validation type="validateDOBYear" name="Year" mask="yyyy"/>
+								<nedss:PersonFindNotNull>
+									<value>
+										<xsp:expr>personFind.getBirthTimeYear()</xsp:expr>
+									</value>
+								</nedss:PersonFindNotNull>
+							</element>
+						</line>
+						<partner type="join" id="betweendate">
+							<line>
+								<element name="personSearch.beforeBirthTime" type="text" size="10" mask="##/##/####">
+									<validation type="dateRange" name="DOB Begin Date" requiredPartner="personSearch.afterBirthTime" mask="mm/dd/yyyy">
+								</validation>
+									<nedss:PersonFindNotNull>
+										<value>
+											<xsp:expr>personFind.getBeforeBirthTime()</xsp:expr>
+										</value>
+									</nedss:PersonFindNotNull>
+								</element>
+								<element name="personSearch.afterBirthTime" type="text" size="10" mask="##/##/####" onload="flipDateOnload('personSearch.birthTimeOperator');" label="[-nc] - ">
+									<validation type="dateRange" name="DOB End Date" requiredPartner="personSearch.beforeBirthTime" mask="mm/dd/yyyy">
+										<xsp:attribute name="dateBeforeReference">personSearch.beforeBirthTime</xsp:attribute>
+									</validation>
+									<nedss:PersonFindNotNull>
+										<value>
+											<xsp:expr>personFind.getAfterBirthTime()</xsp:expr>
+										</value>
+									</nedss:PersonFindNotNull>
+								</element>
+							</line>
+						</partner>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" align="left" label="Current Sex"/>
+					<element name="personSearch.currentSex" type="select" length="7">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEX</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getCurrentSex()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<line>
+					<element name="personSearch.streetAddr1Operator" type="select" background="Shaded" align="left" label="Street Address" default="CT" noblank="true" length="9">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_ALPHA</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getStreetAddr1Operator()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+					<element name="personSearch.streetAddr1" type="text">
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getStreetAddr1()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<line>
+					<element name="personSearch.cityDescTxtOperator" type="select" background="Shaded" label="City" default="CT" noblank="true" length="9">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>SEARCH_ALPHA</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getCityDescTxtOperator()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+					<element name="personSearch.cityDescTxt" type="text">
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getCityDescTxt()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="State"/>
+					<element name="personSearch.state" type="select" length="25">
+						<srt-options-string>
+							<srt-codes:getStateCodes>
+								<type>USA</type>
+							</srt-codes:getStateCodes>
+						</srt-options-string>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getState()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<line>
+					<element type="raw" name="personSearch.zipCdOperator" background="Shaded" label="Zip">
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getZipCdOperator()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+					<element name="personSearch.zipCd" type="text">
+						<validation type="reg-expr" error-code="ERR103" name="Zip">
+							<pattern><![CDATA[^((\d{5})|(\d{5}-\d{4}))?$]]></pattern>
+						</validation>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getZipCd()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<!--nedss:NotEntitySearch-->
+				<line>
+					<element type="group-separator" title="Advanced Search Options"/>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="SSN"/>
+					<element name="personSearch.ssn" type="ssn" mask="###-##-####">
+						<!--validation type="ssn" name="ssnValidation"/-->
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getSsn()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="Patient ID(s)"/>
+					<element type="text" name="personSearch.localID" size="35%">
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getLocalID()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+					<element type="raw">
+						<span align="left">
+							<i>(Separate IDs by commas, semicolons, or spaces)</i>
+						</span>
+					</element>
+					<element type="hidden" name="personSearch.patientIDOperator">
+						<value>IN</value>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="ID Type"/>
+					<element name="personSearch.typeCd" type="select" exclude="SS" length="37">
+						<validation type="acctIdSearchCheck" nameRef="personSearch.rootExtensionTxt" name="ID Type"/>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>EI_TYPE_PAT</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getTypeCd()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="ID Value"/>
+					<element name="personSearch.rootExtensionTxt" type="text">
+						<validation type="acctIdSearchCheck" nameRef="personSearch.typeCd" name="ID Value"/>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getRootExtensionTxt()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<line>
+					<element type="raw" name="personSearch.phoneNbrTxtOperator" background="Shaded" label="Telephone">
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getPhoneNbrTxtOperator()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+					<element name="personSearch.phoneNbrTxt" type="telephone" mask="(###)###-####" size="10">
+						<validation type="reg-expr" error-code="ERR107" name="Telephone">
+							<pattern><![CDATA[^((\d{3})?-(\d{3})?-(\d{4})?)?$]]></pattern>
+						</validation>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getPhoneNbrTxt()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" label="Ethnicity"/>
+					<element name="personSearch.ethnicGroupInd" type="select" length="22">
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>P_ETHN_GRP</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getEthnicGroupInd()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+					</element>
+				</line>
+				<line>
+					<element type="raw" background="Shaded" align="left" label="Race"/>
+					<element name="personSearch.raceCd" type="select" length="41">
+						<srt-options-string>
+							<srt-codes:getRaceCodes>
+								<type>ROOT</type>
+							</srt-codes:getRaceCodes>
+						</srt-options-string>
+						<nedss:PersonFindNotNull>
+							<value>
+								<xsp:expr>personFind.getRaceCd()</xsp:expr>
+							</value>
+						</nedss:PersonFindNotNull>
+						<duplicate name="raceDescTxt"/>
+					</element>
+				</line>
+				<nedss:NotEntitySearch>
+					<xsp:logic><![CDATA[
+					 String mode1 =request.getParameter("Mode1");
+					 if(mode1==null){]]></xsp:logic>
+					<line anchor="no">
+						<element name="recordType" type="checkbox" note="Include records that are:">
+							<xsp:attribute name="authorized">
+								<xsp-request:get-attribute name="sec-status"/>
+							</xsp:attribute>
+							<options>
+								<option label="Active" name="personSearch.active" value="true">
+									<value>y</value>
+									<nedss:PersonFindNotNull>
+										<nedss:StatusCodeActiveNotNull>
+											<checked>
+												<xsp:expr>personFind.getStatusCodeActive()</xsp:expr>
+											</checked>
+										</nedss:StatusCodeActiveNotNull>
+										<nedss:StatusCodeInActiveNull>
+											<nedss:StatusCodeSuperCededNull>
+												<nedss:StatusCodeActiveNull>
+													<checked>ACTIVE</checked>
+												</nedss:StatusCodeActiveNull>
+											</nedss:StatusCodeSuperCededNull>
+										</nedss:StatusCodeInActiveNull>
+									</nedss:PersonFindNotNull>
+									<nedss:ElseClause>
+										<checked>yes</checked>
+									</nedss:ElseClause>
+								</option>
+								<option label="Deleted" name="personSearch.inActive" value="true">
+									<value>y</value>
+									<nedss:PersonFindNotNull>
+										<nedss:StatusCodeInActiveNotNull>
+											<checked>
+												<xsp:expr>personFind.getStatusCodeInActive()</xsp:expr>
+											</checked>
+										</nedss:StatusCodeInActiveNotNull>
+									</nedss:PersonFindNotNull>
+								</option>
+								<option label="Superceded" name="personSearch.superceded" value="true">
+									<value>y</value>
+									<nedss:PersonFindNotNull>
+										<nedss:StatusCodeSuperCededNotNull>
+											<checked>
+												<xsp:expr>personFind.getStatusCodeSuperCeded()</xsp:expr>
+											</checked>
+										</nedss:StatusCodeSuperCededNotNull>
+									</nedss:PersonFindNotNull>
+								</option>
+							</options>
+						</element>
+					</line>
+					<xsp:logic>}</xsp:logic>
+				</nedss:NotEntitySearch>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

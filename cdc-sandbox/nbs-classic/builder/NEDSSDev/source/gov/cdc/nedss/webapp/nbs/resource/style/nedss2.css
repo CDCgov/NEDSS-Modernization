@@ -1,0 +1,466 @@
+body
+{
+    background-color: #FFFFFF;
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: normal;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+label
+{
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+td
+{
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: normal;
+}
+
+th
+{
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+    text-align: left;
+}
+
+.ActiveTab
+{
+    background-color: #003470;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
+    font-size: 9pt;
+    font-weight: bold;
+    text-decoration: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.BackgroundGrayDark
+{
+    background-color: #C0C0C0;
+}
+
+.BackgroundGrayLight
+{
+    background-color: #DCDCDC;
+}
+
+.BackgroundFunkyBlue
+{
+    background-color: #B7C6DB;
+}
+
+.BackgroundWhite
+{
+    background-color: #FFFFFF;
+}
+
+.BackToTop
+{
+    color: #FFFFFF;
+    cursor: pointer;
+    cursor: hand;
+    font-weight: bold;
+    padding-right: 8px;
+    text-decoration: underline;
+    white-space: nowrap;
+}
+
+.Blue
+{
+    background-color: #003470;
+}
+
+.BodyLeft
+{
+    width: 126px;
+}
+
+.BodyMiddle
+{
+    width: 10px;
+}
+
+.BodyRight
+{
+    width: 624px;
+}
+
+.BorderTop
+{
+    border-top: thin black solid;
+}
+
+.BorderBottom
+{
+    border-bottom: thin black solid;
+}
+
+.BorderLeft
+{
+    border-left: thin black solid;
+}
+
+.BorderRight
+{
+    border-right: thin black solid;
+}
+
+.Button
+{
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.ClickableGraphic
+{
+    border: none;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.ColumnHeader
+{
+    cursor: pointer;
+    cursor: hand;
+    text-decoration: underline;
+}
+
+.ColumnHeaderLeft
+{
+    background-color: #C0C0C0;
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+    text-align: left;
+}
+
+.ColumnHeaderCenter
+{
+    background-color: #C0C0C0;
+    color: #000000;
+    font-size: 10pt;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    text-align: center;
+}
+
+.ColumnHeaderRight
+{
+    background-color: #C0C0C0;
+    color: #000000;
+    font-size: 10pt;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    text-align: right;
+}
+
+.ContextInfoName
+{
+    color: #0033FF;
+    font-size: 8pt;
+}
+
+.ContextInfoValue
+{
+    font-size: 8pt;
+}
+
+.DontWrap
+{
+    white-space: nowrap;
+}
+
+.error
+{
+    /*border: 2px solid red;*/
+    color: red;
+    display: "";
+    font-weight: bold;
+    visibility: visible;
+}
+
+.Graphic
+{
+    border: none;
+}
+
+.GraphicBlock
+{
+    display: block;
+    vertical-align: bottom;
+}
+
+.GroupHeader
+{
+    background-color: #C0C0C0;
+    color: #000000;
+    font-size: 10pt;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    text-align: center;
+}
+
+.Hidden
+{
+    display: none;
+    visibility: none;
+}
+
+.InactiveTab
+{
+    background-color: #3A6295;
+    color: #FFFFFF;
+    cursor: pointer;
+    cursor: hand;
+    font-family: Arial, sans-serif;
+    font-size: 9pt;
+    font-weight: bold;
+    text-decoration: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.Invisible
+{
+    display: "";
+    visibility: hidden;
+}
+
+.JumperBar
+{
+    padding-right: 8px;
+    white-space: nowrap;
+}
+
+.JumperLink
+{
+    color: #800080;
+    cursor: pointer;
+    cursor: hand;
+    padding-right: 8px;
+    text-decoration: underline;
+}
+
+.NavbarButtonPrimary
+{
+    border: none;
+    cursor: pointer;
+    cursor: hand;
+    display: block;
+    vertical-align: bottom;
+}
+
+.NavbarButtonSecondary
+{
+    background-color: #DCDCDC;
+    border-right: solid thin #003470;
+    color: #000000;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    font-weight: normal;
+    height: 31px;
+    padding-left: 8px;
+}
+
+.NoBorder
+{
+    border: none;
+}
+
+.NotShaded
+{
+    background-color: #DCDCDC;
+}
+
+.Section
+{
+    color: #FFFFFF;
+    font-size: 12pt;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    padding-left: 8px;
+}
+
+.Shaded
+{
+    background-color: #C0C0C0;
+}
+
+.Subsection
+{
+    color: #003470;
+    font-family: Arial, sans-serif;
+    font-size: 12pt;
+    font-weight: bold;
+    padding-bottom: 12px;
+    padding-top: 12px;
+}
+
+.TableInner
+{
+    background-color: #DCDCDC;
+}
+
+.TableOuter
+{
+    background-color: #DCDCDC;
+    border: solid 1px black;
+}
+
+.TabLine
+{
+    background-color: #003470;
+    line-height: 4px;
+}
+
+.Tabs
+{
+    background-color: #3A6295;
+}
+
+.Text
+{
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+.TextBold
+{
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.TextBoldAndUnderline
+{
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.TextCaption
+{
+    background-color: #CCCCC0;
+    border-right: thin black solid;
+    border-bottom: thin black solid;
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 8pt;
+    font-weight: bold;
+    left: -2px;
+    position: relative;
+    text-decoration: none;
+    top: -2px;
+    vertical-align: top;
+}
+
+.TextTitle
+{
+    background-color: #00C0FF;
+    color: #FFFFFF;
+    font-size: 12pt;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    padding-left: 8px;
+}
+
+.TextUnderline
+{
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: normal;
+    text-decoration: underline;
+}
+
+.Title
+{
+    background-color: #DCDCDC;
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 12pt;
+    font-weight: bold;
+    padding-left: 8px;
+}
+
+.ToolbarLeft
+{
+    background: url("task_button/tb_cel_bak.jpg");
+    width: 400px;
+}
+
+.ToolbarMiddle
+{
+    width: 3px;
+}
+
+.ToolbarRight
+{
+    background: url("task_button/tb_cel_bak.jpg");
+    width: 196px;
+}
+
+.ToolbarStart
+{
+    width: 25px;
+}
+
+.ToolbarButtonGraphic
+{
+    cursor: pointer;
+    cursor: hand;
+}
+
+.ToolbarButtonLabel
+{
+    color: #000000;
+    cursor: pointer;
+    cursor: hand;
+    font-family: Arial, sans-serif;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+.ToolbarHyperlinks
+{
+    line-height: 20px;
+    vertical-align: middle;
+}
+
+.User
+{
+    background-color: #003470;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+    padding-right: 8px;
+}
+
+.Visible
+{
+    display: "";
+    visibility: visible;
+}

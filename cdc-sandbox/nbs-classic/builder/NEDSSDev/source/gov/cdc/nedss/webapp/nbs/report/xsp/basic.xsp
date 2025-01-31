@@ -1,0 +1,1957 @@
+<?xml version="1.0"?>
+<!--!DOCTYPE xsp:page SYSTEM "../../WEB-INF/xsp.dtd"-->
+<xsp:page xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:avr="http://www.cdc.gov/nedss/logicsheet/nedss/avr" language="java">
+	<nedss:import/>
+	<avr:import/>
+	<part>
+		<nedss:init/>
+		<nedss:SetHeaders/>
+		<parameters>
+			<parameter name="border">
+				<xsp:expr>strBorder</xsp:expr>
+			</parameter>
+			<parameter name="uids">
+				<xsp:expr>strUIDs</xsp:expr>
+			</parameter>
+			<parameter name="user">
+				<xsp:expr>strUser</xsp:expr>
+			</parameter>
+			<parameter name="usermode">
+				<xsp:expr>strUserMode</xsp:expr>
+			</parameter>
+			<parameter name="verbose">
+				<xsp:expr>strVerbose</xsp:expr>
+			</parameter>
+			<parameter name="title">Reports</parameter>
+		</parameters>
+		<avr:security/>
+		<xsp:logic><![CDATA[
+            String strSEC = "You must have permission to select filter criteria (private, public, template or reportingFacility) to view this page.";
+            if(booSECbasic == false)
+            {
+                session.setAttribute("ErrorMessage", strSEC);
+                httpResponse.sendRedirect("error");
+            }
+        ]]></xsp:logic>
+		<xsp:logic><![CDATA[
+
+            //  Initialize variables for loops.
+            int intRecords = 0;
+            int intRecord = 0;
+            int intField = 0;
+
+            //  Create temp variables.
+            String strUID = null;
+            String strCode = null;
+            String strType = null;
+            String strName = null;
+            String strMin = null;
+            String strMax = null;
+
+            String strID = null;
+            String strDescription = null;
+            String strSelected = null;
+            String strValue = null;
+
+            //  Get report title.
+            String strReportTitle = getReportTitle();
+
+            //  Get UIDs from the server.
+            String strDataSourceUID = (String)getData(rcu.DATASOURCE_UID, true);
+            String strReportUID = (String)getData(rcu.REPORT_UID, true);
+            String strCountiesSelected= (String)getData(rcu.COUNTIES_SELECTED, true);
+		  
+            //  Get data from the server.
+            String strFilters = (String)getData(rcu.FILTERS, true);
+            String strDiseases = (String)getData(rcu.DISEASE_CODE, true);
+            String strCustomCVG = (String)getData(rcu.CVG_CUSTOM, true);
+            String strCustomWRKR = (String)getData(rcu.STD_HIV_WRKR, true);
+            String strStates = (String)getData(rcu.STATE_CODE, true);
+            String strCounties = (String)getData(rcu.COUNTY_CODE, true);
+            String strRegions = (String)getData(rcu.REGION_CODE, true);
+            String includeNullDisease=(String)getData(rcu.INCLUDE_NULL_DISEASE, true);
+            String includeNullCustomCVG=(String)getData(rcu.INCLUDE_NULL_CVG, true);
+            String includeNullState=(String)getData(rcu.INCLUDE_NULL_STATE, true);
+            String includeNullCounty=(String)getData(rcu.INCLUDE_NULL_COUNTY, true);
+            String includeNullRegion=(String)getData(rcu.INCLUDE_NULL_REGION, true);
+            String includeNullTimeRange=(String)getData(rcu.INCLUDE_NULL_TIMERANGE, true);
+            String includeNullMonthYearRange=(String)getData(rcu.INCLUDE_NULL_MONTHYEAR_RANGE, true);
+            String includeNullTimePeriod=(String)getData(rcu.INCLUDE_NULL_TIMEPERIOD, true);
+            String selectAllDiseases=(String)getData(rcu.SELECT_ALL_DISEASES, true);
+            String selectAllCounties=(String)getData(rcu.SELECT_ALL_COUNTIES, true);
+            String selectAllCVG=(String)getData(rcu.SELECT_ALL_CVG, true);
+            String strTextFilter=(String)getData(rcu.TEXT_FILTER, true);
+            String strDaysFilter=(String)getData(rcu.DAYS_FILTER, true);
+            String selectAllWRKR=(String)getData(rcu.SELECT_ALL_WRKR, true);
+
+            //  Parse the XML data into object trees.
+            ArrayList alFilters = XMLRequestHelper.getTable(strFilters);
+            ArrayList alDiseases = XMLRequestHelper.getTable(strDiseases);
+            ArrayList alStates = XMLRequestHelper.getTable(strStates);
+            ArrayList alCounties = XMLRequestHelper.getTable(strCounties);
+            ArrayList alRegions = XMLRequestHelper.getTable(strRegions);
+            ArrayList alCustomCVG = XMLRequestHelper.getTable(strCustomCVG);
+            ArrayList alCustomWRKR = XMLRequestHelper.getTable(strCustomWRKR);
+            ArrayList al = null;
+
+            //  Declare constants for readability.
+            final boolean booSingle = true;
+            final boolean booMulti = false;
+
+            boolean booDiseases = isSingle(alFilters, rcu.DISEASE_CODE);
+            boolean booStates = isSingle(alFilters, rcu.STATE_CODE);
+            boolean booCounties = isSingle(alFilters, rcu.COUNTY_CODE);
+            boolean booRegions = isSingle(alFilters, rcu.REGION_CODE);
+            boolean booCustomFiter = isSingle(alFilters, rcu.CVG_CUSTOM);
+            boolean booCustomWRKRFiter = isSingle(alFilters, rcu.STD_HIV_WRKR);
+
+            //  Get ready to fill time range filters.
+            //  They will always select the current year and the previous 20 years.
+            GregorianCalendar cal = new GregorianCalendar();
+            int intCurrentYear = cal.get(Calendar.YEAR) + 1;
+
+            //  Find out whether this is a custom report or not and cache the flag.
+            boolean booCustom = isCustom();
+
+            //  Get the selected columns, if applicable.
+            String strSelectedColumns = (String)getData(rcu.SELECTED_COLUMNS, true);
+            ArrayList alSelectedColumns = XMLRequestHelper.getTable(strSelectedColumns);
+            String strCriteria = (String)getData(rcu.CRITERIA_LIST, true);            
+		  ArrayList alCriteria = XMLRequestHelper.getTable(strCriteria);
+            
+            //Get Default State
+           String defaultStateCd = gov.cdc.nedss.util.PropertyUtil.getInstance().getNBS_STATE_CODE(); 
+           int selectedIndex = 2;
+           
+		 //For StandardReports to see if any basic Required Filters are not entered (to validate appropriately)
+		  String basicRequired =  (String)getData(rcu.BASIC_REQUIRED_ENTERED, true);
+		  boolean reqBasicFiltersEntered =  Boolean.valueOf(basicRequired).booleanValue();
+		  if(basicRequired==null) reqBasicFiltersEntered = true;
+		  String anyBasicRequired = (String)getData(rcu.ANY_BASIC_REQUIRED, true);
+		  boolean anyBasicReq = Boolean.valueOf(anyBasicRequired).booleanValue();
+		  String isBasicDataVald = (String)getData(rcu.IS_BASICDATA_VALID, true);
+		  boolean isBasicDataValid = Boolean.valueOf(isBasicDataVald).booleanValue();		  
+		  if(isBasicDataVald ==null) isBasicDataValid = true;
+		System.out.println("******* isBasicDataValid: " + isBasicDataValid);
+        ]]></xsp:logic>
+		<head>
+			<nedss:InitializeSessionTimer frequency="1"/>
+			<script>
+				<nedss:GetConstants class="NEDSSConstants"/>
+			</script>
+			<script>
+				<nedss:GetConstants class="ReportConstantUtil"/>
+			</script>
+			<scriptfile>
+                avr.basic.js
+            </scriptfile>
+               <scriptfile>
+                jquery-1.2.6.min.js
+            </scriptfile>
+            <scriptfile>
+               jquery.tablesorter.js
+            </scriptfile>
+            <scriptfile>
+               jquery.blockUI.js
+            </scriptfile>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alFilters, "aFilters")</xsp:expr>
+			</script>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alSelectedColumns, "aSelectedColumns")</xsp:expr>
+			</script>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alCriteria, "aCriteria")</xsp:expr>
+			</script>
+			<script>
+			
+			
+					jQuery(document).ready(function(){
+			
+							listenersToPreventBackButton();
+			
+					});
+					
+			
+			
+			</script>
+			
+		</head>
+		<toolbarDef>
+			<toolbarLeft>
+				<nedss:IfSHOW_DEBUG_BUTTON>
+					<nedss:IfServer>
+						<toolbarButton id="id_debug" name="Debug">
+							<event name="onclick">
+                                OpenDebugWindow();
+                            </event>
+						</toolbarButton>
+					</nedss:IfServer>
+				</nedss:IfSHOW_DEBUG_BUTTON>
+			</toolbarLeft>
+			<toolbarRight>
+				<xsp:logic><![CDATA[
+                    if(booSEC171 == true)
+                    {
+                ]]></xsp:logic>
+				<toolbarButton id="id_run" name="Run">
+					<event name="onclick">
+						HideErrors();
+                        		var varMSG = "";
+						if(reqBasicFiltersEntered()) {
+		                        if(!isValid())
+		                            return;
+		                    } else {
+		                        if( !hasBasicAdvanceEntered()) 
+								varMSG = "A minimum of one filter must be selected from either the Basic or Advanced Filter Tabs.";
+		                     }   
+	                        <xsp:logic>
+	                        		if(booCustom == true) {
+	                        </xsp:logic>	                     	
+		                        if(!hasColumns()) {  
+		                        	   if(varMSG.length != 0) varMSG+="|";
+		                            varMSG+= "Please select at least one column to display on this report.";
+		                        }	          
+	                        <xsp:logic>}</xsp:logic>              
+						var errorMsg = document.getElementById("error1").innerHTML;
+						if(varMSG.length != 0)  {
+							if(errorMsg == '.')
+							ShowTopError(varMSG);
+							return;
+						}
+						
+						if(errorMsg!=null)
+							if(errorMsg.indexOf("One or more fields are not valid") != -1)
+								return;
+						
+	                        document.frm.id_mode.value = "edit";
+	                        document.frm.id_ObjectType.value = REPORT;
+	                        document.frm.id_OperationType.value = RUN_PAGE;
+	                        post();
+                    </event>
+				</toolbarButton>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<xsp:logic><![CDATA[
+                    if(booSEC172 == true)
+                    {
+                ]]></xsp:logic>
+				<toolbarButton id="id_export" name="Export">
+					<event name="onclick">
+						HideErrors();
+                        		var varMSG = "";
+						if(reqBasicFiltersEntered()) {
+		                        if(!isValid())
+		                            return;
+		                    } else {
+		                        if( !hasBasicAdvanceEntered()) 
+								varMSG = "A minimum of one filter must be selected from either the Basic or Advanced Filter Tabs.";
+		                     }   
+	                        <xsp:logic>
+	                        		if(booCustom == true) {
+	                        </xsp:logic>	                     	
+		                        if(!hasColumns()) {  
+		                        	   if(varMSG.length != 0) varMSG+="|";
+		                            varMSG+= "Please select at least one column to export for this report.";
+		                        }	          
+	                        <xsp:logic>}</xsp:logic>              
+						var errorMsg = document.getElementById("error1").innerHTML;
+						if(varMSG.length != 0)  {
+							if(errorMsg == '.')
+							ShowTopError(varMSG);
+							return;
+						}
+						
+						if(errorMsg!=null)
+							if(errorMsg.indexOf("One or more fields are not valid") != -1)
+								return;
+	
+	                        document.frm.id_mode.value = "edit";
+	                        document.frm.id_ObjectType.value = REPORT;
+	                        document.frm.id_OperationType.value = EXPORT_REPORT;
+	                        post();
+                    </event>
+				</toolbarButton>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<toolbarButton id="id_cancel" name="Cancel">
+					<event name="onclick">
+                        window.location = '/nbs/ManageReports.do';
+                    </event>
+				</toolbarButton>
+			</toolbarRight>
+		</toolbarDef>
+		<tabDef active="id_basic">
+			<tab id="id_basic" name="Basic Filter">
+				<event name="onclick">
+					document.frm.id_mode.value = "edit";
+	                    document.frm.id_ObjectType.value = REPORT;
+	                    document.frm.id_OperationType.value = REPORT_BASIC;
+	                    post();
+                	</event>
+			</tab>
+			<tab id="id_advanced" name="Advanced Filter">
+				<event name="onclick">   							
+					reqBasicFiltersEntered();   
+					document.frm.id_mode.value = "edit";
+	                    document.frm.id_ObjectType.value = REPORT;
+	                    document.frm.id_OperationType.value = REPORT_ADVANCED;
+	                    post();
+	                </event>
+			</tab>
+			<xsp:logic><![CDATA[
+                if(booCustom == true)
+                {
+	            ]]></xsp:logic>
+			<tab id="id_column" name="Column Selection">
+				<event name="onclick">
+					reqBasicFiltersEntered();
+	                    document.frm.id_mode.value = "edit";
+	                    document.frm.id_ObjectType.value = REPORT;
+	                    document.frm.id_OperationType.value = REPORT_COLUMN;
+	                    post();
+                	</event>
+			</tab>
+			<xsp:logic><![CDATA[
+                }
+            ]]></xsp:logic>
+		</tabDef>
+		<body>
+			<part>
+				<attributes>
+					<style>nedss</style>
+				</attributes>
+				<xsp:logic><![CDATA[
+                if(startsWithFilter(alFilters, rcu.COUNTY_CODE))
+                {
+          	  ]]></xsp:logic>
+				<event name="onload">
+				/*Select the appropriate Counties based on the default state value in the State drop down*/				
+				 var varState = document.frm.id_J_S01.options[document.frm.id_J_S01.selectedIndex].value;
+                     /*alert("document.frm.id_J_S01.selectedIndex " + document.frm.id_J_S01.selectedIndex);
+                     alert("varState value: " + varState);*/
+                     var d = window.frames[0].document;
+                     var f = d.forms[0];
+                     varInput = d.getElementById("id_ProxyInput");
+                     varOutput = d.getElementById("id_ProxyOutput");
+                     varMode = d.getElementById("id_mode");
+                     varObjectType = d.getElementById("id_ObjectType");
+                     varOperationType = d.getElementById("id_OperationType");
+                     varInput.value = varState;
+                     varOutput.value = "";
+                     varMode.value = "edit";
+                     varObjectType.value = REPORT;
+                     varOperationType.value = GET_COUNTIES;
+                     f.action = "/nbs/nfc";
+                     f.target = "_self";
+                     f.submit();	
+				<xsp:logic><![CDATA[
+					if(!reqBasicFiltersEntered || !isBasicDataValid) {
+				]]></xsp:logic>
+                     if(!isValid())
+                     { 
+                         return;
+                     }
+                     <xsp:logic>} </xsp:logic>
+				</event>
+				<xsp:logic><![CDATA[
+               	} else {
+          	  ]]></xsp:logic>
+				<event name="onload">
+					<xsp:logic><![CDATA[
+						if(!reqBasicFiltersEntered || !isBasicDataValid) {
+					]]></xsp:logic>
+	                     if(!isValid())
+	                     { 
+	                         return;
+	                     }
+	                     	<xsp:logic>} </xsp:logic>
+				</event>
+				<xsp:logic>} </xsp:logic>
+				<nedss:CheckSessionTimer/>
+			</part>
+			<section>
+				<part>
+					<attributes>
+						<id>HiddenFields</id>
+						<name/>
+						<linked>false</linked>
+						<width>1</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column display="Hidden">
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.DATASOURCE_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.DATASOURCE_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strDataSourceUID</xsp:expr>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.REPORT_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.REPORT_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strReportUID</xsp:expr>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.COUNTIES_SELECTED</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.COUNTIES_SELECTED</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strCountiesSelected</xsp:expr>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.BASIC_REQUIRED_ENTERED</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.BASIC_REQUIRED_ENTERED</xsp:expr>
+								</xsp:attribute>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.ANY_BASIC_REQUIRED</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.ANY_BASIC_REQUIRED</xsp:expr>
+								</xsp:attribute>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.IS_BASICDATA_VALID</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.IS_BASICDATA_VALID</xsp:expr>
+								</xsp:attribute>
+							</xsp:element>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<linkbar>
+				<ids>
+                </ids>
+				<hyperlinks>
+                </hyperlinks>
+			</linkbar>
+			<toolbar location="top"/>
+			<errorbar/>
+			<tabs location="top"/>
+			<xsp:logic><![CDATA[
+                if(startsWithFilter(alFilters, rcu.COUNTY_CODE))
+                {
+            ]]></xsp:logic>
+			<section>
+				<part>
+					<attributes>
+						<id>id_Proxy</id>
+						<name/>
+						<linked>false</linked>
+						<width>1</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column display="Invisible" align="left" width="2">
+							<iframe id="id_ProxyFrame" name="proxy" align="left" frameborder="0" height="1" scrolling="no" url="proxy" width="620"/>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<xsp:logic><![CDATA[
+                }
+            ]]></xsp:logic>
+			<section>
+				<part>
+					<attributes>
+						<id>id_Reports</id>
+						<name>
+							<xsp:expr>strReportTitle</xsp:expr>
+						</name>
+						<linked>false</linked>
+						<width>2</width>
+					</attributes>
+				</part>
+								<!-- Days Filter-->
+				<xsp:logic><![CDATA[
+                    if
+                    (
+                        (startsWithFilter(alFilters, rcu.DAYS_FILTER))
+                    )
+                    {
+                ]]></xsp:logic>
+				<subsection name="Time Frame" line="true">
+					<xsp:logic><![CDATA[
+                        if(startsWithFilter(alFilters, rcu.DAYS_FILTER))
+                        { 
+                        String strDAYS_01 = (String)getData(rcu.DAYS_FILTER, true);
+                    ]]></xsp:logic>
+					<row>
+						<column width="3">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_Days</xsp:attribute>
+								<xsp:attribute name="name">Duplicate investigation time frame is based on event date. To return all potential duplicate investigations for a patient regardless of time frame, leave this filter blank.
+                    </xsp:attribute>
+							</xsp:element>
+						</column>
+					</row>
+					<row>
+						<column width="3">
+							<empty/>
+						</column>
+					</row>
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.DAYS_FILTER</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">Duplicate Investigations Time Frame: </xsp:attribute>
+							</xsp:element>
+						</column>
+						<column width="1" valign="middle">
+							<xsp:element name="textbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.DAYS_FILTER</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.DAYS_FILTER</xsp:expr> 
+								</xsp:attribute>
+								<xsp:attribute name="size">5</xsp:attribute>
+								<xsp:attribute name="max">3</xsp:attribute>
+								<xsp:attribute name="width">1</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<event name="onkeyup">
+                                    if(is_ie)
+                                    {
+                                         isNumericCharacterEntered(_this);
+                                    }
+                                    else
+                                    {
+                                        isNumericCharacterEntered(_this.target);
+                                    }
+                                </event>
+								<xsp:expr>strDAYS_01</xsp:expr> 
+							</xsp:element>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_Days_l</xsp:attribute>
+								<xsp:attribute name="name">Days</xsp:attribute>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                        }
+                    ]]></xsp:logic>
+				</subsection>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<!-- End Custom filter-->
+				<!-- DAYS Filter-->
+
+				<xsp:logic><![CDATA[
+                    if
+                    (
+                        (startsWithFilter(alFilters, rcu.DISEASE_CODE))
+                    )
+                    {
+                ]]></xsp:logic>
+				<subsection name="Condition" line="true">
+					<!-- DISEASE_CODE -->
+					<xsp:logic><![CDATA[
+                        if(startsWithFilter(alFilters, rcu.DISEASE_CODE))
+                        { 
+                        if(!booDiseases){
+                    ]]></xsp:logic>
+					<row>
+						<column align="left" width="1">
+							<empty/>
+						</column>
+						<column align="left" width="2">
+							<checkbox uid="" id="id_disease_select_all" name="disease_select_all" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>selectAllDiseases</xsp:expr>
+								</xsp:attribute>
+								<event name="onclick">
+		                                    var x = document.getElementById("id_<xsp:expr>rcu.DISEASE_CODE</xsp:expr>");
+		                                    varDiseaseSelected = document.getElementById("id_disease_select_all").checked;
+		                                    SelectAllOptions(x, varDiseaseSelected);
+                                		</event>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_disease_select_all</xsp:attribute>
+								<xsp:attribute name="name">Select All</xsp:attribute>
+							</xsp:element>
+							<xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.DISEASE_CODE_N)) {]]></xsp:logic>
+							<checkbox uid="" id="id_disease_include_nulls" name="disease_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullDisease</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_disease_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+							<xsp:logic>}</xsp:logic>
+						</column>
+					</row>
+					<xsp:logic>
+						}
+					</xsp:logic>
+					<xsp:logic><![CDATA[
+					if (booDiseases==booSingle){ ]]></xsp:logic>
+					<xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.DISEASE_CODE_N)) {]]></xsp:logic>
+					<row>
+						<column align="left" width="1">
+							<empty/>
+						</column>
+						<column align="left" width="1">
+							<checkbox uid="" id="id_disease_include_nulls" name="disease_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullDisease</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_disease_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic>}</xsp:logic>
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.DISEASE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">Disease:</xsp:attribute>
+								<!--xsp:expr>rcu.DISEASE_LIST</xsp:expr>:</xsp:attribute-->
+							</xsp:element>
+						</column>
+						<column width="1">
+							<xsp:element name="combobox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.DISEASE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.DISEASE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="type">
+									<xsp:expr>((booDiseases == booSingle) ? "dropdown" : "multi")</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="width">350</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<options>
+									<xsp:logic><![CDATA[
+                                        intRecords = alDiseases.size();
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            intField = 0;
+                                            al = (ArrayList)alDiseases.get(intRecord);
+                                            strUID = (String)al.get(intField++);
+                                            strDescription = (String)al.get(intField++);
+                                            strSelected = (String)al.get(intField++);
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strDescription</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                        }
+                    ]]></xsp:logic>
+					<xsp:logic><![CDATA[
+					if (!booDiseases==booSingle){ ]]></xsp:logic>
+					<!--xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.DISEASE_CODE_N)) {]]></xsp:logic>
+					<row>
+						<column align="left" width="1">
+							<empty/>
+						</column>
+						<column align="left" width="1">
+							<checkbox uid="" id="id_disease_include_nulls" name="disease_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullDisease</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_disease_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic>}</xsp:logic-->
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.DISEASE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.DISEASE_LIST</xsp:expr>:</xsp:attribute>
+							</xsp:element>
+						</column>
+						<column width="1">
+							<xsp:element name="listbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.DISEASE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.DISEASE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="type">
+									<xsp:expr>((booDiseases == booSingle) ? "dropdown" : "multi")</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="width">350</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<options>
+									<xsp:logic><![CDATA[
+                                        intRecords = alDiseases.size();
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            intField = 0;
+                                            al = (ArrayList)alDiseases.get(intRecord);
+                                            strUID = (String)al.get(intField++);
+                                            strDescription = (String)al.get(intField++);
+                                            strSelected = (String)al.get(intField++);
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strDescription</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                        }}
+                    ]]></xsp:logic>
+				</subsection>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<!-- Text Filter-->
+				<xsp:logic><![CDATA[
+                    if
+                    (
+                        (startsWithFilter(alFilters, rcu.TEXT_FILTER))
+                    )
+                    {
+                ]]></xsp:logic>
+				<subsection name="Text Filter" line="true">
+					<xsp:logic><![CDATA[
+                        if(startsWithFilter(alFilters, rcu.TEXT_FILTER))
+                        { 
+                        String strTXT_01 = (String)getData(rcu.TEXT_FILTER, true);
+                    ]]></xsp:logic>
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.TEXT_FILTER</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp-session:get-attribute name="TextfilterField"/>:</xsp:attribute>
+							</xsp:element>
+						</column>
+						<column width="1">
+							<xsp:element name="textbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.TEXT_FILTER</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.TEXT_FILTER</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="size">20</xsp:attribute>
+								<xsp:attribute name="max">20</xsp:attribute>
+								<xsp:attribute name="width">1</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<xsp:expr>strTXT_01</xsp:expr>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                        }
+                    ]]></xsp:logic>
+				</subsection>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<!-- End Custom filter-->
+				<!-- Text Filter-->
+				<xsp:logic><![CDATA[
+                    if
+                    (
+                        (startsWithFilter(alFilters, rcu.CVG_CUSTOM))
+                    )
+                    {
+                ]]></xsp:logic>
+				<subsection name="Custom Filter" line="true">
+					<xsp:logic><![CDATA[
+                        if(startsWithFilter(alFilters, rcu.CVG_CUSTOM))
+                        { 
+                        if(!booCustomFiter){
+                    ]]></xsp:logic>
+					<row>
+						<column align="left" width="1">
+							<empty/>
+						</column>
+						<column align="left" width="2">
+							<checkbox uid="" id="id_cvg_select_all" name="cvg_select_all" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>selectAllCVG</xsp:expr>
+								</xsp:attribute>
+								<event name="onclick">
+		                                    var x = document.getElementById("id_<xsp:expr>rcu.CVG_CUSTOM</xsp:expr>");
+		                                    varCVGSelected = document.getElementById("id_cvg_select_all").checked;
+		                                    SelectAllOptions(x, varCVGSelected);
+                                		</event>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_cvg_select_all</xsp:attribute>
+								<xsp:attribute name="name">Select All</xsp:attribute>
+							</xsp:element>
+							<xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.CVG_CUSTOM_N)) {]]></xsp:logic>
+							<checkbox uid="" id="id_cvg_include_nulls" name="cvg_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullCustomCVG</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_cvg_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+							<xsp:logic>}</xsp:logic>
+						</column>
+					</row>
+					<xsp:logic>
+						}
+					</xsp:logic>
+					<xsp:logic><![CDATA[
+					if (booCustomFiter==booSingle){ ]]></xsp:logic>
+					<xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.CVG_CUSTOM_N)) {]]></xsp:logic>
+					<row>
+						<column align="left" width="1">
+							<empty/>
+						</column>
+						<column align="left" width="1">
+							<checkbox uid="" id="id_cvg_include_nulls" name="cvg_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullCustomCVG</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_cvg_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic>}</xsp:logic>
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.CVG_CUSTOM</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp-session:get-attribute name="filterField"/>:</xsp:attribute>
+							</xsp:element>
+						</column>
+						<column width="1">
+							<xsp:element name="combobox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.CVG_CUSTOM</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.CVG_CUSTOM</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="type">
+									<xsp:expr>((booCustomFiter == booSingle) ? "dropdown" : "multi")</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="width">350</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<options>
+									<xsp:logic><![CDATA[
+                                        intRecords = alCustomCVG.size();
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            intField = 0;
+                                            al = (ArrayList)alCustomCVG.get(intRecord);
+                                            strUID = (String)al.get(intField++);
+                                            strDescription = (String)al.get(intField++);
+                                            strSelected = (String)al.get(intField++);
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strDescription</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                        }
+                    ]]></xsp:logic>
+					<xsp:logic><![CDATA[
+					if (!booCustomFiter==booSingle){ ]]></xsp:logic>
+					<!--xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.CVG_CUSTOM_N)) {]]></xsp:logic>
+					<row>
+						<column align="left" width="1">
+							<empty/>
+						</column>
+						<column align="left" width="1">
+							<checkbox uid="" id="id_disease_include_nulls" name="disease_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullDisease</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_disease_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic>}</xsp:logic-->
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.CVG_CUSTOM</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp-session:get-attribute name="filterField"/>:</xsp:attribute>
+							</xsp:element>
+						</column>
+						<column width="1">
+							<xsp:element name="listbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.CVG_CUSTOM</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.CVG_CUSTOM</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="type">
+									<xsp:expr>((booCustomFiter == booSingle) ? "dropdown" : "multi")</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="width">350</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<options>
+									<xsp:logic><![CDATA[
+                                        intRecords = alCustomCVG.size();
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            intField = 0;
+                                            al = (ArrayList)alCustomCVG.get(intRecord);
+                                            strUID = (String)al.get(intField++);
+                                            strDescription = (String)al.get(intField++);
+                                            strSelected = (String)al.get(intField++);
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strDescription</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                        }}
+                    ]]></xsp:logic>
+				</subsection>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<!-- End Custom filter-->
+				<xsp:logic><![CDATA[
+                    if
+                    (
+                        (startsWithFilter(alFilters, rcu.STD_HIV_WRKR))
+                    )
+                    {
+                ]]></xsp:logic>
+				<subsection name="Worker Filter" line="true">
+					<xsp:logic><![CDATA[
+                        if(startsWithFilter(alFilters, rcu.STD_HIV_WRKR))
+                        { 
+                        if(!booCustomWRKRFiter){
+                    ]]></xsp:logic>
+					<row>
+						<column align="left" width="1">
+							<empty/>
+						</column>
+						<column align="left" width="2">
+							<checkbox uid="" id="id_wrkr_select_all" name="wrkr_select_all" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>selectAllWRKR</xsp:expr>
+								</xsp:attribute>
+								<event name="onclick">
+		                                    var x = document.getElementById("id_<xsp:expr>rcu.STD_HIV_WRKR</xsp:expr>");
+		                                    varWRKRSelected = document.getElementById("id_wrkr_select_all").checked;
+		                                    SelectAllOptions(x, varWRKRSelected);
+                                		</event>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_wrkr_select_all</xsp:attribute>
+								<xsp:attribute name="name">Select All</xsp:attribute>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic>
+						}
+					</xsp:logic>
+					<xsp:logic><![CDATA[
+					if (booCustomWRKRFiter==booSingle){ ]]></xsp:logic>
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.STD_HIV_WRKR</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp-session:get-attribute name="filterFieldWRKR"/>:</xsp:attribute>
+							</xsp:element>
+						</column>
+						<column width="1">
+							<xsp:element name="combobox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.STD_HIV_WRKR</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.STD_HIV_WRKR</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="type">
+									<xsp:expr>((booCustomWRKRFiter == booSingle) ? "dropdown" : "multi")</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="width">350</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<options>
+									<xsp:logic><![CDATA[
+                                        intRecords = alCustomWRKR.size();
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            intField = 0;
+                                            al = (ArrayList)alCustomWRKR.get(intRecord);
+                                            strUID = (String)al.get(intField++);
+                                            strDescription = (String)al.get(intField++);
+                                            strSelected = (String)al.get(intField++);
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strDescription</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                        }
+                    ]]></xsp:logic>
+					<xsp:logic><![CDATA[
+					if (!booCustomWRKRFiter==booSingle){ ]]></xsp:logic>
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.STD_HIV_WRKR</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp-session:get-attribute name="filterFieldWRKR"/>:</xsp:attribute>
+							</xsp:element>
+						</column>
+						<column width="1">
+							<xsp:element name="listbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.STD_HIV_WRKR</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.STD_HIV_WRKR</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="type">
+									<xsp:expr>((booCustomWRKRFiter == booSingle) ? "dropdown" : "multi")</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="width">350</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<options>
+									<xsp:logic><![CDATA[
+                                        intRecords = alCustomWRKR.size();
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            intField = 0;
+                                            al = (ArrayList)alCustomWRKR.get(intRecord);
+                                            strUID = (String)al.get(intField++);
+                                            strDescription = (String)al.get(intField++);
+                                            strSelected = (String)al.get(intField++);
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strDescription</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                        }}
+                    ]]></xsp:logic>
+				</subsection>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<!-- End WRKR filter-->
+				<xsp:logic><![CDATA[
+                    if
+                    (
+                        (startsWithFilter(alFilters, rcu.STATE_CODE))
+                    ||  (startsWithFilter(alFilters, rcu.COUNTY_CODE))
+                    ||  (startsWithFilter(alFilters, rcu.REGION_CODE))
+                    )
+                    {
+                ]]></xsp:logic>
+				<subsection name="Geographic Area" line="true">
+					<!-- STATE_CODE -->
+					<xsp:logic><![CDATA[
+                        if(startsWithFilter(alFilters, rcu.STATE_CODE))
+                        {
+                    ]]></xsp:logic>
+					<xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.STATE_CODE_N)) {]]></xsp:logic>
+					<row>
+						<column align="left" width="1">
+							<empty/>
+						</column>
+						<column align="left" width="1">
+							<checkbox uid="" id="id_state_include_nulls" name="state_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullState</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_state_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic>}</xsp:logic>
+					<!--SINGLE SELECT-->
+					<xsp:logic><![CDATA[  
+                    	if(booStates == booSingle){     
+                        ]]></xsp:logic>
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.STATE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">State:</xsp:attribute>
+								<!--xsp:expr>rcu.STATE_LIST</xsp:expr>:</xsp:attribute-->
+							</xsp:element>
+						</column>
+						<column width="1">
+							<xsp:element name="combobox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.STATE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.STATE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="type">
+									<xsp:expr>((booStates == booSingle) ? "dropdown" : "multi")</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="width">350</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<options>
+									<xsp:logic><![CDATA[
+                                        intRecords = alStates.size();
+                                        boolean isSelected = false;                                                                             
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                        	 intField = 0;
+                                            al = (ArrayList)alStates.get(intRecord);                                            
+                                            strSelected = (String)al.get(selectedIndex);
+                                            	
+                                            if (strSelected .trim().equals("true")){
+                                            		isSelected = true;
+                                            } 
+                                        }                                            
+                                         
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                         	intField = 0;  
+                                            al = (ArrayList)alStates.get(intRecord);
+                                            strUID = (String)al.get(intField++);
+                                            strDescription = (String)al.get(intField++);
+                                            strSelected = (String)al.get(intField++);                                           	
+                                            
+                                            //retrieve default state code from the Nedss.properties file                                    
+                                            if(!isSelected && strUID.equals(defaultStateCd) ){
+                                            		strSelected="true";
+                                            }
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strDescription</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+								<xsp:logic><![CDATA[
+                                    if(startsWithFilter(alFilters, rcu.COUNTY_CODE))
+                                    {
+                                ]]></xsp:logic>
+								<event name="onchange">
+							var varState = document.frm.id_J_S01.options[document.frm.id_J_S01.selectedIndex].value;
+                                    var d = window.frames[0].document;
+                                    var f = d.forms[0];
+                                    varInput = d.getElementById("id_ProxyInput");
+                                    varOutput = d.getElementById("id_ProxyOutput");
+                                    varMode = d.getElementById("id_mode");
+                                    varObjectType = d.getElementById("id_ObjectType");
+                                    varOperationType = d.getElementById("id_OperationType");                                   
+                                    varInput.value = varState;                                   
+                                    varOutput.value = "";
+                                    varMode.value = "edit";
+                                    varObjectType.value = REPORT;
+                                    varOperationType.value = GET_COUNTIES;
+                                    f.action = "/nbs/nfc";
+                                    f.target = "_self";
+                                    f.submit(); 
+                                    
+                                    
+                                </event>
+								<xsp:logic><![CDATA[
+                                    }
+                                ]]></xsp:logic>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                       		 } else{
+                   		 ]]></xsp:logic>
+					<!-- MULTI-SELECT-->
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.STATE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.STATE_LIST</xsp:expr>:</xsp:attribute>
+							</xsp:element>
+						</column>
+						<column width="1">
+							<xsp:element name="listbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.STATE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.STATE_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="type">
+									<xsp:expr>((booStates == booSingle) ? "dropdown" : "multi")</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="width">350</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<options>
+									<xsp:logic><![CDATA[
+                                        intRecords = alStates.size();
+                                        boolean isSelected = false;                                       
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            intField = 0;
+                                            al = (ArrayList)alStates.get(intRecord);                                            
+                                            strSelected = (String)al.get(selectedIndex);                                            	
+                                            if (strSelected .trim().equals("true")){
+                                            		isSelected = true;
+                                            } 
+                                        }                                                                                     
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                         	intField = 0;  
+                                            al = (ArrayList)alStates.get(intRecord);
+                                            strUID = (String)al.get(intField++);
+                                            strDescription = (String)al.get(intField++);
+                                            strSelected = (String)al.get(intField++);                                           	
+                                            
+                                            //retrieve default state code from the Nedss.properties file                                    
+                                            if(!isSelected && strUID.equals(defaultStateCd) ){
+                                            		strSelected="true";
+                                            }
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strDescription</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+								<xsp:logic><![CDATA[
+                                    if(startsWithFilter(alFilters, rcu.COUNTY_CODE))
+                                    {
+                                ]]></xsp:logic>
+								<event name="onchange">
+														
+                                    var varState = document.frm.id_J_S01.options[document.frm.id_J_S01.selectedIndex].value;
+                                    var d = window.frames[0].document;
+                                    var f = d.forms[0];
+                                    varInput = d.getElementById("id_ProxyInput");
+                                    varOutput = d.getElementById("id_ProxyOutput");
+                                    varMode = d.getElementById("id_mode");
+                                    varObjectType = d.getElementById("id_ObjectType");
+                                    varOperationType = d.getElementById("id_OperationType");                        
+                                    
+                                    varInput.value = varState;                                   
+                                    varOutput.value = "";
+                                    varMode.value = "edit";
+                                    varObjectType.value = REPORT;
+                                    varOperationType.value = GET_COUNTIES;
+                                    f.action = "/nbs/nfc";
+                                    f.target = "_self";
+                                    f.submit();
+
+                                </event>
+								<xsp:logic><![CDATA[
+                                    }
+                                ]]></xsp:logic>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                                    }
+                                ]]></xsp:logic>
+					<xsp:logic><![CDATA[
+                        }
+                    ]]></xsp:logic>
+					<!-- COUNTY_CODE -->
+					<xsp:logic><![CDATA[
+                        if(startsWithFilter(alFilters, rcu.COUNTY_CODE))
+                        {
+                    ]]></xsp:logic>
+					<row>
+						<column align="left" width="1">
+							<empty/>
+						</column>
+						<column align="left" width="2">
+							<checkbox uid="" id="id_county_select_all" name="county_select_all" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>selectAllCounties</xsp:expr>
+								</xsp:attribute>
+								<event name="onclick">
+		                                    var x = document.getElementById("id_<xsp:expr>rcu.COUNTY_CODE</xsp:expr>");
+		                                    varCountySelected = document.getElementById("id_county_select_all").checked;
+		                                    SelectAllOptions(x, varCountySelected);
+                                		</event>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_county_select_all</xsp:attribute>
+								<xsp:attribute name="name">Select All</xsp:attribute>
+							</xsp:element>
+							<xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.COUNTY_CODE_N)) {]]></xsp:logic>
+							<checkbox uid="" id="id_county_include_nulls" name="county_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullCounty</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_county_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+							<xsp:logic>}</xsp:logic>
+						</column>
+					</row>
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.COUNTY_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.COUNTY_LIST</xsp:expr>:</xsp:attribute>
+							</xsp:element>
+						</column>
+						<column width="1">
+							<xsp:element name="listbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.COUNTY_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.COUNTY_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="type">
+									<xsp:expr>((booCounties == booSingle) ? "dropdown" : "multi")</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="width">350</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<options>
+									<xsp:logic><![CDATA[
+                                        intRecords = alCounties.size();
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            intField = 0;
+                                            al = (ArrayList)alCounties.get(intRecord);
+                                            strUID = (String)al.get(intField++);
+                                            strDescription = (String)al.get(intField++);
+                                            strSelected = (String)al.get(intField++);
+                                            if(strUID.equals(""))
+                                            {
+                                                continue;
+                                            }
+                                            if(strDescription.equals(""))
+                                            {
+                                                continue;
+                                            }
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strDescription</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                        }
+                    ]]></xsp:logic>
+					<!-- REGION_CODE -->
+					<xsp:logic><![CDATA[
+                        if(startsWithFilter(alFilters, rcu.REGION_CODE))
+                        {
+                    ]]></xsp:logic>
+					<xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.REGION_CODE_N)) {]]></xsp:logic>
+					<row>
+						<column align="left" width="1">
+							<empty/>
+						</column>
+						<column align="left" width="1">
+							<checkbox uid="" id="id_region_include_nulls" name="region_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullRegion</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_region_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic>}</xsp:logic>
+					<row>
+						<column align="right" width="1">
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_<xsp:expr>rcu.REGION_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">Region:</xsp:attribute>
+								<!--xsp:expr>rcu.REGION_LIST</xsp:expr>:</xsp:attribute-->
+							</xsp:element>
+						</column>
+						<column width="1">
+							<xsp:element name="listbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.REGION_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.REGION_CODE</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="type">
+									<xsp:expr>((booRegions == booSingle) ? "dropdown" : "multi")</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="width">350</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<options>
+									<xsp:logic><![CDATA[
+                                        intRecords = alRegions.size();
+                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+                                        {
+                                            intField = 0;
+                                            al = (ArrayList)alRegions.get(intRecord);
+                                            strUID = (String)al.get(intField++);
+                                            strDescription = (String)al.get(intField++);
+                                            strSelected = (String)al.get(intField++);
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strDescription</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+							</xsp:element>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                        }
+                    ]]></xsp:logic>
+				</subsection>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<xsp:logic><![CDATA[
+                    if
+                    (
+                        (startsWithFilter(alFilters, rcu.TIME_RANGE_CODE))
+                    ||  (startsWithFilter(alFilters, rcu.TIME_PERIOD_CODE))
+                     ||  (startsWithFilter(alFilters, rcu.MONTH_YEAR_RANGE_CODE))
+                    )
+                    {
+                ]]></xsp:logic>
+				<subsection name="Time" line="true">
+					<!-- TIME_RANGE_CODE -->
+					<xsp:logic><![CDATA[
+                        if(startsWithFilter(alFilters, rcu.TIME_RANGE_CODE))
+                        {
+                            String strT_T01a = (String)getData(rcu.TIME_RANGE_FROM, true);
+                            String strT_T01b = (String)getData(rcu.TIME_RANGE_TO, true);
+                    ]]></xsp:logic>
+					<row>
+						<column align="right" width="1">
+							<label ref="id_T_T01a" name="Date Filtered By:"/>
+						</column>
+						<column width="2">
+							<text>
+								<xsp-session:get-attribute name="dateType"/>
+							</text>
+							<xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.TIME_RANGE_CODE_N)) {]]></xsp:logic>
+							<checkbox uid="" id="id_timeRange_include_nulls" name="timeRange_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullTimeRange</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_timeRange_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+							<xsp:logic>}</xsp:logic>
+						</column>
+					</row>
+					<row>
+						<column align="right" width="1">
+							<label ref="id_T_T01a" name="From:"/>
+						</column>
+						<column width="1">
+							<xsp:element name="textbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.TIME_RANGE_FROM</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.TIME_RANGE_FROM</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="size">10</xsp:attribute>
+								<xsp:attribute name="max">10</xsp:attribute>
+								<xsp:attribute name="width">1</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<event name="onkeyup">
+                                    if(is_ie)
+                                    {
+                                        DateMask(_this, window.event.keyCode);
+                                    }
+                                    else
+                                    {
+                                        DateMask(_this.target, _this.which);
+                                    }
+                                </event>
+								<xsp:expr>strT_T01a</xsp:expr>
+							</xsp:element>
+						</column>
+					</row>
+					<nedss:IfAddOrEdit>
+						<row>
+							<column width="1">
+								<empty/>
+							</column>
+							<column width="1">
+								<format type="date"/>
+							</column>
+						</row>
+					</nedss:IfAddOrEdit>
+					<row>
+						<column align="right" width="1">
+							<label ref="id_T_T01b" name="To:"/>
+						</column>
+						<column width="1">
+							<xsp:element name="textbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.TIME_RANGE_TO</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.TIME_RANGE_TO</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="size">10</xsp:attribute>
+								<xsp:attribute name="max">10</xsp:attribute>
+								<xsp:attribute name="width">1</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<event name="onkeyup">
+                                    if(is_ie)
+                                    {
+                                        DateMask(_this, window.event.keyCode);
+                                    }
+                                    else
+                                    {
+                                        DateMask(_this.target, _this.which);
+                                    }
+                                </event>
+								<xsp:expr>strT_T01b</xsp:expr>
+							</xsp:element>
+						</column>
+					</row>
+					<nedss:IfAddOrEdit>
+						<row>
+							<column width="1">
+								<empty/>
+							</column>
+							<column width="1">
+								<format type="date"/>
+							</column>
+						</row>
+					</nedss:IfAddOrEdit>
+					<xsp:logic><![CDATA[
+                        }
+                    ]]></xsp:logic>
+					<!--Month/Year Range -->
+					<xsp:logic><![CDATA[
+                        if(startsWithFilter(alFilters, rcu.MONTH_YEAR_RANGE_CODE))
+                        {
+                            String strM_Y01a = (String)getData(rcu.MONTH_YEAR_RANGE_FROM, true);
+                            String strM_Y01b = (String)getData(rcu.MONTH_YEAR_RANGE_TO, true);
+                    ]]></xsp:logic>
+					<row>
+						<column align="right" width="1">
+							<label ref="id_M_Y01a" name="Date Filtered By:"/>
+						</column>
+						<column width="2">
+							<text>
+								<xsp-session:get-attribute name="dateType"/>
+							</text>
+							<xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.MONTH_YEAR_RANGE_CODE_N)) {]]></xsp:logic>
+							<checkbox uid="" id="id_monthYearRange_include_nulls" name="monthYearRange_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullMonthYearRange</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_monthYearRange_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+							<xsp:logic>}</xsp:logic>
+						</column>
+					</row>
+					<row>
+						<column align="right" width="1">
+							<label ref="id_M_Y01a" name="From:"/>
+						</column>
+						<column width="1">
+							<xsp:element name="textbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.MONTH_YEAR_RANGE_FROM</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.MONTH_YEAR_RANGE_FROM</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="size">7</xsp:attribute>
+								<xsp:attribute name="max">7</xsp:attribute>
+								<xsp:attribute name="width">1</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<event name="onkeyup">
+                                    if(is_ie)
+                                    {
+                                        MonthYearMask(_this, window.event.keyCode);
+                                    }
+                                    else
+                                    {
+                                        MonthYearMask(_this.target, _this.which);
+                                    }
+                                </event>
+								<xsp:expr>strM_Y01a</xsp:expr>
+							</xsp:element>
+						</column>
+					</row>
+					<nedss:IfAddOrEdit>
+						<row>
+							<column width="1">
+								<empty/>
+							</column>
+							<column width="1">
+								<format type="monthYear"/>
+							</column>
+						</row>
+					</nedss:IfAddOrEdit>
+					<row>
+						<column align="right" width="1">
+							<label ref="id_M_Y01b" name="To:"/>
+						</column>
+						<column width="1">
+							<xsp:element name="textbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.MONTH_YEAR_RANGE_TO</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.MONTH_YEAR_RANGE_TO</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="size">7</xsp:attribute>
+								<xsp:attribute name="max">7</xsp:attribute>
+								<xsp:attribute name="width">1</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<event name="onkeyup">
+                                    if(is_ie)
+                                    {
+                                        MonthYearMask(_this, window.event.keyCode);
+                                    }
+                                    else
+                                    {
+                                        MonthYearMask(_this.target, _this.which);
+                                    }
+                                </event>
+								<xsp:expr>strM_Y01b</xsp:expr>
+							</xsp:element>
+						</column>
+					</row>
+					<nedss:IfAddOrEdit>
+						<row>
+							<column width="1">
+								<empty/>
+							</column>
+							<column width="1">
+								<format type="monthYear"/>
+							</column>
+						</row>
+					</nedss:IfAddOrEdit>
+					<xsp:logic><![CDATA[
+                        }
+                    ]]></xsp:logic>
+					<xsp:logic><![CDATA[
+                        if(startsWithFilter(alFilters, rcu.TIME_PERIOD_CODE))
+                        {
+                            String strT_T02a = (String)getData(rcu.TIME_PERIOD_FROM, true);
+                            String strT_T02b = (String)getData(rcu.TIME_PERIOD_TO, true);
+                    ]]></xsp:logic>
+					<row>
+						<column align="right" width="1">
+							<label ref="id_T_T01a" name="Date Field:"/>
+						</column>
+						<column width="2">
+							<text>
+								<xsp-session:get-attribute name="dateType"/>
+							</text>
+							<xsp:logic><![CDATA[if(hasFilter(alFilters, rcu.TIME_PERIOD_CODE_N)) {]]></xsp:logic>
+							<checkbox uid="" id="id_timePeriod_include_nulls" name="timePeriod_include_nulls" enabled="true">
+								<xsp:attribute name="checked">
+									<xsp:expr>includeNullTimePeriod</xsp:expr>
+								</xsp:attribute>
+							</checkbox>
+							<xsp:element name="label">
+								<xsp:attribute name="ref">id_timePeriod_include_nulls</xsp:attribute>
+								<xsp:attribute name="name">Include NULLs</xsp:attribute>
+							</xsp:element>
+							<xsp:logic>}</xsp:logic>
+						</column>
+					</row>
+					<row>
+						<column align="right" width="1">
+							<label ref="id_T_T02a" name="From:"/>
+						</column>
+						<column width="1">
+							<!--listbox id="id_T_T02a" name="T_T02a" type="dropdown" error="true"-->
+							<combobox id="id_T_T02a" name="T_T02a" length="4">
+								<options>
+									<xsp:logic><![CDATA[
+                                        for(int x=21; x>0; x--)
+                                        {
+                                            int intYear = intCurrentYear - x;
+                                            strName = Integer.toString(intYear);
+                                            strID = "id_" + strName;
+                                            strValue = strName;
+                                            if(strT_T02a == null)
+                                            {
+                                                strSelected = (x==21) ? "true" : "false";
+                                            }
+                                            else
+                                            {
+                                                strSelected = (strT_T02a.equals(strValue)) ? "true" : "false";
+                                            }
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strName</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strValue</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+								<xsp:attribute name="error">true</xsp:attribute>
+							</combobox>
+						</column>
+					</row>
+					<row>
+						<column align="right" width="1">
+							<label ref="id_T_T02b" name="To:"/>
+						</column>
+						<column width="1">
+							<!--listbox id="id_T_T02b" name="T_T02b" type="dropdown" error="true"-->
+							<combobox id="id_T_T02b" name="T_T02b" length="4">
+								<options>
+									<xsp:logic><![CDATA[
+                                        for(int x=21; x>0; x--)
+                                        {
+                                            int intYear = intCurrentYear - x;
+                                            strName = Integer.toString(intYear);
+                                            strID = "id_" + strName;
+                                            strValue = strName;
+                                            if(strT_T02b == null)
+                                            {
+                                                strSelected = (x==1) ? "true" : "false";
+                                            }
+                                            else
+                                            {
+                                                strSelected = (strT_T02b.equals(strValue)) ? "true" : "false";
+                                            }
+                                    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strName</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strValue</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+                                        }
+                                    ]]></xsp:logic>
+								</options>
+							</combobox>
+						</column>
+					</row>
+					<xsp:logic><![CDATA[
+                        }
+                    ]]></xsp:logic>
+				</subsection>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+			</section>
+			<toolbar location="bottom"/>
+		</body>
+	</part>
+</xsp:page>

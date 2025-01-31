@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<map:sitemap xmlns:map="http://apache.org/cocoon/sitemap/1.0">
+    <map:components>
+        <map:generators default="file">
+            <map:generator label="content,data" logger="sitemap.generator.file" name="file" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.FileGenerator"/>
+            <map:generator label="content,data" logger="sitemap.generator.serverpages" name="serverpages" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.ServerPagesGenerator"/>
+        </map:generators>
+        <map:transformers default="xslt">
+            <map:transformer logger="sitemap.transformer.xslt" name="xslt" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.transformation.TraxTransformer">
+                <use-request-parameters>false</use-request-parameters>
+                <use-browser-capabilities-db>false</use-browser-capabilities-db>
+                <use-deli>false</use-deli>
+            </map:transformer>
+        </map:transformers>
+        <map:readers default="resource">
+            <map:reader logger="sitemap.reader.resource" name="resource" pool-max="32" src="org.apache.cocoon.reading.ResourceReader"/>
+            <map:reader name="jsp" src="org.apache.cocoon.reading.JSPReader"/>
+        </map:readers>
+        <map:serializers default="xhtmlTransitional">
+            <map:serializer logger="sitemap.serializer.xml" mime-type="text/xml" name="xml" src="org.apache.cocoon.serialization.XMLSerializer"/>
+            <map:serializer logger="sitemap.serializer.xhtml" mime-type="text/html" name="xhtml" pool-grow="2" pool-max="64" pool-min="2" src="org.apache.cocoon.serialization.XMLSerializer">
+                <doctype-public>-//W3C//DTD XHTML 1.0 Strict//EN</doctype-public>
+                <doctype-system>http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd</doctype-system>
+                <encoding>UTF-8</encoding>
+            </map:serializer>
+            <map:serializer logger="sitemap.serializer.xhtml" mime-type="text/html" name="xhtmlTransitional" pool-grow="2" pool-max="64" pool-min="2" src="org.apache.cocoon.serialization.XMLSerializer">
+                <doctype-public>-//W3C//DTD XHTML 1.0 Transitional//EN</doctype-public>
+                <doctype-system>http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd</doctype-system>
+                <encoding>UTF-8</encoding>
+            </map:serializer>
+            <map:serializer logger="sitemap.serializer.xhtml" mime-type="text/html" name="xhtmlStrict" pool-grow="2" pool-max="64" pool-min="2" src="org.apache.cocoon.serialization.XMLSerializer">
+                <doctype-public>-//W3C//DTD XHTML 1.0 Strict//EN</doctype-public>
+                <doctype-system>http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd</doctype-system>
+                <encoding>UTF-8</encoding>
+            </map:serializer>
+            <map:serializer logger="sitemap.serializer.xhtml" mime-type="text/html" name="xhtmlFrameset" pool-grow="2" pool-max="64" pool-min="2" src="org.apache.cocoon.serialization.XMLSerializer">
+                <doctype-public>-//W3C//DTD XHTML 1.0 Frameset//EN</doctype-public>
+                <doctype-system>http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd</doctype-system>
+                <encoding>UTF-8</encoding>
+            </map:serializer>
+        </map:serializers>
+        <map:matchers default="wildcard">
+            <map:matcher logger="sitemap.matcher.wildcard" name="wildcard" src="org.apache.cocoon.matching.WildcardURIMatcher"/>
+            <map:matcher logger="sitemap.matcher.regexp" name="regexp" src="org.apache.cocoon.matching.RegexpURIMatcher"/>
+            <map:matcher logger="sitemap.matcher.request-parameter" name="request-parameter" src="org.apache.cocoon.matching.RequestParameterMatcher"/>
+            <map:matcher logger="sitemap.matcher.cookie" name="cookie" src="org.apache.cocoon.matching.CookieMatcher"/>
+            <map:matcher logger="sitemap.matcher.header" name="header" src="org.apache.cocoon.matching.HeaderMatcher"/>
+            <map:matcher logger="sitemap.matcher.parameter" name="parameter" src="org.apache.cocoon.matching.ParameterMatcher"/>
+            <map:matcher logger="sitemap.matcher.sessionstate" name="sessionstate" src="org.apache.cocoon.matching.WildcardSessionAttributeMatcher">
+                <attribute-name>org.apache.cocoon.SessionState</attribute-name>
+            </map:matcher>
+            <map:matcher logger="sitemap.matcher.next-page" name="next-page" src="org.apache.cocoon.matching.WildcardRequestParameterMatcher">
+                <parameter-name>next-state</parameter-name>
+            </map:matcher>
+            <map:matcher logger="sitemap.matcher.referer-match" name="referer-match" src="org.apache.cocoon.matching.WildcardHeaderMatcher">
+                <header-name>referer</header-name>
+            </map:matcher>
+        </map:matchers>
+        <map:selectors default="browser">
+            <map:selector logger="sitemap.selector.browser" name="browser" src="org.apache.cocoon.selection.BrowserSelector">
+                <browser name="explorer" useragent="MSIE"/>
+                <browser name="pocketexplorer" useragent="MSPIE"/>
+                <browser name="handweb" useragent="HandHTTP"/>
+                <browser name="avantgo" useragent="AvantGo"/>
+                <browser name="imode" useragent="DoCoMo"/>
+                <browser name="opera" useragent="Opera"/>
+                <browser name="lynx" useragent="Lynx"/>
+                <browser name="java" useragent="Java"/>
+                <browser name="wap" useragent="Nokia"/>
+                <browser name="wap" useragent="UP"/>
+                <browser name="wap" useragent="Wapalizer"/>
+                <browser name="mozilla5" useragent="Mozilla/5"/>
+                <browser name="mozilla5" useragent="Netscape6/"/>
+                <browser name="netscape" useragent="Mozilla"/>
+            </map:selector>
+            <map:selector logger="sitemap.selector.request-parameter" name="request-parameter" src="org.apache.cocoon.selection.RequestParameterSelector">
+                <!-- <parameter-name>myparam</parameter-name> -->
+            </map:selector>
+            <map:selector logger="sitemap.selector.request-attribute" name="request-attribute" src="org.apache.cocoon.selection.RequestAttributeSelector">
+                <!-- <attribute-name>myparam</attribute-name> -->
+            </map:selector>
+            <map:selector logger="sitemap.selector.session-attribute" name="session-attribute" src="org.apache.cocoon.selection.SessionAttributeSelector">
+                <!-- <attribute-name>myparam</attribute-name> -->
+            </map:selector>
+            <map:selector logger="sitemap.selector.parameter" name="parameter" src="org.apache.cocoon.selection.ParameterSelector"/>
+            <map:selector logger="sitemap.selector.header" name="header" src="org.apache.cocoon.selection.HeaderSelector">
+                <!-- <header-name>myparam</header-name> -->
+            </map:selector>
+            <map:selector logger="sitemap.selector.host" name="host" src="org.apache.cocoon.selection.HostSelector"/>
+        </map:selectors>
+    </map:components>
+    <map:pipelines>
+        <map:pipeline>
+            <map:match pattern="**.css">
+                <map:read src="../resource/style/{1}.css" mime-type="text/css"/>
+            </map:match>
+            <map:match pattern="**.gif">
+                <map:read src="../resource/image/{1}.gif" mime-type="image/gif"/>
+            </map:match>
+            <map:match pattern="**.jpg">
+                <map:read src="../resource/image/{1}.jpg" mime-type="image/jpg"/>
+            </map:match>
+            <map:match pattern="**.js">
+                <map:read src="../resource/javascript/{1}.js" mime-type="text/JavaScript"/>
+            </map:match>
+            <map:match pattern="resource/jar/**.jar">
+                <map:read src="resource/jar/{1}.jar" mime-type="application/x-zip-compressed"/>
+            </map:match>
+            <map:match pattern="**.xsp">
+                <map:generate type="serverpages" src="{1}.xsp"/>
+                <map:serialize type="xml"/>
+            </map:match>
+            <map:match pattern="*.xml">
+                <map:aggregate element="page">
+                    <map:part src="cocoon:/../xsp/navbar.xsp"/>
+                    <map:part src="cocoon:/xsp/{1}.xsp"/>
+                </map:aggregate>
+                <map:serialize type="xml"/>
+            </map:match>
+			<map:match pattern="reportError">
+				<map:generate type="serverpages" src="xsp/error.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>			
+			<map:match pattern="error">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/reportError"/>
+				</map:aggregate>
+				<map:transform src="../xsl/nedss/nedss.xsl"/>
+				<map:serialize type="xhtmlTransitional"/>
+			</map:match>	
+            <map:match pattern="*">
+                <map:aggregate element="page">
+                    <map:part src="cocoon:/../xsp/navbar.xsp"/>
+                    <map:part src="cocoon:/xsp/{1}.xsp"/>
+                </map:aggregate>
+                <map:transform src="../xsl/nedss/nedss.xsl"/>
+                <map:serialize type="xhtmlTransitional"/>
+            </map:match>
+        </map:pipeline>
+    </map:pipelines>
+</map:sitemap>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT MPR-update-engine (handler)>
+<!ATTLIST MPR-update-engine
+	description CDATA #IMPLIED
+	name CDATA #REQUIRED
+	version CDATA #REQUIRED
+>
+
+<!ELEMENT action (action-class,init-id?)>
+<!ATTLIST action name CDATA #REQUIRED>
+
+<!ELEMENT action-class (#PCDATA)>
+
+<!ELEMENT actions (action+)>
+
+<!ELEMENT handler (actions)>
+<!ATTLIST handler
+	id ID #REQUIRED
+	name CDATA #REQUIRED
+>
+
+<!ELEMENT init-id (#PCDATA)>

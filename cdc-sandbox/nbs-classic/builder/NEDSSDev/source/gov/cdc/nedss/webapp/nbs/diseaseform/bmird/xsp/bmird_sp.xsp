@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0">
+	<xsp:structure>
+		<nedss:Include/>
+	</xsp:structure>
+	<content>
+		<tab name="BMIRD">
+			<!--nedss:LessThanFifteenYears/-->
+			<xsp:logic><![CDATA[
+				
+	
+	
+		String age15 = "F";	
+		Timestamp time = null;
+		int age[] = {0,0,0};
+		String patientDateOfBirth = (String)request.getAttribute("birthTime");
+		//System.out.println("\n\n patientDateOfBirth "+ request.getAttribute("birthTime"));
+		if( (patientDateOfBirth != null) && !(patientDateOfBirth.trim().equals("")) )
+		{
+		     //System.out.println("\n\n Age if "+ age);
+			time = StringUtils.stringToStrutsTimestamp(patientDateOfBirth);
+			age = DateUtil.ageInYears(time);
+			//System.out.println("\n\n Age "+ age);
+			if(age[0] < 15)
+			age15 = "T";
+		}	
+		/** For LDF PReview Page **/
+		if(request.getAttribute("doPreview") != null)
+		   if( request.getAttribute("doPreview").equals("yes"))
+		        age15 = "T";
+	//System.out.println("\n do Preview " +  request.getAttribute("doPreview"));
+
+      	]]></xsp:logic>
+			<group colspan="off">
+				<line>
+					<element type="line-separator" />
+				</line>
+				<line>
+					<element type="conditional-entry" name="BMD131c">
+						<controller id="BMD131" type="select" align-label="left" label="What was the serotype?" >
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS011</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS011</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">BMD131</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>BM_SERO_TYPE_IPD</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="BMD131"/>
+							</value>
+						</controller>
+						<line trigger="OTH">
+							<element type="text" label="Other Serotype" size="15" maxlength="15">
+								<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS012</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+								<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS012</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">BMD299</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="BMD299-valueTxt"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+
+				<line>
+					<element type="line-separator" title="Resistance Testing Results"/>
+				</line>
+				<line>
+					<element type="text" label="Oxacillin Zone Size" size="2" maxlength="2">
+						<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS000</xsp:expr>].obsValueNumericDT_s[0].numericValue1_s</xsp:attribute>
+						<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS000</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">BMD136</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="BMD136-numericValue1"/>
+						</value>
+						<validation type="numericErr123" name="Oxacillan Zone Size"/>
+						<partner type="plain-text">
+							<value class="boldTenBlack">mm</value>
+						</partner>
+					</element>
+				</line>
+				<line>
+					<element type="select" label="Interpretation" length="26">
+						<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS001</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+						<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS001</xsp:expr>].theObservationDT.cd</xsp:attribute>
+						<xsp:attribute name="observation-value">BMD137</xsp:attribute>
+						<value>
+							<xsp-request:get-attribute name="BMD137"/>
+						</value>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>BM_OXA_RSLT</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+					</element>
+					<element/>
+				</line>
+				<line>
+					<element type="line-separator"/>
+				</line>
+				<line>
+					<free/>
+					<element name="Test" type="batch-entry">
+						<value>
+							<xsp-request:get-attribute name="agentBatchEntryList"/>
+						</value>
+						<xsp:logic>
+                       // System.out.println("\n\n agentBatchEntryList" +request.getAttribute("agentBatchEntryList"));
+                        </xsp:logic>
+						<line>
+							<element type="select" label="Antimicrobial Agent" length="33">
+								<header>Antimicrobial Agent</header>
+								<xsp:attribute name="name">antibioticBatchEntry_s[i].observationVO_s[0].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">antibioticBatchEntry_s[i].observationVO_s[0].theObservationDT.cd </xsp:attribute>
+								<xsp:attribute name="observation-value">BMD212</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>BM_ANTI_AGENT</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="select" label="Susceptibility Method" length="9">
+								<header>Method</header>
+								<xsp:attribute name="name">antibioticBatchEntry_s[i].observationVO_s[1].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">antibioticBatchEntry_s[i].observationVO_s[1].theObservationDT.cd </xsp:attribute>
+								<xsp:attribute name="observation-value">BMD213</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>BM_SUSC_MT</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="select" label="S/I/R/U Result" length="12">
+								<header>Result</header>
+								<xsp:attribute name="name">antibioticBatchEntry_s[i].observationVO_s[2].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">antibioticBatchEntry_s[i].observationVO_s[2].theObservationDT.cd </xsp:attribute>
+								<xsp:attribute name="observation-value">BMD214</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>LAB_SENS_RSLT_Q</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="select" label="Sign" length="2">
+								<header>Sign</header>
+								<xsp:attribute name="name">antibioticBatchEntry_s[i].observationVO_s[3].obsValueCodedDT_s[0].code</xsp:attribute>
+								<xsp:attribute name="observation-name">antibioticBatchEntry_s[i].observationVO_s[3].theObservationDT.cd </xsp:attribute>
+								<xsp:attribute name="observation-value">BMD215</xsp:attribute>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>BM_ORG_SIGN</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="text" label="MIC Value" size="10" maxlength="20">
+								<header>MIC Value</header>
+								<xsp:attribute name="name">antibioticBatchEntry_s[i].observationVO_s[4].obsValueNumericDT_s[0].numericValue1_s</xsp:attribute>
+								<xsp:attribute name="observation-name">antibioticBatchEntry_s[i].observationVO_s[4].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">BMD216</xsp:attribute>
+								<validation type="numericRangeMIC" name="MIC Value"/>
+							</element>
+						</line>
+						<line tie-to="Add|Create|Edit|">
+							<element type="hidden" name="antibioticBatchEntry_s[i].statusCd"/>
+						</line>
+					</element>
+				</line>
+				<!--end of batch-entry-->
+				<line>
+					<element name="BMD140c" type="conditional-entry">
+						<controller id="BMD140" trigger="Y" type="select" align-label="left" length="7" label="Does the patient have persistent disease as defined by positive sterile site cultures 2-7 days after the first positive culture?">
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS002</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS002</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">BMD140</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="BMD140"/>
+							</value>
+						</controller>
+						<line>
+							<xsp:attribute name="abc">
+								<xsp-request:get-attribute name="abcsInd"/>
+							</xsp:attribute>
+							<element name="" type="raw">
+								<span>
+									<b>If yes, additional culture dates:</b>
+								</span>
+							</element>
+						</line>
+						<line>
+							<xsp:attribute name="abc">
+								<xsp-request:get-attribute name="abcsInd"/>
+							</xsp:attribute>
+							<element type="text" label="Specimen Collection Date 1" size="10" maxlength="10" mask="##/##/####">
+								<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS003</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS003</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">BMD141</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="BMD141-fromTime"/>
+								</value>
+								<validation type="date" mask="mm/dd/yyyy" name="Specimen Collection Date 1"/>
+							</element>
+						</line>
+						<line>
+							<xsp:attribute name="abc">
+								<xsp-request:get-attribute name="abcsInd"/>
+							</xsp:attribute>
+							<element type="conditional-entry" colspan="1" name="BMD142c">
+								<controller id="BMD142" type="select" label="Sites from which S. pneumoniae isolated" makeItalic="S. pneumoniae" size="4">
+									<xsp:attribute name="name">BMD142</xsp:attribute>
+									<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS004</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+									<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS004</xsp:expr>].theObservationDT.cd</xsp:attribute>
+									<xsp:attribute name="observation-value">BMD142</xsp:attribute>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>BM_ORG_ISO_S1</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<value>
+										<xsp-request:get-attribute name="BMD142"/>
+									</value>
+								</controller>
+								<line trigger="OTH">
+									<element type="text" align-label="right" colspan="1" label="Other Normally Sterile Site">
+										<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS009</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+										<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS009</xsp:expr>].theObservationDT.cd			</xsp:attribute>
+										<xsp:attribute name="observation-value">BMD318</xsp:attribute>
+										<value>
+											<xsp-request:get-attribute name="BMD318-valueTxt"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+						<line>
+							<xsp:attribute name="abc">
+								<xsp-request:get-attribute name="abcsInd"/>
+							</xsp:attribute>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<xsp:attribute name="abc">
+								<xsp-request:get-attribute name="abcsInd"/>
+							</xsp:attribute>
+							<element id="BMD143" type="text" label="Specimen Collection Date 2" size="10" maxlength="10" mask="##/##/####">
+								<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS005</xsp:expr>].obsValueDateDT_s[0].fromTime_s</xsp:attribute>
+								<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS005</xsp:expr>].theObservationDT.cd</xsp:attribute>
+								<xsp:attribute name="observation-value">BMD143</xsp:attribute>
+								<value>
+									<xsp-request:get-attribute name="BMD143-fromTime"/>
+								</value>
+								<validation type="date" mask="mm/dd/yyyy" name="Specimen Collection Date 2"/>
+							</element>
+						</line>
+						<line>
+							<xsp:attribute name="abc">
+								<xsp-request:get-attribute name="abcsInd"/>
+							</xsp:attribute>
+							<element type="conditional-entry" colspan="1" name="BMD144c">
+								<controller id="BMD144" type="select" label="Sites from which S. pneumoniae isolated" makeItalic="S. pneumoniae" size="4">
+									<xsp:attribute name="name">BMD144</xsp:attribute>
+									<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS006</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+									<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS006</xsp:expr>].theObservationDT.cd</xsp:attribute>
+									<xsp:attribute name="observation-value">BMD144</xsp:attribute>
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>BM_ORG_ISO_S1</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+									<value>
+										<xsp-request:get-attribute name="BMD144"/>
+									</value>
+								</controller>
+								<line trigger="OTH">
+									<element type="text" align-label="right" colspan="1" label="Other Normally Sterile Site">
+										<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS010</xsp:expr>].obsValueTxtDT_s[0].valueTxt</xsp:attribute>
+										<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS010</xsp:expr>].theObservationDT.cd</xsp:attribute>
+										<xsp:attribute name="observation-value">BMD319</xsp:attribute>
+										<value>
+											<xsp-request:get-attribute name="BMD319-valueTxt"/>
+										</value>
+									</element>
+								</line>
+							</element>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Vaccine Information">
+				<line>
+					<element type="conditional-entry" name="BMD138c">
+						<controller id="BMD138" type="select" align-label="left" length="7" trigger="Y" label="Has patient received 23-valent pneumococcal POLYSACCHARIDE vaccine?">
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS007</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS007</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">BMD138</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="BMD138"/>
+							</value>
+						</controller>
+						<line>
+							<element type="group-separator" light-blue-label="If yes, please enter dosage data in the Vaccination Record."/>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="conditional-entry" name="BMD139c">
+						<controller id="BMD139" type="select" align-label="left" length="7" trigger="Y" label="If &lt; 15 years of age, did the patient receive pneumococcal CONJUGATE vaccine?">
+							<xsp:attribute name="name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS008</xsp:expr>].obsValueCodedDT_s[0].code</xsp:attribute>
+							<xsp:attribute name="observation-name">supplemental_s[<xsp:expr>InvestigationFieldConstants.NEDSS008</xsp:expr>].theObservationDT.cd</xsp:attribute>
+							<xsp:attribute name="observation-value">BMD139</xsp:attribute>
+							<srt-options-string>
+								<srt-codes:getCodedValues>
+									<type>YNU</type>
+								</srt-codes:getCodedValues>
+							</srt-options-string>
+							<value>
+								<xsp-request:get-attribute name="BMD139"/>
+							</value>
+						</controller>
+						<line>
+							<element type="group-separator" light-blue-label="If yes, please enter dosage data in the Vaccination Record."/>
+						</line>
+					</element>
+				</line>
+			</group>
+			<group name="Vaccination Record">
+				<line>
+					<element name="vaccine" type="batch-entry">
+						<readonly/>
+						<value>
+							<xsp-request:get-attribute name="vaccinationRecordList"/>
+						</value>
+						<line>
+							<element type="text" name="dateAdministered" label="Date Administered">
+								<header>Date Administered</header>
+							</element>
+							<element type="text" name="ageAtVaccination" label="Age at Vaccination">
+								<partner type="select" length="7" name="ageAtVaccinationUnits">
+									<srt-options-string>
+										<srt-codes:getCodedValues>
+											<type>AGE_UNIT</type>
+										</srt-codes:getCodedValues>
+									</srt-options-string>
+								</partner>
+							</element>
+							<element/>
+						</line>
+						<line>
+							<element type="select" name="vaccinationAnatomicalSite" label="Vaccination Anatomical Site">
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>ANATOMIC_SITE</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="line-separator" title="Given By"/>
+						</line>
+						<line>
+							<element type="text" name="lastName" label="Last Name"/>
+							<element type="text" name="firstName" label="First Name"/>
+						</line>
+						<line>
+							<element type="text" name="personID" label="Provider ID"/>
+						</line>
+						<line>
+							<element type="text" name="organizationName" label="Organization Name"/>
+						</line>
+						<line>
+							<element type="text" name="organizationID1" label="Organization ID"/>
+						</line>
+						<line>
+							<element type="line-separator"/>
+						</line>
+						<line>
+							<element type="select" name="vaccineAdministered" label="Vaccine Administered">
+								<header>Vaccine Administered</header>
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>VAC_NM</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="text" name="vaccinationID" label="Vaccination ID">
+								<header>Vaccination ID</header>
+							</element>
+						</line>
+						<line>
+							<element type="text" name="manufacturer" label="Manufacturer">
+								<srt-options-string>
+									<srt-codes:getCodedValues>
+										<type>VAC_MFGR</type>
+									</srt-codes:getCodedValues>
+								</srt-options-string>
+							</element>
+						</line>
+						<line>
+							<element type="text" name="lotNumber" label="Lot Number"/>
+							<element type="text" name="expirationDate" label="Expiration Date"/>
+						</line>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

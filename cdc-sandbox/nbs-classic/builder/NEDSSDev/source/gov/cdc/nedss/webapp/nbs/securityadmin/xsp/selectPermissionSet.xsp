@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+	</xsp:structure>
+	<content form="loadPermissionSet.do?OperationType=create">
+		<xsp:logic><![CDATA[
+            LogUtils logger = new LogUtils((this.getClass()).getName());
+           // logger.debug("VALUE OF REQUEST: " + request);
+            String ERR001= (String)request.getAttribute("ERR001");
+            String ERR015= (String)request.getAttribute("ERR015");
+       ]]></xsp:logic>
+		<button-bar>
+			<right>
+				<label>Submit</label>
+				<javascript-action>submitForm();</javascript-action>
+				<!--<javascript-action>getPage('loadPermissionSet.do?OperationType=view');</javascript-action>-->
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>getPage('loadPermissionSets.do?<xsp:expr>PageConstants.OPERATIONTYPE</xsp:expr>=<xsp:expr>NEDSSConstants.LOAD_PERMISSION_SETS</xsp:expr>');</javascript-action>
+			</right>
+		</button-bar>
+		<separator/>
+		<tab>
+			<group>
+			<line>
+							<element type="raw">
+								<span class="normalNineRed">
+									<i>* Indicates a Required Field</i>
+								</span>
+							</element>
+			</line>
+			<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<font class="boldTenRed">
+								<p align="left">
+									<b>
+										<xsp:expr>ERR015</xsp:expr>
+									</b>
+								</p>
+							</font>
+						</span>
+					</element>
+				</line>
+				
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<font class="boldTenArial">
+								<p align="left">
+									<b>Would you like to start with an existing Permission Set as your template?</b>
+								</p>
+							</font>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="templateFlag" type="conditional-entry" indented="yes">
+						<validation type="numeric" name="templateFlag"/>
+						<controller name="input" type="radio" default="y" trigger="y" layout="horizontal">
+							<value>y</value>
+							<options>
+								<option name="yes" value="y" label="[-nc]Yes" align-label="left"/>
+							</options>
+							<options>
+								<option name="no" value="n" label="[-nc]No, start with a blank form" align-label="left"/>
+							</options>
+						</controller>
+						<line>
+							<element name="permSets" type="select" label="*Permission Set" length="29">
+								<srt-options-string>
+									<xsp-request:get-attribute name="AllPermissionSetsStr"/>
+								</srt-options-string>
+								
+							</element>
+							<element></element>
+							<element></element>
+							<element></element>
+							<element></element>
+							<element></element>
+						</line>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<br/>
+							<font class="boldTenRed">
+								<p align="left">
+									<b>
+										<xsp:expr>ERR001</xsp:expr>
+									</b>
+								</p>
+							</font>
+						</span>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

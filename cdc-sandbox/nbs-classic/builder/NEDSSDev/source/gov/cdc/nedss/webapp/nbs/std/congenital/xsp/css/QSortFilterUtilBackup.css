@@ -1,0 +1,72 @@
+		.tabMsg {
+			background-color: #B7BAF5;
+			font-size: 10pt;  
+		}		
+		.tabTitle {
+			background-color: #B7BAF5;		
+			font-size: 14pt;		
+		}
+		.colHdr {
+			background-color: #B7BAF5;		
+			font-size: 10pt;		
+		}
+		.filterHdr {
+			background-color: #B7BAF5;		
+			font-size: 12pt;
+		}
+		.filterSubHdr {
+			background-color: #B7BAF5;
+			font-size: 10pt;		
+			text-align: right;        
+			font-weight:bold;		
+		}
+		body {
+			margin: 0 auto;
+			padding: 0 20px;
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 10pt;
+			color: #555;
+		}
+		table {
+			border: 0;
+			padding: 0;
+			margin: 0 0 20px 0;
+			border-collapse: collapse;
+		}
+		th {
+			padding: 0px; /* NOTE: th padding must be set explicitly in order to support IE */
+			padding-left: 1em;
+			/* text-align: right; */        
+			font-weight:bold;
+			line-height: 2em;
+			/* color: #FFF; */
+			background-color: #DEDFFA;
+		}
+		tbody td {
+			padding-left: 1em;
+			padding: 2px;
+			line-height: 18px;
+			border-top: 1px solid #E0E0E0;
+		}
+		tbody tr:nth-child(2n) {
+			background-color: #F7F7F7;
+		}
+		tbody tr:hover {
+			background-color: #EEEEEE;
+		}
+		td {
+			/* text-align: right; */
+		}
+/*		
+		td:first-child, th:first-child {
+			text-align: left;
+		}
+*/		
+		td:first-child {
+			padding-left: 1em;
+			text-align: left;
+		}
+		th:nth-child(1n) {
+			text-align: left;
+			padding-bottom: 3px;
+		}

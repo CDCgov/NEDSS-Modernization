@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NBSMorbMap>
+	<InvestigationFormCodes>
+		<InvestigationFormCode name="INV_FRM_GEN">
+			<InvestigationFieldMapping mappingFromField="LAB201" mappingToField="INV111" description="ReportDate"/>
+			<InvestigationFieldMapping mappingFromField="ORD106UID" mappingToField="INV183UID" description="Reporting Source UID"/>
+			<InvestigationFieldMapping mappingFromField="ORD106ORG" mappingToField="INV183ORG" description="Reporting Source Details"/>
+			<InvestigationFieldMapping mappingFromField="ORD107UID" mappingToField="NBS291UID" description="Ordering Facility UID"/>
+			<InvestigationFieldMapping mappingFromField="ORD107ORG" mappingToField="NBS291ORG" description="Ordering Faciity Details"/>			
+			<InvestigationFieldMapping mappingFromField="NPP001UID" mappingToField="INV182UID" description="Physician UID"/>
+			<InvestigationFieldMapping mappingFromField="pregnantIndCd" mappingToField="INV178" description="Assesses whether or not the patient is pregnant."/>
+			<InvestigationFieldMapping mappingFromField="pregnantWeek" mappingToField="NBS128" description="Number of weeks pregnant at the time of diagnosis."/>
+			<InvestigationFieldMapping mappingFromField="NPP001PRV" mappingToField="INV182PRV" description="Physician Details"/>
+			<InvestigationFieldMapping mappingFromField="ProcessingDecision" mappingToField="ProcessingDecision" description="Processing Decision"/>
+		</InvestigationFormCode>
+	</InvestigationFormCodes>
+</NBSMorbMap>

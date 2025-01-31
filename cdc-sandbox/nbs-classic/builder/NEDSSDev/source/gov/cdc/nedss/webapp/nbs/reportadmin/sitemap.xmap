@@ -1,0 +1,409 @@
+<?xml version="1.0"?>
+<map:sitemap xmlns:map="http://apache.org/cocoon/sitemap/1.0">
+	<!-- =========================== Components ================================ -->
+	<map:components>
+		<map:generators default="file">
+			<map:generator label="content,data" logger="sitemap.generator.file" name="file" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.FileGenerator"/>
+			<map:generator label="content,data" logger="sitemap.generator.serverpages" name="serverpages" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.ServerPagesGenerator"/>
+		</map:generators>
+		<map:transformers default="xslt">
+			<map:transformer logger="sitemap.transformer.xslt" name="xslt" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.transformation.TraxTransformer">
+				<use-request-parameters>false</use-request-parameters>
+				<use-browser-capabilities-db>false</use-browser-capabilities-db>
+				<use-deli>false</use-deli>
+			</map:transformer>
+		</map:transformers>
+		<map:readers default="resource">
+			<map:reader logger="sitemap.reader.resource" name="resource" pool-max="76" src="org.apache.cocoon.reading.ResourceReader"/>
+			<map:reader name="jsp" src="org.apache.cocoon.reading.JSPReader"/>
+		</map:readers>
+		<map:serializers default="html">
+			<map:serializer logger="sitemap.serializer.links" name="links" src="org.apache.cocoon.serialization.LinkSerializer"/>
+			<map:serializer logger="sitemap.serializer.xml" mime-type="text/xml" name="xml" src="org.apache.cocoon.serialization.XMLSerializer"/>
+			<map:serializer logger="sitemap.serializer.html" mime-type="text/html" name="html" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.serialization.HTMLSerializer">
+				<buffer-size>1024</buffer-size>
+			</map:serializer>
+		</map:serializers>
+		<map:selectors default="browser"/>
+		<map:matchers default="wildcard">
+			<map:matcher logger="sitemap.matcher.wildcard" name="wildcard" src="org.apache.cocoon.matching.WildcardURIMatcher"/>
+			<map:matcher logger="sitemap.matcher.regexp" name="regexp" src="org.apache.cocoon.matching.RegexpURIMatcher"/>
+		</map:matchers>
+	</map:components>
+	<!-- =========================== Pipelines ================================= -->
+	<map:pipelines>
+		<map:pipeline>
+			<!-- ReportAdministration.xsp -->
+			<map:match pattern="ReportAdministration.xsp">
+				<map:generate type="serverpages" src="xsp/ReportAdministration.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="ReportAdministration">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/ReportAdministration.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Report Administration"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- ListDataSource -->
+			<map:match pattern="ListDataSource_int">
+				<map:generate type="serverpages" src="xsp/ListDataSource.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="html"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="ListDataSource">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/ListDataSource_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Data Sources"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- CreateDataSource -->
+			<map:match pattern="CreateDataSource.xsp">
+				<map:generate type="serverpages" src="xsp/CreateDataSource.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="CreateDataSource">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/CreateDataSource.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Register Data Source"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- EditDataSource -->
+			<map:match pattern="EditDataSource.xsp">
+				<map:generate type="serverpages" src="xsp/EditDataSource.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="EditDataSource">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/EditDataSource.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Data Source"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- ViewDataSource -->
+			<map:match pattern="ViewDataSource.xsp">
+				<map:generate type="serverpages" src="xsp/ViewDataSource.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="ViewDataSource">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/ViewDataSource.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Data Source"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- CreateDataSourceColumn -->
+			<map:match pattern="CreateDataSourceColumn.xsp">
+				<map:generate type="serverpages" src="xsp/CreateDataSourceColumn.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="CreateDataSourceColumn">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/CreateDataSourceColumn.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Data Source Column"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- EditDataSourceColumn -->
+			<map:match pattern="EditDataSourceColumn.xsp">
+				<map:generate type="serverpages" src="xsp/EditDataSourceColumn.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="EditDataSourceColumn">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/EditDataSourceColumn.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Data Source Column"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- ViewDataSourceColumn -->
+			<map:match pattern="ViewDataSourceColumn.xsp">
+				<map:generate type="serverpages" src="xsp/ViewDataSourceColumn.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="ViewDataSourceColumn">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/ViewDataSourceColumn.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Data Source Column"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- ListReport -->
+			<map:match pattern="ListReport.xsp">
+				<map:generate type="serverpages" src="xsp/ListReport.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="ListReport">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/ListReport.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Reports"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- CreateReport -->
+			<map:match pattern="CreateReport.xsp">
+				<map:generate type="serverpages" src="xsp/CreateReport.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="CreateReport">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/CreateReport.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create Report"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- EditReport -->
+			<map:match pattern="EditReport.xsp">
+				<map:generate type="serverpages" src="xsp/EditReport.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="EditReport">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/EditReport.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Report"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- ViewReport -->
+			<map:match pattern="ViewReport.xsp">
+				<map:generate type="serverpages" src="xsp/ViewReport.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="ViewReport">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/ViewReport.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Report"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- ListReportSection -->
+            <map:match pattern="ListReportSections.xsp">
+                <map:generate type="serverpages" src="xsp/ListReportSections.xsp"/>
+                <map:transform src="cocoon://create-view-form-xsl-source"/>
+                <map:serialize/>
+            </map:match>
+            <map:match pattern="ListReportSections">
+                <map:aggregate element="page">
+                    <map:part src="cocoon://navbar" element="navbar"/>
+                    <map:part src="cocoon://top_bar" element="top_bar"/>
+                    <map:part src="cocoon:/ListReportSections.xsp"/>
+                </map:aggregate>
+                <map:transform src="cocoon://aggregate-xsl-source">
+                    <map:parameter name="page-title" value="Report Sections"/>
+                </map:transform>
+                <map:serialize type="html"/>
+            </map:match>
+            <!-- CreateReportSection -->
+            <map:match pattern="CreateReportSection.xsp">
+                <map:generate type="serverpages" src="xsp/CreateReportSection.xsp"/>
+                <map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+                <map:serialize/>
+            </map:match>
+            <map:match pattern="CreateReportSection">
+                <map:aggregate element="page">
+                    <map:part src="cocoon://navbar" element="navbar"/>
+                    <map:part src="cocoon://top_bar" element="top_bar"/>
+                    <map:part src="cocoon:/CreateReportSection.xsp"/>
+                </map:aggregate>
+                <map:transform src="cocoon://aggregate-xsl-source">
+                    <map:parameter name="page-title" value="Create Report Section"/>
+                </map:transform>
+                <map:serialize type="html"/>
+            </map:match>
+            <!-- ViewReportSection -->
+			<map:match pattern="ViewReportSection.xsp">
+				<map:generate type="serverpages" src="xsp/ViewReportSection.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="ViewReportSection">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/ViewReportSection.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Report Section"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- EditReport -->
+			<map:match pattern="EditReportSection.xsp">
+				<map:generate type="serverpages" src="xsp/EditReportSection.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="EditReportSection">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/EditReportSection.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Report Section"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- EditReportColumn -->
+			<map:match pattern="EditReportColumn.xsp">
+				<map:generate type="serverpages" src="xsp/EditReportColumn.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="EditReportColumn">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/EditReportColumn.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Manage Report Columns"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- EditReportSort -->
+			<map:match pattern="EditReportSort.xsp">
+				<map:generate type="serverpages" src="xsp/EditReportSort.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="EditReportSort">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/EditReportSort.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Manage Report Sort"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- ViewReportFilter -->
+			<map:match pattern="ViewReportFilter.xsp">
+				<map:generate type="serverpages" src="xsp/ViewReportFilter.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="ViewReportFilter">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/ViewReportFilter.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View Report Filter"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- CreateReportFilter -->
+			<map:match pattern="CreateReportFilter.xsp">
+				<map:generate type="serverpages" src="xsp/CreateReportFilter.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="CreateReportFilter">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/CreateReportFilter.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Add Report Filter"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- EditReportFilter -->
+			<map:match pattern="EditReportFilter.xsp">
+				<map:generate type="serverpages" src="xsp/EditReportFilter.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="EditReportFilter">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/EditReportFilter.xsp"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit Report Filter"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+		</map:pipeline>
+	</map:pipelines>
+</map:sitemap>

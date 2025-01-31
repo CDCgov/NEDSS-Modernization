@@ -1,0 +1,600 @@
+<?xml version="1.0"?>
+<!--!DOCTYPE xsp:page SYSTEM "../../WEB-INF/xsp.dtd"-->
+<xsp:page xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:avr="http://www.cdc.gov/nedss/logicsheet/nedss/avr" language="java">
+	<nedss:import/>
+	<avr:import/>
+	<part>
+		<nedss:init/>
+		<nedss:SetHeaders/>
+		<parameters>
+			<parameter name="border">
+				<xsp:expr>strBorder</xsp:expr>
+			</parameter>
+			<parameter name="uids">
+				<xsp:expr>strUIDs</xsp:expr>
+			</parameter>
+			<parameter name="user">
+				<xsp:expr>strUser</xsp:expr>
+			</parameter>
+			<parameter name="usermode">
+				<xsp:expr>strUserMode</xsp:expr>
+			</parameter>
+			<parameter name="verbose">
+				<xsp:expr>strVerbose</xsp:expr>
+			</parameter>
+			<parameter name="title">Reports</parameter>
+		</parameters>
+		<avr:security/>
+		<xsp:logic><![CDATA[
+            String strSEC = "You must have permission to select filter criteria (private, public, template or reportingFacility) to view this page.";
+            if(booSECcolumn == false)
+            {
+                session.setAttribute("ErrorMessage", strSEC);
+                httpResponse.sendRedirect("error");
+            }
+        ]]></xsp:logic>
+		<xsp:logic><![CDATA[
+
+            //  Initialize variables for loops.
+            int intRecord = 0;
+            int intRecords = 0;
+            int intField = 0;
+            int intFields = 0;
+
+            //  Get report title.
+            String strReportTitle = getReportTitle();
+
+            //  Get UIDs from the server.
+            String strDataSourceUID = (String)getData(rcu.DATASOURCE_UID, true);
+            String strReportUID = (String)getData(rcu.REPORT_UID, true);
+
+            //  Load test data.
+            //  Comment this stuff out before moving into production.
+/*
+            String strPath = "/gov/cdc/nedss/avr/testdata/";
+            setData(strPath + "column.AVAILABLE_COLUMNS.xml", rcu.AVAILABLE_COLUMNS, true);
+            setData(strPath + "column.SELECTED_COLUMNS.xml", rcu.SELECTED_COLUMNS, true);
+*/
+            //  Get data from the server.
+      /*      StringBuffer values = new StringBuffer();
+            values.append("<table>");
+            
+            values.append("<record>");
+             values.append("<field>");
+             values.append("ASC");
+             values.append("</field>");
+             values.append("<field>");
+             values.append("Ascending");
+             values.append("</field>");
+             values.append("<field>");
+             values.append("false");
+             values.append("</field>");
+             values.append("</record>");
+             
+             values.append("<record>");
+             values.append("<field>");
+             values.append("DSEC");
+             values.append("</field>");
+             values.append("<field>");
+             values.append("Descending");
+             values.append("</field>");
+             values.append("<field>");
+             values.append("false");
+             values.append("</field>");
+             values.append("</record>");
+             
+             values.append("</table>");
+             */
+             //String strSortOrder = values.toString();
+            String strSortOrder = (String)getData("SORT_ORDER", true);
+            String strAvailableColumns = (String)getData(rcu.AVAILABLE_COLUMNS, true);
+            String strSelectedColumns = (String)getData(rcu.SELECTED_COLUMNS, true);
+            String srtSortColumns = (String)getData(rcu.SORT_BY, true);
+            String sortColumn = (String)getData("sort", true);
+
+            //  Parse the XML data into object trees.
+            ArrayList alSortOrder = XMLRequestHelper.getTable(strSortOrder );
+            ArrayList alSortColumns = XMLRequestHelper.getTable(srtSortColumns);
+            ArrayList alAvailableColumns = XMLRequestHelper.getTable(strAvailableColumns);
+            ArrayList alSelectedColumns = XMLRequestHelper.getTable(strSelectedColumns);
+            ArrayList al = null;
+
+            //  Remove items from the available columns list that are also in the selected columns list.
+            alAvailableColumns.removeAll(alSelectedColumns);
+            
+            //For CustomReports, check if any basic and Advance Filters are entered.
+            String basicFiltersEntered = (String)getData(rcu.BASIC_FILTERS_ENTERED, true);
+            String advanceFiltersEntered = (String)getData(rcu.ADVANCE_FILTERS_ENTERED, true);
+		  boolean hasBasicFilters =  Boolean.valueOf(basicFiltersEntered).booleanValue();
+		  boolean hasAdvanceFilters =  Boolean.valueOf(advanceFiltersEntered).booleanValue();
+		  
+		 //For StandardReports to see if any basic Required Filters are not entered (to validate appropriately)
+		  String basicRequired =  (String)getData(rcu.BASIC_REQUIRED_ENTERED, true);
+		  boolean reqBasicFiltersEntered =  Boolean.valueOf(basicRequired).booleanValue();
+		  String anyBasicRequired = (String)getData(rcu.ANY_BASIC_REQUIRED, true);
+		  boolean anyBasicReq = Boolean.valueOf(anyBasicRequired).booleanValue();
+		  String isBasicDataVald = (String)getData(rcu.IS_BASICDATA_VALID, true);
+		  boolean isBasicDataValid = Boolean.valueOf(isBasicDataVald).booleanValue();
+        ]]></xsp:logic>
+		<head>
+			<nedss:InitializeSessionTimer frequency="1"/>
+			<script>
+				<nedss:GetConstants class="NEDSSConstants"/>
+			</script>
+			<script>
+				<nedss:GetConstants class="ReportConstantUtil"/>
+			</script>
+			<scriptfile>
+                avr.column.js
+            </scriptfile>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alAvailableColumns, "aAvailableColumns")</xsp:expr>
+			</script>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alSelectedColumns, "aSelectedColumns")</xsp:expr>
+			</script>
+			<script>
+				<xsp:expr>XMLRequestHelper.xmlEncodeArrayListToJavaScript(alSortColumns, "aSortColumns")</xsp:expr>
+			</script>
+		</head>
+		<toolbarDef>
+			<toolbarLeft>
+				<nedss:IfSHOW_DEBUG_BUTTON>
+					<nedss:IfServer>
+						<toolbarButton id="id_debug" name="Debug">
+							<event name="onclick">
+                                exportColumns();
+                                OpenDebugWindow();
+                            </event>
+						</toolbarButton>
+					</nedss:IfServer>
+				</nedss:IfSHOW_DEBUG_BUTTON>
+			</toolbarLeft>
+			<toolbarRight>
+				<xsp:logic><![CDATA[
+                    if(booSEC171 == true)
+                    {
+                ]]></xsp:logic>
+				<toolbarButton id="id_run" name="Run">
+					<event name="onclick">
+                         HideErrors();
+					var varMSG = "";                   
+                        <xsp:logic><![CDATA[
+                            if(!reqBasicFiltersEntered || !isBasicDataValid)
+                            {
+                        	]]></xsp:logic>
+		                    document.frm.id_mode.value = "edit";
+		                    document.frm.id_ObjectType.value = REPORT;
+		                    document.frm.id_OperationType.value = REPORT_BASIC;
+		                    post();								
+					<xsp:logic>}</xsp:logic>
+						<xsp:logic><![CDATA[
+	                         if(!anyBasicReq) {
+							if(!hasBasicFilters && !hasAdvanceFilters) {
+                        	]]></xsp:logic>
+						varMSG = "A minimum of one filter must be selected from either the Basic or Advanced Filter Tabs.";
+					<xsp:logic>
+						}} if(isBasicDataValid) {
+					</xsp:logic>	                        	                        
+		                        if(!isValid())
+		                        {
+		                        	   if(varMSG.length != 0) varMSG+="|";
+		                            varMSG+= "Please select at least one column to display on this report.";                        
+		                        }
+                      	<xsp:logic>}</xsp:logic>
+                        if(varMSG.length != 0)  {
+						ShowTopError(varMSG);
+						return;
+					}
+                        exportColumns();
+	                    <xsp:logic><![CDATA[
+						if(reqBasicFiltersEntered && isBasicDataValid) {
+					]]></xsp:logic>                        
+	                        document.frm.id_mode.value = "edit";
+	                        document.frm.id_ObjectType.value = REPORT;
+	                        document.frm.id_OperationType.value = RUN_PAGE;
+	                        post();
+                        <xsp:logic>}</xsp:logic>
+					</event>
+				</toolbarButton>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<xsp:logic><![CDATA[
+                    if(booSEC172 == true)
+                    {
+                ]]></xsp:logic>
+				<toolbarButton id="id_export" name="Export">
+					<event name="onclick">
+                         HideErrors();
+					var varMSG = "";                   
+                        <xsp:logic><![CDATA[
+                            if(!reqBasicFiltersEntered || !isBasicDataValid)
+                            {
+                        	]]></xsp:logic>
+		                    document.frm.id_mode.value = "edit";
+		                    document.frm.id_ObjectType.value = REPORT;
+		                    document.frm.id_OperationType.value = REPORT_BASIC;
+		                    post();								
+					<xsp:logic>}</xsp:logic>
+						<xsp:logic><![CDATA[
+	                         if(!anyBasicReq) {
+							if(!hasBasicFilters && !hasAdvanceFilters) {
+                        	]]></xsp:logic>
+						varMSG = "A minimum of one filter must be selected from either the Basic or Advanced Filter Tabs.";
+					<xsp:logic>
+						}} if(isBasicDataValid) {
+					</xsp:logic>	                        	                        
+		                        if(!isValid())
+		                        {
+		                        	   if(varMSG.length != 0) varMSG+="|";
+		                            varMSG+= "Please select at least one column to export for this report.";                        
+		                        }
+                      	<xsp:logic>}</xsp:logic>
+                        if(varMSG.length != 0)  {
+						ShowTopError(varMSG);
+						return;
+					}
+                        exportColumns();
+	                    <xsp:logic><![CDATA[
+						if(reqBasicFiltersEntered && isBasicDataValid) {
+					]]></xsp:logic>                        
+	                        document.frm.id_mode.value = "edit";
+	                        document.frm.id_ObjectType.value = REPORT;
+	                        document.frm.id_OperationType.value = EXPORT_REPORT;
+	                        post();
+                        <xsp:logic>}</xsp:logic>
+					</event>
+				</toolbarButton>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<toolbarButton id="id_cancel" name="Cancel">
+					<event name="onclick">
+                        exportColumns();
+                        document.frm.id_mode.value = "edit";
+                        document.frm.id_ObjectType.value = REPORT;
+                        document.frm.id_OperationType.value = REPORT_LIST;
+                        post();
+                    </event>
+				</toolbarButton>
+			</toolbarRight>
+		</toolbarDef>
+		<tabDef active="id_column">
+			<tab id="id_basic" name="Basic Filter">
+				<event name="onclick">
+                    HideErrors();
+                    exportColumns();
+                    document.frm.id_mode.value = "edit";
+                    document.frm.id_ObjectType.value = REPORT;
+                    document.frm.id_OperationType.value = REPORT_BASIC;
+                    post();
+                </event>
+			</tab>
+			<tab id="id_advanced" name="Advanced Filter">
+				<event name="onclick">
+                    HideErrors();
+                    exportColumns();
+                    document.frm.id_mode.value = "edit";
+                    document.frm.id_ObjectType.value = REPORT;
+                    document.frm.id_OperationType.value = REPORT_ADVANCED;
+                    post();
+                </event>
+			</tab>
+			<tab id="id_column" name="Column Selection">
+				<event name="onclick">
+                    HideErrors();
+                    exportColumns();
+                    document.frm.id_mode.value = "edit";
+                    document.frm.id_ObjectType.value = REPORT;
+                    document.frm.id_OperationType.value = REPORT_COLUMN;
+                    post();
+                </event>
+			</tab>
+		</tabDef>
+		<body>
+			<part>
+				<attributes>
+					<style>nedss</style>
+				</attributes>
+				<event name="onload">
+                    importColumns();
+                </event>
+				<nedss:CheckSessionTimer/>
+			</part>
+			<section>
+				<part>
+					<attributes>
+						<id>HiddenFields</id>
+						<name/>
+						<linked>false</linked>
+						<width>1</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column display="Hidden">
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.DATASOURCE_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.DATASOURCE_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strDataSourceUID</xsp:expr>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.REPORT_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.REPORT_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strReportUID</xsp:expr>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.AVAILABLE_COLUMNS</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.AVAILABLE_COLUMNS</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strAvailableColumns</xsp:expr>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.SELECTED_COLUMNS</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.SELECTED_COLUMNS</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strSelectedColumns</xsp:expr>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.SORT_BY</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.SORT_BY</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>srtSortColumns</xsp:expr>
+							</xsp:element>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<linkbar>
+				<ids>
+                </ids>
+				<hyperlinks>
+                </hyperlinks>
+			</linkbar>
+			<toolbar location="top"/>
+			<errorbar/>
+			<tabs location="top"/>
+			<section>
+				<part>
+					<attributes>
+						<id>id_Reports</id>
+						<name>
+							<xsp:expr>strReportTitle</xsp:expr>
+						</name>
+						<linked>false</linked>
+						<width>6</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column width="6">
+							<text>
+                                Please select the column variables you would like to include in this report.
+                                Then move them up or down until they are arranged in the
+                                order you would like them to appear when the report is run.
+                            </text>
+						</column>
+					</row>
+					<row>
+						<column width="6">
+							<empty/>
+						</column>
+					</row>
+					<row>
+						<column width="3">
+							<label ref="id_AVAILABLE_COLUMNS_list" name="Available Columns:"/>
+						</column>
+						<column width="3">
+							<label ref="id_SELECTED_COLUMNS_list" name="Selected Columns:"/>
+						</column>
+					</row>
+					<row>
+						<column width="1">
+							<xsp:element name="listbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.AVAILABLE_COLUMNS</xsp:expr>_list</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.AVAILABLE_COLUMNS</xsp:expr>_list</xsp:attribute>
+								<xsp:attribute name="type">multi</xsp:attribute>
+								<xsp:attribute name="size">10</xsp:attribute>
+								<xsp:attribute name="width">250</xsp:attribute>
+								<xsp:attribute name="blank">true</xsp:attribute>
+								<event name="ondblclick">
+                                    var varSource = document.frm.id_AVAILABLE_COLUMNS_list;
+                                    var varDest = document.frm.id_SELECTED_COLUMNS_list;
+                                    var varDestSort= document.frm.id_SORT_BY_list;
+                                    MoveOptions(varSource, varDest, false,varDestSort);
+                                </event>
+							</xsp:element>
+						</column>
+						<column align="center" width="1">
+							<grid width="1">
+								<row>
+									<column align="center" width="1">
+										<graphic id="id_AddAll" name="imgAddAll" url="list_add_all.jpg" tooltip="Add All" width="24" height="25">
+											<event name="onclick">
+                                                var varSource = document.frm.id_AVAILABLE_COLUMNS_list;
+                                                var varDest = document.frm.id_SELECTED_COLUMNS_list;
+                                                var varDestSort= document.frm.id_SORT_BY_list;
+                                                MoveOptions(varSource, varDest, true,varDestSort);
+                                            </event>
+										</graphic>
+									</column>
+								</row>
+								<row>
+									<column align="center" width="1">
+										<graphic id="id_Add" name="imgAdd" url="list_add.jpg" tooltip="Add" width="24" height="25">
+											<event name="onclick">
+                                                var varSource = document.frm.id_AVAILABLE_COLUMNS_list;
+                                                var varDest = document.frm.id_SELECTED_COLUMNS_list;
+                                                var varDestSort= document.frm.id_SORT_BY_list;
+                                                MoveOptions(varSource, varDest, false,varDestSort);
+                                                 </event>
+										</graphic>
+									</column>
+								</row>
+								<row>
+									<column align="center" width="1">
+										<graphic id="id_Remove" name="imgRemove" url="list_remove.jpg" tooltip="Remove" width="24" height="25">
+											<event name="onclick">
+                                                var varSource = document.frm.id_SELECTED_COLUMNS_list;
+                                                var varDest = document.frm.id_AVAILABLE_COLUMNS_list;
+                                                var varDestSort= document.frm.id_SORT_BY_list;
+                                                MoveOptions(varSource, varDest, false,varDestSort);
+									   disableSortOrder(document.frm.id_SORT_BY_list);
+                                            </event>
+										</graphic>
+									</column>
+								</row>
+								<row>
+									<column align="center" width="1">
+										<graphic id="id_RemoveAll" name="imgRemoveAll" url="list_remove_all.jpg" tooltip="Remove All" width="24" height="25">
+											<event name="onclick">
+                                                var varSource = document.frm.id_SELECTED_COLUMNS_list;
+                                                var varDest = document.frm.id_AVAILABLE_COLUMNS_list;
+                                                var varDestSort= document.frm.id_SORT_BY_list;
+                                                MoveOptions(varSource, varDest, true,varDestSort);
+                                                disableSortOrder(document.frm.id_SORT_BY_list);
+                                            </event>
+										</graphic>
+									</column>
+								</row>
+							</grid>
+						</column>
+						<column width="1">
+							<empty/>
+						</column>
+						<column width="1">
+							<xsp:element name="listbox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.SELECTED_COLUMNS</xsp:expr>_list</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.SELECTED_COLUMNS</xsp:expr>_list</xsp:attribute>
+								<xsp:attribute name="type">single</xsp:attribute>
+								<xsp:attribute name="size">10</xsp:attribute>
+								<xsp:attribute name="width">250</xsp:attribute>
+								<xsp:attribute name="blank">true</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<event name="ondblclick">
+                                    var varSource = document.frm.id_SELECTED_COLUMNS_list;
+                                    var varDest = document.frm.id_AVAILABLE_COLUMNS_list;
+                                    var varDestSort= document.frm.id_SORT_BY_list;
+                                    MoveOptions(varSource, varDest, false,varDestSort);
+                                </event>
+							</xsp:element>
+						</column>
+						<column align="center" width="1">
+							<grid id="id_move">
+								<row>
+									<column align="center" width="1">
+										<graphic id="id_MoveUp" name="imgMoveUp" url="list_move_up.jpg" tooltip="Move Up" width="24" height="25">
+											<event name="onclick">
+                                                do_id_MoveUp_onclick();
+                                            </event>
+										</graphic>
+									</column>
+								</row>
+								<row>
+									<column align="center" width="1">
+										<graphic id="id_MoveDown" name="imgMoveDown" url="list_move_down.jpg" tooltip="Move Down" width="24" height="25">
+											<event name="onclick">
+                                                do_id_MoveDown_onclick();
+                                            </event>
+										</graphic>
+									</column>
+								</row>
+							</grid>
+						</column>
+						<column width="1">
+							<empty/>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<section>
+				<subsection line="true">
+					<row>
+						<column width="6">
+							<grid>
+								<column align="center">
+									<label ref="id_SORT_BY_list" name="Sort By:"/>
+								</column>
+								<column align="left">
+									<!--combobox id="id_SORT_BY_list" name="sort" length="30"/-->
+									<xsp:element name="combobox">
+										<xsp:attribute name="id">id_<xsp:expr>rcu.SORT_BY</xsp:expr>_list</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>rcu.SORT_COLUMN</xsp:expr>
+										</xsp:attribute>
+										<event name="onchange">
+											enableSortOrder();
+										</event>
+									</xsp:element>
+								</column>
+								<column align="center">
+									<label ref="id_SORT_ORDER_list" name="Sort Order:"/>
+								</column>
+								<column align="left">
+									<xsp:element name="combobox">
+										<xsp:attribute name="id">id_<xsp:expr>rcu.SORT_ORDER</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>rcu.SORT_ORDER</xsp:expr>
+										</xsp:attribute>
+										<options>
+											<xsp:logic><![CDATA[
+				                                        intRecords = alSortOrder.size();
+				                                        String strUID=null;
+				                                        String strDescription=null;
+				                                        String  strSelected=null;
+				                                        for(intRecord=0; intRecord<intRecords; intRecord++)
+				                                        {
+				                                            intField = 0;
+				                                            al = (ArrayList)alSortOrder.get(intRecord);
+				                                            strUID = (String)al.get(intField++);
+				                                            strDescription = (String)al.get(intField++);
+				                                            strSelected = (String)al.get(intField++);
+				                                    ]]></xsp:logic>
+											<xsp:element name="option">
+												<xsp:attribute name="id">
+													<xsp:expr>strUID</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="name">
+													<xsp:expr>strDescription</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="value">
+													<xsp:expr>strUID</xsp:expr>
+												</xsp:attribute>
+												<xsp:attribute name="selected">
+													<xsp:expr>strSelected</xsp:expr>
+												</xsp:attribute>
+											</xsp:element>
+											<xsp:logic><![CDATA[
+				                                       }
+				                                   ]]></xsp:logic>
+											<xsp:element name="option"/>
+										</options>
+									</xsp:element>
+								</column>
+							</grid>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<toolbar location="bottom"/>
+		</body>
+	</part>
+</xsp:page>

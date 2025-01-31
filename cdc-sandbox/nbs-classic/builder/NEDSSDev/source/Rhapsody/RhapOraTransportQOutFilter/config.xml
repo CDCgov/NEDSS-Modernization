@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <filterType name="TransportQOut Filter">
+		<class>gov.cdc.nedss.rhapsody.customfilters.TransportqOutFilter</class>
+		<displayname>TransportQOut Filter</displayname>
+		<icon>transportq.bmp</icon>
+		<smallicon>transportq_small.bmp</smallicon> 	
+	</filterType>
+</module>

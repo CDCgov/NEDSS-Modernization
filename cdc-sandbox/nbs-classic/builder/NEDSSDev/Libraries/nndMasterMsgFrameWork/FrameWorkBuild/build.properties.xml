@@ -1,0 +1,16 @@
+<project name="nedssproject.build.properties" default="all" basedir=".">
+	<property name="JAVA_HOME" value="${env.JAVA_HOME}"/>
+	<property name="nbs_development_dir" location="../../../"/>
+	<property name="dest_dir" value="${nbs_development_dir}"/>
+	<property name="libraries_dest_dir" value="${nbs_development_dir}\libraries"/>
+	<property name="build_dir" value="${dest_dir}\classfiles"/>
+	<property name="eclipse_build_dir" value="${nbs_development_dir}\buildclasses"/>
+	<property name="message_build_dir" value = "${eclipse_build_dir}/messaging/NedssMasterMessage/rNMM"/>
+
+	<path id="class.path">
+		<pathelement location="${JAVA_HOME}/jre/lib/rt.jar"/>
+		<pathelement location="${JAVA_HOME}/lib/tools.jar"/>
+		<pathelement location="${nbs_development_dir}/Libraries/Castor/castor-0.9.3.9.jar"/>
+		<pathelement location="${nbs_development_dir}/Libraries/XML/xercesImpl_2.6.2.jar"/>
+	</path>
+</project>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NBSFixedRule>
+	<BusObject type="INV">
+		<QuestionId questionId="NBS110">
+			<FixedRule onLoad="stdReferalBasisExposureFreqEnabReq()" onSubmit="stdRuleCheckReferralBasisOnSubmit()" />
+		</QuestionId>
+		<QuestionId questionId="NBS115">
+			<FixedRule onLoad="stdResetPageStateOnLoad()"  />
+		</QuestionId>
+		<QuestionId questionId="NBS127">
+			<FixedRule onChange="stdConInternetInfoElicitedRequireInternetFollowup()" />
+		</QuestionId>		
+		<QuestionId questionId="NBS128">
+			<FixedRule onBlur="stdCheckFieldMinMaxUnk(this,0,45,99)" />
+		</QuestionId>	
+		<QuestionId questionId="NBS129">
+			<FixedRule onSubmit="stdCheckPartnersInInterviewPeriodOnSubmit()"  />
+		</QuestionId>
+		<QuestionId questionId="NBS130">
+			<FixedRule onSubmit="sexPartnersValidationOnSubmit()"/>
+		</QuestionId>		
+		<QuestionId questionId="NBS136">
+			<FixedRule onLoad="stdSetupDiagnosisOptions()" onChange="stdDiagnosisRelatedFields()" />
+		</QuestionId>
+		<QuestionId questionId="NBS140">
+			<FixedRule onChange="stdFixedRuleInitialFollowupEntry()" />
+		</QuestionId>
+		<QuestionId questionId="NBS141">
+			<FixedRule onChange="stdInitialFollowupDateClosedEntered()" onBlur="stdInitialFollowupDateClosedEntered()" />
+		</QuestionId>
+		<QuestionId questionId="NBS147">
+			<FixedRule onChange="stdSurveillanceDateClosedEntered()" onBlur="stdSurveillanceDateClosedEntered()" />
+		</QuestionId>
+		<QuestionId questionId="NBS151">
+			<FixedRule onChange="stdFixedRuleSurveillancePatientFollowupEntry()" />
+		</QuestionId>
+		<QuestionId questionId="NBS173">
+			<FixedRule onLoad="stdCheckDispositionValue()" onChange="stdFixedRuleFieldFollowupDispositionEntry()" onSubmit="stdRuleCheckCaseStatusOnSubmit()" />
+		</QuestionId>
+		<QuestionId questionId="NBS174">
+			<FixedRule onChange="stdFieldFollowupDispositionDateEntry()" onBlur="stdFieldFollowupDispositionDateEntry()" />
+		</QuestionId>
+		<QuestionId questionId="NBS192">
+			<FixedRule onChange="stdFixedRulePatientInterviewStatusEntry()"/>
+		</QuestionId>
+		<QuestionId questionId="NBS196">
+			<FixedRule onChange="stdCaseClosureDateClosedEntered()" onBlur="stdCaseClosureDateClosedEntered()"  onSubmit="checkIfContactInvsDispositioned()" />
+		</QuestionId>
+		<QuestionId questionId="NBS223">
+			<FixedRule onSubmit="stdCheckPartnersPastYearOnSubmit()"  />
+		</QuestionId>
+		<QuestionId questionId="NBS229">
+			<FixedRule onLoad="stdBehavorialRiskAssessedEntry()" onChange="stdBehavorialRiskAssessedEntry()" />
+		</QuestionId>
+		<QuestionId questionId="NBS217">
+			<FixedRule onBlur="stdCheckFieldMinMaxUnk(this,0,45,99)" />
+		</QuestionId>
+		<QuestionId questionId="NBS219">
+			<FixedRule onBlur="stdCheckFieldMinMaxUnk(this,0,45,99)" />
+		</QuestionId>
+		<QuestionId questionId="NBS240">
+			<FixedRule onChange="stdOtherDrugEntry()" />
+		</QuestionId>
+		<QuestionId questionId="STD120">
+			<FixedRule onSubmit="calculateTotalSexPartnersOnSubmit()"/>
+		</QuestionId>
+		<QuestionId questionId="STD888">
+			<FixedRule onSubmit="calculateSTD888()"/>
+		</QuestionId>
+		<QuestionId questionId="STD999">
+			<FixedRule onSubmit="calculateSTD999()"/>
+		</QuestionId>
+		<QuestionId questionId="INV1115">
+			<FixedRule onLoad="setValueHiddenCaseVerification()" onChange="setValueHiddenCaseVerification();setCasesStatusBasedOnCaseVerification()" />
+		</QuestionId>
+		<QuestionId questionId="INV2001">
+			<FixedRule onSubmit="pgCheckNumberAndUnitsFieldsFormatOnSubmit('INV2001','INV2002')"/>
+		</QuestionId>
+		<QuestionId questionId="INV143">
+			<FixedRule onSubmit="pgCheckNumberAndUnitsFieldsFormatOnSubmit('INV143','INV144')"/>
+		</QuestionId>
+		<QuestionId questionId="INV139">
+			<FixedRule onSubmit="pgCheckNumberAndUnitsFieldsFormatOnSubmit('INV139','INV140')"/>
+		</QuestionId>
+
+		
+		
+		
+	</BusObject>
+	<BusObject type="IXS">
+		<QuestionId questionId="IXS101">
+			<FixedRule onSubmit="ixsValidateInterviewDateOnSubmit()"  />
+		</QuestionId>
+		<QuestionId questionId="IXS102">
+			<FixedRule onSubmit="ixsValidateInterviewerOnSubmit()"  />
+		</QuestionId>		
+		<QuestionId questionId="IXS104">
+			<FixedRule onLoad="ixsHideParticipation('IXS104')"  />
+		</QuestionId>
+	</BusObject>
+	<BusObject type="CON">
+		<QuestionId questionId="CON141">
+			 <FixedRule onChange="conStdNamedBetweenUpdate()"/>
+		</QuestionId>
+		<QuestionId questionId="CON143">
+			<FixedRule onLoad="conStdGetNamedDuringInterview('CON143',JCTContactForm)" onChange="conStdNamedBetweenUpdate()" onSubmit="conStdCheckSpecialSubmitRules()"  />
+		</QuestionId>
+		<QuestionId questionId="CON144">
+			<FixedRule onChange="conStdCongenitalHideNotifiable()"  />
+		</QuestionId>		
+		<QuestionId questionId="CON145">
+			<FixedRule onLoad="conStdGetProcessingDecisionOptions()" onChange="conStdUpdateDispositionSection()" />
+		</QuestionId>
+	</BusObject>
+	<BusObject type="VAC">
+		<QuestionId questionId="VAC103">
+           	<FixedRule onBlur="calculateAgeAtVaccination()" onChange="calculateAgeAtVaccination()" />
+       	</QuestionId>
+       	<QuestionId questionId="DEM115">
+           	<FixedRule onBlur="calculateAgeAtVaccination()" onChange="calculateAgeAtVaccination()"/>
+       	</QuestionId>
+       	
+	</BusObject>
+	
+	<BusObject type="LAB">
+		<QuestionId questionId="INV108">
+           	<FixedRule onBlur="clearFieldsAssociatedToProgramArea();codeLookupLaboratoryReport('entity-table-Org-ReportingOrganizationUID', document);" onChange="clearFieldsAssociatedToProgramArea();codeLookupLaboratoryReport('entity-table-Org-ReportingOrganizationUID', document);" />
+       	</QuestionId>
+       	
+       	<QuestionId questionId="NBS_LAB220">
+           	<FixedRule onBlur="showHideOrganism(); " onChange="showHideOrganism()" />
+           	
+           	<!--<FixedRule onBlur="showHideOrganism(); storePreviousValue(); deleteDataWhenResultedTestChanges();" onChange="showHideOrganism(); storePreviousValue(); deleteDataWhenResultedTestChanges();" />-->
+       	</QuestionId>
+       	
+       	<QuestionId questionId="NBS_LAB267">
+       		<FixedRule onChange="populateParticipationFromOne(this,'NBS_LAB365','NBS_LAB367')"  />
+       	</QuestionId>
+
+	</BusObject>	
+</NBSFixedRule>

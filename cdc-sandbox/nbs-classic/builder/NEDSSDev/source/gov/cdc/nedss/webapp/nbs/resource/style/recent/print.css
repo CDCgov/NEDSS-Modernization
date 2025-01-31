@@ -1,0 +1,92 @@
+/* General */
+a, a:hover {color:#000; text-decoration:none;}
+body {font:11px arial; padding:0px; margin:0px;}
+a:link, a:visited, a:hover {color: black; text-decoration: none; cursor: default;}
+
+/* YUI elements */
+#doc3 {margin:0 auto; padding:1px;}
+#bd {padding:0px;}
+
+/* Hide elements in print mode */
+table.nedssNavTable, table.nedssPageHeaderAndLogoTable tr td.currentUser, table.nedssPageHeaderAndLogoTable tr td.logo, table.topButtonBar, table.bottomButtonBar,div.popupButtonBar,
+a.backToTopLink, div.requiredFieldIndicatorLink, div.returnToPageLink, a.toggleHref, div.nonPrintPreviewModeOnly,
+table.subsect thead tr th a.toggleIconHref,
+table.subSectionsToggler, table.sectionsToggler, table.dtTable tbody tr td input.cursorHand, div.grayButtonBar {display:none;}
+
+table.bluebarsubsect thead tr th a.toggleIconHref,
+table.bluebarsubSectionsToggler, table.sectionsToggler, table.bluebardtTable tbody tr td input, div.grayButtonBar {display:none;}
+
+/* Hide elements in print mode */
+div.showup, div.bluebarsect table.bluebarsectHeader tr td input, table.showup tr td input, div.expandCollapseSections,  table.showup tr td input,
+div.bluebarsect table.bluebarsectHeader tr td a.backToTopLinkforViewFile {display:none;},
+//table.bluebardtTable tbody tr td a {color:#000; text-decoration:none;cursor: default;}
+div.bluebarsect table.bluebarsectHeader {width:100%;  margin-top:0em; margin-bottom:0em;  background:"white"; padding:0px 0px; border-style:solid;}}
+
+
+/* Info boxes */
+div.infoBox { width:100%; padding:2px; margin:3px;}
+div.infoBox span.label, div.infoBox span.value {font-size:13px;}
+span.valueTopLine {font:13px Arial; font-weight:bold; margin-left:0.2em;}
+span.label {font:11px Arial; font-weight:bold; margin-left:0.2em;}
+span.value {margin-right:0.2em;font:11px Arial;}
+div.nedssLightYellowBg {background:#FFF; border-color:#000;}
+table tr.cellColor {background:#FEF2BC;}
+
+/* Sections, subsections */ 
+table.subSectionsToggler, table.sectionsToggler { margin:0.15em;}
+div.sect div.sectBody {padding:0.5em;}
+div.sect table.sectHeader {margin-bottom:2px;}
+div.sect table.sectHeader tbody tr td.sectName {font-size:13px; border-bottom:2px solid #000;} 
+div.sect table.sectHeader tbody tr td.sectName a.anchor {color:#CC3300; font-size:13px;}
+table.subSect {padding-left:1em;}
+table.subSect {padding:0em; margin-top:2px; margin-bottom:6px;}
+table.subSect thead tr th {font-size:12px; color:#185394; font-style:italic; text-decoration:underline;}
+table.subSect tbody tr td {padding-top:1px; padding-bottom:1px; background:#FFF; font-size:11px;}
+table.subSect tbody tr td.fieldName {width:50%; font-size:11px;}
+
+/* Sections, subsections blue bar*/ 
+table.subSectionsToggler, table.sectionsToggler { margin:0.15em;}
+div.bluebarsect div.sectBody {padding:0.5em;}
+div.bluebarsect table.bluebarsectHeader {margin-bottom:2px;}
+div.bluebarsect table.bluebarsectHeader tbody tr td.bluebarsectName {font-size:13px; border-bottom:2px solid #000;} 
+div.bluebarsect table.bluebarsectHeader tbody tr td.bluebarsectName a.anchor {color:blue; font-size:13px;}
+table.bluebarsubSect {padding-left:1em;}
+table.bluebarsubSect {padding:0em; margin-top:2px; margin-bottom:6px;}
+table.bluebarsubSect thead tr th {font-size:12px; color:#185394; font-style:italic; text-decoration:underline;}
+table.bluebarsubSect tbody tr td {padding-top:1px; padding-bottom:1px; background:#FFF; font-size:11px;}
+table.bluebarsubSect tbody tr td.fieldName {width:50%; font-size:11px;}
+
+
+/* Struts layout tag library tab */
+div.hiddenTab {display:block;}
+table tr td.ongletTextEna, table tr td.ongletTextDis, table tr td.ongletTextEna1, table tr td.ongletTextDis1,
+table tr td.ongletTextErr {width:8em; padding:2px; font:normal 1em Arial; margin-left:0px; 
+        margin-right:10px; margin-top:-2px; border-color:#FFF;}
+table tr td.ongletTextEna, table tr td.ongletTextEna1 {background:#FFF; color:#000;}
+td.ongletTextEna, td.ongletTextDis1, td.ongletTextDis, td.ongletTextErr1, td.ongletTextErr, td.ongletTextEna1 {display:none;}
+/*div#tabs0tab0, div#tabs0tab1, div#tabs0tab2, div#tabs0tab3, div#tabs0tab4, div#tabs0tab5, 
+div#tabs0tab6, div#tabs0tab7 {display:block;}*/
+table tr td.ongletSpace {border-width:0px;}
+table tr td.ongletMain {padding:3px; border-width:0px;}
+table tr td.ongletMiddle {border-width:0px;}
+div.tabNavLinks {display:none;}
+table.clsAction {border-top:solid 5px #408FCF;}
+
+/* Display tag table */
+table.dtTable thead tr th, table.privateDtTable thead tr th {text-decoration:none; border:1px solid #666666; 
+        font-weight:normal; background:#EFEFEF; padding:0.20em; text-align:center; 
+        font-style:normal; font-size:11px; color:#000;}
+table.bluebardtTable thead tr th, table.privateDtTable thead tr th {text-decoration:none; border:1px solid #666666; 
+        font-weight:normal; background:#EFEFEF; padding:0.20em; text-align:center; 
+        font-style:normal; font-size:11px; color:#000;}
+
+/* Misc */
+/*h2.printOnlyTabHeader {display:block; text-transform:capitalize; font-size:150%; margin:0.15em;}*/
+h2.printOnlyTabHeader {display:none;}
+div.printerIconBlock {display:block;}
+/*table.subSect tbody img {display:none;}*/ /* to handle cases where print invoked from edit page */
+table.subSect tr td img{display:none;}
+
+table.bluebarsubSect tr td img{display:none;}
+
+

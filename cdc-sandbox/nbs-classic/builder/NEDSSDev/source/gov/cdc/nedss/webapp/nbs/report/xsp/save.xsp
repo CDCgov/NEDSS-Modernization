@@ -1,0 +1,372 @@
+<?xml version="1.0"?>
+<!DOCTYPE xsp:page SYSTEM "../../WEB-INF/xsp.dtd">
+<xsp:page xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:avr="http://www.cdc.gov/nedss/logicsheet/nedss/avr" language="java">
+	<nedss:import/>
+	<avr:import/>
+	<part>
+		<nedss:init/>
+		<nedss:SetHeaders/>
+		<parameters>
+			<parameter name="border">
+				<xsp:expr>strBorder</xsp:expr>
+			</parameter>
+			<parameter name="uids">
+				<xsp:expr>strUIDs</xsp:expr>
+			</parameter>
+			<parameter name="user">
+				<xsp:expr>strUser</xsp:expr>
+			</parameter>
+			<parameter name="usermode">
+				<xsp:expr>strUserMode</xsp:expr>
+			</parameter>
+			<parameter name="verbose">
+				<xsp:expr>strVerbose</xsp:expr>
+			</parameter>
+			<parameter name="title">Reports</parameter>
+		</parameters>
+		<avr:security/>
+		<!--xsp:structure>
+        	<xsp:include>gov.cdc.nedss.reportadmin.dt.ReportDT</xsp:include>
+        </xsp:structure-->
+		<xsp:logic><![CDATA[
+            String strSEC = "You must have permission to create a report (private or public) to view this page.";
+            if(booSECsave == false)
+            {
+                session.setAttribute("ErrorMessage", strSEC);
+                httpResponse.sendRedirect("error");
+            }
+        ]]></xsp:logic>
+		<xsp:logic><![CDATA[
+
+            //  Get report title.
+            String strReportTitle = getReportTitle();
+            
+            //  Initialize variables for loops.
+            int intRecords = 0;
+            int intRecord = 0;
+            int intField = 0;
+
+            //  Create temp variables.
+            String strUID = null;
+            String strCode = null;
+            String strType = null;
+            String strName = null;
+            String strMin = null;
+            String strMax = null;
+
+            String strID = null;
+            String strDescription = null;
+            String strSelected = null;
+            String strValue = null;
+                        
+            //  Get UIDs from the server.
+            String strDataSourceUID = (String)getData(rcu.DATASOURCE_UID, true);
+            String strReportUID = (String)getData(rcu.REPORT_UID, true);
+            String strReportSection = (String)getData(rcu.REPORT_SECTION, true);
+            ArrayList al = null;
+            ArrayList alReportSection = XMLRequestHelper.getTable(strReportSection);
+
+        ]]></xsp:logic>
+		<head>
+			<nedss:InitializeSessionTimer frequency="1"/>
+			<script>
+				<nedss:GetConstants class="NEDSSConstants"/>
+			</script>
+			<script>
+				<nedss:GetConstants class="ReportConstantUtil"/>
+			</script>
+			<scriptfile>
+                avr.save.js
+            </scriptfile>
+		</head>
+		<toolbarDef>
+			<toolbarLeft>
+				<nedss:IfSHOW_DEBUG_BUTTON>
+					<nedss:IfServer>
+						<toolbarButton id="id_debug" name="Debug">
+							<event name="onclick">
+                                OpenDebugWindow();
+                            </event>
+						</toolbarButton>
+					</nedss:IfServer>
+				</nedss:IfSHOW_DEBUG_BUTTON>
+				<xsp:logic><![CDATA[
+                    if(booSEC175 == true)
+                    {
+                ]]></xsp:logic>
+				<toolbarButton id="id_refine" name="Refine Criteria">
+					<event name="onclick">
+                        document.frm.id_mode.value = "edit";
+                        document.frm.id_ObjectType.value = REPORT;
+                        document.frm.id_OperationType.value = REPORT_BASIC;
+                        post();
+                    </event>
+				</toolbarButton>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+			</toolbarLeft>
+			<toolbarRight>
+				<xsp:logic><![CDATA[
+                    if(booSEC181 == true)
+                    {
+                ]]></xsp:logic>
+				<toolbarButton id="id_save" name="Save">
+					<event name="onclick">
+                        if(!isValid())
+                        {
+                            return;
+                        }
+                        document.frm.id_mode.value = "edit";
+                        document.frm.id_ObjectType.value = REPORT;
+                        document.frm.id_OperationType.value = SAVE_AS_NEW_REPORT;
+                        post();
+                    </event>
+				</toolbarButton>
+				<xsp:logic><![CDATA[
+                    }
+                ]]></xsp:logic>
+				<toolbarButton id="id_cancel" name="Cancel">
+					<event name="onclick">
+                        var varName = document.frm.id_name.value;
+                        var varDesc = document.frm.id_desc.value;
+                        if(varName == "")
+                        {
+                            if(varDesc.toLowerCase() == "jamie")
+                            {
+                                var varHeight = 426;
+                                var varWidth = 409;
+                                var varTop = Math.round((screen.availHeight - varHeight) / 2);
+                                var varLeft = Math.round((screen.availWidth - varWidth) / 2);
+                                var s = "";
+                                s += "height=" + varHeight + ",";
+                                s += "width="  + varWidth  + ",";
+                                s += "top="    + varTop    + ",";
+                                s += "left="   + varLeft;
+                                window.open("ee", "ee", s);
+                                return;
+                            }
+                        }
+                        document.frm.id_mode.value = "edit";
+                        document.frm.id_ObjectType.value = REPORT;
+                        document.frm.id_OperationType.value = REPORT_LIST;
+                        post();
+                    </event>
+				</toolbarButton>
+			</toolbarRight>
+		</toolbarDef>
+		<body>
+			<part>
+				<attributes>
+					<style>nedss</style>
+				</attributes>
+				<event name="onload">
+                    document.frm.id_desc.value = "";
+                    document.frm.id_name.focus();
+                </event>
+				<nedss:CheckSessionTimer/>
+			</part>
+			<section>
+				<part>
+					<attributes>
+						<id>HiddenFields</id>
+						<name/>
+						<linked>false</linked>
+						<width>1</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column display="Hidden">
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.DATASOURCE_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.DATASOURCE_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strDataSourceUID</xsp:expr>
+							</xsp:element>
+							<xsp:element name="hiddenfield">
+								<xsp:attribute name="id">
+									<xsp:expr>rcu.REPORT_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.REPORT_UID</xsp:expr>
+								</xsp:attribute>
+								<xsp:expr>strReportUID</xsp:expr>
+							</xsp:element>
+						</column>
+					</row>
+				</subsection>
+			</section>
+			<linkbar>
+				<ids>
+                </ids>
+				<hyperlinks>
+                </hyperlinks>
+			</linkbar>
+			<toolbar location="top"/>
+			<errorbar/>
+			<section>
+				<part>
+					<attributes>
+						<id>id_Reports</id>
+						<name>
+							<xsp:expr>strReportTitle</xsp:expr>
+						</name>
+						<linked>false</linked>
+						<width>2</width>
+					</attributes>
+				</part>
+				<subsection name="" line="false">
+					<row>
+						<column align="right" width="1">
+							<label reqInd="true" ref="id_name" name="* Indicates a Required Field"/>
+						</column>
+					</row>
+					<row>
+						<column align="right" width="1">
+							<text format="Bold">
+                                Save this report design as:
+                            </text>
+						</column>
+						<column width="1">
+							<radiobuttons uid="SEC182" name="type" align="horizontal">
+								<xsp:logic><![CDATA[
+                                    if(booSEC182_private == true)
+                                    {
+                                ]]></xsp:logic>
+								<radiobutton id="id_private" value="Private" label="Private">
+									<xsp:expr>!booSEC182</xsp:expr>
+								</radiobutton>
+								<xsp:logic><![CDATA[
+                                    }
+                                ]]></xsp:logic>
+								<xsp:logic><![CDATA[
+                                    if(booSEC182_public == true)
+                                    {
+                                ]]></xsp:logic>
+								<radiobutton id="id_public" value="Public" label="Public">
+									<xsp:expr>booSEC182</xsp:expr>
+								</radiobutton>
+								<xsp:logic><![CDATA[
+									booSEC182 = false;
+                                    }
+                                ]]></xsp:logic>
+								<!-- Reporting Facility Security -->
+								<xsp:logic><![CDATA[
+                                    if(booSEC182_reportingFacility == true)
+                                    {
+                                ]]></xsp:logic>
+								<radiobutton id="id_reportingFacility" value="ReportingFacility" label="Reporting Facility">
+									<xsp:expr>booSEC182</xsp:expr>
+								</radiobutton>
+								<xsp:logic><![CDATA[
+                                    }
+                                ]]></xsp:logic>								                                
+							</radiobuttons>
+						</column>
+					</row>
+					<row>
+						<column align="right" width="1">
+							<label reqInd="true" ref="id_name" name="* Report Name:"/>
+						</column>
+						<column width="1">
+							<textbox id="id_name" name="name" size="50" max="99">
+								<event name="onkeydown">	
+								var flag = false;
+								flag = ReportSubmitOnKeyPressEnter(_this);
+								if(!flag)
+								{		
+									return false;							
+								}
+							</event>
+							</textbox>
+						</column>
+					</row>
+					<row type="help">
+						<column width="2">
+							<error ref="id_name"/>
+						</column>
+					</row>
+					<row>
+						<column align="right" width="1">
+							<label ref="id_desc" name="Description:"/>
+						</column>
+						<column width="1">
+							<textarea id="id_desc" name="description" rows="4" cols="40"/>
+						</column>
+					</row>
+					<row type="help">
+						<column width="2">
+							<error ref="id_desc"/>
+						</column>
+					</row>
+					<row>
+						
+						 <column align="right" width="1">
+							<label reqInd="true" ref="id_name" name="* Report Section:"/>
+						</column>
+					
+						<column width="1">
+							<xsp:element name="combobox">
+								<xsp:attribute name="id">id_<xsp:expr>rcu.REPORT_SECTION</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="name">
+									<xsp:expr>rcu.REPORT_SECTION</xsp:expr>
+								</xsp:attribute>
+								<xsp:attribute name="type">dropdown</xsp:attribute>
+								<xsp:attribute name="width">350</xsp:attribute>
+								<xsp:attribute name="error">true</xsp:attribute>
+								<options>
+									<xsp:logic><![CDATA[
+										intRecords = alReportSection.size();
+										for(intRecord=0; intRecord<intRecords; intRecord++)
+										{
+										    intField = 0;
+										    al = (ArrayList)alReportSection.get(intRecord);
+										    strUID = (String)al.get(intField++);
+										    strDescription = (String)al.get(intField++);
+										    strSelected = (String)al.get(intField++);
+									    ]]></xsp:logic>
+									<xsp:element name="option">
+										<xsp:attribute name="id">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="name">
+											<xsp:expr>strDescription</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="value">
+											<xsp:expr>strUID</xsp:expr>
+										</xsp:attribute>
+										<xsp:attribute name="selected">
+											<xsp:expr>strSelected</xsp:expr>
+										</xsp:attribute>
+									</xsp:element>
+									<xsp:logic><![CDATA[
+				}
+			    ]]></xsp:logic>
+								</options>
+							</xsp:element>
+						</column>
+					</row>
+					<row type="help">
+						<column width="2">
+							<error ref="id_R_S01.error"/>
+						</column>
+					</row>
+					<!--row>
+						<column align="right" width="1">
+							<xsp:element name="section_cd">
+								<srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.ReportSectionCode")</xsp:expr></srt-options-string>
+			                    <value><xsp:expr>dtReport.getSectionCd()</xsp:expr></value>
+							</xsp:element>
+						</column>
+					</row-->
+				</subsection>
+			</section>
+			<toolbar location="bottom"/>
+		</body>
+	</part>
+</xsp:page>

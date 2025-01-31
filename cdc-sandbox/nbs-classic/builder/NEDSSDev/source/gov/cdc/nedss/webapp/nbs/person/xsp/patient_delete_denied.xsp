@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<!--	<xsp:include>gov.cdc.nedss.wum.commands.*</xsp:include> -->
+		<xsp:include>java.util.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:logic>
+			if(request.getAttribute("returnLink").equals("true")) {
+		</xsp:logic>
+		<link-bar>
+			<link name="Return to View Patient">
+				<xsp-request:get-attribute name="returnToViewPersonHref"/>&amp;uid=<xsp-request:get-attribute name="personUID"/>
+			</link>
+		</link-bar>
+		<xsp:logic> }
+		</xsp:logic>
+
+		<button-bar/>
+		<tab>
+			<group>
+				<line>
+					<element type="raw">
+						<span>
+							<p>
+								<b>Your request to delete this Patient is not possible.<br/>
+									<br/>It may be linked to one or more Public Health Events.</b>
+							</p>
+						</span>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

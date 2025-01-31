@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+    <xsp:structure>
+        <xsp:include>gov.cdc.nedss.reportadmin.dt.ReportDT</xsp:include>
+    </xsp:structure>
+    <content form="/nbs/CreateReport.do">
+        <xsp:logic>
+            ReportDT dtReport = (ReportDT)session.getAttribute("ReportAdmin.dtReport");
+        </xsp:logic>
+        <link-bar>
+            <!--link>
+                <xsp:attribute name="name">
+                    <xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+                </xsp:attribute>
+                <xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+            </link-->
+        </link-bar>
+        <button-bar>
+            <right>
+                <label>Submit</label>
+                <javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "/nbs/CreateReport.do");
+                    document.forms[0].submit();
+                </javascript-action>
+            </right>
+            <right>
+                <label>Cancel</label>
+                <javascript-action>
+                    var frm = document.getElementById("nedssForm");
+                    frm.setAttribute("action", "<xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>");
+                    document.forms[0].submit();
+                </javascript-action>
+            </right>
+        </button-bar>
+        <tab>
+            <group>
+                <line>
+                    <element type="raw">
+                        <span style="color: red; font-weight: bold;">
+                            <value><xsp:expr>request.getAttribute("error")</xsp:expr></value>
+                        </span>
+                    </element>
+                </line>
+            </group>
+            <group>
+                <xsp:attribute name="name">
+                    <xsp:expr>dtReport.getReportTitle()</xsp:expr>
+                </xsp:attribute>
+                <line>
+                    <element type="raw">
+                        <span>
+                            <i>
+                                <font class="boldTenRed"> * Indicates a Required Field </font>
+                            </i>
+                        </span>
+                    </element>
+                </line>
+                <line>
+                    <element name="report_uid" type="hidden">
+                        <value><xsp:expr>dtReport.getReportUID_s()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+                    <element name="context" type="hidden">
+                        <value><xsp:expr>request.getAttribute("context")</xsp:expr></value>
+                    </element>
+                </line>
+			<line>
+				<element name="report_title" type="text" label="*Name" size="80" maxlength="100">
+					<value><xsp:expr>dtReport.getReportTitle()</xsp:expr></value>
+				</element>
+			</line>
+			<line>
+				<element name="desc_txt" type="text" label="*Description" size="80" maxlength="150">
+					<value><xsp:expr>dtReport.getDescTxt()</xsp:expr></value>
+				</element>
+			</line>
+                
+                <line>
+                    <element name="data_source_uid" type="select" length="40" label="*Data Source Title" noblank="true">
+	                    <xsp:attribute name="onchange">populateDSTitle(this)</xsp:attribute>
+	                    <srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.DataSourceTitleSRT")</xsp:expr></srt-options-string>
+	                    <value><xsp:expr>dtReport.getDataSourceUID_s()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+	                <element  name="ds_title"  type="select" length="40" label="Data Source" noblank="true">
+	                    <readonly/>
+	                    <srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.DataSourceSRT")</xsp:expr></srt-options-string>
+	                    <value><xsp:expr>dtReport.getDataSourceUID_s()</xsp:expr></value>
+	                </element>
+	            </line>
+                
+                <line>
+                    <element name="report_type_code" type="select" length="40" label="*Type" noblank="true">
+                        <srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.ReportTypeCodeSRT")</xsp:expr></srt-options-string>
+                        <value><xsp:expr>dtReport.getReportTypeCode()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+                    <element name="location" type="select" length="40" label="*SAS Program" noblank="true">
+                        <srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.SASProgramSRT")</xsp:expr></srt-options-string>
+                        <value><xsp:expr>dtReport.getLocation()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+                    <element name="shared" type="select" length="40" label="*Group" noblank="true">
+                        <srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.SharedSRT")</xsp:expr></srt-options-string>
+                        <value><xsp:expr>dtReport.getShared()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+                    <element name="owner_uid" type="select" length="40" label="*Owner" noblank="true">
+                        <srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.UserProfileSRT")</xsp:expr></srt-options-string>
+                        <value><xsp:expr>dtReport.getOwnerUID_s()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+	                <element name="section_cd" type="select" length="40" label="*Section Name" noblank="true">
+	                    <srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.ReportSectionCode")</xsp:expr></srt-options-string>
+	                    <value><xsp:expr>dtReport.getReportSectionCode_s()</xsp:expr></value>
+	                </element>
+	            </line>
+            </group>
+        </tab>
+    </content>
+</xsp:page>

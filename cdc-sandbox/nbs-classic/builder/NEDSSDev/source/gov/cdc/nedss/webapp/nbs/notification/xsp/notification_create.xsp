@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<xsp:page language="java" 
+	xmlns:xsp="http://apache.org/xsp" 
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"	
+	xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" 
+	xmlns:session="http://apache.org/xsp/session/2.0" 
+	xmlns:xsp-response="http://apache.org/xsp/response/2.0" 
+	xmlns:xsp-request="http://apache.org/xsp/request/2.0" 
+	xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" 
+	xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>java.text.SimpleDateFormat</xsp:include>
+		<xsp:include>java.sql.Timestamp</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.proxy.ejb.notificationproxyejb.vo.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="SubmitButton"/>
+		</xsp:attribute>
+		<javascript-files>
+			<import>CreateNotification.js</import>
+		</javascript-files>
+		<xsp:logic>
+		String EditInvestigationHref= (String)request.getAttribute("EditInvHref");
+
+		//System.out.println("!!!!!!!!!!!!!!!!!VALUE OF ARRAYLIST: " + request.getAttribute("resultFromEJB"));
+		Collection validatedResultCol  = (Collection )request.getAttribute("resultFromEJB");
+		String notificationError = null;
+		
+		if(validatedResultCol !=null )
+			notificationError="true";		
+		else
+			notificationError = "false";
+
+		boolean canEditInvestigation=((Boolean)request.getAttribute("canEditInvestigation")).booleanValue();
+		NBSSecurityObj secObj = (NBSSecurityObj)session.getAttribute("NBSSecurityObject");
+		</xsp:logic>
+		<id-bar>
+			<id name="Patient ID">
+				<xsp-request:get-attribute name="personLocalID"/>
+			</id>
+			<id name="Investigation ID">
+				<xsp-request:get-attribute name="publicHealthCaseLocalUid"/>
+			</id>
+		</id-bar>
+		<button-bar>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="SubmitButton"/>
+				</xsp:attribute>
+				<label>Submit</label>
+				<!--<javascript-action>submitForm();</javascript-action>-->
+				<javascript-action>validateCreateNotification();</javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>cancelForm('<xsp-request:get-attribute name="CancelButtonHref"/>');</javascript-action>
+			</right>
+		</button-bar>
+		<tab name="">
+			<nedss:writeErrorMessages/>
+			<group>
+				<line>
+					<element name="ContextAction" type="hidden">
+						<value>
+							<xsp-request:get-attribute name="ContextAction"/>
+						</value>
+					</element>
+					<element name="NotificationError" type="hidden">
+						<value>
+							<xsp:expr>notificationError</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element type="raw">
+						<span>
+							<xsp:logic>
+								if(validatedResultCol  != null){
+							</xsp:logic>
+							<font class="boldTenRed">
+								<b>
+								This notification can not be sent because data is missing in the following fields:<br/>
+									<ul>
+										<xsp:logic>											
+												for( Iterator anIterator = validatedResultCol.iterator(); anIterator.hasNext();  )
+												{
+													String value = (String)anIterator.next();
+										</xsp:logic>
+										<xsp:expr>value</xsp:expr>
+										<br/>
+										<xsp:logic>
+												}											
+										</xsp:logic>
+									</ul>
+								</b>
+							</font>
+							<xsp:logic>
+								if(canEditInvestigation)
+								{
+							</xsp:logic>
+							<font class="boldTenRed">							
+												Please 
+														<a>
+									<xsp:attribute name="href">
+										<xsp-request:get-attribute name="EditInvHref"/>
+									</xsp:attribute>
+									<xsp:attribute name="onclick">
+														submitRequiredForNND(this,'<xsl:value-of select="normalize-space(/EditInvHref)"/>');
+														</xsp:attribute>
+												Edit the Investigation</a> and resubmit the notification.<br/>
+							</font>
+							<xsp:logic>
+								} else{
+							</xsp:logic>
+								<font class="boldTenRed">							
+									The investigation needs to be edited and the fields entered for the notification to be created.<br/>
+								</font>
+							<xsp:logic>
+								}
+							</xsp:logic>
+							<xsp:logic>				
+							}
+							</xsp:logic>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="PHC155" type="plain-text" label="Investigation ID">
+						<value>
+							<xsp-request:get-attribute name="publicHealthCaseLocalUid"/>
+						</value>
+					</element>
+					<element name="PHC108" type="plain-text" label="Condition">
+						<value>
+							<xsp-request:get-attribute name="conditionCdDescTxt"/>
+						</value>
+					</element>
+					<element/>
+				</line>
+				<line>
+					<!--<element name="PHC110" type="select" label="Case Status">-->
+					<element type="select" label="Case Status" description="caseClassDescTxt">
+						<readonly/>
+						<srt-options-string>
+							<srt-codes:getCodedValues>
+								<type>PHC_CLASS</type>
+							</srt-codes:getCodedValues>
+						</srt-options-string>
+						<value>
+							<xsp-request:get-attribute name="CaseStatus"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="NTF137" type="textarea" label="General Comments">
+						<validation type="lengthLimit" fieldLength="1000" name="Address Comments"/>
+						<value>
+							<xsp-request:get-attribute name="comments"/>
+						</value>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

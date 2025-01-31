@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xsp:page xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" language="java" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+	</xsp:structure>
+	<xsp:logic><![CDATA[
+            LogUtils logger = new LogUtils((this.getClass()).getName());
+    ]]></xsp:logic>
+	<xsp:logic><![CDATA[
+        private String getPreviewXSP() {
+
+               String previewXSP= (String)request.getAttribute("previewXSP");			
+
+ 		     if(previewXSP==null) {
+				previewXSP="<null></null>";
+			}
+			return  previewXSP;	
+        }
+
+    ]]></xsp:logic>
+	<content>
+		<button-bar>
+			<right>
+				<label>Back</label>
+				<javascript-action>document.forms['nedssForm'].action='/nbs/LDFLoad.do'; document.forms['nedssForm'].submit();</javascript-action>
+			</right>
+		</button-bar>
+		<tab>
+			<group>
+				<line>
+					<element type="raw" align="left">
+						<span>
+							<b>Approval Queue for Initial Notifications (0) </b>
+							<br/>
+							<b>Observations Needing Program or Jurisdiction Assignment (0)  </b>
+							<br/>
+							<b>Observations Needing Review (0)  </b>
+							<br/>
+							<b>Updated Notifications Queue (0)  </b>
+							<br/>
+						</span>
+					</element>
+				</line>
+				<util:include-expr>
+					<util:expr>
+						<xsp:expr>getPreviewXSP()</xsp:expr>
+					</util:expr>
+				</util:include-expr>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

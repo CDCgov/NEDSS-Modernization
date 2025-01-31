@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.NEDSSConstants</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+	</xsp:structure>
+	<content>
+		<xsp:attribute name="form">
+			<xsp-request:get-attribute name="formHref"/>
+		</xsp:attribute>
+		<xsp:logic><![CDATA[
+		
+	  	String typeOfAction = request.getParameter("ContextAction");   
+	  	Boolean aggregareProgArea =(Boolean)request.getAttribute("ShowAggregateLink");
+	    boolean isAggreLink = aggregareProgArea.booleanValue();
+	  	
+	  	//##!! System.out.println("The Context Action is "+typeOfAction);
+
+					
+		  Boolean sortDirection = (Boolean) ]]><session:get-attribute name="sortDirection"/><![CDATA[;
+		  String direction = null;
+		  if(sortDirection!=null)
+			direction = sortDirection.toString();
+		  else
+			direction = "true";
+		  
+		]]></xsp:logic>
+		<button-bar/>
+		<javascript-files>
+			<import>SummaryNotificationSpecific.js</import>
+		</javascript-files>
+		<javascript-files>
+			<import>validate.js</import>
+		</javascript-files>
+		<tab name="Summary">
+			<nedss:writeErrorMessages/>
+			<xsp:logic>
+                if(isAggreLink)
+                {
+            </xsp:logic>
+            <group>
+            <line>
+                <element type="raw">
+                    <span style="padding:0.75em; background:#EFF7FF; width:750px;">  
+                        To access Aggregate Reporting for Influenza Outbreak <a href="/nbs/AggregateReport.do?method=searchLoadSummaryData&amp;conditionCd=11063"> Click Here</a>.
+                    </span>
+                </element>
+            </line> 
+            </group>
+			<xsp:logic>
+                }
+            </xsp:logic>
+			
+			<group name="Summary Notifications" colspan="off">
+				<line>
+					<element type="line-separator" title="Summary Report Selection"/>
+					<element type="hidden" name="ContextAction">
+						<value>
+							<xsp:expr>typeOfAction </xsp:expr>
+						</value>
+					</element>
+					<element type="hidden" name="MMWRWeekOptions">
+						<value>
+							<xsp-request:get-attribute name="MMWRWeekOptions"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="County" type="select" label="County" summarydescription="countyCdDesc">
+						<value>
+							<xsp-request:get-attribute name="countyValue"/>
+						</value>
+						<srt-options-string>
+							<xsp-request:get-attribute name="counties"/>
+						</srt-options-string>
+						<validation type="required" error-code="ERR059" name="County"/>
+					</element>
+					<element type="hidden" name="countyCdDesc"/>
+				</line>
+				<line>
+					<element name="MMWRYear" type="select" label="MMWR Year" onchange="updateMMWRWeeks();changeCriteriaFlag();">
+						<srt-options-string>
+							<xsp-request:get-attribute name="MMWRYear"/>
+						</srt-options-string>
+						<validation type="required" name="MMWR Year"/>-
+						<value>
+							<xsp-request:get-attribute name="MIN_MMWR_YEAR"/>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="MMWRWeek" type="select" label="MMWR Week" summarydescription="MMWRWeekDesc" >
+						<xsp:attribute name="onload"> onLoadMMWRWeeks();</xsp:attribute>
+						<validation type="required" name="MMWR Week"/>
+						<xsp:logic>
+						//##!! System.out.println("The mmwrWeek  **************"+request.getAttribute("MIN_MMWR_WEEK"));
+						</xsp:logic>
+						<value>
+							<xsp-request:get-attribute name="MIN_MMWR_WEEK"/>
+						</value>
+						<srt-options-string>
+							<xsp-request:get-attribute name="MMWRWeekOptions"/>
+						</srt-options-string>
+						<xsp:logic>
+
+						//System.out.println("The mmwrWeeks optipons  **************"+request.getAttribute("MMWRWeekOptions"));
+//System.out.println("The mmwrWeeks optipons  **************"+request.getAttribute("summaryReportVOList"));
+
+						</xsp:logic>
+					</element>
+					<element type="hidden" name="MMWRWeekDesc">					 	
+					 </element>
+					<element type="hidden" name="satWeek"/>
+				</line>
+				<line>
+					<element/>
+					<element/>
+					<element type="button" onclick="getSummaryReports();">
+						<value>Get Summary Reports</value>
+					</element>
+				</line>
+				<line>
+					<element type="line-separator" title="Summary Reports"/>
+				</line>
+				<xsp>
+				   //##!! System.out.println("\n\nThe value of viewSumm"+request.getAttribute("viewSumm"));
+				</xsp>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="viewSumm "/>
+				</xsp:attribute>
+				<line>
+					<element type="join">
+						<line>
+							<element type="data-table">
+								<xsp:logic>
+						String  tableNameValue = "Investigation";
+						</xsp:logic>
+								<header>Condition</header>
+								<header>Total Count</header>
+								<header>Last Updated</header>
+								<header>Status</header>
+								<header>Sent Date</header>
+								<view-link>
+									<xsp-request:get-attribute name="Condition"/>&amp;publicHealthCaseUID=</view-link>
+								<value>
+									<xsp-request:get-attribute name="summaryReportVOList"/>
+								</value>
+							</element>
+						</line>
+					</element>
+				</line>
+				<xsp:logic>
+		       	if((String) request.getAttribute("bAddButton") == "true")
+		       	{ 
+	         </xsp:logic>
+				<line>
+					<element type="raw">
+						<span>
+							<b>To add a new Summary Report, please select a condition and click the Add button.</b>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element name="Condition" type="select" label="Condition" description="conditionCdDescTxt">
+						<srt-options-string>
+							<xsp-request:get-attribute name="condition"/>
+						</srt-options-string>
+					</element>
+					<element type="button" onclick="getsatDate(); addSummaryReports();">
+						<value>Add Summary Report</value>
+					</element>
+				</line>
+				<line>
+					<element type="hidden" name="conditionCdDescTxt"/>
+				</line>
+				<xsp:logic>
+		        }
+		  </xsp:logic>
+			</group>
+		</tab>
+	</content>
+</xsp:page>

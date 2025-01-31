@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+    <xsp:structure>
+        <xsp:include>gov.cdc.nedss.reportadmin.dt.ReportDT</xsp:include>
+        <xsp:include>gov.cdc.nedss.reportadmin.dt.ReportSortColumnDT</xsp:include>
+    </xsp:structure>
+    <content form="/nbs/UpdateReportSort.do">
+        <xsp:logic>
+            ReportDT dtReport = (ReportDT)session.getAttribute("ReportAdmin.dtReport");
+            ReportSortColumnDT dtReportSortColumn = (ReportSortColumnDT)session.getAttribute("ReportAdmin.dtReportSortColumn");
+        </xsp:logic>
+        <link-bar>
+            <link>
+                <xsp:attribute name="name">
+                    <xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+                </xsp:attribute>
+                <xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+            </link>
+        </link-bar>
+        <button-bar>
+            <right>
+                <label>Submit</label>
+                <javascript-action>
+                    var action = document.getElementById("action");
+                    action.value = "submit";
+                    document.forms[0].submit();
+                </javascript-action>
+            </right>
+            <right>
+                <label>Cancel</label>
+                <javascript-action>
+                    var action = document.getElementById("action");
+                    action.value = "cancel";
+                    document.forms[0].submit();
+                </javascript-action>
+            </right>
+        </button-bar>
+        <tab>
+            <group>
+                <line>
+                    <element type="raw">
+                        <span style="color: red; font-weight: bold;">
+                            <value><xsp:expr>request.getAttribute("error")</xsp:expr></value>
+                        </span>
+                    </element>
+                </line>
+            </group>
+            <group>
+                <xsp:attribute name="name">
+                    <xsp:expr>dtReport.getReportTitle()</xsp:expr>
+                </xsp:attribute>
+                <line>
+                    <element id="action" name="action" type="hidden">
+                        <value></value>
+                    </element>
+                </line>
+                <line>
+                    <element name="data_source_uid" type="hidden">
+                        <value><xsp:expr>dtReport.getDataSourceUID_s()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+                    <element name="report_uid" type="hidden">
+                        <value><xsp:expr>dtReport.getReportUID_s()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+                    <element name="column_uid" type="select" label="Sort By" noblank="true">
+                        <srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.SelectedColumnsSRT")</xsp:expr></srt-options-string>
+                        <value><xsp:expr>dtReportSortColumn.getColumnUID()</xsp:expr></value>
+                    </element>
+                </line>
+                <line>
+                    <element name="report_sort_order_code" type="select" label="Sort Order" noblank="true">
+                        <srt-options-string><xsp:expr>session.getAttribute("ReportAdmin.ReportSortOrderCodeSRT")</xsp:expr></srt-options-string>
+                        <value><xsp:expr>dtReportSortColumn.getReportSortOrderCode()</xsp:expr></value>
+                    </element>
+                </line>
+            </group>
+        </tab>
+    </content>
+</xsp:page>

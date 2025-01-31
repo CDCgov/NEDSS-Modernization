@@ -1,0 +1,1076 @@
+<?xml version="1.0"?>
+<map:sitemap xmlns:map="http://apache.org/cocoon/sitemap/1.0">
+	<map:components>
+		<map:generators default="file">
+			<map:generator label="content,data" logger="sitemap.generator.file" name="file" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.FileGenerator"/>
+			<map:generator label="content,data" logger="sitemap.generator.serverpages" name="serverpages" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.generation.ServerPagesGenerator"/>
+		</map:generators>
+		<map:transformers default="xslt">
+			<map:transformer logger="sitemap.transformer.xslt" name="xslt" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.transformation.TraxTransformer">
+				<use-request-parameters>false</use-request-parameters>
+				<use-browser-capabilities-db>false</use-browser-capabilities-db>
+				<use-deli>false</use-deli>
+			</map:transformer>
+		</map:transformers>
+		<map:readers default="resource">
+			<map:reader logger="sitemap.reader.resource" name="resource" pool-max="76" src="org.apache.cocoon.reading.ResourceReader"/>
+			<map:reader name="jsp" src="org.apache.cocoon.reading.JSPReader"/>
+		</map:readers>
+		<map:serializers default="html">
+			<map:serializer logger="sitemap.serializer.links" name="links" src="org.apache.cocoon.serialization.LinkSerializer"/>
+			<map:serializer logger="sitemap.serializer.xml" mime-type="text/xml" name="xml" src="org.apache.cocoon.serialization.XMLSerializer"/>
+			<map:serializer mime-type="application/pdf" name="fo2pdf" src="org.apache.cocoon.serialization.FOPSerializer"/>
+			<map:serializer logger="sitemap.serializer.html" mime-type="text/html" name="html" pool-grow="8" pool-max="76" pool-min="32" src="org.apache.cocoon.serialization.HTMLSerializer">
+				<buffer-size>1024</buffer-size>
+			</map:serializer>
+		</map:serializers>
+		<map:selectors default="browser"/>
+		<map:matchers default="wildcard">
+			<map:matcher logger="sitemap.matcher.wildcard" name="wildcard" src="org.apache.cocoon.matching.WildcardURIMatcher"/>
+			<map:matcher logger="sitemap.matcher.regexp" name="regexp" src="org.apache.cocoon.matching.RegexpURIMatcher"/>
+		</map:matchers>
+	</map:components>
+	<!-- =========================== Pipelines ================================= -->
+	<map:pipelines>
+		<map:pipeline>
+			<!--	preview -->
+			<map:match pattern="bmird_preview_int1">
+				<map:generate type="serverpages" src="xsp/bmird_generic1.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_preview_int2">
+				<map:generate type="serverpages" src="xsp/bmird_generic2.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_bmird_generic_preview_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_preview_int1"/>
+					<map:part src="cocoon:/bmird_preview_int2"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_generic_investigation_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/sub_bmird_generic_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Investigation Bmird Generic Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- preview for Group a -->
+			<map:match pattern="bmird_groupa_preview_int3">
+				<map:generate type="serverpages" src="xsp/bmird_groupa_strep.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_bmird_groupa_preview_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_preview_int1"/>
+					<map:part src="cocoon:/bmird_groupa_preview_int3"/>
+					<map:part src="cocoon:/bmird_preview_int2"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_groupa_investigation_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/sub_bmird_groupa_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Investigation Bmird  Group A Strep Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="bmird_groupb_preview_int3">
+				<map:generate type="serverpages" src="xsp/bmird_groupb_strep.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_bmird_groupb_preview_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_preview_int1"/>
+					<map:part src="cocoon:/bmird_groupb_preview_int3"/>
+					<map:part src="cocoon:/bmird_preview_int2"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_groupb_investigation_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/sub_bmird_groupb_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Investigation Bmird  Group B Strep Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- preview for H I -->
+			<map:match pattern="bmird_heamophilus_preview_int3">
+				<map:generate type="serverpages" src="xsp/bmird_hi.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_bmird_heamophilus_preview_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_preview_int1"/>
+					<map:part src="cocoon:/bmird_heamophilus_preview_int3"/>
+					<map:part src="cocoon:/bmird_preview_int2"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_heamophilus_investigation_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/sub_bmird_heamophilus_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Investigation Bmird  Hemophilus Influenzae Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- preview for Neisseria -->
+			<map:match pattern="bmird_neisseria_preview_int3">
+				<map:generate type="serverpages" src="xsp/bmird_nm.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_bmird_neisseria_preview_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_preview_int1"/>
+					<map:part src="cocoon:/bmird_neisseria_preview_int3"/>
+					<map:part src="cocoon:/bmird_preview_int2"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_neisseria_investigation_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/sub_bmird_neisseria_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Investigation Bmird  Neisseria Influenzae Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- preview for Streptococcus pneumoniae  -->
+			<map:match pattern="bmird_streptococcus_pneumoniae_preview_int3">
+				<map:generate type="serverpages" src="xsp/bmird_sp.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source">
+					<map:parameter name="mode" value="preview"/>
+				</map:transform>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_streptococcus_pneumoniae_preview_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_preview_int1"/>
+					<map:part src="cocoon:/bmird_streptococcus_pneumoniae_preview_int3"/>
+					<map:part src="cocoon:/bmird_preview_int2"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_streptococcus_pneumoniae_investigation_preview">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon:/sub_streptococcus_pneumoniae_preview_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Investigation Bmird Streptococcus Pneumoniae Influenzae Preview"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!--	GENERIC	 INTERNAL	-->
+			<map:match pattern="generic_head_int">
+				<map:generate type="serverpages" src="xsp/bmird_generic1.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="generic_foot_int">
+				<map:generate type="serverpages" src="xsp/bmird_generic2.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="generic_head_view_int">
+				<map:generate type="serverpages" src="xsp/bmird_generic1.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<map:match pattern="generic_foot_view_int">
+				<map:generate type="serverpages" src="xsp/bmird_generic2.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize/>
+			</map:match>
+			<!--		ext source		-->
+			<!--map:match pattern="generic_input_ext">
+                <map:generate type="serverpages" src="xsp/ext/ext.xsp"/>
+                <map:transform src="cocoon://create-input-form-xsl-source"/>
+                <map:serialize/>
+            </map:match>
+            <map:match pattern="generic_view_ext">
+                <map:generate type="serverpages" src="xsp/ext/ext.xsp"/>
+                <map:transform src="cocoon://create-view-form-xsl-source"/>
+                <map:serialize/>
+            </map:match-->
+			<map:match pattern="generic_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/generic_edit_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="generic_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/generic_edit_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- GENERIC	-->
+			<map:match pattern="sub_generic_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_int"/>
+					<map:part src="cocoon:/generic_foot_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_generic_view_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_view_int"/>
+					<map:part src="cocoon:/generic_foot_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="generic_edit_int">
+				<map:generate src="cocoon:/sub_generic_int"/>
+				<!--			<map:transform src="cocoon://create-input-form-xsl-source"/> -->
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="generic_view_int">
+				<map:generate src="cocoon:/sub_generic_view_int"/>
+				<!--				<map:transform src="cocoon://create-view-form-xsl-source"/> -->
+				<map:serialize type="xml"/>
+			</map:match>
+			<!--
+					view ext source
+										-->
+			<!--map:match pattern="generic_view_ext">
+                <map:generate type="serverpages" src="xsp/ext/ext.xsp"/>
+                <map:transform src="cocoon://create-view-form-xsl-source"/>
+                <map:serialize/>
+            </map:match-->
+			<map:match pattern="generic_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/generic_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="generic_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/generic_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="generic_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/generic_edit_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="generic_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/generic_edit_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- STREP A	-->
+			<map:match pattern="strepa_edit_int">
+				<map:generate type="serverpages" src="xsp/bmird_groupa_strep.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="strepa_view_int">
+				<map:generate type="serverpages" src="xsp/bmird_groupa_strep.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_strepa_input_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_int"/>
+					<map:part src="cocoon:/strepa_edit_int"/>
+					<map:part src="cocoon:/generic_foot_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_strepa_view_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_view_int"/>
+					<map:part src="cocoon:/strepa_view_int"/>
+					<map:part src="cocoon:/generic_foot_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="strepa_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_strepa_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="strepa_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_strepa_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="strepa_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_strepa_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="strepa_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_strepa_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="strepa_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/sub_strepa_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="strepa_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/sub_strepa_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- STREP B	-->
+			<map:match pattern="strepb_edit_int">
+				<map:generate type="serverpages" src="xsp/bmird_groupb_strep.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="strepb_view_int">
+				<map:generate type="serverpages" src="xsp/bmird_groupb_strep.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_strepb_input_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_int"/>
+					<map:part src="cocoon:/strepb_edit_int"/>
+					<map:part src="cocoon:/generic_foot_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_strepb_view_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_view_int"/>
+					<map:part src="cocoon:/strepb_view_int"/>
+					<map:part src="cocoon:/generic_foot_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="strepb_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_strepb_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="strepb_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_strepb_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="strepb_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_strepb_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="strepb_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_strepb_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="strepb_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/sub_strepb_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="strepb_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/sub_strepb_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- HI	-->
+			<map:match pattern="hi_edit_int">
+				<map:generate type="serverpages" src="xsp/bmird_hi.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hi_view_int">
+				<map:generate type="serverpages" src="xsp/bmird_hi.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_hi_input_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_int"/>
+					<map:part src="cocoon:/hi_edit_int"/>
+					<map:part src="cocoon:/generic_foot_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_hi_view_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_view_int"/>
+					<map:part src="cocoon:/hi_view_int"/>
+					<map:part src="cocoon:/generic_foot_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="hi_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_hi_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hi_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_hi_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hi_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_hi_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hi_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_hi_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hi_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/sub_hi_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="hi_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/sub_hi_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- NM	-->
+			<map:match pattern="nm_edit_int">
+				<map:generate type="serverpages" src="xsp/bmird_nm.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="nm_view_int">
+				<map:generate type="serverpages" src="xsp/bmird_nm.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_nm_input_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_int"/>
+					<map:part src="cocoon:/nm_edit_int"/>
+					<map:part src="cocoon:/generic_foot_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_nm_view_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_view_int"/>
+					<map:part src="cocoon:/nm_view_int"/>
+					<map:part src="cocoon:/generic_foot_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="nm_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_nm_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="nm_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_nm_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="nm_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_nm_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="nm_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_nm_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="nm_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/sub_nm_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="nm_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/sub_nm_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- SP	-->
+			<map:match pattern="sp_edit_int">
+				<map:generate type="serverpages" src="xsp/bmird_sp.xsp"/>
+				<map:transform src="cocoon://create-input-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sp_view_int">
+				<map:generate type="serverpages" src="xsp/bmird_sp.xsp"/>
+				<map:transform src="cocoon://create-view-form-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_sp_input_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_int"/>
+					<map:part src="cocoon:/sp_edit_int"/>
+					<map:part src="cocoon:/generic_foot_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sub_sp_view_int">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/generic_head_view_int"/>
+					<map:part src="cocoon:/sp_view_int"/>
+					<map:part src="cocoon:/generic_foot_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://sub-aggregate-xsl-source"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="sp_create">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_sp_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingCreate"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="sp_create_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_sp_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Create  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="sp_edit">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_sp_input_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingEdit"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="sp_edit_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_input_int"/>
+					<map:part src="cocoon:/sub_sp_input_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="Edit  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="sp_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/sub_sp_view_int"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingView"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<map:match pattern="sp_view_No_Contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://navbar" element="navbar"/>
+					<map:part src="cocoon://top_bar" element="top_bar"/>
+					<map:part src="cocoon://person/patient_from_event_view_int"/>
+					<map:part src="cocoon:/sub_sp_view_int"/>
+				</map:aggregate>
+				<map:transform src="cocoon://aggregate-xsl-source">
+					<map:parameter name="page-title" value="View  Investigation"/>
+				</map:transform>
+				<map:serialize type="html"/>
+			</map:match>
+			<!-- ====================== MAPPINGS FOR PRINTABLE FORMS ============================== -->
+			<map:match pattern="generic_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_generic_print_view"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Generic"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="generic_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_generic_print_view"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Generic"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="strepa_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_groupa_print_view"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Group A Strep"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="strepa_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_groupa_print_view"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Group A Strep"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="strepb_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_groupb_print_view"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Group B Strep"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="strepb_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_groupb_print_view"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Group B Strep"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hi_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_hi_print_view"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Haemophilus"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="hi_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_hi_print_view"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Haemophilus"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="nm_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_nm_print_view"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Neisseria meningitidis"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="nm_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_nm_print_view"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Neisseria meningitidis"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="sp_print">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_sp_print_view"/>
+					<map:part src="cocoon://diseaseform/contacttracing/ContactTracingPrint"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Streptococcus pneumoniae"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="sp_print_no_contact">
+				<map:aggregate element="page">
+					<map:part src="cocoon://person/patient_from_event_print_view"/>
+					<map:part src="cocoon:/bmird_sp_print_view"/>
+				</map:aggregate>
+				<map:transform src="cocoon://print-page-source">
+					<map:parameter name="page-title" value="View Investigation - BMIRD Streptococcus pneumoniae"/>
+				</map:transform>
+				<map:serialize type="fo2pdf"/>
+			</map:match>
+			<map:match pattern="bmird_generic_print_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_generic_1_int"/>
+					<map:part src="cocoon:/bmird_generic_2_int"/>
+				</map:aggregate>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_groupa_print_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_generic_1_int"/>
+					<map:part src="cocoon:/bmird_groupa_int"/>
+					<map:part src="cocoon:/bmird_generic_2_int"/>
+				</map:aggregate>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_groupb_print_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_generic_1_int"/>
+					<map:part src="cocoon:/bmird_groupb_int"/>
+					<map:part src="cocoon:/bmird_generic_2_int"/>
+				</map:aggregate>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_hi_print_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_generic_1_int"/>
+					<map:part src="cocoon:/bmird_hi_int"/>
+					<map:part src="cocoon:/bmird_generic_2_int"/>
+				</map:aggregate>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_nm_print_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_generic_1_int"/>
+					<map:part src="cocoon:/bmird_nm_int"/>
+					<map:part src="cocoon:/bmird_generic_2_int"/>
+				</map:aggregate>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_sp_print_view">
+				<map:aggregate element="page">
+					<map:part src="cocoon:/bmird_generic_1_int"/>
+					<map:part src="cocoon:/bmird_sp_int"/>
+					<map:part src="cocoon:/bmird_generic_2_int"/>
+				</map:aggregate>
+				<map:serialize type="xml"/>
+			</map:match>			
+			<map:match pattern="bmird_generic_1_int">
+				<map:generate type="serverpages" src="xsp/bmird_generic1.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_generic_2_int">
+				<map:generate type="serverpages" src="xsp/bmird_generic2.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_groupa_int">
+				<map:generate type="serverpages" src="xsp/bmird_groupa_strep.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_groupb_int">
+				<map:generate type="serverpages" src="xsp/bmird_groupb_strep.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_hi_int">
+				<map:generate type="serverpages" src="xsp/bmird_hi.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_nm_int">
+				<map:generate type="serverpages" src="xsp/bmird_nm.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>
+			<map:match pattern="bmird_sp_int">
+				<map:generate type="serverpages" src="xsp/bmird_sp.xsp"/>
+				<map:serialize type="xml"/>
+			</map:match>
+
+		</map:pipeline>
+	</map:pipelines>
+</map:sitemap>

@@ -1,0 +1,3661 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:nedss="http://www.cdc.gov/nedss/logicsheet/nedss" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+	</xsp:structure>
+	<xsp:logic><![CDATA[
+            LogUtils logger = new LogUtils((this.getClass()).getName());
+       ]]></xsp:logic>
+	<content form="/nbs/storePermissionSet.do">
+		<javascript-files>
+			<import>ElementValidate.js</import>
+			<import>Validate.js</import>
+		</javascript-files>
+		<!--content form="/nedss/posted"-->
+		<xsp:logic><![CDATA[
+				String operationType=(String) request.getAttribute("OperationType");
+				String psName = request.getParameter("RoleName");
+				
+				String  isUserPaa = "";
+				if(request.getAttribute("isUserPAA") != null)
+					isUserPaa = (request.getAttribute("isUserPAA")).toString();
+				//System.out.println("isUserPaa : " + isUserPaa );
+
+				if(request.getParameter("OperationType").equals(NEDSSConstants.EDIT))
+				{
+					operationType = NEDSSConstants.EDIT;
+				}
+				String readOnlyFlag = request.getParameter("ReadOnly");
+				if(readOnlyFlag==null)
+				{
+					readOnlyFlag="false";
+				}
+				String errorMessage = (String)request.getAttribute("errorMessage");
+		]]></xsp:logic>
+		<javascript-files>
+			<import>PermissionSetSpecific.js</import>
+		</javascript-files>
+		<tab>
+			<nedss:writeErrorMessages/>
+			<!--=========================== Permission Set Configuration ============================== -->
+			<group>
+				<!-- =============================== System ============================== -->
+				
+				<!--=============================== Morbidity Report ============================== -->
+				<line>
+					<element type="line-separator" title="Morbidity Report"/>
+				</line>
+				<line></line>
+				<!--			<line>
+					<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="1">User</font>
+                				</b></span>
+                			</element>
+                			<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="1">Guest</font>
+                				</b></span>
+                			</element>
+                			<element type="raw" aligh="left">
+                				<span><i>
+                					<font size="1">Note: A User marked as a Guest will only have access to shared records.</font>
+                				</i></span>
+                			</element>
+				</line>-->
+				<line>
+					<element type="checkbox-grid">
+						<options>
+							<option name="MorbidityReportAddUser" value="U" header="User">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportAddUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportAddUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportAddGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="Add">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportAddGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportAddGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<!--/element>
+                			<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="2">Add</font>
+                				</b></span>
+                              	</element>
+				</line>
+				<line>
+					<element type="checkbox"-->
+						<options>
+							<option name="MorbidityReportEditUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportEditUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportEditUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportEditGuest" value="G" label="Edit  *User must also have View Morbidity Report access">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportEditGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportEditGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<!--/element>
+                			<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="2">Edit</font>
+                				</b></span>
+                				<span>
+                					<font size="2">  *User must also have View Morbidity Report access</font>
+                				</span>
+                			</element>
+         			</line>
+            			<line>
+					<element type="checkbox"-->
+						<options>
+							<option name="MorbidityReportViewUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportViewUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportViewUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportViewGuest" value="G" label="View  *User must also have View Patient File access">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportViewGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportViewGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportDeleteUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportDeleteUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportDeleteUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportDeleteGuest" value="G" label="Delete  *User must also have View Morbidity Report access">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportDeleteGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportDeleteGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportDeleteExternalUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportDeleteExternalUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportDeleteExternalUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportDeleteExternalGuest" value="G" label="Delete Outside Agency Entered Morbidity Report *User must also have View Morbidity Report access">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportDeleteExternalGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportDeleteExternalGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportAssignSecurityUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportAssignSecurityUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportAssignSecurityUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportAssignSecurityGuest" value="G" label="Assign Security  *User must also have Transfer Ownership Privilege to Morbidity Report access">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportAssignSecurityGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportAssignSecurityGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportAssignSecurityForDataEntryUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportAssignSecurityForDataEntryUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportAssignSecurityForDataEntryUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportAssignSecurityForDataEntryGuest" value="G" label="Assign Security for Data Entry  *User must also have Add Morbidity Report access">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportAssignSecurityForDataEntryGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportAssignSecurityForDataEntryGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<!--/element>
+                			<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="2">Delete</font>
+                				</b></span>
+                				<span>
+                					<font size="2">  *User must also have View Morbidity Report access</font>
+                				</span>
+                			</element>
+         			</line>
+         			<line>
+					<element type="checkbox"-->
+						<options>
+							<option name="MorbidityReportTransferOwnershipUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportTransferOwnershipUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportTransferOwnershipUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportTransferOwnershipGuest" value="G" label="Transfer Ownership Privilege  *User must also have View Morbidity Report access">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportTransferOwnershipGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportTransferOwnershipGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<!--/element>
+                			<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="2">Transfer Ownership Privilege</font>
+                				</b></span>
+                				<span>
+                					<font size="2">  *User must also have Edit Morbidity Report access</font>
+                				</span>
+                			</element>
+         			</line>
+         			<line>
+					<element type="checkbox"-->
+						<options>
+							<option name="InvestigationAutoCreateUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="InvestigationAutoCreateUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("InvestigationAutoCreateUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="InvestigationAutoCreateGuest" value="G" label="AutoCreate an Investigation  *User must also have Add Morbidity Report access">
+								<value>
+									<xsp-request:get-attribute name="InvestigationAutoCreateGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("InvestigationAutoCreateGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<!--===========Morb Mark As Reviewed========-->
+						<options>
+							<option name="MorbidityReportMarkAsReviewedUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportMarkAsReviewedUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportMarkAsReviewedUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MorbidityReportMarkAsReviewedGuest" value="G" label="Mark As Reviewed  *User must also have View Morbidity Report access">
+								<value>
+									<xsp-request:get-attribute name="MorbidityReportMarkAsReviewedGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MorbidityReportMarkAsReviewedGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					</element>
+					<!--		<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="2">AutoCreate</font>
+                				</b></span>
+                				<span>
+                					<font size="2">  *User must also have Add Morbidity Report access and View Patient File access</font>
+                				</span>
+                			</element>-->
+				</line>
+				<!-- =============================== Treatment ============================== -->
+				<line>
+					<element type="line-separator" title="Treatment "/>
+				</line>
+				<line>
+					<element name="TreatmentManageUser" type="checkbox-grid">
+						<options>
+							<option name="TreatmentManageUser" value="U" header="User">
+								<value>
+									<xsp-request:get-attribute name="TreatmentManageUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("TreatmentManageUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+							if (operationType.equals("create") || operationType.equals("edit"))
+							{
+						</xsp:logic>
+						<xsp:logic>
+	                				}
+							else if (operationType.equals("view"))
+							{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+							}
+						 </xsp:logic>
+						<options>
+							<option name="TreatmentManageGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="Manage  (Add, Edit, and Delete) *User must also have View Patient File access">
+								<value>
+									<xsp-request:get-attribute name="TreatmentManageGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("TreatmentManageGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+							if (operationType.equals("create") || operationType.equals("edit"))
+							{
+						</xsp:logic>
+						<xsp:logic>
+	                				}
+							else if (operationType.equals("view"))
+							{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+							}
+						 </xsp:logic>
+						<options>
+							<option name="TreatmentViewUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="TreatmentViewUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("TreatmentViewUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+							if (operationType.equals("create") || operationType.equals("edit"))
+							{
+						</xsp:logic>
+						<xsp:logic>
+	                				}
+							else if (operationType.equals("view"))
+							{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+							}
+						 </xsp:logic>
+						<options>
+							<option name="TreatmentViewGuest" value="G" label="View *User must also have View Patient File access">
+								<value>
+									<xsp-request:get-attribute name="TreatmentViewGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("TreatmentViewGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+							if (operationType.equals("create") || operationType.equals("edit"))
+							{
+						</xsp:logic>
+						<xsp:logic>
+	                				}
+							else if (operationType.equals("view"))
+							{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+							}
+						 </xsp:logic>
+					</element>
+				</line>
+				<!--=============================== Case Reporting ============================== -->
+				<line>
+					<element type="line-separator" title="Case Report"/>
+				</line>
+				<line>
+					<element type="checkbox-grid">
+						<!-- END OF CHANGE FOR DELETE -->
+						<options>
+							<option name="DocumentViewUser" value="U" header="User">
+								<value>
+									<xsp-request:get-attribute name="DocumentViewUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("DocumentViewUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+	            				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="DocumentViewGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="View  *User must also have View Patient File access">
+								<value>
+									<xsp-request:get-attribute name="DocumentViewGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("DocumentViewGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+	            				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<!--/element>
+	            			<element type="raw" aligh="left">
+	            				<span><b>
+	            					<font size="2">Add</font>
+	            				</b></span>
+	            				<span>
+	            					<font size="2">  *User must also have View Patient File access</font>
+	            				</span>
+	            			</element>
+				</line>
+					<element type="checkbox"-->
+						<options>
+							<option name="DocumentDeleteUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="DocumentDeleteUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("DocumentDeleteUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+	            				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="DocumentDeleteGuest" value="G" label="Delete  *User must also have View Case Report access">
+								<value>
+									<xsp-request:get-attribute name="DocumentDeleteGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("DocumentDeleteGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+	            				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="DocumentAssignSecurityForUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="DocumentAssignSecurityForUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+							if (request.getAttribute("DocumentAssignSecurityForUser") == "U") {
+							]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+                					}
+							</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+					if (operationType.equals("create") || operationType.equals("edit"))
+					{
+					</xsp:logic>
+						<xsp:logic>
+            				}
+					else if (operationType.equals("view"))
+					{
+					</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+					}
+				 	</xsp:logic>
+						<options>
+							<option name="DocumentAssignSecurityForGuest" value="G" label="Assign Security *User must also have Transfer Ownership Case Report access">
+								<value>
+									<xsp-request:get-attribute name="DocumentAssignSecurityForGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+							if (request.getAttribute("DocumentAssignSecurityForGuest") == "G") {
+							]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+                					}
+							</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+					if (operationType.equals("create") || operationType.equals("edit"))
+					{
+					</xsp:logic>
+						<xsp:logic>
+            				}
+					else if (operationType.equals("view"))
+					{
+					</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+					}
+				 	</xsp:logic>
+						<options>
+							<option name="DocumentTransferOwnershipUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="DocumentTransferOwnershipUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+						if (request.getAttribute("DocumentTransferOwnershipUser") == "U") {
+						]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+            					}
+						</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+				if (operationType.equals("create") || operationType.equals("edit"))
+				{
+				</xsp:logic>
+						<xsp:logic>
+        				}
+				else if (operationType.equals("view"))
+				{
+				</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+				}
+			 	</xsp:logic>
+						<options>
+							<option name="DocumentTransferOwnershipGuest" value="G" label="Transfer Ownership Privilege  *User must also have View Case Report access">
+								<value>
+									<xsp-request:get-attribute name="DocumentTransferOwnershipGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+						if (request.getAttribute("DocumentTransferOwnershipGuest") == "G") {
+						]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+            					}
+						</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+				if (operationType.equals("create") || operationType.equals("edit"))
+				{
+				</xsp:logic>
+						<xsp:logic>
+        				}
+				else if (operationType.equals("view"))
+				{
+				</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+				}
+			 	</xsp:logic>
+						<xsp:logic>
+				if (operationType.equals("create") || operationType.equals("edit"))
+				{
+				</xsp:logic>
+						<xsp:logic>
+        				}
+				else if (operationType.equals("view"))
+				{
+				</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+				}
+			 	</xsp:logic>
+						<options>
+							<option name="DocumentAutoCreateUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="DocumentAutoCreateUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+						if (request.getAttribute("DocumentAutoCreateUser") == "U") {
+						]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+            					}
+						</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+				if (operationType.equals("create") || operationType.equals("edit"))
+				{
+				</xsp:logic>
+						<xsp:logic>
+        				}
+				else if (operationType.equals("view"))
+				{
+				</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+				}
+			 	</xsp:logic>
+						<options>
+							<option name="DocumentAutoCreateGuest" value="G" label="AutoCreate an Investigation *User must also have View Case Report access">
+								<value>
+									<xsp-request:get-attribute name="DocumentAutoCreateGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+						if (request.getAttribute("DocumentAutoCreateGuest") == "G") {
+						]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+            					}
+						</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+				if (operationType.equals("create") || operationType.equals("edit"))
+				{
+				</xsp:logic>
+						<xsp:logic>
+        				}
+				else if (operationType.equals("view"))
+				{
+				</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+				}
+			 	</xsp:logic>
+			 	<options>
+							<option name="CaseReportViewPHCRActivityLogUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="CaseReportViewPHCRActivityLogUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("CaseReportViewPHCRActivityLogUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="CaseReportViewPHCRActivityLogGuest" value="G" label="View PHCR Activity Log">
+								<value>
+									<xsp-request:get-attribute name="CaseReportViewPHCRActivityLogGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("CaseReportViewPHCRActivityLogGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="DocumentMarkAsReviewedUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="DocumentMarkAsReviewedUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+						if (request.getAttribute("DocumentMarkAsReviewedUser") == "U") {
+						]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+								}
+					</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+					if (operationType.equals("create") || operationType.equals("edit"))
+					{
+					</xsp:logic>
+						<xsp:logic>
+							}
+					else if (operationType.equals("view"))
+					{
+					</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+					}
+	 			</xsp:logic>
+						<options>
+							<option name="DocumentMarkAsReviewedGuest" value="G" header="" label="Mark As Reviewed  *User must also have View Case Report access">
+								<value>
+									<xsp-request:get-attribute name="DocumentMarkAsReviewedGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+							if (request.getAttribute("DocumentMarkAsReviewedGuest") == "G") {
+							]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+    								}
+						</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+					if (operationType.equals("create") || operationType.equals("edit"))
+					{
+					</xsp:logic>
+						<xsp:logic>
+							}
+					else if (operationType.equals("view"))
+					{
+					</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+					}
+	 			</xsp:logic>
+					</element>
+				</line>
+				<!--=============================== Notification ============================== -->
+				<line>
+					<element type="line-separator" title="Notification"/>
+				</line>
+				<!--line>
+					<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="1">User</font>
+                				</b></span>
+                			</element>
+                			<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="1">Guest</font>
+                				</b></span>
+                			</element>
+                			<element type="raw" aligh="left">
+                				<span><i>
+                					<font size="1">Note: A User marked as a Guest will only have access to shared records.</font>
+                				</i></span>
+                			</element>
+				</line-->
+				<line>
+					<element name="NotificationPermissionSet" type="checkbox-grid">
+						<options>
+							<option name="NotificationCreateUser" value="U" header="User">
+								<value>
+									<xsp-request:get-attribute name="NotificationCreateUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("NotificationCreateUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+							<xsp:logic>
+							if (operationType.equals("create") || operationType.equals("edit"))
+							{
+							</xsp:logic>
+							<xsp:logic>
+	                				}
+							else if (operationType.equals("view"))
+							{
+							</xsp:logic>
+							<readonly/>
+							<xsp:logic>
+							}
+						 	</xsp:logic>
+							<option label="Create  *User must also have View Investigation access" header="Guest   Note: A User marked as a Guest will only have access to shared records.">
+								<partner name="NotificationCreateNeedsApprovalUser" type="radio" indented="yes" default="n" layout="horizontal">
+									<options>
+										<option name="NotificationCreateDoesNotNeedApprovalUser" align="left" value="n" label="[-nc]Does Not Need Approval" align-label="left"/>
+									</options>
+									<value>
+										<xsp-request:get-attribute name="NotificationCreateNeedsApprovalUser"/>
+									</value>
+									<options>
+										<option name="NotificationCreateNeedsApprovalUser" value="y" label="[-nc]Needs Approval" align-label="left"/>
+									</options>
+									<value>
+										<xsp-request:get-attribute name="NotificationCreateNeedsApprovalUser"/>
+									</value>
+									<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+									<xsp:logic>
+			                				}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+									<readonly/>
+									<xsp:logic>
+									}
+								 	</xsp:logic>
+								</partner>
+							</option>
+							<option/>
+							<option name="NotificationCreateGuest" value="G" label="Create  *User must also have View Investigation access">
+								<value>
+									<xsp-request:get-attribute name="NotificationCreateGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("NotificationCreateGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+								<partner name="NotificationCreateNeedsApprovalGuest" type="radio" indented="yes" default="n" layout="horizontal">
+									<options>
+										<option name="NotificationCreateDoesNotNeedApprovalGuest" value="n" label="[-nc]Does Not Need Approval" align-label="left"/>
+									</options>
+									<options>
+										<option name="NotificationCreateNeedsApprovalGuest" value="y" label="[-nc]Needs Approval" align-label="left"/>
+									</options>
+									<value>
+										<xsp-request:get-attribute name="NotificationCreateNeedsApprovalGuest"/>
+									</value>
+									<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+									<xsp:logic>
+			                				}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+									<readonly/>
+									<xsp:logic>
+									}
+								 	</xsp:logic>
+								</partner>
+							</option>
+							<!--xsp:logic>
+							if (operationType.equals("create") || operationType.equals("edit"))
+							{
+							</xsp:logic>
+							<xsp:logic>
+	                				}
+							else if (operationType.equals("view"))
+							{
+							</xsp:logic>
+								<readonly/>
+							<xsp:logic>
+							}
+						 	</xsp:logic>							
+						 	
+						 	<option>
+								<partner name="NotificationCreateNeedsApprovalGuest" type="radio" indented="yes" default="n">
+									<options>
+										<option name="NotificationCreateDoesNotNeedApprovalGuest" value="n" label="Does Not Needs Approval"></option>
+									</options>
+									<options>
+										<option name="NotificationCreateNeedsApprovalGuest" value="y" label="Needs Approval"></option>
+									</options>
+									<value>
+										<xsp-request:get-attribute name="NotificationCreateNeedsApprovalGuest"/>
+									</value>
+									<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+									<xsp:logic>
+			                				}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+									<xsp:logic>
+									}
+								 	</xsp:logic>
+				                		</partner>
+			                		</option-->
+							<!--/element>
+                			<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="2">Create</font>
+                				</b></span>
+                                	</element>
+				</line>
+				
+				<line indented="yes">
+					<element type="join">
+						<line indented="no"-->
+							<!--/line>
+	                		</element>
+				</line>
+
+				<line>
+					<element type="checkbox">
+						<options-->
+							<option name="NotificationReviewUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="NotificationReviewUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("NotificationReviewUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+							<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+							<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+							<readonly/>
+							<xsp:logic>
+						}
+					 	</xsp:logic>
+							<option name="NotificationReviewGuest" value="G" label="Review Notification for Approval  *User must also have Edit Investigation access">
+								<value>
+									<xsp-request:get-attribute name="NotificationReviewGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("NotificationReviewGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+							<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+							<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+							<readonly/>
+							<xsp:logic>
+						}
+					 	</xsp:logic>
+							<!--/element>
+                			<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="2">Review NND Notification for Approval</font>
+                				</b></span>
+                				<span>
+                					<font size="2">  *User must also have View Investigation access and Edit Investigation access</font>
+                				</span>
+                			</element>
+         			</line>
+            			<line>
+					<element type="checkbox"-->
+							<option name="NotificationCreateSummaryNotificationUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="NotificationCreateSummaryNotificationUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("NotificationCreateSummaryNotificationUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+							<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+							<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+							<readonly/>
+							<xsp:logic>
+						}
+					 	</xsp:logic>
+							<option name="NotificationCreateSummaryNotificationGuest" value="G" label="Create Summary Notification  *User must also have View Summary Report access">
+								<value>
+									<xsp-request:get-attribute name="NotificationCreateSummaryNotificationGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("NotificationCreateSummaryNotificationGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					</element>
+					<!--	<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="2">Create Summary Notification</font>
+                				</b></span>
+                				<span>
+                					<font size="2">  *User must also have View Summary Report access</font>
+                				</span>
+                           	</element>-->
+				</line>
+			<!--=============================== Queue ============================== -->
+				<line>
+					<element type="line-separator" title="Queues"/>
+				</line>
+				<line>
+					<element type="checkbox-grid">
+						<options>
+							<option name="MessageQueueUser" value="U" header="User">
+								<value>
+									<xsp-request:get-attribute name="MessageQueueUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MessageQueueUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="MessageQueueGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="Message Queue  *User must also have Edit Investigation access">
+								<value>
+									<xsp-request:get-attribute name="MessageQueueGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("MessageQueueGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="SuperviserReviewQueueUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="SuperviserReviewQueueUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("SuperviserReviewQueueUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="SuperviserReviewQueueGuest" value="G" label="Supervisor Review Queue  *User must also have Edit Investigation access">
+								<value>
+									<xsp-request:get-attribute name="SuperviserReviewQueueGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("SuperviserReviewQueueGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+
+						
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					</element>
+				</line>
+
+
+
+				
+				
+								<!--=============================== Public Queues ============================== -->
+				<line>
+					<element type="line-separator" title="Manage Public Queues"/>
+				</line>
+				<line>
+					<element type="checkbox-grid">
+						<options>
+							<option name="AddInactivatePublicQueueUser" value="U" header="User">
+								<value>
+									<xsp-request:get-attribute name="AddInactivatePublicQueueUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("AddInactivatePublicQueueUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="AddInactivatePublicQueueGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="Add/Inactivate  *User must also have View Investigation access">
+								<value>
+									<xsp-request:get-attribute name="AddInactivatePublicQueueGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("AddInactivatePublicQueueGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						
+					</element>
+				</line>
+				
+				<!-- ============================== Case Reporting ==================== -->
+				<line>
+					<element type="line-separator" title="Share Investigation"/>
+				</line>
+				<!--line>
+	<element type="raw" aligh="left">
+				<span><b>
+					<font size="1">User</font>
+				</b></span>
+			</element>
+			<element type="raw" aligh="left">
+				<span><b>
+					<font size="1">Guest</font>
+				</b></span>
+			</element>
+			<element type="raw" aligh="left">
+				<span><i>
+					<font size="1">Note: A User marked as a Guest will only have access to shared records.</font>
+				</i></span>
+			</element>
+</line-->
+				<line>
+					<element name="CaseReportingPermissionSet" type="checkbox-grid">
+						<options>
+							<option name="CaseReportingCreateUser" value="U" header="User">
+								<value>
+									<xsp-request:get-attribute name="CaseReportingCreateUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+				if (request.getAttribute("CaseReportingCreateUser") == "U") {
+				]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+    					}
+				</xsp:logic>
+							</option>
+							<xsp:logic>
+			if (operationType.equals("create") || operationType.equals("edit"))
+			{
+			</xsp:logic>
+							<xsp:logic>
+    				}
+			else if (operationType.equals("view"))
+			{
+			</xsp:logic>
+							<readonly/>
+							<xsp:logic>
+			}
+		 	</xsp:logic>
+							<option label="Create  *User must also have View Investigation access" header="Guest   Note: A User marked as a Guest will only have access to shared records.">
+								<partner name="CaseReportingCreateNeedsApprovalUser" type="radio" indented="yes" default="n" layout="horizontal">
+									<options>
+										<option name="CaseReportingCreateDoesNotNeedApprovalUser" align="left" value="n" label="[-nc]Does Not Need Approval" align-label="left"/>
+									</options>
+									<value>
+										<xsp-request:get-attribute name="CaseReportingCreateNeedsApprovalUser"/>
+									</value>
+									<options>
+										<option name="CaseReportingCreateNeedsApprovalUser" value="y" label="[-nc]Needs Approval" align-label="left"/>
+									</options>
+									<value>
+										<xsp-request:get-attribute name="CaseReportingCreateNeedsApprovalUser"/>
+									</value>
+									<xsp:logic>
+					if (operationType.equals("create") || operationType.equals("edit"))
+					{
+					</xsp:logic>
+									<xsp:logic>
+            				}
+					else if (operationType.equals("view"))
+					{
+					</xsp:logic>
+									<readonly/>
+									<xsp:logic>
+					}
+				 	</xsp:logic>
+								</partner>
+							</option>
+							<option/>
+							<option name="CaseReportingCreateGuest" value="G" label="Create  *User must also have View Investigation access">
+								<value>
+									<xsp-request:get-attribute name="CaseReportingCreateGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+				if (request.getAttribute("CaseReportingCreateGuest") == "G") {
+				]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+    					}
+				</xsp:logic>
+								<partner name="CaseReportingCreateNeedsApprovalGuest" type="radio" indented="yes" default="n" layout="horizontal">
+									<options>
+										<option name="CaseReportingCreateDoesNotNeedApprovalGuest" value="n" label="[-nc]Does Not Need Approval" align-label="left"/>
+									</options>
+									<options>
+										<option name="CaseReportingCreateNeedsApprovalGuest" value="y" label="[-nc]Needs Approval" align-label="left"/>
+									</options>
+									<value>
+										<xsp-request:get-attribute name="CaseReportingCreateNeedsApprovalGuest"/>
+									</value>
+									<xsp:logic>
+					if (operationType.equals("create") || operationType.equals("edit"))
+					{
+					</xsp:logic>
+									<xsp:logic>
+            				}
+					else if (operationType.equals("view"))
+					{
+					</xsp:logic>
+									<readonly/>
+									<xsp:logic>
+					}
+				 	</xsp:logic>
+								</partner>
+							</option>
+							<!--xsp:logic>
+			if (operationType.equals("create") || operationType.equals("edit"))
+			{
+			</xsp:logic>
+			<xsp:logic>
+    				}
+			else if (operationType.equals("view"))
+			{
+			</xsp:logic>
+				<readonly/>
+			<xsp:logic>
+			}
+		 	</xsp:logic>							
+		 	
+		 	<option>
+				<partner name="CaseReportingCreateNeedsApprovalGuest" type="radio" indented="yes" default="n">
+					<options>
+						<option name="CaseReportingCreateDoesNotNeedApprovalGuest" value="n" label="Does Not Needs Approval"></option>
+					</options>
+					<options>
+						<option name="CaseReportingCreateNeedsApprovalGuest" value="y" label="Needs Approval"></option>
+					</options>
+					<value>
+						<xsp-request:get-attribute name="CaseReportingCreateNeedsApprovalGuest"/>
+					</value>
+					<xsp:logic>
+					if (operationType.equals("create") || operationType.equals("edit"))
+					{
+					</xsp:logic>
+					<xsp:logic>
+            				}
+					else if (operationType.equals("view"))
+					{
+					</xsp:logic>
+						<readonly/>
+					<xsp:logic>
+					}
+				 	</xsp:logic>
+                		</partner>
+            		</option-->
+							<!--/element>
+			<element type="raw" aligh="left">
+				<span><b>
+					<font size="2">Create</font>
+				</b></span>
+                	</element>
+</line>
+
+<line indented="yes">
+	<element type="join">
+		<line indented="no"-->
+							<!--/line>
+    		</element>
+</line>
+
+
+		<line>
+	<element type="checkbox"-->
+						</options>
+						<xsp:logic>
+		if (operationType.equals("create") || operationType.equals("edit"))
+		{
+		</xsp:logic>
+						<xsp:logic>
+				}
+		else if (operationType.equals("view"))
+		{
+		</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+		}
+	 	</xsp:logic>
+					</element>
+				</line>
+				
+	-->			<!--=============================== Reports ============================== -->
+				<line>
+					<element type="line-separator" title="Reports"/>
+				</line>
+				<!--			<line>
+					<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="1">User</font>
+                				</b></span>
+                			</element>
+                			<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="1">Guest</font>
+                				</b></span>
+                			</element>
+                			<element type="raw" aligh="left">
+                				<span><i>
+                					<font size="1">Note: A User marked as a Guest will only have access to shared records.</font>
+                				</i></span>
+                			</element>
+				</line>-->
+				<line>
+					<element type="checkbox-grid">
+						<options>
+							<option name="ExportReportUser" value="U" header="User">
+								<value>
+									<xsp-request:get-attribute name="ExportReportUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("ExportReportUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="ExportReportGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="Export Report/Query Design  *User must also have Select Criteria access">
+								<value>
+									<xsp-request:get-attribute name="ExportReportGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("ExportReportGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<!--/element>
+                			<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="2">Export Report/Query Design</font>
+                				</b></span>
+                				<span>
+                					<font size="2">  *User must also have Select Criteria access</font>
+                				</span>
+                			</element>
+				</line>
+				<line>
+					<element type="checkbox"-->
+						<options>
+							<option name="RunReportUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="RunReportUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("RunReportUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="RunReportGuest" value="G" label="Run Report/Query Design   *User must also have Select Criteria access">
+								<value>
+									<xsp-request:get-attribute name="RunReportGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("RunReportGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					</element>
+					<!--		<element type="raw" aligh="left">
+                				<span><b>
+                					<font size="2">Run Report/Query Design</font>
+                				</b></span>
+                				<span>
+                					<font size="2">  *User must also have Select Criteria access</font>
+                				</span>
+                			</element>-->
+				</line>
+				<!--=============================== Template ============================== -->
+				<line>
+					<element type="join">
+						<line indented="yes">
+							<element type="line-separator" title="Template "/>
+						</line>
+						<line></line>
+						<!--	<line>
+								<element type="raw">
+			                				<span><b>
+			                					<font size="1">User</font>
+			                				</b></span>
+			                			</element>
+			                			<element type="raw">
+			                				<span><b>
+			                					<font size="1">Guest</font>
+			                				</b></span>
+			                			</element>
+			                			<element type="raw">
+			                				<span><i>
+			                					<font size="1">Note: A User marked as a Guest will only have access to shared records.</font>
+			                				</i></span>
+			                			</element>
+							</line>-->
+						<line indented="yes">
+							<element type="checkbox-grid">
+								<options>
+									<option name="TemplateReportSelectCriteriaUser" value="U" header="User">
+										<value>
+											<xsp-request:get-attribute name="TemplateReportSelectCriteriaUser"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("TemplateReportSelectCriteriaUser") == "U") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<options>
+									<option name="TemplateReportSelectCriteriaGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="Select Criteria Report/Query Design  *User must also have View Report/Query Design access">
+										<value>
+											<xsp-request:get-attribute name="TemplateReportSelectCriteriaGuest"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("TemplateReportSelectCriteriaGuest") == "G") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<!--/element>
+			                			<element type="raw" aligh="left">
+			                				<span><b>
+			                					<font size="2">Select Criteria Report/Query Design</font>
+			                				</b></span>
+			                				<span>
+			                					<font size="2">  *User must also have View Report/Query Design access</font>
+			                				</span>
+			                			</element>
+							</line>
+							<line>
+							<element type="checkbox"-->
+								<options>
+									<option name="TemplateReportViewUser" value="U">
+										<value>
+											<xsp-request:get-attribute name="TemplateReportViewUser"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("TemplateReportViewUser") == "U") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<options>
+									<option name="TemplateReportViewGuest" value="G" label="View Report/Query Design">
+										<value>
+											<xsp-request:get-attribute name="TemplateReportViewGuest"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("TemplateReportViewGuest") == "G") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+							</element>
+							<!--	<element type="raw" aligh="left">
+		                				<span><b>
+		                					<font size="2">View Report/Query Design</font>
+		                				</b></span>
+		            	                	</element>-->
+						</line>
+					</element>
+				</line>
+				<!--=============================== Public ============================== -->
+				<line>
+					<element type="join">
+						<line indented="yes">
+							<element type="line-separator" title="Public"/>
+						</line>
+						<line></line>
+						<!--		<line>
+								<element type="raw" aligh="left">
+			                				<span><b>
+			                					<font size="1">User</font>
+			                				</b></span>
+			                			</element>
+			                			<element type="raw" aligh="left">
+			                				<span><b>
+			                					<font size="1">Guest</font>
+			                				</b></span>
+			                			</element>
+			                			<element type="raw" aligh="left">
+			                				<span><i>
+			                					<font size="1">Note: A User marked as a Guest will only have access to shared records.</font>
+			                				</i></span>
+			                			</element>
+							</line>-->
+						<line indented="yes">
+							<element type="checkbox-grid">
+								<options>
+									<option name="PublicReportAddUser" value="U" header="User">
+										<value>
+											<xsp-request:get-attribute name="PublicReportAddUser"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("PublicReportAddUser") == "U") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<options>
+									<option name="PublicReportAddGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="Add Report/Query Design  *User must also have View Template Report/Query access">
+										<value>
+											<xsp-request:get-attribute name="PublicReportAddGuest"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("PublicReportAddGuest") == "G") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<!--/element>
+			                			<element type="raw" aligh="left">
+			                				<span><b>
+			                					<font size="2">Add Report/Query Design</font>
+			                				</b></span>
+			                				<span>
+			                					<font size="2">  *User must also have View Template Report/Query access</font>
+			                				</span>
+			                			</element>
+							</line>
+							<line>
+								<element type="checkbox"-->
+								<options>
+									<option name="PublicReportDeleteUser" value="U">
+										<value>
+											<xsp-request:get-attribute name="PublicReportDeleteUser"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("PublicReportDeleteUser") == "U") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<options>
+									<option name="PublicReportDeleteGuest" value="G" label="Delete Report/Query Design  *User must also have View Public Report/Query access">
+										<value>
+											<xsp-request:get-attribute name="PublicReportDeleteGuest"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("PublicReportDeleteGuest") == "G") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<!--/element>
+			                			<element type="raw" aligh="left">
+			                				<span><b>
+			                					<font size="2">Delete Report/Query Design</font>
+			                				</b></span>
+			                				<span>
+			                					<font size="2">  *User must also have View Public Report/Query access</font>
+			                				</span>
+			                			</element>
+			         			</line>
+			            			<line>
+								<element type="checkbox"-->
+								<options>
+									<option name="PublicReportEditUser" value="U">
+										<value>
+											<xsp-request:get-attribute name="PublicReportEditUser"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("PublicReportEditUser") == "U") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<options>
+									<option name="PublicReportEditGuest" value="G" label="Edit Report/Query Design  *User must also have View Public Report/Query access">
+										<value>
+											<xsp-request:get-attribute name="PublicReportEditGuest"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("PublicReportEditGuest") == "G") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<!--/element>
+			                			<element type="raw" aligh="left">
+			                				<span><b>
+			                					<font size="2">Edit Report/Query Design</font>
+			                				</b></span>
+			                				<span>
+			                					<font size="2">  *User must also have View Public Report/Query access</font>
+			                				</span>
+			                           	</element>
+			         			</line>
+							<line>
+								<element type="checkbox"-->
+								<options>
+									<option name="PublicReportSelectFilterUser" value="U">
+										<value>
+											<xsp-request:get-attribute name="PublicReportSelectFilterUser"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("PublicReportSelectFilterUser") == "U") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<options>
+									<option name="PublicReportSelectFilterGuest" value="G" label="Select Filter Criteria  *User must also have View Public Report/Query access">
+										<value>
+											<xsp-request:get-attribute name="PublicReportSelectFilterGuest"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("PublicReportSelectFilterGuest") == "G") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<!--/element>
+			                			<element type="raw" aligh="left">
+			                				<span><b>
+			                					<font size="2">Select Filter Criteria</font>
+			                				</b></span>
+			                				<span>
+			                					<font size="2">  *User must also have View Public Report/Query access</font>
+			                				</span>
+			                			</element>
+			         			</line>
+			         			<line>
+								<element type="checkbox"-->
+								<options>
+									<option name="PublicReportViewUser" value="U">
+										<value>
+											<xsp-request:get-attribute name="PublicReportViewUser"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("PublicReportViewUser") == "U") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+								<options>
+									<option name="PublicReportViewGuest" value="G" label="View Report/Query Design">
+										<value>
+											<xsp-request:get-attribute name="PublicReportViewGuest"/>
+										</value>
+										<xsp:logic><![CDATA[
+											if (request.getAttribute("PublicReportViewGuest") == "G") {
+											]]></xsp:logic>
+										<checked/>
+										<xsp:logic>
+	                								}
+											</xsp:logic>
+									</option>
+								</options>
+								<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+								<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+								<readonly/>
+								<xsp:logic>
+									}
+					 				</xsp:logic>
+							</element>
+							<!--		<element type="raw" aligh="left">
+			                				<span><b>
+			                					<font size="2">View Report/Query Design</font>
+			                				</b></span>
+			             	                	</element>-->
+						</line>
+						<!--=============================== Private ============================== -->
+						<line>
+							<element type="join">
+								<line indented="yes">
+									<element type="line-separator" title="Private"/>
+								</line>
+								<line></line>
+								<line indented="yes">
+									<element type="checkbox-grid">
+										<options>
+											<option name="PrivateReportAddUser" value="U" header="User">
+												<value>
+													<xsp-request:get-attribute name="PrivateReportAddUser"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("PrivateReportAddUser") == "U") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="PrivateReportAddGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="Add Report/Query Design  *User must also have View Template Report/Query access">
+												<value>
+													<xsp-request:get-attribute name="PrivateReportAddGuest"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("PrivateReportAddGuest") == "G") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="PrivateReportDeleteUser" value="U">
+												<value>
+													<xsp-request:get-attribute name="PrivateReportDeleteUser"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("PrivateReportDeleteUser") == "U") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="PrivateReportDeleteGuest" value="G" label="Delete Report/Query Design  *User must also have View Private Report/Query access">
+												<value>
+													<xsp-request:get-attribute name="PrivateReportDeleteGuest"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("PrivateReportDeleteGuest") == "G") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="PrivateReportEditUser" value="U">
+												<value>
+													<xsp-request:get-attribute name="PrivateReportEditUser"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("PrivateReportEditUser") == "U") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="PrivateReportEditGuest" value="G" label="Edit Report/Query Design  *User must also have View Private Report/Query access">
+												<value>
+													<xsp-request:get-attribute name="PrivateReportEditGuest"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("PrivateReportEditGuest") == "G") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="PrivateReportSelectFilterUser" value="U">
+												<value>
+													<xsp-request:get-attribute name="PrivateReportSelectFilterUser"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("PrivateReportSelectFilterUser") == "U") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="PrivateReportSelectFilterGuest" value="G" label="Select Filter Criteria  *User must also have View Private Report/Query access">
+												<value>
+													<xsp-request:get-attribute name="PrivateReportSelectFilterGuest"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("PrivateReportSelectFilterGuest") == "G") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="PrivateReportViewUser" value="U">
+												<value>
+													<xsp-request:get-attribute name="PrivateReportViewUser"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("PrivateReportViewUser") == "U") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="PrivateReportViewGuest" value="G" label="View Report/Query Design">
+												<value>
+													<xsp-request:get-attribute name="PrivateReportViewGuest"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("PrivateReportViewGuest") == "G") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+									</element>
+								</line>
+							</element>
+						</line>
+						<!-- ================================== Reporting Facility ===================== -->
+						<line>
+							<element type="join">
+								<line indented="yes">
+									<element type="line-separator" title="Reporting Facility"/>
+								</line>
+								<line></line>
+								<line indented="yes">
+									<element type="checkbox-grid">
+										<options>
+											<option name="ReportingFacilityReportAddUser" value="U" header="User">
+												<value>
+													<xsp-request:get-attribute name="ReportingFacilityReportAddUser"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("ReportingFacilityReportAddUser") == "U") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="ReportingFacilityReportAddGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="Add Report/Query Design  *User must also have View Template Report/Query access">
+												<value>
+													<xsp-request:get-attribute name="ReportingFacilityReportAddGuest"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("ReportingFacilityReportAddGuest") == "G") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="ReportingFacilityReportDeleteUser" value="U">
+												<value>
+													<xsp-request:get-attribute name="ReportingFacilityReportDeleteUser"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("ReportingFacilityReportDeleteUser") == "U") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="ReportingFacilityReportDeleteGuest" value="G" label="Delete Report/Query Design  *User must also have View Reporting Facility Report/Query access">
+												<value>
+													<xsp-request:get-attribute name="ReportingFacilityReportDeleteGuest"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("ReportingFacilityReportDeleteGuest") == "G") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="ReportingFacilityReportEditUser" value="U">
+												<value>
+													<xsp-request:get-attribute name="ReportingFacilityReportEditUser"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("ReportingFacilityReportEditUser") == "U") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="ReportingFacilityReportEditGuest" value="G" label="Edit Report/Query Design  *User must also have View Reporting Facility Report/Query access">
+												<value>
+													<xsp-request:get-attribute name="ReportingFacilityReportEditGuest"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("ReportingFacilityReportEditGuest") == "G") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="ReportingFacilityReportSelectFilterUser" value="U">
+												<value>
+													<xsp-request:get-attribute name="ReportingFacilityReportSelectFilterUser"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("ReportingFacilityReportSelectFilterUser") == "U") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="ReportingFacilityReportSelectFilterGuest" value="G" label="Select Filter Criteria  *User must also have View Reporting Facility Report/Query access">
+												<value>
+													<xsp-request:get-attribute name="ReportingFacilityReportSelectFilterGuest"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("ReportingFacilityReportSelectFilterGuest") == "G") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="ReportingFacilityReportViewUser" value="U">
+												<value>
+													<xsp-request:get-attribute name="ReportingFacilityReportViewUser"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("ReportingFacilityReportViewUser") == "U") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+										<options>
+											<option name="ReportingFacilityReportViewGuest" value="G" label="View Report/Query Design">
+												<value>
+													<xsp-request:get-attribute name="ReportingFacilityReportViewGuest"/>
+												</value>
+												<xsp:logic><![CDATA[
+											if (request.getAttribute("ReportingFacilityReportViewGuest") == "G") {
+											]]></xsp:logic>
+												<checked/>
+												<xsp:logic>
+	                								}
+											</xsp:logic>
+											</option>
+										</options>
+										<xsp:logic>
+									if (operationType.equals("create") || operationType.equals("edit"))
+									{
+									</xsp:logic>
+										<xsp:logic>
+                							}
+									else if (operationType.equals("view"))
+									{
+									</xsp:logic>
+										<readonly/>
+										<xsp:logic>
+									}
+					 				</xsp:logic>
+									</element>
+								</line>
+							</element>
+						</line>
+						<!--- end of reporting facility in Reports section -->
+					</element>
+				</line>
+				
+				<!--=============================== Contact Record ============================== -->
+				<line>
+					<element type="line-separator" title="Contact Record"/>
+				</line>
+				
+				<line>
+					<element type="checkbox-grid">
+						<options>
+							<option name="ContactRecordAddUser" value="U" header="User">
+								<value>
+									<xsp-request:get-attribute name="ContactRecordAddUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("ContactRecordAddUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="ContactRecordAddGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="Add  *User must also have View Investigation access">
+								<value>
+									<xsp-request:get-attribute name="ContactRecordAddGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("ContactRecordAddGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					
+						<options>
+							<option name="ContactRecordEditUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="ContactRecordEditUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("ContactRecordEditUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="ContactRecordEditGuest" value="G" label="Edit  *User must also have View Contact Record access">
+								<value>
+									<xsp-request:get-attribute name="ContactRecordEditGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("ContactRecordEditGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					
+						<options>
+							<option name="ContactRecordViewUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="ContactRecordViewUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("ContactRecordViewUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="ContactRecordViewGuest" value="G" label="View  *User must also have View Patient File access">
+								<value>
+									<xsp-request:get-attribute name="ContactRecordViewGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("ContactRecordViewGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					
+						<options>
+							<option name="ContactRecordDeleteUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="ContactRecordDeleteUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("ContactRecordDeleteUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="ContactRecordDeleteGuest" value="G" label="Delete  *User must also have View Investigation access">
+								<value>
+									<xsp-request:get-attribute name="ContactRecordDeleteGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("ContactRecordDeleteGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+
+
+					 	
+					 	<options>
+						<option name="ContactRecordManageUser" value="U">
+							<value>
+								<xsp-request:get-attribute name="ContactRecordManageUser"/>
+							</value>
+							<xsp:logic><![CDATA[
+							if (request.getAttribute("ContactRecordManageUser") == "U") {
+							]]></xsp:logic>
+							<checked/>
+							<xsp:logic>
+                					}
+							</xsp:logic>
+						</option>
+					</options>
+					<xsp:logic>
+					if (operationType.equals("create") || operationType.equals("edit"))
+					{
+					</xsp:logic>
+					<xsp:logic>
+            				}
+					else if (operationType.equals("view"))
+					{
+					</xsp:logic>
+					<readonly/>
+					<xsp:logic>
+					}
+				 	</xsp:logic>
+					<options>
+						<option name="ContactRecordManageGuest" value="G" label="Manage  *User must also have View Contact Record access">
+							<value>
+								<xsp-request:get-attribute name="ContactRecordManageGuest"/>
+							</value>
+							<xsp:logic><![CDATA[
+							if (request.getAttribute("ContactRecordManageGuest") == "G") {
+							]]></xsp:logic>
+							<checked/>
+							<xsp:logic>
+                					}
+							</xsp:logic>
+						</option>
+					</options>
+					<xsp:logic>
+					if (operationType.equals("create") || operationType.equals("edit"))
+					{
+					</xsp:logic>
+					<xsp:logic>
+            				}
+					else if (operationType.equals("view"))
+					{
+					</xsp:logic>
+					<readonly/>
+					<xsp:logic>
+					}
+				 	</xsp:logic>
+					 	
+					</element>
+			
+				</line>
+				
+				<!--=============================== Interview ============================== -->
+				<line>
+					<element type="line-separator" title="Interview"/>
+				</line>
+				
+				<line>
+					<element type="checkbox-grid">
+						<options>
+							<option name="InterviewRecordAddUser" value="U" header="User">
+								<value>
+									<xsp-request:get-attribute name="InterviewRecordAddUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("InterviewRecordAddUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="InterviewRecordAddGuest" value="G" header="Guest  Note: A User marked as a Guest will only have access to shared records." label="Add  *User must also have View Investigation access">
+								<value>
+									<xsp-request:get-attribute name="InterviewRecordAddGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("InterviewRecordAddGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					
+						<options>
+							<option name="InterviewRecordEditUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="InterviewRecordEditUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("InterviewRecordEditUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="InterviewRecordEditGuest" value="G" label="Edit  *User must also have View Interview access">
+								<value>
+									<xsp-request:get-attribute name="InterviewRecordEditGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("InterviewRecordEditGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					
+						<options>
+							<option name="InterviewRecordViewUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="InterviewRecordViewUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("InterviewRecordViewUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="InterviewRecordViewGuest" value="G" label="View  *User must also have View Investigation File access">
+								<value>
+									<xsp-request:get-attribute name="InterviewRecordViewGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("InterviewRecordViewGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+					
+						<options>
+							<option name="InterviewRecordDeleteUser" value="U">
+								<value>
+									<xsp-request:get-attribute name="InterviewRecordDeleteUser"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("InterviewRecordDeleteUser") == "U") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+						<options>
+							<option name="InterviewRecordDeleteGuest" value="G" label="Delete  *User must also have View Interview access">
+								<value>
+									<xsp-request:get-attribute name="InterviewRecordDeleteGuest"/>
+								</value>
+								<xsp:logic><![CDATA[
+								if (request.getAttribute("InterviewRecordDeleteGuest") == "G") {
+								]]></xsp:logic>
+								<checked/>
+								<xsp:logic>
+	                					}
+								</xsp:logic>
+							</option>
+						</options>
+						<xsp:logic>
+						if (operationType.equals("create") || operationType.equals("edit"))
+						{
+						</xsp:logic>
+						<xsp:logic>
+                				}
+						else if (operationType.equals("view"))
+						{
+						</xsp:logic>
+						<readonly/>
+						<xsp:logic>
+						}
+					 	</xsp:logic>
+
+
+					 	
+					</element>
+			
+				</line>
+				
+	         		--></group>
+		</tab>
+	</content>
+</xsp:page>

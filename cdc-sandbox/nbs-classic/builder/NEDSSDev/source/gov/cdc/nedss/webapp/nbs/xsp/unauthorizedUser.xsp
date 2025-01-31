@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<content>
+		<button-bar>
+		
+		</button-bar>
+		<tab>
+			<group name="">
+				<line>
+					<element type="raw">
+						<span>
+						<xsp:logic>
+						if((request.getParameter("usersMigrated")) !=null){
+						</xsp:logic>
+						<br/>
+						<b>
+						Please contact Administrator. 
+						<br/>
+						<br/>
+						ERROR: No user exists in database.Please migrate users from LDAP to Database. 
+						</b>
+						<br/>
+						<xsp:logic>
+						}else{</xsp:logic>
+						
+							<br/>
+							<br/>
+							
+							<p><b>You are not authorized to access the NBS system.</b></p>
+							
+						</span>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+			</group>
+		</tab>
+	</content>
+	
+</xsp:page>

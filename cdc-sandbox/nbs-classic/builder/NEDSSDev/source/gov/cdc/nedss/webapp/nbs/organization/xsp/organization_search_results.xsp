@@ -1,0 +1,578 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:xsp="http://apache.org/xsp" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:util="http://apache.org/xsp/util/2.0" xmlns:srt-codes="http://www.cdc.gov/nedss/GetSRTCodes/1.0">
+	<xsp:structure>
+		<xsp:include>java.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.organization.dt.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.organization.vo.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.organization.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.entity.entityid.dt.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.locator.dt.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.util.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.systemservice.nbssecurity.*</xsp:include>
+		<xsp:include>gov.cdc.nedss.webapp.nbs.logicsheet.helper.CachedDropDownValues</xsp:include>
+	</xsp:structure>
+	<xsp:logic>
+	 	
+		private String getTitle(){
+				String titleName = (String)request.getAttribute("OrganizationName");
+				if(titleName != null)  {
+					request.setAttribute("EntityName", titleName);
+					titleName = titleName+" Search Results";
+					return titleName;
+				}	else
+					return "Organization Search Results";
+			}	
+	</xsp:logic>
+	<xsp:logic><![CDATA[
+			 
+			
+		   	private CachedDropDownValues srtValues = new CachedDropDownValues();
+            private TreeMap treemap = srtValues.getStateCodes2("USA");          
+                  	
+
+		   private String getStateDescTxt(String sStateCd) {
+		   		
+		   		String desc=null;
+		                  	if (treemap != null){
+		                    
+		                      if(sStateCd!=null && treemap.get(sStateCd)!=null)
+		                      	desc = (String)treemap.get(sStateCd);	                      	
+		                   }
+		      			return desc;
+		    }
+		    String entityNm = null;
+		    String entityLocalID= null;
+		    String countyCd = null;
+		    String entityCity= null;
+		    String entityState= null;
+		    String entityZip= null;
+		    String entityCounty= null;
+		    String entityUID = null;
+		    String entityPhoneNbr = null;
+		    String entityPhoneExt = null;
+		    
+		    String entityStreetAdd1 = null;
+		    String entityStreetAdd2 = null;
+		    String orgSearchResult =null;
+		    String entityEntityId=null;
+		    String entityEntityIdType=null;
+		    String entityIds=null;
+		    
+		    //Added for ABCs hospital/lab, since version 1.1.3
+		    String abcLabHospitalID = null;
+		    String abcLabHospitalIDType = null;
+		    int abcHospitalIdRule  = -1;
+		    final int SINGLE_ORG_ID_RULE = 0;
+    		    final int SINGLE_ABC_ORG_ID_RULE = 1;
+    		    final int OTHER_ORG_ID_RULE = 2;
+    		   
+    		    
+    		    private int determineABCsHospitalIDToShow(Collection hospitalEntityDTCollection)
+		    {
+		    	 int abcIdCount = 0;
+		    	int totalIdCount = 0;
+				StringBuffer entityIdString = new StringBuffer("");
+		      for(Iterator it = hospitalEntityDTCollection.iterator(); it.hasNext(); )
+		      {
+		        EntityIdDT entityIdDT = (EntityIdDT)it.next();
+		        if(entityIdDT == null) continue;
+		        if(entityIdDT.getTypeDescTxt() != null)
+					entityIdString.append("<br><b>").append(entityIdDT.getTypeDescTxt()).append(": </b>");
+				if(entityIdDT.getRootExtensionTxt() != null)
+					entityIdString.append(entityIdDT.getRootExtensionTxt());
+				if(entityIdDT.getAssigningAuthorityCd() != null)
+					entityIdString.append(" (").append(entityIdDT.getAssigningAuthorityCd());
+				if(entityIdDT.getAssigningAuthorityDescTxt() != null)
+					entityIdString.append(" (").append(entityIdDT.getAssigningAuthorityDescTxt()).append(")");
+				if(entityIdDT.getAssigningAuthorityCd() != null)
+					entityIdString.append( ")");
+		        entityIds = entityIdString.toString();
+		        String idType = entityIdDT.getTypeCd();
+		        String recordStatusCd = entityIdDT.getRecordStatusCd();
+		        if(idType == null) continue;
+
+		        if(idType.equals("ABCs Hospital ID") )
+		        {
+		          abcIdCount++;
+		          totalIdCount++;
+		        }
+		        else  if( !idType.equals("Quick Entry Code") )
+		        {
+		          totalIdCount++;
+		        }
+		      }
+		
+		      if(totalIdCount == 1)
+		      {
+		        return SINGLE_ORG_ID_RULE;
+		      }
+		      if(abcIdCount == 1)
+		      {
+		        return SINGLE_ABC_ORG_ID_RULE;
+		      }
+		      return OTHER_ORG_ID_RULE;
+		    }	     
+		    
+	]]></xsp:logic>
+	<content type="organization">
+		<xsp:attribute name="title">
+			<xsp:expr>getTitle()</xsp:expr>
+		</xsp:attribute>
+		<xsp:logic><![CDATA[
+
+				String contextAction = request.getParameter("ContextAction");
+				int currentIndex = 0;
+				int maxRowCount = 10;
+				int numberOfRecords = 0;
+				TreeMap objStore = (TreeMap) request.getSession().getAttribute("NBSObjectStore");
+
+				//String temp = (String) objStore.get("DSFromIndex");
+				
+				String temp = request.getParameter("currentIndex");
+				if (temp!=null) {
+					currentIndex = Integer.parseInt(temp);
+				}
+				ArrayList organizationList = new ArrayList();
+				ArrayList  organization = new ArrayList();
+
+				OrganizationSearchVO organizationFind = null;
+								
+			try {
+				numberOfRecords = 0;
+				//organizationList = (ArrayList) request.getSession().getAttribute("OrganizationSearchCollection");
+				
+				organizationList = (ArrayList) request.getAttribute("DSSearchResults");
+
+				if(organizationList != null){
+					DisplayOrganizationList  list = (DisplayOrganizationList)organizationList.get(0);
+					if (list != null) {
+						organization = list.getList();
+						numberOfRecords = organization.size() ;
+					}
+				}
+			}
+			catch (Exception e) {
+			     e.printStackTrace();
+			}
+	
+			
+			]]></xsp:logic>
+		<selects>
+			<select name="EL_TYPE">
+				<srt-codes:getCodedValues>
+					<type>EL_TYPE</type>
+				</srt-codes:getCodedValues>
+			</select>
+		</selects>
+		<button-bar>
+			<xsp:logic><![CDATA[if(contextAction!=null  && (!contextAction.equals("EntitySearch"))){]]></xsp:logic>
+			<right>
+				<xsp:attribute name="authorized">
+					<xsp-request:get-attribute name="addButton"/>
+				</xsp:attribute>
+				<label>Add</label>
+				<javascript-action>getPage('<xsp-request:get-attribute name="addButtonHref"/>');</javascript-action>
+			</right>
+			<xsp:logic>}</xsp:logic>
+			<xsp:logic>if(contextAction.equals("EntitySearch")) {</xsp:logic>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>CancelEntitySearch();</javascript-action>
+			</right>
+			<xsp:logic> } </xsp:logic>
+		</button-bar>
+		<javascript-files>
+			<import>EntitySearch.js</import>
+		</javascript-files>
+		<!--	<submit location="localhost/cocoon/nedss/OrganizationSearchResult.xml"/>-->
+		<AddNewOrganizationHref location="/nedss/servlet/gov.cdc.nedss.cdm.CompareOrganizationServlet"/>
+		<!--	<ViewOrganizationHref location="/nedss/servlet/gov.cdc.nedss.cdm.CompareOrganizationServlet"/>-->
+		<xsp-request:get-uri as="xml"/>
+		<session:get-id as="xml"/>
+		<refineSearchHref>
+			<xsp-request:get-attribute name="refineSearchHref"/>
+		</refineSearchHref>
+		<newSearchHref>
+			<xsp-request:get-attribute name="newSearchHref"/>
+		</newSearchHref>
+		<viewHref>
+			<xsp-request:get-attribute name="viewHref"/>
+		</viewHref>
+		<nextHref>
+			<xsp-request:get-attribute name="nextHref"/>
+		</nextHref>
+		<prevHref>
+			<xsp-request:get-attribute name="prevHref"/>
+		</prevHref>
+		<searchCriteria>
+			<session:get-attribute name="searchCriteria"/>
+		</searchCriteria>
+		<search-operation-type>
+			<xsp-request:get-attribute name="searchPageOperationType"/>
+		</search-operation-type>
+		<criteria-operation-type>
+			<xsp-request:get-attribute name="criteriaPageOperationType"/>
+		</criteria-operation-type>
+		<organization-view-operation-type>
+			<xsp-request:get-attribute name="organizationOperationType"/>
+		</organization-view-operation-type>
+		<header>
+			<column>
+				<name/>
+			</column>
+			<!--column>
+				<xsp:logic>if(!contextAction.equals("EntitySearch")) {</xsp:logic>
+				<name>Status</name>
+				<xsp:logic> } </xsp:logic>
+			</column-->
+			<column>
+				<name>Name</name>
+			</column>
+			<column>
+				<name>Address</name>
+			</column>
+			<column>
+				<name>Telephone</name>
+			</column>
+			<column>
+				<name>ID</name>
+			</column>
+		</header>
+		<currentIndex>
+			<xsp:expr>currentIndex</xsp:expr>
+		</currentIndex>
+		<totalRecords>
+			<xsp:expr>numberOfRecords</xsp:expr>
+		</totalRecords>
+		<records>
+			<xsp:logic><![CDATA[
+						for( int i=currentIndex; (i >= currentIndex) && (i < currentIndex + maxRowCount) && (i < numberOfRecords); i++ ) {
+							OrganizationSrchResultVO ovo = (OrganizationSrchResultVO)organization.get(i);
+							entityLocalID=ovo.getOrganizationId();
+
+							entityUID=String.valueOf(ovo.getOrganizationUID());
+							
+							
+
+				]]></xsp:logic>
+			<record>
+				<uid>
+					<xsp:attribute name="type">
+						<xsp:expr>contextAction</xsp:expr>
+					</xsp:attribute>
+					<xsp:expr>ovo.getOrganizationUID()</xsp:expr>
+				</uid>
+				<!--
+				<xsp:logic>if(!contextAction.equals("EntitySearch")) { </xsp:logic>
+				<status-code>
+					<record-status>
+						<xsp:logic>
+						String displayRecordStatus = null;
+						
+						if (ovo.getRecordStatusCd() != null) {
+							if(  ovo.getRecordStatusCd().trim().equals( "ACTIVE"))
+							{
+							
+								displayRecordStatus = "A";
+							}
+						else{
+							displayRecordStatus  = "D";
+							}
+						}
+						
+					  </xsp:logic>
+						<xsp:expr>displayRecordStatus</xsp:expr>
+					</record-status>
+				</status-code>
+				<xsp:logic>}</xsp:logic>
+				-->
+				<!--		code to gather all the organization names		-->
+				<column>
+					<xsp:logic><![CDATA[
+								
+							
+							Collection organizationNames =  ovo.getOrganizationNameColl();
+							if(!(organizationNames == null)) {
+						
+							for( Iterator anIterator = organizationNames .iterator(); anIterator.hasNext(); )
+							{	
+								OrganizationNameDT name = (OrganizationNameDT) anIterator.next();
+								if(name != null)		
+								{			
+								
+									entityNm = name.getNmTxt();
+								
+									]]></xsp:logic>
+					<name>
+						<use-code>
+							<xsp:expr>name.getNmUseCd()</xsp:expr>
+						</use-code>
+						<first-name/>
+						<last-name>
+							<xsp:expr>name.getNmTxt()</xsp:expr>
+						</last-name>
+					</name>
+					<xsp:logic><![CDATA[}}}]]></xsp:logic>
+				</column>
+				<!--		code to gather all the organization addresses		-->
+				<column>
+					<xsp:logic><![CDATA[
+											
+											Collection organizationLocatorsPostal =  ovo.getOrganizationLocatorsColl();
+											if(!(organizationLocatorsPostal == null)) {
+										
+											for( Iterator anIterator = organizationLocatorsPostal .iterator(); anIterator.hasNext(); )
+											{	
+												EntityLocatorParticipationDT locatorPostal = (EntityLocatorParticipationDT)anIterator.next();								
+												if(locatorPostal.getClassCd().equals("PST") ) {
+															
+															if (locatorPostal.getThePostalLocatorDT() != null)	{
+																PostalLocatorDT postal = locatorPostal.getThePostalLocatorDT();
+																//System.out.println("\n locatorPostal.getUseCd()  "+locatorPostal.getUseCd()); 
+																//System.out.println("\n locatorPostal.getCd()  "+locatorPostal.getCd());
+															
+															     if(locatorPostal.getUseCd()!=null && !locatorPostal.getUseCd().trim().equals("") && locatorPostal.getUseCd().equals("Primary Work Place") && locatorPostal.getCd()!=null && !locatorPostal.getCd().trim().equals("") && locatorPostal.getCd().equals("O"))
+															     {
+																	entityCity = postal.getCityDescTxt();
+																	entityState=getStateDescTxt(postal.getStateCd());
+																	entityZip=postal.getZipCd();
+																	//entityCounty=postal.getCntyDescTxt();
+																	entityCounty=postal.getCntyCd();
+																	
+																	entityStreetAdd1 = postal.getStreetAddr1();
+																	entityStreetAdd2 = postal.getStreetAddr2();
+					
+																	if(entityCounty != null && postal.getStateCd() != null) {
+																		TreeMap tm = srtValues.getCountyCodes(postal.getStateCd());
+																		entityCounty = (String)tm.get(entityCounty);
+																	} else {
+																		entityCounty = null;
+																	}
+																}
+																
+													
+													]]></xsp:logic>
+					<address>
+						<use-code>
+							<xsp:expr>locatorPostal.getUseCd()</xsp:expr>
+						</use-code>
+						<!--type-code>
+															<xsp:expr>locatorPostal.getCdDescTxt()</xsp:expr>
+														</type-code> -->
+						<street-address1>
+							<xsp:expr>postal.getStreetAddr1()</xsp:expr>
+						</street-address1>
+						<street-address2>
+							<xsp:expr>postal.getStreetAddr2()</xsp:expr>
+						</street-address2>
+						<city>
+							<xsp:expr>postal.getCityCd()</xsp:expr>
+						</city>
+						<state>
+							<xsp:expr>getStateDescTxt(postal.getStateCd())</xsp:expr>
+						</state>
+						<zip>
+							<xsp:expr>postal.getZipCd()</xsp:expr>
+						</zip>
+						<!--	<county>
+															<xsp:expr>entityCounty</xsp:expr>
+														</county>
+													-->
+					</address>
+					<xsp:logic><![CDATA[}}}}]]></xsp:logic>
+				</column>
+				<!--		telephone column	-->
+				<column>
+					<xsp:logic><![CDATA[
+											
+											Collection organizationLocatorsTele =  ovo.getOrganizationLocatorsColl();
+											if(organizationLocatorsTele != null) {
+												for( Iterator anIterator = organizationLocatorsTele .iterator(); anIterator.hasNext(); )
+												{	
+													EntityLocatorParticipationDT locatorTele = (EntityLocatorParticipationDT)anIterator.next();
+													
+
+													if( locatorTele.getClassCd().equals("TELE")&&locatorTele.getTheTeleLocatorDT() != null && (locatorTele.getUseCd() != null ))
+													{
+
+													 	TeleLocatorDT tele = locatorTele.getTheTeleLocatorDT();
+														 if(locatorTele.getUseCd()!=null && !locatorTele.getUseCd().trim().equals("") && locatorTele.getUseCd().equals("Primary Work Place") && locatorTele.getCd()!=null && !locatorTele.getCd().trim().equals("") && locatorTele.getCd().equals("PH"))														 { 					
+														 entityPhoneNbr = tele.getPhoneNbrTxt();
+														 entityPhoneExt = tele.getExtensionTxt();									
+														
+														 //##!! System.out.println(" --- " + tele.getPhoneNbrTxt());
+														}
+														
+										]]></xsp:logic>
+					<telephone>
+						<use-code>
+							<xsp:expr>locatorTele.getUseCd()</xsp:expr>
+						</use-code>
+						<!--type-code>
+							<value>
+								<xsp:expr>locatorTele.getCdDescTxt()</xsp:expr>
+							</value>
+						</type-code-->
+						<telephone-number>
+							<xsp:expr>tele.getPhoneNbrTxt()</xsp:expr>
+						</telephone-number>
+					</telephone>
+					<xsp:logic><![CDATA[}}}]]></xsp:logic>
+				</column>
+				<!-- Code to gether the id's -->
+				<column>
+					<xsp:logic>
+					
+												Collection organizationIds =  ovo.getOrganizationIdColl();
+												String desc=null;
+
+												if(organizationIds != null) {
+												//Added for ABCs hospital/lab, since version 1.1.3
+		    										abcHospitalIdRule = determineABCsHospitalIDToShow(organizationIds);
+												 									
+													for( Iterator anIterator = organizationIds .iterator(); anIterator.hasNext(); )
+													{	
+														
+														EntityIdDT ids  = (EntityIdDT) anIterator.next();
+														
+													if(ids != null )
+													{
+
+													if(ids.getRootExtensionTxt() != null &amp;&amp; !ids.getRootExtensionTxt().trim().equals(""))
+													{
+
+													  if( ids.getTypeCd() == null)
+													  {
+								if (ids.getTypeDescTxt() != null)
+														{		
+																desc = ids.getTypeDescTxt();
+																if( ids.getTypeDescTxt().equals("Facility ID"))
+																{
+																	entityEntityId=ids.getRootExtensionTxt();
+																	entityEntityIdType= ids.getTypeDescTxt();		     														     
+																}
+																//Added for ABCs hospital/lab, since version 1.1.3
+																if(abcHospitalIdRule == SINGLE_ORG_ID_RULE)
+																{
+																 	abcLabHospitalID =ids.getRootExtensionTxt();
+																	abcLabHospitalIDType= "";
+																}											          	   	 
+														}
+											            }
+													 else
+													 {
+
+														desc =	 ids.getTypeCd() ;
+														if( ids.getTypeCd().equals("Facility ID"))
+														{
+															entityEntityId=ids.getRootExtensionTxt();
+															entityEntityIdType= ids.getTypeCd();		     														     
+														}
+														
+														//Added for ABCs hospital/lab, since version 1.1.3
+														if(abcHospitalIdRule == SINGLE_ORG_ID_RULE &amp;&amp;  ! ids.getTypeCd().equals("Quick Entry Code") )	
+														{
+															abcLabHospitalID =ids.getRootExtensionTxt();
+															abcLabHospitalIDType= ids.getTypeCd();
+														}
+														if(abcHospitalIdRule == SINGLE_ABC_ORG_ID_RULE &amp;&amp; ids.getTypeCd().equals("ABCs Hospital ID"))
+														{
+															abcLabHospitalID =ids.getRootExtensionTxt();
+															abcLabHospitalIDType= ids.getTypeCd();		   
+														}
+														if(abcHospitalIdRule == OTHER_ORG_ID_RULE)	
+														{
+															abcLabHospitalID ="";
+															abcLabHospitalIDType="";
+														}
+													 }
+										</xsp:logic>
+					<id>
+						<use-code>
+							<xsp:expr>desc</xsp:expr>
+						</use-code>
+						<local-id>
+							<xsp:expr>ids.getRootExtensionTxt()</xsp:expr>
+						</local-id>
+					</id>
+					<xsp:logic>}}}}</xsp:logic>
+				</column>
+				<entity-search>
+					<entity-element name="entity.name">
+						<xsp:expr>entityNm</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.localID">
+						<xsp:expr>entityLocalID</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.city">
+						<xsp:expr>entityCity</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.state">
+						<xsp:expr>entityState</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.zip">
+						<xsp:expr>entityZip</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.county">
+						<xsp:expr>entityCounty</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.UID">
+						<xsp:expr>entityUID</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.phoneNbrTxt">
+						<xsp:expr>entityPhoneNbr</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.extensionTxt">
+						<xsp:expr>entityPhoneExt</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.address1">
+						<xsp:expr>entityStreetAdd1</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.address2">
+						<xsp:expr>entityStreetAdd2</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.entityIds">
+						<xsp:expr>entityIds</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.completeOrgSearchResult">
+						<xsp:expr>orgSearchResult</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.entityId">
+						<xsp:expr>entityEntityId</xsp:expr>
+					</entity-element>
+					<entity-element name="entity.entityIdType">
+						<xsp:expr>entityEntityIdType</xsp:expr>
+					</entity-element>
+					
+				</entity-search>
+			</record>
+			<xsp:logic>
+				entityNm = null;
+				entityLocalID= null;
+				countyCd = null;
+				entityCity= null;
+				entityState= null;
+				entityZip= null;
+				entityCounty= null;
+				entityUID = null;
+				entityPhoneNbr = null;
+				entityPhoneExt = null;
+				entityStreetAdd1 =null;
+				entityStreetAdd2 =null;
+				orgSearchResult=null;
+				entityEntityId=null;
+				entityEntityIdType=null;
+				entityIds=null;
+
+
+				//Added for ABCs hospital/lab, since version 1.1.3
+		    		abcLabHospitalID = null;
+		    		abcLabHospitalIDType = null;
+			
+			</xsp:logic>
+			<xsp:logic><![CDATA[
+				}
+			]]></xsp:logic>
+		</records>
+	</content>
+</xsp:page>

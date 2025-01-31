@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<xsp:page language="java" xmlns:default="urn:default" xmlns:xsp="http://apache.org/xsp" xmlns:xsp-request="http://apache.org/xsp/request/2.0" xmlns:xsp-response="http://apache.org/xsp/response/2.0" xmlns:session="http://apache.org/xsp/session/2.0" xmlns:util="http://apache.org/xsp/util/2.0">
+	<xsp:structure>
+		<xsp:include>gov.cdc.nedss.reportadmin.dt.FilterCodeDT</xsp:include>
+		<xsp:include>gov.cdc.nedss.reportadmin.dt.ReportFilterDT</xsp:include>
+	</xsp:structure>
+	<content form="/nbs/UpdateReportFilter.do">
+		<xsp:logic>
+            FilterCodeDT dtFilterCode = (FilterCodeDT)session.getAttribute("ReportAdmin.dtFilterCode");
+            ReportFilterDT dtReportFilter = (ReportFilterDT)session.getAttribute("ReportAdmin.dtReportFilter");
+        </xsp:logic>
+		<link-bar>
+			<!--link>
+                <xsp:attribute name="name">
+                    <xsp:expr>request.getAttribute("LinkName")</xsp:expr>
+                </xsp:attribute>
+                <xsp:expr>request.getAttribute("LinkAddr")</xsp:expr>
+            </link-->
+		</link-bar>
+		<button-bar>
+			<right>
+				<label>Submit</label>
+				<javascript-action>
+                    var action = document.getElementById("action");
+                    action.value = "submit";
+                     validateReportFilterForm();
+                </javascript-action>
+			</right>
+			<right>
+				<label>Cancel</label>
+				<javascript-action>
+                    var action = document.getElementById("action");
+                    action.value = "cancel";
+                    document.forms[0].submit();
+                </javascript-action>
+			</right>
+		</button-bar>
+		<tab>
+			<group>
+				<line>
+					<element type="raw">
+						<span style="color: red; font-weight: bold;">
+							<value>
+								<xsp:expr>request.getAttribute("error")</xsp:expr>
+							</value>
+						</span>
+					</element>
+				</line>
+			</group>
+			<group>
+				<xsp:attribute name="name">
+					<xsp:expr>dtFilterCode.getFilterName()</xsp:expr>
+				</xsp:attribute>
+				<line>
+					<element type="raw" name="rpfError">
+						<span>
+							<i>
+								<font class="boldTenRed"> * Indicates a Required Field </font>
+							</i>
+						</span>
+					</element>
+				</line>
+				<line>
+					<element id="action" name="action" type="hidden">
+						<value/>
+					</element>
+				</line>
+				<line>
+					<element name="report_filter_uid" type="hidden">
+						<value>
+							<xsp:expr>dtReportFilter.getReportFilterUID_s()</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="report_uid" type="hidden">
+						<value>
+							<xsp:expr>dtReportFilter.getReportUID_s()</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="data_source_uid" type="hidden">
+						<value>
+							<xsp:expr>dtReportFilter.getDataSourceUID_s()</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="context" type="hidden">
+						<value>
+							<xsp:expr>request.getAttribute("context")</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<line>
+					<element name="filter_uid" type="hidden">
+						<value>
+							<xsp:expr>dtReportFilter.getFilterUID_s()</xsp:expr>
+						</value>
+					</element>
+				</line>
+				<xsp:logic>if(dtFilterCode.getFilterUID()==1 || dtFilterCode.getFilterUID()==2 || dtFilterCode.getFilterUID()==3 || dtFilterCode.getFilterUID()==8 || dtFilterCode.getFilterUID()==9 || dtFilterCode.getFilterUID()==10 || dtFilterCode.getFilterUID()==16 || dtFilterCode.getFilterUID()==19 || dtFilterCode.getFilterUID()==20 || dtFilterCode.getFilterUID()==21) {</xsp:logic>
+				<line>
+					<element name="reportFilterType" type="select" label="*Type">
+						<srt-options-string>$|SS$SINGLE SELECT|MS$MULTI SELECT|</srt-options-string>
+						<xsp:logic>if(dtReportFilter.getMinValueCount() == 1 &amp;&amp; dtReportFilter.getMaxValueCount() == 1) {</xsp:logic>
+						<value>SS</value>
+						<xsp:logic>} else if(dtReportFilter.getMinValueCount() == 1  &amp;&amp; dtReportFilter.getMaxValueCount() == -1) {</xsp:logic>
+						<value>MS</value>
+						<xsp:logic>}</xsp:logic>
+					</element>
+				</line>
+				<xsp:logic> } </xsp:logic>
+				<xsp:logic>if(dtFilterCode.getFilterUID()==1 || dtFilterCode.getFilterUID()==2 || dtFilterCode.getFilterUID()==3 || dtFilterCode.getFilterUID()==5 || dtFilterCode.getFilterUID()==6 ||dtFilterCode.getFilterUID()==8 || dtFilterCode.getFilterUID()==9 || dtFilterCode.getFilterUID()==10 || dtFilterCode.getFilterUID()==12 || dtFilterCode.getFilterUID()==13 || dtFilterCode.getFilterUID()==14 || dtFilterCode.getFilterUID()==15 || dtFilterCode.getFilterUID()==16 || dtFilterCode.getFilterUID()==18 || dtFilterCode.getFilterUID()==19 || dtFilterCode.getFilterUID()==20 || dtFilterCode.getFilterUID()==21) {</xsp:logic>
+				<line>
+					<element name="column_uid" type="select" length="40" label="*Associated Column" validation="required">
+						<srt-options-string>
+							<xsp:expr>session.getAttribute("ReportAdmin.FilterableColumnSRT")</xsp:expr>
+						</srt-options-string>
+						<value>
+							<xsp:expr>dtReportFilter.getColumnUID()</xsp:expr>
+						</value>
+					</element>
+					<element/>
+				</line>
+				<line>
+					<element type="select" label="Required as Basic Filter" name="report_filter_ind" length="3">
+						<value>
+							<xsp:expr>dtReportFilter.getReportFilterInd()</xsp:expr>
+						</value>
+						<srt-options-string>Y$Yes|N$No|</srt-options-string>
+					</element>
+				</line>
+				<xsp:logic> } </xsp:logic>
+			</group>
+		</tab>
+	</content>
+</xsp:page>
