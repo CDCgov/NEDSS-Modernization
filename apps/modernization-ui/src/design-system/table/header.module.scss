@@ -20,6 +20,15 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        max-height: 2.5rem;
+
+        transition-duration: 0.25s;
+        transition-property: max-height;
+        transition-timing-function: ease-in;
+
+        &.extended {
+            max-height: 5.125rem;
+        }
     }
 
     .sortable {

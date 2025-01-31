@@ -56,7 +56,7 @@ const SortableHeader = <V,>({ className, sorting, children, filtering }: Sortabl
                 [styles.sorted]: direction !== Direction.None
             })}
             aria-sort={ariaSort}>
-            <div className={styles.content}>
+            <div className={classNames(styles.content, { [styles.extended]: filtering?.active })}>
                 <div className={styles.sortable}>
                     {children.name}
                     <Icon
