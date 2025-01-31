@@ -105,8 +105,8 @@ public class PatientEthnicityChangeService {
         ethnicity.ethnicGroup(),
         ethnicity.unknownReason(),
         detailed,
-        patient.getLastChgUserId(),
-        patient.getLastChgTime());
+        patient.audit().changed().changedBy(),
+        patient.audit().changed().changedOn());
   }
 
 }

@@ -1,11 +1,10 @@
 package gov.cdc.nbs.patient.profile.summary;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Collection;
 
 public record PatientSummary(
-    Instant asOf,
+    LocalDate asOf,
     long patient,
     Name legalName,
     LocalDate birthday,

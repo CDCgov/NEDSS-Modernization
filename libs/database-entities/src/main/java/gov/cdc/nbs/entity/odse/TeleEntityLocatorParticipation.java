@@ -1,10 +1,15 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientPhoneLocatorHistoryListener;
-
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @DiscriminatorValue(TeleEntityLocatorParticipation.TELECOM_CLASS_CODE)
@@ -32,7 +37,8 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     public TeleEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddPhoneNumber phoneNumber) {
+            final PatientCommand.AddPhoneNumber phoneNumber
+    ) {
         super(phoneNumber, nbs, identifier);
 
         this.cd = phoneNumber.type();
@@ -44,7 +50,8 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     public TeleEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddEmailAddress emailAddress) {
+            final PatientCommand.AddEmailAddress emailAddress
+    ) {
         super(emailAddress, nbs, identifier);
 
         this.cd = "NET";
@@ -57,7 +64,8 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     public TeleEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddPhone phone) {
+            final PatientCommand.AddPhone phone
+    ) {
         super(phone, nbs, identifier);
 
         this.cd = phone.type();
@@ -80,7 +88,7 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     }
 
     public void delete(final PatientCommand.DeletePhone deleted) {
-        changeStatus(RecordStatus.INACTIVE, deleted.requestedOn());
+        this.recordStatus.inactivate(deleted.requestedOn());
         changed(deleted);
     }
 

@@ -2,10 +2,11 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { MultiSelect, SingleSelect } from 'design-system/select';
+import { EntryFieldsProps } from 'design-system/entry';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
+import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
-import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 import { useJurisdictionOptions } from 'options/jurisdictions';
 import { useProgramAreaOptions } from 'options/program-areas';
 import { SearchCriteria } from 'apps/search/criteria';
@@ -20,7 +21,7 @@ import {
     processingStatusTypes
 } from './labReportFormTypes';
 
-export const GeneralFields = () => {
+export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
     const form = useFormContext<LabReportFilterEntry, Partial<LabReportFilterEntry>>();
 
     const { all: jurisdictions } = useJurisdictionOptions();
@@ -37,7 +38,7 @@ export const GeneralFields = () => {
                 render={({ field: { onChange, name, value } }) => (
                     <MultiSelect
                         label="Program area"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         value={value}
                         name={name}
@@ -53,7 +54,7 @@ export const GeneralFields = () => {
                 render={({ field: { onChange, name, value } }) => (
                     <MultiSelect
                         label="Jurisdiction"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         value={value}
                         name={name}
@@ -74,7 +75,7 @@ export const GeneralFields = () => {
                         label="Pregnancy status"
                         options={pregnancyStatus}
                         id={name}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -90,7 +91,7 @@ export const GeneralFields = () => {
                         onChange={onChange}
                         label="Event ID type"
                         id={name}
-                        sizing="compact"
+                        sizing={sizing}
                         options={identificationTypes}
                     />
                 )}
@@ -112,7 +113,7 @@ export const GeneralFields = () => {
                             type="text"
                             htmlFor={name}
                             id={name}
-                            sizing="compact"
+                            sizing={sizing}
                             required
                             error={error?.message}
                         />
@@ -127,7 +128,7 @@ export const GeneralFields = () => {
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         id={name}
-                        sizing="compact"
+                        sizing={sizing}
                         name={name}
                         value={value}
                         onChange={onChange}
@@ -148,7 +149,7 @@ export const GeneralFields = () => {
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
-                                sizing="compact"
+                                sizing={sizing}
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -169,7 +170,7 @@ export const GeneralFields = () => {
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
-                                sizing="compact"
+                                sizing={sizing}
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -190,7 +191,7 @@ export const GeneralFields = () => {
                     <CheckboxGroup
                         name={name}
                         label="Entry method"
-                        sizing="compact"
+                        sizing={sizing}
                         options={entryMethodTypes}
                         value={value}
                         onChange={onChange}
@@ -205,7 +206,7 @@ export const GeneralFields = () => {
                     <CheckboxGroup
                         name={name}
                         label="Entered by"
-                        sizing="compact"
+                        sizing={sizing}
                         options={enteredByTypes}
                         value={value}
                         onChange={onChange}
@@ -220,7 +221,7 @@ export const GeneralFields = () => {
                     <CheckboxGroup
                         name={name}
                         label="Event status"
-                        sizing="compact"
+                        sizing={sizing}
                         options={eventStatusTypes}
                         value={value}
                         onChange={onChange}
@@ -235,7 +236,7 @@ export const GeneralFields = () => {
                     <CheckboxGroup
                         name={name}
                         label="Processing status"
-                        sizing="compact"
+                        sizing={sizing}
                         options={processingStatusTypes}
                         value={value}
                         onChange={onChange}
@@ -251,7 +252,7 @@ export const GeneralFields = () => {
                         id={name}
                         value={value}
                         label="Event created by user"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                     />
                 )}
@@ -263,7 +264,7 @@ export const GeneralFields = () => {
                     <UserAutocomplete
                         id={name}
                         value={value}
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         label="Event updated by user"
                     />
@@ -278,7 +279,7 @@ export const GeneralFields = () => {
                         value={value}
                         id={name}
                         label="Event ordering facility"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
@@ -294,7 +295,7 @@ export const GeneralFields = () => {
                     <ProviderAutocomplete
                         id={name}
                         label="Event ordering provider"
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -312,7 +313,7 @@ export const GeneralFields = () => {
                         id={name}
                         value={value}
                         label="Event reporting facility"
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}

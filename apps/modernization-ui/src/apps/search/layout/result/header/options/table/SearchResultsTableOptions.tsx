@@ -4,28 +4,55 @@ import { ColumnPreferencesPanel } from 'design-system/table/preferences';
 import { Button } from 'components/button';
 
 import styles from './search-results-table-options.module.scss';
+import { useFilter } from 'design-system/filter/useFilter';
+import { useConfiguration } from 'configuration';
+import classNames from 'classnames';
 
 type Props = {
     disabled?: boolean;
 };
 
 const SearchResultsTableOptions = ({ disabled = false }: Props) => {
+    const { activeFilter, toggleFilter, onReset, filterEntry } = useFilter();
+    const { features } = useConfiguration();
+
     return (
-        <OverlayPanel
-            className={styles.overlay}
-            position="right"
-            toggle={({ toggle }) => (
-                <Button
-                    aria-label="Columns setting"
-                    data-tooltip-position="top"
-                    data-tooltip-offset="left"
-                    outline
-                    disabled={disabled}
-                    icon={<Icon name="settings" aria-label={`Settings`} className={styles.gear} />}
-                    onClick={toggle}
-                />
+        <>
+            {features.patient.search.filters.enabled && (
+                <div className={styles['filter-options']}>
+                    {filterEntry && (
+                        <Button unpadded unstyled onClick={onReset}>
+                            Reset sort/filters
+                        </Button>
+                    )}
+                    <Button
+                        aria-label="Filter"
+                        data-tooltip-position="top"
+                        data-tooltip-offset="center"
+                        className={classNames({ [styles.activeFilter]: activeFilter })}
+                        outline={!activeFilter}
+                        disabled={disabled}
+                        icon={<Icon name="filter_alt" aria-label={`Filter`} className={styles['option-icon']} />}
+                        onClick={toggleFilter}
+                    />
+                </div>
             )}
-            render={(close) => <ColumnPreferencesPanel close={close} />}></OverlayPanel>
+            <OverlayPanel
+                className={styles.overlay}
+                position="right"
+                toggle={({ toggle }) => (
+                    <Button
+                        aria-label="Settings"
+                        data-tooltip-position="top"
+                        data-tooltip-offset="center"
+                        outline
+                        disabled={disabled}
+                        icon={<Icon name="settings" aria-label={`Settings`} className={styles['option-icon']} />}
+                        onClick={toggle}
+                    />
+                )}
+                render={(close) => <ColumnPreferencesPanel close={close} />}></OverlayPanel>
+        </>
     );
 };
 

@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.administrative;
 import com.querydsl.core.Tuple;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,7 +20,7 @@ class PatientAdministrativeTupleMapperTest {
 
         when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
         when(tuple.get(tables.patient().id)).thenReturn(433L);
-        when(tuple.get(tables.patient().asOfDateAdmin)).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
+        when(tuple.get(tables.patient().asOfDateAdmin)).thenReturn(LocalDate.parse("2023-01-17"));
         when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
         when(tuple.get(tables.patient().description)).thenReturn("description-value");
 
@@ -30,7 +30,7 @@ class PatientAdministrativeTupleMapperTest {
 
         assertThat(actual.patient()).isEqualTo(2357L);
         assertThat(actual.id()).isEqualTo(433L);
-        assertThat(actual.asOf()).isEqualTo("2023-01-17T22:54:43Z");
+        assertThat(actual.asOf()).isEqualTo("2023-01-17");
         assertThat(actual.version()).isEqualTo((short) 227);
         assertThat(actual.comment()).isEqualTo("description-value");
 

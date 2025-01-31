@@ -6,6 +6,7 @@ import { Selectable } from 'options';
 import { validateRequiredRule } from 'validation/entry';
 import { RaceCategoryValidator, RaceEntry } from './entry';
 import { useDetailedRaceOptions } from 'options/race';
+import { EntryFieldsProps } from 'design-system/entry';
 
 const RACE_AS_OF_LABEL = 'Race as of';
 
@@ -13,9 +14,15 @@ type RaceEntryFieldsProps = {
     categories: Selectable[];
     categoryValidator: RaceCategoryValidator;
     entry?: RaceEntry;
-};
+} & EntryFieldsProps;
 
-const RaceEntryFields = ({ categories, categoryValidator, entry }: RaceEntryFieldsProps) => {
+const RaceEntryFields = ({
+    categories,
+    categoryValidator,
+    entry,
+    orientation = 'horizontal',
+    sizing = 'medium'
+}: RaceEntryFieldsProps) => {
     const { control, setValue } = useFormContext<RaceEntry>();
 
     const id = useWatch({ control, name: 'id' });
@@ -44,9 +51,9 @@ const RaceEntryFields = ({ categories, categoryValidator, entry }: RaceEntryFiel
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        orientation="horizontal"
+                        orientation={orientation}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -59,7 +66,7 @@ const RaceEntryFields = ({ categories, categoryValidator, entry }: RaceEntryFiel
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Race"
-                        orientation="horizontal"
+                        orientation={orientation}
                         required
                         onBlur={onBlur}
                         onChange={onChange}
@@ -68,7 +75,7 @@ const RaceEntryFields = ({ categories, categoryValidator, entry }: RaceEntryFiel
                         name={name}
                         options={categories}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -79,14 +86,14 @@ const RaceEntryFields = ({ categories, categoryValidator, entry }: RaceEntryFiel
                 render={({ field: { onChange, value, name } }) => (
                     <MultiSelect
                         label="Detailed race"
-                        orientation="horizontal"
+                        orientation={orientation}
                         id={`races-detailed-${name}`}
                         name={name}
                         disabled={!selectedCategory}
                         value={value}
                         onChange={onChange}
                         options={detailedRaces}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />

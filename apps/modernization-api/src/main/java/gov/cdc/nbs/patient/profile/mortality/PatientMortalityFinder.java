@@ -40,7 +40,7 @@ class PatientMortalityFinder {
         .leftJoin(this.tables.locators()).on(
             this.tables.locators().id.entityUid.eq(this.tables.patient().id),
             this.tables.locators().useCd.eq(DEATH_ADDRESS_CODE),
-            this.tables.locators().recordStatusCd.eq(ACTIVE_CODE)
+            this.tables.locators().recordStatus.status.eq(ACTIVE_CODE)
         )
         .leftJoin(this.tables.address()).on(
             this.tables.address().id.eq(this.tables.locators().id.locatorUid)

@@ -4,7 +4,7 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
@@ -19,8 +19,8 @@ public class PatientProfileGeneralVerificationSteps {
     this.response = response;
   }
 
-  @Then("the patient('s) general information is as of {date}")
-  public void the_patients_general_information_includes_the_as_of(final Instant value) throws Exception {
+  @Then("the patient('s) general information is as of {localDate}")
+  public void the_patients_general_information_includes_the_as_of(final LocalDate value) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath("$.data.findPatientProfile.general.asOf", equalTo(value.toString()))

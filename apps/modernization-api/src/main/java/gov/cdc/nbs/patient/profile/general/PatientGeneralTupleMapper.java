@@ -11,7 +11,7 @@ import gov.cdc.nbs.entity.srte.QNaicsIndustryCode;
 import gov.cdc.nbs.message.enums.Indicator;
 import gov.cdc.nbs.patient.IndicatorStringConverter;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 class PatientGeneralTupleMapper {
@@ -67,7 +67,7 @@ class PatientGeneralTupleMapper {
             "A general version is required"
         );
 
-    Instant asOf = tuple.get(this.tables.patient().generalInformation.asOf);
+    LocalDate asOf = tuple.get(this.tables.patient().generalInformation.asOf);
 
     PatientGeneral.MaritalStatus maritalStatus = resolveMaritalStatus(tuple);
 

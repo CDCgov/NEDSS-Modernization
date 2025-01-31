@@ -49,7 +49,7 @@ class PatientRaceFinder {
     return query.from(this.tables.patient())
         .join(this.tables.personRace()).on(
             this.tables.personRace().personUid.id.eq(this.tables.patient().id),
-            this.tables.personRace().recordStatusCd.eq(ACTIVE_CODE)
+            this.tables.personRace().recordStatus.status.eq(ACTIVE_CODE)
         )
         .leftJoin(this.tables.category()).on(
             this.tables.category().id.codeSetNm.eq(RACE_CATEGORY_CODE_SET),

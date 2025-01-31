@@ -10,7 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import java.time.Clock;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Controller
 class PatientBirthAndGenderController {
@@ -36,7 +36,7 @@ class PatientBirthAndGenderController {
 
     NbsUserDetails user = SecurityUtil.getUserDetails();
 
-    RequestContext context = new RequestContext(user.getId(), Instant.now(this.clock));
+    RequestContext context = new RequestContext(user.getId(), LocalDateTime.now(this.clock));
 
     service.update(context, input);
 

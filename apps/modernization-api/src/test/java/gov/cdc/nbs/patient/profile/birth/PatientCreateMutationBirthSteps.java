@@ -36,7 +36,7 @@ public class PatientCreateMutationBirthSteps {
 
   @Given("the new patient's birth is entered")
   public void the_new_patient_birth_is_entered() {
-    this.input.active().setAsOf(RandomUtil.getRandomDateInPast());
+    this.input.active().setAsOf(RandomUtil.dateInPast());
     this.input.active().setDateOfBirth(RandomUtil.dateInPast());
     this.input.active().setBirthGender(RandomUtil.gender());
   }

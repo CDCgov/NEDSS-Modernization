@@ -4,7 +4,7 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -16,8 +16,8 @@ public class PatientProfileNamesVerificationSteps {
     this.response = response;
   }
 
-  @Given("the patient profile name as of {date} contains the prefix {namePrefix}")
-  public void the_name_as_of_contains_the_prefix(final Instant asOf, final String value) throws Exception {
+  @Given("the patient profile name as of {localDate} contains the prefix {namePrefix}")
+  public void the_name_as_of_contains_the_prefix(final LocalDate asOf, final String value) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath("$.data.findPatientProfile.names.content[?(@.asOf=='%s')].prefix.id", asOf)
@@ -25,8 +25,8 @@ public class PatientProfileNamesVerificationSteps {
         );
   }
 
-  @Given("the patient profile name as of {date} contains the first name {string}")
-  public void the_name_as_of_contains_the_first_name(final Instant asOf, final String value) throws Exception {
+  @Given("the patient profile name as of {localDate} contains the first name {string}")
+  public void the_name_as_of_contains_the_first_name(final LocalDate asOf, final String value) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath("$.data.findPatientProfile.names.content[?(@.asOf=='%s')].first", asOf)
@@ -34,8 +34,8 @@ public class PatientProfileNamesVerificationSteps {
         );
   }
 
-  @Given("the patient profile name as of {date} contains the middle name {string}")
-  public void the_name_as_of_contains_the_middle_name(final Instant asOf, final String value) throws Exception {
+  @Given("the patient profile name as of {localDate} contains the middle name {string}")
+  public void the_name_as_of_contains_the_middle_name(final LocalDate asOf, final String value) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath("$.data.findPatientProfile.names.content[?(@.asOf=='%s')].middle", asOf)
@@ -43,8 +43,8 @@ public class PatientProfileNamesVerificationSteps {
         );
   }
 
-  @Given("the patient profile name as of {date} contains the second middle name {string}")
-  public void the_name_as_of_contains_the_second_middle_name(final Instant asOf, final String value) throws Exception {
+  @Given("the patient profile name as of {localDate} contains the second middle name {string}")
+  public void the_name_as_of_contains_the_second_middle_name(final LocalDate asOf, final String value) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath("$.data.findPatientProfile.names.content[?(@.asOf=='%s')].secondMiddle", asOf)
@@ -52,8 +52,8 @@ public class PatientProfileNamesVerificationSteps {
         );
   }
 
-  @Given("the patient profile name as of {date} contains the last name {string}")
-  public void the_name_as_of_contains_the_last_name(final Instant asOf, final String value) throws Exception {
+  @Given("the patient profile name as of {localDate} contains the last name {string}")
+  public void the_name_as_of_contains_the_last_name(final LocalDate asOf, final String value) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath("$.data.findPatientProfile.names.content[?(@.asOf=='%s')].last", asOf)
@@ -61,8 +61,8 @@ public class PatientProfileNamesVerificationSteps {
         );
   }
 
-  @Given("the patient profile name as of {date} contains the second last name {string}")
-  public void the_name_as_of_contains_the_second_last_name(final Instant asOf, final String value) throws Exception {
+  @Given("the patient profile name as of {localDate} contains the second last name {string}")
+  public void the_name_as_of_contains_the_second_last_name(final LocalDate asOf, final String value) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath("$.data.findPatientProfile.names.content[?(@.asOf=='%s')].secondLast", asOf)
@@ -70,8 +70,8 @@ public class PatientProfileNamesVerificationSteps {
         );
   }
 
-  @Given("the patient profile name as of {date} contains the suffix {nameSuffix}")
-  public void the_name_as_of_contains_the_suffix(final Instant asOf, final String value) throws Exception {
+  @Given("the patient profile name as of {localDate} contains the suffix {nameSuffix}")
+  public void the_name_as_of_contains_the_suffix(final LocalDate asOf, final String value) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath("$.data.findPatientProfile.names.content[?(@.asOf=='%s')].suffix.id", asOf)
@@ -79,8 +79,8 @@ public class PatientProfileNamesVerificationSteps {
         );
   }
 
-  @Given("the patient profile name as of {date} contains the degree {degree}")
-  public void the_name_as_of_contains_the_education_level(final Instant asOf, final String value) throws Exception {
+  @Given("the patient profile name as of {localDate} contains the degree {degree}")
+  public void the_name_as_of_contains_the_education_level(final LocalDate asOf, final String value) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath("$.data.findPatientProfile.names.content[?(@.asOf=='%s')].degree.id", asOf)

@@ -54,7 +54,7 @@ type PatientAdministrative {
     patient: ID!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     comment: String
 }
 
@@ -88,7 +88,7 @@ type PatientNameDegree {
 type PatientName {
     patient: Int!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     sequence: Int!
     use: PatientNameUse!
     prefix: PatientNamePrefix
@@ -137,7 +137,7 @@ type PatientAddress {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: PatientAddressType!
     use: PatientAddressUse!
     address1: String
@@ -172,7 +172,7 @@ type PatientPhone {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: PatientPhoneType
     use: PatientPhoneUse
     countryCode: String
@@ -194,7 +194,7 @@ type PatientBirth {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     bornOn: Date
     age: Int
     multipleBirth: PatientIndicatorCodedValue
@@ -224,7 +224,7 @@ type PatientGender {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     birth: PatientGenderCodedValue
     current: PatientGenderCodedValue
     unknownReason: PatientGenderUnknownReason
@@ -248,7 +248,7 @@ type PatientIdentification {
     patient: Int!
     sequence: Int!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: PatientIdentificationType!
     authority: PatientIdentificationAuthority
     value: String
@@ -265,7 +265,7 @@ type PatientMortality {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     deceased: PatientIndicatorCodedValue
     deceasedOn: Date
     city: String
@@ -307,7 +307,7 @@ type PatientGeneral {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     maritalStatus: PatientMaritalStatus
     maternalMaidenName: String
     adultsInHouse: Int
@@ -338,7 +338,7 @@ type PatientEthnicity {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     ethnicGroup: PatientEthnicGroup!
     unknownReason: PatientEthnicityUnknownReason
     detailed: [PatientDetailedEthnicity!]!
@@ -358,7 +358,7 @@ type PatientRace {
     patient: Int!
     id: Int!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     category: PatientRaceCategory!
     detailed: [PatientRaceDetail!]!
 }
@@ -377,7 +377,7 @@ type PatientProfile {
     version: Int!
     status: String!
     deletable: Boolean!
-    summary(asOf: DateTime): PatientSummary
+    summary(asOf: Date): PatientSummary
     names(page: Page): PatientNameResults!
     administrative(page: Page): PatientAdministrativeResults!
     addresses(page: Page): PatientAddressResults!

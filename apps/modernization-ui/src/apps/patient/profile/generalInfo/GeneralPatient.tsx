@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Grid } from '@trussworks/react-uswds';
 import { PatientGeneral, useUpdatePatientGeneralInfoMutation } from 'generated/graphql/schema';
 import { PatientProfileGeneralResult, useFindPatientProfileGeneral } from './useFindPatientProfileGeneral';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { externalizeDate, internalizeDate } from 'date';
 import { orNull } from 'utils/orNull';
 import { interalize } from 'sensitive';
 import { useAlert } from 'alert/useAlert';
@@ -110,7 +110,7 @@ export const GeneralPatient = ({ patient }: Props) => {
                     input: {
                         ...updated,
                         patient: +patient?.id,
-                        asOf: externalizeDateTime(updated.asOf)
+                        asOf: externalizeDate(updated.asOf)
                     }
                 }
             })

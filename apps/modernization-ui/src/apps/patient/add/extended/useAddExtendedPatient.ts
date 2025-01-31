@@ -12,12 +12,14 @@ import {
 
 type ExtendedStep =
     | { status: 'validating'; entry: ExtendedNewPatientEntry }
+    | { status: 'revalidating' }
     | { status: 'valid'; entry: ExtendedNewPatientEntry }
     | { status: 'invalid'; validationErrors: ValidationErrors }
     | { status: 'waiting' };
 
 type ExtendedAction =
     | { type: 'validate'; entry: ExtendedNewPatientEntry }
+    | { type: 'revalidate' }
     | { type: 'invalidate'; validationErrors: ValidationErrors }
     | { type: 'validated' };
 
@@ -27,6 +29,9 @@ const reducer = (current: ExtendedStep, action: ExtendedAction): ExtendedStep =>
     switch (action.type) {
         case 'validate': {
             return { status: 'validating', entry: action.entry };
+        }
+        case 'revalidate': {
+            return current.status === 'invalid' ? { status: 'revalidating' } : initial;
         }
         case 'invalidate': {
             return { status: 'invalid', validationErrors: action.validationErrors };
@@ -54,10 +59,11 @@ const useAddExtendedPatient = (): AddExtendedPatientInteraction => {
 
     const setSubFormState = (subFormState: Partial<SubFormDirtyState>) => {
         setSubFormDirtyState((current) => ({ ...current, ...subFormState }));
+        dispatch({ type: 'revalidate' });
     };
 
     useEffect(() => {
-        if (step.status === 'validating') {
+        if (step.status === 'validating' || step.status === 'revalidating') {
             if (
                 subFormDirtyState.address ||
                 subFormDirtyState.identification ||

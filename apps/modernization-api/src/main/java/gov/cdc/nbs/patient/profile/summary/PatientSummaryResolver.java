@@ -7,7 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import java.time.Clock;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Controller
@@ -28,14 +28,14 @@ class PatientSummaryResolver {
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     Optional<PatientSummary> resolve(
         final PatientProfile profile,
-        @Argument("asOf") final Instant asOf
+        @Argument("asOf") final LocalDate asOf
     ) {
         return this.finder.find(profile.id(), ensureAsOf(asOf));
     }
 
-    private Instant ensureAsOf(final Instant asOf) {
+    private LocalDate ensureAsOf(final LocalDate asOf) {
         return asOf == null
-            ? Instant.now(clock)
+            ? LocalDate.now(clock)
             : asOf;
     }
 }

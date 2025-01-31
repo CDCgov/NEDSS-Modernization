@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.race;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +19,7 @@ class PatientRaceMergerTest {
                 2L,
                 73L,
                 (short) 283,
-                Instant.parse("1970-04-09T09:53:00Z"),
+                LocalDate.parse("1970-04-09"),
                 new PatientRace.Race("category-id", "category-description"),
                 List.of()
             ),
@@ -27,7 +27,7 @@ class PatientRaceMergerTest {
                 3L,
                 79L,
                 (short) 293,
-                Instant.parse("2003-09-05T10:09:30Z"),
+                LocalDate.parse("2003-09-05"),
                 new PatientRace.Race("category-other-id", "category-other-description"),
                 List.of()
 
@@ -37,7 +37,7 @@ class PatientRaceMergerTest {
         assertThat(actual.patient()).isEqualTo(2L);
         assertThat(actual.id()).isEqualTo(73L);
         assertThat(actual.version()).isEqualTo((short) 283);
-        assertThat(actual.asOf()).isEqualTo("1970-04-09T09:53:00Z");
+        assertThat(actual.asOf()).isEqualTo("1970-04-09");
 
         assertThat(actual.category().id()).isEqualTo("category-id");
         assertThat(actual.category().description()).isEqualTo("category-description");
@@ -55,7 +55,7 @@ class PatientRaceMergerTest {
                 2L,
                 73L,
                 (short) 283,
-                Instant.parse("1970-04-09T09:53:00Z"),
+                LocalDate.parse("1970-04-09"),
                 new PatientRace.Race("category-id", "category-description"),
                 List.of(
                     new PatientRace.Race("race-one-id", "race-one-description"),
@@ -66,7 +66,7 @@ class PatientRaceMergerTest {
                 3L,
                 79L,
                 (short) 293,
-                Instant.parse("2003-09-05T10:09:30Z"),
+                LocalDate.parse("2003-09-05"),
                 new PatientRace.Race("category-other-id", "category-other-description"),
                 List.of(
                     new PatientRace.Race("race-five-id", "race-five-description"),

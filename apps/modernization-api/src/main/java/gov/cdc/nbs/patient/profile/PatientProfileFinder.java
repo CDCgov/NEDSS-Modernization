@@ -25,7 +25,7 @@ class PatientProfileFinder {
                 this.tables.patient().personParentUid.id,
                 this.tables.patient().personParentUid.localId,
                 this.tables.patient().personParentUid.versionCtrlNbr,
-                this.tables.patient().personParentUid.recordStatusCd
+                this.tables.patient().personParentUid.recordStatus.status
             )
             .from(this.tables.patient())
             .where(
@@ -44,7 +44,7 @@ class PatientProfileFinder {
                 this.tables.patient().personParentUid.id,
                 this.tables.patient().personParentUid.localId,
                 this.tables.patient().personParentUid.versionCtrlNbr,
-                this.tables.patient().personParentUid.recordStatusCd
+                this.tables.patient().personParentUid.recordStatus.status
             )
             .from(this.tables.patient())
             .where(

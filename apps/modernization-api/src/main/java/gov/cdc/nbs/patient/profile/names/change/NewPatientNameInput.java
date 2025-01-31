@@ -1,10 +1,10 @@
 package gov.cdc.nbs.patient.profile.names.change;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public record NewPatientNameInput(
     long patient,
-    Instant asOf,
+    LocalDate asOf,
     String type,
     String prefix,
     String first,

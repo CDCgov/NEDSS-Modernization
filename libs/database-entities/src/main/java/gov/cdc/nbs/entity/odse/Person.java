@@ -1,7 +1,9 @@
 package gov.cdc.nbs.entity.odse;
 
+import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.audit.RecordStatus;
+import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
@@ -15,6 +17,7 @@ import gov.cdc.nbs.patient.demographic.GeneralInformation;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
 import gov.cdc.nbs.patient.demographic.name.PatientLegalNameResolver;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -33,10 +36,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -46,7 +47,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @Entity
-@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
+@SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7027"}) //  Bidirectional mappings require knowledge of each other
 public class Person {
   @Id
   @Column(name = "person_uid", nullable = false)
@@ -72,17 +73,19 @@ public class Person {
   private String edxInd;
 
   @MapsId
-  @OneToOne(fetch = FetchType.EAGER, cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, optional = false)
+  @OneToOne(
+      fetch = FetchType.EAGER,
+      cascade = {
+          CascadeType.PERSIST,
+          CascadeType.MERGE,
+          CascadeType.REMOVE
+      }, optional = false)
   @JoinColumn(name = "person_uid", nullable = false)
   private NBSEntity nbsEntity;
 
   // administrative
   @Column(name = "as_of_date_admin")
-  private Instant asOfDateAdmin;
+  private LocalDate asOfDateAdmin;
 
   @Column(name = "description", length = 2000)
   private String description;
@@ -93,7 +96,7 @@ public class Person {
 
   // Mortality
   @Column(name = "as_of_date_morbidity")
-  private Instant asOfDateMorbidity;
+  private LocalDate asOfDateMorbidity;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "deceased_ind_cd", length = 20)
@@ -101,7 +104,7 @@ public class Person {
   private Deceased deceasedIndCd;
 
   @Column(name = "deceased_time")
-  private Instant deceasedTime;
+  private LocalDate deceasedTime;
 
   // Ethnicity
   @Embedded
@@ -109,7 +112,7 @@ public class Person {
 
   // Sex & birth
   @Column(name = "as_of_date_sex")
-  private Instant asOfDateSex;
+  private LocalDate asOfDateSex;
 
   @Column(name = "birth_time")
   private LocalDateTime birthTime;
@@ -159,49 +162,33 @@ public class Person {
   @Column(name = "nm_suffix", length = 20)
   private Suffix nmSuffix;
 
-  @OneToMany(mappedBy = "personUid", fetch = FetchType.EAGER, cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, orphanRemoval = true)
+  @OneToMany(
+      mappedBy = "personUid",
+      fetch = FetchType.EAGER,
+      cascade = {
+          CascadeType.PERSIST,
+          CascadeType.MERGE,
+          CascadeType.REMOVE
+      }, orphanRemoval = true)
   private List<PersonName> names;
-
-  @Column(name = "add_reason_cd", length = 20)
-  private String addReasonCd;
-
-  @Column(name = "add_time")
-  private Instant addTime;
-
-  @Column(name = "add_user_id")
-  private Long addUserId;
-
-  @Column(name = "last_chg_reason_cd", length = 20)
-  private String lastChgReasonCd;
-
-  @Column(name = "last_chg_time")
-  private Instant lastChgTime;
-
-  @Column(name = "last_chg_user_id")
-  private Long lastChgUserId;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "record_status_cd", length = 20)
-  private RecordStatus recordStatusCd;
-
-  @Column(name = "record_status_time")
-  private Instant recordStatusTime;
-
-  @Column(name = "status_cd")
-  private Character statusCd;
-
-  @Column(name = "status_time")
-  private Instant statusTime;
 
   @Embedded
   private PatientRaceDemographic race;
 
+  @Embedded
+  private Audit audit;
+
+  @Embedded
+  private RecordStatus recordStatus;
+
+  @Embedded
+  private Status status;
+
   protected Person() {
     this.versionCtrlNbr = 1;
+    this.audit = new Audit();
+    this.recordStatus = new RecordStatus();
+    this.status = new Status();
     this.race = new PatientRaceDemographic(this);
     this.generalInformation = new GeneralInformation();
     this.ethnicity = new PatientEthnicity();
@@ -218,27 +205,18 @@ public class Person {
     this.cd = "PAT";
     this.electronicInd = 'N';
     this.edxInd = "Y";
-    this.statusCd = 'A';
-    this.recordStatusCd = RecordStatus.ACTIVE;
 
   }
 
   public Person(final PatientCommand.CreatePatient patient) {
     this(patient.person(), patient.localId());
 
-    this.statusTime = patient.requestedOn();
-
-    this.recordStatusTime = patient.requestedOn();
-
-    this.addTime = patient.requestedOn();
-    this.addUserId = patient.requester();
-
-    this.lastChgTime = patient.requestedOn();
-    this.lastChgUserId = patient.requester();
+    this.status = new Status(patient.requestedOn());
+    this.recordStatus = new RecordStatus(patient.requestedOn());
+    this.audit = new Audit(patient.requester(), patient.requestedOn());
   }
 
   public Person(final PatientCommand.AddPatient patient) {
-
     this(patient.person(), patient.localId());
 
     this.nbsEntity = new NBSEntity(patient);
@@ -261,15 +239,9 @@ public class Person {
 
     this.ethnicity = new PatientEthnicity(patient);
 
-    this.statusTime = patient.requestedOn();
-
-    this.recordStatusTime = patient.requestedOn();
-
-    this.addTime = patient.requestedOn();
-    this.addUserId = patient.requester();
-
-    this.lastChgTime = patient.requestedOn();
-    this.lastChgUserId = patient.requester();
+    this.status = new Status(patient.requestedOn());
+    this.recordStatus = new gov.cdc.nbs.audit.RecordStatus(patient.requestedOn());
+    this.audit = new Audit(patient.requester(), patient.requestedOn());
 
   }
 
@@ -282,7 +254,7 @@ public class Person {
     this.birthTimeCalc = this.birthTime;
   }
 
-  public PersonName add(final PatientCommand.AddName added) {
+  public PersonName add(final SoundexResolver resolver, final PatientCommand.AddName added) {
 
     Collection<PersonName> existing = ensureNames();
 
@@ -299,7 +271,9 @@ public class Person {
     PersonName personName = new PersonName(
         identifier,
         this,
-        added);
+        resolver,
+        added
+    );
 
     existing.add(personName);
 
@@ -307,13 +281,13 @@ public class Person {
     return personName;
   }
 
-  public void update(final PatientCommand.UpdateNameInfo updated) {
+  public void update(final SoundexResolver resolver, final PatientCommand.UpdateNameInfo updated) {
     PersonNameId identifier = PersonNameId.from(updated.person(), updated.sequence());
 
     ensureNames().stream()
         .filter(name -> Objects.equals(name.getId(), identifier))
         .findFirst()
-        .ifPresent(name -> name.update(updated));
+        .ifPresent(name -> name.update(resolver, updated));
 
     changed(updated);
   }
@@ -474,7 +448,8 @@ public class Person {
 
   public void update(
       final PatientCommand.UpdateBirth birth,
-      final AddressIdentifierGenerator identifierGenerator) {
+      final AddressIdentifierGenerator identifierGenerator
+  ) {
     this.asOfDateSex = birth.asOf();
     resolveDateOfBirth(birth.bornOn());
     this.birthGenderCd = Gender.resolve(birth.gender());
@@ -499,14 +474,13 @@ public class Person {
 
   public void update(
       final PatientCommand.UpdateMortality info,
-      final AddressIdentifierGenerator identifierGenerator) {
+      final AddressIdentifierGenerator identifierGenerator
+  ) {
     this.asOfDateMorbidity = info.asOf();
     this.deceasedIndCd = Deceased.resolve(info.deceased());
 
     if (Objects.equals(Deceased.Y, this.deceasedIndCd)) {
-      this.deceasedTime = info.deceasedOn() == null
-          ? null
-          : info.deceasedOn().atStartOfDay(ZoneOffset.UTC).toInstant();
+      this.deceasedTime = info.deceasedOn();
     } else {
       this.deceasedTime = null;
     }
@@ -525,8 +499,7 @@ public class Person {
       throw new PatientHasAssociatedEventsException(this.id);
     }
 
-    this.recordStatusCd = RecordStatus.LOG_DEL;
-    this.recordStatusTime = delete.requestedOn();
+    this.recordStatus.change("LOG_DEL", delete.requestedOn());
 
     changed(delete);
   }
@@ -555,8 +528,7 @@ public class Person {
   private void changed(final PatientCommand command) {
     this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
 
-    this.lastChgUserId = command.requester();
-    this.lastChgTime = command.requestedOn();
+    this.audit.changed(command.requester(), command.requestedOn());
   }
 
   public GeneralInformation getGeneralInformation() {
@@ -575,6 +547,18 @@ public class Person {
       return false;
     Person person = (Person) o;
     return Objects.equals(id, person.id);
+  }
+
+  public Audit audit() {
+    return audit;
+  }
+
+  public RecordStatus recordStatus() {
+    return recordStatus;
+  }
+
+  public Status status() {
+    return status;
   }
 
   @Override

@@ -15,9 +15,7 @@ const CITY_LABEL = 'City';
 const ZIP_LABEL = 'Zip';
 const CENSUS_TRACT_LABEL = 'Census tract';
 
-type AddressEntryFieldsProps = EntryFieldsProps;
-
-export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryFieldsProps) => {
+export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control, reset } = useFormContext<BasicNewPatientEntry>();
     const location = useLocationCodedValues();
     const selectedState = useWatch({ control, name: 'address.state' });
@@ -49,7 +47,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
                     <AddressSuggestionInput
                         label={STREET_ADDRESS_LABEL}
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         id={name}
                         locations={location}
                         criteria={{
@@ -73,7 +71,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
                     <Input
                         label={STREET_ADDRESS_2_LABEL}
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -93,7 +91,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
                     <Input
                         label={CITY_LABEL}
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -112,7 +110,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
                     <SingleSelect
                         label="State"
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         id={name}
@@ -133,7 +131,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
                         onChange={onChange}
                         onBlur={onBlur}
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         error={error?.message}
                     />
                 )}
@@ -145,7 +143,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
                     <SingleSelect
                         label="County"
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         id={name}
@@ -166,7 +164,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
                         onChange={onChange}
                         onBlur={onBlur}
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         error={error?.message}
                     />
                 )}
@@ -178,7 +176,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
                     <SingleSelect
                         label="Country"
                         orientation={orientation}
-                        sizing="compact"
+                        sizing={sizing}
                         value={value}
                         onChange={onChange}
                         id={name}

@@ -4,24 +4,27 @@ import { Address } from './Address';
 import { Contact } from './Contact';
 import { RaceEthnicity } from './RaceEthnicity';
 import { Id } from './Id';
+import { useComponentSizing } from 'design-system/sizing';
 
 export const PatientCriteria = () => {
+    const sizing = useComponentSizing();
+
     return (
         <>
             <Accordion title="Basic information" open>
-                <BasicInformation />
+                <BasicInformation sizing={sizing} />
             </Accordion>
             <Accordion title="Address">
-                <Address />
+                <Address sizing={sizing} />
             </Accordion>
             <Accordion title="Contact">
-                <Contact />
+                <Contact sizing={sizing} />
             </Accordion>
             <Accordion title="ID">
-                <Id />
+                <Id sizing={sizing} />
             </Accordion>
             <Accordion title="Race/Ethnicity">
-                <RaceEthnicity />
+                <RaceEthnicity sizing={sizing} />
             </Accordion>
         </>
     );

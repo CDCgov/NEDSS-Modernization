@@ -6,13 +6,11 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.Instant;
-
 @Component
 class PatientProfileSummaryRequest {
 
   private static final String QUERY = """
-      query profile($patient: ID!, $asOf: DateTime) {
+      query profile($patient: ID!, $asOf: Date) {
         findPatientProfile(patient: $patient) {
           id
           local
@@ -63,7 +61,6 @@ class PatientProfileSummaryRequest {
           }
         }
       }
-            
       """;
 
   private final GraphQLRequest graphql;
@@ -77,15 +74,6 @@ class PatientProfileSummaryRequest {
         QUERY,
         JsonNodeFactory.instance.objectNode()
             .put("patient", patient.id())
-    );
-  }
-
-  ResultActions summary(final PatientIdentifier patient, final Instant asOf) {
-    return graphql.query(
-        QUERY,
-        JsonNodeFactory.instance.objectNode()
-            .put("patient", patient.id())
-            .put("asOf", asOf.toString())
     );
   }
 

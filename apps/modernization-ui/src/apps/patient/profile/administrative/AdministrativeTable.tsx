@@ -7,7 +7,7 @@ import {
     PatientProfileAdministrativeResult,
     useFindPatientProfileAdministrative
 } from './useFindPatientProfileAdministrative';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { externalizeDate, internalizeDate } from 'date';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { EntryModal } from 'apps/patient/profile/entry';
@@ -90,7 +90,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                 variables: {
                     input: {
                         patient: +patient.id,
-                        asOf: externalizeDateTime(entry.asOf),
+                        asOf: externalizeDate(entry.asOf),
                         comment: entry.comment
                     }
                 }

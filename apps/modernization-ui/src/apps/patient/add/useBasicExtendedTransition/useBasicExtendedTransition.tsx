@@ -7,6 +7,7 @@ import { asExtendedNewPatientEntry } from '../extended/asExtendedNewPatientEntry
 import { useNavigate } from 'react-router-dom';
 import { BasicNewPatientEntry } from '../basic/entry';
 import { asNewExtendedPatientEntry } from '../basic/asNewExtendedPatientEntry';
+import { useConfiguration } from 'configuration';
 
 type BasicExtendedTransitionContextType = {
     transitionData: NewPatientEntry | null;
@@ -14,9 +15,8 @@ type BasicExtendedTransitionContextType = {
     newTransitionData: BasicNewPatientEntry | null;
     setNewTransitionData: (data: BasicNewPatientEntry) => void;
     toExtended: (initial: NewPatientEntry) => void;
-    toExtendedNew: (initial: BasicNewPatientEntry) => void;
+    toExtendedNew: (initial: BasicNewPatientEntry, searchCriteria: string) => void;
     toBasic: () => void;
-    toNewBasic: () => void;
 };
 
 const BasicExtendedTransitionContext = createContext<BasicExtendedTransitionContextType | undefined>(undefined);
@@ -28,9 +28,11 @@ type BasicExtendedTransitionProviderProps = {
 function BasicExtendedTransitionProvider({ children }: BasicExtendedTransitionProviderProps) {
     const [transitionData, setTransitionData] = useState<NewPatientEntry | null>(null);
     const [newTransitionData, setNewTransitionData] = useState<BasicNewPatientEntry | null>(null);
+    const { features } = useConfiguration();
     const navigate = useNavigate();
     const nameCodes = usePatientNameCodedValues();
     const raceCategories = useConceptOptions('P_RACE_CAT', { lazy: false }).options;
+    const [criteria, setCriteria] = useState<string | null>(null);
 
     const toExtended = (initial: NewPatientEntry) => {
         setTransitionData(initial);
@@ -38,18 +40,19 @@ function BasicExtendedTransitionProvider({ children }: BasicExtendedTransitionPr
         navigate('/patient/add/extended', { state: { defaults: defaults } });
     };
 
-    const toExtendedNew = (initial: BasicNewPatientEntry) => {
+    const toExtendedNew = (initial: BasicNewPatientEntry, searchCriteria: string) => {
         setNewTransitionData(initial);
+        setCriteria(searchCriteria);
         const defaults: ExtendedNewPatientEntry = asNewExtendedPatientEntry(initial);
         navigate('/patient/add/extended', { state: { defaults: defaults } });
     };
 
-    const toNewBasic = () => {
-        navigate('patient/add', { state: { defaults: newTransitionData } });
-    };
-
     const toBasic = () => {
-        navigate('/add-patient', { state: { defaults: transitionData } });
+        if (features.patient.add.enabled) {
+            navigate('/patient/add', { state: { defaults: newTransitionData, criteria: criteria } });
+        } else {
+            navigate('/add-patient', { state: { defaults: transitionData, criteria: criteria } });
+        }
     };
 
     const value: BasicExtendedTransitionContextType = {
@@ -59,8 +62,7 @@ function BasicExtendedTransitionProvider({ children }: BasicExtendedTransitionPr
         setNewTransitionData,
         toExtended,
         toExtendedNew,
-        toBasic,
-        toNewBasic
+        toBasic
     };
 
     return <BasicExtendedTransitionContext.Provider value={value}>{children}</BasicExtendedTransitionContext.Provider>;

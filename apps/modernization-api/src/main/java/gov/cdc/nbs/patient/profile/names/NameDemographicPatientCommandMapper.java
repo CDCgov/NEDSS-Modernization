@@ -3,9 +3,6 @@ package gov.cdc.nbs.patient.profile.names;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 
-import java.time.Instant;
-import java.time.ZoneId;
-
 public class NameDemographicPatientCommandMapper {
 
   public static PatientCommand.AddName asAddName(
@@ -14,11 +11,9 @@ public class NameDemographicPatientCommandMapper {
       final NameDemographic demographic
   ) {
 
-    Instant asOf = demographic.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant();
-
     return new PatientCommand.AddName(
         patient,
-        asOf,
+        demographic.asOf(),
         demographic.prefix(),
         demographic.first(),
         demographic.middle(),

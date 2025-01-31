@@ -6,7 +6,7 @@ import gov.cdc.nbs.entity.odse.QPersonRace;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import gov.cdc.nbs.entity.srte.QRaceCode;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -54,7 +54,7 @@ class PatientRaceTupleMapper {
                 "A race version is required"
             );
 
-        Instant asOf = tuple.get(this.tables.personRace().asOfDate);
+        LocalDate asOf = tuple.get(this.tables.personRace().asOfDate);
 
         PatientRace.Race category = maybeMapCategory(tuple);
 

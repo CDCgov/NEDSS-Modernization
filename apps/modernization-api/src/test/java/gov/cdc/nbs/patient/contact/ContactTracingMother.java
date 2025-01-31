@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManager;
 
+import java.time.ZoneOffset;
+
 @Component
 @ScenarioScope
 class ContactTracingMother {
@@ -53,11 +55,11 @@ class ContactTracingMother {
 
     tracing.setVersionCtrlNbr((short)1);
     tracing.setRecordStatusCd("ACTIVE");
-    tracing.setRecordStatusTime(settings.createdOn());
+    tracing.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     tracing.setAddUserId(settings.createdBy());
-    tracing.setAddTime(settings.createdOn());
+    tracing.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     tracing.setLastChgUserId(settings.createdBy());
-    tracing.setLastChgTime(settings.createdOn());
+    tracing.setLastChgTime(settings.createdOn().toInstant(ZoneOffset.UTC));
 
     PublicHealthCase publicHealthCase = lookupInvestigation(investigation);
 

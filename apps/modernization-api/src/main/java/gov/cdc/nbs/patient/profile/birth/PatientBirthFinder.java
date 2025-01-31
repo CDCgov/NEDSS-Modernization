@@ -51,7 +51,7 @@ class PatientBirthFinder {
         .leftJoin(LOCATORS).on(
             LOCATORS.id.entityUid.eq(this.tables.patient().id),
             LOCATORS.useCd.eq(BIRTH_ADDRESS_CODE),
-            LOCATORS.recordStatusCd.eq(ACTIVE_CODE)
+            LOCATORS.recordStatus.status.eq(ACTIVE_CODE)
         )
         .leftJoin(this.tables.address()).on(
             this.tables.address().id.eq(LOCATORS.id.locatorUid)

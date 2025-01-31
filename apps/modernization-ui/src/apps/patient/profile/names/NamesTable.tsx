@@ -9,7 +9,7 @@ import {
     useUpdatePatientNameMutation
 } from 'generated/graphql/schema';
 import { Direction } from 'sorting/Sort';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { externalizeDate, internalizeDate } from 'date';
 import { orNull } from 'utils/orNull';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from 'apps/patient/profile/DetailsModal';
@@ -186,7 +186,7 @@ export const NamesTable = ({ patient }: Props) => {
                     input: {
                         patient: entry.patient ?? 0,
                         type: entry.type,
-                        asOf: externalizeDateTime(entry.asOf),
+                        asOf: externalizeDate(entry.asOf),
                         prefix: entry.prefix,
                         first: entry.first,
                         middle: entry.middle,
@@ -219,7 +219,7 @@ export const NamesTable = ({ patient }: Props) => {
                         patient: entry.patient ?? 0,
                         sequence: entry.sequence ?? 0,
                         type: entry.type,
-                        asOf: externalizeDateTime(entry.asOf),
+                        asOf: externalizeDate(entry.asOf),
                         prefix: entry.prefix,
                         first: entry.first,
                         middle: entry.middle,

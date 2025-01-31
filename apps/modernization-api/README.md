@@ -110,10 +110,22 @@ at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-u
 
 ## Configuration
 
-Spring Config allows configuration values to be overwritten at runtime. Values can be set through Java System Variables,
+Spring Config allows configuration values to be overwritten at deployment. Values can be set through Java System
+Variables,
 Environment Variable,
-and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference/html/features.html#features.external-config)
-. The default profile contains the following properties configuration most likely to change.
+and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference/html/features.html#features.external-config).
+
+Configuration properties can be overwritten at runtime using the `--args` Gradle option to pass arguments to Spring
+Boot.
+
+For example, running the following will cause the modernization-api to connect to a database on a server named `other`
+by executing.
+
+```bash
+./gradlew :modernization-api:bootRun --args'--nbs-datasource.server=other '
+```
+
+The `default` profile contains the following properties configuration most likely to change.
 
 | Name                          | Default   | Description                                         |
 |-------------------------------|-----------|-----------------------------------------------------|
@@ -124,10 +136,22 @@ and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference
 | nbs.datasource.server         | localhost | The host name of the server running MS SQL Server   |
 | nbs.identifier.person.initial | 10000000  | The initial seed value for Person local identifiers |
 
-### UI Features
+### UI Configuration
 
 The modernization-api contains a `/nbs/api/configuration` endpoint that returns a set of configurations for the UI. The
 following configurations are present
+
+#### Settings
+
+| Name                             | Default                  | Description                                                                                             |
+|----------------------------------|--------------------------|---------------------------------------------------------------------------------------------------------|
+| nbs.ui.settings.smarty.key       |                          | The embedded API key, when blank the Smarty API will not be invoked.                                    |
+| nbs.ui.settings.analytics.host   | https://us.i.posthog.com | The host name of the PostHog server to send analytics to.                                               |
+| nbs.ui.settings.analytics.key    |                          | The PostHog project key to associate frontend analytics with, when blank analytics will not be enabled. |
+| nbs.ui.settings.defaults.sizing  | medium                   | The default sizing of components on the modernized user interface.                                      |
+| nbs.ui.settings.defaults.country | 840 (United States)      | The default country for addresses.                                                                      |
+
+#### Features
 
 | Name                                                | Default | Description                                         |
 |-----------------------------------------------------|---------|-----------------------------------------------------|
@@ -143,16 +167,6 @@ following configurations are present
 | nbs.ui.features.patient.add.enabled                 | false   | Enables access to modernized Patient short form add |
 | nbs.ui.features.patient.add.extended.enabled        | false   | Enables access to modernized Patient Extended add   |
 | nbs.ui.features.patient.profile.enabled             | false   | Enables access to modernized Patient Profile        |
-
-Configuration properties can be overwritten at runtime using the `--args` Gradle option to pass arguments to Spring
-Boot.
-
-For example, running the following will cause the modernization-api to connect to a database on a server named `other`
-by executing.
-
-```bash
-./gradlew :modernization-api:bootRun --args'--nbs-datasource.server=other '
-```
 
 ### Kafka
 

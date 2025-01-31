@@ -1,5 +1,5 @@
 import { EntryFooter } from 'apps/patient/profile/entry';
-import { externalizeDateTime } from 'date';
+import { externalizeDate } from 'date';
 import { FormProvider, useForm } from 'react-hook-form';
 import { orNull } from 'utils';
 import { IdentificationEntry } from './identification';
@@ -18,7 +18,7 @@ export const IdentificationEntryForm = ({ entry, onChange, onDelete }: Props) =>
         onChange({
             patient: entry.patient,
             sequence: entry.sequence,
-            asOf: externalizeDateTime(entered.asOf),
+            asOf: externalizeDate(entered.asOf),
             type: orNull(entered.type),
             value: orNull(entered.value),
             state: orNull(entered.state)

@@ -2,17 +2,15 @@ package gov.cdc.nbs.patient.profile.names.change;
 
 import gov.cdc.nbs.patient.PatientException;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 class PatientNameChangeServiceTest {
@@ -24,14 +22,16 @@ class PatientNameChangeServiceTest {
 
     when(profileService.with(anyLong(), any())).thenReturn(Optional.empty());
 
+    SoundexResolver encoder = mock(SoundexResolver.class);
+
     PatientNameChangeService service =
-        new PatientNameChangeService(profileService);
+        new PatientNameChangeService(profileService, encoder);
 
     NewPatientNameInput input = mock(NewPatientNameInput.class);
 
     when(input.patient()).thenReturn(1021L);
 
-    RequestContext context = new RequestContext(523L, Instant.now());
+    RequestContext context = new RequestContext(523L, LocalDateTime.now());
 
     assertThatThrownBy(
         () -> service.add(context, input)

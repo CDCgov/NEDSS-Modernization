@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import java.time.Clock;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Controller
@@ -26,7 +27,7 @@ class PatientSearchResultLegalNameResolver {
   @SchemaMapping(typeName = "PatientSearchResult", field = "legalName")
   @PreAuthorize("hasAuthority('FIND-PATIENT')")
   Optional<PatientSearchResultName> resolve(final PatientSearchResult patient) {
-    return this.finder.find(patient.patient(), this.clock.instant());
+    return this.finder.find(patient.patient(), LocalDate.now(clock));
   }
 
 }

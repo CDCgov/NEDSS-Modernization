@@ -752,7 +752,7 @@ type PatientAdministrative {
     patient: ID!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     comment: String
 }
 
@@ -786,7 +786,7 @@ type PatientNameDegree {
 type PatientName {
     patient: Int!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     sequence: Int!
     use: PatientNameUse!
     prefix: PatientNamePrefix
@@ -835,7 +835,7 @@ type PatientAddress {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: PatientAddressType!
     use: PatientAddressUse!
     address1: String
@@ -870,7 +870,7 @@ type PatientPhone {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: PatientPhoneType
     use: PatientPhoneUse
     countryCode: String
@@ -892,7 +892,7 @@ type PatientBirth {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     bornOn: Date
     age: Int
     multipleBirth: PatientIndicatorCodedValue
@@ -922,7 +922,7 @@ type PatientGender {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     birth: PatientGenderCodedValue
     current: PatientGenderCodedValue
     unknownReason: PatientGenderUnknownReason
@@ -946,7 +946,7 @@ type PatientIdentification {
     patient: Int!
     sequence: Int!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: PatientIdentificationType!
     authority: PatientIdentificationAuthority
     value: String
@@ -963,7 +963,7 @@ type PatientMortality {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     deceased: PatientIndicatorCodedValue
     deceasedOn: Date
     city: String
@@ -1005,7 +1005,7 @@ type PatientGeneral {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     maritalStatus: PatientMaritalStatus
     maternalMaidenName: String
     adultsInHouse: Int
@@ -1036,7 +1036,7 @@ type PatientEthnicity {
     patient: Int!
     id: ID!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     ethnicGroup: PatientEthnicGroup!
     unknownReason: PatientEthnicityUnknownReason
     detailed: [PatientDetailedEthnicity!]!
@@ -1056,7 +1056,7 @@ type PatientRace {
     patient: Int!
     id: Int!
     version: Int!
-    asOf: DateTime!
+    asOf: Date!
     category: PatientRaceCategory!
     detailed: [PatientRaceDetail!]!
 }
@@ -1075,7 +1075,7 @@ type PatientProfile {
     version: Int!
     status: String!
     deletable: Boolean!
-    summary(asOf: DateTime): PatientSummary
+    summary(asOf: Date): PatientSummary
     names(page: Page): PatientNameResults!
     administrative(page: Page): PatientAdministrativeResults!
     addresses(page: Page): PatientAddressResults!
@@ -1134,7 +1134,12 @@ input LocationCriteria {
 
 input Filter {
   id: String
+  address: String
+  ageOrDateOfBirth: String
   name: String
+  sex: String
+  email: String
+  phone: String
 }
 
 input PersonFilter {
@@ -1413,7 +1418,7 @@ input PersonInput {
     birthGender: Gender
     currentGender: Gender
     deceased: Deceased
-    deceasedTime: DateTime
+    deceasedTime: Date
     maritalStatus: String
     addresses: [NewPatientAddress!]
     phoneNumbers: [NewPatientPhoneNumber!]
@@ -1421,14 +1426,14 @@ input PersonInput {
     identifications: [NewPatientIdentification!]
     ethnicity: String
     races: [String]
-    asOf: DateTime
+    asOf: Date
     comments: String
     stateHIVCase: String
 }
 
 input GeneralInfoInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     maritalStatus: String
     maternalMaidenName: String
     adultsInHouse: Int
@@ -1446,7 +1451,7 @@ type PatientGeneralChangeResult {
 
 input MortalityInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     deceased: String
     deceasedOn: Date
     city: String
@@ -1461,7 +1466,7 @@ type PatientMortalityChangeResult {
 
 input AdministrativeInput {
     patient: Int!
-    asOf: DateTime
+    asOf: Date!
     comment: String
 }
 
@@ -1472,7 +1477,7 @@ type PatientAdministrativeChangeResult {
 
 input EthnicityInput {
     patient: String!
-    asOf: DateTime!
+    asOf: Date!
     ethnicGroup: String
     unknownReason: String
     detailed: [String!]
@@ -1484,7 +1489,7 @@ type PatientEthnicityChangeResult {
 
 input RaceInput {
     patient: Int!
-    asOf: DateTime
+    asOf: Date
     category: String!
     detailed: [String!]
 }
@@ -1508,7 +1513,7 @@ union PatientRaceAddResult = PatientRaceChangeSuccessful | PatientRaceChangeFail
 input NewPatientNameInput {
     patient: Int!
     type: String!
-    asOf: DateTime
+    asOf: Date!
     prefix: String
     first: String
     middle: String
@@ -1523,7 +1528,7 @@ input UpdatePatientNameInput {
     patient: Int!
     sequence: Int!
     type: String!
-    asOf: DateTime
+    asOf: Date!
     prefix: String
     first: String
     middle: String
@@ -1546,7 +1551,7 @@ type PatientNameChangeResult {
 
 input NewPatientAddressInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     address1: String
@@ -1563,7 +1568,7 @@ input NewPatientAddressInput {
 input UpdatePatientAddressInput {
     patient: Int!
     id: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     address1: String
@@ -1589,7 +1594,7 @@ type PatientAddressChangeResult {
 
 input NewPatientPhoneInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     countryCode: String
@@ -1603,7 +1608,7 @@ input NewPatientPhoneInput {
 input UpdatePatientPhoneInput {
     patient: Int!
     id: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     use: String!
     countryCode: String
@@ -1626,7 +1631,7 @@ type PatientPhoneChangeResult {
 
 input NewPatientIdentificationInput {
     patient: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     authority: String
     value: String!
@@ -1635,7 +1640,7 @@ input NewPatientIdentificationInput {
 input UpdatePatientIdentificationInput {
     patient: Int!
     sequence: Int!
-    asOf: DateTime!
+    asOf: Date!
     type: String!
     authority: String
     value: String!
@@ -1653,7 +1658,7 @@ type PatientIdentificationChangeResult {
 
 input UpdateBirthAndGenderInput {
     patient: ID!
-    asOf: DateTime!
+    asOf: Date!
     birth: UpdateBirthInput
     gender: UpdateGenderInput
 }

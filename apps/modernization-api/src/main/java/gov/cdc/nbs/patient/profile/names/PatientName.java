@@ -1,12 +1,12 @@
 package gov.cdc.nbs.patient.profile.names;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public record PatientName(
     long patient,
     short version,
     int sequence,
-    Instant asOf,
+    LocalDate asOf,
     Use use,
     Prefix prefix,
     String first,
@@ -18,30 +18,30 @@ public record PatientName(
     Degree degree
 ) {
 
-    record Use(
-        String id,
-        String description
-    ) {
-    }
+  record Use(
+      String id,
+      String description
+  ) {
+  }
 
 
-    record Prefix(
-        String id,
-        String description
-    ) {
-    }
+  record Prefix(
+      String id,
+      String description
+  ) {
+  }
 
 
-    record Suffix(
-        String id,
-        String description
-    ) {
-    }
+  record Suffix(
+      String id,
+      String description
+  ) {
+  }
 
 
-    record Degree(
-        String id,
-        String description
-    ) {
-    }
+  record Degree(
+      String id,
+      String description
+  ) {
+  }
 }

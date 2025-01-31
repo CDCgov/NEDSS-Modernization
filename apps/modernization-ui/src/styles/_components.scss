@@ -1,16 +1,24 @@
 @use 'styles/colors';
 
-$compact-font-size: 0.875rem;
-$compact-height: 2rem;
+$medium-font-size: 0.875rem;
+$medium-height: 2rem;
+$medium-textarea-height: 7.5rem;
 
-%compact {
+%medium {
     line-height: normal;
-    font-size: $compact-font-size;
+    font-size: $medium-font-size;
 }
 
-%compact-input {
-    height: $compact-height;
+%medium-input {
+    height: $medium-height;
     width: unset;
 
-    @extend %compact;
+    @extend %medium;
+}
+
+%medium-textarea {
+    height: $medium-textarea-height;
+    width: unset;
+
+    @extend %medium;
 }

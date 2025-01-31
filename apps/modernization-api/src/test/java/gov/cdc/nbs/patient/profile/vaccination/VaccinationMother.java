@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManager;
 
+import java.time.ZoneOffset;
+
 @Component
 class VaccinationMother {
 
@@ -60,8 +62,8 @@ class VaccinationMother {
 
         Intervention vaccination = new Intervention(identifier, local);
 
-        vaccination.setRecordStatusTime(settings.createdOn());
-        vaccination.setAddTime(settings.createdOn());
+        vaccination.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+        vaccination.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
         vaccination.setAddUserId(settings.createdBy());
 
         vaccination.setActivityFromTime(RandomUtil.getRandomDateInPast());
@@ -88,8 +90,8 @@ class VaccinationMother {
         participation.setSubjectClassCd(PERSON_CLASS);
 
         participation.setRecordStatusCd(RecordStatus.ACTIVE);
-        participation.setRecordStatusTime(settings.createdOn());
-        participation.setAddTime(settings.createdOn());
+        participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+        participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
         participation.setAddUserId(settings.createdBy());
         participation.setActUid(act);
 

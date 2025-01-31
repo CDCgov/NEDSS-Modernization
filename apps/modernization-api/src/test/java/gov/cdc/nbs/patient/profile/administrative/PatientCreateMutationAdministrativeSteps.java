@@ -29,7 +29,7 @@ public class PatientCreateMutationAdministrativeSteps {
   public void the_new_patient_comment_is_entered() {
     PatientInput active = this.input.active();
 
-    active.setAsOf(RandomUtil.getRandomDateInPast());
+    active.setAsOf(RandomUtil.dateInPast());
     active.setComments(RandomUtil.getRandomString());
   }
 

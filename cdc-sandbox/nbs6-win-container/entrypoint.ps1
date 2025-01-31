@@ -2,7 +2,9 @@
 # Prepare NBS Configuration and Start NBS 6.0
 
 #Disable specific scheduled tasks (all enabled by default)
-$disabledTasksArray= $env:DISABLED_SCHEDULED_TASKS.split(',') | ForEach-Object {$_.Trim()}
+if ($env:DISABLED_SCHEDULED_TASKS -ne $null) {
+    $disabledTasksArray= $env:DISABLED_SCHEDULED_TASKS.split(',') | ForEach-Object {$_.Trim()}
+}
 
 foreach ($item in $disabledTasksArray) {
     Write-Output "Disabling TaskName: $item Task"
@@ -13,6 +15,14 @@ foreach ($item in $disabledTasksArray) {
 $env:JAVA_OPTS="-Xms$env:JAVA_MEMORY -Xmx$env:JAVA_MEMORY -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Xss4m"
 $env:JAVA_OPTS="$env:JAVA_OPTS -Djava.net.preferIPv4Stack=true"
 $env:JAVA_OPTS="$env:JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman"
+
+# Set global variables and paths
+[Environment]::SetEnvironmentVariable("JAVA_HOME", $env:JAVA_HOME, "Machine")
+[Environment]::SetEnvironmentVariable("JBOSS_HOME", $env:JBOSS_HOME, "Machine")
+[Environment]::SetEnvironmentVariable("JAVA_TOOL_OPTIONS", $env:JAVA_TOOL_OPTIONS, "Machine")
+[Environment]::SetEnvironmentVariable("DATABASE_ENDPOINT", $env:DATABASE_ENDPOINT, "Machine")
+[Environment]::SetEnvironmentVariable("JAVA_OPTS", $env:JAVA_OPTS, "Machine")
+[Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\executables\sqlcmd", "Machine")
 
 # Initialize hastable for data sources
 # NOTE: Provide DATABASE_ENDPOINT when running Container

@@ -11,7 +11,6 @@ describe('OperatorSelect', () => {
         id: 'operator-select',
         value: null,
         showLabel: false,
-        sizing: 'compact',
         onChange: mockOnChange
     };
 

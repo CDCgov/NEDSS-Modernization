@@ -11,38 +11,38 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import java.time.Clock;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Controller
 class BasicPatientCreateController {
 
-    private final Clock clock;
-    private final BasicPatientCreator creator;
-    private final PatientIndexer indexer;
+  private final Clock clock;
+  private final BasicPatientCreator creator;
+  private final PatientIndexer indexer;
 
-    BasicPatientCreateController(
-        final Clock clock,
-        final BasicPatientCreator creator,
-        final PatientIndexer indexer
-    ) {
-        this.clock = clock;
-        this.creator = creator;
-        this.indexer = indexer;
-    }
+  BasicPatientCreateController(
+      final Clock clock,
+      final BasicPatientCreator creator,
+      final PatientIndexer indexer
+  ) {
+    this.clock = clock;
+    this.creator = creator;
+    this.indexer = indexer;
+  }
 
-    @MutationMapping("createPatient")
-    @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('ADD-PATIENT')")
-    PatientIdentifier create(final @Argument("patient") PatientInput input) {
+  @MutationMapping("createPatient")
+  @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('ADD-PATIENT')")
+  PatientIdentifier create(final @Argument("patient") PatientInput input) {
 
-        var user = SecurityUtil.getUserDetails();
+    var user = SecurityUtil.getUserDetails();
 
-        RequestContext context = new RequestContext(user.getId(), Instant.now(this.clock));
+    RequestContext context = new RequestContext(user.getId(), LocalDateTime.now(this.clock));
 
-        PatientIdentifier created = creator.create(context, input);
+    PatientIdentifier created = creator.create(context, input);
 
-        this.indexer.index(created.id());
+    this.indexer.index(created.id());
 
-        return created;
-    }
+    return created;
+  }
 
 }

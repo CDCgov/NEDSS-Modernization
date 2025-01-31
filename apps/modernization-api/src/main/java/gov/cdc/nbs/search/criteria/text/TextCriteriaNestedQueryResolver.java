@@ -46,26 +46,24 @@ public class TextCriteriaNestedQueryResolver {
                                 .defaultOperator(Operator.And))))));
   }
 
-  public static BoolQuery containsInOneOfTwoFields(final String path, final String name1, final String name2,
-      final String value) {
+  public static BoolQuery containsInAtLeastOneField(final String path, final String value, final String... fields) {
     String adjusted = WildCards.contains(value);
-    return BoolQuery.of(
-        bool -> bool.should(
-            should -> should.nested(
-                nested -> nested.path(path)
-                    .query(
-                        query -> query.queryString(
-                            simple -> simple.fields(name1)
-                                .query(adjusted)
-                                .defaultOperator(Operator.And)))))
-            .should(
-                should -> should.nested(
-                    nested -> nested.path(path)
-                        .query(
-                            query -> query.queryString(
-                                simple -> simple.fields(name2)
-                                    .query(adjusted)
-                                    .defaultOperator(Operator.And))))));
+
+    BoolQuery.Builder builder = new BoolQuery.Builder();
+    for (int i = 0; i < fields.length; ++i) {
+      final String field = fields[i];
+      builder = builder.should(
+          should -> should.nested(
+              nested -> nested.path(path)
+                  .query(
+                      query -> query.queryString(
+                          simple -> simple.fields(field)
+                              .query(adjusted)
+                              .defaultOperator(Operator.And)))));
+
+    }
+    final BoolQuery.Builder returnBuilder = builder;
+    return BoolQuery.of(bool -> returnBuilder);
   }
 
   public static BoolQuery startsWith(final String path, final String name, final String value) {

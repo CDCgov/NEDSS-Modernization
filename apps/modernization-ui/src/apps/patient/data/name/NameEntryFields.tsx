@@ -10,9 +10,7 @@ import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatient
 const AS_OF_DATE_LABEL = 'Name as of';
 const TYPE_LABEL = 'Type';
 
-type NameEntryFieldsProps = EntryFieldsProps;
-
-export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsProps) => {
+export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<NameEntry>();
     const coded = usePatientNameCodedValues();
 
@@ -33,7 +31,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         orientation={orientation}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -53,7 +51,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         options={coded.types}
                         error={error?.message}
                         required
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -70,7 +68,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         onBlur={onBlur}
                         name={name}
                         options={coded.prefixes}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -90,7 +88,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         name={name}
                         id={name}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -110,7 +108,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         name={name}
                         id={name}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -130,7 +128,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         name={name}
                         id={name}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -150,7 +148,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         name={name}
                         id={name}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -170,7 +168,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         name={name}
                         id={name}
                         error={error?.message}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -188,7 +186,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         id={name}
                         name={name}
                         options={coded.suffixes}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />
@@ -204,7 +202,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         id={name}
                         name={name}
                         options={coded.degrees}
-                        sizing="compact"
+                        sizing={sizing}
                     />
                 )}
             />

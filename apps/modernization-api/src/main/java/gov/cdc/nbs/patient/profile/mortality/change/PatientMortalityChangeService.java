@@ -11,7 +11,7 @@ import jakarta.persistence.EntityManager;
 
 @Component
 @Transactional
-public class PatientMortalityChangeService {
+class PatientMortalityChangeService {
 
     private final EntityManager entityManager;
     private final AddressIdentifierGenerator generator;
@@ -24,7 +24,7 @@ public class PatientMortalityChangeService {
         this.generator = generator;
     }
 
-    public void update(final RequestContext context, final UpdatePatientMortality input) {
+    void update(final RequestContext context, final UpdatePatientMortality input) {
 
         Person patient = managed(input.patient());
 

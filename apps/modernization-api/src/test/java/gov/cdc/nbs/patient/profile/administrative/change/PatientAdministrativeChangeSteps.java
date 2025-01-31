@@ -50,7 +50,7 @@ public class PatientAdministrativeChangeSteps {
     this.activeChange.active(
         new UpdatePatientAdministrative(
             patient.id(),
-            RandomUtil.getRandomDateInPast(),
+            RandomUtil.dateInPast(),
             faker.lorem().paragraph()
         )
     );

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManager;
 
+import java.time.ZoneOffset;
+
 @Component
 class TreatmentMother {
 
@@ -65,8 +67,8 @@ class TreatmentMother {
         treatment.setJurisdictionCd("999999");
 
         treatment.setRecordStatusCd("ACTIVE");
-        treatment.setRecordStatusTime(settings.createdOn());
-        treatment.setAddTime(settings.createdOn());
+        treatment.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+        treatment.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
         treatment.setAddUserId(settings.createdBy());
 
         subjectOfTreatment(treatment, patient);
@@ -96,8 +98,8 @@ class TreatmentMother {
         participation.setSubjectClassCd(PERSON_CLASS);
 
         participation.setRecordStatusCd(RecordStatus.ACTIVE);
-        participation.setRecordStatusTime(settings.createdOn());
-        participation.setAddTime(settings.createdOn());
+        participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
+        participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
         participation.setAddUserId(settings.createdBy());
         participation.setActUid(act);
 

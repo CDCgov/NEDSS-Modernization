@@ -55,11 +55,11 @@ class PatientPhoneFinder {
         )
         .join(this.tables.locators()).on(
             this.tables.locators().id.entityUid.eq(this.tables.patient().id),
-            this.tables.locators().recordStatusCd.eq(ACTIVE_CODE)
+            this.tables.locators().recordStatus.status.eq(ACTIVE_CODE)
         )
         .join(this.tables.phoneNumber()).on(
             this.tables.phoneNumber().id.eq(this.tables.locators().id.locatorUid),
-            this.tables.phoneNumber().recordStatus.recordStatusCd.eq(ACTIVE_CODE)
+            this.tables.phoneNumber().recordStatus.status.eq(ACTIVE_CODE)
         )
         .join(this.tables.type()).on(
             this.tables.type().id.codeSetNm.eq(PHONE_TYPE_CODE_SET),

@@ -4,7 +4,7 @@ import { AddPatientRaceMutation, useAddPatientRaceMutation } from 'generated/gra
 import { EntryModal } from 'apps/patient/profile/entry';
 import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
-import { externalizeDateTime } from 'date';
+import { externalizeDate } from 'date';
 
 type PatientRaceAddProps = {
     modal: RefObject<ModalRef>;
@@ -32,7 +32,7 @@ const AddPatientRace = ({ modal, patient, entry, onSuccess, onFailure, onCancel 
                 variables: {
                     input: {
                         patient,
-                        asOf: externalizeDateTime(entry.asOf),
+                        asOf: externalizeDate(entry.asOf),
                         category: entry.category,
                         detailed: entry.detailed
                     }

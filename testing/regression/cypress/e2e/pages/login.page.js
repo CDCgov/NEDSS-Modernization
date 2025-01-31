@@ -24,6 +24,7 @@ class LoginPage {
           cy.get("#password").type(pass);
         }
         cy.get("#kc-login").click();
+        cy.get("table a").click();
         cy.get("#homePageAdvancedSearch").click();
         cy.wait("@loginRequest");
       }

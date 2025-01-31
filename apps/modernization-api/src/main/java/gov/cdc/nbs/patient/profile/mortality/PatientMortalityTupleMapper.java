@@ -16,9 +16,7 @@ import gov.cdc.nbs.geo.state.SimpleState;
 import gov.cdc.nbs.geo.state.SimpleStateTupleMapper;
 import gov.cdc.nbs.message.enums.Deceased;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Objects;
 
 class PatientMortalityTupleMapper {
@@ -93,11 +91,11 @@ class PatientMortalityTupleMapper {
                 "A mortality version is required"
             );
 
-        Instant asOf = tuple.get(this.tables.patient().asOfDateMorbidity);
+        LocalDate asOf = tuple.get(this.tables.patient().asOfDateMorbidity);
 
         PatientMortality.Deceased deceased = resolveDeceased(tuple.get(this.tables.patient().deceasedIndCd));
 
-        LocalDate deceasedOn = resolveDeceasedOn(tuple);
+        LocalDate deceasedOn = tuple.get(tables.patient().deceasedTime);
 
         String city = tuple.get(this.tables.address().cityDescTxt);
 
@@ -127,13 +125,4 @@ class PatientMortalityTupleMapper {
             : new PatientMortality.Deceased(deceased.name(), deceased.display());
     }
 
-    private LocalDate resolveDeceasedOn(final Tuple tuple) {
-
-        Instant value = tuple.get(tables.patient().deceasedTime);
-
-        return value == null
-            ? null
-            : LocalDate.ofInstant(value, ZoneId.of("UTC"));
-
-    }
 }

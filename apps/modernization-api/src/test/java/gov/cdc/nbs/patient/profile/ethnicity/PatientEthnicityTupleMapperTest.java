@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.ethnicity;
 import com.querydsl.core.Tuple;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -22,7 +22,7 @@ class PatientEthnicityTupleMapperTest {
         when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
         when(tuple.get(tables.patient().id)).thenReturn(433L);
         when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
-        when(tuple.get(tables.patient().ethnicity.asOfDateEthnicity)).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
+        when(tuple.get(tables.patient().ethnicity.asOfDateEthnicity)).thenReturn(LocalDate.parse("2023-01-17"));
 
         PatientEthnicityTupleMapper mapper = new PatientEthnicityTupleMapper(tables);
 
@@ -31,7 +31,7 @@ class PatientEthnicityTupleMapperTest {
         assertThat(actual.patient()).isEqualTo(2357L);
         assertThat(actual.id()).isEqualTo(433L);
         assertThat(actual.version()).isEqualTo((short) 227);
-        assertThat(actual.asOf()).isEqualTo("2023-01-17T22:54:43Z");
+        assertThat(actual.asOf()).isEqualTo("2023-01-17");
 
         assertThat(actual.ethnicGroup()).isNull();
         assertThat(actual.unknownReason()).isNull();

@@ -1,11 +1,10 @@
 package gov.cdc.nbs.patient.profile.birth.change;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 record UpdateBirthAndGender(
     long patient,
-    Instant asOf,
+    LocalDate asOf,
     Birth birth,
     Gender gender
 ) {

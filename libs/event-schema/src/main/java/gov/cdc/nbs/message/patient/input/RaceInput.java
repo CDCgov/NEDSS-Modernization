@@ -1,12 +1,12 @@
 package gov.cdc.nbs.message.patient.input;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RaceInput {
   private long patient;
-  private Instant asOf;
+  private LocalDate asOf;
   private String category;
   private List<String> detailed;
 
@@ -23,11 +23,11 @@ public class RaceInput {
     return this;
   }
 
-  public Instant getAsOf() {
+  public LocalDate getAsOf() {
     return asOf;
   }
 
-  public RaceInput setAsOf(Instant asOf) {
+  public RaceInput setAsOf(final LocalDate asOf) {
     this.asOf = asOf;
     return this;
   }

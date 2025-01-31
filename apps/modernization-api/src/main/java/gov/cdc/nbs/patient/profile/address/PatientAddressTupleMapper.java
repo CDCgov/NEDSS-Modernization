@@ -15,7 +15,7 @@ import gov.cdc.nbs.geo.county.SimpleCountyTupleMapper;
 import gov.cdc.nbs.geo.state.SimpleState;
 import gov.cdc.nbs.geo.state.SimpleStateTupleMapper;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 
@@ -96,7 +96,7 @@ class PatientAddressTupleMapper {
                 "An address version is required"
             );
 
-        Instant asOf = tuple.get(this.tables.locators().asOfDate);
+        LocalDate asOf = tuple.get(this.tables.locators().asOfDate);
 
         PatientAddress.Type type = mapType(tuple);
 

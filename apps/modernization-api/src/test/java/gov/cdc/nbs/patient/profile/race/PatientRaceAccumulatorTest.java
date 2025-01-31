@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.race;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,7 +19,7 @@ class PatientRaceAccumulatorTest {
                     1087L,
                     1699L,
                     (short) 3,
-                    Instant.parse("2010-08-07T00:05:00Z"),
+                    LocalDate.parse("2010-08-07"),
                     new PatientRace.Race(
                         "category-id",
                         "category-description"
@@ -37,7 +37,7 @@ class PatientRaceAccumulatorTest {
                     1087L,
                     1699L,
                     (short) 4,
-                    Instant.parse("2008-07-10T06:05:04Z"),
+                    LocalDate.parse("2008-07-10"),
                     new PatientRace.Race(
                         "category-id",
                         "category-description"
@@ -52,7 +52,7 @@ class PatientRaceAccumulatorTest {
                     1087L,
                     1699L,
                     (short) 4,
-                    Instant.parse("2010-07-08T05:00:00Z"),
+                    LocalDate.parse("2010-07-08"),
                     new PatientRace.Race(
                         "category-id-other",
                         "category-description-other"

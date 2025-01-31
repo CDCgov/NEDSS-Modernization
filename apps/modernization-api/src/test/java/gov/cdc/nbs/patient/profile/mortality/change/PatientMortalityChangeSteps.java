@@ -1,22 +1,20 @@
 package gov.cdc.nbs.patient.profile.mortality.change;
 
-import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityManager;
+import net.datafaker.Faker;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
-import java.time.ZoneOffset;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,109 +23,116 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 public class PatientMortalityChangeSteps {
 
-    private final Faker faker = new Faker(Locale.of("en-us"));
+  private final Faker faker = new Faker(Locale.of("en-us"));
 
-    @Autowired
-    Available<PatientIdentifier> patients;
+  private final Available<PatientIdentifier> patients;
 
-    @Autowired
-    PatientMortalityController controller;
+  private final PatientMortalityController controller;
 
-    @Autowired
-    EntityManager entityManager;
+  private final EntityManager entityManager;
 
-    private UpdatePatientMortality changes;
+  private UpdatePatientMortality changes;
 
-    @Before("@patient-profile-mortality-change")
-    public void reset() {
-        this.changes = null;
-    }
+  PatientMortalityChangeSteps(
+      final Available<PatientIdentifier> patients,
+      final PatientMortalityController controller,
+      final EntityManager entityManager
+  ) {
+    this.patients = patients;
+    this.controller = controller;
+    this.entityManager = entityManager;
+  }
 
-    @When("a patient is deceased")
-    public void a_patient_is_deceased() {
-        PatientIdentifier patient = this.patients.one();
+  @Before("@patient-profile-mortality-change")
+  public void reset() {
+    this.changes = null;
+  }
 
-        this.changes = new UpdatePatientMortality(
-                patient.id(),
-                RandomUtil.getRandomDateInPast(),
-                Deceased.Y.value(),
-                RandomUtil.dateInPast(),
-                faker.address().city(),
-                RandomUtil.getRandomStateCode(),
-                RandomUtil.maybeOneFrom("25009", "34013", "36031", "50009", "51057"),
-                RandomUtil.country());
+  @When("a patient is deceased")
+  public void a_patient_is_deceased() {
+    PatientIdentifier patient = this.patients.one();
 
-        controller.update(changes);
-    }
+    this.changes = new UpdatePatientMortality(
+        patient.id(),
+        RandomUtil.dateInPast(),
+        Deceased.Y.value(),
+        RandomUtil.dateInPast(),
+        faker.address().city(),
+        RandomUtil.getRandomStateCode(),
+        RandomUtil.maybeOneFrom("25009", "34013", "36031", "50009", "51057"),
+        RandomUtil.country());
 
-    @Then("the patient profile contains the details of mortality")
-    @Transactional
-    public void the_patient_contains_the_details_of_mortality() {
-        PatientIdentifier patient = this.patients.one();
+    controller.update(changes);
+  }
 
-        Person actual = this.entityManager.find(Person.class, patient.id());
+  @Then("the patient profile contains the details of mortality")
+  @Transactional
+  public void the_patient_contains_the_details_of_mortality() {
+    PatientIdentifier patient = this.patients.one();
 
-        assertThat(actual)
-                .returns(changes.asOf(), Person::getAsOfDateMorbidity)
-                .returns(Deceased.resolve(changes.deceased()), Person::getDeceasedIndCd)
-                .returns(changes.deceasedOn().atStartOfDay(ZoneOffset.UTC).toInstant(), Person::getDeceasedTime)
-                .satisfies(
-                        addresses -> assertThat(addresses.addresses())
-                                .satisfiesExactly(
-                                        address -> assertThat(address)
-                                                .returns("U", PostalEntityLocatorParticipation::getCd)
-                                                .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
-                                                .extracting(PostalEntityLocatorParticipation::getLocator)
-                                                .returns(changes.city(), PostalLocator::getCityDescTxt)
-                                                .returns(changes.state(), PostalLocator::getStateCd)
-                                                .returns(changes.county(), PostalLocator::getCntyCd)
-                                                .returns(changes.country(), PostalLocator::getCntryCd)));
-    }
+    Person actual = this.entityManager.find(Person.class, patient.id());
 
-    @When("a patient is not known to be deceased")
-    public void a_patient_is_not_known_to_be_deceased() {
-        PatientIdentifier patient = this.patients.one();
+    assertThat(actual)
+        .returns(changes.asOf(), Person::getAsOfDateMorbidity)
+        .returns(Deceased.resolve(changes.deceased()), Person::getDeceasedIndCd)
+        .returns(changes.deceasedOn(), Person::getDeceasedTime)
+        .satisfies(
+            addresses -> assertThat(addresses.addresses())
+                .satisfiesExactly(
+                    address -> assertThat(address)
+                        .returns("U", PostalEntityLocatorParticipation::getCd)
+                        .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
+                        .extracting(PostalEntityLocatorParticipation::getLocator)
+                        .returns(changes.city(), PostalLocator::getCityDescTxt)
+                        .returns(changes.state(), PostalLocator::getStateCd)
+                        .returns(changes.county(), PostalLocator::getCntyCd)
+                        .returns(changes.country(), PostalLocator::getCntryCd)));
+  }
 
-        this.changes = new UpdatePatientMortality(
-                patient.id(),
-                RandomUtil.getRandomDateInPast(),
-                RandomUtil.maybeOneFrom(Deceased.N.value(), Deceased.UNK.value()),
-                RandomUtil.dateInPast(),
-                faker.address().city(),
-                RandomUtil.getRandomStateCode(),
-                RandomUtil.maybeOneFrom("25009", "34013", "36031", "50009", "51057"),
-                RandomUtil.country());
+  @When("a patient is not known to be deceased")
+  public void a_patient_is_not_known_to_be_deceased() {
+    PatientIdentifier patient = this.patients.one();
 
-        controller.update(changes);
-    }
+    this.changes = new UpdatePatientMortality(
+        patient.id(),
+        RandomUtil.dateInPast(),
+        RandomUtil.maybeOneFrom(Deceased.N.value(), Deceased.UNK.value()),
+        RandomUtil.dateInPast(),
+        faker.address().city(),
+        RandomUtil.getRandomStateCode(),
+        RandomUtil.maybeOneFrom("25009", "34013", "36031", "50009", "51057"),
+        RandomUtil.country());
 
-    @Then("the patient does not contain the details of mortality")
-    @Transactional
-    public void the_patient_does_not_contain_the_details_of_mortality() {
-        PatientIdentifier patient = this.patients.one();
+    controller.update(changes);
+  }
 
-        Person actual = this.entityManager.find(Person.class, patient.id());
+  @Then("the patient does not contain the details of mortality")
+  @Transactional
+  public void the_patient_does_not_contain_the_details_of_mortality() {
+    PatientIdentifier patient = this.patients.one();
 
-        assertThat(actual)
-                .returns(changes.asOf(), Person::getAsOfDateMorbidity)
-                .returns(Deceased.resolve(changes.deceased()), Person::getDeceasedIndCd)
-                .returns(null, Person::getDeceasedTime)
-                .satisfies(
-                        addresses -> assertThat(addresses.addresses())
-                                .noneSatisfy(
-                                        address -> assertThat(address)
-                                                .returns("U", PostalEntityLocatorParticipation::getCd)
-                                                .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
-                                                .extracting(PostalEntityLocatorParticipation::getLocator)
-                                                .returns(changes.city(), PostalLocator::getCityDescTxt)
-                                                .returns(changes.state(), PostalLocator::getStateCd)
-                                                .returns(changes.county(), PostalLocator::getCntyCd)
-                                                .returns(changes.country(), PostalLocator::getCntryCd)));
-    }
+    Person actual = this.entityManager.find(Person.class, patient.id());
 
-    @Then("I am unable to change a patient's mortality")
-    public void i_am_unable_to_change_a_patient_mortality() {
-        assertThatThrownBy(() -> controller.update(changes))
-                .isInstanceOf(AccessDeniedException.class);
-    }
+    assertThat(actual)
+        .returns(changes.asOf(), Person::getAsOfDateMorbidity)
+        .returns(Deceased.resolve(changes.deceased()), Person::getDeceasedIndCd)
+        .returns(null, Person::getDeceasedTime)
+        .satisfies(
+            addresses -> assertThat(addresses.addresses())
+                .noneSatisfy(
+                    address -> assertThat(address)
+                        .returns("U", PostalEntityLocatorParticipation::getCd)
+                        .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
+                        .extracting(PostalEntityLocatorParticipation::getLocator)
+                        .returns(changes.city(), PostalLocator::getCityDescTxt)
+                        .returns(changes.state(), PostalLocator::getStateCd)
+                        .returns(changes.county(), PostalLocator::getCntyCd)
+                        .returns(changes.country(), PostalLocator::getCntryCd)));
+  }
+
+  @Then("I am unable to change a patient's mortality")
+  public void i_am_unable_to_change_a_patient_mortality() {
+    assertThatThrownBy(() -> controller.update(changes))
+        .isInstanceOf(AccessDeniedException.class);
+  }
 }
