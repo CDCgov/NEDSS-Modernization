@@ -28,12 +28,12 @@ export const Default: Story = {
     }
 };
 
-export const Compact: Story = {
+export const Medium: Story = {
     args: {
         name: 'Fruits',
         label: 'Fruits',
         options: [...options],
-        sizing: 'compact'
+        sizing: 'medium'
     }
 };
 
