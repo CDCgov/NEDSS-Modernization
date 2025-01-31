@@ -65,3 +65,8 @@ Scenario: Required Name Fields
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
+  Scenario: Missing Address Information
+    Given I am on the New patient Extended form
+    And I have not filled out all Address input fields
+    Then Error message should appear right above Address fields
+
