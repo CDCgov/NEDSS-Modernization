@@ -74,6 +74,7 @@ class UtilityFunctions {
     cy.get("#b2SearchText4").first().click();
     cy.contains(fakeRandomData.randomLastName).should("be.visible");
     cy.contains("Successfully Create Notification").should("be.visible");
+    cy.get(".dtTable td a").eq(0).click();
   }
 
   createNotication(string) {
