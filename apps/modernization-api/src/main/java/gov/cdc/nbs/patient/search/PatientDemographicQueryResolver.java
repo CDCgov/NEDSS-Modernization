@@ -51,6 +51,8 @@ class PatientDemographicQueryResolver {
   private static final String CITY = "address.city";
   private static final String STATE = "address.stateText";
   private static final String ZIP_CODE = "address.zip";
+  private static final String IDENTIFICATION = "entity_id.rootExtensionTxt";
+
   private final PatientSearchSettings settings;
   private final PatientLocalIdentifierResolver resolver;
   private final PatientNameDemographicQueryResolver nameQueryResolver;
@@ -88,6 +90,7 @@ class PatientDemographicQueryResolver {
         applyEmailCriteria(criteria),
         applyEmailFilter(criteria),
         applyIdentificationCriteria(criteria),
+        applyIdentificationFilter(criteria),
         applyDateOfBirthCriteria(criteria),
         applyPatientAgeOrDateOfBirthFilterCriteria(criteria),
         applyStreetAddressCriteria(criteria),
@@ -329,6 +332,17 @@ class PatientDemographicQueryResolver {
         .map(value -> contains(EMAILS, EMAIL_ADDRESS, value));
   }
 
+  private Optional<QueryVariant> applyIdentificationFilter(final PatientFilter criteria) {
+
+    if (criteria.getFilter().identification() == null) {
+      return Optional.empty();
+    }
+
+    return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().identification(), null))
+        .flatMap(TextCriteria::maybeContains)
+        .map(value -> contains(IDENTIFICATIONS, IDENTIFICATION, value));
+  }
+
   private Optional<QueryVariant> applyEmailCriteria(final PatientFilter criteria) {
 
     String email = criteria.getEmail();
@@ -368,7 +382,7 @@ class PatientDemographicQueryResolver {
                                       .value(type)))
                               .must(
                                   must -> must.wildcard(
-                                      match -> match.field("entity_id.rootExtensionTxt").caseInsensitive(true)
+                                      match -> match.field(IDENTIFICATION).caseInsensitive(true)
                                           .value(WildCards.contains(value))))))));
     }
     return Optional.empty();

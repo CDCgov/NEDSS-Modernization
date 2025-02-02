@@ -443,6 +443,35 @@ Feature: Patient Search
     When I search for patients
     Then the patient is in the search results
 
+  Scenario: I can search for a Patient using a specific Identification and filter
+    Given the patient can be identified with a "MC" of "5507"
+    And the patient can be identified with a "DL" of "4099"
+    And patients are available for search
+    And I add the patient criteria for an "identification value" equal to "4099"
+    And I would like to filter search results with identification "09"
+    When I search for patients
+    Then there are 1 patient search results
+
+  Scenario: I can search for a Patient using a specific Identification and non matching filter
+    Given the patient can be identified with a "MC" of "5507"
+    And the patient can be identified with a "DL" of "4099"
+    And patients are available for search
+    And I add the patient criteria for an "identification value" equal to "4099"
+    And I would like to filter search results with identification "111"
+    When I search for patients
+    Then there are 0 patient search results
+
+  Scenario: I can search for a Patient using a specific Identification and two filters
+    Given the patient can be identified with a "MC" of "5507"
+    And the patient can be identified with a "DL" of "4099"
+    And the patient has the gender Female
+    And patients are available for search
+    And I add the patient criteria for an "identification value" equal to "4099"
+    And I add the patient criteria for sex filter of "F"
+    And I would like to filter search results with identification "09"
+    When I search for patients
+    Then there are 1 patient search results
+
   Scenario Outline: I can search for a Patient with a specified Gender
     Given the patient has the gender Male
     And I have another patient

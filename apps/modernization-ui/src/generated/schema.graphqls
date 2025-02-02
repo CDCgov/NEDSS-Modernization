@@ -1140,6 +1140,7 @@ input Filter {
   sex: String
   email: String
   phone: String
+  identification: String
 }
 
 input PersonFilter {
