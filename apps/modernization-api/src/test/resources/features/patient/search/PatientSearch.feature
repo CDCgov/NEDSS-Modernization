@@ -452,6 +452,15 @@ Feature: Patient Search
     When I search for patients
     Then there are 1 patient search results
 
+  Scenario: I can search for a Patient using a specific Identification and filter with dashes
+    Given the patient can be identified with a "MC" of "5507"
+    And the patient can be identified with a "DL" of "4099"
+    And patients are available for search
+    And I add the patient criteria for an "identification value" equal to "4099"
+    And I would like to filter search results with identification "40-99"
+    When I search for patients
+    Then there are 1 patient search results
+
   Scenario: I can search for a Patient using a specific Identification and non matching filter
     Given the patient can be identified with a "MC" of "5507"
     And the patient can be identified with a "DL" of "4099"

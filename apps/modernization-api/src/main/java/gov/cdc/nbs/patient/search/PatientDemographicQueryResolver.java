@@ -338,7 +338,9 @@ class PatientDemographicQueryResolver {
       return Optional.empty();
     }
 
-    return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().identification(), null))
+    return Optional
+        .ofNullable(new TextCriteria(null, null, null,
+            AdjustStrings.withoutSpecialCharacters(criteria.getFilter().identification()), null))
         .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(IDENTIFICATIONS, IDENTIFICATION, value));
   }
