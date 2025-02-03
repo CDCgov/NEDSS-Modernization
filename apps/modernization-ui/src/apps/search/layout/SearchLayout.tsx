@@ -2,6 +2,7 @@ import { ReactNode, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button } from 'components/button';
 import { Loading } from 'components/Spinner';
 import { CollapsiblePanel } from 'design-system/collapsible-panel';
+import { Shown } from 'conditional-render';
 import { SearchNavigation } from './navigation/SearchNavigation';
 import { PatientSearchHeader } from './patientSearchHeader/PatientSearchHeader';
 import { useSearchInteraction, useSearchResultDisplay } from 'apps/search';
@@ -47,7 +48,6 @@ const SearchLayout = <R,>({
 
     const handleKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            console.log('enta!');
             onSearch();
         }
     };
@@ -77,20 +77,24 @@ const SearchLayout = <R,>({
                 </CollapsiblePanel>
 
                 <div className={styles.results}>
-                    {status === 'waiting' && <SearchLanding />}
-                    {status === 'loading' && <Loading center />}
-                    {status === 'completed' && (
-                        <SearchResults view={view} total={total} terms={terms}>
+                    <Shown when={status === 'waiting'}>
+                        <SearchLanding />
+                    </Shown>
+                    <Shown when={status === 'loading'}>
+                        <Loading center />
+                    </Shown>
+                    <Shown when={status === 'completed' || status === 'reloading'}>
+                        <SearchResults view={view} total={total} terms={terms} loading={status === 'reloading'}>
                             {total === 0 && noResults()}
                             {view === 'list' && total > 0 && resultsAsList()}
                             {view === 'table' && total > 0 && resultsAsTable()}
                         </SearchResults>
-                    )}
-                    {status === 'no-input' && (
+                    </Shown>
+                    <Shown when={status === 'no-input'}>
                         <SearchResults view={view} total={total} terms={terms}>
                             {noInput()}
                         </SearchResults>
-                    )}
+                    </Shown>
                 </div>
             </div>
         </section>

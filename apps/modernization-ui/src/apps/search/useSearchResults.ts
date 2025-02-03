@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { usePage, Status as PageStatus } from 'page';
 import { useSorting } from 'sorting';
 import { Predicate } from 'utils';
-import { Filter, useFilter } from 'design-system/filter';
+import { Filter, maybeUseFilter } from 'design-system/filter';
 import { useSearchCriteria } from './useSearchCriteria';
-import { SearchResults } from './useSearchInteraction';
+import { SearchInteractionStatus, SearchResults } from './useSearchInteraction';
 import { Term } from './terms';
 
 type Page = { number: number; size: number };
@@ -20,6 +20,7 @@ type Initializing<C> = { status: 'initializing'; criteria: C; page: Page };
 type Requesting<C> = { status: 'requesting'; criteria: C; page: Page };
 
 type Fetching<A> = { status: 'fetching'; parameters: A; terms: Term[]; page: Page };
+type Refetching<A, R> = { status: 'reloading'; parameters: A; terms: Term[]; page: Page; results: SearchResults<R> };
 
 type Completed<A, R> = { status: 'completed'; parameters: A; results: SearchResults<R> };
 
@@ -33,6 +34,7 @@ type State<C, A, R> =
     | Resetting
     | Requesting<C>
     | Fetching<A>
+    | Refetching<A, R>
     | Completed<A, R>
     | Failed
     | NoInput<R>;
@@ -80,7 +82,7 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
             return { status: 'initializing', criteria: action.criteria, page };
         }
         case 'complete': {
-            if (current.status === 'fetching') {
+            if (current.status === 'fetching' || current.status === 'reloading') {
                 return { ...current, status: 'completed', results: { ...action.found, terms: current.terms } };
             }
             break;
@@ -88,10 +90,11 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
         case 'change-page': {
             if (current.status === 'completed') {
                 return {
-                    status: 'fetching',
+                    status: 'reloading',
                     parameters: current.parameters,
                     terms: current.results.terms,
-                    page: { number: action.number, size: action.size }
+                    page: { number: action.number, size: action.size },
+                    results: current.results
                 };
             }
             break;
@@ -102,10 +105,11 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
                 const page = { number: 1, size: current.results.size };
 
                 return {
-                    status: 'fetching',
+                    status: 'reloading',
                     parameters: current.parameters,
                     terms: current.results.terms,
-                    page
+                    page,
+                    results: current.results
                 };
             }
             break;
@@ -121,9 +125,9 @@ const orElseEmptyResult =
         result ?? { size: request.page.size, total: 0, content: [], page: 0 };
 
 const adjustResult = <R>(result: Resolved<R>) => {
-    const { total, page, size, content } = result;
+    const { page, ...remaining } = result;
 
-    return { total, size, content, page: page + 1 };
+    return { ...remaining, page: page + 1 };
 };
 
 const defaultNoInputCheck: Predicate<Term[]> = (terms: Term[]) => terms.length === 0;
@@ -137,7 +141,7 @@ const blankResults = (size: number, page: number) => ({
 });
 
 type SearchResultsInteraction<C, R> = {
-    status: 'waiting' | 'resetting' | 'loading' | 'completed' | 'error' | 'no-input' | 'initializing';
+    status: SearchInteractionStatus;
     criteria?: C;
     results: SearchResults<R>;
     error?: string;
@@ -180,7 +184,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
 
     const { property, direction } = useSorting();
 
-    const filtering = useFilter();
+    const filtering = maybeUseFilter();
 
     const sort = useMemo(() => {
         if (property && direction) {
@@ -268,7 +272,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     }, [state.status, noInputCheck]);
 
     useEffect(() => {
-        if (state.status === 'fetching') {
+        if (state.status === 'fetching' || state.status === 'reloading') {
             // the criteria has changed invoke search
             const request = {
                 parameters: state.parameters,
@@ -276,6 +280,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
                 sort,
                 filter: filtering?.filter
             };
+
             resultResolver(request)
                 .then(orElseEmptyResult(request))
                 .then(adjustResult)
@@ -310,7 +315,10 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         [state.status]
     );
     const results = useMemo(
-        () => (state.status === 'completed' ? state.results : blankResults(page.pageSize, page.current)),
+        () =>
+            state.status === 'completed' || state.status === 'reloading'
+                ? state.results
+                : blankResults(page.pageSize, page.current),
         [state.status, page.pageSize, page.current]
     );
     const error = useMemo(() => (state.status === 'error' ? state.reason : undefined), [state.status]);

@@ -1,0 +1,17 @@
+.panel {
+    opacity: 1;
+    position: relative;
+    z-index: 500;
+
+    .loader {
+        display: flex;
+        position: fixed;
+
+        width: 100%;
+        height: 100%;
+
+        backdrop-filter: blur(2px);
+
+        z-index: 1000;
+    }
+}
