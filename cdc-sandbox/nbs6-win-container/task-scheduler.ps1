@@ -35,7 +35,7 @@ foreach ($row in $csvData) {
     $days=[int]$row.frequencyDays
     $hours=[int]$row.frequencyHours
     $minutes=[int]$row.frequencyMinutes
-    $jobName = $row.filename + " Task"
+    $jobName = $row.filename
     $repeat = (New-TimeSpan -Days $days -Hours $hours -Minutes $minutes)
     $currentDate= ([DateTime]::Now)
     $duration = $currentDate.AddYears(25) -$currentDate

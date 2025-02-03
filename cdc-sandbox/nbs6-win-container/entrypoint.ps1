@@ -1,8 +1,45 @@
 # ./entrypoint.ps1
 # Prepare NBS Configuration and Start NBS 6.0
 
+# Get current csv columns and create new file
+$csvRows = Get-Content -Path "C:\tasks.csv" -TotalCount 1
+Add-Content -Path "C:\updatedTasks.csv" -Value $csvRows
+
+# Update schedule for environment 
+$env:updatedTasks=(Get-ChildItem env:updateScheduledTask_*).Value
+if ($null -ne $env:updatedTasks -and $env:updatedTasks -ne "") {
+    Add-Content -Path "C:\updatedTasks.csv" -Value ($env:updatedTasks.split(';').replace('"','').replace('''','') | ForEach-Object {$_.Trim()})
+}
+
+# Load new csv info
+foreach ($item in $updateTasksArray) { 
+    Write-Output "Updating Task as: $item"
+    $trigger = New-ScheduledTaskTrigger -Once -At $row.startTime -RepetitionInterval $repeat -RepetitionDuration $duration
+    Set-ScheduledTask -TaskName "SoftwareScan" -Trigger $trigger
+}
+
+# Import new csv file and update
+$csvDataUpdated = Import-Csv -Path "C:\updatedTasks.csv"
+
+# Modify Triggers
+foreach ($row in $csvDataUpdated) { 
+    Write-Output "Updating Task: $row.filename"
+
+    $days=[int]$row.frequencyDays
+    $hours=[int]$row.frequencyHours
+    $minutes=[int]$row.frequencyMinutes
+    $jobName = $row.filename
+    $repeat = (New-TimeSpan -Days $days -Hours $hours -Minutes $minutes)
+
+    $currentDate= ([DateTime]::Now)
+    $duration = $currentDate.AddYears(25) -$currentDate
+
+    $trigger = New-ScheduledTaskTrigger -Once -At $row.startTime -RepetitionInterval $repeat -RepetitionDuration $duration
+    Set-ScheduledTask -TaskName $jobName -Trigger $trigger
+}
+
 #Disable specific scheduled tasks (all enabled by default)
-if ($env:DISABLED_SCHEDULED_TASKS -ne $null) {
+if ($null -ne $env:DISABLED_SCHEDULED_TASKS -and $env:DISABLED_SCHEDULED_TASKS -ne "") {
     $disabledTasksArray= $env:DISABLED_SCHEDULED_TASKS.split(',') | ForEach-Object {$_.Trim()}
 }
 
@@ -53,10 +90,10 @@ $xmlFileName = "D:\wildfly-10.0.0.Final\nedssdomain\configuration\standalone.xml
 
 # Search and replace db host name in connection URL
 $subsystems = $xmlDoc.server.profile.subsystem
-$subsystems | % {
+$subsystems | ForEach-Object {
     if ($_.xmlns -eq "urn:jboss:domain:datasources:4.0") {
         $datsources = $_.datasources.datasource
-        $datsources | % {
+        $datsources | ForEach-Object {
             if ( $connectionURLs.ContainsKey($_.'pool-name')) {
                 $_.'connection-url' =  $connectionURLs[$_.'pool-name']
             }
