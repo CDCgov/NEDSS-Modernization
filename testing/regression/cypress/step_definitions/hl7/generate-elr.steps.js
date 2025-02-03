@@ -45,7 +45,7 @@ When("I Generate HL7 {string} messages to api", (string) => {
   const checkstatusurl = Cypress.env("checkstatusurl");
   const authurl = Cypress.env("authurl");
 
-  cy.readFile("cypress/fixtures/hepb.json", "utf8").then((jsonData) => {
+  cy.readFile("cypress/fixtures/syphilis.json", "utf8").then((jsonData) => {
     const randomData = {
       randomFirstName: faker.person.firstName(),
       randomLastName: UtilityFunctions.generateRandomLastName(),
@@ -120,19 +120,16 @@ When("I Generate HL7 {string} messages to api", (string) => {
           cy.wait(2000);
           expect(response.status).to.eq(200);
 
-          if (
-            response.body[0].nbsInfo.nbsInterfaceStatus === "QUEUED" ||
-            response.body[0].nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS"
-          ) {
+          const nbsInfo = response.body[0].nbsInfo;
+          const validatedInfo = response.body[0].validatedInfo;
+
+          if (["QUEUED", "IN PROGRESS"].includes(nbsInfo.nbsInterfaceStatus) || 
+              nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS") {
             cy.wait(20000).then(checkStatusRequest);
-          } else if (
-            response.body[0].nbsInfo.nbsInterfaceStatus === "Success" &&
-            response.body[0].nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED"
-          ) {
+          } else if (nbsInfo.nbsInterfaceStatus === "Success" && 
+                     nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED") {
             UtilityFunctions.checkELRActivityLog(fakeRandomData);
-          } else if (
-            response.body[0].validatedInfo.validatedPipeLineStatus === "FAILED"
-          ) {
+          } else if (validatedInfo.validatedPipeLineStatus === "FAILED") {
             expect(response.status).to.eq(424);
           } else {
             checkStatusRequest();

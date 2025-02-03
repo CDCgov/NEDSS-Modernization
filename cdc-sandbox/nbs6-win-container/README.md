@@ -29,3 +29,32 @@ Below are manual NBS6 creation and run process steps. Foundation image used is M
   - Tag Image:  ``` docker tag <CONTAINER-NAME>:<TAG> <DOCKER-REPOSITORY-URL>/<CONTAINER-NAME>:<TAG> ``` 
   - Authenticate to Quay.io:  ``` docker login -u=<USERNAME> -p=<PASSWORD> quay.io ```
   - Push to Quay.io with latest Tag:  ``` docker push <DOCKER-REPOSITORY-URL>/<CONTAINER-NAME>:<TAG>  ```
+
+## Deployment
+This docker container makes use of environment variables that are explicitly defined in the Dockerfile and some that can be set for adhoc use cases.
+
+### Explicit Environment Variables
+| Key | Default | Description |
+| --- | --- | --- |
+| JAVA_HOME | "D:\wildfly-10.0.0.Final\Java\jdk8u412b08" | Location of JAVA for NBS6 wildfly server |
+| JBOSS_HOME | "D:\wildfly-10.0.0.Final" | Location of and including Wildfly directory for NBS6 |
+| JAVA_TOOL_OPTIONS | "-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" | JAVA tools option for NBS6 |
+| GITHUB_RELEASE_TAG | "" | Release Tag from Modernization-API Github repository, default picks up latest tag |
+| FINAL_NBS_USER_GUIDE_NAME  | "NBS User Training Guide.pdf" | Name of NBS6 user guide, changing this requires a DB update |
+| GITHUB_ZIP_FILE_NAME | "<version>.NEDSS.NBS.Modernized.Documentation.zip" | Name of zip Modernization-API Github repository |
+| JAVA_MEMORY | "4096M"  | Memory allocated to NBS6 wildfly server |
+| DISABLED_SCHEDULED_TASKS | "" | Comma separated list of a task's filename to disable from windows scheduled tasks (available filenames for tasks listed in [tasks.csv](./tasks.csv)) | 
+
+
+### Implicit Environment Variables
+| Key | Default | Description |
+| --- | --- | --- |
+| DATABASE_ENDPOINT | `null` | Database server endpoint for NBS6 wildfly |
+| updateScheduledTask_* | `null` | Multiple type allowed due to * qualifier see [Supplemental](#supplemental) Section for details on this use|
+
+### Supplemental
+1. The ability to update any scheduled task on runtime for a container has been added. This comes in the form of adding environment variables starting with updateScheduledTask_. To update a scheduled task simply provide a uniquely named environment variable starting with updateScheduledTask_ (ex. updateScheduledTask_ELRImporter or updateScheduledTask_MsgOutProcessor). The format of the variables should follow what is present in [tasks.csv](./tasks.csv) and **ENDING** with a semicolon.
+    - EXAMPLE: updating ELRImporter.bat tasks to run at 8 am, instead of 6 am, and every 5 minutes instead of every 2 minutes.
+      ```
+        updateScheduledTask_ELRImporter="ELRImporter.bat,, 8am, 0, 0, 5;"
+      ```
