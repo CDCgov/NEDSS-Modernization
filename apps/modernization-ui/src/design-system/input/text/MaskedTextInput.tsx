@@ -1,27 +1,33 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useState } from 'react';
 import { TextInput, TextInputProps } from './TextInput';
 import { masked } from './masked';
+import { orUndefined } from 'utils';
 
 type MaskedTextInputProps = {
     mask: string;
 } & Omit<TextInputProps, 'maxLength'>;
 
-const MaskedTextInput = ({ mask, onChange, ...props }: MaskedTextInputProps) => {
+const MaskedTextInput = ({ mask, value, onChange, ...props }: MaskedTextInputProps) => {
+    const [current, setCurrent] = useState(value);
     const applyMask = useCallback(masked(mask), [mask]);
-    const inputRef = useRef<HTMLInputElement>(null);
+
+    if (current !== value) {
+        console.log('current', current, 'value', value);
+        setCurrent(value);
+    }
 
     const handleChange = (value?: string) => {
-        let next = value;
         if (value) {
-            next = applyMask(value);
-            if (inputRef.current && next !== value) {
-                inputRef.current.value = next;
-            }
+            const next = orUndefined(applyMask(value));
+            setCurrent(next);
+            onChange?.(next);
+        } else {
+            setCurrent(undefined);
+            onChange?.();
         }
-        onChange?.(next);
     };
 
-    return <TextInput onChange={handleChange} inputRef={inputRef} {...props} maxLength={mask.length} />;
+    return <TextInput onChange={handleChange} {...props} maxLength={mask.length} value={current} />;
 };
 
 export { MaskedTextInput };

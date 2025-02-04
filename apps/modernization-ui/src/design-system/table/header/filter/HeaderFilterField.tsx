@@ -1,4 +1,4 @@
-import { KeyboardEvent as ReactKeyboardEvent, useState } from 'react';
+import { KeyboardEvent as ReactKeyboardEvent, useEffect, useState } from 'react';
 import { TextInput } from 'design-system/input/text';
 import { Shown } from 'conditional-render';
 import { FilterDescriptor, FilterInteraction } from 'design-system/filter';
@@ -9,7 +9,13 @@ type HeaderFilterFieldProps = { descriptor: FilterDescriptor; label: string; fil
 
 const HeaderFilterField = ({ descriptor, label, filtering }: HeaderFilterFieldProps) => {
     const { apply, clear, filter } = filtering;
-    const [value, setValue] = useState<string | undefined>(() => (filter ? filter[descriptor.id] : undefined));
+
+    const initialValue = filter ? filter[descriptor.id] : undefined;
+    const [value, setValue] = useState<string | undefined>(initialValue);
+
+    useEffect(() => {
+        setValue(initialValue);
+    }, [initialValue]);
 
     const handleKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
@@ -22,6 +28,10 @@ const HeaderFilterField = ({ descriptor, label, filtering }: HeaderFilterFieldPr
         }
     };
 
+    const handleClear = () => clear(descriptor.id);
+
+    const handleChange = (next?: string) => setValue(next);
+
     return (
         <Shown when={descriptor.type === 'text'}>
             <TextInput
@@ -31,7 +41,8 @@ const HeaderFilterField = ({ descriptor, label, filtering }: HeaderFilterFieldPr
                 name={label}
                 aria-label={`filter by ${label}`}
                 value={value}
-                onChange={setValue}
+                onChange={handleChange}
+                onClear={handleClear}
                 onKeyDown={handleKey}
             />
         </Shown>

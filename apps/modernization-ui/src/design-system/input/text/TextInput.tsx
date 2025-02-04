@@ -1,4 +1,4 @@
-import { RefObject, ChangeEvent as ReactChangeEvent, useState, useEffect } from 'react';
+import { ChangeEvent as ReactChangeEvent } from 'react';
 import classNames from 'classnames';
 import { Icon } from 'design-system/icon';
 
@@ -11,9 +11,9 @@ type TextInputProps = {
     type?: 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'search';
     value?: string;
-    inputRef?: RefObject<HTMLInputElement>;
     onChange?: TextOnChange;
     onBlur?: () => void;
+    onClear?: () => void;
     clearable?: boolean;
 } & Omit<
     JSX.IntrinsicElements['input'],
@@ -29,31 +29,24 @@ const TextInput = ({
     onChange,
     onBlur,
     className,
-    inputRef,
     clearable = false,
+    onClear,
     ...props
 }: TextInputProps) => {
-    // if a ref is passed, we will ignore state
-    const [current, setCurrent] = useState<string>(value ?? '');
-
-    useEffect(() => {
-        setCurrent(value ?? '');
-    }, [value]);
+    const current = value ?? '';
 
     const handleChange = (event: ReactChangeEvent<HTMLInputElement>) => {
         const next = event.target.value;
         if (next) {
-            setCurrent(next);
             onChange?.(next);
         } else {
-            setCurrent('');
             onChange?.();
         }
     };
 
     const handleClear = () => {
-        setCurrent('');
         onChange?.();
+        onClear?.();
     };
 
     return (
@@ -68,8 +61,7 @@ const TextInput = ({
                 onChange={handleChange}
                 onBlur={onBlur}
                 placeholder={placeholder}
-                value={inputRef ? value || '' : current}
-                ref={inputRef}
+                value={current}
                 {...props}
             />
             {clearable && (

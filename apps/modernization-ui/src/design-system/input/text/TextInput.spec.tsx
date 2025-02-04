@@ -54,27 +54,17 @@ describe('when entering text values', () => {
         expect(input).toHaveValue('given value');
     });
 
-    it('should use ref value when changed', () => {
-        const mockInputRef: RefObject<HTMLInputElement> = {
-            current: document.createElement('input', { is: 'mockInputRef' })
-        };
-        const { getByRole } = render(<Fixture value={'given value'} inputRef={mockInputRef} />);
-
-        const input = getByRole('textbox', { name: 'Text input test' });
-
-        expect(input).toHaveValue('given value');
-
-        mockInputRef.current!.value = 'ref value';
-        expect(input).toHaveValue('ref value');
-    });
-
     it('clears input and calls onClear when icon is clicked', () => {
         const onChange = jest.fn();
-        const { getByRole } = render(<Fixture value={'given value'} clearable onChange={onChange} />);
+        const onClear = jest.fn();
+
+        const { getByRole } = render(<Fixture value={'given value'} clearable onChange={onChange} onClear={onClear} />);
 
         const svgIcon = getByRole('img', { hidden: true });
+
         userEvent.click(svgIcon);
 
         expect(onChange).toHaveBeenCalledWith();
+        expect(onClear).toHaveBeenCalled();
     });
 });
