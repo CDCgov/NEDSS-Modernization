@@ -1,7 +1,8 @@
-import { RefObject, ChangeEvent as ReactChangeEvent, useState, useEffect } from 'react';
+import { ChangeEvent as ReactChangeEvent } from 'react';
 import classNames from 'classnames';
-import styles from './text-input.module.scss';
 import { Icon } from 'design-system/icon';
+
+import styles from './text-input.module.scss';
 
 export type TextOnChange = (value?: string) => void;
 
@@ -10,7 +11,6 @@ type TextInputProps = {
     type?: 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'search';
     value?: string;
-    inputRef?: RefObject<HTMLInputElement>;
     onChange?: TextOnChange;
     onBlur?: () => void;
     onClear?: () => void;
@@ -28,32 +28,29 @@ const TextInput = ({
     value,
     onChange,
     onBlur,
-    onClear,
     className,
-    inputRef,
     clearable = false,
+    onClear,
     ...props
 }: TextInputProps) => {
-    // if a ref is passed, we will ignore state
-    const [current, setCurrent] = useState<string>(value ?? '');
-
-    useEffect(() => {
-        setCurrent(value ?? '');
-    }, [value]);
+    const current = value ?? '';
 
     const handleChange = (event: ReactChangeEvent<HTMLInputElement>) => {
         const next = event.target.value;
         if (next) {
-            setCurrent(next);
             onChange?.(next);
         } else {
-            setCurrent('');
             onChange?.();
         }
     };
 
+    const handleClear = () => {
+        onChange?.();
+        onClear?.();
+    };
+
     return (
-        <div className={classNames(styles['text-input'], clearable && styles['clearable'])}>
+        <span className={classNames({ [styles.grouped]: clearable })}>
             <input
                 autoComplete="off"
                 id={id}
@@ -64,22 +61,15 @@ const TextInput = ({
                 onChange={handleChange}
                 onBlur={onBlur}
                 placeholder={placeholder}
-                value={inputRef ? value || '' : current}
-                ref={inputRef}
+                value={current}
                 {...props}
             />
-            {clearable && current && (
-                <Icon
-                    role="img"
-                    aria-label="Clear input"
-                    aria-describedby="clear-input-with-x-icon"
-                    name="close"
-                    size="small"
-                    className={styles.icon}
-                    onClick={onClear}
-                />
+            {clearable && (
+                <span className={styles.suffix}>
+                    {current && <Icon role="button" name="close" size="small" onClick={handleClear} />}
+                </span>
             )}
-        </div>
+        </span>
     );
 };
 

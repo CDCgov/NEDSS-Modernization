@@ -1,6 +1,7 @@
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
+
 import {
     displayPhones,
     displayPatientName,
@@ -11,8 +12,6 @@ import {
     displayIdentifications
 } from 'apps/search/patient/result';
 import styles from './patient-search-result-table.module.scss';
-import { FilterEntry } from '../../../../../design-system/filter/FilterEntry';
-import { useFilter } from 'design-system/filter/useFilter';
 
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
@@ -32,25 +31,38 @@ const columns: Column<PatientSearchResult>[] = [
         sortable: true,
         className: styles['col-patientid'],
         render: (result) => displayProfileLink(result.patient, result.shortId),
-        filter: <FilterEntry id={PATIENT_ID.id} property="text" />
+        filter: { id: 'id', type: 'text' }
     },
     {
         ...PATIENT_NAME,
         sortable: true,
         className: styles['col-patientname'],
-        render: displayPatientName
+        render: displayPatientName,
+        filter: { id: 'name', type: 'text' }
     },
     {
         ...DATE_OF_BIRTH,
         sortable: true,
         className: styles['col-dob'],
-        render: (result) => result.birthday && displayPatientAge(result, 'multiline')
+        render: (result) => result.birthday && displayPatientAge(result, 'multiline'),
+        filter: { id: 'ageOrDateOfBirth', type: 'text' }
     },
-    { ...SEX, sortable: true, className: styles['col-sex'], render: (result) => result.gender },
-    { ...ADDRESS, className: styles['col-address'], render: displayAddresses },
-    { ...PHONE, className: styles['col-phone'], render: displayPhones },
-    { ...IDENTIFICATIONS, className: styles['col-id'], render: displayIdentifications },
-    { ...EMAIL, className: styles['col-email'], render: displayEmails }
+    {
+        ...SEX,
+        sortable: true,
+        className: styles['col-sex'],
+        render: (result) => result.gender,
+        filter: { id: 'sex', type: 'text' }
+    },
+    { ...ADDRESS, className: styles['col-address'], render: displayAddresses, filter: { id: 'address', type: 'text' } },
+    { ...PHONE, className: styles['col-phone'], render: displayPhones, filter: { id: 'phone', type: 'text' } },
+    {
+        ...IDENTIFICATIONS,
+        className: styles['col-id'],
+        render: displayIdentifications,
+        filter: { id: 'identification', type: 'text' }
+    },
+    { ...EMAIL, className: styles['col-email'], render: displayEmails, filter: { id: 'email', type: 'text' } }
 ];
 
 // column preferences
@@ -71,7 +83,6 @@ type Props = {
 
 const PatientSearchResultTable = ({ results }: Props) => {
     const { apply } = useColumnPreferences();
-    const { activeFilter } = useFilter();
 
     return (
         <DataTable<PatientSearchResult>
@@ -79,7 +90,6 @@ const PatientSearchResultTable = ({ results }: Props) => {
             className={styles.patient_results}
             columns={apply(columns)}
             data={results}
-            filterable={activeFilter}
         />
     );
 };

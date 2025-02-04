@@ -1,45 +1,115 @@
-import { render } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
-import { FormProvider, useForm } from 'react-hook-form';
+import { act } from '@testing-library/react';
 import { FilterProvider, useFilter } from './useFilter';
+import { renderHook } from '@testing-library/react-hooks';
+import { ReactNode } from 'react';
 
-const TestComponent = () => {
-    const { activeFilter, toggleFilter } = useFilter();
-    const formMethods = useForm();
-
-    return (
-        <FormProvider {...formMethods}>
-            <div>
-                <span data-testid="filterable">{activeFilter.toString()}</span>
-                <button onClick={toggleFilter}>Toggle</button>
-            </div>
-        </FormProvider>
-    );
-};
-
-const renderWrapper = () => {
-    return render(
-        <FilterProvider>
-            <TestComponent />
-        </FilterProvider>
-    );
-};
+const wrapper = ({ children }: { children: ReactNode }) => <FilterProvider>{children}</FilterProvider>;
 
 describe('FilterProvider', () => {
-    it('should provide default filterable state as false', () => {
-        const { getByTestId } = renderWrapper();
+    it('should not be active by default', () => {
+        const { result } = renderHook(() => useFilter(), { wrapper });
 
-        expect(getByTestId('filterable').textContent).toBe('false');
+        expect(result.current.active).toBeFalsy();
     });
 
-    it('should toggle filterable state', () => {
-        const { getByTestId, getByText } = renderWrapper();
+    it('should be active when shown', () => {
+        const { result } = renderHook(() => useFilter(), { wrapper });
 
-        const toggleButton = getByText('Toggle');
         act(() => {
-            toggleButton.click();
+            result.current.show();
         });
 
-        expect(getByTestId('filterable').textContent).toBe('true');
+        expect(result.current.active).toBeTruthy();
+    });
+
+    it('should not be active when hidden while active', () => {
+        const { result } = renderHook(() => useFilter(), { wrapper });
+
+        act(() => {
+            result.current.show();
+        });
+
+        expect(result.current.active).toBeTruthy();
+
+        act(() => {
+            result.current.hide();
+        });
+
+        expect(result.current.active).toBeFalsy();
+    });
+
+    it('should be active when toggled from inactive', () => {
+        const { result } = renderHook(() => useFilter(), { wrapper });
+
+        act(() => {
+            result.current.toggle();
+        });
+
+        expect(result.current.active).toBeTruthy();
+    });
+
+    it('should be inactive when toggled from active', () => {
+        const { result } = renderHook(() => useFilter(), { wrapper });
+
+        act(() => {
+            result.current.show();
+        });
+
+        act(() => {
+            result.current.toggle();
+        });
+
+        expect(result.current.active).toBeFalsy();
+    });
+
+    it('should apply the filter value for the id', () => {
+        const { result } = renderHook(() => useFilter(), { wrapper });
+
+        act(() => {
+            result.current.apply('filtered', 'filtered-value');
+        });
+
+        expect(result.current.filter).toEqual(expect.objectContaining({ filtered: 'filtered-value' }));
+    });
+
+    it('should clear the filter value for the id', () => {
+        const { result } = renderHook(() => useFilter(), { wrapper });
+
+        act(() => {
+            result.current.apply('filtered', 'filtered-value');
+        });
+
+        act(() => {
+            result.current.apply('other', 'other-value');
+        });
+
+        expect(result.current.filter).toHaveProperty('filtered');
+
+        act(() => {
+            result.current.clear('other');
+        });
+
+        expect(result.current.filter).toHaveProperty('filtered');
+        expect(result.current.filter).not.toHaveProperty('other');
+    });
+
+    it('should reset all filter values', () => {
+        const { result } = renderHook(() => useFilter(), { wrapper });
+
+        act(() => {
+            result.current.apply('filtered', 'filtered-value');
+        });
+
+        act(() => {
+            result.current.apply('other', 'other-value');
+        });
+
+        expect(result.current.filter).toHaveProperty('filtered');
+
+        act(() => {
+            result.current.reset();
+        });
+
+        expect(result.current.filter).toBeUndefined();
     });
 });

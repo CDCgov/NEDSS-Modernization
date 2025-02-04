@@ -2,7 +2,6 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { TextInput, TextInputProps } from './TextInput';
-import { RefObject } from 'react';
 
 const Fixture = ({ id = 'testing-text', ...remaining }: Partial<TextInputProps>) => (
     <div>
@@ -35,17 +34,6 @@ describe('when entering text values', () => {
         expect(onChange).toHaveBeenCalledWith('s');
     });
 
-    it('should allow pasting of text values', () => {
-        const { getByRole } = render(<Fixture />);
-
-        const input = getByRole('textbox', { name: 'Text input test' });
-
-        userEvent.paste(input, 'pasted value');
-        userEvent.tab();
-
-        expect(input).toHaveValue('pasted value');
-    });
-
     it('should display given value', () => {
         const { getByRole } = render(<Fixture value={'given value'} />);
 
@@ -54,25 +42,17 @@ describe('when entering text values', () => {
         expect(input).toHaveValue('given value');
     });
 
-    it('should use ref value when changed', () => {
-        const mockInputRef: RefObject<HTMLInputElement> = {
-            current: document.createElement('input', { is: 'mockInputRef' })
-        };
-        const { getByRole } = render(<Fixture value={'given value'} inputRef={mockInputRef} />);
+    it('should clear input, call onClear and onChange when icon is clicked', () => {
+        const onChange = jest.fn();
+        const onClear = jest.fn();
 
-        const input = getByRole('textbox', { name: 'Text input test' });
+        const { getByRole } = render(<Fixture value={'given value'} clearable onChange={onChange} onClear={onClear} />);
 
-        expect(input).toHaveValue('given value');
+        const svgIcon = getByRole('button', { hidden: true });
 
-        mockInputRef.current!.value = 'ref value';
-        expect(input).toHaveValue('ref value');
-    });
-
-    it('clears input and calls onClear when icon is clicked', () => {
-        const onClearMock = jest.fn();
-        const { getByRole } = render(<Fixture value={'given value'} clearable onClear={onClearMock} />);
-        const svgIcon = getByRole('img', { hidden: true });
         userEvent.click(svgIcon);
-        expect(onClearMock).toHaveBeenCalled();
+
+        expect(onChange).toHaveBeenCalledWith();
+        expect(onClear).toHaveBeenCalled();
     });
 });
