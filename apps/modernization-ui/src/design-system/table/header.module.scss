@@ -1,9 +1,6 @@
 @use 'styles/colors';
 
 .header {
-    padding-top: 0.62rem !important;
-    padding-bottom: 0.62rem !important;
-
     &.fixed {
         position: sticky;
         left: 0;
@@ -16,18 +13,19 @@
         border-right-color: colors.$base;
     }
 
+    &.sorted {
+        background-color: colors.$cool-accent-light !important;
+    }
+
     div {
         display: flex;
         justify-content: space-between;
         border: none;
         align-items: center;
     }
+    
     svg {
-        height: 1.0625rem;
-        width: 0.625rem;
-    }
-
-    &.sorted {
-        background-color: colors.$cool-accent-light !important;
+        height: 1.125rem;
+        width: 1.125rem;
     }
 }

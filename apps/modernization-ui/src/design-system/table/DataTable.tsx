@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Header } from './Header';
 import styles from './data-table.module.scss';
 import { DataTableRow } from './DataTableRow';
+import { Sizing } from 'design-system/field';
 
 type Column<V> = {
     id: string;
@@ -14,17 +15,25 @@ type Column<V> = {
     filter?: ReactNode;
 };
 
-type Props<V> = {
+type DataTableProps<V> = {
     id: string;
     className?: string;
     columns: Column<V>[];
     data: V[];
     filterable?: boolean;
+    sizing?: Sizing;
 };
 
-const DataTable = <V,>({ id, className, columns, filterable, data }: Props<V>) => {
+const DataTable = <V,>({ id, className, columns, filterable, data, sizing = 'medium' }: DataTableProps<V>) => {
+    const resolvedClasses = classNames(
+        'usa-table--borderless',
+        styles.table,
+        { [styles.small]: sizing === 'small' },
+        { [styles.medium]: sizing === 'medium' },
+        { [styles.large]: sizing === 'large' }
+    );
     return (
-        <div id={id} className={classNames('usa-table--borderless', styles.table)}>
+        <div id={id} className={resolvedClasses}>
             <table className={classNames('usa-table', className)}>
                 <thead>
                     <tr>
