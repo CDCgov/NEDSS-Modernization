@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
-// import { initializationLoader, ProtectedLayout } from 'authorization';
+import { initializationLoader, ProtectedLayout } from 'authorization';
 
 import { RedirectHome } from './RedirectHome';
 
@@ -19,16 +19,17 @@ const routing = [
     { path: '/login', element: <Login /> },
     {
         path: '/',
-        element: <>{/* Removed ProtectedLayout */}</>,
+        element: <ProtectedLayout />,
+        loader: initializationLoader,
         children: [
             { index: true, element: <RedirectHome /> },
             ...searchRouting,
             ...addPatientRouting,
             ...patientProfileRouting,
-            ...pageBuilderRouting,
-            ...deduplicationRouting
+            ...pageBuilderRouting
         ]
     },
+    ...deduplicationRouting,
     { path: '*', element: <Navigate to={'/'} /> },
     { path: 'expired', element: <Expired /> }
 ];

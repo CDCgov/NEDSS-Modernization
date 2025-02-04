@@ -17,21 +17,18 @@ export const useMatchingConfiguration = (): UseMatchingConfigurationReturn => {
 
     const fetchConfiguration = async () => {
         setLoading(true);
-        console.log('Fetching matching configuration...');
-
         try {
             const response = await axios.get('http://localhost:8083/api/deduplication/matching-configuration');
 
-            if (response.data) {
+            if (response.data && Object.keys(response.data).length > 0) {
                 setMatchConfiguration(response.data);
-                console.log('Configuration fetched successfully:', response.data);
             } else {
-                console.warn('No matching configuration found. Prompting user to input settings.');
-                setMatchConfiguration({ passes: [] }); // Provide an empty structure instead of null
+                console.warn('No matching configuration found. Setting empty config.');
+                setMatchConfiguration({ passes: [] }); // Prevent JSON errors
             }
         } catch (err) {
-            setError('Failed to fetch matching configuration');
-            console.error('Error fetching configuration:', err);
+            setError('Failed to fetch configuration');
+            console.error('API Error:', err);
         } finally {
             setLoading(false);
         }

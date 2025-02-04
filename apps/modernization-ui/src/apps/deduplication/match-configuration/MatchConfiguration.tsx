@@ -46,6 +46,7 @@ const MatchConfigurationContent = () => {
 
     const handleSubmit = () => {
         const values = form.getValues();
+        console.log('Form values being submitted:', values);
 
         if (!values.passes || values.passes.length === 0) {
             showError({ message: 'Please add at least one pass before saving.' });
