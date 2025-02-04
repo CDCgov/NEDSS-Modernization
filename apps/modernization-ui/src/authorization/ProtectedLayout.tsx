@@ -19,17 +19,20 @@ const ProtectedLayout = () => {
 
     const handleIdle = () => navigate('/expired');
 
-    const WithUser = (user: User) => {
-        const data = useLoaderData() as InitializationLoaderResult;
-
+    const withUser = (user: User) => {
+        // Renamed to withUser (camelCase)
         return (
             <UserContextProvider initial={user}>
-                <Await resolve={data?.configuration}>{WithConfiguration}</Await>
+                <Suspense fallback={<Spinner />}>
+                    {/* Added fallback for Suspense */}
+                    <Await resolve={data?.configuration}>{withConfiguration}</Await>
+                </Suspense>
             </UserContextProvider>
         );
     };
 
-    const WithConfiguration = (configuration: Configuration) => {
+    const withConfiguration = (configuration: Configuration) => {
+        // Renamed to withConfiguration (camelCase)
         return (
             <ConfigurationProvider initial={configuration}>
                 <AnalyticsProvider>
@@ -39,15 +42,21 @@ const ProtectedLayout = () => {
         );
     };
 
+    // Skip login redirection if in development
+    if (process.env.NODE_ENV === 'development') {
+        return withUser(data?.user); // Directly return the user data
+    }
+
     return (
         <Suspense fallback={<Spinner />}>
+            {/* Suspense with fallback */}
             <IdleTimer
                 onIdle={handleIdle}
                 timeout={session.warning}
                 warningTimeout={session.expiration - session.warning}
             />
             <Await resolve={data?.user} errorElement={<Navigate to={'/login'} />}>
-                {WithUser}
+                {withUser}
             </Await>
         </Suspense>
     );

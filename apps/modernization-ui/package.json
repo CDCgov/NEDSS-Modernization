@@ -11,6 +11,7 @@
         "@types/react-beautiful-dnd": "^13.1.5",
         "@types/react-dom": "17.0.25",
         "@uswds/uswds": "3.10.0",
+        "axios": "^1.7.9",
         "classnames": "^2.5.1",
         "date-fns": "3.6.0",
         "graphql": "^16.8.1",
@@ -43,9 +44,9 @@
         "@testing-library/react": "^12",
         "@testing-library/react-hooks": "^7.0.2",
         "@testing-library/user-event": "^13",
+        "@types/jest-axe": "^3.5.9",
         "@types/lodash.debounce": "^4.0.7",
         "@types/node": "^18.19.47",
-        "@types/jest-axe": "^3.5.9",
         "@typescript-eslint/eslint-plugin": "8.15.0",
         "@typescript-eslint/parser": "8.15.0",
         "eslint": "9.15.0",
@@ -105,7 +106,6 @@
     "jest": {
         "clearMocks": true,
         "globalSetup": "./global-setup.test.js",
-        "clearMocks": true,
         "moduleNameMapper": {
             "^.+\\.svg$": "<rootDir>/module-mock.js",
             "^@uswds/uswds/js/(.*)$": "<rootDir>/node_modules/@uswds/uswds/packages/$1/src/index.js"

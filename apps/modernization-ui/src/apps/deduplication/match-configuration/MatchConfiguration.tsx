@@ -1,10 +1,10 @@
+import { useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
 import { AlertProvider, useAlert } from 'alert';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
-import { useEffect, useState } from 'react';
-import { FormProvider, useFieldArray, useForm, useFormState, useWatch } from 'react-hook-form';
+import { useForm, FormProvider, useFieldArray, useFormState, useWatch } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 import { useDataElements } from '../api/useDataElements';
 import { useMatchingConfiguration } from '../api/useMatchingConfiguration';
@@ -21,6 +21,7 @@ export const MatchConfiguration = () => {
         </AlertProvider>
     );
 };
+
 const MatchConfigurationContent = () => {
     const { configuration, loading } = useDataElements();
     const { matchConfiguration, save, error } = useMatchingConfiguration();
@@ -32,18 +33,25 @@ const MatchConfigurationContent = () => {
     const { remove } = useFieldArray<MatchingConfiguration>({ control: form.control, name: 'passes' });
 
     useEffect(() => {
-        form.reset(matchConfiguration, { keepDefaultValues: false });
+        if (matchConfiguration) {
+            form.reset(matchConfiguration, { keepDefaultValues: false });
+        }
     }, [matchConfiguration]);
 
     const handleCancel = () => {
-        form.reset(matchConfiguration, { keepDefaultValues: false });
+        if (matchConfiguration) {
+            form.reset(matchConfiguration, { keepDefaultValues: false });
+        }
     };
 
-    const handleSumbit = () => {
-        save(form.getValues());
-        save(form.getValues(), () =>
-            showSuccess({ message: 'You have successfully updated the match configuration.' })
-        );
+    const handleSubmit = () => {
+        const values = form.getValues();
+
+        if (!values.passes || values.passes.length === 0) {
+            showError({ message: 'Please add at least one pass before saving.' });
+            return;
+        }
+        save(values, () => showSuccess({ message: 'You have successfully updated the match configuration.' }));
     };
 
     const handleDeletePass = () => {
@@ -99,7 +107,7 @@ const MatchConfigurationContent = () => {
                                         </Button>
                                         <Button
                                             disabled={!formState.isValid || watch.passes?.length === 0}
-                                            onClick={handleSumbit}>
+                                            onClick={handleSubmit}>
                                             Save configuration
                                         </Button>
                                     </div>
