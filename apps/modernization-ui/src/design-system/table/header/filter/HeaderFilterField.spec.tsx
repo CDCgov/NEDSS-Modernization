@@ -14,6 +14,7 @@ const mockInteraction: FilterInteraction = {
     toggle: jest.fn(),
     apply: mockApply,
     clear: mockClear,
+    clearAll: jest.fn(),
     reset: jest.fn()
 };
 

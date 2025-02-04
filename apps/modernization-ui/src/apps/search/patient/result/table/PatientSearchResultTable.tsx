@@ -44,13 +44,25 @@ const columns: Column<PatientSearchResult>[] = [
         ...DATE_OF_BIRTH,
         sortable: true,
         className: styles['col-dob'],
-        render: (result) => result.birthday && displayPatientAge(result, 'multiline')
+        render: (result) => result.birthday && displayPatientAge(result, 'multiline'),
+        filter: { id: 'ageOrDateOfBirth', type: 'text' }
     },
-    { ...SEX, sortable: true, className: styles['col-sex'], render: (result) => result.gender },
-    { ...ADDRESS, className: styles['col-address'], render: displayAddresses },
-    { ...PHONE, className: styles['col-phone'], render: displayPhones },
-    { ...IDENTIFICATIONS, className: styles['col-id'], render: displayIdentifications },
-    { ...EMAIL, className: styles['col-email'], render: displayEmails }
+    {
+        ...SEX,
+        sortable: true,
+        className: styles['col-sex'],
+        render: (result) => result.gender,
+        filter: { id: 'sex', type: 'text' }
+    },
+    { ...ADDRESS, className: styles['col-address'], render: displayAddresses, filter: { id: 'address', type: 'text' } },
+    { ...PHONE, className: styles['col-phone'], render: displayPhones, filter: { id: 'phone', type: 'text' } },
+    {
+        ...IDENTIFICATIONS,
+        className: styles['col-id'],
+        render: displayIdentifications,
+        filter: { id: 'identification', type: 'text' }
+    },
+    { ...EMAIL, className: styles['col-email'], render: displayEmails, filter: { id: 'email', type: 'text' } }
 ];
 
 // column preferences

@@ -12,7 +12,6 @@ const MaskedTextInput = ({ mask, value, onChange, ...props }: MaskedTextInputPro
     const applyMask = useCallback(masked(mask), [mask]);
 
     if (current !== value) {
-        console.log('current', current, 'value', value);
         setCurrent(value);
     }
 

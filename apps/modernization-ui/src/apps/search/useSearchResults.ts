@@ -227,6 +227,10 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         if (searchCriteria) {
             //  the search criteria has changed initialize a search
             dispatch({ type: 'initialize', criteria: searchCriteria, page: { number: 1, size: page.pageSize } });
+
+            if (filtering) {
+                filtering.reset();
+            }
         }
     }, [searchCriteria, dispatch]);
 
@@ -234,6 +238,10 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         if (state.status === 'completed' && !searchCriteria) {
             //  the search criteria has removed, reset the search
             dispatch({ type: 'reset' });
+
+            if (filtering) {
+                filtering.reset();
+            }
         }
     }, [state.status, searchCriteria, dispatch]);
 

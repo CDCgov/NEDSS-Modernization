@@ -66,15 +66,7 @@ const TextInput = ({
             />
             {clearable && (
                 <span className={styles.suffix}>
-                    {current && (
-                        <Icon
-                            role="img"
-                            aria-label={`Clear the ${props.name} value`}
-                            name="close"
-                            size="small"
-                            onClick={handleClear}
-                        />
-                    )}
+                    {current && <Icon role="button" name="close" size="small" onClick={handleClear} />}
                 </span>
             )}
         </span>

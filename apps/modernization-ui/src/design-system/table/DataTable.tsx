@@ -35,7 +35,7 @@ const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
                             </Header>
                         ))}
                     </tr>
-                    <tr className={styles.border}>
+                    <tr className={styles.border} aria-hidden>
                         <th colSpan={columns.length} />
                     </tr>
                 </thead>

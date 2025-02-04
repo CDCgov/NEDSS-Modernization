@@ -29,7 +29,7 @@ const SearchResults = ({ children, total, view, terms, loading = false }: Props)
     };
 
     const handleResize = () => {
-        setContentHeight(computeContentHeight());
+        setContentHeight(total > 0 ? computeContentHeight() : 'auto');
     };
 
     useLayoutEffect(() => {
@@ -37,7 +37,7 @@ const SearchResults = ({ children, total, view, terms, loading = false }: Props)
         window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [total]);
 
     return (
         <div className={styles.results}>

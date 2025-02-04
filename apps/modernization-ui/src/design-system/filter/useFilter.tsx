@@ -10,6 +10,7 @@ type FilterInteraction = {
     toggle: () => void;
     apply: (id: string, value: string) => void;
     clear: (id: string) => void;
+    clearAll: () => void;
     reset: () => void;
 };
 
@@ -29,10 +30,14 @@ const FilterProvider = ({ children }: FilterProviderProps) => {
 
     const clear = useCallback((id: string) => setFilter(withoutProperty(id)), [setFilter]);
 
-    const reset = useCallback(() => setFilter(undefined), [setFilter]);
+    const clearAll = useCallback(() => setFilter(undefined), [setFilter]);
+    const reset = useCallback(() => {
+        setActive(false);
+        setFilter(undefined);
+    }, [setActive, setFilter]);
 
     return (
-        <FilterableContext.Provider value={{ active, filter, show, hide, toggle, apply, clear, reset }}>
+        <FilterableContext.Provider value={{ active, filter, show, hide, toggle, apply, clear, clearAll, reset }}>
             {children}
         </FilterableContext.Provider>
     );

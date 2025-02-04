@@ -33,10 +33,12 @@ type StandardHeaderProps<V> = Props<V> & { filtering?: FilterInteraction };
 
 const StandardHeader = <V,>({ className, children, filtering }: StandardHeaderProps<V>) => (
     <th className={classNames(styles.header, className, { [styles.fixed]: children.fixed })}>
-        {children.name}
-        {filtering && filtering.active && children.filter != undefined && (
-            <HeaderFilterField label={children.name} descriptor={children.filter} filtering={filtering} />
-        )}
+        <div className={classNames(styles.content)}>
+            {children.name}
+            {filtering && filtering.active && children.filter != undefined && (
+                <HeaderFilterField label={children.name} descriptor={children.filter} filtering={filtering} />
+            )}
+        </div>
     </th>
 );
 
