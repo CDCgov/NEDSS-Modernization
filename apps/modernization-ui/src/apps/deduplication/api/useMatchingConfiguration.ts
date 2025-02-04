@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { MatchingConfiguration } from '../match-configuration/model/Pass';
+import { Config } from '../../../config';
 
 // Correctly typing the return value of the hook
 interface UseMatchingConfigurationReturn {
@@ -18,7 +19,7 @@ export const useMatchingConfiguration = (): UseMatchingConfigurationReturn => {
     const fetchConfiguration = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:8083/api/deduplication/matching-configuration');
+            const response = await axios.get(Config.apiUrl);
 
             if (response.data && Object.keys(response.data).length > 0) {
                 setMatchConfiguration(response.data);
@@ -36,12 +37,9 @@ export const useMatchingConfiguration = (): UseMatchingConfigurationReturn => {
 
     const save = async (configuration: MatchingConfiguration, successCallback?: () => void) => {
         setLoading(true);
-        console.log('Saving matching configuration...', configuration); // Log the data to be saved
-
         try {
             await axios.post('http://localhost:8083/api/deduplication/configure-matching', configuration);
             setMatchConfiguration(configuration);
-            console.log('Configuration saved successfully:', configuration); // Log success
 
             successCallback?.();
         } catch (err) {

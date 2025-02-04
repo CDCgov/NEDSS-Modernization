@@ -11,7 +11,6 @@
         "@types/react-beautiful-dnd": "^13.1.5",
         "@types/react-dom": "17.0.25",
         "@uswds/uswds": "3.10.0",
-        "axios": "^1.7.9",
         "classnames": "^2.5.1",
         "date-fns": "3.6.0",
         "graphql": "^16.8.1",
