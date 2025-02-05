@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Header } from './Header';
-import styles from './data-table.module.scss';
 import { DataTableRow } from './DataTableRow';
 import { Sizing } from 'design-system/field';
+import { FilterDescriptor } from 'design-system/filter';
+
+import styles from './data-table.module.scss';
 
 type Column<V> = {
     id: string;
@@ -12,7 +14,7 @@ type Column<V> = {
     sortable?: boolean;
     className?: string;
     render: (value: V, index: number) => ReactNode | undefined;
-    filter?: ReactNode;
+    filter?: FilterDescriptor;
 };
 
 type DataTableProps<V> = {
@@ -20,11 +22,10 @@ type DataTableProps<V> = {
     className?: string;
     columns: Column<V>[];
     data: V[];
-    filterable?: boolean;
     sizing?: Sizing;
 };
 
-const DataTable = <V,>({ id, className, columns, filterable, data, sizing = 'medium' }: DataTableProps<V>) => {
+const DataTable = <V,>({ id, className, columns, data, sizing = 'medium' }: DataTableProps<V>) => {
     const resolvedClasses = classNames(
         'usa-table--borderless',
         styles.table,
@@ -38,12 +39,12 @@ const DataTable = <V,>({ id, className, columns, filterable, data, sizing = 'med
                 <thead>
                     <tr>
                         {columns.map((column, index) => (
-                            <Header key={index} className={column.className} filterable={filterable}>
+                            <Header key={index} className={column.className}>
                                 {column}
                             </Header>
                         ))}
                     </tr>
-                    <tr className={styles.border}>
+                    <tr className={styles.border} aria-hidden>
                         <th colSpan={columns.length} />
                     </tr>
                 </thead>
@@ -59,4 +60,4 @@ const DataTable = <V,>({ id, className, columns, filterable, data, sizing = 'med
 
 export { DataTable };
 
-export type { Column };
+export type { Column, FilterDescriptor };

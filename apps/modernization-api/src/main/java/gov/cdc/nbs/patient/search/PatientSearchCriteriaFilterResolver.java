@@ -7,9 +7,9 @@ import co.elastic.clients.elasticsearch._types.query_dsl.ChildScoreMode;
 import co.elastic.clients.elasticsearch._types.query_dsl.NestedQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryVariant;
+import co.elastic.clients.elasticsearch._types.query_dsl.ScriptQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.ScriptQuery;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
@@ -160,12 +160,12 @@ class PatientSearchCriteriaFilterResolver {
       return Optional.empty();
     }
 
-    return Optional.of(ScriptQuery.of(q -> q.script(
-        Script.of(s -> s
-            .inline(inline -> inline
-                .source(
+    return Optional.of(
+        ScriptQuery.of(q -> q.script(
+            Script.of(
+                script -> script.source(
                     "doc['birth_time'].size()!=0 && doc['birth_time'].value.getDayOfMonth() == " + equalsDate.day())
-                .lang(PAINLESS))))));
+                    .lang(PAINLESS)))));
   }
 
   private Optional<QueryVariant> applyDateOfBirthMonthCriteria(final PatientFilter criteria) {
@@ -178,12 +178,14 @@ class PatientSearchCriteriaFilterResolver {
       return Optional.empty();
     }
 
-    return Optional.of(ScriptQuery.of(q -> q.script(
-        Script.of(s -> s
-            .inline(inline -> inline
-                .source(
-                    "doc['birth_time'].size()!=0 && doc['birth_time'].value.getMonthValue() == " + equalsDate.month())
-                .lang(PAINLESS))))));
+    return Optional.of(
+        ScriptQuery.of(
+            query -> query.script(
+                Script.of(script -> script
+                    .source(
+                        "doc['birth_time'].size()!=0 && doc['birth_time'].value.getMonthValue() == "
+                            + equalsDate.month())
+                    .lang(PAINLESS)))));
   }
 
   private Optional<QueryVariant> applyDateOfBirthYearCriteria(final PatientFilter criteria) {
@@ -196,11 +198,13 @@ class PatientSearchCriteriaFilterResolver {
       return Optional.empty();
     }
 
-    return Optional.of(ScriptQuery.of(q -> q.script(
-        Script.of(s -> s
-            .inline(inline -> inline
-                .source("doc['birth_time'].size()!=0 && doc['birth_time'].value.getYear() == " + equalsDate.year())
-                .lang(PAINLESS))))));
+    return Optional.of(
+        ScriptQuery.of(
+            query -> query.script(
+                Script.of(
+                    script -> script.source(
+                        "doc['birth_time'].size()!=0 && doc['birth_time'].value.getYear() == " + equalsDate.year())
+                        .lang(PAINLESS)))));
   }
 
   private Optional<QueryVariant> applyIdentificationCriteria(final PatientFilter criteria) {

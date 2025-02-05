@@ -2,8 +2,9 @@ import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { usePage, Status as PageStatus } from 'page';
 import { useSorting } from 'sorting';
 import { Predicate } from 'utils';
+import { Filter, maybeUseFilter } from 'design-system/filter';
 import { useSearchCriteria } from './useSearchCriteria';
-import { SearchResults } from './useSearchInteraction';
+import { SearchInteractionStatus, SearchResults } from './useSearchInteraction';
 import { Term } from './terms';
 
 type Page = { number: number; size: number };
@@ -19,6 +20,7 @@ type Initializing<C> = { status: 'initializing'; criteria: C; page: Page };
 type Requesting<C> = { status: 'requesting'; criteria: C; page: Page };
 
 type Fetching<A> = { status: 'fetching'; parameters: A; terms: Term[]; page: Page };
+type Refetching<A, R> = { status: 'reloading'; parameters: A; terms: Term[]; page: Page; results: SearchResults<R> };
 
 type Completed<A, R> = { status: 'completed'; parameters: A; results: SearchResults<R> };
 
@@ -32,6 +34,7 @@ type State<C, A, R> =
     | Resetting
     | Requesting<C>
     | Fetching<A>
+    | Refetching<A, R>
     | Completed<A, R>
     | Failed
     | NoInput<R>;
@@ -40,6 +43,7 @@ type Action<C, A, R> =
     | { type: 'wait' }
     | { type: 'reset' }
     | { type: 'change-sort' }
+    | { type: 'change-filter' }
     | ({ type: 'change-page' } & Page)
     | { type: 'initialize'; criteria: C; page: Page }
     | { type: 'request'; criteria: C; page: Page }
@@ -49,47 +53,69 @@ type Action<C, A, R> =
     | { type: 'error'; reason: string };
 
 const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): State<C, A, R> => {
-    if (action.type === 'request') {
-        const { criteria, page } = action;
-        return { status: 'requesting', criteria, page };
-    } else if (action.type === 'fetch') {
-        const { parameters, terms, page } = action;
-        return { status: 'fetching', parameters, terms, page };
-    } else if (action.type === 'complete' && current.status === 'fetching') {
-        return { ...current, status: 'completed', results: { ...action.found, terms: current.terms } };
-    } else if (action.type === 'change-sort' && current.status === 'completed') {
-        const page = { number: 1, size: current.results.size };
+    switch (action.type) {
+        case 'request': {
+            const { criteria, page } = action;
+            return { status: 'requesting', criteria, page };
+        }
+        case 'fetch': {
+            const { parameters, terms, page } = action;
+            return { status: 'fetching', parameters, terms, page };
+        }
+        case 'error': {
+            return { status: 'error', reason: action.reason };
+        }
+        case 'reset': {
+            return { status: 'resetting' };
+        }
+        case 'wait': {
+            return { status: 'waiting' };
+        }
+        case 'no-input': {
+            return {
+                status: 'no-input',
+                results: { total: 0, content: [], terms: [], page: action.page.number, size: action.page.size }
+            };
+        }
+        case 'initialize': {
+            const { page } = action;
+            return { status: 'initializing', criteria: action.criteria, page };
+        }
+        case 'complete': {
+            if (current.status === 'fetching' || current.status === 'reloading') {
+                return { ...current, status: 'completed', results: { ...action.found, terms: current.terms } };
+            }
+            break;
+        }
+        case 'change-page': {
+            if (current.status === 'completed') {
+                return {
+                    status: 'reloading',
+                    parameters: current.parameters,
+                    terms: current.results.terms,
+                    page: { number: action.number, size: action.size },
+                    results: current.results
+                };
+            }
+            break;
+        }
+        case 'change-filter':
+        case 'change-sort': {
+            if (current.status === 'completed') {
+                const page = { number: 1, size: current.results.size };
 
-        return {
-            status: 'fetching',
-            parameters: current.parameters,
-            terms: current.results.terms,
-            page
-        };
-    } else if (action.type === 'change-page' && current.status === 'completed') {
-        return {
-            status: 'fetching',
-            parameters: current.parameters,
-            terms: current.results.terms,
-            page: { number: action.number, size: action.size }
-        };
-    } else if (action.type === 'error') {
-        return { status: 'error', reason: action.reason };
-    } else if (action.type === 'reset') {
-        return { status: 'resetting' };
-    } else if (action.type === 'wait') {
-        return { status: 'waiting' };
-    } else if (action.type === 'no-input') {
-        const { page } = action;
-
-        return {
-            status: 'no-input',
-            results: { total: 0, content: [], terms: [], page: page.number, size: page.size }
-        };
-    } else if (action.type === 'initialize') {
-        const { page } = action;
-        return { status: 'initializing', criteria: action.criteria, page };
+                return {
+                    status: 'reloading',
+                    parameters: current.parameters,
+                    terms: current.results.terms,
+                    page,
+                    results: current.results
+                };
+            }
+            break;
+        }
     }
+
     return current;
 };
 
@@ -99,9 +125,9 @@ const orElseEmptyResult =
         result ?? { size: request.page.size, total: 0, content: [], page: 0 };
 
 const adjustResult = <R>(result: Resolved<R>) => {
-    const { total, page, size, content } = result;
+    const { page, ...remaining } = result;
 
-    return { total, size, content, page: page + 1 };
+    return { ...remaining, page: page + 1 };
 };
 
 const defaultNoInputCheck: Predicate<Term[]> = (terms: Term[]) => terms.length === 0;
@@ -115,7 +141,7 @@ const blankResults = (size: number, page: number) => ({
 });
 
 type SearchResultsInteraction<C, R> = {
-    status: 'waiting' | 'resetting' | 'loading' | 'completed' | 'error' | 'no-input' | 'initializing';
+    status: SearchInteractionStatus;
     criteria?: C;
     results: SearchResults<R>;
     error?: string;
@@ -134,6 +160,7 @@ type ResultRequest<A> = {
     parameters: A;
     page: { number: number; size: number };
     sort?: SortRequest;
+    filter?: Filter;
 };
 type ResultResolver<A, R> = (request: ResultRequest<A>) => Promise<Resolved<R> | undefined>;
 type TermResolver<C> = (criteria: C) => Term[];
@@ -156,6 +183,8 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     const { page, ready, reset: pageReset } = usePage();
 
     const { property, direction } = useSorting();
+
+    const filtering = maybeUseFilter();
 
     const sort = useMemo(() => {
         if (property && direction) {
@@ -198,6 +227,10 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         if (searchCriteria) {
             //  the search criteria has changed initialize a search
             dispatch({ type: 'initialize', criteria: searchCriteria, page: { number: 1, size: page.pageSize } });
+
+            if (filtering) {
+                filtering.reset();
+            }
         }
     }, [searchCriteria, dispatch]);
 
@@ -205,6 +238,10 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         if (state.status === 'completed' && !searchCriteria) {
             //  the search criteria has removed, reset the search
             dispatch({ type: 'reset' });
+
+            if (filtering) {
+                filtering.reset();
+            }
         }
     }, [state.status, searchCriteria, dispatch]);
 
@@ -243,13 +280,15 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     }, [state.status, noInputCheck]);
 
     useEffect(() => {
-        if (state.status === 'fetching') {
+        if (state.status === 'fetching' || state.status === 'reloading') {
             // the criteria has changed invoke search
             const request = {
                 parameters: state.parameters,
                 page: state.page,
-                sort
+                sort,
+                filter: filtering?.filter
             };
+
             resultResolver(request)
                 .then(orElseEmptyResult(request))
                 .then(adjustResult)
@@ -271,6 +310,10 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         }
     }, [sort?.direction, sort?.property]);
 
+    useEffect(() => {
+        dispatch({ type: 'change-filter' });
+    }, [filtering?.filter]);
+
     const status = useMemo(
         () => (state.status === 'fetching' || state.status === 'requesting' ? 'loading' : state.status),
         [state.status]
@@ -280,7 +323,10 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         [state.status]
     );
     const results = useMemo(
-        () => (state.status === 'completed' ? state.results : blankResults(page.pageSize, page.current)),
+        () =>
+            state.status === 'completed' || state.status === 'reloading'
+                ? state.results
+                : blankResults(page.pageSize, page.current),
         [state.status, page.pageSize, page.current]
     );
     const error = useMemo(() => (state.status === 'error' ? state.reason : undefined), [state.status]);

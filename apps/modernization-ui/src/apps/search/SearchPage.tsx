@@ -4,6 +4,7 @@ import { PageProvider, PagingSettings } from 'page';
 import { SortingProvider, SortingSettings } from 'sorting';
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 import { ComponentSizingProvider } from 'design-system/sizing';
+import { FilterProvider } from 'design-system/filter';
 
 const SEARCH_PAGE_SIZE = 20;
 
@@ -16,7 +17,9 @@ const SearchPageProvider = ({ sorting, paging, children }: SearchPageProviderPro
                 {...paging}
                 pageSize={paging?.pageSize || SEARCH_PAGE_SIZE}
                 appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
-                <SearchResultDisplayProvider>{children}</SearchResultDisplayProvider>
+                <FilterProvider>
+                    <SearchResultDisplayProvider>{children}</SearchResultDisplayProvider>
+                </FilterProvider>
             </PageProvider>
         </SortingProvider>
     </ComponentSizingProvider>

@@ -9,7 +9,6 @@ import co.elastic.clients.elasticsearch._types.query_dsl.QueryVariant;
 import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
-import co.elastic.clients.json.JsonData;
 import com.google.common.collect.Streams;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.event.search.LabReportFilter;
@@ -158,9 +157,11 @@ class LabReportSearchCriteriaFilterResolver {
     return criteria.reportedOn().map(
         reported ->
             RangeQuery.of(
-                range -> range.field("activity_to_time")
-                    .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                    .to(FlexibleInstantConverter.toString(reported.getTo()))
+                range -> range.term(
+                    term -> term.field("activity_to_time")
+                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                )
             )
     );
   }
@@ -169,9 +170,11 @@ class LabReportSearchCriteriaFilterResolver {
     return criteria.collectedOn().map(
         reported ->
             RangeQuery.of(
-                range -> range.field("effective_from_time")
-                    .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                    .to(FlexibleInstantConverter.toString(reported.getTo()))
+                range -> range.term(
+                    term -> term.field("effective_from_time")
+                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                )
             )
     );
   }
@@ -180,9 +183,11 @@ class LabReportSearchCriteriaFilterResolver {
     return criteria.receivedOn().map(
         reported ->
             RangeQuery.of(
-                range -> range.field("rpt_to_state_time")
-                    .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                    .to(FlexibleInstantConverter.toString(reported.getTo()))
+                range -> range.term(
+                    term -> term.field("rpt_to_state_time")
+                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                )
             )
     );
   }
@@ -206,9 +211,11 @@ class LabReportSearchCriteriaFilterResolver {
     return criteria.createdOn().map(
         reported ->
             RangeQuery.of(
-                range -> range.field("add_time")
-                    .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                    .to(FlexibleInstantConverter.toString(reported.getTo()))
+                range -> range.term(
+                    term -> term.field("add_time")
+                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                )
             )
     );
   }
@@ -232,9 +239,10 @@ class LabReportSearchCriteriaFilterResolver {
     return criteria.updatedOn().map(
         reported ->
             RangeQuery.of(
-                range -> range.field("observation_last_chg_time")
+                range -> range.term(term -> term.field("observation_last_chg_time")
                     .from(FlexibleInstantConverter.toString(reported.getFrom()))
                     .to(FlexibleInstantConverter.toString(reported.getTo()))
+                )
             )
     );
   }
@@ -412,8 +420,8 @@ class LabReportSearchCriteriaFilterResolver {
     if (includeUpdated && includeNew) {
       return Optional.of(
           RangeQuery.of(
-              range -> range.field(VERSION)
-                  .gte(JsonData.of(1))
+              range -> range.term(term -> term.field(VERSION).gte("1")
+              )
           )
       );
     } else if (includeNew) {
@@ -426,8 +434,8 @@ class LabReportSearchCriteriaFilterResolver {
     } else {
       return Optional.of(
           RangeQuery.of(
-              range -> range.field(VERSION)
-                  .gt(JsonData.of(1))
+              range -> range.term(term -> term.field(VERSION).gt("1")
+              )
           )
       );
     }

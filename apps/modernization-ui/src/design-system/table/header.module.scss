@@ -17,11 +17,26 @@
         background-color: colors.$cool-accent-light !important;
     }
 
-    div {
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-height: 2.5rem;
+
+        transition-duration: 0.25s;
+        transition-property: max-height;
+        transition-timing-function: ease-in;
+
+        &.extended {
+            max-height: 5.125rem;
+        }
+    }
+
+    .sortable {
         display: flex;
         justify-content: space-between;
-        border: none;
         align-items: center;
+        gap: 0.5rem;
     }
     
     svg {

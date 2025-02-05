@@ -1,45 +1,52 @@
 import classNames from 'classnames';
-import { Column } from './DataTable';
 import { Direction, SortingInteraction, maybeUseSorting } from 'sorting';
+import { FilterInteraction, maybeUseFilter } from 'design-system/filter';
+import { HeaderFilterField } from './header/filter';
+import { Column } from './DataTable';
+import { Icon } from 'design-system/icon';
 
-import sprite from '@uswds/uswds/img/sprite.svg';
 import styles from './header.module.scss';
 
 type Props<V> = {
     className?: string;
     children: Column<V>;
-    filterable?: boolean;
 };
 
-const Header = <V,>({ children, filterable, ...remaining }: Props<V>) => {
+const Header = <V,>({ children, ...remaining }: Props<V>) => {
     const sorting = maybeUseSorting();
+    const filtering = maybeUseFilter();
 
     const isSortable = sorting && children.sortable;
 
     return isSortable ? (
-        <SortableHeader sorting={sorting} {...remaining} filterable={filterable}>
+        <SortableHeader sorting={sorting} {...remaining} filtering={filtering}>
             {children}
         </SortableHeader>
     ) : (
-        <StandardHeader {...remaining} filterable={filterable}>
+        <StandardHeader {...remaining} filtering={filtering}>
             {children}
         </StandardHeader>
     );
 };
 
-const StandardHeader = <V,>({ className, children, filterable }: Props<V>) => (
+type StandardHeaderProps<V> = Props<V> & { filtering?: FilterInteraction };
+
+const StandardHeader = <V,>({ className, children, filtering }: StandardHeaderProps<V>) => (
     <th className={classNames(styles.header, className, { [styles.fixed]: children.fixed })}>
-        {children.name}
-        {filterable && children.filter}
+        <div className={classNames(styles.content)}>
+            {children.name}
+            {filtering && filtering.active && children.filter != undefined && (
+                <HeaderFilterField label={children.name} descriptor={children.filter} filtering={filtering} />
+            )}
+        </div>
     </th>
 );
 
-type SortableProps<V> = Props<V> & {
+type SortableProps<V> = StandardHeaderProps<V> & {
     sorting: SortingInteraction;
-    filterable?: boolean;
 };
 
-const SortableHeader = <V,>({ className, sorting, children, filterable }: SortableProps<V>) => {
+const SortableHeader = <V,>({ className, sorting, children, filtering }: SortableProps<V>) => {
     const direction = sorting.property === children.id ? ensureDirection(sorting.direction) : Direction.None;
     const ariaSort = resolveSortAria(direction);
     const icon = resolveSortIcon(direction);
@@ -50,14 +57,20 @@ const SortableHeader = <V,>({ className, sorting, children, filterable }: Sortab
                 [styles.fixed]: children.fixed,
                 [styles.sorted]: direction !== Direction.None
             })}
-            {...(ariaSort && { 'aria-sort': ariaSort })}>
-            <div>
-                {children.name}
-                <svg tabIndex={0} role="img" aria-label={`Sort`} onClick={() => sorting.toggle(children.id)}>
-                    <use xlinkHref={`${sprite}#${icon}`}></use>
-                </svg>
+            aria-sort={ariaSort}>
+            <div className={classNames(styles.content, { [styles.extended]: filtering?.active })}>
+                <div className={styles.sortable}>
+                    {children.name}
+                    <Icon
+                        name={icon}
+                        aria-label={`Sort ${children.name}`}
+                        onClick={() => sorting.toggle(children.id)}
+                    />
+                </div>
+                {filtering && filtering.active && children.filter != undefined && (
+                    <HeaderFilterField label={children.name} descriptor={children.filter} filtering={filtering} />
+                )}
             </div>
-            {filterable && children.filter}
         </th>
     );
 };

@@ -1,43 +1,73 @@
-import { createContext, useContext, ReactNode, useState } from 'react';
-import { Filter } from './FilterEntry';
+import { createContext, useContext, ReactNode, useState, useCallback } from 'react';
+import { Filter } from './filter';
+import { exists } from 'utils';
 
-type FilterContextType = {
-    activeFilter: boolean;
-    filterEntry: Filter | undefined;
-    toggleFilter: () => void;
-    onApply: (value: Filter) => void;
-    onReset: () => void;
-    setActiveFilter: (value: boolean) => void;
+type FilterInteraction = {
+    active: boolean;
+    filter: Filter | undefined;
+    show: () => void;
+    hide: () => void;
+    toggle: () => void;
+    apply: (id: string, value: string) => void;
+    clear: (id: string) => void;
+    clearAll: () => void;
+    reset: () => void;
 };
 
-const FilterableContext = createContext<FilterContextType | undefined>(undefined);
+const FilterableContext = createContext<FilterInteraction | undefined>(undefined);
 
-export const FilterProvider = ({ children }: { children: ReactNode }) => {
-    const [activeFilter, setActiveFilter] = useState(false);
-    const [filterEntry, setFilterEntry] = useState<Filter>();
+type FilterProviderProps = { children: ReactNode };
 
-    const toggleFilter = () => setActiveFilter((prev) => !prev);
+const FilterProvider = ({ children }: FilterProviderProps) => {
+    const [active, setActive] = useState(false);
+    const [filter, setFilter] = useState<Filter>();
 
-    const onApply = (value: Filter) => {
-        setFilterEntry(value);
-    };
+    const show = useCallback(() => setActive(true), [setActive]);
+    const hide = useCallback(() => setActive(false), [setActive]);
+    const toggle = useCallback(() => setActive((prev) => !prev), [setActive]);
 
-    const onReset = () => {
-        setFilterEntry(undefined);
-    };
+    const apply = useCallback((id: string, value: string) => setFilter(withProperty(id, value)), [setFilter]);
+
+    const clear = useCallback((id: string) => setFilter(withoutProperty(id)), [setFilter]);
+
+    const clearAll = useCallback(() => setFilter(undefined), [setFilter]);
+    const reset = useCallback(() => {
+        setActive(false);
+        setFilter(undefined);
+    }, [setActive, setFilter]);
 
     return (
-        <FilterableContext.Provider
-            value={{ activeFilter, filterEntry, toggleFilter, onApply, onReset, setActiveFilter }}>
+        <FilterableContext.Provider value={{ active, filter, show, hide, toggle, apply, clear, clearAll, reset }}>
             {children}
         </FilterableContext.Provider>
     );
 };
 
-export const useFilter = () => {
+const withProperty =
+    <T extends object>(id: keyof T, value: string) =>
+    (current?: T) => ({ ...current, [id]: value });
+
+const withoutProperty =
+    <T,>(id: keyof T) =>
+    (current?: T) => {
+        if (current) {
+            const next = { ...current };
+            delete next[id];
+
+            // if the last property is removed, return undefined
+            return exists(next) ? next : undefined;
+        }
+    };
+
+const useFilter = () => {
     const context = useContext(FilterableContext);
     if (!context) {
         throw new Error('useFilterContext must be used within a FilterProvider');
     }
     return context;
 };
+
+const maybeUseFilter = () => useContext(FilterableContext);
+
+export { useFilter, maybeUseFilter, FilterProvider };
+export type { FilterInteraction };

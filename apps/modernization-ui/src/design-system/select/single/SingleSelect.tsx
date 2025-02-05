@@ -22,6 +22,7 @@ type Props = {
     id: string;
     label: string;
     helperText?: string;
+    placeholder?: string;
     options: Selectable[];
     value?: Selectable | null;
     onChange?: (value?: Selectable) => void;
@@ -70,7 +71,6 @@ const SingleSelect = ({
                 className={classNames('usa-select', className)}
                 name={inputProps.name ?? id}
                 value={value?.value}
-                placeholder={placeholder}
                 onChange={handleChange}
                 {...inputProps}>
                 {renderOptions(options, placeholder)}
