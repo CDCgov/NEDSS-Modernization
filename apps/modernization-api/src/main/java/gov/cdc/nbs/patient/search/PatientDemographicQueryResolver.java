@@ -13,7 +13,6 @@ import co.elastic.clients.elasticsearch._types.query_dsl.QueryVariant;
 import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermsQueryField;
-import co.elastic.clients.json.JsonData;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
 import gov.cdc.nbs.search.AdjustStrings;
 import gov.cdc.nbs.search.WildCards;
@@ -24,13 +23,16 @@ import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import org.apache.commons.codec.language.Soundex;
 import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import static gov.cdc.nbs.search.criteria.text.TextCriteriaNestedQueryResolver.*;
+
+import static gov.cdc.nbs.search.criteria.text.TextCriteriaNestedQueryResolver.contains;
+import static gov.cdc.nbs.search.criteria.text.TextCriteriaNestedQueryResolver.containsInAtLeastOneField;
 
 @Component
 @SuppressWarnings("squid:S3516")
@@ -58,7 +60,6 @@ class PatientDemographicQueryResolver {
   private final PatientNameDemographicQueryResolver nameQueryResolver;
   private final PatientLocationQueryResolver locationQueryResolver;
   private final Soundex soundex;
-
 
   PatientDemographicQueryResolver(
       final PatientSearchSettings settings,
@@ -120,7 +121,7 @@ class PatientDemographicQueryResolver {
     if (criteria.getFilter().name() == null) {
       return Optional.empty();
     }
-    return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().name(), null))
+    return Optional.of(new TextCriteria(null, null, null, criteria.getFilter().name(), null))
         .flatMap(TextCriteria::maybeContains)
         .map(value -> containsInAtLeastOneField(NAMES, value, FIRST_NAME, LAST_NAME));
   }
@@ -164,7 +165,7 @@ class PatientDemographicQueryResolver {
     if (criteria.getFilter().address() == null) {
       return Optional.empty();
     }
-    return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().address(), null))
+    return Optional.of(new TextCriteria(null, null, null, criteria.getFilter().address(), null))
         .flatMap(TextCriteria::maybeContains)
         .map(value -> containsInAtLeastOneField(ADDRESSES, value, STREET, CITY, STATE, ZIP_CODE));
 
@@ -316,7 +317,7 @@ class PatientDemographicQueryResolver {
     }
 
     String phoneDigits = criteria.getFilter().phone().replaceAll("[^\\d]", "");
-    return Optional.ofNullable(new TextCriteria(null, null, null, phoneDigits, null))
+    return Optional.of(new TextCriteria(null, null, null, phoneDigits, null))
         .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(PHONES, "phone.telephoneNbr", value));
   }
@@ -327,7 +328,7 @@ class PatientDemographicQueryResolver {
       return Optional.empty();
     }
 
-    return Optional.ofNullable(new TextCriteria(null, null, null, criteria.getFilter().email(), null))
+    return Optional.of(new TextCriteria(null, null, null, criteria.getFilter().email(), null))
         .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(EMAILS, EMAIL_ADDRESS, value));
   }
@@ -339,7 +340,7 @@ class PatientDemographicQueryResolver {
     }
 
     return Optional
-        .ofNullable(new TextCriteria(null, null, null,
+        .of(new TextCriteria(null, null, null,
             AdjustStrings.withoutSpecialCharacters(criteria.getFilter().identification()), null))
         .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(IDENTIFICATIONS, IDENTIFICATION, value));
@@ -401,12 +402,12 @@ class PatientDemographicQueryResolver {
       return switch (operator) {
         case "before" -> Optional.of(
             RangeQuery.of(
-                range -> range.field(BIRTHDAY)
-                    .lt(JsonData.of(value))));
+                range -> range.term(
+                    term -> term.field(BIRTHDAY).lt(value))));
         case "after" -> Optional.of(
             RangeQuery.of(
-                range -> range.field(BIRTHDAY)
-                    .gt(JsonData.of(value))));
+                range -> range.term(
+                    term -> term.field(BIRTHDAY).gt(value))));
         default -> Optional.of(
             MatchQuery.of(
                 match -> match.field(BIRTHDAY)
@@ -428,22 +429,20 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
-  private Script searchDateOfBirthScript(String value) {
-    return Script.of(t -> t.inline(inline -> inline
-        .source(
+  private Script searchDateOfBirthScript(final String value) {
+    return Script.of(
+        script -> script.source(
             "doc['birth_time'].size()!=0 && (doc['birth_time'].value.toString().substring(5,10)+'-'+doc['birth_time'].value.toString().substring(0,4)).contains('"
                 + value + "')")
-        .lang(PAINLESS)));
+            .lang(PAINLESS));
   }
 
   Integer ageInYears(String value) {
-    Integer age = 0;
     try {
-      age = Integer.parseInt(value);
+      return Integer.parseInt(value);
     } catch (NumberFormatException e) {
       return null;
     }
-    return age;
   }
 
   private Optional<QueryVariant> applyPatientAgeOrDateOfBirthFilterCriteria(final PatientFilter criteria) {
@@ -460,12 +459,15 @@ class PatientDemographicQueryResolver {
               should -> should.script(s -> s.script(searchDateOfBirthScript(value))))));
     }
 
-    return Optional.of(BoolQuery.of(
-        bool -> bool.should(
-            should -> should.script(s -> s.script(searchDateOfBirthScript(value)))).should(
-                s -> s.range(RangeQuery.of(
-                    range -> range.field(BIRTHDAY)
-                        .gt(JsonData.of("now-" + (age + 1) + "y/d")).lt(JsonData.of("now-" + age + "y/d")))))));
+    return Optional.of(
+        BoolQuery.of(
+            bool -> bool.should(
+                should -> should.script(s -> s.script(searchDateOfBirthScript(value))))
+                .should(
+                    s -> s.range(RangeQuery.of(
+                        range -> range.term(term -> term.field(BIRTHDAY)
+                            .gt("now-" + (age + 1) + "y/d")
+                            .lt("now-" + age + "y/d")))))));
   }
 
   private Optional<QueryVariant> applyDateOfBirthLowRangeCriteria(final PatientFilter criteria) {
@@ -478,13 +480,12 @@ class PatientDemographicQueryResolver {
       return Optional.empty();
     }
 
-
     String value = FlexibleInstantConverter.toString(betweenDate.from());
 
     return Optional.of(
         RangeQuery.of(
-            range -> range.field(BIRTHDAY)
-                .gte(JsonData.of(value))));
+            range -> range.term(term -> term.field(BIRTHDAY)
+                .gte(value))));
   }
 
   private Optional<QueryVariant> applyDateOfBirthHighRangeCriteria(final PatientFilter criteria) {
@@ -501,10 +502,10 @@ class PatientDemographicQueryResolver {
 
     return Optional.of(
         RangeQuery.of(
-            range -> range.field(BIRTHDAY)
-                .lte(JsonData.of(value))));
+            range -> range.term(
+                term -> term.field(BIRTHDAY)
+                    .lte(value))));
   }
-
 
   private String resolveDateOperator(final String operator) {
     return operator == null ? "equal" : operator.toLowerCase();
