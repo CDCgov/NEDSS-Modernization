@@ -40,7 +40,7 @@ const including = (existing: ComparisonState, investigation: Investigation): Com
         return verify(existing, investigation);
     } else {
         //  uncomparable
-        return { ...existing, investigations: [...existing.investigations, investigation] };
+        return { ...existing, status: 'uncomparable', investigations: [...existing.investigations, investigation] };
     }
 };
 
