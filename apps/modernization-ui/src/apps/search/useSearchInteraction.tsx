@@ -8,7 +8,8 @@ type SearchInteractionStatus =
     | 'error'
     | 'resetting'
     | 'initializing'
-    | 'loading';
+    | 'loading'
+    | 'reloading';
 
 type SearchResults<R> = {
     total: number;

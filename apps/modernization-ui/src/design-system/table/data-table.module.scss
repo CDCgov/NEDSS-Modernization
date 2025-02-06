@@ -6,7 +6,7 @@
     height: 100%;
     width: 100%;
     padding-right: 6px;
-    
+
     table {
         table-layout: auto !important;
         border-collapse: separate;
@@ -21,11 +21,8 @@
             th {
                 white-space: nowrap;
                 border-style: none;
+                vertical-align: top;
                 background-color: colors.$base-white;
-                svg {
-                    width: 1.0625rem;
-                    margin-left: 0.25rem;
-                }
             }
             tr {
                 &.border {

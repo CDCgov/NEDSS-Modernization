@@ -14,7 +14,7 @@ public class ClassicPathResolver {
     public ClassicPathResolver(
         @Value("${nbs.wildfly.url:http://wildfly:7001}") final String url
     ) {
-        this.base = UriComponentsBuilder.fromHttpUrl(url)
+        this.base = UriComponentsBuilder.fromUriString(url)
             .path("nbs/");
     }
 

@@ -4,19 +4,17 @@
     --modal-min-width: 17.1875rem;
 }
 
-.option-icon {
-    width: 1.75rem;
-    height: 1.75rem;
+.option {
+    width: 2rem;
+    height: 2rem;
 }
 
-.filter-options {
+.filter {
     display: flex;
     gap: 0.5rem;
     align-items: center;
 
-    .activeFilter {
+    .filtered {
         background-color: colors.$primary-darker;
     }
 }
-
-

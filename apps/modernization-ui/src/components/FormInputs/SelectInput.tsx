@@ -1,4 +1,4 @@
-import { Dropdown } from '@trussworks/react-uswds';
+import { Select } from '@trussworks/react-uswds';
 
 import { EntryWrapper, Orientation } from 'components/Entry';
 
@@ -46,17 +46,16 @@ export const SelectInput = ({
 
     //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
     const Wrapped = () => (
-        <Dropdown
+        <Select
             data-testid={dataTestid || 'dropdown'}
             id={id || ''}
             name={name || ''}
             defaultValue={defaultValue || undefined}
-            placeholder="-Select-"
             onChange={onChange}
             onBlur={onBlur}
             {...props}>
             {renderOptions(options)}
-        </Dropdown>
+        </Select>
     );
 
     return (

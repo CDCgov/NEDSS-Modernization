@@ -1,4 +1,4 @@
-import { RecordStatus, PersonFilter, IdentificationCriteria, Filter } from 'generated/graphql/schema';
+import { RecordStatus, PersonFilter, IdentificationCriteria } from 'generated/graphql/schema';
 
 import { asValue, asValues } from 'options/selectable';
 import { PatientCriteriaEntry } from './criteria';
@@ -10,13 +10,6 @@ const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriter
               identificationType: data.identificationType.value
           }
         : undefined;
-
-const resolveFilter = (data: PatientCriteriaEntry): Filter | undefined => {
-    if (data.filter?.patientid) {
-        return { id: data.filter.patientid };
-    }
-    return undefined;
-};
 
 export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     const {
@@ -63,7 +56,6 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         zip: remaining.zip ? String(remaining.zip) : undefined,
         race: asValue(remaining.race),
         ethnicity: asValue(remaining.ethnicity),
-        identification: resolveIdentification(remaining),
-        filter: resolveFilter(remaining)
+        identification: resolveIdentification(remaining)
     };
 };

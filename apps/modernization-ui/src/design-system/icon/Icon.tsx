@@ -1,6 +1,8 @@
 import { SVGProps as ReactSVGProps } from 'react';
-import uswds from '@uswds/uswds/img/sprite.svg';
 import classNames from 'classnames';
+
+import uswds from '@uswds/uswds/img/sprite.svg';
+import extended from './extended-sprite.svg';
 
 import styles from './icon.module.scss';
 
@@ -10,43 +12,8 @@ type Size = 'small' | 'medium' | 'large';
 
 type Props = { name: Icons; size?: Size } & Omit<ReactSVGProps<SVGSVGElement>, 'width' | 'height'>;
 
-const TableIcon = ({
-    className,
-    role,
-    ...props
-}: { className: string; role: string } & ReactSVGProps<SVGSVGElement>) => (
-    <svg
-        className={className}
-        role={role}
-        aria-hidden={props['aria-hidden'] || !props['aria-label'] || !props['aria-labelledby']}
-        {...props}>
-        <path
-            transform="scale(1.5)"
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M18.0953 3.33301V16.1891H1.90479V3.33301H18.0953ZM3.33336 14.7607H6.66669V8.57068H3.33336V14.7607ZM8.09526 14.7607H11.9048V8.57068H8.09526V14.7607ZM13.3334 14.7607H16.6667V8.57068H13.3334V14.7607ZM16.6667 4.76146V7.14222H3.33336V4.76146H16.6667Z"
-            fill="currentColor"
-        />
-    </svg>
-);
-
 const Icon = ({ name, size, role = 'img', className, ...props }: Props) => {
     const location = resolveLocation(name);
-
-    if (name === 'table') {
-        return (
-            <TableIcon
-                className={classNames(styles.icon, className, {
-                    [styles.small]: size === 'small',
-                    [styles.medium]: size === 'medium',
-                    [styles.large]: size === 'large'
-                })}
-                role={role}
-                {...props}
-            />
-        );
-    }
-
     return (
         <svg
             className={classNames(styles.icon, className, {
@@ -64,6 +31,9 @@ const Icon = ({ name, size, role = 'img', className, ...props }: Props) => {
 
 const resolveLocation = (name: string) => {
     switch (name) {
+        case 'table': {
+            return `${extended}#${name}`;
+        }
         case 'calendar':
         case 'down-arrow-blue':
         case 'down-arrow-white':
