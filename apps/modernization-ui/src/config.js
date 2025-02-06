@@ -1,9 +1,11 @@
+const dedupBaseUrl = `http://localhost:8083`;
+
 const prod = {
     modernizationUrl: `${window.location.protocol}//${window.location.host}`,
     pageBuilderUrl: `${window.location.protocol}//${window.location.host}/nbs/page-builder`,
     enableLogin: false,
-    matchingConfigApiUrl: `${window.location.protocol}//${window.location.host}/api/deduplication/matching-configuration`,
-    saveConfigApiUrl: `${window.location.protocol}//${window.location.host}/api/deduplication/configure-matching`
+    matchingConfigApiUrl: `${dedupBaseUrl}/api/deduplication/matching-configuration`,
+    saveConfigApiUrl: `${dedupBaseUrl}/api/deduplication/configure-matching`
 };
 
 const dev = {
@@ -16,8 +18,8 @@ const dev = {
             verification: true
         }
     },
-    matchingConfigApiUrl: `${window.location.protocol}//${window.location.host}/api/deduplication/matching-configuration`,
-    saveConfigApiUrl: `${window.location.protocol}//${window.location.host}/api/deduplication/configure-matching`
+    matchingConfigApiUrl: `${dedupBaseUrl}/api/deduplication/matching-configuration`,
+    saveConfigApiUrl: `${dedupBaseUrl}/api/deduplication/configure-matching`
 };
 
 // eslint-disable-next-line no-undef

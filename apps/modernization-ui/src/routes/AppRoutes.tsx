@@ -26,8 +26,8 @@ const routing = [
             ...searchRouting,
             ...addPatientRouting,
             ...patientProfileRouting,
-            ...pageBuilderRouting,
-            ...deduplicationRouting
+            ...deduplicationRouting,
+            ...pageBuilderRouting
         ]
     },
     { path: '*', element: <Navigate to={'/'} /> },
