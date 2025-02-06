@@ -79,7 +79,7 @@ public class InvestigationNotificationSteps {
   @When("I query for a notifications transport status")
   public void i_query_for_a_notifications_transport_status() throws Exception {
     assertThat(activeNotification.active()).isNotNull();
-    response.active(requester.request(activeNotification.active().local()));
+    response.active(requester.request(activeInvestigation.active().identifier()));
   }
 
   @Then("I receive a notification transport status of {notificationTransportStatus}")
