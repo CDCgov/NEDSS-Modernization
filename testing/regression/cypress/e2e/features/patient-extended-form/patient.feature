@@ -70,3 +70,10 @@ Scenario: Required Name Fields
     And I have not filled out all Address input fields
     Then Error message should appear right above Address fields
 
+  Scenario: Valid Dropdown Selections
+    Given I am on the New patient Extended form
+    And I have filled out Dropdowns fields
+    When I click the Save button
+    Then Form should be submitted successfully without errors
+    And I should receive a confirmation message
+
