@@ -1,0 +1,1 @@
+export { SearchResultPageSelect } from './SearchResultPageSelect';
