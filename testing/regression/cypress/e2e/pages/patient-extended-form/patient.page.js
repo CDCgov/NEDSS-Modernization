@@ -102,6 +102,14 @@ class ClassicPatientSearchPage {
     cy.contains('The Type is required')
     cy.contains('The Use is required')
   }
+
+  fillDropdownFields() {
+    cy.get('#races-category-race').select('1002-5')
+    cy.get('footer button').contains('Add race').eq(0).click()
+    cy.get('select[id="ethnicity.ethnicGroup"]').select('2135-2')
+    cy.get('select[id="birthAndSex.current"]').select('M')
+    cy.get('select[id="birthAndSex.sex"]').select('M')
+  }
 }
 
 export default new ClassicPatientSearchPage();
