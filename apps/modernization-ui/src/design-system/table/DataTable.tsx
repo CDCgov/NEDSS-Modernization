@@ -25,7 +25,7 @@ type DataTableProps<V> = {
     sizing?: Sizing;
 };
 
-const DataTable = <V,>({ id, className, columns, data, sizing = 'large' }: DataTableProps<V>) => {
+const DataTable = <V,>({ id, className, columns, data, sizing }: DataTableProps<V>) => {
     const resolvedClasses = classNames('usa-table--borderless', styles.table, sizing ? styles[sizing] : undefined);
     return (
         <div id={id} className={resolvedClasses}>
