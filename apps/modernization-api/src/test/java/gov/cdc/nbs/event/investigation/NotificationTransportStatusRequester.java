@@ -24,8 +24,7 @@ class NotificationTransportStatusRequester {
   ResultActions request(final String notificationId) throws Exception {
     return mvc.perform(
         this.authenticated.withUser(
-            get("/nbs/api/notification/transport/status")
-                .queryParam("notificationId", notificationId)))
+            get("/nbs/api/notifications/{id}/transport/status", notificationId)))
         .andDo(print());
   }
 }
