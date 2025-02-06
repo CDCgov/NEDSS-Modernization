@@ -25,7 +25,7 @@ type DataTableProps<V> = {
     sizing?: Sizing;
 };
 
-const DataTable = <V,>({ id, className, columns, data, sizing }: DataTableProps<V>) => {
+const DataTable = <V,>({ id, className, columns, data, sizing = 'large' }: DataTableProps<V>) => {
     const resolvedClasses = classNames('usa-table--borderless', styles.table, sizing ? styles[sizing] : undefined);
     return (
         <div id={id} className={resolvedClasses}>
@@ -33,7 +33,7 @@ const DataTable = <V,>({ id, className, columns, data, sizing }: DataTableProps<
                 <thead>
                     <tr>
                         {columns.map((column, index) => (
-                            <Header key={index} className={column.className}>
+                            <Header key={index} className={column.className} sizing={sizing}>
                                 {column}
                             </Header>
                         ))}
