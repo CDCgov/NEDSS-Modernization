@@ -21,10 +21,10 @@ class NotificationTransportStatusRequester {
     this.authenticated = authenticated;
   }
 
-  ResultActions request(final String notificationId) throws Exception {
+  ResultActions request(final Long investigationId) throws Exception {
     return mvc.perform(
         this.authenticated.withUser(
-            get("/nbs/api/notifications/{id}/transport/status", notificationId)))
+            get("/nbs/api/investigations/{id}/notifications/transport/status", investigationId)))
         .andDo(print());
   }
 }
