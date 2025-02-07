@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/nbs/api/notifications")
+@RequestMapping("/nbs/api/investigations/{id}/notifications")
 @PreAuthorize("hasAuthority('VIEW-INVESTIGATION')")
 public class NotificationStatusController {
   private final NotificationStatusResolver resolver;
@@ -16,8 +16,8 @@ public class NotificationStatusController {
     this.resolver = resolver;
   }
 
-  @GetMapping("/{id}/transport/status")
-  public NotificationStatus findStatus(@PathVariable final String id) {
+  @GetMapping("/transport/status")
+  public NotificationStatus findLatestStatus(@PathVariable final String id) {
     return resolver.resolve(id);
   }
 }
