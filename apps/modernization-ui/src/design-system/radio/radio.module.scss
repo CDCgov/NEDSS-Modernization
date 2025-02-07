@@ -1,0 +1,94 @@
+@use 'styles/colors';
+@use 'styles/components';
+
+$radio-small: 1rem;
+$radio-medium: 1.125rem;
+$radio-large: 1.25rem;
+
+@mixin sizedRadio($height: $radio-small, $width: $radio-small, $padding: 1.5rem, $extend: '%small') {
+    height: $height;
+    min-height: $height;
+
+    label {
+        @extend #{$extend};
+        padding-left: $padding;
+        &::before {
+            height: $height;
+            width: $width;
+        }
+    }
+}
+
+.radio {
+    min-height: 1.25rem;
+
+    input {
+        position: absolute;
+        left: -999rem;
+    }
+
+    label {
+        color: colors.$base-darkest;
+        cursor: pointer;
+        padding-left: 1.75rem;
+        position: relative;
+        width: auto;
+        display: inline-block;
+
+        &::before {
+            content: ' ';
+            top: 1px;
+            display: block;
+            left: 0;
+            position: absolute;
+            height: $radio-small;
+            width: $radio-small;
+            border-radius: 50%;
+            box-shadow:
+                0 0 0 2px colors.$disabled-darkest,
+                inset 0 0 0 2px colors.$base-white;
+        }
+    }
+
+    input:focus + label::before {
+        outline: 0.25rem solid colors.$focused;
+        outline-offset: 0.25rem;
+    }
+
+    input:checked + label::before {
+        box-shadow:
+            0 0 0 2px colors.$primary,
+            inset 0 0 0 2px colors.$base-white;
+        background-color: colors.$primary;
+    }
+
+    .disabled {
+        color: colors.$disabled-darker;
+        cursor: not-allowed;
+    }
+
+    input:checked + label.disabled::before {
+        background-color: colors.$disabled-darker;
+        box-shadow:
+            0 0 0 2px colors.$disabled-darker,
+            inset 0 0 0 2px colors.$base-white;
+    }
+
+    input:not(:checked) + label.disabled::before {
+        box-shadow:
+            0 0 0 2px colors.$disabled-darker,
+            inset 0 0 0 2px colors.$base-white;
+    }
+
+    &.small {
+        @include sizedRadio($radio-small, $radio-small, 1.5rem, '%small');
+    }
+
+    &.medium {
+        @include sizedRadio($radio-medium, $radio-medium, 1.75rem, '%medium');
+    }
+
+    &.large {
+        @include sizedRadio($radio-large, $radio-large, 1.75rem, '%large');
+    }
+}
