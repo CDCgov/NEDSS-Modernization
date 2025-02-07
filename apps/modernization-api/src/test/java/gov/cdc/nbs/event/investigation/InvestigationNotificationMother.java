@@ -29,7 +29,7 @@ class InvestigationNotificationMother {
         'NOTF',
         'EVN'
       );
-            
+
       insert into Act_relationship(
         source_act_uid,
         source_class_cd,
@@ -45,7 +45,7 @@ class InvestigationNotificationMother {
         'Notification',
         'ACTIVE'
       );
-            
+
       insert into Notification(
         notification_uid,
         local_id,
@@ -67,7 +67,27 @@ class InvestigationNotificationMother {
       delete from Notification where notification_uid in (:identifiers);
       delete from Act_relationship where source_act_uid in (:identifiers);
       delete from Act where act_uid in (:identifiers);
+      delete from NBS_MSGOUTE.[dbo].TransportQ_out where messageId in (:localIds);
       """;
+
+  private static final String CREATE_TRANSPORT_NOTIFICATION = """
+      insert into NBS_MSGOUTE.[dbo].TransportQ_out (
+      		routeInfo,
+      		SERVICE,
+      		ACTION,
+      		encryption,
+      		SIGNATURE,
+      		messageId,
+      		processingStatus
+      	) values (
+          'CDC',
+          'NNDM_1.1.3',
+          'send',
+          'yes',
+          'no',
+          :messageId,
+          :processingStatus);
+        """;
 
   private final SequentialIdentityGenerator idGenerator;
   private final NamedParameterJdbcTemplate template;
@@ -78,8 +98,7 @@ class InvestigationNotificationMother {
       final SequentialIdentityGenerator idGenerator,
       final NamedParameterJdbcTemplate template,
       final Active<NotificationIdentifier> active,
-      final Available<NotificationIdentifier> available
-  ) {
+      final Available<NotificationIdentifier> available) {
     this.idGenerator = idGenerator;
     this.template = template;
     this.active = active;
@@ -93,15 +112,19 @@ class InvestigationNotificationMother {
         .map(NotificationIdentifier::identifier)
         .toList();
 
+    List<String> localIds = this.available.all()
+        .map(NotificationIdentifier::local)
+        .toList();
     if (!created.isEmpty()) {
 
-      Map<String, List<Long>> parameters = Map.of("identifiers", created);
+      SqlParameterSource params = new MapSqlParameterSource()
+          .addValue("identifiers", created)
+          .addValue("localIds", localIds);
 
       template.execute(
           DELETE,
-          new MapSqlParameterSource(parameters),
-          PreparedStatement::executeUpdate
-      );
+          params,
+          PreparedStatement::executeUpdate);
       this.active.reset();
     }
   }
@@ -109,8 +132,7 @@ class InvestigationNotificationMother {
   void create(
       final InvestigationIdentifier investigation,
       final String status,
-      final Instant on
-  ) {
+      final Instant on) {
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal("NOTF");
 
@@ -120,18 +142,25 @@ class InvestigationNotificationMother {
             "investigation", investigation.identifier(),
             "local", local,
             "status", status,
-            "on", FlexibleInstantConverter.toString(on)
-        )
-    );
+            "on", FlexibleInstantConverter.toString(on)));
 
     template.execute(
         CREATE,
         parameters,
-        PreparedStatement::executeUpdate
-    );
+        PreparedStatement::executeUpdate);
 
     NotificationIdentifier created = new NotificationIdentifier(identifier, local);
     this.available.available(created);
     this.active.active(created);
+  }
+
+  void createTransportStatus(final String status) {
+    SqlParameterSource parameters = new MapSqlParameterSource()
+        .addValue("messageId", active.active().local())
+        .addValue("processingStatus", status);
+    template.execute(
+        CREATE_TRANSPORT_NOTIFICATION,
+        parameters,
+        PreparedStatement::executeUpdate);
   }
 }
