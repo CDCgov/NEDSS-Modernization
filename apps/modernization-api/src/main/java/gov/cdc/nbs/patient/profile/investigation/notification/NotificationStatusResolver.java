@@ -17,16 +17,21 @@ class NotificationStatusResolver {
 
   private static final String QUERY = """
       SELECT
-          processingStatus
+          TOP 1 t.processingStatus
       FROM
-          NBS_MSGOUTE.dbo.TransportQ_out
+          Act_relationship ar
+          JOIN Notification n ON n.notification_uid = ar.source_act_uid
+          JOIN NBS_MSGOUTE.dbo.TransportQ_out t ON t.messageId = n.local_id
       WHERE
-          messageId = :notificationId
-            """;
+          ar.target_act_uid = :investigationId
+          AND ar.type_cd = 'Notification'
+      ORDER BY
+          t.messageCreationTime DESC;
+                  """;
 
-  public NotificationStatus resolve(String notificationId) {
+  public NotificationStatus resolve(String investigationId) {
     SqlParameterSource params = new MapSqlParameterSource()
-        .addValue("notificationId", notificationId);
+        .addValue("investigationId", investigationId);
     try {
       return new NotificationStatus(template.queryForObject(QUERY, params, String.class));
     } catch (EmptyResultDataAccessException e) {
