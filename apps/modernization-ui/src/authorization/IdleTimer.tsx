@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import debounce from 'lodash.debounce';
 import { Confirmation } from 'design-system/modal';
+import { toClockString } from 'utils/util';
 
 interface IdleTimerProps {
     timeout: number; // Timeout in milliseconds
@@ -10,33 +11,39 @@ interface IdleTimerProps {
 
 const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle }) => {
     const [idle, setIdle] = useState(false);
-    const [idleTimer, setIdleTimer] = useState<number | undefined>();
-    const [warningTimer, setWarningTimer] = useState<number | undefined>();
-    const warningMins = Math.ceil(warningTimeout / 60000);
+    // const [idleTimer, setIdleTimer] = useState<number | undefined>();
+    // const [warningTimer, setWarningTimer] = useState<number | undefined>();
+    const idleTimerRef = useRef<number | undefined>();
+    const warningTimerRef = useRef<number | undefined>();
+    const [warningStartTicks, setWarningStartTicks] = useState<number | undefined>();
+    const [timerString, setTimerString] = useState<string | undefined>();
+    // const idleTimer = idleTimerRef.current;
+    // const warningTimer = warningTimerRef.current;
+    console.log('IdleTimer', idleTimerRef.current, warningTimerRef.current);
 
     // this starts the warning timer and shows the warning modal
     const startWarningTimer = useCallback(() => {
+        console.log('IdleTimer warning', warningTimerRef.current, warningTimerRef.current);
         setIdle(true);
-        clearTimeout(warningTimer);
-        setWarningTimer(
-            window.setTimeout(() => {
-                onIdle();
-            }, warningTimeout)
-        );
-    }, [onIdle, warningTimeout, warningTimer]);
+        clearTimeout(warningTimerRef.current);
+        warningTimerRef.current = window.setTimeout(() => {
+            onIdle();
+        }, warningTimeout);
+        setWarningStartTicks(Date.now());
+    }, [onIdle, warningTimeout]);
 
     // this resets the idle timer, when there is mouse activity or the warning modal is dismissed
     const resetIdleTimer = useCallback(() => {
-        clearTimeout(idleTimer);
-        clearTimeout(warningTimer);
+        console.log('IdleTimer reset', warningTimerRef.current, warningTimerRef.current);
+        clearTimeout(warningTimerRef.current);
+        clearTimeout(warningTimerRef.current);
         setIdle(false);
-        setIdleTimer(
-            window.setTimeout(() => {
-                startWarningTimer();
-            }, timeout)
-        );
-        setWarningTimer(undefined);
-    }, [idleTimer, warningTimer, startWarningTimer]);
+        idleTimerRef.current = window.setTimeout(() => {
+            startWarningTimer();
+        }, timeout);
+        warningTimerRef.current = undefined;
+        setWarningStartTicks(undefined);
+    }, [timeout, startWarningTimer]);
     const debouncedResetIdleTimer = useCallback(debounce(resetIdleTimer, 100), [resetIdleTimer]);
 
     const handleActivity = useCallback(() => {
@@ -54,11 +61,13 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle }
 
     useEffect(() => {
         // first call to start the idle timer
+        console.log('IdleTimer first call');
         debouncedResetIdleTimer();
         return () => {
-            clearTimeout(idleTimer);
-            clearTimeout(warningTimer);
+            clearTimeout(idleTimerRef.current);
+            clearTimeout(warningTimerRef.current);
             debouncedResetIdleTimer.cancel();
+            console.log('IdleTimer cleanup', idleTimerRef.current, warningTimerRef.current);
         };
     }, []);
 
@@ -88,6 +97,14 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle }
         };
     }, [timeout, onIdle]);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimerString(toClockString(warningTimeout - (Date.now() - (warningStartTicks || Date.now()))));
+        }, 100);
+
+        return () => clearInterval(interval);
+    }, [warningTimeout, warningStartTicks]);
+
     const handleContinue = () => {
         setIdle(false);
         debouncedResetIdleTimer();
@@ -106,7 +123,8 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle }
                 forceAction={true}
                 onConfirm={handleContinue}
                 onCancel={handleLogout}>
-                Your session will timeout in {warningMins} minutes. Would you like to continue your session in NBS?
+                Your session will timeout in {timerString} minutes due to inactivity. Would you like to continue your
+                session in NBS?
             </Confirmation>
         )
     );
