@@ -64,28 +64,18 @@ class InvestigationNotificationMother {
       """;
 
   private static final String DELETE = """
+      delete from CN_transportq_out where notification_uid in (:identifiers);
       delete from Notification where notification_uid in (:identifiers);
       delete from Act_relationship where source_act_uid in (:identifiers);
       delete from Act where act_uid in (:identifiers);
-      delete from NBS_MSGOUTE.[dbo].TransportQ_out where messageId in (:localIds);
       """;
 
   private static final String CREATE_TRANSPORT_NOTIFICATION = """
-      insert into NBS_MSGOUTE.[dbo].TransportQ_out (
-      		routeInfo,
-      		SERVICE,
-      		ACTION,
-      		encryption,
-      		SIGNATURE,
-      		messageId,
-      		processingStatus
+      insert into CN_transportq_out (
+      		notification_uid,
+      		record_status_cd
       	) values (
-          'CDC',
-          'NNDM_1.1.3',
-          'send',
-          'yes',
-          'no',
-          :messageId,
+          :notificationId,
           :processingStatus);
         """;
 
@@ -112,14 +102,10 @@ class InvestigationNotificationMother {
         .map(NotificationIdentifier::identifier)
         .toList();
 
-    List<String> localIds = this.available.all()
-        .map(NotificationIdentifier::local)
-        .toList();
     if (!created.isEmpty()) {
 
       SqlParameterSource params = new MapSqlParameterSource()
-          .addValue("identifiers", created)
-          .addValue("localIds", localIds);
+          .addValue("identifiers", created);
 
       template.execute(
           DELETE,
@@ -156,7 +142,7 @@ class InvestigationNotificationMother {
 
   void createTransportStatus(final String status) {
     SqlParameterSource parameters = new MapSqlParameterSource()
-        .addValue("messageId", active.active().local())
+        .addValue("notificationId", active.active().identifier())
         .addValue("processingStatus", status);
     template.execute(
         CREATE_TRANSPORT_NOTIFICATION,
