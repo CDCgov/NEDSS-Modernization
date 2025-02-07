@@ -29,7 +29,7 @@ const Button = ({
     destructive = false,
     unstyled = false,
     labelPosition = 'left',
-    sizing = 'small',
+    sizing,
     ...defaultProps
 }: Props) => {
     const isIconOnly = icon && !children;

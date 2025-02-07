@@ -15,7 +15,7 @@ type Props = {
 } & Omit<NavLinkProps, 'classname'> &
     RefAttributes<HTMLAnchorElement>;
 
-const NavLinkButton = ({ type, to, label, className, dataTestId, children, state, sizing = 'small' }: Props) => (
+const NavLinkButton = ({ type, to, label, className, dataTestId, children, state, sizing }: Props) => (
     <NavLink
         className={classnames(className, 'usa-button', sizing && styles[sizing], {
             'usa-button--outline': type === 'outline'
