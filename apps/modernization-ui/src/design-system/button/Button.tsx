@@ -33,7 +33,7 @@ const Button = ({
     ...defaultProps
 }: Props) => {
     const isIconOnly = icon && !children;
-    const classesArray = classNames(className, sizing ? styles[sizing] : undefined, {
+    const classesArray = classNames(className, sizing && styles[sizing], {
         [styles.destructive]: destructive,
         [styles.icon]: icon,
         [styles.unpadded]: unpadded

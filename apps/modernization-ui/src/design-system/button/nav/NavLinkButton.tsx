@@ -1,6 +1,8 @@
 import { RefAttributes } from 'react';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 import classnames from 'classnames';
+import { Sizing } from 'design-system/field';
+import styles from './navlink-button.module.scss';
 
 type Props = {
     to: string;
@@ -9,12 +11,15 @@ type Props = {
     className?: string;
     dataTestId?: string;
     state?: any;
+    sizing?: Sizing;
 } & Omit<NavLinkProps, 'classname'> &
     RefAttributes<HTMLAnchorElement>;
 
-const NavLinkButton = ({ type, to, label, className, dataTestId, children, state }: Props) => (
+const NavLinkButton = ({ type, to, label, className, dataTestId, children, state, sizing = 'small' }: Props) => (
     <NavLink
-        className={classnames(className, 'usa-button', { 'usa-button--outline': type === 'outline' })}
+        className={classnames(className, 'usa-button', sizing && styles[sizing], {
+            'usa-button--outline': type === 'outline'
+        })}
         to={to}
         data-testid={dataTestId}
         aria-label={label}

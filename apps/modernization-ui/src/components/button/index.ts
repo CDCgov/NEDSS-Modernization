@@ -1,2 +1,1 @@
-export * from './link/LinkButton';
-export * from './Button';
+export * from 'design-system/button';
