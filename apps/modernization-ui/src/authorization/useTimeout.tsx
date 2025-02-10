@@ -36,4 +36,4 @@ const useTimeout = (): UseTimeoutResult => {
     return { start, clear, timeoutID };
 };
 
-export default useTimeout;
+export { useTimeout };

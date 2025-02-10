@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import debounce from 'lodash.debounce';
 import { Confirmation } from 'design-system/modal';
-// import { toClockString } from 'utils/util';
-import useTimeout from './useTimeout';
+import { useTimeout } from './useTimeout';
 import { useCountdown } from './useCountdown';
 
 interface IdleTimerProps {
-    timeout: number; // Timeout in milliseconds
-    warningTimeout: number; // Warning Timeout in milliseconds
-    onIdle: () => void; // Callback function to execute when idle
+    /** Timeout in milliseconds: amount of time before modal shows */
+    timeout: number;
+    /** Warning Timeout in milliseconds: amount of time modal shows before onIdle event is fired */
+    warningTimeout: number;
+    /** Callback function to execute when idle */
+    onIdle: () => void;
 }
 
 const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle }) => {

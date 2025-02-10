@@ -41,11 +41,7 @@ const ProtectedLayout = () => {
 
     return (
         <Suspense fallback={<Spinner />}>
-            <IdleTimer
-                onIdle={handleIdle}
-                timeout={30000 /*session.warning*/}
-                warningTimeout={60000 /*session.expiration - session.warning*/}
-            />
+            <IdleTimer onIdle={handleIdle} timeout={30000} warningTimeout={60000} />
             <Await resolve={data?.user} errorElement={<Navigate to={'/login'} />}>
                 {WithUser}
             </Await>
