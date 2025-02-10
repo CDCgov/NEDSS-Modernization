@@ -16,7 +16,7 @@ const ProtectedLayout = () => {
     const {
         settings: { session }
     } = useConfiguration();
-
+    console.log(session);
     const handleIdle = () => navigate('/expired');
 
     const WithUser = (user: User) => {
@@ -43,8 +43,8 @@ const ProtectedLayout = () => {
         <Suspense fallback={<Spinner />}>
             <IdleTimer
                 onIdle={handleIdle}
-                timeout={session.warning}
-                warningTimeout={session.expiration - session.warning}
+                timeout={30000 /*session.warning*/}
+                warningTimeout={60000 /*session.expiration - session.warning*/}
             />
             <Await resolve={data?.user} errorElement={<Navigate to={'/login'} />}>
                 {WithUser}
