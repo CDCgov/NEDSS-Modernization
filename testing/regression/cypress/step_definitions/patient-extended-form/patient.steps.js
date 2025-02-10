@@ -101,3 +101,11 @@ Then("Error message should appear right above Address fields", () => {
 Then("I have filled out Dropdowns fields", () => {
     classicSearchPatientPage.fillDropdownFields()
 });
+
+Then("I have not filled out Dropdowns fields", () => {
+    classicSearchPatientPage.doNotFillDropdownValues()
+});
+
+Then("Error message should appear right above dropdown fields", () => {
+    classicSearchPatientPage.errorMessageDropdownField()
+});
