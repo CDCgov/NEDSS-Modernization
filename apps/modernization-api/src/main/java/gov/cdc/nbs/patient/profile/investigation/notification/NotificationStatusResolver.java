@@ -17,17 +17,15 @@ class NotificationStatusResolver {
 
   private static final String QUERY = """
       SELECT
-          TOP 1 t.processingStatus
+          top 1 t.record_status_cd
       FROM
           Act_relationship ar
-          JOIN Notification n ON n.notification_uid = ar.source_act_uid
-          JOIN NBS_MSGOUTE.dbo.TransportQ_out t ON t.messageId = n.local_id
+          JOIN Public_health_case phc on ar.target_act_uid = phc.public_health_case_uid
+          JOIN CN_transportq_out t on t.notification_uid = ar.source_act_uid
       WHERE
-          ar.target_act_uid = :investigationId
-          AND ar.type_cd = 'Notification'
-      ORDER BY
-          t.messageCreationTime DESC;
-                  """;
+          target_act_uid = :investigationId
+          AND type_cd = 'Notification';
+      """;
 
   public NotificationStatus resolve(String investigationId) {
     SqlParameterSource params = new MapSqlParameterSource()

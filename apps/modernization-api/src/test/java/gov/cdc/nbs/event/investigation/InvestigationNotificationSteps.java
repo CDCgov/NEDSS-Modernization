@@ -70,7 +70,7 @@ public class InvestigationNotificationSteps {
     }
   }
 
-  @Given("the notification exists in the TransportQ_out table with status of {notificationTransportStatus}")
+  @Given("the notification exists in the CN_TransportQ_out table with status of {notificationTransportStatus}")
   public void the_notification_exists_in_the_transportq_out_table_with_status_of(final String status) {
     this.activeInvestigation.maybeActive().ifPresent(
         investigation -> mother.createTransportStatus(status));
