@@ -3,11 +3,11 @@ import { OverlayPanel } from 'overlay';
 import { Icon } from 'design-system/icon';
 import { ColumnPreferencesPanel } from 'design-system/table/preferences';
 import { useFilter } from 'design-system/filter';
-import { Button } from 'components/button';
 import { FeatureToggle } from 'feature';
 import { maybeUseSorting } from 'sorting';
 
 import styles from './search-results-table-options.module.scss';
+import { Button } from 'design-system/button';
 
 type Props = {
     disabled?: boolean;
@@ -38,8 +38,9 @@ const SearchResultsTableOptions = ({ disabled = false }: Props) => {
                         className={classNames({ [styles.filtered]: active })}
                         outline={!active}
                         disabled={disabled}
-                        icon={<Icon name="filter_alt" size="medium" />}
+                        icon={<Icon name="filter_alt" />}
                         onClick={toggle}
+                        sizing="small"
                     />
                 </div>
             </FeatureToggle>
@@ -53,8 +54,9 @@ const SearchResultsTableOptions = ({ disabled = false }: Props) => {
                         data-tooltip-offset="center"
                         outline
                         disabled={disabled}
-                        icon={<Icon name="settings" size="medium" />}
+                        icon={<Icon name="settings" />}
                         onClick={toggle}
+                        sizing="small"
                     />
                 )}
                 render={(close) => <ColumnPreferencesPanel close={close} />}></OverlayPanel>
