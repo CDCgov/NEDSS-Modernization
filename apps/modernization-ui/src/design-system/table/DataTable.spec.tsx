@@ -62,4 +62,10 @@ describe('DataTable', () => {
             expect(headerCell).toHaveClass(column.className!);
         });
     });
+
+    it('renders the correct sizing className in cells', () => {
+        const { container } = render(<DataTable id="test-table" columns={columns} data={data} sizing="large" />);
+        const tableContainer = container.querySelector(`.table`);
+        expect(tableContainer).toHaveClass('large');
+    });
 });

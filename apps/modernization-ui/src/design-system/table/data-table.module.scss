@@ -1,5 +1,6 @@
 @use 'styles/colors';
 @use 'styles/borders';
+@use 'styles/components';
 
 .table {
     overflow: auto;
@@ -69,5 +70,34 @@
         }
 
         @extend %thin-bottom;
+    }
+
+    &.large {
+        table {
+            @extend %large;
+            line-height: 1.6;
+        }
+    }
+
+    &.medium {
+        table {
+            @extend %medium;
+            line-height: 1.5;
+        }
+    }
+
+    &.small {
+        table {
+            @extend %small;
+            line-height: 1.4;
+            tr {
+                th, td {
+                    padding: 0.25rem 0.5rem;
+                }
+                th:first-child, td:first-child {
+                    padding-left: 1rem;
+                }
+            }
+        }
     }
 }
