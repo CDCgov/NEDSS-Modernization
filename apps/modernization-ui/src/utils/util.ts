@@ -31,7 +31,7 @@ export const calculateAge = (birthday: Date) => {
 };
 
 /**
- * Converts mill-seconds to a clock string in the format 'HH:MM:SS' or 'MM:SS' if less than an hour.
+ * Converts milliseconds to a clock string in the format 'HH:MM:SS' or 'MM:SS' if less than an hour.
  * @param {number} millisecs The number of milliseconds
  * @return {unknown} The clock string.
  */
