@@ -30,6 +30,26 @@ class NameEntryPage {
       .and("contain.text", "Please fix the following errors:");
   }
 
+  enterValidPhoneNumber() {
+    const phoneNumber = faker.phone.number("###-###-####");
+    const extension = "123456";
+
+    // Select "Phone" from the Type dropdown
+    cy.get("#phone-type").select("PH");
+
+    // Select "Mobile contact" from the Use dropdown
+    cy.get("#phone-use").select("MC");
+
+    // Enter the generated phone number
+    cy.get("#phoneNumber").clear().type(phoneNumber);
+
+    // Enter the extension
+    cy.get("#extension").clear().type(extension);
+
+    // Click the "Add phone & email" button
+    cy.contains("button", "Add phone & email").click();
+  }
+
 }
 
 export default new NameEntryPage();

@@ -101,3 +101,7 @@ Then("Error message should appear right above Address fields", () => {
 Then("I have filled out Dropdowns fields", () => {
     classicSearchPatientPage.fillDropdownFields()
 });
+
+When("I enter a valid phone number in the Phone field", () => {
+    NameEntryPage.enterValidPhoneNumber();
+  });
