@@ -1,9 +1,9 @@
 import { RefObject } from 'react';
 import { usePage } from 'page';
 import { Shown } from 'conditional-render';
+import { Pagination } from 'design-system/pagination';
 import { SearchResultPageSizeSelect } from './page-size-select';
 import { SearchResultsShowing } from './showing';
-import { SearchResultPageSelect } from './page-select';
 
 import styles from './search-result-pagination.module.scss';
 
@@ -20,6 +20,8 @@ const SearchResultPagination = ({ id, elementRef }: SearchPaginationProps) => {
     const minimum = Math.min(...pageSizes);
     const visible = page.total > minimum;
 
+    const pageCount = Math.ceil(page.total / page.pageSize);
+
     return (
         <Shown when={visible}>
             <div ref={elementRef} id={id} className={styles.pagination}>
@@ -30,7 +32,15 @@ const SearchResultPagination = ({ id, elementRef }: SearchPaginationProps) => {
                     onPageSizeChanged={resize}
                 />
                 <SearchResultsShowing className={styles.showing} page={page} />
-                <SearchResultPageSelect className={styles.pages} page={page} onSelected={request} />
+                <div className={styles.pages}>
+                    <Pagination
+                        total={pageCount}
+                        current={page.current}
+                        onNext={() => request(page.current + 1)}
+                        onPrevious={() => request(page.current - 1)}
+                        onSelectPage={request}
+                    />
+                </div>
             </div>
         </Shown>
     );
