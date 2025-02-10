@@ -6,9 +6,11 @@ import { Column } from './DataTable';
 import { Icon } from 'design-system/icon';
 
 import styles from './header.module.scss';
+import { Sizing } from 'design-system/field';
 
 type Props<V> = {
     className?: string;
+    sizing?: Sizing;
     children: Column<V>;
 };
 
@@ -31,8 +33,11 @@ const Header = <V,>({ children, ...remaining }: Props<V>) => {
 
 type StandardHeaderProps<V> = Props<V> & { filtering?: FilterInteraction };
 
-const StandardHeader = <V,>({ className, children, filtering }: StandardHeaderProps<V>) => (
-    <th className={classNames(styles.header, className, { [styles.fixed]: children.fixed })}>
+const StandardHeader = <V,>({ className, children, filtering, sizing }: StandardHeaderProps<V>) => (
+    <th
+        className={classNames(styles.header, className, sizing && styles[sizing], {
+            [styles.fixed]: children.fixed
+        })}>
         <div className={classNames(styles.content)}>
             {children.name}
             {filtering && filtering.active && children.filter != undefined && (
@@ -46,14 +51,14 @@ type SortableProps<V> = StandardHeaderProps<V> & {
     sorting: SortingInteraction;
 };
 
-const SortableHeader = <V,>({ className, sorting, children, filtering }: SortableProps<V>) => {
+const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }: SortableProps<V>) => {
     const direction = sorting.property === children.id ? ensureDirection(sorting.direction) : Direction.None;
     const ariaSort = resolveSortAria(direction);
     const icon = resolveSortIcon(direction);
 
     return (
         <th
-            className={classNames(styles.header, className, {
+            className={classNames(styles.header, className, sizing && styles[sizing], {
                 [styles.fixed]: children.fixed,
                 [styles.sorted]: direction !== Direction.None
             })}
