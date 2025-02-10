@@ -105,3 +105,11 @@ Then("I have filled out Dropdowns fields", () => {
 When("I enter a valid phone number in the Phone field", () => {
     NameEntryPage.enterValidPhoneNumber();
   });
+
+Then("I have not filled out Dropdowns fields", () => {
+    classicSearchPatientPage.doNotFillDropdownValues()
+});
+
+Then("Error message should appear right above dropdown fields", () => {
+    classicSearchPatientPage.errorMessageDropdownField()
+});

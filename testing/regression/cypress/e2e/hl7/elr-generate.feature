@@ -6,6 +6,4 @@ Feature: Generate ELR HL7
 
   Scenario: ID - Create ELR auto Notification
     When I Generate HL7 "Hep B" messages to api
-
-  Scenario: ID - Create ELR manually create Investigation and Notification
-    When I Generate HL7 message, create investigation "AIDS", and submit a notification
+    When I Check the HL7 transport uid

@@ -84,4 +84,8 @@ Scenario: Required Name Fields
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
     
+  Scenario: Missing Required Dropdown Selections
+    Given I am on the New patient Extended form
+    And I have not filled out Dropdowns fields
+    Then Error message should appear right above dropdown fields
 

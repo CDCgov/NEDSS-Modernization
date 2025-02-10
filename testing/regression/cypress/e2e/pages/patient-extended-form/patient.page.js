@@ -110,6 +110,15 @@ class ClassicPatientSearchPage {
     cy.get('select[id="birthAndSex.current"]').select('M')
     cy.get('select[id="birthAndSex.sex"]').select('M')
   }
+
+  doNotFillDropdownValues() {
+    cy.get('#races-category-race').select('')
+    cy.get('footer button').contains('Add race').eq(0).click()
+  }
+
+  errorMessageDropdownField() {
+    cy.contains('The Race is required.')
+  }
 }
 
 export default new ClassicPatientSearchPage();
