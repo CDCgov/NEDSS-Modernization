@@ -21,7 +21,6 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle }
 
     // this starts the warning timer and shows the warning modal
     const startWarningTimer = useCallback(() => {
-        console.log('IdleTimer warning', idleTimer.timeoutID(), warningTimer.timeoutID());
         setIdle(true);
         warningTimer.start(
             () => {
@@ -35,7 +34,6 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle }
 
     // this resets the idle timer, when there is mouse activity or the warning modal is dismissed
     const resetIdleTimer = useCallback(() => {
-        console.log('IdleTimer reset', idleTimer.timeoutID(), warningTimer.timeoutID());
         warningTimer.clear();
         setIdle(false);
         idleTimer.start(
@@ -64,13 +62,11 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle }
 
     useEffect(() => {
         // first call to start the idle timer
-        console.log('IdleTimer first call');
         debouncedResetIdleTimer();
         return () => {
             idleTimer.clear();
             warningTimer.clear();
             debouncedResetIdleTimer.cancel();
-            console.log('IdleTimer cleanup', idleTimer.timeoutID(), warningTimer.timeoutID());
         };
     }, []);
 
