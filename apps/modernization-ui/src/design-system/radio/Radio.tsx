@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import styles from './radio.module.scss'; // Ensure you have a corresponding radio.module.scss
+import styles from './radio.module.scss';
 import { Sizing } from 'components/Entry';
 import { ChangeEvent } from 'react';
 
@@ -23,9 +23,10 @@ const Radio = ({ className, name, checked = false, sizing, onChange, label, valu
                 value={value}
                 checked={checked}
                 onChange={onChange}
+                className={'usa-radio usa-radio__input '}
                 {...inputProps}
             />
-            <label className={classNames({ [styles.disabled]: inputProps.disabled })} htmlFor={id}>
+            <label className={classNames({ [styles.disabled]: inputProps.disabled }, 'usa-radio__label')} htmlFor={id}>
                 {label}
             </label>
         </div>
