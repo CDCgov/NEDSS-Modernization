@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Button } from 'components/button';
 
 import styles from './toggle-view.module.scss';
-import { ButtonGroup } from 'components/buttonGroup/ButtonGroup';
+import { ButtonGroup } from 'design-system/button';
 
 export const ToggleView = () => {
     const { view, asList, asTable } = useSearchResultDisplay();
