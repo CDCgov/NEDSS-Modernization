@@ -6,9 +6,10 @@ interface IdleTimerProps {
     timeout: number; // Timeout in milliseconds
     warningTimeout: number; // Warning Timeout in milliseconds
     onIdle: () => void; // Callback function to execute when idle
+    onContinue?: () => void; // Callback function to execute when user clicks continue
 }
 
-const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle }) => {
+const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle, onContinue }) => {
     const [idle, setIdle] = useState(false);
     const [idleTimer, setIdleTimer] = useState<number | undefined>();
     const [warningTimer, setWarningTimer] = useState<number | undefined>();
@@ -91,6 +92,7 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle }
     const handleContinue = () => {
         setIdle(false);
         debouncedResetIdleTimer();
+        onContinue?.();
     };
 
     const handleLogout = () => {
