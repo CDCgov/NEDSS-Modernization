@@ -38,8 +38,9 @@ const SearchResultsTableOptions = ({ disabled = false }: Props) => {
                         className={classNames({ [styles.filtered]: active })}
                         outline={!active}
                         disabled={disabled}
-                        icon={<Icon name="filter_alt" size="medium" />}
+                        icon={<Icon name="filter_alt" />}
                         onClick={toggle}
+                        sizing="small"
                     />
                 </div>
             </FeatureToggle>
@@ -53,8 +54,9 @@ const SearchResultsTableOptions = ({ disabled = false }: Props) => {
                         data-tooltip-offset="center"
                         outline
                         disabled={disabled}
-                        icon={<Icon name="settings" size="medium" />}
+                        icon={<Icon name="settings" />}
                         onClick={toggle}
+                        sizing="small"
                     />
                 )}
                 render={(close) => <ColumnPreferencesPanel close={close} />}></OverlayPanel>

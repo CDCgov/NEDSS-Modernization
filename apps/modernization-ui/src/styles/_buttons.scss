@@ -1,5 +1,16 @@
 @use 'colors.scss';
 
+$icon-small: 1.75rem;
+$icon-medium: 2rem;
+$icon-large: 2.25rem;
+
+@mixin sizedButtonIcon($height: $icon-small, $width: $icon-small) {
+    svg {
+        height: $height;
+        width: $width;
+    }
+}
+
 %icon-button {
     padding: 0.5rem !important;
 }
@@ -22,14 +33,20 @@
     padding: 0.5rem 0.75rem;
     font-size: 0.75rem;
     height: auto;
+
+    @include sizedButtonIcon($icon-small, $icon-small);
 }
 
 %button-medium {
     font-size: 0.875rem;
+
+    @include sizedButtonIcon($icon-medium, $icon-medium);
 }
 
 %button-large {
     padding: 1rem 1.5rem;
     font-size: 1rem;
     height: auto;
+
+    @include sizedButtonIcon($icon-large, $icon-large);
 }
