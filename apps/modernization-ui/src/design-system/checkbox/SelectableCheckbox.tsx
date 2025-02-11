@@ -17,7 +17,7 @@ const SelectableCheckbox = ({ className, selectable, selected = false, sizing, o
         onChange?.(checked ? selectable : undefined);
     };
     return (
-        <div className={classNames(styles.checkbox, className, { [styles.medium]: sizing === 'medium' })}>
+        <div className={classNames(styles.checkbox, className, styles[sizing ?? ''])}>
             <input
                 id={id}
                 type="checkbox"
