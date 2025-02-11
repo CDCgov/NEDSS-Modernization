@@ -3,7 +3,7 @@ import { CheckboxGroup } from './CheckboxGroup';
 import { asSelectable, Selectable } from 'options';
 
 const meta = {
-    title: 'Design System/Checkbox/CheckboxGroup',
+    title: 'Design System/CheckboxGroup',
     component: CheckboxGroup
 } satisfies Meta<typeof CheckboxGroup>;
 
