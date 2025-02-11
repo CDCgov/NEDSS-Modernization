@@ -119,6 +119,47 @@ class ClassicPatientSearchPage {
   errorMessageDropdownField() {
     cy.contains('The Race is required.')
   }
+
+  errorMessageAddressField() {
+    cy.contains('The Type is required')
+    cy.contains('The Use is required')
+  }
+
+  errorMessageSectionField(inputId, sectionId) {
+    cy.get("section#phoneEmails").contains(sectionId);
+  }
+
+  clickAddIdentificationButton() {
+    cy.get("section#identifications button").contains("Add identification").click();
+  }
+
+  clickAddPhoneButton() {
+    cy.get("section#phoneEmails button").contains("Add phone & email").click();
+  }
+
+  selectPhoneType() {
+    cy.get("section#phoneEmails select#phone-type").select("Phone");
+  }
+
+  selectPhoneUse() {
+    cy.get("section#phoneEmails select#phone-use").select("Home");
+  }
+
+  typeValidPhoneNumber() {
+    cy.get("section#phoneEmails input#phoneNumber").type("8888888888");
+  }
+
+  errorSectionField(sectionId, text) {
+    cy.get(`section#${sectionId}`).contains(text);
+  }
+
+  selectSectionField(sectionId, inputId, text) {
+    cy.get(`section#${sectionId} select#${inputId}`).select(text);
+  }
+
+  typeInputSectionField(sectionId, inputId, text) {
+    cy.get(`section#${sectionId} input#${inputId}`).type(text);
+  }
 }
 
 export default new ClassicPatientSearchPage();
