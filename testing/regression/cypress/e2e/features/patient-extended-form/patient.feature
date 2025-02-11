@@ -70,3 +70,31 @@ Scenario: Required Name Fields
     And I have not filled out all Address input fields
     Then Error message should appear right above Address fields
 
+  Scenario: Valid Dropdown Selections
+    Given I am on the New patient Extended form
+    And I have filled out Dropdowns fields
+    When I click the Save button
+    Then Form should be submitted successfully without errors
+    And I should receive a confirmation message
+
+  Scenario: Missing Required Dropdown Selections
+    Given I am on the New patient Extended form
+    And I have not filled out Dropdowns fields
+    Then Error message should appear right above dropdown fields
+
+  Scenario: Invalid Identification
+    Given I am on the New patient Extended form
+    And I click Add Identification Button
+    Then Error section "identifications" with error "Type is required."
+    Then Error section "identifications" with error "ID value is required."
+
+  Scenario: Add Valid Phone Number
+    Given I am on the New patient Extended form
+    Then I add type and use for phone
+    Then I click Add Phone and Email Button
+
+  Scenario: Add Valid Identification
+    Given I am on the New patient Extended form
+    Then Select section "identifications" with id "identification-type" option "Medicaid number"
+    Then Type section "identifications" with id "id" with text "23123"
+    And I click Add Identification Button

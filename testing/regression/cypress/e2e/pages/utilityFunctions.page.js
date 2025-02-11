@@ -63,6 +63,48 @@ class UtilityFunctions {
     return formattedFields;
   };
 
+  checkTransportRequest = () => {
+    const authToken = Cypress.env("authTokenAPI");
+    const transportstatusurl = Cypress.env("transportstatusurl");
+    const clientid = Cypress.env("DI_CLIENT_ID");
+    const clientsecret = Cypress.env("DI_SECRET");
+    const authurl = Cypress.env("authurl");
+
+    cy.get("body").then((body) => {
+      if (body.find("table.dtTable td").length > 0) {
+        cy.get('.dtTable td').eq(13).invoke('text').then((text => {
+          const uidString = text.trim();
+          cy.log(uidString);    
+          const uidMatch = uidString.match(/\(UID:\s*(\d+)\)/);
+          if (uidMatch) {
+
+            const elrUid =  uidMatch[1];
+            const updatedUrl = transportstatusurl.replace("uid", elrUid);
+            Cypress.env("elrUid", elrUid);
+            cy.request({
+              method: "GET",
+              url: updatedUrl,
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+                clientid: clientid,
+                clientsecret: clientsecret,
+              },
+            }).then((response) => {
+              let status = response.body.status;
+              if(status === "UNPROCESSED") {
+                expect(status).to.eq("UNPROCESSED");
+              } else if(status === null) {
+                cy.log("Status null, retry");
+                cy.wait(35000);
+                this.checkTransportRequest();
+              }
+            });
+          }                       
+        }));
+      }
+    });
+  };
+
   checkELRActivityLog(fakeRandomData) {
     cy.get("a").contains("Home").click();              
     cy.contains('System Management').click();
@@ -75,6 +117,8 @@ class UtilityFunctions {
     cy.contains(fakeRandomData.randomLastName).should("be.visible");
     cy.contains("Successfully Create Notification").should("be.visible");
     cy.get(".dtTable td a").eq(0).click();
+    cy.wait(1000);
+    this.checkTransportRequest();
   }
 
   createNotication(string) {

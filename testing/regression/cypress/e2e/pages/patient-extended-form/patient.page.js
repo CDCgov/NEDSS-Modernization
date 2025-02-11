@@ -102,6 +102,64 @@ class ClassicPatientSearchPage {
     cy.contains('The Type is required')
     cy.contains('The Use is required')
   }
+
+  fillDropdownFields() {
+    cy.get('#races-category-race').select('1002-5')
+    cy.get('footer button').contains('Add race').eq(0).click()
+    cy.get('select[id="ethnicity.ethnicGroup"]').select('2135-2')
+    cy.get('select[id="birthAndSex.current"]').select('M')
+    cy.get('select[id="birthAndSex.sex"]').select('M')
+  }
+
+  doNotFillDropdownValues() {
+    cy.get('#races-category-race').select('')
+    cy.get('footer button').contains('Add race').eq(0).click()
+  }
+
+  errorMessageDropdownField() {
+    cy.contains('The Race is required.')
+  }
+
+  errorMessageAddressField() {
+    cy.contains('The Type is required')
+    cy.contains('The Use is required')
+  }
+
+  errorMessageSectionField(inputId, sectionId) {
+    cy.get("section#phoneEmails").contains(sectionId);
+  }
+
+  clickAddIdentificationButton() {
+    cy.get("section#identifications button").contains("Add identification").click();
+  }
+
+  clickAddPhoneButton() {
+    cy.get("section#phoneEmails button").contains("Add phone & email").click();
+  }
+
+  selectPhoneType() {
+    cy.get("section#phoneEmails select#phone-type").select("Phone");
+  }
+
+  selectPhoneUse() {
+    cy.get("section#phoneEmails select#phone-use").select("Home");
+  }
+
+  typeValidPhoneNumber() {
+    cy.get("section#phoneEmails input#phoneNumber").type("8888888888");
+  }
+
+  errorSectionField(sectionId, text) {
+    cy.get(`section#${sectionId}`).contains(text);
+  }
+
+  selectSectionField(sectionId, inputId, text) {
+    cy.get(`section#${sectionId} select#${inputId}`).select(text);
+  }
+
+  typeInputSectionField(sectionId, inputId, text) {
+    cy.get(`section#${sectionId} input#${inputId}`).type(text);
+  }
 }
 
 export default new ClassicPatientSearchPage();

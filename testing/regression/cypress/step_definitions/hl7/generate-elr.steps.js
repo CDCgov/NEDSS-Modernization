@@ -38,6 +38,7 @@ When("I Generate HL7 {string} messages to api", (string) => {
   let NBSresponse;
   let fakeFormattedSSN;
   let fakeRandomData;
+
   const authToken = Cypress.env("authTokenAPI");
   const clientid = Cypress.env("DI_CLIENT_ID");
   const clientsecret = Cypress.env("DI_SECRET");
@@ -45,7 +46,7 @@ When("I Generate HL7 {string} messages to api", (string) => {
   const checkstatusurl = Cypress.env("checkstatusurl");
   const authurl = Cypress.env("authurl");
 
-  cy.readFile("cypress/fixtures/syphilis.json", "utf8").then((jsonData) => {
+  cy.readFile("cypress/fixtures/hepb.json", "utf8").then((jsonData) => {
     const randomData = {
       randomFirstName: faker.person.firstName(),
       randomLastName: UtilityFunctions.generateRandomLastName(),
@@ -139,4 +140,8 @@ When("I Generate HL7 {string} messages to api", (string) => {
       checkStatusRequest();
     });
   });
+});
+
+When("I Check the HL7 transport uid", () => {
+  UtilityFunctions.checkTransportRequest();
 });

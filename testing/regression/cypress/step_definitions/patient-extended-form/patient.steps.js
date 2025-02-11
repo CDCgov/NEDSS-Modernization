@@ -97,3 +97,41 @@ Then("I have not filled out all Address input fields", () => {
 Then("Error message should appear right above Address fields", () => {
     classicSearchPatientPage.errorMessageAddressField()
 });
+
+Then("I have filled out Dropdowns fields", () => {
+    classicSearchPatientPage.fillDropdownFields()
+});
+
+Then("I have not filled out Dropdowns fields", () => {
+    classicSearchPatientPage.doNotFillDropdownValues()
+});
+
+Then("Error message should appear right above dropdown fields", () => {
+    classicSearchPatientPage.errorMessageDropdownField()
+});
+
+Then("I click Add Identification Button", () => {
+    classicSearchPatientPage.clickAddIdentificationButton();
+ });
+
+ Then("I click Add Phone and Email Button", () => {
+    classicSearchPatientPage.clickAddPhoneButton();
+ });
+
+Then("I add type and use for phone", () => {
+    classicSearchPatientPage.selectPhoneType();
+    classicSearchPatientPage.selectPhoneUse();
+    classicSearchPatientPage.typeValidPhoneNumber();
+ });
+
+Then("Select section {string} with id {string} option {string}", (text, text1, text2) => {
+    classicSearchPatientPage.selectSectionField(text, text1, text2);
+});
+
+Then("Type section {string} with id {string} with text {string}", (text, text1, text2) => {
+    classicSearchPatientPage.typeInputSectionField(text, text1, text2);
+});
+
+Then("Error section {string} with error {string}", (text, text1) => {
+    classicSearchPatientPage.errorSectionField(text, text1);
+});

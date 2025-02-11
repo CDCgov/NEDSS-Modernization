@@ -1,12 +1,13 @@
 @use 'styles/colors';
 @use 'styles/borders';
+@use 'styles/components';
 
 .table {
     overflow: auto;
     height: 100%;
     width: 100%;
     padding-right: 6px;
-    
+
     table {
         table-layout: auto !important;
         border-collapse: separate;
@@ -21,11 +22,8 @@
             th {
                 white-space: nowrap;
                 border-style: none;
+                vertical-align: top;
                 background-color: colors.$base-white;
-                svg {
-                    width: 1.0625rem;
-                    margin-left: 0.25rem;
-                }
             }
             tr {
                 &.border {
@@ -72,5 +70,34 @@
         }
 
         @extend %thin-bottom;
+    }
+
+    &.large {
+        table {
+            @extend %large;
+            line-height: 1.6;
+        }
+    }
+
+    &.medium {
+        table {
+            @extend %medium;
+            line-height: 1.5;
+        }
+    }
+
+    &.small {
+        table {
+            @extend %small;
+            line-height: 1.4;
+            tr {
+                th, td {
+                    padding: 0.25rem 0.5rem;
+                }
+                th:first-child, td:first-child {
+                    padding-left: 1rem;
+                }
+            }
+        }
     }
 }

@@ -35,6 +35,6 @@ export const EN_US = {
     backOneMonth: 'Navigate back one month',
     forwardOneYear: 'Navigate forward one year',
     forwardOneMonth: 'Navigate forward one month',
-    clickToSelectMonth: 'Click to Select Month',
-    clickToSelectYear: 'Click to Select Year'
+    selectMonth: 'Select month',
+    selectYear: 'Select year'
 };

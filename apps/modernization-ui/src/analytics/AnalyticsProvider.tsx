@@ -13,7 +13,7 @@ const AnalyticsProvider = ({ children }: AnalyticsProviderProps) => {
 };
 
 const withAnalytics = (settings: AnalyticsSettings, children: ReactNode) => (
-    <PostHogProvider apiKey={settings.key} options={settings.options}>
+    <PostHogProvider apiKey={settings.key!} options={settings.options}>
         <PageviewTracker />
         {children}
     </PostHogProvider>
