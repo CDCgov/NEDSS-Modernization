@@ -22,8 +22,9 @@ const SearchResultsListOptions = ({ disabled = false }: Props) => {
                     data-tooltip-offset="left"
                     outline
                     disabled={disabled}
-                    icon={<Icon name="sort_arrow" className={styles.icon} />}
+                    icon={<Icon name="sort_arrow" />}
                     onClick={toggle}
+                    sizing="small"
                 />
             )}
             render={(close) => <SortingPreferencesPanel onClose={close} />}

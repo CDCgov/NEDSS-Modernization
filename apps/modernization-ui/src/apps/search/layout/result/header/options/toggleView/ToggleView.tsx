@@ -18,17 +18,19 @@ export const ToggleView = () => {
                     data-tooltip-offset="center"
                     className={view === 'table' ? styles.active : ''}
                     outline={view !== 'table'}
-                    icon={<Icon name="table" className={styles.icon} />}
+                    icon={<Icon name="table" />}
                     onClick={asTable}
+                    sizing="small"
                 />
                 <Button
                     aria-label="List view"
                     data-tooltip-position="top"
                     data-tooltip-offset="center"
                     className={view === 'list' ? styles.active : ''}
-                    icon={<Icon name="list" className={styles.icon} />}
+                    icon={<Icon name="list" />}
                     onClick={asList}
                     outline={view !== 'list'}
+                    sizing="small"
                 />
             </ButtonGroup>
         </div>
