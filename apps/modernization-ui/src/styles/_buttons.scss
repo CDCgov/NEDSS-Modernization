@@ -17,3 +17,19 @@
         background-color: colors.$secondary-darker !important;
     }
 }
+
+%button-small {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    height: auto;
+}
+
+%button-medium {
+    font-size: 0.875rem;
+}
+
+%button-large {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    height: auto;
+}
