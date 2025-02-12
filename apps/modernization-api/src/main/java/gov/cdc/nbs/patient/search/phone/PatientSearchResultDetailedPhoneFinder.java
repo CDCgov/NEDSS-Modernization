@@ -26,6 +26,7 @@ class PatientSearchResultDetailedPhoneFinder {
           join Tele_locator [phone_number] on
                   [phone_number].[tele_locator_uid] = [locators].[locator_uid]
               and [phone_number].record_status_cd   = [locators].[record_status_cd]
+              and [phone_number].phone_nbr_txt is not null
 
           left join  NBS_SRTE..Code_value_general [type] on
                   [type].code_set_nm = 'EL_TYPE_TELE_PAT'
