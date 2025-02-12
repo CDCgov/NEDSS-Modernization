@@ -1,9 +1,10 @@
 import { ReactNode, useLayoutEffect, useRef, useState } from 'react';
-import { Pagination } from 'design-system/Pagination';
+import { Sizing } from 'design-system/field';
 import { LoadingPanel } from 'design-system/loading';
 import { View } from 'apps/search';
 import { SearchResultsHeader } from './header/SearchResultsHeader';
 import { Term } from 'apps/search/terms';
+import { SearchResultPagination } from './pagination';
 
 import styles from './search-results.module.scss';
 
@@ -13,16 +14,17 @@ type Props = {
     total: number;
     terms: Term[];
     loading?: boolean;
+    sizing?: Sizing;
 };
 
-const SearchResults = ({ children, total, view, terms, loading = false }: Props) => {
+const SearchResults = ({ children, total, view, terms, loading = false, sizing }: Props) => {
     const [contentHeight, setContentHeight] = useState<string>('auto');
     const headerRef = useRef<HTMLDivElement>(null);
     const paginationRef = useRef<HTMLDivElement>(null);
 
     const computeContentHeight = () => {
-        const headerHeight = headerRef.current?.offsetHeight || 0;
-        const paginationHeight = paginationRef.current?.offsetHeight || 0;
+        const headerHeight = headerRef.current?.clientHeight || 0;
+        const paginationHeight = paginationRef.current?.clientHeight || 0;
         const offset = headerHeight + paginationHeight;
 
         return offset > 0 ? `calc(100% - ${offset}px)` : 'auto';
@@ -42,16 +44,20 @@ const SearchResults = ({ children, total, view, terms, loading = false }: Props)
     return (
         <div className={styles.results}>
             <div ref={headerRef}>
-                <SearchResultsHeader className={styles.header} view={view} total={total} terms={terms} />
+                <SearchResultsHeader
+                    className={styles.header}
+                    sizing={sizing}
+                    view={view}
+                    total={total}
+                    terms={terms}
+                />
             </div>
             <main style={{ height: contentHeight }}>
                 <LoadingPanel loading={loading} className={styles.loader}>
                     {children}
                 </LoadingPanel>
             </main>
-            <div ref={paginationRef} className={styles.pagination}>
-                <Pagination />
-            </div>
+            <SearchResultPagination id="search-result-pagination" elementRef={paginationRef} />
         </div>
     );
 };
