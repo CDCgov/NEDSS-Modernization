@@ -47,10 +47,7 @@
 
         input,
         select {
-            height: 1.85rem;
-            width: unset;
-        
-            @extend %small;
+            @extend %small-input;
         }
 
         textarea {

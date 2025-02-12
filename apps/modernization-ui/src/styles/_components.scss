@@ -1,25 +1,12 @@
 @use 'styles/colors';
 
 $medium-font-size: 0.875rem;
-$small-font-size: 0.875rem;
-$large-font-size: 1rem;
-
 $medium-height: 2rem;
 $medium-textarea-height: 7.5rem;
 
 %medium {
     line-height: normal;
     font-size: $medium-font-size;
-}
-
-%small {
-    line-height: normal;
-    font-size: $small-font-size;
-}
-
-%large {
-    line-height: normal;
-    font-size: $large-font-size;
 }
 
 %medium-input {
@@ -37,7 +24,7 @@ $medium-textarea-height: 7.5rem;
 }
 
 $small-font-size: 0.75rem;
-$small-height: 1.5rem;
+$small-height: 1.375rem;
 $small-textarea-height: 6.25rem;
 
 %small {
@@ -48,6 +35,7 @@ $small-textarea-height: 6.25rem;
 %small-input {
     height: $small-height;
     width: unset;
+    padding: 0.1875rem 0.5rem;
 
     @extend %small;
 }
