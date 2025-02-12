@@ -1,0 +1,35 @@
+@use 'styles/colors';
+
+.overflow {
+    color: colors.$base-light;
+}
+
+.current {
+    background-color: colors.$primary-darker !important;
+}
+
+.pagination {
+    background-color: transparent !important;
+
+    ul {
+        li {
+            button {
+                line-height: 1.25rem;
+                font-weight: 400;
+                padding: 0;
+
+                &.page {
+                    &:active,
+                    &:focus,
+                    &:hover {
+                        border: 1px solid colors.$primary-dark !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.arrow {
+    padding-left: 0.75rem;
+}

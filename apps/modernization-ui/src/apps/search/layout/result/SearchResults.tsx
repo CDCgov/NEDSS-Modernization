@@ -1,9 +1,9 @@
 import { ReactNode, useLayoutEffect, useRef, useState } from 'react';
-import { Pagination } from 'design-system/Pagination';
 import { LoadingPanel } from 'design-system/loading';
 import { View } from 'apps/search';
 import { SearchResultsHeader } from './header/SearchResultsHeader';
 import { Term } from 'apps/search/terms';
+import { SearchResultPagination } from './pagination';
 
 import styles from './search-results.module.scss';
 
@@ -21,8 +21,8 @@ const SearchResults = ({ children, total, view, terms, loading = false }: Props)
     const paginationRef = useRef<HTMLDivElement>(null);
 
     const computeContentHeight = () => {
-        const headerHeight = headerRef.current?.offsetHeight || 0;
-        const paginationHeight = paginationRef.current?.offsetHeight || 0;
+        const headerHeight = headerRef.current?.clientHeight || 0;
+        const paginationHeight = paginationRef.current?.clientHeight || 0;
         const offset = headerHeight + paginationHeight;
 
         return offset > 0 ? `calc(100% - ${offset}px)` : 'auto';
@@ -49,9 +49,7 @@ const SearchResults = ({ children, total, view, terms, loading = false }: Props)
                     {children}
                 </LoadingPanel>
             </main>
-            <div ref={paginationRef} className={styles.pagination}>
-                <Pagination />
-            </div>
+            <SearchResultPagination id="search-result-pagination" elementRef={paginationRef} />
         </div>
     );
 };
