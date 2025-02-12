@@ -1,6 +1,7 @@
 import { ReactNode, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button } from 'components/button';
 import { Loading } from 'components/Spinner';
+import { Sizing } from 'design-system/field';
 import { CollapsiblePanel } from 'design-system/collapsible-panel';
 import { Shown } from 'conditional-render';
 import { SearchNavigation } from './navigation/SearchNavigation';
@@ -17,6 +18,7 @@ import styles from './search-layout.module.scss';
 type Renderer = () => ReactNode;
 
 type Props = {
+    sizing?: Sizing;
     actions?: Renderer;
     criteria: Renderer;
     resultsAsList: Renderer;
@@ -29,6 +31,7 @@ type Props = {
 };
 
 const SearchLayout = <R,>({
+    sizing,
     actions,
     criteria,
     resultsAsList,
@@ -84,14 +87,19 @@ const SearchLayout = <R,>({
                         <Loading center />
                     </Shown>
                     <Shown when={status === 'completed' || status === 'reloading'}>
-                        <SearchResults view={view} total={total} terms={terms} loading={status === 'reloading'}>
+                        <SearchResults
+                            sizing={sizing}
+                            view={view}
+                            total={total}
+                            terms={terms}
+                            loading={status === 'reloading'}>
                             {total === 0 && noResults()}
                             {view === 'list' && total > 0 && resultsAsList()}
                             {view === 'table' && total > 0 && resultsAsTable()}
                         </SearchResults>
                     </Shown>
                     <Shown when={status === 'no-input'}>
-                        <SearchResults view={view} total={total} terms={terms}>
+                        <SearchResults sizing={sizing} view={view} total={total} terms={terms}>
                             {noInput()}
                         </SearchResults>
                     </Shown>

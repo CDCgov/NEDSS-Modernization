@@ -1,6 +1,24 @@
 @use 'styles/colors';
 @use 'styles/components';
 
+$checkbox-small: 1rem;
+$checkbox-medium: 1.125rem;
+$checkbox-large: 1.25rem;
+
+@mixin sizedCheckbox($height: $checkbox-small, $width: $checkbox-small, $padding: 1.5rem, $extend: '%small') {
+    height: $height;
+    min-height: $height;
+
+    label {
+        @extend #{$extend};
+        padding-left: $padding;
+        &::before {
+            height: $height;
+            width: $width;
+        }
+    }
+}
+
 .checkbox {
     min-height: 1.25rem;
 
@@ -64,19 +82,15 @@
         box-shadow: 0 0 0 2px colors.$disabled-darker;
     }
 
+    &.small {
+        @include sizedCheckbox($checkbox-small, $checkbox-small, 1.5rem, '%small');
+    }
+
     &.medium {
-        height: 1.125rem;
-        min-height: 1.125rem;
+        @include sizedCheckbox($checkbox-medium, $checkbox-medium, 1.75rem, '%medium');
+    }
 
-        @extend %medium;
-
-        label {
-            @extend %medium;
-            padding-left: 1.75rem;
-            &::before {
-                height: 1.125rem;
-                width: 1.125rem;
-            }
-        }
+    &.large {
+        @include sizedCheckbox($checkbox-large, $checkbox-large, 1.75rem, '%large');
     }
 }

@@ -29,7 +29,7 @@ const Field = ({ sizing = 'large', orientation = 'vertical', className, children
         styles.entry,
         className,
         styles.vertical,
-        { [styles.medium]: sizing === 'medium' },
+        sizing && styles[sizing],
         { [styles.warn]: remaining.warning && !remaining.error },
         { [styles.error]: remaining.error }
     );
