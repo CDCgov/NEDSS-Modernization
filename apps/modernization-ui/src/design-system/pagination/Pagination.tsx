@@ -2,20 +2,22 @@ import classnames from 'classnames';
 import { Icon } from 'design-system/icon';
 import { Button } from 'components/button';
 
+import styles from './pagination.module.scss';
+
 type PaginationPageProps = {
     page: number;
     selected: boolean;
     onSelectPage: (page: number) => void;
 };
 
-const PaginationPage = ({ page, selected, onSelectPage }: PaginationPageProps) => {
+const PageSelector = ({ page, selected, onSelectPage }: PaginationPageProps) => {
     return (
         <li key={`pagination_page_${page}`} className="usa-pagination__item usa-pagination__page-no">
             <Button
-                type="button"
                 unstyled
-                className={classnames('usa-pagination__button', {
-                    'usa-current': selected
+                className={classnames('usa-pagination__button', styles.page, {
+                    'usa-current': selected,
+                    [styles.current]: selected
                 })}
                 aria-label={`Page ${page}`}
                 aria-current={selected ? 'page' : undefined}
@@ -27,7 +29,9 @@ const PaginationPage = ({ page, selected, onSelectPage }: PaginationPageProps) =
 };
 
 const PaginationOverflow = () => (
-    <li className="usa-pagination__item usa-pagination__overflow" aria-label="ellipsis indicating non-visible pages">
+    <li
+        className={classnames('usa-pagination__item', 'usa-pagination__overflow', styles.overflow)}
+        aria-label="ellipsis indicating non-visible pages">
         <span>…</span>
     </li>
 );
@@ -67,10 +71,10 @@ const Pagination = ({
     const showNextPage = !isOnLastPage && current + 1;
 
     return (
-        <nav aria-label={ariaLabel} className={classnames('usa-pagination', className)} {...props}>
+        <nav aria-label={ariaLabel} className={classnames('usa-pagination', styles.pagination, className)} {...props}>
             <ul className="usa-pagination__list">
                 {showPreviousPage && (
-                    <li className="usa-pagination__item usa-pagination__arrow">
+                    <li className={classnames('usa-pagination__item', 'usa-pagination__arrow', styles.arrow)}>
                         <Button
                             className="usa-pagination__link usa-pagination__previous-page"
                             aria-label="Previous page"
@@ -84,7 +88,7 @@ const Pagination = ({
 
                 {pageSelections.map((pageNum, i) =>
                     typeof pageNum === 'number' ? (
-                        <PaginationPage
+                        <PageSelector
                             key={`pagination_page_${pageNum}`}
                             page={pageNum}
                             selected={pageNum === current}
@@ -96,7 +100,7 @@ const Pagination = ({
                 )}
 
                 {showNextPage && (
-                    <li className="usa-pagination__item usa-pagination__arrow">
+                    <li className={classnames('usa-pagination__item', 'usa-pagination__arrow', styles.arrow)}>
                         <Button
                             className="usa-pagination__link usa-pagination__next-page"
                             aria-label="Next page"
