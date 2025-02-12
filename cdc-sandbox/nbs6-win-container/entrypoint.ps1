@@ -11,13 +11,6 @@ if ($null -ne $env:updatedTasks -and $env:updatedTasks -ne "") {
     Add-Content -Path "C:\updatedTasks.csv" -Value ($env:updatedTasks.split(';').replace('"','').replace('''','') | ForEach-Object {$_.Trim()})
 }
 
-# Load new csv info
-foreach ($item in $updateTasksArray) { 
-    Write-Output "Updating Task as: $item"
-    $trigger = New-ScheduledTaskTrigger -Once -At $row.startTime -RepetitionInterval $repeat -RepetitionDuration $duration
-    Set-ScheduledTask -TaskName "SoftwareScan" -Trigger $trigger
-}
-
 # Import new csv file and update
 $csvDataUpdated = Import-Csv -Path "C:\updatedTasks.csv"
 
@@ -44,8 +37,8 @@ if ($null -ne $env:DISABLED_SCHEDULED_TASKS -and $env:DISABLED_SCHEDULED_TASKS -
 }
 
 foreach ($item in $disabledTasksArray) {
-    Write-Output "Disabling TaskName: $item Task"
-    Disable-ScheduledTask -TaskName "$item Task"
+    Write-Output "Disabling TaskName: $item"
+    Disable-ScheduledTask -TaskName "$item"
 }
 
 # Set environment memory allocation (override standalone.conf.bat)
