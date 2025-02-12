@@ -11,6 +11,12 @@ const { result } = renderHook(() =>
     })
 );
 
+const mockUsePatientSearchPermissions = jest.fn();
+
+jest.mock('apps/search/patient/usePatientSearchPermissions', () => ({
+    usePatientSearchPermissions: () => mockUsePatientSearchPermissions()
+}));
+
 const setup = () => {
     return render(
         <FormProvider {...result.current}>
@@ -20,6 +26,10 @@ const setup = () => {
 };
 
 describe('when Basic information renders', () => {
+    beforeEach(() => {
+        mockUsePatientSearchPermissions.mockReturnValue({ searchInactive: true });
+    });
+
     it('should render 8 input fields', () => {
         const { container } = setup();
         const inputs = container.getElementsByTagName('input');
@@ -29,5 +39,16 @@ describe('when Basic information renders', () => {
     it('should have helper text for patient ID', () => {
         const { getByText } = setup();
         expect(getByText('Separate IDs by commas, semicolons, or spaces')).toBeInTheDocument();
+    });
+
+    it('should show status component by default', () => {
+        const { queryByText } = setup();
+        expect(queryByText('Include records that are')).toBeInTheDocument();
+    });
+
+    it('should hide status component when permission not set', () => {
+        mockUsePatientSearchPermissions.mockReturnValue({ searchInactive: false });
+        const { queryByText } = setup();
+        expect(queryByText('Include records that are')).not.toBeInTheDocument();
     });
 });

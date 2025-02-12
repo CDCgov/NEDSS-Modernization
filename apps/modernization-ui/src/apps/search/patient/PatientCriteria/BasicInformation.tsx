@@ -10,9 +10,11 @@ import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteri
 import { DateCriteriaEntry } from 'design-system/date/criteria/DateCriteriaEntry';
 import { validateDateCriteria } from 'design-system/date/criteria/validateDateCriteria';
 import { EntryFieldsProps } from 'design-system/entry';
+import { usePatientSearchPermissions } from 'apps/search/patient/usePatientSearchPermissions';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
+    const { searchInactive } = usePatientSearchPermissions();
 
     return (
         <SearchCriteria>
@@ -100,27 +102,29 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                     />
                 )}
             />
-            <Controller
-                control={control}
-                name="status"
-                rules={{
-                    required: { value: true, message: 'At least one status is required' }
-                }}
-                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <CheckboxGroup
-                        name={name}
-                        label={'Include records that are'}
-                        sizing={sizing}
-                        orientation={orientation}
-                        required
-                        options={statusOptions}
-                        value={value}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        error={error?.message}
-                    />
-                )}
-            />
+            {searchInactive && (
+                <Controller
+                    control={control}
+                    name="status"
+                    rules={{
+                        required: { value: true, message: 'At least one status is required' }
+                    }}
+                    render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                        <CheckboxGroup
+                            name={name}
+                            label={'Include records that are'}
+                            sizing={sizing}
+                            orientation={orientation}
+                            required
+                            options={statusOptions}
+                            value={value}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            error={error?.message}
+                        />
+                    )}
+                />
+            )}
         </SearchCriteria>
     );
 };
