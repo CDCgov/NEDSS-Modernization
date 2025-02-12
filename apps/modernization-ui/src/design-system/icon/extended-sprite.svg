@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink">
-  <symbol id="table">
+  <symbol id="table" viewBox="0 0 24 24">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M21.7142 3.99973V19.427H2.28564V3.99973H21.7142ZM3.99993 17.7129H7.99993V10.2849H3.99993V17.7129ZM9.71422 17.7129H14.2856V10.2849H9.71422V17.7129ZM15.9999 17.7129H19.9999V10.2849H15.9999V17.7129ZM19.9999 5.71387V8.57078H3.99993V5.71387H19.9999Z" />
   </symbol>
 </svg>

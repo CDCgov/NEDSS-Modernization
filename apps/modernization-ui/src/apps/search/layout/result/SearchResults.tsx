@@ -1,4 +1,5 @@
 import { ReactNode, useLayoutEffect, useRef, useState } from 'react';
+import { Sizing } from 'design-system/field';
 import { LoadingPanel } from 'design-system/loading';
 import { View } from 'apps/search';
 import { SearchResultsHeader } from './header/SearchResultsHeader';
@@ -13,9 +14,10 @@ type Props = {
     total: number;
     terms: Term[];
     loading?: boolean;
+    sizing?: Sizing;
 };
 
-const SearchResults = ({ children, total, view, terms, loading = false }: Props) => {
+const SearchResults = ({ children, total, view, terms, loading = false, sizing }: Props) => {
     const [contentHeight, setContentHeight] = useState<string>('auto');
     const headerRef = useRef<HTMLDivElement>(null);
     const paginationRef = useRef<HTMLDivElement>(null);
@@ -42,7 +44,13 @@ const SearchResults = ({ children, total, view, terms, loading = false }: Props)
     return (
         <div className={styles.results}>
             <div ref={headerRef}>
-                <SearchResultsHeader className={styles.header} view={view} total={total} terms={terms} />
+                <SearchResultsHeader
+                    className={styles.header}
+                    sizing={sizing}
+                    view={view}
+                    total={total}
+                    terms={terms}
+                />
             </div>
             <main style={{ height: contentHeight }}>
                 <LoadingPanel loading={loading} className={styles.loader}>
