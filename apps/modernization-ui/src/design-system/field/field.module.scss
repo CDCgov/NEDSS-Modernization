@@ -38,6 +38,26 @@
         margin: 0;
     }
 
+    &.small {
+        @extend %small;
+
+        label {
+            @extend %small;
+        }
+
+        input,
+        select {
+            height: 1.85rem;
+            width: unset;
+        
+            @extend %small;
+        }
+
+        textarea {
+            @extend %small-textarea;
+        }
+    }
+
     &.medium {
         @extend %medium;
 
@@ -52,6 +72,23 @@
 
         textarea {
             @extend %medium-textarea;
+        }
+    }
+
+    &.large {
+        @extend %large;
+
+        label {
+            @extend %large;
+        }
+
+        input,
+        select {
+            @extend %large-input;
+        }
+
+        textarea {
+            @extend %large-textarea;
         }
     }
 

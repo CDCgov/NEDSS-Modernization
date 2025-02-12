@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, ReactNode } from 'react';
 import styles from './buttonActionMenu.module.scss';
 import { Icon } from '@trussworks/react-uswds';
-import { Button } from 'components/button/Button';
+import { Button } from 'design-system/button';
 import classNames from 'classnames';
 
 type Props = {

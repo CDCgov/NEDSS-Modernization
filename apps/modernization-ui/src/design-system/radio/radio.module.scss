@@ -1,0 +1,40 @@
+@use 'styles/colors';
+@use 'styles/components';
+
+$radio-small: 1rem;
+$radio-medium: 1.125rem;
+$radio-large: 1.25rem;
+
+@mixin sizedRadio($height: $radio-small, $width: $radio-small, $padding: 1.5rem, $extend: '%small') {
+    height: $height;
+    min-height: $height;
+
+    label {
+        @extend #{$extend};
+        padding-left: $padding;
+        &::before {
+            height: $height;
+            width: $width;
+        }
+    }
+}
+
+.radio {
+    label {
+        &::before {
+            margin: 0;
+        }
+    }
+
+    &.small {
+        @include sizedRadio($radio-small, $radio-small, 1.5rem, '%small');
+    }
+
+    &.medium {
+        @include sizedRadio($radio-medium, $radio-medium, 1.75rem, '%medium');
+    }
+
+    &.large {
+        @include sizedRadio($radio-large, $radio-large, 1.75rem, '%large');
+    }
+}

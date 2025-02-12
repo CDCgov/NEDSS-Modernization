@@ -113,3 +113,93 @@ Then("I have not filled out Dropdowns fields", () => {
 Then("Error message should appear right above dropdown fields", () => {
     classicSearchPatientPage.errorMessageDropdownField()
 });
+
+Then("I click Add Identification Button", () => {
+    classicSearchPatientPage.clickAddIdentificationButton();
+ });
+
+ Then("I click Add Phone and Email Button", () => {
+    classicSearchPatientPage.clickAddPhoneButton();
+ });
+
+Then("I add type and use for phone", () => {
+    classicSearchPatientPage.selectPhoneType();
+    classicSearchPatientPage.selectPhoneUse();
+    classicSearchPatientPage.typeValidPhoneNumber();
+ });
+
+Then("Select section {string} with id {string} option {string}", (text, text1, text2) => {
+    classicSearchPatientPage.selectSectionField(text, text1, text2);
+});
+
+Then("Type section {string} with id {string} with text {string}", (text, text1, text2) => {
+    classicSearchPatientPage.typeInputSectionField(text, text1, text2);
+});
+
+Then("Error section {string} with error {string}", (text, text1) => {
+    classicSearchPatientPage.errorSectionField(text, text1);
+});
+
+Then("I have successfully added a new patient", () => {
+    classicSearchPatientPage.addNewPatient();
+});
+
+Then("Add Patient Success modal is displayed", () => {
+    classicSearchPatientPage.successModalDisplayed();
+});
+
+Then("I click the Add lab report button", () => {
+    classicSearchPatientPage.clickAddLabReportBtn();
+});
+
+Then("I should be redirected to the Add Lab Report form", () => {
+    classicSearchPatientPage.redirectAddLabReportForm();
+});
+
+Then("I enter a valid Reporting Facility", () => {
+    classicSearchPatientPage.enterReportingFacility();
+});
+
+Then("I select a valid Program Area", () => {
+    classicSearchPatientPage.selectProgramArea();
+});
+
+Then("I select a valid Jurisdiction", () => {
+    classicSearchPatientPage.selectJurisdiction();
+});
+
+Then("I select a valid Resulted Test and fill in the details", () => {
+    classicSearchPatientPage.selectResultedTestAndFillDetails();
+});
+
+Then("I click the Submit button in Report form", () => {
+    classicSearchPatientPage.clickAddReportFormSubmitBtn();
+});
+
+Then("I should see the patients profile displayed with the added lab report", () => {
+    classicSearchPatientPage.verifyPatientProfileWithAddedLabReport();
+});
+
+Then("I click the Add investigation button", () => {
+    classicSearchPatientPage.clickAddInvestigationBtn();
+});
+
+Then("I should be redirected to the Add Investigation form", () => {
+    classicSearchPatientPage.redirectAddInvestigationForm();
+});
+
+Then("I select a valid Condition", () => {
+    classicSearchPatientPage.selectCondition();
+});
+
+Then("I select a valid Jurisdiction in investigation form", () => {
+    classicSearchPatientPage.selectJurisdictionInInvestigationForm();
+});
+
+Then("I click the Submit button in Add Investigation Form", () => {
+    classicSearchPatientPage.clickAddInvestigationFormSubmitBtn();
+});
+
+Then("I should see a success message indicating that the investigation has been added successfully", () => {
+    classicSearchPatientPage.verifyInvestigationAddedSuccessfully();
+});

@@ -89,3 +89,32 @@ Scenario: Required Name Fields
     And I have not filled out Dropdowns fields
     Then Error message should appear right above dropdown fields
 
+  Scenario: Invalid Identification
+    Given I am on the New patient Extended form
+    And I click Add Identification Button
+    Then Error section "identifications" with error "Type is required."
+    Then Error section "identifications" with error "ID value is required."
+
+  Scenario: Add Valid Phone Number
+    Given I am on the New patient Extended form
+    Then I add type and use for phone
+    Then I click Add Phone and Email Button
+
+  Scenario: Add Valid Identification
+    Given I am on the New patient Extended form
+    Then Select section "identifications" with id "identification-type" option "Medicaid number"
+    Then Type section "identifications" with id "id" with text "23123"
+    And I click Add Identification Button
+
+  Scenario: Adding a Lab Report After Creating a New Patient
+    Given I have successfully added a new patient
+    And Add Patient Success modal is displayed
+    When I click the Add lab report button
+    Then I should be redirected to the Add Lab Report form
+    When I enter a valid Reporting Facility
+    And I select a valid Program Area
+    And I select a valid Jurisdiction
+    And I select a valid Resulted Test and fill in the details
+    When I click the Submit button in Report form
+    Then I should see the patients profile displayed with the added lab report
+

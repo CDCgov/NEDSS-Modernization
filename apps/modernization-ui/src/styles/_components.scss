@@ -1,12 +1,25 @@
 @use 'styles/colors';
 
 $medium-font-size: 0.875rem;
+$small-font-size: 0.875rem;
+$large-font-size: 1rem;
+
 $medium-height: 2rem;
 $medium-textarea-height: 7.5rem;
 
 %medium {
     line-height: normal;
     font-size: $medium-font-size;
+}
+
+%small {
+    line-height: normal;
+    font-size: $small-font-size;
+}
+
+%large {
+    line-height: normal;
+    font-size: $large-font-size;
 }
 
 %medium-input {
@@ -21,4 +34,50 @@ $medium-textarea-height: 7.5rem;
     width: unset;
 
     @extend %medium;
+}
+
+$small-font-size: 0.75rem;
+$small-height: 1.5rem;
+$small-textarea-height: 6.25rem;
+
+%small {
+    line-height: normal;
+    font-size: $small-font-size;
+}
+
+%small-input {
+    height: $small-height;
+    width: unset;
+
+    @extend %small;
+}
+
+%small-textarea {
+    height: $small-textarea-height;
+    width: unset;
+
+    @extend %small;
+}
+
+$large-font-size: 1rem;
+$large-height: 2.2rem;
+$large-textarea-height: 6.5rem;
+
+%large {
+    line-height: normal;
+    font-size: $large-font-size;
+}
+
+%large-input {
+    height: $large-height;
+    width: unset;
+
+    @extend %large;
+}
+
+%large-textarea {
+    height: $large-textarea-height;
+    width: unset;
+
+    @extend %large;
 }

@@ -2,6 +2,7 @@ import { Button as TrussworksButton } from '@trussworks/react-uswds';
 import { ReactNode } from 'react';
 import styles from './Button.module.scss';
 import classNames from 'classnames';
+import { Sizing } from 'design-system/field';
 
 type Props = {
     className?: string;
@@ -11,6 +12,7 @@ type Props = {
     destructive?: boolean;
     disabled?: boolean;
     type?: 'button' | 'submit' | 'reset';
+    sizing?: Sizing;
     unstyled?: boolean;
     unpadded?: boolean;
     labelPosition?: 'left' | 'right';
@@ -27,10 +29,11 @@ const Button = ({
     destructive = false,
     unstyled = false,
     labelPosition = 'left',
+    sizing,
     ...defaultProps
 }: Props) => {
     const isIconOnly = icon && !children;
-    const classesAarray = classNames(className, {
+    const classesArray = classNames(className, sizing && styles[sizing], {
         [styles.destructive]: destructive,
         [styles.icon]: icon,
         [styles.unpadded]: unpadded
@@ -38,11 +41,11 @@ const Button = ({
 
     return (
         <TrussworksButton
-            className={classNames(classesAarray, styles['button-component'])}
+            className={classNames(classesArray, styles['button-component'])}
             {...defaultProps}
             type={type}
             unstyled={unstyled}
-            size={icon && !children ? 'big' : undefined}
+            size={isIconOnly ? 'big' : undefined}
             outline={outline}>
             {labelPosition === 'left' && children && icon ? (
                 <>

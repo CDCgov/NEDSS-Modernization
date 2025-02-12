@@ -1,5 +1,5 @@
 import { ButtonActionMenu } from './ButtonActionMenu';
-import { Button } from 'components/button/Button';
+import { Button } from 'design-system/button';
 import { render } from '@testing-library/react';
 
 describe('When ButtonActionMenu renders', () => {
