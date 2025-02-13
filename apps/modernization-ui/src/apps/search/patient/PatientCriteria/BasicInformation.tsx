@@ -10,11 +10,10 @@ import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteri
 import { DateCriteriaEntry } from 'design-system/date/criteria/DateCriteriaEntry';
 import { validateDateCriteria } from 'design-system/date/criteria/validateDateCriteria';
 import { EntryFieldsProps } from 'design-system/entry';
-import { usePatientSearchPermissions } from 'apps/search/patient/usePatientSearchPermissions';
+import { Permitted } from 'libs/permission';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
-    const { searchInactive } = usePatientSearchPermissions();
 
     return (
         <SearchCriteria>
@@ -102,7 +101,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                     />
                 )}
             />
-            {searchInactive && (
+            <Permitted permission="FINDINACTIVE-PATIENT">
                 <Controller
                     control={control}
                     name="status"
@@ -124,7 +123,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         />
                     )}
                 />
-            )}
+            </Permitted>
         </SearchCriteria>
     );
 };

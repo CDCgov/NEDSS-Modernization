@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import { BasicInformation } from './BasicInformation';
 import { PatientCriteriaEntry } from '../criteria';
@@ -11,10 +12,10 @@ const { result } = renderHook(() =>
     })
 );
 
-const mockUsePatientSearchPermissions = jest.fn();
+const mockPermissionAllows = jest.fn();
 
-jest.mock('apps/search/patient/usePatientSearchPermissions', () => ({
-    usePatientSearchPermissions: () => mockUsePatientSearchPermissions()
+jest.mock('libs/permission/Permitted', () => ({
+    Permitted: ({ children }: { children: ReactNode }) => mockPermissionAllows() && children
 }));
 
 const setup = () => {
@@ -27,7 +28,7 @@ const setup = () => {
 
 describe('when Basic information renders', () => {
     beforeEach(() => {
-        mockUsePatientSearchPermissions.mockReturnValue({ searchInactive: true });
+        mockPermissionAllows.mockReturnValue(true);
     });
 
     it('should render 8 input fields', () => {
@@ -47,7 +48,7 @@ describe('when Basic information renders', () => {
     });
 
     it('should hide status component when permission not set', () => {
-        mockUsePatientSearchPermissions.mockReturnValue({ searchInactive: false });
+        mockPermissionAllows.mockReturnValue(false);
         const { queryByText } = setup();
         expect(queryByText('Include records that are')).not.toBeInTheDocument();
     });
