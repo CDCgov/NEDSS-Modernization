@@ -21,4 +21,26 @@ describe('When ButtonActionMenu renders', () => {
         expect(queryByText('Test this')).not.toBeInTheDocument();
         expect(queryByText('Test that')).not.toBeInTheDocument();
     });
+
+    it('should display label on the left by default', () => {
+        const { getByText } = render(
+            <ButtonActionMenu label="Add new">
+                <></>
+            </ButtonActionMenu>
+        );
+
+        expect(getByText('Add new')).toBeInTheDocument();
+        expect(getByText('Add new').previousElementSibling).toBeNull();
+    });
+
+    it('should display label on the right when specified', () => {
+        const { getByText } = render(
+            <ButtonActionMenu label="Add new" labelPosition="right">
+                <></>
+            </ButtonActionMenu>
+        );
+
+        expect(getByText('Add new')).toBeInTheDocument();
+        expect(getByText('Add new').nextElementSibling).toBeNull();
+    });
 });
