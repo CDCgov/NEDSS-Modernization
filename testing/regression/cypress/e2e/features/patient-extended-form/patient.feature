@@ -126,4 +126,14 @@ Scenario: Required Name Fields
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
+  Scenario: Adding an Investigation After Creating a New Patient
+    Given I have successfully added a new patient
+    And Add Patient Success modal is displayed
+    When I click the Add investigation button
+    Then I should be redirected to the Add Investigation form
+    When I select a valid Condition
+    And I select a valid Jurisdiction in investigation form
+    When I click the Submit button in Add Investigation Form
+    Then I should see a success message indicating that the investigation has been added successfully
+
 
