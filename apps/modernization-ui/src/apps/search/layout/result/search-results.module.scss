@@ -7,10 +7,6 @@ $pagination-height: 4.75rem;
         min-height: #{$header-height};
     }
 
-    .pagination {
-        height: #{$pagination-height};
-    }
-
     .loader {
         height: 80%;
         width: 80%;

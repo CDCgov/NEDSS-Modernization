@@ -13,6 +13,7 @@ import { PatientSearchActions } from './PatientSearchActions';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { usePatientSearch } from './usePatientSearch';
 import { Direction } from 'sorting';
+import { useComponentSizing } from 'design-system/sizing';
 
 const PatientSearch = () => {
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
@@ -22,6 +23,7 @@ const PatientSearch = () => {
     });
 
     const interaction = usePatientSearch({ form });
+    const sizing = useComponentSizing();
 
     return (
         <ColumnPreferenceProvider id="search.patients.preferences.columns" defaults={preferences}>
@@ -35,15 +37,18 @@ const PatientSearch = () => {
                 <SearchInteractionProvider interaction={interaction}>
                     <FormProvider {...form}>
                         <SearchLayout
+                            sizing={sizing}
                             actions={() => <PatientSearchActions disabled={interaction.status !== 'completed'} />}
-                            criteria={() => <PatientCriteria />}
+                            criteria={() => <PatientCriteria sizing={sizing} />}
                             resultsAsList={() => (
                                 <SearchResultList<PatientSearchResult>
                                     results={interaction.results.content}
                                     render={(result) => <PatientSearchResultListItem result={result} />}
                                 />
                             )}
-                            resultsAsTable={() => <PatientSearchResultTable results={interaction.results.content} />}
+                            resultsAsTable={() => (
+                                <PatientSearchResultTable sizing={sizing} results={interaction.results.content} />
+                            )}
                             searchEnabled={interaction.enabled}
                             onSearch={interaction.search}
                             noResults={() => <NoPatientResults />}
