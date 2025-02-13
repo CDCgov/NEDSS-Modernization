@@ -1,9 +1,6 @@
 import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
-import { NameRepeatingBlock } from './NameRepeatingBlock';
-
-const onChange = jest.fn();
-const isDirty = jest.fn();
+import { NameRepeatingBlock, NameRepeatingBlockProps } from './NameRepeatingBlock';
 
 const mockPatientNameCodedValues = {
     types: [{ name: 'Adopted name', value: 'AN' }],
@@ -12,31 +9,26 @@ const mockPatientNameCodedValues = {
     degrees: [{ name: 'BA', value: 'BA' }]
 };
 
-const mockEntry = {
-    state: {
-        data: [
-            {
-                asOf: internalizeDate(new Date()),
-                type: 'AN',
-                first: 'test'
-            }
-        ]
-    }
-};
-
-jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
-    useMultiValueEntryState: () => mockEntry
-}));
-
 jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
     usePatientNameCodedValues: () => mockPatientNameCodedValues
 }));
 
-const Fixture = () => <NameRepeatingBlock id="names" onChange={onChange} isDirty={isDirty} />;
+const Fixture = ({ values, onChange = jest.fn(), isDirty = jest.fn() }: Partial<NameRepeatingBlockProps>) => (
+    <NameRepeatingBlock id="names" values={values} onChange={onChange} isDirty={isDirty} />
+);
 
 describe('NameRepeatingBlock', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<Fixture />);
+        const { getAllByRole } = render(
+            <Fixture
+                values={[
+                    {
+                        asOf: '07/11/1997',
+                        type: { name: 'type-name', value: 'type-value' }
+                    }
+                ]}
+            />
+        );
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');

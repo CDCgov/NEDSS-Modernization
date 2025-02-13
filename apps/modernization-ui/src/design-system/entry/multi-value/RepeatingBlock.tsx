@@ -37,44 +37,22 @@ const RepeatingBlock = <V extends FieldValues>({
     viewRenderer
 }: Props<V>) => {
     const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onBlur', defaultValues });
-    const { status, selected, add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>({ values });
+    const { status, entries, selected, add, edit, update, remove, view, reset } = useMultiValueEntryState<V>({
+        values
+    });
 
     useEffect(() => {
-        onChange(state.data);
-    }, [JSON.stringify(state.data)]);
+        onChange(entries);
+    }, [JSON.stringify(entries)]);
 
     useEffect(() => {
         isDirty(form.formState.isDirty);
+
+        if (!form.formState.isDirty) {
+            // If a user clears the form, remove internal form validation errors
+            form.clearErrors();
+        }
     }, [form.formState.isDirty]);
-
-    const handleReset = () => {
-        form.reset(defaultValues);
-        reset();
-    };
-
-    const handleSubmit = (value: V) => {
-        // Submit button performs various actions based on the current state
-        if (state.status === 'adding') {
-            // form reset must be triggered prior to `add` call,
-            // otherwise internal form state retains some values and fails to properly reset
-            form.reset(defaultValues);
-            add(value);
-        } else if (status === 'editing') {
-            form.reset(defaultValues);
-            update(state.index, value);
-        }
-    };
-
-    const handleRemove = (index: number) => {
-        if ((state.status === 'editing' || state.status === 'viewing') && state.index === index) {
-            form.reset(defaultValues);
-        }
-        remove(index);
-    };
-
-    const handleEdit = (index: number) => {
-        edit(index);
-    };
 
     useEffect(() => {
         // Perform form reset after status update to allow time for rendering of form
@@ -84,19 +62,43 @@ const RepeatingBlock = <V extends FieldValues>({
         }
     }, [status, selected, form.reset]);
 
+    const handleReset = () => {
+        form.reset(defaultValues);
+        reset();
+    };
+
+    const handleAdd = (value: V) => {
+        // form reset must be triggered prior to `add` call,
+        // otherwise internal form state retains some values and fails to properly reset
+        form.reset(defaultValues);
+        add(value);
+    };
+
+    const handleUpdate = (value: V) => {
+        form.reset(defaultValues);
+        update(value);
+    };
+
+    const handleRemove = (value: V) => {
+        if ((status === 'editing' || status === 'viewing') && selected === value) {
+            form.reset(defaultValues);
+        }
+        remove(value);
+    };
+
     const iconColumn: Column<V> = {
         id: 'actions',
         name: '',
-        render: (_entry: V, index: number) => (
-            <div className={styles.iconContainer}>
-                <div data-tooltip-position="top" aria-label="View">
-                    <Icon name="visibility" onClick={() => view(index)} />
+        render: (value: V) => (
+            <div className={styles.actions}>
+                <div data-tooltip-position="top" aria-label="View" onClick={() => view(value)}>
+                    <Icon name="visibility" className={classNames({ [styles.active]: status === 'viewing' })} />
                 </div>
-                <div data-tooltip-position="top" aria-label="Edit">
-                    <Icon name="edit" onClick={() => handleEdit(index)} />
+                <div data-tooltip-position="top" aria-label="Edit" onClick={() => edit(value)}>
+                    <Icon name="edit" className={classNames({ [styles.active]: status === 'editing' })} />
                 </div>
-                <div data-tooltip-position="top" aria-label="Delete">
-                    <Icon name="delete" onClick={() => handleRemove(index)} />
+                <div data-tooltip-position="top" aria-label="Delete" onClick={() => handleRemove(value)}>
+                    <Icon name="delete" />
                 </div>
             </div>
         )
@@ -110,13 +112,6 @@ const RepeatingBlock = <V extends FieldValues>({
         return messages.filter((a) => a != undefined);
     }, [JSON.stringify(form.formState.errors), errors]);
 
-    // If a user clears the form, remove internal form validation errors
-    useEffect(() => {
-        if (!form.formState.isDirty) {
-            form.clearErrors();
-        }
-    }, [form.formState.isDirty]);
-
     return (
         <section id={id} className={styles.input}>
             <header>
@@ -125,23 +120,21 @@ const RepeatingBlock = <V extends FieldValues>({
             </header>
 
             <Shown when={errorMessages && errorMessages.length > 0}>
-                <section>
-                    <AlertMessage title="Please fix the following errors:" type="error">
-                        <ul className={styles.errorList}>
-                            {errorMessages.map((e, i) => (
-                                <li key={i}>{e}</li>
-                            ))}
-                        </ul>
-                    </AlertMessage>
-                </section>
+                <AlertMessage title="Please fix the following errors:" type="error">
+                    <ul className={styles.errorList}>
+                        {errorMessages.map((e, i) => (
+                            <li key={i}>{e}</li>
+                        ))}
+                    </ul>
+                </AlertMessage>
             </Shown>
             <div>
-                <Shown when={state.data.length > 0}>
+                <Shown when={entries.length > 0}>
                     <DataTable<V>
                         className={styles.dataTable}
                         id={`${id}-data-table`}
                         columns={[...columns, iconColumn]}
-                        data={state.data}
+                        data={entries}
                     />
                 </Shown>
             </div>
@@ -154,10 +147,16 @@ const RepeatingBlock = <V extends FieldValues>({
                 </FormProvider>
             </Shown>
             <footer>
-                <Shown when={status === 'editing' || status === 'adding'}>
-                    <Button outline onClick={form.handleSubmit(handleSubmit)}>
+                <Shown when={status === 'adding'}>
+                    <Button outline onClick={form.handleSubmit(handleAdd)}>
                         <Icon name="add" />
-                        {`${status === 'editing' ? 'Update' : 'Add'} ${title.toLowerCase()}`}
+                        {`Add ${title.toLowerCase()}`}
+                    </Button>
+                </Shown>
+                <Shown when={status === 'editing'}>
+                    <Button outline onClick={form.handleSubmit(handleUpdate)}>
+                        <Icon name="add" />
+                        {`Update ${title.toLowerCase()}`}
                     </Button>
                 </Shown>
                 <Shown when={status === 'viewing'}>

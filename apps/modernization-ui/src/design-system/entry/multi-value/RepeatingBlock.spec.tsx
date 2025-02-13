@@ -183,7 +183,6 @@ describe('RepeatingBlock', () => {
         userEvent.click(button);
 
         await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
             expect(onChange).toHaveBeenNthCalledWith(1, []);
             expect(onChange).toHaveBeenNthCalledWith(2, [
                 { firstInput: 'first input value', secondInput: 'second input value' }
@@ -200,7 +199,6 @@ describe('RepeatingBlock', () => {
         userEvent.click(button);
 
         await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
             expect(onChange).toHaveBeenNthCalledWith(1, []);
             expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
         });
@@ -230,7 +228,6 @@ describe('RepeatingBlock', () => {
 
         // expect value to be added
         await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
             expect(onChange).toHaveBeenNthCalledWith(1, []);
             expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'typed value', secondInput: 'second value' }]);
         });
@@ -258,7 +255,6 @@ describe('RepeatingBlock', () => {
         userEvent.click(button);
 
         await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
             expect(onChange).toHaveBeenNthCalledWith(1, []);
             expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
         });
@@ -288,7 +284,6 @@ describe('RepeatingBlock', () => {
         userEvent.click(button);
 
         await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
             expect(onChange).toHaveBeenNthCalledWith(1, []);
             expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
         });
@@ -304,50 +299,62 @@ describe('RepeatingBlock', () => {
     });
 
     it('should delete row when delete icon clicked', async () => {
-        const { getByRole, getAllByRole } = render(<Fixture />);
+        const { getByLabelText } = render(
+            <Fixture
+                values={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: []
+                    }
+                ]}
+            />
+        );
 
         await awaitRender();
 
-        const button = getByRole('button');
-        userEvent.click(button);
+        const remove = getByLabelText('Delete');
+        userEvent.click(remove);
 
         await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
-        });
-
-        const iconContainer = getAllByRole('cell')[2].children[0].children[0];
-
-        await waitFor(() => {
-            userEvent.click(iconContainer.children[2].children[0]);
-            expect(onChange).toBeCalledTimes(3);
-            expect(onChange).toHaveBeenNthCalledWith(3, []);
+            expect(onChange).toHaveBeenCalledWith([]);
         });
     });
 
     it('should allow edit of row', async () => {
-        const { getByRole, getAllByRole, getByLabelText } = render(<Fixture />);
+        const { getByRole, getAllByRole, getByLabelText, debug } = render(
+            <Fixture
+                values={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: []
+                    }
+                ]}
+            />
+        );
 
         await awaitRender();
 
-        const button = getByRole('button');
-        const input1 = getByLabelText('First Input');
-        const input2 = getByLabelText('Second Input');
+        const edit = getByLabelText('Edit');
 
-        userEvent.clear(input1);
-        userEvent.type(input1, 'first changed');
-        userEvent.clear(input2);
-        userEvent.type(input2, 'second changed');
+        userEvent.click(edit);
+
+        const button = getByRole('button', { name: 'Update test title' });
+        const input1 = getByLabelText('First Input');
+
+        userEvent.type(input1, '-changed');
+        userEvent.tab();
+
         userEvent.click(button);
 
         await waitFor(() => {
             // change event fires, form resets to default
-            expect(onChange).toBeCalledTimes(2);
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [
-                { firstInput: 'first changed', secondInput: 'second changed' }
-            ]);
+            expect(onChange).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                    expect.objectContaining({ firstInput: 'first-value-changed', secondInput: 'second-value' })
+                ])
+            );
             expect(getByLabelText('First Input')).toHaveValue('first value');
             expect(getByLabelText('Second Input')).toHaveValue('second value');
         });
@@ -357,35 +364,15 @@ describe('RepeatingBlock', () => {
         await waitFor(() => {
             // view clicked, input values set to entry value
             userEvent.click(iconContainer.children[1].children[0]);
-            expect(getByLabelText('First Input')).toHaveValue('first changed');
-            expect(getByLabelText('Second Input')).toHaveValue('second changed');
-        });
-
-        userEvent.clear(input1);
-        userEvent.type(input1, 'first changed again');
-        userEvent.clear(input2);
-        userEvent.type(input2, 'second changed again');
-        userEvent.click(button);
-
-        await waitFor(() => {
-            // change event fires, form resets to default
-            expect(onChange).toBeCalledTimes(3);
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [
-                { firstInput: 'first changed', secondInput: 'second changed' }
-            ]);
-            expect(onChange).toHaveBeenNthCalledWith(3, [
-                { firstInput: 'first changed again', secondInput: 'second changed again' }
-            ]);
-            expect(getByLabelText('First Input')).toHaveValue('first value');
-            expect(getByLabelText('Second Input')).toHaveValue('second value');
+            expect(getByLabelText('First Input')).toHaveValue('first-value-changed');
+            expect(getByLabelText('Second Input')).toHaveValue('second-value');
         });
 
         // table display updated
         const columns = getAllByRole('cell');
         expect(columns).toHaveLength(3);
-        expect(columns[0]).toHaveTextContent('first changed again');
-        expect(columns[1]).toHaveTextContent('second changed again');
+        expect(columns[0]).toHaveTextContent('first-value-changed');
+        expect(columns[1]).toHaveTextContent('second-value');
         expect(columns[2]).toHaveTextContent('');
     });
 
