@@ -199,3 +199,11 @@ Then("I click the Submit button in Add Investigation Form", () => {
 Then("I should see a success message indicating that the investigation has been added successfully", () => {
     classicSearchPatientPage.verifyInvestigationAddedSuccessfully();
 });
+
+When("I select yes to Is the patient deceased", () => {
+    NameEntryPage.selectPatientDeceasedYes();
+  });
+
+  When("I complete the Mortality fields", () => {
+    NameEntryPage.completeMortalityFields();
+  });
