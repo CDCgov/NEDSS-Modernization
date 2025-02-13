@@ -31,6 +31,19 @@ export const calculateAge = (birthday: Date) => {
 };
 
 /**
+ * Converts milliseconds to a clock string in the format 'HH:MM:SS' or 'MM:SS' if less than an hour.
+ * @param {number} millisecs The number of milliseconds
+ * @return {unknown} The clock string.
+ */
+export const toClockString = (millisecs: number): string => {
+    const pad = (num: number) => num.toString().padStart(2, '0');
+    const seconds = Math.floor((millisecs / 1000) % 60);
+    const minutes = Math.floor((millisecs / (1000 * 60)) % 60);
+    const hours = Math.floor(millisecs / (1000 * 60 * 60));
+    return hours > 0 ? `${hours}:${pad(minutes)}:${pad(seconds)}` : `${minutes}:${pad(seconds)}`;
+};
+
+/**
  * Given an object, selects the value at the given path, using dot notation.
  * Example: selectField({ a: { b: { c: 42 } } }, 'a.b.c') returns 42
  * @param {object} obj The object for which to select the field

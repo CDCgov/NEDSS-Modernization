@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { OverlayPanel } from 'overlay';
 import { Icon } from 'design-system/icon';
+import { Sizing } from 'design-system/field';
 import { ColumnPreferencesPanel } from 'design-system/table/preferences';
 import { useFilter } from 'design-system/filter';
 import { Button } from 'components/button';
@@ -11,9 +12,10 @@ import styles from './search-results-table-options.module.scss';
 
 type Props = {
     disabled?: boolean;
+    sizing?: Sizing;
 };
 
-const SearchResultsTableOptions = ({ disabled = false }: Props) => {
+const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
     const { active, toggle, clearAll, filter } = useFilter();
     const sorting = maybeUseSorting();
 
@@ -27,7 +29,7 @@ const SearchResultsTableOptions = ({ disabled = false }: Props) => {
             <FeatureToggle guard={(features) => features.patient.search.filters.enabled}>
                 <div className={styles.filter}>
                     {filter && (
-                        <Button unpadded unstyled onClick={handleFilterSortReset}>
+                        <Button unpadded unstyled onClick={handleFilterSortReset} sizing={sizing}>
                             Reset sort/filters
                         </Button>
                     )}
@@ -38,8 +40,9 @@ const SearchResultsTableOptions = ({ disabled = false }: Props) => {
                         className={classNames({ [styles.filtered]: active })}
                         outline={!active}
                         disabled={disabled}
-                        icon={<Icon name="filter_alt" size="medium" />}
+                        icon={<Icon name="filter_alt" />}
                         onClick={toggle}
+                        sizing={sizing}
                     />
                 </div>
             </FeatureToggle>
@@ -53,8 +56,9 @@ const SearchResultsTableOptions = ({ disabled = false }: Props) => {
                         data-tooltip-offset="center"
                         outline
                         disabled={disabled}
-                        icon={<Icon name="settings" size="medium" />}
+                        icon={<Icon name="settings" />}
                         onClick={toggle}
+                        sizing={sizing}
                     />
                 )}
                 render={(close) => <ColumnPreferencesPanel close={close} />}></OverlayPanel>
