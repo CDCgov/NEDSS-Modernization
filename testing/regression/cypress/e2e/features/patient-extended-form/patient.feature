@@ -118,3 +118,12 @@ Scenario: Required Name Fields
     When I click the Submit button in Report form
     Then I should see the patients profile displayed with the added lab report
 
+  Scenario: Valid Mortality Information
+    Given I am on the New patient Extended form
+    And I select yes to Is the patient deceased
+    And I complete the Mortality fields
+    When I click the Save button
+    Then Form should be submitted successfully without errors
+    And I should receive a confirmation message
+
+

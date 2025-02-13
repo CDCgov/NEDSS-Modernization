@@ -10,17 +10,17 @@ class PatientSearchResultEmailFinder {
 
   private static final String QUERY = """
       select distinct
-          IsNull([email_address].email_address, '') as [email]
+          [email_address].email_address as [email]
       from Entity_locator_participation [locator]
-
+      
           join Tele_locator [email_address] on
                   [email_address].[tele_locator_uid] = [locator].[locator_uid]
               and [email_address].record_status_cd = [locator].[record_status_cd]
-
-
+              and [email_address].email_address is not null
+      
+      
       where   [locator].entity_uid = ?
           and [locator].[class_cd] = 'TELE'
-          and [locator].cd = 'NET'
           and [locator].record_status_cd = 'ACTIVE'
       """;
   private static final int PATIENT_PARAMETER = 1;

@@ -1,0 +1,1 @@
+export { SearchResultPagination } from './SearchResultPagination';

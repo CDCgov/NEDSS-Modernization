@@ -26,12 +26,26 @@ describe('IdleTimer Component', () => {
         render(<Fixture onIdle={onIdle} />);
     });
 
-    it('should start idle timer on mount', () => {
+    it('should start idle timer on mount and display warning modal', () => {
         const { queryByRole } = render(<Fixture onIdle={onIdle} />);
         act(() => {
             jest.advanceTimersByTime(timeout + 100);
         });
         expect(queryByRole('dialog')).toBeInTheDocument();
+    });
+
+    it('should display warning modal with countdown', () => {
+        const { queryByRole, queryByText } = render(<Fixture onIdle={onIdle} />);
+        act(() => {
+            jest.advanceTimersByTime(timeout + 100);
+        });
+        expect(queryByRole('dialog')).toBeInTheDocument();
+        expect(queryByText('Your session will timeout', { exact: false })).toBeInTheDocument();
+        // advance timer enough for first countdown interval
+        act(() => {
+            jest.advanceTimersByTime(100);
+        });
+        expect(queryByText('0:01')).toBeInTheDocument();
     });
 
     it('should reset idle timer on activity', () => {
@@ -63,9 +77,6 @@ describe('IdleTimer Component', () => {
         });
         expect(queryByRole('dialog')).toBeInTheDocument();
         fireEvent.click(getByText('Continue'));
-        // act(() => {
-        //     fireEvent.click(getByText('Continue'));
-        // });
         expect(queryByRole('dialog')).not.toBeInTheDocument();
         act(() => {
             jest.advanceTimersByTime(timeout + 100);
@@ -75,7 +86,6 @@ describe('IdleTimer Component', () => {
 
     it('should call onIdle on logout', () => {
         const { queryByRole, getByText } = render(<Fixture onIdle={onIdle} />);
-        // jest.advanceTimersByTime(timeout + 100);
         act(() => {
             jest.advanceTimersByTime(timeout + 100);
         });

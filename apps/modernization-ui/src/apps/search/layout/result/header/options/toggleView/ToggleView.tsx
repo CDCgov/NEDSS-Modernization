@@ -2,11 +2,16 @@ import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 import { Icon } from 'design-system/icon';
 import classNames from 'classnames';
 import { Button } from 'components/button';
+import { ButtonGroup } from 'design-system/button';
+import { Sizing } from 'design-system/field';
 
 import styles from './toggle-view.module.scss';
-import { ButtonGroup } from 'design-system/button';
 
-export const ToggleView = () => {
+type ToggleViewProps = {
+    sizing?: Sizing;
+};
+
+export const ToggleView = ({ sizing }: ToggleViewProps) => {
     const { view, asList, asTable } = useSearchResultDisplay();
 
     return (
@@ -20,7 +25,7 @@ export const ToggleView = () => {
                     outline={view !== 'table'}
                     icon={<Icon name="table" />}
                     onClick={asTable}
-                    sizing="small"
+                    sizing={sizing}
                 />
                 <Button
                     aria-label="List view"
@@ -30,7 +35,7 @@ export const ToggleView = () => {
                     icon={<Icon name="list" />}
                     onClick={asList}
                     outline={view !== 'list'}
-                    sizing="small"
+                    sizing={sizing}
                 />
             </ButtonGroup>
         </div>
