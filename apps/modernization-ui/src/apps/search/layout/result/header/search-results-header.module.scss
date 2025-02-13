@@ -1,8 +1,17 @@
 @use 'styles/borders';
 
+$header-height-medium: 3.75rem;
+$header-height-small: 3rem;
+
 .header {
     padding: 0.5rem 0.5rem 0.5rem 1rem;
     display: flex;
+
+    min-height: $header-height-medium;
+
+    &.small {
+        min-height: $header-height-small;
+    }
 
     @extend %thin-bottom;
     justify-content: space-between;
