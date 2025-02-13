@@ -1,4 +1,4 @@
-import { selectField } from './util';
+import { selectField, toClockString } from './util';
 
 describe('selectField', () => {
     it('should return the value at the given path', () => {
@@ -48,5 +48,18 @@ describe('selectField', () => {
         const path = 'a.1.b';
         const result = selectField(obj, path);
         expect(result).toBeUndefined();
+    });
+});
+
+describe('toClockString', () => {
+    it('should convert milliseconds to clock string', () => {
+        expect(toClockString(0)).toBe('0:00');
+        expect(toClockString(1000)).toBe('0:01');
+        expect(toClockString(60000)).toBe('1:00');
+        expect(toClockString(61000)).toBe('1:01');
+        expect(toClockString(3600000)).toBe('1:00:00');
+        expect(toClockString(3661000)).toBe('1:01:01');
+        expect(toClockString(86400000)).toBe('24:00:00');
+        expect(toClockString(86461000)).toBe('24:01:01');
     });
 });
