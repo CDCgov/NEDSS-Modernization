@@ -77,6 +77,13 @@ Scenario: Required Name Fields
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
+  Scenario: Valid Phone Number
+    Given I am on the New patient Extended form
+    And I enter a valid phone number in the Phone field
+    Then I click the Save button
+    Then Form should be submitted successfully without errors
+    And I should receive a confirmation message
+    
   Scenario: Missing Required Dropdown Selections
     Given I am on the New patient Extended form
     And I have not filled out Dropdowns fields
