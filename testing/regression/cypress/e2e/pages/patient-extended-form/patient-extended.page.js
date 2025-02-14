@@ -48,6 +48,7 @@ class NameEntryPage {
 
     // Click the "Add phone & email" button
     cy.contains("button", "Add phone & email").click();
+  }
 
   selectPatientDeceasedYes() {
     // Select "Yes" from the mortality status dropdown

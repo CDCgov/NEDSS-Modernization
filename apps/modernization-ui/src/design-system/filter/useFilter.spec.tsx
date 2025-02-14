@@ -72,6 +72,18 @@ describe('FilterProvider', () => {
         expect(result.current.filter).toEqual(expect.objectContaining({ filtered: 'filtered-value' }));
     });
 
+    it('should return applied filter value for the id', () => {
+        const { result } = renderHook(() => useFilter(), { wrapper });
+
+        act(() => {
+            result.current.apply('filtered', 'filtered-value');
+        });
+
+        const actual = result.current.valueOf('filtered');
+
+        expect(actual).toEqual('filtered-value');
+    });
+
     it('should clear the filter value for the id', () => {
         const { result } = renderHook(() => useFilter(), { wrapper });
 
