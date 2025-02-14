@@ -63,7 +63,13 @@ export const DateCriteriaEntry = ({
                     />
                 )}
                 {value && isDateBetweenCriteria(value) && (
-                    <DateRangeEntry id={`${id}-range-entry`} value={value} onChange={onChange} onBlur={onBlur} />
+                    <DateRangeEntry
+                        sizing={sizing}
+                        id={`${id}-range-entry`}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                    />
                 )}
             </div>
         </EntryWrapper>
