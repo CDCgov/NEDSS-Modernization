@@ -11,7 +11,7 @@ import { useMultiValueEntryState } from './useMultiValueEntryState';
 
 import styles from './RepeatingBlock.module.scss';
 
-type Props<V extends FieldValues> = {
+type RepeatingBlockProps<V extends FieldValues> = {
     id: string;
     title: string;
     columns: Column<V>[];
@@ -35,7 +35,7 @@ const RepeatingBlock = <V extends FieldValues>({
     isDirty,
     formRenderer,
     viewRenderer
-}: Props<V>) => {
+}: RepeatingBlockProps<V>) => {
     const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onBlur', defaultValues });
     const { status, entries, selected, add, edit, update, remove, view, reset } = useMultiValueEntryState<V>({
         values
@@ -67,6 +67,10 @@ const RepeatingBlock = <V extends FieldValues>({
         reset();
     };
 
+    const handleClear = () => {
+        form.reset(defaultValues);
+    };
+
     const handleAdd = (value: V) => {
         // form reset must be triggered prior to `add` call,
         // otherwise internal form state retains some values and fails to properly reset
@@ -92,10 +96,16 @@ const RepeatingBlock = <V extends FieldValues>({
         render: (value: V) => (
             <div className={styles.actions}>
                 <div data-tooltip-position="top" aria-label="View" onClick={() => view(value)}>
-                    <Icon name="visibility" className={classNames({ [styles.active]: status === 'viewing' })} />
+                    <Icon
+                        name="visibility"
+                        className={classNames({ [styles.active]: status === 'viewing' && value === selected })}
+                    />
                 </div>
                 <div data-tooltip-position="top" aria-label="Edit" onClick={() => edit(value)}>
-                    <Icon name="edit" className={classNames({ [styles.active]: status === 'editing' })} />
+                    <Icon
+                        name="edit"
+                        className={classNames({ [styles.active]: status === 'editing' && value === selected })}
+                    />
                 </div>
                 <div data-tooltip-position="top" aria-label="Delete" onClick={() => handleRemove(value)}>
                     <Icon name="delete" />
@@ -152,11 +162,22 @@ const RepeatingBlock = <V extends FieldValues>({
                         <Icon name="add" />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
+                    <Shown when={form.formState.isDirty}>
+                        <Button outline aria-details={`clear ${title.toLowerCase()}`} onClick={handleClear}>
+                            Clear
+                        </Button>
+                    </Shown>
                 </Shown>
                 <Shown when={status === 'editing'}>
                     <Button outline onClick={form.handleSubmit(handleUpdate)}>
                         <Icon name="add" />
                         {`Update ${title.toLowerCase()}`}
+                    </Button>
+                    <Button
+                        outline
+                        aria-details={`cancel editing current ${title.toLowerCase()}`}
+                        onClick={handleReset}>
+                        Cancel
                     </Button>
                 </Shown>
                 <Shown when={status === 'viewing'}>
@@ -171,3 +192,4 @@ const RepeatingBlock = <V extends FieldValues>({
 };
 
 export { RepeatingBlock };
+export type { RepeatingBlockProps };
