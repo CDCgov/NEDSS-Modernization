@@ -46,7 +46,7 @@ When("I Generate HL7 {string} messages to api", (string) => {
   const checkstatusurl = Cypress.env("checkstatusurl");
   const authurl = Cypress.env("authurl");
 
-  cy.readFile("cypress/fixtures/hepb.json", "utf8").then((jsonData) => {
+  cy.readFile(`cypress/fixtures/${messageCondition}.json`, "utf8").then((jsonData) => {
     const randomData = {
       randomFirstName: faker.person.firstName(),
       randomLastName: UtilityFunctions.generateRandomLastName(),
