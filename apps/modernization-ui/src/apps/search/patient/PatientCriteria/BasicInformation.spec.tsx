@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import { BasicInformation } from './BasicInformation';
 import { PatientCriteriaEntry } from '../criteria';
@@ -11,6 +12,12 @@ const { result } = renderHook(() =>
     })
 );
 
+const mockPermissionAllows = jest.fn();
+
+jest.mock('libs/permission/Permitted', () => ({
+    Permitted: ({ children }: { children: ReactNode }) => mockPermissionAllows() && children
+}));
+
 const setup = () => {
     return render(
         <FormProvider {...result.current}>
@@ -20,6 +27,10 @@ const setup = () => {
 };
 
 describe('when Basic information renders', () => {
+    beforeEach(() => {
+        mockPermissionAllows.mockReturnValue(true);
+    });
+
     it('should render 8 input fields', () => {
         const { container } = setup();
         const inputs = container.getElementsByTagName('input');
@@ -29,5 +40,16 @@ describe('when Basic information renders', () => {
     it('should have helper text for patient ID', () => {
         const { getByText } = setup();
         expect(getByText('Separate IDs by commas, semicolons, or spaces')).toBeInTheDocument();
+    });
+
+    it('should show status component by default', () => {
+        const { queryByText } = setup();
+        expect(queryByText('Include records that are')).toBeInTheDocument();
+    });
+
+    it('should hide status component when permission not set', () => {
+        mockPermissionAllows.mockReturnValue(false);
+        const { queryByText } = setup();
+        expect(queryByText('Include records that are')).not.toBeInTheDocument();
     });
 });

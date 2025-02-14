@@ -3,7 +3,7 @@ import { Message } from 'design-system/message';
 import { CreatedPatient } from './api';
 import { displayName } from 'name';
 import { ClassicButton } from 'classic';
-import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { NavLinkButton } from 'design-system/button';
 import { Heading } from 'components/heading';
 import { FeatureToggle } from 'feature';
 import { LinkButton } from 'components/button';
