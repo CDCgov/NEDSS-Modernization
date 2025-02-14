@@ -51,7 +51,10 @@
     .actionMenuButton {
         padding: 0.375rem 1.25rem;
         line-height: 0;
-        span {
+        span:first-child {
+            margin-left: 1rem;
+        }
+        span:last-child {
             margin-right: 1rem;
         }
     }
