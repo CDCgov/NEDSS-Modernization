@@ -4,6 +4,7 @@
     align-items: center;
     display: flex;
     padding: 0;
+    margin-top: 0.5rem;
     position: relative;
 
     border-width: 1px;
@@ -16,6 +17,8 @@
         border: 0;
         margin-top: 0;
         min-width: 0;
+
+        padding-right: 1.5rem;
     }
 
     .suffix {
