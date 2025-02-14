@@ -22,8 +22,7 @@ export const ButtonActionMenu = ({
     icon,
     outline,
     className,
-    labelPosition = 'right',
-
+    labelPosition = 'left',
     children
 }: Props) => {
     const wrapperRef = useRef(null);

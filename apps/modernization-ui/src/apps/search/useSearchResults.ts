@@ -238,16 +238,16 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         if (state.status === 'completed' && !searchCriteria) {
             //  the search criteria has removed, reset the search
             dispatch({ type: 'reset' });
-
-            if (filtering) {
-                filtering.reset();
-            }
         }
     }, [state.status, searchCriteria, dispatch]);
 
     useEffect(() => {
         if (state.status === 'resetting') {
             clearCriteria();
+
+            if (filtering) {
+                filtering.reset();
+            }
         }
     }, [state.status, clearCriteria]);
 

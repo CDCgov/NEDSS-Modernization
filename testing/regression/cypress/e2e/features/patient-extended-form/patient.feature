@@ -77,6 +77,13 @@ Scenario: Required Name Fields
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
+  Scenario: Valid Phone Number
+    Given I am on the New patient Extended form
+    And I enter a valid phone number in the Phone field
+    Then I click the Save button
+    Then Form should be submitted successfully without errors
+    And I should receive a confirmation message
+    
   Scenario: Missing Required Dropdown Selections
     Given I am on the New patient Extended form
     And I have not filled out Dropdowns fields
@@ -98,3 +105,35 @@ Scenario: Required Name Fields
     Then Select section "identifications" with id "identification-type" option "Medicaid number"
     Then Type section "identifications" with id "id" with text "23123"
     And I click Add Identification Button
+
+  Scenario: Adding a Lab Report After Creating a New Patient
+    Given I have successfully added a new patient
+    And Add Patient Success modal is displayed
+    When I click the Add lab report button
+    Then I should be redirected to the Add Lab Report form
+    When I enter a valid Reporting Facility
+    And I select a valid Program Area
+    And I select a valid Jurisdiction
+    And I select a valid Resulted Test and fill in the details
+    When I click the Submit button in Report form
+    Then I should see the patients profile displayed with the added lab report
+
+  Scenario: Valid Mortality Information
+    Given I am on the New patient Extended form
+    And I select yes to Is the patient deceased
+    And I complete the Mortality fields
+    When I click the Save button
+    Then Form should be submitted successfully without errors
+    And I should receive a confirmation message
+
+  Scenario: Adding an Investigation After Creating a New Patient
+    Given I have successfully added a new patient
+    And Add Patient Success modal is displayed
+    When I click the Add investigation button
+    Then I should be redirected to the Add Investigation form
+    When I select a valid Condition
+    And I select a valid Jurisdiction in investigation form
+    When I click the Submit button in Add Investigation Form
+    Then I should see a success message indicating that the investigation has been added successfully
+
+

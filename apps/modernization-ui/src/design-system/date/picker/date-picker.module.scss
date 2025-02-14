@@ -1,0 +1,18 @@
+@mixin sizedButtonIcon($height: 1rem, $width: 1rem) {
+    button {
+        background-size: $height $width;
+        background-position: left;
+    }
+}
+
+.small {
+    @include sizedButtonIcon(1rem, 1rem);
+}
+
+.medium {
+    @include sizedButtonIcon(1.125rem, 1.125rem);
+}
+
+.large {
+    @include sizedButtonIcon(1.25rem, 1.25rem);
+}
