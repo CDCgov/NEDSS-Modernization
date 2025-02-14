@@ -40,7 +40,7 @@ const StandardHeader = <V,>({ className, children, filtering, sizing }: Standard
         })}>
         <div className={classNames(styles.content)}>
             {children.name}
-            {filtering && filtering.active && children.filter != undefined && (
+            {filtering?.active && children?.filter?.id && (
                 <HeaderFilterField label={children.name} descriptor={children.filter} filtering={filtering} />
             )}
         </div>
@@ -72,7 +72,7 @@ const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }:
                         onClick={() => sorting.toggle(children.id)}
                     />
                 </div>
-                {filtering && filtering.active && children.filter != undefined && (
+                {filtering?.active && children?.filter?.id && (
                     <HeaderFilterField label={children.name} descriptor={children.filter} filtering={filtering} />
                 )}
             </div>
