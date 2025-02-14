@@ -22,7 +22,7 @@ jest.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories
 }));
 
-const FormWrapper = () => {
+const FormWrapper = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const form = useForm<BasicEthnicityRace>({
         mode: 'onBlur',
         defaultValues: {
@@ -32,7 +32,7 @@ const FormWrapper = () => {
     });
     return (
         <FormProvider {...form}>
-            <BasicRaceEthnicityFields />
+            <BasicRaceEthnicityFields sizing={props.sizing} />
         </FormProvider>
     );
 };
@@ -40,6 +40,23 @@ const FormWrapper = () => {
 describe('BasicRaceEthnicityFields', () => {
     beforeEach(() => {
         mockRaceCategories = [];
+    });
+
+    it('should render the select box with the proper small styling when sizing is set to small', async () => {
+        mockRaceCategories = [
+            { value: 'asian', name: 'Asian' },
+            { value: 'white', name: 'White' },
+            { value: 'black', name: 'Black or African American' }
+        ];
+
+        const { getByText, getByLabelText } = render(<FormWrapper sizing="small" />);
+
+        const asianCheckbox = getByLabelText(/asian/i);
+        const whiteCheckbox = getByLabelText(/white/i);
+
+        expect(getByText('Ethnicity').parentElement?.parentElement).toHaveClass('small');
+        expect(asianCheckbox.parentElement).toHaveClass('small');
+        expect(whiteCheckbox.parentElement).toHaveClass('small');
     });
 
     it('should allows selecting an ethnicity option', async () => {

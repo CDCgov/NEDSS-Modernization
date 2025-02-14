@@ -15,7 +15,7 @@ jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
     usePatientNameCodedValues: () => mockPatientNameCodedValues
 }));
 
-const Fixture = () => {
+const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const form = useForm<NameInformationEntry>({
         mode: 'onBlur',
         defaultValues: {
@@ -28,7 +28,7 @@ const Fixture = () => {
 
     return (
         <FormProvider {...form}>
-            <NameEntryFields />
+            <NameEntryFields sizing={props.sizing} />
         </FormProvider>
     );
 };
@@ -42,6 +42,16 @@ describe('when entering name information', () => {
         expect(getByLabelText('Last')).toBeInTheDocument();
         expect(getByLabelText('Suffix')).toBeInTheDocument();
     });
+
+    it('should render all input fields with the small sizing when sizing is set to small.', () => {
+        const { getByText } = render(<Fixture sizing="small" />);
+
+        expect(getByText('First').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Middle').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Last').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Suffix').parentElement?.parentElement).toHaveClass('small');
+    });
+
     it('should validate last name', async () => {
         const { getByLabelText, queryByText } = render(<Fixture />);
 
