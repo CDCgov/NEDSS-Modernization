@@ -6,6 +6,9 @@ import { maskedAsDate } from './maskedAsDate';
 import datePicker from '@uswds/uswds/js/usa-date-picker';
 import { useDate } from './useDate';
 import { onlyNumericKeys } from 'design-system/input/numeric';
+import { Sizing } from 'design-system/field';
+import classNames from 'classnames';
+import styles from './date-picker.module.scss';
 
 const handleExternalKeyUp = (event: Event) => {
     const input = event.target as HTMLInputElement;
@@ -25,11 +28,22 @@ type DatePickerProps = {
     minDate?: string;
     maxDate?: string;
     value?: string | null;
+    sizing?: Sizing;
     onChange?: (value?: string) => void;
     onBlur?: () => void;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;
 
-const DatePicker = ({ id, label, maxDate, minDate, value, onChange, onBlur, ...remaining }: DatePickerProps) => {
+const DatePicker = ({
+    id,
+    label,
+    maxDate,
+    minDate,
+    value,
+    sizing,
+    onChange,
+    onBlur,
+    ...remaining
+}: DatePickerProps) => {
     const { current, date, clear, change, initialize } = useDate({ value });
 
     const datePickerRef = useRef<HTMLDivElement>(null);
@@ -97,7 +111,7 @@ const DatePicker = ({ id, label, maxDate, minDate, value, onChange, onBlur, ...r
     return (
         <div
             ref={datePickerRef}
-            className="usa-date-picker"
+            className={classNames(styles[sizing ?? ''], 'usa-date-picker')}
             data-default-value={date}
             data-max-date={adjustedMaxValue}
             data-min-date={adjustedMinValue}>
