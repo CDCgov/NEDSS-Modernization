@@ -61,6 +61,7 @@ export const AddPatientBasicForm = () => {
                             values={value}
                             onChange={onChange}
                             isDirty={() => {}}
+                            sizing={sizing}
                         />
                     )}
                 />
