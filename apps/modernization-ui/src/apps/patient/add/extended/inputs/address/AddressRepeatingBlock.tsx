@@ -3,6 +3,7 @@ import { Column } from 'design-system/table';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { AddressEntry, AddressEntryFields, initial } from 'apps/patient/data/address';
 import { asAddressTypeUse } from 'apps/patient/data/address/utils';
+import { Sizing } from 'design-system/field';
 
 import { AddressView } from './AddressView';
 
@@ -14,9 +15,10 @@ type Props = {
     onChange: (data: AddressEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
+    sizing?: Sizing;
 };
-export const AddressRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
-    const renderForm = () => <AddressEntryFields />;
+export const AddressRepeatingBlock = ({ id, values, errors, onChange, isDirty, sizing = 'medium' }: Props) => {
+    const renderForm = () => <AddressEntryFields sizing={sizing} />;
     const renderView = (entry: AddressEntry) => <AddressView entry={entry} />;
 
     const columns: Column<AddressEntry>[] = [

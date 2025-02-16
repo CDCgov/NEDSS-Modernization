@@ -3,6 +3,7 @@ import { Column } from 'design-system/table';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { NameEntry, NameEntryFields, initial } from 'apps/patient/data/name';
 import { NameEntryView } from './NameEntryView';
+import { Sizing } from 'design-system/field';
 
 const defaultValue: Partial<NameEntry> = initial();
 
@@ -21,10 +22,11 @@ type Props = {
     onChange: (data: NameEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
+    sizing?: Sizing;
 };
 
-export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
-    const renderForm = () => <NameEntryFields />;
+export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty, sizing = 'medium' }: Props) => {
+    const renderForm = () => <NameEntryFields sizing={sizing} />;
     const renderView = (entry: NameEntry) => <NameEntryView entry={entry} />;
 
     return (
