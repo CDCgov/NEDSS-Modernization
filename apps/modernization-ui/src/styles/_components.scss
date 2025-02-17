@@ -24,7 +24,7 @@ $medium-textarea-height: 7.5rem;
 }
 
 $small-font-size: 0.75rem;
-$small-height: 1.5rem;
+$small-height: 1.375rem;
 $small-textarea-height: 6.25rem;
 
 %small {
@@ -35,6 +35,7 @@ $small-textarea-height: 6.25rem;
 %small-input {
     height: $small-height;
     width: unset;
+    padding: 0.25rem 0.5rem;
 
     @extend %small;
 }
@@ -47,8 +48,24 @@ $small-textarea-height: 6.25rem;
 }
 
 $large-font-size: 1rem;
+$large-height: 2.2rem;
+$large-textarea-height: 6.5rem;
 
 %large {
     line-height: normal;
     font-size: $large-font-size;
+}
+
+%large-input {
+    height: $large-height;
+    width: unset;
+
+    @extend %large;
+}
+
+%large-textarea {
+    height: $large-textarea-height;
+    width: unset;
+
+    @extend %large;
 }

@@ -64,9 +64,9 @@ const TextInput = ({
                 value={current}
                 {...props}
             />
-            {clearable && (
+            {clearable && current && (
                 <span className={styles.suffix}>
-                    {current && <Icon role="button" name="close" size="small" onClick={handleClear} />}
+                    <Icon role="button" name="close" size="small" onClick={handleClear} />
                 </span>
             )}
         </span>

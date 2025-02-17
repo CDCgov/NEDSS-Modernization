@@ -1,9 +1,7 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.hidden {
-    display: none;
-}
+$pagination-height: 4.75rem;
 
 .pagination {
     display: flex;
@@ -12,14 +10,16 @@
     gap: 2rem;
     padding: 0 1rem;
     color: colors.$base;
+    height: #{$pagination-height};
 
     @extend %thin-top;
 
-    .range {
+    .showing {
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
+
     .pages {
         display: flex;
         align-items: center;

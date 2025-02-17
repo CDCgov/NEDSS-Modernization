@@ -1,8 +1,9 @@
 import { render, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FilterInteraction, FilterProvider, FilterType } from 'design-system/filter';
+import { FilterInteraction, FilterType } from 'design-system/filter';
 import { HeaderFilterField } from './HeaderFilterField';
 
+const mockValueOf = jest.fn();
 const mockApply = jest.fn();
 const mockClear = jest.fn();
 
@@ -12,6 +13,7 @@ const mockInteraction: FilterInteraction = {
     show: jest.fn(),
     hide: jest.fn(),
     toggle: jest.fn(),
+    valueOf: mockValueOf,
     apply: mockApply,
     clear: mockClear,
     clearAll: jest.fn(),
@@ -33,6 +35,14 @@ describe('when filtering table data from the header', () => {
         const { getByRole } = render(<Fixture id="test-id" />);
         const input = getByRole('textbox');
         expect(input).toHaveValue('');
+    });
+
+    it('should contain the applied filter value', () => {
+        mockValueOf.mockReturnValue('applied-value');
+
+        const { getByRole } = render(<Fixture id="test-id" />);
+        const input = getByRole('textbox');
+        expect(input).toHaveValue('applied-value');
     });
 
     it('should apply the filter when enter is pressed', () => {

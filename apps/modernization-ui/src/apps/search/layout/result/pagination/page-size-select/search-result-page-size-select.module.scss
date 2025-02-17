@@ -1,0 +1,27 @@
+@use 'styles/colors';
+
+.selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+    gap: 0.5rem;
+
+    max-width: fit-content;
+
+    select {
+        display: inline-block !important;
+        width: fit-content;
+        margin: 0;
+
+        color: colors.$base-darkest;
+
+        font-size: 1rem;
+        line-height: 125%;
+
+        padding-top: 0.25rem;
+        padding-right: 1.5rem;
+        padding-bottom: 0.38rem;
+        padding-left: 0.75rem;
+    }
+}

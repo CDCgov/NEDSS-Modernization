@@ -1,10 +1,10 @@
-import { Radio } from '@trussworks/react-uswds';
 import { ChangeEvent } from 'react';
 import { EntryWrapper, Sizing } from 'components/Entry';
 import { DateCriteria, initialDateEqualsCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from '../entry';
 import { ExactDateEntry } from './exact-date';
 import { DateRangeEntry } from './date-range';
 import styles from './date-criteria.module.scss';
+import { Radio } from 'design-system/radio';
 
 export type DateCriteriaEntryProps = {
     id: string;
@@ -41,6 +41,7 @@ export const DateCriteriaEntry = ({
                     value={'equals'}
                     onChange={handleDateOperationChange}
                     checked={!value || isDateEqualsCriteria(value)}
+                    sizing={sizing}
                 />
                 <Radio
                     id={'between'}
@@ -49,6 +50,7 @@ export const DateCriteriaEntry = ({
                     value={'between'}
                     onChange={handleDateOperationChange}
                     checked={!!value && isDateBetweenCriteria(value)}
+                    sizing={sizing}
                 />
             </div>
             <div className="margin-bottom-1">
@@ -61,7 +63,13 @@ export const DateCriteriaEntry = ({
                     />
                 )}
                 {value && isDateBetweenCriteria(value) && (
-                    <DateRangeEntry id={`${id}-range-entry`} value={value} onChange={onChange} onBlur={onBlur} />
+                    <DateRangeEntry
+                        sizing={sizing}
+                        id={`${id}-range-entry`}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                    />
                 )}
             </div>
         </EntryWrapper>

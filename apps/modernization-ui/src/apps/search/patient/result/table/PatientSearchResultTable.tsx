@@ -1,4 +1,5 @@
 import { PatientSearchResult } from 'generated/graphql/schema';
+import { Sizing } from 'design-system/field';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
 
@@ -11,6 +12,7 @@ import {
     displayAddresses,
     displayIdentifications
 } from 'apps/search/patient/result';
+
 import styles from './patient-search-result-table.module.scss';
 
 // column definitions
@@ -79,9 +81,10 @@ const preferences: ColumnPreference[] = [
 
 type Props = {
     results: PatientSearchResult[];
+    sizing?: Sizing;
 };
 
-const PatientSearchResultTable = ({ results }: Props) => {
+const PatientSearchResultTable = ({ results, sizing }: Props) => {
     const { apply } = useColumnPreferences();
 
     return (
@@ -90,6 +93,7 @@ const PatientSearchResultTable = ({ results }: Props) => {
             className={styles.patient_results}
             columns={apply(columns)}
             data={results}
+            sizing={sizing}
         />
     );
 };

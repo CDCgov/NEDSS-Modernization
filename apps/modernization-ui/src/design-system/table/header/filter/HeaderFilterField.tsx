@@ -8,20 +8,21 @@ import styles from './header-filter-field.module.scss';
 type HeaderFilterFieldProps = { descriptor: FilterDescriptor; label: string; filtering: FilterInteraction };
 
 const HeaderFilterField = ({ descriptor, label, filtering }: HeaderFilterFieldProps) => {
-    const { apply, clear, filter } = filtering;
+    const { valueOf, apply, clear } = filtering;
 
-    const initialValue = filter ? filter[descriptor.id] : undefined;
+    const initialValue = valueOf(descriptor.id);
     const [value, setValue] = useState<string | undefined>(initialValue);
 
     useEffect(() => {
-        setValue(initialValue);
-    }, [initialValue]);
+        setValue(valueOf(descriptor.id));
+    }, [valueOf]);
 
     const handleKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.stopPropagation();
-            if (value) {
-                apply(descriptor.id, value);
+            const next = (event.target as HTMLInputElement).value;
+            if (next) {
+                apply(descriptor.id, next);
             } else {
                 clear(descriptor.id);
             }
@@ -35,7 +36,7 @@ const HeaderFilterField = ({ descriptor, label, filtering }: HeaderFilterFieldPr
     return (
         <Shown when={descriptor.type === 'text'}>
             <TextInput
-                clearable
+                clearable={Boolean(initialValue)}
                 className={styles.filter}
                 id={`text-filter-${descriptor.id}`}
                 name={label}

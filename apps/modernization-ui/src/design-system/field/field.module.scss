@@ -38,6 +38,28 @@
         margin: 0;
     }
 
+    &.small {
+        @extend %small;
+
+        label {
+            @extend %small;
+        }
+
+        select {
+            @extend %small-input;
+            padding: 0.1875rem 0.5rem;
+        }
+
+        input {
+            @extend %small-input;
+            padding: 0.25rem 0.5rem;
+        }
+
+        textarea {
+            @extend %small-textarea;
+        }
+    }
+
     &.medium {
         @extend %medium;
 
@@ -52,6 +74,23 @@
 
         textarea {
             @extend %medium-textarea;
+        }
+    }
+
+    &.large {
+        @extend %large;
+
+        label {
+            @extend %large;
+        }
+
+        input,
+        select {
+            @extend %large-input;
+        }
+
+        textarea {
+            @extend %large-textarea;
         }
     }
 

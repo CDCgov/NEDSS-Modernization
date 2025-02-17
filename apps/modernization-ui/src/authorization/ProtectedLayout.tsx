@@ -9,6 +9,7 @@ import { Spinner } from 'components/Spinner';
 import { Layout } from '../layout/Layout';
 import { InitializationLoaderResult } from './initializationLoader';
 import IdleTimer from './IdleTimer';
+import { currentUser } from 'user';
 
 const ProtectedLayout = () => {
     const data = useLoaderData() as InitializationLoaderResult;
@@ -18,6 +19,9 @@ const ProtectedLayout = () => {
     } = useConfiguration();
 
     const handleIdle = () => navigate('/expired');
+    const handleIdleContinue = async () => {
+        await currentUser();
+    };
 
     const WithUser = (user: User) => {
         const data = useLoaderData() as InitializationLoaderResult;
@@ -43,6 +47,7 @@ const ProtectedLayout = () => {
         <Suspense fallback={<Spinner />}>
             <IdleTimer
                 onIdle={handleIdle}
+                onContinue={handleIdleContinue}
                 timeout={session.warning}
                 warningTimeout={session.expiration - session.warning}
             />

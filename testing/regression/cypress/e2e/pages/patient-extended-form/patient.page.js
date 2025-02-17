@@ -119,6 +119,116 @@ class ClassicPatientSearchPage {
   errorMessageDropdownField() {
     cy.contains('The Race is required.')
   }
+
+  errorMessageSectionField(inputId, sectionId) {
+    cy.get("section#phoneEmails").contains(sectionId);
+  }
+
+  clickAddIdentificationButton() {
+    cy.get("section#identifications button").contains("Add identification").click();
+  }
+
+  clickAddPhoneButton() {
+    cy.get("section#phoneEmails button").contains("Add phone & email").click();
+  }
+
+  selectPhoneType() {
+    cy.get("section#phoneEmails select#phone-type").select("Phone");
+  }
+
+  selectPhoneUse() {
+    cy.get("section#phoneEmails select#phone-use").select("Home");
+  }
+
+  typeValidPhoneNumber() {
+    cy.get("section#phoneEmails input#phoneNumber").type("8888888888");
+  }
+
+  errorSectionField(sectionId, text) {
+    cy.get(`section#${sectionId}`).contains(text);
+  }
+
+  selectSectionField(sectionId, inputId, text) {
+    cy.get(`section#${sectionId} select#${inputId}`).select(text);
+  }
+
+  typeInputSectionField(sectionId, inputId, text) {
+    cy.get(`section#${sectionId} input#${inputId}`).type(text);
+  }
+
+  addNewPatient() {
+    this.goToNewPatientExtendedForm()
+    this.fillExtendedFormDetails()
+    this.clickSaveExtendedForm()
+  }
+
+  successModalDisplayed() {
+    cy.contains('You have successfully added a new patient')
+  }
+
+  clickAddLabReportBtn() {
+    cy.contains('button', 'Add lab report').eq(0).click()
+  }
+
+  redirectAddLabReportForm() {
+    cy.contains('Lab Report')
+  }
+
+  enterReportingFacility() {
+    cy.get('#NBS_LAB365Text').type('test')
+    cy.get('#NBS_LAB365CodeLookupButton').eq(0).click()
+  }
+
+  selectProgramArea() {
+    cy.get('#INV108').eq(0).select('ARBO', {force: true})
+  }
+
+  selectJurisdiction() {
+    cy.get('#INV107').eq(0).select('130006', {force: true})
+  }
+
+  selectResultedTestAndFillDetails() {
+    cy.get('#NBS_LAB220').eq(0).select('T-50130', {force: true})
+    cy.get('#NBS_LAB280').eq(0).select('ABN', {force: true})
+    cy.get('#AddButtonToggleRESULTED_TEST_CONTAINER input').eq(0).click()
+  }
+
+  clickAddReportFormSubmitBtn() {
+    cy.get('#SubmitBottom').eq(0).click()
+  }
+
+  verifyPatientProfileWithAddedLabReport() {
+    cy.contains('Patient profile')
+  }
+
+  clickAddInvestigationBtn() {
+   cy.contains('button', 'Add investigation').eq(0).click()
+  }
+
+  redirectAddInvestigationForm() {
+    cy.contains('Select Condition')
+  }
+
+  selectCondition() {
+    cy.get('#ccd').eq(0).select('11065', {force: true})
+    cy.get('#Submit').eq(0).click()
+    const field = cy.get('#NBS104')
+    field.invoke('val', "01/20/2024").trigger('change')
+    field.click()
+    cy.contains("Comments").eq(0).click()
+  }
+
+   selectJurisdictionInInvestigationForm() {
+     cy.get('#INV107').eq(0).select('130006', {force: true})
+   }
+
+   clickAddInvestigationFormSubmitBtn() {
+     cy.get('#SubmitBottom').eq(0).click()
+   }
+
+   verifyInvestigationAddedSuccessfully() {
+     cy.contains('Investigation has been successfully saved in the system')
+   }
 }
 
 export default new ClassicPatientSearchPage();
