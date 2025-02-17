@@ -6,14 +6,20 @@ import { IdentificationView } from './IdentificationView';
 
 const defaultValue: Partial<IdentificationEntry> = initial();
 
-type Props = {
+type IdentificationRepeatingBlockProps = {
     id: string;
     values?: IdentificationEntry[];
     onChange: (data: IdentificationEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
 };
-export const IdentificationRepeatingBlock = ({ id, errors, values, onChange, isDirty }: Props) => {
+export const IdentificationRepeatingBlock = ({
+    id,
+    errors,
+    values,
+    onChange,
+    isDirty
+}: IdentificationRepeatingBlockProps) => {
     const renderForm = () => <IdentificationEntryFields />;
     const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} />;
 
@@ -38,3 +44,5 @@ export const IdentificationRepeatingBlock = ({ id, errors, values, onChange, isD
         />
     );
 };
+
+export type { IdentificationRepeatingBlockProps };
