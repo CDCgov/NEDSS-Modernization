@@ -46,12 +46,10 @@ describe('DataTable', () => {
     it('renders the correct data in cells', () => {
         const { container } = render(<DataTable id="test-table" columns={columns} data={data} />);
         data.forEach((row, rowIndex) => {
-            columns.forEach((column, colIndex) => {
-                const cell = container.querySelector(
-                    `tbody tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`
-                );
-                expect(cell).toHaveTextContent(String(row[column.id as keyof TestData]));
-            });
+            const idCell = container.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(1)`);
+            expect(idCell).toHaveTextContent(String(row['id']));
+            const nameCell = container.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(2)`);
+            expect(nameCell).toHaveTextContent(String(row['name']));
         });
     });
 
@@ -65,7 +63,19 @@ describe('DataTable', () => {
 
     it('renders the correct sizing className in cells', () => {
         const { container } = render(<DataTable id="test-table" columns={columns} data={data} sizing="large" />);
-        const tableContainer = container.querySelector(`.table`);
+        const tableContainer = container.querySelector('.table');
         expect(tableContainer).toHaveClass('large');
+    });
+
+    it('renders with row height constraint by default', () => {
+        const { queryAllByTestId } = render(<DataTable id="test-table" columns={columns} data={data} />);
+        expect(queryAllByTestId('height-constrained')).not.toHaveLength(0);
+    });
+
+    it('renders without row height constraints when specified', () => {
+        const { queryAllByTestId } = render(
+            <DataTable id="test-table" columns={columns} data={data} rowHeightConstrained={false} />
+        );
+        expect(queryAllByTestId('height-constrained')).toHaveLength(0);
     });
 });

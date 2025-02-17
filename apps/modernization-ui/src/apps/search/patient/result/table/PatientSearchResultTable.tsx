@@ -94,6 +94,7 @@ const PatientSearchResultTable = ({ results, sizing }: Props) => {
             columns={apply(columns)}
             data={results}
             sizing={sizing}
+            rowHeightConstrained={false}
         />
     );
 };
