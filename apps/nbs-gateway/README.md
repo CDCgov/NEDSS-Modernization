@@ -1,6 +1,7 @@
 # National Electronic Disease Surveillance System (NEDSS) Base System Modernization Gateway
 
-An entry point for an NBS 6.X Application that allows a Strangler Fig approach to piecemeal modernization.
+An entry point for an NBS 6.X Application that allows a Strangler Fig approach to piecemeal modernization to various
+services.
 
 ## Running
 
@@ -51,11 +52,30 @@ A container can be created by running the following command from the root folder
 docker compose build nbs-gateway
 ```
 
+## Route Locators
+
+Spring Cloud Gateway route locators are components that define how the gateway matches incoming requests to specific
+routes. They determine which backend service should handle a given request based on various criteria.
+
+### Routing to API services
+
+With the `nbs-gateway` being the entry point for all client requests routes to API services should be defined by a
+`RouteLocator`. By convention requests to a backend service are routed through the path `/nbs/{name}/api/**` and are
+always enabled.
+
+### Strangler Fig Routing
+
+Any `RouteLocators` that route NBS6.x paths to a modernized service should be configured to be enabled and disabled via
+deployment time configuration. This has been implemented using Spring's `@Configuration` and `@ConditionalOnExpression`
+annotations to ensure that a `RouteLocator` is configured only when the value of a configuration property is `true`.  
+
+It is important to make sure that any NBS6.x paths are unique enough to only target the desired pages.
+
 ## Configuration
 
 Spring Config allows configuration values to be overwritten at runtime. Values can be set through Java System Variables,
 Environment
-Variable,and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference/html/features.html#features.external-config).
+Variable,and [other useful means](https://docs.spring.io/spring-boot/reference/features/external-config.html).
 The default profile contains the following properties configuration most likely to change.
 
 | Name                                                   | Default                 | Description                                                                         |
