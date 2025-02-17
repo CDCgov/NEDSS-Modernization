@@ -10,33 +10,33 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 
 @Component
-class StateCodedValueFinder {
+public class StateCodedValueFinder {
 
-    private final JPAQueryFactory factory;
-    private final QStateCode values;
+  private final JPAQueryFactory factory;
+  private final QStateCode values;
 
-    StateCodedValueFinder(final JPAQueryFactory factory) {
-        this.factory = factory;
-        this.values = QStateCode.stateCode;
-    }
+  StateCodedValueFinder(final JPAQueryFactory factory) {
+    this.factory = factory;
+    this.values = QStateCode.stateCode;
+  }
 
-    Collection<StateCodedValue> all() {
-        return this.factory.select(
-                values.id,
-                values.codeDescTxt,
-                values.stateNm
-            ).from(values)
-            .orderBy(new OrderSpecifier<>(Order.ASC, values.id))
-            .fetch()
-            .stream()
-            .map(this::map)
-            .toList();
-    }
+  public Collection<StateCodedValue> all() {
+    return this.factory.select(
+        values.id,
+        values.codeDescTxt,
+        values.stateNm).from(values)
+        .orderBy(new OrderSpecifier<>(Order.ASC, values.id))
+        .fetch()
+        .stream()
+        .map(this::map)
+        .toList();
+  }
 
-    private StateCodedValue map(final Tuple tuple) {
-        String value = tuple.get(values.id);
-        String name = tuple.get(values.codeDescTxt);
-        String abbreviation = tuple.get(values.stateNm);
-        return new StateCodedValue(value, name, abbreviation);
-    }
+  private StateCodedValue map(final Tuple tuple) {
+    String value = tuple.get(values.id);
+    String name = tuple.get(values.codeDescTxt);
+    String abbreviation = tuple.get(values.stateNm);
+    return new StateCodedValue(value, name, abbreviation);
+  }
 }
+// gone
