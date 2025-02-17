@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
-import { IdentificationRepeatingBlock } from './IdentificationRepeatingBlock';
+import { IdentificationRepeatingBlock, IdentificationRepeatingBlockProps } from './IdentificationRepeatingBlock';
 import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
 
 const mockPatientIdentificationCodedValues: PatientIdentificationCodedValues = {
@@ -12,30 +12,17 @@ jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValu
     usePatientIdentificationCodedValues: () => mockPatientIdentificationCodedValues
 }));
 
-const mockEntry = {
-    state: {
-        data: [
-            {
-                asOf: internalizeDate(new Date()),
-                type: 'AN',
-                idValue: '12341241'
-            }
-        ]
-    }
-};
-
-jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
-    useMultiValueEntryState: () => mockEntry
-}));
-
-const onChange = jest.fn();
-const isDirty = jest.fn();
-
-const Fixture = () => <IdentificationRepeatingBlock id="identifications" onChange={onChange} isDirty={isDirty} />;
+const Fixture = ({ values, onChange = jest.fn(), isDirty = jest.fn() }: Partial<IdentificationRepeatingBlockProps>) => (
+    <IdentificationRepeatingBlock id="identifications" values={values} onChange={onChange} isDirty={isDirty} />
+);
 
 describe('IdentificationMultiEntry', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<Fixture />);
+        const { getAllByRole } = render(
+            <Fixture
+                values={[{ asOf: '02/19/2023', type: { value: 'type-value', name: 'type-name' }, id: '12341241' }]}
+            />
+        );
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');

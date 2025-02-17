@@ -52,3 +52,5 @@ export const BasicIdentificationRepeatingBlock = ({
         />
     );
 };
+
+export type { BasicIdentificationRepeatingBlockProps };

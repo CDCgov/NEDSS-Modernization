@@ -1,6 +1,9 @@
 import { render } from '@testing-library/react';
 import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
-import { BasicIdentificationRepeatingBlock } from './BasicIdentificationRepeatingBlock';
+import {
+    BasicIdentificationRepeatingBlock,
+    BasicIdentificationRepeatingBlockProps
+} from './BasicIdentificationRepeatingBlock';
 
 const mockPatientIdentificationCodedValues: PatientIdentificationCodedValues = {
     types: [{ name: 'Account number', value: 'AN' }],
@@ -11,29 +14,26 @@ jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValu
     usePatientIdentificationCodedValues: () => mockPatientIdentificationCodedValues
 }));
 
-const mockEntry = {
-    state: {
-        data: [
-            {
-                type: 'AN',
-                idValue: '12341241'
-            }
-        ]
-    }
-};
-
-jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
-    useMultiValueEntryState: () => mockEntry
-}));
-
-const onChange = jest.fn();
-const isDirty = jest.fn();
-
-const Fixture = () => <BasicIdentificationRepeatingBlock id="identifications" onChange={onChange} isDirty={isDirty} />;
+const Fixture = ({
+    values,
+    onChange = jest.fn(),
+    isDirty = jest.fn()
+}: Partial<BasicIdentificationRepeatingBlockProps>) => (
+    <BasicIdentificationRepeatingBlock id="identifications" values={values} onChange={onChange} isDirty={isDirty} />
+);
 
 describe('BasicIdentificationRepeatingBlock', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<Fixture />);
+        const { getAllByRole } = render(
+            <Fixture
+                values={[
+                    {
+                        type: { value: 'type-value', name: 'type-name' },
+                        id: '12341241'
+                    }
+                ]}
+            />
+        );
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('Type');
