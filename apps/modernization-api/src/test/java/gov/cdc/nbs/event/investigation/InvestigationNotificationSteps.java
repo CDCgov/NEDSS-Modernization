@@ -92,7 +92,7 @@ public class InvestigationNotificationSteps {
   @Then("the notification transport status includes the notification local Id")
   public void notification_transport_status_includes_notification_local_id() throws Exception {
     response.active()
-        .andExpect(jsonPath("$.notificationLocalId").value(equalTo(activeNotification.active().local())));
+        .andExpect(jsonPath("$.localId").value(equalTo(activeNotification.active().local())));
   }
 
 }
