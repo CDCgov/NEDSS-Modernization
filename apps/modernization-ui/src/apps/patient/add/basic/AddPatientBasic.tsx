@@ -41,11 +41,17 @@ export const AddPatientBasic = () => {
     const location = useLocation();
 
     const handleCancel = () => {
-        toSearch(location.state.criteria);
+        toSearch(location.state?.criteria);
     };
-    const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state.criteria));
+    const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state?.criteria));
 
-    const working = !form.formState.isValid || interaction.status !== 'waiting';
+    const handleFormIsValid = (valid: boolean) => {
+        console.log('AddPatientBasic: form valid', valid);
+        interaction.setCanSave(valid);
+    };
+
+    const working = !form.formState.isValid || !interaction.canSave || interaction.status !== 'waiting';
+    console.log('AddPatientBasic: formState valid, working', form.formState.isValid, working);
 
     return (
         <DataEntryLayout>
@@ -58,7 +64,7 @@ export const AddPatientBasic = () => {
                     sections={sections}
                     headerActions={() => (
                         <div className={styles.buttonGroup}>
-                            {features.patient?.add?.extended?.enabled && (
+                            <Shown when={features.patient?.add?.extended?.enabled}>
                                 <Button
                                     type="button"
                                     onClick={handleExtended}
@@ -67,7 +73,7 @@ export const AddPatientBasic = () => {
                                     disabled={working}>
                                     Add extended data
                                 </Button>
-                            )}
+                            </Shown>
                             <Button onClick={handleCancel} outline>
                                 Cancel
                             </Button>
@@ -76,7 +82,7 @@ export const AddPatientBasic = () => {
                             </Button>
                         </div>
                     )}>
-                    <AddPatientBasicForm />
+                    <AddPatientBasicForm isValid={handleFormIsValid} />
                 </AddPatientLayout>
             </FormProvider>
         </DataEntryLayout>

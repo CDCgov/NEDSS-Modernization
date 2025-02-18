@@ -19,7 +19,11 @@ import {
     RACE_ETHNICITY_SECTION
 } from './sections';
 
-export const AddPatientBasicForm = () => {
+type Props = {
+    isValid: (valid: boolean) => void;
+};
+
+export const AddPatientBasicForm = ({ isValid }: Props) => {
     const { control } = useFormContext<BasicNewPatientEntry>();
     return (
         <div className={styles.addPatientForm}>
@@ -52,12 +56,23 @@ export const AddPatientBasicForm = () => {
                 <Controller
                     control={control}
                     name="identifications"
-                    render={({ field: { onChange, value } }) => (
+                    render={({ field: { onChange, value }, fieldState }) => (
                         <BasicIdentificationRepeatingBlock
                             id={IDENTIFICATIONS_SECTION.id}
                             values={value}
                             onChange={onChange}
-                            isDirty={() => {}}
+                            isDirty={(isDirty) => {
+                                console.log('Identification isDirty', isDirty);
+                            }}
+                            isValid={(valid) => {
+                                console.log('Identification isValid, invalid', isValid, fieldState.invalid);
+                                isValid(valid);
+                                // if (fieldState.invalid === isValid) {
+                                //     !isValid
+                                //         ? setError('identifications', { message: 'Identification is invalid' })
+                                //         : clearErrors('identifications');
+                                // }
+                            }}
                         />
                     )}
                 />

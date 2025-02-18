@@ -17,9 +17,16 @@ jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValu
 const Fixture = ({
     values,
     onChange = jest.fn(),
-    isDirty = jest.fn()
+    isDirty = jest.fn(),
+    isValid = jest.fn()
 }: Partial<BasicIdentificationRepeatingBlockProps>) => (
-    <BasicIdentificationRepeatingBlock id="identifications" values={values} onChange={onChange} isDirty={isDirty} />
+    <BasicIdentificationRepeatingBlock
+        id="identifications"
+        values={values}
+        onChange={onChange}
+        isDirty={isDirty}
+        isValid={isValid}
+    />
 );
 
 describe('BasicIdentificationRepeatingBlock', () => {
