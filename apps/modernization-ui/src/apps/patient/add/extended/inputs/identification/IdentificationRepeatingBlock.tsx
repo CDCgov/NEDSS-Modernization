@@ -21,7 +21,7 @@ export const IdentificationRepeatingBlock = ({
     values,
     onChange,
     isDirty,
-    sizing
+    sizing = 'medium'
 }: IdentificationRepeatingBlockProps) => {
     const renderForm = () => <IdentificationEntryFields sizing={sizing} />;
     const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} />;
