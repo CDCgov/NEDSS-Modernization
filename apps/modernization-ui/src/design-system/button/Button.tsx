@@ -35,7 +35,7 @@ const Button = ({
     const isIconOnly = icon && !children;
     const classesArray = classNames(className, sizing && styles[sizing], {
         [styles.destructive]: destructive,
-        [styles.icon]: icon,
+        [styles.icon]: isIconOnly,
         [styles.unpadded]: unpadded
     });
 
