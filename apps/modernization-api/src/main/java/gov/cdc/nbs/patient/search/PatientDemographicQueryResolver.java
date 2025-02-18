@@ -328,7 +328,7 @@ class PatientDemographicQueryResolver {
       return Optional.empty();
     }
 
-    return Optional.of(new TextCriteria(null, null, null, criteria.getFilter().email(), null))
+    return Optional.of(new TextCriteria(null, null, null, criteria.getFilter().email().replace("@", " "), null))
         .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(EMAILS, EMAIL_ADDRESS, value));
   }
