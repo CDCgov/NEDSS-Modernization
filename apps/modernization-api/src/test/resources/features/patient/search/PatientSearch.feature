@@ -347,6 +347,16 @@ Feature: Patient Search
     When I search for patients
     Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
 
+  Scenario: I can search for a Patient using an email address and an exact match email filter
+    Given the patient has an "email address" of "emailaddress@mail.com"
+    And I have another patient
+    And the patient has an "email address" of "other@mail.com"
+    And patients are available for search
+    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
+    And I would like to filter search results with email "emailaddress@mail.com"
+    When I search for patients
+    Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
+
   Scenario: I can search for a Patient using an email address and a non-matching email filter
     Given the patient has an "email address" of "emailaddress@mail.com"
     And I have another patient
