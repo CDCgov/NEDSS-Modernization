@@ -7,7 +7,7 @@ import { Sizing } from 'design-system/field';
 
 const defaultValue: Partial<IdentificationEntry> = initial();
 
-type Props = {
+type IdentificationRepeatingBlockProps = {
     id: string;
     values?: IdentificationEntry[];
     onChange: (data: IdentificationEntry[]) => void;
@@ -15,7 +15,14 @@ type Props = {
     errors?: ReactNode[];
     sizing?: Sizing;
 };
-export const IdentificationRepeatingBlock = ({ id, errors, values, onChange, isDirty, sizing = 'medium' }: Props) => {
+export const IdentificationRepeatingBlock = ({
+    id,
+    errors,
+    values,
+    onChange,
+    isDirty,
+    sizing
+}: IdentificationRepeatingBlockProps) => {
     const renderForm = () => <IdentificationEntryFields sizing={sizing} />;
     const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} />;
 
@@ -40,3 +47,5 @@ export const IdentificationRepeatingBlock = ({ id, errors, values, onChange, isD
         />
     );
 };
+
+export type { IdentificationRepeatingBlockProps };

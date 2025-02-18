@@ -16,7 +16,7 @@ const columns: Column<NameEntry>[] = [
     { id: 'nameSuffix', name: 'Suffix', render: (v) => v.suffix?.name }
 ];
 
-type Props = {
+type NameRepeatingBlockProps = {
     id: string;
     values?: NameEntry[];
     onChange: (data: NameEntry[]) => void;
@@ -25,7 +25,7 @@ type Props = {
     sizing?: Sizing;
 };
 
-export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty, sizing = 'medium' }: Props) => {
+export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty, sizing }: NameRepeatingBlockProps) => {
     const renderForm = () => <NameEntryFields sizing={sizing} />;
     const renderView = (entry: NameEntry) => <NameEntryView entry={entry} />;
 
@@ -44,3 +44,5 @@ export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty, sizi
         />
     );
 };
+
+export type { NameRepeatingBlockProps };

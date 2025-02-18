@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
 import { AddressRepeatingBlock } from './AddressRepeatingBlock';
+import { AddressEntry } from 'apps/patient/data';
 
 const mockPatientAddressCodedValues = {
     types: [{ name: 'House', value: 'H' }],
@@ -9,22 +10,6 @@ const mockPatientAddressCodedValues = {
 
 jest.mock('apps/patient/profile/addresses/usePatientAddressCodedValues', () => ({
     usePatientAddressCodedValues: () => mockPatientAddressCodedValues
-}));
-
-const mockEntry = {
-    state: {
-        data: [
-            {
-                asOf: internalizeDate(new Date()),
-                type: 'H',
-                use: 'HM'
-            }
-        ]
-    }
-};
-
-jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
-    useMultiValueEntryState: () => mockEntry
 }));
 
 const mockLocationCodedValues = {
@@ -44,11 +29,27 @@ jest.mock('location/useLocationCodedValues', () => ({
 const onChange = jest.fn();
 const isDirty = jest.fn();
 
-const Fixture = () => <AddressRepeatingBlock id="races" onChange={onChange} isDirty={isDirty} />;
+type FixtureProps = {
+    values?: AddressEntry[];
+};
 
-describe('RaceMultiEntry', () => {
+const Fixture = ({ values }: FixtureProps) => (
+    <AddressRepeatingBlock id="races" values={values} onChange={onChange} isDirty={isDirty} />
+);
+
+describe('when entering multiple address demographics', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<Fixture />);
+        const { getAllByRole } = render(
+            <Fixture
+                values={[
+                    {
+                        asOf: '07/11/1997',
+                        type: { name: 'type-name', value: 'type-value' },
+                        use: { name: 'use-name', value: 'use-value' }
+                    }
+                ]}
+            />
+        );
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');

@@ -7,7 +7,7 @@ import { Sizing } from 'design-system/field';
 
 const defaultValue: Partial<PhoneEmailEntry> = initial();
 
-type Props = {
+type PhoneAndEmailRepeatingBlockProps = {
     id: string;
     values?: PhoneEmailEntry[];
     onChange: (data: PhoneEmailEntry[]) => void;
@@ -15,7 +15,14 @@ type Props = {
     errors?: ReactNode[];
     sizing?: Sizing;
 };
-export const PhoneAndEmailRepeatingBlock = ({ id, values, errors, onChange, isDirty, sizing = 'medium' }: Props) => {
+export const PhoneAndEmailRepeatingBlock = ({
+    id,
+    values,
+    errors,
+    onChange,
+    isDirty,
+    sizing
+}: PhoneAndEmailRepeatingBlockProps) => {
     const renderForm = () => <PhoneEmailEntryFields sizing={sizing} />;
     const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} />;
 
@@ -42,3 +49,5 @@ export const PhoneAndEmailRepeatingBlock = ({ id, values, errors, onChange, isDi
         />
     );
 };
+
+export type { PhoneAndEmailRepeatingBlockProps };

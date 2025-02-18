@@ -27,7 +27,7 @@
     }
 
     .dataTable {
-        .iconContainer {
+        .actions {
             display: flex;
             gap: 0.5rem;
             justify-content: flex-end;
@@ -36,6 +36,12 @@
                 color: colors.$primary;
                 cursor: pointer;
                 font-size: icons.$size-standard;
+            }
+
+            .active {
+                border-radius: 0.25rem;
+                color: colors.$base-white;
+                background-color: colors.$primary-darker;
             }
         }
     }
@@ -50,6 +56,7 @@
 
     footer {
         display: flex;
+        gap: 0.5rem;
         padding: 0.5rem 1.5rem 0.5rem 16.5rem;
 
         svg {

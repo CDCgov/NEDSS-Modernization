@@ -1,10 +1,7 @@
-import { screen, render, waitFor } from '@testing-library/react';
-import { PhoneAndEmailRepeatingBlock } from './PhoneAndEmailRepeatingBlock';
+import { screen, render, waitFor, act } from '@testing-library/react';
+import { PhoneAndEmailRepeatingBlock, PhoneAndEmailRepeatingBlockProps } from './PhoneAndEmailRepeatingBlock';
 import { internalizeDate } from 'date';
 import userEvent from '@testing-library/user-event';
-
-const onChange = jest.fn();
-const isDirty = jest.fn();
 
 const mockPatientPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],
@@ -15,32 +12,28 @@ jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
     usePatientPhoneCodedValues: () => mockPatientPhoneCodedValues
 }));
 
-const mockEntry = {
-    state: {
-        data: [
-            {
-                asOf: internalizeDate(new Date()),
-                type: 'PH',
-                use: 'H'
-            }
-        ]
-    }
-};
-
-jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
-    useMultiValueEntryState: () => mockEntry
-}));
-
 const awaitRender = async () => {
     // wait on render to prevent act warning
     expect(await screen.findByText('URL')).toBeInTheDocument();
 };
 
-const Fixture = () => <PhoneAndEmailRepeatingBlock id="phoneAndEmail" onChange={onChange} isDirty={isDirty} />;
+const Fixture = ({ values, onChange = jest.fn(), isDirty = jest.fn() }: Partial<PhoneAndEmailRepeatingBlockProps>) => (
+    <PhoneAndEmailRepeatingBlock id="phoneAndEmail" values={values} onChange={onChange} isDirty={isDirty} />
+);
 
-describe('PhoneAndEmailMultiEntry', () => {
+describe('PhoneAndEmailRepeatingBlock', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<Fixture />);
+        const { getAllByRole } = render(
+            <Fixture
+                values={[
+                    {
+                        asOf: '07/11/1997',
+                        type: { name: 'type-name', value: 'type-value' },
+                        use: { name: 'use-name', value: 'use-value' }
+                    }
+                ]}
+            />
+        );
         // wait on render to prevent act warning
         await awaitRender();
 
@@ -86,30 +79,35 @@ describe('PhoneAndEmailMultiEntry', () => {
     });
 
     it('should trigger on change when value added', async () => {
-        const { getByLabelText, getAllByRole } = render(<Fixture />);
+        const onChange = jest.fn();
+
+        const { getByLabelText, getByRole } = render(<Fixture onChange={onChange} />);
+
         // wait on render to prevent act warning
         await awaitRender();
+
         const type = getByLabelText('Type');
         const use = getByLabelText('Use');
-        const buttons = getAllByRole('button');
+        const add = getByRole('button', { name: 'Add phone & email' });
 
-        await waitFor(async () => {
-            userEvent.selectOptions(use, 'H');
-            userEvent.selectOptions(type, 'PH');
-            // warning says no effect, but it lies
-            userEvent.click(buttons[0]); // Add phone & email button
+        userEvent.selectOptions(use, 'H');
+        userEvent.selectOptions(type, 'PH');
+
+        act(() => {
+            userEvent.click(add);
         });
 
         await waitFor(async () => {
-            const date = internalizeDate(new Date());
-
-            expect(onChange).toHaveBeenNthCalledWith(1, [
-                {
-                    asOf: date,
-                    type: 'PH',
-                    use: 'H'
-                }
-            ]);
+            expect(onChange).toHaveBeenNthCalledWith(1, []);
+            expect(onChange).toHaveBeenNthCalledWith(
+                2,
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        type: expect.objectContaining({ name: 'Phone', value: 'PH' }),
+                        use: expect.objectContaining({ name: 'Home', value: 'H' })
+                    })
+                ])
+            );
         });
     });
 });
