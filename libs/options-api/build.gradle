@@ -30,20 +30,6 @@ dependencies {
     implementation libs.springBoot.web
     implementation libs.springBoot.jdbc
     implementation libs.bundles.swagger
-    implementation libs.bundles.jpa
-    annotationProcessor libs.springBoot.jpa
-    implementation libs.mssql.jdbc
-    implementation(project(':database-entities'))
-    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
-    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier("jakarta") })
-    implementation libs.bundles.jackson
-    compileOnly libs.lombok
-    annotationProcessor libs.lombok
-
-}
-
-compileJava {
-    options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'
 }
 
 test {

@@ -1,42 +1,34 @@
 package gov.cdc.nbs.option.states.codedvalue;
 
-import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.entity.srte.QStateCode;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
 @Component
 public class StatesCodedValueFinder {
+  private final JdbcTemplate template;
+  private final StatesCodedValueRowMapper mapper;
 
-  private final JPAQueryFactory factory;
-  private final QStateCode values;
+  private static final String QUERY =
+      """
+              SELECT
+                state_cd as value, state_nm as name, code_desc_txt as abbreviation
+              FROM
+                NBS_SRTE.dbo.state_code
+          order by
+              name
+          """;
 
-  StatesCodedValueFinder(final JPAQueryFactory factory) {
-    this.factory = factory;
-    this.values = QStateCode.stateCode;
+  StatesCodedValueFinder(final JdbcTemplate template) {
+    this.template = template;
+    this.mapper = new StatesCodedValueRowMapper();
   }
 
   public Collection<StateCodedValue> all() {
-    return this.factory.select(
-        values.id,
-        values.codeDescTxt,
-        values.stateNm).from(values)
-        .orderBy(new OrderSpecifier<>(Order.ASC, values.id))
-        .fetch()
-        .stream()
-        .map(this::map)
-        .toList();
+    return this.template.query(
+        QUERY, statement -> {
+        }, mapper);
   }
 
-  private StateCodedValue map(final Tuple tuple) {
-    String value = tuple.get(values.id);
-    String name = tuple.get(values.codeDescTxt);
-    String abbreviation = tuple.get(values.stateNm);
-    return new StateCodedValue(value, name, abbreviation);
-  }
 }
-// gone
