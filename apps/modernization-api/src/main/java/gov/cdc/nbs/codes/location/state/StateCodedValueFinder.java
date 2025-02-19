@@ -39,4 +39,3 @@ public class StateCodedValueFinder {
     return new StateCodedValue(value, name, abbreviation);
   }
 }
-// gone
