@@ -20,7 +20,11 @@ import {
     RACE_ETHNICITY_SECTION
 } from './sections';
 
-export const AddPatientBasicForm = () => {
+type Props = {
+    isValid: (valid: boolean) => void;
+};
+
+export const AddPatientBasicForm = ({ isValid }: Props) => {
     const { control } = useFormContext<BasicNewPatientEntry>();
     const sizing = useComponentSizing();
 
@@ -61,6 +65,7 @@ export const AddPatientBasicForm = () => {
                             values={value}
                             onChange={onChange}
                             isDirty={() => {}}
+                            isValid={isValid}
                             sizing={sizing}
                         />
                     )}

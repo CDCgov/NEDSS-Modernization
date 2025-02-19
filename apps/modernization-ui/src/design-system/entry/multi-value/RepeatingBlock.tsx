@@ -20,6 +20,7 @@ type RepeatingBlockProps<V extends FieldValues> = {
     values?: V[];
     onChange: (data: V[]) => void;
     isDirty: (isDirty: boolean) => void;
+    isValid?: (isValid: boolean) => void;
     formRenderer: (entry?: V) => ReactNode;
     viewRenderer: (entry: V) => ReactNode;
 };
@@ -33,6 +34,7 @@ const RepeatingBlock = <V extends FieldValues>({
     errors,
     onChange,
     isDirty,
+    isValid,
     formRenderer,
     viewRenderer
 }: RepeatingBlockProps<V>) => {
@@ -121,6 +123,10 @@ const RepeatingBlock = <V extends FieldValues>({
 
         return messages.filter((a) => a != undefined);
     }, [JSON.stringify(form.formState.errors), errors]);
+
+    useEffect(() => {
+        isValid?.(!errorMessages || errorMessages.length === 0);
+    }, [errorMessages]);
 
     return (
         <section id={id} className={styles.input}>
