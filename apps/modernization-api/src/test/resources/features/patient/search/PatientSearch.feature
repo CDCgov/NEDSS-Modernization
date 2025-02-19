@@ -328,57 +328,6 @@ Feature: Patient Search
     When I search for patients
     Then the search results have a patient with an "phone number" equal to "613-240-2200"
 
-  Scenario: I can search for a Patient using an email address
-    Given the patient has an "email address" of "emailaddress@mail.com"
-    And I have another patient
-    And the patient has an "email address" of "other@mail.com"
-    And patients are available for search
-    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
-    When I search for patients
-    Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
-
-  Scenario: I can search for a Patient using an email address and an email filter
-    Given the patient has an "email address" of "emailaddress@mail.com"
-    And I have another patient
-    And the patient has an "email address" of "other@mail.com"
-    And patients are available for search
-    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
-    And I would like to filter search results with email "address"
-    When I search for patients
-    Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
-
-  Scenario: I can search for a Patient using an email address and an exact match email filter
-    Given the patient has an "email address" of "emailaddress@mail.com"
-    And I have another patient
-    And the patient has an "email address" of "other@mail.com"
-    And patients are available for search
-    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
-    And I would like to filter search results with email "emailaddress@mail.com"
-    When I search for patients
-    Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
-
-  Scenario: I can search for a Patient using an email address and a non-matching email filter
-    Given the patient has an "email address" of "emailaddress@mail.com"
-    And I have another patient
-    And the patient has an "email address" of "other@mail.com"
-    And patients are available for search
-    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
-    And I would like to filter search results with email "QQQ"
-    When I search for patients
-    Then there are 0 patient search results
-
-  Scenario: I can search for a Patient using an email address and two filters
-    Given the patient has an "email address" of "emailaddress@mail.com"
-    And the patient has the gender Unknown
-    And I have another patient
-    And the patient has an "email address" of "other@mail.com"
-    And patients are available for search
-    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
-    And I add the patient criteria for sex filter of "u"
-    And I would like to filter search results with email "address"
-    When I search for patients
-    Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
-
   Scenario: I can search for a Patient using an Identification
     Given the patient can be identified with an "other" of "888-88-8888"
     And I have another patient

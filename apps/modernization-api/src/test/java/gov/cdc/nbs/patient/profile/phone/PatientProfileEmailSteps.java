@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.profile.phone;
 
-import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.message.patient.input.PatientInput;
@@ -9,7 +8,7 @@ import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.springframework.beans.factory.annotation.Autowired;
+import net.datafaker.Faker;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -20,11 +19,17 @@ public class PatientProfileEmailSteps {
 
     private final Faker faker = new Faker();
 
-    @Autowired
-    Active<PatientInput> input;
+    private final Active<PatientInput> input;
 
-    @Autowired
-    TestPatient patient;
+    private final TestPatient patient;
+
+    PatientProfileEmailSteps(
+        final Active<PatientInput> input,
+        final TestPatient patient
+    ) {
+        this.input = input;
+        this.patient = patient;
+    }
 
     @Given("the new patient's email address is entered")
     public void the_new_patient_email_address_is_entered() {
