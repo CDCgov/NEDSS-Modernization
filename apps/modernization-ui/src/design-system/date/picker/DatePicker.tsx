@@ -8,7 +8,6 @@ import { useDate } from './useDate';
 import { onlyNumericKeys } from 'design-system/input/numeric';
 import { Sizing } from 'design-system/field';
 import classNames from 'classnames';
-import styles from './date-picker.module.scss';
 
 const handleExternalKeyUp = (event: Event) => {
     const input = event.target as HTMLInputElement;
@@ -111,7 +110,7 @@ const DatePicker = ({
     return (
         <div
             ref={datePickerRef}
-            className={classNames(styles[sizing ?? ''], 'usa-date-picker')}
+            className={classNames(sizing ?? '', 'usa-date-picker')}
             data-default-value={date}
             data-max-date={adjustedMaxValue}
             data-min-date={adjustedMinValue}>
