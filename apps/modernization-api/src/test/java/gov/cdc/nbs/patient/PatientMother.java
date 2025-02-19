@@ -229,13 +229,30 @@ public class PatientMother {
   public void withIdentification(
       final PatientIdentifier identifier,
       final String type,
-      final String value) {
+      final String value
+  ) {
+
+    withIdentification(
+        identifier,
+        type,
+        value,
+        RandomUtil.dateInPast()
+    );
+
+  }
+
+  public void withIdentification(
+      final PatientIdentifier identifier,
+      final String type,
+      final String value,
+      final LocalDate asOf
+  ) {
     Person patient = managed(identifier);
 
     patient.add(
         new PatientCommand.AddIdentification(
             identifier.id(),
-            RandomUtil.dateInPast(),
+            asOf,
             value,
             RandomUtil.maybeOneFrom("GA"),
             type,

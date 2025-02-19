@@ -369,8 +369,8 @@ class PatientDemographicQueryResolver {
 
     PatientFilter.Identification identification = criteria.getIdentification();
 
-    String type = identification.getIdentificationType();
-    String value = AdjustStrings.withoutSpecialCharacters(identification.getIdentificationNumber());
+    String type = identification.identificationType();
+    String value = AdjustStrings.withoutSpecialCharacters(identification.identificationNumber());
 
     if (type != null && (value != null && !value.isEmpty())) {
       return Optional.of(

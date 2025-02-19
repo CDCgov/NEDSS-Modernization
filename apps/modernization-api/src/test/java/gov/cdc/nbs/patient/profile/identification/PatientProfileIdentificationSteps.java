@@ -4,12 +4,10 @@ import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCreateAssertions;
-import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import net.datafaker.Faker;
@@ -26,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PatientProfileIdentificationSteps {
 
-  private final PatientMother mother;
   private final Active<PatientIdentifier> activePatient;
   private final Active<PatientInput> input;
   private final TestPatient patient;
@@ -38,7 +35,6 @@ public class PatientProfileIdentificationSteps {
   private final Active<Page<PatientIdentification>> results = new Active<>();
 
   PatientProfileIdentificationSteps(
-      final PatientMother mother,
       final Active<PatientIdentifier> activePatient,
       final Active<PatientInput> input,
       final TestPatient patient,
@@ -46,7 +42,6 @@ public class PatientProfileIdentificationSteps {
       final PatientProfileIdentificationRequester requester,
       final Active<ResultActions> response
   ) {
-    this.mother = mother;
     this.activePatient = activePatient;
     this.input = input;
     this.patient = patient;
@@ -89,40 +84,6 @@ public class PatientProfileIdentificationSteps {
               PatientCreateAssertions.containsIdentifications(input.active().getIdentifications()));
     }
 
-  }
-
-  @Before("@patient-profile-identifications")
-  public void reset() {
-    this.results.reset();
-  }
-
-  @Given("the patient has identification")
-  @Transactional
-  public void the_patient_has_identification() {
-    mother.withIdentification(this.activePatient.active());
-  }
-
-  @Given("the patient can be identified with a(n) {identificationType} of {string}")
-  @Transactional
-  public void the_patient_has_identification(
-      final String type,
-      final String value
-  ) {
-    mother.withIdentification(
-        this.activePatient.active(),
-        type,
-        value
-    );
-  }
-
-  @Given("the patient can be identified with a(n) {identificationType} without a value")
-  @Transactional
-  public void the_patient_has_an_invalid_identification(final String type) {
-    mother.withIdentification(
-        this.activePatient.active(),
-        type,
-        null
-    );
   }
 
   @Given("I view the Patient Profile Identification")

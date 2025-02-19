@@ -8,10 +8,8 @@ import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -29,20 +27,25 @@ import java.util.Optional;
 @JsonInclude(Include.NON_NULL)
 public class PatientFilter {
 
-  @Getter
-  @Setter
-  @AllArgsConstructor
-  @NoArgsConstructor
-  @EqualsAndHashCode
+
   @JsonInclude(Include.NON_NULL)
-  public static class Identification {
-    private String identificationNumber;
-    private String assigningAuthority;
-    private String identificationType;
+  public record Identification(
+      String identificationNumber,
+      String assigningAuthority,
+      String identificationType
+  ) {
+    Identification withType(final String type) {
+      return new Identification(identificationNumber(), assigningAuthority(), type);
+    }
+
+    Identification withValue(final String value) {
+      return new Identification(value, assigningAuthority(), identificationType());
+    }
   }
 
+
   public record Filter(String id, String name, String ageOrDateOfBirth, String sex, String address, String email,
-      String phone, String identification) {
+                       String phone, String identification) {
     Filter withId(final String id) {
       return new Filter(id, name(), ageOrDateOfBirth(), sex(), address(), email(), null, null);
     }
@@ -97,6 +100,7 @@ public class PatientFilter {
     }
   }
 
+
   public record LocationCriteria(TextCriteria street, TextCriteria city) {
 
     Optional<TextCriteria> maybeStreet() {
@@ -115,6 +119,7 @@ public class PatientFilter {
       return new LocationCriteria(street(), city);
     }
   }
+
 
   private String id;
   private NameCriteria name;
@@ -172,9 +177,14 @@ public class PatientFilter {
 
   public Identification getIdentification() {
     if (this.identification == null) {
-      this.identification = new Identification();
+      this.identification = new Identification(null, null, null);
     }
     return identification;
+  }
+
+  public PatientFilter withIdentification(final Identification identification) {
+    this.identification = identification;
+    return this;
   }
 
   public Filter getFilter() {
@@ -459,4 +469,5 @@ public class PatientFilter {
     }
     return this;
   }
+
 }
