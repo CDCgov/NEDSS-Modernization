@@ -14,7 +14,7 @@ jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValu
     usePatientIdentificationCodedValues: () => mockPatientIdentificationCodedValues
 }));
 
-const Fixture = () => {
+const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const form = useForm<BasicIdentificationEntry>({
         mode: 'onBlur',
         defaultValues: {
@@ -25,7 +25,7 @@ const Fixture = () => {
     });
     return (
         <FormProvider {...form}>
-            <BasicIdentificationFields />
+            <BasicIdentificationFields sizing={props.sizing} />
         </FormProvider>
     );
 };
@@ -37,6 +37,14 @@ describe('BasicIdentificationFields', () => {
         expect(getByLabelText('Type')).toBeInTheDocument();
         expect(getByLabelText('Assigning authority')).toBeInTheDocument();
         expect(getByLabelText('ID value')).toBeInTheDocument();
+    });
+
+    it('Should render the proper labels small when the sizing is set to small', async () => {
+        const { getByText } = render(<Fixture sizing="small" />);
+
+        expect(getByText('Type').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Assigning authority').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('ID value').parentElement?.parentElement).toHaveClass('small');
     });
 
     it('should require type', async () => {
