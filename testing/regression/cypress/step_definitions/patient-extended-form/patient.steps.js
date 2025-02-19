@@ -211,3 +211,19 @@ When("I select yes to Is the patient deceased", () => {
   When("I complete the Mortality fields", () => {
     NameEntryPage.completeMortalityFields();
   });
+
+Then("I am on the Classic Patient Search page", () => {
+    classicSearchPatientPage.navigateToClassicPatientSearchPane();
+});
+
+Then("I select Starts with for Last Name", () => {
+    classicSearchPatientPage.startsWithForLastName();
+});
+
+Then("I enter a partial Last Name", () => {
+    classicSearchPatientPage.enterLastNameInClassicSearchPatientPage('simpson');
+});
+
+Then("the system should return patients whose Last Name starts with the entered value", () => {
+    classicSearchPatientPage.patientListStartsWithEnteredValue();
+});

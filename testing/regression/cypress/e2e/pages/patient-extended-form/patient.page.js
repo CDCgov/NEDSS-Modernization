@@ -229,6 +229,15 @@ class ClassicPatientSearchPage {
    verifyInvestigationAddedSuccessfully() {
      cy.contains('Investigation has been successfully saved in the system')
    }
+
+   startsWithForLastName() {
+    cy.get('#DEM102O').select('SW', {force: true})
+   }
+
+   patientListStartsWithEnteredValue() {
+    cy.contains('Simpson')
+   }
+
 }
 
 export default new ClassicPatientSearchPage();
