@@ -63,21 +63,53 @@ class UtilityFunctions {
     return formattedFields;
   };
 
+  checkTransportRequestAPI = (apiID) => {
+    const authToken = Cypress.env("authTokenAPI");
+    const transportstatusurlapi = Cypress.env("transportstatusurlapi");
+    const clientid = Cypress.env("DI_CLIENT_ID");
+    const clientsecret = Cypress.env("DI_SECRET");
+    const authurl = Cypress.env("authurl");
+    const transportstatusurlapiUpdated = transportstatusurlapi.replace("uid", apiID);
+    let counter = 0;
+    cy.request({
+      method: "GET",
+      url: transportstatusurlapiUpdated,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        clientid: clientid,
+        clientsecret: clientsecret,
+      },
+    }).then((response) => {
+      expect(response.status).to.eq(200);
+      counter++;
+      let status = response.body.transportStatus;
+      if(status === null) {
+        cy.wait(35000);
+        if(counter !== 4) {
+          cy.log("Status null, retry");
+          this.checkTransportRequestAPI(apiID);
+        } else {
+            expect(status).to.eq(null);
+        }
+      } else {
+        expect(status).to.eq("BOTH");
+      }
+    });
+  };
+
   checkTransportRequest = () => {
     const authToken = Cypress.env("authTokenAPI");
     const transportstatusurl = Cypress.env("transportstatusurl");
     const clientid = Cypress.env("DI_CLIENT_ID");
     const clientsecret = Cypress.env("DI_SECRET");
     const authurl = Cypress.env("authurl");
-
     cy.get("body").then((body) => {
       if (body.find("table.dtTable td").length > 0) {
         cy.get('.dtTable td').eq(13).invoke('text').then((text => {
           const uidString = text.trim();
-          cy.log(uidString);    
+          cy.log(uidString);
           const uidMatch = uidString.match(/\(UID:\s*(\d+)\)/);
           if (uidMatch) {
-
             const elrUid =  uidMatch[1];
             const updatedUrl = transportstatusurl.replace("uid", elrUid);
             Cypress.env("elrUid", elrUid);
@@ -90,9 +122,11 @@ class UtilityFunctions {
                 clientsecret: clientsecret,
               },
             }).then((response) => {
+              expect(response.status).to.eq(200);
               let status = response.body.status;
               if(status === "UNPROCESSED") {
-                expect(status).to.eq("UNPROCESSED");
+                let localId = response.body.localId;
+                this.checkTransportRequestAPI(localId);
               } else if(status === null) {
                 cy.log("Status null, retry");
                 cy.wait(35000);
