@@ -187,7 +187,7 @@ input.usa-input--error:focus {
     }
 
     .usa-date-picker__external-input {
-        margin-right: 0 !important;
+        margin-right: 0.25rem !important;
 
         &:focus {
             margin-right: 0.25rem !important;
@@ -196,7 +196,7 @@ input.usa-input--error:focus {
 
     .usa-date-picker__calendar {
         min-width: $calendarWidth !important;
-        // padding: 1rem 0 !important;
+        padding: 0.5rem 0 !important;
     }
 }
 
