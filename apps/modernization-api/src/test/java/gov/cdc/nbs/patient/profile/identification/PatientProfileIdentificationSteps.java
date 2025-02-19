@@ -11,7 +11,6 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import net.datafaker.Faker;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +30,6 @@ public class PatientProfileIdentificationSteps {
   private final PatientProfileIdentificationRequester requester;
   private final Active<ResultActions> response;
 
-  private final Faker faker = new Faker();
-  private final Active<Page<PatientIdentification>> results = new Active<>();
-
   PatientProfileIdentificationSteps(
       final Active<PatientIdentifier> activePatient,
       final Active<PatientInput> input,
@@ -48,16 +44,6 @@ public class PatientProfileIdentificationSteps {
     this.activePageable = activePageable;
     this.requester = requester;
     this.response = response;
-  }
-
-  @Given("the new patient's Social Security Number is entered")
-  public void the_new_patient_ssn_is_entered() {
-    PatientInput.Identification identification = new PatientInput.Identification(
-        faker.idNumber().ssnValid(),
-        "SS",
-        "ANY");
-
-    this.input.active().getIdentifications().add(identification);
   }
 
   @Given("the new patient's identification is entered")
