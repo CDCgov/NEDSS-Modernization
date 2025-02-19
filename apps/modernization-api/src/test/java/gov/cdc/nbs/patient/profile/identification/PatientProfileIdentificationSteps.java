@@ -10,7 +10,6 @@ import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import net.datafaker.Faker;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
