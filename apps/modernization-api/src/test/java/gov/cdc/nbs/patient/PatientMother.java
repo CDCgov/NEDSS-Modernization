@@ -431,15 +431,31 @@ public class PatientMother {
   }
 
   public void withEmail(final PatientIdentifier identifier, final String email) {
+    withEmail(
+        identifier,
+        "NET",
+        RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
+        email,
+        RandomUtil.dateInPast()
+    );
+  }
+
+  public void withEmail(
+      final PatientIdentifier identifier,
+      final String type,
+      final String use,
+      final String email,
+      final LocalDate asOf
+  ) {
     Person patient = managed(identifier);
 
     patient.add(
         new PatientCommand.AddPhone(
             identifier.id(),
             idGenerator.next(),
-            "NET",
-            RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
-            RandomUtil.dateInPast(),
+            type,
+            use,
+            asOf,
             null,
             null,
             null,
@@ -449,6 +465,21 @@ public class PatientMother {
             this.settings.createdBy(),
             this.settings.createdOn()
         )
+    );
+  }
+
+  public void withEmail(
+      final PatientIdentifier identifier,
+      final String type,
+      final String use,
+      final String email
+  ) {
+    withEmail(
+        identifier,
+        type,
+        use,
+        email,
+        RandomUtil.dateInPast()
     );
   }
 
