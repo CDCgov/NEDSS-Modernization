@@ -59,23 +59,13 @@ export const AddPatientBasicForm = ({ isValid }: Props) => {
                 <Controller
                     control={control}
                     name="identifications"
-                    render={({ field: { onChange, value }, fieldState }) => (
+                    render={({ field: { onChange, value } }) => (
                         <BasicIdentificationRepeatingBlock
                             id={IDENTIFICATIONS_SECTION.id}
                             values={value}
                             onChange={onChange}
-                            isDirty={(isDirty) => {
-                                console.log('Identification isDirty', isDirty);
-                            }}
-                            isValid={(valid) => {
-                                console.log('Identification isValid, invalid', isValid, fieldState.invalid);
-                                isValid(valid);
-                                // if (fieldState.invalid === isValid) {
-                                //     !isValid
-                                //         ? setError('identifications', { message: 'Identification is invalid' })
-                                //         : clearErrors('identifications');
-                                // }
-                            }}
+                            isDirty={() => {}}
+                            isValid={isValid}
                             sizing={sizing}
                         />
                     )}

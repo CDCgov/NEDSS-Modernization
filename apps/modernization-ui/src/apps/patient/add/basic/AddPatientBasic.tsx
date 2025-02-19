@@ -46,12 +46,10 @@ export const AddPatientBasic = () => {
     const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state?.criteria));
 
     const handleFormIsValid = (valid: boolean) => {
-        console.log('AddPatientBasic: form valid', valid);
         interaction.setCanSave(valid);
     };
 
     const working = !form.formState.isValid || !interaction.canSave || interaction.status !== 'waiting';
-    console.log('AddPatientBasic: formState valid, working', form.formState.isValid, working);
 
     return (
         <DataEntryLayout>
