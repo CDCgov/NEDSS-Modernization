@@ -15,7 +15,7 @@ const columns: Column<NameEntry>[] = [
     { id: 'nameSuffix', name: 'Suffix', render: (v) => v.suffix?.name }
 ];
 
-type Props = {
+type NameRepeatingBlockProps = {
     id: string;
     values?: NameEntry[];
     onChange: (data: NameEntry[]) => void;
@@ -23,7 +23,7 @@ type Props = {
     errors?: ReactNode[];
 };
 
-export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
+export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty }: NameRepeatingBlockProps) => {
     const renderForm = () => <NameEntryFields />;
     const renderView = (entry: NameEntry) => <NameEntryView entry={entry} />;
 
@@ -42,3 +42,5 @@ export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Pr
         />
     );
 };
+
+export type { NameRepeatingBlockProps };

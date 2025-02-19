@@ -2,17 +2,19 @@ import classNames from 'classnames';
 import styles from './height-constrained.module.scss';
 import { Button } from 'components/button';
 import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { Sizing } from 'design-system/field';
 
 type Props = {
     children: ReactNode;
     rowConstraint: Constraint;
     name: string;
+    sizing?: Sizing;
     onChange: (value: Constraint) => void;
 };
 
 export type Constraint = 'bounded' | 'unbounded' | 'acceptable';
 
-export const HeightConstrained = ({ children, onChange, rowConstraint, name }: Props) => {
+export const HeightConstrained = ({ children, onChange, rowConstraint, name, sizing }: Props) => {
     const measureRef = useRef<HTMLTableRowElement | null>(null);
     const [constraint, setConstraint] = useState<Constraint>('acceptable');
     const matchesRow = useMemo(() => constraint === rowConstraint, [constraint, rowConstraint]);
@@ -36,7 +38,8 @@ export const HeightConstrained = ({ children, onChange, rowConstraint, name }: P
                     [styles.unbounded]: constraint === 'unbounded' && matchesRow,
                     [styles.bounded]: constraint === 'bounded' && matchesRow
                 })}
-                ref={measureRef}>
+                ref={measureRef}
+                data-testid="height-constrained">
                 {children}
             </div>
             {constraint === 'bounded' && matchesRow && (
@@ -44,6 +47,7 @@ export const HeightConstrained = ({ children, onChange, rowConstraint, name }: P
                     aria-label={`view more ` + name}
                     unpadded
                     className={styles.button}
+                    sizing={sizing}
                     onClick={() => onChange('unbounded')}>
                     View more
                 </Button>
@@ -53,6 +57,7 @@ export const HeightConstrained = ({ children, onChange, rowConstraint, name }: P
                     aria-label={`view less ` + name}
                     unpadded
                     className={styles.button}
+                    sizing={sizing}
                     onClick={() => onChange('bounded')}>
                     View less
                 </Button>

@@ -120,11 +120,6 @@ class ClassicPatientSearchPage {
     cy.contains('The Race is required.')
   }
 
-  errorMessageAddressField() {
-    cy.contains('The Type is required')
-    cy.contains('The Use is required')
-  }
-
   errorMessageSectionField(inputId, sectionId) {
     cy.get("section#phoneEmails").contains(sectionId);
   }
@@ -214,13 +209,13 @@ class ClassicPatientSearchPage {
     cy.contains('Select Condition')
   }
 
-   selectCondition() {
-     cy.get('#ccd').eq(0).select('11065', {force: true})
-     cy.get('#Submit').eq(0).click()
-     const field = cy.get('#NBS104')
-     field.invoke('val', "01/20/2024").trigger('change')
-     field.click()
-     cy.contains("Comments").eq(0).click()
+  selectCondition() {
+    cy.get('#ccd').eq(0).select('11065', {force: true})
+    cy.get('#Submit').eq(0).click()
+    const field = cy.get('#NBS104')
+    field.invoke('val', "01/20/2024").trigger('change')
+    field.click()
+    cy.contains("Comments").eq(0).click()
   }
 
    selectJurisdictionInInvestigationForm() {

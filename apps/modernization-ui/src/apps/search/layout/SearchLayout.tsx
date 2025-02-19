@@ -70,10 +70,10 @@ const SearchLayout = <R,>({
                     ariaLabel="Search criteria">
                     <div className={styles.inputs}>{criteria()}</div>
                     <div className={styles.actions}>
-                        <Button type="button" onClick={onSearch} disabled={!searchEnabled}>
+                        <Button type="button" onClick={onSearch} disabled={!searchEnabled} sizing={sizing}>
                             Search
                         </Button>
-                        <Button type="button" outline onClick={onClear}>
+                        <Button type="button" outline onClick={onClear} sizing={sizing}>
                             Clear all
                         </Button>
                     </div>

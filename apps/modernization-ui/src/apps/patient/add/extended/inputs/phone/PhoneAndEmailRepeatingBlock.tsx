@@ -6,14 +6,20 @@ import { PhoneEntryView } from './PhoneEntryView';
 
 const defaultValue: Partial<PhoneEmailEntry> = initial();
 
-type Props = {
+type PhoneAndEmailRepeatingBlockProps = {
     id: string;
     values?: PhoneEmailEntry[];
     onChange: (data: PhoneEmailEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
 };
-export const PhoneAndEmailRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
+export const PhoneAndEmailRepeatingBlock = ({
+    id,
+    values,
+    errors,
+    onChange,
+    isDirty
+}: PhoneAndEmailRepeatingBlockProps) => {
     const renderForm = () => <PhoneEmailEntryFields />;
     const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} />;
 
@@ -40,3 +46,5 @@ export const PhoneAndEmailRepeatingBlock = ({ id, values, errors, onChange, isDi
         />
     );
 };
+
+export type { PhoneAndEmailRepeatingBlockProps };
