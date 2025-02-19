@@ -1,4 +1,4 @@
-package gov.cdc.nbs.codes.location.state;
+package gov.cdc.nbs.option.states.codedvalue;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Order;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 
 @Component
-public class StateCodedValueFinder {
+public class StatesCodedValueFinder {
 
   private final JPAQueryFactory factory;
   private final QStateCode values;
 
-  StateCodedValueFinder(final JPAQueryFactory factory) {
+  StatesCodedValueFinder(final JPAQueryFactory factory) {
     this.factory = factory;
     this.values = QStateCode.stateCode;
   }
