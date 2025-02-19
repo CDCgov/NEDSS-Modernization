@@ -3,6 +3,7 @@ import { Column } from 'design-system/table';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { IdentificationEntryFields, IdentificationEntry, initial } from 'apps/patient/data/identification';
 import { IdentificationView } from './IdentificationView';
+import { Sizing } from 'design-system/field';
 
 const defaultValue: Partial<IdentificationEntry> = initial();
 
@@ -12,15 +13,17 @@ type IdentificationRepeatingBlockProps = {
     onChange: (data: IdentificationEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
+    sizing?: Sizing;
 };
 export const IdentificationRepeatingBlock = ({
     id,
     errors,
     values,
     onChange,
-    isDirty
+    isDirty,
+    sizing = 'medium'
 }: IdentificationRepeatingBlockProps) => {
-    const renderForm = () => <IdentificationEntryFields />;
+    const renderForm = () => <IdentificationEntryFields sizing={sizing} />;
     const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} />;
 
     const columns: Column<IdentificationEntry>[] = [

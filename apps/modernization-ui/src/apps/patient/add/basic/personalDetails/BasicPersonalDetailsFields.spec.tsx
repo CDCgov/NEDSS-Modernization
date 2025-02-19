@@ -49,14 +49,14 @@ jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => (
     usePatientSexBirthCodedValues: () => mockSexBirthCodedValues
 }));
 
-const Fixture = () => {
+const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const form = useForm<BasicPersonalDetailsEntry>({
         mode: 'onBlur'
     });
 
     return (
         <FormProvider {...form}>
-            <BasicPersonalDetailsFields />
+            <BasicPersonalDetailsFields sizing={props.sizing} />
         </FormProvider>
     );
 };
@@ -72,6 +72,17 @@ describe('when entering patient sex and birth demographics', () => {
         expect(getByLabelText('Is the patient deceased?')).toBeInTheDocument();
         expect(getByLabelText('Marital status')).toBeInTheDocument();
         expect(getByLabelText('State HIV case ID')).toBeInTheDocument();
+    });
+
+    it('should render the proper labels with the small size when sizing is set to small', () => {
+        const { getByText } = render(<Fixture sizing="small" />);
+
+        expect(getByText('Date of birth').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Current sex').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Birth sex').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Is the patient deceased?').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Marital status').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('State HIV case ID').parentElement?.parentElement).toHaveClass('small');
     });
 
     it('should validate date of birth', async () => {
