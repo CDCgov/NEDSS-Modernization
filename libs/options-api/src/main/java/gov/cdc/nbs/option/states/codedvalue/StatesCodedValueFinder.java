@@ -17,7 +17,7 @@ public class StatesCodedValueFinder {
               FROM
                 NBS_SRTE.dbo.state_code
           order by
-              name
+              indent_level_nbr
           """;
 
   StatesCodedValueFinder(final JdbcTemplate template) {

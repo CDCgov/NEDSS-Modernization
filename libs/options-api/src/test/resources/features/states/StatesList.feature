@@ -6,5 +6,5 @@ Feature: List States REST API
     Then there are options available
     And the option named "MO" is included
     And there are 59 options included
-    And the 1st option is "AK"
-    And the 59th option is "WY"
+    And the 1st option is "AL"
+    And the 59th option is "VI"
