@@ -137,8 +137,8 @@ Scenario: Required Name Fields
     Then I should see a success message indicating that the investigation has been added successfully
 
   Scenario: Searching for a patient by Last Name using "Starts with"
-    Given I am on the Classic Patient Search page
+    Given I am on the modernized Patient Search page
     When I select Starts with for Last Name
-    And I enter a partial Last Name
-    And Click on Search in classic Patient Search pane
+    And I enter a partial Last Name "simpson"
+    And Click on Search in Patient Search pane
     Then the system should return patients whose Last Name starts with the entered value
