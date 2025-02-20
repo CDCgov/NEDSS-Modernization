@@ -6,8 +6,8 @@ import { DataElements } from '../DataElement';
 const configuration: DataElements = {
     lastName: {
         active: true,
-        m: 0.8,
-        u: 0.003,
+        oddsRatio: 0.33,
+        logOdds: Math.log(0.33),
         threshold: 0.7
     }
 };
@@ -17,13 +17,14 @@ jest.mock('apps/deduplication/api/useDataElements', () => ({
         return { configuration };
     }
 }));
+
 const Wrapper = () => {
     const form = useForm<DataElements>({ defaultValues: configuration });
     return (
         <FormProvider {...form}>
             <table>
                 <tbody>
-                    <DataElementRow field="lastName" fieldName="Last Name" />
+                <DataElementRow field="lastName" fieldName="Last Name" />
                 </tbody>
             </table>
         </FormProvider>
@@ -36,15 +37,11 @@ describe('DataElementRow', () => {
 
         // Field
         expect(getByText('Last Name')).toBeInTheDocument();
-        // M
-        expect(getByDisplayValue('0.8')).toBeInTheDocument();
-        // U
-        expect(getByDisplayValue('0.003')).toBeInTheDocument();
+        // Odds ratio
+        expect(getByDisplayValue(String(configuration.lastName?.oddsRatio))).toBeInTheDocument();
+        // Log odds
+        expect(getByText(String(configuration.lastName!.logOdds!.toFixed(4)))).toBeInTheDocument(); // Ensures it matches UI formatting
         // Threshold
         expect(getByDisplayValue('0.7')).toBeInTheDocument();
-        // Odds ratio
-        expect(getByText(0.8 / 0.003)).toBeInTheDocument();
-        // Log odds
-        expect(getByText(Math.log(0.8) - Math.log(0.003))).toBeInTheDocument();
     });
 });
