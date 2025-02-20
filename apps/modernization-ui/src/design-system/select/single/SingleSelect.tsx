@@ -30,6 +30,7 @@ type Props = {
     sizing?: Sizing;
     error?: string;
     required?: boolean;
+    warning?: string;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'value'>;
 
 const SingleSelect = ({
@@ -44,6 +45,7 @@ const SingleSelect = ({
     sizing,
     error,
     required,
+    warning,
     placeholder = '- Select -',
     ...inputProps
 }: Props) => {
@@ -64,7 +66,8 @@ const SingleSelect = ({
             helperText={helperText}
             htmlFor={id}
             required={required}
-            error={error}>
+            error={error}
+            warning={warning}>
             <select
                 key={value?.value ?? ''}
                 id={id}
