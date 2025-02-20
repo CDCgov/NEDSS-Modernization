@@ -10,19 +10,11 @@ type Props = {
     fieldName: string;
     field: keyof DataElements;
 };
+
 export const DataElementRow = ({ fieldName, field }: Props) => {
     const { configuration } = useDataElements();
     const form = useFormContext<DataElements>();
     const watch = useWatch({ control: form.control });
-
-    const calculateOddsRatio = () => {
-        const m = watch[field]?.m;
-        const u = watch[field]?.u;
-        if (Number.isNaN(m) || Number.isNaN(u) || u == 0 || m == 0 || m == undefined || u == undefined) {
-            return '--';
-        }
-        return m / u;
-    };
 
     useEffect(() => {
         const active = watch[field]?.active;
@@ -30,8 +22,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
             if (!active) {
                 form.setValue(field, {
                     active,
-                    m: undefined,
-                    u: undefined,
+                    oddsRatio: undefined,
                     logOdds: undefined,
                     threshold: undefined
                 });
@@ -39,9 +30,8 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
             } else {
                 const defaultValue = {
                     active,
-                    m: configuration?.[field]?.m,
-                    u: configuration?.[field]?.u,
-                    logOdds: 0, // calculated on m, u change
+                    oddsRatio: configuration?.[field]?.oddsRatio,
+                    logOdds: configuration?.[field]?.oddsRatio ? Math.log(configuration[field].oddsRatio) : undefined,
                     threshold: configuration?.[field]?.threshold
                 };
                 form.setValue(field, defaultValue);
@@ -51,14 +41,13 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
     }, [watch[field]?.active]);
 
     useEffect(() => {
-        const m = Number(watch[field]?.m);
-        const u = Number(watch[field]?.u);
-        if (Number.isNaN(m) || Number.isNaN(u) || u == 0 || m == 0 || m == undefined || u == undefined) {
+        const oddsRatio = Number(watch[field]?.oddsRatio);
+        if (Number.isNaN(oddsRatio) || oddsRatio <= 0 || oddsRatio === undefined) {
             form.setValue(`${field}.logOdds`, undefined);
         } else {
-            form.setValue(`${field}.logOdds`, Math.log(m) - Math.log(u));
+            form.setValue(`${field}.logOdds`, Math.log(oddsRatio));
         }
-    }, [watch[field]?.m, watch[field]?.u]);
+    }, [watch[field]?.oddsRatio]);
 
     return (
         <tr>
@@ -75,9 +64,9 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
             <td>
                 <Controller
                     control={form.control}
-                    name={`${field}.m`}
+                    name={`${field}.oddsRatio`}
                     rules={{
-                        required: { value: watch[field]?.active ?? false, message: 'M is required' }
+                        required: { value: watch[field]?.active ?? false, message: 'Odds ratio is required' }
                     }}
                     render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
                         <TableNumericInput
@@ -86,37 +75,13 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             onChange={onChange}
                             onBlur={onBlur}
                             error={error?.message}
-                            max={1}
-                            min={0}
+                            min={0.01}
                             step={0.01}
                             disabled={!watch[field]?.active}
                         />
                     )}
                 />
             </td>
-            <td>
-                <Controller
-                    control={form.control}
-                    name={`${field}.u`}
-                    rules={{
-                        required: { value: watch[field]?.active ?? false, message: 'U is required' }
-                    }}
-                    render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
-                        <TableNumericInput
-                            name={name}
-                            value={value}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            error={error?.message}
-                            max={1}
-                            min={0}
-                            step={0.01}
-                            disabled={!watch[field]?.active}
-                        />
-                    )}
-                />
-            </td>
-            <td>{calculateOddsRatio()}</td>
             <td>{watch[field]?.logOdds ?? '--'}</td>
             <td>
                 <Controller

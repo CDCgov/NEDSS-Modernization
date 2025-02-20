@@ -1,7 +1,6 @@
 type DataElement = {
     active?: boolean;
-    m?: number;
-    u?: number;
+    oddsRatio?: number;
     logOdds?: number;
     threshold?: number;
 };

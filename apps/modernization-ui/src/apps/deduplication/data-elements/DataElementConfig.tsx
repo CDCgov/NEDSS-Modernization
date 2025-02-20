@@ -18,23 +18,24 @@ export const DataElementConfig = () => {
         </AlertProvider>
     );
 };
+
 const initial: DataElements = {
-    firstName: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    lastName: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    suffix: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    birthDate: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    mrn: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    ssn: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    sex: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    gender: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    race: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    address: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    city: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    state: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    zip: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    county: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    telephone: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
-    driversLicense: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined }
+    firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    lastName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    suffix: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    birthDate: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    mrn: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    ssn: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    sex: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    gender: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    race: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    address: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    city: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    state: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    zip: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    county: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    telephone: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    driversLicense: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined }
 };
 
 const DataElementConfigContent = () => {
@@ -43,10 +44,12 @@ const DataElementConfigContent = () => {
     const form = useForm<DataElements>({ mode: 'onBlur', defaultValues: initial });
     const nav = useNavigate();
 
+    // Reset form when configuration changes
     useEffect(() => {
         form.reset(configuration, { keepDefaultValues: false, keepDirty: false });
     }, [configuration]);
 
+    // Show error alert if there is an API error
     useEffect(() => {
         if (error) {
             showError({ message: error });
@@ -56,6 +59,7 @@ const DataElementConfigContent = () => {
     const handleCancel = () => {
         nav({ pathname: '/deduplication/match-configuration' });
     };
+
     const handleSubmit = () => {
         save(form.getValues(), () =>
             showSuccess({ message: 'You have successfully updated the data elements configuration.' })
