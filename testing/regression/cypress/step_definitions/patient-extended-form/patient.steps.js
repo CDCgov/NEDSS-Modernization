@@ -231,3 +231,12 @@ Then("Click on Search in modernized Patient Search pane", () => {
 Then("the system should return patients whose Last Name starts with the entered value", () => {
     classicSearchPatientPage.patientListEnteredValue();
 });
+
+Then("I select Contains for Last Name", () => {
+    classicSearchPatientPage.containsForLastName();
+});
+
+Then("the system should return patients whose Last Name contains the entered value", () => {
+    classicSearchPatientPage.patientListEnteredValue();
+});
+
