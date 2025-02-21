@@ -83,7 +83,7 @@ Scenario: Required Name Fields
     Then I click the Save button
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
-    
+
   Scenario: Missing Required Dropdown Selections
     Given I am on the New patient Extended form
     And I have not filled out Dropdowns fields
@@ -142,3 +142,11 @@ Scenario: Required Name Fields
     And I enter a partial Last Name "simpson"
     And Click on Search in Patient Search pane
     Then the system should return patients whose Last Name starts with the entered value
+
+  Scenario: Searching for a patient by Last Name using "Contains"
+    Given I am on the modernized Patient Search page
+    When I select Contains for Last Name
+    And I enter a partial Last Name "simpson"
+    And Click on Search in Patient Search pane
+    Then the system should return patients whose Last Name contains the entered value
+
