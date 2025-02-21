@@ -5,13 +5,16 @@ import { Outlet } from 'react-router-dom';
 import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
 import { AddPatientBasic } from './basic/AddPatientBasic';
 import { SearchFromAddPatientProvider } from 'apps/search/patient/add/useSearchFromAddPatient';
+import { ComponentSizingProvider } from 'design-system/sizing';
 
 const PatientDataProviderWrapper = () => (
-    <SearchFromAddPatientProvider>
-        <BasicExtendedTransitionProvider>
-            <Outlet />
-        </BasicExtendedTransitionProvider>
-    </SearchFromAddPatientProvider>
+    <ComponentSizingProvider>
+        <SearchFromAddPatientProvider>
+            <BasicExtendedTransitionProvider>
+                <Outlet />
+            </BasicExtendedTransitionProvider>
+        </SearchFromAddPatientProvider>
+    </ComponentSizingProvider>
 );
 
 const routing = [
