@@ -48,7 +48,7 @@ const ConfigurationSetupContent = () => {
                     </NavLink>
 
                     <Button>
-                        <Icon.FileDownload size={3} /> {/* placeholder icon */}
+                        <Icon.UploadFile size={3} /> {/* placeholder icon */}
                         Import configuration file
                     </Button>
                 </div>
