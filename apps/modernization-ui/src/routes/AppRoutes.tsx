@@ -26,10 +26,10 @@ const routing = [
             ...searchRouting,
             ...addPatientRouting,
             ...patientProfileRouting,
-            ...pageBuilderRouting,
-            ...deduplicationRouting
+            ...pageBuilderRouting
         ]
     },
+    ...deduplicationRouting,
     { path: '*', element: <Navigate to={'/'} /> },
     { path: 'expired', element: <Expired /> }
 ];

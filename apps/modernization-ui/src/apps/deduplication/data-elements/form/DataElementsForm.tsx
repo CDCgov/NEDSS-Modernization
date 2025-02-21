@@ -42,43 +42,43 @@ export const DataElementsForm = () => {
             <div className={styles.dataElementsForm}>
                 <table>
                     <thead>
-                    <tr>
-                        <th className={styles.checkbox}>
-                            <Checkbox
-                                name={'selectAll'}
-                                label=""
-                                id={'toggle-all-checkbox'}
-                                selected={!hasInactive()}
-                                onChange={handleToggleAll}
-                            />
-                        </th>
-                        <th>Field</th>
-                        <th className={styles.numericColumn}>Odds ratio</th>
-                        <th className={styles.calculatedColumn}>Log odds</th>
-                        <th className={styles.numericColumn}>Threshold</th>
-                        <th />
-                    </tr>
-                    <tr className={styles.border}>
-                        <th colSpan={6} />
-                    </tr>
+                        <tr>
+                            <th className={styles.checkbox}>
+                                <Checkbox
+                                    name={'selectAll'}
+                                    label=""
+                                    id={'toggle-all-checkbox'}
+                                    selected={!hasInactive()}
+                                    onChange={handleToggleAll}
+                                />
+                            </th>
+                            <th>Field</th>
+                            <th className={styles.numericColumn}>Odds ratio</th>
+                            <th className={styles.calculatedColumn}>Log odds</th>
+                            <th className={styles.numericColumn}>Threshold</th>
+                            <th />
+                        </tr>
+                        <tr className={styles.border}>
+                            <th colSpan={6} />
+                        </tr>
                     </thead>
                     <tbody>
-                    <DataElementRow fieldName="First name" field="firstName" />
-                    <DataElementRow fieldName="Last name" field="lastName" />
-                    <DataElementRow fieldName="Suffix" field="suffix" />
-                    <DataElementRow fieldName="Date of birth" field="birthDate" />
-                    <DataElementRow fieldName="Current sex" field="sex" />
-                    <DataElementRow fieldName="Gender" field="gender" />
-                    <DataElementRow fieldName="Race" field="race" />
-                    <DataElementRow fieldName="Address" field="address" />
-                    <DataElementRow fieldName="City" field="city" />
-                    <DataElementRow fieldName="State" field="state" />
-                    <DataElementRow fieldName="Zip" field="zip" />
-                    <DataElementRow fieldName="County" field="county" />
-                    <DataElementRow fieldName="Phone number" field="telephone" />
-                    <DataElementRow fieldName="MRN" field="mrn" />
-                    <DataElementRow fieldName="SSN" field="ssn" />
-                    <DataElementRow fieldName="Drivers license" field="driversLicense" />
+                        <DataElementRow fieldName="First name" field="firstName" />
+                        <DataElementRow fieldName="Last name" field="lastName" />
+                        <DataElementRow fieldName="Suffix" field="suffix" />
+                        <DataElementRow fieldName="Date of birth" field="birthDate" />
+                        <DataElementRow fieldName="Current sex" field="sex" />
+                        <DataElementRow fieldName="Gender" field="gender" />
+                        <DataElementRow fieldName="Race" field="race" />
+                        <DataElementRow fieldName="Address" field="address" />
+                        <DataElementRow fieldName="City" field="city" />
+                        <DataElementRow fieldName="State" field="state" />
+                        <DataElementRow fieldName="Zip" field="zip" />
+                        <DataElementRow fieldName="County" field="county" />
+                        <DataElementRow fieldName="Phone number" field="telephone" />
+                        <DataElementRow fieldName="MRN" field="mrn" />
+                        <DataElementRow fieldName="SSN" field="ssn" />
+                        <DataElementRow fieldName="Drivers license" field="driversLicense" />
                     </tbody>
                 </table>
             </div>
