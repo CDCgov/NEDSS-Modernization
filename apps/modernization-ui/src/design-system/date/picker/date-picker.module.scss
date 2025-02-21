@@ -1,11 +1,11 @@
-@mixin sizedDatePicker($backgroundSize: 1rem, $buttonWidth: 1.125rem, $calendarWidth: 17.75rem) {
+@mixin sizedDatePicker($backgroundSize: 1rem, $calendarWidth: 17.75rem) {
     & > div > button {
         background-size: $backgroundSize;
         background-position: left;
-        width: $buttonWidth;
+        width: $backgroundSize;
 
         &:focus {
-            width: calc($buttonWidth + 0.5rem);
+            width: calc($backgroundSize + 0.5rem);
             background-position: center;
         }
     }
@@ -20,13 +20,13 @@
 }
 
 .small {
-    @include sizedDatePicker(1rem, 1.125rem);
+    @include sizedDatePicker(1rem);
 }
 
 .medium {
-    @include sizedDatePicker(1.25rem, 1.25rem);
+    @include sizedDatePicker(1.125rem);
 }
 
 .large {
-    @include sizedDatePicker(1.25rem, 1.25rem);
+    @include sizedDatePicker(1.25rem);
 }
