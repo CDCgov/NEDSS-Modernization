@@ -229,6 +229,57 @@ class ClassicPatientSearchPage {
    verifyInvestigationAddedSuccessfully() {
      cy.contains('Investigation has been successfully saved in the system')
    }
+
+   navigateToModernizedPatientSearchPane() {
+     cy.get('#homePageAdvancedSearch').click()
+   }
+
+   startsWithForLastName() {
+    cy.get('select[id="name.lastOperator"]').select('startsWith')
+   }
+
+   enterLastNameInModernizedSearchPatientPage(text) {
+     cy.get('input[id="name.last"]').type(text)
+   }
+
+   clickSearchBtnInModernizedPatientSearchPane() {
+     cy.contains('button', 'Search').eq(0).click()
+   }
+
+   patientListEnteredValue() {
+    cy.contains('Simpson')
+   }
+
+   containsForLastName() {
+     cy.get('select[id="name.lastOperator"]').select('contains')
+   }
+
+   soundsLikeForLastName() {
+     cy.get('select[id="name.lastOperator"]').select('soundsLike')
+   }
+
+   selectExactDateForDateOfBirth() {
+    cy.get('input[type="radio"][name="dateOperation"]').should('have.value', 'equals')
+   }
+
+   enterDateOfBirthInModernizedSearchPatientPage() {
+     cy.get('#bornOn-exact-date-month').type('07')
+     cy.get('#bornOn-exact-date-day').type('24')
+     cy.get('#bornOn-exact-date-year').type('1940')
+   }
+
+   patientListEnteredValueForDateOfBirth() {
+    cy.contains('Martin')
+   }
+
+   equalForLastName() {
+     cy.get('select[id="name.lastOperator"]').select('equals')
+   }
+
+   notEqualForLastName() {
+     cy.get('select[id="name.lastOperator"]').select('not')
+   }
+
 }
 
 export default new ClassicPatientSearchPage();

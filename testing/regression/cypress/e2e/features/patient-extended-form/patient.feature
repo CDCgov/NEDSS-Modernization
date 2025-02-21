@@ -136,4 +136,9 @@ Scenario: Required Name Fields
     When I click the Submit button in Add Investigation Form
     Then I should see a success message indicating that the investigation has been added successfully
 
-
+  Scenario: Searching for a patient by Last Name using "Starts with"
+    Given I am on the modernized Patient Search page
+    When I select Starts with for Last Name
+    And I enter a partial Last Name "simpson"
+    And Click on Search in Patient Search pane
+    Then the system should return patients whose Last Name starts with the entered value
