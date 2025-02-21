@@ -79,6 +79,7 @@ const Fixture = ({
     values = [],
     errors,
     defaultValues,
+    sizing,
     onChange = jest.fn(),
     isDirty = jest.fn()
 }: Partial<RepeatingBlockProps<TestType>>) => (
@@ -90,6 +91,7 @@ const Fixture = ({
         values={values}
         onChange={onChange}
         isDirty={isDirty}
+        sizing={sizing}
         formRenderer={() => <UnderTestForm />}
         viewRenderer={(entry) => <UnderTestView entry={entry} />}
         errors={errors}
@@ -144,6 +146,15 @@ describe('RepeatingBlock', () => {
 
         const button = getByRole('button', { name: 'Add test title' });
         expect(button).toBeInTheDocument();
+    });
+
+    it('should display add button with correct size', async () => {
+        const { getByRole } = render(<Fixture sizing="small" />);
+        await awaitRender();
+
+        const button = getByRole('button', { name: 'Add test title' });
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveClass('small');
     });
 
     it('should display specified columns', async () => {
@@ -292,7 +303,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should display icons in last column of table', async () => {
-        const { getByRole, getAllByRole } = render(
+        const { getAllByRole } = render(
             <Fixture
                 values={[
                     {
@@ -320,6 +331,28 @@ describe('RepeatingBlock', () => {
         // Delete icon
         expect(iconContainer.children[2]).toHaveAttribute('aria-label', 'Delete');
         expect(iconContainer.children[2]).toHaveAttribute('data-tooltip-position', 'top');
+    });
+
+    it('should render icons with correct sizing', async () => {
+        const { container } = render(
+            <Fixture
+                sizing="small"
+                values={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: []
+                    }
+                ]}
+            />
+        );
+        await awaitRender();
+
+        const icons = container.querySelectorAll('.actions svg');
+        expect(icons).toHaveLength(3);
+        icons.forEach((icon) => {
+            expect(icon).toHaveClass('small');
+        });
     });
 
     it('should render view when view icon clicked', async () => {
