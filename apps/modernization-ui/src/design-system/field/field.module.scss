@@ -45,12 +45,14 @@
             @extend %small;
         }
 
-        input,
         select {
-            height: 1.85rem;
-            width: unset;
-        
-            @extend %small;
+            @extend %small-input;
+            padding: 0.1875rem 0.5rem;
+        }
+
+        input {
+            @extend %small-input;
+            padding: 0.25rem 0.5rem;
         }
 
         textarea {

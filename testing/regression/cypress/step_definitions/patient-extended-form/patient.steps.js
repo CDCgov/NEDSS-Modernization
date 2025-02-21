@@ -102,6 +102,10 @@ Then("I have filled out Dropdowns fields", () => {
     classicSearchPatientPage.fillDropdownFields()
 });
 
+When("I enter a valid phone number in the Phone field", () => {
+    NameEntryPage.enterValidPhoneNumber();
+  });
+
 Then("I have not filled out Dropdowns fields", () => {
     classicSearchPatientPage.doNotFillDropdownValues()
 });
@@ -199,3 +203,40 @@ Then("I click the Submit button in Add Investigation Form", () => {
 Then("I should see a success message indicating that the investigation has been added successfully", () => {
     classicSearchPatientPage.verifyInvestigationAddedSuccessfully();
 });
+
+When("I select yes to Is the patient deceased", () => {
+    NameEntryPage.selectPatientDeceasedYes();
+  });
+
+  When("I complete the Mortality fields", () => {
+    NameEntryPage.completeMortalityFields();
+  });
+
+Then("I am on the modernized Patient Search page", () => {
+    classicSearchPatientPage.navigateToModernizedPatientSearchPane();
+});
+
+Then("I select Starts with for Last Name", () => {
+    classicSearchPatientPage.startsWithForLastName();
+});
+
+Then("I enter a partial Last Name {string}", (name) => {
+    classicSearchPatientPage.enterLastNameInModernizedSearchPatientPage(name);
+});
+
+Then("Click on Search in modernized Patient Search pane", () => {
+    classicSearchPatientPage.clickSearchBtnInModernizedPatientSearchPane()
+});
+
+Then("the system should return patients whose Last Name starts with the entered value", () => {
+    classicSearchPatientPage.patientListEnteredValue();
+});
+
+Then("I select Contains for Last Name", () => {
+    classicSearchPatientPage.containsForLastName();
+});
+
+Then("the system should return patients whose Last Name contains the entered value", () => {
+    classicSearchPatientPage.patientListEnteredValue();
+});
+

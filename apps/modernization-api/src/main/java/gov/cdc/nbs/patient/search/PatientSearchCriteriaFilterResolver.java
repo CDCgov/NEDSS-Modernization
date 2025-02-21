@@ -211,8 +211,8 @@ class PatientSearchCriteriaFilterResolver {
 
     PatientFilter.Identification identification = criteria.getIdentification();
 
-    String type = identification.getIdentificationType();
-    String value = identification.getIdentificationNumber();
+    String type = identification.identificationType();
+    String value = identification.identificationNumber();
 
     if (type != null && value != null) {
       return Optional.of(

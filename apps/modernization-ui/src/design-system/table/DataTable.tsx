@@ -23,9 +23,10 @@ type DataTableProps<V> = {
     columns: Column<V>[];
     data: V[];
     sizing?: Sizing;
+    rowHeightConstrained?: boolean;
 };
 
-const DataTable = <V,>({ id, className, columns, data, sizing }: DataTableProps<V>) => {
+const DataTable = <V,>({ id, className, columns, data, sizing, rowHeightConstrained = true }: DataTableProps<V>) => {
     const resolvedClasses = classNames('usa-table--borderless', styles.table, sizing ? styles[sizing] : undefined);
     return (
         <div id={id} className={resolvedClasses}>
@@ -44,7 +45,14 @@ const DataTable = <V,>({ id, className, columns, data, sizing }: DataTableProps<
                 </thead>
                 <tbody>
                     {data.map((row, index) => (
-                        <DataTableRow index={index} row={row} columns={columns} key={index} />
+                        <DataTableRow
+                            index={index}
+                            row={row}
+                            columns={columns}
+                            sizing={sizing}
+                            heightConstrained={rowHeightConstrained}
+                            key={index}
+                        />
                     ))}
                 </tbody>
             </table>

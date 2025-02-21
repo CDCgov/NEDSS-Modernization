@@ -1,14 +1,14 @@
-import { act, render, waitFor } from '@testing-library/react';
+import { act, render, cleanup } from '@testing-library/react';
 import { AdministrativeEntryFields } from './AdministrativeEntryFields';
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { NewPatientEntry } from 'apps/patient/add';
 
-const Fixture = () => {
+const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const methods = useForm<NewPatientEntry>({ mode: 'onBlur' });
     return (
         <FormProvider {...methods}>
-            <AdministrativeEntryFields />
+            <AdministrativeEntryFields sizing={props.sizing} />
         </FormProvider>
     );
 };
@@ -19,6 +19,13 @@ describe('when entering patient administrative information', () => {
 
         expect(getByLabelText('Information as of date')).toBeInTheDocument();
         expect(getByLabelText('Comments')).toBeInTheDocument();
+    });
+
+    it('should render all input fields with the correct sizing when sizing is small.', () => {
+        const { getByText } = render(<Fixture sizing="small" />);
+
+        expect(getByText('Information as of date').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Comments').parentElement?.parentElement).toHaveClass('small');
     });
 
     it('should require as of date', async () => {

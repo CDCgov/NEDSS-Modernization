@@ -5,6 +5,7 @@ import { useRaceCategoryOptions } from 'options/race';
 import { RaceEntryFields, RaceEntry, initial } from 'apps/patient/data/race';
 import { RaceEntryView } from './RaceEntryView';
 import { categoryValidator } from './categoryValidator';
+import { Sizing } from 'design-system/field';
 
 const columns: Column<RaceEntry>[] = [
     { id: 'race-as-of', name: 'As of', render: (v) => v.asOf },
@@ -22,13 +23,19 @@ type Props = {
     onChange: (data: RaceEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
+    sizing?: Sizing;
 };
 
-const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty }: Props) => {
+const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty, sizing = 'medium' }: Props) => {
     const categories = useRaceCategoryOptions();
 
     const renderForm = (entry?: RaceEntry) => (
-        <RaceEntryFields categories={categories} categoryValidator={categoryValidator(values)} entry={entry} />
+        <RaceEntryFields
+            categories={categories}
+            categoryValidator={categoryValidator(values)}
+            entry={entry}
+            sizing={sizing}
+        />
     );
     const renderView = (entry: RaceEntry) => <RaceEntryView entry={entry} />;
 

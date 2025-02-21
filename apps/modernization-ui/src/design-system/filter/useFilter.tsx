@@ -8,6 +8,7 @@ type FilterInteraction = {
     show: () => void;
     hide: () => void;
     toggle: () => void;
+    valueOf: (id: string) => string | undefined;
     apply: (id: string, value: string) => void;
     clear: (id: string) => void;
     clearAll: () => void;
@@ -22,6 +23,7 @@ const FilterProvider = ({ children }: FilterProviderProps) => {
     const [active, setActive] = useState(false);
     const [filter, setFilter] = useState<Filter>();
 
+    const valueOf = useCallback((id: string) => (filter ? filter[id] : undefined), [filter]);
     const show = useCallback(() => setActive(true), [setActive]);
     const hide = useCallback(() => setActive(false), [setActive]);
     const toggle = useCallback(() => setActive((prev) => !prev), [setActive]);
@@ -37,7 +39,8 @@ const FilterProvider = ({ children }: FilterProviderProps) => {
     }, [setActive, setFilter]);
 
     return (
-        <FilterableContext.Provider value={{ active, filter, show, hide, toggle, apply, clear, clearAll, reset }}>
+        <FilterableContext.Provider
+            value={{ active, filter, show, hide, toggle, valueOf, apply, clear, clearAll, reset }}>
             {children}
         </FilterableContext.Provider>
     );

@@ -4,15 +4,17 @@ import { useEffect } from 'react';
 import styles from './date-range-entry.module.scss';
 import classNames from 'classnames';
 import { DatePicker } from 'design-system/date/picker';
+import { Sizing } from 'design-system/field';
 
 type DateRangeEntryProps = {
     id: string;
     value: DateBetweenCriteria;
+    sizing?: Sizing;
     onChange: (value: DateBetweenCriteria) => void;
     onBlur?: () => void;
 };
 
-export const DateRangeEntry = ({ id, value, onChange, onBlur }: DateRangeEntryProps) => {
+export const DateRangeEntry = ({ id, value, sizing, onChange, onBlur }: DateRangeEntryProps) => {
     const { state: rangeEntry, apply, clear } = useDateBetweenCriteria(value);
 
     const handleOnChange = (field: DateRangeEntryFields) => (value: string | undefined) => {
@@ -32,6 +34,7 @@ export const DateRangeEntry = ({ id, value, onChange, onBlur }: DateRangeEntryPr
             <div className={classNames(styles['range-wrapper'], 'from')}>
                 <label htmlFor={'from'}>From</label>
                 <DatePicker
+                    sizing={sizing}
                     onBlur={onBlur}
                     id={`${id}-from`}
                     name="from"
@@ -43,6 +46,7 @@ export const DateRangeEntry = ({ id, value, onChange, onBlur }: DateRangeEntryPr
             <div className={classNames(styles['range-wrapper'])}>
                 <label htmlFor={'to'}>To</label>
                 <DatePicker
+                    sizing={sizing}
                     onBlur={onBlur}
                     id={`${id}-to`}
                     name="to"

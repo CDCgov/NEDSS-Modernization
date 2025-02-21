@@ -3,6 +3,7 @@ import { Column } from 'design-system/table';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { NameEntry, NameEntryFields, initial } from 'apps/patient/data/name';
 import { NameEntryView } from './NameEntryView';
+import { Sizing } from 'design-system/field';
 
 const defaultValue: Partial<NameEntry> = initial();
 
@@ -15,16 +16,24 @@ const columns: Column<NameEntry>[] = [
     { id: 'nameSuffix', name: 'Suffix', render: (v) => v.suffix?.name }
 ];
 
-type Props = {
+type NameRepeatingBlockProps = {
     id: string;
     values?: NameEntry[];
     onChange: (data: NameEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
+    sizing?: Sizing;
 };
 
-export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
-    const renderForm = () => <NameEntryFields />;
+export const NameRepeatingBlock = ({
+    id,
+    values,
+    errors,
+    onChange,
+    isDirty,
+    sizing = 'medium'
+}: NameRepeatingBlockProps) => {
+    const renderForm = () => <NameEntryFields sizing={sizing} />;
     const renderView = (entry: NameEntry) => <NameEntryView entry={entry} />;
 
     return (
@@ -42,3 +51,5 @@ export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Pr
         />
     );
 };
+
+export type { NameRepeatingBlockProps };

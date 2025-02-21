@@ -6,6 +6,7 @@ import { initial } from './entry';
 import { BasicIdentificationFields } from './BasicIdentificationFields';
 import { BasicIdentificationView } from './BasicIdentificationView';
 import styles from './identification.module.scss';
+import { Sizing } from 'design-system/field';
 
 const defaultValue: Partial<BasicIdentificationEntry> = initial();
 
@@ -15,6 +16,7 @@ type BasicIdentificationRepeatingBlockProps = {
     onChange: (data: BasicIdentificationEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
+    sizing?: Sizing;
 };
 
 export const BasicIdentificationRepeatingBlock = ({
@@ -22,9 +24,10 @@ export const BasicIdentificationRepeatingBlock = ({
     values,
     onChange,
     isDirty,
-    errors
+    errors,
+    sizing = 'medium'
 }: BasicIdentificationRepeatingBlockProps) => {
-    const renderForm = () => <BasicIdentificationFields />;
+    const renderForm = () => <BasicIdentificationFields sizing={sizing} />;
     const renderView = (entry: BasicIdentificationEntry) => <BasicIdentificationView entry={entry} />;
 
     const columns: Column<BasicIdentificationEntry>[] = [
@@ -52,3 +55,5 @@ export const BasicIdentificationRepeatingBlock = ({
         />
     );
 };
+
+export type { BasicIdentificationRepeatingBlockProps };

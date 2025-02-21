@@ -77,6 +77,13 @@ Scenario: Required Name Fields
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
+  Scenario: Valid Phone Number
+    Given I am on the New patient Extended form
+    And I enter a valid phone number in the Phone field
+    Then I click the Save button
+    Then Form should be submitted successfully without errors
+    And I should receive a confirmation message
+
   Scenario: Missing Required Dropdown Selections
     Given I am on the New patient Extended form
     And I have not filled out Dropdowns fields
@@ -110,4 +117,36 @@ Scenario: Required Name Fields
     And I select a valid Resulted Test and fill in the details
     When I click the Submit button in Report form
     Then I should see the patients profile displayed with the added lab report
+
+  Scenario: Valid Mortality Information
+    Given I am on the New patient Extended form
+    And I select yes to Is the patient deceased
+    And I complete the Mortality fields
+    When I click the Save button
+    Then Form should be submitted successfully without errors
+    And I should receive a confirmation message
+
+  Scenario: Adding an Investigation After Creating a New Patient
+    Given I have successfully added a new patient
+    And Add Patient Success modal is displayed
+    When I click the Add investigation button
+    Then I should be redirected to the Add Investigation form
+    When I select a valid Condition
+    And I select a valid Jurisdiction in investigation form
+    When I click the Submit button in Add Investigation Form
+    Then I should see a success message indicating that the investigation has been added successfully
+
+  Scenario: Searching for a patient by Last Name using "Starts with"
+    Given I am on the modernized Patient Search page
+    When I select Starts with for Last Name
+    And I enter a partial Last Name "simpson"
+    And Click on Search in Patient Search pane
+    Then the system should return patients whose Last Name starts with the entered value
+
+  Scenario: Searching for a patient by Last Name using "Contains"
+    Given I am on the modernized Patient Search page
+    When I select Contains for Last Name
+    And I enter a partial Last Name "simpson"
+    And Click on Search in Patient Search pane
+    Then the system should return patients whose Last Name contains the entered value
 

@@ -17,7 +17,7 @@ type Props = {
 
 const SearchResultsHeader = ({ className, sizing, view, total, terms }: Props) => {
     return (
-        <header className={classNames(styles.header, className)}>
+        <header className={classNames(styles.header, className, styles[sizing ?? ''])}>
             <SearchTerms total={total} terms={terms} />
             <SearchResultsOptionsBar view={view} disabled={total === 0} sizing={sizing} />
         </header>

@@ -328,7 +328,7 @@ class PatientDemographicQueryResolver {
       return Optional.empty();
     }
 
-    return Optional.of(new TextCriteria(null, null, null, criteria.getFilter().email(), null))
+    return Optional.of(new TextCriteria(null, null, null, criteria.getFilter().email().replace("@", " "), null))
         .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(EMAILS, EMAIL_ADDRESS, value));
   }
@@ -369,8 +369,8 @@ class PatientDemographicQueryResolver {
 
     PatientFilter.Identification identification = criteria.getIdentification();
 
-    String type = identification.getIdentificationType();
-    String value = AdjustStrings.withoutSpecialCharacters(identification.getIdentificationNumber());
+    String type = identification.identificationType();
+    String value = AdjustStrings.withoutSpecialCharacters(identification.identificationNumber());
 
     if (type != null && (value != null && !value.isEmpty())) {
       return Optional.of(
