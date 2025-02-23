@@ -5,6 +5,7 @@ import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import NavBar from 'shared/header/NavBar';
 import styles from './configurationSetup.module.scss';
 
 export const ConfigurationSetup = () => {
@@ -29,10 +30,10 @@ const ConfigurationSetupContent = () => {
 
     return (
         <div className={styles.configurationSetup}>
+            <NavBar /> {/* NBS Navigation Bar */}
             <header>
                 <Heading level={1}>Person match configuration</Heading>
             </header>
-
             <main>
                 <Shown when={watch.passes == null}>
                     <div className={styles.card}>
