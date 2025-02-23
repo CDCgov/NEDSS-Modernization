@@ -2,8 +2,9 @@ import { Icon } from '@trussworks/react-uswds';
 import { AlertProvider, useAlert } from 'alert';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
-import { NavLink } from 'react-router-dom';
+import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import styles from './configurationSetup.module.scss';
 
 export const ConfigurationSetup = () => {
@@ -17,41 +18,54 @@ export const ConfigurationSetup = () => {
 const ConfigurationSetupContent = () => {
     const { showError } = useAlert();
     const [error] = useState<string | null>(null);
+    const form = useForm({ mode: 'onBlur' });
+    const watch = useWatch({ control: form.control });
 
     useEffect(() => {
         if (error) {
             showError({ message: error });
         }
-    }, [error, showError]);
+    }, [error, form.control]);
 
     return (
-        <div className={styles.headers}>
-            {/* Top White Box for the Header */}
-            <header className={styles.headerBox}>
+        <div className={styles.configurationSetup}>
+            <header>
                 <Heading level={1}>Person match configuration</Heading>
             </header>
 
-            {/* Main Content in a Separate White Box */}
-            <main className={styles.contentBox}>
-                <h2 className={styles.title}>Algorithm not configured</h2>
-                <p className={styles.description}>
-                    Before configuring the algorithm, the data elements available to the algorithm must first be set.
-                    <br />
-                    To get started, you may manually update the data elements or upload a configuration file.
-                </p>
-                <div className={styles.buttonContainer}>
-                    <NavLink to={'/deduplication/data-elements'}>
-                        <Button>
-                            <Icon.Settings size={3} />
-                            Configure data elements
-                        </Button>
-                    </NavLink>
+            <main>
+                <Shown when={watch.passes == null}>
+                    <div className={styles.card}>
+                        {/* Card */}
+                        <div className={styles.cardHeader}>
+                            {/* Header */}
+                            <h2 className={styles.title}>Algorithm not configured</h2>
+                        </div>
 
-                    <Button>
-                        <Icon.UploadFile size={3} /> {/* placeholder icon */}
-                        Import configuration file
-                    </Button>
-                </div>
+                        <div className={styles.cardBody}>
+                            {/* Body */}
+                            <p className={styles.description}>
+                                Before configuring the algorithm, the data elements available to the algorithm must
+                                first be set. To get started, you may manually update the data elements or upload a
+                                configuration file.
+                            </p>
+
+                            <div className={styles.buttonContainer}>
+                                <Button>
+                                    <Icon.Settings size={3} />
+                                    {/* Todo: This button should nav to deduplication/data-elements */}
+                                    Configure data elements
+                                </Button>
+
+                                <Button>
+                                    <Icon.UploadFile size={3} />
+                                    {/* Todo: This button should open a pop-up for import */}
+                                    Import configuration file
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </Shown>
             </main>
         </div>
     );
