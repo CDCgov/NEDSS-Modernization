@@ -18,7 +18,7 @@
     }
 
     label {
-        font-size: 0.875rem !important;
+        font-size: 0.875rem;
         font-weight: 700;
     }
 
@@ -27,7 +27,7 @@
         flex-direction: row;
         align-items: center;
         flex-grow: 1;
-        
+
         .children {
             order: 1;
             width: 20rem;
@@ -49,7 +49,7 @@
             .children {
                 order: 2;
             }
-    
+
             .message {
                 margin-left: 0;
                 order: 1;
