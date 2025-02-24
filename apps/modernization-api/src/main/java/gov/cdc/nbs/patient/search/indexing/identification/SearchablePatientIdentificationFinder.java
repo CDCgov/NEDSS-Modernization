@@ -10,38 +10,43 @@ import java.util.List;
 @Component
 public class SearchablePatientIdentificationFinder {
 
-  private static final String QUERY = """
-      select distinct
-          [identification].[type_cd]          as [type],
-          [identification].root_extension_txt as [value],
-          [identification].[record_status_cd] as [status]
-      from [Entity_id] [identification]
-      where   [identification].[entity_uid]= ?
-        """;
-  private static final int TYPE_COLUMN = 1;
-  private static final int VALUE_COLUMN = 2;
-  private static final int STATUS_COLUMN = 3;
-  private static final int PATIENT_PARAMETER = 1;
+    private static final String QUERY = """
+            select
+                [identification].as_of_date         as [as_of],
+                [identification].entity_id_seq      as [sequence],
+                [identification].[type_cd]          as [type],
+                [identification].root_extension_txt as [value]
+            from [Entity_id] [identification]
+            where   [identification].[entity_uid]= ?
+                and [identification].[record_status_cd] = 'ACTIVE'
+                and [identification].[root_extension_txt] is not null
+            order by
+                [identification].as_of_date  desc,
+                [identification].entity_id_seq desc
+            """;
+    private static final int TYPE_COLUMN = 3;
+    private static final int VALUE_COLUMN = 4;
 
-  private final JdbcTemplate template;
-  private final RowMapper<SearchablePatient.Identification> mapper;
+    private static final int PATIENT_PARAMETER = 1;
 
-  public SearchablePatientIdentificationFinder(final JdbcTemplate template) {
-    this.template = template;
-    this.mapper = new SearchablePatientIdentificationRowMapper(
-        new SearchablePatientIdentificationRowMapper.Column(
-            TYPE_COLUMN,
-            VALUE_COLUMN,
-            STATUS_COLUMN
-        )
-    );
-  }
+    private final JdbcTemplate template;
+    private final RowMapper<SearchablePatient.Identification> mapper;
 
-  public List<SearchablePatient.Identification> find(final long patient) {
-    return this.template.query(
-        QUERY,
-        statement -> statement.setLong(PATIENT_PARAMETER, patient),
-        this.mapper
-    );
-  }
+    public SearchablePatientIdentificationFinder(final JdbcTemplate template) {
+        this.template = template;
+        this.mapper = new SearchablePatientIdentificationRowMapper(
+                new SearchablePatientIdentificationRowMapper.Column(
+                        TYPE_COLUMN,
+                        VALUE_COLUMN
+                )
+        );
+    }
+
+    public List<SearchablePatient.Identification> find(final long patient) {
+        return this.template.query(
+                QUERY,
+                statement -> statement.setLong(PATIENT_PARAMETER, patient),
+                this.mapper
+        );
+    }
 }

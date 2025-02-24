@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 class SearchablePatientIdentificationRowMapper implements RowMapper<SearchablePatient.Identification> {
 
-  record Column(int type, int value, int status) {
+  record Column(int type, int value) {
   }
 
 
@@ -22,12 +22,10 @@ class SearchablePatientIdentificationRowMapper implements RowMapper<SearchablePa
   public SearchablePatient.Identification mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
     String type = resultSet.getString(columns.type());
     String value = resultSet.getString(columns.value());
-    String status = resultSet.getString(columns.status());
 
     return new SearchablePatient.Identification(
         type,
-        value,
-        status
+        value
     );
   }
 }

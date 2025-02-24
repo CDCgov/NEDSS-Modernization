@@ -35,7 +35,8 @@ class PatientSearchCriteriaSortResolver {
           asSortOption("name", "name.middleNm.keyword", order),
           asSortOption("name", "name.nmSuffix.keyword", order),
           asHandlingNullSortOption("birth_time", order),
-          asHandlingNullSortOption("local_id", order));
+          asHandlingNullSortOption("local_id", order)
+      );
       case "lastnm" -> Stream.of(asSortOption("name", "name.lastNm.keyword", order));
       case "firstnm" -> Stream.of(asSortOption("name", "name.firstNm.keyword", order));
       case ADDRESS -> Stream.of(asSortOption(ADDRESS, "address.streetAddr1.keyword", order));
@@ -45,7 +46,7 @@ class PatientSearchCriteriaSortResolver {
       case "country" -> Stream.of(asSortOption(ADDRESS, "address.cntryText.keyword", order));
       case "email" -> Stream.of(asSortOption("email", "email.emailAddress.keyword", order));
       case "id" -> Stream.of(asSortOption("patient", order));
-      case "identification" -> Stream.of(asSortOption("entity_id", "entity_id.rootExtensionTxt.keyword", order));
+      case "identification" -> Stream.of(asSortOption("sort.identification", order));
       case "phonenumber" -> Stream.of(asSortOption("phone", "phone.telephoneNbr.keyword", order));
       case "state" -> Stream.of(asSortOption(ADDRESS, "address.stateText.keyword", order));
       case "sex" -> Stream.of(asSortOption("curr_sex_cd", order));
