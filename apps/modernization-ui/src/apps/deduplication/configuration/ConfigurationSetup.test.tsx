@@ -97,8 +97,8 @@ describe('ConfigurationSetup', () => {
         const configureButton = screen.getByText('Configure data elements');
         const importButton = screen.getByText('Import configuration file');
 
-        await userEvent.click(configureButton); // ✅ Use userEvent directly
-        await userEvent.click(importButton);   // ✅ Use userEvent directly
+        await userEvent.click(configureButton);
+        await userEvent.click(importButton);
 
         expect(configureButton).toBeInTheDocument();
         expect(importButton).toBeInTheDocument();
