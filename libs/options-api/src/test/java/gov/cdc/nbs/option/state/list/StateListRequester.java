@@ -1,4 +1,4 @@
-package gov.cdc.nbs.option.state.codedvalue;
+package gov.cdc.nbs.option.state.list;
 
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -8,11 +8,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
-class StateCodedValueRequester {
+class StateListRequester {
 
   private final MockMvc mvc;
 
-  StateCodedValueRequester(final MockMvc mvc) {
+  StateListRequester(final MockMvc mvc) {
     this.mvc = mvc;
   }
 

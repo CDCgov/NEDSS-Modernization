@@ -1,16 +1,16 @@
-package gov.cdc.nbs.option.state.codedvalue;
+package gov.cdc.nbs.option.state.list;
 
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
-public class StateCodedValueSteps {
+public class StateListSteps {
 
-  private final StateCodedValueRequester request;
+  private final StateListRequester request;
   private final Active<ResultActions> response;
 
-  StateCodedValueSteps(
-      final StateCodedValueRequester request,
+  StateListSteps(
+      final StateListRequester request,
       final Active<ResultActions> response) {
     this.request = request;
     this.response = response;
