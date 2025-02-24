@@ -92,7 +92,7 @@ class UtilityFunctions {
             expect(status).to.eq(null);
         }
       } else {
-        expect(status).to.eq("BOTH");
+        expect(status).to.eq("queued");
       }
     });
   };
