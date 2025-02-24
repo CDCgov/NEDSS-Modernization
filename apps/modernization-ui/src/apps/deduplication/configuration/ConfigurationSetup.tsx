@@ -1,16 +1,11 @@
 import { Icon } from '@trussworks/react-uswds';
-import { AlertProvider } from 'alert';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import styles from './configurationSetup.module.scss';
 
 export const ConfigurationSetup = () => {
-    return (
-        <AlertProvider>
-            <ConfigurationSetupContent />
-        </AlertProvider>
-    );
+    return <ConfigurationSetupContent />;
 };
 
 const ConfigurationSetupContent = () => {
