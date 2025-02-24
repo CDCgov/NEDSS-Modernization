@@ -18,10 +18,10 @@ public class ConfigurationSteps {
     this.response = response;
   }
 
-  @Before
-  public void reset() {
-    response.reset();
-  }
+//  @Before
+//  public void reset() {
+//    response.reset();
+//  }
 
   @When("I request the frontend configuration")
   public void i_request_the_frontend_configuration() throws Exception {
