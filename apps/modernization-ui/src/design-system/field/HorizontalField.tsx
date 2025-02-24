@@ -3,11 +3,12 @@ import classNames from 'classnames';
 import { HelperText } from './HelperText';
 import { InlineErrorMessage } from './InlineErrorMessage';
 import { InlineWarningMessage } from './InlineWarningMessage';
-
+import { Sizing } from './Field';
 import styles from './horizontal-field.module.scss';
 
 type Props = {
     className?: string;
+    sizing: Sizing;
     htmlFor: string;
     label: string;
     helperText?: string;
@@ -17,9 +18,19 @@ type Props = {
     children: ReactNode;
 };
 
-const HorizontalField = ({ className, htmlFor, label, helperText, required, error, warning, children }: Props) => (
-    <div className={classNames(styles.horizontalInput, className)}>
-        <div className={styles.left}>
+const HorizontalField = ({
+    className,
+    sizing,
+    htmlFor,
+    label,
+    helperText,
+    required,
+    error,
+    warning,
+    children
+}: Props) => (
+    <div className={classNames(styles.horizontalInput, styles[sizing], className)}>
+        <div className={classNames(styles.left, styles[sizing])}>
             <label className={classNames({ required })} htmlFor={htmlFor}>
                 {label}
             </label>
