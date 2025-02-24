@@ -10,16 +10,17 @@ import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
 import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
-import { useConfiguration } from 'configuration';
+// import { useConfiguration } from 'configuration';
 import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
 
 import styles from './add-patient-basic.module.scss';
+import { FeatureToggle } from 'feature';
 
 export const AddPatientBasic = () => {
     const { initialize } = useAddPatientBasicDefaults();
 
     const interaction = useAddBasicPatient();
-    const { features } = useConfiguration();
+    // const { features } = useConfiguration();
     const form = useForm<BasicNewPatientEntry>({
         defaultValues: {
             ...initialize(),
@@ -62,7 +63,7 @@ export const AddPatientBasic = () => {
                     sections={sections}
                     headerActions={() => (
                         <div className={styles.buttonGroup}>
-                            <Shown when={features.patient?.add?.extended?.enabled}>
+                            <FeatureToggle guard={(features) => features.patient?.add?.extended?.enabled}>
                                 <Button
                                     type="button"
                                     onClick={handleExtended}
@@ -71,7 +72,7 @@ export const AddPatientBasic = () => {
                                     disabled={working}>
                                     Add extended data
                                 </Button>
-                            </Shown>
+                            </FeatureToggle>
                             <Button onClick={handleCancel} outline>
                                 Cancel
                             </Button>
