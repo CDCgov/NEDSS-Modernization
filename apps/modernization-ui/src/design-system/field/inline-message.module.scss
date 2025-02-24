@@ -6,3 +6,9 @@
     display: block;
     font-weight: 700;
 }
+
+@media (min-width: 1280px) {
+    .message {
+        margin-left: 0.25rem;
+    }
+}

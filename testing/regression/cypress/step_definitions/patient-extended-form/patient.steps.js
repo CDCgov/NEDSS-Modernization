@@ -231,3 +231,23 @@ Then("Click on Search in modernized Patient Search pane", () => {
 Then("the system should return patients whose Last Name starts with the entered value", () => {
     classicSearchPatientPage.patientListEnteredValue();
 });
+
+Then("I select Contains for Last Name", () => {
+    classicSearchPatientPage.containsForLastName();
+});
+
+Then("the system should return patients whose Last Name contains the entered value", () => {
+    classicSearchPatientPage.patientListEnteredValue();
+});
+
+When("I select input id {string} with type {string}", (id, type) => {
+    classicSearchPatientPage.selectSearchNameType(id, type);
+});
+
+Then("I feel input id {string} with text {string}", (id, text) => {
+    classicSearchPatientPage.fillIdInputWithText(id, text);
+});
+
+Then("Verify text {string} in Search Result data type {string}", (text, type) => {
+    classicSearchPatientPage.findSearchResultByDataItemType(text, type)
+});

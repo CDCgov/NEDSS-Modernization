@@ -83,7 +83,7 @@ Scenario: Required Name Fields
     Then I click the Save button
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
-    
+
   Scenario: Missing Required Dropdown Selections
     Given I am on the New patient Extended form
     And I have not filled out Dropdowns fields
@@ -142,3 +142,45 @@ Scenario: Required Name Fields
     And I enter a partial Last Name "simpson"
     And Click on Search in Patient Search pane
     Then the system should return patients whose Last Name starts with the entered value
+
+  Scenario: Searching for a patient by Last Name using "Contains"
+    Given I am on the modernized Patient Search page
+    When I select Contains for Last Name
+    And I enter a partial Last Name "simpson"
+    And Click on Search in Patient Search pane
+    Then the system should return patients whose Last Name contains the entered value
+
+  Scenario: Searching for a patient by First Name using "Not equal"
+    Given I am on the modernized Patient Search page
+    When I select input id "name.firstOperator" with type "Not equal"
+    Then I feel input id "name.first" with text "Adam"
+    And Click on Search in Patient Search pane
+    Then Verify text "Legal" in Search Result data type "name"
+
+  Scenario: Searching for a patient by First Name using "Equal"
+    Given I am on the modernized Patient Search page
+    When I select input id "name.firstOperator" with type "Equal"
+    Then I feel input id "name.first" with text "Adam"
+    And Click on Search in Patient Search pane
+    Then Verify text "Adam" in Search Result data type "name"
+
+  Scenario: Searching for a patient by First Name using "Starts with"
+    Given I am on the modernized Patient Search page
+    When I select input id "name.firstOperator" with type "Starts with"
+    Then I feel input id "name.first" with text "A"
+    And Click on Search in Patient Search pane
+    Then Verify text "Apple" in Search Result data type "name"
+
+  Scenario: Searching for a patient by First Name using "Contains"
+    Given I am on the modernized Patient Search page
+    When I select input id "name.firstOperator" with type "Contains"
+    Then I feel input id "name.first" with text "dam"
+    And Click on Search in Patient Search pane
+    Then Verify text "Adam" in Search Result data type "name"
+
+  Scenario: Searching for a patient by First Name using "Sounds like"
+    Given I am on the modernized Patient Search page
+    When I select input id "name.firstOperator" with type "Sounds like"
+    Then I feel input id "name.first" with text "dam"
+    And Click on Search in Patient Search pane
+    Then Verify text "Donna" in Search Result data type "name"

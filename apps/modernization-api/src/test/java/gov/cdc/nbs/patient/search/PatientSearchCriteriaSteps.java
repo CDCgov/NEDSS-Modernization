@@ -17,7 +17,8 @@ public class PatientSearchCriteriaSteps {
 
   PatientSearchCriteriaSteps(
       final Active<PatientIdentifier> patient,
-      final Active<PatientFilter> activeCriteria) {
+      final Active<PatientFilter> activeCriteria
+  ) {
     this.patient = patient;
     this.activeCriteria = activeCriteria;
   }
@@ -38,7 +39,8 @@ public class PatientSearchCriteriaSteps {
   private PatientFilter applyCriteria(
       final String field,
       final String value,
-      final PatientFilter criteria) {
+      final PatientFilter criteria
+  ) {
     switch (field.toLowerCase()) {
       case "patient id" -> criteria.setId(value);
       case "first name" -> criteria.setFirstName(value);
@@ -48,12 +50,16 @@ public class PatientSearchCriteriaSteps {
       case "email", "email address" -> criteria.setEmail(value);
       case "city" -> criteria.setCity(value);
       case "address" -> criteria.setAddress(value);
-      case "identification type" -> criteria.getIdentification().setIdentificationType(value);
-      case "identification value" -> criteria.getIdentification().setIdentificationNumber(value);
+      case "identification value" -> criteria.withIdentification(criteria.getIdentification().withValue(value));
       default -> throw new IllegalStateException(
           "Unexpected search criteria %s equal %s".formatted(field, value));
     }
     return criteria;
+  }
+
+  @Given("I add the patient criteria for an identification type equal to {identificationType}")
+  public void i_add_the_patient_criteria_for_an_identification(final String type) {
+    this.activeCriteria.active(criteria -> criteria.withIdentification(criteria.getIdentification().withType(type)));
   }
 
   @Given("I add the patient criteria for a gender of {gender}")

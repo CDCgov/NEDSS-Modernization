@@ -62,9 +62,16 @@ const columns: Column<PatientSearchResult>[] = [
         ...IDENTIFICATIONS,
         className: styles['col-id'],
         render: displayIdentifications,
-        filter: { id: 'identification', type: 'text' }
+        filter: { id: 'identification', type: 'text' },
+        sortable: true
     },
-    { ...EMAIL, className: styles['col-email'], render: displayEmails, filter: { id: 'email', type: 'text' } }
+    {
+        ...EMAIL,
+        className: styles['col-email'],
+        render: displayEmails,
+        sortable: true,
+        filter: { id: 'email', type: 'text' }
+    }
 ];
 
 // column preferences
@@ -79,10 +86,7 @@ const preferences: ColumnPreference[] = [
     { ...EMAIL, moveable: true, toggleable: true }
 ];
 
-type Props = {
-    results: PatientSearchResult[];
-    sizing?: Sizing;
-};
+type Props = { results: PatientSearchResult[]; sizing?: Sizing };
 
 const PatientSearchResultTable = ({ results, sizing }: Props) => {
     const { apply } = useColumnPreferences();
