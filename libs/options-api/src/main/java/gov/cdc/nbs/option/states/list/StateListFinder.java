@@ -13,7 +13,7 @@ public class StateListFinder {
   private static final String QUERY =
       """
               SELECT
-                state_cd as value, state_nm as name
+                state_cd as value, code_desc_txt as name
               FROM
                 NBS_SRTE.dbo.state_code
           order by
