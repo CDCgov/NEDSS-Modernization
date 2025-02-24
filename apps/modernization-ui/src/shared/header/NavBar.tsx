@@ -6,7 +6,7 @@ import styles from './NavBar.module.scss';
 
 // eslint-disable-next-line no-undef
 
-export default function NavBar() {
+export default function NavBar({ title }: { title?: string }) {
     const {
         state: { user },
         logout
@@ -104,7 +104,7 @@ export default function NavBar() {
                         <tr>
                             <td className={styles.pageHeader} style={{ padding: '5px', marginBottom: '0px' }}>
                                 <a style={{ textTransform: 'capitalize' }}>
-                                    {location?.pathname?.split('/')[1]?.split('-').join(' ')}
+                                    {title ?? location?.pathname?.split('/')[1]?.split('-').join(' ')}
                                 </a>
                             </td>
 

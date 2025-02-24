@@ -19,28 +19,35 @@ export const ConfigurationSetup = () => {
 const ConfigurationSetupContent = () => {
     const { showError } = useAlert();
     const [error] = useState<string | null>(null);
-    const form = useForm({ mode: 'onBlur' });
+    const form = useForm<{ passes?: any }>({ mode: 'onBlur' });
     const watch = useWatch({ control: form.control });
+
+    if (!form || !form.control) {
+        console.error('useForm() did not return a valid form object.');
+        return null; // Prevents rendering the component if form is invalid
+    }
 
     useEffect(() => {
         if (error) {
             showError({ message: error });
         }
-    }, [error, form.control]);
+    }, [error]);
 
     return (
         <div className={styles.configurationSetup}>
-            <NavBar /> {/* NBS Navigation Bar */}
+            <NavBar title="Person Match Configuration" />
             <header>
                 <Heading level={1}>Person match configuration</Heading>
             </header>
             <main>
-                <Shown when={watch.passes == null}>
+                <Shown when={!watch?.passes}>
                     <div className={styles.card}>
                         {/* Card */}
                         <div className={styles.cardHeader}>
                             {/* Header */}
-                            <h2 className={styles.title}>Algorithm not configured</h2>
+                            <Heading level={2} className={styles.title}>
+                                Algorithm not configured
+                            </Heading>
                         </div>
 
                         <div className={styles.cardBody}>
@@ -52,13 +59,13 @@ const ConfigurationSetupContent = () => {
                             </p>
 
                             <div className={styles.buttonContainer}>
-                                <Button>
+                                <Button sizing="medium">
                                     <Icon.Settings size={3} />
                                     {/* Todo: This button should nav to deduplication/data-elements */}
                                     Configure data elements
                                 </Button>
 
-                                <Button>
+                                <Button sizing="medium">
                                     <Icon.UploadFile size={3} />
                                     {/* Todo: This button should open a pop-up for import */}
                                     Import configuration file

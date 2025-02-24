@@ -72,9 +72,6 @@
     }
 
     .title {
-      font-size: 22px;
-      font-weight: 700;
-      color: colors.$base-darkest;
       line-height: 25.85px;
       text-align: center;
       margin-bottom: 0.25rem;
@@ -82,7 +79,6 @@
     }
 
     .description {
-      @extend body;
       width: 100%;
       max-width: 622px;
       font-weight: 400;
@@ -99,10 +95,6 @@
       justify-content: center;
       gap: 1rem;
       margin-top: 1rem;
-
-      button {
-        @extend %button-medium;
-      }
     }
   }
 
