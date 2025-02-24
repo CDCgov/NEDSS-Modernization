@@ -5,7 +5,7 @@ Feature: Patient search using updated Date of Birth fields
 
     Scenario: Searching for a patient by Date of Birth using "Exact Date"
         When I select Exact Date for Date of Birth
-        When I enter a specific date of birth
+        And I enter a specific date of birth
         Then the system should return patients whose Date of Birth exactly matches the entered date
 
     Scenario: Searching for a patient by Date of Birth using "Date Range"
