@@ -234,6 +234,14 @@ class ClassicPatientSearchPage {
      cy.get('#homePageAdvancedSearch').click()
    }
 
+  startsWithForLastName() {
+    cy.get('select[id="name.lastOperator"]').select('startsWith')
+   }
+
+  selectSearchNameType(idName, type) {
+    cy.get(`select[id="${idName}"]`).select(type);
+  }
+
    startsWithForLastName() {
     cy.get('select[id="name.lastOperator"]').select('startsWith')
    }
@@ -271,6 +279,14 @@ class ClassicPatientSearchPage {
    patientListEnteredValueForDateOfBirth() {
     cy.contains('Martin')
    }
+
+  findSearchResultByDataItemType(text, id) {
+    cy.get(`div[data-item-type="${id}"]`).contains(text)
+  }
+
+  fillIdInputWithText(id, text) {
+    cy.get(`input[id="${id}"]`).type(text);
+  }
 
    equalForLastName() {
      cy.get('select[id="name.lastOperator"]').select('equals')

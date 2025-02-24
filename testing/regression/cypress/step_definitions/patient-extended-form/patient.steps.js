@@ -208,9 +208,9 @@ When("I select yes to Is the patient deceased", () => {
     NameEntryPage.selectPatientDeceasedYes();
   });
 
-  When("I complete the Mortality fields", () => {
+When("I complete the Mortality fields", () => {
     NameEntryPage.completeMortalityFields();
-  });
+});
 
 Then("I am on the modernized Patient Search page", () => {
     classicSearchPatientPage.navigateToModernizedPatientSearchPane();
@@ -220,12 +220,24 @@ Then("I select Starts with for Last Name", () => {
     classicSearchPatientPage.startsWithForLastName();
 });
 
+When("I select input id {string} with type {string}", (id, type) => {
+    classicSearchPatientPage.selectSearchNameType(id, type);
+});
+
+Then("I feel input id {string} with text {string}", (id, text) => {
+    classicSearchPatientPage.fillIdInputWithText(id, text);
+});
+
 Then("I enter a partial Last Name {string}", (name) => {
     classicSearchPatientPage.enterLastNameInModernizedSearchPatientPage(name);
 });
 
 Then("Click on Search in modernized Patient Search pane", () => {
     classicSearchPatientPage.clickSearchBtnInModernizedPatientSearchPane()
+});
+
+Then("Verify text {string} in Search Result data type {string}", (text, type) => {
+    classicSearchPatientPage.findSearchResultByDataItemType(text, type)
 });
 
 Then("the system should return patients whose Last Name starts with the entered value", () => {
