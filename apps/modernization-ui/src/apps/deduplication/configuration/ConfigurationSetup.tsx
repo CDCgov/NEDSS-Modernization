@@ -1,11 +1,8 @@
 import { Icon } from '@trussworks/react-uswds';
-import { AlertProvider, useAlert } from 'alert';
+import { AlertProvider } from 'alert';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
-import { useEffect, useState } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
-import NavBar from 'shared/header/NavBar';
 import styles from './configurationSetup.module.scss';
 
 export const ConfigurationSetup = () => {
@@ -17,30 +14,13 @@ export const ConfigurationSetup = () => {
 };
 
 const ConfigurationSetupContent = () => {
-    const { showError } = useAlert();
-    const [error] = useState<string | null>(null);
-    const form = useForm<{ passes?: any }>({ mode: 'onBlur' });
-    const watch = useWatch({ control: form.control });
-
-    if (!form || !form.control) {
-        console.error('useForm() did not return a valid form object.');
-        return null; // Prevents rendering the component if form is invalid
-    }
-
-    useEffect(() => {
-        if (error) {
-            showError({ message: error });
-        }
-    }, [error]);
-
     return (
         <div className={styles.configurationSetup}>
-            <NavBar title="Person Match Configuration" />
             <header>
                 <Heading level={1}>Person match configuration</Heading>
             </header>
             <main>
-                <Shown when={!watch?.passes}>
+                <Shown when={true /* This should be replaced with a valid condition */}>
                     <div className={styles.card}>
                         {/* Card */}
                         <div className={styles.cardHeader}>
