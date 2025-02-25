@@ -36,7 +36,7 @@ const Field = ({ sizing = 'large', orientation = 'vertical', className, children
 
     if (orientation === 'horizontal') {
         return (
-            <HorizontalField className={resolvedClasses} {...remaining}>
+            <HorizontalField className={resolvedClasses} sizing={sizing} {...remaining}>
                 {children}
             </HorizontalField>
         );
