@@ -21,10 +21,10 @@ When("I select Date Range for Date of Birth", () => {
     PatientSearchPage.selectDateRange();
   });
   
-  When("I enter a start and end date for the range", () => {
+When("I enter a start and end date for the range", () => {
     PatientSearchPage.enterDateRange();
   });
   
-  Then("the system should return patients whose Date of Birth falls within the entered date range", () => {
+Then("the system should return patients whose Date of Birth falls within the entered date range", () => {
     PatientSearchPage.verifySearchResults();
   });
