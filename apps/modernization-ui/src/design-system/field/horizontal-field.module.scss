@@ -8,6 +8,11 @@
     gap: 2rem;
     min-height: 3rem;
     @extend %thin-bottom;
+    &.small {
+        padding: 0.5rem 1.5rem;
+    }
+
+
 
 
     .left {
