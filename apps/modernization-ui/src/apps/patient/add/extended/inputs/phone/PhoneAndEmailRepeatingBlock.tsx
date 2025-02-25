@@ -21,7 +21,7 @@ export const PhoneAndEmailRepeatingBlock = ({
     errors,
     onChange,
     isDirty,
-    sizing = 'medium'
+    sizing
 }: PhoneAndEmailRepeatingBlockProps) => {
     const renderForm = () => <PhoneEmailEntryFields sizing={sizing} />;
     const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} />;
@@ -46,6 +46,7 @@ export const PhoneAndEmailRepeatingBlock = ({
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}
+            sizing={sizing}
         />
     );
 };
