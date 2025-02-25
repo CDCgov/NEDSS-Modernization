@@ -81,7 +81,8 @@ const Fixture = ({
     defaultValues,
     sizing,
     onChange = jest.fn(),
-    isDirty = jest.fn()
+    isDirty = jest.fn(),
+    isValid
 }: Partial<RepeatingBlockProps<TestType>>) => (
     <RepeatingBlock<TestType>
         id="testing"
@@ -92,6 +93,7 @@ const Fixture = ({
         onChange={onChange}
         isDirty={isDirty}
         sizing={sizing}
+        isValid={isValid}
         formRenderer={() => <UnderTestForm />}
         viewRenderer={(entry) => <UnderTestView entry={entry} />}
         errors={errors}
@@ -501,5 +503,52 @@ describe('RepeatingBlock', () => {
 
         expect(getByText('First error')).toBeInTheDocument();
         expect(getByText('Second error')).toBeInTheDocument();
+    });
+
+    it('should display form errors', async () => {
+        const { getByRole, queryByText } = render(<Fixture />);
+        await awaitRender();
+
+        const add = getByRole('button', { name: 'Add test title' });
+        userEvent.click(add);
+
+        await waitFor(() => {
+            expect(queryByText('First input is required.')).toBeInTheDocument();
+        });
+    });
+
+    it('should call isDirty with true when form input applied', () => {
+        const isDirty = jest.fn();
+        const { getByLabelText } = render(<Fixture isDirty={isDirty} />);
+        const input1 = getByLabelText('First Input');
+        userEvent.type(input1, 'first value');
+
+        expect(isDirty).toHaveBeenCalledWith(true);
+    });
+
+    it('should call isDirty with false when form input cleared', () => {
+        const isDirty = jest.fn();
+        const { getByLabelText, getByRole } = render(<Fixture isDirty={isDirty} />);
+        const input1 = getByLabelText('First Input');
+        userEvent.type(input1, 'first value');
+
+        const clear = getByRole('button', { name: 'Clear' });
+        userEvent.click(clear);
+
+        expect(isDirty).toHaveBeenCalledWith(false);
+    });
+
+    it('should call isValid with false when there are form errors', async () => {
+        const isValid = jest.fn();
+        const { getByRole, getByText } = render(<Fixture isValid={isValid} />);
+        await awaitRender();
+
+        const add = getByRole('button', { name: 'Add test title' });
+        userEvent.click(add);
+
+        await waitFor(() => {
+            expect(getByText('First input is required.')).toBeInTheDocument();
+            expect(isValid).toHaveBeenCalledWith(false);
+        });
     });
 });
