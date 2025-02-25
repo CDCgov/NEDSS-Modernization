@@ -19,6 +19,7 @@ class SearchablePatientFinder {
               deceased_ind_cd,
               curr_sex_cd,
               ethnic_group_ind,
+
               --documentIds
               (SELECT STUFF(
               (
@@ -224,7 +225,26 @@ class SearchablePatientFinder {
                       AND par.subject_entity_uid IN (select person_uid from Person p2 where p2.person_parent_uid=[patient].person_parent_uid)
                     ) tmp
                     FOR XML PATH('')
-                  ), 1, 1, '')) accession_ids
+                  ), 1, 1, '')) accession_ids,
+
+                --sort_email_address
+                (SELECT MAX(tl.email_address) sort_email_address
+                FROM
+                  Entity_locator_participation elp WITH (NOLOCK)
+                  JOIN Tele_locator tl WITH (NOLOCK) ON elp.locator_uid = tl.tele_locator_uid
+                WHERE
+                  elp.entity_uid IN (select person_uid from Person p2 where p2.person_parent_uid=[patient].person_parent_uid)
+                  AND elp.class_cd = 'TELE'
+                  AND elp.status_cd = 'A'
+                  AND tl.email_address IS NOT NULL
+                  AND elp.as_of_date = (select max(as_of_date)
+                    FROM Entity_locator_participation elp2 WITH (NOLOCK)
+                    JOIN Tele_locator tl2 WITH (NOLOCK) ON elp2.locator_uid = tl2.tele_locator_uid
+                    WHERE
+                      elp2.entity_uid IN (select person_uid from Person p2 where p2.person_parent_uid=[patient].person_parent_uid)
+                      AND elp2.class_cd = 'TELE'
+                      AND elp2.status_cd = 'A'
+                      AND tl2.email_address IS NOT NULL)) sort_email_address
 
           from person [patient]
           where cd = 'PAT'
@@ -249,6 +269,7 @@ class SearchablePatientFinder {
   private static final int INVESTIGATION_IDS_COLUMN = 16;
   private static final int LAB_REPORT_IDS_COLUMN = 17;
   private static final int ACCESSION_IDS_COLUMN = 18;
+  private static final int SORT_EMAIL_COLUMN = 19;
 
   private final JdbcTemplate template;
   private final SearchablePatientRowMapper mapper;
@@ -274,7 +295,8 @@ class SearchablePatientFinder {
             ACCESSION_IDS_COLUMN,
             INVESTIGATION_IDS_COLUMN,
             LAB_REPORT_IDS_COLUMN,
-            NOTIFICATION_IDS_COLUMN));
+            NOTIFICATION_IDS_COLUMN,
+            SORT_EMAIL_COLUMN));
   }
 
   Optional<SearchablePatient> find(long identifier) {
