@@ -184,3 +184,11 @@ Scenario: Required Name Fields
     Then I feel input id "name.first" with text "dam"
     And Click on Search in Patient Search pane
     Then Verify text "Donna" in Search Result data type "name"
+
+  Scenario: Searching for a patient by Last Name using "Equal"
+    Given I am on the modernized Patient Search page
+    When I select Equal for Last Name
+    And I enter a partial Last Name "Simpson"
+    And Click on Search in Patient Search pane
+    Then the system should return patients whose Last Name Equal the entered value
+
