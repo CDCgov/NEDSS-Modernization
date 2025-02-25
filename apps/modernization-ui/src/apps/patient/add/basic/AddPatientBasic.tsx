@@ -41,9 +41,9 @@ export const AddPatientBasic = () => {
     const location = useLocation();
 
     const handleCancel = () => {
-        toSearch(location.state.criteria);
+        toSearch(location.state?.criteria ?? '');
     };
-    const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state.criteria));
+    const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state?.criteria ?? ''));
 
     const working = !form.formState.isValid || interaction.status !== 'waiting';
 
