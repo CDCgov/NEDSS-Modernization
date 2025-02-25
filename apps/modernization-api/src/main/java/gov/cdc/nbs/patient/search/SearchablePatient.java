@@ -16,26 +16,17 @@ public record SearchablePatient(@JsonProperty("person_uid") long identifier, @Js
     @JsonProperty("record_status_cd") String status,
     @JsonProperty("birth_time") @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
         using = LocalDateWithTimeJsonDeserializer.class) LocalDate birthday,
-    @JsonProperty("deceased_ind_cd") String deceased,
-    @JsonProperty("curr_sex_cd") String gender,
-    @JsonProperty("ethnic_group_ind") String ethnicity,
-    @JsonProperty("name") List<Name> names,
-    @JsonProperty("address") List<Address> addresses,
-    @JsonProperty("phone") List<Phone> phones,
-    @JsonProperty("email") List<Email> emails,
-    @JsonProperty("race") List<Race> races,
-    @JsonProperty("entity_id") List<Identification> identifications,
-    @JsonProperty("document_ids") String documentIds,
-    @JsonProperty("morbidity_report_ids") String morbidityReportIds,
-    @JsonProperty("treatment_ids") String treatmentIds,
-    @JsonProperty("vaccination_ids") String vaccinationIds,
-    @JsonProperty("abcs_case_ids") String abcsCaseIds,
-    @JsonProperty("city_case_ids") String cityCaseIds,
-    @JsonProperty("state_case_ids") String stateCaseIds,
-    @JsonProperty("accession_ids") String accessionIds,
-    @JsonProperty("investigation_ids") String investigationIds,
-    @JsonProperty("lab_report_ids") String labReportIds,
-    @JsonProperty("notification_ids") String notificationIds) {
+    @JsonProperty("deceased_ind_cd") String deceased, @JsonProperty("curr_sex_cd") String gender,
+    @JsonProperty("ethnic_group_ind") String ethnicity, @JsonProperty("name") List<Name> names,
+    @JsonProperty("address") List<Address> addresses, @JsonProperty("phone") List<Phone> phones,
+    @JsonProperty("email") List<Email> emails, @JsonProperty("race") List<Race> races,
+    @JsonProperty("entity_id") List<Identification> identifications, @JsonProperty("document_ids") String documentIds,
+    @JsonProperty("morbidity_report_ids") String morbidityReportIds, @JsonProperty("treatment_ids") String treatmentIds,
+    @JsonProperty("vaccination_ids") String vaccinationIds, @JsonProperty("abcs_case_ids") String abcsCaseIds,
+    @JsonProperty("city_case_ids") String cityCaseIds, @JsonProperty("state_case_ids") String stateCaseIds,
+    @JsonProperty("accession_ids") String accessionIds, @JsonProperty("investigation_ids") String investigationIds,
+    @JsonProperty("lab_report_ids") String labReportIds, @JsonProperty("notification_ids") String notificationIds,
+    @JsonProperty("sort_email") String sortEmail) {
 
   public SearchablePatient(
       long identifier,
@@ -55,7 +46,8 @@ public record SearchablePatient(@JsonProperty("person_uid") long identifier, @Js
       String accessionIds,
       String investigationIds,
       String labReportIds,
-      String notificationIds) {
+      String notificationIds,
+      String sortEmail) {
     this(
         identifier,
         local,
@@ -80,7 +72,8 @@ public record SearchablePatient(@JsonProperty("person_uid") long identifier, @Js
         accessionIds,
         investigationIds,
         labReportIds,
-        notificationIds);
+        notificationIds,
+        sortEmail);
   }
 
   public record Name(
