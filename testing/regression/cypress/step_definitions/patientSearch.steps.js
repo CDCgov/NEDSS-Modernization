@@ -5,14 +5,26 @@ When("I select Exact Date for Date of Birth", () => {
   PatientSearchPage.selectExactDate();
 });
 
-And("I enter a specific date of birth", () => {
+When("I enter a specific date of birth", () => {
   PatientSearchPage.enterExactDateOfBirth();
 });
 
-When("I click the Search button", () => {
-  PatientSearchPage.clickSearch();
-});
+When("I search for patients", () => {
+    PatientSearchPage.clickSearch();
+  });
 
 Then("the system should return patients whose Date of Birth exactly matches the entered date", () => {
   PatientSearchPage.verifySearchResults();
 });
+
+When("I select Date Range for Date of Birth", () => {
+    PatientSearchPage.selectDateRange();
+  });
+  
+  When("I enter a start and end date for the range", () => {
+    PatientSearchPage.enterDateRange();
+  });
+  
+  Then("the system should return patients whose Date of Birth falls within the entered date range", () => {
+    PatientSearchPage.verifySearchResults();
+  });
