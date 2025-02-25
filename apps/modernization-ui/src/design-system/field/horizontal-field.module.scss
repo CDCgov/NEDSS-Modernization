@@ -8,26 +8,39 @@
     gap: 2rem;
     min-height: 3rem;
     @extend %thin-bottom;
+
     &.small {
-        padding: 0.5rem 1.5rem;
-    }
-
-
-
-
-    .left {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        min-width: 13rem;
-        width: 13rem;
-
-        &.small {
+        .left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
             min-width: 12rem;
             width: 12rem;
         }
 
+        padding: 0.5rem 1.5rem;
     }
+
+    &.medium {
+        .left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 13rem;
+            width: 13rem;
+        }
+    }
+
+    &.large {
+        .left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 13rem;
+            width: 13rem;
+        }
+    }
+
 
     label {
         font-size: 0.875rem;

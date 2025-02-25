@@ -30,7 +30,7 @@ const HorizontalField = ({
     children
 }: Props) => (
     <div className={classNames(styles.horizontalInput, styles[sizing], className)}>
-        <div className={classNames(styles.left, styles[sizing])}>
+        <div className={styles.left}>
             <label className={classNames({ required })} htmlFor={htmlFor}>
                 {label}
             </label>
