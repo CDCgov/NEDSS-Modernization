@@ -175,7 +175,8 @@ Feature: Patient Search Sorting
     And search result 3 has a "city" of "acity"
 
   Scenario: I can find the most relevant patient when sorting by email ascending
-    Given the patient has a "email address" of "abc@test.com"
+    Given the patient has the Email Address - Home email address of "xyz@test.com" as of 11/07/2023
+    And the patient has the Email Address - Home email address of "abc@test.com" as of 11/07/2024
     And I have another patient
     And the patient has a "email address" of "cba@test.com"
     And I have another patient
@@ -190,7 +191,8 @@ Feature: Patient Search Sorting
   Scenario: I can find the most relevant patient when sorting by email descending
     Given the patient has a "email address" of "abc@test.com"
     And I have another patient
-    And the patient has a "email address" of "cba@test.com"
+    And the patient has the Email Address - Home email address of "xyz@test.com" as of 11/07/2023
+    And the patient has the Email Address - Home email address of "cba@test.com" as of 11/07/2024
     And I have another patient
     And the patient has a "email address" of "bac@test.com"
     And patients are available for search
