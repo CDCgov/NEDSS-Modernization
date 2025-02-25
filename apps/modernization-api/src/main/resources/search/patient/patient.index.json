@@ -632,7 +632,7 @@
       "sex_unk_reason_cd": {
         "type": "keyword"
       },
-      "sort_email": {
+      "sort_email_address": {
         "type": "keyword",
         "index": false
       },

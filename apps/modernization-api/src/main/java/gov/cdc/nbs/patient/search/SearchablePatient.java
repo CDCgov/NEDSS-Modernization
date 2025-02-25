@@ -26,7 +26,7 @@ public record SearchablePatient(@JsonProperty("person_uid") long identifier, @Js
     @JsonProperty("city_case_ids") String cityCaseIds, @JsonProperty("state_case_ids") String stateCaseIds,
     @JsonProperty("accession_ids") String accessionIds, @JsonProperty("investigation_ids") String investigationIds,
     @JsonProperty("lab_report_ids") String labReportIds, @JsonProperty("notification_ids") String notificationIds,
-    @JsonProperty("sort_email") String sortEmail) {
+    @JsonProperty("sort_email_address") String sortEmail) {
 
   public SearchablePatient(
       long identifier,
