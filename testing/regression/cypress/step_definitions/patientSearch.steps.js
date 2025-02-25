@@ -17,7 +17,11 @@ Then("the system should return patients whose Date of Birth exactly matches the 
   PatientSearchPage.verifySearchResults();
 });
 
-When("I select Date Range for Date of Birth", () => {
+/*When("I select Date Range for Date of Birth", () => {
+    PatientSearchPage.selectDateRange();
+  });*/
+
+  When("I select Date Range for Date of Birth", () => {
     PatientSearchPage.selectDateRange();
   });
   
