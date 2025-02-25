@@ -77,6 +77,7 @@ class SearchablePatientResolver {
         patient.accessionIds(),
         patient.investigationIds(),
         patient.labReportIds(),
-        patient.notificationIds());
+        patient.notificationIds(),
+        patient.sortEmail());
   }
 }

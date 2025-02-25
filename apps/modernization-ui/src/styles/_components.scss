@@ -32,6 +32,11 @@ $small-textarea-height: 6.25rem;
     font-size: $small-font-size;
 }
 
+%small-label {
+    line-height: normal;
+    font-size: $small-font-size;
+}
+
 %small-input {
     height: $small-height;
     width: unset;
