@@ -240,3 +240,50 @@ Then("the system should return patients whose Last Name contains the entered val
     classicSearchPatientPage.patientListEnteredValue();
 });
 
+When("I select input id {string} with type {string}", (id, type) => {
+    classicSearchPatientPage.selectSearchNameType(id, type);
+});
+
+Then("I feel input id {string} with text {string}", (id, text) => {
+    classicSearchPatientPage.fillIdInputWithText(id, text);
+});
+
+Then("Verify text {string} in Search Result data type {string}", (text, type) => {
+    classicSearchPatientPage.findSearchResultByDataItemType(text, type)
+});
+
+Then("I select Exact Date for Date of Birth", () => {
+    classicSearchPatientPage.selectExactDateForDateOfBirth();
+});
+
+Then("I enter a specific date of birth", () => {
+    classicSearchPatientPage.enterDateOfBirthInModernizedSearchPatientPage();
+});
+
+Then("the system should return patients whose Last Name Exact Date the entered value", () => {
+    classicSearchPatientPage.patientListEnteredValueForDateOfBirth();
+});
+
+Then("I select Equal for Last Name", () => {
+    classicSearchPatientPage.equalForLastName();
+});
+
+Then("I select Not Equal for Last Name", () => {
+    classicSearchPatientPage.notEqualForLastName();
+});
+
+Then("the system should return patients whose Last Name Not Equal the entered value", () => {
+    classicSearchPatientPage.patientListEnteredValue();
+});
+
+Then("I select Sounds like for Last Name", () => {
+    classicSearchPatientPage.soundsLikeForLastName();
+});
+
+Then("the system should return patients whose Last Name Sounds like the entered value", () => {
+    classicSearchPatientPage.patientListEnteredValue();
+});
+
+Then("the system should return patients whose Last Name Equal the entered value", () => {
+    classicSearchPatientPage.patientListEnteredValue();
+});
