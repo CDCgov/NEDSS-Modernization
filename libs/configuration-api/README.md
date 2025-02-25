@@ -13,13 +13,19 @@ Boot.
 Provides the values Settings returned with in the `settings` property of
 the response of the `/nbs/api/configuration` endpoint.
 
-| Name                             | Default                  | Description                                                                                             |
-|----------------------------------|--------------------------|---------------------------------------------------------------------------------------------------------|
-| nbs.ui.settings.smarty.key       |                          | The embedded API key, when blank the Smarty API will not be invoked.                                    |
-| nbs.ui.settings.analytics.host   | https://us.i.posthog.com | The host name of the PostHog server to send analytics to.                                               |
-| nbs.ui.settings.analytics.key    |                          | The PostHog project key to associate frontend analytics with, when blank analytics will not be enabled. |
-| nbs.ui.settings.defaults.sizing  | medium                   | The default sizing of components on the modernized user interface.                                      |
-| nbs.ui.settings.defaults.country | 840 (United States)      | The default country for addresses.                                                                      |
+| Name                               | Default                  | Description                                                                                                                                                                                                                                                                                     |
+|------------------------------------|--------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| nbs.ui.settings.smarty.key         |                          | The embedded API key, when blank the Smarty API will not be invoked.                                                                                                                                                                                                                            |
+| nbs.ui.settings.analytics.host     | https://us.i.posthog.com | The host name of the PostHog server to send analytics to.                                                                                                                                                                                                                                       |
+| nbs.ui.settings.analytics.key      |                          | The PostHog project key to associate frontend analytics with, when blank analytics will not be enabled.                                                                                                                                                                                         |
+| nbs.ui.settings.defaults.sizing    | medium                   | The default sizing of components on the modernized user interface.                                                                                                                                                                                                                              |
+| nbs.ui.settings.defaults.country   | 840 (United States)      | The default country for addresses.                                                                                                                                                                                                                                                              |
+| nbs.ui.settings.session.warning    | 28m                      | A [Duration](https://docs.spring.io/spring-boot/reference/features/external-config.html#features.external-config.typesafe-configuration-properties.conversion.durations) that defines the amount of time to wait while the user is idle before warning of session timeout                       |
+| nbs.ui.settings.session.expiration | 30m                      | A [Duration](https://docs.spring.io/spring-boot/reference/features/external-config.html#features.external-config.typesafe-configuration-properties.conversion.durations) that defines the amount of time to wait while the user is idle before navigating the user to the expired session page. |
+
+_Note:  The `session` configuration settings are meant for a user interface to be able to alert a user that a session is
+going to expire and do not actually control the session timeout. The `warning`, and `expiration` settings should
+correspond to the session expiration configuration on the OIDC provider.
 
 ## Features
 
