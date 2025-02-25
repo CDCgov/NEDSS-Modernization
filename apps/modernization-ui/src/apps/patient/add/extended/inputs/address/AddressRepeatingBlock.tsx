@@ -46,6 +46,7 @@ export const AddressRepeatingBlock = ({ id, values, errors, onChange, isDirty, s
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}
+            sizing={sizing}
         />
     );
 };

@@ -5,22 +5,24 @@ import uswds from '@uswds/uswds/img/sprite.svg';
 import extended from './extended-sprite.svg';
 
 import styles from './icon.module.scss';
+import { Sizing } from 'design-system/field';
 
 type Icons = USWDSIcons | ExtendedIcons;
 
-type Size = 'small' | 'medium' | 'large';
+type Props = {
+    name: Icons;
+    sizing?: Sizing;
+    /** @deprecated Use sizing property instead */
+    size?: Sizing;
+} & Omit<ReactSVGProps<SVGSVGElement>, 'width' | 'height'>;
 
-type Props = { name: Icons; size?: Size } & Omit<ReactSVGProps<SVGSVGElement>, 'width' | 'height'>;
-
-const Icon = ({ name, size, role = 'img', className, ...props }: Props) => {
+const Icon = ({ name, sizing, role = 'img', className, ...props }: Props) => {
     const location = resolveLocation(name);
+    // standardizing property name as "sizing"
+    sizing = sizing || props.size;
     return (
         <svg
-            className={classNames(styles.icon, className, {
-                [styles.small]: size === 'small',
-                [styles.medium]: size === 'medium',
-                [styles.large]: size === 'large'
-            })}
+            className={classNames(styles.icon, className, sizing && styles[sizing])}
             role={role}
             aria-hidden={props['aria-hidden'] || !props['aria-label'] || !props['aria-labelledby']}
             {...props}>
