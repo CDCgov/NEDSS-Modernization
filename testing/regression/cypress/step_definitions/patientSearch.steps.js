@@ -32,3 +32,11 @@ When("I enter a start and end date for the range", () => {
 Then("the system should return patients whose Date of Birth falls within the entered date range", () => {
     PatientSearchPage.verifySearchResults();
   });
+
+  When("I enter a Date of Birth that does not exist", () => {
+    PatientSearchPage.enterInvalidDateOfBirth();
+  });
+  
+  Then("the system should display an error message", () => {
+    PatientSearchPage.verifyErrorMessage();
+  });
