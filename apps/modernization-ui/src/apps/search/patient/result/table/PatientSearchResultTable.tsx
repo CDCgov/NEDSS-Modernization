@@ -56,8 +56,20 @@ const columns: Column<PatientSearchResult>[] = [
         render: (result) => result.gender,
         filter: { id: 'sex', type: 'text' }
     },
-    { ...ADDRESS, className: styles['col-address'], render: displayAddresses, filter: { id: 'address', type: 'text' } },
-    { ...PHONE, className: styles['col-phone'], render: displayPhones, filter: { id: 'phone', type: 'text' } },
+    {
+        ...ADDRESS,
+        className: styles['col-address'],
+        render: displayAddresses,
+        filter: { id: 'address', type: 'text' },
+        sortable: true
+    },
+    {
+        ...PHONE,
+        className: styles['col-phone'],
+        render: displayPhones,
+        filter: { id: 'phone', type: 'text' },
+        sortable: true
+    },
     {
         ...IDENTIFICATIONS,
         className: styles['col-id'],

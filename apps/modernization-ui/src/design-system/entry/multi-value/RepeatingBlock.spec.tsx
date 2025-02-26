@@ -79,8 +79,10 @@ const Fixture = ({
     values = [],
     errors,
     defaultValues,
+    sizing,
     onChange = jest.fn(),
-    isDirty = jest.fn()
+    isDirty = jest.fn(),
+    isValid
 }: Partial<RepeatingBlockProps<TestType>>) => (
     <RepeatingBlock<TestType>
         id="testing"
@@ -90,6 +92,8 @@ const Fixture = ({
         values={values}
         onChange={onChange}
         isDirty={isDirty}
+        sizing={sizing}
+        isValid={isValid}
         formRenderer={() => <UnderTestForm />}
         viewRenderer={(entry) => <UnderTestView entry={entry} />}
         errors={errors}
@@ -144,6 +148,15 @@ describe('RepeatingBlock', () => {
 
         const button = getByRole('button', { name: 'Add test title' });
         expect(button).toBeInTheDocument();
+    });
+
+    it('should display add button with correct size', async () => {
+        const { getByRole } = render(<Fixture sizing="small" />);
+        await awaitRender();
+
+        const button = getByRole('button', { name: 'Add test title' });
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveClass('small');
     });
 
     it('should display specified columns', async () => {
@@ -292,7 +305,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should display icons in last column of table', async () => {
-        const { getByRole, getAllByRole } = render(
+        const { getAllByRole } = render(
             <Fixture
                 values={[
                     {
@@ -320,6 +333,28 @@ describe('RepeatingBlock', () => {
         // Delete icon
         expect(iconContainer.children[2]).toHaveAttribute('aria-label', 'Delete');
         expect(iconContainer.children[2]).toHaveAttribute('data-tooltip-position', 'top');
+    });
+
+    it('should render icons with correct sizing', async () => {
+        const { container } = render(
+            <Fixture
+                sizing="small"
+                values={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: []
+                    }
+                ]}
+            />
+        );
+        await awaitRender();
+
+        const icons = container.querySelectorAll('.actions svg');
+        expect(icons).toHaveLength(3);
+        icons.forEach((icon) => {
+            expect(icon).toHaveClass('small');
+        });
     });
 
     it('should render view when view icon clicked', async () => {
@@ -468,5 +503,52 @@ describe('RepeatingBlock', () => {
 
         expect(getByText('First error')).toBeInTheDocument();
         expect(getByText('Second error')).toBeInTheDocument();
+    });
+
+    it('should display form errors', async () => {
+        const { getByRole, queryByText } = render(<Fixture />);
+        await awaitRender();
+
+        const add = getByRole('button', { name: 'Add test title' });
+        userEvent.click(add);
+
+        await waitFor(() => {
+            expect(queryByText('First input is required.')).toBeInTheDocument();
+        });
+    });
+
+    it('should call isDirty with true when form input applied', () => {
+        const isDirty = jest.fn();
+        const { getByLabelText } = render(<Fixture isDirty={isDirty} />);
+        const input1 = getByLabelText('First Input');
+        userEvent.type(input1, 'first value');
+
+        expect(isDirty).toHaveBeenCalledWith(true);
+    });
+
+    it('should call isDirty with false when form input cleared', () => {
+        const isDirty = jest.fn();
+        const { getByLabelText, getByRole } = render(<Fixture isDirty={isDirty} />);
+        const input1 = getByLabelText('First Input');
+        userEvent.type(input1, 'first value');
+
+        const clear = getByRole('button', { name: 'Clear' });
+        userEvent.click(clear);
+
+        expect(isDirty).toHaveBeenCalledWith(false);
+    });
+
+    it('should call isValid with false when there are form errors', async () => {
+        const isValid = jest.fn();
+        const { getByRole, getByText } = render(<Fixture isValid={isValid} />);
+        await awaitRender();
+
+        const add = getByRole('button', { name: 'Add test title' });
+        userEvent.click(add);
+
+        await waitFor(() => {
+            expect(getByText('First input is required.')).toBeInTheDocument();
+            expect(isValid).toHaveBeenCalledWith(false);
+        });
     });
 });

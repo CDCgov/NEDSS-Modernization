@@ -99,7 +99,7 @@ describe('patientSearchResult functions', () => {
     });
 
     it('should render identifications with header and content', () => {
-        const { getByText } = render(displayIdentifications(mockPatient));
+        const { getByText } = render(<>{displayIdentifications(mockPatient)}</>);
         expect(getByText('SSN')).toBeInTheDocument();
         expect(getByText('123-45-6789')).toBeInTheDocument();
         expect(getByText('MRN')).toBeInTheDocument();

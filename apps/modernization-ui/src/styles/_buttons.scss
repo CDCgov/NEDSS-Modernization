@@ -2,8 +2,10 @@
 
 $button-padding-small: 0.5rem 0.75rem;
 $button-padding-medium: 0.75rem 1.25rem;
-$icon-small: 1.5rem;
-$icon-medium: 1.75rem;
+$icon-small: 1rem;
+$icon-medium: 1.25rem;
+$icon-only-small: 1.5rem;
+$icon-only-medium: 1.75rem;
 $icon-padding-small: 0.25rem;
 $icon-padding-medium: 0.5rem;
 
@@ -16,12 +18,14 @@ $icon-padding-medium: 0.5rem;
 
 %icon-button {
     padding: $icon-padding-medium !important;
+    @include sizedButtonIcon($icon-only-medium, $icon-only-medium);
 }
 
 .icon {
     @extend %icon-button;
     &.small {
         padding: $icon-padding-small !important;
+        @include sizedButtonIcon($icon-only-small, $icon-only-small);
     }
 }
 
@@ -52,7 +56,8 @@ $icon-padding-medium: 0.5rem;
 }
 
 %button-large {
-    padding: 1rem 1.5rem;
-    font-size: 1.125rem;
-    height: auto;
+    padding: $button-padding-medium;
+    font-size: 1rem;
+
+    @include sizedButtonIcon($icon-medium, $icon-medium);
 }

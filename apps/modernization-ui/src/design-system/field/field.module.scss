@@ -58,6 +58,12 @@
         textarea {
             @extend %small-textarea;
         }
+
+        &.error, &.warn {
+            select {
+                min-height: 1.75rem;
+            }
+        }
     }
 
     &.medium {

@@ -9,16 +9,41 @@
     min-height: 3rem;
     @extend %thin-bottom;
 
-    .left {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        min-width: 13rem;
-        width: 13rem;
+    &.small {
+        .left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 12rem;
+            width: 12rem;
+        }
+
+        padding: 0.5rem 1.5rem;
     }
 
+    &.medium {
+        .left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 13rem;
+            width: 13rem;
+        }
+    }
+
+    &.large {
+        .left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 13rem;
+            width: 13rem;
+        }
+    }
+
+
     label {
-        font-size: 0.875rem !important;
+        font-size: 0.875rem;
         font-weight: 700;
     }
 
@@ -27,7 +52,7 @@
         flex-direction: row;
         align-items: center;
         flex-grow: 1;
-        
+
         .children {
             order: 1;
             width: 20rem;
@@ -49,7 +74,7 @@
             .children {
                 order: 2;
             }
-    
+
             .message {
                 margin-left: 0;
                 order: 1;
@@ -58,4 +83,3 @@
     }
 
 }
-
