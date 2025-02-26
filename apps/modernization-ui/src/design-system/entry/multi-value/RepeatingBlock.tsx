@@ -134,7 +134,7 @@ const RepeatingBlock = <V extends FieldValues>({
     }, [errorMessages]);
 
     return (
-        <section id={id} className={styles.input}>
+        <section id={id} className={classNames(styles.input, sizing && styles[sizing])}>
             <header>
                 <Heading level={2}>{title}</Heading>
                 <span className="required-before">All required fields for adding {title.toLowerCase()}</span>
