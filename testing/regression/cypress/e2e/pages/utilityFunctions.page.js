@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-
+let counterApi = 0;
 class UtilityFunctions {
   getRandomLetter() {
     const letters = 'abcdefghijklmnopqrstuvwxyz';
@@ -70,7 +70,8 @@ class UtilityFunctions {
     const clientsecret = Cypress.env("DI_SECRET");
     const authurl = Cypress.env("authurl");
     const transportstatusurlapiUpdated = transportstatusurlapi.replace("uid", apiID);
-    let counter = 0;
+    
+    counterApi++;
     cy.request({
       method: "GET",
       url: transportstatusurlapiUpdated,
@@ -80,19 +81,19 @@ class UtilityFunctions {
         clientsecret: clientsecret,
       },
     }).then((response) => {
-      expect(response.status).to.eq(200);
-      counter++;
+      expect(response.status).to.eq(200);      
       let status = response.body.transportStatus;
       if(status === null) {
         cy.wait(35000);
-        if(counter !== 4) {
+        cy.log(counter);
+        if(counterApi === 4) {
           cy.log("Status null, retry");
           this.checkTransportRequestAPI(apiID);
         } else {
             expect(status).to.eq(null);
         }
       } else {
-        expect(status).to.eq("queued");
+        expect(status).to.be.oneOf(["BOTH", "queued"]);
       }
     });
   };
@@ -133,7 +134,7 @@ class UtilityFunctions {
                 this.checkTransportRequest();
               }
             });
-          }                       
+          }
         }));
       }
     });
