@@ -5,10 +5,8 @@ import { Shown } from 'conditional-render';
 import styles from './configurationSetup.module.scss';
 
 export const ConfigurationSetup = () => {
-    return <ConfigurationSetupContent />;
-};
-
-const ConfigurationSetupContent = () => {
+    // If a configuration is available, show pass selection screen
+    // if no configuration is available (not error), show "Algorithm not configured" card
     return (
         <div className={styles.configurationSetup}>
             <header>
@@ -36,13 +34,13 @@ const ConfigurationSetupContent = () => {
                             <div className={styles.buttonContainer}>
                                 <Button sizing="medium">
                                     <Icon.Settings size={3} />
-                                    {/* Todo: This button should nav to deduplication/data-elements */}
+                                    {/* This button should nav to deduplication/data-elements */}
                                     Configure data elements
                                 </Button>
 
                                 <Button sizing="medium">
                                     <Icon.UploadFile size={3} />
-                                    {/* Todo: This button should open a pop-up for import */}
+                                    {/* This button should open a pop-up for import */}
                                     Import configuration file
                                 </Button>
                             </div>
