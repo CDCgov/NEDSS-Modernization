@@ -192,3 +192,10 @@ Scenario: Required Name Fields
     And Click on Search in Patient Search pane
     Then the system should return patients whose Last Name Equal the entered value
 
+  Scenario: Searching for a patient by Last Name using "Not Equal"
+    Given I am on the modernized Patient Search page
+    When I select Not Equal for Last Name
+    And I enter a partial Last Name "Simpson"
+    And Click on Search in Patient Search pane
+    Then the system should return patients whose Last Name Not Equal the entered value
+
