@@ -60,7 +60,7 @@
         }
 
         &.error, &.warn {
-            select {
+            select, input {
                 min-height: 1.75rem;
             }
         }

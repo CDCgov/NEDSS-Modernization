@@ -27,7 +27,7 @@ export const BasicIdentificationRepeatingBlock = ({
     isDirty,
     isValid,
     errors,
-    sizing = 'medium'
+    sizing
 }: BasicIdentificationRepeatingBlockProps) => {
     const renderForm = () => <BasicIdentificationFields sizing={sizing} />;
     const renderView = (entry: BasicIdentificationEntry) => <BasicIdentificationView entry={entry} />;
@@ -52,6 +52,7 @@ export const BasicIdentificationRepeatingBlock = ({
             onChange={onChange}
             isDirty={isDirty}
             isValid={isValid}
+            sizing={sizing}
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}
