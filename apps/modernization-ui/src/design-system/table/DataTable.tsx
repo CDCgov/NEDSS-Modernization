@@ -46,10 +46,7 @@ const DataTable = <V,>({ id, className, columns, data, sizing, rowHeightConstrai
                     </tr>
                 </thead>
                 <tbody>
-                    <Shown when={data.length === 0}>
-                        <NoDataRow colSpan={columns.length} />
-                    </Shown>
-                    <Shown when={data.length > 0}>
+                    <Shown when={data.length > 0} fallback={<NoDataRow colSpan={columns.length} />}>
                         {data.map((row, index) => (
                             <DataTableRow
                                 index={index}
