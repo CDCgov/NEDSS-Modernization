@@ -4,8 +4,6 @@ import { displayAddress } from 'address/display';
 
 import { ItemGroup } from 'design-system/item';
 import { internalizeDate, displayAgeAsOfToday } from 'date';
-import { NoData } from 'components/NoData';
-import { Shown } from 'conditional-render';
 
 // Displays Other names, that are not the legal name
 const displayOtherNames = (result: PatientSearchResult, order: 'normal' | 'reverse' = 'normal'): JSX.Element | null => {
@@ -60,18 +58,17 @@ const displayPatientAge = (result: PatientSearchResult, variant: 'singleline' | 
     </div>
 );
 
-// Returns JSX that represents a list of IDs to display
-const displayIdentifications = (result: PatientSearchResult): JSX.Element => (
-    <Shown when={result.identification.length > 0} fallback={<NoData display="dashes" />}>
-        {result.identification.map((identification, index) => (
-            <div key={index}>
-                <ItemGroup type="other" label={identification.type}>
-                    {identification.value}
-                </ItemGroup>
-            </div>
-        ))}
-    </Shown>
-);
+// Returns JSX that represents a list of IDs to display if there are IDs otherwise returns null
+const displayIdentifications = (result: PatientSearchResult): JSX.Element[] | null =>
+    result.identification.length
+        ? result.identification.map((identification, index) => (
+              <div key={index}>
+                  <ItemGroup type="other" label={identification.type}>
+                      {identification.value}
+                  </ItemGroup>
+              </div>
+          ))
+        : null;
 
 export {
     displayPatientName,
