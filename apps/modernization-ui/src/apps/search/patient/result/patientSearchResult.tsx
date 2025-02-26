@@ -4,6 +4,7 @@ import { displayAddress } from 'address/display';
 
 import { ItemGroup } from 'design-system/item';
 import { internalizeDate, displayAgeAsOfToday } from 'date';
+import { NoData } from 'components/NoData';
 
 // Displays Other names, that are not the legal name
 const displayOtherNames = (result: PatientSearchResult, order: 'normal' | 'reverse' = 'normal'): JSX.Element | null => {
@@ -68,6 +69,7 @@ const displayIdentifications = (result: PatientSearchResult): JSX.Element => (
                 </ItemGroup>
             </div>
         ))}
+        {result.identification.length === 0 && <NoData display="dashes" />}
     </div>
 );
 
