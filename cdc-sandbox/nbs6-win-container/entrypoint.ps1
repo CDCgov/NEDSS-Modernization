@@ -72,12 +72,41 @@ $connectionURLs = @{
     "SrtDS" = "jdbc:sqlserver://DATABASE_ENDPOINT:1433;SelectMethod=direct;DatabaseName=nbs_srte"
 }
 
+$connectionURLs_user = @{ 
+    "NedssDS" = "odse_user";                     
+    "MsgOutDS" = "odse_user";                    
+    "ElrXrefDS" = "odse_user";                     
+    "RdbDS" = "rdb_user";                     
+    "SrtDS" = "srte_user"
+}
+
+$connectionURLs_pass = @{ 
+    "NedssDS" = "odse_pass";                     
+    "MsgOutDS" = "odse_pass";                     
+    "ElrXrefDS" = "odse_pass";                     
+    "RdbDS" = "rdb_pass";                     
+    "SrtDS" = "srte_pass"
+}
 
 $keys = $connectionURLs.Keys.Clone()
-
 foreach ($key in $keys) {
     $connectionURLs[$key] = $connectionURLs[$key] -replace "DATABASE_ENDPOINT", $env:DATABASE_ENDPOINT
 }
+
+$keys_user = $connectionURLs_user.Keys.Clone()
+foreach ($key in $keys_user) {
+    $connectionURLs_user[$key] = $connectionURLs_user[$key] -replace "odse_user", $env:odse_user
+    $connectionURLs_user[$key] = $connectionURLs_user[$key] -replace "rdb_user", $env:rdb_user
+    $connectionURLs_user[$key] = $connectionURLs_user[$key] -replace "srte_user", $env:srte_user
+}
+
+$keys_pass = $connectionURLs_pass.Keys.Clone()
+foreach ($key in $keys_pass) {
+    $connectionURLs_pass[$key] = $connectionURLs_pass[$key] -replace "odse_pass", $env:odse_pass
+    $connectionURLs_pass[$key] = $connectionURLs_pass[$key] -replace "rdb_pass", $env:rdb_pass
+    $connectionURLs_pass[$key] = $connectionURLs_pass[$key] -replace "srte_pass", $env:srte_pass
+}
+
 
 # Replace datasources in standalone.xml file
 $xmlFileName = "D:\wildfly-10.0.0.Final\nedssdomain\configuration\standalone.xml"
@@ -96,6 +125,8 @@ $subsystems | ForEach-Object {
         $datsources | ForEach-Object {
             if ( $connectionURLs.ContainsKey($_.'pool-name')) {
                 $_.'connection-url' =  $connectionURLs[$_.'pool-name']
+                $_.security.'user-name' = $connectionURLs_user[$_.'pool-name']
+                $_.security.password = $connectionURLs_pass[$_.'pool-name']
             }
         }
     }
