@@ -14,3 +14,7 @@ Feature: Patient Search Result Addresses
     When I search for patients
     Then the search results have a patient with an "address type" equal to "House"
     And the search results have a patient with an "address use" equal to "Home"
+
+  Scenario: I can view patient search results addresses in the correct order
+    Given the patient has a House - Home address at "6 Richmond Street" "Miami" "12345" as of 01/01/1999
+
