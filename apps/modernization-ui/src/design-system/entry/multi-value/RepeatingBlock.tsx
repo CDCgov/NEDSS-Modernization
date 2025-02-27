@@ -150,15 +150,13 @@ const RepeatingBlock = <V extends FieldValues>({
                 </AlertMessage>
             </Shown>
             <div>
-                <Shown when={entries.length > 0}>
-                    <DataTable<V>
-                        className={styles.dataTable}
-                        id={`${id}-data-table`}
-                        columns={[...columns, iconColumn]}
-                        data={entries}
-                        sizing={sizing}
-                    />
-                </Shown>
+                <DataTable<V>
+                    className={styles.dataTable}
+                    id={`${id}-data-table`}
+                    columns={[...columns, iconColumn]}
+                    data={entries}
+                    sizing={sizing}
+                />
             </div>
             <Shown when={status === 'viewing'}>{selected && viewRenderer(selected)}</Shown>
             <Shown when={status !== 'viewing'}>
