@@ -2,50 +2,50 @@
 @use 'styles/borders';
 
 .dataElements {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-  .heading {
     display: flex;
-    align-items: center;
-    padding: 1rem;
-    gap: 0.5rem;
-    background-color: colors.$base-white;
-    @extend %thin-bottom;
+    flex-direction: column;
+    height: 100%;
 
-    svg {
-      cursor: pointer;
+    .heading {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        gap: 0.5rem;
+        background-color: colors.$base-white;
+        @extend %thin-bottom;
+
+        svg {
+            cursor: pointer;
+        }
     }
-  }
 
-  .content {
-    display: flex;
-    padding: 1rem;
-    gap: 1rem;
+    .content {
+        display: flex;
+        padding: 1rem;
+        gap: 1rem;
 
-    main {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      gap: 1rem;
-      padding-bottom: 8rem;
+        main {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            gap: 1rem;
+            padding-bottom: 8rem;
 
-      .belongingnessCard {
-        padding: 0.75rem 1.5rem;
-      }
+            .belongingnessCard {
+                padding: 0.75rem 1.5rem;
+            }
+        }
     }
-  }
 
-  .buttonBar {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    width: 100%;
-    padding: 1.5rem;
-    background-color: colors.$base-white;
-    position: fixed;
-    bottom: 0;
-    @extend %thin-top;
-  }
+    .buttonBar {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 1.5rem;
+        background-color: colors.$base-white;
+        position: fixed;
+        bottom: 0;
+        @extend %thin-top;
+    }
 }

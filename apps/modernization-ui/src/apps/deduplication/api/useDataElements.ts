@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { DataElements } from '../data-elements/types/DataElement';
+import { DataElements } from '../data-elements/DataElement';
 
 const KEY = 'deduplication-dataElements';
 

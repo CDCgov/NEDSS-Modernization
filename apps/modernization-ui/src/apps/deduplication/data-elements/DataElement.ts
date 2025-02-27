@@ -1,16 +1,19 @@
 type DataElement = {
     active?: boolean;
+    oddsRatio?: number;
     logOdds?: number;
     threshold?: number;
 };
 
 type DataElements = {
+    // Personal Information
+    firstName?: DataElement;
+    lastName?: DataElement;
     dateOfBirth?: DataElement;
     currentSex?: DataElement;
     race?: DataElement;
-    firstName?: DataElement;
-    lastName?: DataElement;
     suffix?: DataElement;
+    // Address Details
     streetAddress1?: DataElement;
     city?: DataElement;
     state?: DataElement;
@@ -19,6 +22,7 @@ type DataElements = {
     telecom?: DataElement;
     telephone?: DataElement;
     email?: DataElement;
+    // Identification Details
     accountNumber?: DataElement;
     driversLicenseNumber?: DataElement;
     medicaidNumber?: DataElement;
@@ -33,15 +37,4 @@ type DataElements = {
     wicIdentifier?: DataElement;
 };
 
-type Field = {
-    key: keyof DataElements;
-    label: string;
-};
-
-// Define structure for grouping fields (Personal, Address, Identification)
-type DataElementGroup = {
-    title: string;
-    fields: Field[];
-};
-
-export type { DataElements, DataElement, Field, DataElementGroup };
+export type { DataElements, DataElement };

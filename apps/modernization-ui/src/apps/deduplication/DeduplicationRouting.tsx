@@ -1,5 +1,5 @@
 import { ConfigurationSetup } from './configuration/ConfigurationSetup';
-import { DataElementConfig } from './data-elements/DataElementsConfig';
+import { DataElementConfig } from './data-elements/DataElementConfig';
 
 const routing = [
     {
