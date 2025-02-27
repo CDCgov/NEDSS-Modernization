@@ -34,7 +34,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         align-items: flex-start;
-        gap: 0.25rem;
+        gap: 0.5rem;
 
         .children {
             width: 20rem;
@@ -52,6 +52,8 @@
         .left {
             --label-area-width: 12rem;
             --label-area-font-size: #{components.$small-font-size};
+
+            padding-top: 0.25rem;
         }
 
         padding-left: 1rem;
