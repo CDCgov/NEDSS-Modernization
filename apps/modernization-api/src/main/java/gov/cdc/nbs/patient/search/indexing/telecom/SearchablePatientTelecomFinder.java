@@ -12,7 +12,9 @@ public class SearchablePatientTelecomFinder {
           [locator].[phone_nbr_txt]       as [phone_number],
           [locator].extension_txt         as [extension],
           [participation].cd              as [type_cd],
-          [participation].use_cd          as [use_cd]
+          [participation].use_cd          as [use_cd],
+          [participation].[as_of_date],
+          [participation].[locator_uid]
 
       from Entity_locator_participation [participation]
 
@@ -21,12 +23,16 @@ public class SearchablePatientTelecomFinder {
 
       where   [participation].entity_uid = ?
           and [participation].[class_cd] = 'TELE'
+      order by 
+          [participation].[as_of_date] desc,
+          [participation].[locator_uid] desc
       """;
   private static final int ADDRESS_COLUMN = 1;
   private static final int NUMBER_COLUMN = 2;
   private static final int EXTENSION_COLUMN = 3;
   private static final int TYPE_COLUMN = 4;
   private static final int USE_COLUMN = 5;
+
   private static final int PATIENT_PARAMETER = 1;
 
   private final JdbcTemplate template;
