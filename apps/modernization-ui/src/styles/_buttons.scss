@@ -16,19 +16,6 @@ $icon-padding-medium: 0.5rem;
     }
 }
 
-%icon-button {
-    padding: $icon-padding-medium !important;
-    @include sizedButtonIcon($icon-only-medium, $icon-only-medium);
-}
-
-.icon {
-    @extend %icon-button;
-    &.small {
-        padding: $icon-padding-small !important;
-        @include sizedButtonIcon($icon-only-small, $icon-only-small);
-    }
-}
-
 .destructive {
     background-color: colors.$destructive !important;
     &:hover {
@@ -60,4 +47,21 @@ $icon-padding-medium: 0.5rem;
     font-size: 1rem;
 
     @include sizedButtonIcon($icon-medium, $icon-medium);
+}
+
+%icon-button {
+    padding: $icon-padding-medium !important;
+    @include sizedButtonIcon($icon-only-medium, $icon-only-medium);
+}
+
+%icon-button-small {
+    padding: $icon-padding-small !important;
+    @include sizedButtonIcon($icon-only-small, $icon-only-small);
+}
+
+.icon {
+    &.small {
+        @extend %icon-button-small;
+    }
+    @extend %icon-button;
 }
