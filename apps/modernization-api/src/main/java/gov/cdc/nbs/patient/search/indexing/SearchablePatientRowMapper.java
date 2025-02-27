@@ -28,8 +28,8 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
       int accessionIds,
       int investigationIds,
       int labReportIds,
-      int notificationIds,
-      int sortEmail) {
+      int notificationIds
+  ) {
   }
 
 
@@ -48,7 +48,6 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
     String deceased = resultSet.getString(columns.deceased());
     String gender = resultSet.getString(columns.gender());
     String ethnicity = resultSet.getString(columns.ethnicity());
-    String sortEmail = resultSet.getString(columns.sortEmail());
     String documentIds = resultSet.getString(columns.documentIds());
     String morbidityReportIds = resultSet.getString(columns.morbidityReportIds());
     String treatmentIds = resultSet.getString(columns.treatmentIds());
@@ -80,7 +79,7 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
         accessionIds,
         investigationIds,
         labReportIds,
-        notificationIds,
-        sortEmail);
+        notificationIds
+    );
   }
 }

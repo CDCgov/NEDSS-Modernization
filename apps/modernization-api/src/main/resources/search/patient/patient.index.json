@@ -1,41 +1,114 @@
 {
   "mappings": {
     "properties": {
-      "SSN": {
+      "cd": {
         "type": "keyword"
       },
-      "_class": {
-        "type": "keyword",
-        "index": false,
-        "doc_values": false
+      "person_uid": {
+        "type": "long"
       },
-      "abcs_case_ids": {
-        "type": "text"
-      },
-      "accession_ids": {
-        "type": "text"
-      },
-      "add_reason_cd": {
+      "local_id": {
         "type": "keyword"
       },
-      "add_time": {
+      "short_id": {
+        "type": "keyword"
+      },
+      "record_status_cd": {
+        "type": "keyword"
+      },
+      "birth_time": {
         "type": "date",
         "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
       },
-      "add_user_id": {
-        "type": "long"
-      },
-      "additional_gender_cd": {
+      "deceased_ind_cd": {
         "type": "keyword"
+      },
+      "curr_sex_cd": {
+        "type": "keyword"
+      },
+      "ethnic_group_ind": {
+        "type": "keyword"
+      },
+      "name": {
+        "type": "nested",
+        "properties": {
+          "firstNm": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "firstNmSndx": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "lastNm": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "lastNmSndx": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "middleNm": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "nmSuffix": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "nm_use_cd": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "full" : {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
       },
       "address": {
         "type": "nested",
         "properties": {
-          "_class": {
-            "type": "keyword",
-            "index": false,
-            "doc_values": false
-          },
           "city": {
             "type": "text",
             "fields": {
@@ -125,148 +198,8 @@
                 "ignore_above": 256
               }
             }
-          }
-        }
-      },
-      "administrative_gender_cd": {
-        "type": "keyword"
-      },
-      "adults_in_house_nbr": {
-        "type": "short"
-      },
-      "age_calc": {
-        "type": "short"
-      },
-      "age_calc_time": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "age_calc_unit_cd": {
-        "type": "keyword"
-      },
-      "age_category_cd": {
-        "type": "keyword"
-      },
-      "age_reported": {
-        "type": "keyword"
-      },
-      "age_reported_time": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "age_reported_unit_cd": {
-        "type": "keyword"
-      },
-      "as_of_date_admin": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "as_of_date_ethnicity": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "as_of_date_general": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "as_of_date_morbidity": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "as_of_date_sex": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "birth_city_cd": {
-        "type": "keyword"
-      },
-      "birth_city_desc_txt": {
-        "type": "text"
-      },
-      "birth_cntry_cd": {
-        "type": "keyword"
-      },
-      "birth_gender_cd": {
-        "type": "keyword"
-      },
-      "birth_order_nbr": {
-        "type": "short"
-      },
-      "birth_state_cd": {
-        "type": "keyword"
-      },
-      "birth_time": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "birth_time_calc": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "cd": {
-        "type": "keyword"
-      },
-      "cd_desc_txt": {
-        "type": "text"
-      },
-      "cell_phone_nbr": {
-        "type": "keyword"
-      },
-      "children_in_house_nbr": {
-        "type": "short"
-      },
-      "city_case_ids": {
-        "type": "text"
-      },
-      "curr_sex_cd": {
-        "type": "keyword"
-      },
-      "deceased_ind_cd": {
-        "type": "keyword"
-      },
-      "deceased_time": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "dedup_match_ind": {
-        "type": "keyword"
-      },
-      "description": {
-        "type": "text"
-      },
-      "dl_num": {
-        "type": "keyword"
-      },
-      "dl_state_cd": {
-        "type": "keyword"
-      },
-      "document_ids": {
-        "type": "text"
-      },
-      "education_level_cd": {
-        "type": "keyword"
-      },
-      "education_level_desc_txt": {
-        "type": "text"
-      },
-      "edx_ind": {
-        "type": "keyword"
-      },
-      "ehars_id": {
-        "type": "keyword"
-      },
-      "electronic_ind": {
-        "type": "keyword"
-      },
-      "email": {
-        "type": "nested",
-        "properties": {
-          "_class": {
-            "type": "keyword",
-            "index": false,
-            "doc_values": false
           },
-          "emailAddress": {
+          "full" : {
             "type": "text",
             "fields": {
               "keyword": {
@@ -276,265 +209,10 @@
             }
           }
         }
-      },
-      "entity_id": {
-        "type": "nested",
-        "properties": {
-          "_class": {
-            "type": "keyword",
-            "index": false,
-            "doc_values": false
-          },
-          "recordStatusCd": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "rootExtensionTxt": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "typeCd": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          }
-        }
-      },
-      "ethnic_group_desc_txt": {
-        "type": "text"
-      },
-      "ethnic_group_ind": {
-        "type": "keyword"
-      },
-      "ethnic_group_seq_nbr": {
-        "type": "short"
-      },
-      "ethnic_unk_reason_cd": {
-        "type": "keyword"
-      },
-      "ethnicity_group_cd": {
-        "type": "keyword"
-      },
-      "first_nm": {
-        "type": "text"
-      },
-      "group_time": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "hm_city_cd": {
-        "type": "keyword"
-      },
-      "hm_city_desc_txt": {
-        "type": "text"
-      },
-      "hm_cntry_cd": {
-        "type": "keyword"
-      },
-      "hm_cnty_cd": {
-        "type": "keyword"
-      },
-      "hm_email_addr": {
-        "type": "keyword"
-      },
-      "hm_phone_cntry_cd": {
-        "type": "keyword"
-      },
-      "hm_phone_nbr": {
-        "type": "text"
-      },
-      "hm_state_cd": {
-        "type": "keyword"
-      },
-      "hm_street_addr1": {
-        "type": "text"
-      },
-      "hm_street_addr2": {
-        "type": "text"
-      },
-      "hm_zip_cd": {
-        "type": "keyword"
-      },
-      "id": {
-        "type": "long"
-      },
-      "investigation_ids": {
-        "type": "text"
-      },
-      "lab_report_ids": {
-        "type": "text"
-      },
-      "last_chg_reason_cd": {
-        "type": "keyword"
-      },
-      "last_chg_time": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "last_chg_user_id": {
-        "type": "long"
-      },
-      "last_nm": {
-        "type": "text",
-        "fields": {
-          "text": {
-            "type": "text"
-          }
-        },
-        "fielddata": true
-      },
-      "local_id": {
-        "type": "keyword"
-      },
-      "marital_status_cd": {
-        "type": "keyword"
-      },
-      "marital_status_desc_txt": {
-        "type": "text"
-      },
-      "medicaid_num": {
-        "type": "keyword"
-      },
-      "middle_nm": {
-        "type": "text"
-      },
-      "morbidity_report_ids": {
-        "type": "text"
-      },
-      "mothers_maiden_nm": {
-        "type": "text"
-      },
-      "multiple_birth_ind": {
-        "type": "keyword"
-      },
-      "name": {
-        "type": "nested",
-        "properties": {
-          "_class": {
-            "type": "keyword",
-            "index": false,
-            "doc_values": false
-          },
-          "firstNm": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "firstNmSndx": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "lastNm": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "lastNmSndx": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "middleNm": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "nmDegree": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "nmPrefix": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "nmSuffix": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "nm_use_cd": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          }
-        }
-      },
-      "nm_prefix": {
-        "type": "text"
-      },
-      "nm_suffix": {
-        "type": "text"
-      },
-      "notification_ids": {
-        "type": "text"
-      },
-      "occupation_cd": {
-        "type": "keyword"
-      },
-      "person_uid": {
-        "type": "long"
       },
       "phone": {
         "type": "nested",
         "properties": {
-          "_class": {
-            "type": "keyword",
-            "index": false,
-            "doc_values": false
-          },
           "extensionTxt": {
             "type": "text",
             "fields": {
@@ -561,26 +239,23 @@
           }
         }
       },
-      "preferred_gender_cd": {
-        "type": "keyword"
-      },
-      "preferred_nm": {
-        "type": "text"
-      },
-      "prim_lang_cd": {
-        "type": "keyword"
-      },
-      "prim_lang_desc_txt": {
-        "type": "text"
+      "email": {
+        "type": "nested",
+        "properties": {
+          "emailAddress": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
       },
       "race": {
         "type": "nested",
         "properties": {
-          "_class": {
-            "type": "keyword",
-            "index": false,
-            "doc_values": false
-          },
           "raceCategoryCd": {
             "type": "text",
             "fields": {
@@ -598,8 +273,22 @@
                 "ignore_above": 256
               }
             }
+          }
+        }
+      },
+      "entity_id": {
+        "type": "nested",
+        "properties": {
+          "rootExtensionTxt": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
           },
-          "raceDescTxt": {
+          "typeCd": {
             "type": "text",
             "fields": {
               "keyword": {
@@ -610,92 +299,62 @@
           }
         }
       },
-      "race_category_cd": {
-        "type": "keyword"
-      },
-      "race_cd": {
-        "type": "keyword"
-      },
-      "race_desc_txt": {
+      "document_ids": {
         "type": "text"
       },
-      "race_seq_nbr": {
-        "type": "short"
-      },
-      "record_status_cd": {
-        "type": "keyword"
-      },
-      "record_status_time": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "sex_unk_reason_cd": {
-        "type": "keyword"
-      },
-      "sort_email_address": {
-        "type": "keyword",
-        "index": false
-      },
-      "speaks_english_cd": {
-        "type": "keyword"
-      },
-      "state_case_ids": {
+      "morbidity_report_ids": {
         "type": "text"
-      },
-      "status_cd": {
-        "type": "keyword"
-      },
-      "status_time": {
-        "type": "date",
-        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "survived_ind_cd": {
-        "type": "keyword"
       },
       "treatment_ids": {
-        "type": "text"
-      },
-      "user_affiliation_txt": {
         "type": "text"
       },
       "vaccination_ids": {
         "type": "text"
       },
-      "version_ctrl_nbr": {
-        "type": "short"
-      },
-      "wk_city_cd": {
-        "type": "keyword"
-      },
-      "wk_city_desc_txt": {
+      "abcs_case_ids": {
         "type": "text"
       },
-      "wk_cntry_cd": {
-        "type": "keyword"
-      },
-      "wk_cnty_cd": {
-        "type": "keyword"
-      },
-      "wk_email_addr": {
-        "type": "keyword"
-      },
-      "wk_phone_cntry_cd": {
-        "type": "keyword"
-      },
-      "wk_phone_nbr": {
-        "type": "keyword"
-      },
-      "wk_state_cd": {
-        "type": "keyword"
-      },
-      "wk_street_addr1": {
+      "city_case_ids": {
         "type": "text"
       },
-      "wk_street_addr2": {
+      "state_case_ids": {
         "type": "text"
       },
-      "wk_zip_cd": {
-        "type": "keyword"
+      "accession_ids": {
+        "type": "text"
+      },
+      "investigation_ids": {
+        "type": "text"
+      },
+      "lab_report_ids": {
+        "type": "text"
+      },
+      "notification_ids": {
+        "type": "text"
+      },
+      "sort": {
+        "properties" : {
+          "identification": {
+            "type": "keyword",
+            "index": false
+          },
+          "phone": {
+            "type": "keyword",
+            "index": false
+          },
+          "address": {
+            "type": "keyword",
+            "index": false
+          },
+          "email": {
+            "type": "keyword",
+            "index": false
+          },
+          "name": {
+            "type": "keyword",
+            "index": false
+          }
+        }
       }
     }
   }
