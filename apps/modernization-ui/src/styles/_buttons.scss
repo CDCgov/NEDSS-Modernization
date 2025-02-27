@@ -63,5 +63,8 @@ $icon-padding-medium: 0.5rem;
     &.small {
         @extend %icon-button-small;
     }
-    @extend %icon-button;
+    &.medium {
+        @extend %icon-button;
+    }
+    
 }
