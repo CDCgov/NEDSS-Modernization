@@ -199,3 +199,10 @@ Scenario: Required Name Fields
     And Click on Search in Patient Search pane
     Then the system should return patients whose Last Name Not Equal the entered value
 
+  Scenario: Searching for a patient by Last Name using "Sounds like"
+    Given I am on the modernized Patient Search page
+    When I select Sounds like for Last Name
+    And I enter a partial Last Name "simpson"
+    And Click on Search in Patient Search pane
+    Then the system should return patients whose Last Name Sounds like the entered value
+
