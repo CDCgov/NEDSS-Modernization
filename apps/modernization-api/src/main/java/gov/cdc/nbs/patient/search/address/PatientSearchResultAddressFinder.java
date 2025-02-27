@@ -27,8 +27,7 @@ class PatientSearchResultAddressFinder {
 	      [state].state_nm                as [state],
 	      [address].zip_cd                as [zipcode],
 	      [country].code_short_desc_txt   as [country],
-	      [county].code_desc_txt          as [county],
-	      [locators].as_of_date           as [as_of]
+	      [county].code_desc_txt          as [county]
 	  from Entity_locator_participation [locators]
 	  
 	      join Postal_locator [address] on
@@ -55,8 +54,6 @@ class PatientSearchResultAddressFinder {
 	      and [locators].[class_cd] = 'PST'
 	      and ([locators].[use_cd] IS NULL OR [locators].[use_cd] not in ('BIR', 'DTH'))
 	      and [locators].[record_status_cd] = 'ACTIVE'
-	  order by
-	      [locators].as_of_date desc
 	  """;
   private static final int PATIENT_PARAMETER = 1;
 
