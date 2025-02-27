@@ -7,6 +7,7 @@
     input,
     select,
     textarea {
+        width: 100%;
         outline: none;
         padding-top: 0.25rem;
         padding-bottom: 0.25rem;
@@ -34,6 +35,7 @@
     input,
     select,
     textarea {
+        width: 100%;
         box-sizing: border-box;
         margin: 0;
     }
@@ -59,8 +61,10 @@
             @extend %small-textarea;
         }
 
-        &.error, &.warn {
-            select, input {
+        &.error,
+        &.warn {
+            select,
+            input {
                 min-height: 1.75rem;
             }
         }

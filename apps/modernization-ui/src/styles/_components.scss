@@ -11,14 +11,12 @@ $medium-textarea-height: 7.5rem;
 
 %medium-input {
     height: $medium-height;
-    width: unset;
 
     @extend %medium;
 }
 
 %medium-textarea {
     height: $medium-textarea-height;
-    width: unset;
 
     @extend %medium;
 }
@@ -39,7 +37,6 @@ $small-textarea-height: 6.25rem;
 
 %small-input {
     height: $small-height;
-    width: unset;
     padding: 0.25rem 0.5rem;
 
     @extend %small;
@@ -47,7 +44,6 @@ $small-textarea-height: 6.25rem;
 
 %small-textarea {
     height: $small-textarea-height;
-    width: unset;
 
     @extend %small;
 }
@@ -63,14 +59,12 @@ $large-textarea-height: 6.5rem;
 
 %large-input {
     height: $large-height;
-    width: unset;
 
     @extend %large;
 }
 
 %large-textarea {
     height: $large-textarea-height;
-    width: unset;
 
     @extend %large;
 }
