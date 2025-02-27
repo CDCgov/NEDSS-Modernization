@@ -7,7 +7,7 @@ const routing = [
         element: <ConfigurationSetup />
     },
     {
-        path: '/deduplication/data-elements',
+        path: '/deduplication/data_elements',
         element: <DataElementConfig />
     }
 ];

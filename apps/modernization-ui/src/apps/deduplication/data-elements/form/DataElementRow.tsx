@@ -44,7 +44,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
         if (Number.isNaN(oddsRatio) || oddsRatio === 0 || oddsRatio === undefined) {
             form.setValue(`${field}.logOdds`, undefined);
         } else {
-            form.setValue(`${field}.logOdds`, Math.log(oddsRatio));
+            form.setValue(`${field}.logOdds`, Math.log10(oddsRatio));
         }
     }, [watch[field]?.oddsRatio]);
 
@@ -77,7 +77,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             onChange={onChange}
                             onBlur={onBlur} // Validation triggered only onBlur
                             error={error?.message}
-                            max={10} // Adjusted upper bound to allow meaningful odds ratios
+                            max={10}
                             min={0.01} // Prevents division by zero
                             step={0.01}
                             disabled={!watch[field]?.active}

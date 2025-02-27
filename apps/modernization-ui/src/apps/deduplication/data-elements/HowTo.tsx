@@ -6,9 +6,9 @@ export const HowTo = () => {
         <aside className={styles.helpText}>
             <Heading level={2}>How to</Heading>
             <div>
-                <Heading level={4}>
+                <p>
                     <strong>Data elements</strong>
-                </Heading>
+                </p>
                 <p>
                     This table represents all the possible data elements that are available for use as person matching
                     criteria.
@@ -18,12 +18,9 @@ export const HowTo = () => {
                     previous testing of local data.
                 </p>
                 <p>The corresponding log odds value used by the algorithm will be calculated and displayed.</p>
-                <Heading level={4}>
-                    <strong>Threshold</strong>
-                </Heading>
                 <p>
-                    Values above which two strings are said to be “similar enough” that they’re probably the same thing.
-                    Values that are less than the threshold will be calculated as 0.
+                    <strong>Threshold-</strong> Values above which two strings are said to be “similar enough” that
+                    they’re probably the same thing. Values that are less than the threshold will be calculated as 0.
                 </p>
             </div>
         </aside>

@@ -4,6 +4,7 @@
 .card {
     @extend %thin;
     background-color: colors.$base-white;
+    border-radius: 5px;
 
     & > header {
         display: flex;

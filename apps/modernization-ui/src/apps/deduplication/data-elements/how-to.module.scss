@@ -1,12 +1,15 @@
 .helpText {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 0 1rem;
-    width: 20rem;
+    width: 350px;
+    height: 378px;
+    gap: 24px;
+    border-radius: 5px;
+    padding: 1rem;
+    font-weight: 350;
+    font-size: 14px;
+    line-height: 21px;
 
-    p {
-        margin: 0;
+p {
+        margin-bottom: 1 rem;
     }
 
     ul li {
