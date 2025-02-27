@@ -21,7 +21,8 @@ class PatientSearchResultDetailedPhoneFinder {
 	    IsNull([locators].cd, '')       as [type_cd],
 	    [locators].use_cd               as [use_cd],
 	    [phone_number].phone_nbr_txt    as [phone_number],
-	    [locators].as_of_date           as [as_of]
+	    [locators].as_of_date           as [as_of],
+	  	[locators].locator_uid			as [locator_uid]
 	  from Entity_locator_participation [locators]
 	  
 	      join Tele_locator [phone_number] on
@@ -44,7 +45,7 @@ class PatientSearchResultDetailedPhoneFinder {
 	      and [locators].record_status_cd = 'ACTIVE'
 	  
 	  order by
-	      [locators].as_of_date desc    
+	      [locators].as_of_date desc, [locators].locator_uid desc    
 	  """;
   private static final int PATIENT_PARAMETER = 1;
 
