@@ -54,10 +54,6 @@ class PatientSearchPage {
     cy.get("#bornOn-range-entry-to").should("be.visible").clear().type(endDate);
   }
 
-  verifySearchResults() {
-    cy.contains("Perform a search to see results").should("not.exist");
-  }
-
   enterInvalidDateOfBirth() {
     const futureYear = new Date().getFullYear() + 1; // Next year (invalid)
     const invalidMonth = "13"; // Invalid month
