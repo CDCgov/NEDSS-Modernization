@@ -1,14 +1,14 @@
 import { ConfigurationSetup } from './configuration/ConfigurationSetup';
-import { DataElementConfig } from './data-elements/DataElementConfig';
+import { FeatureGuard } from 'feature';
 
 const routing = [
     {
         path: '/deduplication/configuration',
-        element: <ConfigurationSetup />
-    },
-    {
-        path: '/deduplication/data_elements',
-        element: <DataElementConfig />
+        element: (
+            <FeatureGuard guard={(features) => features?.deduplication?.enabled}>
+                <ConfigurationSetup />
+            </FeatureGuard>
+        )
     }
 ];
 

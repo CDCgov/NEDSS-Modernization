@@ -47,11 +47,27 @@ class SearchablePatientResolver {
     List<SearchablePatient.Address> addresses = this.addressFinder.find(patient.identifier());
     List<SearchablePatient.Race> races = this.raceFinder.find(patient.identifier());
     List<SearchablePatient.Identification> identifications = identificationFinder.find(patient.identifier());
+    String identification = identifications.stream()
+        .map(SearchablePatient.Identification::value)
+        .findFirst()
+        .orElse(null);
 
     SearchablePatientTelecom telecom = this.telecomFinder.find(patient.identifier());
 
     List<SearchablePatient.Phone> phones = telecom.phones();
+    String phone = phones.stream()
+        .map(SearchablePatient.Phone::number)
+        .findFirst()
+        .orElse(null);
+
     List<SearchablePatient.Email> emails = telecom.emails();
+
+    String email = emails.stream()
+        .map(SearchablePatient.Email::address)
+        .findFirst()
+        .orElse(null);
+
+    SearchablePatient.Sort sort = new SearchablePatient.Sort(identification, email, phone);
 
     return new SearchablePatient(
         patient.identifier(),
@@ -77,6 +93,7 @@ class SearchablePatientResolver {
         patient.accessionIds(),
         patient.investigationIds(),
         patient.labReportIds(),
-        patient.notificationIds());
+        patient.notificationIds(),
+        sort);
   }
 }
