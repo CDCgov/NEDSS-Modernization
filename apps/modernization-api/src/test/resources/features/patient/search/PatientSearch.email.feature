@@ -77,3 +77,12 @@ Feature: Patient Search Result Addresses
     Then the search results have a patient with the 1st "email address" equal to "email-one@ema.il"
     And the search results have a patient with the 2nd "email address" equal to "email-two@ema.il"
     And the search results have a patient with the 3rd "email address" equal to "email-three@ema.il"
+
+  Scenario: Patient Search results contain email addresses order by uid
+    Given the patient has the Beeper - Home email address of "email-three@ema.il" as of 05/13/1997
+    And the patient has the Email Address - Home email address of "email-one@ema.il" as of 05/13/1997
+    And patients are available for search
+    And I would like to search for a patient using a local ID
+    When I search for patients
+    Then the search results have a patient with the 1st "email address" equal to "email-one@ema.il"
+    And the search results have a patient with the 2nd "email address" equal to "email-three@ema.il"

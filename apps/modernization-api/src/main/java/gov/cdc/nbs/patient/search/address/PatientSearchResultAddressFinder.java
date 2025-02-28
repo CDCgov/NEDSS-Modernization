@@ -29,27 +29,27 @@ class PatientSearchResultAddressFinder {
           [country].code_short_desc_txt   as [country],
           [county].code_desc_txt          as [county]
       from Entity_locator_participation [locators]
-
+      
           join Postal_locator [address] on
                   [address].[postal_locator_uid] = [locators].[locator_uid]
               and [address].record_status_cd = [locators].record_status_cd
-
+      
           left join  NBS_SRTE..Code_value_general [type] on
                   [type].code_set_nm = 'EL_TYPE_PST_PAT'
               and [type].code = [locators].cd
-
+      
           left join NBS_SRTE..Code_value_general [use] on
                   [use].code_set_nm = 'EL_USE_PST_PAT'
               and [use].code = [locators].[use_cd]
-
+      
           left join NBS_SRTE..State_county_code_value [county] on [county].code = [address].cnty_cd
-
+      
           left join NBS_SRTE..State_code [state] on
                   [state].state_cd = [address].state_cd
-
+      
           left join NBS_SRTE..Country_code [country] on
                   [country].code = [address].cntry_cd
-
+      
       where   [locators].entity_uid = ?
           and [locators].[class_cd] = 'PST'
           and ([locators].[use_cd] IS NULL OR [locators].[use_cd] not in ('BIR', 'DTH'))
