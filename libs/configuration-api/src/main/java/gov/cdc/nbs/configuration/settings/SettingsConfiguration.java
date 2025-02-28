@@ -2,6 +2,7 @@ package gov.cdc.nbs.configuration.settings;
 
 import gov.cdc.nbs.configuration.settings.analytics.Analytics;
 import gov.cdc.nbs.configuration.settings.defautls.Defaults;
+import gov.cdc.nbs.configuration.settings.session.Session;
 import gov.cdc.nbs.configuration.settings.smarty.Smarty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +16,9 @@ class SettingsConfiguration {
   SettingsResolver settingsResolver(
       final Smarty smarty,
       final Analytics analytics,
-      final Defaults defaults
+      final Defaults defaults,
+      final Session session
   ) {
-    return () -> new Settings(smarty, analytics, defaults);
+    return () -> new Settings(smarty, analytics, defaults, session);
   }
 }

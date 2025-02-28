@@ -19,6 +19,7 @@ class SearchablePatientFinder {
               deceased_ind_cd,
               curr_sex_cd,
               ethnic_group_ind,
+          
               --documentIds
               (SELECT STUFF(
               (
@@ -41,7 +42,7 @@ class SearchablePatientFinder {
                 ) tmp
                 FOR XML PATH('')
               ), 1, 1, '')) document_ids,
-
+          
               --morbidityReportIds
               (SELECT STUFF(
               (
@@ -61,7 +62,7 @@ class SearchablePatientFinder {
                 ) tmp
                 FOR XML PATH('')
               ), 1, 1, '')) morbidity_report_ids,
-
+          
               --treatmentIds
               (SELECT STUFF(
               (
@@ -81,7 +82,7 @@ class SearchablePatientFinder {
                 ) tmp
                 FOR XML PATH('')
               ), 1, 1, '')) treatment_ids,
-
+          
               --vaccinationIds
               (SELECT STUFF(
               (
@@ -99,7 +100,7 @@ class SearchablePatientFinder {
                 ) tmp
                 FOR XML PATH('')
               ), 1, 1, '')) vaccination_ids,
-
+          
                 --State Case Ids
                 (SELECT STUFF(
                 (
@@ -118,7 +119,7 @@ class SearchablePatientFinder {
                   ) tmp
                   FOR XML PATH('')
                 ), 1, 1, '')) state_case_ids,
-
+          
                 --ABCS Case IDs
                 (SELECT STUFF(
                 (
@@ -138,7 +139,7 @@ class SearchablePatientFinder {
                   ) tmp
                   FOR XML PATH('')
                 ), 1, 1, '')) abcs_case_ids,
-
+          
                 --City Case Ids
                 (SELECT STUFF(
                 (
@@ -156,7 +157,7 @@ class SearchablePatientFinder {
                   ) tmp
                   FOR XML PATH('')
                 ), 1, 1, '')) city_case_ids,
-
+          
                 --Notification Ids
                 (SELECT STUFF(
                 (
@@ -176,7 +177,7 @@ class SearchablePatientFinder {
                     ) tmp
                     FOR XML PATH('')
                   ), 1, 1, '')) notification_ids,
-
+          
                 --Investigation Ids
                 (SELECT STUFF(
                 (
@@ -190,8 +191,8 @@ class SearchablePatientFinder {
                     ) tmp
                     FOR XML PATH('')
                   ), 1, 1, '')) investigation_ids,
-
-
+          
+          
                 --Lab Report Ids
                 (SELECT STUFF(
                 (
@@ -206,8 +207,8 @@ class SearchablePatientFinder {
                     ) tmp
                     FOR XML PATH('')
                   ), 1, 1, '')) lab_report_ids,
-
-
+          
+          
                 --Accession Ids
                 (SELECT STUFF(
                 (
@@ -225,7 +226,7 @@ class SearchablePatientFinder {
                     ) tmp
                     FOR XML PATH('')
                   ), 1, 1, '')) accession_ids
-
+          
           from person [patient]
           where cd = 'PAT'
           and person_uid = ?
@@ -274,14 +275,16 @@ class SearchablePatientFinder {
             ACCESSION_IDS_COLUMN,
             INVESTIGATION_IDS_COLUMN,
             LAB_REPORT_IDS_COLUMN,
-            NOTIFICATION_IDS_COLUMN));
+            NOTIFICATION_IDS_COLUMN
+        )
+    );
   }
 
   Optional<SearchablePatient> find(long identifier) {
     return this.template.query(
-        QUERY,
-        statement -> statement.setLong(PATIENT_PARAMETER, identifier),
-        this.mapper).stream()
+            QUERY,
+            statement -> statement.setLong(PATIENT_PARAMETER, identifier),
+            this.mapper).stream()
         .findFirst();
   }
 }

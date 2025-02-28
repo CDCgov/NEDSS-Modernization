@@ -15,6 +15,7 @@ type BasicIdentificationRepeatingBlockProps = {
     values?: BasicIdentificationEntry[];
     onChange: (data: BasicIdentificationEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
+    isValid: (isValid: boolean) => void;
     errors?: ReactNode[];
     sizing?: Sizing;
 };
@@ -24,8 +25,9 @@ export const BasicIdentificationRepeatingBlock = ({
     values,
     onChange,
     isDirty,
+    isValid,
     errors,
-    sizing = 'medium'
+    sizing
 }: BasicIdentificationRepeatingBlockProps) => {
     const renderForm = () => <BasicIdentificationFields sizing={sizing} />;
     const renderView = (entry: BasicIdentificationEntry) => <BasicIdentificationView entry={entry} />;
@@ -49,6 +51,8 @@ export const BasicIdentificationRepeatingBlock = ({
             columns={columns}
             onChange={onChange}
             isDirty={isDirty}
+            isValid={isValid}
+            sizing={sizing}
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}

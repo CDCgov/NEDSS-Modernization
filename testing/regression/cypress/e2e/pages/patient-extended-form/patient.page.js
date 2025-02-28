@@ -276,9 +276,21 @@ class ClassicPatientSearchPage {
      cy.get('select[id="name.lastOperator"]').select('equals')
    }
 
-   notEqualForLastName() {
+  notEqualForLastName() {
      cy.get('select[id="name.lastOperator"]').select('not')
    }
+
+  selectSearchNameType(idName, type) {
+    cy.get(`select[id="${idName}"]`).select(type);
+  }
+
+  findSearchResultByDataItemType(text, id) {
+    cy.get(`div[data-item-type="${id}"]`).contains(text)
+  }
+
+  fillIdInputWithText(id, text) {
+    cy.get(`input[id="${id}"]`).type(text);
+  }
 
 }
 

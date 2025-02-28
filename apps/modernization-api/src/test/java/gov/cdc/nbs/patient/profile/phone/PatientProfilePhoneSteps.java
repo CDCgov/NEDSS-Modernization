@@ -14,6 +14,7 @@ import io.cucumber.java.en.Then;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -84,4 +85,10 @@ public class PatientProfilePhoneSteps {
 		.ifPresent(found -> mother.withPhone(found, type, use, null, number, null));
   }
 
+  @Given("the patient has the {phoneType} - {phoneUse} number of {string} as of {localDate}")
+  public void the_patient_has_the_phone_as_of(final String type, final String use, final String number,
+	  LocalDate asOf) {
+	this.activePatient.maybeActive()
+		.ifPresent(found -> mother.withPhone(found, type, use, null, number, null, asOf));
+  }
 }

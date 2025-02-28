@@ -43,10 +43,10 @@ class PatientSearchCriteriaSortResolver {
       case "city" -> Stream.of(asSortOption(ADDRESS, "address.city.keyword", order));
       case "county" -> Stream.of(asSortOption(ADDRESS, "address.cntyText.keyword", order));
       case "country" -> Stream.of(asSortOption(ADDRESS, "address.cntryText.keyword", order));
-      case "email" -> Stream.of(asSortOption("email", "email.emailAddress.keyword", order));
+      case "email" -> Stream.of(asSortOption("sort.email", order));
       case "id" -> Stream.of(asSortOption("patient", order));
-      case "identification" -> Stream.of(asSortOption("entity_id", "entity_id.rootExtensionTxt.keyword", order));
-      case "phonenumber" -> Stream.of(asSortOption("phone", "phone.telephoneNbr.keyword", order));
+      case "identification" -> Stream.of(asSortOption("sort.identification", order));
+      case "phonenumber" -> Stream.of(asSortOption("sort.phone", order));
       case "state" -> Stream.of(asSortOption(ADDRESS, "address.stateText.keyword", order));
       case "sex" -> Stream.of(asSortOption("curr_sex_cd", order));
       case "zip" -> Stream.of(asSortOption(ADDRESS, "address.zip.keyword", order));

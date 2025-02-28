@@ -1,1 +1,8 @@
 $size-standard: 1.25rem;
+
+@mixin sizedIcon($height: $size-standard, $width: $size-standard) {
+    svg {
+        height: $height;
+        width: $width;
+    }
+}

@@ -68,7 +68,7 @@ const defaultProperties: Properties = {
 
 const defaultSettings: Settings = {
     session: {
-        warning: 1000 * 60 * 15,
+        warning: 1000 * 60 * 18,
         expiration: 1000 * 60 * 20
     },
     defaults: {

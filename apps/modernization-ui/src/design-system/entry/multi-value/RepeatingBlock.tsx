@@ -8,6 +8,7 @@ import { Icon } from 'design-system/icon';
 import { AlertMessage } from 'design-system/message';
 import { Column, DataTable } from 'design-system/table';
 import { useMultiValueEntryState } from './useMultiValueEntryState';
+import { Sizing } from 'design-system/field';
 
 import styles from './RepeatingBlock.module.scss';
 
@@ -18,8 +19,10 @@ type RepeatingBlockProps<V extends FieldValues> = {
     defaultValues?: DefaultValues<V>; // Provide all default values to allow `isDirty` to function
     errors?: ReactNode[];
     values?: V[];
+    sizing?: Sizing;
     onChange: (data: V[]) => void;
     isDirty: (isDirty: boolean) => void;
+    isValid?: (isValid: boolean) => void;
     formRenderer: (entry?: V) => ReactNode;
     viewRenderer: (entry: V) => ReactNode;
 };
@@ -31,8 +34,10 @@ const RepeatingBlock = <V extends FieldValues>({
     values = [],
     columns,
     errors,
+    sizing,
     onChange,
     isDirty,
+    isValid,
     formRenderer,
     viewRenderer
 }: RepeatingBlockProps<V>) => {
@@ -94,21 +99,23 @@ const RepeatingBlock = <V extends FieldValues>({
         id: 'actions',
         name: '',
         render: (value: V) => (
-            <div className={styles.actions}>
+            <div className={classNames(styles.actions, sizing && styles[sizing])}>
                 <div data-tooltip-position="top" aria-label="View" onClick={() => view(value)}>
                     <Icon
                         name="visibility"
+                        sizing={sizing}
                         className={classNames({ [styles.active]: status === 'viewing' && value === selected })}
                     />
                 </div>
                 <div data-tooltip-position="top" aria-label="Edit" onClick={() => edit(value)}>
                     <Icon
                         name="edit"
+                        sizing={sizing}
                         className={classNames({ [styles.active]: status === 'editing' && value === selected })}
                     />
                 </div>
                 <div data-tooltip-position="top" aria-label="Delete" onClick={() => handleRemove(value)}>
-                    <Icon name="delete" />
+                    <Icon name="delete" sizing={sizing} />
                 </div>
             </div>
         )
@@ -122,8 +129,12 @@ const RepeatingBlock = <V extends FieldValues>({
         return messages.filter((a) => a != undefined);
     }, [JSON.stringify(form.formState.errors), errors]);
 
+    useEffect(() => {
+        isValid?.(!errorMessages || errorMessages.length === 0);
+    }, [errorMessages]);
+
     return (
-        <section id={id} className={styles.input}>
+        <section id={id} className={classNames(styles.input, sizing && styles[sizing])}>
             <header>
                 <Heading level={2}>{title}</Heading>
                 <span className="required-before">All required fields for adding {title.toLowerCase()}</span>
@@ -139,14 +150,13 @@ const RepeatingBlock = <V extends FieldValues>({
                 </AlertMessage>
             </Shown>
             <div>
-                <Shown when={entries.length > 0}>
-                    <DataTable<V>
-                        className={styles.dataTable}
-                        id={`${id}-data-table`}
-                        columns={[...columns, iconColumn]}
-                        data={entries}
-                    />
-                </Shown>
+                <DataTable<V>
+                    className={styles.dataTable}
+                    id={`${id}-data-table`}
+                    columns={[...columns, iconColumn]}
+                    data={entries}
+                    sizing={sizing}
+                />
             </div>
             <Shown when={status === 'viewing'}>{selected && viewRenderer(selected)}</Shown>
             <Shown when={status !== 'viewing'}>
@@ -158,31 +168,36 @@ const RepeatingBlock = <V extends FieldValues>({
             </Shown>
             <footer>
                 <Shown when={status === 'adding'}>
-                    <Button outline onClick={form.handleSubmit(handleAdd)}>
-                        <Icon name="add" />
+                    <Button outline sizing={sizing} onClick={form.handleSubmit(handleAdd)}>
+                        <Icon name="add" sizing={sizing} />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
                     <Shown when={form.formState.isDirty}>
-                        <Button outline aria-details={`clear ${title.toLowerCase()}`} onClick={handleClear}>
+                        <Button
+                            outline
+                            sizing={sizing}
+                            aria-details={`clear ${title.toLowerCase()}`}
+                            onClick={handleClear}>
                             Clear
                         </Button>
                     </Shown>
                 </Shown>
                 <Shown when={status === 'editing'}>
-                    <Button outline onClick={form.handleSubmit(handleUpdate)}>
-                        <Icon name="add" />
+                    <Button outline sizing={sizing} onClick={form.handleSubmit(handleUpdate)}>
+                        <Icon name="add" sizing={sizing} />
                         {`Update ${title.toLowerCase()}`}
                     </Button>
                     <Button
                         outline
+                        sizing={sizing}
                         aria-details={`cancel editing current ${title.toLowerCase()}`}
                         onClick={handleReset}>
                         Cancel
                     </Button>
                 </Shown>
                 <Shown when={status === 'viewing'}>
-                    <Button outline onClick={handleReset}>
-                        <Icon name="add" />
+                    <Button outline sizing={sizing} onClick={handleReset}>
+                        <Icon name="add" sizing={sizing} />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
                 </Shown>

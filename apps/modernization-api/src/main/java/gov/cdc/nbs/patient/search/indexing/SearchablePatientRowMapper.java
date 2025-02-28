@@ -28,7 +28,8 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
       int accessionIds,
       int investigationIds,
       int labReportIds,
-      int notificationIds) {
+      int notificationIds
+  ) {
   }
 
 
@@ -78,6 +79,7 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
         accessionIds,
         investigationIds,
         labReportIds,
-        notificationIds);
+        notificationIds
+    );
   }
 }
