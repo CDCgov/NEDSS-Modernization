@@ -1,70 +1,50 @@
 @use 'styles/colors';
 
-$medium-font-size: 0.875rem;
-$medium-height: 2rem;
-$medium-textarea-height: 7.5rem;
-
-%medium {
-    line-height: normal;
-    font-size: $medium-font-size;
-}
-
-%medium-input {
-    height: $medium-height;
-
-    @extend %medium;
-}
-
-%medium-textarea {
-    height: $medium-textarea-height;
-
-    @extend %medium;
-}
-
 $small-font-size: 0.75rem;
 $small-height: 1.375rem;
-$small-textarea-height: 6.25rem;
+$small-textarea-height: 5.0625rem;
 
 %small {
-    line-height: normal;
-    font-size: $small-font-size;
-}
+    --component-font-size: #{$small-font-size};
+    --component-height: #{$small-height};
 
-%small-label {
-    line-height: normal;
-    font-size: $small-font-size;
-}
-
-%small-input {
-    height: $small-height;
-    padding: 0.25rem 0.5rem;
-
-    @extend %small;
+    font-size: var(--component-font-size);
 }
 
 %small-textarea {
-    height: $small-textarea-height;
-
-    @extend %small;
+    --component-height: #{$small-textarea-height};
 }
+
+//
+
+$medium-font-size: 0.875rem;
+$medium-height: 2rem;
+$medium-textarea-height: 6rem;
+
+%medium {
+    --component-font-size: #{$medium-font-size};
+    --component-height: #{$medium-height};
+
+    font-size: var(--component-font-size);
+}
+
+%medium-textarea {
+    --component-height: #{$medium-textarea-height};
+}
+
+//
 
 $large-font-size: 1rem;
 $large-height: 2.2rem;
-$large-textarea-height: 6.5rem;
+$large-textarea-height: 10rem;
 
 %large {
-    line-height: normal;
-    font-size: $large-font-size;
-}
+    --component-font-size: #{$large-font-size};
+    --component-height: #{$large-height};
 
-%large-input {
-    height: $large-height;
-
-    @extend %large;
+    font-size: var(--component-font-size);
 }
 
 %large-textarea {
-    height: $large-textarea-height;
-
-    @extend %large;
+    --component-height: #{$large-textarea-height};
 }
