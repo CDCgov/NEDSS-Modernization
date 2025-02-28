@@ -10,11 +10,11 @@ import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTra
 import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
-import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
+import { CancelAddPatientPanel } from '../cancelAddPatientPanel/CancelAddPatientPanel';
 import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
-import { useShowCancelModal } from './useShowCancelModal';
+import { useShowCancelModal } from '../cancelAddPatientPanel/useShowCancelModal';
 
 import styles from './add-patient-extended.module.scss';
 
@@ -101,7 +101,7 @@ export const AddPatientExtended = () => {
                         </main>
                     </div>
                     <Shown when={blocker.blocked}>
-                        <CancelAddPatientExtendedPanel onConfirm={handleModalConfirm} onClose={handleModalClose} />
+                        <CancelAddPatientPanel onConfirm={handleModalConfirm} onClose={handleModalClose} />
                     </Shown>
                 </div>
             </FormProvider>
