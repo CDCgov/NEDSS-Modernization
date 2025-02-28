@@ -37,11 +37,11 @@ const HorizontalField = ({
             {helperText && <HelperText id={`${htmlFor}-hint`}>{helperText}</HelperText>}
         </div>
         <div className={styles.right}>
+            <div className={styles.children}>{children}</div>
             <div className={styles.message}>
                 {warning && <InlineWarningMessage id={`${htmlFor}-warning`}>{warning}</InlineWarningMessage>}
                 {error && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
             </div>
-            <div className={styles.children}>{children}</div>
         </div>
     </div>
 );

@@ -54,13 +54,11 @@
         flex-grow: 1;
 
         .children {
-            order: 1;
             width: 20rem;
         }
 
         .message {
             margin-left: 0.25rem;
-            order: 2;
         }
     }
 
@@ -71,13 +69,8 @@
             align-items: flex-start;
             gap: 0.25rem;
 
-            .children {
-                order: 2;
-            }
-
             .message {
                 margin-left: 0;
-                order: 1;
             }
         }
     }
