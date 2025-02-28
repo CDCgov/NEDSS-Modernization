@@ -49,7 +49,10 @@ export const AddPatientBasic = () => {
         toSearch(location.state?.criteria ?? '');
     };
 
-    const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state?.criteria ?? ''));
+    const handleExtended = form.handleSubmit((data) => {
+        blocker.allow();
+        toExtendedNew(data, location.state?.criteria ?? '');
+    });
 
     const handleFormIsValid = (valid: boolean) => {
         interaction.setCanSave(valid);
