@@ -67,3 +67,12 @@ Feature: Patient Search Result Phone Numbers
     And the search results have a patient with the 2nd "phone" equal to "543-123-3333"
     And the search results have a patient with the 3rd "phone" equal to "888-222-3333"
 
+  Scenario: Patient Search results contain phone number order by uid
+    Given the patient has the Cellular Phone - Home phone number of "1" "888-222-3333" - "1234" as of 01/01/1999
+    And the patient has the Phone - Home phone number of "1" "543-123-3333" - "54" as of 01/01/1999
+    And patients are available for search
+    And I would like to search for a patient using a local ID
+    When I search for patients
+    Then the search results have a patient with the 1st "phone" equal to "543-123-3333"
+    And the search results have a patient with the 2nd "phone" equal to "888-222-3333"
+
