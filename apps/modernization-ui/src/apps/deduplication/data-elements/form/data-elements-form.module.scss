@@ -13,7 +13,7 @@
         height: 100%;
         max-width: 1200px;
         overflow: auto;
-        padding: 0px;
+        padding: 0;
     }
 
     table {
@@ -24,6 +24,7 @@
         border-collapse: separate;
         border-spacing: 0;
         font-size: 0.875rem;
+        text-align: left;
         overflow: hidden;
 
         thead {
@@ -36,6 +37,7 @@
             .border {
                 th {
                     height: 1px;
+                    width: 100%;
                     padding: 0;
                     background-color: colors.$base;
                     box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.5);
@@ -43,7 +45,7 @@
             }
 
             .calculatedColumn {
-                min-width: 10rem;
+                min-width: 6rem;
             }
 
             .numericColumn {
@@ -54,7 +56,7 @@
         tr th,
         td {
             height: 38px;
-            padding: 0.25rem 0.5rem;
+            padding: 0.2rem 0.4rem;
             text-align: left !important;
             vertical-align: middle;
         }

@@ -7,8 +7,9 @@
 
     label {
         margin: 0;
-        color: colors.$base-darkest;
+        color: colors.$base-black;
         font-weight: 700;
+        font-size: 12px;
     }
 
     .inputWithError {
@@ -16,11 +17,28 @@
         align-items: center;
 
         input {
-            width: 5rem;
-            height: 2.5rem;
+            width: 72px;
+            height: 27px;
             padding: 0.5rem;
             border-radius: 0;
-            border: solid 1px colors.$base-dark;
+            border: solid 1px colors.$base-darkest;
+            &:disabled {
+                background-color: colors.$base-lighter;
+                border: solid 1px colors.$base-dark;
+                color: colors.$base-dark;
+            }
+        }
+
+        /* Hide spinner */
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            -webkit-appearance: none !important;
+            appearance: none !important;
+            margin: 0;
+        }
+
+        &[type="number"] {
+            -moz-appearance: textfield !important;
         }
 
         .errorBorder {

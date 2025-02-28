@@ -44,7 +44,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
         if (Number.isNaN(oddsRatio) || oddsRatio === 0 || oddsRatio === undefined) {
             form.setValue(`${field}.logOdds`, undefined);
         } else {
-            form.setValue(`${field}.logOdds`, Math.log10(oddsRatio));
+            form.setValue(`${field}.logOdds`, Math.log(oddsRatio));
         }
     }, [watch[field]?.oddsRatio]);
 

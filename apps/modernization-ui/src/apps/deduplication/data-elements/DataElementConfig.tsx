@@ -65,7 +65,7 @@ const DataElementConfigContent = () => {
     }, [error]);
 
     const handleCancel = () => {
-        nav({ pathname: '/deduplication/match-configuration' });
+        nav({ pathname: '/deduplication/configuration' });
     };
     const handleSubmit = () => {
         save(form.getValues(), () =>

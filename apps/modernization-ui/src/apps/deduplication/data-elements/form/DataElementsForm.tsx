@@ -71,7 +71,7 @@ export const DataElementsForm = () => {
                                 <th className={styles.numericColumn}>Threshold</th>
                             </tr>
                             <tr className={styles.border}>
-                                <th colSpan={5} />
+                                <th colSpan={6} />
                             </tr>
                         </thead>
                         <tbody>
@@ -81,7 +81,8 @@ export const DataElementsForm = () => {
                             <DataElementRow fieldName="Date of birth" field="dateOfBirth" />
                             <DataElementRow fieldName="Current sex" field="currentSex" />
                             <DataElementRow fieldName="Race" field="race" />
-                            <DataElementRow fieldName="Street address" field="streetAddress1" />
+                            <DataElementRow fieldName="SSN" field="socialSecurity" />
+                            <DataElementRow fieldName="Street address 1" field="streetAddress1" />
                             <DataElementRow fieldName="City" field="city" />
                             <DataElementRow fieldName="State" field="state" />
                             <DataElementRow fieldName="Zip" field="zip" />
@@ -93,12 +94,10 @@ export const DataElementsForm = () => {
                             <DataElementRow fieldName="Drivers license number" field="driversLicenseNumber" />
                             <DataElementRow fieldName="Medicaid number" field="medicaidNumber" />
                             <DataElementRow fieldName="Medical record number" field="medicalRecordNumber" />
-                            <DataElementRow fieldName="Medicare number" field="medicareNumber" />
                             <DataElementRow fieldName="National unique identifier" field="nationalUniqueIdentifier" />
                             <DataElementRow fieldName="Patient external identifier" field="patientExternalIdentifier" />
                             <DataElementRow fieldName="Patient internal identifier" field="patientInternalIdentifier" />
                             <DataElementRow fieldName="Person number" field="personNumber" />
-                            <DataElementRow fieldName="Social security" field="socialSecurity" />
                             <DataElementRow fieldName="Visa/Passport" field="visaPassport" />
                             <DataElementRow fieldName="WIC Identifier" field="wicIdentifier" />
                         </tbody>
