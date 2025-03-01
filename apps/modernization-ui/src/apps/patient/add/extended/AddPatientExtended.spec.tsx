@@ -158,7 +158,7 @@ jest.mock('apps/patient/profile/generalInfo/usePatientGeneralCodedValues', () =>
     usePatientGeneralCodedValues: () => mockPatientCodedValues
 }));
 
-jest.mock('./useShowCancelModal', () => ({
+jest.mock('../cancelAddPatientPanel/useShowCancelModal', () => ({
     useShowCancelModal: jest.fn()
 }));
 
