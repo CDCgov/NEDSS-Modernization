@@ -9,6 +9,8 @@ import styles from './data-table.module.scss';
 import { Shown } from 'conditional-render';
 import { NoDataRow } from './NoDataRow';
 
+type SortIconType = 'default' | 'alpha' | 'numeric';
+
 type Column<V> = {
     id: string;
     name: string;
@@ -17,6 +19,7 @@ type Column<V> = {
     className?: string;
     render: (value: V, index: number) => ReactNode | undefined;
     filter?: FilterDescriptor;
+    sortIconType?: SortIconType;
 };
 
 type DataTableProps<V> = {
@@ -66,4 +69,4 @@ const DataTable = <V,>({ id, className, columns, data, sizing, rowHeightConstrai
 
 export { DataTable };
 
-export type { Column, FilterDescriptor };
+export type { Column, FilterDescriptor, SortIconType };
