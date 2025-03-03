@@ -29,11 +29,10 @@ class PatientSearchResultDetailedPhoneFinder {
           left join  NBS_SRTE..Code_value_general [type] on
                   [type].code_set_nm = 'EL_TYPE_TELE_PAT'
               and [type].code = [locators].cd
-      
           left join NBS_SRTE..Code_value_general [use] on
                   [use].code_set_nm = 'EL_USE_TELE_PAT'
               and [use].code = [locators].[use_cd]
-      where   [locators].entity_uid = ?
+      where [locators].entity_uid = ?
           and [locators].[class_cd] = 'TELE'
           and ([locators].cd is null or [locators].cd <> 'NET')
           and [locators].record_status_cd = 'ACTIVE'
