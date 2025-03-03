@@ -163,6 +163,38 @@ public class PatientMother {
       final String city,
       final String county,
       final String state,
+      final String zip,
+      final LocalDate asOf) {
+    Person patient = managed(identifier);
+
+    patient.add(
+        new PatientCommand.AddAddress(
+            patient.getId(),
+            idGenerator.next(),
+            asOf,
+            type,
+            use,
+            address,
+            null,
+            city,
+            state,
+            zip,
+            county,
+            "840",
+            null,
+            null,
+            this.settings.createdBy(),
+            this.settings.createdOn()));
+  }
+
+  public void withAddress(
+      final PatientIdentifier identifier,
+      final String type,
+      final String use,
+      final String address,
+      final String city,
+      final String county,
+      final String state,
       final String zip) {
     Person patient = managed(identifier);
 
