@@ -20,7 +20,7 @@ class PatientSearchResultDetailedPhoneFinder {
         [locators].use_cd               as [use_cd],
         [phone_number].phone_nbr_txt    as [phone_number],
         [locators].as_of_date as [as_of],
-      	[locators].locator_uid         as [locator_uid]
+      [locators].locator_uid as [locator_uid]
       from Entity_locator_participation [locators]
           join Tele_locator [phone_number] on
                   [phone_number].[tele_locator_uid] = [locators].[locator_uid]
