@@ -1,19 +1,17 @@
 import { createContext, ReactNode, useContext } from 'react';
 import { Sizing } from 'design-system/field';
-import { useConfiguration } from 'configuration';
+// import { useConfiguration } from 'configuration';
 
 const FALLBACK_SIZING = 'medium';
 
 const ComponentSizingContext = createContext<Sizing>(FALLBACK_SIZING);
 
-type ComponentSizingProviderProps = {
-    children: ReactNode;
-};
+type ComponentSizingProviderProps = { children: ReactNode };
 
 const ComponentSizingProvider = ({ children }: ComponentSizingProviderProps) => {
-    const { settings } = useConfiguration();
+    // const { settings } = useConfiguration();
 
-    const sizing = settings.defaults.sizing ?? FALLBACK_SIZING;
+    const sizing = 'small';
 
     return <ComponentSizingContext.Provider value={sizing}>{children}</ComponentSizingContext.Provider>;
 };
