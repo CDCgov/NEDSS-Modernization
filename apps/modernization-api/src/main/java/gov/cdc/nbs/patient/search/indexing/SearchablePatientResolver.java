@@ -68,7 +68,7 @@ class SearchablePatientResolver {
         .orElse(null);
 
     String address = addresses.stream()
-        .map((elem) -> (elem.address1() == null ? "" : elem.address1())
+        .map(elem -> (elem.address1() == null ? "" : elem.address1())
             + (elem.address2() == null ? "" : elem.address2()) + (elem.city() == null ? "" : elem.city())
             + (elem.state() == null ? "" : elem.state()) + (elem.zip() == null ? "" : elem.zip()))
         .findFirst()
