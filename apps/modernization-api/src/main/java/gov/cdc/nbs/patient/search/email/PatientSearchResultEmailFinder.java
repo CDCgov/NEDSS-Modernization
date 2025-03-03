@@ -12,7 +12,7 @@ class PatientSearchResultEmailFinder {
       select distinct
       [locator].as_of_date            as [as_of],
       [email_address].email_address   as [email],
-      [locator].locator_uid			as [locator_uid]
+      [locator].locator_uid as [locator_uid]
       from Entity_locator_participation [locator]
       
       join Tele_locator [email_address] on
