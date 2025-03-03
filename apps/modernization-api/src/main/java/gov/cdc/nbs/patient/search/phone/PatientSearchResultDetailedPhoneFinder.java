@@ -11,7 +11,7 @@ class PatientSearchResultDetailedPhoneFinder {
       select distinct
       coalesce(
           [type].code_short_desc_txt,
-          IsNull([locators].cd, ''))  as [type],
+          IsNull([locators].cd, '')) as [type],
         coalesce(
             [use].code_short_desc_txt,
             IsNull([locators].[use_cd],'')
@@ -19,7 +19,7 @@ class PatientSearchResultDetailedPhoneFinder {
         IsNull([locators].cd, '')       as [type_cd],
         [locators].use_cd               as [use_cd],
         [phone_number].phone_nbr_txt    as [phone_number],
-        [locators].as_of_date           as [as_of],
+        [locators].as_of_date as [as_of],
       	[locators].locator_uid         as [locator_uid]
       from Entity_locator_participation [locators]
           join Tele_locator [phone_number] on
