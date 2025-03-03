@@ -25,8 +25,7 @@ class PatientSearchResultEmailFinder {
                 and [locator].[class_cd] = 'TELE'
                 and [locator].record_status_cd = 'ACTIVE'
             order by
-                [locator].as_of_date desc, [locator].locator_uid desc
-      """;
+                [locator].as_of_date desc, [locator].locator_uid desc""";
 
   private static final int PATIENT_PARAMETER = 1;
   private static final int EMAIL_COLUMN = 2;
