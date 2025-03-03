@@ -1,10 +1,12 @@
 import { Navigate } from 'react-router-dom';
 import { SearchPage } from './SearchPage';
-import { PatientSearch } from './patient/PatientSearch';
+import { PatientSearch } from './patient';
 import { LaboratoryReportSearch } from './laboratory-report';
 import { InvestigationSearch } from './investigation';
 import { SimpleSearch } from './simple';
+import { ActivityLogSearch } from './activity';
 
+// @ts-ignore
 const routing = [
     {
         path: 'search',
@@ -26,6 +28,10 @@ const routing = [
             {
                 path: 'simple/:type/:criteria',
                 element: <SimpleSearch />
+            },
+            {
+                path: 'activity',
+                element: <ActivityLogSearch />
             }
         ]
     }

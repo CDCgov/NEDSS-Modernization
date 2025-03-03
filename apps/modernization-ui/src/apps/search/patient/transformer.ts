@@ -12,6 +12,8 @@ const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriter
         : undefined;
 
 export const transform = (data: PatientCriteriaEntry): PersonFilter => {
+    console.log ("Inside transform...");
+
     const {
         name,
         id,
@@ -32,6 +34,7 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         bornOn,
         ...remaining
     } = data;
+
     return {
         name,
         location,

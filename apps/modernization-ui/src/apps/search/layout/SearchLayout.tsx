@@ -6,6 +6,7 @@ import { CollapsiblePanel } from 'design-system/collapsible-panel';
 import { Shown } from 'conditional-render';
 import { SearchNavigation } from './navigation/SearchNavigation';
 import { PatientSearchHeader } from './patientSearchHeader/PatientSearchHeader';
+import { ActivityLogSearchHeader } from './activityLogSearchHeader/ActivityLogSearchHeader';
 import { useSearchInteraction, useSearchResultDisplay } from 'apps/search';
 import { SearchLanding } from './landing';
 import { SearchResults } from './result';
@@ -55,12 +56,18 @@ const SearchLayout = <R,>({
         }
     };
 
+    const isActivityLogSearch = location.pathname.includes('/search/activity-log');
+
     return (
         <section className={styles.search} onKeyDown={handleKey}>
             <FeatureToggle
                 guard={(features) => features?.search?.events?.enabled}
                 fallback={<SearchNavigation className={styles.navigation} actions={actions} />}>
-                <PatientSearchHeader className={styles.navigation} actions={actions} />
+                {isActivityLogSearch ? (
+                    <ActivityLogSearchHeader className={styles.navigation} actions={actions} />
+                ) : (
+                    <PatientSearchHeader className={styles.navigation} actions={actions} />
+                )}
             </FeatureToggle>
 
             <div className={styles.content}>

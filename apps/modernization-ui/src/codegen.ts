@@ -3,7 +3,7 @@ import { CodegenConfig } from '@graphql-codegen/cli';
 const config: CodegenConfig = {
     schema: [
         {
-            'http://localhost:8080/graphql': {
+            'http://localhost:9090/graphql': {
                 headers: { Authorization: 'Bearer ' + process.env.API_TOKEN }
             }
         }

@@ -6,6 +6,11 @@ import { splitStringByCommonDelimiters } from 'utils';
 const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];
 
+    console.log ("Inside terms resolver...");
+
+    console.log("entry is..." + JSON.stringify(entry, null, 2));
+
+
     const pushCriteria = (source: string, title: string, value?: TextCriteria) => {
         // get the operator i.e. "contains" to populate the operator field in the term
         const stringValue = asTextCriteriaValue(value);
@@ -128,6 +133,7 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     if (entry.vaccination) {
         terms.push(fromValue('vaccination', 'VACCINATION ID')(entry.vaccination));
     }
+    console.log("Terms Array:", JSON.stringify(terms, null, 2));
 
     return terms;
 };

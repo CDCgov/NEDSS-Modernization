@@ -1,0 +1,28 @@
+.navigation {
+    display: flex;
+    gap: 1rem;
+    flex-shrink: 0;
+    z-index: 100;
+
+    h1 {
+        margin: 0;
+    }
+
+    .linkContainer {
+        display: flex;
+        align-items: center;
+        min-height: 2.75rem;
+    }
+
+    .links {
+        flex-grow: 1;
+    }
+}
+
+.infoIconContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 24px;
+    width: 24px;
+}

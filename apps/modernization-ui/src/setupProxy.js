@@ -1,6 +1,6 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const PORT = process.env.PROXY_PORT ?? '8080';
+const PORT = process.env.PROXY_PORT ?? '9090';
 
 const target = `http://localhost:${PORT}/`;
 

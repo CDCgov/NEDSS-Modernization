@@ -25,6 +25,9 @@ const PHONE = { id: 'phoneNumber', name: 'Phone' };
 const IDENTIFICATIONS = { id: 'identification', name: 'ID' };
 const EMAIL = { id: 'email', name: 'Email' };
 
+console.log("Inside Results Table...");
+
+
 // table columns
 const columns: Column<PatientSearchResult>[] = [
     {

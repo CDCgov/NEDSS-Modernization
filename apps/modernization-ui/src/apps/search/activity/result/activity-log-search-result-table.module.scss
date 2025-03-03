@@ -1,0 +1,47 @@
+.activity_results {
+  tbody tr td a {
+    font-weight: 700;
+  }
+}
+
+.col-processed-time {
+  width: 8rem;
+  min-width: 8rem !important;
+  max-width: 10rem !important;
+}
+
+.col-record-status {
+  min-width: 8rem;
+}
+
+.col-algorithm-name {
+  min-width: 12rem;
+}
+
+.col-action {
+  min-width: 7rem;
+}
+
+.col-message-id {
+  min-width: 10rem;
+}
+
+.col-reporting-facility {
+  min-width: 14rem;
+}
+
+.col-patient-name {
+  min-width: 14rem;
+}
+
+.col-observation-id {
+  min-width: 9rem;
+}
+
+.col-accession-nbr {
+  min-width: 12rem;
+}
+
+.col-exception-text {
+  min-width: 15rem;
+}

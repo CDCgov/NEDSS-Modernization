@@ -28,6 +28,8 @@ type Settings = {
 const usePatientSearch = ({ form }: Settings): SearchInteraction<PatientSearchResult> => {
     const [fetch] = useFindPatientsByFilterLazyQuery();
 
+    console.log ("Inside usePatientSearch...");
+
     const resultResolver = (request: ResultRequest<PersonFilter>) =>
         fetch({
             variables: {
@@ -39,8 +41,14 @@ const usePatientSearch = ({ form }: Settings): SearchInteraction<PatientSearchRe
             if (response.error) {
                 throw new Error(response.error.message);
             }
+
+            const data = response.data;
+            console.warn(data);
             return response.data?.findPatientsByFilter;
         });
+
+    console.log ("Inside usePatientSearch fetched result...");
+
 
     return useSearchResultsFormAdapter({ form, defaultValues, transformer, resultResolver, termResolver });
 };

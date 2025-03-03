@@ -19,6 +19,7 @@ const SearchNavigation = ({ className, actions }: Props) => {
                 <TabNavigationEntry path="/search/patients">Patients</TabNavigationEntry>
                 <TabNavigationEntry path="/search/investigations">Investigations</TabNavigationEntry>
                 <TabNavigationEntry path="/search/lab-reports">Lab reports</TabNavigationEntry>
+                <TabNavigationEntry path="/search/activity-log">ELR/ECR Activity Log</TabNavigationEntry>
             </TabNavigation>
             {actions && actions()}
         </nav>
