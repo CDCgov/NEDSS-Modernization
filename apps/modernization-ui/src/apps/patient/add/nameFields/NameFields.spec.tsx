@@ -39,7 +39,7 @@ describe('when entering a last name', () => {
         });
 
         await waitFor(() => {
-            expect(getByText('Only allows 50 characters')).toBeInTheDocument();
+            expect(getByText('Only allows 50 characters.')).toBeInTheDocument();
         });
     });
 
@@ -77,7 +77,7 @@ describe('when entering a first name', () => {
         });
 
         await waitFor(() => {
-            expect(getByText('Only allows 50 characters')).toBeInTheDocument();
+            expect(getByText('Only allows 50 characters.')).toBeInTheDocument();
         });
     });
 
@@ -115,7 +115,7 @@ describe('when entering a middle name', () => {
         });
 
         await waitFor(() => {
-            expect(getByText('Only allows 50 characters')).toBeInTheDocument();
+            expect(getByText('Only allows 50 characters.')).toBeInTheDocument();
         });
     });
 
