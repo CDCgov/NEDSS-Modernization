@@ -134,8 +134,50 @@ class ClassicHomePage {
   }
 
   verifyOpenInvestigations() {
-    cy.get("a").contains("Open Investigations").eq(0).click()
+    cy.get("a").contains("Open Investigations").eq(0).click();
   } 
+
+  clickSortTableOption(string) {
+    cy.get(`svg[aria-label="${string}"]`).click();
+  }
+
+  clickResultIdLink() {
+    this.patientVerifySearchTableInfo();
+    cy.get("div#patient-search-results a").eq(0).click();
+  }
+
+  returnPatientData() {
+    return {
+      ssn: "986-37-4923",
+      dob: "05/16/1961",
+      address: "7135 Emmet Spur",
+      phone: "732-721-2970",
+      zip: "74146",
+      email: "CadenRatkeyklkb79@hotmail.com"
+    };
+  }
+  
+  patientVerifySearchTableInfo() {
+    let patientData = this.returnPatientData();
+    cy.get("div#patient-search-results").contains(patientData.ssn);
+    cy.get("div#patient-search-results").contains(patientData.dob);    
+    cy.get("div#patient-search-results").contains(patientData.address);
+    cy.get("div#patient-search-results").contains(patientData.phone);  
+    cy.get("div#patient-search-results").contains(patientData.zip);
+    cy.get("div#patient-search-results").contains(patientData.email);
+  }
+
+  patientProfileSummaryVerify() {
+    let patientData = this.returnPatientData();
+    cy.get("p.patient-summary-item-value").contains(patientData.ssn);
+    cy.get("p.patient-summary-item-value").contains(patientData.dob);    
+    cy.get("p.patient-summary-item-value").contains(patientData.address);
+    cy.get("p.patient-summary-item-value").contains(patientData.phone);  
+    cy.get("p.patient-summary").contains(patientData.zip);
+    cy.get("a").contains("Demographics").click();
+    cy.get("div#demographics-tabpanel").contains(patientData.email);
+  }
+
 
 }
 
