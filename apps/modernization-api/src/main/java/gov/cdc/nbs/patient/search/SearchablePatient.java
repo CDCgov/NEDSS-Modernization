@@ -38,8 +38,7 @@ public record SearchablePatient(
     @JsonProperty("investigation_ids") String investigationIds,
     @JsonProperty("lab_report_ids") String labReportIds,
     @JsonProperty("notification_ids") String notificationIds,
-    Sort sort
-) {
+    Sort sort) {
 
   public SearchablePatient(
       long identifier,
@@ -85,15 +84,14 @@ public record SearchablePatient(
         investigationIds,
         labReportIds,
         notificationIds,
-        null
-    );
+        null);
   }
 
   public record Sort(
       String identification,
       String email,
-      String phone
-  ) {
+      String phone,
+      String address) {
   }
 
 
@@ -143,8 +141,8 @@ public record SearchablePatient(
 
   public record Identification(
       @JsonProperty("typeCd") String type,
-      @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class, as = String.class) @JsonProperty(
-          "rootExtensionTxt") String value) {
+      @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class,
+          as = String.class) @JsonProperty("rootExtensionTxt") String value) {
   }
 
 
