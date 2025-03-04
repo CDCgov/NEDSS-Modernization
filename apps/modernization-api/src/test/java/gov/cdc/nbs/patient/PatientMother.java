@@ -225,6 +225,41 @@ public class PatientMother {
             this.settings.createdOn()));
   }
 
+  public void withAddress(
+      final PatientIdentifier identifier,
+      final String type,
+      final String use,
+      final String address,
+      final String city,
+      final String county,
+      final String state,
+      final String zip,
+      final LocalDate date
+  ) {
+    Person patient = managed(identifier);
+
+    patient.add(
+        new PatientCommand.AddAddress(
+            patient.getId(),
+            idGenerator.next(),
+            date,
+            type,
+            use,
+            address,
+            null,
+            city,
+            state,
+            zip,
+            county,
+            "840",
+            null,
+            null,
+            this.settings.createdBy(),
+            this.settings.createdOn()
+        )
+    );
+  }
+
   public void withAddress(final PatientIdentifier identifier) {
 	Person patient = managed(identifier);
 

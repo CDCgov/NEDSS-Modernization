@@ -44,14 +44,14 @@ class PatientSearchResultDetailedPhoneFinder {
   private final PatientSearchResultPhoneMapper mapper;
 
   PatientSearchResultDetailedPhoneFinder(final JdbcTemplate template) {
-    this.template = template;
-    this.mapper = new PatientSearchResultPhoneMapper();
+	this.template = template;
+	this.mapper = new PatientSearchResultPhoneMapper();
   }
 
   Collection<PatientSearchResultPhone> find(final long patient) {
-    return this.template.query(
-        QUERY,
-        statement -> statement.setLong(PATIENT_PARAMETER, patient),
-        mapper);
+	return this.template.query(
+		QUERY,
+		statement -> statement.setLong(PATIENT_PARAMETER, patient),
+		mapper);
   }
 }
