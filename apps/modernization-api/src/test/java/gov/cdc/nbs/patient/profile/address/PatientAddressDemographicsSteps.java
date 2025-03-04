@@ -4,7 +4,6 @@ import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
 
