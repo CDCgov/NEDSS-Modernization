@@ -10,11 +10,10 @@ import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTra
 import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
-import { CancelAddPatientPanel } from '../cancelAddPatientPanel/CancelAddPatientPanel';
+import { CancelAddPatientPanel, useShowCancelModal } from '../cancelAddPatientPanel';
 import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
-import { useShowCancelModal } from '../cancelAddPatientPanel/useShowCancelModal';
 
 import styles from './add-patient-extended.module.scss';
 
