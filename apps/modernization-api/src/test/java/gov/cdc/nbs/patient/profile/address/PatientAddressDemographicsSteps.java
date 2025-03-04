@@ -20,22 +20,22 @@ public class PatientAddressDemographicsSteps {
     this.patient = patient;
   }
 
-  @Given("the patient has a {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
-  public void the_patient_has_an_address(String type, String use, String address, String city, String zip,
-      LocalDate date) {
-    PatientIdentifier identifier = patient.active();
-
-    mother.withAddress(
-        identifier,
-        type,
-        use,
-        address,
-        city,
-        null,
-        null,
-        zip,
-        date
-
-    );
-  }
+  //  @Given("the patient has a {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
+  //  public void the_patient_has_an_address(String type, String use, String address, String city, String zip,
+  //      LocalDate date) {
+  //    PatientIdentifier identifier = patient.active();
+  //
+  //    mother.withAddress(
+  //        identifier,
+  //        type,
+  //        use,
+  //        address,
+  //        city,
+  //        null,
+  //        null,
+  //        zip,
+  //        date
+  //
+  //    );
+  //  }
 }
