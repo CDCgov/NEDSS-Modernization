@@ -28,7 +28,7 @@ class PatientSearchResultAddressFinder {
           [address].zip_cd                as [zipcode],
           [country].code_short_desc_txt   as [country],
           [county].code_desc_txt          as [county],
-          [locators].as_of_date			  as [as_of]
+          [locators].as_of_date as [as_of]
       from Entity_locator_participation [locators]
       
           join Postal_locator [address] on
