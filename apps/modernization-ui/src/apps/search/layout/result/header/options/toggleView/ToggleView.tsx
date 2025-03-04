@@ -7,9 +7,7 @@ import { Sizing } from 'design-system/field';
 
 import styles from './toggle-view.module.scss';
 
-type ToggleViewProps = {
-    sizing?: Sizing;
-};
+type ToggleViewProps = { sizing?: Sizing };
 
 export const ToggleView = ({ sizing }: ToggleViewProps) => {
     const { view, asList, asTable } = useSearchResultDisplay();
@@ -23,7 +21,7 @@ export const ToggleView = ({ sizing }: ToggleViewProps) => {
                     data-tooltip-offset="center"
                     className={view === 'table' ? styles.active : ''}
                     outline={view !== 'table'}
-                    icon={<Icon name="table" />}
+                    icon={<Icon name="table" type="custom" />}
                     onClick={asTable}
                     sizing={sizing}
                 />

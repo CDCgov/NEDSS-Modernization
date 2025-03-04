@@ -47,7 +47,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                     />
                 )}
             />
-            <ValueView title="Current age" value={!bornOnInvalid ? age : null} />
+            <ValueView title="Current age" value={!bornOnInvalid ? age : null} sizing={sizing} />
             <Controller
                 control={control}
                 name="personalDetails.currentSex"

@@ -1,17 +1,18 @@
 @use 'styles/colors';
 @use 'styles/components';
 
-@mixin highlight($color) {
+$error-border-width: 4px;
+
+@mixin highlight($color, $border-width: $error-border-width) {
     border-left-color: $color;
 
     input,
     select,
     textarea {
+        width: 100%;
         outline: none;
-        padding-top: 0.25rem;
-        padding-bottom: 0.25rem;
 
-        border-width: 4px;
+        border-width: $border-width;
         border-style: solid;
         border-color: $color;
     }
@@ -26,57 +27,42 @@
     border-left-style: solid;
     border-left-color: colors.$clear;
 
+    line-height: normal;
+
     label {
         margin: 0;
         color: colors.$base-darkest;
+        font-size: var(--component-font-size);
     }
 
     input,
     select,
     textarea {
+        width: 100%;
         box-sizing: border-box;
         margin: 0;
+        font-size: var(--component-font-size);
+        height: var(--component-height);
     }
 
     &.small {
         @extend %small;
 
-        label {
-            @extend %small;
-        }
-
         select {
-            @extend %small-input;
             padding: 0.1875rem 0.5rem;
         }
 
         input {
-            @extend %small-input;
             padding: 0.25rem 0.5rem;
         }
 
         textarea {
             @extend %small-textarea;
         }
-
-        &.error, &.warn {
-            select {
-                min-height: 1.75rem;
-            }
-        }
     }
 
     &.medium {
         @extend %medium;
-
-        label {
-            @extend %medium;
-        }
-
-        input,
-        select {
-            @extend %medium-input;
-        }
 
         textarea {
             @extend %medium-textarea;
@@ -86,17 +72,17 @@
     &.large {
         @extend %large;
 
-        label {
-            @extend %large;
-        }
-
-        input,
-        select {
-            @extend %large-input;
-        }
-
         textarea {
             @extend %large-textarea;
+        }
+    }
+
+    &.error,
+    &.warn {
+        input,
+        select {
+            //  Adjusts the sizing of select and input components to account for a thicker border.
+            min-height: calc(var(--component-height) + ($error-border-width * 2));
         }
     }
 

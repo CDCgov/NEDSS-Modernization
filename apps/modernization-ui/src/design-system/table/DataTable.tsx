@@ -6,6 +6,10 @@ import { Sizing } from 'design-system/field';
 import { FilterDescriptor } from 'design-system/filter';
 
 import styles from './data-table.module.scss';
+import { Shown } from 'conditional-render';
+import { NoDataRow } from './NoDataRow';
+
+type SortIconType = 'default' | 'alpha' | 'numeric';
 
 type Column<V> = {
     id: string;
@@ -15,6 +19,7 @@ type Column<V> = {
     className?: string;
     render: (value: V, index: number) => ReactNode | undefined;
     filter?: FilterDescriptor;
+    sortIconType?: SortIconType;
 };
 
 type DataTableProps<V> = {
@@ -44,16 +49,18 @@ const DataTable = <V,>({ id, className, columns, data, sizing, rowHeightConstrai
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((row, index) => (
-                        <DataTableRow
-                            index={index}
-                            row={row}
-                            columns={columns}
-                            sizing={sizing}
-                            heightConstrained={rowHeightConstrained}
-                            key={index}
-                        />
-                    ))}
+                    <Shown when={data.length > 0} fallback={<NoDataRow colSpan={columns.length} />}>
+                        {data.map((row, index) => (
+                            <DataTableRow
+                                index={index}
+                                row={row}
+                                columns={columns}
+                                sizing={sizing}
+                                heightConstrained={rowHeightConstrained}
+                                key={index}
+                            />
+                        ))}
+                    </Shown>
                 </tbody>
             </table>
         </div>
@@ -62,4 +69,4 @@ const DataTable = <V,>({ id, className, columns, data, sizing, rowHeightConstrai
 
 export { DataTable };
 
-export type { Column, FilterDescriptor };
+export type { Column, FilterDescriptor, SortIconType };

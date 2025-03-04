@@ -60,5 +60,18 @@
         display: flex;
         gap: 0.5rem;
         padding: 0.5rem 1.5rem 0.5rem 16.5rem;
+
+    }
+
+    &.small {
+        footer {
+            padding-left: 15.75rem;
+        }
+    }
+
+    &.large {
+        footer {
+            padding-left: 16.75rem;
+        }
     }
 }
