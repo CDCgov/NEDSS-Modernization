@@ -28,12 +28,12 @@ const validateDay = (name: string) => (value: DateEntry) => {
             const limit = getDaysInMonth(new Date(value.year, value.month - 1));
 
             if (value.day > limit) {
-                return `The ${name} should have at most ${limit} days`;
+                return `The ${name} should have at most ${limit} days.`;
             }
         } else if (value.day > 31) {
-            return `The ${name} should have at most 31 days`;
+            return `The ${name} should have at most 31 days.`;
         } else if (value.day < 1) {
-            return `The ${name} should be at least the first day of the month`;
+            return `The ${name} should be at least the first day of the month.`;
         }
     }
     return true;

@@ -14,10 +14,11 @@ type Props = {
     sizing?: Sizing;
     /** @deprecated Use sizing property instead */
     size?: Sizing;
+    type?: 'custom';
 } & Omit<ReactSVGProps<SVGSVGElement>, 'width' | 'height'>;
 
-const Icon = ({ name, sizing, role = 'img', className, ...props }: Props) => {
-    const location = resolveLocation(name);
+const Icon = ({ name, sizing, role = 'img', className, type, ...props }: Props) => {
+    const location = resolveLocation(name, type);
     // standardizing property name as "sizing"
     sizing = sizing || props.size;
     return (
@@ -31,11 +32,11 @@ const Icon = ({ name, sizing, role = 'img', className, ...props }: Props) => {
     );
 };
 
-const resolveLocation = (name: string) => {
+const resolveLocation = (name: string, type: Props['type']) => {
+    if (type === 'custom') {
+        return `${extended}#${name}`;
+    }
     switch (name) {
-        case 'table': {
-            return `${extended}#${name}`;
-        }
         case 'calendar':
         case 'down-arrow-blue':
         case 'down-arrow-white':
@@ -85,7 +86,13 @@ type ExtendedIcons =
     | 'textarea'
     | 'textbox'
     | 'ungroup'
-    | 'table';
+    | 'table'
+    | 'sort_asc_alpha'
+    | 'sort_des_alpha'
+    | 'sort_asc_numeric'
+    | 'sort_des_numeric'
+    | 'sort_asc_default'
+    | 'sort_des_default';
 
 type USWDSIcons =
     | 'accessibility_new'

@@ -36,6 +36,9 @@ nbs:
     oidc:
       enabled: false
   ui:
+    settings:
+      defaults:
+        sizing: small
     features:
       address:
         autocomplete: false
