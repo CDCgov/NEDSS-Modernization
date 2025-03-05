@@ -3,12 +3,12 @@ import { Confirmation } from 'design-system/modal';
 import { ChangeEvent, useCallback, useState } from 'react';
 import { useShowCancelModal } from './useShowCancelModal';
 
-type CancelAddPatientExtendedPanelProps = {
+type CancelAddPatientPanelProps = {
     onClose?: () => void;
     onConfirm?: () => void;
 };
 
-export const CancelAddPatientExtendedPanel = ({ onClose, onConfirm }: CancelAddPatientExtendedPanelProps) => {
+export const CancelAddPatientPanel = ({ onClose, onConfirm }: CancelAddPatientPanelProps) => {
     const [visibilityCheckBox, setVisibilityCheckBox] = useState<boolean>(false);
     const { save } = useShowCancelModal();
 
