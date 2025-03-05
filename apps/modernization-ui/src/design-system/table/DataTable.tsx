@@ -29,9 +29,18 @@ type DataTableProps<V> = {
     data: V[];
     sizing?: Sizing;
     rowHeightConstrained?: boolean;
+    noDataFallback?: boolean;
 };
 
-const DataTable = <V,>({ id, className, columns, data, sizing, rowHeightConstrained = true }: DataTableProps<V>) => {
+const DataTable = <V,>({
+    id,
+    className,
+    columns,
+    data,
+    sizing,
+    noDataFallback,
+    rowHeightConstrained = true
+}: DataTableProps<V>) => {
     const resolvedClasses = classNames('usa-table--borderless', styles.table, sizing ? styles[sizing] : undefined);
     return (
         <div id={id} className={resolvedClasses}>
@@ -49,7 +58,7 @@ const DataTable = <V,>({ id, className, columns, data, sizing, rowHeightConstrai
                     </tr>
                 </thead>
                 <tbody>
-                    <Shown when={data.length > 0} fallback={<NoDataRow colSpan={columns.length} />}>
+                    <Shown when={data.length > 0} fallback={noDataFallback && <NoDataRow colSpan={columns.length} />}>
                         {data.map((row, index) => (
                             <DataTableRow
                                 index={index}
