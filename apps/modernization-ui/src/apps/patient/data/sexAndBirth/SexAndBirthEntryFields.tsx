@@ -41,6 +41,11 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
         }
     }, [selectedCurrentGender]);
 
+    useEffect(() => {
+        console.log({ age });
+        console.log({ currentBirthday });
+    }, [age]);
+
     return (
         <section>
             <Controller
