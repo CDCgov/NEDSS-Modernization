@@ -32,7 +32,7 @@ const PatientSearch = () => {
                 available={sorting}
                 defaultSort={{
                     property: 'patientname',
-                    direction: Direction.Descending
+                    direction: Direction.Ascending
                 }}>
                 <SearchInteractionProvider interaction={interaction}>
                     <FormProvider {...form}>
