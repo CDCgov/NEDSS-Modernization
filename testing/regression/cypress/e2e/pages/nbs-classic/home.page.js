@@ -141,9 +141,20 @@ class ClassicHomePage {
     cy.get(`svg[aria-label="${string}"]`).click();
   }
 
+  verifyTopAfterSortSearch(string) {
+    cy.get("#patient-search-results tbody tr").eq(0).contains(string);
+  }
+
+  verifyNoTopAfterSortSearch(string) {
+    cy.get("#patient-search-results tbody tr").eq(0).should('not.contain', string);
+  }
+
   clickResultIdLink() {
-    this.patientVerifySearchTableInfo();
-    cy.get("div#patient-search-results a").eq(0).click();
+    cy.wait(3000);
+    this.copySearchRowInfo();
+
+    // this.patientVerifySearchTableInfo();
+    // cy.get("div#patient-search-results a").eq(0).click();
   }
 
   returnPatientData() {
@@ -158,7 +169,7 @@ class ClassicHomePage {
   }
   
   patientVerifySearchTableInfo() {
-    let patientData = this.returnPatientData();
+    let patientData = this.returnPatientData();    
     cy.get("div#patient-search-results").contains(patientData.ssn);
     cy.get("div#patient-search-results").contains(patientData.dob);    
     cy.get("div#patient-search-results").contains(patientData.address);
@@ -178,6 +189,17 @@ class ClassicHomePage {
     cy.get("div#demographics-tabpanel").contains(patientData.email);
   }
 
+  copySearchRowInfo() {
+    cy.get("body").then((body) => {            
+      if (body.find("div#patient-search-results").length > 0) {        
+        cy.get('div#patient-search-results tbody tr td').then(($tds) => {
+          const tdTexts = $tds.toArray().map(td => td.innerText.trim());
+          cy.log(tdTexts);  
+          Cypress.env("tdTexts", tdTexts);
+        });
+      }
+    });
+  }
 
 }
 

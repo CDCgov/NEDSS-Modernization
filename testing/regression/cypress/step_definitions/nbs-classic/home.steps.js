@@ -89,9 +89,16 @@ Then("Verify Open Investigations", () => {
     classicHomePage.verifyOpenInvestigations()
 });
 
-
 Then("Sort Search results by {string}", (string) => {
     classicHomePage.clickSortTableOption(string);
+});
+
+Then("Verify top Search result by {string}", (string) => {
+    classicHomePage.verifyTopAfterSortSearch(string);
+});
+
+Then("Verify top Search result is not {string}", (string) => {
+    classicHomePage.verifyNoTopAfterSortSearch(string);
 });
 
 Then("I click first patient Search results to view profile", () => {
