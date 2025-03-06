@@ -34,7 +34,12 @@ const StandardHeader = <V,>({ className, children, filtering, sizing }: Standard
         <div className={classNames(styles.content)}>
             {children.name}
             {filtering?.active && children?.filter?.id && (
-                <HeaderFilterField label={children.name} descriptor={children.filter} filtering={filtering} />
+                <HeaderFilterField
+                    label={children.name}
+                    descriptor={children.filter}
+                    filtering={filtering}
+                    sizing={sizing}
+                />
             )}
         </div>
     </th>
@@ -66,7 +71,12 @@ const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }:
                     />
                 </div>
                 {filtering?.active && children?.filter?.id && (
-                    <HeaderFilterField label={children.name} descriptor={children.filter} filtering={filtering} />
+                    <HeaderFilterField
+                        label={children.name}
+                        descriptor={children.filter}
+                        filtering={filtering}
+                        sizing={sizing}
+                    />
                 )}
             </div>
         </th>
