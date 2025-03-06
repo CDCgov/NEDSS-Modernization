@@ -1,4 +1,4 @@
-import { ChangeEvent as ReactChangeEvent } from 'react';
+import { ChangeEvent as ReactChangeEvent, useEffect } from 'react';
 import classNames from 'classnames';
 import { Icon } from 'design-system/icon';
 
@@ -15,6 +15,7 @@ type TextInputProps = {
     onBlur?: () => void;
     onClear?: () => void;
     clearable?: boolean;
+    sorted?: boolean;
 } & Omit<
     JSX.IntrinsicElements['input'],
     'defaultValue' | 'onChange' | 'onBlur' | 'value' | 'type' | 'inputMode' | 'autoComplete'
@@ -30,6 +31,7 @@ const TextInput = ({
     onBlur,
     className,
     clearable = false,
+    sorted = false,
     onClear,
     ...props
 }: TextInputProps) => {
@@ -57,7 +59,7 @@ const TextInput = ({
                 name={props.name ?? id}
                 type={type}
                 inputMode={inputMode}
-                className={classNames('usa-input', className)}
+                className={classNames({ [styles.sorted]: sorted }, 'usa-input', className)}
                 onChange={handleChange}
                 onBlur={onBlur}
                 placeholder={placeholder}

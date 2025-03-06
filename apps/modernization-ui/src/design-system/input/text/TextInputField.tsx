@@ -1,7 +1,7 @@
 import { Field, FieldProps } from 'design-system/field';
 import { TextInput, TextInputProps } from './TextInput';
 
-type TextInputFieldProps = FieldProps & TextInputProps;
+type TextInputFieldProps = FieldProps & TextInputProps & { sorted?: boolean };
 
 const TextInputField = ({
     id,
@@ -11,6 +11,7 @@ const TextInputField = ({
     error,
     warning,
     required,
+    sorted,
     ...remaining
 }: TextInputFieldProps) => {
     return (
@@ -22,7 +23,7 @@ const TextInputField = ({
             required={required}
             error={error}
             warning={warning}>
-            <TextInput id={id} {...remaining} />
+            <TextInput id={id} sorted={sorted} {...remaining} />
         </Field>
     );
 };

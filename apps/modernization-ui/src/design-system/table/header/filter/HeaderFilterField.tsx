@@ -11,9 +11,10 @@ type HeaderFilterFieldProps = {
     sizing: Sizing | undefined;
     label: string;
     filtering: FilterInteraction;
+    sorted?: boolean;
 };
 
-const HeaderFilterField = ({ descriptor, label, filtering, sizing }: HeaderFilterFieldProps) => {
+const HeaderFilterField = ({ descriptor, label, filtering, sizing, sorted }: HeaderFilterFieldProps) => {
     const { valueOf, apply, clear } = filtering;
 
     const initialValue = valueOf(descriptor.id);
@@ -52,6 +53,7 @@ const HeaderFilterField = ({ descriptor, label, filtering, sizing }: HeaderFilte
                 onClear={handleClear}
                 onKeyDown={handleKey}
                 sizing={sizing}
+                sorted={sorted}
             />
         </Shown>
     );
