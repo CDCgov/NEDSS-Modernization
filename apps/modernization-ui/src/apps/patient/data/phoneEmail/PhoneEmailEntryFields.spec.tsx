@@ -121,7 +121,7 @@ describe('when entering patient phone & email demographics', () => {
         userEvent.paste(countryCodeInput, value);
         userEvent.tab();
 
-        const validationMessage = 'A country code should be 1 to 3 digits';
+        const validationMessage = 'A country code should be 1 to 20 digits!';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
@@ -146,7 +146,7 @@ describe('when entering patient phone & email demographics', () => {
         userEvent.paste(extensionInput, value);
         userEvent.tab();
 
-        const validationMessage = 'A Extension should be 1 to 4 digits';
+        const validationMessage = 'An Extension should be 1 to 20 digits.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);

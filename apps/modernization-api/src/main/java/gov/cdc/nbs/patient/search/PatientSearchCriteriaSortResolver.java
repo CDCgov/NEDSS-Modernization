@@ -38,7 +38,7 @@ class PatientSearchCriteriaSortResolver {
           asHandlingNullSortOption("local_id", order));
       case "lastnm" -> Stream.of(asSortOption("name", "name.lastNm.keyword", order));
       case "firstnm" -> Stream.of(asSortOption("name", "name.firstNm.keyword", order));
-      case ADDRESS -> Stream.of(asSortOption(ADDRESS, "address.streetAddr1.keyword", order));
+      case ADDRESS -> Stream.of(asSortOption("sort.address", order));
       case "birthtime", "birthday" -> Stream.of(asSortOption("birth_time", order));
       case "city" -> Stream.of(asSortOption(ADDRESS, "address.city.keyword", order));
       case "county" -> Stream.of(asSortOption(ADDRESS, "address.cntyText.keyword", order));
