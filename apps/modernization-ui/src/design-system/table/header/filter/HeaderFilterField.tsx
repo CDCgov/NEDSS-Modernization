@@ -51,7 +51,6 @@ const HeaderFilterField = ({ descriptor, label, filtering, sizing }: HeaderFilte
                 onChange={handleChange}
                 onClear={handleClear}
                 onKeyDown={handleKey}
-                label=""
                 sizing={sizing}
             />
         </Shown>
