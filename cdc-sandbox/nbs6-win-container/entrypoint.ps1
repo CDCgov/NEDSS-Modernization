@@ -44,8 +44,8 @@ if ($null -ne $env:DISABLED_SCHEDULED_TASKS -and $env:DISABLED_SCHEDULED_TASKS -
 }
 
 foreach ($item in $disabledTasksArray) {
-    Write-Output "Disabling TaskName: $item Task"
-    Disable-ScheduledTask -TaskName "$item Task"
+    Write-Output "Disabling TaskName: $item"
+    Disable-ScheduledTask -TaskName "$item"
 }
 
 # Set environment memory allocation (override standalone.conf.bat)
