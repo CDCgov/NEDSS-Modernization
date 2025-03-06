@@ -1,3 +1,4 @@
+@skip-if-disabled-is-int
 Feature: Page Builder - User can verify delete section while editing the page here.
 
   Background:
