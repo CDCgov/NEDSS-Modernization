@@ -1,8 +1,10 @@
+import { Pass } from 'apps/deduplication/api/model/Pass';
 import { useMatchConfiguration } from 'apps/deduplication/api/useMatchConfiguration';
+import { Shown } from 'conditional-render';
+import { useState } from 'react';
+import { SelectPass } from '../notification-cards/SelectPass';
 import { PassList } from './pass-list/PassList';
 import styles from './pass-configuration.module.scss';
-import { useState } from 'react';
-import { Pass } from 'apps/deduplication/api/model/Pass';
 
 export const PassConfiguration = () => {
     const { passes } = useMatchConfiguration();
@@ -10,7 +12,9 @@ export const PassConfiguration = () => {
     return (
         <div className={styles.passConfiguration}>
             <PassList passes={passes} setSelectedPass={setSelectedPass} selectedPass={selectedPass} />
-            Selected Pass: {selectedPass ? selectedPass.name : ''}
+            <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes.length} />}>
+                Select pass: {selectedPass?.name}
+            </Shown>
         </div>
     );
 };

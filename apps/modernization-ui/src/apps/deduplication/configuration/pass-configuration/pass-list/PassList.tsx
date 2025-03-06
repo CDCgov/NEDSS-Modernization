@@ -2,7 +2,6 @@ import { Pass } from 'apps/deduplication/api/model/Pass';
 import styles from './pass-list.module.scss';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
-import { NoPasses } from '../no-passes/NoPasses';
 import { Button } from 'design-system/button';
 import { Icon } from '@trussworks/react-uswds';
 import { PassEntry } from '../pass-entry/PassEntry';
@@ -26,7 +25,9 @@ export const PassList = ({ passes, selectedPass, setSelectedPass }: Props) => {
             <div className={styles.heading}>
                 <Heading level={2}>Pass configurations</Heading>
             </div>
-            <Shown when={passes !== undefined && passes.length > 0} fallback={<NoPasses />}>
+            <Shown
+                when={passes !== undefined && passes.length > 0}
+                fallback={<div className={styles.noPassesText}>No pass configurations have been created.</div>}>
                 {passes.map((pass, k) => (
                     <PassEntry
                         key={k}

@@ -7,7 +7,7 @@ export const NoConfiguration = () => {
     return (
         <div className={styles.noConfiguration}>
             <div className={styles.card}>
-                <div className={styles.cardHeader}>
+                <div>
                     <Heading level={2}>Algorithm not configured</Heading>
                 </div>
 

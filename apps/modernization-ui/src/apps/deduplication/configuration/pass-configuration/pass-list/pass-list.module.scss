@@ -21,4 +21,14 @@
         margin-top: 0.5rem !important;
         text-decoration: none;
     }
+
+    .noPassesText {
+        padding: 0.75rem 0;
+        color: colors.$base;
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.3125rem;
+        @extend %thin-bottom;
+    }
 }
