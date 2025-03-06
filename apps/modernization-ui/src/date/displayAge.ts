@@ -9,8 +9,6 @@ const displayAgeAsOf = (dateOfBirth: Maybe<string | Date>, from: Date) => {
         dateOfBirth = new Date(dateOfBirth);
     }
 
-    console.log(dateOfBirth);
-
     if (!(dateOfBirth instanceof Date) || isNaN(dateOfBirth.getTime()) || dateOfBirth > from) {
         return undefined;
     }
