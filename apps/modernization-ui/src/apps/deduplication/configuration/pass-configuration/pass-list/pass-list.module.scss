@@ -1,0 +1,24 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.passList {
+    display: flex;
+    flex-direction: column;
+    width: 18.75rem;
+    padding: 1.5rem 1rem;
+    align-items: flex-start;
+    align-self: stretch;
+    background-color: colors.$base-white;
+    @extend %thin-right;
+
+    .heading {
+        width: 100%;
+        padding-bottom: 1rem;
+        @extend %thin-bottom;
+    }
+
+    .addPassButton {
+        margin-top: 0.5rem !important;
+        text-decoration: none;
+    }
+}

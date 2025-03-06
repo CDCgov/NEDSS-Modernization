@@ -1,16 +1,16 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ConfigurationSetup } from './ConfigurationSetup';
+import { MatchConfiguration } from './MatchConfiguration';
 import { MemoryRouter } from 'react-router-dom';
 
 jest.mock('alert', () => ({
     useAlert: jest.fn(() => ({
-        showError: jest.fn(),
+        showError: jest.fn()
     })),
-    AlertProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    AlertProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>
 }));
 
-describe('ConfigurationSetup', () => {
+describe('MatchConfiguration', () => {
     let showErrorMock: jest.Mock;
 
     beforeEach(() => {
@@ -23,7 +23,7 @@ describe('ConfigurationSetup', () => {
     test('renders the configuration setup page correctly', () => {
         render(
             <MemoryRouter>
-                <ConfigurationSetup />
+                <MatchConfiguration />
             </MemoryRouter>
         );
 
@@ -37,7 +37,7 @@ describe('ConfigurationSetup', () => {
     test('handles error display using useAlert', () => {
         render(
             <MemoryRouter>
-                <ConfigurationSetup />
+                <MatchConfiguration />
             </MemoryRouter>
         );
 
@@ -47,7 +47,7 @@ describe('ConfigurationSetup', () => {
     test('navigating to /deduplication/configuration loads the page', () => {
         render(
             <MemoryRouter initialEntries={['/deduplication/configuration']}>
-                <ConfigurationSetup />
+                <MatchConfiguration />
             </MemoryRouter>
         );
 
@@ -57,7 +57,7 @@ describe('ConfigurationSetup', () => {
     test('the page has the title "Person match configuration"', () => {
         render(
             <MemoryRouter>
-                <ConfigurationSetup />
+                <MatchConfiguration />
             </MemoryRouter>
         );
 
@@ -70,7 +70,7 @@ describe('ConfigurationSetup', () => {
     test('the page has a "Configure data elements" button', () => {
         render(
             <MemoryRouter>
-                <ConfigurationSetup />
+                <MatchConfiguration />
             </MemoryRouter>
         );
 
@@ -80,7 +80,7 @@ describe('ConfigurationSetup', () => {
     test('the page has an "Import configuration file" button', () => {
         render(
             <MemoryRouter>
-                <ConfigurationSetup />
+                <MatchConfiguration />
             </MemoryRouter>
         );
 
@@ -90,15 +90,15 @@ describe('ConfigurationSetup', () => {
     test('handles button clicks correctly', async () => {
         render(
             <MemoryRouter>
-                <ConfigurationSetup />
+                <MatchConfiguration />
             </MemoryRouter>
         );
 
         const configureButton = screen.getByText('Configure data elements');
         const importButton = screen.getByText('Import configuration file');
 
-        await userEvent.click(configureButton);
-        await userEvent.click(importButton);
+        userEvent.click(configureButton);
+        userEvent.click(importButton);
 
         expect(configureButton).toBeInTheDocument();
         expect(importButton).toBeInTheDocument();

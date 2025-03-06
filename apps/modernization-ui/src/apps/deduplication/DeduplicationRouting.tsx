@@ -1,4 +1,4 @@
-import { ConfigurationSetup } from './configuration/ConfigurationSetup';
+import { MatchConfiguration } from './configuration/MatchConfiguration';
 import { FeatureGuard } from 'feature';
 
 const routing = [
@@ -6,7 +6,7 @@ const routing = [
         path: '/deduplication/configuration',
         element: (
             <FeatureGuard guard={(features) => features?.deduplication?.enabled}>
-                <ConfigurationSetup />
+                <MatchConfiguration />
             </FeatureGuard>
         )
     }
