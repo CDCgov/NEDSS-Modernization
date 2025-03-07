@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { NotificationCard } from './NotificationCard';
 
 const Fixture = () => {
-    return <NotificationCard heading={'Heading text'} body={'body text'} buttons={<button>Button Text</button>} />;
+    return <NotificationCard heading={'Heading text'} body={'body text'} buttons={<button>Button text</button>} />;
 };
 describe('NotificationCard', () => {
     it('should display heading', () => {

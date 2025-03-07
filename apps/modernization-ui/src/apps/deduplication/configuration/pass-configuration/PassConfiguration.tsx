@@ -1,13 +1,15 @@
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { useMatchConfiguration } from 'apps/deduplication/api/useMatchConfiguration';
 import { Shown } from 'conditional-render';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SelectPass } from '../notification-cards/SelectPass';
 import { PassList } from './pass-list/PassList';
 import styles from './pass-configuration.module.scss';
 
 export const PassConfiguration = () => {
     const { passes } = useMatchConfiguration();
+    const [newPass, setNewPass] = useState<Pass | undefined>();
+    const [passList, setPassList] = useState<Pass[]>([]);
     const [selectedPass, setSelectedPass] = useState<Pass | undefined>();
 
     const handleEditPassName = (pass: Pass) => {
@@ -15,13 +17,21 @@ export const PassConfiguration = () => {
     };
 
     const handleAddPass = () => {
-        console.log('Add pass clicked');
+        // Need to confirm data loss if a pass is already selected selected
+        const newPass = { name: 'New pass configuration', active: false };
+        setNewPass(newPass);
+        setSelectedPass(newPass);
     };
+
+    useEffect(() => {
+        const passList = [newPass, ...passes].filter((p) => p !== undefined);
+        setPassList(passList);
+    }, [newPass, passes]);
 
     return (
         <div className={styles.passConfiguration}>
             <PassList
-                passes={passes}
+                passes={passList}
                 onSetSelectedPass={setSelectedPass}
                 onEditPassName={handleEditPassName}
                 onAddPass={handleAddPass}

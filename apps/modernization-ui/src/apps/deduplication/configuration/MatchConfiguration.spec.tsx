@@ -1,106 +1,35 @@
-import { render, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render } from '@testing-library/react';
 import { MatchConfiguration } from './MatchConfiguration';
-import { MemoryRouter } from 'react-router-dom';
 
-jest.mock('alert', () => ({
-    useAlert: jest.fn(() => ({
-        showError: jest.fn()
-    })),
-    AlertProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>
+let mockReturnValue: string | undefined = 'value';
+jest.mock('apps/deduplication/api/useDataElements', () => ({
+    useDataElements: () => {
+        return { dataElements: mockReturnValue };
+    }
 }));
 
+const Fixture = () => {
+    return <MatchConfiguration />;
+};
+
 describe('MatchConfiguration', () => {
-    let showErrorMock: jest.Mock;
+    // Display
+    it('should show Heading', () => {
+        const { getByText } = render(<Fixture />);
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-        showErrorMock = jest.fn();
-        const { useAlert } = require('alert');
-        useAlert.mockReturnValue({ showError: showErrorMock });
+        expect(getByText('Person match configuration')).toBeInTheDocument();
     });
 
-    test('renders the configuration setup page correctly', () => {
-        render(
-            <MemoryRouter>
-                <MatchConfiguration />
-            </MemoryRouter>
-        );
+    it('should display algorithm not configured message if no data elements are present', () => {
+        const { getByText } = render(<Fixture />);
 
-        const header = screen.getByRole('banner');
-        const heading = within(header).getByRole('heading', { level: 1 });
-
-        expect(heading).toHaveTextContent('Person match configuration');
-        expect(screen.getByText('Algorithm not configured')).toBeInTheDocument();
+        expect(getByText('Select a pass configuration')).toBeInTheDocument();
     });
 
-    test('handles error display using useAlert', () => {
-        render(
-            <MemoryRouter>
-                <MatchConfiguration />
-            </MemoryRouter>
-        );
+    it('should display algorithm not configured message if no data elements are present', () => {
+        mockReturnValue = undefined;
+        const { getByText } = render(<Fixture />);
 
-        expect(showErrorMock).not.toHaveBeenCalled();
-    });
-
-    test('navigating to /deduplication/configuration loads the page', () => {
-        render(
-            <MemoryRouter initialEntries={['/deduplication/configuration']}>
-                <MatchConfiguration />
-            </MemoryRouter>
-        );
-
-        expect(screen.getByRole('banner')).toBeInTheDocument();
-    });
-
-    test('the page has the title "Person match configuration"', () => {
-        render(
-            <MemoryRouter>
-                <MatchConfiguration />
-            </MemoryRouter>
-        );
-
-        const header = screen.getByRole('banner');
-        const heading = within(header).getByRole('heading', { level: 1 });
-
-        expect(heading).toHaveTextContent('Person match configuration');
-    });
-
-    test('the page has a "Configure data elements" button', () => {
-        render(
-            <MemoryRouter>
-                <MatchConfiguration />
-            </MemoryRouter>
-        );
-
-        expect(screen.getByRole('button', { name: 'Configure data elements' })).toBeInTheDocument();
-    });
-
-    test('the page has an "Import configuration file" button', () => {
-        render(
-            <MemoryRouter>
-                <MatchConfiguration />
-            </MemoryRouter>
-        );
-
-        expect(screen.getByRole('button', { name: 'Import configuration file' })).toBeInTheDocument();
-    });
-
-    test('handles button clicks correctly', async () => {
-        render(
-            <MemoryRouter>
-                <MatchConfiguration />
-            </MemoryRouter>
-        );
-
-        const configureButton = screen.getByText('Configure data elements');
-        const importButton = screen.getByText('Import configuration file');
-
-        userEvent.click(configureButton);
-        userEvent.click(importButton);
-
-        expect(configureButton).toBeInTheDocument();
-        expect(importButton).toBeInTheDocument();
+        expect(getByText('Algorithm not configured')).toBeInTheDocument();
     });
 });

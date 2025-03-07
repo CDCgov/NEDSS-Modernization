@@ -1,9 +1,9 @@
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { useDataElements } from '../api/useDataElements';
-import styles from './match-configuration.module.scss';
 import { AlgorithmNotConfigured } from './notification-cards/AlgorithmNotConfigured';
 import { PassConfiguration } from './pass-configuration/PassConfiguration';
+import styles from './match-configuration.module.scss';
 
 export const MatchConfiguration = () => {
     const { dataElements } = useDataElements();
