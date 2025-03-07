@@ -1,10 +1,11 @@
-import { Pass } from 'apps/deduplication/api/model/Pass';
+import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { useMatchConfiguration } from 'apps/deduplication/api/useMatchConfiguration';
 import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
 import { SelectPass } from '../notification-cards/SelectPass';
 import { PassList } from './pass-list/PassList';
 import styles from './pass-configuration.module.scss';
+import { PassForm } from './pass-form/PassForm';
 
 export const PassConfiguration = () => {
     const { passes } = useMatchConfiguration();
@@ -18,7 +19,11 @@ export const PassConfiguration = () => {
 
     const handleAddPass = () => {
         // Need to confirm data loss if a pass is already selected selected
-        const newPass = { name: 'New pass configuration', active: false };
+        const newPass = {
+            name: 'New pass configuration',
+            blockingCriteria: [BlockingAttribute.FIRST_NAME],
+            active: false
+        };
         setNewPass(newPass);
         setSelectedPass(newPass);
     };
@@ -38,7 +43,7 @@ export const PassConfiguration = () => {
                 selectedPass={selectedPass}
             />
             <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes.length} />}>
-                Select pass: {selectedPass?.name}
+                <PassForm initial={selectedPass!} />
             </Shown>
         </div>
     );

@@ -1,0 +1,36 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.sidePanel {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+    white-space: nowrap;
+    background-color: colors.$base-white;
+    box-shadow: -6px 4px 6px 0px rgba(0, 0, 0, 0.1);
+    transition: 0.5s;
+
+    .heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        @extend %thin-bottom;
+
+        button {
+            background-color: unset;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+    }
+
+    .panelContent {
+        display: flex;
+        overflow: hidden;
+    }
+}

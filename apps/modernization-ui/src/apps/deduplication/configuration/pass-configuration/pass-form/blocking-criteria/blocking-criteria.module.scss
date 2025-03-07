@@ -1,0 +1,37 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.blockingCriteria {
+    @include borders.rounded();
+    @extend %thin;
+    background-color: colors.$base-white;
+
+    .heading {
+        padding: 1rem;
+        @extend %thin-bottom;
+
+        & > span {
+            color: colors.$base-darker;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.3125rem;
+        }
+    }
+
+    .body {
+        padding: 1rem;
+
+        .noBlockingCriteriaText {
+            line-height: 1.62rem;
+        }
+
+        .buttonContainer {
+            padding: 1rem 0;
+
+            .addButton {
+                height: 2rem;
+            }
+        }
+    }
+}

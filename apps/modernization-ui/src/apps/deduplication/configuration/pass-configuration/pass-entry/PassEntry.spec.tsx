@@ -8,6 +8,7 @@ const editName = jest.fn();
 const pass: Pass = {
     name: 'Pass name',
     description: 'Pass description',
+    blockingCriteria: [],
     active: true
 };
 const Fixture = ({ status = true }) => {

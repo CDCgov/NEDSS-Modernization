@@ -13,11 +13,13 @@ export const useMatchConfiguration = () => {
             {
                 name: 'Lastname_Dateofbirth longer name',
                 description: 'This is my description for this pass',
+                blockingCriteria: [],
                 active: true
             },
             {
                 name: 'IDtype_City',
                 description: '',
+                blockingCriteria: [],
                 active: false
             }
         ]);

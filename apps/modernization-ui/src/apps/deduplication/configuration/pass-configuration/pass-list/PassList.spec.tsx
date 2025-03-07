@@ -10,11 +10,13 @@ const passes: Pass[] = [
     {
         name: 'Pass name 1',
         description: 'Pass description 1',
+        blockingCriteria: [],
         active: true
     },
     {
         name: 'Pass name 2',
         description: 'Pass description 2',
+        blockingCriteria: [],
         active: false
     }
 ];
