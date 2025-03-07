@@ -2,13 +2,16 @@ import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanne
 import styles from './no-patient-result.module.scss';
 import { useAddPatientFromSearch } from 'apps/search/patient/add/useAddPatientFromSearch';
 import { PatientSearchResultTable } from '../table';
+import { Sizing } from 'design-system/field';
 
-const NoPatientResults = () => {
+type Props = { sizing: Sizing };
+
+const NoPatientResults = ({ sizing }: Props) => {
     const { add } = useAddPatientFromSearch();
 
     return (
         <>
-            <PatientSearchResultTable results={[]} />
+            <PatientSearchResultTable results={[]} sizing={sizing} />
             <div className={styles.noResults}>
                 <AlertBanner type="info" iconSize={4}>
                     <div className={styles.noResultsContent}>

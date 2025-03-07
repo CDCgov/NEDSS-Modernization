@@ -11,7 +11,7 @@ type Sizing = 'small' | 'medium' | 'large';
 type FieldProps = {
     orientation?: Orientation;
     sizing?: Sizing;
-    label: string;
+    label?: string;
     helperText?: string;
     error?: string;
     required?: boolean;

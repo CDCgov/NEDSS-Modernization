@@ -33,6 +33,10 @@ $error-border-width: 4px;
         margin: 0;
         color: colors.$base-darkest;
         font-size: var(--component-font-size);
+        :empty {
+            margin: 0;
+            padding: 0;
+        }
     }
 
     input,
