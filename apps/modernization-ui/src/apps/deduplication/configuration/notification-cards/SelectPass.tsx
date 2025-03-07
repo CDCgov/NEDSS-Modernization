@@ -11,7 +11,7 @@ export const SelectPass = ({ passCount }: Props) => {
             fallback={
                 <NotificationCard
                     heading="Select a pass configuration"
-                    body="To get started, select a pass configuration from the left to edit or click “Add pass configuration” to create a new pass."
+                    body='To get started, select a pass configuration from the left to edit or click "Add pass configuration" to create a new pass.'
                 />
             }>
             <NotificationCard

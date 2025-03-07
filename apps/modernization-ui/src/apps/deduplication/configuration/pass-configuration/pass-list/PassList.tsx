@@ -9,17 +9,11 @@ import { PassEntry } from '../pass-entry/PassEntry';
 type Props = {
     passes: Pass[];
     selectedPass?: Pass;
-    setSelectedPass: (pass: Pass) => void;
+    onSetSelectedPass: (pass: Pass) => void;
+    onEditPassName: (pass: Pass) => void;
+    onAddPass: () => void;
 };
-export const PassList = ({ passes, selectedPass, setSelectedPass }: Props) => {
-    const handleAddPass = () => {
-        console.log('clicked add pass');
-    };
-
-    const handleEditPassName = (pass: Pass) => {
-        console.log('edit pass name', pass);
-    };
-
+export const PassList = ({ passes, selectedPass, onSetSelectedPass, onEditPassName, onAddPass }: Props) => {
     return (
         <aside className={styles.passList}>
             <div className={styles.heading}>
@@ -32,8 +26,8 @@ export const PassList = ({ passes, selectedPass, setSelectedPass }: Props) => {
                     <PassEntry
                         key={k}
                         pass={pass}
-                        selectPass={() => setSelectedPass(pass)}
-                        editName={() => handleEditPassName(pass)}
+                        onSelectPass={onSetSelectedPass}
+                        onEditName={onEditPassName}
                         isSelected={pass === selectedPass}
                     />
                 ))}
@@ -42,7 +36,7 @@ export const PassList = ({ passes, selectedPass, setSelectedPass }: Props) => {
                 icon={<Icon.Add size={3} />}
                 labelPosition="right"
                 unstyled
-                onClick={handleAddPass}
+                onClick={onAddPass}
                 className={styles.addPassButton}>
                 Add pass configuration
             </Button>
