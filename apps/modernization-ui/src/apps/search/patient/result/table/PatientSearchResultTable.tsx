@@ -50,7 +50,7 @@ const columns: Column<PatientSearchResult>[] = [
         className: styles['col-dob'],
         render: (result) => result.birthday && displayPatientAge(result, 'multiline'),
         filter: { id: 'ageOrDateOfBirth', type: 'text' },
-        sortIconType: 'default'
+        sortIconType: 'numeric'
     },
     {
         ...SEX,

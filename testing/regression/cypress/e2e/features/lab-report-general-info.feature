@@ -1,3 +1,4 @@
+@skip-if-disabled-is-int
 Feature: Laboratory Report Search by general search
 
   Background:

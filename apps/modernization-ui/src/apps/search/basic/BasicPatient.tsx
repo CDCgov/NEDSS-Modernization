@@ -33,8 +33,8 @@ export { withPatient, displayProfileLink, displayGender };
 
 const sorting: SortingSelectable[] = [
     { property: 'relavance', direction: Direction.Descending, name: 'Closest match' },
-    { property: 'legalName', direction: Direction.Ascending, name: 'Patient name (A-Z)' },
-    { property: 'legalName', direction: Direction.Descending, name: 'Patient name (Z-A)' },
+    { property: 'patientname', direction: Direction.Ascending, name: 'Patient name (A-Z)' },
+    { property: 'patientname', direction: Direction.Descending, name: 'Patient name (Z-A)' },
     { property: 'birthday', direction: Direction.Ascending, name: 'Date of birth (Ascending)' },
     { property: 'birthday', direction: Direction.Descending, name: 'Date of birth (Descending)' }
 ];
