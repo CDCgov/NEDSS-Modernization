@@ -58,6 +58,12 @@ $env:JAVA_OPTS="$env:JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman"
 [Environment]::SetEnvironmentVariable("JBOSS_HOME", $env:JBOSS_HOME, "Machine")
 [Environment]::SetEnvironmentVariable("JAVA_TOOL_OPTIONS", $env:JAVA_TOOL_OPTIONS, "Machine")
 [Environment]::SetEnvironmentVariable("DATABASE_ENDPOINT", $env:DATABASE_ENDPOINT, "Machine")
+[Environment]::SetEnvironmentVariable("odse_user", $env:odse_user, "Machine")
+[Environment]::SetEnvironmentVariable("odse_pass", $env:odse_pass, "Machine")
+[Environment]::SetEnvironmentVariable("rdb_user", $env:rdb_user, "Machine")
+[Environment]::SetEnvironmentVariable("rdb_pass", $env:rdb_pass, "Machine")
+[Environment]::SetEnvironmentVariable("srte_user", $env:srte_user, "Machine")
+[Environment]::SetEnvironmentVariable("srte_pass", $env:srte_pass, "Machine")
 [Environment]::SetEnvironmentVariable("JAVA_OPTS", $env:JAVA_OPTS, "Machine")
 [Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\executables\sqlcmd", "Machine")
 
