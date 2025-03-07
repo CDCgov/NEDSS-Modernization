@@ -11,7 +11,7 @@ export const useMatchConfiguration = () => {
 
         setPasses([
             {
-                name: 'Lastname_Dateofbirth',
+                name: 'Lastname_Dateofbirth longer name',
                 description: 'This is my description for this pass',
                 active: true
             },
