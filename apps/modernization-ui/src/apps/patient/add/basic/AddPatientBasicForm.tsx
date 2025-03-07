@@ -34,11 +34,7 @@ export const AddPatientBasicForm = ({ isValid }: Props) => {
                 <Card
                     id={ADMINISTRATIVE_SECTION.id}
                     title={ADMINISTRATIVE_SECTION.label}
-                    info={
-                        <span>
-                            <span className="required"> All fields marked with</span> are required
-                        </span>
-                    }>
+                    info={<span className="required-before">Required</span>}>
                     <AdministrativeEntryFields sizing={sizing} />
                 </Card>
                 <Card id={NAME_SECTION.id} title={NAME_SECTION.label}>
