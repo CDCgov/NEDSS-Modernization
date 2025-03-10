@@ -27,7 +27,7 @@ type NameRepeatingBlockProps = {
 
 export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty, sizing }: NameRepeatingBlockProps) => {
     const renderForm = () => <NameEntryFields sizing={sizing} />;
-    const renderView = (entry: NameEntry) => <NameEntryView entry={entry} />;
+    const renderView = (entry: NameEntry) => <NameEntryView entry={entry} sizing={sizing} />;
 
     return (
         <RepeatingBlock<NameEntry>
