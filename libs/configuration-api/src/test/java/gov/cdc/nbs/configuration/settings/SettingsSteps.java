@@ -11,7 +11,8 @@ public class SettingsSteps {
 
   private final Active<ResultActions> response;
 
-  public SettingsSteps(final Active<ResultActions> response) {
+  SettingsSteps(
+      final Active<ResultActions> response) {
     this.response = response;
   }
 
@@ -21,6 +22,10 @@ public class SettingsSteps {
       case "smarty key" -> "settings.smarty.key";
       case "analytics key" -> "settings.analytics.key";
       case "analytics host" -> "settings.analytics.host";
+      case "default sizing" -> "settings.defaults.sizing";
+      case "default country" -> "settings.defaults.country";
+      case "session warning" -> "settings.session.warning";
+      case "session expiration" -> "settings.session.expiration";
       default -> value;
     };
   }
