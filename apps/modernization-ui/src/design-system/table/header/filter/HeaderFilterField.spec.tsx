@@ -24,7 +24,7 @@ const mockInteraction: FilterInteraction = {
 };
 
 const Fixture = ({ id, type = 'text' }: { id: string; type?: FilterType }) => {
-    return <HeaderFilterField descriptor={{ id, type }} label="Testing" filtering={mockInteraction} />;
+    return <HeaderFilterField descriptor={{ id, type }} label="Testing" filtering={mockInteraction} sizing="medium" />;
 };
 
 describe('when filtering table data from the header', () => {
