@@ -21,7 +21,7 @@ export const ToggleView = ({ sizing }: ToggleViewProps) => {
                     data-tooltip-offset="center"
                     className={view === 'table' ? styles.active : ''}
                     outline={view !== 'table'}
-                    icon={<Icon name="table" type="custom" />}
+                    icon={<Icon name="table" />}
                     onClick={asTable}
                     sizing={sizing}
                 />
