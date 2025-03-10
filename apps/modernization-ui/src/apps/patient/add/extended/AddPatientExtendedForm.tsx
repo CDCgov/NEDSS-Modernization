@@ -16,7 +16,7 @@ import { AlertMessage } from 'design-system/message';
 import styles from './add-patient-extended-form.module.scss';
 import { SubFormDirtyState, ValidationErrors } from './useAddExtendedPatientInteraction';
 import React, { useEffect, useRef } from 'react';
-// import { useComponentSizing } from 'design-system/sizing';
+import { useComponentSizing } from 'design-system/sizing';
 
 type Props = {
     validationErrors?: ValidationErrors;
@@ -24,7 +24,7 @@ type Props = {
 };
 export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Props) => {
     const { control } = useFormContext<ExtendedNewPatientEntry>();
-    const sizing = 'small'; //useComponentSizing();
+    const sizing = useComponentSizing();
 
     const formRef = useRef<HTMLDivElement>(null);
 
