@@ -8,7 +8,7 @@ import styles from './header-filter-field.module.scss';
 type HeaderFilterFieldProps = { descriptor: FilterDescriptor; label: string; filtering: FilterInteraction };
 
 const HeaderFilterField = ({ descriptor, label, filtering }: HeaderFilterFieldProps) => {
-    const { valueOf, apply, clear } = filtering;
+    const { valueOf, apply, clear, onFilterChange, pendingFilter } = filtering;
 
     const initialValue = valueOf(descriptor.id);
     const [value, setValue] = useState<string | undefined>(initialValue);
@@ -22,7 +22,7 @@ const HeaderFilterField = ({ descriptor, label, filtering }: HeaderFilterFieldPr
             event.stopPropagation();
             const next = (event.target as HTMLInputElement).value;
             if (next) {
-                apply(descriptor.id, next);
+                apply(pendingFilter);
             } else {
                 clear(descriptor.id);
             }
@@ -31,7 +31,10 @@ const HeaderFilterField = ({ descriptor, label, filtering }: HeaderFilterFieldPr
 
     const handleClear = () => clear(descriptor.id);
 
-    const handleChange = (next?: string) => setValue(next);
+    const handleChange = (next?: string) => {
+        next && onFilterChange(descriptor.id, next);
+        setValue(next);
+    };
 
     return (
         <Shown when={descriptor.type === 'text'}>

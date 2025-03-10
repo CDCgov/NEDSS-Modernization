@@ -66,7 +66,7 @@ describe('FilterProvider', () => {
         const { result } = renderHook(() => useFilter(), { wrapper });
 
         act(() => {
-            result.current.apply('filtered', 'filtered-value');
+            result.current.apply({ filtered: 'filtered-value' });
         });
 
         expect(result.current.filter).toEqual(expect.objectContaining({ filtered: 'filtered-value' }));
@@ -76,7 +76,7 @@ describe('FilterProvider', () => {
         const { result } = renderHook(() => useFilter(), { wrapper });
 
         act(() => {
-            result.current.apply('filtered', 'filtered-value');
+            result.current.apply({ filtered: 'filtered-value' });
         });
 
         const actual = result.current.valueOf('filtered');
@@ -88,11 +88,7 @@ describe('FilterProvider', () => {
         const { result } = renderHook(() => useFilter(), { wrapper });
 
         act(() => {
-            result.current.apply('filtered', 'filtered-value');
-        });
-
-        act(() => {
-            result.current.apply('other', 'other-value');
+            result.current.apply({ other: 'other-value', filtered: 'filtered-value' });
         });
 
         expect(result.current.filter).toHaveProperty('filtered');
@@ -109,11 +105,7 @@ describe('FilterProvider', () => {
         const { result } = renderHook(() => useFilter(), { wrapper });
 
         act(() => {
-            result.current.apply('filtered', 'filtered-value');
-        });
-
-        act(() => {
-            result.current.apply('other', 'other-value');
+            result.current.apply({ other: 'other-value', filtered: 'filtered-value' });
         });
 
         expect(result.current.filter).toHaveProperty('filtered');
