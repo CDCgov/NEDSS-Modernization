@@ -1,7 +1,26 @@
 Feature: Frontend Settings Configuration
 
-  Scenario: Property based Configuration values are available through the API
+  Scenario Outline: Default values are defined for Settings
     When I request the frontend configuration
-    Then the settings include a Smarty key of "smarty-key"
-    And the settings include an analytics host of "analytics-host"
-    And the settings include an analytics key of "analytics-key"
+    Then the settings include a <setting> of "<value>"
+
+    Examples:
+      | setting            | value                    |
+      | analytics host     | https://us.i.posthog.com |
+      | session warning    | 1680000                  |
+      | session expiration | 1800000                  |
+
+
+  Scenario Outline: Property based Configuration values are available through the API
+    Given I set the <setting> setting to "<value>"
+    When I request the frontend configuration
+    Then the settings include a <setting> of "<value>"
+
+    Examples:
+      | setting            | value           |
+      | Smarty key         | smarty-key      |
+      | analytics host     | analytics-host  |
+      | analytics key      | analytics-key   |
+      | session warning    | 1063            |
+      | session expiration | 1049            |
+

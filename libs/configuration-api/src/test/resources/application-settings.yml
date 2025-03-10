@@ -1,8 +1,0 @@
-nbs:
-  ui:
-    settings:
-      smarty:
-        key: smarty-key
-      analytics:
-        host: analytics-host
-        key: analytics-key
