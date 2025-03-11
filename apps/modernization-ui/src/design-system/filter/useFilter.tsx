@@ -10,10 +10,14 @@ type FilterInteraction = {
     hide: () => void;
     toggle: () => void;
     valueOf: (id: string) => string | undefined;
-    apply: (value: Filter | undefined) => void;
-    onFilterChange: (id: string, value: string) => void;
+    apply: () => void;
+    /* adds a value to the pending filter */
+    add: (id: string, value: string) => void;
+    /* removes the value of the given id from the filter */
     clear: (id: string) => void;
+    /* removes all values from the filter */
     clearAll: () => void;
+    /* removes all values from the filter and deactivates filtering */
     reset: () => void;
 };
 
@@ -39,12 +43,12 @@ const FilterProvider = ({ children }: FilterProviderProps) => {
         [setFilter, setPendingFilter]
     );
 
-    const onFilterChange = useCallback(
+    const add = useCallback(
         (id: string, value: string) => setPendingFilter(withProperty(id, value)),
         [setPendingFilter]
     );
 
-    const apply = useCallback((filter: Filter | undefined) => setFilter(filter), [setFilter]);
+    const apply = useCallback(() => setFilter(pendingFilter), [setFilter]);
 
     const clear = (id: string) => updateFilter(withoutProperty(id)(filter) as Filter | undefined);
 
@@ -67,7 +71,7 @@ const FilterProvider = ({ children }: FilterProviderProps) => {
                 clear,
                 clearAll,
                 reset,
-                onFilterChange,
+                add,
                 pendingFilter
             }}>
             {children}

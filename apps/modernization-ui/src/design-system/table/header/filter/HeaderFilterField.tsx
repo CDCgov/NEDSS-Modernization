@@ -15,7 +15,7 @@ type HeaderFilterFieldProps = {
 };
 
 const HeaderFilterField = ({ descriptor, label, filtering, sizing, sorted }: HeaderFilterFieldProps) => {
-    const { valueOf, apply, clear, onFilterChange, pendingFilter } = filtering;
+    const { valueOf, apply, clear, add, pendingFilter } = filtering;
 
     const initialValue = valueOf(descriptor.id);
     const [value, setValue] = useState<string | undefined>(initialValue);
@@ -39,7 +39,7 @@ const HeaderFilterField = ({ descriptor, label, filtering, sizing, sorted }: Hea
     const handleClear = () => clear(descriptor.id);
 
     const handleChange = (next?: string) => {
-        next && onFilterChange(descriptor.id, next);
+        next && add(descriptor.id, next);
         setValue(next);
     };
 
