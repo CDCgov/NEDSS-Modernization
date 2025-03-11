@@ -14,12 +14,19 @@ class SearchablePatientFinder {
           select
               person_uid,
               local_id,
+              cast(
+                substring(
+                  [patient].local_id,
+                  len(id_settings.prefix) + 1,
+                  len([patient].local_id) - len(id_settings.prefix) - len(id_settings.suffix)
+                ) as bigint
+              ) - id_settings.initial as short_id,
               record_status_cd,
               birth_time,
               deceased_ind_cd,
               curr_sex_cd,
               ethnic_group_ind,
-          
+
               --documentIds
               (SELECT STUFF(
               (
@@ -42,7 +49,7 @@ class SearchablePatientFinder {
                 ) tmp
                 FOR XML PATH('')
               ), 1, 1, '')) document_ids,
-          
+
               --morbidityReportIds
               (SELECT STUFF(
               (
@@ -62,7 +69,7 @@ class SearchablePatientFinder {
                 ) tmp
                 FOR XML PATH('')
               ), 1, 1, '')) morbidity_report_ids,
-          
+
               --treatmentIds
               (SELECT STUFF(
               (
@@ -82,7 +89,7 @@ class SearchablePatientFinder {
                 ) tmp
                 FOR XML PATH('')
               ), 1, 1, '')) treatment_ids,
-          
+
               --vaccinationIds
               (SELECT STUFF(
               (
@@ -100,7 +107,7 @@ class SearchablePatientFinder {
                 ) tmp
                 FOR XML PATH('')
               ), 1, 1, '')) vaccination_ids,
-          
+
                 --State Case Ids
                 (SELECT STUFF(
                 (
@@ -119,7 +126,7 @@ class SearchablePatientFinder {
                   ) tmp
                   FOR XML PATH('')
                 ), 1, 1, '')) state_case_ids,
-          
+
                 --ABCS Case IDs
                 (SELECT STUFF(
                 (
@@ -139,7 +146,7 @@ class SearchablePatientFinder {
                   ) tmp
                   FOR XML PATH('')
                 ), 1, 1, '')) abcs_case_ids,
-          
+
                 --City Case Ids
                 (SELECT STUFF(
                 (
@@ -157,7 +164,7 @@ class SearchablePatientFinder {
                   ) tmp
                   FOR XML PATH('')
                 ), 1, 1, '')) city_case_ids,
-          
+
                 --Notification Ids
                 (SELECT STUFF(
                 (
@@ -177,7 +184,7 @@ class SearchablePatientFinder {
                     ) tmp
                     FOR XML PATH('')
                   ), 1, 1, '')) notification_ids,
-          
+
                 --Investigation Ids
                 (SELECT STUFF(
                 (
@@ -191,8 +198,8 @@ class SearchablePatientFinder {
                     ) tmp
                     FOR XML PATH('')
                   ), 1, 1, '')) investigation_ids,
-          
-          
+
+
                 --Lab Report Ids
                 (SELECT STUFF(
                 (
@@ -207,8 +214,8 @@ class SearchablePatientFinder {
                     ) tmp
                     FOR XML PATH('')
                   ), 1, 1, '')) lab_report_ids,
-          
-          
+
+
                 --Accession Ids
                 (SELECT STUFF(
                 (
@@ -226,30 +233,44 @@ class SearchablePatientFinder {
                     ) tmp
                     FOR XML PATH('')
                   ), 1, 1, '')) accession_ids
-          
+
           from person [patient]
+              OUTER apply
+                  (
+                  select
+                    [generator].UID_prefix_cd     as [prefix],
+                    [generator].UID_suffix_CD     as [suffix],
+                    cast([configuration].config_value as bigint)  as [initial]
+                  from Local_UID_generator [generator] WITH (NOLOCK),
+                    NBS_configuration [configuration] WITH (NOLOCK)
+                  where [generator].class_name_cd = 'PERSON'
+                    and [generator].type_cd = 'LOCAL'
+                    and [configuration].config_key = 'SEED_VALUE'
+                  ) as id_settings
+
           where cd = 'PAT'
           and person_uid = ?
           """;
   private static final int PATIENT_PARAMETER = 1;
   private static final int IDENTIFIER_COLUMN = 1;
   private static final int LOCAL_COLUMN = 2;
-  private static final int STATUS_COLUMN = 3;
-  private static final int BIRTHDAY_COLUMN = 4;
-  private static final int DECEASED_COLUMN = 5;
-  private static final int GENDER_COLUMN = 6;
-  private static final int ETHNICITY_COLUMN = 7;
-  private static final int DOCUMENT_IDS_COLUMN = 8;
-  private static final int MORBIDITY_REPORT_IDS_COLUMN = 9;
-  private static final int TREATMENT_IDS_COLUMN = 10;
-  private static final int VACCINATION_IDS_COLUMN = 11;
-  private static final int STATE_CASE_IDS_COLUMN = 12;
-  private static final int ABCS_CASE_IDS_COLUMN = 13;
-  private static final int CITY_CASE_IDS_COLUMN = 14;
-  private static final int NOTIFICATION_IDS_COLUMN = 15;
-  private static final int INVESTIGATION_IDS_COLUMN = 16;
-  private static final int LAB_REPORT_IDS_COLUMN = 17;
-  private static final int ACCESSION_IDS_COLUMN = 18;
+  private static final int SHORT_ID_COLUMN = 3;
+  private static final int STATUS_COLUMN = 4;
+  private static final int BIRTHDAY_COLUMN = 5;
+  private static final int DECEASED_COLUMN = 6;
+  private static final int GENDER_COLUMN = 7;
+  private static final int ETHNICITY_COLUMN = 8;
+  private static final int DOCUMENT_IDS_COLUMN = 9;
+  private static final int MORBIDITY_REPORT_IDS_COLUMN = 10;
+  private static final int TREATMENT_IDS_COLUMN = 11;
+  private static final int VACCINATION_IDS_COLUMN = 12;
+  private static final int STATE_CASE_IDS_COLUMN = 13;
+  private static final int ABCS_CASE_IDS_COLUMN = 14;
+  private static final int CITY_CASE_IDS_COLUMN = 15;
+  private static final int NOTIFICATION_IDS_COLUMN = 16;
+  private static final int INVESTIGATION_IDS_COLUMN = 17;
+  private static final int LAB_REPORT_IDS_COLUMN = 18;
+  private static final int ACCESSION_IDS_COLUMN = 19;
 
   private final JdbcTemplate template;
   private final SearchablePatientRowMapper mapper;
@@ -260,6 +281,7 @@ class SearchablePatientFinder {
         new SearchablePatientRowMapper.Column(
             IDENTIFIER_COLUMN,
             LOCAL_COLUMN,
+            SHORT_ID_COLUMN,
             STATUS_COLUMN,
             BIRTHDAY_COLUMN,
             DECEASED_COLUMN,
@@ -275,16 +297,14 @@ class SearchablePatientFinder {
             ACCESSION_IDS_COLUMN,
             INVESTIGATION_IDS_COLUMN,
             LAB_REPORT_IDS_COLUMN,
-            NOTIFICATION_IDS_COLUMN
-        )
-    );
+            NOTIFICATION_IDS_COLUMN));
   }
 
   Optional<SearchablePatient> find(long identifier) {
     return this.template.query(
-            QUERY,
-            statement -> statement.setLong(PATIENT_PARAMETER, identifier),
-            this.mapper).stream()
+        QUERY,
+        statement -> statement.setLong(PATIENT_PARAMETER, identifier),
+        this.mapper).stream()
         .findFirst();
   }
 }
