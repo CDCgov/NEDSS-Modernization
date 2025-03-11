@@ -6,6 +6,7 @@ import { Button } from 'design-system/button';
 import { Control, Controller, useFormContext, useWatch } from 'react-hook-form';
 import styles from './matching-criteria.module.scss';
 import { SelectInput } from 'components/FormInputs/SelectInput';
+import { useEffect, useState } from 'react';
 
 type Props = {
     onAddAttributes: () => void;
@@ -13,17 +14,23 @@ type Props = {
 export const MatchingCriteria = ({ onAddAttributes: onShowAttributes }: Props) => {
     const form = useFormContext<Pass>();
     const { matchingCriteria } = useWatch<Pass>(form);
+    const [criteria, setCriteria] = useState<MatchingAttributeEntry[]>([]);
 
-    const handleRemoveAttribute = (attribute: MatchingAttribute) => {
-        const current: MatchingAttributeEntry[] = [];
+    useEffect(() => {
+        // create local copy to avoid form issues with undefined
+        const cleanCriteria: MatchingAttributeEntry[] = [];
         matchingCriteria?.forEach((c) => {
             if (c.attribute !== undefined && c.method !== undefined) {
-                current.push({ attribute: c.attribute, method: c.method });
+                cleanCriteria.push({ attribute: c.attribute, method: c.method });
             }
         });
+        setCriteria(cleanCriteria);
+    }, [matchingCriteria]);
+
+    const handleRemoveAttribute = (attribute: MatchingAttribute) => {
         form.setValue(
             'matchingCriteria',
-            current.filter((a) => attribute !== a.attribute)
+            criteria.filter((a) => attribute !== a.attribute)
         );
     };
 
@@ -43,271 +50,201 @@ export const MatchingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                         label="First name"
                         logOdds={9.9444}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.FIRST_NAME) ?? 0}
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.FIRST_NAME) !== undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.FIRST_NAME)}
+                        attribute={MatchingAttribute.FIRST_NAME}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Last name"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.LAST_NAME) ?? 0}
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.LAST_NAME) !== undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.LAST_NAME)}
+                        attribute={MatchingAttribute.LAST_NAME}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Suffix"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.SUFFIX) ?? 0}
-                        visible={matchingCriteria?.find((m) => m.attribute === MatchingAttribute.SUFFIX) !== undefined}
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.SUFFIX)}
+                        attribute={MatchingAttribute.SUFFIX}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Date of birth"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.DATE_OF_BIRTH) ?? 0}
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.DATE_OF_BIRTH) !== undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.DATE_OF_BIRTH)}
+                        attribute={MatchingAttribute.DATE_OF_BIRTH}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Sex"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.SEX) ?? 0}
-                        visible={matchingCriteria?.find((m) => m.attribute === MatchingAttribute.SEX) !== undefined}
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.SEX)}
+                        attribute={MatchingAttribute.SEX}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Race"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.RACE) ?? 0}
-                        visible={matchingCriteria?.find((m) => m.attribute === MatchingAttribute.RACE) !== undefined}
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.RACE)}
+                        attribute={MatchingAttribute.RACE}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Address"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.ADDRESS) ?? 0}
-                        visible={matchingCriteria?.find((m) => m.attribute === MatchingAttribute.ADDRESS) !== undefined}
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.ADDRESS)}
+                        attribute={MatchingAttribute.ADDRESS}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="City"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.CITY) ?? 0}
-                        visible={matchingCriteria?.find((m) => m.attribute === MatchingAttribute.CITY) !== undefined}
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.CITY)}
+                        attribute={MatchingAttribute.CITY}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="State"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.STATE) ?? 0}
-                        visible={matchingCriteria?.find((m) => m.attribute === MatchingAttribute.STATE) !== undefined}
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.STATE)}
+                        attribute={MatchingAttribute.STATE}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Zip"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.ZIP) ?? 0}
-                        visible={matchingCriteria?.find((m) => m.attribute === MatchingAttribute.ZIP) !== undefined}
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.ZIP)}
+                        attribute={MatchingAttribute.ZIP}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="County"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.COUNTY) ?? 0}
-                        visible={matchingCriteria?.find((m) => m.attribute === MatchingAttribute.COUNTY) !== undefined}
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.COUNTY)}
+                        attribute={MatchingAttribute.COUNTY}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Phone"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.PHONE) ?? 0}
-                        visible={matchingCriteria?.find((m) => m.attribute === MatchingAttribute.PHONE) !== undefined}
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.PHONE)}
+                        attribute={MatchingAttribute.PHONE}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Email"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.EMAIL) ?? 0}
-                        visible={matchingCriteria?.find((m) => m.attribute === MatchingAttribute.EMAIL) !== undefined}
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.EMAIL)}
+                        attribute={MatchingAttribute.EMAIL}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Identifier"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.IDENTIFIER) ?? 0}
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.IDENTIFIER) !== undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.IDENTIFIER)}
+                        attribute={MatchingAttribute.IDENTIFIER}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Social security number"
                         logOdds={9.988}
                         control={form.control}
-                        index={
-                            matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.SOCIAL_SECURITY) ?? 0
-                        }
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.SOCIAL_SECURITY) !==
-                            undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.SOCIAL_SECURITY)}
+                        attribute={MatchingAttribute.SOCIAL_SECURITY}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Driver's license"
                         logOdds={9.988}
                         control={form.control}
-                        index={
-                            matchingCriteria?.findIndex(
-                                (m) => m.attribute === MatchingAttribute.DRIVERS_LICENSE_NUMBER
-                            ) ?? 0
-                        }
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.DRIVERS_LICENSE_NUMBER) !==
-                            undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.DRIVERS_LICENSE_NUMBER)}
+                        attribute={MatchingAttribute.DRIVERS_LICENSE_NUMBER}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Medicaid number"
                         logOdds={9.988}
                         control={form.control}
-                        index={
-                            matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.MEDICAID_NUMBER) ?? 0
-                        }
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.MEDICAID_NUMBER) !==
-                            undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.MEDICAID_NUMBER)}
+                        attribute={MatchingAttribute.MEDICAID_NUMBER}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Medical record number"
                         logOdds={9.988}
                         control={form.control}
-                        index={
-                            matchingCriteria?.findIndex(
-                                (m) => m.attribute === MatchingAttribute.MEDICAL_RECORD_NUMBER
-                            ) ?? 0
-                        }
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.MEDICAL_RECORD_NUMBER) !==
-                            undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.MEDICAL_RECORD_NUMBER)}
+                        attribute={MatchingAttribute.MEDICAL_RECORD_NUMBER}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Account number"
                         logOdds={9.988}
                         control={form.control}
-                        index={
-                            matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.ACCOUNT_NUMBER) ?? 0
-                        }
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.ACCOUNT_NUMBER) !==
-                            undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.ACCOUNT_NUMBER)}
+                        attribute={MatchingAttribute.ACCOUNT_NUMBER}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="National unique idividual identifier"
                         logOdds={9.988}
                         control={form.control}
-                        index={
-                            matchingCriteria?.findIndex(
-                                (m) => m.attribute === MatchingAttribute.NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER
-                            ) ?? 0
-                        }
-                        visible={
-                            matchingCriteria?.find(
-                                (m) => m.attribute === MatchingAttribute.NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER
-                            ) !== undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER)}
+                        attribute={MatchingAttribute.NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Patient external identifier"
                         logOdds={9.988}
                         control={form.control}
-                        index={
-                            matchingCriteria?.findIndex(
-                                (m) => m.attribute === MatchingAttribute.PATIENT_EXTERNAL_IDENTIFIER
-                            ) ?? 0
-                        }
-                        visible={
-                            matchingCriteria?.find(
-                                (m) => m.attribute === MatchingAttribute.PATIENT_EXTERNAL_IDENTIFIER
-                            ) !== undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.PATIENT_EXTERNAL_IDENTIFIER)}
+                        attribute={MatchingAttribute.PATIENT_EXTERNAL_IDENTIFIER}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Patient internal identifier"
                         logOdds={9.988}
                         control={form.control}
-                        index={
-                            matchingCriteria?.findIndex(
-                                (m) => m.attribute === MatchingAttribute.PATIENT_INTERNAL_IDENTIFIER
-                            ) ?? 0
-                        }
-                        visible={
-                            matchingCriteria?.find(
-                                (m) => m.attribute === MatchingAttribute.PATIENT_INTERNAL_IDENTIFIER
-                            ) !== undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.PATIENT_INTERNAL_IDENTIFIER)}
+                        attribute={MatchingAttribute.PATIENT_INTERNAL_IDENTIFIER}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="Person number"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.PERSON_NUMBER) ?? 0}
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.PERSON_NUMBER) !== undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.PERSON_NUMBER)}
+                        attribute={MatchingAttribute.PERSON_NUMBER}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="VISA / Passport number"
                         logOdds={9.988}
                         control={form.control}
-                        index={matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.VISA_PASSPORT) ?? 0}
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.VISA_PASSPORT) !== undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.VISA_PASSPORT)}
+                        attribute={MatchingAttribute.VISA_PASSPORT}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                     <MatchingCriteriaAttribute
                         label="WIC Identifier"
                         logOdds={9.988}
                         control={form.control}
-                        index={
-                            matchingCriteria?.findIndex((m) => m.attribute === MatchingAttribute.WIC_IDENTIFIER) ?? 0
-                        }
-                        visible={
-                            matchingCriteria?.find((m) => m.attribute === MatchingAttribute.WIC_IDENTIFIER) !==
-                            undefined
-                        }
-                        onRemove={() => handleRemoveAttribute(MatchingAttribute.WIC_IDENTIFIER)}
+                        attribute={MatchingAttribute.WIC_IDENTIFIER}
+                        matchingCriteria={criteria}
+                        onRemove={handleRemoveAttribute}
                     />
                 </Shown>
                 <div className={styles.buttonContainer}>
@@ -329,14 +266,26 @@ export const MatchingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
 type AttributeProps = {
     label: string;
     logOdds: number;
-    visible: boolean;
     control: Control<Pass>;
-    index: number;
-    onRemove: () => void;
+    matchingCriteria: MatchingAttributeEntry[];
+    attribute: MatchingAttribute;
+    onRemove: (attribute: MatchingAttribute) => void;
 };
-const MatchingCriteriaAttribute = ({ label, logOdds, visible, control, index, onRemove }: AttributeProps) => {
+const MatchingCriteriaAttribute = ({
+    label,
+    logOdds,
+    control,
+    attribute,
+    matchingCriteria,
+    onRemove
+}: AttributeProps) => {
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+        setIndex(matchingCriteria.findIndex((m) => m.attribute === attribute));
+    }, [matchingCriteria]);
     return (
-        <Shown when={visible}>
+        <Shown when={matchingCriteria.find((m) => m.attribute === attribute) !== undefined}>
             <div className={styles.attribute}>
                 <div className={styles.info}>
                     <div>
@@ -365,7 +314,7 @@ const MatchingCriteriaAttribute = ({ label, logOdds, visible, control, index, on
                     />
                 </div>
                 <div className={styles.deleteButton}>
-                    <Button outline onClick={onRemove}>
+                    <Button outline onClick={() => onRemove(attribute)}>
                         <Icon.Delete size={3} />
                     </Button>
                 </div>

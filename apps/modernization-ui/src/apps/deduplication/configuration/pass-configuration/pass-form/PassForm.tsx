@@ -35,14 +35,12 @@ export const PassForm = ({ initial }: Props) => {
     }, [initial]);
 
     useEffect(() => {
-        if (panelState.content === 'blocking') {
-            setSelectedBlockingAttributes(blockingCriteria ?? []);
-        } else if (panelState.content === 'matching') {
-            setSelectedMatchingAttributes(
-                matchingCriteria?.map((a) => a.attribute).filter((a) => a !== undefined) ?? []
-            );
-        }
+        setSelectedBlockingAttributes(blockingCriteria ?? []);
     }, [blockingCriteria]);
+
+    useEffect(() => {
+        setSelectedMatchingAttributes(matchingCriteria?.map((a) => a.attribute).filter((a) => a !== undefined) ?? []);
+    }, [matchingCriteria]);
 
     const togglePanelState = (content: 'blocking' | 'matching') => {
         if (panelState.visible && panelState.content === content) {
