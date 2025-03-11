@@ -17,8 +17,7 @@ public class PatientSearchCriteriaSteps {
 
   PatientSearchCriteriaSteps(
       final Active<PatientIdentifier> patient,
-      final Active<PatientFilter> activeCriteria
-  ) {
+      final Active<PatientFilter> activeCriteria) {
     this.patient = patient;
     this.activeCriteria = activeCriteria;
   }
@@ -39,8 +38,7 @@ public class PatientSearchCriteriaSteps {
   private PatientFilter applyCriteria(
       final String field,
       final String value,
-      final PatientFilter criteria
-  ) {
+      final PatientFilter criteria) {
     switch (field.toLowerCase()) {
       case "patient id" -> criteria.setId(value);
       case "first name" -> criteria.setFirstName(value);
