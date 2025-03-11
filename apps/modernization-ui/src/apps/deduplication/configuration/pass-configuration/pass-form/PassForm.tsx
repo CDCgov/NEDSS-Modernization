@@ -1,25 +1,35 @@
-import { Pass } from 'apps/deduplication/api/model/Pass';
+import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { Button } from 'design-system/button';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { BlockingCriteria } from './blocking-criteria/BlockingCriteria';
 import styles from './pass-form.module.scss';
-import { SidePanel } from './side-panel/SidePanel';
+import { BlockingCriteriaSidePanel } from './blocking-criteria/BlockingCriteriaSidePanel';
+import { Shown } from 'conditional-render';
 
 type Props = {
     initial: Pass;
 };
 export const PassForm = ({ initial }: Props) => {
     const form = useForm<Pass>({ defaultValues: initial });
+    const { blockingCriteria } = useWatch(form);
+    const [selectedBlockingAttributes, setSelectedBlockingAttributes] = useState<BlockingAttribute[]>([]);
     const [panelState, setPanelState] = useState<{ visible: boolean; content: 'blocking' | 'matching' }>({
         visible: false,
         content: 'blocking'
     });
 
     useEffect(() => {
+        // Reset form when selected pass changes
         form.reset(initial, { keepDefaultValues: false });
         setPanelState({ visible: false, content: 'blocking' });
     }, [initial]);
+
+    useEffect(() => {
+        if (panelState.content === 'blocking') {
+            setSelectedBlockingAttributes(blockingCriteria ?? []);
+        }
+    }, [blockingCriteria]);
 
     const togglePanelState = (content: 'blocking' | 'matching') => {
         if (panelState.visible && panelState.content === content) {
@@ -29,11 +39,26 @@ export const PassForm = ({ initial }: Props) => {
         }
     };
 
+    const handleCloseBlockingPanel = () => {
+        // hide panel
+        setPanelState({ ...panelState, visible: false });
+
+        // reset selected blocking criteria
+        setSelectedBlockingAttributes(blockingCriteria ?? []);
+    };
+
     return (
         <div className={styles.passForm}>
             <FormProvider {...form}>
                 <div className={styles.formContent}>
-                    <SidePanel state={panelState} onClose={() => togglePanelState(panelState.content)} />
+                    <Shown when={panelState.content === 'blocking'}>
+                        <BlockingCriteriaSidePanel
+                            selectedAttributes={selectedBlockingAttributes}
+                            onChange={setSelectedBlockingAttributes}
+                            onClose={handleCloseBlockingPanel}
+                            visible={panelState.visible}
+                        />
+                    </Shown>
                     <BlockingCriteria onShowAttributes={() => togglePanelState('blocking')} />
                 </div>
             </FormProvider>

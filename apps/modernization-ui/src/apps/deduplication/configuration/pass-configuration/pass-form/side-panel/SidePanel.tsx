@@ -1,44 +1,26 @@
 import { Icon } from '@trussworks/react-uswds';
 import { Heading } from 'components/heading';
-import { Shown } from 'conditional-render';
-import { BlockingCriteriaSelection } from '../blocking-criteria/BlockingCriteriaSelection';
+import { ReactNode } from 'react';
 import styles from './side-panel.module.scss';
-import { useEffect, useState } from 'react';
 
 type Props = {
-    state: { visible: boolean; content: 'blocking' | 'matching' };
+    heading: string;
+    visible: boolean;
     onClose: () => void;
+    children: ReactNode;
 };
-export const SidePanel = ({ state, onClose }: Props) => {
-    const [internalVisible, setInternalVisible] = useState(false);
-
-    useEffect(() => {
-        // Immediately shows content while expanding
-        if (state.visible) {
-            setInternalVisible(true);
-        } else {
-            // hides content of panel after collapsing
-            setTimeout(() => {
-                setInternalVisible(false);
-            }, 500);
-        }
-    }, [state.visible]);
-
+export const SidePanel = ({ heading, children, visible, onClose }: Props) => {
     return (
-        <div className={styles.sidePanel} style={{ width: state.visible ? '27.5rem' : 0 }}>
-            <Shown when={internalVisible}>
-                <div className={styles.heading}>
-                    <Heading level={2}>Add {state.content} attribute(s)</Heading>
-                    <button onClick={onClose}>
-                        <Icon.Close size={4} />
-                    </button>
-                </div>
-                <div className={styles.panelContent}>
-                    <Shown when={state.content === 'blocking'}>
-                        <BlockingCriteriaSelection />
-                    </Shown>
-                </div>
-            </Shown>
+        <div
+            className={styles.sidePanel}
+            style={{ transition: visible ? '0.5s' : '0s', width: visible ? '27.5rem' : 0 }}>
+            <div className={styles.heading}>
+                <Heading level={2}>{heading}</Heading>
+                <button onClick={onClose}>
+                    <Icon.Close size={4} />
+                </button>
+            </div>
+            <div className={styles.panelContent}>{children}</div>
         </div>
     );
 };
