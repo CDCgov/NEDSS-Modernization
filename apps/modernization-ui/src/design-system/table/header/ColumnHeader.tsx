@@ -1,16 +1,16 @@
 import classNames from 'classnames';
 import { Direction, SortingInteraction, maybeUseSorting } from 'sorting';
 import { FilterInteraction, maybeUseFilter } from 'design-system/filter';
-import { HeaderFilterField } from './header/filter';
-import { Column, SortIconType } from './DataTable';
+import { HeaderFilterField } from './filter';
+import { Column, SortIconType } from 'design-system/table';
 import { Icon } from 'design-system/icon';
-
-import styles from './header.module.scss';
 import { Sizing } from 'design-system/field';
+
+import styles from './column-header.module.scss';
 
 type Props<V> = { className?: string; sizing?: Sizing; children: Column<V> };
 
-const Header = <V,>({ children, ...remaining }: Props<V>) => {
+const ColumnHeader = <V,>({ children, ...remaining }: Props<V>) => {
     const sorting = maybeUseSorting();
     const filtering = maybeUseFilter();
 
@@ -130,4 +130,4 @@ const resolveSortAria = (direction: Direction) => {
     }
 };
 
-export { Header };
+export { ColumnHeader };

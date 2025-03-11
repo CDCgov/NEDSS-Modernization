@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
-import { Header } from './Header';
+import { Shown } from 'conditional-render';
+import { DataTableHeader } from './header/DataTableHeader';
 import { DataTableRow } from './DataTableRow';
 import { Sizing } from 'design-system/field';
 import { FilterDescriptor } from 'design-system/filter';
+import { NoDataRow } from './NoDataRow';
 
 import styles from './data-table.module.scss';
-import { Shown } from 'conditional-render';
-import { NoDataRow } from './NoDataRow';
 
 type SortIconType = 'default' | 'alpha' | 'numeric';
 
@@ -45,18 +45,7 @@ const DataTable = <V,>({
     return (
         <div id={id} className={resolvedClasses}>
             <table className={classNames('usa-table', className)}>
-                <thead>
-                    <tr>
-                        {columns.map((column, index) => (
-                            <Header key={index} className={column.className} sizing={sizing}>
-                                {column}
-                            </Header>
-                        ))}
-                    </tr>
-                    <tr className={styles.border} aria-hidden>
-                        <th colSpan={columns.length} />
-                    </tr>
-                </thead>
+                <DataTableHeader columns={columns} sizing={sizing} />
                 <tbody>
                     <Shown when={data.length > 0} fallback={noDataFallback && <NoDataRow colSpan={columns.length} />}>
                         {data.map((row, index) => (
