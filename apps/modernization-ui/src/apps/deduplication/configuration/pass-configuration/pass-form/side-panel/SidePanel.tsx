@@ -2,7 +2,7 @@ import { Icon } from '@trussworks/react-uswds';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import styles from './side-panel.module.scss';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 type Props = {
     heading: string;
@@ -12,34 +12,40 @@ type Props = {
     buttons?: ReactNode;
 };
 export const SidePanel = ({ heading, children, buttons, visible, onClose }: Props) => {
-    const [internalVisible, setInternalVisible] = useState(false);
+    const divRef = useRef(null);
+    const [panelWidth, setPanelWidth] = useState(0);
 
     useEffect(() => {
-        // Immediately shows content while expanding
-        if (visible) {
-            setInternalVisible(true);
-        } else {
-            // hides content of panel after collapsing
-            setTimeout(() => {
-                setInternalVisible(false);
-            }, 500);
+        // on width changes, update state
+        const observer = new ResizeObserver((entries) => {
+            const entry = entries[0];
+            if (entry) {
+                setPanelWidth(entry.contentRect.width);
+            }
+        });
+        // assign ref to observer
+        if (divRef.current) {
+            observer.observe(divRef.current);
         }
-    }, [visible]);
+    }, []);
 
     return (
-        <div className={styles.sidePanel} style={{ width: visible ? '27.5rem' : 0 }}>
-            <Shown when={internalVisible}>
-                <div className={styles.heading}>
-                    <Heading level={2}>{heading}</Heading>
-                    <button onClick={onClose}>
-                        <Icon.Close size={4} />
-                    </button>
-                </div>
-                <div className={styles.panelContent}>{children}</div>
-                <Shown when={buttons !== undefined}>
-                    <div className={styles.buttonBar}>{buttons}</div>
+        <div ref={divRef} className={styles.sidePanel} style={{ width: visible ? '27.5rem' : 0 }}>
+            <div className={styles.fixedWidth}>
+                {/* Hide content when panel is closed */}
+                <Shown when={panelWidth > 0}>
+                    <div className={styles.heading}>
+                        <Heading level={2}>{heading}</Heading>
+                        <button onClick={onClose}>
+                            <Icon.Close size={4} />
+                        </button>
+                    </div>
+                    <div className={styles.panelContent}>{children}</div>
+                    <Shown when={buttons !== undefined}>
+                        <div className={styles.buttonBar}>{buttons}</div>
+                    </Shown>
                 </Shown>
-            </Shown>
+            </div>
         </div>
     );
 };

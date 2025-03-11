@@ -13,6 +13,16 @@
     background-color: colors.$base-white;
     box-shadow: -6px 4px 6px 0px rgba(0, 0, 0, 0.1);
     z-index: 100;
+    transition: 0.5s;
+
+    .fixedWidth {
+        // sets min width so as panel shrinks, it doesn't "squish" content
+        min-width: 27.5rem;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+    }
 
     .heading {
         display: flex;
