@@ -19,7 +19,7 @@ const NoPatientResults = ({ sizing }: Props) => {
                         <span className={styles.noResultsHeader}> No result found</span>
                         <span className={styles.noResultsSubHeading}>
                             Try refining your search
-                            <Permitted include={[ADD_PATIENT_PERMISSION]} mode="any">
+                            <Permitted include={[ADD_PATIENT_PERMISSION]}>
                                 , or{' '}
                                 <a className={styles.link} onClick={add}>
                                     add a new patient.
