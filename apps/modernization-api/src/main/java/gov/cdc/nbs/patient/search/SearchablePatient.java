@@ -15,6 +15,7 @@ import java.util.List;
 public record SearchablePatient(
     @JsonProperty("person_uid") long identifier,
     @JsonProperty("local_id") String local,
+    @JsonProperty("short_id") String shortId,
     @JsonProperty("record_status_cd") String status,
     @JsonProperty("birth_time") @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
         using = LocalDateWithTimeJsonDeserializer.class) LocalDate birthday,
@@ -43,6 +44,7 @@ public record SearchablePatient(
   public SearchablePatient(
       long identifier,
       String local,
+      String shortId,
       String status,
       LocalDate birthday,
       String deceased,
@@ -62,6 +64,7 @@ public record SearchablePatient(
     this(
         identifier,
         local,
+        shortId,
         status,
         birthday,
         deceased,
