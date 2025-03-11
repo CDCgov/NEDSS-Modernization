@@ -74,7 +74,6 @@ const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }:
                         descriptor={children.filter}
                         filtering={filtering}
                         sizing={sizing}
-                        sorted={direction !== Direction.None}
                     />
                 )}
             </div>
