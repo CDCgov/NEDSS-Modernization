@@ -1,20 +1,20 @@
 import { KeyboardEvent as ReactKeyboardEvent, useEffect, useState } from 'react';
-import { TextInputField } from 'design-system/input/text';
+import { TextInput } from 'design-system/input/text';
 import { Shown } from 'conditional-render';
 import { FilterDescriptor, FilterInteraction } from 'design-system/filter';
 
 import styles from './header-filter-field.module.scss';
 import { Sizing } from 'design-system/field';
+import classNames from 'classnames';
 
 type HeaderFilterFieldProps = {
     descriptor: FilterDescriptor;
     sizing: Sizing | undefined;
     label: string;
     filtering: FilterInteraction;
-    sorted?: boolean;
 };
 
-const HeaderFilterField = ({ descriptor, label, filtering, sizing, sorted }: HeaderFilterFieldProps) => {
+const HeaderFilterField = ({ descriptor, label, filtering, sizing }: HeaderFilterFieldProps) => {
     const { valueOf, apply, clear } = filtering;
 
     const initialValue = valueOf(descriptor.id);
@@ -42,9 +42,13 @@ const HeaderFilterField = ({ descriptor, label, filtering, sizing, sorted }: Hea
 
     return (
         <Shown when={descriptor.type === 'text'}>
-            <TextInputField
+            <TextInput
                 clearable={Boolean(initialValue)}
-                className={styles.filter}
+                className={classNames(styles.filter, {
+                    [styles.small]: sizing === 'small',
+                    [styles.medium]: sizing === 'medium',
+                    [styles.large]: sizing === 'large'
+                })}
                 id={`text-filter-${descriptor.id}`}
                 name={label}
                 aria-label={`filter by ${label}`}
@@ -52,8 +56,6 @@ const HeaderFilterField = ({ descriptor, label, filtering, sizing, sorted }: Hea
                 onChange={handleChange}
                 onClear={handleClear}
                 onKeyDown={handleKey}
-                sizing={sizing}
-                sorted={sorted}
             />
         </Shown>
     );
