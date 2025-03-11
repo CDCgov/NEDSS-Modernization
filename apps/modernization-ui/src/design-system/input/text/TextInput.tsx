@@ -15,7 +15,6 @@ type TextInputProps = {
     onBlur?: () => void;
     onClear?: () => void;
     clearable?: boolean;
-    sorted?: boolean;
 } & Omit<
     JSX.IntrinsicElements['input'],
     'defaultValue' | 'onChange' | 'onBlur' | 'value' | 'type' | 'inputMode' | 'autoComplete'
@@ -31,7 +30,6 @@ const TextInput = ({
     onBlur,
     className,
     clearable = false,
-    sorted = false,
     onClear,
     ...props
 }: TextInputProps) => {
@@ -59,7 +57,7 @@ const TextInput = ({
                 name={props.name ?? id}
                 type={type}
                 inputMode={inputMode}
-                className={classNames({ [styles.sorted]: sorted }, 'usa-input', className)}
+                className={classNames('usa-input', className)}
                 onChange={handleChange}
                 onBlur={onBlur}
                 placeholder={placeholder}
