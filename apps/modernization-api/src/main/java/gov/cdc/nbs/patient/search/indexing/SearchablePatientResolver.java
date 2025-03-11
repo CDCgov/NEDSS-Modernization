@@ -79,6 +79,7 @@ class SearchablePatientResolver {
     return new SearchablePatient(
         patient.identifier(),
         patient.local(),
+        patient.shortId(),
         patient.status(),
         patient.birthday(),
         patient.deceased(),

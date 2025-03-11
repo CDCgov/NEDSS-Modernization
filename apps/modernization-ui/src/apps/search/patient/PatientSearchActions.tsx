@@ -1,11 +1,8 @@
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
 import { Button } from 'components/button';
 import { useAddPatientFromSearch } from './add/useAddPatientFromSearch';
-import { Permitted } from 'libs/permission';
+import { ADD_PATIENT_PERMISSION, ADD_LAB_REPORT_PERMISSION, Permitted } from 'libs/permission';
 import { Icon } from 'design-system/icon';
-
-const ADD_PATIENT_PERMISSION = 'ADD-PATIENT';
-const ADD_LAB_REPORT_PERMISSION = 'ADD-OBSERVATIONLABREPORT';
 
 type Props = {
     disabled: boolean;

@@ -51,7 +51,7 @@ const DeletePatient = ({ patient }: Props) => {
 
     return (
         <>
-            <Button destructive icon={<Icon name="delete" size="small" />} labelPosition="right" onClick={show}>
+            <Button destructive icon={<Icon name="delete" sizing="small" />} labelPosition="right" onClick={show}>
                 Delete patient
             </Button>
             {render(

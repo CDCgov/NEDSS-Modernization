@@ -11,7 +11,6 @@ const TextInputField = ({
     error,
     warning,
     required,
-    sorted,
     ...remaining
 }: TextInputFieldProps) => {
     return (
@@ -23,7 +22,7 @@ const TextInputField = ({
             required={required}
             error={error}
             warning={warning}>
-            <TextInput id={id} sorted={sorted} {...remaining} />
+            <TextInput id={id} {...remaining} />
         </Field>
     );
 };
