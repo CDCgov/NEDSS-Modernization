@@ -12,8 +12,14 @@ type Props = {
     footer?: ReactNode;
 };
 export const SidePanel = ({ heading, children, footer, visible, onClose }: Props) => {
+    const [internalVisible, setInternalVisible] = useState<boolean>(false);
     const divRef = useRef(null);
     const [panelWidth, setPanelWidth] = useState(0);
+
+    useEffect(() => {
+        // forces initialization of component at 0 width so transition always happens
+        setInternalVisible(visible);
+    }, [visible]);
 
     useEffect(() => {
         // on width changes, update state
@@ -27,10 +33,16 @@ export const SidePanel = ({ heading, children, footer, visible, onClose }: Props
         if (divRef.current) {
             observer.observe(divRef.current);
         }
+        // remove observer when unmounting
+        return () => {
+            if (divRef.current) {
+                observer.unobserve(divRef.current);
+            }
+        };
     }, []);
 
     return (
-        <div ref={divRef} className={styles.sidePanel} style={{ width: visible ? '27.5rem' : 0 }}>
+        <div ref={divRef} className={styles.sidePanel} style={{ width: internalVisible ? '27.5rem' : 0 }}>
             <div className={styles.fixedWidth}>
                 {/* Hide content when panel is closed */}
                 <Shown when={panelWidth > 0 || visible}>

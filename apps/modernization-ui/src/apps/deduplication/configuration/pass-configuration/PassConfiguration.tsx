@@ -19,9 +19,10 @@ export const PassConfiguration = () => {
 
     const handleAddPass = () => {
         // Need to confirm data loss if a pass is already selected selected
-        const newPass = {
+        const newPass: Pass = {
             name: 'New pass configuration',
             blockingCriteria: [BlockingAttribute.FIRST_NAME],
+            matchingCriteria: [],
             active: false
         };
         setNewPass(newPass);

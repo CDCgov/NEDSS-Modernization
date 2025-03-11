@@ -9,6 +9,7 @@ const pass: Pass = {
     name: 'Pass name',
     description: 'Pass description',
     blockingCriteria: [],
+    matchingCriteria: [],
     active: true
 };
 const Fixture = ({ status = true }) => {
