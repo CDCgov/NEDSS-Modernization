@@ -26,6 +26,49 @@
             line-height: 1.62rem;
         }
 
+        .attribute {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            gap: 1rem;
+            @extend %thin-bottom;
+
+            .label {
+                color: colors.$base-darkest;
+                font-size: 1rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 1.25rem;
+            }
+
+            .description {
+                color: colors.$base-darkest;
+                font-size: 0.875rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 1.09375rem;
+            }
+
+            .deleteButton {
+                & > button {
+                    display: flex;
+                    width: 2rem;
+                    min-width: unset;
+                    height: 2rem;
+                    padding: 0.25rem;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 0.25rem;
+                    border: 2px solid colors.$disabled;
+                    box-shadow: none;
+
+                    & > svg {
+                        color: colors.$error;
+                    }
+                }
+            }
+        }
+
         .buttonContainer {
             padding: 1rem 0;
 

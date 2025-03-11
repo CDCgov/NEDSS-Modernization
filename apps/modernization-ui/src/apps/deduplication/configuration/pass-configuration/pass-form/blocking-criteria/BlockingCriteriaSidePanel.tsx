@@ -3,14 +3,17 @@ import { AttributeEntry } from '../attribute-entry/AttributeEntry';
 import { SidePanel } from '../side-panel/SidePanel';
 import styles from './blocking-criteria-panel.module.scss';
 import { Shown } from 'conditional-render';
+import { Button } from 'design-system/button';
+import { Icon } from 'design-system/icon';
 
 type Props = {
     selectedAttributes: BlockingAttribute[];
     visible: boolean;
+    onAccept: () => void;
     onChange: (attributes: BlockingAttribute[]) => void;
-    onClose: () => void;
+    onCancel: () => void;
 };
-export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onChange, onClose }: Props) => {
+export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccept, onChange, onCancel }: Props) => {
     const handleOnChange = (attribute: BlockingAttribute) => {
         if (selectedAttributes.includes(attribute)) {
             onChange([...selectedAttributes].filter((a) => a !== attribute));
@@ -20,7 +23,20 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onChang
     };
 
     return (
-        <SidePanel heading="Add blocking attribute(s)" visible={visible} onClose={onClose}>
+        <SidePanel
+            heading="Add blocking attribute(s)"
+            visible={visible}
+            onClose={onCancel}
+            buttons={
+                <>
+                    <Button outline onClick={onCancel}>
+                        Cancel
+                    </Button>
+                    <Button icon={<Icon name="add" size="small" />} labelPosition="right" onClick={onAccept}>
+                        Add attribute(s)
+                    </Button>
+                </>
+            }>
             <div className={styles.blockingCriteriaPanel}>
                 <Shown when={visible}>
                     <AttributeEntry

@@ -12,6 +12,7 @@
     white-space: nowrap;
     background-color: colors.$base-white;
     box-shadow: -6px 4px 6px 0px rgba(0, 0, 0, 0.1);
+    z-index: 100;
 
     .heading {
         display: flex;
@@ -31,5 +32,13 @@
     .panelContent {
         display: flex;
         overflow: hidden;
+    }
+
+    .buttonBar {
+        display: flex;
+        justify-content: flex-end;
+        padding: 1rem;
+        gap: 0.5rem;
+        @extend %thin-top;
     }
 }
