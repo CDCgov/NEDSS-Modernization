@@ -3,6 +3,7 @@ import styles from './no-patient-result.module.scss';
 import { useAddPatientFromSearch } from 'apps/search/patient/add/useAddPatientFromSearch';
 import { PatientSearchResultTable } from '../table';
 import { Sizing } from 'design-system/field';
+import { ADD_PATIENT_PERMISSION, Permitted } from 'libs/permission';
 
 type Props = { sizing: Sizing };
 
@@ -17,10 +18,13 @@ const NoPatientResults = ({ sizing }: Props) => {
                     <div className={styles.noResultsContent}>
                         <span className={styles.noResultsHeader}> No result found</span>
                         <span className={styles.noResultsSubHeading}>
-                            Try refining your search, or{' '}
-                            <a className={styles.link} onClick={add}>
-                                add a new patient.
-                            </a>
+                            Try refining your search
+                            <Permitted include={[ADD_PATIENT_PERMISSION]}>
+                                , or{' '}
+                                <a className={styles.link} onClick={add}>
+                                    add a new patient.
+                                </a>
+                            </Permitted>
                         </span>
                     </div>
                 </AlertBanner>
