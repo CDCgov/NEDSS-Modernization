@@ -7,9 +7,9 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import styles from './blocking-criteria.module.scss';
 
 type Props = {
-    onShowAttributes: () => void;
+    onAddAttributes: () => void;
 };
-export const BlockingCriteria = ({ onShowAttributes }: Props) => {
+export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) => {
     const form = useFormContext<{ blockingCriteria: BlockingAttribute[] }>();
     const { blockingCriteria } = useWatch(form);
 
@@ -31,7 +31,9 @@ export const BlockingCriteria = ({ onShowAttributes }: Props) => {
                 <Shown
                     when={blockingCriteria && blockingCriteria.length > 0}
                     fallback={
-                        <div className={styles.noBlockingCriteriaText}>Please add blocking criteria to get started</div>
+                        <div className={styles.noBlockingCriteriaText}>
+                            Please add blocking criteria to get started.
+                        </div>
                     }>
                     <BlockingCriteriaAttribute
                         label="First name"

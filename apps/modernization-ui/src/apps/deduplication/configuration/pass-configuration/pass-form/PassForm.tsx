@@ -4,7 +4,7 @@ import { Button } from 'design-system/button';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { BlockingCriteria } from './blocking-criteria/BlockingCriteria';
-import { BlockingCriteriaSidePanel } from './blocking-criteria/BlockingCriteriaSidePanel';
+import { BlockingCriteriaSidePanel } from './blocking-criteria/panel/BlockingCriteriaSidePanel';
 import styles from './pass-form.module.scss';
 
 type Props = {
@@ -65,7 +65,7 @@ export const PassForm = ({ initial }: Props) => {
                     />
                 </Shown>
                 <div className={styles.formContent}>
-                    <BlockingCriteria onShowAttributes={() => togglePanelState('blocking')} />
+                    <BlockingCriteria onAddAttributes={() => togglePanelState('blocking')} />
                 </div>
             </FormProvider>
             <div className={styles.buttonBar}>

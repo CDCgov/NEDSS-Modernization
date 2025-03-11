@@ -9,9 +9,9 @@ type Props = {
     visible: boolean;
     onClose: () => void;
     children: ReactNode;
-    buttons?: ReactNode;
+    footer?: ReactNode;
 };
-export const SidePanel = ({ heading, children, buttons, visible, onClose }: Props) => {
+export const SidePanel = ({ heading, children, footer, visible, onClose }: Props) => {
     const divRef = useRef(null);
     const [panelWidth, setPanelWidth] = useState(0);
 
@@ -33,7 +33,7 @@ export const SidePanel = ({ heading, children, buttons, visible, onClose }: Prop
         <div ref={divRef} className={styles.sidePanel} style={{ width: visible ? '27.5rem' : 0 }}>
             <div className={styles.fixedWidth}>
                 {/* Hide content when panel is closed */}
-                <Shown when={panelWidth > 0}>
+                <Shown when={panelWidth > 0 || visible}>
                     <div className={styles.heading}>
                         <Heading level={2}>{heading}</Heading>
                         <button onClick={onClose}>
@@ -41,8 +41,8 @@ export const SidePanel = ({ heading, children, buttons, visible, onClose }: Prop
                         </button>
                     </div>
                     <div className={styles.panelContent}>{children}</div>
-                    <Shown when={buttons !== undefined}>
-                        <div className={styles.buttonBar}>{buttons}</div>
+                    <Shown when={footer !== undefined}>
+                        <div className={styles.buttonBar}>{footer}</div>
                     </Shown>
                 </Shown>
             </div>

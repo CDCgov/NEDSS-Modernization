@@ -1,8 +1,8 @@
 import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
 import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
-import { AttributeEntry } from '../attribute-entry/AttributeEntry';
-import { SidePanel } from '../side-panel/SidePanel';
+import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
+import { SidePanel } from '../../side-panel/SidePanel';
 import styles from './blocking-criteria-panel.module.scss';
 
 type Props = {
@@ -26,7 +26,7 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
             heading="Add blocking attribute(s)"
             visible={visible}
             onClose={onCancel}
-            buttons={
+            footer={
                 <>
                     <Button outline onClick={onCancel}>
                         Cancel
@@ -38,7 +38,7 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
             }>
             <div className={styles.blockingCriteriaPanel}>
                 <AttributeEntry
-                    name="First name"
+                    label="First name"
                     description="The first 4 characters of the person's first name."
                     onChange={() => {
                         handleOnChange(BlockingAttribute.FIRST_NAME);
@@ -46,7 +46,7 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
                     selected={selectedAttributes.includes(BlockingAttribute.FIRST_NAME)}
                 />
                 <AttributeEntry
-                    name="Last name"
+                    label="Last name"
                     description="The first 4 characters of the person's last name."
                     onChange={() => {
                         handleOnChange(BlockingAttribute.LAST_NAME);
@@ -54,7 +54,7 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
                     selected={selectedAttributes.includes(BlockingAttribute.LAST_NAME)}
                 />
                 <AttributeEntry
-                    name="Date of birth"
+                    label="Date of birth"
                     description="The person's birthdate in the format YYYY-MM-DD."
                     onChange={() => {
                         handleOnChange(BlockingAttribute.DATE_OF_BIRTH);
@@ -62,7 +62,7 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
                     selected={selectedAttributes.includes(BlockingAttribute.DATE_OF_BIRTH)}
                 />
                 <AttributeEntry
-                    name="Sex"
+                    label="Sex"
                     description="The person's sex in the format of M or F."
                     onChange={() => {
                         handleOnChange(BlockingAttribute.SEX);
@@ -70,7 +70,7 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
                     selected={selectedAttributes.includes(BlockingAttribute.SEX)}
                 />
                 <AttributeEntry
-                    name="Street address 1"
+                    label="Street address 1"
                     description="The first 4 characters of the person's address."
                     onChange={() => {
                         handleOnChange(BlockingAttribute.STREET_ADDRESS);
@@ -78,7 +78,7 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
                     selected={selectedAttributes.includes(BlockingAttribute.STREET_ADDRESS)}
                 />
                 <AttributeEntry
-                    name="Zip"
+                    label="Zip"
                     description="The person's 5 digit zip code."
                     onChange={() => {
                         handleOnChange(BlockingAttribute.ZIP);
@@ -86,7 +86,7 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
                     selected={selectedAttributes.includes(BlockingAttribute.ZIP)}
                 />
                 <AttributeEntry
-                    name="Email"
+                    label="Email"
                     description="The first 4 characters of the person's email address."
                     onChange={() => {
                         handleOnChange(BlockingAttribute.EMAIL);
@@ -94,8 +94,8 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
                     selected={selectedAttributes.includes(BlockingAttribute.EMAIL)}
                 />
                 <AttributeEntry
-                    name="Phone"
-                    description="The first 4 digits of the person's phone number."
+                    label="Phone"
+                    description="The last 4 digits of the person's phone number."
                     onChange={() => {
                         handleOnChange(BlockingAttribute.PHONE);
                     }}
