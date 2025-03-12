@@ -1,8 +1,8 @@
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
 import { NameInformationEntry } from '../entry';
 import { NameEntryFields } from './NameEntryFields';
-import { render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 const mockPatientNameCodedValues = {
     types: [{ name: 'Adopted name', value: 'AN' }],
@@ -54,47 +54,39 @@ describe('when entering name information', () => {
 
     it('should validate last name', async () => {
         const user = userEvent.setup();
-        const { getByLabelText, queryByText } = render(<Fixture />);
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const last = getByLabelText('Last');
-        await user.clear(last);
         await user.type(
             last,
-            'hsdfjhsjfjshkfhskhfkhskjfhkjshfhsdhfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhj dkacindijsnjpasdfilksbdvsdovbadkhv zcasjkfasnj hasb fkasj asjks s jdasjaksdb fbashf asfasfaskbf as faskj bfkdsbfkasb f'
+            'hsdfjhsjfjshkfhskhfkhskjfhkjshfhsdhfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhj dkacindijsnjpasdfilksbdvsdovbadkhv zcasjkfasnj hasb fkasj asjks s jdasjaksdb fbashf asfasfaskbf as faskj bfkdsbfkasb f{tab}'
         );
-        await user.tab();
 
-        const validationError = queryByText('The Last name only allows 50 characters max.');
-        expect(validationError).toBeInTheDocument();
+        expect(getByText(/The Last name only allows 50 characters max/)).toBeInTheDocument();
     });
     it('should validate middle name', async () => {
         const user = userEvent.setup();
-        const { getByLabelText, queryByText } = render(<Fixture />);
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const middle = getByLabelText('Middle');
-        await user.clear(middle);
         await user.type(
             middle,
-            'hsdfjhsjfjshkfhskhfkhskjfhkjshfhsdhfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhj dkacindijsnjpasdfilksbdvsdovbadkhv zcasjkfasnj hasb fkasj asjks s jdasjaksdb fbashf asfasfaskbf as faskj bfkdsbfkasb f'
+            'hsdfjhsjfjshkfhskhfkhskjfhkjshfhsdhfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhj dkacindijsnjpasdfilksbdvsdovbadkhv zcasjkfasnj hasb fkasj asjks s jdasjaksdb fbashf asfasfaskbf as faskj bfkdsbfkasb f{tab}'
         );
-        await user.tab();
 
-        const validationError = queryByText('The Middle name only allows 50 characters max');
-        expect(validationError).toBeInTheDocument();
+        expect(getByText(/The Middle name only allows 50 characters max/)).toBeInTheDocument();
     });
     it('should validate first name', async () => {
         const user = userEvent.setup();
-        const { getByLabelText, queryByText } = render(<Fixture />);
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const first = getByLabelText('First');
-        await user.clear(first);
+
         await user.type(
             first,
-            'hsdfjhsjfjshkfhskhfkhskjfhkjshfhsdhfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhj dkacindijsnjpasdfilksbdvsdovbadkhv zcasjkfasnj hasb fkasj asjks s jdasjaksdb fbashf asfasfaskbf as faskj bfkdsbfkasb f'
+            'hsdfjhsjfjshkfhskhfkhskjfhkjshfhsdhfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhj dkacindijsnjpasdfilksbdvsdovbadkhv zcasjkfasnj hasb fkasj asjks s jdasjaksdb fbashf asfasfaskbf as faskj bfkdsbfkasb f{tab}'
         );
-        await user.tab();
 
-        const validationError = queryByText('The First name only allows 50 characters max');
-        expect(validationError).toBeInTheDocument();
+        expect(getByText(/The First name only allows 50 characters max/)).toBeInTheDocument();
     });
 });

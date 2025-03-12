@@ -86,14 +86,12 @@ describe('when entering patient name demographics', () => {
         const asOf = getByLabelText('Name as of');
         const type = getByLabelText('Type');
 
-        await user.type(asOf, '01/20/2020');
-        await user.tab();
-        await user.selectOptions(type, 'AN');
-        await user.tab();
+        await user
+            .type(asOf, '01/20/2020{tab}')
+            .then(() => user.selectOptions(type, 'AN'))
+            .then(() => user.tab());
 
-        await waitFor(() => {
-            expect(queryByText('The Name as of is required')).not.toBeInTheDocument();
-            expect(queryByText('The Type is required')).not.toBeInTheDocument();
-        });
+        expect(queryByText('The Name as of is required')).not.toBeInTheDocument();
+        expect(queryByText('The Type is required')).not.toBeInTheDocument();
     });
 });
