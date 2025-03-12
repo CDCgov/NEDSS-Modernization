@@ -67,11 +67,22 @@ export const PassConfiguration = () => {
     };
 
     const handleChangePass = (pass: Pass) => {
+        if (pass === selectedPass) {
+            // user selected the pass that is already selected
+            return;
+        }
         // if dirty, confirm
-        if (isDirty) {
-            setConfirmationState({ visible: true, onAccept: () => setSelectedPass(pass) });
+        if (isDirty || selectedPass === newPass) {
+            setConfirmationState({ visible: true, onAccept: () => changeSelectedPass(pass) });
         } else {
             setSelectedPass(pass);
+        }
+    };
+
+    const changeSelectedPass = (pass: Pass) => {
+        setSelectedPass(pass);
+        if (selectedPass?.id === undefined) {
+            setNewPass(undefined);
         }
     };
 
