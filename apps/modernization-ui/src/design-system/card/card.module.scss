@@ -14,3 +14,18 @@
         @extend %thin-bottom;
     }
 }
+
+.titleWrapper {
+    display: flex;
+    flex-direction: column;
+    max-height: 46px;
+}
+
+.subtext {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: colors.$base-darker;
+    margin-top: 0;
+    max-height: 17px;
+}

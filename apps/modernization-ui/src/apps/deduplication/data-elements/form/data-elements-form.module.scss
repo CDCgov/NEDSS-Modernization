@@ -4,14 +4,16 @@
 .dataElementsForm {
     height: 100%;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1480px;
     border-radius: 10px;
     overflow: hidden;
+    display: block;
+    text-align: left;
 
-    .tableWrapper {
+    .contentWrapper {
         width: 100%;
         height: 100%;
-        max-width: 1200px;
+        max-width: 1480px;
         overflow: auto;
         padding: 0;
     }
@@ -23,16 +25,33 @@
         table-layout: fixed;
         border-collapse: separate;
         border-spacing: 0;
-        font-size: 0.875rem;
+        font-size: 12px;
         text-align: left;
         overflow: hidden;
+
+        @extend %thin-top;
 
         thead {
             position: sticky;
             top: 0;
             z-index: 20;
             text-align: left;
+            align-items: center;
             background-color: colors.$base-white;
+            height: 25px !important;
+            min-height: 25px !important;
+            max-height: 25px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            box-sizing: border-box;
+
+            tr th{
+                max-height: 25px !important;
+                line-height: 25px;
+                padding-left: 6px;
+                padding-top: 3px;
+                padding-bottom: 3px;
+            }
 
             .border {
                 th {
@@ -46,25 +65,37 @@
 
             .calculatedColumn {
                 min-width: 6rem;
+                padding-left: 5px;
+                max-height: 25px;
             }
 
             .numericColumn {
                 width: 8rem;
+                padding-left: 5px;
+                max-height: 25px;
             }
         }
 
         tr th,
         td {
-            height: 38px;
+            height: 25px;
+            width: 216px;
             padding: 0.2rem 0.4rem;
             text-align: left !important;
             vertical-align: middle;
         }
 
         .checkbox {
-            width: 2.5rem;
+            width: 40px;
+            height: 20px;
+            padding-right: 40px;
+            padding-left: 18px;
+            align-items: center;
+            justify-content: center;
             label::before {
-                margin-top: -0.75rem;
+                margin-top: -0.85rem;
+                width: 16px;
+                height: 16px;
             }
         }
 
@@ -76,4 +107,38 @@
 
         @extend %thin-bottom;
     }
+
+}
+
+.headerWithIcon {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    max-height: 16px;
+}
+
+
+.infoIcon use{
+    fill: colors.$primary !important;
+    align-items: center;
+    display: inline-flex;
+    vertical-align: middle;
+    max-height: 16px !important;
+    margin-left: 5px;
+    transform: translateY(-2px);
+}
+
+.infoIcon svg {
+    height: 20px !important;
+    width: 16px !important;
+    vertical-align: middle;
+    display: inline-block;
+    gap: 2px;
+}
+
+.cardInfo {
+    font-size: 14px;
+    color: #3D4551;
+    line-height: 1.6;
+    margin-top: 8px;
 }

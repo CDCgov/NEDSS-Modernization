@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDataElements } from '../api/useDataElements';
 import { DataElements } from './DataElement';
 import { DataElementsForm } from './form/DataElementsForm';
-import { HowTo } from './HowTo';
 import styles from './data-elements.module.scss';
 
 export const DataElementConfig = () => {
@@ -84,7 +83,6 @@ const DataElementConfigContent = () => {
                         <DataElementsForm />
                     </FormProvider>
                 </main>
-                <HowTo />
             </div>
             <div className={styles.buttonBar}>
                 <Button outline onClick={handleCancel}>
