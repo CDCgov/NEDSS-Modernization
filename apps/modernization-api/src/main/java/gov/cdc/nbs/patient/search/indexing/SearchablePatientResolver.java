@@ -51,6 +51,7 @@ class SearchablePatientResolver {
         .map(SearchablePatient.Identification::value)
         .findFirst()
         .orElse(null);
+    identification = identification != null ? identification.toUpperCase() : null;
 
     SearchablePatientTelecom telecom = this.telecomFinder.find(patient.identifier());
 
@@ -59,6 +60,7 @@ class SearchablePatientResolver {
         .map(SearchablePatient.Phone::number)
         .findFirst()
         .orElse(null);
+    phone = phone != null ? phone.toUpperCase() : null;
 
     List<SearchablePatient.Email> emails = telecom.emails();
 
@@ -66,6 +68,7 @@ class SearchablePatientResolver {
         .map(SearchablePatient.Email::address)
         .findFirst()
         .orElse(null);
+    email = email != null ? email.toUpperCase() : null;
 
     String address = addresses.stream()
         .map(elem -> (elem.address1() == null ? "" : elem.address1())
@@ -73,6 +76,7 @@ class SearchablePatientResolver {
             + (elem.state() == null ? "" : elem.state()) + (elem.zip() == null ? "" : elem.zip()))
         .findFirst()
         .orElse("");
+    address = address != null ? address.toUpperCase() : null;
 
     SearchablePatient.Sort sort = new SearchablePatient.Sort(identification, email, phone, address);
 
