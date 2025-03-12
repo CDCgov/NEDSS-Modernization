@@ -5,6 +5,16 @@
     @include borders.rounded();
     @extend %thin;
     background-color: colors.$base-white;
+    position: relative;
+
+    .disabledOverlay {
+        background-color: #d9d9d9;
+        position: absolute;
+        top: 0;
+        opacity: 0.5;
+        height: 100%;
+        width: 100%;
+    }
 
     .heading {
         padding: 1rem;

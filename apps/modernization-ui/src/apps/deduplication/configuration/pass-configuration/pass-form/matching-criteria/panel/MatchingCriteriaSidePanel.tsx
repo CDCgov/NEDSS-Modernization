@@ -171,7 +171,7 @@ export const MatchingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
                     selected={selectedAttributes.includes(MatchingAttribute.ACCOUNT_NUMBER)}
                 />
                 <AttributeEntry
-                    label="National unique idividual identifier"
+                    label="National unique individual identifier"
                     onChange={() => {
                         handleOnChange(MatchingAttribute.NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER);
                     }}
@@ -206,7 +206,7 @@ export const MatchingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
                     selected={selectedAttributes.includes(MatchingAttribute.VISA_PASSPORT)}
                 />
                 <AttributeEntry
-                    label="WIC Identifier"
+                    label="WIC identifier"
                     onChange={() => {
                         handleOnChange(MatchingAttribute.WIC_IDENTIFIER);
                     }}

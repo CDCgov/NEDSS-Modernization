@@ -1,20 +1,25 @@
 import { Icon } from '@trussworks/react-uswds';
 import { MatchingAttribute, MatchingAttributeEntry, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
+import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
+import { useEffect, useState } from 'react';
 import { Control, Controller, useFormContext, useWatch } from 'react-hook-form';
 import styles from './matching-criteria.module.scss';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { useEffect, useState } from 'react';
 
 type Props = {
     onAddAttributes: () => void;
 };
 export const MatchingCriteria = ({ onAddAttributes: onShowAttributes }: Props) => {
     const form = useFormContext<Pass>();
-    const { matchingCriteria } = useWatch<Pass>(form);
+    const { matchingCriteria, blockingCriteria } = useWatch<Pass>(form);
     const [criteria, setCriteria] = useState<MatchingAttributeEntry[]>([]);
+    const [disabled, setDisabled] = useState<boolean>(true);
+
+    useEffect(() => {
+        setDisabled(blockingCriteria === undefined || blockingCriteria.length === 0);
+    }, [blockingCriteria]);
 
     useEffect(() => {
         // create local copy to avoid form issues with undefined
@@ -36,6 +41,9 @@ export const MatchingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
 
     return (
         <div className={styles.matchingCriteria}>
+            <Shown when={disabled}>
+                <div className={styles.disabledOverlay}></div>
+            </Shown>
             <div className={styles.heading}>
                 <Heading level={2}>2. Matching criteria</Heading>
                 <span>Include records that meet all these conditions</span>
@@ -254,6 +262,7 @@ export const MatchingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                         outline
                         onClick={onShowAttributes}
                         sizing="small"
+                        disabled={disabled}
                         className={styles.addButton}>
                         Add matching attribute(s)
                     </Button>

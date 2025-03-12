@@ -43,55 +43,130 @@ const Fixture = ({ initial }: Props) => {
 };
 
 // tests have to use waitFor since panel initializes in closed state
-describe('BlockingCriteriaSidePanel', () => {
+describe('MatchingCriteriaSidePanel', () => {
     it('should display first name attribute', async () => {
         const { queryByText } = render(<Fixture />);
         await waitFor(() => expect(queryByText('First name')).toBeInTheDocument());
-        await waitFor(() =>
-            expect(queryByText("The first 4 characters of the person's first name.")).toBeInTheDocument()
-        );
     });
 
     it('should display last name attribute', async () => {
         const { queryByText } = render(<Fixture />);
         await waitFor(() => expect(queryByText('Last name')).toBeInTheDocument());
-        await waitFor(() =>
-            expect(queryByText("The first 4 characters of the person's last name.")).toBeInTheDocument()
-        );
+    });
+
+    it('should display suffix attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('Suffix')).toBeInTheDocument());
     });
 
     it('should display date of birth attribute', async () => {
         const { queryByText } = render(<Fixture />);
         await waitFor(() => expect(queryByText('Date of birth')).toBeInTheDocument());
-        await waitFor(() =>
-            expect(queryByText("The person's birthdate in the format YYYY-MM-DD.")).toBeInTheDocument()
-        );
     });
 
     it('should display sex attribute', async () => {
         const { queryByText } = render(<Fixture />);
         await waitFor(() => expect(queryByText('Sex')).toBeInTheDocument());
-        await waitFor(() => expect(queryByText("The person's sex in the format of M or F.")).toBeInTheDocument());
     });
 
-    it('should display street address attribute', async () => {
+    it('should display race attribute', async () => {
         const { queryByText } = render(<Fixture />);
-        await waitFor(() => expect(queryByText('Street address 1')).toBeInTheDocument());
-        await waitFor(() => expect(queryByText("The first 4 characters of the person's address.")).toBeInTheDocument());
+        await waitFor(() => expect(queryByText('Race')).toBeInTheDocument());
     });
 
-    it('should display zip attribute', async () => {
+    it('should display Address attribute', async () => {
         const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('Address')).toBeInTheDocument());
+    });
 
+    it('should display city attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('City')).toBeInTheDocument());
+    });
+
+    it('should display State attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('State')).toBeInTheDocument());
+    });
+
+    it('should display Zip attribute', async () => {
+        const { queryByText } = render(<Fixture />);
         await waitFor(() => expect(queryByText('Zip')).toBeInTheDocument());
-        await waitFor(() => expect(queryByText("The person's 5 digit zip code.")).toBeInTheDocument());
     });
 
-    it('should display phone attribute', async () => {
+    it('should display county attribute', async () => {
         const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('County')).toBeInTheDocument());
+    });
 
+    it('should display Phone attribute', async () => {
+        const { queryByText } = render(<Fixture />);
         await waitFor(() => expect(queryByText('Phone')).toBeInTheDocument());
-        await waitFor(() => expect(queryByText("The last 4 digits of the person's phone number.")).toBeInTheDocument());
+    });
+
+    it('should display email attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('Email')).toBeInTheDocument());
+    });
+
+    it('should display Identifier attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('Identifier')).toBeInTheDocument());
+    });
+
+    it('should display ssn attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('Social security number')).toBeInTheDocument());
+    });
+
+    it('should display drivers license attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText("Driver's license")).toBeInTheDocument());
+    });
+
+    it('should display medicaid attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('Medicaid number')).toBeInTheDocument());
+    });
+
+    it('should display mrn attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('Medical record number')).toBeInTheDocument());
+    });
+
+    it('should display account number attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('Account number')).toBeInTheDocument());
+    });
+
+    it('should display national unique attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('National unique individual identifier')).toBeInTheDocument());
+    });
+
+    it('should display patient external attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('Patient external identifier')).toBeInTheDocument());
+    });
+
+    it('should display patient internal attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('Patient internal identifier')).toBeInTheDocument());
+    });
+
+    it('should display person number attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('Person number')).toBeInTheDocument());
+    });
+
+    it('should display visa attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('VISA / Passport number')).toBeInTheDocument());
+    });
+
+    it('should display WIC attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+        await waitFor(() => expect(queryByText('WIC identifier')).toBeInTheDocument());
     });
 
     it('should not render fields when closed', () => {
