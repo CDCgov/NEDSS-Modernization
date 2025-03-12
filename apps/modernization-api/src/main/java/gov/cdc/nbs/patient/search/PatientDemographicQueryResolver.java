@@ -47,6 +47,7 @@ class PatientDemographicQueryResolver {
   private static final String NAME_USE_CD = "name.nm_use_cd.keyword";
   private static final String LAST_NAME = "name.lastNm";
   private static final String LOCAL_ID = "local_id";
+  private static final String SHORT_ID = "short_id";
   private static final String FIRST_NAME = "name.firstNm";
   private static final String PAINLESS = "painless";
   private static final String STREET = "address.streetAddr1";
@@ -112,7 +113,7 @@ class PatientDemographicQueryResolver {
     return Optional.of(BoolQuery.of(
         bool -> bool.must(
             query -> query.queryString(
-                simple -> simple.fields(LOCAL_ID)
+                simple -> simple.fields(SHORT_ID)
                     .query(adjusted)))));
 
   }

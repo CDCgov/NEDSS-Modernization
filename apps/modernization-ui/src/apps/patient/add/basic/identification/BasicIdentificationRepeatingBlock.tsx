@@ -30,7 +30,7 @@ export const BasicIdentificationRepeatingBlock = ({
     sizing
 }: BasicIdentificationRepeatingBlockProps) => {
     const renderForm = () => <BasicIdentificationFields sizing={sizing} />;
-    const renderView = (entry: BasicIdentificationEntry) => <BasicIdentificationView entry={entry} />;
+    const renderView = (entry: BasicIdentificationEntry) => <BasicIdentificationView entry={entry} sizing={sizing} />;
 
     const columns: Column<BasicIdentificationEntry>[] = [
         { id: 'identificationType', name: 'Type', className: styles['col-type'], render: (v) => v.type?.name },
