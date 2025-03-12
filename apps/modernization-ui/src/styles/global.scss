@@ -46,7 +46,7 @@ td span {
 .required-before {
     &::before {
         content: '* ';
-        color: colors.$mandatory;
+        color: colors.$error-dark;
     }
 }
 
