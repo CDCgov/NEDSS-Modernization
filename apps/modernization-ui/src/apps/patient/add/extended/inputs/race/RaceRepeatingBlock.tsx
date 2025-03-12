@@ -37,7 +37,7 @@ const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty, sizing
             sizing={sizing}
         />
     );
-    const renderView = (entry: RaceEntry) => <RaceEntryView entry={entry} />;
+    const renderView = (entry: RaceEntry) => <RaceEntryView entry={entry} sizing={sizing} />;
 
     return (
         <RepeatingBlock<RaceEntry>
