@@ -2,19 +2,52 @@ import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { useMatchConfiguration } from 'apps/deduplication/api/useMatchConfiguration';
 import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
+import { FormProvider, useForm, useFormState } from 'react-hook-form';
 import { SelectPass } from '../notification-cards/SelectPass';
-import { PassList } from './pass-list/PassList';
 import styles from './pass-configuration.module.scss';
+import { UnsavedChangesConfirmation } from './pass-form/confirmation/UnsavedChangesConfirmation';
 import { PassForm } from './pass-form/PassForm';
+import { PassList } from './pass-list/PassList';
 
 export const PassConfiguration = () => {
-    const { passes } = useMatchConfiguration();
+    const { passes, deletePass } = useMatchConfiguration();
+    const form = useForm<Pass>({ mode: 'onBlur' });
+    const { isDirty } = useFormState(form);
     const [newPass, setNewPass] = useState<Pass | undefined>();
     const [passList, setPassList] = useState<Pass[]>([]);
     const [selectedPass, setSelectedPass] = useState<Pass | undefined>();
+    const [confirmationState, setConfirmationState] = useState<{
+        visible: boolean;
+        onAccept: (() => void) | undefined;
+    }>({
+        visible: false,
+        onAccept: undefined
+    });
 
-    const handleEditPassName = (pass: Pass) => {
-        console.log('edit pass name clicked', pass);
+    useEffect(() => {
+        // Reset form when selected pass changes
+        form.reset(
+            { ...selectedPass, matchingCriteria: selectedPass?.matchingCriteria ?? [] },
+            { keepDefaultValues: false }
+        );
+    }, [selectedPass]);
+
+    useEffect(() => {
+        const passList = [newPass, ...passes].filter((p) => p !== undefined);
+        setPassList(passList);
+    }, [newPass, passes]);
+
+    const handleEditPassName = () => {
+        console.log('edit pass name NYI');
+    };
+
+    const handleAddPassClick = () => {
+        // If form is dirty, confirm data loss prior to action
+        if (!isDirty) {
+            handleAddPass();
+        } else {
+            setConfirmationState({ visible: true, onAccept: handleAddPass });
+        }
     };
 
     const handleAddPass = () => {
@@ -29,22 +62,53 @@ export const PassConfiguration = () => {
         setSelectedPass(newPass);
     };
 
-    useEffect(() => {
-        const passList = [newPass, ...passes].filter((p) => p !== undefined);
-        setPassList(passList);
-    }, [newPass, passes]);
+    const handleCancel = () => {
+        setSelectedPass(undefined);
+    };
+
+    const handleChangePass = (pass: Pass) => {
+        // if dirty, confirm
+        if (isDirty) {
+            setConfirmationState({ visible: true, onAccept: () => setSelectedPass(pass) });
+        } else {
+            setSelectedPass(pass);
+        }
+    };
+
+    const handleDelete = () => {
+        if (selectedPass === undefined) {
+            return;
+        }
+        if (selectedPass.id === undefined) {
+            setNewPass(undefined);
+        } else {
+            deletePass(selectedPass.id);
+        }
+        setSelectedPass(undefined);
+    };
 
     return (
         <div className={styles.passConfiguration}>
+            <UnsavedChangesConfirmation
+                passName={selectedPass?.name ?? ''}
+                onAccept={() => {
+                    confirmationState.onAccept?.();
+                    setConfirmationState({ visible: false, onAccept: undefined });
+                }}
+                visible={confirmationState.visible}
+                onCancel={() => setConfirmationState({ visible: false, onAccept: undefined })}
+            />
             <PassList
                 passes={passList}
-                onSetSelectedPass={setSelectedPass}
+                onSetSelectedPass={(p) => handleChangePass(p)}
                 onEditPassName={handleEditPassName}
-                onAddPass={handleAddPass}
+                onAddPass={handleAddPassClick}
                 selectedPass={selectedPass}
             />
             <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes.length} />}>
-                <PassForm initial={selectedPass!} />
+                <FormProvider {...form}>
+                    <PassForm passCount={passes.length} onCancel={handleCancel} onDelete={handleDelete} />
+                </FormProvider>
             </Shown>
         </div>
     );

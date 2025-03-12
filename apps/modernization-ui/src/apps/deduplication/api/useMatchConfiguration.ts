@@ -11,6 +11,7 @@ export const useMatchConfiguration = () => {
 
         setPasses([
             {
+                id: 0,
                 name: 'Lastname_Dateofbirth longer name',
                 description: 'This is my description for this pass',
                 blockingCriteria: [BlockingAttribute.FIRST_NAME],
@@ -18,6 +19,7 @@ export const useMatchConfiguration = () => {
                 active: true
             },
             {
+                id: 1,
                 name: 'IDtype_City',
                 description: '',
                 blockingCriteria: [],
@@ -29,9 +31,13 @@ export const useMatchConfiguration = () => {
         setLoading(false);
     };
 
+    const deletePass = (id: number) => {
+        setPasses(passes.filter((p) => id !== p.id));
+    };
+
     useEffect(() => {
         fetchConfiguration();
     }, []);
 
-    return { fetchConfiguration, loading, error, passes };
+    return { fetchConfiguration, deletePass, loading, error, passes };
 };

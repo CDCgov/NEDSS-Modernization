@@ -1,10 +1,10 @@
+import { Icon } from '@trussworks/react-uswds';
 import { Pass } from 'apps/deduplication/api/model/Pass';
-import styles from './pass-list.module.scss';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { Icon } from '@trussworks/react-uswds';
-import { PassEntry } from '../pass-entry/PassEntry';
+import { PassEntry } from './pass-entry/PassEntry';
+import styles from './pass-list.module.scss';
 
 type Props = {
     passes: Pass[];

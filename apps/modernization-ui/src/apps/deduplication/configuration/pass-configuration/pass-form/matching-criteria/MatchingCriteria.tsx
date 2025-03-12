@@ -1,10 +1,10 @@
 import { Icon } from '@trussworks/react-uswds';
-import { MatchingAttribute, MatchingAttributeEntry, Pass } from 'apps/deduplication/api/model/Pass';
+import { MatchingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { useEffect, useState } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { MatchingCriteriaAttribute } from './MatchingCriteriaAttribute';
 import styles from './matching-criteria.module.scss';
 
@@ -13,30 +13,17 @@ type Props = {
 };
 export const MatchingCriteria = ({ onAddAttributes: onShowAttributes }: Props) => {
     const form = useFormContext<Pass>();
+    const { remove } = useFieldArray({ control: form.control, name: 'matchingCriteria' });
     const { matchingCriteria, blockingCriteria } = useWatch<Pass>(form);
-    const [criteria, setCriteria] = useState<MatchingAttributeEntry[]>([]);
     const [disabled, setDisabled] = useState<boolean>(true);
 
     useEffect(() => {
         setDisabled(blockingCriteria === undefined || blockingCriteria.length === 0);
     }, [blockingCriteria]);
 
-    useEffect(() => {
-        // create local copy to avoid form issues with undefined
-        const cleanCriteria: MatchingAttributeEntry[] = [];
-        matchingCriteria?.forEach((c) => {
-            if (c.attribute !== undefined && c.method !== undefined) {
-                cleanCriteria.push({ attribute: c.attribute, method: c.method });
-            }
-        });
-        setCriteria(cleanCriteria);
-    }, [matchingCriteria]);
-
     const handleRemoveAttribute = (attribute: MatchingAttribute) => {
-        form.setValue(
-            'matchingCriteria',
-            criteria.filter((a) => attribute !== a.attribute)
-        );
+        const index = matchingCriteria?.findIndex((a) => attribute === a.attribute);
+        remove(index);
     };
 
     return (

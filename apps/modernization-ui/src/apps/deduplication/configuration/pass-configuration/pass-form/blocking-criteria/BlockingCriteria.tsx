@@ -4,8 +4,8 @@ import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { useFormContext, useWatch } from 'react-hook-form';
-import styles from './blocking-criteria.module.scss';
 import { BlockingCriteriaAttribute } from './BlockingCriteriaAttribute';
+import styles from './blocking-criteria.module.scss';
 
 type Props = {
     onAddAttributes: () => void;
@@ -18,7 +18,8 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
         const current = [...(blockingCriteria ?? [])];
         form.setValue(
             'blockingCriteria',
-            current.filter((a) => a !== attribute)
+            current.filter((a) => a !== attribute),
+            { shouldDirty: true }
         );
     };
 

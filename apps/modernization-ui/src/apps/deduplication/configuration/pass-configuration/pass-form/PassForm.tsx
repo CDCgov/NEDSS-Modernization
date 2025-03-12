@@ -1,38 +1,34 @@
-import {
-    BlockingAttribute,
-    MatchingAttribute,
-    MatchingAttributeEntry,
-    MatchMethod,
-    Pass
-} from 'apps/deduplication/api/model/Pass';
+import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { useFieldArray, useFormContext, useFormState, useWatch } from 'react-hook-form';
 import { BlockingCriteria } from './blocking-criteria/BlockingCriteria';
 import { BlockingCriteriaSidePanel } from './blocking-criteria/panel/BlockingCriteriaSidePanel';
-import styles from './pass-form.module.scss';
+import { UnsavedChangesConfirmation } from './confirmation/UnsavedChangesConfirmation';
 import { MatchingCriteria } from './matching-criteria/MatchingCriteria';
 import { MatchingCriteriaSidePanel } from './matching-criteria/panel/MatchingCriteriaSidePanel';
+import styles from './pass-form.module.scss';
+import { DeletePassConfirmation } from './confirmation/DeletePassConfirmation';
 
 type Props = {
-    initial: Pass;
+    passCount: number;
+    onCancel: () => void;
+    onDelete: () => void;
 };
-export const PassForm = ({ initial }: Props) => {
-    const form = useForm<Pass>({ defaultValues: initial });
-    const { blockingCriteria, matchingCriteria } = useWatch(form);
+export const PassForm = ({ passCount, onCancel, onDelete }: Props) => {
+    const form = useFormContext<Pass>();
+    const { isDirty } = useFormState(form);
+    const { blockingCriteria, matchingCriteria, name, id } = useWatch(form);
+    const { replace } = useFieldArray({ control: form.control, name: 'matchingCriteria' });
     const [selectedBlockingAttributes, setSelectedBlockingAttributes] = useState<BlockingAttribute[]>([]);
     const [selectedMatchingAttributes, setSelectedMatchingAttributes] = useState<MatchingAttribute[]>([]);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [panelState, setPanelState] = useState<{ visible: boolean; content: 'blocking' | 'matching' }>({
         visible: false,
         content: 'blocking'
     });
-
-    useEffect(() => {
-        // Reset form when selected pass changes
-        form.reset(initial, { keepDefaultValues: false });
-        setPanelState({ visible: false, content: 'blocking' });
-    }, [initial]);
 
     useEffect(() => {
         setSelectedBlockingAttributes(blockingCriteria ?? []);
@@ -41,6 +37,10 @@ export const PassForm = ({ initial }: Props) => {
     useEffect(() => {
         setSelectedMatchingAttributes(matchingCriteria?.map((a) => a.attribute).filter((a) => a !== undefined) ?? []);
     }, [matchingCriteria]);
+
+    useEffect(() => {
+        setPanelState({ ...panelState, visible: false });
+    }, [form]);
 
     const togglePanelState = (content: 'blocking' | 'matching') => {
         if (panelState.visible && panelState.content === content) {
@@ -68,7 +68,7 @@ export const PassForm = ({ initial }: Props) => {
     };
 
     const handleSelectBlockingAttributes = () => {
-        form.setValue('blockingCriteria', selectedBlockingAttributes);
+        form.setValue('blockingCriteria', selectedBlockingAttributes, { shouldDirty: true });
         setPanelState({ ...panelState, visible: false });
     };
 
@@ -81,18 +81,13 @@ export const PassForm = ({ initial }: Props) => {
     };
 
     const handleSelectMatchingAttributes = () => {
-        // Remove entries no longer selected
-        let current: MatchingAttributeEntry[] = (matchingCriteria ?? []) as MatchingAttributeEntry[];
-        current = current.filter((a) => a.attribute !== undefined && selectedMatchingAttributes.includes(a.attribute));
-
-        // Add newly selected entries
-        selectedMatchingAttributes.forEach((selectedEntry) => {
-            if (current.findIndex((c) => c.attribute === selectedEntry) === -1) {
-                current.push({ attribute: selectedEntry, method: MatchMethod.NONE });
-            }
-        });
-
-        form.setValue('matchingCriteria', current);
+        replace(
+            selectedMatchingAttributes.map((m) => {
+                // if attribute was already selected, set method to pre-selected method
+                const method = matchingCriteria?.find((x) => x.attribute === m)?.method ?? MatchMethod.NONE;
+                return { attribute: m, method: method };
+            })
+        );
         setPanelState({ ...panelState, visible: false });
     };
 
@@ -104,34 +99,71 @@ export const PassForm = ({ initial }: Props) => {
         setSelectedMatchingAttributes(matchingCriteria?.map((a) => a.attribute).filter((a) => a !== undefined) ?? []);
     };
 
+    const handleCancelClick = () => {
+        if (isDirty) {
+            setShowConfirmation(true);
+        } else {
+            onCancel();
+        }
+    };
+
     return (
         <div className={styles.passForm}>
-            <FormProvider {...form}>
-                <Shown when={panelState.content === 'blocking'}>
-                    <BlockingCriteriaSidePanel
-                        selectedAttributes={selectedBlockingAttributes}
-                        onAccept={handleSelectBlockingAttributes}
-                        onChange={setSelectedBlockingAttributes}
-                        onCancel={handleCloseBlockingPanel}
-                        visible={panelState.visible}
-                    />
-                </Shown>
-                <Shown when={panelState.content === 'matching'}>
-                    <MatchingCriteriaSidePanel
-                        selectedAttributes={selectedMatchingAttributes}
-                        onAccept={handleSelectMatchingAttributes}
-                        onChange={setSelectedMatchingAttributes}
-                        onCancel={handleCloseMatchingPanel}
-                        visible={panelState.visible}
-                    />
-                </Shown>
-                <div className={styles.formContent}>
-                    <BlockingCriteria onAddAttributes={() => togglePanelState('blocking')} />
-                    <MatchingCriteria onAddAttributes={() => togglePanelState('matching')} />
-                </div>
-            </FormProvider>
+            <Shown when={panelState.content === 'blocking'}>
+                <BlockingCriteriaSidePanel
+                    selectedAttributes={selectedBlockingAttributes}
+                    onAccept={handleSelectBlockingAttributes}
+                    onChange={setSelectedBlockingAttributes}
+                    onCancel={handleCloseBlockingPanel}
+                    visible={panelState.visible}
+                />
+            </Shown>
+            <Shown when={panelState.content === 'matching'}>
+                <MatchingCriteriaSidePanel
+                    selectedAttributes={selectedMatchingAttributes}
+                    onAccept={handleSelectMatchingAttributes}
+                    onChange={setSelectedMatchingAttributes}
+                    onCancel={handleCloseMatchingPanel}
+                    visible={panelState.visible}
+                />
+            </Shown>
+            <UnsavedChangesConfirmation
+                passName={name ?? ''}
+                visible={showConfirmation}
+                onAccept={() => {
+                    onCancel();
+                    setShowConfirmation(false);
+                }}
+                onCancel={() => setShowConfirmation(false)}
+            />
+            <DeletePassConfirmation
+                passName={name ?? ''}
+                visible={showDeleteConfirmation}
+                onAccept={() => {
+                    onDelete();
+                    setShowDeleteConfirmation(false);
+                }}
+                onCancel={() => setShowDeleteConfirmation(false)}
+                isLastPass={passCount === 1}
+            />
+            <div className={styles.formContent}>
+                <BlockingCriteria onAddAttributes={() => togglePanelState('blocking')} />
+                <MatchingCriteria onAddAttributes={() => togglePanelState('matching')} />
+            </div>
             <div className={styles.buttonBar}>
-                <Button outline>Cancel</Button> <Button disabled>Save pass configuration</Button>
+                <div>
+                    <Shown when={id !== undefined}>
+                        <button onClick={() => setShowDeleteConfirmation(true)} className={styles.deleteButton}>
+                            Delete pass configuration
+                        </button>
+                    </Shown>
+                </div>
+                <div>
+                    <Button outline onClick={handleCancelClick}>
+                        Cancel
+                    </Button>
+                    <Button disabled>Save pass configuration</Button>
+                </div>
             </div>
         </div>
     );

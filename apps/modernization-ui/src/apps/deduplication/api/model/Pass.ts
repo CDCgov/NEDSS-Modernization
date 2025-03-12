@@ -1,4 +1,5 @@
 export type Pass = {
+    id?: number;
     name: string;
     description?: string;
     active: boolean;
