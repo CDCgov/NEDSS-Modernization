@@ -5,7 +5,7 @@ import { HeaderFilterField } from './HeaderFilterField';
 
 const mockValueOf = jest.fn();
 const mockApply = jest.fn();
-const mockOnFilterChange = jest.fn();
+const mockAdd = jest.fn();
 const mockClear = jest.fn();
 
 const mockInteraction: FilterInteraction = {
@@ -19,7 +19,7 @@ const mockInteraction: FilterInteraction = {
     clear: mockClear,
     clearAll: jest.fn(),
     reset: jest.fn(),
-    onFilterChange: mockOnFilterChange,
+    add: mockAdd,
     pendingFilter: { 'applying-value': 't' }
 };
 
@@ -60,7 +60,7 @@ describe('when filtering table data from the header', () => {
             userEvent.type(input, '{Enter}');
         });
 
-        expect(mockApply).toHaveBeenCalledWith({ 'applying-value': 't' });
+        expect(mockAdd).toHaveBeenCalledWith('applying-value', 't');
     });
 
     it('should clear the filter when the clear button is pressed', () => {

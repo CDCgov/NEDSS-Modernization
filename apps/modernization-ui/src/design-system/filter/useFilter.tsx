@@ -12,7 +12,7 @@ type FilterInteraction = {
     valueOf: (id: string) => string | undefined;
     apply: () => void;
     /* adds a value to the pending filter */
-    add: (id: string, value: string) => void;
+    add: (id: string, value?: string) => void;
     /* removes the value of the given id from the filter */
     clear: (id: string) => void;
     /* removes all values from the filter */
@@ -30,7 +30,7 @@ const FilterProvider = ({ children }: FilterProviderProps) => {
     const [filter, setFilter] = useState<Filter>();
     const [pendingFilter, setPendingFilter] = useState<Filter>();
 
-    const valueOf = useCallback((id: string) => (filter ? filter[id] : undefined), [filter]);
+    const valueOf = useCallback((id: string) => (pendingFilter ? pendingFilter[id] : undefined), [pendingFilter]);
     const show = useCallback(() => setActive(true), [setActive]);
     const hide = useCallback(() => setActive(false), [setActive]);
     const toggle = useCallback(() => setActive((prev) => !prev), [setActive]);
@@ -44,11 +44,11 @@ const FilterProvider = ({ children }: FilterProviderProps) => {
     );
 
     const add = useCallback(
-        (id: string, value: string) => setPendingFilter(withProperty(id, value)),
+        (id: string, value?: string) => setPendingFilter(withProperty(id, value)),
         [setPendingFilter]
     );
 
-    const apply = useCallback(() => setFilter(pendingFilter), [setFilter]);
+    const apply = () => setFilter(pendingFilter);
 
     const clear = (id: string) => updateFilter(withoutProperty(id)(filter) as Filter | undefined);
 
@@ -80,7 +80,7 @@ const FilterProvider = ({ children }: FilterProviderProps) => {
 };
 
 const withProperty =
-    <T extends object>(id: keyof T, value: string) =>
+    <T extends object>(id: keyof T, value?: string) =>
     (current?: T) => ({ ...current, [id]: value });
 
 const withoutProperty =

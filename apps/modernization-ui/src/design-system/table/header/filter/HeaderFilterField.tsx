@@ -1,4 +1,4 @@
-import { KeyboardEvent as ReactKeyboardEvent, useEffect, useState } from 'react';
+import { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { TextInputField } from 'design-system/input/text';
 import { Shown } from 'conditional-render';
 import { FilterDescriptor, FilterInteraction } from 'design-system/filter';
@@ -15,21 +15,14 @@ type HeaderFilterFieldProps = {
 };
 
 const HeaderFilterField = ({ descriptor, label, filtering, sizing, sorted }: HeaderFilterFieldProps) => {
-    const { valueOf, apply, clear, add, pendingFilter } = filtering;
-
-    const initialValue = valueOf(descriptor.id);
-    const [value, setValue] = useState<string | undefined>(initialValue);
-
-    useEffect(() => {
-        setValue(valueOf(descriptor.id));
-    }, [valueOf]);
+    const { valueOf, apply, clear, add } = filtering;
 
     const handleKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.stopPropagation();
             const next = (event.target as HTMLInputElement).value;
             if (next) {
-                apply(pendingFilter);
+                apply();
             } else {
                 clear(descriptor.id);
             }
@@ -38,20 +31,17 @@ const HeaderFilterField = ({ descriptor, label, filtering, sizing, sorted }: Hea
 
     const handleClear = () => clear(descriptor.id);
 
-    const handleChange = (next?: string) => {
-        next && add(descriptor.id, next);
-        setValue(next);
-    };
+    const handleChange = (next?: string) => add(descriptor.id, next);
 
     return (
         <Shown when={descriptor.type === 'text'}>
             <TextInputField
-                clearable={Boolean(initialValue)}
+                clearable={Boolean(valueOf(descriptor.id))}
                 className={styles.filter}
                 id={`text-filter-${descriptor.id}`}
                 name={label}
                 aria-label={`filter by ${label}`}
-                value={value}
+                value={valueOf(descriptor.id)}
                 onChange={handleChange}
                 onClear={handleClear}
                 onKeyDown={handleKey}
