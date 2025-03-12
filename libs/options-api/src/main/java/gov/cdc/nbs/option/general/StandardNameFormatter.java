@@ -1,4 +1,4 @@
-package gov.cdc.nbs.option.name;
+package gov.cdc.nbs.option.general;
 
 public class StandardNameFormatter {
 
