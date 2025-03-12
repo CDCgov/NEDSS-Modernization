@@ -25,6 +25,7 @@ const NoPatientResults = ({ sizing }: Props) => {
                                     add a new patient.
                                 </a>
                             </Permitted>
+                            <Permitted exclude={[ADD_PATIENT_PERMISSION]}>.</Permitted>
                         </span>
                     </div>
                 </AlertBanner>
