@@ -2,7 +2,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
-import { usePatientAddressCodedValues } from 'apps/patient/profile/addresses/usePatientAddressCodedValues';
+// import { usePatientAddressCodedValues } from 'apps/patient/profile/addresses/usePatientAddressCodedValues';
 import { useLocationCodedValues } from 'location';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
@@ -11,6 +11,7 @@ import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location'
 import { CensusTractInputField, validCensusTractRule } from './census-tract';
 import { AddressEntry } from './entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
+import { useAddressCodedValues } from 'apps/patient/profile/addresses/useAddressCodedValues';
 
 const AS_OF_DATE_LABEL = 'Address as of';
 const TYPE_LABEL = 'Type';
@@ -24,12 +25,15 @@ const COMMENTS_LABEL = 'Address comments';
 
 export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control, reset } = useFormContext<AddressEntry>();
-    const coded = usePatientAddressCodedValues();
+    // const coded = usePatientAddressCodedValues();
+    const coded = useAddressCodedValues();
     const location = useLocationCodedValues();
     const selectedState = useWatch({ control, name: 'state' });
     const enteredCity = useWatch({ control, name: 'city' });
     const enteredZip = useWatch({ control, name: 'zipcode' });
     const counties = location.counties.byState(selectedState?.value ?? '');
+
+    // console.log('address coded', coded, codedNew);
 
     const handleSuggestionSelection = (selected: AddressSuggestion) => {
         reset(
