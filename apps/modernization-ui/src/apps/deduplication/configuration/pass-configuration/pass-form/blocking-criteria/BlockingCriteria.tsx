@@ -5,6 +5,7 @@ import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { useFormContext, useWatch } from 'react-hook-form';
 import styles from './blocking-criteria.module.scss';
+import { BlockingCriteriaAttribute } from './BlockingCriteriaAttribute';
 
 type Props = {
     onAddAttributes: () => void;
@@ -38,50 +39,50 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                     <BlockingCriteriaAttribute
                         label="First name"
                         description="The first 4 characters of the patient's first name"
-                        visible={blockingCriteria?.includes(BlockingAttribute.FIRST_NAME) ?? false}
-                        onRemove={() => handleRemoveAttribute(BlockingAttribute.FIRST_NAME)}
+                        attribute={BlockingAttribute.FIRST_NAME}
+                        onRemove={handleRemoveAttribute}
                     />
                     <BlockingCriteriaAttribute
                         label="Last name"
                         description="The first 4 characters of the patient's last name"
-                        visible={blockingCriteria?.includes(BlockingAttribute.LAST_NAME) ?? false}
-                        onRemove={() => handleRemoveAttribute(BlockingAttribute.LAST_NAME)}
+                        attribute={BlockingAttribute.LAST_NAME}
+                        onRemove={handleRemoveAttribute}
                     />
                     <BlockingCriteriaAttribute
                         label="Date of birth"
                         description="The person's birthdate in the format YYYY-MM-DD."
-                        visible={blockingCriteria?.includes(BlockingAttribute.DATE_OF_BIRTH) ?? false}
-                        onRemove={() => handleRemoveAttribute(BlockingAttribute.DATE_OF_BIRTH)}
+                        attribute={BlockingAttribute.DATE_OF_BIRTH}
+                        onRemove={handleRemoveAttribute}
                     />
                     <BlockingCriteriaAttribute
                         label="Sex"
                         description="The person's sex in the format of M or F."
-                        visible={blockingCriteria?.includes(BlockingAttribute.SEX) ?? false}
-                        onRemove={() => handleRemoveAttribute(BlockingAttribute.SEX)}
+                        attribute={BlockingAttribute.SEX}
+                        onRemove={handleRemoveAttribute}
                     />
                     <BlockingCriteriaAttribute
                         label="Street address 1"
                         description="The first 4 characters of the person's address."
-                        visible={blockingCriteria?.includes(BlockingAttribute.STREET_ADDRESS) ?? false}
-                        onRemove={() => handleRemoveAttribute(BlockingAttribute.STREET_ADDRESS)}
+                        attribute={BlockingAttribute.STREET_ADDRESS}
+                        onRemove={handleRemoveAttribute}
                     />
                     <BlockingCriteriaAttribute
                         label="Zip"
                         description="The person's 5 digit zip code."
-                        visible={blockingCriteria?.includes(BlockingAttribute.ZIP) ?? false}
-                        onRemove={() => handleRemoveAttribute(BlockingAttribute.ZIP)}
+                        attribute={BlockingAttribute.ZIP}
+                        onRemove={handleRemoveAttribute}
                     />
                     <BlockingCriteriaAttribute
                         label="Email"
                         description="The first 4 characters of the person's email address."
-                        visible={blockingCriteria?.includes(BlockingAttribute.EMAIL) ?? false}
-                        onRemove={() => handleRemoveAttribute(BlockingAttribute.EMAIL)}
+                        attribute={BlockingAttribute.EMAIL}
+                        onRemove={handleRemoveAttribute}
                     />
                     <BlockingCriteriaAttribute
                         label="Phone"
                         description="The first 4 digits of the person's phone number."
-                        visible={blockingCriteria?.includes(BlockingAttribute.PHONE) ?? false}
-                        onRemove={() => handleRemoveAttribute(BlockingAttribute.PHONE)}
+                        attribute={BlockingAttribute.PHONE}
+                        onRemove={handleRemoveAttribute}
                     />
                 </Shown>
                 <div className={styles.buttonContainer}>
@@ -97,29 +98,5 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                 </div>
             </div>
         </div>
-    );
-};
-
-type AttributeProps = {
-    label: string;
-    description: string;
-    visible: boolean;
-    onRemove: () => void;
-};
-const BlockingCriteriaAttribute = ({ label, description, visible, onRemove }: AttributeProps) => {
-    return (
-        <Shown when={visible}>
-            <div className={styles.attribute}>
-                <div>
-                    <div className={styles.label}>{label}</div>
-                    <div className={styles.description}>{description}</div>
-                </div>
-                <div className={styles.deleteButton}>
-                    <Button outline onClick={onRemove}>
-                        <Icon.Delete size={3} />
-                    </Button>
-                </div>
-            </div>
-        </Shown>
     );
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MatchingAttribute, MatchMethod, Pass } from './model/Pass';
+import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from './model/Pass';
 
 export const useMatchConfiguration = () => {
     const [passes, setPasses] = useState<Pass[]>([]);
@@ -13,8 +13,8 @@ export const useMatchConfiguration = () => {
             {
                 name: 'Lastname_Dateofbirth longer name',
                 description: 'This is my description for this pass',
-                blockingCriteria: [],
-                matchingCriteria: [{ attribute: MatchingAttribute.FIRST_NAME, method: MatchMethod.EXACT }],
+                blockingCriteria: [BlockingAttribute.FIRST_NAME],
+                matchingCriteria: [{ attribute: MatchingAttribute.LAST_NAME, method: MatchMethod.EXACT }],
                 active: true
             },
             {
