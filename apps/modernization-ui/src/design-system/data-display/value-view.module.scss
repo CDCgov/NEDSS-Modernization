@@ -17,6 +17,7 @@
         width: 13rem;
         color: colors.$base-darkest;
         font-weight: 700;
+        padding-top: 1px;
     }
 
     .value {
@@ -25,6 +26,8 @@
 
     &.small {
         @extend %small;
+        min-height: 2.375rem;
+        padding-left: 1.25rem;
         .title {
             width: 12rem;
         }
@@ -36,5 +39,6 @@
 
     &.large {
         @extend %large;
+        min-height: 3.25rem;
     }
 }
