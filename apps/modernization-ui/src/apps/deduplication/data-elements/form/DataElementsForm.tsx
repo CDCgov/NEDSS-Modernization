@@ -5,7 +5,7 @@ import { DataElements } from '../DataElement';
 import { DataElementsCard } from './DataElementsCard';
 import { useRef } from 'react';
 import { Icon } from 'design-system/icon';
-import styles from './data-elements-form.module.scss';
+import styles from './DataElementsForm.module.scss';
 import RichTooltip from 'design-system/richTooltip/RichTooltip';
 
 const dataElementKeys: (keyof DataElements)[] = [
@@ -72,6 +72,7 @@ export const DataElementsForm = () => {
                                     id={'toggle-all-checkbox'}
                                     selected={!hasInactive()}
                                     onChange={handleToggleAll}
+                                    data-testid="select-all-checkbox"
                                 />
                             </th>
                             <th>Field</th>
@@ -86,7 +87,7 @@ export const DataElementsForm = () => {
                                                 as calculated from previous testing of local data
                                             </span>
                                         </RichTooltip>
-                                        <Icon name="info_outline" className="infoIcon" />
+                                        <Icon name="info_outline" className="infoIcon" data-testid="infoIcon" />
                                     </span>
                                 </span>
                             </th>

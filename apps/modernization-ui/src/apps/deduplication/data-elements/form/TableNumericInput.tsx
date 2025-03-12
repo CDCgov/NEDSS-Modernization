@@ -1,6 +1,6 @@
 import { Icon, Label, Tooltip } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import styles from './table-numeric-input.module.scss';
+import styles from './TableNumericInput.module.scss';
 import { ChangeEvent, FocusEvent } from 'react';
 
 type Props = {

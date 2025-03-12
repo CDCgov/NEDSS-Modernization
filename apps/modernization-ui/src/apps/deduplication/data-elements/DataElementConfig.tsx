@@ -72,6 +72,9 @@ const DataElementConfigContent = () => {
         );
     };
 
+    const isFormEmpty = !form.formState.isDirty;
+    const isFormValid = form.formState.isValid;
+
     return (
         <div className={styles.dataElements}>
             <div className={styles.heading}>
@@ -88,7 +91,7 @@ const DataElementConfigContent = () => {
                 <Button outline onClick={handleCancel}>
                     Cancel
                 </Button>
-                <Button onClick={handleSubmit} disabled={!form.formState.isDirty || !form.formState.isValid}>
+                <Button onClick={handleSubmit} disabled={isFormEmpty || !isFormValid}>
                     Save data elements configuration
                 </Button>
             </div>

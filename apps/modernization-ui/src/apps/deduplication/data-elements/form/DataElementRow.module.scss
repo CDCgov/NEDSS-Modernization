@@ -1,11 +1,12 @@
+@use 'styles/colors';
+
 .checkbox {
     width: 3.25rem;
     justify-content: center;
     label::before {
-        margin-top: -0.55rem;
-        margin-left: 13px;
-        width: 16px;
-        height: 16px;
+        border-radius: 1px;
+        border: 1px;
+
     }
 }
 

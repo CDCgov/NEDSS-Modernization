@@ -1,9 +1,9 @@
-import { Checkbox } from 'design-system/checkbox';
+import { DataElementCheckBox } from './/DataElementCheckBox';
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DataElements } from '../DataElement';
 import { TableNumericInput } from './TableNumericInput';
-import styles from './data-element-row.module.scss';
+import styles from './DataElementRow.module.scss';
 import { useDataElements } from 'apps/deduplication/api/useDataElements';
 
 type Props = {
@@ -54,8 +54,15 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                 <Controller
                     control={form.control}
                     name={`${field}.active`}
-                    render={({ field: { value, onChange, name } }) => (
-                        <Checkbox name={name} label="" id={`${field}-checkbox`} selected={value} onChange={onChange} />
+                    render={({ field: { value, onChange } }) => (
+                        <DataElementCheckBox
+                            name={`${field}.active`}
+                            label=""
+                            id={`${field}-checkbox`}
+                            selected={value}
+                            onChange={onChange}
+                            data-testid={`${field}-checkbox`}
+                        />
                     )}
                 />
             </td>
@@ -64,12 +71,6 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                 <Controller
                     control={form.control}
                     name={`${field}.oddsRatio`}
-                    rules={{
-                        required: {
-                            value: watch[field]?.active ?? false,
-                            message: 'Odds ratio is required'
-                        }
-                    }}
                     render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
                         <TableNumericInput
                             name={name}
