@@ -311,8 +311,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query search($filter: PersonFilter!, $page: SortablePage, $share: String) {\n  findPatientsByFilter(filter: $filter, page: $page, share: $share) {\n    content {\n      patient\n      shortId\n      legalName {\n        first\n        middle\n        last\n        suffix\n      }\n      addresses {\n        type\n        use\n        address\n        city\n        county\n        zipcode\n        state\n      }\n    }\n    total\n    page\n    size\n  }\n}\n",
-								"variables": "{\n    \"filter\" :{\n        \"recordStatus\": [\"ACTIVE\"]\n    },\n    \"page\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 5\n\t}\n}"
+								"query": "      query patients($filter: PersonFilter!, $page: SortablePage) {\n        findPatientsByFilter(filter: $filter, page: $page) {\n          content {\n            patient\n            shortId\n            status\n            birthday\n            age\n            gender\n            legalName {\n              first\n              middle\n              last\n              suffix\n            }\n            names {\n              type\n              first\n              middle\n              last\n              suffix\n            }\n            identification {\n              type\n              value\n            }\n            emails\n            phones\n            addresses {\n                type\n                use\n                address\n                address2\n                city\n                county\n                state\n                zipcode\n            }\n            detailedPhones {\n                type\n                use\n                number\n            }\n          }\n          total\n        }\n      }",
+								"variables": "{\n    \"filter\" :{\n        \"recordStatus\": [\"ACTIVE\"],\n        \"id\":\"114097\"\n        }        \n    },\n    \"page\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 25\n\t}\n}"
 							}
 						},
 						"url": {
@@ -3653,6 +3653,65 @@
 										{
 											"key": "limit",
 											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Languages",
+					"item": [
+						{
+							"name": "All Primary languages",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/nbs/api/options/languages/primary",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"options",
+										"languages",
+										"primary"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Specific Primary languages",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/nbs/api/options/languages/primary/search?criteria=w",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"options",
+										"languages",
+										"primary",
+										"search"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "criteria",
+											"value": "w"
 										}
 									]
 								}
