@@ -1,10 +1,10 @@
-import { DataElementCheckBox } from '../DataElementCheckBox/DataElementCheckBox';
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DataElements } from '../../DataElement';
 import { TableNumericInput } from '../TableNumericInput/TableNumericInput';
 import styles from './DataElementRow.module.scss';
 import { useDataElements } from 'apps/deduplication/api/useDataElements';
+import { Checkbox } from 'design-system/checkbox';
 
 type Props = {
     fieldName: string;
@@ -59,13 +59,16 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                     control={form.control}
                     name={`${field}.active`}
                     render={({ field: { value, onChange } }) => (
-                        <DataElementCheckBox
+                        <Checkbox
                             name={`${field}.active`}
                             label=""
                             id={`${field}-checkbox`}
                             selected={value}
                             onChange={onChange}
-                            data-testid={`${field}-checkbox`}
+                            aria-label={fieldName}
+                            role="checkbox"
+                            aria-checked={value}
+                            aria-labelledby={`${field}-checkbox-label`}
                         />
                     )}
                 />
@@ -84,7 +87,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             if (String(value) === '') return true; // Allow empty input to clear error
                             const numericValue = Number(value);
                             if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 1) {
-                                return 'Requires a value between 0 and 1';
+                                return 'Requires a value between 0>1';
                             }
                             return true;
                         }
@@ -103,7 +106,6 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             min={0.01} // Prevents division by zero
                             step={0.01}
                             disabled={!watch[field]?.active}
-                            data-testid={`${field}-oddsRatio`}
                         />
                     )}
                 />
@@ -121,8 +123,8 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                         validate: (value) => {
                             if (String(value) === '') return true; // Allow empty input to clear error
                             const numericValue = Number(value);
-                            if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 1) {
-                                return 'Requires a value between 0 and 1';
+                            if (isNaN(numericValue) || numericValue < 0 || numericValue > 1) {
+                                return 'Requires a value between 0≥1';
                             }
                             return true;
                         }
@@ -138,7 +140,6 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             min={0}
                             step={0.01}
                             disabled={!watch[field]?.active}
-                            data-testid={`${field}-threshold`}
                         />
                     )}
                 />

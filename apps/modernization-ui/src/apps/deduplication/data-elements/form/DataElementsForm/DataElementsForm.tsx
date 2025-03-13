@@ -72,7 +72,8 @@ export const DataElementsForm = () => {
                                     id={'toggle-all-checkbox'}
                                     selected={!hasInactive()}
                                     onChange={handleToggleAll}
-                                    data-testid="select-all-checkbox"
+                                    aria-label={'Select All'}
+                                    aria-labelledby={`select-all-checkbox`}
                                 />
                             </th>
                             <th>Field</th>

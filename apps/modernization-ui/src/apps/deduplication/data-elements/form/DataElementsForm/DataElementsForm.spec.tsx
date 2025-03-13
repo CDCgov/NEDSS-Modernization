@@ -30,7 +30,7 @@ test('toggles individual checkboxes', () => {
     );
 
     // Check that 'First name' checkbox is not checked initially
-    const firstNameCheckbox = screen.getByTestId('firstName-checkbox');
+    const firstNameCheckbox = screen.getByLabelText(/First name/i);
     expect(firstNameCheckbox).not.toBeChecked();
 
     // Click the checkbox to check it
@@ -49,18 +49,17 @@ test('selects all checkboxes when "Select All" is clicked', async () => {
         </Wrapper>
     );
 
-    const selectAllCheckbox = screen.getByTestId('select-all-checkbox');
+    const selectAllCheckbox = screen.getByLabelText(/Select All/i);
 
     // Click the "Select All" checkbox
     fireEvent.click(selectAllCheckbox);
 
-    // Wait for the state to propagate and ensure checkboxes are updated
+    // Wait for the checkboxes to be updated in the DOM
     await waitFor(() => {
-        // Query random checkboxes using their respective data-testid
-        const firstNameCheckbox = screen.getByTestId('firstName-checkbox');
-        const lastNameCheckbox = screen.getByTestId('lastName-checkbox');
-        const suffixCheckbox = screen.getByTestId('suffix-checkbox');
-        const emailCheckbox = screen.getByTestId('email-checkbox');
+        const firstNameCheckbox = screen.getByLabelText(/First name/i);
+        const lastNameCheckbox = screen.getByLabelText(/Last name/i);
+        const suffixCheckbox = screen.getByLabelText(/Suffix/i);
+        const emailCheckbox = screen.getByLabelText(/Email/i);
 
         // Verify that the individual checkboxes are checked
         expect(firstNameCheckbox).toBeEnabled();
@@ -77,7 +76,7 @@ test('shows tooltip when info icon is hovered', async () => {
         </Wrapper>
     );
 
-    // Find the info icon by the data-testid attribute
+    // Find the info icon using its data-testid
     const infoIcon = screen.getByTestId('infoIcon');
 
     // Simulate hovering over the info icon
@@ -89,6 +88,7 @@ test('shows tooltip when info icon is hovered', async () => {
     });
 });
 
+
 test('renders form with initial values', () => {
     render(
         <Wrapper>
@@ -97,7 +97,7 @@ test('renders form with initial values', () => {
     );
 
     // Check the initial state of a checkbox (randomly checked)
-    expect(screen.getByTestId('firstName-checkbox')).not.toBeChecked();
-    expect(screen.getByTestId('email-checkbox')).not.toBeChecked();
-    expect(screen.getByTestId('patientInternalIdentifier-checkbox')).not.toBeChecked();
+    expect(screen.getByLabelText(/First name/i)).not.toBeChecked();
+    expect(screen.getByLabelText(/Email/i)).not.toBeChecked();
+    expect(screen.getByLabelText(/Patient internal identifier/i)).not.toBeChecked();
 });

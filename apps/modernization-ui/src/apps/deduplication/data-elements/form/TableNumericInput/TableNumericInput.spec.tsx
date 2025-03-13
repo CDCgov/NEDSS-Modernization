@@ -11,14 +11,13 @@ describe('TableNumericInput', () => {
                 error="This is an error"
                 onChange={() => {}}
                 onBlur={() => {}}
-                data-testid="testInput"
             />
         );
 
         const errorTooltip = screen.getByText('This is an error');
         expect(errorTooltip).toBeInTheDocument();
 
-        const input = screen.getByTestId('testInput');
+        const input = screen.getByLabelText('numericInput');
         expect(input).toHaveClass('errorBorder');
     });
 
@@ -29,14 +28,13 @@ describe('TableNumericInput', () => {
                 value="5"
                 onChange={() => {}}
                 onBlur={() => {}}
-                data-testid="testInput"
             />
         );
 
         const errorTooltip = screen.queryByText('This is an error');
         expect(errorTooltip).not.toBeInTheDocument();
 
-        const input = screen.getByTestId('testInput');
+        const input = screen.getByLabelText('numericInput');
         expect(input).not.toHaveClass('errorBorder');
     });
 
@@ -48,11 +46,10 @@ describe('TableNumericInput', () => {
                 disabled
                 onChange={() => {}}
                 onBlur={() => {}}
-                data-testid="testInput"
             />
         );
 
-        const input = screen.getByTestId('testInput');
+        const input = screen.getByLabelText('numericInput');
         expect(input).toBeDisabled();
     });
 
@@ -64,11 +61,10 @@ describe('TableNumericInput', () => {
                 value="5"
                 onChange={() => {}}
                 onBlur={onBlurMock}
-                data-testid="testInput"
             />
         );
 
-        const input = screen.getByTestId('testInput');
+        const input = screen.getByLabelText('numericInput');
         fireEvent.blur(input);
 
         expect(onBlurMock).toHaveBeenCalled();
@@ -84,11 +80,10 @@ describe('TableNumericInput', () => {
                 step={1}
                 onChange={() => {}}
                 onBlur={() => {}}
-                data-testid="testInput"
             />
         );
 
-        const input = screen.getByTestId('testInput');
+        const input = screen.getByLabelText('numericInput');
         expect(input).toHaveAttribute('min', '0');
         expect(input).toHaveAttribute('max', '10');
         expect(input).toHaveAttribute('step', '1');

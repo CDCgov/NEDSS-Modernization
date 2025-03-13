@@ -1,5 +1,5 @@
-@use '../../../../../styles/colors';
-@use '../../../../../styles/borders';
+@use 'styles/colors';
+@use 'styles/borders';
 
 .card {
   background: colors.$base-white;
