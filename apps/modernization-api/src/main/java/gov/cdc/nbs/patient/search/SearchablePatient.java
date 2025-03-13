@@ -109,7 +109,8 @@ public record SearchablePatient(
       @JsonProperty("lastNm") @JsonSerialize(using = WithoutHyphensJsonSerializer.class, as = String.class) String last,
       @JsonProperty("lastNmSndx") String lastSoundex,
       @JsonProperty("nmPrefix") String prefix,
-      @JsonProperty("nmSuffix") String suffix) {
+      @JsonProperty("nmSuffix") String suffix,
+      @JsonProperty("full") String full) {
   }
 
 
@@ -123,7 +124,8 @@ public record SearchablePatient(
       @JsonProperty("cntryCd") String country,
       @JsonProperty("cntyText") String countyText,
       @JsonProperty("stateText") String stateText,
-      @JsonProperty("cntryText") String countryText) {
+      @JsonProperty("cntryText") String countryText,
+      @JsonProperty("full") String full) {
   }
 
 
