@@ -29,7 +29,7 @@ public class SearchablePatientNameFinder {
                   ),
                 'json'
                 )
-              ) as [full],
+              ) as [full]
       from person_name [name]
       join NBS_SRTE..Code_value_general [use] on
                  [use].[code_set_nm] = 'P_NM_USE'
