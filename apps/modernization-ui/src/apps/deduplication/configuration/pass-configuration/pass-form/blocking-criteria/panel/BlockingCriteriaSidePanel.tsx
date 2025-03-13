@@ -31,7 +31,7 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
                     <Button outline onClick={onCancel}>
                         Cancel
                     </Button>
-                    <Button icon={<Icon name="add" size="small" />} labelPosition="right" onClick={onAccept}>
+                    <Button icon={<Icon name="add" sizing="small" />} labelPosition="right" onClick={onAccept}>
                         Add attribute(s)
                     </Button>
                 </>
