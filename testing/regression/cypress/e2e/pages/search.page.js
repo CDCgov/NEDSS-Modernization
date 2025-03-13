@@ -167,9 +167,9 @@ class SearchPage {
 verifyTableColumns() {
   const expectedColumns = [
     "Patient ID",
-    "Patient Name",
+    "Patient name",
     "DOB/Age",
-    "Current Sex",
+    "Current sex",
     "Address",
     "Phone",
     "ID",
