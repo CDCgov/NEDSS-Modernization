@@ -31,7 +31,7 @@ type Action =
 const reducer = (current: State, action: Action): State => {
     switch (action.type) {
         case 'sync': {
-            if (current.active?.property !== action.property && current.active?.direction !== action.direction) {
+            if (current.active?.property !== action.property || current.active?.direction !== action.direction) {
                 //  the active sorting differs from the preference
                 return action.property && action.direction
                     ? //  update the preference to match the active sorting

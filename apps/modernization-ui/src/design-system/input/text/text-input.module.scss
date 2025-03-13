@@ -1,3 +1,6 @@
+.input {
+    margin-top: 0 !important;
+}
 .grouped {
     align-items: center;
     display: flex;
@@ -7,9 +10,6 @@
     appearance: none;
 
     input {
-        margin-top: 0;
-        min-width: 0;
-
         padding-right: 1.5rem;
     }
 

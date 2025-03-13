@@ -148,54 +148,133 @@ class ClassicHomePage {
   verifyNoTopAfterSortSearch(string) {
     cy.get("#patient-search-results tbody tr").eq(0).should('not.contain', string);
   }
-
-  clickResultIdLink() {
-    cy.wait(3000);
-    this.copySearchRowInfo();
-
-    // this.patientVerifySearchTableInfo();
-    // cy.get("div#patient-search-results a").eq(0).click();
-  }
-
-  returnPatientData() {
-    return {
-      ssn: "986-37-4923",
-      dob: "05/16/1961",
-      address: "7135 Emmet Spur",
-      phone: "732-721-2970",
-      zip: "74146",
-      email: "CadenRatkeyklkb79@hotmail.com"
-    };
-  }
   
-  patientVerifySearchTableInfo() {
-    let patientData = this.returnPatientData();    
-    cy.get("div#patient-search-results").contains(patientData.ssn);
-    cy.get("div#patient-search-results").contains(patientData.dob);    
-    cy.get("div#patient-search-results").contains(patientData.address);
-    cy.get("div#patient-search-results").contains(patientData.phone);  
-    cy.get("div#patient-search-results").contains(patientData.zip);
-    cy.get("div#patient-search-results").contains(patientData.email);
-  }
+  searchArray(selector, values, field = "value") {
+        if (Array.isArray(values)) {
+            values.forEach(item => {
+                const value = typeof item === "object" ? item[field] || item.value : item;
+                if (value) {
+                    cy.get(selector).contains(value);
+                }
+            });
+        }
+    }
 
-  patientProfileSummaryVerify() {
-    let patientData = this.returnPatientData();
-    cy.get("p.patient-summary-item-value").contains(patientData.ssn);
-    cy.get("p.patient-summary-item-value").contains(patientData.dob);    
-    cy.get("p.patient-summary-item-value").contains(patientData.address);
-    cy.get("p.patient-summary-item-value").contains(patientData.phone);  
-    cy.get("p.patient-summary").contains(patientData.zip);
+  patientVerifySearchTableInfo() {
+    const patientData = Cypress.env("patientSearchRowData");            
+    cy.get("div#patient-search-results").contains(patientData.dob);    
+    this.searchArray("div#patient-search-results", patientData.names);
+    this.searchArray("div#patient-search-results", patientData.ids, "value");    
+    this.searchArray("div#patient-search-results", patientData.addresses, "city");
+    this.searchArray("div#patient-search-results", patientData.addresses, "state");
+    this.searchArray("div#patient-search-results", patientData.addresses, "zipcode");
+    this.searchArray("div#patient-search-results", patientData.emails);
+    this.searchArray("div#patient-search-results", patientData.phones);
+    cy.get("div#patient-search-results a").eq(0).click();
+    this.searchArray("p.patient-summary-item-value", patientData.ids, "value");
+    this.searchArray("p.patient-summary-item-value", patientData.addresses, "city");
+    this.searchArray("p.patient-summary-item-value", patientData.addresses, "state");
+    this.searchArray("p.patient-summary-item-value", patientData.addresses, "zipcode");    
+    this.searchArray("p.patient-summary-item-value", patientData.phones);
     cy.get("a").contains("Demographics").click();
-    cy.get("div#demographics-tabpanel").contains(patientData.email);
+    this.searchArray("div#demographics-tabpanel", patientData.emails)    
   }
 
   copySearchRowInfo() {
+    cy.wait(1000);
     cy.get("body").then((body) => {            
-      if (body.find("div#patient-search-results").length > 0) {        
+      if (body.find("div#patient-search-results").length > 0) {
         cy.get('div#patient-search-results tbody tr td').then(($tds) => {
           const tdTexts = $tds.toArray().map(td => td.innerText.trim());
-          cy.log(tdTexts);  
-          Cypress.env("tdTexts", tdTexts);
+
+
+          function categorizeAddresses(text) {
+              let categorized = [];
+              let lines = text.split(/\n+/).map(line => line.trim()).filter(line => line); // Remove blank lines
+              let currentType = null;
+              let currentValue = [];
+
+              lines.forEach(line => {
+                  if (/^[A-Za-z\s]+$/.test(line) && line.length < 30) {                      
+                      if (currentType && currentValue.length > 0) {
+                          categorized.push(formatAddress(currentType, currentValue));
+                      }
+                      currentType = line.toLowerCase();
+                      currentValue = [];
+                  } else {
+                      currentValue.push(line);
+                  }
+              });
+              
+              if (currentType && currentValue.length > 0) {
+                  categorized.push(formatAddress(currentType, currentValue));
+              }
+
+              return categorized;
+          }
+
+          function formatAddress(type, addressLines) {
+              if (addressLines.length < 2) {
+                  return { type, fullAddress: addressLines.join(", ") };
+              }
+
+              let cityStateZip = addressLines.pop();
+              let match = cityStateZip.match(/^(.+),\s([A-Z]{2})\s(\d{5})$/);
+
+              if (match) {
+                  return {
+                      type,
+                      street: addressLines.join(", "),
+                      city: match[1],
+                      state: match[2],
+                      zipcode: match[3],
+                      fullAddress: addressLines.join(", ") + ", " + cityStateZip
+                  };
+              } else {                  
+                  return { type, fullAddress: addressLines.join(", ") + ", " + cityStateZip };
+              }
+          }
+
+          function categorizeEntries(text) {
+              let categorized = [];
+              let lines = text.split(/\n+/).map(line => line.trim()).filter(line => line); // Remove blank lines
+              let currentType = null;
+              let currentValue = [];
+
+              lines.forEach(line => {
+                if (/^[A-Za-z\s]+$/.test(line) && line.length < 30) {                      
+                    if (currentType && currentValue.length > 0) {                          
+                      categorized.push({ type: currentType, value: currentValue.join(", ") });
+                    }
+                    currentType = line.toLowerCase();
+                    currentValue = [];
+                } else {                      
+                    currentValue.push(line);
+                }
+              });
+              
+              if (currentType && currentValue.length > 0) {
+                  categorized.push({ type: currentType, value: currentValue.join(", ") });
+              }
+
+              return categorized;
+          }
+
+          const parsedDataTdTexts = {
+            patientId: tdTexts[0],
+            names: categorizeEntries(tdTexts[1]),
+            dob: tdTexts[2].split(/\n+/)[0], 
+            age: tdTexts[2].split(/\n+/)[1] || null, 
+            gender: tdTexts[3],
+            addresses: categorizeAddresses(tdTexts[4]),
+            phones: categorizeEntries(tdTexts[5]),
+            ids: categorizeEntries(tdTexts[6]),
+            emails: tdTexts[7].split(/\n+/).map(email => ({ type: "email", value: email }))
+          };
+
+          cy.log(parsedDataTdTexts);
+          Cypress.env("patientSearchRowData", parsedDataTdTexts);
+          this.patientVerifySearchTableInfo();
         });
       }
     });

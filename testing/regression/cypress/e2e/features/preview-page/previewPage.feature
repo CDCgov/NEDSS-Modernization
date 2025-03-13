@@ -1,3 +1,4 @@
+@skip-if-disabled-is-int
 Feature: Page Builder - User can view Preview Page here.
 
   Background:

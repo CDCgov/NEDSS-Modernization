@@ -102,6 +102,6 @@ Then("Verify top Search result is not {string}", (string) => {
 });
 
 Then("I click first patient Search results to view profile", () => {
-    classicHomePage.clickResultIdLink();
+    classicHomePage.copySearchRowInfo();
 });
 
