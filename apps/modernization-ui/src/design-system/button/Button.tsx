@@ -8,7 +8,8 @@ type Props = {
     className?: string;
     icon?: ReactNode;
     children?: ReactNode;
-    outline?: boolean;
+    outline?: boolean; // Deprecated - replaced by secondary
+    secondary?: boolean;
     destructive?: boolean;
     disabled?: boolean;
     type?: 'button' | 'submit' | 'reset';
@@ -26,6 +27,7 @@ const Button = ({
     unpadded,
     children,
     outline = false,
+    secondary = false,
     destructive = false,
     unstyled = false,
     labelPosition = 'left',
@@ -33,8 +35,10 @@ const Button = ({
     ...defaultProps
 }: Props) => {
     const isIconOnly = icon && !children;
+    const isSecondary = secondary || outline;
     const classesArray = classNames(className, sizing && styles[sizing], {
-        [styles.destructive]: destructive,
+        [styles.destructive]: destructive && !isSecondary,
+        [styles.secondaryDestructive]: destructive && isSecondary,
         [styles.icon]: isIconOnly,
         [styles.unpadded]: unpadded
     });
@@ -46,7 +50,7 @@ const Button = ({
             type={type}
             unstyled={unstyled}
             size={isIconOnly ? 'big' : undefined}
-            outline={outline}>
+            outline={isSecondary}>
             {labelPosition === 'left' && children && icon ? (
                 <>
                     <span>{children}</span>
