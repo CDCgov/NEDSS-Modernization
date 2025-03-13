@@ -82,6 +82,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             min={0.01} // Prevents division by zero
                             step={0.01}
                             disabled={!watch[field]?.active}
+                            data-testid={`${field}-oddsRatio`}
                         />
                     )}
                 />
@@ -108,6 +109,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             min={0}
                             step={0.01}
                             disabled={!watch[field]?.active}
+                            data-testid={`${field}-threshold`}
                         />
                     )}
                 />

@@ -15,6 +15,7 @@ const DataElementCheckBox = ({ id, label, className, selected = false, onChange,
         <div className={classNames(styles.checkbox, className)} aria-checked={selected}>
             <input
                 id={id}
+                data-testid="test-checkbox"
                 type="checkbox"
                 checked={selected}
                 aria-hidden

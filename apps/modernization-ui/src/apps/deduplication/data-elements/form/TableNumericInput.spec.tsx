@@ -1,51 +1,143 @@
-import { act, render } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { TableNumericInput } from './TableNumericInput';
-import userEvent from '@testing-library/user-event';
-
-const onChange = jest.fn();
-const onBlur = jest.fn();
+import '@testing-library/jest-dom';
 
 describe('TableNumericInput', () => {
-    it('renders input', () => {
-        const { getByLabelText, getByRole } = render(
+    it('should render the input with a label', () => {
+        render(
             <TableNumericInput
-                name="Test name"
-                label="test label"
-                min={0}
-                max={1}
-                step={0.01}
-                onBlur={onBlur}
-                onChange={onChange}
+                name="testInput"
+                label="Test Label"
+                value=""
+                onChange={() => {}}
+                onBlur={() => {}}
             />
         );
-        expect(getByRole('label')).toHaveTextContent('test label');
-        const element = getByLabelText('test label');
-        expect(element).toHaveAttribute('max', '1');
-        expect(element).toHaveAttribute('min', '0');
-        expect(element).toHaveAttribute('step', '0.01');
+
+        const input = screen.getByTestId('testInput');
+        const label = screen.getByText('Test Label');
+
+        expect(input).toBeInTheDocument();
+        expect(label).toBeInTheDocument();
     });
 
-    it('triggers callbacks', () => {
-        const { getByLabelText } = render(
+    it('should render the input without a label if not provided', () => {
+        render(
             <TableNumericInput
-                name="Test name"
-                label="test label"
-                min={0}
-                max={1}
-                step={0.01}
-                onBlur={onBlur}
-                onChange={onChange}
-                disabled={false}
+                name="testInput"
+                value=""
+                onChange={() => {}}
+                onBlur={() => {}}
             />
         );
-        const element = getByLabelText('test label');
-        act(() => {
-            userEvent.click(element);
-            userEvent.type(element, '0.03');
-            userEvent.tab();
-        });
 
-        expect(onChange).toHaveBeenCalledTimes(3);
-        expect(onBlur).toHaveBeenCalledTimes(1);
+        const input = screen.getByTestId('testInput');
+        const label = screen.queryByText('Test Label');
+
+        expect(input).toBeInTheDocument();
+        expect(label).not.toBeInTheDocument();
+    });
+
+    it('should update the value when the input changes', () => {
+        const onChangeMock = jest.fn();
+        render(
+            <TableNumericInput
+                name="testInput"
+                value="5"
+                onChange={onChangeMock}
+                onBlur={() => {}}
+            />
+        );
+
+        const input = screen.getByTestId('testInput');
+        fireEvent.change(input, { target: { value: '10' } });
+
+        expect(onChangeMock).toHaveBeenCalledWith(expect.objectContaining({ target: { value: '10' } }));
+    });
+
+    it('should display an error message when error is passed', () => {
+        render(
+            <TableNumericInput
+                name="testInput"
+                value="5"
+                error="This is an error"
+                onChange={() => {}}
+                onBlur={() => {}}
+            />
+        );
+
+        const errorTooltip = screen.getByText('This is an error');
+        expect(errorTooltip).toBeInTheDocument();
+
+        const input = screen.getByTestId('testInput');
+        expect(input).toHaveClass('errorBorder');
+    });
+
+    it('should not display error message when no error is passed', () => {
+        render(
+            <TableNumericInput
+                name="testInput"
+                value="5"
+                onChange={() => {}}
+                onBlur={() => {}}
+            />
+        );
+
+        const errorTooltip = screen.queryByText('This is an error');
+        expect(errorTooltip).not.toBeInTheDocument();
+
+        const input = screen.getByTestId('testInput');
+        expect(input).not.toHaveClass('errorBorder');
+    });
+
+    it('should be disabled when disabled prop is true', () => {
+        render(
+            <TableNumericInput
+                name="testInput"
+                value="5"
+                disabled
+                onChange={() => {}}
+                onBlur={() => {}}
+            />
+        );
+
+        const input = screen.getByTestId('testInput');
+        expect(input).toBeDisabled();
+    });
+
+    it('should call onBlur when the input loses focus', () => {
+        const onBlurMock = jest.fn();
+        render(
+            <TableNumericInput
+                name="testInput"
+                value="5"
+                onChange={() => {}}
+                onBlur={onBlurMock}
+            />
+        );
+
+        const input = screen.getByTestId('testInput');
+        fireEvent.blur(input);
+
+        expect(onBlurMock).toHaveBeenCalled();
+    });
+
+    it('should respect min, max, and step values', () => {
+        render(
+            <TableNumericInput
+                name="testInput"
+                value="5"
+                min={0}
+                max={10}
+                step={1}
+                onChange={() => {}}
+                onBlur={() => {}}
+            />
+        );
+
+        const input = screen.getByTestId('testInput');
+        expect(input).toHaveAttribute('min', '0');
+        expect(input).toHaveAttribute('max', '10');
+        expect(input).toHaveAttribute('step', '1');
     });
 });

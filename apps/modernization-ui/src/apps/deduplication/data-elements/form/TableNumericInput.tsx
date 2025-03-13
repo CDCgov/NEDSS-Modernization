@@ -14,8 +14,21 @@ type Props = {
     disabled?: boolean;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onBlur: (event: FocusEvent<HTMLInputElement>) => void;
+    'data-testid'?: string;
 };
-export const TableNumericInput = ({ label, name, value, error, max, min, step, disabled, onChange, onBlur }: Props) => {
+export const TableNumericInput = ({
+    label,
+    name,
+    value,
+    error,
+    max,
+    min,
+    step,
+    disabled,
+    onChange,
+    onBlur,
+    'data-testid': dataTestId
+}: Props) => {
     return (
         <div className={styles.tableNumericInput}>
             {label && (
@@ -36,9 +49,15 @@ export const TableNumericInput = ({ label, name, value, error, max, min, step, d
                     step={step}
                     disabled={disabled}
                     className={classNames([error ? styles.errorBorder : '', styles.numericInput])}
+                    data-testid={dataTestId}
                 />
                 {error && (
-                    <Tooltip id={`${name}-error-tooltip`} label={error} className={styles.tooltip} position={'top'}>
+                    <Tooltip
+                        id={`${name}-error-tooltip`}
+                        label={error}
+                        className={styles.tooltip}
+                        position={'top'}
+                        data-testid={`${dataTestId}-tooltip`}>
                         <Icon.ErrorOutline className={styles.tooltipIcon} />
                     </Tooltip>
                 )}
