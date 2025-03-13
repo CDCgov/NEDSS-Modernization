@@ -91,6 +91,7 @@ public record SearchablePatient(
   }
 
   public record Sort(
+      String name,
       String identification,
       String email,
       String phone,

@@ -44,6 +44,13 @@ class SearchablePatientResolver {
   private SearchablePatient withDemographics(final SearchablePatient patient) {
 
     List<SearchablePatient.Name> names = this.nameFinder.find(patient.identifier());
+    String name = names.stream()
+        .map(elem -> (elem.last() == null ? "" : elem.last()) + " "
+            + (elem.first() == null ? "" : elem.first()))
+        .findFirst()
+        .orElse("");
+    name = name != null ? name.toUpperCase() : null;
+
     List<SearchablePatient.Address> addresses = this.addressFinder.find(patient.identifier());
     List<SearchablePatient.Race> races = this.raceFinder.find(patient.identifier());
     List<SearchablePatient.Identification> identifications = identificationFinder.find(patient.identifier());
@@ -71,14 +78,14 @@ class SearchablePatientResolver {
     email = email != null ? email.toUpperCase() : null;
 
     String address = addresses.stream()
-        .map(elem -> (elem.address1() == null ? "" : elem.address1())
-            + (elem.address2() == null ? "" : elem.address2()) + (elem.city() == null ? "" : elem.city())
-            + (elem.state() == null ? "" : elem.state()) + (elem.zip() == null ? "" : elem.zip()))
+        .map(elem -> (elem.address1() == null ? "" : elem.address1()) + " "
+            + (elem.address2() == null ? "" : elem.address2()) + " " + (elem.city() == null ? "" : elem.city()) + " "
+            + (elem.state() == null ? "" : elem.state()) + " " + (elem.zip() == null ? "" : elem.zip()))
         .findFirst()
         .orElse("");
     address = address != null ? address.toUpperCase() : null;
 
-    SearchablePatient.Sort sort = new SearchablePatient.Sort(identification, email, phone, address);
+    SearchablePatient.Sort sort = new SearchablePatient.Sort(name, identification, email, phone, address);
 
     return new SearchablePatient(
         patient.identifier(),
