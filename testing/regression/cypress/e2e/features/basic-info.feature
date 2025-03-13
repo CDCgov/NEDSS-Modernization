@@ -66,7 +66,7 @@ Feature: Patient Search by Basic Info
     When I search by last name as "test"
     //When I view the results in the "Table" view
     Then I should see the following columns displayed for each patient:
-      | Patient iD   |
+      | Patient ID   |
       | Patient name |
       | DOB/Age      |
       | Current sex  |

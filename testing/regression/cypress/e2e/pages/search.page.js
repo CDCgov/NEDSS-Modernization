@@ -155,18 +155,16 @@ class SearchPage {
           .should("be.visible")
           .click({ force: true });
       } else {
-        // Table is already visible
         cy.log("Table is already in view.");
       }
     });
 
-    // Ensure table is visible before continuing
     cy.get("table", { timeout: 6000 }).should("be.visible");
   }
 
 verifyTableColumns() {
   const expectedColumns = [
-    "Patient iD",
+    "Patient ID",
     "Patient name",
     "DOB/Age",
     "Current sex",
@@ -177,7 +175,7 @@ verifyTableColumns() {
   ];
 
   expectedColumns.forEach((column) => {
-    cy.contains("th", column).should("be.visible");
+    cy.contains("#patient-search-results thead th", column).should("be.visible");
   });
 
   }
