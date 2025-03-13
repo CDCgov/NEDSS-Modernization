@@ -69,7 +69,7 @@ Feature: Patient Search by Basic Info
       | Patient ID   |
       | Patient name |
       | DOB/Age      |
-      | Current Sex  |
+      | Current sex  |
       | Address      |
       | Phone        |
       | ID           |
