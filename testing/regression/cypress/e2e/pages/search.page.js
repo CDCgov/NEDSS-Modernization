@@ -143,6 +143,44 @@ class SearchPage {
   clickAddressTab() {    
     cy.get('summary').contains("Address").click();
   }
+
+  ensureTableView() {
+    cy.get("table").then(($table) => {
+      if ($table.length === 0) {
+        // Table is NOT visible, switch to Table View
+        cy.log("Table not found, switching to Table View...");
+        cy.get('use[href*="#table"]')
+          .should("exist")
+          .closest("button, div, span")
+          .should("be.visible")
+          .click({ force: true });
+      } else {
+        // Table is already visible
+        cy.log("Table is already in view.");
+      }
+    });
+
+    // Ensure table is visible before continuing
+    cy.get("table", { timeout: 6000 }).should("be.visible");
+  }
+
+verifyTableColumns() {
+  const expectedColumns = [
+    "Patient ID",
+    "Patient Name",
+    "DOB/Age",
+    "Current Sex",
+    "Address",
+    "Phone",
+    "ID",
+    "Email"
+  ];
+
+  expectedColumns.forEach((column) => {
+    cy.contains("th", column).should("be.visible");
+  });
+
+  }
 }
 
 export const searchPage = new SearchPage();

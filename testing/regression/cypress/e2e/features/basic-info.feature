@@ -61,5 +61,19 @@ Feature: Patient Search by Basic Info
     Then I should see Results with the sex "Male"
     Then I sort by "Patient name (A-Z)"
     Then I verify the sort of patient name
+
+  Scenario: Viewing Search Results in Table View
+    When I search by last name as "test"
+    //When I view the results in the "Table" view
+    Then I should see the following columns displayed for each patient:
+      | Patient ID   |
+      | Patient name |
+      | DOB/Age      |
+      | Current Sex  |
+      | Address      |
+      | Phone        |
+      | ID           |
+      | Email        |
+
     
   
