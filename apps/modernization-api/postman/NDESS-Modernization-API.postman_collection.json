@@ -3721,6 +3721,63 @@
 					]
 				},
 				{
+					"name": "Occupations",
+					"item": [
+						{
+							"name": "All Occupations",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/nbs/api/options/occupations",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"options",
+										"occupations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Specific Occupations",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/nbs/api/options/occupations/search?criteria=w",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"options",
+										"occupations",
+										"search"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "criteria",
+											"value": "w"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Resulted Test",
 					"request": {
 						"method": "GET",
