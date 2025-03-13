@@ -6,7 +6,7 @@ type AddressCodedValues = {
     uses: CodedValue[];
 };
 
-const useAddressCodedValues = () => {
+const useAddressCodedValues = (): AddressCodedValues => {
     const types = useConceptOptions(ConceptNames.addressTypes, { lazy: false });
     const uses = useConceptOptions(ConceptNames.addressUses, { lazy: false });
 
