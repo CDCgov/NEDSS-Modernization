@@ -28,7 +28,7 @@ public class SearchablePatientAddressFinder {
                     isNull([address].street_addr1, '') + ' '
                   + isNull([address].street_addr2, '') + ' '
                   + isNull([address].city_desc_txt, '') + ' '
-                  + isNull([state].state_nm, '')  + ' '
+                  + isNull([srte_state].state_nm, '')  + ' '
                   + isNull([address].zip_cd, ''),
                   'json'
                   )
