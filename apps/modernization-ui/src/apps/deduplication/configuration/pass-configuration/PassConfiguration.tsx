@@ -43,10 +43,10 @@ export const PassConfiguration = () => {
 
     const handleAddPassClick = () => {
         // If form is dirty, confirm data loss prior to action
-        if (!isDirty) {
-            handleAddPass();
-        } else {
+        if (isDirty && selectedPass !== undefined) {
             setConfirmationState({ visible: true, onAccept: handleAddPass });
+        } else {
+            handleAddPass();
         }
     };
 
@@ -72,7 +72,7 @@ export const PassConfiguration = () => {
             return;
         }
         // if dirty, confirm
-        if (isDirty || selectedPass === newPass) {
+        if (isDirty || (selectedPass === newPass && selectedPass !== undefined)) {
             setConfirmationState({ visible: true, onAccept: () => changeSelectedPass(pass) });
         } else {
             setSelectedPass(pass);
