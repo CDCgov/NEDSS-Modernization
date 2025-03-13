@@ -13,8 +13,8 @@ type PermittedProps = {
     mode?: 'all' | 'any';
     /** The children to render if permissions are satisfied */
     children: ReactNode | ReactNode[];
-    /** The fallback to render if permissions are satisfied */
-    fallback?: ReactNode | String;
+    /** The fallback to render if permissions are not satisfied */
+    fallback?: ReactNode | ReactNode[];
 };
 
 const Permitted = ({ permission, include, exclude, mode, children, fallback }: PermittedProps) => {
