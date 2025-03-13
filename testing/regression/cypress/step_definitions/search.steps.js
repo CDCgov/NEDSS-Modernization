@@ -237,10 +237,6 @@ Then("I click address tab", () => {
   searchPage.clickAddressTab()   
 })
 
-When('I view the results in the "Table" view', () => {
-  searchPage.ensureTableView();
-});
-
 Then("I should see the following columns displayed for each patient:", () => {
   searchPage.verifyTableColumns();
 });

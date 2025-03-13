@@ -64,7 +64,6 @@ Feature: Patient Search by Basic Info
 
   Scenario: Viewing Search Results in Table View
     When I search by last name as "test"
-    //When I view the results in the "Table" view
     Then I should see the following columns displayed for each patient:
       | Patient ID   |
       | Patient name |
@@ -74,6 +73,4 @@ Feature: Patient Search by Basic Info
       | Phone        |
       | ID           |
       | Email        |
-
-    
   

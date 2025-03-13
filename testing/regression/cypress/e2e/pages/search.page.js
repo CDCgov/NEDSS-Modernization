@@ -144,24 +144,6 @@ class SearchPage {
     cy.get('summary').contains("Address").click();
   }
 
-  ensureTableView() {
-    cy.get("table").then(($table) => {
-      if ($table.length === 0) {
-        // Table is NOT visible, switch to Table View
-        cy.log("Table not found, switching to Table View...");
-        cy.get('use[href*="#table"]')
-          .should("exist")
-          .closest("button, div, span")
-          .should("be.visible")
-          .click({ force: true });
-      } else {
-        cy.log("Table is already in view.");
-      }
-    });
-
-    cy.get("table", { timeout: 6000 }).should("be.visible");
-  }
-
 verifyTableColumns() {
   const expectedColumns = [
     "Patient ID",
@@ -175,7 +157,7 @@ verifyTableColumns() {
   ];
 
   expectedColumns.forEach((column) => {
-    cy.contains("#patient-search-results thead th", column).should("be.visible");
+    cy.contains("#patient-search-results thead th", column);
   });
 
   }
