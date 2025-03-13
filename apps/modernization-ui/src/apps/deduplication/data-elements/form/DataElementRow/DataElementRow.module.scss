@@ -1,0 +1,21 @@
+@use 'styles/colors';
+
+.checkbox {
+    width: 40px;
+    height: 20px;
+    padding-right: 40px;
+    padding-left: 18px;
+    align-items: center !important;
+    justify-content: center;
+    label::before {
+        margin-top: -0.60rem;
+        margin-left: 0.85rem;
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.field {
+    font-weight: 400;
+}
+

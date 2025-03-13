@@ -21,4 +21,13 @@ describe('Card Component', () => {
         );
         expect(container.querySelector('section')).toHaveAttribute('id', 'test-id');
     });
+
+    it('renders without subtext when not provided', () => {
+        const { queryByText } = render(
+            <Card id="test-id" title="Test Title">
+                <div>Child Content</div>
+            </Card>
+        );
+        expect(queryByText('Subtext here')).not.toBeInTheDocument();
+    });
 });
