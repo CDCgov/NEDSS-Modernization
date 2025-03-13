@@ -27,7 +27,7 @@ const routing = [
             ...addPatientRouting,
             ...patientProfileRouting,
             ...pageBuilderRouting,
-            ...deduplicationRouting,
+            ...deduplicationRouting
         ]
     },
     { path: '*', element: <Navigate to={'/'} /> },

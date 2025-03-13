@@ -84,7 +84,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             if (String(value) === '') return true; // Allow empty input to clear error
                             const numericValue = Number(value);
                             if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 1) {
-                                return 'Requires value between 0 and 1';
+                                return 'Requires a value between 0 and 1';
                             }
                             return true;
                         }
@@ -117,6 +117,14 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                         required: {
                             value: watch[field]?.active ?? false,
                             message: 'Missing threshold'
+                        },
+                        validate: (value) => {
+                            if (String(value) === '') return true; // Allow empty input to clear error
+                            const numericValue = Number(value);
+                            if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 1) {
+                                return 'Requires a value between 0 and 1';
+                            }
+                            return true;
                         }
                     }}
                     render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
