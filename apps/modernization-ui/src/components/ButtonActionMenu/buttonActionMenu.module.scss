@@ -57,6 +57,12 @@
         span:last-child {
             margin-right: 1rem;
         }
+        svg:first-child {
+            margin-left: 0.5rem;
+        }
+        svg:last-child {
+            margin-right: 0.5rem;
+        }
     }
     .menu {
         position: absolute;

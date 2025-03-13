@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
-import sprite from '@uswds/uswds/img/sprite.svg';
 import styles from './accordion.module.scss';
+import { Icon } from 'design-system/icon';
 
 type Props = {
     title?: string;
@@ -15,10 +15,10 @@ export const Accordion = ({ title, children, open = false }: Props) => {
             <summary>
                 <h3>{title}</h3>
                 <svg role="img" aria-label={`Expand ${title}`} className={styles.closed}>
-                    <use xlinkHref={`${sprite}#add`} />
+                    <Icon name={'expand_more'} />
                 </svg>
                 <svg role="img" aria-label={`Collapse ${title}`} className={styles.opened}>
-                    <use xlinkHref={`${sprite}#remove`} />
+                    <Icon name={'expand_less'} />
                 </svg>
             </summary>
             {children}

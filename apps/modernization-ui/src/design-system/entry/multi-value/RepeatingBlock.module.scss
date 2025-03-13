@@ -35,7 +35,6 @@
             svg {
                 color: colors.$primary;
                 cursor: pointer;
-                font-size: icons.$size-standard;
             }
 
             .active {
@@ -44,6 +43,8 @@
                 color: colors.$base-white;
                 background-color: colors.$primary-darker;
             }
+
+            @include icons.sizedIcon(1rem, 1rem);
         }
     }
 
@@ -58,10 +59,18 @@
     footer {
         display: flex;
         gap: 0.5rem;
-        padding: 0.5rem 1.5rem 0.5rem 16.5rem;
+        padding: 0.5rem 1.5rem 0.5rem 16.75rem;
+    }
 
-        svg {
-            font-size: icons.$size-standard;
+    &.small {
+        footer {
+            padding-left: 15.25rem;
+        }
+    }
+
+    &.large {
+        footer {
+            padding-left: 16.75rem;
         }
     }
 }

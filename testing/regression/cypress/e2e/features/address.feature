@@ -6,7 +6,7 @@ Feature: Patient Search by Address
     Given I click address tab
 
   Scenario: Address - Search by City    
-    When I search for "Cullen" city
+    When I search for "East Melissa" city
     Then I should see Results with the last name "Ratkeyklkb"
 
   Scenario: Address - Search by State
@@ -14,7 +14,7 @@ Feature: Patient Search by Address
     Then I should see Results with for text "KY"
 
   Scenario: Address - Search by Zip Code
-    When I search for "42437" zip code
+    When I search for "30342" zip code
     Then I should see Results with the last name "Ratkeyklkb" 
 
   Scenario: Address - Search by Street address
@@ -26,5 +26,5 @@ Feature: Patient Search by Address
     Then I should see "No result found"
 
   Scenario: CNFT1-1283 Address – Search by Multiple Address Criteria
-    When I search for Street Address "90 SE Panda" City "Cullen" State "Kentucky" Zip code "42437"
+    When I search for Street Address "90 SE Panda" City "East Melissa" State "Massachusetts" Zip code "30342"
     Then I should see "Ratkeyklkb, Caden Benjamin, Esquire"

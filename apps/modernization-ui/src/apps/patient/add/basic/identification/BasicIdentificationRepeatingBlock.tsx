@@ -27,10 +27,10 @@ export const BasicIdentificationRepeatingBlock = ({
     isDirty,
     isValid,
     errors,
-    sizing = 'medium'
+    sizing
 }: BasicIdentificationRepeatingBlockProps) => {
     const renderForm = () => <BasicIdentificationFields sizing={sizing} />;
-    const renderView = (entry: BasicIdentificationEntry) => <BasicIdentificationView entry={entry} />;
+    const renderView = (entry: BasicIdentificationEntry) => <BasicIdentificationView entry={entry} sizing={sizing} />;
 
     const columns: Column<BasicIdentificationEntry>[] = [
         { id: 'identificationType', name: 'Type', className: styles['col-type'], render: (v) => v.type?.name },
@@ -52,6 +52,7 @@ export const BasicIdentificationRepeatingBlock = ({
             onChange={onChange}
             isDirty={isDirty}
             isValid={isValid}
+            sizing={sizing}
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}

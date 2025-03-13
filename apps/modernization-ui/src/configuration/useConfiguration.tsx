@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
+import merge from 'lodash.merge';
 import { Configuration } from './configuration';
 import { defaultConfiguration } from './defaults';
 import { currentConfiguration } from './currentConfiguration';
@@ -15,7 +16,7 @@ const reducer = (state: InternalState, action: Action): InternalState => {
         case 'load':
             return { ...state, status: 'loading' };
         case 'loaded':
-            return { status: 'ready', configuration: { ...state.configuration, ...action.configuration } };
+            return { status: 'ready', configuration: merge(state.configuration, action.configuration) };
         default:
             return initialize(defaultConfiguration);
     }
@@ -23,7 +24,7 @@ const reducer = (state: InternalState, action: Action): InternalState => {
 
 const initialize = (configuration?: Configuration): InternalState => {
     if (configuration) {
-        return { status: 'ready', configuration: { ...defaultConfiguration, ...configuration } };
+        return { status: 'ready', configuration: merge(defaultConfiguration, configuration) };
     } else {
         return {
             status: 'default',

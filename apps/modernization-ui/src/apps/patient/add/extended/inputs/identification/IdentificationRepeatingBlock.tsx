@@ -21,10 +21,10 @@ export const IdentificationRepeatingBlock = ({
     values,
     onChange,
     isDirty,
-    sizing = 'medium'
+    sizing
 }: IdentificationRepeatingBlockProps) => {
     const renderForm = () => <IdentificationEntryFields sizing={sizing} />;
-    const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} />;
+    const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} sizing={sizing} />;
 
     const columns: Column<IdentificationEntry>[] = [
         { id: 'identificationAsOf', name: 'As of', render: (v) => v.asOf },
@@ -44,6 +44,7 @@ export const IdentificationRepeatingBlock = ({
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}
+            sizing={sizing}
         />
     );
 };

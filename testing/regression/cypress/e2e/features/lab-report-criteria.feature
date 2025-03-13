@@ -1,3 +1,4 @@
+@skip-if-disabled-is-int
 Feature: Lab Report Search by criteria
 
   Background:

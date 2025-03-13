@@ -26,7 +26,7 @@ type Props = {
     sizing?: Sizing;
 };
 
-const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty, sizing = 'medium' }: Props) => {
+const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty, sizing }: Props) => {
     const categories = useRaceCategoryOptions();
 
     const renderForm = (entry?: RaceEntry) => (
@@ -37,7 +37,7 @@ const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty, sizing
             sizing={sizing}
         />
     );
-    const renderView = (entry: RaceEntry) => <RaceEntryView entry={entry} />;
+    const renderView = (entry: RaceEntry) => <RaceEntryView entry={entry} sizing={sizing} />;
 
     return (
         <RepeatingBlock<RaceEntry>
@@ -51,6 +51,7 @@ const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty, sizing
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}
+            sizing={sizing}
         />
     );
 };

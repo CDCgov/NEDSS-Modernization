@@ -252,11 +252,11 @@ Then("Verify text {string} in Search Result data type {string}", (text, type) =>
     classicSearchPatientPage.findSearchResultByDataItemType(text, type)
 });
 
-Then("I select Exact Date for Date of Birth", () => {
+Then("I select Exact Date for Date of Birth in extended form", () => {
     classicSearchPatientPage.selectExactDateForDateOfBirth();
 });
 
-Then("I enter a specific date of birth", () => {
+Then("I enter a specific date of birth in extended form", () => {
     classicSearchPatientPage.enterDateOfBirthInModernizedSearchPatientPage();
 });
 

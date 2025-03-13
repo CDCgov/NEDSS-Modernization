@@ -24,7 +24,7 @@ describe('when validating a date entered in parts', () => {
             const actual = validateDateEntry('Date with an invalid month')({ month: 13 });
 
             expect(actual).toContain(
-                'The Date with an invalid month should have a month between 1 (January) and 12 (December)'
+                'The Date with an invalid month should have a month between 1 (January) and 12 (December).'
             );
         });
 
@@ -32,14 +32,14 @@ describe('when validating a date entered in parts', () => {
             const actual = validateDateEntry('Date with an invalid month')({ month: 0 });
 
             expect(actual).toContain(
-                'The Date with an invalid month should have a month between 1 (January) and 12 (December)'
+                'The Date with an invalid month should have a month between 1 (January) and 12 (December).'
             );
         });
 
         it('should not allow a day greater than the days in the month', () => {
             const actual = validateDateEntry('Date with too many days')({ year: 2000, month: 2, day: 30 });
 
-            expect(actual).toContain('The Date with too many days should have at most 29 days');
+            expect(actual).toContain('The Date with too many days should have at most 29 days.');
         });
 
         it('should not allow months after today', () => {
@@ -52,7 +52,7 @@ describe('when validating a date entered in parts', () => {
                 year: 2017
             });
 
-            expect(actual).toContain('The Date in the future cannot be after 05/23/2017');
+            expect(actual).toContain('The Date in the future cannot be after 05/23/2017.');
         });
     });
 
@@ -66,13 +66,13 @@ describe('when validating a date entered in parts', () => {
         it('should not allow a day less than 1', () => {
             const actual = validateDateEntry('Date with an invalid day')({ day: 0 });
 
-            expect(actual).toContain('The Date with an invalid day should be at least the first day of the month');
+            expect(actual).toContain('The Date with an invalid day should be at least the first day of the month.');
         });
 
         it('should not allow a day greater than 31', () => {
             const actual = validateDateEntry('Date with an invalid day')({ day: 32 });
 
-            expect(actual).toContain('The Date with an invalid day should have at most 31 days');
+            expect(actual).toContain('The Date with an invalid day should have at most 31 days.');
         });
     });
 

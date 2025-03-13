@@ -11,12 +11,17 @@ import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
 import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
 import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
+import { useNavigationBlock } from 'navigation/useNavigationBlock';
+import { useEffect } from 'react';
+import { useShowCancelModal, CancelAddPatientPanel } from '../cancelAddPatientPanel';
 
 import styles from './add-patient-basic.module.scss';
 import { FeatureToggle } from 'feature';
 
 export const AddPatientBasic = () => {
     const { initialize } = useAddPatientBasicDefaults();
+    const { value: bypassModal } = useShowCancelModal();
+    const blocker = useNavigationBlock({ activated: !bypassModal });
 
     const interaction = useAddBasicPatient();
     const form = useForm<BasicNewPatientEntry>({
@@ -42,13 +47,40 @@ export const AddPatientBasic = () => {
     const handleCancel = () => {
         toSearch(location.state?.criteria ?? '');
     };
-    const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state?.criteria ?? ''));
+
+    const handleExtended = form.handleSubmit((data) => {
+        blocker.allow();
+        toExtendedNew(data, location.state?.criteria ?? '');
+    });
 
     const handleFormIsValid = (valid: boolean) => {
         interaction.setCanSave(valid);
     };
 
     const working = !form.formState.isValid || !interaction.canSave || interaction.status !== 'waiting';
+
+    const handleModalConfirm = () => {
+        blocker.unblock();
+        toSearch(location.state?.criteria ?? '');
+    };
+
+    const handleModalClose = blocker.reset;
+
+    useEffect(() => {
+        if (form.formState.isSubmitted) {
+            blocker.allow();
+        } else if (form.formState.isDirty) {
+            blocker.block();
+        } else {
+            blocker.allow();
+        }
+    }, [form.formState.isSubmitted, form.formState.isDirty, blocker.allow, blocker.block]);
+
+    useEffect(() => {
+        if (interaction.status === 'created') {
+            blocker.reset();
+        }
+    }, [interaction.status]);
 
     return (
         <DataEntryLayout>
@@ -82,6 +114,9 @@ export const AddPatientBasic = () => {
                     <AddPatientBasicForm isValid={handleFormIsValid} />
                 </AddPatientLayout>
             </FormProvider>
+            <Shown when={blocker.blocked}>
+                <CancelAddPatientPanel onConfirm={handleModalConfirm} onClose={handleModalClose} />
+            </Shown>
         </DataEntryLayout>
     );
 };

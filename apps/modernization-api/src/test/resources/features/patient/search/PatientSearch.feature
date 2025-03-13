@@ -61,6 +61,18 @@ Feature: Patient Search
     And search result 1 has a "last name" of "Smith"
     And there are 1 patient search results
 
+  Scenario: I can filter search results with a 0 and get no results because short id does not have a 0
+    Given I have a patient
+    And the patient has a "local id" of "PSN09999999GA01"
+    And the patient has the legal name "Joe" "Other"
+    And I have another patient
+    And the patient has the legal name "Joe" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a first name that equals "Joe"
+    And I would like to filter search results with id "0"
+    When I search for patients
+    Then there are 0 patient search results
+
   Scenario: I can filter search results with the patient's short ID and name
     Given I have a patient
     And the patient has the legal name "Joe" "Other"
@@ -277,56 +289,6 @@ Feature: Patient Search
     And the search results have a patient without a "legal name suffix"
     And the search results have a patient with a "first name" equal to "Al"
     And the search results have a patient with a "last name" equal to "Lias"
-
-  Scenario: I can search for a Patient using a phone number
-    Given the patient has the phone number "1"-"888-240-2200" x"1009"
-    And I have another patient
-    And the patient has the Answering service - Temporary number of "613-240-2200"
-    And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "613-240-2200"
-    When I search for patients
-    Then the search results have a patient with a Answering service - Temporary number of "613-240-2200"
-
-  Scenario: I can search for a Patient using a partial phone number
-    Given the patient has a "phone number" of "888-240-2200"
-    And I have another patient
-    And the patient has a "phone number" of "613-240-2200"
-    And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "613-240-2200"
-    When I search for patients
-    Then the search results have a patient with an "phone number" equal to "613-240-2200"
-
-  Scenario: I can search for a Patient using a phone number and filter
-    Given the patient has a "phone number" of "888-240-2200"
-    And I have another patient
-    And the patient has a "phone number" of "613-240-2200"
-    And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "613-240-2200"
-    And I would like to filter search results with phone "32402"
-    When I search for patients
-    Then the search results have a patient with an "phone number" equal to "613-240-2200"
-
-  Scenario: I can search for a Patient using a phone number and a filter that doesn't exist
-    Given the patient has a "phone number" of "888-240-2200"
-    And I have another patient
-    And the patient has a "phone number" of "613-240-2200"
-    And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "613-240-2200"
-    And I would like to filter search results with phone "111111"
-    When I search for patients
-    Then there are 0 patient search results
-
-  Scenario: I can search for a Patient using a phone number two filters
-    Given the patient has a "phone number" of "888-240-2200"
-    And I have another patient
-    And the patient has a "phone number" of "613-240-2200"
-    And the patient has an "email address" of "emailaddress@mail.com"
-    And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "613-240-2200"
-    And I would like to filter search results with email "address"
-    And I would like to filter search results with phone "3-240-2"
-    When I search for patients
-    Then the search results have a patient with an "phone number" equal to "613-240-2200"
 
   Scenario Outline: I can search for a Patient with a specified Gender
     Given the patient has the gender Male

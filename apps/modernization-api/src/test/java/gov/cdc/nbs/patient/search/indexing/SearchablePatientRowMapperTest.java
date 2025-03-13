@@ -18,7 +18,7 @@ class SearchablePatientRowMapperTest {
   void should_map_from_result_set() throws SQLException {
 
     SearchablePatientRowMapper.Column columns =
-        new SearchablePatientRowMapper.Column(2, 3, 5, 7, 11, 13, 17, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+        new SearchablePatientRowMapper.Column(2, 3, 4, 5, 7, 11, 13, 17, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
 
     ResultSet resultSet = mock(ResultSet.class);
 

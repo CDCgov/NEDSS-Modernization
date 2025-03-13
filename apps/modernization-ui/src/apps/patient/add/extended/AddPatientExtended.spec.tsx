@@ -9,7 +9,7 @@ import { PatientIdentificationCodedValues } from 'apps/patient/profile/identific
 import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
-import { useShowCancelModal } from './useShowCancelModal';
+import { useShowCancelModal } from '../cancelAddPatientPanel';
 import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
 import { Selectable } from 'options';
 
@@ -158,7 +158,7 @@ jest.mock('apps/patient/profile/generalInfo/usePatientGeneralCodedValues', () =>
     usePatientGeneralCodedValues: () => mockPatientCodedValues
 }));
 
-jest.mock('./useShowCancelModal', () => ({
+jest.mock('../cancelAddPatientPanel/useShowCancelModal', () => ({
     useShowCancelModal: jest.fn()
 }));
 

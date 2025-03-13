@@ -17,39 +17,39 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PatientProfileEmailSteps {
 
-    private final Faker faker = new Faker();
+  private final Faker faker = new Faker();
 
-    private final Active<PatientInput> input;
+  private final Active<PatientInput> input;
 
-    private final TestPatient patient;
+  private final TestPatient patient;
 
-    PatientProfileEmailSteps(
-        final Active<PatientInput> input,
-        final TestPatient patient
-    ) {
-        this.input = input;
-        this.patient = patient;
-    }
+  PatientProfileEmailSteps(
+	  final Active<PatientInput> input,
+	  final TestPatient patient
+  ) {
+	this.input = input;
+	this.patient = patient;
+  }
 
-    @Given("the new patient's email address is entered")
-    public void the_new_patient_email_address_is_entered() {
-        this.input.active().getEmailAddresses().add(faker.internet().emailAddress());
-    }
+  @Given("the new patient's email address is entered")
+  public void the_new_patient_email_address_is_entered() {
+	this.input.active().getEmailAddresses().add(faker.internet().emailAddress());
+  }
 
-    @Then("the new patient has the entered email address")
-    @Transactional
-    public void the_new_patient_has_the_entered_email_address() {
-        Person actual = patient.managed();
+  @Then("the new patient has the entered email address")
+  @Transactional
+  public void the_new_patient_has_the_entered_email_address() {
+	Person actual = patient.managed();
 
-        Collection<TeleEntityLocatorParticipation> emails = actual.emailAddresses();
+	Collection<TeleEntityLocatorParticipation> emails = actual.emailAddresses();
 
-        if (!emails.isEmpty()) {
+	if (!emails.isEmpty()) {
 
-            assertThat(emails)
-                    .satisfiesExactlyInAnyOrder(
-                            PatientCreateAssertions.containsEmailAddresses(input.active().getEmailAddresses()));
+	  assertThat(emails)
+		  .satisfiesExactlyInAnyOrder(
+			  PatientCreateAssertions.containsEmailAddresses(input.active().getEmailAddresses()));
 
-        }
+	}
 
-    }
+  }
 }

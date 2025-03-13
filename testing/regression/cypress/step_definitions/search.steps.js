@@ -100,7 +100,7 @@ When("I first name should be {string}", (string) => {
 });
 
 When("I dob should be {string}", (string) => {  
-  cy.get("input[id=dateOfBirth]").should('have.text', string);
+  cy.get("input[id=bornOn-exact-date-year]").should('have.text', string);
 });
 
 Then("I should see Results with the last name {string}", (string) => {
@@ -144,7 +144,7 @@ When("I search by email as {string}", (string) => {
 });
 
 Then("I should see Results with the phone number as {string}", (string) => {
-  cy.get('p').contains(string).should("be.visible");
+  cy.get('div[data-item-type="phone"]').first().scrollIntoView().contains(string).should("be.visible");
 
 });
 
@@ -219,7 +219,7 @@ Then("I sort by {string}", (string) => {
 })
 
 Then("I verify the sort of patient name", () => {
-  cy.get('.result-item_label__4ANhR')
+  cy.get('div[data-item-type="name"]')
   .invoke('text')
   .then(name => {
     //Sort the names

@@ -8,8 +8,7 @@ $size-large: 2.5rem;
 }
 
 .icon {
-    width: 1rem;
-    height: 1rem;
+    @include sized;
     fill: currentColor;
 
     &.small {

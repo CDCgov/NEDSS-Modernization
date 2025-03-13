@@ -1,3 +1,4 @@
+@skip-if-disabled-is-int
 Feature: Page Builder - User can verify manage section here.
 
   Background:

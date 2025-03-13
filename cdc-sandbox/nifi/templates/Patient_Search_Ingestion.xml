@@ -1338,12 +1338,14 @@ to the most recent record when NiFi is first started</label>
                         <connections>
                             <id>4110d93e-af27-38f2-0000-000000000000</id>
                             <parentGroupId>4b264392-2cf9-3ddc-0000-000000000000</parentGroupId>
+                            <versionedComponentId>4110d93e-af27-38f2-af39-78dd8aab463c</versionedComponentId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>100</backPressureObjectThreshold>
                             <destination>
 <groupId>4b264392-2cf9-3ddc-0000-000000000000</groupId>
 <id>c6a7cc5e-cde9-3354-0000-000000000000</id>
 <type>PROCESSOR</type>
+<versionedComponentId>c6a7cc5e-cde9-3354-9a74-7956d67e1d2b</versionedComponentId>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
                             <labelIndex>1</labelIndex>
@@ -1617,6 +1619,7 @@ to the most recent record when NiFi is first started</label>
                         <connections>
                             <id>faddf4d6-d344-348f-0000-000000000000</id>
                             <parentGroupId>4b264392-2cf9-3ddc-0000-000000000000</parentGroupId>
+                            <versionedComponentId>faddf4d6-d344-348f-84e8-25519364c07a</versionedComponentId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>100</backPressureObjectThreshold>
                             <destination>
@@ -1637,6 +1640,7 @@ to the most recent record when NiFi is first started</label>
 <groupId>4b264392-2cf9-3ddc-0000-000000000000</groupId>
 <id>c6a7cc5e-cde9-3354-0000-000000000000</id>
 <type>PROCESSOR</type>
+<versionedComponentId>c6a7cc5e-cde9-3354-9a74-7956d67e1d2b</versionedComponentId>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -2549,6 +2553,7 @@ WHERE
 <x>4472.0</x>
 <y>424.0</y>
                             </position>
+                            <versionedComponentId>c6a7cc5e-cde9-3354-9a74-7956d67e1d2b</versionedComponentId>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
@@ -4455,6 +4460,34 @@ WHERE
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>0829776d-4324-3f60-0000-000000000000</id>
+                            <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
+                            <versionedComponentId>0829776d-4324-3f60-8848-030f4d486464</versionedComponentId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
+<id>a3357495-6b33-3666-0000-000000000000</id>
+<type>PROCESSOR</type>
+<versionedComponentId>a3357495-6b33-3666-bf24-46fbe8c478dd</versionedComponentId>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
+<id>20974801-0564-3643-0000-000000000000</id>
+<type>PROCESSOR</type>
+<versionedComponentId>20974801-0564-3643-98d4-13a5051b6676</versionedComponentId>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>098b261c-185c-3a1a-0000-000000000000</id>
                             <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
                             <versionedComponentId>098b261c-185c-3a1a-93b7-37c77169d38f</versionedComponentId>
@@ -4507,6 +4540,34 @@ WHERE
 <id>0ddeb73e-0381-353d-0000-000000000000</id>
 <type>PROCESSOR</type>
 <versionedComponentId>0ddeb73e-0381-353d-aaa1-2992e43fbc16</versionedComponentId>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>4a8637e1-c0d4-3a20-0000-000000000000</id>
+                            <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
+                            <versionedComponentId>4a8637e1-c0d4-3a20-868d-d313399a62e7</versionedComponentId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
+<id>6a837a67-8578-3c49-0000-000000000000</id>
+<type>PROCESSOR</type>
+<versionedComponentId>6a837a67-8578-3c49-8f62-f0cd211ced52</versionedComponentId>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>failure</selectedRelationships>
+                            <source>
+<groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
+<id>20974801-0564-3643-0000-000000000000</id>
+<type>PROCESSOR</type>
+<versionedComponentId>20974801-0564-3643-98d4-13a5051b6676</versionedComponentId>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -4565,6 +4626,34 @@ WHERE
 <id>7a1170fe-2c99-36c5-0000-000000000000</id>
 <type>PROCESSOR</type>
 <versionedComponentId>7a1170fe-2c99-36c5-8bb1-c72fd14d972d</versionedComponentId>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>7a8f4297-84ea-3f71-0000-000000000000</id>
+                            <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
+                            <versionedComponentId>7a8f4297-84ea-3f71-bb8d-795cbac8252e</versionedComponentId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
+<id>20974801-0564-3643-0000-000000000000</id>
+<type>PROCESSOR</type>
+<versionedComponentId>20974801-0564-3643-98d4-13a5051b6676</versionedComponentId>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
+<id>ee7cdad8-d200-3ad8-0000-000000000000</id>
+<type>PROCESSOR</type>
+<versionedComponentId>ee7cdad8-d200-3ad8-a3dd-116d1af36337</versionedComponentId>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -4644,34 +4733,6 @@ WHERE
                             <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                             <name></name>
                             <selectedRelationships>failure</selectedRelationships>
-                            <source>
-<groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
-<id>ee7cdad8-d200-3ad8-0000-000000000000</id>
-<type>PROCESSOR</type>
-<versionedComponentId>ee7cdad8-d200-3ad8-a3dd-116d1af36337</versionedComponentId>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>90b672bc-4145-3815-0000-000000000000</id>
-                            <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
-                            <versionedComponentId>90b672bc-4145-3815-bfcd-e0a03ec84ab8</versionedComponentId>
-                            <backPressureDataSizeThreshold>5 MB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>1000</backPressureObjectThreshold>
-                            <destination>
-<groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
-<id>a3357495-6b33-3666-0000-000000000000</id>
-<type>PROCESSOR</type>
-<versionedComponentId>a3357495-6b33-3666-bf24-46fbe8c478dd</versionedComponentId>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
                             <source>
 <groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
 <id>ee7cdad8-d200-3ad8-0000-000000000000</id>
@@ -5008,7 +5069,7 @@ to insert into Elasticsearch</label>
                             <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
                             <position>
 <x>5504.0</x>
-<y>288.0</y>
+<y>240.0</y>
                             </position>
                             <versionedComponentId>a5a402f7-fa5b-3312-bee0-3d874cd6d91b</versionedComponentId>
                             <height>592.0</height>
@@ -5233,6 +5294,152 @@ These processors extract the fields into an attribute, remove the existing field
                             <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
+                        </processors>
+                        <processors>
+                            <id>20974801-0564-3643-0000-000000000000</id>
+                            <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
+                            <position>
+<x>7152.0</x>
+<y>-48.0</y>
+                            </position>
+                            <versionedComponentId>20974801-0564-3643-98d4-13a5051b6676</versionedComponentId>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.19.0</version>
+                            </bundle>
+                            <config>
+<backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+<bulletinLevel>WARN</bulletinLevel>
+<comments>Assumes that the first value of the multi-value demographics (identification, phone, address, email) is the most recent and should be used when sorting patients by that value.</comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>jolt-transform</key>
+        <value>
+            <name>jolt-transform</name>
+        </value>
+    </entry>
+    <entry>
+        <key>jolt-custom-class</key>
+        <value>
+            <dependencies>
+                <dependentValues>jolt-transform-custom</dependentValues>
+                <propertyName>jolt-spec</propertyName>
+            </dependencies>
+            <name>jolt-custom-class</name>
+        </value>
+    </entry>
+    <entry>
+        <key>jolt-custom-modules</key>
+        <value>
+            <dependencies>
+                <dependentValues>jolt-transform-custom</dependentValues>
+                <propertyName>jolt-spec</propertyName>
+            </dependencies>
+            <name>jolt-custom-modules</name>
+        </value>
+    </entry>
+    <entry>
+        <key>jolt-spec</key>
+        <value>
+            <name>jolt-spec</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Transform Cache Size</key>
+        <value>
+            <name>Transform Cache Size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>pretty_print</key>
+        <value>
+            <name>pretty_print</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<maxBackoffPeriod>10 mins</maxBackoffPeriod>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>jolt-transform</key>
+        <value>jolt-transform-chain</value>
+    </entry>
+    <entry>
+        <key>jolt-custom-class</key>
+    </entry>
+    <entry>
+        <key>jolt-custom-modules</key>
+    </entry>
+    <entry>
+        <key>jolt-spec</key>
+        <value>[
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "sort_identification": "=firstElement(@(1,entity_id))",
+      "sort_phone": "=firstElement(@(1,phone))",
+      "sort_email": "=firstElement(@(1,email))",
+	  "sort_address": "=firstElement(@(1,address))",
+		"sort_name": "=firstElement(@(1,name))"
+    }
+  }, {
+    "operation": "shift",
+    "spec": {
+      "sort_identification": {
+        "@.rootExtensionTxt": "sort.identification"
+      },
+      "sort_phone": {
+        "@.telephoneNbr": "sort.phone"
+      },
+      "sort_email": {
+        "@.emailAddress": "sort.email"
+      },
+      "sort_address": {
+        "@.full": "sort.address"
+      },
+      "sort_name": {
+        "@.full": "sort.name"
+      },
+      "*": "&amp;"
+    }
+  }
+]
+</value>
+    </entry>
+    <entry>
+        <key>Transform Cache Size</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>pretty_print</key>
+        <value>false</value>
+    </entry>
+</properties>
+<retryCount>10</retryCount>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>Evaluate patient sort</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>failure</name>
+<retry>false</retry>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+<retry>false</retry>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
                         <processors>
                             <id>33e6abd5-5ad8-3bde-0000-000000000000</id>
@@ -5614,6 +5821,78 @@ These processors extract the fields into an attribute, remove the existing field
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
+                            <id>6a837a67-8578-3c49-0000-000000000000</id>
+                            <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
+                            <position>
+<x>7152.0</x>
+<y>-288.0</y>
+                            </position>
+                            <versionedComponentId>6a837a67-8578-3c49-8f62-f0cd211ced52</versionedComponentId>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.19.0</version>
+                            </bundle>
+                            <config>
+<backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>log-level</key>
+        <value>
+            <name>log-level</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>
+            <name>log-prefix</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>
+            <name>log-message</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<maxBackoffPeriod>10 mins</maxBackoffPeriod>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>log-level</key>
+        <value>warn</value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>Patient sort evaluation: </value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+    </entry>
+</properties>
+<retryCount>10</retryCount>
+<runDurationMillis>25</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>Patient sort evaluation</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+<retry>false</retry>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.LogMessage</type>
+                        </processors>
+                        <processors>
                             <id>6eb3c8c9-608d-3c2b-0000-000000000000</id>
                             <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
                             <position>
@@ -5732,68 +6011,56 @@ These processors extract the fields into an attribute, remove the existing field
     </entry>
     <entry>
         <key>SQL select query</key>
-        <value>SELECT 
-  p.person_uid, 
-  p.add_time, 
-  p.add_user_id, 
-  p.as_of_date_admin, 
-  p.as_of_date_ethnicity, 
-  p.as_of_date_general, 
-  p.as_of_date_morbidity, 
-  p.as_of_date_sex, 
-  p.birth_time, 
-  p.birth_time_calc, 
-  p.cd, 
-  p.curr_sex_cd, 
-  p.deceased_ind_cd, 
-  p.electronic_ind, 
-  p.ethnic_group_ind, 
-  p.last_chg_time, 
-  p.last_chg_user_id, 
-  p.marital_status_cd, 
-  p.record_status_cd, 
-  p.record_status_time, 
-  p.status_cd, 
-  p.status_time, 
-  p.local_id, 
-  p.version_ctrl_nbr, 
-  p.edx_ind, 
-  p.dedup_match_ind, 
-  p.first_nm, 
-  p.middle_nm, 
-  p.last_nm, 
-  p.person_uid id, 
-  nested.address, 
-  nested.phone, 
-  nested.email, 
-  nested.name, 
-  nested.race, 
+        <value>SELECT
+  p.cd,
+  p.person_uid,
+  p.local_id,
+  cast(
+    substring(
+      p.local_id, 
+      len(id_settings.prefix) + 1, 
+      len(p.local_id) - len(id_settings.prefix) - len(id_settings.suffix)
+    ) as bigint
+   ) - id_settings.initial as short_id,
+  p.record_status_cd,
+  p.birth_time,
+  p.deceased_ind_cd,
+  p.curr_sex_cd,
+  p.ethnic_group_ind,
+  p.person_uid id,
+  nested.name,
+  nested.address,
+  nested.phone,
+  nested.email,
+  nested.race,
   nested.entity_id,
-  
   --documentIds
   (SELECT STUFF(
   (
     SELECT ','+ cast(documentId as varchar)
     FROM (
 	  SELECT DISTINCT
-	    doc.local_id documentId
-	  FROM 
-	    nbs_document doc WITH (NOLOCK)
+        doc.local_id documentId
+      FROM
+        nbs_document doc WITH (NOLOCK)
         JOIN Participation par WITH (NOLOCK)
-          ON doc.nbs_document_uid = par.act_uid
-	      AND par.subject_class_cd = 'PSN'
+        ON doc.nbs_document_uid = par.act_uid
+          AND par.subject_class_cd = 'PSN'
           AND par.record_status_cd = 'ACTIVE'
           AND par.act_class_cd = 'DOC'
           AND par.type_cd = 'SubjOfDoc'
-    		JOIN Person p2 WITH (NOLOCK)
-    		  ON par.subject_entity_uid=p2.person_uid
-    		  AND p2.person_parent_uid=p.person_parent_uid	  
-		  AND p2.person_parent_uid in(${person_ids})
-        JOIN NBS_SRTE..Code_value_general cvg WITH (NOLOCK)
-	      ON cvg.code_set_nm = 'PUBLIC_HEALTH_EVENT'
-	      AND cvg.code = doc.doc_type_cd
+        JOIN Person p2 WITH (NOLOCK)
+        ON par.subject_entity_uid=p2.person_uid
+          AND p2.person_parent_uid=p.person_parent_uid
+        AND p2.person_parent_uid in(${person_ids})
+        JOIN NBS_SRTE..Code_value_general cvg
+WITH
+(NOLOCK)
+        ON cvg.code_set_nm = 'PUBLIC_HEALTH_EVENT'
+          AND cvg.code = doc.doc_type_cd
     ) tmp
-    FOR XML PATH('')
+    FOR XML PATH
+('')
   ), 1, 1, '')) document_ids,
 
   --morbidityReportIds
@@ -5802,44 +6069,46 @@ These processors extract the fields into an attribute, remove the existing field
     SELECT ','+ cast(morbidityReportId as varchar)
     FROM (
 	  SELECT DISTINCT
-	    obs.local_id morbidityReportId
+        obs.local_id morbidityReportId
       FROM
-	    Observation obs WITH (NOLOCK)
-	    JOIN Participation par WITH (NOLOCK)
-	      ON par.act_uid = obs.observation_uid
-		  AND par.subject_class_cd = 'PSN'
+        Observation obs WITH (NOLOCK)
+        JOIN Participation par WITH (NOLOCK)
+        ON par.act_uid = obs.observation_uid
+          AND par.subject_class_cd = 'PSN'
           AND par.record_status_cd = 'ACTIVE'
           AND par.act_class_cd = 'OBS'
           AND par.type_cd = 'SubjOfMorbReport'
-  		JOIN Person p2 WITH (NOLOCK)
-  		  ON par.subject_entity_uid=p2.person_uid
-  		  AND p2.person_parent_uid=p.person_parent_uid
-		  AND p2.person_parent_uid in(${person_ids})
+        JOIN Person p2 WITH (NOLOCK)
+        ON par.subject_entity_uid=p2.person_uid
+          AND p2.person_parent_uid=p.person_parent_uid
+          AND p2.person_parent_uid in(${person_ids})
     ) tmp
-    FOR XML PATH('')
+    FOR XML PATH
+('')
   ), 1, 1, '')) morbidity_report_ids,
-  
+
   --treatmentIds
   (SELECT STUFF(
   (
     SELECT ','+ cast(treatmentId as varchar)
     FROM (
 	  SELECT DISTINCT
-	    trt.local_id treatmentId
-	  FROM
-	    Treatment trt with (NOLOCK)
-	    JOIN Participation par WITH (NOLOCK)
-	      ON par.act_uid = trt.treatment_uid 
-  		JOIN Person p2 WITH (NOLOCK)
-  		  ON par.subject_entity_uid=p2.person_uid
-  		  AND p2.person_parent_uid=p.person_parent_uid	  
-		  AND p2.person_parent_uid in(${person_ids})
-	      AND par.act_class_cd = 'TRMT'
-	      AND par.record_status_cd = 'ACTIVE' 
+        trt.local_id treatmentId
+      FROM
+        Treatment trt with (NOLOCK)
+        JOIN Participation par WITH (NOLOCK)
+        ON par.act_uid = trt.treatment_uid
+        JOIN Person p2 WITH (NOLOCK)
+        ON par.subject_entity_uid=p2.person_uid
+          AND p2.person_parent_uid=p.person_parent_uid
+          AND p2.person_parent_uid in(${person_ids})
+          AND par.act_class_cd = 'TRMT'
+          AND par.record_status_cd = 'ACTIVE'
           AND par.subject_class_cd='PSN'
-		  AND par.type_cd = 'SubjOfTrmt'
+          AND par.type_cd = 'SubjOfTrmt'
     ) tmp
-    FOR XML PATH('')
+    FOR XML PATH
+('')
   ), 1, 1, '')) treatment_ids,
 
   --vaccinationIds
@@ -5848,41 +6117,43 @@ These processors extract the fields into an attribute, remove the existing field
     SELECT ','+ cast(vaccinationId as varchar)
     FROM (
   SELECT DISTINCT
-    inv.local_id vaccinationId
-  FROM
-    Intervention inv WITH (NOLOCK)
-    JOIN Participation par WITH (NOLOCK)
-      ON inv.intervention_uid = par.act_uid 
-	  AND par.subject_class_cd='PAT' 
-  	  AND par.type_cd = 'SubOfVacc' 
-  		JOIN Person p2 WITH (NOLOCK)
-  		  ON par.subject_entity_uid=p2.person_uid
-  		  AND p2.person_parent_uid=p.person_parent_uid	  
-		  AND p2.person_parent_uid in(${person_ids})
+        inv.local_id vaccinationId
+      FROM
+        Intervention inv WITH (NOLOCK)
+        JOIN Participation par WITH (NOLOCK)
+        ON inv.intervention_uid = par.act_uid
+          AND par.subject_class_cd='PAT'
+          AND par.type_cd = 'SubOfVacc'
+        JOIN Person p2 WITH (NOLOCK)
+        ON par.subject_entity_uid=p2.person_uid
+          AND p2.person_parent_uid=p.person_parent_uid
+          AND p2.person_parent_uid in(${person_ids})
     ) tmp
-    FOR XML PATH('')
+    FOR XML PATH
+('')
   ), 1, 1, '')) vaccination_ids,
-  
+
   --State Case Ids
   (SELECT STUFF(
   (
     SELECT ','+ cast(stateCaseId as varchar)
     FROM (  
         SELECT DISTINCT ai.root_extension_txt stateCaseId
-		FROM 
-		  Public_health_case phc WITH (NOLOCK)
-		  JOIN Act_id ai WITH (NOLOCK) ON phc.public_health_case_uid = ai.act_uid
-			and ai.type_cd='STATE'
-      and (ai.assigning_authority_cd &lt;&gt; 'ABCS' OR ai.assigning_authority_cd IS NULL)
-			and ai.root_extension_txt is not null
-			and ai.root_extension_txt&lt;&gt;''
-		  JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid 
-  		JOIN Person p2 WITH (NOLOCK)
-  		  ON par.subject_entity_uid=p2.person_uid
-  		  AND p2.person_parent_uid=p.person_parent_uid	  
-		  AND p2.person_parent_uid in(${person_ids})
+      FROM
+        Public_health_case phc WITH (NOLOCK)
+        JOIN Act_id ai WITH (NOLOCK) ON phc.public_health_case_uid = ai.act_uid
+          and ai.type_cd='STATE'
+          and (ai.assigning_authority_cd &lt;&gt; 'ABCS' OR ai.assigning_authority_cd IS NULL)
+          and ai.root_extension_txt is not null
+          and ai.root_extension_txt&lt;&gt;''
+        JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid
+        JOIN Person p2 WITH (NOLOCK)
+        ON par.subject_entity_uid=p2.person_uid
+          AND p2.person_parent_uid=p.person_parent_uid
+          AND p2.person_parent_uid in(${person_ids})
     ) tmp
-    FOR XML PATH('')
+    FOR XML PATH
+('')
   ), 1, 1, '')) state_case_ids,
 
   --ABCS Case IDs
@@ -5891,22 +6162,23 @@ These processors extract the fields into an attribute, remove the existing field
     SELECT ','+ cast(abcsCaseId as varchar)
     FROM (  
 		SELECT DISTINCT ai.root_extension_txt abcsCaseId
-		FROM 
-		  Public_health_case phc WITH (NOLOCK)
-		  JOIN Act_id ai WITH (NOLOCK) ON phc.public_health_case_uid = ai.act_uid
-		    and ai.act_id_seq=2
-			and ai.type_cd='STATE'
-      and ai.assigning_authority_cd='ABCS'
-			and ai.root_extension_txt is not null
-			and ai.root_extension_txt&lt;&gt;''			
-		  JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid 
-  		JOIN Person p2 WITH (NOLOCK)
-  		  ON par.subject_entity_uid=p2.person_uid
-  		  AND p2.person_parent_uid=p.person_parent_uid	  
-		  AND p2.person_parent_uid in(${person_ids})
+      FROM
+        Public_health_case phc WITH (NOLOCK)
+        JOIN Act_id ai WITH (NOLOCK) ON phc.public_health_case_uid = ai.act_uid
+          and ai.act_id_seq=2
+          and ai.type_cd='STATE'
+          and ai.assigning_authority_cd='ABCS'
+          and ai.root_extension_txt is not null
+          and ai.root_extension_txt&lt;&gt;''
+        JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid
+        JOIN Person p2 WITH (NOLOCK)
+        ON par.subject_entity_uid=p2.person_uid
+          AND p2.person_parent_uid=p.person_parent_uid
+          AND p2.person_parent_uid in(${person_ids})
     ) tmp
-    FOR XML PATH('')
-  ), 1, 1, '')) abcs_case_ids,	
+    FOR XML PATH
+('')
+  ), 1, 1, '')) abcs_case_ids,
 
   --City Case Ids
   (SELECT STUFF(
@@ -5914,20 +6186,21 @@ These processors extract the fields into an attribute, remove the existing field
     SELECT ','+ cast(cityCaseId as varchar)
     FROM (  
 		SELECT DISTINCT ai.root_extension_txt cityCaseId
-		FROM 
-		  Public_health_case phc WITH (NOLOCK)
-		  JOIN Act_id ai WITH (NOLOCK) ON phc.public_health_case_uid = ai.act_uid
-			and ai.type_cd='CITY'
-			and ai.root_extension_txt is not null
-			and ai.root_extension_txt&lt;&gt;''
-		  JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid 
-  		JOIN Person p2 WITH (NOLOCK)
-  		  ON par.subject_entity_uid=p2.person_uid
-  		  AND p2.person_parent_uid=p.person_parent_uid	  
-		  AND p2.person_parent_uid in(${person_ids})
+      FROM
+        Public_health_case phc WITH (NOLOCK)
+        JOIN Act_id ai WITH (NOLOCK) ON phc.public_health_case_uid = ai.act_uid
+          and ai.type_cd='CITY'
+          and ai.root_extension_txt is not null
+          and ai.root_extension_txt&lt;&gt;''
+        JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid
+        JOIN Person p2 WITH (NOLOCK)
+        ON par.subject_entity_uid=p2.person_uid
+          AND p2.person_parent_uid=p.person_parent_uid
+          AND p2.person_parent_uid in(${person_ids})
     ) tmp
-    FOR XML PATH('')
-  ), 1, 1, '')) city_case_ids,			
+    FOR XML PATH
+('')
+  ), 1, 1, '')) city_case_ids,
 
   --Notification Ids
   (SELECT STUFF(
@@ -5935,21 +6208,22 @@ These processors extract the fields into an attribute, remove the existing field
     SELECT ','+ cast(notificationId as varchar)
     FROM (  
 		SELECT DISTINCT noti.local_id notificationId
-		FROM 
-		  Public_health_case phc WITH (NOLOCK)
-		  JOIN Act_relationship ar WITH (NOLOCK) ON ar.target_act_uid=phc.public_health_case_uid
-		    AND ar.type_cd='Notification'
-			AND ar.target_class_cd='CASE'
-			AND ar.source_class_cd='NOTF'
-			AND ar.record_status_cd='ACTIVE'
-		  JOIN notification noti WITH (NOLOCK) ON noti.notification_uid=ar.source_act_uid
-		  JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid 
-  		JOIN Person p2 WITH (NOLOCK)
-  		  ON par.subject_entity_uid=p2.person_uid
-  		  AND p2.person_parent_uid=p.person_parent_uid	  
-		  AND p2.person_parent_uid in(${person_ids})
+      FROM
+        Public_health_case phc WITH (NOLOCK)
+        JOIN Act_relationship ar WITH (NOLOCK) ON ar.target_act_uid=phc.public_health_case_uid
+          AND ar.type_cd='Notification'
+          AND ar.target_class_cd='CASE'
+          AND ar.source_class_cd='NOTF'
+          AND ar.record_status_cd='ACTIVE'
+        JOIN notification noti WITH (NOLOCK) ON noti.notification_uid=ar.source_act_uid
+        JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid
+        JOIN Person p2 WITH (NOLOCK)
+        ON par.subject_entity_uid=p2.person_uid
+          AND p2.person_parent_uid=p.person_parent_uid
+          AND p2.person_parent_uid in(${person_ids})
       ) tmp
-      FOR XML PATH('')
+    FOR XML PATH
+('')
     ), 1, 1, '')) notification_ids,
 
   --Investigation Ids
@@ -5958,15 +6232,16 @@ These processors extract the fields into an attribute, remove the existing field
     SELECT ','+ cast(investigationId as varchar)
     FROM (  
 		SELECT DISTINCT phc.local_id investigationId
-		FROM 
-		  Public_health_case phc WITH (NOLOCK)
-		  JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid 
-  		JOIN Person p2 WITH (NOLOCK)
-  		  ON par.subject_entity_uid=p2.person_uid
-  		  AND p2.person_parent_uid=p.person_parent_uid	  
-		  AND p2.person_parent_uid in(${person_ids})
+      FROM
+        Public_health_case phc WITH (NOLOCK)
+        JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid
+        JOIN Person p2 WITH (NOLOCK)
+        ON par.subject_entity_uid=p2.person_uid
+          AND p2.person_parent_uid=p.person_parent_uid
+          AND p2.person_parent_uid in(${person_ids})
       ) tmp
-      FOR XML PATH('')
+    FOR XML PATH
+('')
     ), 1, 1, '')) investigation_ids,
 
 
@@ -5976,165 +6251,225 @@ These processors extract the fields into an attribute, remove the existing field
     SELECT ','+ cast(labReportId as varchar)
     FROM (  
 		SELECT DISTINCT
-		  obs.local_id labReportId
-		FROM 
-		  observation obs WITH (NOLOCK)
-		  JOIN participation par WITH (NOLOCK) ON par.act_uid = obs.observation_uid
-  		JOIN Person p2 WITH (NOLOCK)
-  		  ON par.subject_entity_uid=p2.person_uid
-  		  AND p2.person_parent_uid=p.person_parent_uid	  
-		  AND p2.person_parent_uid in(${person_ids})
+        obs.local_id labReportId
+      FROM
+        observation obs WITH (NOLOCK)
+        JOIN participation par WITH (NOLOCK) ON par.act_uid = obs.observation_uid
+        JOIN Person p2 WITH (NOLOCK)
+        ON par.subject_entity_uid=p2.person_uid
+          AND p2.person_parent_uid=p.person_parent_uid
+          AND p2.person_parent_uid in(${person_ids})
       ) tmp
-      FOR XML PATH('')
+    FOR XML PATH
+('')
     ), 1, 1, '')) lab_report_ids,
-	
-	
+
+
   --Accession Ids
   (SELECT STUFF(
   (
     SELECT ','+ cast(accessionId as varchar)
     FROM (  
 		SELECT DISTINCT ai.root_extension_txt accessionId
-		FROM 
-		  observation obs WITH (NOLOCK)
-		  JOIN act_id ai WITH (NOLOCK) ON ai.act_uid = obs.observation_uid
-		    AND ai.type_cd='FN'
-			and ai.root_extension_txt is not null
-			and ai.root_extension_txt&lt;&gt;''
-		  JOIN participation par WITH (NOLOCK) ON par.act_uid = obs.observation_uid
-  		JOIN Person p2 WITH (NOLOCK)
-  		  ON par.subject_entity_uid=p2.person_uid
-  		  AND p2.person_parent_uid=p.person_parent_uid	  
-		  AND p2.person_parent_uid in(${person_ids})
+      FROM
+        observation obs WITH (NOLOCK)
+        JOIN act_id ai WITH (NOLOCK) ON ai.act_uid = obs.observation_uid
+          AND ai.type_cd='FN'
+          and ai.root_extension_txt is not null
+          and ai.root_extension_txt&lt;&gt;''
+        JOIN participation par WITH (NOLOCK) ON par.act_uid = obs.observation_uid
+        JOIN Person p2 WITH (NOLOCK)
+        ON par.subject_entity_uid=p2.person_uid
+          AND p2.person_parent_uid=p.person_parent_uid
+          AND p2.person_parent_uid in(${person_ids})
       ) tmp
-      FOR XML PATH('')
+    FOR XML PATH
+('')
     ), 1, 1, '')) accession_ids
 
-FROM 
-  person p WITH (NOLOCK)
-  OUTER apply (
-    SELECT 
-      * 
-    FROM 
-      -- address
+FROM
+  person p
+WITH
+(NOLOCK)
+  OUTER apply
+(
+    SELECT
+    *
+  FROM
+    -- address
+    (
+        SELECT
       (
-        SELECT 
-          (
-            SELECT 
-              STRING_ESCAPE(pl.street_addr1, 'json') streetAddr1, 
-              STRING_ESCAPE(pl.street_addr2, 'json') streetAddr2, 
-              STRING_ESCAPE(pl.city_desc_txt, 'json') city, 
-              pl.zip_cd zip, 
-              pl.cnty_cd cntyCd, 
-              pl.state_cd state, 
-              pl.cntry_cd cntryCd,
- 			  [county].code_desc_txt cntyText,
-			  [state].state_nm stateText,
-			  [country].code_short_desc_txt cntryText
-            FROM 
-              Entity_locator_participation elp WITH (NOLOCK)
-              JOIN Postal_locator pl WITH (NOLOCK) ON elp.locator_uid = pl.postal_locator_uid 
- 			  left join NBS_SRTE..State_county_code_value [county] WITH (NOLOCK) on [county].code = pl.cnty_cd
-			  left join NBS_SRTE..State_code [state] WITH (NOLOCK) on [state].state_cd = pl.state_cd
-			  left join NBS_SRTE..Country_code [country] WITH (NOLOCK) on [country].code = pl.cntry_cd
-            WHERE 
-              elp.entity_uid = p.person_uid 
-              AND elp.class_cd = 'PST' 
-              AND elp.status_cd = 'A' FOR json path, 
+            SELECT
+        STRING_ESCAPE(pl.street_addr1, 'json') streetAddr1,
+        STRING_ESCAPE(pl.street_addr2, 'json') streetAddr2,
+        STRING_ESCAPE(pl.city_desc_txt, 'json') city,
+        pl.zip_cd zip,
+        pl.cnty_cd cntyCd,
+        pl.state_cd state,
+        pl.cntry_cd cntryCd,
+        [county].code_desc_txt cntyText,
+        [state].state_nm stateText,
+        [country].code_short_desc_txt cntryText,
+        trim(string_escape(isNull(pl.street_addr1, '') + ' ' + isNull(pl.street_addr2, '') + ' ' + isNull(pl.city_desc_txt, '') + ' ' + isNull([state].state_nm, '')  + ' ' + isNull(pl.zip_cd, ''),'json')) as [full]
+      FROM
+        Entity_locator_participation elp WITH (NOLOCK)
+        JOIN Postal_locator pl WITH (NOLOCK) ON 
+            pl.postal_locator_uid = elp.locator_uid
+          and pl.record_status_cd = 'ACTIVE'
+        left join NBS_SRTE..State_county_code_value [county] WITH (NOLOCK) on [county].code = pl.cnty_cd
+        left join NBS_SRTE..State_code [state] WITH (NOLOCK) on [state].state_cd = pl.state_cd
+        left join NBS_SRTE..Country_code [country] WITH (NOLOCK) on [country].code = pl.cntry_cd
+      WHERE 
+              elp.entity_uid = p.person_uid
+        AND elp.class_cd = 'PST'
+        AND elp.status_cd = 'A'
+        AND elp.record_status_cd = 'ACTIVE'
+      order by 
+      elp.as_of_date desc,
+      elp.locator_uid desc
+      FOR json path, 
               INCLUDE_NULL_VALUES
           ) AS address
-      ) AS address, 
-      -- person phone
+      ) AS address,
+    -- person phone
+    (
+        SELECT
       (
-        SELECT 
-          (
             SELECT
-			  REPLACE(REPLACE(tl.phone_nbr_txt,'-',''),' ','') telephoneNbr,
-              tl.extension_txt extensionTxt,
-			  elp.cd typeCd,
-              elp.use_cd useCd
-            FROM
-              Entity_locator_participation elp WITH (NOLOCK)
-              JOIN Tele_locator tl WITH (NOLOCK) ON elp.locator_uid = tl.tele_locator_uid 
-            WHERE 
-              elp.entity_uid = p.person_uid 
-              AND elp.class_cd = 'TELE' 
-              AND elp.status_cd = 'A' 
-              AND tl.phone_nbr_txt IS NOT NULL FOR json path, 
+        REPLACE(REPLACE(tl.phone_nbr_txt,'-',''),' ','') telephoneNbr,
+        tl.extension_txt extensionTxt,
+        elp.cd typeCd,
+        elp.use_cd useCd
+      FROM
+        Entity_locator_participation elp WITH (NOLOCK)
+        JOIN Tele_locator tl WITH (NOLOCK) ON 
+            tl.tele_locator_uid = elp.locator_uid
+          and tl.record_status_cd = 'ACTIVE'
+      WHERE 
+              elp.entity_uid = p.person_uid
+        AND elp.class_cd = 'TELE'
+        AND elp.status_cd = 'A'
+        AND elp.record_status_cd = 'ACTIVE'
+        AND tl.phone_nbr_txt IS NOT NULL
+      order by 
+      elp.as_of_date desc,
+      elp.locator_uid desc
+      FOR json path, 
               INCLUDE_NULL_VALUES
           ) AS phone
-      ) AS phone, 
-      -- person email
+      ) AS phone,
+    -- person email
+    (
+        SELECT
       (
-        SELECT 
-          (
-            SELECT 
-              STRING_ESCAPE(tl.email_address, 'json') emailAddress 
-            FROM 
-              Entity_locator_participation elp WITH (NOLOCK)
-              JOIN Tele_locator tl WITH (NOLOCK) ON elp.locator_uid = tl.tele_locator_uid 
-            WHERE 
-              elp.entity_uid = p.person_uid 
-              AND elp.class_cd = 'TELE' 
-              AND elp.status_cd = 'A' 
-              AND tl.email_address IS NOT NULL FOR json path, 
+            SELECT
+        STRING_ESCAPE(tl.email_address, 'json') emailAddress
+      FROM
+        Entity_locator_participation elp WITH (NOLOCK)
+        JOIN Tele_locator tl WITH (NOLOCK) ON 
+          tl.tele_locator_uid = elp.locator_uid
+          and tl.record_status_cd = 'ACTIVE'
+      WHERE 
+              elp.entity_uid = p.person_uid
+        AND elp.class_cd = 'TELE'
+        AND elp.status_cd = 'A'
+        AND elp.record_status_cd = 'ACTIVE'
+        AND tl.email_address IS NOT NULL
+      order by 
+      elp.as_of_date desc,
+      elp.locator_uid desc
+      FOR json path, 
               INCLUDE_NULL_VALUES
           ) AS email
-      ) AS email, 
-      -- person_names
-      (
-        SELECT 
-          (
-            SELECT 
-			  STRING_ESCAPE(REPLACE(pn.last_nm,'-',' '), 'json') lastNm,
-              soundex(pn.last_nm) lastNmSndx, 
-              STRING_ESCAPE(pn.middle_nm, 'json') middleNm, 
-              STRING_ESCAPE(pn.first_nm, 'json') firstNm, 
-              soundex(pn.first_nm) firstNmSndx, 
-              pn.nm_use_cd, 
-              pn.nm_suffix nmSuffix, 
-              pn.nm_degree nmDegree 
-            FROM 
-              person_name pn WITH (NOLOCK)
-            WHERE 
-              person_uid = p.person_uid FOR json path, 
-              INCLUDE_NULL_VALUES
+      ) AS email,
+    -- person_names
+    (
+        SELECT (
+          SELECT
+        STRING_ESCAPE(REPLACE(pn.last_nm,'-',' '), 'json') lastNm,
+        soundex(pn.last_nm) lastNmSndx,
+        STRING_ESCAPE(pn.middle_nm, 'json') middleNm,
+        STRING_ESCAPE(pn.first_nm, 'json') firstNm,
+        soundex(pn.first_nm) firstNmSndx,
+        pn.nm_use_cd,
+        pn.nm_suffix nmSuffix,
+        trim(
+          string_escape(
+              replace(
+                isNull(pn.last_nm, '') + ' ' 
+              + isNull(pn.first_nm, '') + ' ' 
+              + isNull(pn.middle_nm, '') + ' ' 
+              + isNull([suffix].code_short_desc_txt, ''),
+              '-', ' '
+            ),
+            'json'
+          )
+        ) as [full]
+      FROM person_name pn WITH (NOLOCK)
+
+        left join NBS_SRTE..Code_value_general [suffix] on
+                   [suffix].[code_set_nm] = 'P_NM_SFX'
+          and [suffix].[code] = [pn].nm_suffix
+
+      WHERE pn.person_uid = p.person_uid
+        and pn.record_status_cd = 'ACTIVE'
+      order by
+        [pn].as_of_date desc,
+        [pn].person_name_seq desc
+      FOR json path, 
+                  INCLUDE_NULL_VALUES
           ) AS name
-      ) AS name, 
-      -- person races
+      ) AS name,
+    -- person races
+    (
+        SELECT
       (
-        SELECT 
-          (
-            SELECT 
-              pr.race_cd raceCd, 
-              pr.race_desc_txt raceDescTxt, 
-              pr.race_category_cd raceCategoryCd 
-            FROM 
-              Person_race pr WITH (NOLOCK)
-            WHERE 
-              person_uid = p.person_uid FOR json path, 
+            SELECT
+        pr.race_cd raceCd,
+        pr.race_category_cd raceCategoryCd
+      FROM Person_race pr WITH (NOLOCK)
+      WHERE pr.person_uid = p.person_uid
+        and pr.record_status_cd = 'ACTIVE'
+      FOR json path, 
               INCLUDE_NULL_VALUES
           ) AS race
-      ) AS race, 
-      -- Entity id
+      ) AS race,
+    -- Entity id (Identification)
+    (
+        SELECT
       (
-        SELECT 
-          (
-            SELECT 
-              ei.type_cd typeCd, 
-              ei.record_status_cd recordStatusCd, 
-			  STRING_ESCAPE(REPLACE(REPLACE(ei.root_extension_txt,'-',''),' ',''), 'json') rootExtensionTxt
-            FROM 
-              entity_id ei WITH (NOLOCK)
-            WHERE 
-              ei.entity_uid = p.person_uid FOR json path, 
-              INCLUDE_NULL_VALUES
+        SELECT
+        ei.type_cd typeCd,
+        STRING_ESCAPE(REPLACE(REPLACE(ei.root_extension_txt,'-',''),' ',''), 'json') rootExtensionTxt
+      FROM
+        entity_id ei WITH (NOLOCK)
+      WHERE ei.entity_uid = p.person_uid
+        and ei.record_status_cd = 'ACTIVE'
+      order by 
+          ei.as_of_date desc,
+          ei.entity_id_seq desc
+      FOR json path, INCLUDE_NULL_VALUES
           ) AS entity_id
       ) AS entity_id
-  ) AS nested 
-WHERE 
-  p.person_uid in(${person_ids})
-  AND p.person_uid = p.person_parent_uid;</value>
+  )
+AS nested,
+  (
+  select
+    [generator].UID_prefix_cd     as [prefix],
+    [generator].UID_suffix_CD     as [suffix],
+    cast([configuration].config_value as bigint)  as [initial]
+  from Local_UID_generator [generator] WITH (NOLOCK),
+    NBS_configuration [configuration] WITH (NOLOCK)
+  where [generator].class_name_cd = 'PERSON'
+    and [generator].type_cd = 'LOCAL'
+    and [configuration].config_key = 'SEED_VALUE'
+) as id_settings
+
+WHERE p.person_uid = p.person_parent_uid
+  and p.person_uid in (${person_ids})
+ ;
+</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -9425,5 +9760,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/22/2025 17:43:14 UTC</timestamp>
+    <timestamp>02/26/2025 18:01:53 UTC</timestamp>
 </template>

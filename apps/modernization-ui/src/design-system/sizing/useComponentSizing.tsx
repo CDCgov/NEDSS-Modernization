@@ -6,9 +6,7 @@ const FALLBACK_SIZING = 'medium';
 
 const ComponentSizingContext = createContext<Sizing>(FALLBACK_SIZING);
 
-type ComponentSizingProviderProps = {
-    children: ReactNode;
-};
+type ComponentSizingProviderProps = { children: ReactNode };
 
 const ComponentSizingProvider = ({ children }: ComponentSizingProviderProps) => {
     const { settings } = useConfiguration();

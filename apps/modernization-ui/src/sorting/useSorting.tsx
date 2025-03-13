@@ -83,10 +83,10 @@ const toDirection = (value: string) => {
 const nextDirection = (direction: Direction) => {
     switch (direction) {
         case Direction.None:
-            return Direction.Descending;
-        case Direction.Descending:
             return Direction.Ascending;
         case Direction.Ascending:
+            return Direction.Descending;
+        case Direction.Descending:
             return Direction.None;
     }
 };

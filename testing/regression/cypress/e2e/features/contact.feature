@@ -5,18 +5,18 @@ Feature: Patient Search by contact
     Given I am logged in as secure user
 
   Scenario: Contact - Search by Phone Number
-    When I search by phone number as "202-555-5509"
-    Then I should see Results with the phone number as "202-555-5509"
+    When I search by phone number as "732-721-2970"
+    Then I should see Results with the phone number as "732-721-2970"
 
   Scenario: Contact - Search by Email
-    When I search by email as "paris.penn@example.com"
-    Then I should see Results with the email as "paris.penn@example.com"
+    When I search by email as "CadenRatkeyklkb79@hotmail.com"
+    Then I should see Results with the email as "CadenRatkeyklkb79@hotmail.com"
 
   Scenario: Contact - search by both phone number and email
-    When I search by email as "none2@none.com"
-    And I search by phone number as "202-555-0004"
-    Then I should see "Lemmy Priestley"
+    When I search by email as "CadenRatkeyklkb79@hotmail.com"
+    And I search by phone number as "732-721-2970"
+    Then I should see "Ratkeyklkb, Caden Benjamin"
 
   Scenario: Contact - Search by partial phone number
-    When I search by phone number as "202555"
-    Then I should see Results with the phone number as "202-555"
+    When I search by phone number as "732721"
+    Then I should see Results with the phone number as "732-721"

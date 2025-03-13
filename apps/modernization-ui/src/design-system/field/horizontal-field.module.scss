@@ -1,61 +1,72 @@
 @use 'styles/borders';
+@use 'styles/components';
 
 .horizontalInput {
     display: flex;
     flex-direction: row;
     padding: 0.5rem 1.5rem;
-    align-items: center;
+    align-items: flex-start;
     gap: 2rem;
-    min-height: 3rem;
+
     @extend %thin-bottom;
 
     .left {
+        --label-area-width: 13rem;
+        --label-area-font-size: inherit;
+
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        min-width: 13rem;
-        width: 13rem;
-    }
+        padding-top: 0.5rem;
+        min-width: var(--label-area-width);
+        width: var(--label-area-width);
 
-    label {
-        font-size: 0.875rem !important;
-        font-weight: 700;
+        label {
+            font-weight: 700;
+            font-size: var(--label-area-font-size);
+        }
     }
 
     .right {
+        width: 100%;
         display: flex;
         flex-direction: row;
-        align-items: center;
-        flex-grow: 1;
-        
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 0.5rem;
+
         .children {
-            order: 1;
             width: 20rem;
+            flex-shrink: 0;
         }
 
         .message {
-            margin-left: 0.25rem;
-            order: 2;
+            width: 9rem;
+            flex-shrink: 1;
+            flex-grow: 1;
         }
     }
 
-    @media (max-width: 1279px) {
-        .right {
-            flex-direction: column;
-            flex-grow: 0;
-            align-items: flex-start;
-            gap: 0.25rem;
+    &.small {
+        .left {
+            --label-area-width: 12rem;
+            --label-area-font-size: #{components.$small-font-size};
 
-            .children {
-                order: 2;
-            }
-    
-            .message {
-                margin-left: 0;
-                order: 1;
-            }
+            padding-top: 0.25rem;
+        }
+
+        padding-left: 1rem;
+    }
+
+    &.medium {
+        .left {
+            --label-area-font-size: #{components.$medium-font-size};
         }
     }
 
+    &.large {
+        .left {
+            --label-area-font-size: #{components.$large-font-size};
+        }
+    }
 }
-

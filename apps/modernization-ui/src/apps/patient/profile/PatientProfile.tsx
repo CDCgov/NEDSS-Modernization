@@ -40,7 +40,7 @@ export const PatientProfile = () => {
                         <Button
                             type={'button'}
                             onClick={openPrintableView(patient?.id)}
-                            icon={<Icon name="print" size="small" />}
+                            icon={<Icon name="print" sizing="small" />}
                             labelPosition="right">
                             Print
                         </Button>

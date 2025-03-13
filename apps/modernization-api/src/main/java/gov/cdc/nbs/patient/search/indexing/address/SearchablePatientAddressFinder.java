@@ -33,6 +33,9 @@ public class SearchablePatientAddressFinder {
           where   [locators].entity_uid = ?
               and [locators].[class_cd] = 'PST'
               and ([locators].use_cd IS NULL OR [locators].use_cd not in ('BIR', 'DTH'))
+          order by
+              [locators].as_of_date  desc,
+              [locators].locator_uid desc
           """;
   private static final int PATIENT_PARAMETER = 1;
   private static final int ADDRESS_1_COLUMN = 1;

@@ -19,7 +19,7 @@ describe('when validating a date entered at text', () => {
             (value) => {
                 const actual = validateDate('Date with an invalid format')(value);
 
-                expect(actual).toContain('The Date with an invalid format should be in the format MM/DD/YYYY');
+                expect(actual).toContain('The Date with an invalid format should be in the format MM/DD/YYYY.');
             }
         );
 
@@ -27,7 +27,7 @@ describe('when validating a date entered at text', () => {
             const actual = validateDate('Date with an invalid month')('15/31/2000');
 
             expect(actual).toContain(
-                'The Date with an invalid month should have a month between 1 (January) and 12 (December)'
+                'The Date with an invalid month should have a month between 1 (January) and 12 (December).'
             );
         });
 
@@ -35,7 +35,7 @@ describe('when validating a date entered at text', () => {
             const actual = validateDate('Date with an invalid month')('00/31/2000');
 
             expect(actual).toContain(
-                'The Date with an invalid month should have a month between 1 (January) and 12 (December)'
+                'The Date with an invalid month should have a month between 1 (January) and 12 (December).'
             );
         });
     });
@@ -44,19 +44,19 @@ describe('when validating a date entered at text', () => {
         it('should not allow a day greater than the days in the month', () => {
             const actual = validateDate('Date with too many days')('02/30/2000');
 
-            expect(actual).toContain('The Date with too many days should have at most 29 days');
+            expect(actual).toContain('The Date with too many days should have at most 29 days.');
         });
 
         it('should not allow dates before the year 1875', () => {
             const actual = validateDate('Date with an invalid year')('12/31/1874');
 
-            expect(actual).toContain('The Date with an invalid year should occur after 12/31/1874');
+            expect(actual).toContain('The Date with an invalid year should occur after 12/31/1874.');
         });
 
         it('should not allow future dates', () => {
             const actual = validateDate('Date field name')('01/27/2020');
 
-            expect(actual).toContain('The Date field name cannot be after 01/25/2020');
+            expect(actual).toContain('The Date field name cannot be after 01/25/2020.');
         });
     });
 });

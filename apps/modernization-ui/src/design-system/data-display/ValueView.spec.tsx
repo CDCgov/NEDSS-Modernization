@@ -15,4 +15,11 @@ describe('DataRow', () => {
 
         expect(getByText('title goes here')).toHaveClass('required');
     });
+
+    it('should display with correct size when provided', () => {
+        const { container } = render(
+            <ValueView title="title goes here" value="Value goes here" sizing="small" required />
+        );
+        expect(container.firstChild).toHaveClass('small');
+    });
 });

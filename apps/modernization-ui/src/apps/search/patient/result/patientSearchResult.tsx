@@ -58,18 +58,17 @@ const displayPatientAge = (result: PatientSearchResult, variant: 'singleline' | 
     </div>
 );
 
-// Returns JSX that represents a list of IDs to display
-const displayIdentifications = (result: PatientSearchResult): JSX.Element => (
-    <div>
-        {result.identification.map((identification, index) => (
-            <div key={index}>
-                <ItemGroup type="other" label={identification.type}>
-                    {identification.value}
-                </ItemGroup>
-            </div>
-        ))}
-    </div>
-);
+// Returns JSX that represents a list of IDs to display if there are IDs otherwise returns null
+const displayIdentifications = (result: PatientSearchResult): JSX.Element[] | null =>
+    result.identification.length
+        ? result.identification.map((identification, index) => (
+              <div key={index}>
+                  <ItemGroup type="other" label={identification.type}>
+                      {identification.value}
+                  </ItemGroup>
+              </div>
+          ))
+        : null;
 
 export {
     displayPatientName,

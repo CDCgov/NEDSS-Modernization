@@ -2,17 +2,13 @@ import classNames from 'classnames';
 import { Direction, SortingInteraction, maybeUseSorting } from 'sorting';
 import { FilterInteraction, maybeUseFilter } from 'design-system/filter';
 import { HeaderFilterField } from './header/filter';
-import { Column } from './DataTable';
+import { Column, SortIconType } from './DataTable';
 import { Icon } from 'design-system/icon';
 
 import styles from './header.module.scss';
 import { Sizing } from 'design-system/field';
 
-type Props<V> = {
-    className?: string;
-    sizing?: Sizing;
-    children: Column<V>;
-};
+type Props<V> = { className?: string; sizing?: Sizing; children: Column<V> };
 
 const Header = <V,>({ children, ...remaining }: Props<V>) => {
     const sorting = maybeUseSorting();
@@ -34,27 +30,27 @@ const Header = <V,>({ children, ...remaining }: Props<V>) => {
 type StandardHeaderProps<V> = Props<V> & { filtering?: FilterInteraction };
 
 const StandardHeader = <V,>({ className, children, filtering, sizing }: StandardHeaderProps<V>) => (
-    <th
-        className={classNames(styles.header, className, sizing && styles[sizing], {
-            [styles.fixed]: children.fixed
-        })}>
+    <th className={classNames(styles.header, className, sizing && styles[sizing], { [styles.fixed]: children.fixed })}>
         <div className={classNames(styles.content)}>
             {children.name}
             {filtering?.active && children?.filter?.id && (
-                <HeaderFilterField label={children.name} descriptor={children.filter} filtering={filtering} />
+                <HeaderFilterField
+                    label={children.name}
+                    descriptor={children.filter}
+                    filtering={filtering}
+                    sizing={sizing}
+                />
             )}
         </div>
     </th>
 );
 
-type SortableProps<V> = StandardHeaderProps<V> & {
-    sorting: SortingInteraction;
-};
+type SortableProps<V> = StandardHeaderProps<V> & { sorting: SortingInteraction };
 
 const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }: SortableProps<V>) => {
     const direction = sorting.property === children.id ? ensureDirection(sorting.direction) : Direction.None;
     const ariaSort = resolveSortAria(direction);
-    const icon = resolveSortIcon(direction);
+    const icon = resolveSortIcon(direction, children.sortIconType);
 
     return (
         <th
@@ -73,7 +69,12 @@ const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }:
                     />
                 </div>
                 {filtering?.active && children?.filter?.id && (
-                    <HeaderFilterField label={children.name} descriptor={children.filter} filtering={filtering} />
+                    <HeaderFilterField
+                        label={children.name}
+                        descriptor={children.filter}
+                        filtering={filtering}
+                        sizing={sizing}
+                    />
                 )}
             </div>
         </th>
@@ -82,12 +83,34 @@ const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }:
 
 const ensureDirection = (direction?: Direction) => direction ?? Direction.None;
 
-const resolveSortIcon = (direction: Direction) => {
+const ascIcon = (type?: SortIconType) => {
+    switch (type) {
+        case 'alpha':
+            return 'sort_asc_alpha';
+        case 'numeric':
+            return 'sort_asc_numeric';
+        default:
+            return 'sort_asc_default';
+    }
+};
+
+const desIcon = (type?: SortIconType) => {
+    switch (type) {
+        case 'alpha':
+            return 'sort_des_alpha';
+        case 'numeric':
+            return 'sort_des_numeric';
+        default:
+            return 'sort_des_default';
+    }
+};
+
+const resolveSortIcon = (direction: Direction, type?: SortIconType) => {
     switch (direction) {
         case Direction.Ascending:
-            return 'arrow_downward';
+            return ascIcon(type);
         case Direction.Descending:
-            return 'arrow_upward';
+            return desIcon(type);
         default:
             return 'sort_arrow';
     }

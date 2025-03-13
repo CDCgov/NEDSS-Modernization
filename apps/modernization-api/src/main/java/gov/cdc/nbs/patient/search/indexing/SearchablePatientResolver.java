@@ -47,15 +47,39 @@ class SearchablePatientResolver {
     List<SearchablePatient.Address> addresses = this.addressFinder.find(patient.identifier());
     List<SearchablePatient.Race> races = this.raceFinder.find(patient.identifier());
     List<SearchablePatient.Identification> identifications = identificationFinder.find(patient.identifier());
+    String identification = identifications.stream()
+        .map(SearchablePatient.Identification::value)
+        .findFirst()
+        .orElse(null);
 
     SearchablePatientTelecom telecom = this.telecomFinder.find(patient.identifier());
 
     List<SearchablePatient.Phone> phones = telecom.phones();
+    String phone = phones.stream()
+        .map(SearchablePatient.Phone::number)
+        .findFirst()
+        .orElse(null);
+
     List<SearchablePatient.Email> emails = telecom.emails();
+
+    String email = emails.stream()
+        .map(SearchablePatient.Email::address)
+        .findFirst()
+        .orElse(null);
+
+    String address = addresses.stream()
+        .map(elem -> (elem.address1() == null ? "" : elem.address1())
+            + (elem.address2() == null ? "" : elem.address2()) + (elem.city() == null ? "" : elem.city())
+            + (elem.state() == null ? "" : elem.state()) + (elem.zip() == null ? "" : elem.zip()))
+        .findFirst()
+        .orElse("");
+
+    SearchablePatient.Sort sort = new SearchablePatient.Sort(identification, email, phone, address);
 
     return new SearchablePatient(
         patient.identifier(),
         patient.local(),
+        patient.shortId(),
         patient.status(),
         patient.birthday(),
         patient.deceased(),
@@ -77,6 +101,7 @@ class SearchablePatientResolver {
         patient.accessionIds(),
         patient.investigationIds(),
         patient.labReportIds(),
-        patient.notificationIds());
+        patient.notificationIds(),
+        sort);
   }
 }

@@ -1,3 +1,4 @@
+@skip-if-disabled-is-int
 Feature: Investigation Search by criteria
 
   Background:

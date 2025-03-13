@@ -12,7 +12,10 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-public record SearchablePatient(@JsonProperty("person_uid") long identifier, @JsonProperty("local_id") String local,
+public record SearchablePatient(
+    @JsonProperty("person_uid") long identifier,
+    @JsonProperty("local_id") String local,
+    @JsonProperty("short_id") String shortId,
     @JsonProperty("record_status_cd") String status,
     @JsonProperty("birth_time") @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
         using = LocalDateWithTimeJsonDeserializer.class) LocalDate birthday,
@@ -35,11 +38,13 @@ public record SearchablePatient(@JsonProperty("person_uid") long identifier, @Js
     @JsonProperty("accession_ids") String accessionIds,
     @JsonProperty("investigation_ids") String investigationIds,
     @JsonProperty("lab_report_ids") String labReportIds,
-    @JsonProperty("notification_ids") String notificationIds) {
+    @JsonProperty("notification_ids") String notificationIds,
+    Sort sort) {
 
   public SearchablePatient(
       long identifier,
       String local,
+      String shortId,
       String status,
       LocalDate birthday,
       String deceased,
@@ -59,6 +64,7 @@ public record SearchablePatient(@JsonProperty("person_uid") long identifier, @Js
     this(
         identifier,
         local,
+        shortId,
         status,
         birthday,
         deceased,
@@ -80,8 +86,17 @@ public record SearchablePatient(@JsonProperty("person_uid") long identifier, @Js
         accessionIds,
         investigationIds,
         labReportIds,
-        notificationIds);
+        notificationIds,
+        null);
   }
+
+  public record Sort(
+      String identification,
+      String email,
+      String phone,
+      String address) {
+  }
+
 
   public record Name(
       @JsonProperty("nm_use_cd") String use,
@@ -90,8 +105,7 @@ public record SearchablePatient(@JsonProperty("person_uid") long identifier, @Js
       @JsonProperty("firstNmSndx") String firstSoundex,
       @JsonProperty("middleNm") @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class,
           as = String.class) String middle,
-      @JsonProperty("lastNm") @JsonSerialize(using = WithoutHyphensJsonSerializer.class,
-          as = String.class) String last,
+      @JsonProperty("lastNm") @JsonSerialize(using = WithoutHyphensJsonSerializer.class, as = String.class) String last,
       @JsonProperty("lastNmSndx") String lastSoundex,
       @JsonProperty("nmPrefix") String prefix,
       @JsonProperty("nmSuffix") String suffix) {
@@ -131,8 +145,7 @@ public record SearchablePatient(@JsonProperty("person_uid") long identifier, @Js
   public record Identification(
       @JsonProperty("typeCd") String type,
       @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class,
-          as = String.class) @JsonProperty("rootExtensionTxt") String value,
-      @JsonProperty("recordStatusCd") String status) {
+          as = String.class) @JsonProperty("rootExtensionTxt") String value) {
   }
 
 

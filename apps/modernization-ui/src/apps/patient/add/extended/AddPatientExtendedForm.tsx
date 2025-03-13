@@ -76,7 +76,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                 <Card
                     title="Administrative"
                     id="administrative"
-                    info={<span className="required-before">All required fields for adding comments</span>}>
+                    info={<span className="required-before">Required</span>}>
                     <AdministrativeEntryFields sizing={sizing} />
                 </Card>
                 <Controller
@@ -160,32 +160,19 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                         />
                     )}
                 />
-                <Card
-                    id="ethnicity"
-                    title="Ethnicity"
-                    info={<span className="required-before">All required fields for adding ethnicity</span>}>
+                <Card id="ethnicity" title="Ethnicity" info={<span className="required-before">Required</span>}>
                     <EthnicityEntryFields sizing={sizing} />
                 </Card>
-                <Card
-                    id="sexAndBirth"
-                    title="Sex & birth"
-                    info={<span className="required-before">All required fields for adding sex & birth</span>}>
+                <Card id="sexAndBirth" title="Sex & birth" info={<span className="required-before">Required</span>}>
                     <SexAndBirthEntryFields sizing={sizing} />
                 </Card>
-                <Card
-                    id="mortality"
-                    title="Mortality"
-                    info={<span className="required-before">All required fields for adding mortality</span>}>
+                <Card id="mortality" title="Mortality" info={<span className="required-before">Required</span>}>
                     <MortalityEntryFields sizing={sizing} />
                 </Card>
                 <Card
                     id="generalInformation"
                     title="General patient information"
-                    info={
-                        <span className="required-before">
-                            All required fields for adding general patient information
-                        </span>
-                    }>
+                    info={<span className="required-before">Required</span>}>
                     <GeneralInformationEntryFields sizing={sizing} />
                 </Card>
             </div>

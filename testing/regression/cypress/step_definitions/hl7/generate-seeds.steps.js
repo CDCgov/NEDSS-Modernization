@@ -23,7 +23,7 @@ When("I Seed HL7 {string} messages to api", (string) => {
   const apiurl = Cypress.env("apiurl");
   const checkstatusurl = Cypress.env("checkstatusurl");
   const authurl = Cypress.env("authurl");
-  cy.readFile("cypress/fixtures/hepbseedaddress.json", "utf8").then((jsonData) => {
+  cy.readFile("cypress/fixtures/seed.json", "utf8").then((jsonData) => {
     const randomData = {
       randomFirstName: "Caden",
       randomLastName: "Ratkeyklkb",
@@ -33,9 +33,8 @@ When("I Seed HL7 {string} messages to api", (string) => {
     };
 
     const replacements = {
-      PawnlandFirstName: "Caden",
-      PawnlandLastName: "Ratkeyklkb",
-      // 'patient.email@example.com': randomData.fakeEmail,
+      PawnlandFirstName: randomData.randomFirstName,
+      PawnlandLastName: randomData.randomLastName,   
       SSNHOLDER: "123456789",
       BIRTHYEAR: "1977",
       PATIENTCITY: "Cullen",
@@ -93,20 +92,16 @@ When("I Seed HL7 {string} messages to api", (string) => {
         }).then((response) => {
           cy.wait(2000);
           expect(response.status).to.eq(200);
+          const nbsInfo = response.body[0].nbsInfo;
+          const validatedInfo = response.body[0].validatedInfo;
 
-          if (
-            response.body.nbsInfo.nbsInterfaceStatus === "QUEUED" ||
-            response.body.nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS"
-          ) {
+          if (["QUEUED", "IN PROGRESS"].includes(nbsInfo.nbsInterfaceStatus) || 
+              nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS") {
             cy.wait(20000).then(checkStatusRequest);
-          } else if (
-            response.body.nbsInfo.nbsInterfaceStatus === "Success" &&
-            response.body.nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED"
-          ) {
+          } else if (nbsInfo.nbsInterfaceStatus === "Success" && 
+                     nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED") {
             UtilityFunctions.checkELRActivityLog(fakeRandomData);
-          } else if (
-            response.body.validatedInfo.validatedPipeLineStatus === "FAILED"
-          ) {
+          } else if (validatedInfo.validatedPipeLineStatus === "FAILED") {
             expect(response.status).to.eq(424);
           } else {
             checkStatusRequest();

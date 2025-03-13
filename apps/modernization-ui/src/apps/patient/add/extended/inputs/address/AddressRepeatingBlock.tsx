@@ -19,7 +19,7 @@ type Props = {
 };
 export const AddressRepeatingBlock = ({ id, values, errors, onChange, isDirty, sizing = 'medium' }: Props) => {
     const renderForm = () => <AddressEntryFields sizing={sizing} />;
-    const renderView = (entry: AddressEntry) => <AddressView entry={entry} />;
+    const renderView = (entry: AddressEntry) => <AddressView entry={entry} sizing={sizing} />;
 
     const columns: Column<AddressEntry>[] = [
         { id: 'addressAsOf', name: 'As of', render: (v) => v.asOf },
@@ -46,6 +46,7 @@ export const AddressRepeatingBlock = ({ id, values, errors, onChange, isDirty, s
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}
+            sizing={sizing}
         />
     );
 };

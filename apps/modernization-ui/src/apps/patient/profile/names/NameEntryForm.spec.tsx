@@ -44,7 +44,7 @@ describe('When adding a name', () => {
             });
 
             await waitFor(() => {
-                expect(getByText('Only allows 50 characters')).toBeInTheDocument();
+                expect(getByText('Only allows 50 characters.')).toBeInTheDocument();
             });
         });
 
@@ -83,7 +83,7 @@ describe('When adding a name', () => {
             });
 
             await waitFor(() => {
-                expect(getByText('Only allows 50 characters')).toBeInTheDocument();
+                expect(getByText('Only allows 50 characters.')).toBeInTheDocument();
             });
         });
 
@@ -122,7 +122,7 @@ describe('When adding a name', () => {
             });
 
             await waitFor(() => {
-                expect(getByText('Only allows 50 characters')).toBeInTheDocument();
+                expect(getByText('Only allows 50 characters.')).toBeInTheDocument();
             });
         });
 
@@ -161,7 +161,7 @@ describe('When adding a name', () => {
             });
 
             await waitFor(() => {
-                expect(getByText('Only allows 50 characters')).toBeInTheDocument();
+                expect(getByText('Only allows 50 characters.')).toBeInTheDocument();
             });
         });
 
@@ -200,7 +200,7 @@ describe('When adding a name', () => {
             });
 
             await waitFor(() => {
-                expect(getByText('Only allows 50 characters')).toBeInTheDocument();
+                expect(getByText('Only allows 50 characters.')).toBeInTheDocument();
             });
         });
 

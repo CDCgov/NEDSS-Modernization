@@ -3,6 +3,9 @@ import { Maybe } from 'utils';
 
 const displayAgeAsOf = (dateOfBirth: Maybe<string | Date>, from: Date) => {
     if (typeof dateOfBirth === 'string') {
+        if (dateOfBirth.length < 10) {
+            return undefined;
+        }
         dateOfBirth = new Date(dateOfBirth);
     }
 
