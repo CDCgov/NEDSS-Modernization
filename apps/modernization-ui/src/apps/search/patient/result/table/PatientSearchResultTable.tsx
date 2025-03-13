@@ -33,56 +33,64 @@ const columns: Column<PatientSearchResult>[] = [
         sortable: true,
         className: styles['col-patientid'],
         render: (result) => displayProfileLink(result.patient, result.shortId),
-        filter: { id: 'id', type: 'text' }
+        filter: { id: 'id', type: 'text' },
+        sortIconType: 'numeric'
     },
     {
         ...PATIENT_NAME,
         sortable: true,
         className: styles['col-patientname'],
         render: displayPatientName,
-        filter: { id: 'name', type: 'text' }
+        filter: { id: 'name', type: 'text' },
+        sortIconType: 'alpha'
     },
     {
         ...DATE_OF_BIRTH,
         sortable: true,
         className: styles['col-dob'],
         render: (result) => result.birthday && displayPatientAge(result, 'multiline'),
-        filter: { id: 'ageOrDateOfBirth', type: 'text' }
+        filter: { id: 'ageOrDateOfBirth', type: 'text' },
+        sortIconType: 'numeric'
     },
     {
         ...SEX,
         sortable: true,
         className: styles['col-sex'],
         render: (result) => result.gender,
-        filter: { id: 'sex', type: 'text' }
+        filter: { id: 'sex', type: 'text' },
+        sortIconType: 'alpha'
     },
     {
         ...ADDRESS,
         className: styles['col-address'],
         render: displayAddresses,
         filter: { id: 'address', type: 'text' },
-        sortable: true
+        sortable: true,
+        sortIconType: 'alpha'
     },
     {
         ...PHONE,
         className: styles['col-phone'],
         render: displayPhones,
         filter: { id: 'phone', type: 'text' },
-        sortable: true
+        sortable: true,
+        sortIconType: 'numeric'
     },
     {
         ...IDENTIFICATIONS,
         className: styles['col-id'],
         render: displayIdentifications,
         filter: { id: 'identification', type: 'text' },
-        sortable: true
+        sortable: true,
+        sortIconType: 'alpha'
     },
     {
         ...EMAIL,
         className: styles['col-email'],
         render: displayEmails,
         sortable: true,
-        filter: { id: 'email', type: 'text' }
+        filter: { id: 'email', type: 'text' },
+        sortIconType: 'alpha'
     }
 ];
 

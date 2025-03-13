@@ -1,20 +1,12 @@
-@use 'styles/colors';
-
 .grouped {
     align-items: center;
     display: flex;
     padding: 0;
-    margin-top: 0.5rem;
     position: relative;
 
-    border-width: 1px;
-    border-color: colors.$base-darkest;
-    border-style: solid;
     appearance: none;
-    border-radius: 0;
 
     input {
-        border: 0;
         margin-top: 0;
         min-width: 0;
 

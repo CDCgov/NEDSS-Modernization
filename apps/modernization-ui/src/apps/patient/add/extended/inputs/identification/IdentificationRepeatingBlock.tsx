@@ -24,7 +24,7 @@ export const IdentificationRepeatingBlock = ({
     sizing
 }: IdentificationRepeatingBlockProps) => {
     const renderForm = () => <IdentificationEntryFields sizing={sizing} />;
-    const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} />;
+    const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} sizing={sizing} />;
 
     const columns: Column<IdentificationEntry>[] = [
         { id: 'identificationAsOf', name: 'As of', render: (v) => v.asOf },

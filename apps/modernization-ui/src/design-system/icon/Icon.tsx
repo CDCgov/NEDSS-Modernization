@@ -1,30 +1,29 @@
 import { SVGProps as ReactSVGProps } from 'react';
 import classNames from 'classnames';
+import { Sizing } from 'design-system/field';
+
+import styles from './icon.module.scss';
 
 import uswds from '@uswds/uswds/img/sprite.svg';
 import extended from './extended-sprite.svg';
-
-import styles from './icon.module.scss';
-import { Sizing } from 'design-system/field';
 
 type Icons = USWDSIcons | ExtendedIcons;
 
 type Props = {
     name: Icons;
     sizing?: Sizing;
-    /** @deprecated Use sizing property instead */
-    size?: Sizing;
 } & Omit<ReactSVGProps<SVGSVGElement>, 'width' | 'height'>;
 
 const Icon = ({ name, sizing, role = 'img', className, ...props }: Props) => {
     const location = resolveLocation(name);
-    // standardizing property name as "sizing"
-    sizing = sizing || props.size;
+
+    const hidden = props['aria-hidden'] || !(props['aria-label'] || props['aria-labelledby']);
+
     return (
         <svg
             className={classNames(styles.icon, className, sizing && styles[sizing])}
             role={role}
-            aria-hidden={props['aria-hidden'] || !props['aria-label'] || !props['aria-labelledby']}
+            aria-hidden={hidden}
             {...props}>
             <use xlinkHref={location} />
         </svg>
@@ -33,7 +32,13 @@ const Icon = ({ name, sizing, role = 'img', className, ...props }: Props) => {
 
 const resolveLocation = (name: string) => {
     switch (name) {
-        case 'table': {
+        case 'table':
+        case 'sort_asc_alpha':
+        case 'sort_des_alpha':
+        case 'sort_asc_numeric':
+        case 'sort_des_numeric':
+        case 'sort_asc_default':
+        case 'sort_des_default': {
             return `${extended}#${name}`;
         }
         case 'calendar':
@@ -42,7 +47,6 @@ const resolveLocation = (name: string) => {
         case 'drag':
         case 'expand':
         case 'expand-more':
-        case 'folder':
         case 'group':
         case 'icon-dot-gov':
         case 'icon-https':
@@ -55,7 +59,9 @@ const resolveLocation = (name: string) => {
         case 'subsection':
         case 'textarea':
         case 'textbox':
-        case 'ungroup':
+        case 'ungroup': {
+            return `/icons/${name}.svg`;
+        }
         default: {
             return `${uswds}#${name}`;
         }
@@ -63,6 +69,7 @@ const resolveLocation = (name: string) => {
 };
 
 export { Icon };
+export type { Icons };
 
 type ExtendedIcons =
     | 'calendar'
@@ -71,7 +78,6 @@ type ExtendedIcons =
     | 'drag'
     | 'expand'
     | 'expand-more'
-    | 'folder'
     | 'group'
     | 'icon-dot-gov'
     | 'icon-https'
@@ -85,7 +91,13 @@ type ExtendedIcons =
     | 'textarea'
     | 'textbox'
     | 'ungroup'
-    | 'table';
+    | 'table'
+    | 'sort_asc_alpha'
+    | 'sort_des_alpha'
+    | 'sort_asc_numeric'
+    | 'sort_des_numeric'
+    | 'sort_asc_default'
+    | 'sort_des_default';
 
 type USWDSIcons =
     | 'accessibility_new'

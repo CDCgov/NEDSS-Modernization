@@ -137,7 +137,7 @@ const RepeatingBlock = <V extends FieldValues>({
         <section id={id} className={classNames(styles.input, sizing && styles[sizing])}>
             <header>
                 <Heading level={2}>{title}</Heading>
-                <span className="required-before">All required fields for adding {title.toLowerCase()}</span>
+                <span className="required-before">Required</span>
             </header>
 
             <Shown when={errorMessages && errorMessages.length > 0}>
@@ -156,6 +156,7 @@ const RepeatingBlock = <V extends FieldValues>({
                     columns={[...columns, iconColumn]}
                     data={entries}
                     sizing={sizing}
+                    noDataFallback
                 />
             </div>
             <Shown when={status === 'viewing'}>{selected && viewRenderer(selected)}</Shown>

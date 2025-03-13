@@ -24,7 +24,7 @@ export const PhoneAndEmailRepeatingBlock = ({
     sizing
 }: PhoneAndEmailRepeatingBlockProps) => {
     const renderForm = () => <PhoneEmailEntryFields sizing={sizing} />;
-    const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} />;
+    const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} sizing={sizing} />;
 
     const columns: Column<PhoneEmailEntry>[] = [
         { id: 'phoneEmailAsOf', name: 'As of', render: (v) => v.asOf },

@@ -9,9 +9,9 @@ type Orientation = 'horizontal' | 'vertical';
 type Sizing = 'small' | 'medium' | 'large';
 
 type FieldProps = {
+    label: string;
     orientation?: Orientation;
     sizing?: Sizing;
-    label: string;
     helperText?: string;
     error?: string;
     required?: boolean;

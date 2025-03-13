@@ -29,19 +29,25 @@ const HorizontalField = ({
     warning,
     children
 }: Props) => (
-    <div className={classNames(styles.horizontalInput, styles[sizing], className)}>
+    <div
+        className={classNames(styles.horizontalInput, className, {
+            [styles.small]: sizing === 'small',
+            [styles.medium]: sizing === 'medium',
+            [styles.large]: sizing === 'large'
+        })}>
         <div className={styles.left}>
             <label className={classNames({ required })} htmlFor={htmlFor}>
                 {label}
             </label>
+
             {helperText && <HelperText id={`${htmlFor}-hint`}>{helperText}</HelperText>}
         </div>
         <div className={styles.right}>
+            <div className={styles.children}>{children}</div>
             <div className={styles.message}>
                 {warning && <InlineWarningMessage id={`${htmlFor}-warning`}>{warning}</InlineWarningMessage>}
                 {error && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
             </div>
-            <div className={styles.children}>{children}</div>
         </div>
     </div>
 );

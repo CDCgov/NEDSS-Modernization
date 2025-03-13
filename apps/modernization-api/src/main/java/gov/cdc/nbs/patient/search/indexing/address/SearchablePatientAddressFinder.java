@@ -22,9 +22,18 @@ public class SearchablePatientAddressFinder {
               [address].cntry_cd              as [country],
               [srte_county].code_desc_txt     as [county_text],
               [srte_state].state_nm           as [state_text],
-              [srte_country].code_short_desc_txt as [country_text]
+              [srte_country].code_short_desc_txt as [country_text],
+              trim(
+                string_escape(
+                    isNull([address].street_addr1, '') + ' '
+                  + isNull([address].street_addr2, '') + ' '
+                  + isNull([address].city_desc_txt, '') + ' '
+                  + isNull([srte_state].state_nm, '')  + ' '
+                  + isNull([address].zip_cd, ''),
+                  'json'
+                  )
+                ) as [full]
           from Entity_locator_participation [locators]
-
               join Postal_locator [address] on
                       [address].[postal_locator_uid] = [locators].[locator_uid]
               left join NBS_SRTE..State_county_code_value [srte_county] on [srte_county].code = [address].cnty_cd
@@ -33,6 +42,9 @@ public class SearchablePatientAddressFinder {
           where   [locators].entity_uid = ?
               and [locators].[class_cd] = 'PST'
               and ([locators].use_cd IS NULL OR [locators].use_cd not in ('BIR', 'DTH'))
+          order by
+              [locators].as_of_date  desc,
+              [locators].locator_uid desc
           """;
   private static final int PATIENT_PARAMETER = 1;
   private static final int ADDRESS_1_COLUMN = 1;
@@ -45,6 +57,7 @@ public class SearchablePatientAddressFinder {
   private static final int COUNTY_TEXT_COLUMN = 8;
   private static final int STATE_TEXT_COLUMN = 9;
   private static final int COUNTRY_TEXT_COLUMN = 10;
+  private static final int FULL_COLUMN = 11;
 
   private final JdbcTemplate template;
   private final RowMapper<SearchablePatient.Address> mapper;
@@ -62,7 +75,8 @@ public class SearchablePatientAddressFinder {
             COUNTRY_COLUMN,
             COUNTY_TEXT_COLUMN,
             STATE_TEXT_COLUMN,
-            COUNTRY_TEXT_COLUMN));
+            COUNTRY_TEXT_COLUMN,
+            FULL_COLUMN));
   }
 
   public List<SearchablePatient.Address> find(final long patient) {

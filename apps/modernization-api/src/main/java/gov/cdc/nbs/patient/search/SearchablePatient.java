@@ -15,6 +15,7 @@ import java.util.List;
 public record SearchablePatient(
     @JsonProperty("person_uid") long identifier,
     @JsonProperty("local_id") String local,
+    @JsonProperty("short_id") String shortId,
     @JsonProperty("record_status_cd") String status,
     @JsonProperty("birth_time") @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
         using = LocalDateWithTimeJsonDeserializer.class) LocalDate birthday,
@@ -38,12 +39,12 @@ public record SearchablePatient(
     @JsonProperty("investigation_ids") String investigationIds,
     @JsonProperty("lab_report_ids") String labReportIds,
     @JsonProperty("notification_ids") String notificationIds,
-    Sort sort
-) {
+    Sort sort) {
 
   public SearchablePatient(
       long identifier,
       String local,
+      String shortId,
       String status,
       LocalDate birthday,
       String deceased,
@@ -63,6 +64,7 @@ public record SearchablePatient(
     this(
         identifier,
         local,
+        shortId,
         status,
         birthday,
         deceased,
@@ -85,15 +87,15 @@ public record SearchablePatient(
         investigationIds,
         labReportIds,
         notificationIds,
-        null
-    );
+        null);
   }
 
   public record Sort(
+      String name,
       String identification,
       String email,
-      String phone
-  ) {
+      String phone,
+      String address) {
   }
 
 
@@ -107,7 +109,8 @@ public record SearchablePatient(
       @JsonProperty("lastNm") @JsonSerialize(using = WithoutHyphensJsonSerializer.class, as = String.class) String last,
       @JsonProperty("lastNmSndx") String lastSoundex,
       @JsonProperty("nmPrefix") String prefix,
-      @JsonProperty("nmSuffix") String suffix) {
+      @JsonProperty("nmSuffix") String suffix,
+      @JsonProperty("full") String full) {
   }
 
 
@@ -121,7 +124,8 @@ public record SearchablePatient(
       @JsonProperty("cntryCd") String country,
       @JsonProperty("cntyText") String countyText,
       @JsonProperty("stateText") String stateText,
-      @JsonProperty("cntryText") String countryText) {
+      @JsonProperty("cntryText") String countryText,
+      @JsonProperty("full") String full) {
   }
 
 
@@ -143,8 +147,8 @@ public record SearchablePatient(
 
   public record Identification(
       @JsonProperty("typeCd") String type,
-      @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class, as = String.class) @JsonProperty(
-          "rootExtensionTxt") String value) {
+      @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class,
+          as = String.class) @JsonProperty("rootExtensionTxt") String value) {
   }
 
 

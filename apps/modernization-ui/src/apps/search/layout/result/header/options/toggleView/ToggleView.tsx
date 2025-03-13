@@ -7,9 +7,7 @@ import { Sizing } from 'design-system/field';
 
 import styles from './toggle-view.module.scss';
 
-type ToggleViewProps = {
-    sizing?: Sizing;
-};
+type ToggleViewProps = { sizing?: Sizing };
 
 export const ToggleView = ({ sizing }: ToggleViewProps) => {
     const { view, asList, asTable } = useSearchResultDisplay();
