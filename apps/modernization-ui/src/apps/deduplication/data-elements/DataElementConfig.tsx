@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useDataElements } from '../api/useDataElements';
 import { DataElements } from './DataElement';
-import { DataElementsForm } from './form/DataElementsForm';
+import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
 import styles from './data-elements.module.scss';
 
 export const DataElementConfig = () => {

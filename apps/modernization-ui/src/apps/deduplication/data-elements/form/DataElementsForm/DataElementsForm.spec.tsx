@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { DataElementsForm } from './DataElementsForm';
 import { FormProvider, useForm } from 'react-hook-form';
-import { DataElements } from '../DataElement';
+import { DataElements } from '../../DataElement';
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
     const methods = useForm<DataElements>({ defaultValues: {} });

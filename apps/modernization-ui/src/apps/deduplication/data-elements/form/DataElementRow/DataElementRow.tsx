@@ -1,8 +1,8 @@
-import { DataElementCheckBox } from './DataElementCheckBox';
+import { DataElementCheckBox } from '../DataElementCheckBox/DataElementCheckBox';
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { DataElements } from '../DataElement';
-import { TableNumericInput } from './TableNumericInput';
+import { DataElements } from '../../DataElement';
+import { TableNumericInput } from '../TableNumericInput/TableNumericInput';
 import styles from './DataElementRow.module.scss';
 import { useDataElements } from 'apps/deduplication/api/useDataElements';
 

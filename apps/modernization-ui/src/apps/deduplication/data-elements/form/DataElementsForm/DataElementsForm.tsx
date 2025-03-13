@@ -1,8 +1,8 @@
 import { Checkbox } from 'design-system/checkbox';
-import { DataElementRow } from './DataElementRow';
+import { DataElementRow } from '../DataElementRow/DataElementRow';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { DataElements } from '../DataElement';
-import { DataElementsCard } from './DataElementsCard';
+import { DataElements } from '../../DataElement';
+import { DataElementsCard } from '../DataElementsCard/DataElementsCard';
 import { useRef } from 'react';
 import { Icon } from 'design-system/icon';
 import styles from './DataElementsForm.module.scss';
