@@ -69,6 +69,16 @@ describe('Button component tests', () => {
         expect(screen.getByRole('button')).toHaveClass('destructive');
     });
 
+    it('renders the secondaryDestructive className when set', () => {
+        render(
+            <Button destructive secondary>
+                Destructive
+            </Button>
+        );
+        expect(screen.getByRole('button')).not.toHaveClass('destructive');
+        expect(screen.getByRole('button')).toHaveClass('secondaryDestructive');
+    });
+
     it('renders the unpadded className when set', () => {
         render(<Button unpadded>Unpadded</Button>);
         expect(screen.getByRole('button')).toHaveClass('unpadded');

@@ -26,7 +26,7 @@ const Button = ({
     icon,
     unpadded,
     children,
-    outline = false, // Deprecated - please use 'secondary'
+    outline = false,
     secondary = false,
     destructive = false,
     unstyled = false,
