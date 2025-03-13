@@ -13,9 +13,11 @@ type PermittedProps = {
     mode?: 'all' | 'any';
     /** The children to render if permissions are satisfied */
     children: ReactNode | ReactNode[];
+    /** The fallback to render if permissions are not satisfied */
+    fallback?: ReactNode | ReactNode[];
 };
 
-const Permitted = ({ permission, include, exclude, mode, children }: PermittedProps) => {
+const Permitted = ({ permission, include, exclude, mode, children, fallback }: PermittedProps) => {
     const { allows } = usePermissions();
     const permissionList = permission ? [permission] : undefined;
     include = include ?? permissionList;
@@ -23,7 +25,11 @@ const Permitted = ({ permission, include, exclude, mode, children }: PermittedPr
     const checkExcluded = !exclude || (mode === 'any' ? !exclude.some(allows) : !exclude.every(allows));
     const allowed = checkIncluded && checkExcluded;
 
-    return <Shown when={allowed}>{children}</Shown>;
+    return (
+        <Shown fallback={fallback} when={allowed}>
+            {children}
+        </Shown>
+    );
 };
 
 export { Permitted };
