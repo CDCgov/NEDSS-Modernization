@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("java:S3776") // cog complexity on name sorting
 @Component
 class SearchablePatientResolver {
 
