@@ -15,8 +15,8 @@ class SearchablePatientNameRowMapper implements RowMapper<SearchablePatient.Name
       int middle,
       int last,
       int prefix,
-      int suffix
-  ) {
+      int suffix,
+      int full) {
   }
 
 
@@ -38,6 +38,7 @@ class SearchablePatientNameRowMapper implements RowMapper<SearchablePatient.Name
     String lastSoundex = encoded(last);
     String prefix = resultSet.getString(column.prefix());
     String suffix = resultSet.getString(column.suffix());
+    String full = resultSet.getString(column.full());
 
     return new SearchablePatient.Name(
         use,
@@ -47,8 +48,8 @@ class SearchablePatientNameRowMapper implements RowMapper<SearchablePatient.Name
         last,
         lastSoundex,
         prefix,
-        suffix
-    );
+        suffix,
+        full);
   }
 
   private String encoded(final String value) {

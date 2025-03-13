@@ -5,13 +5,19 @@ import { exists } from 'utils';
 type FilterInteraction = {
     active: boolean;
     filter: Filter | undefined;
+    pendingFilter: Filter | undefined;
     show: () => void;
     hide: () => void;
     toggle: () => void;
     valueOf: (id: string) => string | undefined;
-    apply: (id: string, value: string) => void;
+    apply: () => void;
+    /* adds a value to the pending filter */
+    add: (id: string, value?: string) => void;
+    /* removes the value of the given id from the filter */
     clear: (id: string) => void;
+    /* removes all values from the filter */
     clearAll: () => void;
+    /* removes all values from the filter and deactivates filtering */
     reset: () => void;
 };
 
@@ -22,32 +28,59 @@ type FilterProviderProps = { children: ReactNode };
 const FilterProvider = ({ children }: FilterProviderProps) => {
     const [active, setActive] = useState(false);
     const [filter, setFilter] = useState<Filter>();
+    const [pendingFilter, setPendingFilter] = useState<Filter>();
 
-    const valueOf = useCallback((id: string) => (filter ? filter[id] : undefined), [filter]);
+    const valueOf = useCallback((id: string) => (pendingFilter ? pendingFilter[id] : undefined), [pendingFilter]);
     const show = useCallback(() => setActive(true), [setActive]);
     const hide = useCallback(() => setActive(false), [setActive]);
     const toggle = useCallback(() => setActive((prev) => !prev), [setActive]);
 
-    const apply = useCallback((id: string, value: string) => setFilter(withProperty(id, value)), [setFilter]);
+    const updateFilter = useCallback(
+        (value: Filter | undefined) => {
+            setFilter(value);
+            setPendingFilter(value);
+        },
+        [setFilter, setPendingFilter]
+    );
 
-    const clear = useCallback((id: string) => setFilter(withoutProperty(id)), [setFilter]);
+    const add = useCallback(
+        (id: string, value?: string) => setPendingFilter(withProperty(id, value)),
+        [setPendingFilter]
+    );
 
-    const clearAll = useCallback(() => setFilter(undefined), [setFilter]);
+    const apply = () => setFilter(pendingFilter);
+
+    const clear = (id: string) => updateFilter(withoutProperty(id)(filter) as Filter | undefined);
+
+    const clearAll = () => updateFilter(undefined);
     const reset = useCallback(() => {
         setActive(false);
-        setFilter(undefined);
-    }, [setActive, setFilter]);
+        updateFilter(undefined);
+    }, [setActive, updateFilter]);
 
     return (
         <FilterableContext.Provider
-            value={{ active, filter, show, hide, toggle, valueOf, apply, clear, clearAll, reset }}>
+            value={{
+                active,
+                filter,
+                show,
+                hide,
+                toggle,
+                valueOf,
+                apply,
+                clear,
+                clearAll,
+                reset,
+                add,
+                pendingFilter
+            }}>
             {children}
         </FilterableContext.Provider>
     );
 };
 
 const withProperty =
-    <T extends object>(id: keyof T, value: string) =>
+    <T extends object>(id: keyof T, value?: string) =>
     (current?: T) => ({ ...current, [id]: value });
 
 const withoutProperty =
