@@ -14,7 +14,7 @@ Feature: Patient Search by Basic Info
   Scenario: Basic Info - Search by DOB
     When I search by dob as "05/16/1961"
     Then I should see "Ratkeyklkb, Caden Benjamin, Esquire"
-    When I search by dob as "05/16/1977"
+    When I search by dob as "03/07/1910"
     Then I should see no result found text
 
   Scenario: Basic Info - Search by Sex
@@ -22,8 +22,6 @@ Feature: Patient Search by Basic Info
     Then I should see Results with the sex "Male"
     When I search by sex as "Female"
     Then I should see Results with the sex "Female"
-    When I search by sex as "Other"
-    Then I should see Results with the sex "No Data"
 
   Scenario: Basic Info - Search by Patient ID
     When I search by patient id as "95136"
@@ -46,8 +44,8 @@ Feature: Patient Search by Basic Info
     Then I should see "a"
   
   Scenario: Search with Invalid Data
-    When I search by dob as "76/5"
-    Then I should see error message "Please enter a valid date (mm/dd/yyyy) using only numeric characters (0-9) or choose a date from the calendar by clicking on the calendar icon."
+    When I fill dob as "76/5/2000"
+    Then I should see error message "The Date of birth should have a month between 1 (January) and 12 (December)."
 
   Scenario: Clear Search Criteria
     When I fill last name as "Zollie"

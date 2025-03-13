@@ -51,7 +51,6 @@ const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }:
     const direction = sorting.property === children.id ? ensureDirection(sorting.direction) : Direction.None;
     const ariaSort = resolveSortAria(direction);
     const icon = resolveSortIcon(direction, children.sortIconType);
-    const iconType = icon !== 'sort_arrow' ? 'custom' : undefined;
 
     return (
         <th
@@ -65,7 +64,6 @@ const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }:
                     {children.name}
                     <Icon
                         name={icon}
-                        type={iconType}
                         aria-label={`Sort ${children.name}`}
                         onClick={() => sorting.toggle(children.id)}
                     />
@@ -76,7 +74,6 @@ const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }:
                         descriptor={children.filter}
                         filtering={filtering}
                         sizing={sizing}
-                        sorted={direction !== Direction.None}
                     />
                 )}
             </div>
