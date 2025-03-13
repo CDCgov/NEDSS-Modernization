@@ -1,10 +1,10 @@
 import { Shown } from 'conditional-render';
 import styles from './blocking-criteria.module.scss';
 import { Button } from 'design-system/button';
-import { Icon } from '@trussworks/react-uswds';
 import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { Icon } from 'design-system/icon';
 
 type AttributeProps = {
     label: string;
@@ -31,10 +31,14 @@ export const BlockingCriteriaAttribute = ({ label, description, attribute, onRem
                     <div className={styles.label}>{label}</div>
                     <div className={styles.description}>{description}</div>
                 </div>
-                <div className={styles.deleteButton}>
-                    <Button outline onClick={() => onRemove(attribute)}>
-                        <Icon.Delete size={3} />
-                    </Button>
+                <div>
+                    <Button
+                        icon={<Icon name="delete" />}
+                        outline
+                        sizing="small"
+                        destructive
+                        onClick={() => onRemove(attribute)}
+                    />
                 </div>
             </div>
         </Shown>

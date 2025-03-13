@@ -71,25 +71,6 @@
                     gap: 0;
                 }
             }
-
-            .deleteButton {
-                & > button {
-                    display: flex;
-                    width: 2rem;
-                    min-width: unset;
-                    height: 2rem;
-                    padding: 0.25rem;
-                    justify-content: center;
-                    align-items: center;
-                    border-radius: 0.25rem;
-                    border: 2px solid colors.$disabled;
-                    box-shadow: none;
-
-                    & > svg {
-                        color: colors.$error;
-                    }
-                }
-            }
         }
 
         .buttonContainer {

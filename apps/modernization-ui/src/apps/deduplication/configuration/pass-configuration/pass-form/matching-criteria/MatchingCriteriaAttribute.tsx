@@ -1,4 +1,3 @@
-import { Icon } from '@trussworks/react-uswds';
 import { MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Shown } from 'conditional-render';
@@ -6,6 +5,7 @@ import { Button } from 'design-system/button';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import styles from './matching-criteria.module.scss';
+import { Icon } from 'design-system/icon';
 
 type AttributeProps = {
     label: string;
@@ -57,9 +57,13 @@ export const MatchingCriteriaAttribute = ({ label, attribute, onRemove }: Attrib
                     />
                 </div>
                 <div className={styles.deleteButton}>
-                    <Button outline onClick={() => onRemove(attribute)}>
-                        <Icon.Delete size={3} />
-                    </Button>
+                    <Button
+                        icon={<Icon name="delete" />}
+                        sizing="small"
+                        outline
+                        destructive
+                        onClick={() => onRemove(attribute)}
+                    />
                 </div>
             </div>
         </Shown>
