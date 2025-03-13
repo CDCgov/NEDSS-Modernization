@@ -153,9 +153,9 @@ export const PassForm = ({ passCount, onCancel, onDelete }: Props) => {
             <div className={styles.buttonBar}>
                 <div>
                     <Shown when={id !== undefined}>
-                        <button onClick={() => setShowDeleteConfirmation(true)} className={styles.deleteButton}>
+                        <Button secondary destructive sizing="small" onClick={() => setShowDeleteConfirmation(true)}>
                             Delete pass configuration
-                        </button>
+                        </Button>
                     </Shown>
                 </div>
                 <div>

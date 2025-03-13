@@ -34,22 +34,5 @@
             align-items: center;
             gap: 0.5rem;
         }
-
-        .deleteButton {
-            display: flex;
-            height: 2rem;
-            padding: 0.5rem 0.75rem;
-            justify-content: center;
-            align-items: center;
-            border-radius: 0.25rem;
-            border: 2px solid colors.$disabled;
-            background: colors.$base-white;
-            color: colors.$error;
-            text-align: center;
-            cursor: pointer;
-
-            font-weight: 700;
-            line-height: 1.25rem;
-        }
     }
 }
