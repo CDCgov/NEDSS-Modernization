@@ -36,8 +36,10 @@ export { EncryptionControllerService } from './services/EncryptionControllerServ
 export { FacilityOptionsService } from './services/FacilityOptionsService';
 export { JurisdictionOptionsService } from './services/JurisdictionOptionsService';
 export { LoginService } from './services/LoginService';
+export { OccupationOptionsService } from './services/OccupationOptionsService';
 export { PatientProfileService } from './services/PatientProfileService';
 export { PatientRaceService } from './services/PatientRaceService';
+export { PrimaryLanguageOptionsService } from './services/PrimaryLanguageOptionsService';
 export { ProgramAreaOptionsService } from './services/ProgramAreaOptionsService';
 export { ProviderOptionsService } from './services/ProviderOptionsService';
 export { RaceOptionsService } from './services/RaceOptionsService';

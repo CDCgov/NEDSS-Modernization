@@ -4,6 +4,13 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    min-width: fit-content;
+
+
+    textarea {
+        min-width: 100%;
+        max-width: inherit;
+    }
 
     .counter {
         display: flex;
