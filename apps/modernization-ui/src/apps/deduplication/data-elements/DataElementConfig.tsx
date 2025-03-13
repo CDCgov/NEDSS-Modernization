@@ -72,8 +72,15 @@ const DataElementConfigContent = () => {
         );
     };
 
-    const isFormEmpty = !form.formState.isDirty;
-    const isFormValid = form.formState.isValid;
+    const allValues = form.watch(); // Use watch to get live updates
+
+    const hasInvalidValues = Object.values(allValues).some(
+        (element) => element.active && (!element.oddsRatio || !element.threshold)
+    );
+
+    const hasActiveElements = Object.values(allValues).some((element) => element.active);
+
+    const isSaveDisabled = hasInvalidValues || !hasActiveElements;
 
     return (
         <div className={styles.dataElements}>
@@ -91,7 +98,7 @@ const DataElementConfigContent = () => {
                 <Button outline onClick={handleCancel}>
                     Cancel
                 </Button>
-                <Button onClick={handleSubmit} disabled={isFormEmpty || !isFormValid}>
+                <Button onClick={handleSubmit} disabled={isSaveDisabled}>
                     Save data elements configuration
                 </Button>
             </div>

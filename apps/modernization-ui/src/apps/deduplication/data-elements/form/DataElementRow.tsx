@@ -1,4 +1,4 @@
-import { DataElementCheckBox } from './/DataElementCheckBox';
+import { DataElementCheckBox } from './DataElementCheckBox';
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DataElements } from '../DataElement';
@@ -71,11 +71,28 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                 <Controller
                     control={form.control}
                     name={`${field}.oddsRatio`}
+                    rules={{
+                        required: {
+                            value: watch[field]?.active ?? false,
+                            message: 'Missing odds ratio'
+                        },
+                        validate: (value) => {
+                            if (String(value) === '') return true; // Allow empty input to clear error
+                            const numericValue = Number(value);
+                            if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 1) {
+                                return 'Requires value between 0 and 1';
+                            }
+                            return true;
+                        }
+                    }}
                     render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
                         <TableNumericInput
                             name={name}
-                            value={value}
-                            onChange={onChange}
+                            value={value ?? ''}
+                            onChange={(e) => {
+                                onChange(e); // Normal onChange event
+                                form.trigger(`${field}.oddsRatio`); // Manually trigger validation
+                            }}
                             onBlur={onBlur} // Validation triggered only onBlur
                             error={error?.message}
                             max={10}
