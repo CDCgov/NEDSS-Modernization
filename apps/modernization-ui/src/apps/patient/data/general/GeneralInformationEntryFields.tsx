@@ -4,7 +4,7 @@ import { NumericInput } from 'design-system/input';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
 import { usePatientProfilePermissions } from 'apps/patient/profile/permission';
-import { usePatientGeneralCodedValues } from 'apps/patient/profile/generalInfo';
+import { useGeneralCodedValues, usePatientGeneralCodedValues } from 'apps/patient/profile/generalInfo';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
@@ -18,6 +18,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
     const { control } = useFormContext<{ general: GeneralInformationEntry }>();
     const { hivAccess } = usePatientProfilePermissions();
     const coded = usePatientGeneralCodedValues();
+    const codedGeneral = useGeneralCodedValues();
 
     return (
         <section>
@@ -51,7 +52,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={coded.maritalStatuses}
+                        options={codedGeneral.maritalStatuses}
                         sizing={sizing}
                     />
                 )}
@@ -146,7 +147,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={coded.educationLevels}
+                        options={codedGeneral.educationLevels}
                         sizing={sizing}
                     />
                 )}
