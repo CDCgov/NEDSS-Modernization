@@ -13,7 +13,7 @@ import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAd
 import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
 import { useNavigationBlock } from 'navigation/useNavigationBlock';
 import { useEffect } from 'react';
-import { useShowCancelModal, CancelAddPatientPanel } from '../cancelAddPatientPanel';
+import { useShowCancelModal, CancelAddPatientPanel, handleNativeCancelAddPanel } from '../cancelAddPatientPanel';
 
 import styles from './add-patient-basic.module.scss';
 import { FeatureToggle } from 'feature';
@@ -83,16 +83,7 @@ export const AddPatientBasic = () => {
     }, [interaction.status]);
 
     useEffect(() => {
-        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-            if (form.formState.isDirty && !form.formState.isSubmitted) {
-                e.preventDefault();
-            }
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
+        handleNativeCancelAddPanel(form.formState.isDirty, form.formState.isSubmitted);
     }, [form.formState.isDirty, form.formState.isSubmitted]);
 
     return (
