@@ -3,6 +3,7 @@
 
 .card {
     @extend %thin;
+    border-radius: 5px;
     background-color: colors.$base-white;
 
     & > header {
