@@ -10,6 +10,8 @@ const pass: Pass = {
     description: 'Pass description',
     blockingCriteria: [],
     matchingCriteria: [],
+    lowerBound: 0.25,
+    upperBound: 1,
     active: true
 };
 const Fixture = ({ status = true }) => {

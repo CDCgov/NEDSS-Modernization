@@ -2,14 +2,15 @@ import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/de
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { useEffect, useState } from 'react';
-import { useFieldArray, useFormContext, useFormState, useWatch } from 'react-hook-form';
+import { useFormContext, useFormState, useWatch } from 'react-hook-form';
 import { BlockingCriteria } from './blocking-criteria/BlockingCriteria';
 import { BlockingCriteriaSidePanel } from './blocking-criteria/panel/BlockingCriteriaSidePanel';
+import { DeletePassConfirmation } from './confirmation/DeletePassConfirmation';
 import { UnsavedChangesConfirmation } from './confirmation/UnsavedChangesConfirmation';
+import { MatchingBounds } from './matching-bounds/MatchingBounds';
 import { MatchingCriteria } from './matching-criteria/MatchingCriteria';
 import { MatchingCriteriaSidePanel } from './matching-criteria/panel/MatchingCriteriaSidePanel';
 import styles from './pass-form.module.scss';
-import { DeletePassConfirmation } from './confirmation/DeletePassConfirmation';
 
 type Props = {
     passCount: number;
@@ -18,9 +19,8 @@ type Props = {
 };
 export const PassForm = ({ passCount, onCancel, onDelete }: Props) => {
     const form = useFormContext<Pass>();
-    const { isDirty } = useFormState(form);
+    const { isDirty, isValid } = useFormState(form);
     const { blockingCriteria, matchingCriteria, name, id } = useWatch(form);
-    const { replace } = useFieldArray({ control: form.control, name: 'matchingCriteria' });
     const [selectedBlockingAttributes, setSelectedBlockingAttributes] = useState<BlockingAttribute[]>([]);
     const [selectedMatchingAttributes, setSelectedMatchingAttributes] = useState<MatchingAttribute[]>([]);
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -68,7 +68,7 @@ export const PassForm = ({ passCount, onCancel, onDelete }: Props) => {
     };
 
     const handleSelectBlockingAttributes = () => {
-        form.setValue('blockingCriteria', selectedBlockingAttributes, { shouldDirty: true });
+        form.setValue('blockingCriteria', selectedBlockingAttributes, { shouldDirty: true, shouldValidate: true });
         setPanelState({ ...panelState, visible: false });
     };
 
@@ -81,13 +81,12 @@ export const PassForm = ({ passCount, onCancel, onDelete }: Props) => {
     };
 
     const handleSelectMatchingAttributes = () => {
-        replace(
-            selectedMatchingAttributes.map((m) => {
-                // if attribute was already selected, set method to pre-selected method
-                const method = matchingCriteria?.find((x) => x.attribute === m)?.method ?? MatchMethod.NONE;
-                return { attribute: m, method: method };
-            })
-        );
+        const newValue = selectedMatchingAttributes.map((m) => {
+            // if attribute was already selected, set method to pre-selected method
+            const method = matchingCriteria?.find((x) => x.attribute === m)?.method ?? MatchMethod.NONE;
+            return { attribute: m, method: method };
+        });
+        form.setValue('matchingCriteria', newValue, { shouldDirty: true, shouldValidate: true });
         setPanelState({ ...panelState, visible: false });
     };
 
@@ -149,6 +148,7 @@ export const PassForm = ({ passCount, onCancel, onDelete }: Props) => {
             <div className={styles.formContent}>
                 <BlockingCriteria onAddAttributes={() => togglePanelState('blocking')} />
                 <MatchingCriteria onAddAttributes={() => togglePanelState('matching')} />
+                <MatchingBounds />
             </div>
             <div className={styles.buttonBar}>
                 <div>
@@ -162,7 +162,7 @@ export const PassForm = ({ passCount, onCancel, onDelete }: Props) => {
                     <Button outline onClick={handleCancelClick}>
                         Cancel
                     </Button>
-                    <Button disabled>Save pass configuration</Button>
+                    <Button disabled={!isDirty || !isValid}>Save pass configuration</Button>
                 </div>
             </div>
         </div>

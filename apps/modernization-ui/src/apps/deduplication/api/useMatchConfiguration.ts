@@ -16,15 +16,9 @@ export const useMatchConfiguration = () => {
                 description: 'This is my description for this pass',
                 blockingCriteria: [BlockingAttribute.FIRST_NAME],
                 matchingCriteria: [{ attribute: MatchingAttribute.LAST_NAME, method: MatchMethod.EXACT }],
+                lowerBound: 0.7,
+                upperBound: 0.99,
                 active: true
-            },
-            {
-                id: 1,
-                name: 'IDtype_City',
-                description: '',
-                blockingCriteria: [],
-                matchingCriteria: [],
-                active: false
             }
         ]);
 

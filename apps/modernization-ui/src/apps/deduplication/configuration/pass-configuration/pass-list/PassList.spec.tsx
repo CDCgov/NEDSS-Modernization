@@ -12,6 +12,8 @@ const passes: Pass[] = [
         description: 'Pass description 1',
         blockingCriteria: [],
         matchingCriteria: [],
+        lowerBound: 0.25,
+        upperBound: 1,
         active: true
     },
     {
@@ -19,6 +21,8 @@ const passes: Pass[] = [
         description: 'Pass description 2',
         blockingCriteria: [],
         matchingCriteria: [],
+        lowerBound: 0.25,
+        upperBound: 1,
         active: false
     }
 ];

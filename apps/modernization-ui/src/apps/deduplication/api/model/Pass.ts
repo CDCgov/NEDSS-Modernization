@@ -5,6 +5,8 @@ export type Pass = {
     active: boolean;
     blockingCriteria: BlockingAttribute[];
     matchingCriteria: MatchingAttributeEntry[];
+    lowerBound?: number;
+    upperBound?: number;
 };
 
 export type MatchingAttributeEntry = {

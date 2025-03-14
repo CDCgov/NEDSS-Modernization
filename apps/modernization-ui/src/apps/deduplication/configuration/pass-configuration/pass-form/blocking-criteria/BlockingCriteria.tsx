@@ -12,15 +12,15 @@ type Props = {
 };
 export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) => {
     const form = useFormContext<{ blockingCriteria: BlockingAttribute[] }>();
+    const registeredBlockingCriteria = form.register('blockingCriteria', { required: true, minLength: 1 });
     const { blockingCriteria } = useWatch(form);
 
     const handleRemoveAttribute = (attribute: BlockingAttribute) => {
-        const current = [...(blockingCriteria ?? [])];
-        form.setValue(
-            'blockingCriteria',
-            current.filter((a) => a !== attribute),
-            { shouldDirty: true }
-        );
+        const value = [...(blockingCriteria ?? [])].filter((a) => a !== attribute);
+
+        registeredBlockingCriteria.onChange({
+            target: { name: 'blockingCriteria', value: value }
+        });
     };
 
     return (

@@ -4,7 +4,7 @@ import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { useEffect, useState } from 'react';
-import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { MatchingCriteriaAttribute } from './MatchingCriteriaAttribute';
 import styles from './matching-criteria.module.scss';
 
@@ -13,7 +13,10 @@ type Props = {
 };
 export const MatchingCriteria = ({ onAddAttributes: onShowAttributes }: Props) => {
     const form = useFormContext<Pass>();
-    const { remove } = useFieldArray({ control: form.control, name: 'matchingCriteria' });
+    const registeredMatchingCriteria = form.register('matchingCriteria', {
+        required: true,
+        minLength: { value: 1, message: 'Matching criteria is required.' }
+    });
     const { matchingCriteria, blockingCriteria } = useWatch<Pass>(form);
     const [disabled, setDisabled] = useState<boolean>(true);
 
@@ -22,8 +25,11 @@ export const MatchingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
     }, [blockingCriteria]);
 
     const handleRemoveAttribute = (attribute: MatchingAttribute) => {
-        const index = matchingCriteria?.findIndex((a) => attribute === a.attribute);
-        remove(index);
+        const value = [...(matchingCriteria ?? [])].filter((a) => a.attribute !== attribute);
+        registeredMatchingCriteria.onChange({
+            target: { name: 'matchingCriteria', value: value }
+        });
+        form.trigger('matchingCriteria');
     };
 
     return (

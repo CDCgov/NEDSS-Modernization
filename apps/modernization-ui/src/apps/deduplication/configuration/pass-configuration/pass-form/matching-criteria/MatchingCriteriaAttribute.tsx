@@ -38,12 +38,15 @@ export const MatchingCriteriaAttribute = ({ label, attribute, onRemove }: Attrib
                     <Controller
                         control={form.control}
                         name={`matchingCriteria.${index}.method`}
-                        rules={{ required: { value: true, message: 'Match method is required.' } }}
+                        rules={{ required: { value: true, message: 'Matching method is required.' } }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onBlur={onBlur}
-                                onChange={onChange}
+                                onChange={(e) => {
+                                    onChange(e);
+                                    onBlur();
+                                }}
                                 id={name}
                                 name={name}
                                 htmlFor={name}

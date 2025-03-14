@@ -1,4 +1,4 @@
-import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
+import { Pass } from 'apps/deduplication/api/model/Pass';
 import { useMatchConfiguration } from 'apps/deduplication/api/useMatchConfiguration';
 import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
@@ -54,7 +54,7 @@ export const PassConfiguration = () => {
         // Need to confirm data loss if a pass is already selected selected
         const newPass: Pass = {
             name: 'New pass configuration',
-            blockingCriteria: [BlockingAttribute.FIRST_NAME],
+            blockingCriteria: [],
             matchingCriteria: [],
             active: false
         };
