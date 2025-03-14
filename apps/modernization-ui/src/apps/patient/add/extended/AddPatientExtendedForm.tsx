@@ -73,10 +73,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                         {renderErrorMessages()}
                     </AlertMessage>
                 )}
-                <Card
-                    title="Administrative"
-                    id="administrative"
-                    info={<span className="required-before">Required</span>}>
+                <Card title="Administrative" id="administrative" required>
                     <AdministrativeEntryFields sizing={sizing} />
                 </Card>
                 <Controller
@@ -160,19 +157,16 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                         />
                     )}
                 />
-                <Card id="ethnicity" title="Ethnicity" info={<span className="required-before">Required</span>}>
+                <Card id="ethnicity" title="Ethnicity" required>
                     <EthnicityEntryFields sizing={sizing} />
                 </Card>
-                <Card id="sexAndBirth" title="Sex & birth" info={<span className="required-before">Required</span>}>
+                <Card id="sexAndBirth" title="Sex & birth" required>
                     <SexAndBirthEntryFields sizing={sizing} />
                 </Card>
-                <Card id="mortality" title="Mortality" info={<span className="required-before">Required</span>}>
+                <Card id="mortality" title="Mortality" required>
                     <MortalityEntryFields sizing={sizing} />
                 </Card>
-                <Card
-                    id="generalInformation"
-                    title="General patient information"
-                    info={<span className="required-before">Required</span>}>
+                <Card id="generalInformation" title="General patient information" required>
                     <GeneralInformationEntryFields sizing={sizing} />
                 </Card>
             </div>
