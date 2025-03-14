@@ -13,7 +13,7 @@ import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { useConfiguration } from 'configuration';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import './AddNewPage.scss';
 import { AddNewPageFields } from './AddNewPageFields';
 

@@ -1,6 +1,6 @@
 import { render, act } from '@testing-library/react';
 import { AlertProvider } from 'alert';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { AddNewPage } from './AddNewPage';
 
 import {

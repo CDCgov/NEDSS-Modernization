@@ -1,10 +1,10 @@
 import { act } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useSearchCriteria } from './useSearchCriteria';
 import { decrypt, encrypt } from 'cryptography';
 
-jest.mock('react-router-dom', () => ({
+jest.mock('react-router', () => ({
     useSearchParams: jest.fn()
 }));
 

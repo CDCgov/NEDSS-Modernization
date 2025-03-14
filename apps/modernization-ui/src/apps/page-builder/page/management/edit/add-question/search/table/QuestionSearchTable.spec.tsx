@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 
 import { PageProvider } from 'page';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { QuestionSearchTable } from './QuestionSearchTable';
 
 describe('question search table tests', () => {
