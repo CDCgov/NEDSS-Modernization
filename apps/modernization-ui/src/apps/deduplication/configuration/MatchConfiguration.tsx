@@ -4,6 +4,8 @@ import { useDataElements } from '../api/useDataElements';
 import { AlgorithmNotConfigured } from './notification-cards/AlgorithmNotConfigured';
 import { PassConfiguration } from './pass-configuration/PassConfiguration';
 import styles from './match-configuration.module.scss';
+import { Button } from 'design-system/button';
+import { Icon } from 'design-system/icon';
 
 export const MatchConfiguration = () => {
     const { dataElements } = useDataElements();
@@ -12,6 +14,13 @@ export const MatchConfiguration = () => {
         <div className={styles.configurationSetup}>
             <header>
                 <Heading level={1}>Person match configuration</Heading>
+                <div className={styles.buttons}>
+                    <Button icon={<Icon name="settings" />} labelPosition="right" secondary>
+                        Configure data elements
+                    </Button>
+                    <Button icon={<Icon name="file_upload" />} sizing="medium" secondary />
+                    <Button icon={<Icon name="file_download" />} sizing="medium" secondary />
+                </div>
             </header>
             <main>
                 <Shown when={dataElements !== undefined} fallback={<AlgorithmNotConfigured />}>
