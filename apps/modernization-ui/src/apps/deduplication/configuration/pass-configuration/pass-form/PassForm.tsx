@@ -11,6 +11,7 @@ import { MatchingBounds } from './matching-bounds/MatchingBounds';
 import { MatchingCriteria } from './matching-criteria/MatchingCriteria';
 import { MatchingCriteriaSidePanel } from './matching-criteria/panel/MatchingCriteriaSidePanel';
 import styles from './pass-form.module.scss';
+import { ActivateToggle } from './activate-toggle/ActivateToggle';
 
 type Props = {
     passCount: number;
@@ -149,6 +150,7 @@ export const PassForm = ({ passCount, onCancel, onDelete }: Props) => {
                 <BlockingCriteria onAddAttributes={() => togglePanelState('blocking')} />
                 <MatchingCriteria onAddAttributes={() => togglePanelState('matching')} />
                 <MatchingBounds />
+                <ActivateToggle />
             </div>
             <div className={styles.buttonBar}>
                 <div>
