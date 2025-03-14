@@ -1,11 +1,11 @@
 import { render, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
-import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
+import { EthnicityCodedValues } from 'apps/patient/profile/ethnicity';
 import { EthnicityEntry } from './entry';
 import { EthnicityEntryFields } from './EthnicityEntryFields';
 
-const mockEthnicityValues: PatientEthnicityCodedValue = {
+const mockEthnicityValues: EthnicityCodedValues = {
     ethnicGroups: [
         { name: 'Hispanic or Latino', value: '2135-2' },
         { name: 'Unknown', value: 'UNK' }
@@ -14,9 +14,10 @@ const mockEthnicityValues: PatientEthnicityCodedValue = {
     detailedEthnicities: [{ name: 'Central American', value: '2155-0' }]
 };
 
-jest.mock('apps/patient/profile/ethnicity/usePatientEthnicityCodedValues', () => ({
-    usePatientEthnicityCodedValues: () => mockEthnicityValues
+jest.mock('apps/patient/profile/ethnicity', () => ({
+    useEthnicityCodedValues: () => mockEthnicityValues
 }));
+
 const Fixture = () => {
     const form = useForm<EthnicityEntry>({ mode: 'onBlur' });
     return (

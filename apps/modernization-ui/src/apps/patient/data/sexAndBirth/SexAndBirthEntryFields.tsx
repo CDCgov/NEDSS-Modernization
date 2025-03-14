@@ -1,11 +1,11 @@
 import { useEffect, useMemo } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
+import { useSexBirthCodedValues } from 'apps/patient/profile/sexBirth';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { Input } from 'components/FormInputs/Input';
 import { displayAgeAsOfToday } from 'date/displayAge';
-import { useCountyCodedValues } from 'location';
+import { useCountyCodedValues, useLocationCodedValues } from 'location';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { BirthEntry, SexEntry } from 'apps/patient/data/entry';
 import { EntryFieldsProps } from 'design-system/entry';
@@ -26,7 +26,8 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
     const selectedMultipleBirth = useWatch({ control, name: 'birthAndSex.multiple' });
     const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
 
-    const coded = usePatientSexBirthCodedValues();
+    const coded = useSexBirthCodedValues();
+    const location = useLocationCodedValues();
     const { counties } = useCountyCodedValues(selectedState?.value);
 
     useEffect(() => {
@@ -248,7 +249,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={coded.states.all}
+                        options={location.states.all}
                         sizing={sizing}
                     />
                 )}
@@ -283,7 +284,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={coded.countries}
+                        options={location.countries}
                         sizing={sizing}
                     />
                 )}
