@@ -10,7 +10,7 @@
         padding: 1rem;
         justify-content: space-between;
         align-items: center;
-        @extend %thin-bottom
+        @extend %thin-bottom;
     }
 
     &.withSubtext {
