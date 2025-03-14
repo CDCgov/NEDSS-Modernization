@@ -36,6 +36,7 @@
         gap: 0.5rem;
 
         .children {
+            min-width: fit-content;
             width: 20rem;
             flex-shrink: 0;
         }
