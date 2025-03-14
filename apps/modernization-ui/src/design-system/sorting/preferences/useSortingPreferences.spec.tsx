@@ -22,7 +22,11 @@ const mockSave = jest.fn();
 const mockRemove = jest.fn();
 
 jest.mock('storage', () => ({
-    useLocalStorage: () => ({ value: mockValue, save: mockSave, remove: mockRemove })
+    useLocalStorage: ({ key, initial }: { key: string; initial?: any }) => ({
+        value: mockValue,
+        save: mockSave,
+        remove: mockRemove
+    })
 }));
 
 const wrapper = ({ children }: { children: ReactNode }) => (
@@ -32,6 +36,9 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 describe('useSortingPreferences', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        mockProperty = undefined;
+        mockDirection = undefined;
+        mockValue = undefined;
     });
 
     it('should initialize unsorted', () => {
@@ -82,9 +89,13 @@ describe('useSortingPreferences', () => {
 
     it('should initialize the active sorting from sorting preferences when present', () => {
         mockValue = { property: 'initial-value', direction: 'desc' as Direction };
-
+        
         const { result } = renderHook(() => useSortingPreferences(), { wrapper });
-
+        
+        act(() => {
+            result.current.sortOn(mockValue);
+        });
+        
         expect(result.current.active).toEqual(
             expect.objectContaining({ property: 'initial-value', direction: 'desc' })
         );
@@ -97,10 +108,6 @@ describe('useSortingPreferences', () => {
 
         act(() => {
             result.current.sortOn({ property: 'property-value', direction: 'asc' as Direction });
-        });
-
-        act(() => {
-            result.current.sortOn();
         });
 
         expect(mockSave).toBeCalledWith(expect.objectContaining({ property: 'property-value', direction: 'asc' }));

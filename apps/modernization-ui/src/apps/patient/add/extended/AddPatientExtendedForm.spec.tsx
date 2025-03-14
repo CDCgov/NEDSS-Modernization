@@ -166,34 +166,34 @@ describe('AddPatientExtendedForm', () => {
         const requiredTexts = getAllByText('Required');
 
         expect(headers[0]).toHaveTextContent('Administrative');
-        expect(headers[0].parentElement).toContainElement(requiredTexts[0]);
+        expect(headers[0].parentElement?.parentElement).toContainElement(requiredTexts[0]);
 
         expect(headers[1]).toHaveTextContent('Name');
-        expect(headers[1].parentElement).toContainElement(requiredTexts[1]);
+        expect(headers[1].parentElement?.parentElement).toContainElement(requiredTexts[1]);
 
         expect(headers[2]).toHaveTextContent('Address');
-        expect(headers[2].parentElement).toContainElement(requiredTexts[2]);
+        expect(headers[2].parentElement?.parentElement).toContainElement(requiredTexts[2]);
 
         expect(headers[3]).toHaveTextContent('Phone & email');
-        expect(headers[3].parentElement).toContainElement(requiredTexts[3]);
+        expect(headers[3].parentElement?.parentElement).toContainElement(requiredTexts[3]);
 
         expect(headers[4]).toHaveTextContent('Identification');
-        expect(headers[4].parentElement).toContainElement(requiredTexts[4]);
+        expect(headers[4].parentElement?.parentElement).toContainElement(requiredTexts[4]);
 
         expect(headers[5]).toHaveTextContent('Race');
-        expect(headers[5].parentElement).toContainElement(requiredTexts[5]);
+        expect(headers[5].parentElement?.parentElement).toContainElement(requiredTexts[5]);
 
         expect(headers[6]).toHaveTextContent('Ethnicity');
-        expect(headers[6].parentElement).toContainElement(requiredTexts[6]);
+        expect(headers[6].parentElement?.parentElement).toContainElement(requiredTexts[6]);
 
         expect(headers[7]).toHaveTextContent('Sex & birth');
-        expect(headers[7].parentElement).toContainElement(requiredTexts[7]);
+        expect(headers[7].parentElement?.parentElement).toContainElement(requiredTexts[7]);
 
         expect(headers[8]).toHaveTextContent('Mortality');
-        expect(headers[8].parentElement).toContainElement(requiredTexts[8]);
+        expect(headers[8].parentElement?.parentElement).toContainElement(requiredTexts[8]);
 
         expect(headers[9]).toHaveTextContent('General patient information');
-        expect(headers[9].parentElement).toContainElement(requiredTexts[9]);
+        expect(headers[9].parentElement?.parentElement).toContainElement(requiredTexts[9]);
     });
 
     it('should set default date for as of fields', async () => {

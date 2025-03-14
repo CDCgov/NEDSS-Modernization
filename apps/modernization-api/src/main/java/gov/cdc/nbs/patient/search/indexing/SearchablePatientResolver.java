@@ -44,11 +44,17 @@ class SearchablePatientResolver {
   private SearchablePatient withDemographics(final SearchablePatient patient) {
 
     List<SearchablePatient.Name> names = this.nameFinder.find(patient.identifier());
+    String name = names.stream()
+        .map(SearchablePatient.Name::full)
+        .map(String::toUpperCase)
+        .findFirst().orElse(null);
+
     List<SearchablePatient.Address> addresses = this.addressFinder.find(patient.identifier());
     List<SearchablePatient.Race> races = this.raceFinder.find(patient.identifier());
     List<SearchablePatient.Identification> identifications = identificationFinder.find(patient.identifier());
     String identification = identifications.stream()
         .map(SearchablePatient.Identification::value)
+        .map(String::toUpperCase)
         .findFirst()
         .orElse(null);
 
@@ -57,6 +63,7 @@ class SearchablePatientResolver {
     List<SearchablePatient.Phone> phones = telecom.phones();
     String phone = phones.stream()
         .map(SearchablePatient.Phone::number)
+        .map(String::toUpperCase)
         .findFirst()
         .orElse(null);
 
@@ -64,17 +71,16 @@ class SearchablePatientResolver {
 
     String email = emails.stream()
         .map(SearchablePatient.Email::address)
+        .map(String::toUpperCase)
         .findFirst()
         .orElse(null);
 
     String address = addresses.stream()
-        .map(elem -> (elem.address1() == null ? "" : elem.address1())
-            + (elem.address2() == null ? "" : elem.address2()) + (elem.city() == null ? "" : elem.city())
-            + (elem.state() == null ? "" : elem.state()) + (elem.zip() == null ? "" : elem.zip()))
-        .findFirst()
-        .orElse("");
+        .map(SearchablePatient.Address::full)
+        .map(String::toUpperCase)
+        .findFirst().orElse(null);
 
-    SearchablePatient.Sort sort = new SearchablePatient.Sort(identification, email, phone, address);
+    SearchablePatient.Sort sort = new SearchablePatient.Sort(name, identification, email, phone, address);
 
     return new SearchablePatient(
         patient.identifier(),

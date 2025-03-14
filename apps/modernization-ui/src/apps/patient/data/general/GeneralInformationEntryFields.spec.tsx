@@ -1,7 +1,7 @@
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
-import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
+import { GeneralCodedValues } from 'apps/patient/profile/generalInfo';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { FormProvider, useForm } from 'react-hook-form';
 import { GeneralInformationEntryFields } from './GeneralInformationEntryFields';
@@ -13,16 +13,16 @@ jest.mock('apps/patient/profile/permission/usePatientProfilePermissions', () => 
     usePatientProfilePermissions: () => mockPermissions
 }));
 
-const mockPatientCodedValues: PatientGeneralCodedValue = {
+const mockGeneralCodedValues: GeneralCodedValues = {
     maritalStatuses: [{ name: 'Married', value: 'M' }],
-    primaryOccupations: [{ name: 'Tester', value: 'T' }],
     educationLevels: [{ name: '1 or more years of college', value: '1' }],
+    primaryOccupations: [{ name: 'Tester', value: 'T' }],
     primaryLanguages: [{ name: 'Welsh', value: 'W' }],
     speaksEnglish: [{ name: 'Yes', value: 'Y' }]
 };
 
-jest.mock('apps/patient/profile/generalInfo/usePatientGeneralCodedValues', () => ({
-    usePatientGeneralCodedValues: () => mockPatientCodedValues
+jest.mock('apps/patient/profile/generalInfo/useGeneralCodedValues', () => ({
+    useGeneralCodedValues: () => mockGeneralCodedValues
 }));
 
 const Fixture = () => {

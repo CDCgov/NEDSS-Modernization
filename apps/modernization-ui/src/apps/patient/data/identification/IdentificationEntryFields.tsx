@@ -4,7 +4,7 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { usePatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
+import { useIdentificationCodedValues } from 'apps/patient/profile/identification';
 import { IdentificationEntry } from './entry';
 
 const AS_OF_DATE_LABEL = 'Identification as of';
@@ -13,8 +13,7 @@ const ID_VALUE_LABEL = 'ID value';
 
 export const IdentificationEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<IdentificationEntry>();
-
-    const coded = usePatientIdentificationCodedValues();
+    const coded = useIdentificationCodedValues();
 
     return (
         <section>

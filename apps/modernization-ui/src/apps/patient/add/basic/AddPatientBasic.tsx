@@ -13,7 +13,7 @@ import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAd
 import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
 import { useNavigationBlock } from 'navigation/useNavigationBlock';
 import { useEffect } from 'react';
-import { useShowCancelModal, CancelAddPatientPanel } from '../cancelAddPatientPanel';
+import { useShowCancelModal, CancelAddPatientPanel, handleNativeCancelAddPanel } from '../cancelAddPatientPanel';
 
 import styles from './add-patient-basic.module.scss';
 import { FeatureToggle } from 'feature';
@@ -81,6 +81,10 @@ export const AddPatientBasic = () => {
             blocker.reset();
         }
     }, [interaction.status]);
+
+    useEffect(() => {
+        handleNativeCancelAddPanel(form.formState.isDirty, form.formState.isSubmitted);
+    }, [form.formState.isDirty, form.formState.isSubmitted]);
 
     return (
         <DataEntryLayout>

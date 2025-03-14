@@ -4,8 +4,8 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
 import { validateRequiredRule } from 'validation/entry';
-import { usePatientEthnicityCodedValues } from 'apps/patient/profile/ethnicity';
 import { EthnicityEntry } from './entry';
+import { useEthnicityCodedValues } from 'apps/patient/profile/ethnicity';
 
 const UNKNOWN = 'UNK';
 const HISPANIC = '2135-2';
@@ -14,7 +14,7 @@ const AS_OF_DATE_LABEL = 'Ethnicity information as of';
 
 export const EthnicityEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control, setValue } = useFormContext<{ ethnicity: EthnicityEntry }>();
-    const coded = usePatientEthnicityCodedValues();
+    const coded = useEthnicityCodedValues();
     const selectedEthnicity = useWatch({ control, name: 'ethnicity.ethnicGroup' });
 
     useEffect(() => {

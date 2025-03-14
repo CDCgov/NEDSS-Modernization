@@ -1,19 +1,18 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { act, render, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { NameEntry } from './entry';
 import { NameEntryFields } from './NameEntryFields';
 
-const mockPatientNameCodedValues = {
+const mockNameCodedValues = {
     types: [{ name: 'Adopted name', value: 'AN' }],
     prefixes: [{ name: 'Miss', value: 'MS' }],
     suffixes: [{ name: 'Sr.', value: 'SR' }],
     degrees: [{ name: 'BA', value: 'BA' }]
 };
 
-jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
-    usePatientNameCodedValues: () => mockPatientNameCodedValues
+jest.mock('apps/patient/profile/names', () => ({
+    useNameCodedValues: () => mockNameCodedValues
 }));
 
 const Fixture = () => {

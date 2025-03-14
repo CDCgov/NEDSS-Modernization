@@ -18,7 +18,8 @@ class SearchablePatientAddressRowMapper implements RowMapper<SearchablePatient.A
       int country,
       int countyText,
       int stateText,
-      int countryText) {
+      int countryText,
+      int full) {
   }
 
 
@@ -40,6 +41,7 @@ class SearchablePatientAddressRowMapper implements RowMapper<SearchablePatient.A
     String countyText = resultSet.getString(this.columns.countyText());
     String stateText = resultSet.getString(this.columns.stateText());
     String countryText = resultSet.getString(this.columns.countryText());
+    String full = resultSet.getString(this.columns.full());
     return new SearchablePatient.Address(
         address1,
         address2,
@@ -50,6 +52,7 @@ class SearchablePatientAddressRowMapper implements RowMapper<SearchablePatient.A
         country,
         countyText,
         stateText,
-        countryText);
+        countryText,
+        full);
   }
 }

@@ -10,7 +10,7 @@ import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTra
 import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
-import { CancelAddPatientPanel, useShowCancelModal } from '../cancelAddPatientPanel';
+import { CancelAddPatientPanel, useShowCancelModal, handleNativeCancelAddPanel } from '../cancelAddPatientPanel';
 import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
@@ -68,6 +68,10 @@ export const AddPatientExtended = () => {
             blocker.reset();
         }
     }, [interaction.status]);
+
+    useEffect(() => {
+        handleNativeCancelAddPanel(form.formState.isDirty, form.formState.isSubmitted);
+    }, [form.formState.isDirty, form.formState.isSubmitted]);
 
     return (
         <AddExtendedPatientInteractionProvider interaction={interaction}>

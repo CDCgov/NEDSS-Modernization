@@ -4,13 +4,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { PhoneEmailEntry } from './entry';
 import { PhoneEmailEntryFields } from './PhoneEmailEntryFields';
 
-const mockPatientPhoneCodedValues = {
+const mockPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],
     uses: [{ name: 'Home', value: 'H' }]
 };
 
-jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
-    usePatientPhoneCodedValues: () => mockPatientPhoneCodedValues
+jest.mock('apps/patient/profile/phoneEmail', () => ({
+    usePhoneCodedValues: () => mockPhoneCodedValues
 }));
 
 const Fixture = () => {

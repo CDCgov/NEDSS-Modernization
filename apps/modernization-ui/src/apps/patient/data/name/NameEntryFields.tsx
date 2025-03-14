@@ -5,14 +5,14 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
 import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry/';
 import { NameEntry } from './entry';
-import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
+import { useNameCodedValues } from 'apps/patient/profile/names';
 
 const AS_OF_DATE_LABEL = 'Name as of';
 const TYPE_LABEL = 'Type';
 
 export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<NameEntry>();
-    const coded = usePatientNameCodedValues();
+    const coded = useNameCodedValues();
 
     return (
         <section>

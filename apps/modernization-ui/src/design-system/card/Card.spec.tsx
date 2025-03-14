@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Card } from './Card';
 
 describe('Card Component', () => {
@@ -20,5 +20,31 @@ describe('Card Component', () => {
             </Card>
         );
         expect(container.querySelector('section')).toHaveAttribute('id', 'test-id');
+    });
+
+    it('does not render subtext when subtext prop is not provided', () => {
+        // Render the Card without subtext
+        render(
+            <Card id="test-card" title="Test Title" children={<p>Test content</p>}>
+                {/* No subtext prop here */}
+            </Card>
+        );
+
+        // Check that subtext is not in the document
+        const subtextElement = screen.queryByText(/subtext/i);
+        expect(subtextElement).toBeNull();
+    });
+
+    it('renders subtext when subtext prop is provided', () => {
+        // Render the Card with subtext
+        render(
+            <Card id="test-card" title="Test Title" subtext="This is the subtext" children={<p>Test content</p>}>
+                {/* Subtext is passed */}
+            </Card>
+        );
+
+        // Check that subtext is in the document
+        const subtextElement = screen.getByText(/This is the subtext/i);
+        expect(subtextElement).toBeInTheDocument();
     });
 });
