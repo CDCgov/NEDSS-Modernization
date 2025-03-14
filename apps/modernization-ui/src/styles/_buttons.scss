@@ -16,6 +16,12 @@ $icon-padding-medium: 0.5rem;
     }
 }
 
+.secondary {
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: inset 0 0 0 2px colors.$primary;
+    color: colors.$primary;
+}
+
 .destructive {
     background-color: colors.$destructive !important;
     &:hover {
@@ -26,8 +32,8 @@ $icon-padding-medium: 0.5rem;
     }
 }
 
-.secondaryDestructive {
-    background-color: colors.$base-white;
+.destructive.secondary {
+    background-color: colors.$base-white !important;
     color: colors.$error !important;
     box-shadow: inset 0 0 0 2px colors.$disabled !important;
     border-radius: 0.25rem;
@@ -80,5 +86,4 @@ $icon-padding-medium: 0.5rem;
     &.medium {
         @extend %icon-button;
     }
-    
 }
