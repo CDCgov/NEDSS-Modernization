@@ -9,6 +9,8 @@
     background-color: colors.$base-white;
 
     & > header {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
         display: flex;
         padding: 1rem;
         justify-content: space-between;
