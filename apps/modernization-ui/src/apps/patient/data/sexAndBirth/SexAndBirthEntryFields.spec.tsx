@@ -1,20 +1,13 @@
 import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
-import { PatientSexBirthCodedValue } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { CountiesCodedValues } from 'location/useCountyCodedValues';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SexAndBirthEntryFields } from './SexAndBirthEntryFields';
+import { LocationCodedValues } from 'location';
+import { SexBirthCodedValues } from 'apps/patient/profile/sexBirth';
 
-const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
-    genders: [
-        { name: 'Male', value: 'M' },
-        { name: 'Female', value: 'F' },
-        { name: 'Unknown', value: 'U' }
-    ],
-    preferredGenders: [{ name: 'FTM', value: 'FTM' }],
-    genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
-    multipleBirth: [{ name: 'Yes', value: 'Y' }],
+const mockLocationCodedValues: LocationCodedValues = {
     states: {
         all: [{ name: 'Alabama', value: 'AL', abbreviation: 'AL' }],
         byValue: jest.fn(),
@@ -26,8 +19,23 @@ const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     countries: [{ name: 'United States of America', value: 'US' }]
 };
 
-jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => ({
-    usePatientSexBirthCodedValues: () => mockSexBirthCodedValues
+const mockSexBirthCodedValues: SexBirthCodedValues = {
+    genders: [
+        { name: 'Male', value: 'M' },
+        { name: 'Female', value: 'F' },
+        { name: 'Unknown', value: 'U' }
+    ],
+    preferredGenders: [{ name: 'FTM', value: 'FTM' }],
+    genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
+    multipleBirth: [{ name: 'Yes', value: 'Y' }]
+};
+
+jest.mock('location/useLocationCodedValues', () => ({
+    useLocationCodedValues: () => mockLocationCodedValues
+}));
+
+jest.mock('apps/patient/profile/sexBirth/useSexBirthCodedValues', () => ({
+    useSexBirthCodedValues: () => mockSexBirthCodedValues
 }));
 
 const mockCountyCodedValues: CountiesCodedValues = { counties: [{ name: 'CountyA', value: 'A', group: 'G' }] };
@@ -69,7 +77,7 @@ describe('when entering patient sex and birth demographics', () => {
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText, findByText } = render(<Fixture />);
+        const { getByLabelText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Sex & birth information as of');
         act(() => {
