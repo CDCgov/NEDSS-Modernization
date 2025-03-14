@@ -3,6 +3,7 @@
 
 .horizontalInput {
     display: flex;
+    max-width: 100%;
     flex-direction: row;
     padding: 0.5rem 1.5rem;
     align-items: flex-start;
@@ -39,6 +40,10 @@
         .children {
             width: 20rem;
             flex-shrink: 0;
+        }
+
+        .textareaField {
+            max-width: 100%;
         }
 
         .message {

@@ -4,6 +4,7 @@
 .card {
     @extend %thin;
     background-color: colors.$base-white;
+    max-width: 100%;
 
     & > header {
         display: flex;

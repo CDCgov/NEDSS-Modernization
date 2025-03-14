@@ -16,6 +16,7 @@ type Props = {
     required?: boolean;
     warning?: string;
     children: ReactNode;
+    isTextArea?: boolean;
 };
 
 const HorizontalField = ({
@@ -27,7 +28,8 @@ const HorizontalField = ({
     required,
     error,
     warning,
-    children
+    children,
+    isTextArea
 }: Props) => (
     <div
         className={classNames(styles.horizontalInput, className, {
@@ -43,7 +45,11 @@ const HorizontalField = ({
             {helperText && <HelperText id={`${htmlFor}-hint`}>{helperText}</HelperText>}
         </div>
         <div className={styles.right}>
-            <div className={styles.children}>{children}</div>
+            {isTextArea ? (
+                <div className={styles.textareaField}>{children}</div>
+            ) : (
+                <div className={styles.children}>{children}</div>
+            )}
             <div className={styles.message}>
                 {warning && <InlineWarningMessage id={`${htmlFor}-warning`}>{warning}</InlineWarningMessage>}
                 {error && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
