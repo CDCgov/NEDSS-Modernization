@@ -82,6 +82,19 @@ export const AddPatientBasic = () => {
         }
     }, [interaction.status]);
 
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (form.formState.isDirty && !form.formState.isSubmitted) {
+                e.preventDefault();
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [form.formState.isDirty, form.formState.isSubmitted]);
+
     return (
         <DataEntryLayout>
             <Shown when={interaction.status === 'created'}>
