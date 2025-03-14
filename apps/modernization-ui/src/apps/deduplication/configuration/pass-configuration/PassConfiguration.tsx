@@ -63,6 +63,9 @@ export const PassConfiguration = () => {
     };
 
     const handleCancel = () => {
+        if (selectedPass === newPass) {
+            setNewPass(undefined);
+        }
         setSelectedPass(undefined);
     };
 

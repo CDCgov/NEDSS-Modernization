@@ -100,7 +100,7 @@ export const PassForm = ({ passCount, onCancel, onDelete }: Props) => {
     };
 
     const handleCancelClick = () => {
-        if (isDirty) {
+        if (isDirty || id === undefined) {
             setShowConfirmation(true);
         } else {
             onCancel();
