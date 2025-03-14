@@ -13,6 +13,7 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
   record Column(
       int identifier,
       int local,
+      int shortId,
       int status,
       int birthday,
       int deceased,
@@ -58,11 +59,13 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
     String investigationIds = resultSet.getString(columns.investigationIds());
     String labReportIds = resultSet.getString(columns.labReportIds());
     String notificationIds = resultSet.getString(columns.notificationIds());
+    String shortId = resultSet.getString(columns.shortId());
 
 
     return new SearchablePatient(
         identifier,
         local,
+        shortId,
         status,
         birthday,
         deceased,

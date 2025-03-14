@@ -32,7 +32,7 @@ const PatientSearch = () => {
                 available={sorting}
                 defaultSort={{
                     property: 'patientname',
-                    direction: Direction.Descending
+                    direction: Direction.Ascending
                 }}>
                 <SearchInteractionProvider interaction={interaction}>
                     <FormProvider {...form}>
@@ -51,7 +51,7 @@ const PatientSearch = () => {
                             )}
                             searchEnabled={interaction.enabled}
                             onSearch={interaction.search}
-                            noResults={() => <NoPatientResults />}
+                            noResults={() => <NoPatientResults sizing={sizing} />}
                             onClear={interaction.clear}
                         />
                     </FormProvider>

@@ -18,7 +18,7 @@ jest.mock('location/useLocationCodedValues', () => ({
     useLocationCodedValues: () => mockLocationCodedValues
 }));
 
-const Fixture = () => {
+const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const form = useForm<AddressEntry>({
         mode: 'onBlur',
         defaultValues: {
@@ -34,7 +34,7 @@ const Fixture = () => {
     });
     return (
         <FormProvider {...form}>
-            <BasicAddressFields />
+            <BasicAddressFields sizing={props.sizing} />
         </FormProvider>
     );
 };
@@ -51,6 +51,19 @@ describe('when entering address section', () => {
         expect(getByLabelText('County')).toBeInTheDocument();
         expect(getByLabelText('Census tract')).toBeInTheDocument();
         expect(getByLabelText('Country')).toBeInTheDocument();
+    });
+
+    it('should render the proper labels as small when the sizing is set to small', () => {
+        const { getByText } = render(<Fixture sizing="small" />);
+
+        expect(getByText('Street address 1').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Street address 2').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('City').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('State').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Zip').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('County').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Census tract').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Country').parentElement?.parentElement).toHaveClass('small');
     });
 
     test.each([
@@ -97,7 +110,7 @@ describe('when entering address section', () => {
         );
         userEvent.tab();
 
-        const validationMessage = 'The Street address 1 only allows 100 characters';
+        const validationMessage = 'The Street address 1 only allows 100 characters.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
@@ -115,7 +128,7 @@ describe('when entering address section', () => {
         );
         userEvent.tab();
 
-        const validationMessage = 'The Street address 2 only allows 100 characters';
+        const validationMessage = 'The Street address 2 only allows 100 characters.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
@@ -133,7 +146,7 @@ describe('when entering address section', () => {
         );
         userEvent.tab();
 
-        const validationMessage = 'The City only allows 100 characters';
+        const validationMessage = 'The City only allows 100 characters.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);

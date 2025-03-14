@@ -158,42 +158,42 @@ const Fixture = ({ asOf, validationErrors }: Props) => {
 };
 describe('AddPatientExtendedForm', () => {
     it('should render the sections with appropriate help text', async () => {
-        const { getByText, getAllByRole } = render(<Fixture />);
+        const { getAllByText, getByText, getAllByRole } = render(<Fixture />);
 
         await waitFor(() => expect(getByText('Administrative')).toBeInTheDocument());
 
         const headers = getAllByRole('heading');
+        const requiredTexts = getAllByText('Required');
+
         expect(headers[0]).toHaveTextContent('Administrative');
-        expect(headers[0].parentElement).toContainElement(getByText('All required fields for adding comments'));
+        expect(headers[0].parentElement).toContainElement(requiredTexts[0]);
 
         expect(headers[1]).toHaveTextContent('Name');
-        expect(headers[1].parentElement).toContainElement(getByText('All required fields for adding name'));
+        expect(headers[1].parentElement).toContainElement(requiredTexts[1]);
 
         expect(headers[2]).toHaveTextContent('Address');
-        expect(headers[2].parentElement).toContainElement(getByText('All required fields for adding address'));
+        expect(headers[2].parentElement).toContainElement(requiredTexts[2]);
 
         expect(headers[3]).toHaveTextContent('Phone & email');
-        expect(headers[3].parentElement).toContainElement(getByText('All required fields for adding phone & email'));
+        expect(headers[3].parentElement).toContainElement(requiredTexts[3]);
 
         expect(headers[4]).toHaveTextContent('Identification');
-        expect(headers[4].parentElement).toContainElement(getByText('All required fields for adding identification'));
+        expect(headers[4].parentElement).toContainElement(requiredTexts[4]);
 
         expect(headers[5]).toHaveTextContent('Race');
-        expect(headers[5].parentElement).toContainElement(getByText('All required fields for adding race'));
+        expect(headers[5].parentElement).toContainElement(requiredTexts[5]);
 
         expect(headers[6]).toHaveTextContent('Ethnicity');
-        expect(headers[6].parentElement).toContainElement(getByText('All required fields for adding ethnicity'));
+        expect(headers[6].parentElement).toContainElement(requiredTexts[6]);
 
         expect(headers[7]).toHaveTextContent('Sex & birth');
-        expect(headers[7].parentElement).toContainElement(getByText('All required fields for adding sex & birth'));
+        expect(headers[7].parentElement).toContainElement(requiredTexts[7]);
 
         expect(headers[8]).toHaveTextContent('Mortality');
-        expect(headers[8].parentElement).toContainElement(getByText('All required fields for adding mortality'));
+        expect(headers[8].parentElement).toContainElement(requiredTexts[8]);
 
         expect(headers[9]).toHaveTextContent('General patient information');
-        expect(headers[9].parentElement).toContainElement(
-            getByText('All required fields for adding general patient information')
-        );
+        expect(headers[9].parentElement).toContainElement(requiredTexts[9]);
     });
 
     it('should set default date for as of fields', async () => {

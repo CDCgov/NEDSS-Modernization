@@ -57,7 +57,7 @@ const TextInput = ({
                 name={props.name ?? id}
                 type={type}
                 inputMode={inputMode}
-                className={classNames('usa-input', className)}
+                className={classNames('usa-input', styles.input, className)}
                 onChange={handleChange}
                 onBlur={onBlur}
                 placeholder={placeholder}
@@ -66,7 +66,7 @@ const TextInput = ({
             />
             {clearable && current && (
                 <span className={styles.suffix}>
-                    <Icon role="button" name="close" size="small" onClick={handleClear} />
+                    <Icon role="button" name="close" sizing="small" onClick={handleClear} />
                 </span>
             )}
         </span>

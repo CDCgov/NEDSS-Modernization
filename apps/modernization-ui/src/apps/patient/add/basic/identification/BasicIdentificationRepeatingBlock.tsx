@@ -6,6 +6,7 @@ import { initial } from './entry';
 import { BasicIdentificationFields } from './BasicIdentificationFields';
 import { BasicIdentificationView } from './BasicIdentificationView';
 import styles from './identification.module.scss';
+import { Sizing } from 'design-system/field';
 
 const defaultValue: Partial<BasicIdentificationEntry> = initial();
 
@@ -14,7 +15,9 @@ type BasicIdentificationRepeatingBlockProps = {
     values?: BasicIdentificationEntry[];
     onChange: (data: BasicIdentificationEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
+    isValid: (isValid: boolean) => void;
     errors?: ReactNode[];
+    sizing?: Sizing;
 };
 
 export const BasicIdentificationRepeatingBlock = ({
@@ -22,10 +25,12 @@ export const BasicIdentificationRepeatingBlock = ({
     values,
     onChange,
     isDirty,
-    errors
+    isValid,
+    errors,
+    sizing
 }: BasicIdentificationRepeatingBlockProps) => {
-    const renderForm = () => <BasicIdentificationFields />;
-    const renderView = (entry: BasicIdentificationEntry) => <BasicIdentificationView entry={entry} />;
+    const renderForm = () => <BasicIdentificationFields sizing={sizing} />;
+    const renderView = (entry: BasicIdentificationEntry) => <BasicIdentificationView entry={entry} sizing={sizing} />;
 
     const columns: Column<BasicIdentificationEntry>[] = [
         { id: 'identificationType', name: 'Type', className: styles['col-type'], render: (v) => v.type?.name },
@@ -46,9 +51,13 @@ export const BasicIdentificationRepeatingBlock = ({
             columns={columns}
             onChange={onChange}
             isDirty={isDirty}
+            isValid={isValid}
+            sizing={sizing}
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}
         />
     );
 };
+
+export type { BasicIdentificationRepeatingBlockProps };

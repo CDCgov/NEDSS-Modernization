@@ -10,11 +10,10 @@ import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTra
 import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
-import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
+import { CancelAddPatientPanel, useShowCancelModal, handleNativeCancelAddPanel } from '../cancelAddPatientPanel';
 import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
-import { useShowCancelModal } from './useShowCancelModal';
 
 import styles from './add-patient-extended.module.scss';
 
@@ -70,6 +69,10 @@ export const AddPatientExtended = () => {
         }
     }, [interaction.status]);
 
+    useEffect(() => {
+        handleNativeCancelAddPanel(form.formState.isDirty, form.formState.isSubmitted);
+    }, [form.formState.isDirty, form.formState.isSubmitted]);
+
     return (
         <AddExtendedPatientInteractionProvider interaction={interaction}>
             <Shown when={interaction.status === 'created'}>
@@ -101,7 +104,7 @@ export const AddPatientExtended = () => {
                         </main>
                     </div>
                     <Shown when={blocker.blocked}>
-                        <CancelAddPatientExtendedPanel onConfirm={handleModalConfirm} onClose={handleModalClose} />
+                        <CancelAddPatientPanel onConfirm={handleModalConfirm} onClose={handleModalClose} />
                     </Shown>
                 </div>
             </FormProvider>

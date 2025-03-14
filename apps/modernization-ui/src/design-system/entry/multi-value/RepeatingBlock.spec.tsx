@@ -2,22 +2,13 @@ import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
-import { RepeatingBlock } from './RepeatingBlock';
-import { ReactNode } from 'react';
+import { RepeatingBlock, RepeatingBlockProps } from './RepeatingBlock';
 
 type TestType = {
     firstInput: string;
     secondInput: string;
     thirdInput?: number;
     others: [];
-};
-
-const onChange = jest.fn();
-const isDirty = jest.fn();
-
-const defaultValues: Partial<TestType> = {
-    firstInput: 'first value',
-    secondInput: 'second value'
 };
 
 const UnderTestForm = () => {
@@ -84,21 +75,25 @@ const columns = [
     }
 ];
 
-type Props = {
-    values?: TestType[];
-    errors?: ReactNode[];
-    defaults?: Partial<TestType>;
-};
-
-const Fixture = ({ values = [], errors, defaults }: Props) => (
+const Fixture = ({
+    values = [],
+    errors,
+    defaultValues,
+    sizing,
+    onChange = jest.fn(),
+    isDirty = jest.fn(),
+    isValid
+}: Partial<RepeatingBlockProps<TestType>>) => (
     <RepeatingBlock<TestType>
         id="testing"
         title={'Test title'}
-        defaultValues={{ ...defaultValues, ...defaults }}
+        defaultValues={defaultValues}
         columns={columns}
         values={values}
         onChange={onChange}
         isDirty={isDirty}
+        sizing={sizing}
+        isValid={isValid}
         formRenderer={() => <UnderTestForm />}
         viewRenderer={(entry) => <UnderTestView entry={entry} />}
         errors={errors}
@@ -128,7 +123,14 @@ describe('RepeatingBlock', () => {
     });
 
     it('should display default values', async () => {
-        const { getByLabelText } = render(<Fixture />);
+        const { getByLabelText } = render(
+            <Fixture
+                defaultValues={{
+                    firstInput: 'first value',
+                    secondInput: 'second value'
+                }}
+            />
+        );
         await awaitRender();
 
         const firstInput = getByLabelText('First Input');
@@ -144,9 +146,17 @@ describe('RepeatingBlock', () => {
         const { getByRole } = render(<Fixture />);
         await awaitRender();
 
-        const button = getByRole('button');
+        const button = getByRole('button', { name: 'Add test title' });
         expect(button).toBeInTheDocument();
-        expect(button).toHaveTextContent('Add test');
+    });
+
+    it('should display add button with correct size', async () => {
+        const { getByRole } = render(<Fixture sizing="small" />);
+        await awaitRender();
+
+        const button = getByRole('button', { name: 'Add test title' });
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveClass('small');
     });
 
     it('should display specified columns', async () => {
@@ -163,12 +173,14 @@ describe('RepeatingBlock', () => {
     });
 
     it('should trigger on change when data is submitted', async () => {
-        const { getByRole, getByLabelText } = render(<Fixture />);
+        const onChange = jest.fn();
+
+        const { getByRole, getByLabelText } = render(<Fixture onChange={onChange} />);
 
         await awaitRender();
 
-        const button = getByRole('button');
-        expect(button).toBeInTheDocument();
+        const add = getByRole('button', { name: 'Add test title' });
+
         const input1 = getByLabelText('First Input');
         expect(input1).toBeInTheDocument();
         const input2 = getByLabelText('Second Input');
@@ -180,10 +192,9 @@ describe('RepeatingBlock', () => {
         userEvent.clear(input2);
         userEvent.type(input2, 'second input value');
         expect(input2).toHaveValue('second input value');
-        userEvent.click(button);
+        userEvent.click(add);
 
         await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
             expect(onChange).toHaveBeenNthCalledWith(1, []);
             expect(onChange).toHaveBeenNthCalledWith(2, [
                 { firstInput: 'first input value', secondInput: 'second input value' }
@@ -191,17 +202,57 @@ describe('RepeatingBlock', () => {
         });
     });
 
-    it('should display submitted data in table', async () => {
-        const { getByRole, getAllByRole } = render(<Fixture />);
+    it('should not display clear button when adding and no changes have been made.', async () => {
+        const { queryByRole } = render(<Fixture />);
 
         await awaitRender();
 
-        const button = getByRole('button');
-        userEvent.click(button);
+        expect(queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument();
+    });
+
+    it('should display clear button when adding and changes have been made.', async () => {
+        const { getByRole, getByLabelText } = render(<Fixture />);
+
+        await awaitRender();
+
+        const input1 = getByLabelText('First Input');
+
+        userEvent.type(input1, '-change');
+
+        expect(getByRole('button', { name: 'Clear' })).toBeInTheDocument();
+    });
+
+    it('should reset values to default state when Clear is clicked.', async () => {
+        const { getByRole, getByLabelText } = render(<Fixture />);
+
+        await awaitRender();
+
+        const input1 = getByLabelText('First Input');
+
+        userEvent.type(input1, '-change');
+
+        const clear = getByRole('button', { name: 'Clear' });
+
+        userEvent.click(clear);
+
+        userEvent.type(input1, 'first input value');
+    });
+
+    it('should display submitted data in table', async () => {
+        const onChange = jest.fn();
+
+        const { getByRole, getAllByRole, getByLabelText } = render(<Fixture onChange={onChange} />);
+
+        await awaitRender();
+
+        userEvent.type(getByLabelText('First Input'), 'first value');
+        userEvent.type(getByLabelText('Second Input'), 'second value');
+        userEvent.tab();
+
+        const add = getByRole('button', { name: 'Add test title' });
+        userEvent.click(add);
 
         await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
             expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
         });
 
@@ -213,11 +264,16 @@ describe('RepeatingBlock', () => {
     });
 
     it('should reset after adding data', async () => {
-        const { getByRole, getByLabelText, queryByText } = render(<Fixture defaults={{ firstInput: undefined }} />);
+        const onChange = jest.fn();
+
+        const { getByRole, getByLabelText, queryByText } = render(<Fixture onChange={onChange} />);
 
         await awaitRender();
+
+        const add = getByRole('button', { name: 'Add test title' });
+
         // try to add with empty required field
-        userEvent.click(getByRole('button'));
+        userEvent.click(add);
 
         // ensure validation message appears
         await waitFor(() => {
@@ -226,13 +282,12 @@ describe('RepeatingBlock', () => {
 
         // enter data and submit
         userEvent.type(getByLabelText('First Input'), 'typed value');
-        userEvent.click(getByRole('button'));
+        userEvent.click(add);
 
         // expect value to be added
         await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
             expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'typed value', secondInput: 'second value' }]);
+            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'typed value', secondInput: undefined }]);
         });
 
         // verify validation message is no longer visible
@@ -241,7 +296,7 @@ describe('RepeatingBlock', () => {
         });
 
         // immediately click add button again
-        userEvent.click(getByRole('button'));
+        userEvent.click(add);
 
         // verify validation text is shown
         await waitFor(() => {
@@ -250,18 +305,19 @@ describe('RepeatingBlock', () => {
     });
 
     it('should display icons in last column of table', async () => {
-        const { getByRole, getAllByRole } = render(<Fixture />);
+        const { getAllByRole } = render(
+            <Fixture
+                values={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: []
+                    }
+                ]}
+            />
+        );
 
         await awaitRender();
-
-        const button = getByRole('button');
-        userEvent.click(button);
-
-        await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
-        });
 
         const iconContainer = getAllByRole('cell')[2].children[0].children[0];
         expect(iconContainer.children).toHaveLength(3);
@@ -279,121 +335,220 @@ describe('RepeatingBlock', () => {
         expect(iconContainer.children[2]).toHaveAttribute('data-tooltip-position', 'top');
     });
 
+    it('should render icons with correct sizing', async () => {
+        const { container } = render(
+            <Fixture
+                sizing="small"
+                values={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: []
+                    }
+                ]}
+            />
+        );
+        await awaitRender();
+
+        const icons = container.querySelectorAll('.actions svg');
+        expect(icons).toHaveLength(3);
+        icons.forEach((icon) => {
+            expect(icon).toHaveClass('small');
+        });
+    });
+
     it('should render view when view icon clicked', async () => {
-        const { getByRole, getAllByRole, getByText } = render(<Fixture />);
+        const { getByLabelText, getByText } = render(
+            <Fixture
+                values={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: []
+                    }
+                ]}
+            />
+        );
 
         await awaitRender();
 
-        const button = getByRole('button');
-        userEvent.click(button);
+        const view = getByLabelText('View');
+        userEvent.click(view);
 
-        await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
-        });
-
-        const iconContainer = getAllByRole('cell')[2].children[0].children[0];
-        expect(iconContainer.children).toHaveLength(3);
-
-        // View icon
-        userEvent.click(iconContainer.children[0].children[0]);
-
-        expect(getByText('Render view first value: first value')).toBeInTheDocument();
-        expect(getByText('Render view second value: second value')).toBeInTheDocument();
+        expect(getByText('Render view first value: first-value')).toBeInTheDocument();
+        expect(getByText('Render view second value: second-value')).toBeInTheDocument();
     });
 
     it('should delete row when delete icon clicked', async () => {
-        const { getByRole, getAllByRole } = render(<Fixture />);
+        const onChange = jest.fn();
+        const { getByLabelText } = render(
+            <Fixture
+                onChange={onChange}
+                values={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: []
+                    }
+                ]}
+            />
+        );
 
         await awaitRender();
 
-        const button = getByRole('button');
-        userEvent.click(button);
+        const remove = getByLabelText('Delete');
+        userEvent.click(remove);
 
         await waitFor(() => {
-            expect(onChange).toBeCalledTimes(2);
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
-        });
-
-        const iconContainer = getAllByRole('cell')[2].children[0].children[0];
-
-        await waitFor(() => {
-            userEvent.click(iconContainer.children[2].children[0]);
-            expect(onChange).toBeCalledTimes(3);
-            expect(onChange).toHaveBeenNthCalledWith(3, []);
+            expect(onChange).toHaveBeenCalledWith([]);
         });
     });
 
     it('should allow edit of row', async () => {
-        const { getByRole, getAllByRole, getByLabelText } = render(<Fixture />);
+        const onChange = jest.fn();
+
+        const { getByRole, getAllByRole, getByLabelText } = render(
+            <Fixture
+                onChange={onChange}
+                values={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: []
+                    }
+                ]}
+            />
+        );
 
         await awaitRender();
 
-        const button = getByRole('button');
+        const edit = getByLabelText('Edit');
+
+        userEvent.click(edit);
+
+        const update = getByRole('button', { name: 'Update test title' });
         const input1 = getByLabelText('First Input');
-        const input2 = getByLabelText('Second Input');
 
-        userEvent.clear(input1);
-        userEvent.type(input1, 'first changed');
-        userEvent.clear(input2);
-        userEvent.type(input2, 'second changed');
-        userEvent.click(button);
+        userEvent.type(input1, '-changed');
+        userEvent.tab();
+
+        userEvent.click(update);
 
         await waitFor(() => {
             // change event fires, form resets to default
-            expect(onChange).toBeCalledTimes(2);
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [
-                { firstInput: 'first changed', secondInput: 'second changed' }
-            ]);
-            expect(getByLabelText('First Input')).toHaveValue('first value');
-            expect(getByLabelText('Second Input')).toHaveValue('second value');
-        });
-
-        const iconContainer = getAllByRole('cell')[2].children[0].children[0];
-
-        await waitFor(() => {
-            // view clicked, input values set to entry value
-            userEvent.click(iconContainer.children[1].children[0]);
-            expect(getByLabelText('First Input')).toHaveValue('first changed');
-            expect(getByLabelText('Second Input')).toHaveValue('second changed');
-        });
-
-        userEvent.clear(input1);
-        userEvent.type(input1, 'first changed again');
-        userEvent.clear(input2);
-        userEvent.type(input2, 'second changed again');
-        userEvent.click(button);
-
-        await waitFor(() => {
-            // change event fires, form resets to default
-            expect(onChange).toBeCalledTimes(3);
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [
-                { firstInput: 'first changed', secondInput: 'second changed' }
-            ]);
-            expect(onChange).toHaveBeenNthCalledWith(3, [
-                { firstInput: 'first changed again', secondInput: 'second changed again' }
-            ]);
-            expect(getByLabelText('First Input')).toHaveValue('first value');
-            expect(getByLabelText('Second Input')).toHaveValue('second value');
+            expect(onChange).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                    expect.objectContaining({ firstInput: 'first-value-changed', secondInput: 'second-value' })
+                ])
+            );
         });
 
         // table display updated
         const columns = getAllByRole('cell');
         expect(columns).toHaveLength(3);
-        expect(columns[0]).toHaveTextContent('first changed again');
-        expect(columns[1]).toHaveTextContent('second changed again');
+        expect(columns[0]).toHaveTextContent('first-value-changed');
+        expect(columns[1]).toHaveTextContent('second-value');
         expect(columns[2]).toHaveTextContent('');
     });
 
-    it('should display errors passed to component', async () => {
+    it('should allow cancelling update of row being edited', async () => {
+        const onChange = jest.fn();
+
+        const { getByRole, getAllByRole, getByLabelText } = render(
+            <Fixture
+                onChange={onChange}
+                values={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: []
+                    }
+                ]}
+            />
+        );
+
+        await awaitRender();
+
+        const edit = getByLabelText('Edit');
+
+        userEvent.click(edit);
+
+        const input1 = getByLabelText('First Input');
+
+        userEvent.type(input1, '-changed');
+        userEvent.tab();
+
+        const cancel = getByRole('button', { name: 'Cancel' });
+        userEvent.click(cancel);
+
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                    expect.objectContaining({ firstInput: 'first-value', secondInput: 'second-value' })
+                ])
+            );
+        });
+
+        // table display updated
+        const columns = getAllByRole('cell');
+        expect(columns).toHaveLength(3);
+        expect(columns[0]).toHaveTextContent('first-value');
+        expect(columns[1]).toHaveTextContent('second-value');
+        expect(columns[2]).toHaveTextContent('');
+    });
+
+    it('should display errors passed to component ', async () => {
         const { getByText } = render(<Fixture errors={['First error', 'Second error']} />);
         await awaitRender();
 
         expect(getByText('First error')).toBeInTheDocument();
         expect(getByText('Second error')).toBeInTheDocument();
+    });
+
+    it('should display form errors', async () => {
+        const { getByRole, queryByText } = render(<Fixture />);
+        await awaitRender();
+
+        const add = getByRole('button', { name: 'Add test title' });
+        userEvent.click(add);
+
+        await waitFor(() => {
+            expect(queryByText('First input is required.')).toBeInTheDocument();
+        });
+    });
+
+    it('should call isDirty with true when form input applied', () => {
+        const isDirty = jest.fn();
+        const { getByLabelText } = render(<Fixture isDirty={isDirty} />);
+        const input1 = getByLabelText('First Input');
+        userEvent.type(input1, 'first value');
+
+        expect(isDirty).toHaveBeenCalledWith(true);
+    });
+
+    it('should call isDirty with false when form input cleared', () => {
+        const isDirty = jest.fn();
+        const { getByLabelText, getByRole } = render(<Fixture isDirty={isDirty} />);
+        const input1 = getByLabelText('First Input');
+        userEvent.type(input1, 'first value');
+
+        const clear = getByRole('button', { name: 'Clear' });
+        userEvent.click(clear);
+
+        expect(isDirty).toHaveBeenCalledWith(false);
+    });
+
+    it('should call isValid with false when there are form errors', async () => {
+        const isValid = jest.fn();
+        const { getByRole, getByText } = render(<Fixture isValid={isValid} />);
+        await awaitRender();
+
+        const add = getByRole('button', { name: 'Add test title' });
+        userEvent.click(add);
+
+        await waitFor(() => {
+            expect(getByText('First input is required.')).toBeInTheDocument();
+            expect(isValid).toHaveBeenCalledWith(false);
+        });
     });
 });

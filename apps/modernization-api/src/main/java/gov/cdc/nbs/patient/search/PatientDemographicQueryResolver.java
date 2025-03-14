@@ -47,6 +47,7 @@ class PatientDemographicQueryResolver {
   private static final String NAME_USE_CD = "name.nm_use_cd.keyword";
   private static final String LAST_NAME = "name.lastNm";
   private static final String LOCAL_ID = "local_id";
+  private static final String SHORT_ID = "short_id";
   private static final String FIRST_NAME = "name.firstNm";
   private static final String PAINLESS = "painless";
   private static final String STREET = "address.streetAddr1";
@@ -112,7 +113,7 @@ class PatientDemographicQueryResolver {
     return Optional.of(BoolQuery.of(
         bool -> bool.must(
             query -> query.queryString(
-                simple -> simple.fields(LOCAL_ID)
+                simple -> simple.fields(SHORT_ID)
                     .query(adjusted)))));
 
   }
@@ -328,7 +329,7 @@ class PatientDemographicQueryResolver {
       return Optional.empty();
     }
 
-    return Optional.of(new TextCriteria(null, null, null, criteria.getFilter().email(), null))
+    return Optional.of(new TextCriteria(null, null, null, criteria.getFilter().email().replace("@", " "), null))
         .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(EMAILS, EMAIL_ADDRESS, value));
   }
@@ -369,8 +370,8 @@ class PatientDemographicQueryResolver {
 
     PatientFilter.Identification identification = criteria.getIdentification();
 
-    String type = identification.getIdentificationType();
-    String value = AdjustStrings.withoutSpecialCharacters(identification.getIdentificationNumber());
+    String type = identification.identificationType();
+    String value = AdjustStrings.withoutSpecialCharacters(identification.identificationNumber());
 
     if (type != null && (value != null && !value.isEmpty())) {
       return Optional.of(

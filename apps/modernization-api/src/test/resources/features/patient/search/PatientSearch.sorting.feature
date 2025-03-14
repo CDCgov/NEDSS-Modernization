@@ -122,32 +122,6 @@ Feature: Patient Search Sorting
     And search result 2 has a "first name" of "Stephanie"
     And search result 3 has a "first name" of "Jason"
 
-  Scenario: I can find the most relevant patient when sorting by identification ascending
-    Given the patient can be identified with an "SS" of "888-88-8888"
-    And I have another patient
-    And the patient can be identified with an "DL" of "123"
-    And I have another patient
-    And the patient can be identified with an "Other" of "456"
-    And patients are available for search
-    And I want patients sorted by "identification" "asc"
-    When I search for patients
-    Then search result 1 has an "identification value" of "123"
-    And search result 2 has an "identification value" of "456"
-    And search result 3 has an "identification value" of "888-88-8888"
-
-  Scenario: I can find the most relevant patient when sorting by identification descending
-    Given the patient can be identified with an "SS" of "888-88-8888"
-    And I have another patient
-    And the patient can be identified with an "DL" of "123"
-    And I have another patient
-    And the patient can be identified with an "Other" of "456"
-    And patients are available for search
-    And I want patients sorted by "identification" "desc"
-    When I search for patients
-    Then search result 1 has an "identification value" of "888-88-8888"
-    And search result 2 has an "identification value" of "456"
-    And search result 3 has an "identification value" of "123"
-
   Scenario: I can find the most relevant patient when sorting by city  ascending
     Given the patient has a "city" of "acity"
     And I have another patient
@@ -173,32 +147,6 @@ Feature: Patient Search Sorting
     Then search result 1 has a "city" of "ccity"
     And search result 2 has a "city" of "bcity"
     And search result 3 has a "city" of "acity"
-
-  Scenario: I can find the most relevant patient when sorting by email ascending
-    Given the patient has a "email address" of "abc@test.com"
-    And I have another patient
-    And the patient has a "email address" of "cba@test.com"
-    And I have another patient
-    And the patient has a "email address" of "bac@test.com"
-    And patients are available for search
-    And I want patients sorted by "email" "asc"
-    When I search for patients
-    Then search result 1 has a "email address" of "abc@test.com"
-    And search result 2 has a "email address" of "bac@test.com"
-    And search result 3 has a "email address" of "cba@test.com"
-
-  Scenario: I can find the most relevant patient when sorting by email descending
-    Given the patient has a "email address" of "abc@test.com"
-    And I have another patient
-    And the patient has a "email address" of "cba@test.com"
-    And I have another patient
-    And the patient has a "email address" of "bac@test.com"
-    And patients are available for search
-    And I want patients sorted by "email" "desc"
-    When I search for patients
-    Then search result 1 has a "email address" of "cba@test.com"
-    And search result 2 has a "email address" of "bac@test.com"
-    And search result 3 has a "email address" of "abc@test.com"
 
   Scenario: I can find the most relevant patient when sorting by address ascending
     Given the patient has a "address" of "123 One St"

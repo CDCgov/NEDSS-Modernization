@@ -8,18 +8,21 @@ import { Icon } from 'design-system/icon';
 import { AlertMessage } from 'design-system/message';
 import { Column, DataTable } from 'design-system/table';
 import { useMultiValueEntryState } from './useMultiValueEntryState';
+import { Sizing } from 'design-system/field';
 
 import styles from './RepeatingBlock.module.scss';
 
-type Props<V extends FieldValues> = {
+type RepeatingBlockProps<V extends FieldValues> = {
     id: string;
     title: string;
     columns: Column<V>[];
     defaultValues?: DefaultValues<V>; // Provide all default values to allow `isDirty` to function
     errors?: ReactNode[];
     values?: V[];
+    sizing?: Sizing;
     onChange: (data: V[]) => void;
     isDirty: (isDirty: boolean) => void;
+    isValid?: (isValid: boolean) => void;
     formRenderer: (entry?: V) => ReactNode;
     viewRenderer: (entry: V) => ReactNode;
 };
@@ -31,50 +34,30 @@ const RepeatingBlock = <V extends FieldValues>({
     values = [],
     columns,
     errors,
+    sizing,
     onChange,
     isDirty,
+    isValid,
     formRenderer,
     viewRenderer
-}: Props<V>) => {
+}: RepeatingBlockProps<V>) => {
     const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onBlur', defaultValues });
-    const { status, selected, add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>({ values });
+    const { status, entries, selected, add, edit, update, remove, view, reset } = useMultiValueEntryState<V>({
+        values
+    });
 
     useEffect(() => {
-        onChange(state.data);
-    }, [JSON.stringify(state.data)]);
+        onChange(entries);
+    }, [JSON.stringify(entries)]);
 
     useEffect(() => {
         isDirty(form.formState.isDirty);
+
+        if (!form.formState.isDirty) {
+            // If a user clears the form, remove internal form validation errors
+            form.clearErrors();
+        }
     }, [form.formState.isDirty]);
-
-    const handleReset = () => {
-        form.reset(defaultValues);
-        reset();
-    };
-
-    const handleSubmit = (value: V) => {
-        // Submit button performs various actions based on the current state
-        if (state.status === 'adding') {
-            // form reset must be triggered prior to `add` call,
-            // otherwise internal form state retains some values and fails to properly reset
-            form.reset(defaultValues);
-            add(value);
-        } else if (status === 'editing') {
-            form.reset(defaultValues);
-            update(state.index, value);
-        }
-    };
-
-    const handleRemove = (index: number) => {
-        if ((state.status === 'editing' || state.status === 'viewing') && state.index === index) {
-            form.reset(defaultValues);
-        }
-        remove(index);
-    };
-
-    const handleEdit = (index: number) => {
-        edit(index);
-    };
 
     useEffect(() => {
         // Perform form reset after status update to allow time for rendering of form
@@ -84,19 +67,55 @@ const RepeatingBlock = <V extends FieldValues>({
         }
     }, [status, selected, form.reset]);
 
+    const handleReset = () => {
+        form.reset(defaultValues);
+        reset();
+    };
+
+    const handleClear = () => {
+        form.reset(defaultValues);
+    };
+
+    const handleAdd = (value: V) => {
+        // form reset must be triggered prior to `add` call,
+        // otherwise internal form state retains some values and fails to properly reset
+        form.reset(defaultValues);
+        add(value);
+    };
+
+    const handleUpdate = (value: V) => {
+        form.reset(defaultValues);
+        update(value);
+    };
+
+    const handleRemove = (value: V) => {
+        if ((status === 'editing' || status === 'viewing') && selected === value) {
+            form.reset(defaultValues);
+        }
+        remove(value);
+    };
+
     const iconColumn: Column<V> = {
         id: 'actions',
         name: '',
-        render: (_entry: V, index: number) => (
-            <div className={styles.iconContainer}>
-                <div data-tooltip-position="top" aria-label="View">
-                    <Icon name="visibility" onClick={() => view(index)} />
+        render: (value: V) => (
+            <div className={classNames(styles.actions, sizing && styles[sizing])}>
+                <div data-tooltip-position="top" aria-label="View" onClick={() => view(value)}>
+                    <Icon
+                        name="visibility"
+                        sizing={sizing}
+                        className={classNames({ [styles.active]: status === 'viewing' && value === selected })}
+                    />
                 </div>
-                <div data-tooltip-position="top" aria-label="Edit">
-                    <Icon name="edit" onClick={() => handleEdit(index)} />
+                <div data-tooltip-position="top" aria-label="Edit" onClick={() => edit(value)}>
+                    <Icon
+                        name="edit"
+                        sizing={sizing}
+                        className={classNames({ [styles.active]: status === 'editing' && value === selected })}
+                    />
                 </div>
-                <div data-tooltip-position="top" aria-label="Delete">
-                    <Icon name="delete" onClick={() => handleRemove(index)} />
+                <div data-tooltip-position="top" aria-label="Delete" onClick={() => handleRemove(value)}>
+                    <Icon name="delete" sizing={sizing} />
                 </div>
             </div>
         )
@@ -110,40 +129,35 @@ const RepeatingBlock = <V extends FieldValues>({
         return messages.filter((a) => a != undefined);
     }, [JSON.stringify(form.formState.errors), errors]);
 
-    // If a user clears the form, remove internal form validation errors
     useEffect(() => {
-        if (!form.formState.isDirty) {
-            form.clearErrors();
-        }
-    }, [form.formState.isDirty]);
+        isValid?.(!errorMessages || errorMessages.length === 0);
+    }, [errorMessages]);
 
     return (
-        <section id={id} className={styles.input}>
+        <section id={id} className={classNames(styles.input, sizing && styles[sizing])}>
             <header>
                 <Heading level={2}>{title}</Heading>
-                <span className="required-before">All required fields for adding {title.toLowerCase()}</span>
+                <span className="required-before">Required</span>
             </header>
 
             <Shown when={errorMessages && errorMessages.length > 0}>
-                <section>
-                    <AlertMessage title="Please fix the following errors:" type="error">
-                        <ul className={styles.errorList}>
-                            {errorMessages.map((e, i) => (
-                                <li key={i}>{e}</li>
-                            ))}
-                        </ul>
-                    </AlertMessage>
-                </section>
+                <AlertMessage title="Please fix the following errors:" type="error">
+                    <ul className={styles.errorList}>
+                        {errorMessages.map((e, i) => (
+                            <li key={i}>{e}</li>
+                        ))}
+                    </ul>
+                </AlertMessage>
             </Shown>
             <div>
-                <Shown when={state.data.length > 0}>
-                    <DataTable<V>
-                        className={styles.dataTable}
-                        id={`${id}-data-table`}
-                        columns={[...columns, iconColumn]}
-                        data={state.data}
-                    />
-                </Shown>
+                <DataTable<V>
+                    className={styles.dataTable}
+                    id={`${id}-data-table`}
+                    columns={[...columns, iconColumn]}
+                    data={entries}
+                    sizing={sizing}
+                    noDataFallback
+                />
             </div>
             <Shown when={status === 'viewing'}>{selected && viewRenderer(selected)}</Shown>
             <Shown when={status !== 'viewing'}>
@@ -154,15 +168,37 @@ const RepeatingBlock = <V extends FieldValues>({
                 </FormProvider>
             </Shown>
             <footer>
-                <Shown when={status === 'editing' || status === 'adding'}>
-                    <Button outline onClick={form.handleSubmit(handleSubmit)}>
-                        <Icon name="add" />
-                        {`${status === 'editing' ? 'Update' : 'Add'} ${title.toLowerCase()}`}
+                <Shown when={status === 'adding'}>
+                    <Button outline sizing={sizing} onClick={form.handleSubmit(handleAdd)}>
+                        <Icon name="add" sizing={sizing} />
+                        {`Add ${title.toLowerCase()}`}
+                    </Button>
+                    <Shown when={form.formState.isDirty}>
+                        <Button
+                            outline
+                            sizing={sizing}
+                            aria-details={`clear ${title.toLowerCase()}`}
+                            onClick={handleClear}>
+                            Clear
+                        </Button>
+                    </Shown>
+                </Shown>
+                <Shown when={status === 'editing'}>
+                    <Button outline sizing={sizing} onClick={form.handleSubmit(handleUpdate)}>
+                        <Icon name="add" sizing={sizing} />
+                        {`Update ${title.toLowerCase()}`}
+                    </Button>
+                    <Button
+                        outline
+                        sizing={sizing}
+                        aria-details={`cancel editing current ${title.toLowerCase()}`}
+                        onClick={handleReset}>
+                        Cancel
                     </Button>
                 </Shown>
                 <Shown when={status === 'viewing'}>
-                    <Button outline onClick={handleReset}>
-                        <Icon name="add" />
+                    <Button outline sizing={sizing} onClick={handleReset}>
+                        <Icon name="add" sizing={sizing} />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
                 </Shown>
@@ -172,3 +208,4 @@ const RepeatingBlock = <V extends FieldValues>({
 };
 
 export { RepeatingBlock };
+export type { RepeatingBlockProps };

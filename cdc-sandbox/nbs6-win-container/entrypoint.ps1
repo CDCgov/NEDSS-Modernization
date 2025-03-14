@@ -44,8 +44,8 @@ if ($null -ne $env:DISABLED_SCHEDULED_TASKS -and $env:DISABLED_SCHEDULED_TASKS -
 }
 
 foreach ($item in $disabledTasksArray) {
-    Write-Output "Disabling TaskName: $item Task"
-    Disable-ScheduledTask -TaskName "$item Task"
+    Write-Output "Disabling TaskName: $item"
+    Disable-ScheduledTask -TaskName "$item"
 }
 
 # Set environment memory allocation (override standalone.conf.bat)
@@ -58,6 +58,12 @@ $env:JAVA_OPTS="$env:JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman"
 [Environment]::SetEnvironmentVariable("JBOSS_HOME", $env:JBOSS_HOME, "Machine")
 [Environment]::SetEnvironmentVariable("JAVA_TOOL_OPTIONS", $env:JAVA_TOOL_OPTIONS, "Machine")
 [Environment]::SetEnvironmentVariable("DATABASE_ENDPOINT", $env:DATABASE_ENDPOINT, "Machine")
+[Environment]::SetEnvironmentVariable("odse_user", $env:odse_user, "Machine")
+[Environment]::SetEnvironmentVariable("odse_pass", $env:odse_pass, "Machine")
+[Environment]::SetEnvironmentVariable("rdb_user", $env:rdb_user, "Machine")
+[Environment]::SetEnvironmentVariable("rdb_pass", $env:rdb_pass, "Machine")
+[Environment]::SetEnvironmentVariable("srte_user", $env:srte_user, "Machine")
+[Environment]::SetEnvironmentVariable("srte_pass", $env:srte_pass, "Machine")
 [Environment]::SetEnvironmentVariable("JAVA_OPTS", $env:JAVA_OPTS, "Machine")
 [Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\executables\sqlcmd", "Machine")
 
@@ -72,12 +78,41 @@ $connectionURLs = @{
     "SrtDS" = "jdbc:sqlserver://DATABASE_ENDPOINT:1433;SelectMethod=direct;DatabaseName=nbs_srte"
 }
 
+$connectionURLs_user = @{ 
+    "NedssDS" = "odse_user";                     
+    "MsgOutDS" = "odse_user";                    
+    "ElrXrefDS" = "odse_user";                     
+    "RdbDS" = "rdb_user";                     
+    "SrtDS" = "srte_user"
+}
+
+$connectionURLs_pass = @{ 
+    "NedssDS" = "odse_pass";                     
+    "MsgOutDS" = "odse_pass";                     
+    "ElrXrefDS" = "odse_pass";                     
+    "RdbDS" = "rdb_pass";                     
+    "SrtDS" = "srte_pass"
+}
 
 $keys = $connectionURLs.Keys.Clone()
-
 foreach ($key in $keys) {
     $connectionURLs[$key] = $connectionURLs[$key] -replace "DATABASE_ENDPOINT", $env:DATABASE_ENDPOINT
 }
+
+$keys_user = $connectionURLs_user.Keys.Clone()
+foreach ($key in $keys_user) {
+    $connectionURLs_user[$key] = $connectionURLs_user[$key] -replace "odse_user", $env:odse_user
+    $connectionURLs_user[$key] = $connectionURLs_user[$key] -replace "rdb_user", $env:rdb_user
+    $connectionURLs_user[$key] = $connectionURLs_user[$key] -replace "srte_user", $env:srte_user
+}
+
+$keys_pass = $connectionURLs_pass.Keys.Clone()
+foreach ($key in $keys_pass) {
+    $connectionURLs_pass[$key] = $connectionURLs_pass[$key] -replace "odse_pass", $env:odse_pass
+    $connectionURLs_pass[$key] = $connectionURLs_pass[$key] -replace "rdb_pass", $env:rdb_pass
+    $connectionURLs_pass[$key] = $connectionURLs_pass[$key] -replace "srte_pass", $env:srte_pass
+}
+
 
 # Replace datasources in standalone.xml file
 $xmlFileName = "D:\wildfly-10.0.0.Final\nedssdomain\configuration\standalone.xml"
@@ -96,6 +131,8 @@ $subsystems | ForEach-Object {
         $datsources | ForEach-Object {
             if ( $connectionURLs.ContainsKey($_.'pool-name')) {
                 $_.'connection-url' =  $connectionURLs[$_.'pool-name']
+                $_.security.'user-name' = $connectionURLs_user[$_.'pool-name']
+                $_.security.password = $connectionURLs_pass[$_.'pool-name']
             }
         }
     }

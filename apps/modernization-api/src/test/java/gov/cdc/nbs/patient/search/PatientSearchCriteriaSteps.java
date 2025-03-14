@@ -48,12 +48,16 @@ public class PatientSearchCriteriaSteps {
       case "email", "email address" -> criteria.setEmail(value);
       case "city" -> criteria.setCity(value);
       case "address" -> criteria.setAddress(value);
-      case "identification type" -> criteria.getIdentification().setIdentificationType(value);
-      case "identification value" -> criteria.getIdentification().setIdentificationNumber(value);
+      case "identification value" -> criteria.withIdentification(criteria.getIdentification().withValue(value));
       default -> throw new IllegalStateException(
           "Unexpected search criteria %s equal %s".formatted(field, value));
     }
     return criteria;
+  }
+
+  @Given("I add the patient criteria for an identification type equal to {identificationType}")
+  public void i_add_the_patient_criteria_for_an_identification(final String type) {
+    this.activeCriteria.active(criteria -> criteria.withIdentification(criteria.getIdentification().withType(type)));
   }
 
   @Given("I add the patient criteria for a gender of {gender}")
@@ -94,6 +98,13 @@ public class PatientSearchCriteriaSteps {
   public void i_would_like_to_search_for_a_patient_using_a_local_ID() {
     this.patient.maybeActive().ifPresent(
         found -> this.activeCriteria.active(criteria -> criteria.withId(found.local())));
+  }
+
+  @Given("I would like to filter search results with id {string}")
+  public void i_would_like_to_filter_search_results_with_id(String id) {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria
+            .active(criteria -> criteria.withIdFilter(id)));
   }
 
   @Given("I would like to search for a patient using a local ID and a good equals id filter")

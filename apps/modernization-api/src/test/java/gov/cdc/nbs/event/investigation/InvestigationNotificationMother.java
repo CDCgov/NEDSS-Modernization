@@ -73,9 +73,11 @@ class InvestigationNotificationMother {
   private static final String CREATE_TRANSPORT_NOTIFICATION = """
       insert into CN_transportq_out (
       		notification_uid,
+          notification_local_id,
       		record_status_cd
       	) values (
           :notificationId,
+          :notificationLocalId,
           :processingStatus);
         """;
 
@@ -143,6 +145,7 @@ class InvestigationNotificationMother {
   void createTransportStatus(final String status) {
     SqlParameterSource parameters = new MapSqlParameterSource()
         .addValue("notificationId", active.active().identifier())
+        .addValue("notificationLocalId", active.active().local())
         .addValue("processingStatus", status);
     template.execute(
         CREATE_TRANSPORT_NOTIFICATION,

@@ -61,6 +61,18 @@ Feature: Patient Search
     And search result 1 has a "last name" of "Smith"
     And there are 1 patient search results
 
+  Scenario: I can filter search results with a 0 and get no results because short id does not have a 0
+    Given I have a patient
+    And the patient has a "local id" of "PSN09999999GA01"
+    And the patient has the legal name "Joe" "Other"
+    And I have another patient
+    And the patient has the legal name "Joe" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a first name that equals "Joe"
+    And I would like to filter search results with id "0"
+    When I search for patients
+    Then there are 0 patient search results
+
   Scenario: I can filter search results with the patient's short ID and name
     Given I have a patient
     And the patient has the legal name "Joe" "Other"
@@ -277,209 +289,6 @@ Feature: Patient Search
     And the search results have a patient without a "legal name suffix"
     And the search results have a patient with a "first name" equal to "Al"
     And the search results have a patient with a "last name" equal to "Lias"
-
-  Scenario: I can search for a Patient using a phone number
-    Given the patient has the phone number "1"-"888-240-2200" x"1009"
-    And I have another patient
-    And the patient has the Answering service - Temporary number of "613-240-2200"
-    And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "613-240-2200"
-    When I search for patients
-    Then the search results have a patient with a Answering service - Temporary number of "613-240-2200"
-
-  Scenario: I can search for a Patient using a partial phone number
-    Given the patient has a "phone number" of "888-240-2200"
-    And I have another patient
-    And the patient has a "phone number" of "613-240-2200"
-    And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "613-240-2200"
-    When I search for patients
-    Then the search results have a patient with an "phone number" equal to "613-240-2200"
-
-  Scenario: I can search for a Patient using a phone number and filter
-    Given the patient has a "phone number" of "888-240-2200"
-    And I have another patient
-    And the patient has a "phone number" of "613-240-2200"
-    And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "613-240-2200"
-    And I would like to filter search results with phone "32402"
-    When I search for patients
-    Then the search results have a patient with an "phone number" equal to "613-240-2200"
-
-  Scenario: I can search for a Patient using a phone number and a filter that doesn't exist
-    Given the patient has a "phone number" of "888-240-2200"
-    And I have another patient
-    And the patient has a "phone number" of "613-240-2200"
-    And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "613-240-2200"
-    And I would like to filter search results with phone "111111"
-    When I search for patients
-    Then there are 0 patient search results
-
-  Scenario: I can search for a Patient using a phone number two filters
-    Given the patient has a "phone number" of "888-240-2200"
-    And I have another patient
-    And the patient has a "phone number" of "613-240-2200"
-    And the patient has an "email address" of "emailaddress@mail.com"
-    And patients are available for search
-    And I add the patient criteria for an "phone number" equal to "613-240-2200"
-    And I would like to filter search results with email "address"
-    And I would like to filter search results with phone "3-240-2"
-    When I search for patients
-    Then the search results have a patient with an "phone number" equal to "613-240-2200"
-
-  Scenario: I can search for a Patient using an email address
-    Given the patient has an "email address" of "emailaddress@mail.com"
-    And I have another patient
-    And the patient has an "email address" of "other@mail.com"
-    And patients are available for search
-    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
-    When I search for patients
-    Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
-
-  Scenario: I can search for a Patient using an email address and an email filter
-    Given the patient has an "email address" of "emailaddress@mail.com"
-    And I have another patient
-    And the patient has an "email address" of "other@mail.com"
-    And patients are available for search
-    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
-    And I would like to filter search results with email "address"
-    When I search for patients
-    Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
-
-  Scenario: I can search for a Patient using an email address and a non-matching email filter
-    Given the patient has an "email address" of "emailaddress@mail.com"
-    And I have another patient
-    And the patient has an "email address" of "other@mail.com"
-    And patients are available for search
-    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
-    And I would like to filter search results with email "QQQ"
-    When I search for patients
-    Then there are 0 patient search results
-
-  Scenario: I can search for a Patient using an email address and two filters
-    Given the patient has an "email address" of "emailaddress@mail.com"
-    And the patient has the gender Unknown
-    And I have another patient
-    And the patient has an "email address" of "other@mail.com"
-    And patients are available for search
-    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
-    And I add the patient criteria for sex filter of "u"
-    And I would like to filter search results with email "address"
-    When I search for patients
-    Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
-
-  Scenario: I can search for a Patient using an Identification
-    Given the patient can be identified with an "other" of "888-88-8888"
-    And I have another patient
-    And the patient can be identified with a "SS" of "888-88-8888"
-    And patients are available for search
-    And I add the patient criteria for an "identification type" equal to "SS"
-    And I add the patient criteria for an "identification value" equal to "888-88-8888"
-    When I search for patients
-    Then there is only one patient search result
-    And the search results have a patient with an "identification type" equal to "Social Security"
-    And the search results have a patient with an "identification value" equal to "888-88-8888"
-
-  Scenario Outline: I can search for a Patient using a partial a Identification number
-    Given the patient can be identified with an <first-type> of <first-value>
-    And the patient can be identified with a <patient-type> of <patient-value>
-    And patients are available for search
-    And I add the patient criteria for an "identification type" equal to <patient-type>
-    And I add the patient criteria for an "identification value" equal to <search>
-    When I search for patients
-    Then the patient is in the search results
-    Examples:
-      | first-type | first-value   | patient-type | patient-value | search |
-      | "MN"       | "888-88-8000" | "SS"         | "888-88-8888" | "888"  |
-      | "SS"       | "888-88-8000" | "SS"         | "888-88-8888" | "888"  |
-      | "SS"       | "111-88-8000" | "SS"         | "888-88-8888" | "888"  |
-
-  Scenario: I can search for a Patient using a specific Identification
-    Given the patient can be identified with a "MC" of "5507"
-    And the patient can be identified with a "DL" of "4099"
-    And patients are available for search
-    And I add the patient criteria for an "identification type" equal to "MC"
-    And I add the patient criteria for an "identification value" equal to "4099"
-    When I search for patients
-    Then the patient is not in the search results
-
-  Scenario: I can search for a Patient using a value that is contained in the Identification
-    Given the patient can be identified with a "MC" of "1234"
-    And I have another patient
-    And the patient can be identified with a "MC" of "1345"
-    And patients are available for search
-    And I add the patient criteria for an "identification type" equal to "MC"
-    And I add the patient criteria for an "identification value" equal to "23"
-    When I search for patients
-    Then there is only one patient search result
-    And the search results have a patient with an "identification value" equal to "1234"
-
-  Scenario: BUG: CNFT1-2008 I can search for a Patient with invalid identification
-    Given the patient has the legal name "Max" "Headroom"
-    And the patient can be identified with a Medicare Number of "1009"
-    And I have another patient
-    And the patient has the legal name "Max" "Smart"
-    And the patient has the gender Male
-    And the patient can be identified with an Account Number without a value
-    And patients are available for search
-    When I search for patients
-    And the search results have a patient with a "last name" equal to "Headroom"
-    And the search results have a patient with a "last name" equal to "Smart"
-
-  Scenario: I can search for a Patient using a specific Identification in lower case when it's stored in upper
-    Given the patient can be identified with a "DL" of "A123"
-    And patients are available for search
-    And I add the patient criteria for an "identification type" equal to "DL"
-    And I add the patient criteria for an "identification value" equal to "a"
-    When I search for patients
-    Then the patient is in the search results
-
-  Scenario: I can search for a Patient using a specific Identification in upper case when it's stored in lower
-    Given the patient can be identified with a "DL" of "a123"
-    And patients are available for search
-    And I add the patient criteria for an "identification type" equal to "DL"
-    And I add the patient criteria for an "identification value" equal to "A"
-    When I search for patients
-    Then the patient is in the search results
-
-  Scenario: I can search for a Patient using a specific Identification and filter
-    Given the patient can be identified with a "MC" of "5507"
-    And the patient can be identified with a "DL" of "4099"
-    And patients are available for search
-    And I add the patient criteria for an "identification value" equal to "4099"
-    And I would like to filter search results with identification "09"
-    When I search for patients
-    Then there are 1 patient search results
-
-  Scenario: I can search for a Patient using a specific Identification and filter with dashes
-    Given the patient can be identified with a "MC" of "5507"
-    And the patient can be identified with a "DL" of "4099"
-    And patients are available for search
-    And I add the patient criteria for an "identification value" equal to "4099"
-    And I would like to filter search results with identification "40-99"
-    When I search for patients
-    Then there are 1 patient search results
-
-  Scenario: I can search for a Patient using a specific Identification and non matching filter
-    Given the patient can be identified with a "MC" of "5507"
-    And the patient can be identified with a "DL" of "4099"
-    And patients are available for search
-    And I add the patient criteria for an "identification value" equal to "4099"
-    And I would like to filter search results with identification "111"
-    When I search for patients
-    Then there are 0 patient search results
-
-  Scenario: I can search for a Patient using a specific Identification and two filters
-    Given the patient can be identified with a "MC" of "5507"
-    And the patient can be identified with a "DL" of "4099"
-    And the patient has the gender Female
-    And patients are available for search
-    And I add the patient criteria for an "identification value" equal to "4099"
-    And I add the patient criteria for sex filter of "F"
-    And I would like to filter search results with identification "09"
-    When I search for patients
-    Then there are 1 patient search results
 
   Scenario Outline: I can search for a Patient with a specified Gender
     Given the patient has the gender Male

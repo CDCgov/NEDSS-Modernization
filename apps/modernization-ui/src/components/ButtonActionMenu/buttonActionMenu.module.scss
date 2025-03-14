@@ -49,13 +49,19 @@
         }
     }
     .actionMenuButton {
-        padding: 0.375rem 1.25rem;
+        padding: 0.25rem;
         line-height: 0;
         span:first-child {
             margin-left: 1rem;
         }
         span:last-child {
             margin-right: 1rem;
+        }
+        svg:first-child {
+            margin-left: 0.5rem;
+        }
+        svg:last-child {
+            margin-right: 0.5rem;
         }
     }
     .menu {

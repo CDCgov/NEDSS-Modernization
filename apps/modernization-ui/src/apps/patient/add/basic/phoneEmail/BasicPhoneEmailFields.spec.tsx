@@ -4,7 +4,7 @@ import { BasicPhoneEmailFields } from './BasicPhoneEmailFields';
 import userEvent from '@testing-library/user-event';
 import { BasicPhoneEmail } from '../entry';
 
-const Fixture = () => {
+const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const form = useForm<BasicPhoneEmail>({
         mode: 'onBlur',
         defaultValues: {
@@ -16,7 +16,7 @@ const Fixture = () => {
     });
     return (
         <FormProvider {...form}>
-            <BasicPhoneEmailFields />
+            <BasicPhoneEmailFields sizing={props.sizing} />
         </FormProvider>
     );
 };
@@ -30,6 +30,16 @@ describe('PhoneEmailEntryFields', () => {
         expect(getByLabelText('Work phone extension')).toBeInTheDocument();
         expect(getByLabelText('Cell phone')).toBeInTheDocument();
         expect(getByLabelText('Email')).toBeInTheDocument();
+    });
+
+    it('should render all input fields with small size when sizing is set to small', () => {
+        const { getByText } = render(<Fixture sizing="small" />);
+
+        expect(getByText('Home phone').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Work phone').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Work phone extension').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Cell phone').parentElement?.parentElement).toHaveClass('small');
+        expect(getByText('Email').parentElement?.parentElement).toHaveClass('small');
     });
 
     it('should validates cell phone field', async () => {

@@ -1,18 +1,32 @@
-@mixin sizedButtonIcon($height: 1rem, $width: 1rem) {
-    button {
-        background-size: $height $width;
+@mixin sizedDatePicker($backgroundSize: 1rem, $calendarWidth: 17.75rem) {
+    & > div > button {
+        background-size: $backgroundSize;
         background-position: left;
+        width: $backgroundSize;
+
+        &:focus {
+            width: calc($backgroundSize + 0.5rem);
+            background-position: center;
+        }
+    }
+
+    & > div > input {
+        margin-right: 0.25rem !important;
+    }
+
+    & > div > div {
+        min-width: $calendarWidth !important;
     }
 }
 
 .small {
-    @include sizedButtonIcon(1rem, 1rem);
+    @include sizedDatePicker(1rem);
 }
 
 .medium {
-    @include sizedButtonIcon(1.125rem, 1.125rem);
+    @include sizedDatePicker(1.125rem);
 }
 
 .large {
-    @include sizedButtonIcon(1.25rem, 1.25rem);
+    @include sizedDatePicker(1.25rem);
 }

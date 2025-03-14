@@ -22,9 +22,15 @@ Below are manual NBS6 creation and run process steps. Foundation image used is M
     - S3_ZIP_NAME - Zip file name pulling NBS6 Wildfly installation zip from S3.
   - Verify container was built successfully
 - Run NBS6 Docker Container
-  - Run:  ``` docker run -p 7001:7001 -e "GITHUB_RELEASE_TAG=latest" -e "DATABASE_ENDPOINT=<ENDPOINT>" -t <CONTAINER-NAME> ```
+  - Run:  ``` docker run -p 7001:7001 -e "GITHUB_RELEASE_TAG=latest" -e "DATABASE_ENDPOINT=<ENDPOINT>" -e "odse_user=<username>" -e "odse_pass=<password>" -e "rdb_user=<username>" -e "rdb_pass=<password>" -e "srte_user=<username>" -e "srte_pass=<password>"  -t <CONTAINER-NAME> ```
     - GITHUB_RELEASE_TAG - Creates URL, downloads Release Package from GitHub Releases and configure User Guide. Default is always latest or Null
     - DATABASE_ENDPOINT - Provides Database Endpoint
+    - odse_user - Provides odse Database user
+    - odse_pass - Provides odse Database password
+    - rdb_user - Provides rdb Database user
+    - rdb_pass - Provides rdb Database pasword
+    - srte_user - Provides srte Database user
+    - srte_pass - Provides srte Database password
 - Optional: Push Image to Quay.io Repository
   - Tag Image:  ``` docker tag <CONTAINER-NAME>:<TAG> <DOCKER-REPOSITORY-URL>/<CONTAINER-NAME>:<TAG> ``` 
   - Authenticate to Quay.io:  ``` docker login -u=<USERNAME> -p=<PASSWORD> quay.io ```

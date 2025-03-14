@@ -3,19 +3,28 @@ import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { Column } from 'design-system/table';
 import { PhoneEmailEntry, PhoneEmailEntryFields, initial } from 'apps/patient/data/phoneEmail';
 import { PhoneEntryView } from './PhoneEntryView';
+import { Sizing } from 'design-system/field';
 
 const defaultValue: Partial<PhoneEmailEntry> = initial();
 
-type Props = {
+type PhoneAndEmailRepeatingBlockProps = {
     id: string;
     values?: PhoneEmailEntry[];
     onChange: (data: PhoneEmailEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
+    sizing?: Sizing;
 };
-export const PhoneAndEmailRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
-    const renderForm = () => <PhoneEmailEntryFields />;
-    const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} />;
+export const PhoneAndEmailRepeatingBlock = ({
+    id,
+    values,
+    errors,
+    onChange,
+    isDirty,
+    sizing
+}: PhoneAndEmailRepeatingBlockProps) => {
+    const renderForm = () => <PhoneEmailEntryFields sizing={sizing} />;
+    const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} sizing={sizing} />;
 
     const columns: Column<PhoneEmailEntry>[] = [
         { id: 'phoneEmailAsOf', name: 'As of', render: (v) => v.asOf },
@@ -37,6 +46,9 @@ export const PhoneAndEmailRepeatingBlock = ({ id, values, errors, onChange, isDi
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}
+            sizing={sizing}
         />
     );
 };
+
+export type { PhoneAndEmailRepeatingBlockProps };

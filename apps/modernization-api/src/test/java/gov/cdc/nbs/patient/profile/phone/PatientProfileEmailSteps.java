@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.profile.phone;
 
-import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.message.patient.input.PatientInput;
@@ -9,7 +8,7 @@ import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.springframework.beans.factory.annotation.Autowired;
+import net.datafaker.Faker;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -18,33 +17,39 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PatientProfileEmailSteps {
 
-    private final Faker faker = new Faker();
+  private final Faker faker = new Faker();
 
-    @Autowired
-    Active<PatientInput> input;
+  private final Active<PatientInput> input;
 
-    @Autowired
-    TestPatient patient;
+  private final TestPatient patient;
 
-    @Given("the new patient's email address is entered")
-    public void the_new_patient_email_address_is_entered() {
-        this.input.active().getEmailAddresses().add(faker.internet().emailAddress());
-    }
+  PatientProfileEmailSteps(
+	  final Active<PatientInput> input,
+	  final TestPatient patient
+  ) {
+	this.input = input;
+	this.patient = patient;
+  }
 
-    @Then("the new patient has the entered email address")
-    @Transactional
-    public void the_new_patient_has_the_entered_email_address() {
-        Person actual = patient.managed();
+  @Given("the new patient's email address is entered")
+  public void the_new_patient_email_address_is_entered() {
+	this.input.active().getEmailAddresses().add(faker.internet().emailAddress());
+  }
 
-        Collection<TeleEntityLocatorParticipation> emails = actual.emailAddresses();
+  @Then("the new patient has the entered email address")
+  @Transactional
+  public void the_new_patient_has_the_entered_email_address() {
+	Person actual = patient.managed();
 
-        if (!emails.isEmpty()) {
+	Collection<TeleEntityLocatorParticipation> emails = actual.emailAddresses();
 
-            assertThat(emails)
-                    .satisfiesExactlyInAnyOrder(
-                            PatientCreateAssertions.containsEmailAddresses(input.active().getEmailAddresses()));
+	if (!emails.isEmpty()) {
 
-        }
+	  assertThat(emails)
+		  .satisfiesExactlyInAnyOrder(
+			  PatientCreateAssertions.containsEmailAddresses(input.active().getEmailAddresses()));
 
-    }
+	}
+
+  }
 }

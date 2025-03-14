@@ -1,6 +1,21 @@
+@use 'styles/colors';
 @use 'styles/components';
 
 .filter {
-    font-size: components.$medium-font-size;
-    height: components.$medium-height !important;
+    border-color: colors.$base-darkest !important;
+
+    font-size: var(--component-font-size);
+    height: var(--component-height) !important;
+
+    &.small {
+        @extend %small;
+    }
+
+    &.medium {
+        @extend %medium;
+    }
+
+    &.large {
+        @extend %large;
+    }
 }

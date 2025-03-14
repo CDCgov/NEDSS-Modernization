@@ -1,5 +1,6 @@
 @use 'styles/colors';
 @use 'styles/borders';
+@use 'styles/components';
 
 .dataRow {
     display: flex;
@@ -16,9 +17,28 @@
         width: 13rem;
         color: colors.$base-darkest;
         font-weight: 700;
+        padding-top: 1px;
     }
 
     .value {
         color: colors.$disabled-darkest;
+    }
+
+    &.small {
+        @extend %small;
+        min-height: 2.375rem;
+        padding-left: 1.25rem;
+        .title {
+            width: 12rem;
+        }
+    }
+
+    &.medium {
+        @extend %medium;
+    }
+
+    &.large {
+        @extend %large;
+        min-height: 3.25rem;
     }
 }

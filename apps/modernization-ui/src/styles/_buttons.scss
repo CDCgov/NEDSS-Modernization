@@ -1,21 +1,19 @@
 @use 'colors.scss';
 
-$icon-small: 1.5rem;
-$icon-medium: 1.75rem;
+$button-padding-small: 0.5rem 0.75rem;
+$button-padding-medium: 0.75rem 1.25rem;
+$icon-small: 1rem;
+$icon-medium: 1.25rem;
+$icon-only-small: 1.5rem;
+$icon-only-medium: 1.75rem;
+$icon-padding-small: 0.25rem;
+$icon-padding-medium: 0.5rem;
 
 @mixin sizedButtonIcon($height: $icon-small, $width: $icon-small) {
     svg {
         height: $height;
         width: $width;
     }
-}
-
-%icon-button {
-    padding: 0.5rem !important;
-}
-
-.icon {
-    @extend %icon-button;
 }
 
 .destructive {
@@ -29,8 +27,8 @@ $icon-medium: 1.75rem;
 }
 
 %button-small {
-    padding: 0.25rem !important;
-    font-size: 0.75rem;
+    padding: $button-padding-small;
+    font-size: 0.875rem;
     height: auto;
     min-width: 2rem;
 
@@ -38,13 +36,35 @@ $icon-medium: 1.75rem;
 }
 
 %button-medium {
-    font-size: 0.875rem;
+    padding: $button-padding-medium;
+    font-size: 1rem;
 
     @include sizedButtonIcon($icon-medium, $icon-medium);
 }
 
 %button-large {
-    padding: 1rem 1.5rem;
+    padding: $button-padding-medium;
     font-size: 1rem;
-    height: auto;
+
+    @include sizedButtonIcon($icon-medium, $icon-medium);
+}
+
+%icon-button {
+    padding: $icon-padding-medium !important;
+    @include sizedButtonIcon($icon-only-medium, $icon-only-medium);
+}
+
+%icon-button-small {
+    padding: $icon-padding-small !important;
+    @include sizedButtonIcon($icon-only-small, $icon-only-small);
+}
+
+.icon {
+    &.small {
+        @extend %icon-button-small;
+    }
+    &.medium {
+        @extend %icon-button;
+    }
+    
 }

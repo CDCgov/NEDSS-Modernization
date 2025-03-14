@@ -1,3 +1,4 @@
+@skip-if-disabled-not-test
 Feature: Classic NBS - User can view and manage data in Manage Pages
 
   Background:

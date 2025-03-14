@@ -16,6 +16,7 @@ import { AlertMessage } from 'design-system/message';
 import styles from './add-patient-extended-form.module.scss';
 import { SubFormDirtyState, ValidationErrors } from './useAddExtendedPatientInteraction';
 import React, { useEffect, useRef } from 'react';
+import { useComponentSizing } from 'design-system/sizing';
 
 type Props = {
     validationErrors?: ValidationErrors;
@@ -23,6 +24,8 @@ type Props = {
 };
 export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Props) => {
     const { control } = useFormContext<ExtendedNewPatientEntry>();
+    const sizing = useComponentSizing();
+
     const formRef = useRef<HTMLDivElement>(null);
 
     // Generates an error message that will contain a link to the section if an id is provided
@@ -73,8 +76,8 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                 <Card
                     title="Administrative"
                     id="administrative"
-                    info={<span className="required-before">All required fields for adding comments</span>}>
-                    <AdministrativeEntryFields />
+                    info={<span className="required-before">Required</span>}>
+                    <AdministrativeEntryFields sizing={sizing} />
                 </Card>
                 <Controller
                     control={control}
@@ -86,6 +89,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             isDirty={(isDirty) => setSubFormState({ name: isDirty })}
                             onChange={onChange}
                             errors={validationErrors?.dirtySections.name ? [generateErrorMessage('Name')] : undefined}
+                            sizing={sizing}
                         />
                     )}
                 />
@@ -101,6 +105,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             errors={
                                 validationErrors?.dirtySections.address ? [generateErrorMessage('Address')] : undefined
                             }
+                            sizing={sizing}
                         />
                     )}
                 />
@@ -118,6 +123,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                                     ? [generateErrorMessage('Phone & Email')]
                                     : undefined
                             }
+                            sizing={sizing}
                         />
                     )}
                 />
@@ -135,6 +141,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                                     ? [generateErrorMessage('Identification')]
                                     : undefined
                             }
+                            sizing={sizing}
                         />
                     )}
                 />
@@ -149,36 +156,24 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             isDirty={(isDirty) => setSubFormState({ race: isDirty })}
                             onChange={onChange}
                             errors={validationErrors?.dirtySections.race ? [generateErrorMessage('Race')] : undefined}
+                            sizing={sizing}
                         />
                     )}
                 />
-                <Card
-                    id="ethnicity"
-                    title="Ethnicity"
-                    info={<span className="required-before">All required fields for adding ethnicity</span>}>
-                    <EthnicityEntryFields />
+                <Card id="ethnicity" title="Ethnicity" info={<span className="required-before">Required</span>}>
+                    <EthnicityEntryFields sizing={sizing} />
                 </Card>
-                <Card
-                    id="sexAndBirth"
-                    title="Sex & birth"
-                    info={<span className="required-before">All required fields for adding sex & birth</span>}>
-                    <SexAndBirthEntryFields />
+                <Card id="sexAndBirth" title="Sex & birth" info={<span className="required-before">Required</span>}>
+                    <SexAndBirthEntryFields sizing={sizing} />
                 </Card>
-                <Card
-                    id="mortality"
-                    title="Mortality"
-                    info={<span className="required-before">All required fields for adding mortality</span>}>
-                    <MortalityEntryFields />
+                <Card id="mortality" title="Mortality" info={<span className="required-before">Required</span>}>
+                    <MortalityEntryFields sizing={sizing} />
                 </Card>
                 <Card
                     id="generalInformation"
                     title="General patient information"
-                    info={
-                        <span className="required-before">
-                            All required fields for adding general patient information
-                        </span>
-                    }>
-                    <GeneralInformationEntryFields />
+                    info={<span className="required-before">Required</span>}>
+                    <GeneralInformationEntryFields sizing={sizing} />
                 </Card>
             </div>
         </div>

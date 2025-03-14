@@ -3,19 +3,28 @@ import { Column } from 'design-system/table';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { IdentificationEntryFields, IdentificationEntry, initial } from 'apps/patient/data/identification';
 import { IdentificationView } from './IdentificationView';
+import { Sizing } from 'design-system/field';
 
 const defaultValue: Partial<IdentificationEntry> = initial();
 
-type Props = {
+type IdentificationRepeatingBlockProps = {
     id: string;
     values?: IdentificationEntry[];
     onChange: (data: IdentificationEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
+    sizing?: Sizing;
 };
-export const IdentificationRepeatingBlock = ({ id, errors, values, onChange, isDirty }: Props) => {
-    const renderForm = () => <IdentificationEntryFields />;
-    const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} />;
+export const IdentificationRepeatingBlock = ({
+    id,
+    errors,
+    values,
+    onChange,
+    isDirty,
+    sizing
+}: IdentificationRepeatingBlockProps) => {
+    const renderForm = () => <IdentificationEntryFields sizing={sizing} />;
+    const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} sizing={sizing} />;
 
     const columns: Column<IdentificationEntry>[] = [
         { id: 'identificationAsOf', name: 'As of', render: (v) => v.asOf },
@@ -35,6 +44,9 @@ export const IdentificationRepeatingBlock = ({ id, errors, values, onChange, isD
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}
+            sizing={sizing}
         />
     );
 };
+
+export type { IdentificationRepeatingBlockProps };
