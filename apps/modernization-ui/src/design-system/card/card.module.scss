@@ -1,5 +1,7 @@
 @use 'styles/colors';
 @use 'styles/borders';
+@use 'styles/tooltip';
+@use 'styles/icons';
 
 .card {
     @extend %thin;
@@ -12,5 +14,63 @@
         justify-content: space-between;
         align-items: center;
         @extend %thin-bottom;
+    }
+
+    .errorList {
+        list-style: inside;
+        padding: 0;
+        margin: 0;
+
+        & > li {
+            line-height: 1.62rem;
+        }
+    }
+
+    .dataTable {
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+
+            svg {
+                color: colors.$primary;
+                cursor: pointer;
+            }
+
+            .active {
+                border-radius: 0.25rem;
+                padding:  0.0625rem;
+                color: colors.$base-white;
+                background-color: colors.$primary-darker;
+            }
+
+            @include icons.sizedIcon(1rem, 1rem);
+        }
+    }
+
+    .form {
+        background-color: colors.$base-white;
+    }
+
+    .changed {
+        background-color: colors.$primary-lighter;
+    }
+
+    footer {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.5rem 1.5rem 0.5rem 16.75rem;
+    }
+
+    &.small {
+        footer {
+            padding-left: 15.25rem;
+        }
+    }
+
+    &.large {
+        footer {
+            padding-left: 16.75rem;
+        }
     }
 }
