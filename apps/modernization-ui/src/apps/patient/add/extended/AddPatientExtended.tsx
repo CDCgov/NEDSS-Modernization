@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from 'components/button';
 import { Shown } from 'conditional-render';
-import { useNavigationBlock } from 'navigation/useNavigationBlock';
+import { useFormNavigationBlock } from 'navigation';
 import { CreatedPatient } from 'apps/patient/add/api';
 import { DataEntryMenu } from 'apps/patient/add/DataEntryMenu';
 import { PatientCreatedPanel } from 'apps/patient/add/PatientCreatedPanel';
@@ -10,7 +10,7 @@ import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTra
 import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
-import { CancelAddPatientPanel, useShowCancelModal, handleNativeCancelAddPanel } from '../cancelAddPatientPanel';
+import { CancelAddPatientPanel, useShowCancelModal } from '../cancelAddPatientPanel';
 import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
@@ -20,7 +20,7 @@ import styles from './add-patient-extended.module.scss';
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient();
     const { initialize } = useAddPatientExtendedDefaults();
-    const { value: bypassModal } = useShowCancelModal();
+    const { value: bypassBlocker } = useShowCancelModal();
     const { toBasic } = useBasicExtendedTransition();
 
     const created = useMemo<CreatedPatient | undefined>(
@@ -43,18 +43,7 @@ export const AddPatientExtended = () => {
     };
 
     // Setup navigation blocking for back button
-    const blocker = useNavigationBlock({ activated: !bypassModal });
-
-    useEffect(() => {
-        if (form.formState.isSubmitted) {
-            //  the form is in a dirty state even after submitting, since we know a submit occurred allow navigation
-            blocker.allow();
-        } else if (form.formState.isDirty) {
-            blocker.block();
-        } else {
-            blocker.allow();
-        }
-    }, [form.formState.isSubmitted, form.formState.isDirty, blocker.allow, blocker.block]);
+    const blocker = useFormNavigationBlock({ activated: !bypassBlocker, form });
 
     const handleModalConfirm = () => {
         blocker.unblock();
@@ -65,13 +54,9 @@ export const AddPatientExtended = () => {
     // Reset the blocker after a successful submission
     useEffect(() => {
         if (interaction.status === 'created') {
-            blocker.reset();
+            blocker.allow();
         }
     }, [interaction.status]);
-
-    useEffect(() => {
-        handleNativeCancelAddPanel(form.formState.isDirty, form.formState.isSubmitted);
-    }, [form.formState.isDirty, form.formState.isSubmitted]);
 
     return (
         <AddExtendedPatientInteractionProvider interaction={interaction}>
