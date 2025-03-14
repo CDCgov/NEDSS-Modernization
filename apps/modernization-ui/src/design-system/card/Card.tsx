@@ -11,14 +11,14 @@ type Props = {
     children: ReactNode;
 };
 export const Card = ({ id, title, info, subtext, children, level = 2 }: Props) => {
-    const cardClassName = subtext ? `${styles.card} ${styles.withSubtext}` : styles.card;
-
     return (
-        <section id={id} className={cardClassName}>
+        <section id={id} className={styles.card}>
             <header>
-                <Heading level={level}>{title}</Heading>
+                <div>
+                    <Heading level={level}>{title}</Heading>
+                    {subtext && <div className={styles.subtext}>{subtext}</div>}
+                </div>
                 {info}
-                {subtext && <div className={styles.subtext}>{subtext}</div>}
             </header>
             {children}
         </section>

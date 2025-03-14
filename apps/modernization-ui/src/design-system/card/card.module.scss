@@ -4,6 +4,7 @@
 .card {
     @extend %thin;
     background-color: colors.$base-white;
+    @include borders.rounded();
 
     & > header {
         display: flex;
@@ -12,19 +13,6 @@
         align-items: center;
         @extend %thin-bottom;
     }
-
-    &.withSubtext {
-        border-radius: 5px;
-        align-items: flex-start;
-        flex-direction: column;
-    }
-}
-
-.subtext {
-    font-size: 14px;
-    line-height: 21px;
-    color: colors.$base-darker;
-    margin-top: 0.25rem;
 }
 
 .subtext {
