@@ -23,26 +23,26 @@ $icon-padding-medium: 0.5rem;
 }
 
 .destructive {
-    background-color: colors.$destructive !important;
+    background-color: colors.$destructive;
     &:hover {
-        background-color: colors.$secondary-dark !important;
+        background-color: colors.$secondary-dark;
     }
     &:active {
-        background-color: colors.$secondary-darker !important;
+        background-color: colors.$secondary-darker;
     }
 }
 
 .destructive.secondary {
-    background-color: colors.$base-white !important;
-    color: colors.$error !important;
-    box-shadow: inset 0 0 0 2px colors.$disabled !important;
+    background-color: colors.$base-white;
+    color: colors.$error;
+    box-shadow: inset 0 0 0 2px colors.$disabled;
     border-radius: 0.25rem;
 
     &:hover {
-        color: colors.$secondary-dark !important;
+        color: colors.$secondary-dark;
     }
     &:active {
-        color: colors.$error-darker !important;
+        color: colors.$error-darker;
     }
 }
 
