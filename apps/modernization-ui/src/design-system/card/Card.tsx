@@ -14,10 +14,8 @@ export const Card = ({ id, title, info, subtext, children, level = 2 }: Props) =
     return (
         <section id={id} className={styles.card}>
             <header>
-                <div>
-                    <Heading level={level}>{title}</Heading>
-                    {subtext && <div className={styles.subtext}>{subtext}</div>}
-                </div>
+                <Heading level={level}>{title}</Heading>
+                {subtext && <div className={styles.subtext}>{subtext}</div>}
                 {info}
             </header>
             {children}

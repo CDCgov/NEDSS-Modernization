@@ -19,5 +19,6 @@
     font-size: 14px;
     line-height: 21px;
     color: colors.$base-darker;
-    margin-top: 0.25rem;
+    align-items: flex-start;
+    flex-direction: column;
 }
