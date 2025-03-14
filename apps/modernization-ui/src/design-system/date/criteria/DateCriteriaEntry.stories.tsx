@@ -3,7 +3,7 @@ import { DateCriteriaEntry } from './DateCriteriaEntry';
 import { DateCriteria } from '../entry';
 
 const meta = {
-    title: 'Design System/DateCriteriaEntry',
+    title: 'Design System/Date/DateCriteriaEntry',
     component: DateCriteriaEntry
 } satisfies Meta<typeof DateCriteriaEntry>;
 
