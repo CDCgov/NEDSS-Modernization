@@ -37,8 +37,8 @@ const Button = ({
     const isIconOnly = icon && !children;
     const isSecondary = secondary || outline;
     const classesArray = classNames(className, sizing && styles[sizing], {
-        [styles.destructive]: destructive && !isSecondary,
-        [styles.secondaryDestructive]: destructive && isSecondary,
+        [styles.destructive]: destructive,
+        [styles.secondary]: isSecondary,
         [styles.icon]: isIconOnly,
         [styles.unpadded]: unpadded
     });
@@ -49,8 +49,7 @@ const Button = ({
             {...defaultProps}
             type={type}
             unstyled={unstyled}
-            size={isIconOnly ? 'big' : undefined}
-            outline={isSecondary}>
+            size={isIconOnly ? 'big' : undefined}>
             {labelPosition === 'left' && children && icon ? (
                 <>
                     <span>{children}</span>
