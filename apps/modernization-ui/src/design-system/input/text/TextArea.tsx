@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { ChangeEvent, useEffect, useState } from 'react';
 import styles from './textarea.module.scss';
 
@@ -51,7 +50,7 @@ const TextArea = ({
                 id={id}
                 name={props.name ?? id}
                 inputMode={inputMode}
-                className={classNames('usa-textarea', className)}
+                className={className}
                 onChange={handleChange}
                 onBlur={onBlur}
                 placeholder={placeholder}
