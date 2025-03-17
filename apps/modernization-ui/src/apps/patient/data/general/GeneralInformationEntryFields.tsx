@@ -4,7 +4,7 @@ import { NumericInput } from 'design-system/input';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
 import { usePatientProfilePermissions } from 'apps/patient/profile/permission';
-import { usePatientGeneralCodedValues } from 'apps/patient/profile/generalInfo';
+import { useGeneralCodedValues } from 'apps/patient/profile/generalInfo';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
@@ -17,7 +17,7 @@ const ENTRY_FIELD_PLACEHOLDER = '';
 export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<{ general: GeneralInformationEntry }>();
     const { hivAccess } = usePatientProfilePermissions();
-    const coded = usePatientGeneralCodedValues();
+    const coded = useGeneralCodedValues();
 
     return (
         <section>

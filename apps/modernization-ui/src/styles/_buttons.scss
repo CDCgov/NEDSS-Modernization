@@ -16,6 +16,21 @@ $icon-padding-medium: 0.5rem;
     }
 }
 
+.secondary {
+    background-color: rgba(0, 0, 0, 0) !important;
+    box-shadow: inset 0 0 0 2px colors.$primary !important;
+    color: colors.$primary !important;
+
+    &:hover {
+        box-shadow: inset 0 0 0 2px colors.$primary-dark !important;
+        color: colors.$primary-dark !important;
+    }
+    &:active {
+        box-shadow: inset 0 0 0 2px colors.$primary-darker !important;
+        color: colors.$primary-darker !important;
+    }
+}
+
 .destructive {
     background-color: colors.$destructive !important;
     &:hover {
@@ -23,6 +38,19 @@ $icon-padding-medium: 0.5rem;
     }
     &:active {
         background-color: colors.$secondary-darker !important;
+    }
+}
+
+.destructive.secondary {
+    background-color: colors.$base-white !important;
+    color: colors.$error !important;
+    box-shadow: inset 0 0 0 2px colors.$disabled !important;
+
+    &:hover {
+        color: colors.$secondary-dark !important;
+    }
+    &:active {
+        color: colors.$error-darker !important;
     }
 }
 
@@ -66,5 +94,4 @@ $icon-padding-medium: 0.5rem;
     &.medium {
         @extend %icon-button;
     }
-    
 }

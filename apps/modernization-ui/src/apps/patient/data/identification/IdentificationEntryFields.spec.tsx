@@ -1,17 +1,17 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { render, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
+import { IdentificationCodedValues } from 'apps/patient/profile/identification';
 import { IdentificationEntry } from './entry';
 import { IdentificationEntryFields } from './IdentificationEntryFields';
 
-const mockPatientIdentificationCodedValues: PatientIdentificationCodedValues = {
+const mockIdentificationCodedValues: IdentificationCodedValues = {
     types: [{ name: 'Account number', value: 'AN' }],
     authorities: [{ name: 'Assigning auth', value: 'AA' }]
 };
 
-jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValues', () => ({
-    usePatientIdentificationCodedValues: () => mockPatientIdentificationCodedValues
+jest.mock('apps/patient/profile/identification', () => ({
+    useIdentificationCodedValues: () => mockIdentificationCodedValues
 }));
 
 const Fixture = () => {
@@ -54,7 +54,7 @@ describe('when entering patient identification demographics', () => {
     });
 
     it('should require type', async () => {
-        const { getByLabelText, getByText, findByText } = render(<Fixture />);
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const typeInput = getByLabelText('Type');
         act(() => {

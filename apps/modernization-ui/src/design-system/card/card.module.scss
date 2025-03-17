@@ -7,6 +7,7 @@
     @extend %thin;
     border-radius: 5px;
     background-color: colors.$base-white;
+    @include borders.rounded();
 
     & > header {
         border-top-left-radius: 5px;
@@ -75,4 +76,20 @@
             padding-left: 16.75rem;
         }
     }
+}
+
+.subtext {
+    font-size: 0.875rem;
+    line-height: 1.3125rem;
+    color: colors.$base-darker;
+}
+
+.info {
+    margin-left: auto;
+}
+
+.titleBlock {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
 }
