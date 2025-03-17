@@ -15,10 +15,11 @@ import { ActivateToggle } from './activate-toggle/ActivateToggle';
 
 type Props = {
     passCount: number;
+    onSave: () => void;
     onCancel: () => void;
     onDelete: () => void;
 };
-export const PassForm = ({ passCount, onCancel, onDelete }: Props) => {
+export const PassForm = ({ passCount, onCancel, onDelete, onSave }: Props) => {
     const form = useFormContext<Pass>();
     const { isDirty, isValid } = useFormState(form);
     const { blockingCriteria, matchingCriteria, name, id } = useWatch(form);
@@ -164,7 +165,9 @@ export const PassForm = ({ passCount, onCancel, onDelete }: Props) => {
                     <Button outline onClick={handleCancelClick}>
                         Cancel
                     </Button>
-                    <Button disabled={!isDirty || !isValid}>Save pass configuration</Button>
+                    <Button disabled={!isDirty || !isValid} onClick={onSave}>
+                        Save pass configuration
+                    </Button>
                 </div>
             </div>
         </div>

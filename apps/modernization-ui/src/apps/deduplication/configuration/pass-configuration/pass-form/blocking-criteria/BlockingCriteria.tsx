@@ -1,8 +1,8 @@
 import { Icon } from '@trussworks/react-uswds';
 import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
-import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
+import { Card } from 'design-system/card';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { BlockingCriteriaAttribute } from './BlockingCriteriaAttribute';
 import styles from './blocking-criteria.module.scss';
@@ -24,12 +24,11 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
     };
 
     return (
-        <div className={styles.blockingCriteria}>
-            <div className={styles.heading}>
-                <Heading level={2}>1. Blocking criteria</Heading>
-                <span>Include records that meet all these conditions</span>
-            </div>
-            <div className={styles.body}>
+        <Card
+            id="blockingCriteriaCard"
+            title="1. Blocking criteria"
+            subtext="Include records that meet all these conditions">
+            <div className={styles.blockingCriteria}>
                 <Shown
                     when={blockingCriteria && blockingCriteria.length > 0}
                     fallback={
@@ -98,6 +97,6 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                     </Button>
                 </div>
             </div>
-        </div>
+        </Card>
     );
 };

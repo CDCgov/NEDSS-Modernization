@@ -29,9 +29,13 @@ export const useMatchConfiguration = () => {
         setPasses(passes.filter((p) => id !== p.id));
     };
 
+    const savePass = (pass: Pass) => {
+        console.log('save clicked for pass', pass);
+    };
+
     useEffect(() => {
         fetchConfiguration();
     }, []);
 
-    return { fetchConfiguration, deletePass, loading, error, passes };
+    return { fetchConfiguration, deletePass, savePass, loading, error, passes };
 };

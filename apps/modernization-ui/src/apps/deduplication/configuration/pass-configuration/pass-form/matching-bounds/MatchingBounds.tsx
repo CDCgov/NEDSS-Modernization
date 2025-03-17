@@ -1,11 +1,9 @@
 import { Pass } from 'apps/deduplication/api/model/Pass';
-import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
-import { InlineErrorMessage } from 'design-system/field/InlineErrorMessage';
-import { Icon } from 'design-system/icon';
-import { Numeric } from 'design-system/input/numeric/Numeric';
+import { Card } from 'design-system/card';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { BoundEntry } from './bound-entry/BoundEntry';
 import styles from './matching-bounds.module.scss';
 
 export const MatchingBounds = () => {
@@ -27,54 +25,63 @@ export const MatchingBounds = () => {
             <Shown when={disabled}>
                 <div className={styles.disabledOverlay}></div>
             </Shown>
-            <div className={styles.heading}>
-                <Heading level={2}>3. Matching criteria</Heading>
-                <span>
-                    Records with log odds scores between the lower and upper bounds will present for review and
-                    resolution in the potential match queue
-                </span>
-            </div>
-            <div className={styles.body}>
-                <div>
-                    <Controller
-                        control={form.control}
-                        name={'lowerBound'}
-                        rules={{ required: { value: true, message: 'Lower bound is required.' } }}
-                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                            <>
-                                <label htmlFor={name}>
-                                    Lower bound <Icon name="info_outline" sizing="small" />
-                                </label>
-                                <Numeric onBlur={onBlur} onChange={onChange} id={name} value={value} />
-                                {error?.message && (
-                                    <InlineErrorMessage id={`${name}-error`}>{error.message}</InlineErrorMessage>
-                                )}
-                            </>
-                        )}
-                    />
+            <Card
+                id="matchingBoundsCard"
+                title="3. Matching bounds"
+                subtext="Records with log odds scores between the lower and upper bounds will present for review and
+                    resolution in the potential match queue">
+                <div className={styles.body}>
+                    <div>
+                        <Controller
+                            control={form.control}
+                            name={'lowerBound'}
+                            rules={{ required: { value: true, message: 'Lower bound is required.' } }}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                                <BoundEntry
+                                    label="Lower bound"
+                                    name={name}
+                                    value={value}
+                                    tooltip={
+                                        <span>
+                                            <b>Lower bound - </b> Records with log odds scores below this number will be
+                                            automatically kept separate and new person records created.
+                                        </span>
+                                    }
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                    error={error?.message}
+                                />
+                            )}
+                        />
+                    </div>
+                    <div>
+                        <Controller
+                            control={form.control}
+                            name={'upperBound'}
+                            rules={{ required: { value: true, message: 'Upper bound is required.' } }}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                                <BoundEntry
+                                    label="Upper bound"
+                                    name={name}
+                                    value={value}
+                                    tooltip={
+                                        <span>
+                                            <b>Upper bound - </b> Records with log odds scores above this number will be
+                                            automatically merged into a single person record
+                                        </span>
+                                    }
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                    error={error?.message}
+                                />
+                            )}
+                        />
+                    </div>
+                    <div>
+                        Total log odds: <strong>NYI - TODO</strong>
+                    </div>
                 </div>
-                <div>
-                    <Controller
-                        control={form.control}
-                        name={'upperBound'}
-                        rules={{ required: { value: true, message: 'Upper bound is required.' } }}
-                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                            <>
-                                <label htmlFor={name}>
-                                    Upper bound <Icon name="info_outline" sizing="small" />
-                                </label>
-                                <Numeric onBlur={onBlur} onChange={onChange} id={name} value={value} />
-                                {error?.message && (
-                                    <InlineErrorMessage id={`${name}-error`}>{error.message}</InlineErrorMessage>
-                                )}
-                            </>
-                        )}
-                    />
-                </div>
-                <div>
-                    Total log odds: <strong>NYI - TODO</strong>
-                </div>
-            </div>
+            </Card>
         </div>
     );
 };

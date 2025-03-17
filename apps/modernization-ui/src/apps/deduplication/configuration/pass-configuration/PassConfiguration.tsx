@@ -10,7 +10,7 @@ import { PassForm } from './pass-form/PassForm';
 import { PassList } from './pass-list/PassList';
 
 export const PassConfiguration = () => {
-    const { passes, deletePass } = useMatchConfiguration();
+    const { passes, deletePass, savePass } = useMatchConfiguration();
     const form = useForm<Pass>({ mode: 'onBlur' });
     const { isDirty } = useFormState(form);
     const [newPass, setNewPass] = useState<Pass | undefined>();
@@ -101,6 +101,10 @@ export const PassConfiguration = () => {
         setSelectedPass(undefined);
     };
 
+    const handleSave = () => {
+        savePass(form.getValues());
+    };
+
     return (
         <div className={styles.passConfiguration}>
             <UnsavedChangesConfirmation
@@ -121,7 +125,12 @@ export const PassConfiguration = () => {
             />
             <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes.length} />}>
                 <FormProvider {...form}>
-                    <PassForm passCount={passes.length} onCancel={handleCancel} onDelete={handleDelete} />
+                    <PassForm
+                        passCount={passes.length}
+                        onCancel={handleCancel}
+                        onDelete={handleDelete}
+                        onSave={handleSave}
+                    />
                 </FormProvider>
             </Shown>
         </div>
