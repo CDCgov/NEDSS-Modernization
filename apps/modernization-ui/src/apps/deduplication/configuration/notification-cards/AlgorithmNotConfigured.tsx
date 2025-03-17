@@ -1,8 +1,10 @@
 import { Icon } from '@trussworks/react-uswds';
 import { Button } from 'design-system/button';
 import { NotificationCard } from './NotificationCard';
+import { useNavigate } from 'react-router-dom';
 
 export const AlgorithmNotConfigured = () => {
+    const nav = useNavigate();
     return (
         <NotificationCard
             heading="Algorithm not configured"
@@ -15,7 +17,7 @@ export const AlgorithmNotConfigured = () => {
             }
             buttons={
                 <>
-                    <Button sizing="medium">
+                    <Button sizing="medium" onClick={() => nav('/deduplication/data_elements')}>
                         <Icon.Settings size={3} />
                         Configure data elements
                     </Button>
