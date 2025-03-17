@@ -143,6 +143,24 @@ class SearchPage {
   clickAddressTab() {    
     cy.get('summary').contains("Address").click();
   }
+
+verifyTableColumns() {
+  const expectedColumns = [
+    "Patient ID",
+    "Patient name",
+    "DOB/Age",
+    "Current sex",
+    "Address",
+    "Phone",
+    "ID",
+    "Email"
+  ];
+
+  expectedColumns.forEach((column) => {
+    cy.contains("#patient-search-results thead th", column);
+  });
+
+  }
 }
 
 export const searchPage = new SearchPage();
