@@ -5,6 +5,7 @@
     @extend %thin;
     background-color: colors.$base-white;
     @include borders.rounded();
+    max-width: 80rem;
 
     & > header {
         display: flex;
