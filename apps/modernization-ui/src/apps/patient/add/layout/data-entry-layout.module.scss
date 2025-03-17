@@ -1,0 +1,12 @@
+@use 'styles/colors';
+
+.layout {
+    display: flex;
+    height: calc(100vh - 75px);
+    background-color: colors.$base-white;
+
+    .content {
+        width: 100%;
+        max-width: calc(100% - 258px);
+    }
+}

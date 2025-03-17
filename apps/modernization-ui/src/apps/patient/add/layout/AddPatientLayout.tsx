@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { AddPatientHeaderContent } from './headerContent/AddPatientHeaderContent';
 import { InPageNavigation, NavSection } from 'design-system/inPageNavigation/InPageNavigation';
-import styles from './add-layout.module.scss';
+
+import styles from './add-patient-layout.module.scss';
 
 type AddPatientLayoutProps = {
     headerActions: () => ReactNode;
@@ -12,11 +13,11 @@ type AddPatientLayoutProps = {
 
 export const AddPatientLayout = ({ headerActions, headerTitle, sections, children }: AddPatientLayoutProps) => {
     return (
-        <div className={styles.content}>
+        <div className={styles.layout}>
             <AddPatientHeaderContent title={headerTitle}>{headerActions()}</AddPatientHeaderContent>
             <main>
-                {children}
-                <aside className={styles.aside}>
+                <div className={styles.content}>{children}</div>
+                <aside>
                     <InPageNavigation sections={sections} />
                 </aside>
             </main>

@@ -1,5 +1,4 @@
 import { Card } from 'design-system/card';
-import styles from './add-patient-basic-form.module.scss';
 import { BasicPhoneEmailFields } from './phoneEmail';
 import { BasicIdentificationRepeatingBlock } from './identification';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -20,6 +19,8 @@ import {
     RACE_ETHNICITY_SECTION
 } from './sections';
 
+import styles from './add-patient-basic-form.module.scss';
+
 type Props = {
     isValid: (valid: boolean) => void;
 };
@@ -29,44 +30,42 @@ export const AddPatientBasicForm = ({ isValid }: Props) => {
     const sizing = useComponentSizing();
 
     return (
-        <div className={styles.addPatientForm}>
-            <div className={styles.formContent}>
-                <Card
-                    id={ADMINISTRATIVE_SECTION.id}
-                    title={ADMINISTRATIVE_SECTION.label}
-                    info={<span className="required-before">Required</span>}>
-                    <AdministrativeEntryFields sizing={sizing} />
-                </Card>
-                <Card id={NAME_SECTION.id} title={NAME_SECTION.label}>
-                    <NameEntryFields sizing={sizing} />
-                </Card>
-                <Card id={PERSONAL_DETAILS_SECTION.id} title={PERSONAL_DETAILS_SECTION.label}>
-                    <BasicPersonalDetailsFields sizing={sizing} />
-                </Card>
-                <Card id={ADDRESS_SECTION.id} title={ADDRESS_SECTION.label}>
-                    <BasicAddressFields sizing={sizing} />
-                </Card>
-                <Card id={PHONE_EMAIL_SECTION.id} title={PHONE_EMAIL_SECTION.label}>
-                    <BasicPhoneEmailFields sizing={sizing} />
-                </Card>
-                <Card id={RACE_ETHNICITY_SECTION.id} title={RACE_ETHNICITY_SECTION.label}>
-                    <BasicRaceEthnicityFields sizing={sizing} />
-                </Card>
-                <Controller
-                    control={control}
-                    name="identifications"
-                    render={({ field: { onChange, value } }) => (
-                        <BasicIdentificationRepeatingBlock
-                            id={IDENTIFICATIONS_SECTION.id}
-                            values={value}
-                            onChange={onChange}
-                            isDirty={() => {}}
-                            isValid={isValid}
-                            sizing={sizing}
-                        />
-                    )}
-                />
-            </div>
+        <div className={styles.formContent}>
+            <Card
+                id={ADMINISTRATIVE_SECTION.id}
+                title={ADMINISTRATIVE_SECTION.label}
+                info={<span className="required-before">Required</span>}>
+                <AdministrativeEntryFields sizing={sizing} />
+            </Card>
+            <Card id={NAME_SECTION.id} title={NAME_SECTION.label}>
+                <NameEntryFields sizing={sizing} />
+            </Card>
+            <Card id={PERSONAL_DETAILS_SECTION.id} title={PERSONAL_DETAILS_SECTION.label}>
+                <BasicPersonalDetailsFields sizing={sizing} />
+            </Card>
+            <Card id={ADDRESS_SECTION.id} title={ADDRESS_SECTION.label}>
+                <BasicAddressFields sizing={sizing} />
+            </Card>
+            <Card id={PHONE_EMAIL_SECTION.id} title={PHONE_EMAIL_SECTION.label}>
+                <BasicPhoneEmailFields sizing={sizing} />
+            </Card>
+            <Card id={RACE_ETHNICITY_SECTION.id} title={RACE_ETHNICITY_SECTION.label}>
+                <BasicRaceEthnicityFields sizing={sizing} />
+            </Card>
+            <Controller
+                control={control}
+                name="identifications"
+                render={({ field: { onChange, value } }) => (
+                    <BasicIdentificationRepeatingBlock
+                        id={IDENTIFICATIONS_SECTION.id}
+                        values={value}
+                        onChange={onChange}
+                        isDirty={() => {}}
+                        isValid={isValid}
+                        sizing={sizing}
+                    />
+                )}
+            />
         </div>
     );
 };

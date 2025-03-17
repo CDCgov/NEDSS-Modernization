@@ -1,0 +1,23 @@
+@use 'styles/colors';
+
+.layout {
+    main {
+        display: flex;
+        gap: 1rem;
+        height: 100%;
+        padding: 1rem 1rem 0 1rem;
+        background-color: colors.$background;
+        overflow-y: scroll;
+
+        .content {
+            width: 100%;
+            max-width: calc(100% - 12.1875rem - 1rem);
+        }
+
+        aside {
+            position: sticky;
+            top: 0;
+            min-width: 12.1875rem;
+        }
+    }
+}

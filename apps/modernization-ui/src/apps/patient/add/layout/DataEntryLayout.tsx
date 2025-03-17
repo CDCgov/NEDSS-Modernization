@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
-import styles from './add-layout.module.scss';
 import { DataEntryMenu } from '../DataEntryMenu';
+
+import styles from './data-entry-layout.module.scss';
 
 type DataEntryLayoutProps = {
     children?: ReactNode;
@@ -8,9 +9,9 @@ type DataEntryLayoutProps = {
 
 export const DataEntryLayout = ({ children }: DataEntryLayoutProps) => {
     return (
-        <div className={styles.addLayout}>
+        <div className={styles.layout}>
             <DataEntryMenu />
-            {children}
+            <div className={styles.content}>{children}</div>
         </div>
     );
 };
