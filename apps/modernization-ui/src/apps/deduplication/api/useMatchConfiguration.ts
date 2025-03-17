@@ -12,7 +12,7 @@ export const useMatchConfiguration = () => {
         setPasses([
             {
                 id: 0,
-                name: 'Lastname_Dateofbirth longer name',
+                name: 'My first pass',
                 description: 'This is my description for this pass',
                 blockingCriteria: [BlockingAttribute.FIRST_NAME],
                 matchingCriteria: [{ attribute: MatchingAttribute.LAST_NAME, method: MatchMethod.EXACT }],
