@@ -9,7 +9,7 @@
         margin: 0;
         color: colors.$base-black;
         font-weight: 700;
-        font-size: 12px;
+        font-size: 0.75rem;
     }
 
     .inputWithError {
@@ -18,14 +18,14 @@
         position: relative !important;
 
         input {
-            width: 72px;
-            height: 27px;
+            width: 4.5rem;
+            height: 1.6875rem;
             padding: 0.5rem;
             border-radius: 0;
-            border: solid 1px colors.$base-darkest;
+            border: solid 0.0625rem colors.$base-darkest;
             &:disabled {
                 background-color: colors.$base-lighter;
-                border: solid 1px colors.$base-dark;
+                border: solid 0.0625rem colors.$base-dark;
                 color: colors.$base-dark;
             }
         }
@@ -65,8 +65,8 @@
                 margin-left: 0.25rem;
                 font-size: 1rem;
                 border-radius: 50%;
-                width: 19.25px;
-                height: 19.25px;
+                width: 1.203125rem;
+                height: 1.203125rem;
             }
         }
     }
@@ -75,7 +75,7 @@
             background-color: colors.$error-dark;
             &::after {
                 left: 51%;
-                border-top: 5px solid colors.$error-dark;
+                border-top: 0.3125rem solid colors.$error-dark;
             }
         }
     }

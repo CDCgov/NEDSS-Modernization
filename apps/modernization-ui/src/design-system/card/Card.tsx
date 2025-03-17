@@ -6,7 +6,7 @@ type Props = {
     id: string;
     title: ReactNode;
     info?: ReactNode;
-    subtext?: ReactNode;
+    subtext?: string;
     level?: HeadingLevel;
     children: ReactNode;
 };
@@ -14,11 +14,11 @@ export const Card = ({ id, title, info, subtext, children, level = 2 }: Props) =
     return (
         <section id={id} className={styles.card}>
             <header>
-                <div className={styles.titleWrapper}>
+                <div className={styles.titleBlock}>
                     <Heading level={level}>{title}</Heading>
-                    {subtext && <p className={styles.subtext}>{subtext}</p>}
+                    {subtext && <div className={styles.subtext}>{subtext}</div>}
                 </div>
-                {info}
+                {info && <div className={styles.info}>{info}</div>}
             </header>
             {children}
         </section>

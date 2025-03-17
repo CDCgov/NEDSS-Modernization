@@ -4,32 +4,21 @@
 .dataElementsForm {
     height: 100%;
     width: 100%;
-    max-width: 1480px;
-    border-radius: 10px;
+    max-width: 92.5rem;
     overflow: hidden;
     display: block;
     text-align: left;
 
-    .contentWrapper {
-        width: 100%;
-        height: 100%;
-        max-width: 1480px;
-        overflow: auto;
-        padding: 0;
-    }
-
     table {
         width: 100%;
-        height: 595px;
+        height: 37.1875rem;
         background-color: transparent;
         table-layout: fixed;
         border-collapse: separate;
         border-spacing: 0;
-        font-size: 12px;
+        font-size: 0.75rem;
         text-align: left;
         overflow: hidden;
-
-        @extend %thin-top;
 
         thead {
             position: sticky;
@@ -38,24 +27,24 @@
             text-align: left;
             align-items: center;
             background-color: colors.$base-white;
-            height: 25px !important;
-            min-height: 25px !important;
-            max-height: 25px !important;
+            height: 1.5625rem !important;
+            min-height: 1.5625rem !important;
+            max-height: 1.5625rem !important;
             padding: 0 !important;
             margin: 0 !important;
             box-sizing: border-box;
 
             tr th{
-                max-height: 25px !important;
-                line-height: 25px;
-                padding-left: 6px;
-                padding-top: 3px;
-                padding-bottom: 3px;
+                max-height: 1.5625rem !important;
+                line-height: 1.5625rem;
+                padding-left: 0.375rem;
+                padding-top: 0.1875rem;
+                padding-bottom: 0.1875rem;
             }
 
             .border {
                 th {
-                    height: 1px;
+                    height: 0.0625rem;
                     width: 100%;
                     padding: 0;
                     background-color: colors.$base;
@@ -65,37 +54,37 @@
 
             .calculatedColumn {
                 min-width: 6rem;
-                padding-left: 5px;
-                max-height: 25px;
+                padding-left: 0.3125rem;
+                max-height: 1.5625rem;
             }
 
             .numericColumn {
                 width: 8rem;
-                padding-left: 5px;
-                max-height: 25px;
+                padding-left: 0.3125rem;
+                max-height: 1.5625rem;
             }
         }
 
         tr th,
         td {
-            height: 25px;
-            width: 216px;
+            height: 1.5625rem;
+            width: 13.5rem;
             padding: 0.2rem 0.4rem;
             text-align: left !important;
             vertical-align: middle;
         }
 
         .checkbox {
-            width: 40px;
-            height: 20px;
-            padding-right: 40px;
-            padding-left: 18px;
+            width: 2.5rem;
+            height: 1.25rem;
+            padding-right: 2.5rem;
+            padding-left: 1.125rem;
             align-items: center;
             justify-content: center;
             label::before {
                 margin-top: -0.85rem;
-                width: 16px;
-                height: 16px;
+                width: 1rem;
+                height: 1rem;
             }
         }
 
@@ -104,8 +93,6 @@
             width: 100%;
             display: table-cell;
         }
-
-        @extend %thin-bottom;
     }
 
 }
@@ -113,8 +100,8 @@
 .headerWithIcon {
     display: inline-flex;
     align-items: center;
-    gap: 3px;
-    max-height: 16px;
+    gap: 0.1875rem;
+    max-height: 1rem;
 }
 
 
@@ -123,22 +110,22 @@
     align-items: center;
     display: inline-flex;
     vertical-align: middle;
-    max-height: 16px !important;
-    margin-left: 5px;
-    transform: translateY(-2px);
+    max-height: 1rem !important;
+    margin-left: 0.3125rem;
+    transform: translateY(-0.125rem);
 }
 
 .infoIcon svg {
-    height: 20px !important;
-    width: 16px !important;
+    height: 1.25rem !important;
+    width: 1rem !important;
     vertical-align: middle;
     display: inline-block;
-    gap: 2px;
+    gap:0.125rem;
 }
 
 .cardInfo {
-    font-size: 14px;
-    color: #3D4551;
+    font-size: 0.875rem;
+    color: colors.$base-darker;
     line-height: 1.6;
-    margin-top: 8px;
+    margin-top: 0.5rem;
 }

@@ -4,7 +4,7 @@
 .card {
     @extend %thin;
     background-color: colors.$base-white;
-    border-radius: 5px;
+    @include borders.rounded();
 
     & > header {
         display: flex;
@@ -15,17 +15,18 @@
     }
 }
 
-.titleWrapper {
-    display: flex;
-    flex-direction: column;
-    max-height: 46px;
+.subtext {
+    font-size: 0.875rem;
+    line-height: 1.3125rem;
+    color: colors.$base-darker;
 }
 
-.subtext {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 150%;
-    color: colors.$base-darker;
-    margin-top: 0;
-    max-height: 17px;
+.info {
+    margin-left: auto;
+}
+
+.titleBlock {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
 }
