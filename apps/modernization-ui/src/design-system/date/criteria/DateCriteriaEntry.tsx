@@ -1,21 +1,29 @@
-import { ChangeEvent } from 'react';
-import { EntryWrapper, Sizing } from 'components/Entry';
-import { DateCriteria, initialDateEqualsCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from '../entry';
+import { useState } from 'react';
+import { EntryWrapper } from 'components/Entry';
+import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from '../entry';
 import { ExactDateEntry } from './exact-date';
 import { DateRangeEntry } from './date-range';
 import styles from './date-criteria.module.scss';
 import { Radio } from 'design-system/radio';
+import { FieldProps } from 'design-system/field';
+
+type CriteriaType = 'equals' | 'between';
+
+const resolveCriteriaType = (value: DateCriteria): CriteriaType =>
+    isDateBetweenCriteria(value) ? 'between' : 'equals';
+
+const resolveInitialCriteriaType = (value?: DateCriteria | null): CriteriaType =>
+    value ? resolveCriteriaType(value) : 'equals';
+
+const asDateEqualsCriteria = (value?: DateCriteria | null) =>
+    value && isDateEqualsCriteria(value) ? value : undefined;
 
 export type DateCriteriaEntryProps = {
     id: string;
-    value: DateCriteria | null | undefined;
-    label: string;
-    sizing?: Sizing;
-    orientation?: 'vertical' | 'horizontal';
-    error?: string;
+    value?: DateCriteria | null;
     onChange: (value?: DateCriteria) => void;
     onBlur?: () => void;
-};
+} & FieldProps;
 
 export const DateCriteriaEntry = ({
     orientation,
@@ -27,8 +35,10 @@ export const DateCriteriaEntry = ({
     onChange,
     onBlur
 }: DateCriteriaEntryProps) => {
-    const handleDateOperationChange = (event: ChangeEvent<HTMLInputElement>) => {
-        onChange(event.target.value === 'equals' ? { equals: {} } : { between: {} });
+    const [type, setType] = useState<CriteriaType>(resolveInitialCriteriaType(value));
+    const handleDateOperationChange = (type: CriteriaType) => () => {
+        setType(type);
+        onChange();
     };
 
     return (
@@ -39,8 +49,8 @@ export const DateCriteriaEntry = ({
                     name="dateOperation"
                     label={'Exact Date'}
                     value={'equals'}
-                    onChange={handleDateOperationChange}
-                    checked={!value || isDateEqualsCriteria(value)}
+                    onChange={handleDateOperationChange('equals')}
+                    checked={type === 'equals'}
                     sizing={sizing}
                 />
                 <Radio
@@ -48,16 +58,16 @@ export const DateCriteriaEntry = ({
                     name="dateOperation"
                     label={'Date Range'}
                     value={'between'}
-                    onChange={handleDateOperationChange}
-                    checked={!!value && isDateBetweenCriteria(value)}
+                    onChange={handleDateOperationChange('between')}
+                    checked={type === 'between'}
                     sizing={sizing}
                 />
             </div>
-            <div className="margin-bottom-1">
-                {(!value || isDateEqualsCriteria(value)) && (
+            <div className="margin-bottom-1" key={type}>
+                {type === 'equals' && (
                     <ExactDateEntry
                         id={`${id}-exact-date`}
-                        value={value || initialDateEqualsCriteria}
+                        value={asDateEqualsCriteria(value)}
                         onChange={onChange}
                         onBlur={onBlur}
                     />

@@ -77,8 +77,7 @@ type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity
 export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact, NameCriteria, Filter };
 
 const initial: PatientCriteriaEntry = {
-    status: [ACTIVE],
-    bornOn: { equals: {} }
+    status: [ACTIVE]
 };
 
 export { initial };

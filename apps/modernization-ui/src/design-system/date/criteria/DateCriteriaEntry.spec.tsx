@@ -22,9 +22,9 @@ describe('DateCriteriaEntry Component', () => {
         const { getByLabelText, getByRole } = render(<DateCriteriaEntry {...defaultProps} value={null} />);
         const exactDateRadio = getByLabelText('Exact Date');
         expect(exactDateRadio).toBeChecked();
-        expect(getByRole('spinbutton', { name: 'month' })).toBeInTheDocument();
-        expect(getByRole('spinbutton', { name: 'day' })).toBeInTheDocument();
-        expect(getByRole('spinbutton', { name: 'year' })).toBeInTheDocument();
+        expect(getByRole('spinbutton', { name: 'Month' })).toBeInTheDocument();
+        expect(getByRole('spinbutton', { name: 'Day' })).toBeInTheDocument();
+        expect(getByRole('spinbutton', { name: 'Year' })).toBeInTheDocument();
     });
 
     it('should call onChange when a exact date is selected', async () => {
