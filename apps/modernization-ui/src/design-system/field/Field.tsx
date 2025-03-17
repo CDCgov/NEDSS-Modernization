@@ -16,6 +16,7 @@ type FieldProps = {
     error?: string;
     required?: boolean;
     warning?: string;
+    isTextArea?: boolean;
 };
 
 type Props = {
