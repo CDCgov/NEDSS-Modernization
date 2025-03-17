@@ -45,7 +45,6 @@ export const HeightConstrained = ({ children, onChange, rowConstraint, name, siz
             {constraint === 'bounded' && matchesRow && (
                 <Button
                     aria-label={`view more ` + name}
-                    unpadded
                     className={styles.button}
                     sizing={sizing}
                     onClick={() => onChange('unbounded')}>
@@ -55,7 +54,6 @@ export const HeightConstrained = ({ children, onChange, rowConstraint, name, siz
             {constraint === 'bounded' && rowConstraint === 'unbounded' && (
                 <Button
                     aria-label={`view less ` + name}
-                    unpadded
                     className={styles.button}
                     sizing={sizing}
                     onClick={() => onChange('bounded')}>

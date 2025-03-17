@@ -9,89 +9,192 @@ $icon-only-medium: 1.75rem;
 $icon-padding-small: 0.25rem;
 $icon-padding-medium: 0.5rem;
 
-@mixin sizedButtonIcon($height: $icon-small, $width: $icon-small) {
+@mixin icon($height: $icon-small, $width: $icon-small) {
     svg {
         height: $height;
         width: $width;
     }
 }
 
-.secondary {
-    background-color: rgba(0, 0, 0, 0) !important;
-    box-shadow: inset 0 0 0 2px colors.$primary !important;
-    color: colors.$primary !important;
-
-    &:hover {
-        box-shadow: inset 0 0 0 2px colors.$primary-dark !important;
-        color: colors.$primary-dark !important;
-    }
-    &:active {
-        box-shadow: inset 0 0 0 2px colors.$primary-darker !important;
-        color: colors.$primary-darker !important;
-    }
-}
-
-.destructive {
-    background-color: colors.$destructive !important;
-    &:hover {
-        background-color: colors.$secondary-dark !important;
-    }
-    &:active {
-        background-color: colors.$secondary-darker !important;
-    }
-}
-
-.destructive.secondary {
-    background-color: colors.$base-white !important;
-    color: colors.$error !important;
-    box-shadow: inset 0 0 0 2px colors.$disabled !important;
-
-    &:hover {
-        color: colors.$secondary-dark !important;
-    }
-    &:active {
-        color: colors.$error-darker !important;
-    }
-}
-
 %button-small {
-    padding: $button-padding-small;
+    padding: $button-padding-small !important;
     font-size: 0.875rem;
-    height: auto;
+    min-height: 2rem;
+    max-height: 2rem;
     min-width: 2rem;
 
-    @include sizedButtonIcon($icon-small, $icon-small);
+    @include icon($icon-small, $icon-small);
 }
 
 %button-medium {
-    padding: $button-padding-medium;
+    padding: $button-padding-medium !important;
     font-size: 1rem;
+    min-height: 2.75rem;
+    max-height: 2.75rem;
 
-    @include sizedButtonIcon($icon-medium, $icon-medium);
+    @include icon($icon-medium, $icon-medium);
 }
 
 %button-large {
-    padding: $button-padding-medium;
-    font-size: 1rem;
-
-    @include sizedButtonIcon($icon-medium, $icon-medium);
+    @extend %button-medium;
 }
 
 %icon-button {
     padding: $icon-padding-medium !important;
-    @include sizedButtonIcon($icon-only-medium, $icon-only-medium);
+    @include icon($icon-only-medium, $icon-only-medium);
 }
 
-%icon-button-small {
-    padding: $icon-padding-small !important;
-    @include sizedButtonIcon($icon-only-small, $icon-only-small);
-}
+.button {
+    appearance: none;
+    border: 0;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    column-gap: 0.5rem;
+    font-weight: 700;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
 
-.icon {
-    &.small {
-        @extend %icon-button-small;
+    --button-color: #{colors.$base-white};
+    --button-background-color: #{colors.$primary};
+    --button-border-color: #{colors.$primary};
+
+    --button-color-active: #{colors.$base-white};
+    --button-background-color-active: #{colors.$primary-darker};
+    --button-border-color-active: #{colors.$primary-darker};
+
+    --button-color-hover: #{colors.$base-white};
+    --button-background-color-hover: #{colors.$primary-dark};
+    --button-border-color-hover: --button-background-color-hover;
+
+    --button-color-disabled: #{colors.$disabled-darkest};
+    --button-background-color-disabled: #{colors.$disabled};
+    --button-border-color-disabled: #{colors.$disabled};
+
+    color: var(--button-color);
+    background-color: var(--button-background-color);
+
+    box-shadow: inset 0 0 0 2px var(--button-border-color);
+
+    padding: var(--button-padding, #{$button-padding-medium});
+    font-size: var(--button-font-size, 1rem);
+    min-height: var(--button-height, 2.75rem);
+    max-height: var(--button-height, 2.75rem);
+
+    svg {
+        height: var(--button-icon-size, #{$icon-medium});
+        width: var(--button-icon-size, #{$icon-medium});
     }
-    &.medium {
-        @extend %icon-button;
+
+    &:active,
+    &.active {
+        color: var(--button-color-active, --button-color);
+        background-color: var(--button-background-color-active);
+        box-shadow: inset 0 0 0 2px var(--button-border-color-active);
+    }
+
+    &:hover:not(:disabled) {
+        color: var(--button-color-hover, --button-color);
+        background-color: var(--button-background-color-hover, --button-background-color);
+        box-shadow: inset 0 0 0 2px var(--button-border-color-hover, --button-border-color);
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        color: var(--button-color-disabled, --button-color);
+        background-color: var(--button-background-color-disabled, --button-background-color);
+        box-shadow: inset 0 0 0 2px var(--button-border-color-disabled, --button-border-color);
+    }
+
+    &.small {
+        --button-padding: #{$button-padding-small};
+        --button-font-size: 0.875rem;
+        --button-height: 2rem;
+        --button-icon-size: #{$icon-small};
+
+        min-width: 2rem;
+    }
+
+    &.icon {
+        --button-padding: #{$icon-padding-medium};
+        --button-icon-size: #{$icon-only-medium};
+
+        &.small {
+            --button-padding: #{$icon-padding-small};
+            --button-icon-size: #{$icon-only-small};
+        }
+    }
+
+    &.icon-last {
+        flex-direction: row-reverse;
+    }
+
+    &.secondary {
+        --button-border-color: #{colors.$primary};
+        --button-background-color: transparent;
+        --button-color: #{colors.$primary};
+
+        --button-border-color-hover: #{colors.$primary-dark};
+        --button-background-color-hover: var(--button-background-color);
+        --button-color-hover: #{colors.$primary-dark};
+
+        --button-color-active: #{colors.$primary-darker};
+        --button-background-color-active: var(--button-background-color);
+        --button-border-color-active: var(--button-color-active);
+
+        --button-color-disabled: #{colors.$disabled-darker};
+        --button-background-color-disabled: var(--button-background-color);
+        --button-border-color-disabled: #{colors.$disabled-dark};
+
+        &.destructive {
+            --button-color: #{colors.$error};
+            --button-border-color: #{colors.$disabled};
+
+            --button-color-active: #{colors.$error-darker};
+            --button-border-color-active: #{colors.$disabled};
+
+            --button-border-color-hover: #{colors.$disabled};
+            --button-color-hover: #{colors.$secondary-dark};
+        }
+    }
+
+    &.tertiary {
+        --button-padding: 0;
+        --button-border-color: transparent;
+        --button-background-color: transparent;
+        --button-color: #{colors.$primary};
+
+        --button-color-hover: #{colors.$primary-darker};
+        --button-background-color-hover: var(--button-background-color);
+
+        --button-color-active: #{colors.$primary-darker};
+        --button-background-color-active: var(--button-background-color);
+        --button-border-color-active: var(--button-border-color);
+
+        --button-color-disabled: #{colors.$disabled-darker};
+        --button-border-color-disabled: var(--button-background-color);
+        --button-background-color-disabled: var(--button-background-color);
+
+        &.destructive {
+            --button-color: #{colors.$error};
+            --button-color-hover: #{colors.$secondary-dark};
+            --button-color-active: #{colors.$secondary-dark};
+        }
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &.destructive:not(.tertiary):not(.secondary) {
+        --button-color: #{colors.$base-white};
+        --button-background-color: #{colors.$destructive};
+        --button-border-color: #{colors.$destructive};
+
+        --button-background-color-hover: #{colors.$secondary-dark};
+
+        --button-background-color-active: #{colors.$secondary-darker};
     }
 }

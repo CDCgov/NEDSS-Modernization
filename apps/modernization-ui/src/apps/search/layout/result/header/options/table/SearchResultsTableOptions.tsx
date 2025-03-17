@@ -29,7 +29,7 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
             <FeatureToggle guard={(features) => features.patient.search.filters.enabled}>
                 <div className={styles.filter}>
                     {filter && (
-                        <Button unpadded unstyled onClick={handleFilterSortReset} sizing={sizing}>
+                        <Button tertiary onClick={handleFilterSortReset} sizing={sizing}>
                             Reset sort/filters
                         </Button>
                     )}
@@ -38,7 +38,7 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
                         className={classNames({ [styles.filtered]: active })}
-                        outline={!active}
+                        secondary={!active}
                         disabled={disabled}
                         icon={<Icon name="filter_alt" />}
                         onClick={toggle}
