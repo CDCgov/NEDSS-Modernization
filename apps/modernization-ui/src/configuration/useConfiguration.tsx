@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
-import merge from 'lodash.merge';
+import merge from 'lodash/merge';
 import { Configuration } from './configuration';
 import { defaultConfiguration } from './defaults';
 import { currentConfiguration } from './currentConfiguration';

@@ -49,6 +49,7 @@ class PatientDemographicQueryResolver {
   private static final String LOCAL_ID = "local_id";
   private static final String SHORT_ID = "short_id";
   private static final String FIRST_NAME = "name.firstNm";
+  private static final String FULL_NAME = "name.full";
   private static final String PAINLESS = "painless";
   private static final String STREET = "address.streetAddr1";
   private static final String CITY = "address.city";
@@ -124,7 +125,7 @@ class PatientDemographicQueryResolver {
     }
     return Optional.of(new TextCriteria(null, null, null, criteria.getFilter().name(), null))
         .flatMap(TextCriteria::maybeContains)
-        .map(value -> containsInAtLeastOneField(NAMES, value, FIRST_NAME, LAST_NAME));
+        .map(value -> containsInAtLeastOneField(NAMES, value, FULL_NAME));
   }
 
   private Optional<QueryVariant> applyPatientIdentifierCriteria(final PatientFilter criteria) {

@@ -236,3 +236,7 @@ Then("I verify the sort of patient name", () => {
 Then("I click address tab", () => {    
   searchPage.clickAddressTab()   
 })
+
+Then("I should see the following columns displayed for each patient:", () => {
+  searchPage.verifyTableColumns();
+});

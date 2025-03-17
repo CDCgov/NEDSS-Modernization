@@ -113,6 +113,54 @@ Feature: Patient Search
     And search result 1 has a "last name" of "Smith"
     And there are 1 patient search results
 
+  Scenario: I can filter search results by last first middle suffix
+    Given I have a patient
+    And the patient has the legal name "Joe" "Jacob" "Smith", Jr. as of 01/01/2000
+    And I have another patient
+    And the patient has the legal name "Joel" "Jacob" "Smith", Jr. as of 01/01/2000
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith"
+    And I would like to filter search results with name "smith joel jacob jr"
+    When I search for patients
+    Then search result 1 has a "first name" of "Joel"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results    
+
+  Scenario: I can filter search results by partial last first partial middle
+    Given I have a patient
+    And the patient has the legal name "Joe" "Jacob" "Smith", Jr. as of 01/01/2000
+    And I have another patient
+    And the patient has the legal name "Joel" "Jacob" "Smith", Jr. as of 01/01/2000
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith"
+    And I would like to filter search results with name "th joel ja"
+    When I search for patients
+    Then search result 1 has a "first name" of "Joel"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results    
+
+  Scenario: I can filter search results by partial middle suffix
+    Given I have a patient
+    And the patient has the legal name "Joe" "Jacob" "Smith", Jr. as of 01/01/2000
+    And I have another patient
+    And the patient has the legal name "Joel" "Jacob" "Smith", Jr. as of 01/01/2000
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith"
+    And I would like to filter search results with name "ob jr"
+    When I search for patients
+    Then there are 2 patient search results    
+
+  Scenario: I can filter search results by a non existent filter
+    Given I have a patient
+    And the patient has the legal name "Joe" "Jacob" "Smith", Jr. as of 01/01/2000
+    And I have another patient
+    And the patient has the legal name "Joel" "Jacob" "Smith", Jr. as of 01/01/2000
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith"
+    And I would like to filter search results with name "xxx"
+    When I search for patients
+    Then there are 0 patient search results  
+
   Scenario: I can filter search results by a non-existent name
     Given I have a patient
     And the patient has the legal name "Joe" "Smith"

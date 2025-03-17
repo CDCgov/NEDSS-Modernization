@@ -8,7 +8,7 @@ import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
 
 export const MatchConfiguration = () => {
-    const { dataElements } = useDataElements();
+    const { configuration } = useDataElements();
 
     return (
         <div className={styles.configurationSetup}>
@@ -23,7 +23,7 @@ export const MatchConfiguration = () => {
                 </div>
             </header>
             <main>
-                <Shown when={dataElements !== undefined} fallback={<AlgorithmNotConfigured />}>
+                <Shown when={configuration !== undefined} fallback={<AlgorithmNotConfigured />}>
                     <PassConfiguration />
                 </Shown>
             </main>
