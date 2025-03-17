@@ -39,8 +39,8 @@
             width: 20rem;
             flex-shrink: 0;
         }
-        .childrenTextArea {
-            width: 40rem;
+        .childrenTextArea { 
+            max-width: 100%;
         }
 
         .message {
