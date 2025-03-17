@@ -19,6 +19,14 @@
     font-size: 0.875rem;
     line-height: 1.3125rem;
     color: colors.$base-darker;
-    align-items: flex-start;
+}
+
+.info {
+    margin-left: auto;
+}
+
+.titleBlock {
+    display: flex;
     flex-direction: column;
+    align-self: flex-start;
 }
