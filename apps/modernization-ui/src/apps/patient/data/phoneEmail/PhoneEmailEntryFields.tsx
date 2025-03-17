@@ -7,7 +7,7 @@ import { Verification } from 'libs/verification';
 import { EmailField, PhoneNumberInputField, validPhoneNumberRule, maybeValidateEmail } from 'libs/demographics/contact';
 import { MaskedTextInputField, TextInputField } from 'design-system/input/text';
 import { PhoneEmailEntry } from 'apps/patient/data';
-import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
+import { usePhoneCodedValues } from 'apps/patient/profile/phoneEmail';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 
 const AS_OF_DATE_LABEL = 'Phone & email as of';
@@ -20,7 +20,7 @@ const COMMENTS_LABEL = 'Phone & email comments';
 
 export const PhoneEmailEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<PhoneEmailEntry>();
-    const coded = usePatientPhoneCodedValues();
+    const coded = usePhoneCodedValues();
 
     return (
         <section>

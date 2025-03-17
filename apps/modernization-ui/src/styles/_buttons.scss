@@ -16,13 +16,42 @@ $icon-padding-medium: 0.5rem;
     }
 }
 
-.destructive {
-    background-color: colors.$destructive !important;
+.secondary {
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: inset 0 0 0 2px colors.$primary;
+    color: colors.$primary;
+
     &:hover {
-        background-color: colors.$secondary-dark !important;
+        box-shadow: inset 0 0 0 2px colors.$primary-dark;
+        color: colors.$primary-dark;
     }
     &:active {
-        background-color: colors.$secondary-darker !important;
+        box-shadow: inset 0 0 0 2px colors.$primary-darker;
+        color: colors.$primary-darker;
+    }
+}
+
+.destructive {
+    background-color: colors.$destructive;
+    &:hover {
+        background-color: colors.$secondary-dark;
+    }
+    &:active {
+        background-color: colors.$secondary-darker;
+    }
+}
+
+.destructive.secondary {
+    background-color: colors.$base-white;
+    color: colors.$error;
+    box-shadow: inset 0 0 0 2px colors.$disabled;
+    border-radius: 0.25rem;
+
+    &:hover {
+        color: colors.$secondary-dark;
+    }
+    &:active {
+        color: colors.$error-darker;
     }
 }
 
@@ -66,5 +95,4 @@ $icon-padding-medium: 0.5rem;
     &.medium {
         @extend %icon-button;
     }
-    
 }

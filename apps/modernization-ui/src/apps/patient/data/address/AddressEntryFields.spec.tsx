@@ -3,14 +3,15 @@ import userEvent from '@testing-library/user-event';
 import { render, waitFor, act } from '@testing-library/react';
 import { AddressEntry } from './entry';
 import { AddressEntryFields } from './AddressEntryFields';
+import { AddressCodedValues } from 'apps/patient/profile/addresses';
 
-const mockPatientAddressCodedValues = {
+const mockAddressCodedValues: AddressCodedValues = {
     types: [{ name: 'House', value: 'H' }],
     uses: [{ name: 'Home', value: 'HM' }]
 };
 
-jest.mock('apps/patient/profile/addresses/usePatientAddressCodedValues', () => ({
-    usePatientAddressCodedValues: () => mockPatientAddressCodedValues
+jest.mock('apps/patient/profile/addresses', () => ({
+    useAddressCodedValues: () => mockAddressCodedValues
 }));
 
 const mockLocationCodedValues = {
