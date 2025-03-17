@@ -99,11 +99,11 @@ describe('BlockingCriteriaSidePanel', () => {
     });
 
     it('should update selected when checkbox is clicked ', async () => {
-        const { getAllByRole, queryByText } = render(<Fixture />);
+        const { getByLabelText, queryByText } = render(<Fixture />);
 
         await waitFor(() => expect(queryByText('First name')).toBeInTheDocument());
 
-        const checkbox = getAllByRole('checkbox')[0]; // First name
+        const checkbox = getByLabelText('First name'); // First name
         expect(checkbox).toBeChecked();
         userEvent.click(checkbox);
 

@@ -20,10 +20,10 @@ describe('AttributeEntry', () => {
     });
 
     it('should set checked state correctly when false', () => {
-        const { getByRole } = render(
+        const { getByLabelText } = render(
             <AttributeEntry label="Some label" description="my description" selected={false} onChange={onChange} />
         );
-        const checkbox = getByRole('checkbox');
+        const checkbox = getByLabelText('Some label');
         expect(checkbox).not.toBeChecked();
 
         userEvent.click(checkbox);
@@ -32,10 +32,10 @@ describe('AttributeEntry', () => {
     });
 
     it('should set checked state correctly when true', () => {
-        const { getByRole } = render(
+        const { getByLabelText } = render(
             <AttributeEntry label="Some label" description="my description" selected={true} onChange={onChange} />
         );
-        const checkbox = getByRole('checkbox');
+        const checkbox = getByLabelText('Some label');
         expect(checkbox).toBeChecked();
 
         userEvent.click(checkbox);
