@@ -19,8 +19,6 @@
     font-size: 0.875rem;
     line-height: 1.3125rem;
     color: colors.$base-darker;
-    align-self: flex-start;
-    flex-direction: column;
 }
 
 .info {
@@ -30,4 +28,5 @@
 .titleBlock {
     display: flex;
     flex-direction: column;
+    align-self: flex-start;
 }
