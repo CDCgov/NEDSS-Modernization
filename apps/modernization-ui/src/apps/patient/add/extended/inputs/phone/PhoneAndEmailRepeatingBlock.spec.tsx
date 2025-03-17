@@ -8,8 +8,8 @@ const mockPatientPhoneCodedValues = {
     uses: [{ name: 'Home', value: 'H' }]
 };
 
-jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
-    usePatientPhoneCodedValues: () => mockPatientPhoneCodedValues
+jest.mock('apps/patient/profile/phoneEmail/usePhoneCodedValues', () => ({
+    usePhoneCodedValues: () => mockPatientPhoneCodedValues
 }));
 
 const awaitRender = async () => {

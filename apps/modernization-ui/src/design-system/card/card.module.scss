@@ -4,6 +4,7 @@
 .card {
     @extend %thin;
     background-color: colors.$base-white;
+    @include borders.rounded();
 
     & > header {
         display: flex;
@@ -12,4 +13,20 @@
         align-items: center;
         @extend %thin-bottom;
     }
+}
+
+.subtext {
+    font-size: 0.875rem;
+    line-height: 1.3125rem;
+    color: colors.$base-darker;
+}
+
+.info {
+    margin-left: auto;
+}
+
+.titleBlock {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
 }

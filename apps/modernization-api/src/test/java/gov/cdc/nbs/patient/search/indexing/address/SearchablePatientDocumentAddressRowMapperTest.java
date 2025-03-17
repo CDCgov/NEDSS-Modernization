@@ -16,7 +16,7 @@ class SearchablePatientDocumentAddressRowMapperTest {
   void should_map_from_result_set() throws SQLException {
 
     SearchablePatientAddressRowMapper.Column columns =
-        new SearchablePatientAddressRowMapper.Column(2, 3, 5, 7, 11, 13, 17, 18, 19, 20);
+        new SearchablePatientAddressRowMapper.Column(2, 3, 5, 7, 11, 13, 17, 18, 19, 20, 21);
 
     ResultSet resultSet = mock(ResultSet.class);
 
