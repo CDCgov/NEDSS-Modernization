@@ -6,7 +6,6 @@ import { BlockingCriteriaSidePanel } from './BlockingCriteriaSidePanel';
 
 const onAccept = jest.fn();
 const onCancel = jest.fn();
-const onChange = jest.fn();
 
 class ResizeObserver {
     observe() {
