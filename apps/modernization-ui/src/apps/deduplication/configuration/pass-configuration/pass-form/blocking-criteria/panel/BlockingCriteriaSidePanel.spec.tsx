@@ -1,8 +1,8 @@
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
+import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
+import { FormProvider, useForm } from 'react-hook-form';
 import { BlockingCriteriaSidePanel } from './BlockingCriteriaSidePanel';
-import { useState } from 'react';
 
 const onAccept = jest.fn();
 const onCancel = jest.fn();
@@ -24,21 +24,21 @@ window.ResizeObserver = ResizeObserver;
 export default ResizeObserver;
 
 type Props = {
-    initial?: BlockingAttribute[];
+    visible?: boolean;
 };
-const Fixture = ({ initial }: Props) => {
-    const [selectedAttributes, setSelectedAttributes] = useState<BlockingAttribute[]>(initial ?? []);
+const Fixture = ({ visible = true }: Props) => {
+    const form = useForm<Pass>({
+        defaultValues: {
+            name: 'Pass name',
+            description: 'This is my description for this pass',
+            blockingCriteria: [BlockingAttribute.FIRST_NAME],
+            active: true
+        }
+    });
     return (
-        <BlockingCriteriaSidePanel
-            selectedAttributes={selectedAttributes}
-            visible={true}
-            onAccept={onAccept}
-            onCancel={onCancel}
-            onChange={(a) => {
-                onChange(a);
-                setSelectedAttributes(a);
-            }}
-        />
+        <FormProvider {...form}>
+            <BlockingCriteriaSidePanel visible={visible} onAccept={onAccept} onCancel={onCancel} />
+        </FormProvider>
     );
 };
 
@@ -95,41 +95,22 @@ describe('BlockingCriteriaSidePanel', () => {
     });
 
     it('should not render fields when closed', () => {
-        const { queryByText } = render(
-            <BlockingCriteriaSidePanel
-                selectedAttributes={[]}
-                visible={false}
-                onAccept={onAccept}
-                onCancel={onCancel}
-                onChange={onChange}
-            />
-        );
+        const { queryByText } = render(<Fixture visible={false} />);
         expect(queryByText('First name')).not.toBeInTheDocument();
     });
 
-    it('should trigger on change when checkbox is clicked', async () => {
+    it('should update selected when checkbox is clicked ', async () => {
         const { getAllByRole, queryByText } = render(<Fixture />);
 
         await waitFor(() => expect(queryByText('First name')).toBeInTheDocument());
 
-        const checkboxes = getAllByRole('checkbox');
-        userEvent.click(checkboxes[0]); // First name
-        expect(onChange).toBeCalledWith([BlockingAttribute.FIRST_NAME]);
+        const checkbox = getAllByRole('checkbox')[0]; // First name
+        expect(checkbox).toBeChecked();
+        userEvent.click(checkbox);
 
-        userEvent.click(checkboxes[1]); // Last name
-        expect(onChange).toBeCalledWith([BlockingAttribute.FIRST_NAME, BlockingAttribute.LAST_NAME]);
-    });
-
-    it('should trigger on change when checkbox is clicked and attributes are already selected', async () => {
-        const { getAllByRole, queryByText } = render(<Fixture initial={[BlockingAttribute.FIRST_NAME]} />);
-
-        await waitFor(() => expect(queryByText('First name')).toBeInTheDocument());
-
-        const checkboxes = getAllByRole('checkbox');
-        expect(checkboxes[0]).toBeChecked();
-        userEvent.click(checkboxes[0]); // First name
-
-        expect(onChange).toBeCalledWith([]);
+        expect(checkbox).not.toBeChecked();
+        userEvent.click(checkbox);
+        expect(checkbox).toBeChecked();
     });
 
     it('should trigger onCancel when cancel is clicked', async () => {

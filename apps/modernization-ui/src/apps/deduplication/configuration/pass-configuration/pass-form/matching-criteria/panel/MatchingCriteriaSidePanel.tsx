@@ -1,23 +1,31 @@
-import { MatchingAttribute } from 'apps/deduplication/api/model/Pass';
+import { MatchingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
+import { useEffect, useState } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
 import { SidePanel } from '../../side-panel/SidePanel';
 import styles from './matching-criteria-panel.module.scss';
 
 type Props = {
-    selectedAttributes: MatchingAttribute[];
     visible: boolean;
-    onAccept: () => void;
-    onChange: (attributes: MatchingAttribute[]) => void;
+    onAccept: (attributes: MatchingAttribute[]) => void;
     onCancel: () => void;
 };
-export const MatchingCriteriaSidePanel = ({ selectedAttributes, visible, onAccept, onChange, onCancel }: Props) => {
+export const MatchingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props) => {
+    const form = useFormContext<Pass>();
+    const [selectedAttributes, setSelectedAttributes] = useState<MatchingAttribute[]>([]);
+    const { matchingCriteria } = useWatch(form);
+
+    useEffect(() => {
+        setSelectedAttributes(matchingCriteria?.map((a) => a.attribute).filter((a) => a !== undefined) ?? []);
+    }, [matchingCriteria, visible]);
+
     const handleOnChange = (attribute: MatchingAttribute) => {
         if (selectedAttributes.includes(attribute)) {
-            onChange([...selectedAttributes].filter((a) => a !== attribute));
+            setSelectedAttributes([...selectedAttributes].filter((a) => a !== attribute));
         } else {
-            onChange([...selectedAttributes, attribute]);
+            setSelectedAttributes([...selectedAttributes, attribute]);
         }
     };
 
@@ -31,7 +39,10 @@ export const MatchingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
                     <Button outline onClick={onCancel}>
                         Cancel
                     </Button>
-                    <Button icon={<Icon name="add" sizing="small" />} labelPosition="right" onClick={onAccept}>
+                    <Button
+                        icon={<Icon name="add" sizing="small" />}
+                        labelPosition="right"
+                        onClick={() => onAccept(selectedAttributes)}>
                         Add attribute(s)
                     </Button>
                 </>

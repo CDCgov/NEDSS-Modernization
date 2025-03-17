@@ -1,24 +1,37 @@
-import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
+import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
+import { useEffect, useState } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
 import { SidePanel } from '../../side-panel/SidePanel';
 import styles from './blocking-criteria-panel.module.scss';
 
 type Props = {
-    selectedAttributes: BlockingAttribute[];
     visible: boolean;
-    onAccept: () => void;
-    onChange: (attributes: BlockingAttribute[]) => void;
+    onAccept: (attributes: BlockingAttribute[]) => void;
     onCancel: () => void;
 };
-export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccept, onChange, onCancel }: Props) => {
+export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props) => {
+    const form = useFormContext<Pass>();
+    const [selectedAttributes, setSelectedAttributes] = useState<BlockingAttribute[]>([]);
+    const { blockingCriteria } = useWatch(form);
+
+    useEffect(() => {
+        setSelectedAttributes(blockingCriteria ?? []);
+    }, [blockingCriteria, visible]);
+
     const handleOnChange = (attribute: BlockingAttribute) => {
         if (selectedAttributes.includes(attribute)) {
-            onChange([...selectedAttributes].filter((a) => a !== attribute));
+            setSelectedAttributes([...selectedAttributes].filter((a) => a !== attribute));
         } else {
-            onChange([...selectedAttributes, attribute]);
+            setSelectedAttributes([...selectedAttributes, attribute]);
         }
+    };
+
+    const handleCancel = () => {
+        onCancel();
+        setSelectedAttributes(blockingCriteria ?? []);
     };
 
     return (
@@ -28,10 +41,13 @@ export const BlockingCriteriaSidePanel = ({ selectedAttributes, visible, onAccep
             onClose={onCancel}
             footer={
                 <>
-                    <Button outline onClick={onCancel}>
+                    <Button outline onClick={handleCancel}>
                         Cancel
                     </Button>
-                    <Button icon={<Icon name="add" sizing="small" />} labelPosition="right" onClick={onAccept}>
+                    <Button
+                        icon={<Icon name="add" sizing="small" />}
+                        labelPosition="right"
+                        onClick={() => onAccept(selectedAttributes)}>
                         Add attribute(s)
                     </Button>
                 </>

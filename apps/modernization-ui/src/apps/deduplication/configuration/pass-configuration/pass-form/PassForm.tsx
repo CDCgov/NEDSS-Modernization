@@ -3,6 +3,7 @@ import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { useEffect, useState } from 'react';
 import { useFormContext, useFormState, useWatch } from 'react-hook-form';
+import { ActivateToggle } from './activate-toggle/ActivateToggle';
 import { BlockingCriteria } from './blocking-criteria/BlockingCriteria';
 import { BlockingCriteriaSidePanel } from './blocking-criteria/panel/BlockingCriteriaSidePanel';
 import { DeletePassConfirmation } from './confirmation/DeletePassConfirmation';
@@ -11,7 +12,6 @@ import { MatchingBounds } from './matching-bounds/MatchingBounds';
 import { MatchingCriteria } from './matching-criteria/MatchingCriteria';
 import { MatchingCriteriaSidePanel } from './matching-criteria/panel/MatchingCriteriaSidePanel';
 import styles from './pass-form.module.scss';
-import { ActivateToggle } from './activate-toggle/ActivateToggle';
 
 type Props = {
     passCount: number;
@@ -22,9 +22,7 @@ type Props = {
 export const PassForm = ({ passCount, onCancel, onDelete, onSave }: Props) => {
     const form = useFormContext<Pass>();
     const { isDirty, isValid } = useFormState(form);
-    const { blockingCriteria, matchingCriteria, name, id } = useWatch(form);
-    const [selectedBlockingAttributes, setSelectedBlockingAttributes] = useState<BlockingAttribute[]>([]);
-    const [selectedMatchingAttributes, setSelectedMatchingAttributes] = useState<MatchingAttribute[]>([]);
+    const { matchingCriteria, name, id } = useWatch(form);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [panelState, setPanelState] = useState<{ visible: boolean; content: 'blocking' | 'matching' }>({
@@ -33,71 +31,34 @@ export const PassForm = ({ passCount, onCancel, onDelete, onSave }: Props) => {
     });
 
     useEffect(() => {
-        setSelectedBlockingAttributes(blockingCriteria ?? []);
-    }, [blockingCriteria]);
-
-    useEffect(() => {
-        setSelectedMatchingAttributes(matchingCriteria?.map((a) => a.attribute).filter((a) => a !== undefined) ?? []);
-    }, [matchingCriteria]);
-
-    useEffect(() => {
         setPanelState({ ...panelState, visible: false });
     }, [form]);
 
     const togglePanelState = (content: 'blocking' | 'matching') => {
         if (panelState.visible && panelState.content === content) {
-            // Panel is currently visible and we have "toggled" the same attribute select
-            if (content === 'blocking') {
-                handleCloseBlockingPanel();
-            } else {
-                handleCloseMatchingPanel();
-            }
+            closePanel();
         } else {
-            if (panelState.visible) {
-                // Panel is currently visible but we are opening new content
-                if (content === 'blocking') {
-                    // opening blocking selection, clear matching changes
-                    setSelectedMatchingAttributes(
-                        matchingCriteria?.map((a) => a.attribute).filter((a) => a !== undefined) ?? []
-                    );
-                } else {
-                    // opening matching selection, clear blocking changes
-                    setSelectedBlockingAttributes(blockingCriteria ?? []);
-                }
-            }
             setPanelState({ visible: true, content });
         }
     };
 
-    const handleSelectBlockingAttributes = () => {
-        form.setValue('blockingCriteria', selectedBlockingAttributes, { shouldDirty: true, shouldValidate: true });
+    const closePanel = () => {
         setPanelState({ ...panelState, visible: false });
     };
 
-    const handleCloseBlockingPanel = () => {
-        // hide panel
-        setPanelState({ ...panelState, visible: false });
-
-        // reset selected blocking criteria
-        setSelectedBlockingAttributes(blockingCriteria ?? []);
+    const handleSelectBlockingAttributes = (attributes: BlockingAttribute[]) => {
+        form.setValue('blockingCriteria', attributes, { shouldDirty: true, shouldValidate: true });
+        closePanel();
     };
 
-    const handleSelectMatchingAttributes = () => {
-        const newValue = selectedMatchingAttributes.map((m) => {
+    const handleSelectMatchingAttributes = (attributes: MatchingAttribute[]) => {
+        const newValue = attributes.map((m) => {
             // if attribute was already selected, set method to pre-selected method
             const method = matchingCriteria?.find((x) => x.attribute === m)?.method ?? MatchMethod.NONE;
             return { attribute: m, method: method };
         });
         form.setValue('matchingCriteria', newValue, { shouldDirty: true, shouldValidate: true });
-        setPanelState({ ...panelState, visible: false });
-    };
-
-    const handleCloseMatchingPanel = () => {
-        // hide panel
-        setPanelState({ ...panelState, visible: false });
-
-        // reset selected matching criteria
-        setSelectedMatchingAttributes(matchingCriteria?.map((a) => a.attribute).filter((a) => a !== undefined) ?? []);
+        closePanel();
     };
 
     const handleCancelClick = () => {
@@ -112,19 +73,15 @@ export const PassForm = ({ passCount, onCancel, onDelete, onSave }: Props) => {
         <div className={styles.passForm}>
             <Shown when={panelState.content === 'blocking'}>
                 <BlockingCriteriaSidePanel
-                    selectedAttributes={selectedBlockingAttributes}
                     onAccept={handleSelectBlockingAttributes}
-                    onChange={setSelectedBlockingAttributes}
-                    onCancel={handleCloseBlockingPanel}
+                    onCancel={closePanel}
                     visible={panelState.visible}
                 />
             </Shown>
             <Shown when={panelState.content === 'matching'}>
                 <MatchingCriteriaSidePanel
-                    selectedAttributes={selectedMatchingAttributes}
                     onAccept={handleSelectMatchingAttributes}
-                    onChange={setSelectedMatchingAttributes}
-                    onCancel={handleCloseMatchingPanel}
+                    onCancel={closePanel}
                     visible={panelState.visible}
                 />
             </Shown>
