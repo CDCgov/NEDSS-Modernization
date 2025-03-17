@@ -7,9 +7,10 @@ import { SelectPass } from '../notification-cards/SelectPass';
 import { PassList } from './pass-list/PassList';
 import styles from './pass-configuration.module.scss';
 import { UnsavedChangesConfirmation } from '../confirmation/UnsavedChangesConfirmation';
+import { PassForm } from './pass-form/PassForm';
 
 export const PassConfiguration = () => {
-    const { passes } = useMatchConfiguration();
+    const { passes, deletePass, savePass } = useMatchConfiguration();
     const form = useForm<Pass>({ mode: 'onBlur' });
     const { isDirty } = useFormState(form);
     const [newPass, setNewPass] = useState<Pass | undefined>();
@@ -81,6 +82,29 @@ export const PassConfiguration = () => {
         }
     };
 
+    const handleCancel = () => {
+        if (selectedPass === newPass) {
+            setNewPass(undefined);
+        }
+        setSelectedPass(undefined);
+    };
+
+    const handleDelete = () => {
+        if (selectedPass === undefined) {
+            return;
+        }
+        if (selectedPass.id === undefined) {
+            setNewPass(undefined);
+        } else {
+            deletePass(selectedPass.id);
+        }
+        setSelectedPass(undefined);
+    };
+
+    const handleSave = () => {
+        savePass(form.getValues());
+    };
+
     return (
         <div className={styles.passConfiguration}>
             <UnsavedChangesConfirmation
@@ -101,7 +125,12 @@ export const PassConfiguration = () => {
             />
             <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes.length} />}>
                 <FormProvider {...form}>
-                    <div></div>
+                    <PassForm
+                        passCount={passes.length}
+                        onCancel={handleCancel}
+                        onDelete={handleDelete}
+                        onSave={handleSave}
+                    />
                 </FormProvider>
             </Shown>
         </div>
