@@ -110,7 +110,7 @@ describe('when entering address section', () => {
         );
         userEvent.tab();
 
-        const validationMessage = 'The Street address 1 only allows 100 characters.';
+        const validationMessage = 'The Street address 1 only allows 100 characters max.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
@@ -128,7 +128,7 @@ describe('when entering address section', () => {
         );
         userEvent.tab();
 
-        const validationMessage = 'The Street address 2 only allows 100 characters.';
+        const validationMessage = 'The Street address 2 only allows 100 characters max.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
@@ -146,7 +146,7 @@ describe('when entering address section', () => {
         );
         userEvent.tab();
 
-        const validationMessage = 'The City only allows 100 characters.';
+        const validationMessage = 'The City only allows 100 characters max.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
