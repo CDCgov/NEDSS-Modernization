@@ -4,7 +4,7 @@ import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { BlockingCriteriaAttribute } from './BlockingCriteriaAttribute';
+import { BlockingCriteriaAttribute } from './attribute/BlockingCriteriaAttribute';
 import styles from './blocking-criteria.module.scss';
 
 type Props = {

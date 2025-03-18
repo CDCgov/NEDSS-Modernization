@@ -8,8 +8,12 @@ import { PassList } from './pass-list/PassList';
 import styles from './pass-configuration.module.scss';
 import { UnsavedChangesConfirmation } from '../confirmation/UnsavedChangesConfirmation';
 import { PassForm } from './pass-form/PassForm';
+import { DataElements } from 'apps/deduplication/data-elements/DataElement';
 
-export const PassConfiguration = () => {
+type Props = {
+    dataElements: DataElements;
+};
+export const PassConfiguration = ({ dataElements }: Props) => {
     const { passes, deletePass, savePass } = useMatchConfiguration();
     const form = useForm<Pass>({ mode: 'onBlur' });
     const { isDirty } = useFormState(form);
@@ -126,6 +130,7 @@ export const PassConfiguration = () => {
             <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes.length} />}>
                 <FormProvider {...form}>
                     <PassForm
+                        dataElements={dataElements}
                         passCount={passes.length}
                         onCancel={handleCancel}
                         onDelete={handleDelete}

@@ -1,4 +1,4 @@
-import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
+import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { useEffect, useState } from 'react';
@@ -7,19 +7,26 @@ import { BlockingCriteria } from './blocking-criteria/BlockingCriteria';
 import { BlockingCriteriaSidePanel } from './blocking-criteria/panel/BlockingCriteriaSidePanel';
 import { DeletePassConfirmation } from './confirmation/DeletePassConfirmation';
 import { UnsavedChangesConfirmation } from './confirmation/UnsavedChangesConfirmation';
+import { MatchingCriteria } from './matching-criteria/MatchingCriteria';
+import { MatchingBounds } from './matching-bounds/MatchingBounds';
+import { ActivateToggle } from './activate-toggle/ActivateToggle';
+import { MatchingCriteriaSidePanel } from './matching-criteria/panel/MatchingCriteriaSidePanel';
+import { DataElements } from 'apps/deduplication/data-elements/DataElement';
 import styles from './pass-form.module.scss';
 
 type Props = {
     passCount: number;
+    dataElements: DataElements;
     onSave: () => void;
     onCancel: () => void;
     onDelete: () => void;
 };
-export const PassForm = ({ passCount, onCancel, onDelete, onSave }: Props) => {
+export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }: Props) => {
     const form = useFormContext<Pass>();
     const { isDirty, isValid } = useFormState(form);
     const { id } = useWatch(form);
     const { name } = useWatch(form);
+    const { matchingCriteria } = useWatch(form);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [panelState, setPanelState] = useState<{ visible: boolean; content: 'blocking' | 'matching' }>({
@@ -48,6 +55,16 @@ export const PassForm = ({ passCount, onCancel, onDelete, onSave }: Props) => {
         closePanel();
     };
 
+    const handleSelectMatchingAttributes = (attributes: MatchingAttribute[]) => {
+        const newValue = attributes.map((m) => {
+            // if attribute was already selected, set method to pre-selected method
+            const method = matchingCriteria?.find((x) => x.attribute === m)?.method ?? MatchMethod.NONE;
+            return { attribute: m, method: method };
+        });
+        form.setValue('matchingCriteria', newValue, { shouldDirty: true, shouldValidate: true });
+        closePanel();
+    };
+
     const handleCancelClick = () => {
         if (isDirty || id === undefined) {
             setShowConfirmation(true);
@@ -61,6 +78,13 @@ export const PassForm = ({ passCount, onCancel, onDelete, onSave }: Props) => {
             <Shown when={panelState.content === 'blocking'}>
                 <BlockingCriteriaSidePanel
                     onAccept={handleSelectBlockingAttributes}
+                    onCancel={closePanel}
+                    visible={panelState.visible}
+                />
+            </Shown>
+            <Shown when={panelState.content === 'matching'}>
+                <MatchingCriteriaSidePanel
+                    onAccept={handleSelectMatchingAttributes}
                     onCancel={closePanel}
                     visible={panelState.visible}
                 />
@@ -86,6 +110,9 @@ export const PassForm = ({ passCount, onCancel, onDelete, onSave }: Props) => {
             />
             <div className={styles.formContent}>
                 <BlockingCriteria onAddAttributes={() => togglePanelState('blocking')} />
+                <MatchingCriteria onAddAttributes={() => togglePanelState('matching')} dataElements={dataElements} />
+                <MatchingBounds dataElements={dataElements} />
+                <ActivateToggle />
             </div>
             <div className={styles.buttonBar}>
                 <div>

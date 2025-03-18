@@ -33,6 +33,40 @@ export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
         onCancel();
         setSelectedAttributes(blockingCriteria ?? []);
     };
+    const attributeList: { attribute: BlockingAttribute; label: string; description: string }[] = [
+        {
+            attribute: BlockingAttribute.FIRST_NAME,
+            label: 'First name',
+            description: "The first 4 characters of the person's first name."
+        },
+        {
+            attribute: BlockingAttribute.LAST_NAME,
+            label: 'Last name',
+            description: "The first 4 characters of the person's last name."
+        },
+        {
+            attribute: BlockingAttribute.DATE_OF_BIRTH,
+            label: 'Date of birth',
+            description: "The person's birthdate in the format YYYY-MM-DD."
+        },
+        { attribute: BlockingAttribute.SEX, label: 'Sex', description: "The person's sex in the format of M or F." },
+        {
+            attribute: BlockingAttribute.STREET_ADDRESS,
+            label: 'Street address 1',
+            description: "The first 4 characters of the person's address."
+        },
+        { attribute: BlockingAttribute.ZIP, label: 'Zip', description: "The person's 5 digit zip code." },
+        {
+            attribute: BlockingAttribute.EMAIL,
+            label: 'Email',
+            description: "The first 4 characters of the person's email address."
+        },
+        {
+            attribute: BlockingAttribute.PHONE,
+            label: 'Phone',
+            description: "The last 4 digits of the person's phone number."
+        }
+    ];
 
     return (
         <SidePanel
@@ -53,70 +87,17 @@ export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
                 </>
             }>
             <div className={styles.blockingCriteriaPanel}>
-                <AttributeEntry
-                    label="First name"
-                    description="The first 4 characters of the person's first name."
-                    onChange={() => {
-                        handleOnChange(BlockingAttribute.FIRST_NAME);
-                    }}
-                    selected={selectedAttributes.includes(BlockingAttribute.FIRST_NAME)}
-                />
-                <AttributeEntry
-                    label="Last name"
-                    description="The first 4 characters of the person's last name."
-                    onChange={() => {
-                        handleOnChange(BlockingAttribute.LAST_NAME);
-                    }}
-                    selected={selectedAttributes.includes(BlockingAttribute.LAST_NAME)}
-                />
-                <AttributeEntry
-                    label="Date of birth"
-                    description="The person's birthdate in the format YYYY-MM-DD."
-                    onChange={() => {
-                        handleOnChange(BlockingAttribute.DATE_OF_BIRTH);
-                    }}
-                    selected={selectedAttributes.includes(BlockingAttribute.DATE_OF_BIRTH)}
-                />
-                <AttributeEntry
-                    label="Sex"
-                    description="The person's sex in the format of M or F."
-                    onChange={() => {
-                        handleOnChange(BlockingAttribute.SEX);
-                    }}
-                    selected={selectedAttributes.includes(BlockingAttribute.SEX)}
-                />
-                <AttributeEntry
-                    label="Street address 1"
-                    description="The first 4 characters of the person's address."
-                    onChange={() => {
-                        handleOnChange(BlockingAttribute.STREET_ADDRESS);
-                    }}
-                    selected={selectedAttributes.includes(BlockingAttribute.STREET_ADDRESS)}
-                />
-                <AttributeEntry
-                    label="Zip"
-                    description="The person's 5 digit zip code."
-                    onChange={() => {
-                        handleOnChange(BlockingAttribute.ZIP);
-                    }}
-                    selected={selectedAttributes.includes(BlockingAttribute.ZIP)}
-                />
-                <AttributeEntry
-                    label="Email"
-                    description="The first 4 characters of the person's email address."
-                    onChange={() => {
-                        handleOnChange(BlockingAttribute.EMAIL);
-                    }}
-                    selected={selectedAttributes.includes(BlockingAttribute.EMAIL)}
-                />
-                <AttributeEntry
-                    label="Phone"
-                    description="The last 4 digits of the person's phone number."
-                    onChange={() => {
-                        handleOnChange(BlockingAttribute.PHONE);
-                    }}
-                    selected={selectedAttributes.includes(BlockingAttribute.PHONE)}
-                />
+                {attributeList.map((a, k) => (
+                    <AttributeEntry
+                        key={`blockingAttribute-${k}`}
+                        label={a.label}
+                        description={a.description}
+                        onChange={() => {
+                            handleOnChange(a.attribute);
+                        }}
+                        selected={selectedAttributes.includes(a.attribute)}
+                    />
+                ))}
             </div>
         </SidePanel>
     );

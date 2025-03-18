@@ -1,0 +1,33 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.matchingCriteria {
+    position: relative;
+
+    .disabledOverlay {
+        background-color: colors.$base-lighter;
+        position: absolute;
+        top: 0;
+        opacity: 0.5;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .body {
+        padding: 0 1rem;
+
+        .noMatchingCriteriaText {
+            padding-top: 1rem;
+            line-height: 1.62rem;
+        }
+
+        .buttonContainer {
+            padding: 1rem 0;
+
+            .addButton {
+                height: 2rem;
+            }
+        }
+    }
+}
