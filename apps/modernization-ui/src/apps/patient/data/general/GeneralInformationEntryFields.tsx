@@ -4,7 +4,7 @@ import { NumericInput } from 'design-system/input';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
 import { usePatientProfilePermissions } from 'apps/patient/profile/permission';
-import { useGeneralCodedValues } from 'apps/patient/profile/generalInfo';
+import { useGeneralCodedValues } from './useGeneralCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';

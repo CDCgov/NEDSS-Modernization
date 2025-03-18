@@ -7,7 +7,7 @@ import { Verification } from 'libs/verification';
 import { EmailField, PhoneNumberInputField, validPhoneNumberRule, maybeValidateEmail } from 'libs/demographics/contact';
 import { MaskedTextInputField, TextInputField } from 'design-system/input/text';
 import { PhoneEmailEntry } from 'apps/patient/data';
-import { usePhoneCodedValues } from 'apps/patient/profile/phoneEmail';
+import { usePhoneCodedValues } from './usePhoneCodedValues';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { maxCommentLengthRule } from 'validation/entry/maxCommentLengthRule';
 

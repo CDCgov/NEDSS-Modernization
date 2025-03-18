@@ -1,7 +1,7 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { render, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IdentificationCodedValues } from 'apps/patient/profile/identification';
+import { IdentificationCodedValues } from './useIdentificationCodedValues';
 import { IdentificationEntry } from './entry';
 import { IdentificationEntryFields } from './IdentificationEntryFields';
 
@@ -10,7 +10,7 @@ const mockIdentificationCodedValues: IdentificationCodedValues = {
     authorities: [{ name: 'Assigning auth', value: 'AA' }]
 };
 
-jest.mock('apps/patient/profile/identification', () => ({
+jest.mock('./useIdentificationCodedValues', () => ({
     useIdentificationCodedValues: () => mockIdentificationCodedValues
 }));
 
