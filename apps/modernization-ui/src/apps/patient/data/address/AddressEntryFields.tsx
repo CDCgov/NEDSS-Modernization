@@ -10,7 +10,6 @@ import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location'
 import { CensusTractInputField, validCensusTractRule } from './census-tract';
 import { AddressEntry } from './entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
-import { maxCommentLengthRule } from 'validation/entry/maxCommentLengthRule';
 import { useAddressCodedValues } from './useAddressCodedValues';
 
 const AS_OF_DATE_LABEL = 'Address as of';
@@ -256,7 +255,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
             <Controller
                 control={control}
                 name="comment"
-                rules={maxCommentLengthRule(2000, COMMENTS_LABEL)}
+                rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <TextAreaField
                         label={COMMENTS_LABEL}
