@@ -1,19 +1,20 @@
-import { CodedValue, indicators } from 'coded';
-import { useConceptOptions, ConceptNames } from 'options/concepts';
+import { indicators } from 'coded';
+import { Selectable } from 'options';
+import { useConceptOptions } from 'options/concepts';
 import { usePrimaryLanguageOptions } from 'options/language';
 import { useOccupationOptions } from 'options/occupations';
 
 type GeneralCodedValues = {
-    maritalStatuses: CodedValue[];
-    educationLevels: CodedValue[];
-    primaryLanguages: CodedValue[];
-    primaryOccupations: CodedValue[];
-    speaksEnglish: CodedValue[];
+    maritalStatuses: Selectable[];
+    educationLevels: Selectable[];
+    primaryLanguages: Selectable[];
+    primaryOccupations: Selectable[];
+    speaksEnglish: Selectable[];
 };
 
 const useGeneralCodedValues = (): GeneralCodedValues => {
-    const maritalStatuses = useConceptOptions(ConceptNames.maritalStatuses, { lazy: false });
-    const educationLevels = useConceptOptions(ConceptNames.educationLevels, { lazy: false });
+    const maritalStatuses = useConceptOptions('P_MARITAL', { lazy: false });
+    const educationLevels = useConceptOptions('P_EDUC_LVL', { lazy: false });
     const primaryLanguages = usePrimaryLanguageOptions({ lazy: false });
     const primaryOccupations = useOccupationOptions({ lazy: false });
 

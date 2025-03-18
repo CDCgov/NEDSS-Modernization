@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
-import { GeneralCodedValues } from 'apps/patient/profile/generalInfo';
+import { GeneralCodedValues } from './useGeneralCodedValues';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { FormProvider, useForm } from 'react-hook-form';
 import { GeneralInformationEntryFields } from './GeneralInformationEntryFields';
@@ -21,7 +21,7 @@ const mockGeneralCodedValues: GeneralCodedValues = {
     speaksEnglish: [{ name: 'Yes', value: 'Y' }]
 };
 
-jest.mock('apps/patient/profile/generalInfo/useGeneralCodedValues', () => ({
+jest.mock('./useGeneralCodedValues', () => ({
     useGeneralCodedValues: () => mockGeneralCodedValues
 }));
 
