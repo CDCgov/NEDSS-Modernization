@@ -1,0 +1,8 @@
+.blockingCriteriaPanel {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

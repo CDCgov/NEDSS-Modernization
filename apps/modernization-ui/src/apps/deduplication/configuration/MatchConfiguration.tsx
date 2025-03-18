@@ -30,7 +30,7 @@ export const MatchConfiguration = () => {
             </header>
             <main>
                 <Shown when={configuration !== undefined} fallback={<AlgorithmNotConfigured />}>
-                    <PassConfiguration />
+                    {configuration && <PassConfiguration dataElements={configuration} />}
                 </Shown>
             </main>
         </div>
