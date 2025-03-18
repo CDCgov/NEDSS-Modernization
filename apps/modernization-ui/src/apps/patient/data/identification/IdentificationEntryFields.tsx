@@ -4,7 +4,7 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { useIdentificationCodedValues } from 'apps/patient/profile/identification';
+import { useIdentificationCodedValues } from './useIdentificationCodedValues';
 import { IdentificationEntry } from './entry';
 
 const AS_OF_DATE_LABEL = 'Identification as of';

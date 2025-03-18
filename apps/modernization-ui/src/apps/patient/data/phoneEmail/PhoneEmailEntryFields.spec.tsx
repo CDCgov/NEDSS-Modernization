@@ -9,7 +9,7 @@ const mockPhoneCodedValues = {
     uses: [{ name: 'Home', value: 'H' }]
 };
 
-jest.mock('apps/patient/profile/phoneEmail', () => ({
+jest.mock('./usePhoneCodedValues', () => ({
     usePhoneCodedValues: () => mockPhoneCodedValues
 }));
 

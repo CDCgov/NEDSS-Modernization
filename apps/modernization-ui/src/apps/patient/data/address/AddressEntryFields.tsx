@@ -10,7 +10,7 @@ import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location'
 import { CensusTractInputField, validCensusTractRule } from './census-tract';
 import { AddressEntry } from './entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
-import { useAddressCodedValues } from 'apps/patient/profile/addresses';
+import { useAddressCodedValues } from './useAddressCodedValues';
 
 const AS_OF_DATE_LABEL = 'Address as of';
 const TYPE_LABEL = 'Type';
