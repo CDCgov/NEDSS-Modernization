@@ -71,33 +71,4 @@ describe('when entering patient general information demographics', () => {
 
         expect(await findByText(errorMessage)).toBeInTheDocument();
     });
-
-    it('should only allow alphabetic characters in mother\'s maiden name field', async () => {
-        const { getByLabelText } = render(<Fixture />);
-        const maternalMaidenNameInput = getByLabelText("Mother's maiden name");
-        
-        await act(async () => {
-            await userEvent.type(maternalMaidenNameInput, 'h');
-        });
-        expect(maternalMaidenNameInput).toHaveValue('h');
-        
-        await act(async () => {
-            await userEvent.clear(maternalMaidenNameInput);
-        });
-        
-        await act(async () => {
-            await userEvent.type(maternalMaidenNameInput, '1');
-        });
-        expect(maternalMaidenNameInput).toHaveValue('');
-        
-        await act(async () => {
-            await userEvent.type(maternalMaidenNameInput, '@');
-        });
-        expect(maternalMaidenNameInput).toHaveValue('');
-        
-        await act(async () => {
-            await userEvent.type(maternalMaidenNameInput, 's');
-        });
-        expect(maternalMaidenNameInput).toHaveValue('s');
-    });
 });

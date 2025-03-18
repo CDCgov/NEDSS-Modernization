@@ -8,7 +8,6 @@ import { useGeneralCodedValues } from 'apps/patient/profile/generalInfo';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
-import { onlyAlphaKeys } from 'components/FormInputs/onlyAlphaKeys';
 
 const AS_OF_DATE_LABEL = 'General information as of';
 const MATERNAL_MAIDEN_NAME_LABEL = "Mother's maiden name";
@@ -63,7 +62,6 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                 rules={maxLengthRule(50, MATERNAL_MAIDEN_NAME_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        onKeyDown={onlyAlphaKeys}
                         label={MATERNAL_MAIDEN_NAME_LABEL}
                         orientation={orientation}
                         placeholder={ENTRY_FIELD_PLACEHOLDER}
