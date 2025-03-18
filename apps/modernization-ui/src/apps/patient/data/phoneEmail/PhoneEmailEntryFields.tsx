@@ -9,6 +9,7 @@ import { MaskedTextInputField, TextInputField } from 'design-system/input/text';
 import { PhoneEmailEntry } from 'apps/patient/data';
 import { usePhoneCodedValues } from 'apps/patient/profile/phoneEmail';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
+import { maxCommentLengthRule } from 'validation/entry/maxCommentLengthRule';
 
 const AS_OF_DATE_LABEL = 'Phone & email as of';
 const TYPE_LABEL = 'Type';
@@ -197,7 +198,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal', sizing = 'me
             <Controller
                 control={control}
                 name="comment"
-                rules={maxLengthRule(2000, COMMENTS_LABEL)}
+                rules={maxCommentLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <TextAreaField
                         label={COMMENTS_LABEL}

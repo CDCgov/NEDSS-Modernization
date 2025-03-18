@@ -11,6 +11,7 @@ import { CensusTractInputField, validCensusTractRule } from './census-tract';
 import { AddressEntry } from './entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { useAddressCodedValues } from 'apps/patient/profile/addresses';
+import { maxCommentLengthRule } from 'validation/entry/maxCommentLengthRule';
 
 const AS_OF_DATE_LABEL = 'Address as of';
 const TYPE_LABEL = 'Type';
@@ -255,7 +256,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
             <Controller
                 control={control}
                 name="comment"
-                rules={maxLengthRule(2000, COMMENTS_LABEL)}
+                rules={maxCommentLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <TextAreaField
                         label={COMMENTS_LABEL}
