@@ -18,7 +18,8 @@ type Props = {
 export const PassForm = ({ passCount, onCancel, onDelete, onSave }: Props) => {
     const form = useFormContext<Pass>();
     const { isDirty, isValid } = useFormState(form);
-    const { name, id } = useWatch(form);
+    const { id } = useWatch(form);
+    const { name } = useWatch(form);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [panelState, setPanelState] = useState<{ visible: boolean; content: 'blocking' | 'matching' }>({
