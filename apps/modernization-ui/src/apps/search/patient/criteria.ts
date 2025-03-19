@@ -1,4 +1,4 @@
-import { DateCriteria } from 'design-system/date/entry';
+import { DateCriteria } from 'design-system/date/criteria';
 import { Selectable, asSelectable } from 'options';
 import { TextCriteria, AlphaTextCriteria } from 'options/operator';
 

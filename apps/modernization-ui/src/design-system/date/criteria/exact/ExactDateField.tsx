@@ -51,6 +51,8 @@ const ExactDateField = ({ id, value, onChange, onBlur }: ExactDateFieldProps) =>
                     value={criteria?.month}
                     onChange={handleFieldOnChange('month')}
                     onBlur={onBlur}
+                    min={1}
+                    max={12}
                 />
             </div>
             <div className={classNames(styles['numeric-wrapper'], styles['day'])}>
@@ -61,6 +63,8 @@ const ExactDateField = ({ id, value, onChange, onBlur }: ExactDateFieldProps) =>
                     value={criteria?.day}
                     onChange={handleFieldOnChange('day')}
                     onBlur={onBlur}
+                    min={1}
+                    max={31}
                 />
             </div>
             <div className={classNames(styles['numeric-wrapper'], styles['year'])}>
@@ -71,6 +75,7 @@ const ExactDateField = ({ id, value, onChange, onBlur }: ExactDateFieldProps) =>
                     value={criteria?.year}
                     onChange={handleFieldOnChange('year')}
                     onBlur={onBlur}
+                    min={1875}
                 />
             </div>
         </div>

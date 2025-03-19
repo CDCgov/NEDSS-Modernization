@@ -5,7 +5,7 @@ import { DatePicker } from 'design-system/date/picker';
 import { Sizing } from 'design-system/field';
 import { DateBetweenCriteria, DateRange } from '../dateCriteria';
 
-import styles from './date-range-entry.module.scss';
+import styles from './date-range-field.module.scss';
 
 type Field = keyof DateRange;
 

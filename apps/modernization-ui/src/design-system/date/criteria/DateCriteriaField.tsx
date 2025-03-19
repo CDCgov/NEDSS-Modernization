@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useState } from 'react';
 import { EntryWrapper } from 'components/Entry';
 import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from './dateCriteria';
 import { ExactDateField } from './exact';
@@ -40,29 +39,17 @@ const DateCriteriaField = ({
     onChange,
     onBlur
 }: DateCriteriaFieldProps) => {
-    const [type, setType] = useState<CriteriaType>(resolveInitialCriteriaType(value));
-
-    useEffect(() => {
-        setType(resolveInitialCriteriaType(value));
-    }, [value]);
-
-    const handleDateOperationChange = useCallback(
-        (type: CriteriaType) => () => {
-            setType(type);
-            onChange();
-        },
-        [setType, onChange]
-    );
+    const type = resolveInitialCriteriaType(value);
 
     return (
         <EntryWrapper error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
-            <div className={styles['options-wrapper']}>
+            <div className={styles.operators} data-range-operator={type}>
                 <Radio
                     id={'equals'}
                     name="dateOperation"
                     label={'Exact Date'}
                     value={'equals'}
-                    onChange={handleDateOperationChange('equals')}
+                    onChange={() => onChange({ equals: {} })}
                     checked={type === 'equals'}
                     sizing={sizing}
                 />
@@ -71,7 +58,7 @@ const DateCriteriaField = ({
                     name="dateOperation"
                     label={'Date Range'}
                     value={'between'}
-                    onChange={handleDateOperationChange('between')}
+                    onChange={() => onChange({ between: {} })}
                     checked={type === 'between'}
                     sizing={sizing}
                 />
