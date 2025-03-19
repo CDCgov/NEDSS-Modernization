@@ -57,7 +57,7 @@ const Numeric = ({
             id={id}
             name={props.name ?? id}
             className={classNames('usa-input', className)}
-            type="text" // Adding type='text' to allow maxLength to work as expected as with number type the attribute does not work as expected, this is a known limitaiton of number inputs in HTML.
+            type="text" // Adding type='text' to allow maxLength to work as expected as with number type the attribute does not work as expected, this is a known limitation of number inputs in HTML.
             inputMode={inputMode}
             onChange={handleChange}
             onBlur={onBlur}
