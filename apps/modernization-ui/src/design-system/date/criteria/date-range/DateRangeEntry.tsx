@@ -1,61 +1,69 @@
-import { DateBetweenCriteria } from 'design-system/date/entry';
-import { DateRangeEntryFields, useDateBetweenCriteria } from '../useDateBetweenCriteria';
-import { useEffect } from 'react';
-import styles from './date-range-entry.module.scss';
+import { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
+import { withoutProperty, withProperty } from 'utils/object';
+import { DateBetweenCriteria, DateRange } from 'design-system/date/entry';
 import { DatePicker } from 'design-system/date/picker';
 import { Sizing } from 'design-system/field';
 
+import styles from './date-range-entry.module.scss';
+
+type Field = keyof DateRange;
+
+const next = (field: Field, value: string | undefined) =>
+    value ? withProperty<DateRange, string>(field, value) : withoutProperty<DateRange>(field);
+
 type DateRangeEntryProps = {
     id: string;
-    value: DateBetweenCriteria;
+    value?: DateBetweenCriteria;
     sizing?: Sizing;
-    onChange: (value: DateBetweenCriteria) => void;
+    onChange: (value?: DateBetweenCriteria) => void;
     onBlur?: () => void;
 };
 
-export const DateRangeEntry = ({ id, value, sizing, onChange, onBlur }: DateRangeEntryProps) => {
-    const { state: rangeEntry, apply, clear } = useDateBetweenCriteria(value);
-
-    const handleOnChange = (field: DateRangeEntryFields) => (value: string | undefined) => {
-        if (value) {
-            apply(field, value);
-        } else {
-            clear(field);
-        }
-    };
+const DateRangeEntry = ({ id, value, sizing, onChange, onBlur }: DateRangeEntryProps) => {
+    const [range, setRange] = useState<DateRange | undefined>(value?.between);
 
     useEffect(() => {
-        onChange(rangeEntry as DateBetweenCriteria);
-    }, [rangeEntry, onChange]);
+        setRange(value?.between);
+    }, [value, setRange]);
+
+    const handleFieldOnChange = useCallback(
+        (field: Field) => (changed: string | undefined) => {
+            const between = next(field, changed)(value?.between);
+            if (between) {
+                onChange({ between });
+            } else {
+                onChange();
+            }
+        },
+        [onChange, value?.between]
+    );
 
     return (
-        <div id={id} aria-label="patient-search-date-range" className={styles['date-range-entry']}>
+        <div id={id} className={styles['date-range-entry']}>
             <div className={classNames(styles['range-wrapper'], 'from')}>
-                <label htmlFor={'from'}>From</label>
+                <label htmlFor={`${id}-from`}>From</label>
                 <DatePicker
                     sizing={sizing}
                     onBlur={onBlur}
                     id={`${id}-from`}
-                    name="from"
-                    aria-label={`${id}-from`}
-                    value={value?.between?.from}
-                    onChange={(e) => handleOnChange('from')(e)}
+                    value={range?.from}
+                    onChange={handleFieldOnChange('from')}
                 />
             </div>
             <div className={classNames(styles['range-wrapper'])}>
-                <label htmlFor={'to'}>To</label>
+                <label htmlFor={`${id}-to`}>To</label>
                 <DatePicker
                     sizing={sizing}
                     onBlur={onBlur}
                     id={`${id}-to`}
-                    name="to"
-                    minDate={value?.between?.from}
-                    aria-label={`${id}-to`}
-                    value={value?.between?.to}
-                    onChange={(e) => handleOnChange('to')(e)}
+                    minDate={range?.from}
+                    value={range?.to}
+                    onChange={handleFieldOnChange('to')}
                 />
             </div>
         </div>
     );
 };
+
+export { DateRangeEntry };

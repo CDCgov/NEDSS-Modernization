@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { EntryWrapper } from 'components/Entry';
 import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from '../entry';
 import { ExactDateEntry } from './exact-date';
 import { DateRangeEntry } from './date-range';
-import styles from './date-criteria.module.scss';
 import { Radio } from 'design-system/radio';
 import { FieldProps } from 'design-system/field';
+import { Shown } from 'conditional-render';
+
+import styles from './date-criteria.module.scss';
 
 type CriteriaType = 'equals' | 'between';
 
@@ -18,6 +20,9 @@ const resolveInitialCriteriaType = (value?: DateCriteria | null): CriteriaType =
 const asDateEqualsCriteria = (value?: DateCriteria | null) =>
     value && isDateEqualsCriteria(value) ? value : undefined;
 
+const asDateRangeCriteria = (value?: DateCriteria | null) =>
+    value && isDateBetweenCriteria(value) ? value : undefined;
+
 export type DateCriteriaEntryProps = {
     id: string;
     value?: DateCriteria | null;
@@ -25,7 +30,7 @@ export type DateCriteriaEntryProps = {
     onBlur?: () => void;
 } & FieldProps;
 
-export const DateCriteriaEntry = ({
+const DateCriteriaEntry = ({
     orientation,
     label,
     id,
@@ -36,10 +41,18 @@ export const DateCriteriaEntry = ({
     onBlur
 }: DateCriteriaEntryProps) => {
     const [type, setType] = useState<CriteriaType>(resolveInitialCriteriaType(value));
-    const handleDateOperationChange = (type: CriteriaType) => () => {
-        setType(type);
-        onChange();
-    };
+
+    useEffect(() => {
+        setType(resolveInitialCriteriaType(value));
+    }, [value]);
+
+    const handleDateOperationChange = useCallback(
+        (type: CriteriaType) => () => {
+            setType(type);
+            onChange();
+        },
+        [setType, onChange]
+    );
 
     return (
         <EntryWrapper error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
@@ -63,25 +76,27 @@ export const DateCriteriaEntry = ({
                     sizing={sizing}
                 />
             </div>
-            <div className="margin-bottom-1" key={type}>
-                {type === 'equals' && (
+            <div key={type}>
+                <Shown when={type === 'equals'}>
                     <ExactDateEntry
                         id={`${id}-exact-date`}
                         value={asDateEqualsCriteria(value)}
                         onChange={onChange}
                         onBlur={onBlur}
                     />
-                )}
-                {value && isDateBetweenCriteria(value) && (
+                </Shown>
+                <Shown when={type === 'between'}>
                     <DateRangeEntry
                         sizing={sizing}
                         id={`${id}-range-entry`}
-                        value={value}
+                        value={asDateRangeCriteria(value)}
                         onChange={onChange}
                         onBlur={onBlur}
                     />
-                )}
+                </Shown>
             </div>
         </EntryWrapper>
     );
 };
+
+export { DateCriteriaEntry };
