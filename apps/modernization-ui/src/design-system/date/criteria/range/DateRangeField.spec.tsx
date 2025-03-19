@@ -1,18 +1,18 @@
 import { act, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
-import { DateRangeEntry } from './DateRangeEntry';
+import { DateRangeField } from './DateRangeField';
 
-describe('DateRangeEntry Component', () => {
+describe('DateRangeField Component', () => {
     it('should render with no accessibility violations', async () => {
-        const { container } = render(<DateRangeEntry id="testing-date-range-accessibility" onChange={jest.fn()} />);
+        const { container } = render(<DateRangeField id="testing-date-range-accessibility" onChange={jest.fn()} />);
 
         expect(await axe(container)).toHaveNoViolations();
     });
 
     it('should render the component with initial values', () => {
         const { getByRole } = render(
-            <DateRangeEntry
+            <DateRangeField
                 id="testing-date-range"
                 value={{
                     between: {
@@ -32,7 +32,7 @@ describe('DateRangeEntry Component', () => {
 
     it('should call from input change handler when the from date is entered', () => {
         const mockOnChange = jest.fn();
-        const { getByRole } = render(<DateRangeEntry id="testing-date-range-from-entered" onChange={mockOnChange} />);
+        const { getByRole } = render(<DateRangeField id="testing-date-range-from-entered" onChange={mockOnChange} />);
 
         const from = getByRole('textbox', { name: 'From' });
 
@@ -47,7 +47,7 @@ describe('DateRangeEntry Component', () => {
     it('should call from input change handler when the from date is changed', () => {
         const mockOnChange = jest.fn();
         const { getByRole } = render(
-            <DateRangeEntry
+            <DateRangeField
                 id="testing-date-range-from-change"
                 value={{
                     between: {
@@ -71,7 +71,7 @@ describe('DateRangeEntry Component', () => {
 
     it('should call from input change handler when the to date is entered', () => {
         const mockOnChange = jest.fn();
-        const { getByRole } = render(<DateRangeEntry id="testing-date-range-to-entered" onChange={mockOnChange} />);
+        const { getByRole } = render(<DateRangeField id="testing-date-range-to-entered" onChange={mockOnChange} />);
 
         const to = getByRole('textbox', { name: 'To' });
 
@@ -86,7 +86,7 @@ describe('DateRangeEntry Component', () => {
     it('should call from input change handler when the to date is changed', () => {
         const mockOnChange = jest.fn();
         const { getByRole } = render(
-            <DateRangeEntry
+            <DateRangeField
                 id="testing-date-range-to-change"
                 value={{
                     between: {

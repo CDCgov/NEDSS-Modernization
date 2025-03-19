@@ -2,23 +2,24 @@ import { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { withoutProperty, withProperty } from 'utils/object';
 import { Numeric } from 'design-system/input/numeric/Numeric';
-import { DateEntry, DateEqualsCriteria } from 'design-system/date/entry';
+import { DateEntry } from 'design-system/date/entry';
+import { DateEqualsCriteria } from '../dateCriteria';
 
-import styles from './exact-date-entry.module.scss';
+import styles from './exact-date-field.module.scss';
 
 type Field = keyof DateEntry;
 
 const next = (field: Field, value: number | undefined) =>
     value ? withProperty<DateEntry, number>(field, value) : withoutProperty<DateEntry>(field);
 
-type ExactDateEntryProps = {
+type ExactDateFieldProps = {
     id: string;
     value?: DateEqualsCriteria;
     onChange: (value?: DateEqualsCriteria) => void;
     onBlur?: () => void;
 };
 
-const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryProps) => {
+const ExactDateField = ({ id, value, onChange, onBlur }: ExactDateFieldProps) => {
     const [criteria, setCriteria] = useState<DateEntry | undefined>(value?.equals);
 
     useEffect(() => {
@@ -76,4 +77,4 @@ const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryProps) =>
     );
 };
 
-export { ExactDateEntry };
+export { ExactDateField };

@@ -1,17 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
-import { ExactDateEntry } from './ExactDateEntry';
+import { ExactDateField } from './ExactDateField';
 
-describe('ExactDateEntry Component', () => {
+describe('ExactDateField Component', () => {
     it('should render with no accessibility violations', async () => {
-        const { container } = render(<ExactDateEntry id="testing-exact-date-entry" onChange={jest.fn()} />);
+        const { container } = render(<ExactDateField id="testing-exact-date-entry" onChange={jest.fn()} />);
 
         expect(await axe(container)).toHaveNoViolations();
     });
 
     it('should render inputs with correct default month', () => {
-        render(<ExactDateEntry id="test-id" value={{ equals: { month: 1 } }} onChange={jest.fn()} />);
+        render(<ExactDateField id="test-id" value={{ equals: { month: 1 } }} onChange={jest.fn()} />);
         const monthInput = screen.getByRole('spinbutton', { name: 'Month' });
 
         expect(monthInput).toHaveValue(1);
@@ -19,7 +19,7 @@ describe('ExactDateEntry Component', () => {
 
     it('should render inputs with correct default values', () => {
         const { getByRole } = render(
-            <ExactDateEntry id="test-id" value={{ equals: { month: 1, day: 1, year: 1995 } }} onChange={jest.fn()} />
+            <ExactDateField id="test-id" value={{ equals: { month: 1, day: 1, year: 1995 } }} onChange={jest.fn()} />
         );
         const monthInput = getByRole('spinbutton', { name: 'Month' });
         const dayInput = getByRole('spinbutton', { name: 'Day' });
@@ -33,7 +33,7 @@ describe('ExactDateEntry Component', () => {
     it('should call onChange when day value is changed', () => {
         const mockOnChange = jest.fn();
 
-        const { getByRole } = render(<ExactDateEntry id="test-day" onChange={mockOnChange} />);
+        const { getByRole } = render(<ExactDateField id="test-day" onChange={mockOnChange} />);
         const dayInput = getByRole('spinbutton', { name: 'Day' });
         userEvent.paste(dayInput, '12');
         expect(mockOnChange).toHaveBeenCalledWith({ equals: expect.objectContaining({ day: 12 }) });
@@ -42,7 +42,7 @@ describe('ExactDateEntry Component', () => {
     it('should call onChange when month value is changed', () => {
         const mockOnChange = jest.fn();
 
-        const { getByRole } = render(<ExactDateEntry id="test-month" onChange={mockOnChange} />);
+        const { getByRole } = render(<ExactDateField id="test-month" onChange={mockOnChange} />);
         const dayInput = getByRole('spinbutton', { name: 'Month' });
         userEvent.paste(dayInput, '4');
         expect(mockOnChange).toHaveBeenCalledWith({ equals: expect.objectContaining({ month: 4 }) });
@@ -51,7 +51,7 @@ describe('ExactDateEntry Component', () => {
     it('should call onChange when year value is changed', () => {
         const mockOnChange = jest.fn();
 
-        const { getByRole } = render(<ExactDateEntry id="test-year" onChange={mockOnChange} />);
+        const { getByRole } = render(<ExactDateField id="test-year" onChange={mockOnChange} />);
         const dayInput = getByRole('spinbutton', { name: 'Year' });
         userEvent.paste(dayInput, '1908');
         expect(mockOnChange).toHaveBeenCalledWith({ equals: expect.objectContaining({ year: 1908 }) });

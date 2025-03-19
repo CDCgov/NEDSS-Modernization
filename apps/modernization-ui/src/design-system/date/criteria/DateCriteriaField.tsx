@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { EntryWrapper } from 'components/Entry';
-import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from '../entry';
-import { ExactDateEntry } from './exact-date';
-import { DateRangeEntry } from './date-range';
+import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from './dateCriteria';
+import { ExactDateField } from './exact';
+import { DateRangeField } from './range';
 import { Radio } from 'design-system/radio';
 import { FieldProps } from 'design-system/field';
 import { Shown } from 'conditional-render';
@@ -23,14 +23,14 @@ const asDateEqualsCriteria = (value?: DateCriteria | null) =>
 const asDateRangeCriteria = (value?: DateCriteria | null) =>
     value && isDateBetweenCriteria(value) ? value : undefined;
 
-export type DateCriteriaEntryProps = {
+type DateCriteriaFieldProps = {
     id: string;
     value?: DateCriteria | null;
     onChange: (value?: DateCriteria) => void;
     onBlur?: () => void;
 } & FieldProps;
 
-const DateCriteriaEntry = ({
+const DateCriteriaField = ({
     orientation,
     label,
     id,
@@ -39,7 +39,7 @@ const DateCriteriaEntry = ({
     error,
     onChange,
     onBlur
-}: DateCriteriaEntryProps) => {
+}: DateCriteriaFieldProps) => {
     const [type, setType] = useState<CriteriaType>(resolveInitialCriteriaType(value));
 
     useEffect(() => {
@@ -78,7 +78,7 @@ const DateCriteriaEntry = ({
             </div>
             <div key={type}>
                 <Shown when={type === 'equals'}>
-                    <ExactDateEntry
+                    <ExactDateField
                         id={`${id}-exact-date`}
                         value={asDateEqualsCriteria(value)}
                         onChange={onChange}
@@ -86,7 +86,7 @@ const DateCriteriaEntry = ({
                     />
                 </Shown>
                 <Shown when={type === 'between'}>
-                    <DateRangeEntry
+                    <DateRangeField
                         sizing={sizing}
                         id={`${id}-range-entry`}
                         value={asDateRangeCriteria(value)}
@@ -99,4 +99,5 @@ const DateCriteriaEntry = ({
     );
 };
 
-export { DateCriteriaEntry };
+export { DateCriteriaField };
+export type { DateCriteriaFieldProps };

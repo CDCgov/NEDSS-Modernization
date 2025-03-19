@@ -1,7 +1,7 @@
 import { today } from 'date';
 import { asValue } from 'options';
 import { orNull } from 'utils';
-import { resolveDate } from 'design-system/date/entry';
+import { resolveDate } from 'design-system/date/criteria';
 import { TextCriteria, asTextCriteriaValue } from 'options/operator';
 import { PatientCriteriaEntry, Identification, RaceEthnicity, Contact } from 'apps/search/patient/criteria';
 import { IdentificationEntry, EmailEntry, NewPatientEntry } from 'apps/patient/add';

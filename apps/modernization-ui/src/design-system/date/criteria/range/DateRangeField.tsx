@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { withoutProperty, withProperty } from 'utils/object';
-import { DateBetweenCriteria, DateRange } from 'design-system/date/entry';
 import { DatePicker } from 'design-system/date/picker';
 import { Sizing } from 'design-system/field';
+import { DateBetweenCriteria, DateRange } from '../dateCriteria';
 
 import styles from './date-range-entry.module.scss';
 
@@ -12,7 +12,7 @@ type Field = keyof DateRange;
 const next = (field: Field, value: string | undefined) =>
     value ? withProperty<DateRange, string>(field, value) : withoutProperty<DateRange>(field);
 
-type DateRangeEntryProps = {
+type DateRangeFieldProps = {
     id: string;
     value?: DateBetweenCriteria;
     sizing?: Sizing;
@@ -20,7 +20,7 @@ type DateRangeEntryProps = {
     onBlur?: () => void;
 };
 
-const DateRangeEntry = ({ id, value, sizing, onChange, onBlur }: DateRangeEntryProps) => {
+const DateRangeField = ({ id, value, sizing, onChange, onBlur }: DateRangeFieldProps) => {
     const [range, setRange] = useState<DateRange | undefined>(value?.between);
 
     useEffect(() => {
@@ -66,4 +66,4 @@ const DateRangeEntry = ({ id, value, sizing, onChange, onBlur }: DateRangeEntryP
     );
 };
 
-export { DateRangeEntry };
+export { DateRangeField };
