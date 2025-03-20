@@ -1,0 +1,40 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.matchingAttribute {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    gap: 1rem;
+    @extend %thin-bottom;
+
+    .info {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+
+        .label {
+            color: colors.$base-darkest;
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.25rem;
+            width: 17.5rem;
+        }
+
+        .logOdds {
+            display: flex;
+            gap: 0.5rem;
+            color: colors.$base-darkest;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.09375rem;
+        }
+        & > span {
+            width: 19.8125rem;
+            gap: 0;
+        }
+    }
+}

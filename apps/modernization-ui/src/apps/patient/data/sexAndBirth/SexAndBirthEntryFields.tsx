@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { useSexBirthCodedValues } from 'apps/patient/profile/sexBirth';
+import { useSexBirthCodedValues } from './useSexBirthCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { Input } from 'components/FormInputs/Input';
@@ -67,19 +67,21 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                 name="birthAndSex.bornOn"
                 rules={validDateRule(BORN_ON_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <DatePickerInput
-                        id={name}
-                        value={value}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        sizing={sizing}
-                        label={BORN_ON_LABEL}
-                        error={error?.message}
-                        orientation={orientation}
-                    />
+                    <>
+                        <DatePickerInput
+                            id={name}
+                            value={value}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            sizing={sizing}
+                            label={BORN_ON_LABEL}
+                            error={error?.message}
+                            orientation={orientation}
+                        />
+                        <ValueView title="Current age" value={!error ? age : ''} />
+                    </>
                 )}
             />
-            <ValueView title="Current age" value={age} />
             <Controller
                 control={control}
                 name="birthAndSex.current"

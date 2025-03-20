@@ -1,27 +1,26 @@
-import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useFormNavigationBlock } from 'navigation';
+import { FeatureToggle } from 'feature';
+import { Shown } from 'conditional-render';
 import { Button } from 'components/button';
 import { AddPatientLayout, DataEntryLayout } from 'apps/patient/add/layout';
 import { sections } from './sections';
 import { AddPatientBasicForm } from './AddPatientBasicForm';
 import { BasicNewPatientEntry } from './entry';
 import { useAddBasicPatient } from './useAddBasicPatient';
-import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
 import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
 import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
-import { useNavigationBlock } from 'navigation/useNavigationBlock';
-import { useEffect } from 'react';
-import { useShowCancelModal, CancelAddPatientPanel, handleNativeCancelAddPanel } from '../cancelAddPatientPanel';
+import { useShowCancelModal, CancelAddPatientPanel } from '../cancelAddPatientPanel';
 
 import styles from './add-patient-basic.module.scss';
-import { FeatureToggle } from 'feature';
 
 export const AddPatientBasic = () => {
     const { initialize } = useAddPatientBasicDefaults();
-    const { value: bypassModal } = useShowCancelModal();
-    const blocker = useNavigationBlock({ activated: !bypassModal });
+    const { value: bypassBlocker } = useShowCancelModal();
 
     const interaction = useAddBasicPatient();
     const form = useForm<BasicNewPatientEntry>({
@@ -36,6 +35,7 @@ export const AddPatientBasic = () => {
         },
         mode: 'onBlur'
     });
+    const blocker = useFormNavigationBlock({ activated: !bypassBlocker, form });
 
     const { toExtendedNew } = useBasicExtendedTransition();
 
@@ -67,24 +67,10 @@ export const AddPatientBasic = () => {
     const handleModalClose = blocker.reset;
 
     useEffect(() => {
-        if (form.formState.isSubmitted) {
-            blocker.allow();
-        } else if (form.formState.isDirty) {
-            blocker.block();
-        } else {
-            blocker.allow();
-        }
-    }, [form.formState.isSubmitted, form.formState.isDirty, blocker.allow, blocker.block]);
-
-    useEffect(() => {
         if (interaction.status === 'created') {
-            blocker.reset();
+            blocker.allow();
         }
     }, [interaction.status]);
-
-    useEffect(() => {
-        handleNativeCancelAddPanel(form.formState.isDirty, form.formState.isSubmitted);
-    }, [form.formState.isDirty, form.formState.isSubmitted]);
 
     return (
         <DataEntryLayout>
