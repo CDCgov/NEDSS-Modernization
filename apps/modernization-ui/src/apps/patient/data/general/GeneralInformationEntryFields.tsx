@@ -97,7 +97,6 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         min="0"
                         error={error?.message}
                         sizing={sizing}
-                        max={99999}
                     />
                 )}
             />
@@ -121,7 +120,6 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         min="0"
                         error={error?.message}
                         sizing={sizing}
-                        max={99999}
                     />
                 )}
             />

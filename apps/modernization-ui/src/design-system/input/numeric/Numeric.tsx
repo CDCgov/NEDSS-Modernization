@@ -3,8 +3,6 @@ import classNames from 'classnames';
 import { onlyNumericKeys } from './onlyNumericKeys';
 import { useNumeric } from './useNumeric';
 
-const asDisplay = (value?: string | number | null) => (value === undefined ? '' : `${value}`);
-
 type NumericOnChange = (value?: number) => void;
 
 type NumericProps = {
@@ -31,16 +29,12 @@ const Numeric = ({
         onChange?.(current);
     }, [current]);
 
-    const display = useMemo(() => asDisplay(current), [current]);
-
     const handleChange = (event: ReactChangeEvent<HTMLInputElement>) => {
         const next = event.target.value;
 
         if (next === '') {
             clear();
         } else if (Number.isNaN(next)) {
-            event.preventDefault();
-        } else if (props.max && next > props.max) {
             event.preventDefault();
         } else {
             const adjusted = Number(next);
@@ -64,7 +58,7 @@ const Numeric = ({
             onChange={handleChange}
             onBlur={onBlur}
             placeholder={placeholder}
-            value={display}
+            value={current ?? ''}
             pattern="[0-9]*"
             onKeyDown={onlyNumericKeys}
             {...props}
