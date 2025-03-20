@@ -1,4 +1,4 @@
-import { ChangeEvent as ReactChangeEvent, useEffect, useMemo } from 'react';
+import { ChangeEvent as ReactChangeEvent, useEffect } from 'react';
 import classNames from 'classnames';
 import { onlyNumericKeys } from './onlyNumericKeys';
 import { useNumeric } from './useNumeric';
