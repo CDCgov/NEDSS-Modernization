@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useCallback, useReducer } from 'react';
 import { asStrictISODate } from 'design-system/date/asStrictISODate';
 
 type State = { date?: string | undefined; value: string };
@@ -58,9 +58,9 @@ type UseDateSettings = {
 const useDate = (settings?: UseDateSettings): UseDateInteraction => {
     const [state, dispatch] = useReducer(reducer, settings?.value ?? undefined, asState);
 
-    const clear = () => dispatch({ type: 'clear' });
-    const change = (value: string) => dispatch({ type: 'change', value });
-    const initialize = (value?: string | null) => dispatch({ type: 'initialize', value });
+    const clear = useCallback(() => dispatch({ type: 'clear' }), [dispatch]);
+    const change = useCallback((value: string) => dispatch({ type: 'change', value }), [dispatch]);
+    const initialize = useCallback((value?: string | null) => dispatch({ type: 'initialize', value }), [dispatch]);
 
     return {
         current: state.value,
