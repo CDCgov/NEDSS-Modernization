@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { AlgorithmNotConfigured } from './AlgorithmNotConfigured';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 const Fixture = () => (
     <MemoryRouter>

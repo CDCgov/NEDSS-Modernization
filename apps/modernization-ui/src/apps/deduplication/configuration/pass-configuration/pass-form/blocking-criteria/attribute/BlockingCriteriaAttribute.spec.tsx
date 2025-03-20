@@ -51,12 +51,16 @@ describe('BlockingCriteriaAttribute', () => {
         expect(queryByText('Last name')).not.toBeInTheDocument();
     });
 
-    it('should remove when delete button clicked', () => {
+    it('should remove when delete button clicked', async () => {
         const { getByRole } = render(<Fixture />);
+
+        const user = userEvent.setup();
 
         const deleteButton = getByRole('button');
         expect(deleteButton).toBeInTheDocument();
-        userEvent.click(deleteButton);
+
+        await user.click(deleteButton);
+
         expect(onRemove).toHaveBeenCalledWith(BlockingAttribute.FIRST_NAME);
     });
 });
