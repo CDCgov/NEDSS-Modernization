@@ -40,7 +40,7 @@ const Numeric = ({
             clear();
         } else if (Number.isNaN(next)) {
             event.preventDefault();
-        } else if (props.maxLength && next.length > props.maxLength) {
+        } else if (props.max && next > props.max) {
             event.preventDefault();
         } else {
             const adjusted = Number(next);

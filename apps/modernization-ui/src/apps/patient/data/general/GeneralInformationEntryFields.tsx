@@ -80,7 +80,10 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
             <Controller
                 control={control}
                 name="general.adultsInResidence"
-                rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
+                rules={{
+                    min: { value: 0, message: 'Must be greater than 0' },
+                    max: { value: 99999, message: 'Must be 99999 or less' }
+                }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <NumericInput
                         label="Number of adults in residence"
@@ -94,14 +97,17 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         min="0"
                         error={error?.message}
                         sizing={sizing}
-                        maxLength={5}
+                        max={99999}
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="general.childrenInResidence"
-                rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
+                rules={{
+                    min: { value: 0, message: 'Must be greater than 0' },
+                    max: { value: 99999, message: 'Must be 99999 or less' }
+                }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <NumericInput
                         label="Number of children in residence"
@@ -115,7 +121,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         min="0"
                         error={error?.message}
                         sizing={sizing}
-                        maxLength={5}
+                        max={99999}
                     />
                 )}
             />
