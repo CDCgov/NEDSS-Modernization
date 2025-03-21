@@ -115,6 +115,7 @@ describe('Add New Page', () => {
 
         // @ts-expect-error : location is mocked to check that the href is changed
         delete window.location;
+        // @ts-expect-error : location is mocked to check that the href is changed by the redirect
         window.location = mockLocation;
 
         const { getByRole, getByText } = render(<Fixture />);
