@@ -78,7 +78,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                             error={error?.message}
                             orientation={orientation}
                         />
-                        <ValueView title="Current age" value={!error ? age : ''} />
+                        <ValueView title="Current age" value={!error ? age : ''} sizing={sizing} />
                     </>
                 )}
             />
