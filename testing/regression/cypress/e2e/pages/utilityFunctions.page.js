@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 
+let counterApi = 0;
 class UtilityFunctions {
   getRandomLetter() {
     const letters = 'abcdefghijklmnopqrstuvwxyz';
@@ -63,6 +64,41 @@ class UtilityFunctions {
     return formattedFields;
   };
 
+  checkTransportRequestAPI = (apiID) => {
+    const authToken = Cypress.env("authTokenAPI");
+    const transportstatusurlapi = Cypress.env("transportstatusurlapi");
+    const clientid = Cypress.env("DI_CLIENT_ID");
+    const clientsecret = Cypress.env("DI_SECRET");
+    const authurl = Cypress.env("authurl");
+    const transportstatusurlapiUpdated = transportstatusurlapi.replace("uid", apiID);
+
+    counterApi++;
+    cy.request({
+      method: "GET",
+      url: transportstatusurlapiUpdated,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        clientid: clientid,
+        clientsecret: clientsecret,
+      },
+    }).then((response) => {
+      expect(response.status).to.eq(200);
+      let status = response.body.transportStatus;
+      if(status === null) {
+        cy.wait(35000);
+        cy.log(counter);
+        if(counterApi === 4) {
+          cy.log("Status null, retry");
+          this.checkTransportRequestAPI(apiID);
+        } else {
+            expect(status).to.eq(null);
+        }
+      } else {
+        expect(status).to.be.oneOf(["BOTH", "queued"]);
+      }
+    });
+  };
+
   checkTransportRequest = () => {
     const authToken = Cypress.env("authTokenAPI");
     const transportstatusurl = Cypress.env("transportstatusurl");
@@ -90,9 +126,12 @@ class UtilityFunctions {
                 clientsecret: clientsecret,
               },
             }).then((response) => {
+              expect(response.status).to.eq(200);
               let status = response.body.status;
               if(status === "UNPROCESSED") {
                 expect(status).to.eq("UNPROCESSED");
+                let localId = response.body.localId;
+                this.checkTransportRequestAPI(localId);                
               } else if(status === null) {
                 cy.log("Status null, retry");
                 cy.wait(35000);
