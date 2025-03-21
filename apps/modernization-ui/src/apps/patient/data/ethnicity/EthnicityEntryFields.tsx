@@ -5,7 +5,7 @@ import { MultiSelect, SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
 import { validateRequiredRule } from 'validation/entry';
 import { EthnicityEntry } from './entry';
-import { useEthnicityCodedValues } from 'apps/patient/profile/ethnicity';
+import { useEthnicityCodedValues } from './useEthnicityCodedValues';
 
 const UNKNOWN = 'UNK';
 const HISPANIC = '2135-2';

@@ -63,7 +63,7 @@ describe('when entering name information', () => {
         );
         userEvent.tab();
 
-        const validationMessage = 'The Last name only allows 50 characters.';
+        const validationMessage = 'The Last name only allows 50 characters max.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
@@ -81,7 +81,7 @@ describe('when entering name information', () => {
         );
         userEvent.tab();
 
-        const validationMessage = 'The Middle name only allows 50 characters.';
+        const validationMessage = 'The Middle name only allows 50 characters max.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
@@ -99,7 +99,7 @@ describe('when entering name information', () => {
         );
         userEvent.tab();
 
-        const validationMessage = 'The First name only allows 50 characters.';
+        const validationMessage = 'The First name only allows 50 characters max.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);

@@ -5,7 +5,7 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
 import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry/';
 import { NameEntry } from './entry';
-import { useNameCodedValues } from 'apps/patient/profile/names';
+import { useNameCodedValues } from './useNameCodedValues';
 
 const AS_OF_DATE_LABEL = 'Name as of';
 const TYPE_LABEL = 'Type';

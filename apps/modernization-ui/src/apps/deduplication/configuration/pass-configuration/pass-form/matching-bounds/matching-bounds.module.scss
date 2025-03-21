@@ -1,0 +1,36 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.matchingBounds {
+    position: relative;
+
+    .disabledOverlay {
+        background-color: colors.$base-lighter;
+        position: absolute;
+        top: 0;
+        opacity: 0.5;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .body {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        padding: 1rem;
+
+        & > div label {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+
+            & div {
+                display: flex;
+                svg {
+                    color: colors.$primary;
+                }
+            }
+        }
+    }
+}
