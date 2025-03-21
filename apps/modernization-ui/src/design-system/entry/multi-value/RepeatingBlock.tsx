@@ -178,7 +178,8 @@ const RepeatingBlock = <V extends FieldValues>({
                             outline
                             sizing={sizing}
                             aria-details={`clear ${title.toLowerCase()}`}
-                            onClick={handleClear}>
+                            onClick={handleClear}
+                            onMouseDown={(e) => e.preventDefault() /* prevent need to double click after blur */}>
                             Clear
                         </Button>
                     </Shown>
