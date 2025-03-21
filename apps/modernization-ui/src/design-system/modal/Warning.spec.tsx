@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 
 import { Warning } from './Warning';
-import userEvent from '@testing-library/user-event';
 
 describe('when a warning is displayed', () => {
     it('should render with no accessibility violations', async () => {
@@ -39,7 +39,7 @@ describe('when a warning is displayed', () => {
         expect(title).toBeInTheDocument();
     });
 
-    it('should invoke onClose when the "Go back" button is clicked', () => {
+    it('should invoke onClose when the "Go back" button is clicked', async () => {
         const onClose = jest.fn();
 
         const { getByRole } = render(<Warning onClose={onClose}>warning message</Warning>);
@@ -48,12 +48,13 @@ describe('when a warning is displayed', () => {
 
         expect(closer).toBeInTheDocument();
 
-        userEvent.click(closer);
+        const user = userEvent.setup();
+        await user.click(closer);
 
         expect(onClose).toBeCalled();
     });
 
-    it('should invoke onClose when the close icon is clicked', () => {
+    it('should invoke onClose when the close icon is clicked', async () => {
         const onClose = jest.fn();
 
         const { getByRole } = render(<Warning onClose={onClose}>warning message</Warning>);
@@ -62,7 +63,8 @@ describe('when a warning is displayed', () => {
 
         expect(closer).toBeInTheDocument();
 
-        userEvent.click(closer);
+        const user = userEvent.setup();
+        await user.click(closer);
 
         expect(onClose).toBeCalled();
     });

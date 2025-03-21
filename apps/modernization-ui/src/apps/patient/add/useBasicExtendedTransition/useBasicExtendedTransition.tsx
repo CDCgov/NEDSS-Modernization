@@ -4,7 +4,7 @@ import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatient
 import { useConceptOptions } from 'options/concepts';
 import { ExtendedNewPatientEntry } from '../extended';
 import { asExtendedNewPatientEntry } from '../extended/asExtendedNewPatientEntry';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { BasicNewPatientEntry } from '../basic/entry';
 import { asNewExtendedPatientEntry } from '../basic/asNewExtendedPatientEntry';
 import { useConfiguration } from 'configuration';

@@ -60,7 +60,7 @@ describe('When paginating search results', () => {
         expect(getByText(/Showing 21 to 40 of 47/)).toBeInTheDocument();
     });
 
-    it('should request the previous page when the "Previous page" button is clicked', () => {
+    it('should request the previous page when the "Previous page" button is clicked', async () => {
         mockTotal = 179;
         mockPageSize = 30;
         mockCurrent = 3;
@@ -69,12 +69,14 @@ describe('When paginating search results', () => {
 
         const page = getByLabelText('Previous page');
 
-        userEvent.click(page);
+        const user = userEvent.setup();
+
+        await user.click(page);
 
         expect(mockRequest).toBeCalledWith(2);
     });
 
-    it('should request the selected page when a page is clicked.', () => {
+    it('should request the selected page when a page is clicked.', async () => {
         mockTotal = 137;
         mockPageSize = 20;
         mockCurrent = 1;
@@ -83,12 +85,14 @@ describe('When paginating search results', () => {
 
         const page = getByLabelText('Page 2');
 
-        userEvent.click(page);
+        const user = userEvent.setup();
+
+        await user.click(page);
 
         expect(mockRequest).toBeCalledWith(2);
     });
 
-    it('should request the next page when the "Next page" button is clicked', () => {
+    it('should request the next page when the "Next page" button is clicked', async () => {
         mockTotal = 137;
         mockPageSize = 20;
         mockCurrent = 2;
@@ -97,7 +101,9 @@ describe('When paginating search results', () => {
 
         const page = getByLabelText('Next page');
 
-        userEvent.click(page);
+        const user = userEvent.setup();
+
+        await user.click(page);
 
         expect(mockRequest).toBeCalledWith(3);
     });

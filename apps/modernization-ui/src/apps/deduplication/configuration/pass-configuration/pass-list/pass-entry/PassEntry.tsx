@@ -19,7 +19,7 @@ export const PassEntry = ({ pass, onSelectPass, onEditName, isSelected = false }
                         {pass.name}
                     </button>
                     <button className={styles.editButton} onClick={() => onEditName(pass)}>
-                        <Icon name="edit" />
+                        <Icon name="edit" role="button" aria-label={`Edit ${pass.name}`} />
                     </button>
                 </div>
                 <div className={styles.description}>{pass.description}</div>

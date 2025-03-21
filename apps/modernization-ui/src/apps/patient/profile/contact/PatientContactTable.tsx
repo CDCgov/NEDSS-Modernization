@@ -6,7 +6,7 @@ import { usePage } from 'page';
 import { Direction } from 'sorting';
 import { AssociatedWith, Tracing, Contact, Headers } from './PatientContacts';
 import { SortCriteria, sort } from './PatientContactSorter';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const displayContact = (contact: Contact) => (
     <Link to={`/patient-profile/${contact.id}`} className={'profile'}>

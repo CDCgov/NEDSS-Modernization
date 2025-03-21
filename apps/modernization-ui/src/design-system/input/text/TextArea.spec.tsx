@@ -18,25 +18,29 @@ describe('text area', () => {
         expect(input).toHaveClass('usa-textarea');
         expect(input).toHaveAttribute('inputMode', 'text');
     });
-    it('should alert when value changed', () => {
+    it('should alert when value changed', async () => {
+        const user = userEvent.setup();
+
         const onChange = jest.fn();
 
         const { getByRole } = render(<Fixture onChange={onChange} />);
 
         const input = getByRole('textbox', { name: 'Text area test' });
 
-        userEvent.type(input, 's');
-        userEvent.tab();
+        await user.type(input, 's');
+        await user.tab();
 
         expect(onChange).toHaveBeenCalledWith('s');
     });
-    it('should allow pasting of text values', () => {
+    it('should allow pasting of text values', async () => {
+        const user = userEvent.setup();
         const { getByRole } = render(<Fixture />);
 
         const input = getByRole('textbox', { name: 'Text area test' });
 
-        userEvent.paste(input, 'pasted value');
-        userEvent.tab();
+        await user.click(input);
+        await user.paste('pasted value');
+        await user.tab();
 
         expect(input).toHaveValue('pasted value');
     });

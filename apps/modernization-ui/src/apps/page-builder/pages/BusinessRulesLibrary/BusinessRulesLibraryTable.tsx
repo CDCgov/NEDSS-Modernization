@@ -7,7 +7,7 @@ import { TableBody, TableComponent } from 'components/Table/Table';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { usePage } from 'page';
 import React, { RefObject, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Direction } from 'sorting';
 import './BusinessRulesLibraryTable.scss';
 import { RuleSearchBar } from './RuleSearchBar';

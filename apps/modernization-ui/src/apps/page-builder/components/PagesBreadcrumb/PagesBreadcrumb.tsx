@@ -1,5 +1,5 @@
 import { Icon } from '@trussworks/react-uswds';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import './PagesBreadcrumb.scss';
 
 type Props = {

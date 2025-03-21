@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { PatientCriteriaEntry } from '../criteria';
 import { useSearchCriteriaEncrypted } from 'apps/search/useSearchCriteriaEncrypted';
 import { useFormContext } from 'react-hook-form';

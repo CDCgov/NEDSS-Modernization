@@ -89,7 +89,7 @@ describe('when paginating a large set of data', () => {
         expect(page).toHaveAttribute('aria-current', 'page');
     });
 
-    it('should request the previous page when the "Previous page" button is clicked', () => {
+    it('should request the previous page when the "Previous page" button is clicked', async () => {
         const mockOnNext = jest.fn();
         const mockOnPrevious = jest.fn();
         const mockOnSelectPage = jest.fn();
@@ -106,12 +106,14 @@ describe('when paginating a large set of data', () => {
 
         const page = getByLabelText('Previous page');
 
-        userEvent.click(page);
+        const user = userEvent.setup();
+
+        await user.click(page);
 
         expect(mockOnPrevious).toBeCalled();
     });
 
-    it('should request the selected page when a page is clicked', () => {
+    it('should request the selected page when a page is clicked', async () => {
         const mockOnNext = jest.fn();
         const mockOnPrevious = jest.fn();
         const mockOnSelectPage = jest.fn();
@@ -128,12 +130,14 @@ describe('when paginating a large set of data', () => {
 
         const page = getByLabelText('Page 2');
 
-        userEvent.click(page);
+        const user = userEvent.setup();
+
+        await user.click(page);
 
         expect(mockOnSelectPage).toBeCalledWith(2);
     });
 
-    it('should request the next page when the "Next page" button is clicked', () => {
+    it('should request the next page when the "Next page" button is clicked', async () => {
         const mockOnNext = jest.fn();
         const mockOnPrevious = jest.fn();
         const mockOnSelectPage = jest.fn();
@@ -150,7 +154,9 @@ describe('when paginating a large set of data', () => {
 
         const page = getByLabelText('Next page');
 
-        userEvent.click(page);
+        const user = userEvent.setup();
+
+        await user.click(page);
 
         expect(mockOnNext).toBeCalled();
     });

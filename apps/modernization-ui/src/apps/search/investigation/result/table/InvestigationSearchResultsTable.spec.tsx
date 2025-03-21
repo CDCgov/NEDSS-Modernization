@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { Investigation } from 'generated/graphql/schema';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { Column } from 'design-system/table';
 import { InvestigationSearchResultsTable } from './InvestigationSearchResultsTable';
 import { SelectableResolver } from 'options';

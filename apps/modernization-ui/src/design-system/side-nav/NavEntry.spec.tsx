@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { NavEntry, NavEntryProps } from './NavEntry';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 const Fixture = (props: NavEntryProps) => (
     <MemoryRouter>

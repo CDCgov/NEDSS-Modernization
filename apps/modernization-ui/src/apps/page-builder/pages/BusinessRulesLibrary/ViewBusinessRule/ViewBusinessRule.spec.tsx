@@ -1,6 +1,6 @@
 import { screen, render } from '@testing-library/react';
 import { ViewBusinessRule } from './ViewBusinessRule';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import { Rule } from 'apps/page-builder/generated';
 import { PageProvider } from 'page';
 

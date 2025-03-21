@@ -16,8 +16,9 @@ describe('The Self Service Sign up', () => {
 
         const input = getByRole('textbox', { name: 'Email address' });
 
-        userEvent.type(input, 'invalid email');
-        userEvent.tab();
+        const user = userEvent.setup();
+
+        await user.type(input, 'invalid email').then(() => user.tab());
 
         expect(await findByText(/Please enter a valid email address/)).toBeInTheDocument();
 
@@ -31,8 +32,9 @@ describe('The Self Service Sign up', () => {
 
         const input = getByRole('textbox', { name: 'Email address' });
 
-        userEvent.type(input, 'valid@email.ok');
-        userEvent.tab();
+        const user = userEvent.setup();
+
+        await user.type(input, 'valid@email.ok').then(() => user.tab());
 
         const button = await findByRole('button', { name: 'Sign up for demo access' });
 

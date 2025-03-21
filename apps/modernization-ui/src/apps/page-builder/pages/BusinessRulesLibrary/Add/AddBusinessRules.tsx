@@ -5,7 +5,7 @@ import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { Breadcrumb } from 'breadcrumb';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { BusinessRulesForm } from '../Form/BusinessRulesForm';
 import styles from './AddBusinessRule.module.scss';
 

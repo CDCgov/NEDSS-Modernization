@@ -48,7 +48,7 @@ export const SidePanel = ({ heading, children, footer, visible, onClose }: Props
                 <Shown when={panelWidth > 0 || visible}>
                     <div className={styles.heading}>
                         <Heading level={2}>{heading}</Heading>
-                        <button onClick={onClose}>
+                        <button onClick={onClose} aria-label={`Close ${heading}`}>
                             <Icon.Close size={4} />
                         </button>
                     </div>

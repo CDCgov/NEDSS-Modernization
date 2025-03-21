@@ -229,16 +229,14 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                 control={form.control}
                 name="reportingProviderId"
                 render={({ field: { onBlur, onChange, name, value } }) => (
-                    <>
-                        <ProviderAutocomplete
-                            id={name}
-                            label="Reporting provider"
-                            sizing={sizing}
-                            value={value}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                        />
-                    </>
+                    <ProviderAutocomplete
+                        id={name}
+                        label="Reporting provider"
+                        sizing={sizing}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                    />
                 )}
             />
 
@@ -247,16 +245,14 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                 control={form.control}
                 name="reportingFacilityId"
                 render={({ field: { onBlur, onChange, name, value } }) => (
-                    <>
-                        <FacilityAutocomplete
-                            id={name}
-                            label="Reporting Facility"
-                            sizing={sizing}
-                            value={value}
-                            onChange={(e) => onChange(e)}
-                            onBlur={onBlur}
-                        />
-                    </>
+                    <FacilityAutocomplete
+                        id={name}
+                        label="Reporting Facility"
+                        sizing={sizing}
+                        value={value}
+                        onChange={(e) => onChange(e)}
+                        onBlur={onBlur}
+                    />
                 )}
             />
         </SearchCriteria>

@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 import { useSignUp } from './useSignUp';
 
 describe('useSignUp', () => {
@@ -16,10 +16,12 @@ describe('useSignUp', () => {
 
         // @ts-expect-error : location is mocked to check that the href is changed by the redirect
         delete window.location;
+        // @ts-expect-error : location is mocked to check that the href is changed by the redirect
         window.location = mockLocation;
     });
 
     afterAll(() => {
+        // @ts-expect-error : location is mocked to check that the href is changed by the redirect
         window.location = location;
     });
 

@@ -1,6 +1,6 @@
 import { FeatureGuard, FeatureLayout } from 'feature';
 import { PageProvider } from 'page';
-import { Navigate, RouteObject } from 'react-router-dom';
+import { Navigate, RouteObject } from 'react-router';
 import { PageLibrary } from './page/library/PageLibrary';
 import { Edit } from './page/management/edit/Edit';
 import { PreviewPage } from './page/management/preview';

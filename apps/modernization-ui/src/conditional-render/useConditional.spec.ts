@@ -1,9 +1,9 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { createElement, act } from 'react';
+import { renderHook } from '@testing-library/react';
 import { useConditionalRender } from './useConditionalRender';
-import { createElement } from 'react';
 
 describe('when conditionally rendering', () => {
-    it('should not render by defualt', () => {
+    it('should not render by default', () => {
         const { result } = renderHook(() => useConditionalRender());
 
         const actual = result.current.render(createElement('h1', null, 'Heading'));

@@ -14,7 +14,7 @@ import { LinkButton } from 'components/button';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { ConfirmationModal } from 'confirmation';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { PageControllerService } from '../../../generated/services/PageControllerService';
 import { PublishPage } from './PublishPage/PublishPage';
 import { SaveTemplate } from './SaveTemplate/SaveTemplate';

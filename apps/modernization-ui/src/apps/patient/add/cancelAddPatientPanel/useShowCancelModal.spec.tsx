@@ -1,19 +1,14 @@
-import { renderHook } from '@testing-library/react-hooks';
-import { useLocalStorage } from 'storage';
+import { renderHook } from '@testing-library/react';
 import { useShowCancelModal } from './useShowCancelModal';
 
+const mockSave = jest.fn();
+const mockRemove = jest.fn();
+
 jest.mock('storage', () => ({
-    useLocalStorage: jest.fn()
+    useLocalStorage: () => ({ value: false, save: mockSave, remove: mockRemove })
 }));
 
 describe('useShowCancelModal', () => {
-    const defaultSave = jest.fn();
-
-    beforeEach(() => {
-        (useLocalStorage as jest.Mock).mockReturnValue({ value: false, save: defaultSave });
-        defaultSave.mockReset();
-    });
-
     it('should initialize with value false', () => {
         const { result } = renderHook(() => useShowCancelModal());
         expect(result.current.value).toBe(false);

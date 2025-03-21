@@ -3,7 +3,7 @@ import { TableBody, TableComponent } from 'components/Table/Table';
 import { internalizeDate } from 'date';
 import { usePage } from 'page';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Direction } from 'sorting';
 
 import styles from './page-library-table.module.scss';

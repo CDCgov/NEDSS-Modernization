@@ -1,6 +1,6 @@
 import { AlertProvider } from 'alert';
 import { PagesQuestion, PagesResponse, PagesSection, PagesSubSection, PagesTab } from 'apps/page-builder/generated';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import { PageManagementProvider } from '../../usePageManagement';
 import { render } from '@testing-library/react';
 import { PageContent } from '../content/PageContent';

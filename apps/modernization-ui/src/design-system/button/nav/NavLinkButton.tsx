@@ -1,5 +1,5 @@
 import { RefAttributes } from 'react';
-import { NavLink, NavLinkProps } from 'react-router-dom';
+import { NavLink, NavLinkProps } from 'react-router';
 import classnames from 'classnames';
 import { Sizing } from 'design-system/field';
 import styles from './navlink-button.module.scss';

@@ -1,7 +1,7 @@
+import { FormProvider, useForm } from 'react-hook-form';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
-import { FormProvider, useForm } from 'react-hook-form';
 import { MatchingCriteriaSidePanel } from './MatchingCriteriaSidePanel';
 
 const onAccept = jest.fn();
@@ -178,37 +178,47 @@ describe('MatchingCriteriaSidePanel', () => {
     it('should update state when checkbox is clicked', async () => {
         const { getByLabelText, queryByText } = render(<Fixture />);
 
+        const user = userEvent.setup();
+
         await waitFor(() => expect(queryByText('First name')).toBeInTheDocument());
 
         const checkbox = getByLabelText('First name'); // First name
-        userEvent.click(checkbox);
+
+        await user.click(checkbox);
+
         expect(checkbox).toBeChecked();
 
-        userEvent.click(checkbox); // Last name
+        await user.click(checkbox); // Last name
         expect(checkbox).not.toBeChecked();
     });
 
     it('should trigger onCancel when cancel is clicked', async () => {
-        const { getAllByRole, queryByText } = render(<Fixture />);
+        const { getByRole, queryByText } = render(<Fixture />);
+
+        const user = userEvent.setup();
 
         await waitFor(() => expect(queryByText('First name')).toBeInTheDocument());
 
-        const buttons = getAllByRole('button');
-        expect(buttons[1]).toHaveTextContent('Cancel');
-        userEvent.click(buttons[1]);
+        const cancel = getByRole('button', { name: 'Cancel' });
+        expect(cancel).toHaveTextContent('Cancel');
+
+        await user.click(cancel);
 
         expect(onCancel).toBeCalledTimes(1);
     });
 
     it('should trigger onAccept when Add attribute(s) is clicked', async () => {
-        const { getAllByRole, queryByText } = render(<Fixture />);
+        const { getByRole, queryByText } = render(<Fixture />);
+
+        const user = userEvent.setup();
 
         await waitFor(() => expect(queryByText('First name')).toBeInTheDocument());
 
-        const buttons = getAllByRole('button');
-        expect(buttons[2]).toHaveTextContent('Add attribute(s)');
-        userEvent.click(buttons[2]);
+        const add = getByRole('button', { name: 'Add attribute(s)' });
+        expect(add).toHaveTextContent('Add attribute(s)');
 
-        expect(onAccept).toBeCalledTimes(1);
+        await user.click(add);
+
+        expect(onAccept).toBeCalledWith([]);
     });
 });

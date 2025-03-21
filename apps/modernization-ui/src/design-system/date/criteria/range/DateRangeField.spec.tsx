@@ -30,21 +30,20 @@ describe('DateRangeField Component', () => {
         expect(to).toHaveValue('02/17/2000');
     });
 
-    it('should call from input change handler when the from date is entered', () => {
+    it('should call from input change handler when the from date is entered', async () => {
         const mockOnChange = jest.fn();
         const { getByRole } = render(<DateRangeField id="testing-date-range-from-entered" onChange={mockOnChange} />);
 
         const from = getByRole('textbox', { name: 'From' });
 
-        act(() => {
-            userEvent.type(from, '02012023');
-            userEvent.tab();
-        });
+        const user = userEvent.setup();
+
+        await user.type(from, '02012023{tab}');
 
         expect(mockOnChange).toHaveBeenCalledWith({ between: expect.objectContaining({ from: '02/01/2023' }) });
     });
 
-    it('should call from input change handler when the from date is changed', () => {
+    it('should call from input change handler when the from date is changed', async () => {
         const mockOnChange = jest.fn();
         const { getByRole } = render(
             <DateRangeField
@@ -60,30 +59,27 @@ describe('DateRangeField Component', () => {
 
         const from = getByRole('textbox', { name: 'From' });
 
-        act(() => {
-            userEvent.clear(from);
-            userEvent.type(from, '02012023');
-            userEvent.tab();
-        });
+        const user = userEvent.setup();
+
+        await user.clear(from).then(() => user.type(from, '02012023{tab}'));
 
         expect(mockOnChange).toHaveBeenCalledWith({ between: expect.objectContaining({ from: '02/01/2023' }) });
     });
 
-    it('should call from input change handler when the to date is entered', () => {
+    it('should call from input change handler when the to date is entered', async () => {
         const mockOnChange = jest.fn();
         const { getByRole } = render(<DateRangeField id="testing-date-range-to-entered" onChange={mockOnChange} />);
 
         const to = getByRole('textbox', { name: 'To' });
 
-        act(() => {
-            userEvent.type(to, '02012023');
-            userEvent.tab();
-        });
+        const user = userEvent.setup();
+
+        await user.type(to, '02012023{tab}');
 
         expect(mockOnChange).toHaveBeenCalledWith({ between: expect.objectContaining({ to: '02/01/2023' }) });
     });
 
-    it('should call from input change handler when the to date is changed', () => {
+    it('should call from input change handler when the to date is changed', async () => {
         const mockOnChange = jest.fn();
         const { getByRole } = render(
             <DateRangeField
@@ -100,11 +96,9 @@ describe('DateRangeField Component', () => {
 
         const to = getByRole('textbox', { name: 'To' });
 
-        act(() => {
-            userEvent.clear(to);
-            userEvent.type(to, '02012023');
-            userEvent.tab();
-        });
+        const user = userEvent.setup();
+
+        await user.clear(to).then(() => user.type(to, '02012023{tab}'));
 
         expect(mockOnChange).toHaveBeenCalledWith({ between: expect.objectContaining({ to: '02/01/2023' }) });
     });

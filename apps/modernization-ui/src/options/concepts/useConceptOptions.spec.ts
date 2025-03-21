@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useConceptOptions } from './useConceptOptions';
 import { ConceptOptionsService } from 'generated';
 import { useSelectableOptions } from 'options/useSelectableOptions';

@@ -38,14 +38,15 @@ describe('Checkbox testing', () => {
         expect(container.firstChild).toHaveClass('testClass');
     });
 
-    it('should emit onChange event when label clicked', () => {
+    it('should emit onChange event when label clicked', async () => {
+        const user = userEvent.setup();
         const onChange = jest.fn();
 
         const { getByText } = render(<Checkbox id="test" label="Test Label" onChange={onChange} selected={false} />);
 
         const label = getByText('Test Label');
 
-        userEvent.click(label);
+        await user.click(label);
 
         expect(onChange).toHaveBeenCalledWith(true);
     });

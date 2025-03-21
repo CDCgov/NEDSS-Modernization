@@ -1,8 +1,8 @@
-import { act, render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { internalizeDate } from 'date';
 import { RaceRepeatingBlock } from './RaceRepeatingBlock';
 import { Selectable } from 'options';
-import userEvent from '@testing-library/user-event';
 
 const mockRaceCategories: Selectable[] = [
     { value: '1', name: 'race one name' },
@@ -59,21 +59,19 @@ describe('RaceRepeatingBlock', () => {
         expect(detailedRace).toHaveValue('');
     });
 
-    it('should mark repeating block as dirty when input changes', () => {
+    it('should mark repeating block as dirty when input changes', async () => {
         const { getByLabelText } = render(<RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />);
 
         const category = getByLabelText('Race');
 
-        act(() => {
-            userEvent.selectOptions(category, '1');
-            userEvent.tab();
-        });
+        const user = userEvent.setup();
+        await user.selectOptions(category, '1');
 
         expect(isDirty).toHaveBeenCalledWith(true);
     });
 
     it('should not allow adding the same race more than once', async () => {
-        const { getByLabelText, getByRole, getByText } = render(
+        const { getByLabelText, getByRole } = render(
             <RaceRepeatingBlock
                 id="testing"
                 values={[
@@ -93,17 +91,15 @@ describe('RaceRepeatingBlock', () => {
 
         const add = getByRole('button', { name: 'Add race' });
 
-        act(() => {
-            userEvent.selectOptions(category, '1');
-            userEvent.tab();
+        const user = userEvent.setup();
+        await user.selectOptions(category, '1').then(() => user.click(add));
 
-            userEvent.click(add);
-        });
+        expect(getByRole('alert')).toHaveTextContent(
+            /Race race one name has already been added to the repeating block/
+        );
 
-        await waitFor(() => {
-            expect(getByRole('listitem')).toHaveTextContent(
-                /Race race one name has already been added to the repeating block/
-            );
-        });
+        expect(getByRole('listitem')).toHaveTextContent(
+            /Race race one name has already been added to the repeating block/
+        );
     });
 });

@@ -1,7 +1,6 @@
-import { act } from '@testing-library/react';
-import { FilterProvider, useFilter } from './useFilter';
-import { renderHook } from '@testing-library/react-hooks';
 import { ReactNode } from 'react';
+import { act, renderHook } from '@testing-library/react';
+import { FilterProvider, useFilter } from './useFilter';
 
 const wrapper = ({ children }: { children: ReactNode }) => <FilterProvider>{children}</FilterProvider>;
 

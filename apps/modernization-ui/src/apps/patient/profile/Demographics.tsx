@@ -10,7 +10,7 @@ import { Mortality } from 'apps/patient/profile/mortality';
 import { Ethnicity } from 'apps/patient/profile/ethnicity';
 import { SexBirth } from 'apps/patient/profile/sexBirth';
 import { AlertProvider } from 'alert';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { usePatientProfile } from './usePatientProfile';
 
 export type AlertType = {

@@ -39,7 +39,7 @@ describe('when a success is displayed', () => {
         expect(title).toBeInTheDocument();
     });
 
-    it('should invoke onClose when the "Go back" button is clicked', () => {
+    it('should invoke onClose when the "Go back" button is clicked', async () => {
         const onClose = jest.fn();
 
         const { getByRole } = render(<Success onClose={onClose}>success message</Success>);
@@ -48,12 +48,13 @@ describe('when a success is displayed', () => {
 
         expect(closer).toBeInTheDocument();
 
-        userEvent.click(closer);
+        const user = userEvent.setup();
+        await user.click(closer);
 
         expect(onClose).toBeCalled();
     });
 
-    it('should invoke onClose when the close icon is clicked', () => {
+    it('should invoke onClose when the close icon is clicked', async () => {
         const onClose = jest.fn();
 
         const { getByRole } = render(<Success onClose={onClose}>success message</Success>);
@@ -62,7 +63,8 @@ describe('when a success is displayed', () => {
 
         expect(closer).toBeInTheDocument();
 
-        userEvent.click(closer);
+        const user = userEvent.setup();
+        await user.click(closer);
 
         expect(onClose).toBeCalled();
     });

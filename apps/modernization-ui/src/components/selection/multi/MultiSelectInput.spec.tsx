@@ -11,17 +11,19 @@ describe('Given a MultiSelectInput component', () => {
     ];
 
     it('should display options when clicked', async () => {
-        const { getByRole, findByText } = render(
+        const { getByRole, getByText } = render(
             <MultiSelectInput id="testing-multi-select" label="testing multi-select" options={options} />
         );
 
         const component = getByRole('combobox');
 
-        userEvent.click(component);
+        const user = userEvent.setup();
 
-        expect(await findByText('label-one')).toBeInTheDocument();
-        expect(await findByText('label-two')).toBeInTheDocument();
-        expect(await findByText('label-three')).toBeInTheDocument();
+        await user.click(component);
+
+        expect(getByText('label-one')).toBeInTheDocument();
+        expect(getByText('label-two')).toBeInTheDocument();
+        expect(getByText('label-three')).toBeInTheDocument();
     });
 
     it('should display single selected value', () => {
@@ -41,12 +43,14 @@ describe('Given a MultiSelectInput component', () => {
         expect(queryByText('label-three')).not.toBeInTheDocument();
     });
 
-    it('should remove the selected item when clicked', () => {
+    it('should remove the selected item when clicked', async () => {
         const { queryByText, getByLabelText } = render(<MultiSelectInput options={options} value={['2']} />);
 
         const selected = getByLabelText('Remove label-two');
 
-        userEvent.click(selected);
+        const user = userEvent.setup();
+
+        await user.click(selected);
 
         expect(queryByText('label-two')).not.toBeInTheDocument();
     });

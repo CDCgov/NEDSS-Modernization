@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import { AlertProvider } from 'alert';
 import { ApolloWrapper } from 'providers/ApolloContext';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';

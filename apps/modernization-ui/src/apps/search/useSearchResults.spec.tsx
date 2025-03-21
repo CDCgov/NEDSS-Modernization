@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { ReactNode, act } from 'react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { SearchResultSettings, useSearchResults } from './useSearchResults';
 import { Page } from 'page';
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';
@@ -101,27 +101,27 @@ describe('when searching using useSearchResults', () => {
         expect(result.current.status).toEqual('waiting');
     });
 
-    it('should change to status to loading after invoking a search', async () => {
+    it('should change to status to loading after invoking a search', () => {
         const { result } = setup();
 
-        await act(async () => {
+        act(() => {
             result.current.search({ name: 'name-value' });
         });
 
         expect(result.current.status).toEqual('loading');
     });
 
-    it('should change to status to no-input when terms cannot be resolved', async () => {
+    it('should change to status to no-input when terms cannot be resolved', () => {
         const { result } = setup({ termResolver: () => [] });
 
-        await act(async () => {
+        act(() => {
             result.current.search({ name: 'name-value' });
         });
 
         expect(result.current.status).toEqual('no-input');
     });
 
-    it('should change to status to waiting when reset before searching', async () => {
+    it('should change to status to waiting when reset before searching', () => {
         const { result } = setup();
 
         act(() => {
@@ -131,10 +131,10 @@ describe('when searching using useSearchResults', () => {
         expect(result.current.status).toEqual('waiting');
     });
 
-    it('should change to status to waiting when reset after completed', async () => {
+    it('should change to status to waiting when reset after completed', () => {
         const { result } = setup();
 
-        await act(async () => {
+        act(() => {
             result.current.search({ name: 'name-value' });
         });
 
@@ -152,17 +152,17 @@ describe('when searching using useSearchResults', () => {
 
         mockCriteria = { name: 'name-value' };
 
-        await act(async () => {
+        act(() => {
             result.current.search({ name: 'name-value' });
         });
 
-        expect(result.current.status).toEqual('error');
+        await waitFor(() => expect(result.current.status).toEqual('error'));
     });
 
     it('should change to status to waiting when reset after error', async () => {
         const { result } = setup({ resultResolver: () => Promise.reject(new Error()) });
 
-        await act(async () => {
+        act(() => {
             result.current.search({ name: 'name-value' });
         });
 
@@ -170,7 +170,7 @@ describe('when searching using useSearchResults', () => {
             result.current.reset();
         });
 
-        expect(result.current.status).toEqual('waiting');
+        await waitFor(() => expect(result.current.status).toEqual('waiting'));
     });
 
     it('should change the criteria when searching', async () => {
@@ -184,15 +184,17 @@ describe('when searching using useSearchResults', () => {
 
         const { result } = setup({ transformer, termResolver });
 
-        await act(async () => {
+        act(() => {
             result.current.search({ name: 'name-value' });
         });
 
-        expect(transformer).toHaveBeenCalledWith({ name: 'name-value' });
+        await waitFor(() => {
+            expect(transformer).toHaveBeenCalledWith({ name: 'name-value' });
 
-        expect(termResolver).toHaveBeenCalledWith({ name: 'name-value' });
+            expect(termResolver).toHaveBeenCalledWith({ name: 'name-value' });
 
-        expect(mockChange).toHaveBeenCalledWith(expect.objectContaining({ name: 'name-value' }));
+            expect(mockChange).toHaveBeenCalledWith(expect.objectContaining({ name: 'name-value' }));
+        });
     });
 
     it('should use the request first page when criteria changes', async () => {
@@ -204,16 +206,16 @@ describe('when searching using useSearchResults', () => {
         mockPage.current = 227;
         mockPage.pageSize = 307;
 
-        const { result, rerender } = setup({ resultResolver });
+        const { result } = setup({ resultResolver });
 
-        await act(async () => {
+        act(() => {
             result.current.search({ name: 'name-value' });
         });
 
-        rerender();
-
-        expect(resultResolver).toBeCalledWith(
-            expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
+        await waitFor(() =>
+            expect(resultResolver).toBeCalledWith(
+                expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
+            )
         );
     });
 
@@ -228,14 +230,14 @@ describe('when searching using useSearchResults', () => {
 
         const { result, rerender } = setup({ resultResolver });
 
-        await act(async () => {
+        act(() => {
             result.current.search({ name: 'name-value' });
         });
 
-        rerender();
-
-        expect(resultResolver).toBeCalledWith(
-            expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
+        await waitFor(() =>
+            expect(resultResolver).toBeCalledWith(
+                expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
+            )
         );
     });
 
@@ -248,16 +250,16 @@ describe('when searching using useSearchResults', () => {
 
         mockSortDirection = Direction.Ascending;
 
-        const { result, rerender } = setup({ resultResolver });
+        const { result } = setup({ resultResolver });
 
-        await act(async () => {
+        act(() => {
             result.current.search({ name: 'name-value' });
         });
 
-        rerender();
-
-        expect(resultResolver).toBeCalledWith(
-            expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
+        await waitFor(() =>
+            expect(resultResolver).toBeCalledWith(
+                expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
+            )
         );
     });
 });

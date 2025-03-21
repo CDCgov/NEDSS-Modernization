@@ -1,4 +1,4 @@
-import { screen, render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
@@ -100,29 +100,22 @@ const Fixture = ({
     />
 );
 
-const awaitRender = async () => {
-    expect(await screen.findByText('Test title')).toBeInTheDocument();
-};
-
 describe('RepeatingBlock', () => {
-    it('should display provided title', async () => {
+    it('should display provided title', () => {
         const { getByRole } = render(<Fixture />);
-        // wait on render to prevent act warning
-        await awaitRender();
 
         const heading = getByRole('heading');
         expect(heading).toHaveTextContent('Test');
     });
 
-    it('should display provided form', async () => {
+    it('should display provided form', () => {
         const { getByLabelText } = render(<Fixture />);
-        await awaitRender();
 
         expect(getByLabelText('First Input')).toBeInTheDocument();
         expect(getByLabelText('Second Input')).toBeInTheDocument();
     });
 
-    it('should display default values', async () => {
+    it('should display default values', () => {
         const { getByLabelText } = render(
             <Fixture
                 defaultValues={{
@@ -131,7 +124,6 @@ describe('RepeatingBlock', () => {
                 }}
             />
         );
-        await awaitRender();
 
         const firstInput = getByLabelText('First Input');
         expect(firstInput).toBeInTheDocument();
@@ -142,31 +134,27 @@ describe('RepeatingBlock', () => {
         expect(secondInput).toHaveValue('second value');
     });
 
-    it('should display add button', async () => {
+    it('should display add button', () => {
         const { getByRole } = render(<Fixture />);
-        await awaitRender();
 
         const button = getByRole('button', { name: 'Add test title' });
         expect(button).toBeInTheDocument();
     });
 
-    it('should display add button with correct size', async () => {
+    it('should display add button with correct size', () => {
         const { getByRole } = render(<Fixture sizing="small" />);
-        await awaitRender();
 
         const button = getByRole('button', { name: 'Add test title' });
         expect(button).toBeInTheDocument();
         expect(button).toHaveClass('small');
     });
 
-    it('should display specified columns', async () => {
+    it('should display specified columns', () => {
         const { getByRole } = render(
             <Fixture values={[{ firstInput: 'first-input-value', secondInput: 'second-input-value', others: [] }]} />
         );
 
-        await waitFor(() => {
-            expect(getByRole('table')).toBeInTheDocument();
-        });
+        expect(getByRole('table')).toBeInTheDocument();
 
         expect(getByRole('columnheader', { name: 'First column name' })).toBeInTheDocument();
         expect(getByRole('columnheader', { name: 'Second column name' })).toBeInTheDocument();
@@ -177,8 +165,6 @@ describe('RepeatingBlock', () => {
 
         const { getByRole, getByLabelText } = render(<Fixture onChange={onChange} />);
 
-        await awaitRender();
-
         const add = getByRole('button', { name: 'Add test title' });
 
         const input1 = getByLabelText('First Input');
@@ -186,26 +172,21 @@ describe('RepeatingBlock', () => {
         const input2 = getByLabelText('Second Input');
         expect(input2).toBeInTheDocument();
 
-        userEvent.clear(input1);
-        userEvent.type(input1, 'first input value');
-        expect(input1).toHaveValue('first input value');
-        userEvent.clear(input2);
-        userEvent.type(input2, 'second input value');
-        expect(input2).toHaveValue('second input value');
-        userEvent.click(add);
+        const user = userEvent.setup();
 
-        await waitFor(() => {
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [
-                { firstInput: 'first input value', secondInput: 'second input value' }
-            ]);
-        });
+        await user
+            .type(input1, 'first input value')
+            .then(() => user.type(input2, 'second input value'))
+            .then(() => user.click(add));
+
+        expect(onChange).toHaveBeenNthCalledWith(1, []);
+        expect(onChange).toHaveBeenNthCalledWith(2, [
+            { firstInput: 'first input value', secondInput: 'second input value' }
+        ]);
     });
 
-    it('should not display clear button when adding and no changes have been made.', async () => {
+    it('should not display clear button when adding and no changes have been made.', () => {
         const { queryByRole } = render(<Fixture />);
-
-        await awaitRender();
 
         expect(queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument();
     });
@@ -213,29 +194,34 @@ describe('RepeatingBlock', () => {
     it('should display clear button when adding and changes have been made.', async () => {
         const { getByRole, getByLabelText } = render(<Fixture />);
 
-        await awaitRender();
-
         const input1 = getByLabelText('First Input');
 
-        userEvent.type(input1, '-change');
+        const user = userEvent.setup();
+
+        await user.type(input1, '-change');
 
         expect(getByRole('button', { name: 'Clear' })).toBeInTheDocument();
     });
 
     it('should reset values to default state when Clear is clicked.', async () => {
-        const { getByRole, getByLabelText } = render(<Fixture />);
-
-        await awaitRender();
+        const { getByRole, getByLabelText } = render(
+            <Fixture
+                defaultValues={{
+                    firstInput: 'first value'
+                }}
+            />
+        );
 
         const input1 = getByLabelText('First Input');
 
-        userEvent.type(input1, '-change');
+        const user = userEvent.setup();
+
+        await user.type(input1, '-change');
 
         const clear = getByRole('button', { name: 'Clear' });
+        await user.click(clear);
 
-        userEvent.click(clear);
-
-        userEvent.type(input1, 'first input value');
+        expect(input1).toHaveValue('first value');
     });
 
     it('should display submitted data in table', async () => {
@@ -243,18 +229,16 @@ describe('RepeatingBlock', () => {
 
         const { getByRole, getAllByRole, getByLabelText } = render(<Fixture onChange={onChange} />);
 
-        await awaitRender();
-
-        userEvent.type(getByLabelText('First Input'), 'first value');
-        userEvent.type(getByLabelText('Second Input'), 'second value');
-        userEvent.tab();
-
         const add = getByRole('button', { name: 'Add test title' });
-        userEvent.click(add);
 
-        await waitFor(() => {
-            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
-        });
+        const user = userEvent.setup();
+
+        await user
+            .type(getByLabelText('First Input'), 'first value')
+            .then(() => user.type(getByLabelText('Second Input'), 'second value'))
+            .then(() => user.click(add));
+
+        expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
 
         const columns = getAllByRole('cell');
         expect(columns).toHaveLength(3);
@@ -268,43 +252,36 @@ describe('RepeatingBlock', () => {
 
         const { getByRole, getByLabelText, queryByText } = render(<Fixture onChange={onChange} />);
 
-        await awaitRender();
-
         const add = getByRole('button', { name: 'Add test title' });
 
         // try to add with empty required field
-        userEvent.click(add);
+        const user = userEvent.setup();
+
+        await user.click(add);
 
         // ensure validation message appears
-        await waitFor(() => {
-            expect(queryByText('First input is required.')).toBeInTheDocument();
-        });
+        expect(queryByText('First input is required.')).toBeInTheDocument();
 
         // enter data and submit
-        userEvent.type(getByLabelText('First Input'), 'typed value');
-        userEvent.click(add);
+        await user.type(getByLabelText('First Input'), 'typed value').then(() => user.click(add));
 
         // expect value to be added
-        await waitFor(() => {
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'typed value', secondInput: undefined }]);
-        });
+
+        expect(onChange).toHaveBeenNthCalledWith(1, []);
+        expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'typed value', secondInput: undefined }]);
 
         // verify validation message is no longer visible
-        await waitFor(() => {
-            expect(queryByText('First input is required.')).not.toBeInTheDocument();
-        });
+
+        expect(queryByText('First input is required.')).not.toBeInTheDocument();
 
         // immediately click add button again
-        userEvent.click(add);
+        await user.click(add);
 
         // verify validation text is shown
-        await waitFor(() => {
-            expect(queryByText('First input is required.')).toBeInTheDocument();
-        });
+        expect(queryByText('First input is required.')).toBeInTheDocument();
     });
 
-    it('should display icons in last column of table', async () => {
+    it('should display icons in last column of table', () => {
         const { getAllByRole } = render(
             <Fixture
                 values={[
@@ -316,8 +293,6 @@ describe('RepeatingBlock', () => {
                 ]}
             />
         );
-
-        await awaitRender();
 
         const iconContainer = getAllByRole('cell')[2].children[0].children[0];
         expect(iconContainer.children).toHaveLength(3);
@@ -348,7 +323,6 @@ describe('RepeatingBlock', () => {
                 ]}
             />
         );
-        await awaitRender();
 
         const icons = container.querySelectorAll('.actions svg');
         expect(icons).toHaveLength(3);
@@ -370,10 +344,10 @@ describe('RepeatingBlock', () => {
             />
         );
 
-        await awaitRender();
-
         const view = getByLabelText('View');
-        userEvent.click(view);
+        const user = userEvent.setup();
+
+        await user.click(view);
 
         expect(getByText('Render view first value: first-value')).toBeInTheDocument();
         expect(getByText('Render view second value: second-value')).toBeInTheDocument();
@@ -394,14 +368,12 @@ describe('RepeatingBlock', () => {
             />
         );
 
-        await awaitRender();
-
         const remove = getByLabelText('Delete');
-        userEvent.click(remove);
+        const user = userEvent.setup();
 
-        await waitFor(() => {
-            expect(onChange).toHaveBeenCalledWith([]);
-        });
+        await user.click(remove);
+
+        expect(onChange).toHaveBeenCalledWith([]);
     });
 
     it('should allow edit of row', async () => {
@@ -420,28 +392,23 @@ describe('RepeatingBlock', () => {
             />
         );
 
-        await awaitRender();
-
         const edit = getByLabelText('Edit');
 
-        userEvent.click(edit);
+        const user = userEvent.setup();
+
+        await user.click(edit);
 
         const update = getByRole('button', { name: 'Update test title' });
         const input1 = getByLabelText('First Input');
 
-        userEvent.type(input1, '-changed');
-        userEvent.tab();
+        await user.type(input1, '-changed{tab}').then(() => user.click(update));
 
-        userEvent.click(update);
-
-        await waitFor(() => {
-            // change event fires, form resets to default
-            expect(onChange).toHaveBeenCalledWith(
-                expect.arrayContaining([
-                    expect.objectContaining({ firstInput: 'first-value-changed', secondInput: 'second-value' })
-                ])
-            );
-        });
+        // change event fires, form resets to default
+        expect(onChange).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({ firstInput: 'first-value-changed', secondInput: 'second-value' })
+            ])
+        );
 
         // table display updated
         const columns = getAllByRole('cell');
@@ -467,27 +434,24 @@ describe('RepeatingBlock', () => {
             />
         );
 
-        await awaitRender();
-
         const edit = getByLabelText('Edit');
 
-        userEvent.click(edit);
+        const user = userEvent.setup();
+
+        await user.click(edit);
 
         const input1 = getByLabelText('First Input');
 
-        userEvent.type(input1, '-changed');
-        userEvent.tab();
+        await user.type(input1, '-changed{tab}');
 
         const cancel = getByRole('button', { name: 'Cancel' });
-        userEvent.click(cancel);
+        await user.click(cancel);
 
-        await waitFor(() => {
-            expect(onChange).toHaveBeenCalledWith(
-                expect.arrayContaining([
-                    expect.objectContaining({ firstInput: 'first-value', secondInput: 'second-value' })
-                ])
-            );
-        });
+        expect(onChange).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({ firstInput: 'first-value', secondInput: 'second-value' })
+            ])
+        );
 
         // table display updated
         const columns = getAllByRole('cell');
@@ -499,7 +463,6 @@ describe('RepeatingBlock', () => {
 
     it('should display errors passed to component ', async () => {
         const { getByText } = render(<Fixture errors={['First error', 'Second error']} />);
-        await awaitRender();
 
         expect(getByText('First error')).toBeInTheDocument();
         expect(getByText('Second error')).toBeInTheDocument();
@@ -507,33 +470,38 @@ describe('RepeatingBlock', () => {
 
     it('should display form errors', async () => {
         const { getByRole, queryByText } = render(<Fixture />);
-        await awaitRender();
 
         const add = getByRole('button', { name: 'Add test title' });
-        userEvent.click(add);
 
-        await waitFor(() => {
-            expect(queryByText('First input is required.')).toBeInTheDocument();
-        });
+        const user = userEvent.setup();
+
+        await user.click(add);
+
+        expect(queryByText('First input is required.')).toBeInTheDocument();
     });
 
-    it('should call isDirty with true when form input applied', () => {
+    it('should call isDirty with true when form input applied', async () => {
         const isDirty = jest.fn();
         const { getByLabelText } = render(<Fixture isDirty={isDirty} />);
         const input1 = getByLabelText('First Input');
-        userEvent.type(input1, 'first value');
+        const user = userEvent.setup();
+
+        await user.type(input1, 'first value');
 
         expect(isDirty).toHaveBeenCalledWith(true);
     });
 
-    it('should call isDirty with false when form input cleared', () => {
+    it('should call isDirty with false when form input cleared', async () => {
         const isDirty = jest.fn();
         const { getByLabelText, getByRole } = render(<Fixture isDirty={isDirty} />);
         const input1 = getByLabelText('First Input');
-        userEvent.type(input1, 'first value');
+        const user = userEvent.setup();
+
+        await user.type(input1, 'first value');
 
         const clear = getByRole('button', { name: 'Clear' });
-        userEvent.click(clear);
+
+        await user.click(clear);
 
         expect(isDirty).toHaveBeenCalledWith(false);
     });
@@ -541,14 +509,13 @@ describe('RepeatingBlock', () => {
     it('should call isValid with false when there are form errors', async () => {
         const isValid = jest.fn();
         const { getByRole, getByText } = render(<Fixture isValid={isValid} />);
-        await awaitRender();
 
         const add = getByRole('button', { name: 'Add test title' });
-        userEvent.click(add);
+        const user = userEvent.setup();
 
-        await waitFor(() => {
-            expect(getByText('First input is required.')).toBeInTheDocument();
-            expect(isValid).toHaveBeenCalledWith(false);
-        });
+        await user.click(add);
+
+        expect(getByText('First input is required.')).toBeInTheDocument();
+        expect(isValid).toHaveBeenCalledWith(false);
     });
 });

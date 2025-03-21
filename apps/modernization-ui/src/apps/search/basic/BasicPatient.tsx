@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { displayName } from 'name';
 import { asSelectableGender } from 'options/gender';
 import { Mapping, Maybe } from 'utils';

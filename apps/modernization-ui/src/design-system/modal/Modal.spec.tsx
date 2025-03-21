@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import { axe } from 'jest-axe';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 
 import { Modal } from './Modal';
 
@@ -63,7 +63,9 @@ describe('when a modal is displayed', () => {
         expect(closer).toBeNull();
     });
 
-    it('should invoke the onClose when icon close called', () => {
+    it('should invoke the onClose when icon close called', async () => {
+        const user = userEvent.setup();
+
         const onClose = jest.fn();
         const { getByRole } = render(
             <Modal id={'identifier-value'} title="Title Value" onClose={onClose}>
@@ -73,7 +75,7 @@ describe('when a modal is displayed', () => {
 
         const closer = getByRole('button', { name: 'Close Title Value' });
 
-        userEvent.click(closer);
+        await user.click(closer);
 
         expect(onClose).toBeCalled();
     });
@@ -98,7 +100,9 @@ describe('when a modal is displayed', () => {
         expect(baseElement).toBeInTheDocument();
     });
 
-    it('should invoke the onClose when footer close called', () => {
+    it('should invoke the onClose when footer close called', async () => {
+        const user = userEvent.setup();
+
         const onClose = jest.fn();
 
         const { getByRole } = render(
@@ -117,7 +121,7 @@ describe('when a modal is displayed', () => {
 
         const closer = getByRole('button', { name: 'Close' });
 
-        userEvent.click(closer);
+        await user.click(closer);
 
         expect(onClose).toBeCalled();
     });

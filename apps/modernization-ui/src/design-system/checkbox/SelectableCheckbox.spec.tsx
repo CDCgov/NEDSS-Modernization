@@ -53,24 +53,29 @@ describe('Checkbox testing', () => {
         expect(container.firstChild).toHaveClass('testClass');
     });
 
-    it('should emit onChange event when checkbox clicked', () => {
+    it('should emit onChange event when checkbox clicked', async () => {
+        const user = userEvent.setup();
+
         const onChange = jest.fn();
         const { getByRole } = render(<SelectableCheckbox onChange={onChange} selectable={option} selected={false} />);
 
         const checkbox = getByRole('checkbox');
 
-        userEvent.click(checkbox);
+        await user.click(checkbox);
+
         expect(onChange).toHaveBeenCalledWith(option);
     });
 
-    it('should emit onChange event when label clicked', () => {
+    it('should emit onChange event when label clicked', async () => {
+        const user = userEvent.setup();
+
         const onChange = jest.fn();
 
         const { getByText } = render(<SelectableCheckbox onChange={onChange} selectable={option} selected={false} />);
 
         const label = getByText('name');
 
-        userEvent.click(label);
+        await userEvent.click(label);
 
         expect(onChange).toHaveBeenCalledWith(option);
     });

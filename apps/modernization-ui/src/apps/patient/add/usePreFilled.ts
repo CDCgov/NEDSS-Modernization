@@ -1,6 +1,6 @@
 import { DefaultNewPatentEntry, NewPatientEntry } from 'apps/patient/add';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 const usePreFilled = (initial: DefaultNewPatentEntry): NewPatientEntry => {
     const location = useLocation();

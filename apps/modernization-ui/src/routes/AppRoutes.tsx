@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 import { initializationLoader, ProtectedLayout } from 'authorization';
 
 import { RedirectHome } from './RedirectHome';

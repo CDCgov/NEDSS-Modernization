@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { MatchConfiguration } from './MatchConfiguration';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 let mockReturnValue: string | undefined = 'value';
 jest.mock('apps/deduplication/api/useDataElements', () => ({

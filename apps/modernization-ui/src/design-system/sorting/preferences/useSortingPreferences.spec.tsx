@@ -1,6 +1,6 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { ReactNode, act } from 'react';
+import { renderHook } from '@testing-library/react';
 import { ActiveSorting, SortingPreferenceProvider, useSortingPreferences } from './useSortingPreferences';
-import { ReactNode } from 'react';
 import { Direction } from 'sorting';
 
 let mockProperty: string | undefined = undefined;

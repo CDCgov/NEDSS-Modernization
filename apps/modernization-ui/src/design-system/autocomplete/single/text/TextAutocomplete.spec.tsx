@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { AutocompleteOptionsResolver } from 'options/autocompete';
@@ -31,7 +31,8 @@ describe('TextAutocomplete', () => {
         const { getByRole, findByText } = render(<TextAutocomplete {...defaultProps} />);
         const input = getByRole('textbox');
 
-        await act(async () => userEvent.type(input, 'a'));
+        const user = userEvent.setup();
+        await user.type(input, 'a');
 
         const suggestion = await findByText('Value 1');
         expect(suggestion).toBeInTheDocument();
@@ -47,7 +48,8 @@ describe('TextAutocomplete', () => {
         const select = await findByText('Value 1');
         expect(select).toBeInTheDocument();
 
-        act(() => userEvent.click(select));
+        const user = userEvent.setup();
+        await user.click(select);
 
         expect(onChange).toHaveBeenCalledWith('Value 1');
         expect(input).toHaveValue('Value 1');
@@ -68,14 +70,10 @@ describe('TextAutocomplete', () => {
         const { getByRole } = render(<TextAutocomplete {...defaultProps} onChange={onChange} />);
 
         const input = getByRole('textbox');
-        await act(async () => {
-            await userEvent.type(input, 'test');
-        });
 
-        expect(onChange).toHaveBeenCalledWith('t');
-        expect(onChange).toHaveBeenCalledWith('e');
-        expect(onChange).toHaveBeenCalledWith('s');
-        expect(onChange).toHaveBeenCalledWith('t');
-        expect(onChange).toHaveBeenCalledTimes(4);
+        const user = userEvent.setup();
+        await user.type(input, 'test');
+
+        expect(onChange).toHaveBeenCalledWith('test');
     });
 });

@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import { Icon } from '@trussworks/react-uswds';
 
 import styles from './breadcrumb.module.scss';

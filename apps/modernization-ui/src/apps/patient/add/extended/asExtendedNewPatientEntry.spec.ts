@@ -1,10 +1,8 @@
 import { today } from 'date';
 import { NewPatientEntry } from '../NewPatientEntry';
 import { PatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
-import { LocationCodedValues, StateCodedValue } from 'location';
-import { CodedValue } from 'coded';
+import { LocationCodedValues } from 'location';
 import { asSelectable, Selectable } from 'options';
-import { act, renderHook } from '@testing-library/react-hooks';
 import { asExtendedNewPatientEntry } from './asExtendedNewPatientEntry';
 import { Deceased, Gender, Suffix } from 'generated/graphql/schema';
 

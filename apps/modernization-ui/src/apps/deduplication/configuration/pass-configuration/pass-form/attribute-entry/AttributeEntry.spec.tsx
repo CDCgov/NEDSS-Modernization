@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import { AttributeEntry } from './AttributeEntry';
 import userEvent from '@testing-library/user-event';
+import { AttributeEntry } from './AttributeEntry';
 
 const onChange = jest.fn();
 
@@ -19,26 +19,32 @@ describe('AttributeEntry', () => {
         expect(getByText('my description')).toBeInTheDocument();
     });
 
-    it('should set checked state correctly when false', () => {
+    it('should set checked state correctly when false', async () => {
         const { getByLabelText } = render(
             <AttributeEntry label="Some label" description="my description" selected={false} onChange={onChange} />
         );
+
+        const user = userEvent.setup();
+
         const checkbox = getByLabelText('Some label');
         expect(checkbox).not.toBeChecked();
 
-        userEvent.click(checkbox);
+        await user.click(checkbox);
 
         expect(onChange).toHaveBeenCalledTimes(1);
     });
 
-    it('should set checked state correctly when true', () => {
+    it('should set checked state correctly when true', async () => {
         const { getByLabelText } = render(
             <AttributeEntry label="Some label" description="my description" selected={true} onChange={onChange} />
         );
+
+        const user = userEvent.setup();
+
         const checkbox = getByLabelText('Some label');
         expect(checkbox).toBeChecked();
 
-        userEvent.click(checkbox);
+        await user.click(checkbox);
 
         expect(onChange).toHaveBeenCalledTimes(1);
     });

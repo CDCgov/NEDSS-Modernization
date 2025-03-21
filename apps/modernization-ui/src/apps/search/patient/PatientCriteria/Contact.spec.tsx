@@ -1,21 +1,19 @@
+import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import { Contact } from './Contact';
 import { PatientCriteriaEntry } from '../criteria';
-import { FormProvider, useForm } from 'react-hook-form';
-import { renderHook } from '@testing-library/react-hooks';
+
 import { MockedProvider } from '@apollo/react-testing';
 
-const { result } = renderHook(() =>
-    useForm<PatientCriteriaEntry>({
+const Fixture = () => {
+    const form = useForm<PatientCriteriaEntry>({
         mode: 'onChange',
         defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] }
-    })
-);
+    });
 
-const setup = () => {
-    return render(
+    return (
         <MockedProvider>
-            <FormProvider {...result.current}>
+            <FormProvider {...form}>
                 <Contact />
             </FormProvider>
         </MockedProvider>
@@ -23,8 +21,10 @@ const setup = () => {
 };
 
 describe('when Address renders', () => {
+    //  this test would be more effective if it checked for the existence of input labels and asserts accessibility settings.
+
     it('should render 2 input fields', () => {
-        const { container } = setup();
+        const { container } = render(<Fixture />);
         const inputs = container.getElementsByTagName('input');
         expect(inputs.length).toBe(2);
     });

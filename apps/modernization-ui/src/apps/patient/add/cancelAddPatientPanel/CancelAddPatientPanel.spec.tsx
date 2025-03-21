@@ -1,20 +1,14 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CancelAddPatientPanel } from './CancelAddPatientPanel';
-import { useShowCancelModal } from './useShowCancelModal';
+
+const mockSave = jest.fn();
 
 jest.mock('./useShowCancelModal', () => ({
-    useShowCancelModal: jest.fn()
+    useShowCancelModal: () => ({ value: false, save: mockSave })
 }));
 
 describe('CancelAddPatientPanel', () => {
-    const defaultSave = jest.fn();
-
-    beforeEach(() => {
-        (useShowCancelModal as jest.Mock).mockReturnValue({ value: false, save: defaultSave });
-        defaultSave.mockReset();
-    });
-
     it('should render the confirmation modal', () => {
         const { getByRole, getByText } = render(<CancelAddPatientPanel />);
 
@@ -24,12 +18,15 @@ describe('CancelAddPatientPanel', () => {
         expect(getByRole('button', { name: 'No, back to form' })).toBeInTheDocument();
     });
 
-    it('should invoke the onClose when cancel button is clicked', () => {
+    it('should invoke the onClose when cancel button is clicked', async () => {
         const onClose = jest.fn();
         const { getByRole } = render(<CancelAddPatientPanel onClose={onClose} />);
 
         const closer = getByRole('button', { name: 'No, back to form' });
-        userEvent.click(closer);
+
+        const user = userEvent.setup();
+
+        await user.click(closer);
 
         expect(onClose).toBeCalled();
     });
@@ -39,15 +36,23 @@ describe('CancelAddPatientPanel', () => {
         const { getByRole } = render(<CancelAddPatientPanel onConfirm={onConfirm} />);
 
         const confirmButton = getByRole('button', { name: 'Yes, cancel' });
-        userEvent.click(confirmButton);
+
+        const user = userEvent.setup();
+
+        await user.click(confirmButton);
+
         expect(onConfirm).toBeCalled();
     });
 
-    it('should save checkbox state to local storage on confirm', () => {
+    it('should save checkbox state to local storage on confirm', async () => {
         const { getByRole } = render(<CancelAddPatientPanel />);
-        userEvent.click(getByRole('checkbox'));
-        userEvent.click(getByRole('button', { name: 'Yes, cancel' }));
+
+        const user = userEvent.setup();
+
+        await user.click(getByRole('checkbox'));
+        await user.click(getByRole('button', { name: 'Yes, cancel' }));
+
         expect(getByRole('checkbox')).toBeChecked();
-        expect(defaultSave).toBeCalledWith(true);
+        expect(mockSave).toBeCalledWith(true);
     });
 });

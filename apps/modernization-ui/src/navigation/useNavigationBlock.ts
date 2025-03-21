@@ -1,8 +1,40 @@
 import { useCallback, useEffect, useState } from 'react';
 import { BlockerFunction, useBlocker, Location as RouterLocation, useNavigate } from 'react-router';
 import { unblockableRoutes } from 'routes';
-import { NavigationBlock, NavigationBlockProps } from './block';
 
+type Paths = string | string[];
+
+type NavigationBlockSettings = {
+    /** Whether blocking navigation is allowed, for example, if a user opts in to bypassing the warning */
+    activated?: boolean;
+    /** A list of routes that do not block navigation. */
+    allowed?: Paths;
+    /** Callback to handle when navigation is blocked. Use this to take action like opening a modal. */
+    onBlock?: () => void;
+};
+
+type NavigationBlockInteraction = {
+    /** Whether navigation is current blocked */
+    blocked: boolean;
+    /** Deactivates the navigation block allowing internal navigation to occur  */
+    allow: () => void;
+    /** Activates the navigation block preventing internal navigation from occurring */
+    block: () => void;
+    /** Invoke to allow navigation to continue */
+    unblock: () => void;
+    /** Reset the navigation blocker */
+    reset: () => void;
+};
+
+const isAllowedPath = (allowed: Paths | undefined, path: string) => {
+    if (typeof allowed === 'string') {
+        return allowed === path;
+    } else if (Array.isArray(allowed)) {
+        return allowed.includes(path);
+    }
+
+    return false;
+};
 const isBlockedPath = (path: string) => !unblockableRoutes.includes(path);
 const isNavigating = (current: RouterLocation, next: RouterLocation) => current.pathname !== next.pathname;
 
@@ -14,17 +46,22 @@ const isNavigating = (current: RouterLocation, next: RouterLocation) => current.
  * navigation that occurs when the block is activated will use the browser native message
  * to confirm navigation away from the page.
  *
- * @param {NavigationBlockProps} props - The properties object.
- * @return {NavigationBlock} Functions to control navigation.
+ * @param {NavigationBlockSettings} props - The properties object.
+ * @return {NavigationBlockInteraction} Functions to control navigation.
  */
-const useNavigationBlock = ({ activated = true, onBlock }: NavigationBlockProps): NavigationBlock => {
-    //
+const useNavigationBlock = ({
+    activated = true,
+    onBlock,
+    allowed
+}: NavigationBlockSettings): NavigationBlockInteraction => {
     const [isEngaged, setEngaged] = useState<boolean>(false);
 
     const blockingFn = useCallback<BlockerFunction>(
         ({ currentLocation, nextLocation }) => {
             return isEngaged
-                ? isNavigating(currentLocation, nextLocation) && isBlockedPath(nextLocation.pathname)
+                ? isNavigating(currentLocation, nextLocation) &&
+                      !isAllowedPath(allowed, nextLocation.pathname) &&
+                      isBlockedPath(nextLocation.pathname)
                 : false;
         },
         [isEngaged]
@@ -87,3 +124,4 @@ const useNavigationBlock = ({ activated = true, onBlock }: NavigationBlockProps)
 };
 
 export { useNavigationBlock };
+export type { NavigationBlockInteraction, NavigationBlockSettings };

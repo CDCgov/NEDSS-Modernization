@@ -1,6 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
-import userEvent from '@testing-library/user-event';
+import { render, renderHook } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { CreateQuestionForm } from '../QuestionForm';
 import { DataMartFields } from './DataMartFields';
@@ -34,47 +32,47 @@ jest.mock('apps/page-builder/hooks/api/useOptions', () => ({
     }
 }));
 
+const Fixture = () => {
+    const form = useForm<CreateQuestionForm>({
+        mode: 'onBlur',
+        defaultValues: {
+            subgroup: 'RSK',
+            dataMartInfo: { dataMartColumnName: 'duplicateDataMartColumnName', rdbColumnName: 'duplicateRdbColumnName' }
+        }
+    });
+
+    return (
+        <FormProvider {...form} setError={setError}>
+            <DataMartFields />
+        </FormProvider>
+    );
+};
+
 describe('DataMartFields', () => {
-    it('should validate data mart column on blur', async () => {
-        const { getByText } = render(
-            <FormProvider {...result.current} setError={setError}>
-                <DataMartFields />
-            </FormProvider>
-        );
+    it('should validate data mart column on blur', () => {
+        const { getByText } = render(<Fixture />);
         const dataMartField = getByText('Data mart column name');
         expect(dataMartField).toBeInTheDocument();
         const rdbColumnField = getByText('RDB column name');
         expect(rdbColumnField).toBeInTheDocument();
-        userEvent.click(dataMartField);
-        userEvent.click(rdbColumnField);
 
-        await waitFor(() => {
-            expect(validate).toHaveBeenCalled();
-            expect(setError).toHaveBeenNthCalledWith(2, 'dataMartInfo.dataMartColumnName', {
-                message: 'A Data mart column named: duplicateDataMartColumnName already exists in the system'
-            });
+        expect(validate).toHaveBeenCalled();
+        expect(setError).toHaveBeenNthCalledWith(2, 'dataMartInfo.dataMartColumnName', {
+            message: 'A Data mart column named: duplicateDataMartColumnName already exists in the system'
         });
     });
 
-    it('should validate rdb column on blur', async () => {
-        const { getByText } = render(
-            <FormProvider {...result.current} setError={setError}>
-                <DataMartFields />
-            </FormProvider>
-        );
+    it('should validate rdb column on blur', () => {
+        const { getByText } = render(<Fixture />);
         const dataMartField = getByText('Data mart column name');
         expect(dataMartField).toBeInTheDocument();
         const rdbColumnField = getByText('RDB column name');
         expect(rdbColumnField).toBeInTheDocument();
-        userEvent.click(dataMartField);
-        userEvent.click(rdbColumnField);
 
-        await waitFor(() => {
-            expect(validate).toHaveBeenCalled();
-            expect(setError).toHaveBeenNthCalledWith(1, 'dataMartInfo.rdbColumnName', {
-                message:
-                    'An Rdb column named: duplicateRdbColumnName already exists in the system for the specified subgroup'
-            });
+        expect(validate).toHaveBeenCalled();
+        expect(setError).toHaveBeenNthCalledWith(1, 'dataMartInfo.rdbColumnName', {
+            message:
+                'An Rdb column named: duplicateRdbColumnName already exists in the system for the specified subgroup'
         });
     });
 });

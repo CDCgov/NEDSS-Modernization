@@ -1,7 +1,7 @@
 import { Icon } from '@trussworks/react-uswds';
 import { Button } from 'design-system/button';
 import { NotificationCard } from './NotificationCard';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 export const AlgorithmNotConfigured = () => {
     const nav = useNavigate();

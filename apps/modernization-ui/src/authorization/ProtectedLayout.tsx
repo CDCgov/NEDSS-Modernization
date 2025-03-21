@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Await, Navigate, useLoaderData, useNavigate } from 'react-router-dom';
+import { Await, Navigate, useLoaderData, useNavigate } from 'react-router';
 import { User, UserContextProvider } from 'providers/UserContext';
 import { currentUser } from 'user';
 import { Configuration, ConfigurationProvider } from 'configuration';

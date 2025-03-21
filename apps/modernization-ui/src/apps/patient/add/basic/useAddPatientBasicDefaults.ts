@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { BasicNewPatientEntry, initial as initialEntry } from './entry';
 
 type Interaction = {

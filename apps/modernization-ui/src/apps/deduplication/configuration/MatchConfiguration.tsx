@@ -2,7 +2,7 @@ import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useDataElements } from '../api/useDataElements';
 import { AlgorithmNotConfigured } from './notification-cards/AlgorithmNotConfigured';
 import { PassConfiguration } from './pass-configuration/PassConfiguration';
