@@ -118,4 +118,40 @@ describe('useNavigationBlock', () => {
 
         expect(blockerResult).toBe(false);
     });
+
+    it('should not block when route is allowed', () => {
+        let blockerResult: boolean | undefined = undefined;
+        (useBlocker as jest.Mock).mockImplementation((fn) => {
+            blockerResult = fn({
+                currentLocation: { pathname: '/current' },
+                nextLocation: { pathname: '/allowed-next' }
+            });
+            return { ...defaultBlockerResult };
+        });
+        const { result } = renderHook(() => useNavigationBlock({ allowed: '/allowed-next' }));
+
+        act(() => {
+            result.current.block();
+        });
+
+        expect(blockerResult).toBe(false);
+    });
+
+    it('should not block when route is allowed', () => {
+        let blockerResult: boolean | undefined = undefined;
+        (useBlocker as jest.Mock).mockImplementation((fn) => {
+            blockerResult = fn({
+                currentLocation: { pathname: '/current' },
+                nextLocation: { pathname: '/allowed-next' }
+            });
+            return { ...defaultBlockerResult };
+        });
+        const { result } = renderHook(() => useNavigationBlock({ allowed: '/next' }));
+
+        act(() => {
+            result.current.block();
+        });
+
+        expect(blockerResult).toBe(true);
+    });
 });
