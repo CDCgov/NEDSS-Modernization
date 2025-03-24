@@ -134,7 +134,11 @@ const RepeatingBlock = <V extends FieldValues>({
     }, [errorMessages]);
 
     return (
-        <Card id={id} title={title} className={classNames(styles.input, sizing && styles[sizing])}>
+        <Card
+            id={id}
+            title={title}
+            className={classNames(styles.input, sizing && styles[sizing])}
+            info={<span className="required-before">Required</span>}>
             <Shown when={errorMessages && errorMessages.length > 0}>
                 <AlertMessage title="Please fix the following errors:" type="error">
                     <ul className={styles.errorList}>

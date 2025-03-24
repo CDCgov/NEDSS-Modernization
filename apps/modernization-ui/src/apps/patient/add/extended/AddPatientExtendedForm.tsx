@@ -157,16 +157,19 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                         />
                     )}
                 />
-                <Card id="ethnicity" title="Ethnicity">
+                <Card id="ethnicity" title="Ethnicity" info={<span className="required-before">Required</span>}>
                     <EthnicityEntryFields sizing={sizing} />
                 </Card>
-                <Card id="sexAndBirth" title="Sex & birth">
+                <Card id="sexAndBirth" title="Sex & birth" info={<span className="required-before">Required</span>}>
                     <SexAndBirthEntryFields sizing={sizing} />
                 </Card>
-                <Card id="mortality" title="Mortality">
+                <Card id="mortality" title="Mortality" info={<span className="required-before">Required</span>}>
                     <MortalityEntryFields sizing={sizing} />
                 </Card>
-                <Card id="generalInformation" title="General patient information">
+                <Card
+                    id="generalInformation"
+                    title="General patient information"
+                    info={<span className="required-before">Required</span>}>
                     <GeneralInformationEntryFields sizing={sizing} />
                 </Card>
             </div>
