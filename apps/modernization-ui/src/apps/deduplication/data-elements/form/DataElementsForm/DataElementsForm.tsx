@@ -12,7 +12,7 @@ const dataElementKeys: (keyof DataElements)[] = [
     'firstName',
     'lastName',
     'dateOfBirth',
-    'currentSex',
+    'sex',
     'race',
     'suffix',
     // Address Details
@@ -133,7 +133,7 @@ export const DataElementsForm = () => {
                         <DataElementRow fieldName="Last name" field="lastName" />
                         <DataElementRow fieldName="Suffix" field="suffix" />
                         <DataElementRow fieldName="Date of birth" field="dateOfBirth" />
-                        <DataElementRow fieldName="Current sex" field="currentSex" />
+                        <DataElementRow fieldName="Current sex" field="sex" />
                         <DataElementRow fieldName="Race" field="race" />
                         <DataElementRow fieldName="SSN" field="socialSecurity" />
                         <DataElementRow fieldName="Street address 1" field="streetAddress1" />

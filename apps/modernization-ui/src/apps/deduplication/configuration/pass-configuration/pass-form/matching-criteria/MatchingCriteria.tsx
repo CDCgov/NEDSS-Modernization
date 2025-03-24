@@ -41,7 +41,7 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
         { label: 'Suffix', attribute: MatchingAttribute.SUFFIX },
         {
             label: 'Date of birth',
-            attribute: MatchingAttribute.DATE_OF_BIRTH
+            attribute: MatchingAttribute.BIRTHDATE
         },
         { label: 'Sex', attribute: MatchingAttribute.SEX },
         { label: 'Race', attribute: MatchingAttribute.RACE },

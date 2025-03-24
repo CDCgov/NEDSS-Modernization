@@ -20,11 +20,11 @@ const initial: DataElements = {
     firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     lastName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     dateOfBirth: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    currentSex: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    sex: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     race: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     suffix: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     // Address Details
-    streetAddress1: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    address: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     city: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     state: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     zip: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },

@@ -9,14 +9,14 @@ export const getLogOdds = (dataElements: DataElements, matchingAttribute?: Match
             return dataElements.lastName?.logOdds ?? 0;
         case MatchingAttribute.SUFFIX:
             return dataElements.suffix?.logOdds ?? 0;
-        case MatchingAttribute.DATE_OF_BIRTH:
+        case MatchingAttribute.BIRTHDATE:
             return dataElements.dateOfBirth?.logOdds ?? 0;
         case MatchingAttribute.SEX:
-            return dataElements.currentSex?.logOdds ?? 0;
+            return dataElements.sex?.logOdds ?? 0;
         case MatchingAttribute.RACE:
             return dataElements.race?.logOdds ?? 0;
         case MatchingAttribute.ADDRESS:
-            return dataElements.streetAddress1?.logOdds ?? 0;
+            return dataElements.address?.logOdds ?? 0;
         case MatchingAttribute.CITY:
             return dataElements.city?.logOdds ?? 0;
         case MatchingAttribute.STATE:

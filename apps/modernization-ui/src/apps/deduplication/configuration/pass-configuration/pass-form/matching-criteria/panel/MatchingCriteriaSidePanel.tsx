@@ -32,7 +32,7 @@ export const MatchingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
         { attribute: MatchingAttribute.FIRST_NAME, label: 'First name' },
         { attribute: MatchingAttribute.LAST_NAME, label: 'Last name' },
         { attribute: MatchingAttribute.SUFFIX, label: 'Suffix' },
-        { attribute: MatchingAttribute.DATE_OF_BIRTH, label: 'Date of birth' },
+        { attribute: MatchingAttribute.BIRTHDATE, label: 'Date of birth' },
         { attribute: MatchingAttribute.SEX, label: 'Sex' },
         { attribute: MatchingAttribute.RACE, label: 'Race' },
         { attribute: MatchingAttribute.ADDRESS, label: 'Address' },
