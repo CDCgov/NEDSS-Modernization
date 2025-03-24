@@ -64,6 +64,9 @@ const RepeatingBlock = <V extends FieldValues>({
         // fixes issue with coded values not being selected within the form
         if (status === 'editing') {
             form.reset(selected);
+        } else {
+            // Conversely, if status is not editing, reset to default values to clear form between state changes
+            form.reset(defaultValues);
         }
     }, [status, selected, form.reset]);
 
