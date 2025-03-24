@@ -9,7 +9,6 @@ type Props = {
     info?: ReactNode;
     subtext?: string;
     level?: HeadingLevel;
-    required?: boolean;
     className?: string;
     children: ReactNode;
 };
