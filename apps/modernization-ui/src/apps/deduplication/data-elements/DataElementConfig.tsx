@@ -49,13 +49,13 @@ const initial: DataElements = {
 
 const DataElementConfigContent = () => {
     const { showSuccess, showError } = useAlert();
-    const { configuration, save, error } = useDataElements();
+    const { dataElements, save, error } = useDataElements();
     const form = useForm<DataElements>({ mode: 'onBlur', defaultValues: initial });
     const nav = useNavigate();
 
     useEffect(() => {
-        form.reset(configuration, { keepDefaultValues: false, keepDirty: false });
-    }, [configuration]);
+        form.reset(dataElements, { keepDefaultValues: false, keepDirty: false });
+    }, [dataElements]);
 
     useEffect(() => {
         if (error) {

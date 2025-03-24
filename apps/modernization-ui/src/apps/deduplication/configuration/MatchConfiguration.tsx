@@ -10,7 +10,7 @@ import styles from './match-configuration.module.scss';
 
 export const MatchConfiguration = () => {
     const nav = useNavigate();
-    const { configuration } = useDataElements();
+    const { dataElements } = useDataElements();
 
     return (
         <div className={styles.configurationSetup}>
@@ -29,8 +29,8 @@ export const MatchConfiguration = () => {
                 </div>
             </header>
             <main>
-                <Shown when={configuration !== undefined} fallback={<AlgorithmNotConfigured />}>
-                    {configuration && <PassConfiguration dataElements={configuration} />}
+                <Shown when={dataElements !== undefined} fallback={<AlgorithmNotConfigured />}>
+                    {dataElements && <PassConfiguration dataElements={dataElements} />}
                 </Shown>
             </main>
         </div>

@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const DataElementRow = ({ fieldName, field }: Props) => {
-    const { configuration } = useDataElements();
+    const { dataElements } = useDataElements();
     const form = useFormContext<DataElements>();
     const watch = useWatch({ control: form.control });
 
@@ -30,9 +30,9 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
             } else {
                 const defaultValue = {
                     active,
-                    oddsRatio: configuration?.[field]?.oddsRatio,
+                    oddsRatio: dataElements?.[field]?.oddsRatio,
                     logOdds: 0, // Will be recalculated when oddsRatio changes
-                    threshold: configuration?.[field]?.threshold
+                    threshold: dataElements?.[field]?.threshold
                 };
                 form.setValue(field, defaultValue);
             }
@@ -62,7 +62,6 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             selected={value}
                             onChange={onChange}
                             aria-label={fieldName}
-                            role="checkbox"
                             aria-checked={value}
                             aria-labelledby={`${field}-checkbox-label`}
                         />

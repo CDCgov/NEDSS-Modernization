@@ -16,7 +16,7 @@ const dataElementKeys: (keyof DataElements)[] = [
     'race',
     'suffix',
     // Address Details
-    'streetAddress1',
+    'address',
     'city',
     'state',
     'zip',
@@ -79,10 +79,10 @@ export const DataElementsForm = () => {
                             <th>Field</th>
                             <th className={styles.numericColumn}>
                                 <span className={styles.headerWithIcon}>
-                                    Odds ratio
+                                    Odds ratio{' '}
                                     <span ref={oddsRatioRef} className={styles.infoIcon}>
                                         <RichTooltip anchorRef={oddsRatioRef} marginTop={38}>
-                                            <span>Odds Ratio – </span>
+                                            <span>Odds Ratio - </span>
                                             <span style={{ fontWeight: 'normal' }}>
                                                 Once checked, enter predetermined odds ratio value for each data element
                                                 as calculated from previous testing of local data
@@ -94,7 +94,7 @@ export const DataElementsForm = () => {
                             </th>
                             <th className={styles.calculatedColumn}>
                                 <span className={styles.headerWithIcon}>
-                                    Log odds
+                                    Log odds{' '}
                                     <span ref={logOddsRef} className={styles.infoIcon}>
                                         <RichTooltip anchorRef={logOddsRef} marginTop={38}>
                                             <span>Log odds – </span>
@@ -109,7 +109,7 @@ export const DataElementsForm = () => {
                             </th>
                             <th className={styles.numericColumn}>
                                 <span className={styles.headerWithIcon}>
-                                    Threshold
+                                    Threshold{' '}
                                     <span ref={thresholdRef} className={styles.infoIcon}>
                                         <RichTooltip anchorRef={thresholdRef} marginTop={38}>
                                             <span>Threshold – </span>
@@ -136,7 +136,7 @@ export const DataElementsForm = () => {
                         <DataElementRow fieldName="Current sex" field="sex" />
                         <DataElementRow fieldName="Race" field="race" />
                         <DataElementRow fieldName="SSN" field="socialSecurity" />
-                        <DataElementRow fieldName="Street address 1" field="streetAddress1" />
+                        <DataElementRow fieldName="Street address 1" field="address" />
                         <DataElementRow fieldName="City" field="city" />
                         <DataElementRow fieldName="State" field="state" />
                         <DataElementRow fieldName="Zip" field="zip" />
