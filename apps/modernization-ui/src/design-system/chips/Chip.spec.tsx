@@ -17,12 +17,14 @@ describe('Chip', () => {
         expect(chipText).toBeInTheDocument();
     });
 
-    it('calls handleClose when close icon is clicked', () => {
+    it('calls handleClose when close icon is clicked', async () => {
+        const user = userEvent.setup();
+
         const { handleClose } = mockProps;
         const { getByLabelText } = render(<Chip {...mockProps} />);
 
         const closeIcon = getByLabelText('Close chip');
-        userEvent.click(closeIcon);
+        await user.click(closeIcon);
 
         expect(handleClose).toHaveBeenCalled();
     });

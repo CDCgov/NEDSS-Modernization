@@ -1,4 +1,4 @@
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router';
 import { usePatientProfilePermissions } from './permission';
 import { ProfileProvider } from './ProfileContext';
 import { usePatientProfile } from './usePatientProfile';

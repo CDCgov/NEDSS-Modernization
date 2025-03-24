@@ -66,7 +66,10 @@ describe('DatePickerInput component tests', () => {
             );
 
             const input = getByTestId('date-picker-external-input');
-            await userEvent.type(input, '02/15/2023');
+
+            const user = userEvent.setup();
+
+            await user.type(input, '02/15/2023');
 
             expect(onChange).toHaveBeenCalledWith('02/15/2023');
         });
@@ -85,11 +88,13 @@ describe('DatePickerInput component tests', () => {
             );
 
             const input = getByTestId('date-picker-button');
-            await userEvent.click(input);
+            const user = userEvent.setup();
+
+            await user.click(input);
 
             const dateButton = getByText('15');
 
-            await userEvent.click(dateButton);
+            await user.click(dateButton);
 
             expect(onChange).toHaveBeenCalledWith('12/15/2023');
         });
@@ -105,8 +110,9 @@ describe('DatePickerInput component tests', () => {
             );
 
             const input = getByTestId('date-picker-external-input');
-            await userEvent.type(input, '02/01/2022');
-            input.blur();
+            const user = userEvent.setup();
+
+            await user.type(input, '02/01/2022{tab}');
 
             const component = container.firstChild;
 
@@ -124,8 +130,11 @@ describe('DatePickerInput component tests', () => {
             );
 
             const input = getByTestId('date-picker-external-input');
-            await userEvent.type(input, '02012022');
-            input.blur();
+
+            const user = userEvent.setup();
+
+            await user.type(input, '02012022{tab}');
+
             expect(input).toHaveAttribute('value', '02/01/2022');
         });
     });
@@ -137,8 +146,9 @@ describe('DatePickerInput component tests', () => {
             );
 
             const input = getByTestId('date-picker-external-input');
-            await userEvent.type(input, '12/');
-            input.blur();
+            const user = userEvent.setup();
+
+            await user.type(input, '12/{tab}');
 
             const component = container.firstChild;
 

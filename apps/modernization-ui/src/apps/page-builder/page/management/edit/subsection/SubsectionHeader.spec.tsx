@@ -36,7 +36,7 @@ const groupedSubsection: PagesSubSection = {
 };
 
 describe('Subsection header', () => {
-    it('should display group question option for Draft page', () => {
+    it('should display group question option for Draft page', async () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
@@ -57,11 +57,13 @@ describe('Subsection header', () => {
                 </PageManagementProvider>
             </AlertProvider>
         );
-        userEvent.click(getByRole('menu'));
+        const user = userEvent.setup();
+        await user.click(getByRole('menu'));
+
         expect(queryByText('Group questions')).toBeInTheDocument();
     });
 
-    it('should display group question option for Published with Draft page', () => {
+    it('should display group question option for Published with Draft page', async () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
@@ -82,11 +84,12 @@ describe('Subsection header', () => {
                 </PageManagementProvider>
             </AlertProvider>
         );
-        userEvent.click(getByRole('menu'));
+        const user = userEvent.setup();
+        await user.click(getByRole('menu'));
         expect(queryByText('Group questions')).toBeInTheDocument();
     });
 
-    it('should not display group question option for Published page', () => {
+    it('should not display group question option for Published page', async () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
@@ -107,11 +110,12 @@ describe('Subsection header', () => {
                 </PageManagementProvider>
             </AlertProvider>
         );
-        userEvent.click(getByRole('menu'));
+        const user = userEvent.setup();
+        await user.click(getByRole('menu'));
         expect(queryByText('Group questions')).not.toBeInTheDocument();
     });
 
-    it('should not display group question option if a question is published', () => {
+    it('should not display group question option if a question is published', async () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
@@ -144,11 +148,12 @@ describe('Subsection header', () => {
                 </PageManagementProvider>
             </AlertProvider>
         );
-        userEvent.click(getByRole('menu'));
+        const user = userEvent.setup();
+        await user.click(getByRole('menu'));
         expect(queryByText('Group questions')).not.toBeInTheDocument();
     });
 
-    it('should not display ungroup question option for Published page', () => {
+    it('should not display ungroup question option for Published page', async () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
@@ -169,11 +174,12 @@ describe('Subsection header', () => {
                 </PageManagementProvider>
             </AlertProvider>
         );
-        userEvent.click(getByRole('menu'));
+        const user = userEvent.setup();
+        await user.click(getByRole('menu'));
         expect(queryByText('Ungroup questions')).not.toBeInTheDocument();
     });
 
-    it('should display ungroup question option for Draft page', () => {
+    it('should display ungroup question option for Draft page', async () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
@@ -194,11 +200,12 @@ describe('Subsection header', () => {
                 </PageManagementProvider>
             </AlertProvider>
         );
-        userEvent.click(getByRole('menu'));
+        const user = userEvent.setup();
+        await user.click(getByRole('menu'));
         expect(queryByText('Ungroup questions')).toBeInTheDocument();
     });
 
-    it('should display ungroup question option for Published with Draft page', () => {
+    it('should display ungroup question option for Published with Draft page', async () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
@@ -219,11 +226,12 @@ describe('Subsection header', () => {
                 </PageManagementProvider>
             </AlertProvider>
         );
-        userEvent.click(getByRole('menu'));
+        const user = userEvent.setup();
+        await user.click(getByRole('menu'));
         expect(queryByText('Ungroup questions')).toBeInTheDocument();
     });
 
-    it('should not display ungroup question option if a question is published', () => {
+    it('should not display ungroup question option if a question is published', async () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
@@ -256,7 +264,8 @@ describe('Subsection header', () => {
                 </PageManagementProvider>
             </AlertProvider>
         );
-        userEvent.click(getByRole('menu'));
+        const user = userEvent.setup();
+        await user.click(getByRole('menu'));
         expect(queryByText('Ungroup questions')).not.toBeInTheDocument();
     });
 });

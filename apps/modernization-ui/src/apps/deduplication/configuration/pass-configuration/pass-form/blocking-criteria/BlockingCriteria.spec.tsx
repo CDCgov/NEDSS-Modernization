@@ -61,10 +61,14 @@ describe('BlockingCriteria', () => {
         expect(getByRole('button')).toHaveTextContent('Add blocking attribute(s)');
     });
 
-    it('should trigger onAddAttributes when button is clicked', () => {
+    it('should trigger onAddAttributes when button is clicked', async () => {
         const { getByRole } = render(<Fixture />);
+
+        const user = userEvent.setup();
+
         const button = getByRole('button');
-        userEvent.click(button);
+
+        await user.click(button);
 
         expect(onAddAttributes).toHaveBeenCalledTimes(1);
     });

@@ -1,6 +1,6 @@
 import { screen, render } from '@testing-library/react';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import { Rule } from 'apps/page-builder/generated';
 import { PageProvider } from 'page';
 
