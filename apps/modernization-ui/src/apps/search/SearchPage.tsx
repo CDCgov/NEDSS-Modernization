@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import { PageProvider, PagingSettings } from 'page';
 import { SortingProvider, SortingSettings } from 'sorting';
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';

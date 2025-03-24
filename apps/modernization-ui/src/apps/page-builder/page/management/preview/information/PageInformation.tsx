@@ -7,7 +7,7 @@ import {
 } from 'apps/page-builder/generated';
 import { useDownloadPageMetadata } from 'apps/page-builder/hooks/api/useDownloadPageMetadata';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { usePageManagement } from '../../usePageManagement';
 import styles from './page-information.module.scss';
 

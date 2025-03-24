@@ -1,7 +1,7 @@
 import { FeatureGuard } from 'feature';
 import { AddPatient } from './AddPatient';
 import { AddPatientExtended } from './extended/AddPatientExtended';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
 import { AddPatientBasic } from './basic/AddPatientBasic';
 import { SearchFromAddPatientProvider } from 'apps/search/patient/add/useSearchFromAddPatient';

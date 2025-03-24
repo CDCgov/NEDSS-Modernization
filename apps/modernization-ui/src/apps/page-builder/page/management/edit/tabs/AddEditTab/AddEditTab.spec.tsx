@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { AlertProvider } from 'alert';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import { AddEditTab } from './AddEditTab';
 import Router from 'react-router';
 import { PagesTab, Tab } from 'apps/page-builder/generated';

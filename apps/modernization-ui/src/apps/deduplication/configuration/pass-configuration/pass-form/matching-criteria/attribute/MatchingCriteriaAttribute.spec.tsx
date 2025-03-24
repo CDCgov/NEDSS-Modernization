@@ -1,8 +1,8 @@
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
 import { BlockingAttribute, MatchingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { MatchingCriteriaAttribute } from './MatchingCriteriaAttribute';
-import { render } from '@testing-library/react';
-import { FormProvider, useForm } from 'react-hook-form';
-import userEvent from '@testing-library/user-event';
 
 const onRemove = jest.fn();
 const Fixture = () => {
@@ -52,12 +52,17 @@ describe('MatchingCriteriaAttribute', () => {
         expect(getByText('2.3938')).toBeInTheDocument();
     });
 
-    it('should remove when delete button clicked', () => {
+    it('should remove when delete button clicked', async () => {
         const { getByRole } = render(<Fixture />);
 
+        const user = userEvent.setup();
+
         const deleteButton = getByRole('button');
+
         expect(deleteButton).toBeInTheDocument();
-        userEvent.click(deleteButton);
+
+        await user.click(deleteButton);
+
         expect(onRemove).toHaveBeenCalledWith(MatchingAttribute.FIRST_NAME);
     });
 });

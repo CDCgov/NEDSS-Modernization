@@ -12,7 +12,7 @@ import { TargetQuestion } from '../TargetQuestion/TargetQuestion';
 import { mapComparatorToString } from '../helpers/mapComparatorToString';
 import { mapRuleFunctionToString } from '../helpers/mapRuleFunctionToString';
 import SubSectionsDropdown from '../SubSectionDropdown';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { mapLogicForDateCompare } from '../helpers/mapLogicForDateCompare';
 import './ModalWidth.scss';
 import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';

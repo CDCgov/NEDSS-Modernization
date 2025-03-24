@@ -30,30 +30,44 @@ describe('ExactDateField Component', () => {
         expect(yearInput).toHaveValue(1995);
     });
 
-    it('should call onChange when day value is changed', () => {
+    it('should call onChange when day value is changed', async () => {
         const mockOnChange = jest.fn();
 
         const { getByRole } = render(<ExactDateField id="test-day" onChange={mockOnChange} />);
-        const dayInput = getByRole('spinbutton', { name: 'Day' });
-        userEvent.paste(dayInput, '12');
+
+        const user = userEvent.setup();
+
+        const day = getByRole('spinbutton', { name: 'Day' });
+
+        await user.type(day, '12{tab}');
+
         expect(mockOnChange).toHaveBeenCalledWith({ equals: expect.objectContaining({ day: 12 }) });
     });
 
-    it('should call onChange when month value is changed', () => {
+    it('should call onChange when month value is changed', async () => {
         const mockOnChange = jest.fn();
 
         const { getByRole } = render(<ExactDateField id="test-month" onChange={mockOnChange} />);
-        const dayInput = getByRole('spinbutton', { name: 'Month' });
-        userEvent.paste(dayInput, '4');
+
+        const user = userEvent.setup();
+
+        const month = getByRole('spinbutton', { name: 'Month' });
+
+        await user.type(month, '4{tab}');
+
         expect(mockOnChange).toHaveBeenCalledWith({ equals: expect.objectContaining({ month: 4 }) });
     });
 
-    it('should call onChange when year value is changed', () => {
+    it('should call onChange when year value is changed', async () => {
         const mockOnChange = jest.fn();
 
         const { getByRole } = render(<ExactDateField id="test-year" onChange={mockOnChange} />);
-        const dayInput = getByRole('spinbutton', { name: 'Year' });
-        userEvent.paste(dayInput, '1908');
+        const user = userEvent.setup();
+
+        const year = getByRole('spinbutton', { name: 'Year' });
+
+        await user.type(year, '1908{tab}');
+
         expect(mockOnChange).toHaveBeenCalledWith({ equals: expect.objectContaining({ year: 1908 }) });
     });
 });

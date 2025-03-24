@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 import { WelcomeLayout } from './Layout/WelcomeLayout';
 import { About } from 'apps/landing/About/About';
 import { Learn } from 'apps/landing/Learn/Learn';

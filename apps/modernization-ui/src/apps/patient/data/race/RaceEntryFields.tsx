@@ -9,6 +9,7 @@ import { useDetailedRaceOptions } from 'options/race';
 import { EntryFieldsProps } from 'design-system/entry';
 
 const RACE_AS_OF_LABEL = 'Race as of';
+const RACE_CATEGORY_LABEL = 'Race';
 
 type RaceEntryFieldsProps = {
     categories: Selectable[];
@@ -61,11 +62,12 @@ const RaceEntryFields = ({
                 control={control}
                 name="race"
                 rules={{
+                    ...validateRequiredRule(RACE_CATEGORY_LABEL),
                     validate: (category) => categoryValidator(id, category)
                 }}
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                     <SingleSelect
-                        label="Race"
+                        label={RACE_CATEGORY_LABEL}
                         orientation={orientation}
                         required
                         onBlur={onBlur}

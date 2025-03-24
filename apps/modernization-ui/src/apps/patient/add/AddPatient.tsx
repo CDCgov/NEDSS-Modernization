@@ -26,7 +26,7 @@ import { PatientCreatedPanel } from './PatientCreatedPanel';
 import './AddPatient.scss';
 import { CreatedPatient } from './api';
 import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //

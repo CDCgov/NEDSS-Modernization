@@ -1,7 +1,7 @@
-import { Pass } from 'apps/deduplication/api/model/Pass';
-import { PassList } from './PassList';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Pass } from 'apps/deduplication/api/model/Pass';
+import { PassList } from './PassList';
 
 const selectPass = jest.fn();
 const editPassName = jest.fn();
@@ -65,27 +65,39 @@ describe('PassList', () => {
     });
 
     // Actions
-    it('should call Select pass when pass name is clicked', () => {
-        const { getAllByRole } = render(<Fixture />);
-        const selectPassButton = getAllByRole('button')[0];
+    it('should call Select pass when pass name is clicked', async () => {
+        const { getByRole } = render(<Fixture />);
 
-        userEvent.click(selectPassButton);
+        const user = userEvent.setup();
+
+        const selectPassButton = getByRole('button', { name: 'Pass name 1' });
+
+        await user.click(selectPassButton);
+
         expect(selectPass).toHaveBeenCalledWith(passes[0]);
     });
 
-    it('should call Edit pass name when edit button is clicked', () => {
-        const { getAllByRole } = render(<Fixture />);
-        const editNameButton = getAllByRole('button')[1];
+    it('should call Edit pass name when edit button is clicked', async () => {
+        const { getByRole } = render(<Fixture />);
 
-        userEvent.click(editNameButton);
+        const user = userEvent.setup();
+
+        const editNameButton = getByRole('button', { name: 'Edit Pass name 1' });
+
+        await user.click(editNameButton);
+
         expect(editPassName).toHaveBeenCalledWith(passes[0]);
     });
 
-    it('should call Add pass when Add pass button is clicked', () => {
+    it('should call Add pass when Add pass button is clicked', async () => {
         const { getByText } = render(<Fixture />);
+
+        const user = userEvent.setup();
+
         const addPassButton = getByText('Add pass configuration');
 
-        userEvent.click(addPassButton);
+        await user.click(addPassButton);
+
         expect(addPass).toHaveBeenCalledTimes(1);
     });
 });

@@ -27,13 +27,19 @@ describe('ActivateToggle', () => {
         expect(getByText('Activate this pass configuration')).toBeInTheDocument();
     });
 
-    it('should update update active when clicked', () => {
+    it('should update update active when clicked', async () => {
         const { getByRole } = render(<Fixture />);
 
+        const user = userEvent.setup();
+
         expect(getByRole('checkbox')).toBeChecked();
-        userEvent.click(getByRole('checkbox'));
+
+        await user.click(getByRole('checkbox'));
+
         expect(getByRole('checkbox')).not.toBeChecked();
-        userEvent.click(getByRole('checkbox'));
+
+        await user.click(getByRole('checkbox'));
+
         expect(getByRole('checkbox')).toBeChecked();
     });
 });

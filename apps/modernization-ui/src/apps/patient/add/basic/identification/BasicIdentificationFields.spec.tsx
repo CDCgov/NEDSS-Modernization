@@ -51,13 +51,11 @@ describe('BasicIdentificationFields', () => {
         const { getByLabelText, getByText } = render(<Fixture />);
 
         const typeInput = getByLabelText('Type');
-        act(() => {
-            userEvent.click(typeInput);
-            userEvent.tab();
-        });
-        await waitFor(() => {
-            expect(getByText('The Type is required.')).toBeInTheDocument();
-        });
+
+        await userEvent.click(typeInput);
+        await userEvent.tab();
+
+        expect(getByText('The Type is required.')).toBeInTheDocument();
     });
 
     it('should require id value', async () => {
@@ -65,13 +63,11 @@ describe('BasicIdentificationFields', () => {
         await findByText('ID value');
 
         const valueInput = getByLabelText('ID value');
-        act(() => {
-            userEvent.click(valueInput);
-            userEvent.tab();
-        });
-        await waitFor(() => {
-            expect(getByText('The ID value is required.')).toBeInTheDocument();
-        });
+
+        await userEvent.click(valueInput);
+        await userEvent.tab();
+
+        expect(getByText('The ID value is required.')).toBeInTheDocument();
     });
 
     it('should be valid with type, and id value', async () => {

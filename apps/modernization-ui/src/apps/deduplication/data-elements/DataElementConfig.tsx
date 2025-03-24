@@ -3,7 +3,7 @@ import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useDataElements } from '../api/useDataElements';
 import { DataElements } from './DataElement';
 import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';

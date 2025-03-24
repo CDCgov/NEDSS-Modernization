@@ -1,4 +1,5 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act } from 'react';
+import { renderHook } from '@testing-library/react';
 import { AddPatientSettings, useAddPatient } from './useAddPatient';
 import { NewPatient } from './api';
 
