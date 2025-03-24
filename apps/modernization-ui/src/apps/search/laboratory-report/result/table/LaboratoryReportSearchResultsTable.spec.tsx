@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { LabReport } from 'generated/graphql/schema';
 import { LaboratoryReportSearchResultsTable } from './LaboratoryReportSearchResultsTable';
 import { Selectable } from 'options';

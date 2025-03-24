@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ConditionSummary } from 'apps/page-builder/generated';
 import { ConditionsDisplay } from './ConditionsDisplay';
-import userEvent from '@testing-library/user-event';
+
 const conditions: ConditionSummary[] = [
     {
         name: 'condition1',
@@ -60,7 +61,9 @@ describe('ConditionDisplay', () => {
         expect(queryByText(viewLess)).not.toBeInTheDocument();
     });
 
-    it('should show all conditions on clicking n more', () => {
+    it('should show all conditions on clicking n more', async () => {
+        const user = userEvent.setup();
+
         let moreConditions = [...conditions, { name: 'condition6', id: '6' }];
         expect(moreConditions).toHaveLength(6);
 
@@ -70,7 +73,8 @@ describe('ConditionDisplay', () => {
         const more = getByText('1 more...');
         expect(queryByText(viewLess)).not.toBeInTheDocument();
 
-        userEvent.click(more);
+        await user.click(more);
+
         expect(queryByText(viewLess)).toBeInTheDocument();
 
         entries = getAllByRole('listitem');
@@ -78,7 +82,9 @@ describe('ConditionDisplay', () => {
         expect(entries[5]).toHaveTextContent('condition6 (6)');
     });
 
-    it('should hide conditions on clicking view less', () => {
+    it('should hide conditions on clicking view less', async () => {
+        const user = userEvent.setup();
+
         let moreConditions = [...conditions, { name: 'condition6', id: '6' }];
         expect(moreConditions).toHaveLength(6);
 
@@ -89,12 +95,12 @@ describe('ConditionDisplay', () => {
         expect(queryByText(viewLess)).not.toBeInTheDocument();
 
         // Clicking 1 more, shows all 6 entries
-        userEvent.click(more);
+        await user.click(more);
         expect(queryByText(viewLess)).toBeInTheDocument();
         expect(getAllByRole('listitem')).toHaveLength(6);
 
         // clicking view less, reverts to original state
-        userEvent.click(getByText(viewLess));
+        await user.click(getByText(viewLess));
         expect(getAllByRole('listitem')).toHaveLength(5);
         expect(getByText('1 more...')).toBeInTheDocument();
         expect(queryByText(viewLess)).not.toBeInTheDocument();

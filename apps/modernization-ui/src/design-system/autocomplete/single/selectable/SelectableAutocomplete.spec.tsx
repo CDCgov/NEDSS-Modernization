@@ -1,9 +1,8 @@
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { AutocompleteOptionsResolver } from 'options/autocompete';
 import { SelectableAutocomplete } from './SelectableAutocomplete';
-import { Selectable } from 'options';
 
 const mockResolver: AutocompleteOptionsResolver = async (criteria: string) => {
     const options = [
@@ -36,7 +35,8 @@ describe('SelectableAutocomplete', () => {
         );
         const input = getByRole('textbox');
 
-        await act(async () => userEvent.type(input, 'a'));
+        const user = userEvent.setup();
+        await user.type(input, 'a');
 
         const appleSuggestion = await findByText('Value 1');
         expect(appleSuggestion).toBeInTheDocument();
@@ -53,13 +53,15 @@ describe('SelectableAutocomplete', () => {
             />
         );
 
+        const user = userEvent.setup();
+
         const input = getByRole('textbox');
-        await userEvent.type(input, 'a');
+        await user.type(input, 'a');
 
         const appleSuggestion = await findByText('Value 1');
         expect(appleSuggestion).toBeInTheDocument();
 
-        act(() => userEvent.click(appleSuggestion));
+        await user.click(appleSuggestion);
 
         expect(onChange).toHaveBeenCalledWith({ name: 'Value 1', value: 'val-1', label: 'label-1' });
         expect(input).toHaveValue('Value 1');

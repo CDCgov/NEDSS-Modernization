@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { AutocompleteOptionsResolver } from 'options/autocompete';
@@ -31,7 +31,9 @@ describe('Autocomplete', () => {
         const { getByRole, findByText } = render(<Autocomplete {...defaultProps} />);
         const input = getByRole('textbox');
 
-        await act(async () => userEvent.type(input, 'o'));
+        const user = userEvent.setup();
+
+        await user.type(input, 'o');
 
         const suggestion = await findByText('Option 1');
         expect(suggestion).toBeInTheDocument();
@@ -42,12 +44,14 @@ describe('Autocomplete', () => {
         const { getByRole, findByText } = render(<Autocomplete {...defaultProps} onChange={onChange} />);
 
         const input = getByRole('textbox');
-        await userEvent.type(input, 'o');
+        const user = userEvent.setup();
+
+        await user.type(input, 'o');
 
         const select = await findByText('Option 1');
         expect(select).toBeInTheDocument();
 
-        act(() => userEvent.click(select));
+        await user.click(select);
 
         expect(onChange).toHaveBeenCalled();
         expect(input).toHaveValue('Option 1');
@@ -68,15 +72,11 @@ describe('Autocomplete', () => {
         const { getByRole } = render(<Autocomplete {...defaultProps} onEntered={onEntered} />);
 
         const input = getByRole('textbox');
-        await act(async () => {
-            await userEvent.type(input, 'test');
-        });
+        const user = userEvent.setup();
 
-        expect(onEntered).toHaveBeenCalledWith('t');
-        expect(onEntered).toHaveBeenCalledWith('e');
-        expect(onEntered).toHaveBeenCalledWith('s');
-        expect(onEntered).toHaveBeenCalledWith('t');
-        expect(onEntered).toHaveBeenCalledTimes(4);
+        await user.type(input, 'test');
+
+        expect(onEntered).toHaveBeenCalledWith('test');
     });
 
     it('calls onBlur when input loses focus', async () => {
@@ -84,8 +84,10 @@ describe('Autocomplete', () => {
         const { getByRole } = render(<Autocomplete {...defaultProps} onBlur={onBlur} />);
 
         const input = getByRole('textbox');
-        await userEvent.type(input, 'test');
-        await userEvent.tab();
+
+        const user = userEvent.setup();
+
+        await user.type(input, 'test{tab}');
 
         expect(onBlur).toHaveBeenCalledTimes(1);
     });

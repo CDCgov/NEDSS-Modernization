@@ -1,4 +1,4 @@
-import { render, waitFor, act } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
 import { EthnicityCodedValues } from './useEthnicityCodedValues';
@@ -40,39 +40,35 @@ describe('when entering patient ethnicity demographics', () => {
     });
 
     it('should require as of date', async () => {
-        const { getByLabelText, findByText } = render(<Fixture />);
+        const { getByLabelText, getByText } = render(<Fixture />);
         const asOf = getByLabelText('Ethnicity information as of');
-        act(() => {
-            userEvent.click(asOf);
-            userEvent.tab();
-        });
 
-        expect(await findByText('The Ethnicity information as of is required.')).toBeInTheDocument();
+        const user = userEvent.setup();
+
+        await user.click(asOf).then(() => user.tab());
+
+        expect(getByText('The Ethnicity information as of is required.')).toBeInTheDocument();
     });
 
     it('should display spanish origin when hispanic or latino selected', async () => {
         const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
-        act(() => {
-            userEvent.selectOptions(getByLabelText('Ethnicity'), '2135-2');
-        });
+        const user = userEvent.setup();
+        await user.selectOptions(getByLabelText('Ethnicity'), '2135-2');
 
-        await waitFor(() => {
-            expect(getByLabelText('Spanish origin')).toBeInTheDocument();
-        });
+        expect(getByLabelText('Spanish origin')).toBeInTheDocument();
+
         expect(queryByLabelText('Reason unknown')).not.toBeInTheDocument();
     });
 
     it('should display unknown reason when unknown selected', async () => {
         const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
-        act(() => {
-            userEvent.selectOptions(getByLabelText('Ethnicity'), 'UNK');
-        });
+        const user = userEvent.setup();
+        await user.selectOptions(getByLabelText('Ethnicity'), 'UNK');
 
-        await waitFor(() => {
-            expect(getByLabelText('Reason unknown')).toBeInTheDocument();
-        });
+        expect(getByLabelText('Reason unknown')).toBeInTheDocument();
+
         expect(queryByLabelText('Spanish origin')).not.toBeInTheDocument();
     });
 });

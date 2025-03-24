@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { FeatureToggle } from 'feature';
 
 const nbs6PatientProfile = (identifier: number, shortId: number, display?: string) => (

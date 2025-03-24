@@ -1,6 +1,7 @@
 import { Heading, HeadingLevel } from 'components/heading';
 import { ReactNode } from 'react';
 import styles from './card.module.scss';
+import classNames from 'classnames';
 
 type Props = {
     id: string;
@@ -8,11 +9,12 @@ type Props = {
     info?: ReactNode;
     subtext?: string;
     level?: HeadingLevel;
+    className?: string;
     children: ReactNode;
 };
-export const Card = ({ id, title, info, subtext, children, level = 2 }: Props) => {
+export const Card = ({ id, title, info, subtext, children, className, level = 2 }: Props) => {
     return (
-        <section id={id} className={styles.card}>
+        <section id={id} className={classNames(styles.card, className)}>
             <header>
                 <div className={styles.titleBlock}>
                     <Heading level={level}>{title}</Heading>

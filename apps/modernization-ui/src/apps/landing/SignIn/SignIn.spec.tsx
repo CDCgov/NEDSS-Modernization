@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SignIn } from './SignIn';
@@ -22,12 +21,14 @@ describe('SignIn', () => {
         expect(getByRole('button', { name: 'Sign up for demo access' })).toBeInTheDocument();
     });
 
-    it('calls handleWelcomeEvent when Sign up button is clicked', () => {
+    it('calls handleWelcomeEvent when Sign up button is clicked', async () => {
+        const user = userEvent.setup();
+
         const handleWelcomeEventMock = jest.fn();
         const { getByRole } = render(<SignIn handleWelcomeEvent={handleWelcomeEventMock} />);
 
         const signUpButton = getByRole('button', { name: 'Sign up for demo access' });
-        userEvent.click(signUpButton);
+        await user.click(signUpButton);
 
         expect(handleWelcomeEventMock).toHaveBeenCalledWith('signUp');
     });

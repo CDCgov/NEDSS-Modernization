@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
 import { SignIn } from 'apps/landing/SignIn/SignIn';
 import { SignUp } from 'apps/landing/SignUp/SignUp';

@@ -56,14 +56,18 @@ describe('SidePanel', () => {
     it('should trigger on close when close button is clicked', async () => {
         // show content
         let visible = true;
-        const { getAllByRole } = render(
+        const { getByRole } = render(
             <SidePanel heading="Some heading" visible={visible} onClose={onClose}>
                 Some content
             </SidePanel>
         );
-        const buttons = getAllByRole('button');
 
-        userEvent.click(buttons[0]); // Close button
+        const user = userEvent.setup();
+
+        const close = getByRole('button', { name: 'Close Some heading' });
+
+        await user.click(close); // Close button
+
         expect(onClose).toHaveBeenCalled();
     });
 });

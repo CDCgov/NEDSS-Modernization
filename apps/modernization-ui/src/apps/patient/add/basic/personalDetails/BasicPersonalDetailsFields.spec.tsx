@@ -1,4 +1,4 @@
-import { act, render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { PatientSexBirthCodedValue } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -6,6 +6,12 @@ import { BasicPersonalDetailsFields } from './BasicPersonalDetailsFields';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
 import { BasicPersonalDetailsEntry } from '../entry';
+
+const mockNow = jest.fn();
+
+jest.mock('design-system/date/clock', () => ({
+    now: () => mockNow()
+}));
 
 const mockPermissions: PatientProfilePermission = { delete: true, compareInvestigation: false, hivAccess: true };
 
@@ -62,6 +68,10 @@ const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
 };
 
 describe('when entering patient sex and birth demographics', () => {
+    beforeEach(() => {
+        mockNow.mockReturnValue(new Date('2020-01-25T00:00:00'));
+    });
+
     it('should render the proper labels', () => {
         const { getByLabelText, getByText } = render(<Fixture />);
 
@@ -86,40 +96,36 @@ describe('when entering patient sex and birth demographics', () => {
     });
 
     it('should validate date of birth', async () => {
-        const { getByLabelText, findByText, queryByText } = render(<Fixture />);
+        const { getByLabelText, getByText, queryByText } = render(<Fixture />);
         const dateOfBirth = getByLabelText('Date of birth');
 
         expect(queryByText('The Date of birth should be in the format MM/DD/YYYY.')).not.toBeInTheDocument();
 
-        act(() => {
-            userEvent.clear(dateOfBirth);
-            userEvent.type(dateOfBirth, '123');
-            userEvent.tab();
-        });
+        const user = userEvent.setup();
 
-        expect(await findByText('The Date of birth should be in the format MM/DD/YYYY.')).toBeInTheDocument();
+        await user.clear(dateOfBirth).then(() => user.type(dateOfBirth, '123{tab}'));
+
+        expect(getByText('The Date of birth should be in the format MM/DD/YYYY.')).toBeInTheDocument();
     });
 
     it('should not render age when date of birth not set', async () => {
-        const { container, getByText } = render(<Fixture />);
+        const { queryByText, getByText } = render(<Fixture />);
         expect(getByText('Current age')).toBeInTheDocument();
-        expect(container.querySelector('span.value')?.innerHTML).toBe('');
+        expect(queryByText(/year|month|day/)).not.toBeInTheDocument();
     });
 
     it('should render age only when date of birth is valid', async () => {
-        const { container, getByText, getByLabelText } = render(<Fixture />);
+        const { queryByText, getByText, getByLabelText } = render(<Fixture />);
         const dateOfBirth = getByLabelText('Date of birth');
 
         expect(getByText('Current age')).toBeInTheDocument();
-        expect(container.querySelector('span.value')?.innerHTML).toBe('');
+        expect(queryByText(/year|month|day/)).not.toBeInTheDocument();
 
-        act(() => {
-            userEvent.clear(dateOfBirth);
-            userEvent.type(dateOfBirth, '12012012');
-            userEvent.tab();
-        });
+        const user = userEvent.setup();
 
-        expect(container.querySelector('span.value')?.innerHTML).toContain('years');
+        await user.clear(dateOfBirth).then(() => user.type(dateOfBirth, '12012012{tab}'));
+
+        expect(getByText('7 years')).toBeInTheDocument();
     });
 
     it('should enable Date of death when deceased is true', async () => {
@@ -128,12 +134,11 @@ describe('when entering patient sex and birth demographics', () => {
         const deceased = getByLabelText('Is the patient deceased?');
         expect(queryByLabelText('Date of death')).not.toBeInTheDocument();
 
-        act(() => {
-            userEvent.selectOptions(deceased, 'Y');
-        });
-        await waitFor(() => {
-            expect(getByLabelText('Date of death')).toBeInTheDocument();
-        });
+        const user = userEvent.setup();
+
+        await user.selectOptions(deceased, 'Y');
+
+        expect(getByLabelText('Date of death')).toBeInTheDocument();
     });
 
     it('should not render the HIV case ID when user does not have permission', async () => {

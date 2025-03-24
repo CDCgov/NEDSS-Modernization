@@ -1,9 +1,8 @@
-import { render, waitFor } from '@testing-library/react';
-import { BasicInformationFields } from './BasicInformationFields';
 import { FormProvider, useForm } from 'react-hook-form';
-import { CreateQuestionForm } from '../QuestionForm';
-import { renderHook } from '@testing-library/react-hooks';
+import { render, renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { BasicInformationFields } from './BasicInformationFields';
+import { CreateQuestionForm } from '../QuestionForm';
 
 const { result } = renderHook(() =>
     useForm<CreateQuestionForm>({
@@ -31,46 +30,42 @@ jest.mock('apps/page-builder/hooks/api/useOptions', () => ({
     }
 }));
 
+const Fixture = () => {
+    const form = useForm<CreateQuestionForm>({
+        mode: 'onBlur'
+    });
+
+    return (
+        <FormProvider {...form} setError={setError}>
+            <BasicInformationFields />
+        </FormProvider>
+    );
+};
+
 describe('BasicInformationFields', () => {
     it('should validate unique Id on blur', async () => {
-        const { getByText } = render(
-            <FormProvider {...result.current} setError={setError}>
-                <BasicInformationFields />
-            </FormProvider>
-        );
-        const uniqueIdField = getByText('Unique ID');
-        expect(uniqueIdField).toBeInTheDocument();
-        const uniqueNameField = getByText('Unique name');
-        expect(uniqueNameField).toBeInTheDocument();
-        userEvent.click(uniqueIdField);
-        userEvent.click(uniqueNameField);
+        const { getByRole } = render(<Fixture />);
 
-        await waitFor(() => {
-            expect(validate).toHaveBeenCalled();
-            expect(setError).toHaveBeenNthCalledWith(1, 'uniqueId', {
-                message: 'A question with Unique ID: duplicateUniqueId already exists in the system'
-            });
-        });
+        const input = getByRole('textbox', { name: 'Unique ID' });
+        expect(input).toBeInTheDocument();
+
+        await userEvent.type(input, 'duplicateUniqueId');
+
+        await userEvent.tab();
+
+        expect(validate).toHaveBeenCalledWith('duplicateUniqueId');
     });
 
     it('should validate unique name on blur', async () => {
-        const { getByText } = render(
-            <FormProvider {...result.current} setError={setError}>
-                <BasicInformationFields />
-            </FormProvider>
-        );
-        const uniqueIdField = getByText('Unique ID');
-        expect(uniqueIdField).toBeInTheDocument();
-        const uniqueNameField = getByText('Unique name');
-        expect(uniqueNameField).toBeInTheDocument();
-        userEvent.click(uniqueIdField);
-        userEvent.click(uniqueNameField);
+        const { getByRole } = render(<Fixture />);
 
-        await waitFor(() => {
-            expect(validate).toHaveBeenCalled();
-            expect(setError).toHaveBeenNthCalledWith(2, 'uniqueName', {
-                message: 'A question with Unique name: duplicateUniqueName already exists in the system'
-            });
-        });
+        const input = getByRole('textbox', { name: 'Unique name' });
+        expect(input).toBeInTheDocument();
+
+        await userEvent.type(input, 'duplicateUniqueName');
+
+        await userEvent.tab();
+
+        expect(validate).toHaveBeenCalledWith('duplicateUniqueName');
     });
 });

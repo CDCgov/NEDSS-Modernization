@@ -35,7 +35,7 @@ export const AddPatientBasic = () => {
         },
         mode: 'onBlur'
     });
-    const blocker = useFormNavigationBlock({ activated: !bypassBlocker, form });
+    const blocker = useFormNavigationBlock({ activated: !bypassBlocker, form, allowed: '/patient/add/extended' });
 
     const { toExtendedNew } = useBasicExtendedTransition();
 
@@ -48,10 +48,7 @@ export const AddPatientBasic = () => {
         toSearch(location.state?.criteria ?? '');
     };
 
-    const handleExtended = form.handleSubmit((data) => {
-        blocker.allow();
-        toExtendedNew(data, location.state?.criteria ?? '');
-    });
+    const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state?.criteria ?? ''));
 
     const handleFormIsValid = (valid: boolean) => {
         interaction.setCanSave(valid);

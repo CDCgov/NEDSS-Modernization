@@ -70,30 +70,38 @@ describe('DeletePatient Component', () => {
     });
 
     it('should handle the deletion flow', async () => {
+        const user = userEvent.setup();
+
         (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
         const { getByRole, getByText } = render(<DeletePatient patient={mockPatient} />);
 
         const deleteButton = getByRole('button', { name: /delete patient/i });
-        userEvent.click(deleteButton);
+
+        await user.click(deleteButton);
 
         expect(getByText('Permanently delete patient?')).toBeInTheDocument();
         const confirmButton = getByRole('button', {
             name: 'Yes, delete'
         });
-        userEvent.click(confirmButton);
+
+        await user.click(confirmButton);
     });
 
     it('should show first name only if it is present on dialog', async () => {
+        const user = userEvent.setup();
+
         (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
         const { getByRole, getByText } = render(<DeletePatient patient={mockPatient} />);
 
         const deleteButton = getByRole('button', { name: /delete patient/i });
-        userEvent.click(deleteButton);
+        await user.click(deleteButton);
 
         expect(getByText('--, sdfaszxc')).toBeInTheDocument();
     });
 
     it('should show last name only if it is present on dialog', async () => {
+        const user = userEvent.setup();
+
         (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
         const mockPatientWithLastName = {
             ...mockPatient,
@@ -110,29 +118,32 @@ describe('DeletePatient Component', () => {
         const { getByRole, getByText } = render(<DeletePatient patient={mockPatientWithLastName} />);
 
         const deleteButton = getByRole('button', { name: /delete patient/i });
-        userEvent.click(deleteButton);
+        await user.click(deleteButton);
 
         expect(getByText('test last, --')).toBeInTheDocument();
     });
 
-    it('should show warning if patient has associations', () => {
+    it('should show warning if patient has associations', async () => {
+        const user = userEvent.setup();
+
         (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Has_Associations);
 
         const { getByRole, getByText } = render(<DeletePatient patient={mockPatient} />);
 
         const deleteButton = getByRole('button', { name: /delete patient/i });
-        userEvent.click(deleteButton);
+        await user.click(deleteButton);
 
         expect(getByText('This patient file is inactive and cannot be deleted.')).toBeInTheDocument();
     });
 
-    it('should show warning if patient is inactive', () => {
+    it('should show warning if patient is inactive', async () => {
+        const user = userEvent.setup();
         (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Is_Inactive);
 
         const { getByRole, getByText } = render(<DeletePatient patient={mockPatient} />);
 
         const deleteButton = getByRole('button', { name: /delete patient/i });
-        userEvent.click(deleteButton);
+        await user.click(deleteButton);
 
         expect(getByText('This patient file is inactive and cannot be deleted.')).toBeInTheDocument();
     });
