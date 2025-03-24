@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { PagingSettings } from 'page';
 import { SortingSettings } from 'sorting';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { TableProvider } from '../TableProvider';
 
 type WithinTableProviderProps = {

@@ -29,7 +29,7 @@ describe('when changing the number of results per page', () => {
         expect(toggle).toBeInTheDocument();
     });
 
-    it('should invoke onPageSizeChanged when page size changed', () => {
+    it('should invoke onPageSizeChanged when page size changed', async () => {
         const mockOnPageSizeChanged = jest.fn();
 
         const { getByLabelText } = render(
@@ -43,7 +43,8 @@ describe('when changing the number of results per page', () => {
 
         const toggle = getByLabelText('Results per page');
 
-        userEvent.selectOptions(toggle, '50');
+        const user = userEvent.setup();
+        await user.selectOptions(toggle, '50');
 
         expect(mockOnPageSizeChanged).toBeCalledWith(50);
     });

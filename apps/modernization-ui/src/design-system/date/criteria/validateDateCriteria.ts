@@ -1,6 +1,6 @@
-import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from '../entry';
-import { validateDateEntry } from '../validateDateEntry';
-import { validateDateRange } from '../validateDateRange';
+import { validateDateEntry } from 'design-system/date';
+import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from './dateCriteria';
+import { validateDateRange } from './range/validateDateRange';
 
 const validateDateCriteria =
     (name: string) =>

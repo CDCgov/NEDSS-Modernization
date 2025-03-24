@@ -1,7 +1,7 @@
 import { PageRuleControllerService, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
 import { Breadcrumb } from 'breadcrumb';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { findTargetQuestion, findTargetSubsection } from '../helpers/findTargetQuestions';

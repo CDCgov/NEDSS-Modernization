@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 import { PatientProfile } from './PatientProfile';
 import { Summary } from './Summary';
 import { Events } from './Events';

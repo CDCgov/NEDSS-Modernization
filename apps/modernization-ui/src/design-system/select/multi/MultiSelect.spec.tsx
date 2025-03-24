@@ -16,7 +16,9 @@ describe('MultiSelect', () => {
 
         const component = getByRole('combobox');
 
-        userEvent.click(component);
+        const user = userEvent.setup();
+
+        await user.click(component);
 
         options.forEach((option) => {
             expect(getByText(option.label)).toBeInTheDocument();
@@ -37,9 +39,9 @@ describe('MultiSelect', () => {
 
         const component = getByRole('combobox');
 
-        userEvent.click(component);
+        const user = userEvent.setup();
 
-        userEvent.click(getByText('Option One'));
+        await user.click(component).then(() => user.click(getByText('Option One')));
 
         expect(onChange).toHaveBeenCalledWith([expect.objectContaining({ value: '1', label: 'Option One' })]);
     });

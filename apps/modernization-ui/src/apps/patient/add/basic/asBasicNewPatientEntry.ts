@@ -11,7 +11,7 @@ import {
     BasicIdentificationEntry
 } from './entry';
 import { asTextCriteriaValue, TextCriteria } from 'options/operator';
-import { resolveDate } from 'design-system/date/entry';
+import { resolveDate } from 'design-system/date/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 
 const mapOr =

@@ -65,6 +65,27 @@ Make sure you have the following dependencies installed:
   }
    ```
 
+## Set Private Variable
+- Add `.cypress.env.json` to regression directory
+  File is listed in .gitignore that contains environment variables and should never be committed.
+
+## Run Manually
+- set baseUrl in `cypress.config.js` file. Currently it's set to http://localhost:8080/
+  ```javascript
+    module.exports = defineConfig({
+      e2e: {
+        setupNodeEvents,
+        specPattern: "./cypress/**/**/*.feature",
+        baseUrl: "http://localhost:8080/",
+        //baseUrl: "https://app.test.nbspreview.com/",
+        // baseUrl: "https://app.int1.nbspreview.com/",
+        chromeWebSecurity: false,
+        video: false,
+      },
+    });
+  ```
+- `npx cypress open`
+
 ## Viewing Reports
 Once the tests have been executed, the [multiple-cucumber-html-reporter](https://github.com/WasiqB/multiple-cucumber-html-reporter) reports will be generated in the specified output directory. You can view the reports by running the following command:
 ```

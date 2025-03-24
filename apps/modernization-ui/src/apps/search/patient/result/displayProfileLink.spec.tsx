@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import { displayProfileLink } from './displayProfileLink';
 import { defaultConfiguration } from 'configuration/defaults';
 import { Features } from 'configuration';

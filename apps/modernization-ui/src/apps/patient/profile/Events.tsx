@@ -10,7 +10,7 @@ import { MorbidityTable } from 'apps/patient/profile/morbidity';
 import { LabReportTable } from 'apps/patient/profile/labReport';
 import { PatientProfileVaccinations } from 'apps/patient/profile/vaccination';
 import { ClassicModalProvider } from 'classic/ClassicModalContext';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { usePatientProfile } from './usePatientProfile';
 
 export const Events = () => {

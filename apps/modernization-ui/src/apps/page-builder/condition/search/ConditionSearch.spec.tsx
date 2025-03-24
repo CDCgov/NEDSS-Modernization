@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { ConditionSearch } from './ConditionSearch';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { Condition } from 'apps/page-builder/generated';
 
 const mockCondition: Condition = {

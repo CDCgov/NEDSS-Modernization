@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import { Toggle } from './Toggle';
 import userEvent from '@testing-library/user-event';
+import { Toggle } from './Toggle';
 
 describe('Toggle testing', () => {
     it('should render checked', () => {
@@ -16,14 +16,16 @@ describe('Toggle testing', () => {
         const checkbox = getByRole('checkbox');
         expect(checkbox).not.toBeChecked();
     });
-    it('should emit onChange event when label clicked', () => {
+    it('should emit onChange event when label clicked', async () => {
+        const user = userEvent.setup();
+
         const onChange = jest.fn();
 
         const { getByText } = render(<Toggle name={'test'} label={'test'} value={false} onChange={onChange} />);
 
         const label = getByText('test');
 
-        userEvent.click(label);
+        await user.click(label);
 
         expect(onChange).toHaveBeenCalledWith(true);
     });

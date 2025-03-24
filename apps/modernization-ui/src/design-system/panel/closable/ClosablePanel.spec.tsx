@@ -87,7 +87,9 @@ describe('CloseablePanel', () => {
         expect(content).toBeInTheDocument();
     });
 
-    it('should invoke the onClose when icon close called', () => {
+    it('should invoke the onClose when icon close called', async () => {
+        const user = userEvent.setup();
+
         const onClose = jest.fn();
         const { getByLabelText } = render(
             <ClosablePanel title="title-value" onClose={onClose}>
@@ -97,7 +99,7 @@ describe('CloseablePanel', () => {
 
         const closer = getByLabelText('Close title-value');
 
-        userEvent.click(closer);
+        await user.click(closer);
 
         expect(onClose).toBeCalled();
     });

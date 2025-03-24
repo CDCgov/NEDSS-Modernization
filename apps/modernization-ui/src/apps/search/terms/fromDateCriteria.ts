@@ -1,4 +1,4 @@
-import { DateBetweenCriteria, DateEqualsCriteria } from 'design-system/date/entry';
+import { DateBetweenCriteria, DateEqualsCriteria } from 'design-system/date/criteria';
 import { Term } from './terms';
 
 const fromDateEqualsCriteria =

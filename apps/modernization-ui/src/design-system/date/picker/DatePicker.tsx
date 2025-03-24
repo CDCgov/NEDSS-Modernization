@@ -1,13 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import classNames from 'classnames';
 import { mapOr } from 'utils/mapping';
+import { Sizing } from 'design-system/field';
 import { asStrictISODate } from 'design-system/date/asStrictISODate';
+import { onlyNumericKeys } from 'design-system/input/numeric';
 import { maskedAsDate } from './maskedAsDate';
+import { useDate } from './useDate';
 
 import datePicker from '@uswds/uswds/js/usa-date-picker';
-import { useDate } from './useDate';
-import { onlyNumericKeys } from 'design-system/input/numeric';
-import { Sizing } from 'design-system/field';
-import classNames from 'classnames';
 import styles from './date-picker.module.scss';
 
 const handleExternalKeyUp = (event: Event) => {
@@ -63,19 +63,27 @@ const DatePicker = ({
         }
     }, [current, externalInputRef.current]);
 
-    const handleExternalOnBlur = () => onBlur?.();
+    const handleExternalOnBlur = useCallback(() => onBlur?.(), [onBlur]);
 
-    const handleExternalOnChange = (event: Event) => {
-        if (event.target && 'value' in event.target && typeof event.target.value === 'string' && event.target.value) {
-            change(event.target.value);
-            onChange?.(event.target.value);
-        } else {
-            clear();
-            onChange?.('');
-        }
-    };
+    const handleExternalOnChange = useCallback(
+        (event: Event) => {
+            if (
+                event.target &&
+                'value' in event.target &&
+                typeof event.target.value === 'string' &&
+                event.target.value
+            ) {
+                change(event.target.value);
+                onChange?.(event.target.value);
+            } else {
+                clear();
+                onChange?.('');
+            }
+        },
+        [onChange]
+    );
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const datePickerElement = datePickerRef.current as HTMLDivElement;
         const wrapper = datePickerElement.querySelector('.usa-date-picker__wrapper');
 
@@ -88,25 +96,33 @@ const DatePicker = ({
 
             toggle.ariaLabel = `Toggle ${label} calendar`;
         }
-        const external = context.externalInputEl as HTMLInputElement;
-        externalInputRef.current = external;
 
-        external.addEventListener('blur', handleExternalOnBlur);
-        external.addEventListener('change', handleExternalOnChange);
-        external.addEventListener('keyup', handleExternalKeyUp);
-        external.addEventListener('keydown', onlyNumericKeys);
+        externalInputRef.current = context.externalInputEl as HTMLInputElement;
 
         return () => {
-            external.removeEventListener('blur', handleExternalOnBlur);
-            external.removeEventListener('change', handleExternalOnChange);
-            external.removeEventListener('keyup', handleExternalKeyUp);
-            external.removeEventListener('keydown', onlyNumericKeys);
-
             if (wrapper) {
                 datePicker.off(datePickerElement);
             }
         };
     }, []);
+
+    useEffect(() => {
+        if (externalInputRef.current) {
+            externalInputRef.current.addEventListener('blur', handleExternalOnBlur);
+            externalInputRef.current.addEventListener('change', handleExternalOnChange);
+            externalInputRef.current.addEventListener('keyup', handleExternalKeyUp);
+            externalInputRef.current.addEventListener('keydown', onlyNumericKeys);
+        }
+
+        return () => {
+            if (externalInputRef.current) {
+                externalInputRef.current.removeEventListener('blur', handleExternalOnBlur);
+                externalInputRef.current.removeEventListener('change', handleExternalOnChange);
+                externalInputRef.current.removeEventListener('keyup', handleExternalKeyUp);
+                externalInputRef.current.removeEventListener('keydown', onlyNumericKeys);
+            }
+        };
+    }, [externalInputRef.current, handleExternalOnBlur, handleExternalOnChange]);
 
     return (
         <div
