@@ -73,7 +73,10 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                         {renderErrorMessages()}
                     </AlertMessage>
                 )}
-                <Card title="Administrative" id="administrative">
+                <Card
+                    title="Administrative"
+                    id="administrative"
+                    info={<span className="required-before">Required</span>}>
                     <AdministrativeEntryFields sizing={sizing} />
                 </Card>
                 <Controller
