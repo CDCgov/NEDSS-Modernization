@@ -1,10 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useNavigationBlock } from './useNavigationBlock';
-import { useBlocker } from 'react-router-dom';
+import { useBlocker } from 'react-router';
 
 const mockUseNavigate = jest.fn();
 
-jest.mock('react-router-dom', () => ({
+jest.mock('react-router', () => ({
     useBlocker: jest.fn(),
     useNavigate: () => mockUseNavigate
 }));

@@ -1,0 +1,56 @@
+@use 'styles/colors';
+@use 'styles/borders';
+@use 'styles/buttons';
+
+.notificationCard {
+    flex-grow: 1;
+    padding: 1rem;
+
+    .card {
+        background-color: colors.$base-white;
+        padding: 3.75rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        @include borders.rounded();
+        @extend %thin;
+
+        .cardBody {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            .description {
+                max-width: 35.3125rem;
+                text-align: center;
+                font-size: 0.875rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 1.4175rem;
+                color: colors.$base-darkest;
+            }
+
+            .buttonContainer {
+                display: flex;
+                justify-content: center;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+
+            .buttonBar {
+                display: flex;
+                justify-content: space-between;
+                position: sticky;
+                bottom: 0;
+                padding: 1.5rem;
+                background-color: colors.$base-white;
+                @extend %thin-top;
+
+                & > div {
+                    display: flex;
+                    gap: 0.5rem;
+                }
+            }
+        }
+    }
+}

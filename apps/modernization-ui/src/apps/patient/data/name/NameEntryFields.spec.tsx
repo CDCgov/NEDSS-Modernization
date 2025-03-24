@@ -11,7 +11,7 @@ const mockNameCodedValues = {
     degrees: [{ name: 'BA', value: 'BA' }]
 };
 
-jest.mock('apps/patient/profile/names', () => ({
+jest.mock('./useNameCodedValues', () => ({
     useNameCodedValues: () => mockNameCodedValues
 }));
 

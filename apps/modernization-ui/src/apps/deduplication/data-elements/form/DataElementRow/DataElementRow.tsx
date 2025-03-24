@@ -41,14 +41,10 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
 
     useEffect(() => {
         const oddsRatio = Number(watch[field]?.oddsRatio);
-
-        const isValidOddsRatio = !isNaN(oddsRatio) && oddsRatio > 0 && oddsRatio < 1;
-
-        if (!isValidOddsRatio) {
+        if (isNaN(oddsRatio)) {
             form.setValue(`${field}.logOdds`, undefined);
             return;
         }
-
         form.setValue(`${field}.logOdds`, Math.log(oddsRatio));
     }, [watch[field]?.oddsRatio]);
 
@@ -78,31 +74,13 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                 <Controller
                     control={form.control}
                     name={`${field}.oddsRatio`}
-                    rules={{
-                        required: {
-                            value: watch[field]?.active ?? false,
-                            message: 'Missing odds ratio'
-                        },
-                        validate: (value) => {
-                            if (String(value) === '') return true; // Allow empty input to clear error
-                            const numericValue = Number(value);
-                            if (isNaN(numericValue) || numericValue <= 0 || numericValue >= 1) {
-                                return 'Requires a value between 0>1';
-                            }
-                            return true;
-                        }
-                    }}
-                    render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
+                    render={({ field: { value, onChange, onBlur, name } }) => (
                         <TableNumericInput
                             name={name}
                             value={value ?? ''}
-                            onChange={(e) => {
-                                onChange(e); // Normal onChange event
-                                form.trigger(`${field}.oddsRatio`); // Manually trigger validation
-                            }}
-                            onBlur={onBlur} // Validation triggered only onBlur
-                            error={error?.message}
-                            max={10}
+                            onChange={onChange} // No longer triggering validation
+                            onBlur={onBlur}
+                            error={undefined}
                             min={0.01} // Prevents division by zero
                             step={0.01}
                             disabled={!watch[field]?.active}
@@ -119,14 +97,6 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                         required: {
                             value: watch[field]?.active ?? false,
                             message: 'Missing threshold'
-                        },
-                        validate: (value) => {
-                            if (String(value) === '') return true; // Allow empty input to clear error
-                            const numericValue = Number(value);
-                            if (isNaN(numericValue) || numericValue < 0 || numericValue > 1) {
-                                return 'Requires a value between 0≥1';
-                            }
-                            return true;
                         }
                     }}
                     render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
@@ -136,7 +106,6 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             onChange={onChange}
                             onBlur={onBlur} // Validation triggered only onBlur
                             error={error?.message}
-                            max={1}
                             min={0}
                             step={0.01}
                             disabled={!watch[field]?.active}

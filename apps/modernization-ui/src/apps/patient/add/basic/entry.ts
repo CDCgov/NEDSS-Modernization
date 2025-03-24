@@ -78,7 +78,10 @@ const initial = (asOf: string = today()): BasicNewPatientEntry => ({
             name: 'United States'
         }
     },
-    identifications: []
+    identifications: [],
+    ethnicityRace: {
+        races: []
+    }
 });
 
 export { initial };

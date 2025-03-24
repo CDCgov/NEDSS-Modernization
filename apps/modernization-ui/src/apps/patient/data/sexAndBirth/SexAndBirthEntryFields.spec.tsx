@@ -5,7 +5,7 @@ import { CountiesCodedValues } from 'location/useCountyCodedValues';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SexAndBirthEntryFields } from './SexAndBirthEntryFields';
 import { LocationCodedValues } from 'location';
-import { SexBirthCodedValues } from 'apps/patient/profile/sexBirth';
+import { SexBirthCodedValues } from './useSexBirthCodedValues';
 
 const mockLocationCodedValues: LocationCodedValues = {
     states: {
@@ -34,7 +34,7 @@ jest.mock('location/useLocationCodedValues', () => ({
     useLocationCodedValues: () => mockLocationCodedValues
 }));
 
-jest.mock('apps/patient/profile/sexBirth/useSexBirthCodedValues', () => ({
+jest.mock('./useSexBirthCodedValues', () => ({
     useSexBirthCodedValues: () => mockSexBirthCodedValues
 }));
 

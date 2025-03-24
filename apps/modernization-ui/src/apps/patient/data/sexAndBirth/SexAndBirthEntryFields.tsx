@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { useSexBirthCodedValues } from 'apps/patient/profile/sexBirth';
+import { useSexBirthCodedValues } from './useSexBirthCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { Input } from 'components/FormInputs/Input';
@@ -78,7 +78,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                             error={error?.message}
                             orientation={orientation}
                         />
-                        <ValueView title="Current age" value={!error ? age : ''} />
+                        <ValueView title="Current age" value={!error ? age : ''} sizing={sizing} />
                     </>
                 )}
             />

@@ -1,7 +1,7 @@
 import { render, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
-import { EthnicityCodedValues } from 'apps/patient/profile/ethnicity';
+import { EthnicityCodedValues } from './useEthnicityCodedValues';
 import { EthnicityEntry } from './entry';
 import { EthnicityEntryFields } from './EthnicityEntryFields';
 
@@ -14,7 +14,7 @@ const mockEthnicityValues: EthnicityCodedValues = {
     detailedEthnicities: [{ name: 'Central American', value: '2155-0' }]
 };
 
-jest.mock('apps/patient/profile/ethnicity', () => ({
+jest.mock('./useEthnicityCodedValues', () => ({
     useEthnicityCodedValues: () => mockEthnicityValues
 }));
 
