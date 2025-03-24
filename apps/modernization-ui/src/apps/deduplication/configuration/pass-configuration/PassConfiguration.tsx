@@ -1,17 +1,17 @@
+import { useAlert } from 'alert';
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { useMatchConfiguration } from 'apps/deduplication/api/useMatchConfiguration';
+import { DataElements } from 'apps/deduplication/data-elements/DataElement';
 import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormState } from 'react-hook-form';
-import { SelectPass } from '../notification-cards/SelectPass';
-import { PassList } from './pass-list/PassList';
-import styles from './pass-configuration.module.scss';
-import { UnsavedChangesConfirmation } from '../confirmation/UnsavedChangesConfirmation';
-import { PassForm } from './pass-form/PassForm';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement';
-import { SavePassModal } from './pass-form/save-modal/SavePassModal';
-import { useAlert } from 'alert';
 import { exists } from 'utils';
+import { UnsavedChangesConfirmation } from '../confirmation/UnsavedChangesConfirmation';
+import { SelectPass } from '../notification-cards/SelectPass';
+import styles from './pass-configuration.module.scss';
+import { PassForm } from './pass-form/PassForm';
+import { SavePassModal } from './pass-form/save-modal/SavePassModal';
+import { PassList } from './pass-list/PassList';
 
 type Props = {
     dataElements: DataElements;
@@ -118,8 +118,8 @@ export const PassConfiguration = ({ dataElements }: Props) => {
         });
     };
 
-    const handleEditPassName = () => {
-        console.log('edit pass name NYI');
+    const handleRenamePass = (pass: Pass, onSuccess: () => void) => {
+        savePass(pass, onSuccess);
     };
 
     return (
@@ -136,8 +136,8 @@ export const PassConfiguration = ({ dataElements }: Props) => {
             <PassList
                 passes={passList}
                 onSetSelectedPass={(p) => handleChangePass(p)}
-                onEditPassName={handleEditPassName}
                 onAddPass={handleAddPassClick}
+                onRenamePass={handleRenamePass}
                 selectedPass={selectedPass}
             />
             <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes?.length ?? 0} />}>

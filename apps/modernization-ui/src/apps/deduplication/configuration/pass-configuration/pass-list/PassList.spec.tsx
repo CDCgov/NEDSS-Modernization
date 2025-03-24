@@ -4,8 +4,8 @@ import { Pass } from 'apps/deduplication/api/model/Pass';
 import { PassList } from './PassList';
 
 const selectPass = jest.fn();
-const editPassName = jest.fn();
 const addPass = jest.fn();
+const onRenamePass = jest.fn();
 const passes: Pass[] = [
     {
         name: 'Pass name 1',
@@ -28,7 +28,7 @@ const passes: Pass[] = [
 ];
 const Fixture = ({ passList = passes }) => {
     return (
-        <PassList passes={passList} onSetSelectedPass={selectPass} onEditPassName={editPassName} onAddPass={addPass} />
+        <PassList passes={passList} onRenamePass={onRenamePass} onSetSelectedPass={selectPass} onAddPass={addPass} />
     );
 };
 
@@ -75,18 +75,6 @@ describe('PassList', () => {
         await user.click(selectPassButton);
 
         expect(selectPass).toHaveBeenCalledWith(passes[0]);
-    });
-
-    it('should call Edit pass name when edit button is clicked', async () => {
-        const { getByRole } = render(<Fixture />);
-
-        const user = userEvent.setup();
-
-        const editNameButton = getByRole('button', { name: 'Edit Pass name 1' });
-
-        await user.click(editNameButton);
-
-        expect(editPassName).toHaveBeenCalledWith(passes[0]);
     });
 
     it('should call Add pass when Add pass button is clicked', async () => {
