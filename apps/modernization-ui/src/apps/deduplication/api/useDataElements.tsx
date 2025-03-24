@@ -25,7 +25,7 @@ export const useDataElements = () => {
                     });
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
                 setError('Failed to retrieve data elements');
             });
 
@@ -50,7 +50,7 @@ export const useDataElements = () => {
                     });
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
                 setError('Failed to save data elements');
             });
 

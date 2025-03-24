@@ -21,6 +21,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
         registeredBlockingCriteria.onChange({
             target: { name: 'blockingCriteria', value: value }
         });
+        form.trigger('blockingCriteria');
     };
 
     return (

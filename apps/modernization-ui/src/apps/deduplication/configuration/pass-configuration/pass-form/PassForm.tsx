@@ -13,6 +13,7 @@ import { ActivateToggle } from './activate-toggle/ActivateToggle';
 import { MatchingCriteriaSidePanel } from './matching-criteria/panel/MatchingCriteriaSidePanel';
 import { DataElements } from 'apps/deduplication/data-elements/DataElement';
 import styles from './pass-form.module.scss';
+import { exists } from 'utils';
 
 type Props = {
     passCount: number;
@@ -23,7 +24,7 @@ type Props = {
 };
 export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }: Props) => {
     const form = useFormContext<Pass>();
-    const { isDirty, isValid } = useFormState(form);
+    const { isDirty, dirtyFields, isValid } = useFormState(form);
     const { id } = useWatch(form);
     const { name } = useWatch(form);
     const { matchingCriteria } = useWatch(form);
@@ -126,7 +127,7 @@ export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }
                     <Button outline onClick={handleCancelClick}>
                         Cancel
                     </Button>
-                    <Button disabled={!isDirty || !isValid} onClick={onSave}>
+                    <Button disabled={!isDirty || !exists(dirtyFields) || !isValid} onClick={onSave}>
                         Save pass configuration
                     </Button>
                 </div>

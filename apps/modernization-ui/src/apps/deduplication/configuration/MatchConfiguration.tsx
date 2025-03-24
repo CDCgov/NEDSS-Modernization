@@ -1,16 +1,25 @@
+import { useAlert } from 'alert';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useDataElements } from '../api/useDataElements';
+import styles from './match-configuration.module.scss';
 import { AlgorithmNotConfigured } from './notification-cards/AlgorithmNotConfigured';
 import { PassConfiguration } from './pass-configuration/PassConfiguration';
-import styles from './match-configuration.module.scss';
 
 export const MatchConfiguration = () => {
+    const { showError } = useAlert();
     const nav = useNavigate();
-    const { dataElements } = useDataElements();
+    const { dataElements, error } = useDataElements();
+
+    useEffect(() => {
+        if (error) {
+            showError({ message: 'Failed to retrieve data elements' });
+        }
+    }, [error]);
 
     return (
         <div className={styles.configurationSetup}>

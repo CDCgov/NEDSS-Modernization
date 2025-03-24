@@ -9,14 +9,18 @@ import styles from './pass-configuration.module.scss';
 import { UnsavedChangesConfirmation } from '../confirmation/UnsavedChangesConfirmation';
 import { PassForm } from './pass-form/PassForm';
 import { DataElements } from 'apps/deduplication/data-elements/DataElement';
+import { SavePassModal } from './pass-form/save-modal/SavePassModal';
+import { useAlert } from 'alert';
+import { exists } from 'utils';
 
 type Props = {
     dataElements: DataElements;
 };
 export const PassConfiguration = ({ dataElements }: Props) => {
-    const { passes, deletePass, savePass } = useMatchConfiguration();
+    const { showSuccess, showError } = useAlert();
+    const { passes, deletePass, savePass, error } = useMatchConfiguration();
     const form = useForm<Pass>({ mode: 'onBlur' });
-    const { isDirty } = useFormState(form);
+    const { isDirty, dirtyFields } = useFormState(form);
     const [newPass, setNewPass] = useState<Pass | undefined>();
     const [passList, setPassList] = useState<Pass[]>([]);
     const [selectedPass, setSelectedPass] = useState<Pass | undefined>();
@@ -27,13 +31,11 @@ export const PassConfiguration = ({ dataElements }: Props) => {
         visible: false,
         onAccept: undefined
     });
+    const [showSaveModal, setShowSaveModal] = useState<boolean>(false);
 
     useEffect(() => {
         // Reset form when selected pass changes
-        form.reset(
-            { ...selectedPass, matchingCriteria: selectedPass?.matchingCriteria ?? [] },
-            { keepDefaultValues: false }
-        );
+        form.reset({ ...selectedPass }, { keepDefaultValues: false, keepDirty: false });
     }, [selectedPass]);
 
     useEffect(() => {
@@ -41,13 +43,15 @@ export const PassConfiguration = ({ dataElements }: Props) => {
         setPassList(passList);
     }, [newPass, passes]);
 
-    const handleEditPassName = () => {
-        console.log('edit pass name NYI');
-    };
+    useEffect(() => {
+        if (error) {
+            showError({ message: 'Failed to retrieve Pass configuration' });
+        }
+    }, [error]);
 
     const handleAddPassClick = () => {
         // If form is dirty, confirm data loss prior to action
-        if (isDirty && selectedPass !== undefined) {
+        if (isDirty && exists(dirtyFields) && selectedPass !== undefined) {
             setConfirmationState({ visible: true, onAccept: handleAddPass });
         } else {
             handleAddPass();
@@ -72,7 +76,7 @@ export const PassConfiguration = ({ dataElements }: Props) => {
             return;
         }
         // if dirty, confirm
-        if (isDirty || (selectedPass === newPass && selectedPass !== undefined)) {
+        if ((isDirty && exists(dirtyFields)) || (selectedPass === newPass && selectedPass !== undefined)) {
             setConfirmationState({ visible: true, onAccept: () => changeSelectedPass(pass) });
         } else {
             setSelectedPass(pass);
@@ -106,7 +110,16 @@ export const PassConfiguration = ({ dataElements }: Props) => {
     };
 
     const handleSave = () => {
-        savePass(form.getValues());
+        savePass(form.getValues(), () => {
+            showSuccess({ message: `You have successfully updated the ${selectedPass?.name} pass configuration.` });
+            setNewPass(undefined);
+            setSelectedPass(undefined);
+            setShowSaveModal(false);
+        });
+    };
+
+    const handleEditPassName = () => {
+        console.log('edit pass name NYI');
     };
 
     return (
@@ -127,14 +140,19 @@ export const PassConfiguration = ({ dataElements }: Props) => {
                 onAddPass={handleAddPassClick}
                 selectedPass={selectedPass}
             />
-            <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes.length} />}>
+            <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes?.length ?? 0} />}>
                 <FormProvider {...form}>
                     <PassForm
                         dataElements={dataElements}
                         passCount={passes.length}
                         onCancel={handleCancel}
                         onDelete={handleDelete}
-                        onSave={handleSave}
+                        onSave={() => setShowSaveModal(true)}
+                    />
+                    <SavePassModal
+                        visible={showSaveModal}
+                        onAccept={handleSave}
+                        onCancel={() => setShowSaveModal(false)}
                     />
                 </FormProvider>
             </Shown>

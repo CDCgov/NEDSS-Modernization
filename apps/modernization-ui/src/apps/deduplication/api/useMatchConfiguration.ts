@@ -25,7 +25,7 @@ export const useMatchConfiguration = () => {
                     });
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
                 setError('Failed to retrieve pass configuration');
             });
 
@@ -48,7 +48,7 @@ export const useMatchConfiguration = () => {
                     });
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
                 setError('Failed to delete pass');
             });
 
@@ -56,6 +56,39 @@ export const useMatchConfiguration = () => {
     };
 
     const savePass = (pass: Pass, successCallback?: () => void) => {
+        if (pass.id) {
+            updatePass(pass, successCallback);
+        } else {
+            createPass(pass, successCallback);
+        }
+    };
+
+    const updatePass = (pass: Pass, successCallback?: () => void) => {
+        fetch(`${Config.deduplicationUrl}/api/configuration/pass/${pass.id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(pass)
+        })
+            .then((response) => {
+                response
+                    .json()
+                    .then((algorithm) => setPasses(algorithm.passes))
+                    .catch(() => {
+                        console.error('Failed to extract json for pass configuration.');
+                    });
+            })
+            .catch((error) => {
+                console.error(error);
+                setError('Failed to save pass');
+            });
+
+        successCallback?.();
+    };
+
+    const createPass = (pass: Pass, successCallback?: () => void) => {
         fetch(`${Config.deduplicationUrl}/api/configuration/pass`, {
             method: 'POST',
             headers: {
@@ -73,7 +106,7 @@ export const useMatchConfiguration = () => {
                     });
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
                 setError('Failed to save pass');
             });
 
