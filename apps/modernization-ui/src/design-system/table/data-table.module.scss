@@ -7,6 +7,10 @@
     height: 100%;
     width: 100%;
 
+    &.noOverflow {
+        overflow: initial;
+    }
+
     table {
         table-layout: auto !important;
         border-collapse: separate;
