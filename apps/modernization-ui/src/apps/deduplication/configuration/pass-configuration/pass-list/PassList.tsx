@@ -29,7 +29,7 @@ export const PassList = ({ passes, selectedPass, onSetSelectedPass, onAddPass, o
         }
     };
     return (
-        <aside className={styles.passList}>
+        <>
             <UpdatePassNameModal
                 name={passToUpdate?.name ?? ''}
                 description={passToUpdate?.description}
@@ -37,30 +37,32 @@ export const PassList = ({ passes, selectedPass, onSetSelectedPass, onAddPass, o
                 onAccept={handleUpdateName}
                 onCancel={() => setPassToUpdate(undefined)}
             />
-            <div className={styles.heading}>
-                <Heading level={2}>Pass configurations</Heading>
-            </div>
-            <Shown
-                when={passes !== undefined && passes.length > 0}
-                fallback={<div className={styles.noPassesText}>No pass configurations have been created.</div>}>
-                {passes.map((pass, k) => (
-                    <PassEntry
-                        key={k}
-                        pass={pass}
-                        onSelectPass={onSetSelectedPass}
-                        onEditName={() => setPassToUpdate(pass)}
-                        isSelected={pass === selectedPass}
-                    />
-                ))}
-            </Shown>
-            <Button
-                icon={<Icon.Add size={3} />}
-                labelPosition="right"
-                unstyled
-                onClick={onAddPass}
-                className={styles.addPassButton}>
-                Add pass configuration
-            </Button>
-        </aside>
+            <aside className={styles.passList}>
+                <div className={styles.heading}>
+                    <Heading level={2}>Pass configurations</Heading>
+                </div>
+                <Shown
+                    when={passes !== undefined && passes.length > 0}
+                    fallback={<div className={styles.noPassesText}>No pass configurations have been created.</div>}>
+                    {passes.map((pass, k) => (
+                        <PassEntry
+                            key={k}
+                            pass={pass}
+                            onSelectPass={onSetSelectedPass}
+                            onEditName={() => setPassToUpdate(pass)}
+                            isSelected={pass === selectedPass}
+                        />
+                    ))}
+                </Shown>
+                <Button
+                    icon={<Icon.Add size={3} />}
+                    labelPosition="right"
+                    unstyled
+                    onClick={onAddPass}
+                    className={styles.addPassButton}>
+                    Add pass configuration
+                </Button>
+            </aside>
+        </>
     );
 };

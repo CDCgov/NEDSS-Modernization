@@ -6,6 +6,7 @@ import { PassEntry } from './PassEntry';
 const selectPass = jest.fn();
 const editName = jest.fn();
 const pass: Pass = {
+    id: 1,
     name: 'Pass name',
     description: 'Pass description',
     blockingCriteria: [],
@@ -84,5 +85,20 @@ describe('PassEntry', () => {
         await user.click(editButton);
 
         expect(editName).toHaveBeenCalledWith(pass);
+    });
+
+    it('should not show edit name if pass hasnt been saved', async () => {
+        const { queryByRole } = render(
+            <PassEntry
+                pass={{ ...pass, id: undefined }}
+                isSelected={false}
+                onSelectPass={selectPass}
+                onEditName={editName}
+            />
+        );
+
+        const editButton = queryByRole('button', { name: 'Edit Pass name' });
+
+        expect(editButton).not.toBeInTheDocument();
     });
 });

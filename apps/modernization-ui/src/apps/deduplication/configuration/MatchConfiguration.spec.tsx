@@ -1,18 +1,21 @@
 import { render } from '@testing-library/react';
 import { MatchConfiguration } from './MatchConfiguration';
 import { MemoryRouter } from 'react-router';
+import { AlertProvider } from 'alert';
 
 let mockReturnValue: string | undefined = 'value';
 jest.mock('apps/deduplication/api/useDataElements', () => ({
     useDataElements: () => {
-        return { configuration: mockReturnValue };
+        return { dataElements: mockReturnValue };
     }
 }));
 
 const Fixture = () => {
     return (
         <MemoryRouter>
-            <MatchConfiguration />
+            <AlertProvider>
+                <MatchConfiguration />
+            </AlertProvider>
         </MemoryRouter>
     );
 };

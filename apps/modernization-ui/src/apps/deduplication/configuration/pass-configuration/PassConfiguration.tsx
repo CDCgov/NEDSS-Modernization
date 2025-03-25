@@ -64,6 +64,8 @@ export const PassConfiguration = ({ dataElements }: Props) => {
             name: 'New pass configuration',
             blockingCriteria: [],
             matchingCriteria: [],
+            lowerBound: 0.0,
+            upperBound: 0.0,
             active: false
         };
         setNewPass(newPass);
@@ -112,9 +114,9 @@ export const PassConfiguration = ({ dataElements }: Props) => {
     const handleSave = () => {
         savePass(form.getValues(), () => {
             showSuccess({ message: `You have successfully updated the ${selectedPass?.name} pass configuration.` });
+            setShowSaveModal(false);
             setNewPass(undefined);
             setSelectedPass(undefined);
-            setShowSaveModal(false);
         });
     };
 

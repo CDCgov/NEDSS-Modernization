@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { PassList } from './PassList';
+import { AlertProvider } from 'alert';
 
 const selectPass = jest.fn();
 const addPass = jest.fn();
@@ -28,7 +29,14 @@ const passes: Pass[] = [
 ];
 const Fixture = ({ passList = passes }) => {
     return (
-        <PassList passes={passList} onRenamePass={onRenamePass} onSetSelectedPass={selectPass} onAddPass={addPass} />
+        <AlertProvider>
+            <PassList
+                passes={passList}
+                onRenamePass={onRenamePass}
+                onSetSelectedPass={selectPass}
+                onAddPass={addPass}
+            />
+        </AlertProvider>
     );
 };
 
