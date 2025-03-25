@@ -18,12 +18,11 @@ type Props = {
 };
 export const PassConfiguration = ({ dataElements }: Props) => {
     const { showSuccess, showError } = useAlert();
-    const { passes, deletePass, savePass, error } = useMatchConfiguration();
+    const { passes, selectedPass, error, selectPass, addPass, deletePass, savePass, updatePassName } =
+        useMatchConfiguration();
     const form = useForm<Pass>({ mode: 'onBlur' });
     const { isDirty, dirtyFields } = useFormState(form);
-    const [newPass, setNewPass] = useState<Pass | undefined>();
-    const [passList, setPassList] = useState<Pass[]>([]);
-    const [selectedPass, setSelectedPass] = useState<Pass | undefined>();
+
     const [confirmationState, setConfirmationState] = useState<{
         visible: boolean;
         onAccept: (() => void) | undefined;
@@ -37,11 +36,6 @@ export const PassConfiguration = ({ dataElements }: Props) => {
         // Reset form when selected pass changes
         form.reset({ ...selectedPass }, { keepDefaultValues: false, keepDirty: false });
     }, [selectedPass]);
-
-    useEffect(() => {
-        const passList = [newPass, ...passes].filter((p) => p !== undefined);
-        setPassList(passList);
-    }, [newPass, passes]);
 
     useEffect(() => {
         if (error) {
@@ -59,17 +53,7 @@ export const PassConfiguration = ({ dataElements }: Props) => {
     };
 
     const handleAddPass = () => {
-        // Need to confirm data loss if a pass is already selected selected
-        const newPass: Pass = {
-            name: 'New pass configuration',
-            blockingCriteria: [],
-            matchingCriteria: [],
-            lowerBound: 0.0,
-            upperBound: 0.0,
-            active: false
-        };
-        setNewPass(newPass);
-        setSelectedPass(newPass);
+        addPass();
     };
 
     const handleChangePass = (pass: Pass) => {
@@ -77,51 +61,48 @@ export const PassConfiguration = ({ dataElements }: Props) => {
             // user selected the pass that is already selected
             return;
         }
-        // if dirty, confirm
-        if ((isDirty && exists(dirtyFields)) || (selectedPass === newPass && selectedPass !== undefined)) {
-            setConfirmationState({ visible: true, onAccept: () => changeSelectedPass(pass) });
+        // if dirty or new pass, confirm
+        if ((isDirty && exists(dirtyFields)) || (selectedPass !== undefined && selectedPass.id === undefined)) {
+            setConfirmationState({ visible: true, onAccept: () => selectPass(pass) });
         } else {
-            setSelectedPass(pass);
-        }
-    };
-
-    const changeSelectedPass = (pass: Pass) => {
-        setSelectedPass(pass);
-        if (selectedPass?.id === undefined) {
-            setNewPass(undefined);
+            selectPass(pass);
         }
     };
 
     const handleCancel = () => {
-        if (selectedPass === newPass) {
-            setNewPass(undefined);
-        }
-        setSelectedPass(undefined);
+        selectPass();
     };
 
     const handleDelete = () => {
         if (selectedPass === undefined) {
             return;
         }
-        if (selectedPass.id === undefined) {
-            setNewPass(undefined);
-        } else {
-            deletePass(selectedPass.id);
-        }
-        setSelectedPass(undefined);
+        deletePass(selectedPass.id, () => {
+            showSuccess({
+                message: (
+                    <span>
+                        You have successfully deleted the <strong>{selectedPass?.name}</strong> configuration.
+                    </span>
+                )
+            });
+        });
     };
 
     const handleSave = () => {
-        savePass(form.getValues(), () => {
-            showSuccess({ message: `You have successfully updated the ${selectedPass?.name} pass configuration.` });
+        savePass(form.getValues(), (passName: string) => {
+            showSuccess({
+                message: (
+                    <span>
+                        You have successfully updated the <strong>{passName}</strong> pass configuration.
+                    </span>
+                )
+            });
             setShowSaveModal(false);
-            setNewPass(undefined);
-            setSelectedPass(undefined);
         });
     };
 
     const handleRenamePass = (pass: Pass, onSuccess: () => void) => {
-        savePass(pass, onSuccess);
+        updatePassName(pass, onSuccess);
     };
 
     return (
@@ -136,7 +117,7 @@ export const PassConfiguration = ({ dataElements }: Props) => {
                 onCancel={() => setConfirmationState({ visible: false, onAccept: undefined })}
             />
             <PassList
-                passes={passList}
+                passes={passes}
                 onSetSelectedPass={(p) => handleChangePass(p)}
                 onAddPass={handleAddPassClick}
                 onRenamePass={handleRenamePass}

@@ -88,6 +88,7 @@ export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }
                     onAccept={handleSelectMatchingAttributes}
                     onCancel={closePanel}
                     visible={panelState.visible}
+                    dataElements={dataElements}
                 />
             </Shown>
             <UnsavedChangesConfirmation
