@@ -13,3 +13,10 @@ Feature: Country Options REST API
   Scenario: I cannot find specific countries that do not exist
     When I am trying to find countries that start with "zzzzzzzzz"
     Then there aren't any options available
+
+  Scenario: I can list all the countries in order
+    When I am retrieving all the countries
+    Then there are options available
+    And there are 231 options included
+    And the 1st option is "Afghanistan"
+    And the 231 option is "Zimbabwe"
