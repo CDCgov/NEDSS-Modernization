@@ -19,4 +19,4 @@ Feature: Country Options REST API
     Then there are options available
     And there are 231 options included
     And the 1st option is "Afghanistan"
-    And the 231 option is "Zimbabwe"
+    And the 231st option is "Zimbabwe"
