@@ -50,7 +50,7 @@ export const PassList = ({ passes, selectedPass, onSetSelectedPass, onAddPass, o
                             pass={pass}
                             onSelectPass={onSetSelectedPass}
                             onEditName={() => setPassToUpdate(pass)}
-                            isSelected={pass === selectedPass}
+                            isSelected={pass.id === selectedPass?.id}
                         />
                     ))}
                 </Shown>
