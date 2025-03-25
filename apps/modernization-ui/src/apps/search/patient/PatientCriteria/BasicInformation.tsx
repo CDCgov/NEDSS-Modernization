@@ -10,6 +10,7 @@ import { genders } from 'options/gender';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
 import { Permitted } from 'libs/permission';
+import { onlyPatientIdKeys } from '../onlyPatientIdKeys';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -97,6 +98,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
+                        onKeyDown={onlyPatientIdKeys}
                     />
                 )}
             />
