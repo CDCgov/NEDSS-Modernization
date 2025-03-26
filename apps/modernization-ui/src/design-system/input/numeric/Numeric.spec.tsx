@@ -124,5 +124,17 @@ describe('when entering numeric values', () => {
 
             expect(input).not.toHaveValue();
         });
+
+        it('should allow entry of decimals if set to decimal inputMode', async () => {
+            const user = userEvent.setup();
+            const { getByRole } = render(<Fixture inputMode="decimal" />);
+
+            const input = getByRole('spinbutton', { name: 'Numeric input test' });
+
+            await user.type(input, '0.1');
+            await user.tab();
+
+            expect(input).toHaveValue(0.1);
+        });
     });
 });
