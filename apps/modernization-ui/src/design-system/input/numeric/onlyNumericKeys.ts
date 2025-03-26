@@ -1,7 +1,7 @@
 import { KeyboardEvent as ReactKeyboardEvent } from 'react';
 
 const isNumericKey = (key: string) => {
-    return key.length == 1 ? /[0-9]/.test(key) : true;
+    return key.length == 1 ? /\d/.test(key) : true;
 };
 
 const onlyNumericKeys = (event: KeyboardEvent | ReactKeyboardEvent) => {
@@ -11,4 +11,10 @@ const onlyNumericKeys = (event: KeyboardEvent | ReactKeyboardEvent) => {
     }
 };
 
-export { onlyNumericKeys };
+const onlyNumericOrDecimal = (event: KeyboardEvent | ReactKeyboardEvent) => {
+    if (event.key !== '.' && !isNumericKey(event.key)) {
+        event.preventDefault();
+    }
+};
+
+export { onlyNumericKeys, onlyNumericOrDecimal };

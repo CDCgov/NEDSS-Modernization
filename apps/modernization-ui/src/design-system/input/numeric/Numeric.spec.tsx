@@ -3,10 +3,10 @@ import userEvent from '@testing-library/user-event';
 
 import { Numeric, NumericProps } from './Numeric';
 
-const Fixture = ({ id = 'testing-numeric', ...remaining }: Partial<NumericProps>) => (
+const Fixture = ({ id = 'testing-numeric', inputMode = 'numeric', ...remaining }: Partial<NumericProps>) => (
     <div>
         <label htmlFor={id}>Numeric input test</label>
-        <Numeric id={id} {...remaining} />
+        <Numeric inputMode={inputMode} id={id} {...remaining} />
     </div>
 );
 
@@ -123,6 +123,18 @@ describe('when entering numeric values', () => {
             await user.tab();
 
             expect(input).not.toHaveValue();
+        });
+
+        it('should allow entry of decimals if set to decimal inputMode', async () => {
+            const user = userEvent.setup();
+            const { getByRole } = render(<Fixture inputMode="decimal" />);
+
+            const input = getByRole('spinbutton', { name: 'Numeric input test' });
+
+            await user.type(input, '0.1');
+            await user.tab();
+
+            expect(input).toHaveValue(0.1);
         });
     });
 });
