@@ -1,6 +1,6 @@
 import { ChangeEvent as ReactChangeEvent, useEffect } from 'react';
 import classNames from 'classnames';
-import { onlyNumericKeys } from './onlyNumericKeys';
+import { onlyNumericKeys, onlyNumericOrDecimal } from './onlyNumericKeys';
 import { useNumeric } from './useNumeric';
 
 type NumericOnChange = (value?: number) => void;
@@ -60,7 +60,7 @@ const Numeric = ({
             placeholder={placeholder}
             value={current ?? ''}
             pattern="[0-9]*"
-            onKeyDown={onlyNumericKeys}
+            onKeyDown={inputMode === 'numeric' ? onlyNumericKeys : onlyNumericOrDecimal}
             {...props}
         />
     );
