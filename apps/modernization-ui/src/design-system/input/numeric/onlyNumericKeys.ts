@@ -11,10 +11,10 @@ const onlyNumericKeys = (event: KeyboardEvent | ReactKeyboardEvent) => {
     }
 };
 
-const onlyNumericOrDecimal = (event: KeyboardEvent | ReactKeyboardEvent) => {
+const onlyDecimalKeys = (event: KeyboardEvent | ReactKeyboardEvent) => {
     if (event.key !== '.' && !isNumericKey(event.key)) {
         event.preventDefault();
     }
 };
 
-export { onlyNumericKeys, onlyNumericOrDecimal };
+export { onlyNumericKeys, onlyDecimalKeys };
