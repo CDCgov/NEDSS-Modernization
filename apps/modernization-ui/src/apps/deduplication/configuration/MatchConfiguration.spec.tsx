@@ -2,11 +2,17 @@ import { render } from '@testing-library/react';
 import { MatchConfiguration } from './MatchConfiguration';
 import { MemoryRouter } from 'react-router';
 import { AlertProvider } from 'alert';
+import { DataElements } from '../data-elements/DataElement';
 
-let mockReturnValue: string | undefined = 'value';
+let mockReturnValue: DataElements | undefined = { firstName: { active: true } };
 jest.mock('apps/deduplication/api/useDataElements', () => ({
     useDataElements: () => {
         return { dataElements: mockReturnValue };
+    }
+}));
+jest.mock('apps/deduplication/api/useMatchConfiguration', () => ({
+    useMatchConfiguration: () => {
+        return { passes: [] };
     }
 }));
 
