@@ -49,7 +49,8 @@ foreach ($item in $disabledTasksArray) {
 }
 
 # Set environment memory allocation (override standalone.conf.bat)
-$env:JAVA_OPTS="-Xms$env:JAVA_MEMORY -Xmx$env:JAVA_MEMORY -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Xss4m"
+$env:JAVA_OPTS="-Xms$env:JAVA_MEMORY -Xmx$env:JAVA_MEMORY -XX:MetaspaceSize=96M"
+$env:JAVA_OPTS="$env:JAVA_OPTS -XX:MaxMetaspaceSize=$env:MAX_META_SPACE_SIZE -Xss4m -XX:+UseG1GC -XX:+AggressiveOpts"
 $env:JAVA_OPTS="$env:JAVA_OPTS -Djava.net.preferIPv4Stack=true"
 $env:JAVA_OPTS="$env:JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman"
 
