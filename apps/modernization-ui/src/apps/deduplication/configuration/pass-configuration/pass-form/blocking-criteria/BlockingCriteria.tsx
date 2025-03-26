@@ -21,6 +21,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
         registeredBlockingCriteria.onChange({
             target: { name: 'blockingCriteria', value: value }
         });
+        form.trigger('blockingCriteria');
     };
 
     return (
@@ -51,7 +52,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                     <BlockingCriteriaAttribute
                         label="Date of birth"
                         description="The person's birthdate in the format YYYY-MM-DD."
-                        attribute={BlockingAttribute.DATE_OF_BIRTH}
+                        attribute={BlockingAttribute.BIRTHDATE}
                         onRemove={handleRemoveAttribute}
                     />
                     <BlockingCriteriaAttribute
@@ -63,7 +64,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                     <BlockingCriteriaAttribute
                         label="Street address 1"
                         description="The first 4 characters of the person's address."
-                        attribute={BlockingAttribute.STREET_ADDRESS}
+                        attribute={BlockingAttribute.ADDRESS}
                         onRemove={handleRemoveAttribute}
                     />
                     <BlockingCriteriaAttribute

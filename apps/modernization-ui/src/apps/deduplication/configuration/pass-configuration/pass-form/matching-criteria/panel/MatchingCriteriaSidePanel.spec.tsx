@@ -3,6 +3,7 @@ import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { MatchingCriteriaSidePanel } from './MatchingCriteriaSidePanel';
+import { DataElements } from 'apps/deduplication/data-elements/DataElement';
 
 const onAccept = jest.fn();
 const onCancel = jest.fn();
@@ -22,10 +23,38 @@ class ResizeObserver {
 window.ResizeObserver = ResizeObserver;
 export default ResizeObserver;
 
+const defaultDataElements: DataElements = {
+    firstName: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    lastName: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    suffix: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    dateOfBirth: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    sex: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    race: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    address: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    city: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    state: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    zip: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    county: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    telephone: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    email: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    socialSecurity: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    driversLicenseNumber: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    medicaidNumber: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    medicalRecordNumber: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    accountNumber: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    nationalUniqueIdentifier: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    patientExternalIdentifier: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    patientInternalIdentifier: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    personNumber: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    visaPassport: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 },
+    wicIdentifier: { active: true, logOdds: 23, oddsRatio: 120, threshold: 3 }
+};
+
 type Props = {
     visible?: boolean;
+    dataElements?: DataElements;
 };
-const Fixture = ({ visible = true }: Props) => {
+const Fixture = ({ visible = true, dataElements = defaultDataElements }: Props) => {
     const form = useForm<Pass>({
         defaultValues: {
             name: 'Pass name',
@@ -38,7 +67,12 @@ const Fixture = ({ visible = true }: Props) => {
 
     return (
         <FormProvider {...form}>
-            <MatchingCriteriaSidePanel visible={visible} onAccept={onAccept} onCancel={onCancel} />
+            <MatchingCriteriaSidePanel
+                dataElements={dataElements}
+                visible={visible}
+                onAccept={onAccept}
+                onCancel={onCancel}
+            />
         </FormProvider>
     );
 };
@@ -110,11 +144,6 @@ describe('MatchingCriteriaSidePanel', () => {
         await waitFor(() => expect(queryByText('Email')).toBeInTheDocument());
     });
 
-    it('should display Identifier attribute', async () => {
-        const { queryByText } = render(<Fixture />);
-        await waitFor(() => expect(queryByText('Identifier')).toBeInTheDocument());
-    });
-
     it('should display ssn attribute', async () => {
         const { queryByText } = render(<Fixture />);
         await waitFor(() => expect(queryByText('Social security number')).toBeInTheDocument());
@@ -168,6 +197,11 @@ describe('MatchingCriteriaSidePanel', () => {
     it('should display WIC attribute', async () => {
         const { queryByText } = render(<Fixture />);
         await waitFor(() => expect(queryByText('WIC identifier')).toBeInTheDocument());
+    });
+
+    it('should not display first name attribute if data element is not active', async () => {
+        const { queryByText } = render(<Fixture dataElements={{}} />);
+        expect(queryByText('First name')).not.toBeInTheDocument();
     });
 
     it('should not render fields when closed', () => {

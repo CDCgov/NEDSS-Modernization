@@ -1,0 +1,12 @@
+.savePassModal {
+    & > div :global(.usa-modal__main) {
+        padding: 1rem !important;
+        display: flex;
+        flex-direction: column;
+        gap: 0.62rem;
+    }
+
+    & > div footer {
+        padding: 1rem;
+    }
+}

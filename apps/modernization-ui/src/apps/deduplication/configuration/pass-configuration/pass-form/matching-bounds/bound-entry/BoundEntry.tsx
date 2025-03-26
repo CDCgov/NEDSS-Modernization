@@ -28,7 +28,14 @@ export const BoundEntry = ({ name, label, value, error, tooltip, disabled = fals
                     </RichTooltip>
                 </div>
             </label>
-            <Numeric id={name} value={value} disabled={disabled} onBlur={onBlur} onChange={onChange} />
+            <Numeric
+                inputMode="decimal"
+                id={name}
+                value={value}
+                disabled={disabled}
+                onBlur={onBlur}
+                onChange={onChange}
+            />
             {error && <InlineErrorMessage id={`${name}-error`}>{error}</InlineErrorMessage>}
         </>
     );

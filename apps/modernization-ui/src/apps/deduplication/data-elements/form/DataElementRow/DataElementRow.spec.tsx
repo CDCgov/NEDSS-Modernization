@@ -2,12 +2,12 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { DataElementRow } from './DataElementRow';
 import { useDataElements } from 'apps/deduplication/api/useDataElements';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement'
+import { DataElements } from 'apps/deduplication/data-elements/DataElement';
 import userEvent from '@testing-library/user-event';
 
 // Mock the useDataElements hook
 jest.mock('apps/deduplication/api/useDataElements', () => ({
-    useDataElements: jest.fn(),
+    useDataElements: jest.fn()
 }));
 
 // Test component that provides the form context
@@ -27,9 +27,9 @@ describe('DataElementRow Component', () => {
     beforeEach(() => {
         // Mocking configuration data for the test
         (useDataElements as jest.Mock).mockReturnValue({
-            configuration: {
-                firstName: { oddsRatio: 1.5, threshold: 0.8 },
-            },
+            dataElements: {
+                firstName: { oddsRatio: 1.5, threshold: 0.8 }
+            }
         });
     });
 
@@ -37,7 +37,7 @@ describe('DataElementRow Component', () => {
         render(<TestFormProvider fieldName="First Name" field={field} />);
 
         // Query the checkbox via aria-labelledby or aria-label
-        expect(screen.getByLabelText('First Name')).toBeInTheDocument();  // This will be the field name
+        expect(screen.getByLabelText('First Name')).toBeInTheDocument(); // This will be the field name
 
         // Assert numeric inputs (Odds Ratio & Threshold)
         const inputs = screen.getAllByRole('spinbutton');
@@ -67,7 +67,6 @@ describe('DataElementRow Component', () => {
     it('should calculate and display logOdds correctly when oddsRatio is updated', async () => {
         render(<TestFormProvider fieldName="First Name" field={field} />);
 
-        const logOddsDisplay = screen.getByText('--');
         const [oddsRatioInput] = screen.getAllByRole('spinbutton');
 
         fireEvent.change(oddsRatioInput, { target: { value: '0.5' } });

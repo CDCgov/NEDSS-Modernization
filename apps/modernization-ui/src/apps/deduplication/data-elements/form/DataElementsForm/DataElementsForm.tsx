@@ -12,11 +12,11 @@ const dataElementKeys: (keyof DataElements)[] = [
     'firstName',
     'lastName',
     'dateOfBirth',
-    'currentSex',
+    'sex',
     'race',
     'suffix',
     // Address Details
-    'streetAddress1',
+    'address',
     'city',
     'state',
     'zip',
@@ -79,10 +79,10 @@ export const DataElementsForm = () => {
                             <th>Field</th>
                             <th className={styles.numericColumn}>
                                 <span className={styles.headerWithIcon}>
-                                    Odds ratio
+                                    Odds ratio{' '}
                                     <span ref={oddsRatioRef} className={styles.infoIcon}>
                                         <RichTooltip anchorRef={oddsRatioRef} marginTop={38}>
-                                            <span>Odds Ratio – </span>
+                                            <span>Odds Ratio - </span>
                                             <span style={{ fontWeight: 'normal' }}>
                                                 Once checked, enter predetermined odds ratio value for each data element
                                                 as calculated from previous testing of local data
@@ -94,10 +94,10 @@ export const DataElementsForm = () => {
                             </th>
                             <th className={styles.calculatedColumn}>
                                 <span className={styles.headerWithIcon}>
-                                    Log odds
+                                    Log odds{' '}
                                     <span ref={logOddsRef} className={styles.infoIcon}>
                                         <RichTooltip anchorRef={logOddsRef} marginTop={38}>
-                                            <span>Log odds – </span>
+                                            <span>Log odds - </span>
                                             <span style={{ fontWeight: 'normal' }}>
                                                 The corresponding log odds value used by the algorithm will be
                                                 calculated and displayed.
@@ -109,13 +109,13 @@ export const DataElementsForm = () => {
                             </th>
                             <th className={styles.numericColumn}>
                                 <span className={styles.headerWithIcon}>
-                                    Threshold
+                                    Threshold{' '}
                                     <span ref={thresholdRef} className={styles.infoIcon}>
                                         <RichTooltip anchorRef={thresholdRef} marginTop={38}>
-                                            <span>Threshold – </span>
+                                            <span>Threshold - </span>
                                             <span style={{ fontWeight: 'normal' }}>
                                                 Values above which two strings are said to be “similar enough” that
-                                                they’re probably the same thing. Values that are less than the threshold
+                                                they're probably the same thing. Values that are less than the threshold
                                                 will be calculated as 0.
                                             </span>
                                         </RichTooltip>
@@ -133,10 +133,10 @@ export const DataElementsForm = () => {
                         <DataElementRow fieldName="Last name" field="lastName" />
                         <DataElementRow fieldName="Suffix" field="suffix" />
                         <DataElementRow fieldName="Date of birth" field="dateOfBirth" />
-                        <DataElementRow fieldName="Current sex" field="currentSex" />
+                        <DataElementRow fieldName="Current sex" field="sex" />
                         <DataElementRow fieldName="Race" field="race" />
                         <DataElementRow fieldName="SSN" field="socialSecurity" />
-                        <DataElementRow fieldName="Street address 1" field="streetAddress1" />
+                        <DataElementRow fieldName="Street address 1" field="address" />
                         <DataElementRow fieldName="City" field="city" />
                         <DataElementRow fieldName="State" field="state" />
                         <DataElementRow fieldName="Zip" field="zip" />
