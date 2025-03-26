@@ -1,12 +1,14 @@
 const prod = {
     modernizationUrl: `${window.location.protocol}//${window.location.host}`,
     pageBuilderUrl: `${window.location.protocol}//${window.location.host}/nbs/page-builder`,
+    deduplicationUrl: `${window.location.protocol}//${window.location.host}/nbs/deduplication`,
     enableLogin: false
 };
 
 const dev = {
     modernizationUrl: `${window.location.protocol}//${window.location.host}`,
     pageBuilderUrl: `${window.location.protocol}//${window.location.host}/nbs/page-builder`,
+    deduplicationUrl: `${window.location.protocol}//${window.location.host}/nbs/deduplication`,
     enableLogin: true,
     features: {
         address: {

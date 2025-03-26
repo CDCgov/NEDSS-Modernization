@@ -45,13 +45,13 @@ export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
             description: "The first 4 characters of the person's last name."
         },
         {
-            attribute: BlockingAttribute.DATE_OF_BIRTH,
+            attribute: BlockingAttribute.BIRTHDATE,
             label: 'Date of birth',
             description: "The person's birthdate in the format YYYY-MM-DD."
         },
         { attribute: BlockingAttribute.SEX, label: 'Sex', description: "The person's sex in the format of M or F." },
         {
-            attribute: BlockingAttribute.STREET_ADDRESS,
+            attribute: BlockingAttribute.ADDRESS,
             label: 'Street address 1',
             description: "The first 4 characters of the person's address."
         },
