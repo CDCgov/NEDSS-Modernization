@@ -17,7 +17,7 @@
 
 ### Recommended Screen Readers
 - NVDA (Windows, Free): [Download](https://www.nvaccess.org/)
-- VoiceOver (macOS, Built-in): Command + F5 to enable
+- VoiceOver (macOS, Built-in): Command + F5 to enable, on Mac just enable in System Preferences > Accessibility > VoiceOver
 
 ### Key Commands
 #### NVDA
