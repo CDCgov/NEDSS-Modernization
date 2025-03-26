@@ -9,10 +9,6 @@ Then("Enter Last Name text box input {string}", (text) => {
     classicHomePage.enterLastName(text)
 });
 
-Then("Click on Search in Patient Search pane", () => {
-    classicHomePage.clickSearchBtnInPatientSearchPane()
-});
-
 Then("Enter First Name text box input {string}", (text) => {
     classicHomePage.enterFirstName(text)
 });
@@ -88,20 +84,3 @@ Then("Verify Documents Requiring Review", () => {
 Then("Verify Open Investigations", () => {
     classicHomePage.verifyOpenInvestigations()
 });
-
-Then("Sort Search results by {string}", (string) => {
-    classicHomePage.clickSortTableOption(string);
-});
-
-Then("Verify top Search result by {string}", (string) => {
-    classicHomePage.verifyTopAfterSortSearch(string);
-});
-
-Then("Verify top Search result is not {string}", (string) => {
-    classicHomePage.verifyNoTopAfterSortSearch(string);
-});
-
-Then("I click first patient Search results to view profile", () => {
-    classicHomePage.copySearchRowInfo();
-});
-

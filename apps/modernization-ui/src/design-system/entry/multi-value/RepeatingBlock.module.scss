@@ -6,15 +6,6 @@
 .input {
     @extend %thin;
     background-color: colors.$base-white;
-    header {
-        display: flex;
-        padding: 1.5rem;
-        justify-content: space-between;
-        align-items: center;
-        background-color: colors.$base-white;
-
-        @extend %thin-bottom;
-    }
 
     .errorList {
         list-style: inside;
@@ -39,7 +30,7 @@
 
             .active {
                 border-radius: 0.25rem;
-                padding:  0.0625rem;
+                padding: 0.0625rem;
                 color: colors.$base-white;
                 background-color: colors.$primary-darker;
             }
