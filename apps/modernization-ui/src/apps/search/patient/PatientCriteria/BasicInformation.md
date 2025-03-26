@@ -61,7 +61,7 @@
 
 | Screen Reader | Browser | OS | Status | Notes |
 |--------------|---------|----|---------| ------|
-| VoiceOver    | Chrome  | macOS 13   | ✅ | All announcements clear |
+| VoiceOver    | Chrome  | macOS 15   | ✅ | All announcements clear |
 
 #### Keyboard Interaction
 - Tab: Moves focus to the field
