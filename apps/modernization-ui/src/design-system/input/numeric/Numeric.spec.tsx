@@ -3,10 +3,10 @@ import userEvent from '@testing-library/user-event';
 
 import { Numeric, NumericProps } from './Numeric';
 
-const Fixture = ({ id = 'testing-numeric', inputMode = 'numeric', ...remaining }: Partial<NumericProps>) => (
+const Fixture = ({ id = 'testing-numeric', ...remaining }: Partial<NumericProps>) => (
     <div>
         <label htmlFor={id}>Numeric input test</label>
-        <Numeric inputMode={inputMode} id={id} {...remaining} />
+        <Numeric id={id} {...remaining} />
     </div>
 );
 
