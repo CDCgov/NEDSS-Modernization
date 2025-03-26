@@ -12,6 +12,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "CT_contact")
+@SuppressWarnings("javaarchitecture:S7027")
 public class CtContact {
     @Id
     @Column(name = "ct_contact_uid", nullable = false)
