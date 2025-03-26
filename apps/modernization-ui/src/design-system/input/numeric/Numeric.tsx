@@ -1,6 +1,6 @@
 import { ChangeEvent as ReactChangeEvent, useEffect } from 'react';
 import classNames from 'classnames';
-import { onlyNumericKeys } from './onlyNumericKeys';
+import { onlyNumericKeys, isWithinMinMaxRange } from './onlyNumericKeys';
 import { useNumeric } from './useNumeric';
 
 type NumericOnChange = (value?: number) => void;
@@ -35,6 +35,8 @@ const Numeric = ({
         if (next === '') {
             clear();
         } else if (Number.isNaN(next)) {
+            event.preventDefault();
+        } else if (!isWithinMinMaxRange(next, props.min, props.max)) {
             event.preventDefault();
         } else {
             const adjusted = Number(next);
