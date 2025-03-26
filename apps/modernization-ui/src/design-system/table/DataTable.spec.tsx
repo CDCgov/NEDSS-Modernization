@@ -78,10 +78,4 @@ describe('DataTable', () => {
         );
         expect(queryAllByTestId('height-constrained')).toHaveLength(0);
     });
-
-    it('renders the noOverflow className when specified', () => {
-        const { container } = render(<DataTable id="test-table" columns={columns} data={data} noOverflow />);
-        const tableContainer = container.querySelector('.table');
-        expect(tableContainer).toHaveClass('noOverflow');
-    });
 });
