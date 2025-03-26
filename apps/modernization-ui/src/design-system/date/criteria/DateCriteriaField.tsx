@@ -1,9 +1,8 @@
-import { EntryWrapper } from 'components/Entry';
 import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from './dateCriteria';
 import { ExactDateField } from './exact';
 import { DateRangeField } from './range';
 import { Radio } from 'design-system/radio';
-import { FieldProps } from 'design-system/field';
+import { Field, FieldProps } from 'design-system/field';
 import { Shown } from 'conditional-render';
 
 import styles from './date-criteria.module.scss';
@@ -42,7 +41,7 @@ const DateCriteriaField = ({
     const type = resolveInitialCriteriaType(value);
 
     return (
-        <EntryWrapper error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
+        <Field error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
             <div className={styles.operators} data-range-operator={type}>
                 <Radio
                     id={'equals'}
@@ -52,6 +51,7 @@ const DateCriteriaField = ({
                     onChange={() => onChange({ equals: {} })}
                     checked={type === 'equals'}
                     sizing={sizing}
+                    className={styles.radio}
                 />
                 <Radio
                     id={'between'}
@@ -61,6 +61,7 @@ const DateCriteriaField = ({
                     onChange={() => onChange({ between: {} })}
                     checked={type === 'between'}
                     sizing={sizing}
+                    className={styles.radio}
                 />
             </div>
             <div key={type}>
@@ -82,7 +83,7 @@ const DateCriteriaField = ({
                     />
                 </Shown>
             </div>
-        </EntryWrapper>
+        </Field>
     );
 };
 
