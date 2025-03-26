@@ -8,6 +8,8 @@ import { useDataElements } from '../api/useDataElements';
 import { DataElements } from './DataElement';
 import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
 import styles from './data-elements.module.scss';
+import { Shown } from 'conditional-render';
+import { Loading } from 'components/Spinner';
 
 export const DataElementConfig = () => {
     return (
@@ -49,7 +51,7 @@ const initial: DataElements = {
 
 const DataElementConfigContent = () => {
     const { showSuccess, showError } = useAlert();
-    const { dataElements, save, error } = useDataElements();
+    const { dataElements, save, error, loading } = useDataElements();
     const form = useForm<DataElements>({ mode: 'onBlur', defaultValues: initial });
     const nav = useNavigate();
 
@@ -89,9 +91,11 @@ const DataElementConfigContent = () => {
             </div>
             <div className={styles.content}>
                 <main>
-                    <FormProvider {...form}>
-                        <DataElementsForm />
-                    </FormProvider>
+                    <Shown when={!loading} fallback={<Loading center />}>
+                        <FormProvider {...form}>
+                            <DataElementsForm />
+                        </FormProvider>
+                    </Shown>
                 </main>
             </div>
             <div className={styles.buttonBar}>

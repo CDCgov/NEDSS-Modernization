@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Pass } from './model/Pass';
 import { Config } from 'config';
 
-export const useMatchConfiguration = () => {
+export const useMatchConfiguration = (lazy = false) => {
     const [passes, setPasses] = useState<Pass[]>([]);
     const [selectedPass, setSelectedPass] = useState<Pass | undefined>();
     const [error, setError] = useState<string | undefined>();
@@ -52,9 +52,8 @@ export const useMatchConfiguration = () => {
             .catch((error) => {
                 console.error(error);
                 setError('Failed to retrieve pass configuration');
-            });
-
-        setLoading(false);
+            })
+            .finally(() => setLoading(false));
     };
 
     const deletePass = (id?: number, successCallback?: () => void) => {
@@ -175,8 +174,27 @@ export const useMatchConfiguration = () => {
             });
     };
 
+    const exportAlgorithm = () => {
+        fetch(`${Config.deduplicationUrl}/api/configuration/export`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json'
+            }
+        }).then((response) => {
+            response.blob().then((blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `deduplication_config_${new Date().toISOString()}.json`;
+                a.click();
+            });
+        });
+    };
+
     useEffect(() => {
-        fetchConfiguration();
+        if (!lazy) {
+            fetchConfiguration();
+        }
     }, []);
 
     return {
@@ -189,6 +207,7 @@ export const useMatchConfiguration = () => {
         savePass,
         updatePassName,
         selectPass,
-        addPass
+        addPass,
+        exportAlgorithm
     };
 };

@@ -27,9 +27,8 @@ export const useDataElements = () => {
             .catch((error) => {
                 console.error(error);
                 setError('Failed to retrieve data elements');
-            });
-
-        setLoading(false);
+            })
+            .finally(() => setLoading(false));
     };
 
     const save = async (updatedDataElements: DataElements, successCallback?: () => void) => {

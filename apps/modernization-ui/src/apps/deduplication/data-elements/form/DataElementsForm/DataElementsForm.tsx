@@ -97,7 +97,7 @@ export const DataElementsForm = () => {
                                     Log odds{' '}
                                     <span ref={logOddsRef} className={styles.infoIcon}>
                                         <RichTooltip anchorRef={logOddsRef} marginTop={38}>
-                                            <span>Log odds – </span>
+                                            <span>Log odds - </span>
                                             <span style={{ fontWeight: 'normal' }}>
                                                 The corresponding log odds value used by the algorithm will be
                                                 calculated and displayed.
@@ -112,10 +112,10 @@ export const DataElementsForm = () => {
                                     Threshold{' '}
                                     <span ref={thresholdRef} className={styles.infoIcon}>
                                         <RichTooltip anchorRef={thresholdRef} marginTop={38}>
-                                            <span>Threshold – </span>
+                                            <span>Threshold - </span>
                                             <span style={{ fontWeight: 'normal' }}>
                                                 Values above which two strings are said to be “similar enough” that
-                                                they’re probably the same thing. Values that are less than the threshold
+                                                they're probably the same thing. Values that are less than the threshold
                                                 will be calculated as 0.
                                             </span>
                                         </RichTooltip>

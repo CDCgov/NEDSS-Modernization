@@ -41,7 +41,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
 
     useEffect(() => {
         const oddsRatio = Number(watch[field]?.oddsRatio);
-        if (isNaN(oddsRatio)) {
+        if (oddsRatio == undefined || isNaN(oddsRatio) || oddsRatio == 0) {
             form.setValue(`${field}.logOdds`, undefined);
             return;
         }
@@ -73,13 +73,19 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                 <Controller
                     control={form.control}
                     name={`${field}.oddsRatio`}
-                    render={({ field: { value, onChange, onBlur, name } }) => (
+                    rules={{
+                        required: {
+                            value: watch[field]?.active ?? false,
+                            message: 'Missing odds ratio'
+                        }
+                    }}
+                    render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
                         <TableNumericInput
                             name={name}
                             value={value ?? ''}
                             onChange={onChange} // No longer triggering validation
                             onBlur={onBlur}
-                            error={undefined}
+                            error={error?.message}
                             min={0.01} // Prevents division by zero
                             step={0.01}
                             disabled={!watch[field]?.active}
