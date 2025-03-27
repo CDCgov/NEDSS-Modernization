@@ -1,7 +1,8 @@
 filename, scriptPathFromWorkDir, startTime, frequencyDays, frequencyHours, frequencyMinutes
 ELRImporter.bat,, 6am, 0, 0, 2
-MsgOutProcessor.bat,, 8pm, 1, 0 , 0
+MsgOutProcessor.bat,, 7am, 0, 0 , 30
 UserProfileUpdateProcess.bat, retired\, 12am, 1, 0, 0
 SendAlertEMail.bat, retired\, 1am, 0, 0, 4
 DeDuplicationSimilarBatchProcess.bat, retired\, 7pm, 1, 0 , 0
 covid19ETL.bat,, 5am, 1, 0 , 0
+PHCImporter.bat,, 6am, 0, 1 , 0

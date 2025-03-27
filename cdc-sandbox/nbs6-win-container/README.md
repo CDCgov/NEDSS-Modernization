@@ -31,6 +31,7 @@ Below are manual NBS6 creation and run process steps. Foundation image used is M
     - rdb_pass - Provides rdb Database pasword
     - srte_user - Provides srte Database user
     - srte_pass - Provides srte Database password
+    - PHCRImporter_user - Provide existing user that is able to run PHCRImporter. Defintions found at https://www.cdcnbscentral.com/attachments/download/31179/NBS%206.0%20System%20Management%20Guide.pdf
 - Optional: Push Image to Quay.io Repository
   - Tag Image:  ``` docker tag <CONTAINER-NAME>:<TAG> <DOCKER-REPOSITORY-URL>/<CONTAINER-NAME>:<TAG> ``` 
   - Authenticate to Quay.io:  ``` docker login -u=<USERNAME> -p=<PASSWORD> quay.io ```

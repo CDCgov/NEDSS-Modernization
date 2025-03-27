@@ -1,6 +1,11 @@
 # ./entrypoint.ps1
 # Prepare NBS Configuration and Start NBS 6.0
 
+# Update files needing inputs
+if ($null -ne $env:PHCRImporter_user -and $env:PHCRImporter_user -ne "") {
+    (Get-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\BatchFiles\PHCRImporter.bat" -Raw) -replace "%1  %2", "$env:PHCRImporter_user" | Set-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\BatchFiles\PHCRImporter.bat"
+}
+
 # Get current csv columns and create new file
 $csvRows = Get-Content -Path "C:\tasks.csv" -TotalCount 1
 Add-Content -Path "C:\updatedTasks.csv" -Value $csvRows
