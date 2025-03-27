@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Column, DataTable } from './DataTable';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { SortingProvider, useSorting } from 'sorting';
 import { ComponentType } from 'react';
 import { Checkbox } from 'design-system/checkbox';
