@@ -9,4 +9,10 @@
     &.alert {
         padding-left: 1.25rem;
     }
+
+    .textContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+    }
 }
