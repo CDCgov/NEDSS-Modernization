@@ -17,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@SuppressWarnings("javaarchitecture:S7027")
 public class Act {
   @Id
   @Column(name = "act_uid", nullable = false)

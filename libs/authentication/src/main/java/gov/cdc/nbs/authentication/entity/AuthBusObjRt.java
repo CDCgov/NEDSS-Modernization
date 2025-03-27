@@ -17,6 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Auth_bus_obj_rt", catalog = "NBS_ODSE")
+@SuppressWarnings("javaarchitecture:S7027")
 public class AuthBusObjRt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

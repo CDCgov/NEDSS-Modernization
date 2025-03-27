@@ -23,6 +23,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "Auth_user", catalog = "NBS_ODSE")
+@SuppressWarnings("javaarchitecture:S7027")
 public class AuthUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

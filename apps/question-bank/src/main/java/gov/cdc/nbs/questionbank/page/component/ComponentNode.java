@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.component;
 
+@SuppressWarnings("javaarchitecture:S7027") //  sealed interface must list implementing classes
 public abstract sealed class ComponentNode permits LayoutNode, ContentNode {
 
   public record Definition(

@@ -14,6 +14,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "WA_RDB_metadata", catalog = "NBS_ODSE")
+@SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7091"}) //  Bidirectional mappings require knowledge of each other
 public class WaRdbMetadata {
   public static final String ACTIVE = "Active";
 
