@@ -84,8 +84,15 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
             <Controller
                 control={control}
                 name="id"
-                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                rules={{
+                    pattern: {
+                        value: /^[0-9,; ]*$/,
+                        message: 'Only numbers, spaces, commas, and semicolons are allowed'
+                    }
+                }}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
+                        onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
@@ -97,6 +104,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
+                        aria-description={'Separate IDs by commas, semicolons, or spaces'}
                     />
                 )}
             />
