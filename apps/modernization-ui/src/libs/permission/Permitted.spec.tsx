@@ -26,86 +26,14 @@ describe('Permitted', () => {
         expect(queryByText('Content')).toBeInTheDocument();
     });
 
-    it('should not render children when not all permission is included', () => {
-        const { queryByText } = render(<Permitted include={['permitted', 'not-permitted']}>Content</Permitted>);
-
-        expect(queryByText('Content')).not.toBeInTheDocument();
-    });
-
-    it('should render children when any permission is included', () => {
-        const { queryByText } = render(
-            <Permitted include={['permitted', 'not-permitted']} mode="any">
-                Content
-            </Permitted>
-        );
+    it('should render children when the permission predicate passes', () => {
+        const { queryByText } = render(<Permitted permission={() => true}>Content</Permitted>);
 
         expect(queryByText('Content')).toBeInTheDocument();
     });
 
-    it('should not render children when permission is excluded', () => {
-        const { queryByText } = render(<Permitted exclude={['permitted']}>Content</Permitted>);
-
-        expect(queryByText('Content')).not.toBeInTheDocument();
-    });
-
-    it('should not render children when all permissions are excluded', () => {
-        const { queryByText } = render(<Permitted exclude={['permitted', 'other-permitted']}>Content</Permitted>);
-
-        expect(queryByText('Content')).not.toBeInTheDocument();
-    });
-
-    it('should not render children when any permissions are excluded', () => {
-        const { queryByText } = render(
-            <Permitted exclude={['permitted', 'some-permitted']} mode="any">
-                Content
-            </Permitted>
-        );
-
-        expect(queryByText('Content')).not.toBeInTheDocument();
-    });
-
-    it('should not render children when any of the permissions are excluded', () => {
-        const { queryByText } = render(
-            <Permitted exclude={['permitted', 'some-permitted']} mode="any">
-                Content
-            </Permitted>
-        );
-
-        expect(queryByText('Content')).not.toBeInTheDocument();
-    });
-
-    it('should render children when any of the permissions excluded are not in user permission list', () => {
-        const { queryByText } = render(<Permitted exclude={['not-permitted']}>Content</Permitted>);
-
-        expect(queryByText('Content')).toBeInTheDocument();
-    });
-
-    it('should render children when not all permissions are excluded', () => {
-        const { queryByText } = render(
-            <Permitted exclude={['some-permitted', 'other-permitted']} mode="all">
-                Content
-            </Permitted>
-        );
-
-        expect(queryByText('Content')).toBeInTheDocument();
-    });
-
-    it('should render children when included and excluded are set', () => {
-        const { queryByText } = render(
-            <Permitted include={['permitted']} exclude={['not-permitted']}>
-                Content
-            </Permitted>
-        );
-
-        expect(queryByText('Content')).toBeInTheDocument();
-    });
-
-    it('should not render children when included and excluded overlap', () => {
-        const { queryByText } = render(
-            <Permitted include={['permitted']} exclude={['permitted']}>
-                Content
-            </Permitted>
-        );
+    it('should render children when the permission predicate fails', () => {
+        const { queryByText } = render(<Permitted permission={() => false}>Content</Permitted>);
 
         expect(queryByText('Content')).not.toBeInTheDocument();
     });
