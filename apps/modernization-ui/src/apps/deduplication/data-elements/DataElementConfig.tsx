@@ -3,11 +3,13 @@ import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useDataElements } from '../api/useDataElements';
 import { DataElements } from './DataElement';
 import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
 import styles from './data-elements.module.scss';
+import { Shown } from 'conditional-render';
+import { Loading } from 'components/Spinner';
 
 export const DataElementConfig = () => {
     return (
@@ -20,11 +22,11 @@ const initial: DataElements = {
     firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     lastName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     dateOfBirth: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    currentSex: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    sex: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     race: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     suffix: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     // Address Details
-    streetAddress1: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    address: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     city: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     state: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     zip: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
@@ -49,13 +51,13 @@ const initial: DataElements = {
 
 const DataElementConfigContent = () => {
     const { showSuccess, showError } = useAlert();
-    const { configuration, save, error } = useDataElements();
+    const { dataElements, save, error, loading } = useDataElements();
     const form = useForm<DataElements>({ mode: 'onBlur', defaultValues: initial });
     const nav = useNavigate();
 
     useEffect(() => {
-        form.reset(configuration, { keepDefaultValues: false, keepDirty: false });
-    }, [configuration]);
+        form.reset(dataElements, { keepDefaultValues: false, keepDirty: false });
+    }, [dataElements]);
 
     useEffect(() => {
         if (error) {
@@ -89,9 +91,11 @@ const DataElementConfigContent = () => {
             </div>
             <div className={styles.content}>
                 <main>
-                    <FormProvider {...form}>
-                        <DataElementsForm />
-                    </FormProvider>
+                    <Shown when={!loading} fallback={<Loading center />}>
+                        <FormProvider {...form}>
+                            <DataElementsForm />
+                        </FormProvider>
+                    </Shown>
                 </main>
             </div>
             <div className={styles.buttonBar}>

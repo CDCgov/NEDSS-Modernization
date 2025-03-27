@@ -1,11 +1,12 @@
-import { Pass } from 'apps/deduplication/api/model/Pass';
-import { PassEntry } from './PassEntry';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Pass } from 'apps/deduplication/api/model/Pass';
+import { PassEntry } from './PassEntry';
 
 const selectPass = jest.fn();
 const editName = jest.fn();
 const pass: Pass = {
+    id: 1,
     name: 'Pass name',
     description: 'Pass description',
     blockingCriteria: [],
@@ -64,20 +65,40 @@ describe('PassEntry', () => {
 
     // Actions
 
-    it('should select pass when name is clicked', () => {
+    it('should select pass when name is clicked', async () => {
         const { getByText } = render(<Fixture />);
 
-        userEvent.click(getByText('Pass name'));
+        const user = userEvent.setup();
+
+        await user.click(getByText('Pass name'));
 
         expect(selectPass).toHaveBeenCalledWith(pass);
     });
 
-    it('should call edit name when edit button is clicked', () => {
-        const { getAllByRole } = render(<Fixture />);
-        const editButton = getAllByRole('button')[1];
+    it('should call edit name when edit button is clicked', async () => {
+        const { getByRole } = render(<Fixture />);
 
-        userEvent.click(editButton);
+        const user = userEvent.setup();
+
+        const editButton = getByRole('button', { name: 'Edit Pass name' });
+
+        await user.click(editButton);
 
         expect(editName).toHaveBeenCalledWith(pass);
+    });
+
+    it('should not show edit name if pass hasnt been saved', async () => {
+        const { queryByRole } = render(
+            <PassEntry
+                pass={{ ...pass, id: undefined }}
+                isSelected={false}
+                onSelectPass={selectPass}
+                onEditName={editName}
+            />
+        );
+
+        const editButton = queryByRole('button', { name: 'Edit Pass name' });
+
+        expect(editButton).not.toBeInTheDocument();
     });
 });

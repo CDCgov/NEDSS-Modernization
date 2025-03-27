@@ -1,15 +1,14 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
-import { SingleSelect } from 'design-system/select';
+import { DateCriteriaField, validateDateCriteria } from 'design-system/date/criteria';
 import { OperatorInput } from 'design-system/input/operator';
+import { SingleSelect } from 'design-system/select';
+import { EntryFieldsProps } from 'design-system/entry';
 import { Input } from 'components/FormInputs/Input';
 import { validNameRule } from 'validation/entry';
 import { genders } from 'options/gender';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
-import { DateCriteriaEntry } from 'design-system/date/criteria/DateCriteriaEntry';
-import { validateDateCriteria } from 'design-system/date/criteria/validateDateCriteria';
-import { EntryFieldsProps } from 'design-system/entry';
 import { Permitted } from 'libs/permission';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
@@ -54,7 +53,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                 name="bornOn"
                 rules={{ validate: (value) => !value || validateDateCriteria('Date of birth')(value) }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <DateCriteriaEntry
+                    <DateCriteriaField
                         id={name}
                         label="Date of birth"
                         value={value}
@@ -85,8 +84,15 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
             <Controller
                 control={control}
                 name="id"
-                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                rules={{
+                    pattern: {
+                        value: /^[0-9,; ]*$/,
+                        message: 'Only numbers, spaces, commas, and semicolons are allowed'
+                    }
+                }}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
+                        onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
@@ -98,6 +104,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
+                        aria-description={'Separate IDs by commas, semicolons, or spaces'}
                     />
                 )}
             />

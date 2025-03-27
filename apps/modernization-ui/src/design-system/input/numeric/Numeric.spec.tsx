@@ -20,48 +20,52 @@ describe('when entering numeric values', () => {
         expect(input).toHaveAttribute('type', 'number');
     });
 
-    it('should alert when value changed', () => {
+    it('should alert when value changed', async () => {
+        const user = userEvent.setup();
         const onChange = jest.fn();
 
         const { getByRole } = render(<Fixture onChange={onChange} />);
 
         const input = getByRole('spinbutton', { name: 'Numeric input test' });
 
-        userEvent.type(input, '7');
-        userEvent.tab();
+        await user.type(input, '7');
+        await user.tab();
 
         expect(onChange).toHaveBeenCalledWith(7);
     });
 
-    it('should allow entry of numeric values', () => {
+    it('should allow entry of numeric values', async () => {
+        const user = userEvent.setup();
         const { getByRole } = render(<Fixture />);
 
         const input = getByRole('spinbutton', { name: 'Numeric input test' });
 
-        userEvent.type(input, '7');
-        userEvent.tab();
+        await user.type(input, '7');
+        await user.tab();
 
         expect(input).toHaveValue(7);
     });
 
-    it('should allow pasting of numeric values', () => {
+    it('should allow pasting of numeric values', async () => {
+        const user = userEvent.setup();
         const { getByRole } = render(<Fixture />);
 
         const input = getByRole('spinbutton', { name: 'Numeric input test' });
 
-        userEvent.paste(input, '743');
-        userEvent.tab();
+        await user.type(input, '743');
+        await user.tab();
 
         expect(input).toHaveValue(743);
     });
 
-    it('should not allow alpha characters values', () => {
+    it('should not allow alpha characters values', async () => {
+        const user = userEvent.setup();
         const { getByRole } = render(<Fixture />);
 
         const input = getByRole('spinbutton', { name: 'Numeric input test' });
 
-        userEvent.type(input, 'a');
-        userEvent.tab();
+        await user.type(input, 'a');
+        await user.tab();
 
         expect(input).not.toHaveValue();
     });
@@ -81,8 +85,8 @@ describe('when entering numeric values', () => {
             '=',
             '_',
             '+',
-            '[',
-            '{',
+            '[[',
+            '{{',
             ']',
             '}',
             ';',
@@ -109,15 +113,28 @@ describe('when entering numeric values', () => {
             '*',
             '(',
             ')'
-        ])('should not allow input of "%s"', (value) => {
+        ])('should not allow input of "%s"', async (value) => {
+            const user = userEvent.setup();
             const { getByRole } = render(<Fixture />);
 
             const input = getByRole('spinbutton', { name: 'Numeric input test' });
 
-            userEvent.type(input, value);
-            userEvent.tab();
+            await user.type(input, value);
+            await user.tab();
 
             expect(input).not.toHaveValue();
+        });
+
+        it('should allow entry of decimals if set to decimal inputMode', async () => {
+            const user = userEvent.setup();
+            const { getByRole } = render(<Fixture inputMode="decimal" />);
+
+            const input = getByRole('spinbutton', { name: 'Numeric input test' });
+
+            await user.type(input, '0.1');
+            await user.tab();
+
+            expect(input).toHaveValue(0.1);
         });
     });
 });

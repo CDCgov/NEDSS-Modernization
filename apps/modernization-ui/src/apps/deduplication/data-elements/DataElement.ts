@@ -10,11 +10,11 @@ type DataElements = {
     firstName?: DataElement;
     lastName?: DataElement;
     dateOfBirth?: DataElement;
-    currentSex?: DataElement;
+    sex?: DataElement;
     race?: DataElement;
     suffix?: DataElement;
     // Address Details
-    streetAddress1?: DataElement;
+    address?: DataElement;
     city?: DataElement;
     state?: DataElement;
     zip?: DataElement;

@@ -6,11 +6,15 @@ import GeneralSearchFields from './GeneralSearchFields';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 
 jest.mock('options/jurisdictions', () => ({
-    useJurisdictionOptions: () => ({ all: [], resolve: () => {} })
+    useJurisdictionOptions: () => ({ all: [] })
 }));
 
 jest.mock('options/program-areas', () => ({
-    useProgramAreaOptions: () => ({ all: [], resolve: () => {} })
+    useProgramAreaOptions: () => ({ all: [] })
+}));
+
+jest.mock('options/condition', () => ({
+    useConditionOptions: () => ({ options: [] })
 }));
 
 const InvestigationFormWithFields = () => {
@@ -44,12 +48,13 @@ describe('GeneralSearchFields', () => {
             expect(select).toBeInTheDocument();
         });
 
-        it('should update the selection', () => {
+        it('should update the selection', async () => {
             const { getByRole } = render(<InvestigationFormWithFields />);
 
             const select = getByRole('combobox', { name: 'Pregnancy status' });
 
-            userEvent.selectOptions(select, 'No');
+            const user = userEvent.setup();
+            await user.selectOptions(select, 'No');
 
             expect(getByRole('option', { name: 'No', selected: true })).toBeInTheDocument();
         });
@@ -63,12 +68,13 @@ describe('GeneralSearchFields', () => {
             expect(select).toBeInTheDocument();
         });
 
-        it('should display the Event ID input when an Event ID type is selected', () => {
+        it('should display the Event ID input when an Event ID type is selected', async () => {
             const { getByRole } = render(<InvestigationFormWithFields />);
 
             const select = getByRole('combobox', { name: 'Event ID type' });
 
-            userEvent.selectOptions(select, 'Investigation ID');
+            const user = userEvent.setup();
+            await user.selectOptions(select, 'Investigation ID');
 
             expect(getByRole('textbox', { name: 'Event ID' })).toBeInTheDocument();
         });
@@ -82,12 +88,13 @@ describe('GeneralSearchFields', () => {
             expect(select).toBeInTheDocument();
         });
 
-        it('should update the selection', () => {
+        it('should update the selection', async () => {
             const { getByRole } = render(<InvestigationFormWithFields />);
 
             const select = getByRole('combobox', { name: 'Event date type' });
 
-            userEvent.selectOptions(select, 'Date of report');
+            const user = userEvent.setup();
+            await user.selectOptions(select, 'Date of report');
 
             expect(getByRole('option', { name: 'Date of report', selected: true })).toBeInTheDocument();
         });

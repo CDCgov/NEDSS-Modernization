@@ -2,13 +2,13 @@ import { ReactNode, useEffect, useMemo } from 'react';
 import { DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 import { Button } from 'components/button';
-import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { Icon } from 'design-system/icon';
 import { AlertMessage } from 'design-system/message';
 import { Column, DataTable } from 'design-system/table';
 import { useMultiValueEntryState } from './useMultiValueEntryState';
 import { Sizing } from 'design-system/field';
+import { Card } from 'design-system/card';
 
 import styles from './RepeatingBlock.module.scss';
 
@@ -64,6 +64,9 @@ const RepeatingBlock = <V extends FieldValues>({
         // fixes issue with coded values not being selected within the form
         if (status === 'editing') {
             form.reset(selected);
+        } else {
+            // Conversely, if status is not editing, reset to default values to clear form between state changes
+            form.reset(defaultValues);
         }
     }, [status, selected, form.reset]);
 
@@ -134,12 +137,11 @@ const RepeatingBlock = <V extends FieldValues>({
     }, [errorMessages]);
 
     return (
-        <section id={id} className={classNames(styles.input, sizing && styles[sizing])}>
-            <header>
-                <Heading level={2}>{title}</Heading>
-                <span className="required-before">Required</span>
-            </header>
-
+        <Card
+            id={id}
+            title={title}
+            className={classNames(styles.input, sizing && styles[sizing])}
+            info={<span className="required-before">Required</span>}>
             <Shown when={errorMessages && errorMessages.length > 0}>
                 <AlertMessage title="Please fix the following errors:" type="error">
                     <ul className={styles.errorList}>
@@ -178,7 +180,8 @@ const RepeatingBlock = <V extends FieldValues>({
                             outline
                             sizing={sizing}
                             aria-details={`clear ${title.toLowerCase()}`}
-                            onClick={handleClear}>
+                            onClick={handleClear}
+                            onMouseDown={(e) => e.preventDefault() /* prevent need to double click after blur */}>
                             Clear
                         </Button>
                     </Shown>
@@ -203,7 +206,7 @@ const RepeatingBlock = <V extends FieldValues>({
                     </Button>
                 </Shown>
             </footer>
-        </section>
+        </Card>
     );
 };
 

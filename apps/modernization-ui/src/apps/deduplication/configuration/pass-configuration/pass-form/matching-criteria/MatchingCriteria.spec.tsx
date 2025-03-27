@@ -70,10 +70,13 @@ describe('BlockingCriteria', () => {
         expect(getByRole('button')).toHaveTextContent('Add matching attribute(s)');
     });
 
-    it('should trigger onAddAttributes when button is clicked', () => {
-        const { getAllByRole } = render(<WithContent />);
-        const buttons = getAllByRole('button');
-        userEvent.click(buttons[1]); // Add matching attribute(s) button
+    it('should trigger onAddAttributes when button is clicked', async () => {
+        const { getByRole } = render(<WithContent />);
+
+        const user = userEvent.setup();
+
+        const add = getByRole('button', { name: 'Add matching attribute(s)' });
+        await user.click(add); // Add matching attribute(s) button
 
         expect(onAddAttributes).toHaveBeenCalledTimes(1);
     });

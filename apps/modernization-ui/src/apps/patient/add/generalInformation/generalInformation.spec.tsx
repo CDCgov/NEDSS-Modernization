@@ -1,35 +1,33 @@
-import React from 'react';
-import { render } from '@testing-library/react';
+import { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import GeneralInformation from './generalInformation';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import GeneralInformation from './generalInformation';
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => {
+const Fixture = () => {
     const methods = useForm();
-    return <FormProvider {...methods}>{children}</FormProvider>;
+    return (
+        <FormProvider {...methods}>
+            <GeneralInformation id="test-id" title="Test Title" />
+        </FormProvider>
+    );
 };
 
 describe('GeneralInformation Component', () => {
     it('should renders without crashing', () => {
-        const { getByLabelText } = render(
-            <Wrapper>
-                <GeneralInformation id="test-id" title="Test Title" />
-            </Wrapper>
-        );
+        const { getByLabelText } = render(<Fixture />);
 
         expect(getByLabelText('Information as of date')).toBeInTheDocument();
         expect(getByLabelText('Comments')).toBeInTheDocument();
     });
 
-    it('should accepts input in the comments field', () => {
-        const { getByLabelText } = render(
-            <Wrapper>
-                <GeneralInformation id="test-id" title="Test Title" />
-            </Wrapper>
-        );
+    it('should accepts input in the comments field', async () => {
+        const user = userEvent.setup();
+
+        const { getByLabelText } = render(<Fixture />);
 
         const commentsInput = getByLabelText('Comments');
-        userEvent.paste(commentsInput, 'Test comment');
+        await user.type(commentsInput, 'Test comment');
 
         expect(commentsInput).toHaveValue('Test comment');
     });

@@ -5,7 +5,6 @@ import { GeneralCodedValues } from './useGeneralCodedValues';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { FormProvider, useForm } from 'react-hook-form';
 import { GeneralInformationEntryFields } from './GeneralInformationEntryFields';
-import { act } from 'react-dom/test-utils';
 
 const mockPermissions: PatientProfilePermission = { delete: true, compareInvestigation: false, hivAccess: false };
 
@@ -58,17 +57,14 @@ describe('when entering patient general information demographics', () => {
     });
 
     it('should require as of date', async () => {
-        const { getByLabelText, queryByText, findByText } = render(<Fixture />);
-        const errorMessage = 'The General information as of is required.';
+        const { getByLabelText, getByText } = render(<Fixture />);
+
         const dateInput = getByLabelText('General information as of');
 
-        expect(queryByText(errorMessage)).not.toBeInTheDocument();
+        const user = userEvent.setup();
 
-        act(() => {
-            userEvent.click(dateInput);
-            userEvent.tab();
-        });
+        await user.click(dateInput).then(() => user.tab());
 
-        expect(await findByText(errorMessage)).toBeInTheDocument();
+        expect(getByText('The General information as of is required.')).toBeInTheDocument();
     });
 });

@@ -1,14 +1,11 @@
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CheckboxGroup } from './CheckboxGroup';
-import { act } from 'react-dom/test-utils';
 
 const options = [
     { value: 'value1', label: 'label1', name: 'name1' },
     { value: 'value2', label: 'label2', name: 'name2' }
 ];
-
-const onChange = jest.fn();
 
 describe('CheckboxGroup', () => {
     it('should render with options', () => {
@@ -77,20 +74,19 @@ describe('CheckboxGroup', () => {
         const two = getByLabelText('Two Name');
         expect(two).not.toBeChecked();
 
-        userEvent.click(one);
+        const user = userEvent.setup();
+        await user.click(one);
 
-        await waitFor(() => {
-            expect(one).toBeChecked();
-            expect(two).not.toBeChecked();
-        });
+        expect(one).toBeChecked();
+        expect(two).not.toBeChecked();
 
-        userEvent.click(two);
+        await user.click(two);
 
         expect(one).toBeChecked();
         expect(two).toBeChecked();
     });
 
-    it('should emit onChange when clicked', () => {
+    it('should emit onChange when clicked', async () => {
         const onChange = jest.fn();
 
         const { getByLabelText } = render(
@@ -108,15 +104,12 @@ describe('CheckboxGroup', () => {
         const one = getByLabelText('name1');
         const two = getByLabelText('name2');
 
-        act(() => {
-            userEvent.click(one);
-        });
+        const user = userEvent.setup();
+        await user.click(one);
 
         expect(onChange).toHaveBeenCalledWith(expect.arrayContaining([expect.objectContaining({ value: 'value1' })]));
 
-        act(() => {
-            userEvent.click(two);
-        });
+        await user.click(two);
 
         expect(onChange).toHaveBeenCalledWith(
             expect.arrayContaining([

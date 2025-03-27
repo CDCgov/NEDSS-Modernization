@@ -1,22 +1,12 @@
-.exact-date-entry {
+.date-range-entry {
     display: flex;
     justify-content: space-between;
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 0.5rem;
 
-    .numeric-wrapper {
+    .range-wrapper {
         display: flex;
         gap: 0.5rem;
         flex-direction: column;
-    }
-
-    .month,
-    .day {
-        flex: 1;
-    }
-
-    .year {
-        flex: 1.5;
     }
 
     input {

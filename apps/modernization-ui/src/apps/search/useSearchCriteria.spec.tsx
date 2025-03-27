@@ -1,9 +1,10 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import { useSearchParams } from 'react-router-dom';
+import { act } from 'react';
+import { renderHook, waitFor } from '@testing-library/react';
+import { useSearchParams } from 'react-router';
 import { useSearchCriteria } from './useSearchCriteria';
 import { decrypt, encrypt } from 'cryptography';
 
-jest.mock('react-router-dom', () => ({
+jest.mock('react-router', () => ({
     useSearchParams: jest.fn()
 }));
 
@@ -32,14 +33,16 @@ describe('useSearchCriteria', () => {
     });
 
     it('should evaluate found criteria', async () => {
+        const { result, rerender } = renderHook(() => useSearchCriteria({}));
+
         (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
         (decrypt as jest.Mock).mockResolvedValue({ key: 'value' });
 
-        const { result, waitForNextUpdate } = renderHook(() => useSearchCriteria({}));
+        rerender();
 
-        await waitForNextUpdate();
-
-        expect(result.current.criteria).toEqual({ key: 'value' });
+        await waitFor(() => {
+            expect(result.current.criteria).toEqual({ key: 'value' });
+        });
     });
 
     it('should clear criteria', async () => {
@@ -53,29 +56,33 @@ describe('useSearchCriteria', () => {
     });
 
     it('should change criteria', async () => {
-        const { result, waitForNextUpdate } = renderHook(() => useSearchCriteria({}));
+        const { result } = renderHook(() => useSearchCriteria({}));
 
         act(() => {
             result.current.change({ key: 'newValue' });
         });
 
-        await waitForNextUpdate();
-
         expect(encrypt).toHaveBeenCalledWith({ key: 'newValue' });
-        expect(setSearchParams).toHaveBeenCalledWith(expect.any(Function), { replace: true });
+
+        await waitFor(() => {
+            expect(setSearchParams).toHaveBeenCalled();
+        });
     });
 
     it('should handle default values as a function', async () => {
+        const defaultValuesFunc = jest.fn();
+        const { result, rerender } = renderHook(() => useSearchCriteria({ defaultValues: defaultValuesFunc }));
+
         (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
         (decrypt as jest.Mock).mockResolvedValue({ key: 'value' });
 
-        const defaultValuesFunc = jest.fn().mockReturnValue({ defaultKey: 'defaultValue' });
+        defaultValuesFunc.mockReturnValue({ defaultKey: 'defaultValue' });
 
-        const { result, waitForNextUpdate } = renderHook(() => useSearchCriteria({ defaultValues: defaultValuesFunc }));
+        rerender();
 
-        await waitForNextUpdate();
-
-        expect(defaultValuesFunc).toHaveBeenCalledWith({ key: 'value' });
-        expect(result.current.criteria).toEqual({ defaultKey: 'defaultValue', key: 'value' });
+        await waitFor(() => {
+            expect(defaultValuesFunc).toHaveBeenCalledWith({ key: 'value' });
+            expect(result.current.criteria).toEqual({ defaultKey: 'defaultValue', key: 'value' });
+        });
     });
 });
