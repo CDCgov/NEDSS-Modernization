@@ -104,7 +104,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
-                        aria-description={'Patient ID(s)-Separate IDs by commas, semicolons, or spaces'}
+                        aria-description={'Separate IDs by commas, semicolons, or spaces'}
                     />
                 )}
             />
