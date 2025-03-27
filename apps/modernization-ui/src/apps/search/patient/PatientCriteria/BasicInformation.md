@@ -48,7 +48,7 @@
 #### Expected Announcements
 
 1. **On Focus**:
-   - "Patient ID(s) Patient ID(s) -Separate IDs by commas, semicolons, or spaces, edit text"
+   - "Patient ID(s) -Separate IDs by commas, semicolons, or spaces, edit text"
    - "You are currently on a text field, inside of web content. To enter text in this field, type. To exit this web area, press Control-Option-Shift-UpArrow." 
 
 2. **On Invalid Input**:
