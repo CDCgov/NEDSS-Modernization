@@ -37,7 +37,8 @@ $error-border-width: 4px;
 
     input,
     select,
-    textarea {
+    textarea,
+    .multi-select {
         width: 100%;
         box-sizing: border-box;
         margin: 0;

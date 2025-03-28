@@ -1,12 +1,12 @@
 @use 'styles/colors';
 
 $small-font-size: 0.75rem;
-$small-height: 1.375rem;
+$small-height: 1.5rem;
 $small-textarea-height: 5.0625rem;
 
 %small {
-    --component-font-size: #{$small-font-size};
-    --component-height: #{$small-height};
+    --component-font-size: #{$small-font-size} !important;
+    --component-height: #{$small-height} !important;
 
     font-size: var(--component-font-size);
 }
