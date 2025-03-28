@@ -6,6 +6,7 @@ import classNames from 'classnames';
 
 import { styles, theme } from 'design-system/select/multi';
 import { CheckboxOption } from './CheckboxOption';
+import { DropdownIndicator } from './DropdownIndicator';
 
 type MultiSelectProps = {
     id: string;
@@ -70,7 +71,11 @@ export const MultiSelect = ({
                 onBlur={onBlur}
                 placeholder={placeholder}
                 isDisabled={disabled}
-                className={classNames('multi-select', { 'multi-select__medium': sizing === 'medium' })}
+                className={classNames(
+                    'multi-select',
+                    { 'multi-select__medium': sizing === 'medium' },
+                    { 'multi-select__small': sizing === 'small' }
+                )}
                 classNamePrefix="multi-select"
                 hideSelectedOptions={false}
                 closeMenuOnSelect={false}
@@ -79,7 +84,7 @@ export const MultiSelect = ({
                 onInputChange={handleInputChange}
                 getOptionValue={asValue}
                 getOptionLabel={asDisplay}
-                components={{ Option: CheckboxOption }}
+                components={{ Option: CheckboxOption, DropdownIndicator: DropdownIndicator }}
             />
         </Field>
     );
