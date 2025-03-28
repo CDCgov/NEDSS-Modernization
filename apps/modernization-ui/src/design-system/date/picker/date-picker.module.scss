@@ -1,4 +1,4 @@
-@mixin sizedDatePicker($backgroundSize: 1rem, $calendarWidth: 17.75rem) {
+@mixin sizedDatePicker($backgroundSize: 1rem, $calendarWidth: 17.75rem, $calendarHeight: 16.75rem) {
     & > div > button {
         background-size: $backgroundSize;
         background-position: left;
@@ -16,11 +16,16 @@
 
     & > div > div {
         min-width: $calendarWidth !important;
+        min-height: $calendarHeight !important;
     }
 }
 
 .small {
-    @include sizedDatePicker(1rem);
+    @include sizedDatePicker(1rem, 17.75rem, 15rem);
+
+    --calendar-navigation-padding: 18px;
+    --calendar-day-of-week-padding: 4px;
+    --calendar-date-padding: 8px;
 }
 
 .medium {
