@@ -100,7 +100,7 @@ describe('when entering address section', () => {
         }
     });
     it('should validate address 1', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
 
         const { getByLabelText, queryByText } = render(<Fixture />);
 
@@ -118,7 +118,7 @@ describe('when entering address section', () => {
         expect(validationError).toBeInTheDocument();
     });
     it('should validate address 2', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
         const { getByLabelText, queryByText } = render(<Fixture />);
 
         const address = getByLabelText('Street address 2');
@@ -135,7 +135,7 @@ describe('when entering address section', () => {
         expect(validationError).toBeInTheDocument();
     });
     it('should validate city', async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ delay: null });
         const { getByLabelText, queryByText } = render(<Fixture />);
 
         const city = getByLabelText('City');
