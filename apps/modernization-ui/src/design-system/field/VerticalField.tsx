@@ -24,9 +24,10 @@ const VerticalField = ({ className, htmlFor, label, helperText, required, error,
                 {label}
             </label>
             {helperText && <HelperText id={`${htmlFor}-hint`}>{helperText}</HelperText>}
-            {warning && <InlineWarningMessage id={`${htmlFor}-warning`}>{warning}</InlineWarningMessage>}
-            {error && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
         </span>
+        {warning && <InlineWarningMessage id={`${htmlFor}-warning`}>{warning}</InlineWarningMessage>}
+        {error && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
+
         {children}
     </span>
 );
