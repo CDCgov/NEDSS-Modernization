@@ -197,7 +197,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                     control={control}
                     name="birthAndSex.order"
                     shouldUnregister
-                    rules={{ min: { value: 0, message: 'Must be a positive number' } }}
+                    rules={{ min: { value: 0, message: 'Must be a positive number.' } }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             label="Birth order"
