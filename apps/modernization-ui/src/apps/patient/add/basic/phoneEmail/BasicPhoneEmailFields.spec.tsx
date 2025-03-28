@@ -71,7 +71,7 @@ describe('PhoneEmailEntryFields', () => {
         await user.type(extensionInput, value);
         await user.tab();
 
-        const validationError = queryByText('A Extension should be 1 to 4 digits');
+        const validationError = queryByText('A Extension should be 1 to 4 digits.');
         if (valid) {
             expect(validationError).not.toBeInTheDocument();
         } else {
