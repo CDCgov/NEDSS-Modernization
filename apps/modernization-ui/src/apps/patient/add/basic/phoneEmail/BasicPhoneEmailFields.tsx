@@ -57,7 +57,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal', sizing = 'me
                 rules={{
                     pattern: {
                         value: /^\+?\d{1,20}$/,
-                        message: 'An Extension should be 1 to 20 digits'
+                        message: 'An Extension should be 1 to 20 digits.'
                     }
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
