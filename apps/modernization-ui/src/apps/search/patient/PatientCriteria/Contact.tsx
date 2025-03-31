@@ -8,7 +8,7 @@ import { EntryFieldsProps } from 'design-system/entry';
 export const Contact = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
     return (
-        <SearchCriteria>
+        <SearchCriteria sizing={sizing}>
             <Controller
                 control={control}
                 name="phoneNumber"
