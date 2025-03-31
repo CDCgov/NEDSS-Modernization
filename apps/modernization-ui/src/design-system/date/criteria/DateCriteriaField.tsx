@@ -42,46 +42,48 @@ const DateCriteriaField = ({
 
     return (
         <Field error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
-            <div className={styles.operators} data-range-operator={type}>
-                <Radio
-                    id={'equals'}
-                    name="dateOperation"
-                    label={'Exact Date'}
-                    value={'equals'}
-                    onChange={() => onChange({ equals: {} })}
-                    checked={type === 'equals'}
-                    sizing={sizing}
-                    className={styles.radio}
-                />
-                <Radio
-                    id={'between'}
-                    name="dateOperation"
-                    label={'Date Range'}
-                    value={'between'}
-                    onChange={() => onChange({ between: {} })}
-                    checked={type === 'between'}
-                    sizing={sizing}
-                    className={styles.radio}
-                />
-            </div>
-            <div key={type}>
-                <Shown when={type === 'equals'}>
-                    <ExactDateField
-                        id={`${id}-exact-date`}
-                        value={asDateEqualsCriteria(value)}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                    />
-                </Shown>
-                <Shown when={type === 'between'}>
-                    <DateRangeField
+            <div className={styles.content}>
+                <div className={styles.operators} data-range-operator={type}>
+                    <Radio
+                        id={'equals'}
+                        name="dateOperation"
+                        label={'Exact Date'}
+                        value={'equals'}
+                        onChange={() => onChange({ equals: {} })}
+                        checked={type === 'equals'}
                         sizing={sizing}
-                        id={`${id}-range-entry`}
-                        value={asDateRangeCriteria(value)}
-                        onChange={onChange}
-                        onBlur={onBlur}
+                        className={styles.radio}
                     />
-                </Shown>
+                    <Radio
+                        id={'between'}
+                        name="dateOperation"
+                        label={'Date Range'}
+                        value={'between'}
+                        onChange={() => onChange({ between: {} })}
+                        checked={type === 'between'}
+                        sizing={sizing}
+                        className={styles.radio}
+                    />
+                </div>
+                <div key={type}>
+                    <Shown when={type === 'equals'}>
+                        <ExactDateField
+                            id={`${id}-exact-date`}
+                            value={asDateEqualsCriteria(value)}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                        />
+                    </Shown>
+                    <Shown when={type === 'between'}>
+                        <DateRangeField
+                            sizing={sizing}
+                            id={`${id}-range-entry`}
+                            value={asDateRangeCriteria(value)}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                        />
+                    </Shown>
+                </div>
             </div>
         </Field>
     );

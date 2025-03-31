@@ -1,4 +1,10 @@
-.operators {
+.content {
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .operators {
+        display: flex;
+        gap: 0.5rem;
+    }
 }
