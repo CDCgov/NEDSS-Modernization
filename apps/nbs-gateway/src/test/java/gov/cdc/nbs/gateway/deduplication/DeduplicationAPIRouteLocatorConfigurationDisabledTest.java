@@ -18,15 +18,15 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
-        "nbs.gateway.classic=http://localhost:10000",
+        "nbs.gateway.modernization.service=localhost:10001",
         "nbs.gateway.deduplication.service=localhost:10002",
         "nbs.gateway.deduplication.enabled=false"
     })
 class DeduplicationAPIRouteLocatorConfigurationDisabledTest {
 
   @RegisterExtension
-  static WireMockExtension classic = WireMockExtension.newInstance()
-      .options(wireMockConfig().port(10000))
+  static WireMockExtension modernized = WireMockExtension.newInstance()
+      .options(wireMockConfig().port(10001))
       .build();
 
   @RegisterExtension
@@ -39,13 +39,14 @@ class DeduplicationAPIRouteLocatorConfigurationDisabledTest {
 
   @Test
   void should_not_route() {
-    classic.stubFor(get(urlEqualTo("/nbs/deduplication/")).willReturn(notFound()));
-    deduplication.stubFor(get(urlPathMatching("/nbs/deduplication/")).willReturn(ok()));
+    // API falls back to modernized api when deduplication is disabled
+    modernized.stubFor(get(urlEqualTo("/nbs/api/deduplication/")).willReturn(notFound()));
+    deduplication.stubFor(get(urlPathMatching("/nbs/api/deduplication/")).willReturn(ok()));
 
     webClient
         .get().uri(
             builder -> builder
-                .path("/nbs/deduplication/")
+                .path("/nbs/api/deduplication/")
                 .build())
         .exchange()
         .expectStatus()

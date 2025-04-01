@@ -12,7 +12,7 @@ import org.springframework.core.Ordered;
 
 @Configuration
 @ConditionalOnExpression("${nbs.gateway.deduplication.enabled}")
-public class DeduplicationAPIRouteLocatorConfiguration {
+class DeduplicationAPIRouteLocatorConfiguration {
 
   @Bean
   RouteLocator deduplicationAPIRouteLocator(
@@ -23,7 +23,7 @@ public class DeduplicationAPIRouteLocatorConfiguration {
         .route(
             "deduplication-api",
             route -> route.order(Ordered.HIGHEST_PRECEDENCE)
-                .path("/nbs/deduplication/**")
+                .path("/nbs/api/deduplication/**")
                 .filters(filter -> filter.filters(defaults))
                 .uri(service.uri()))
         .build();

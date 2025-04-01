@@ -47,12 +47,12 @@ class DeduplicationAPIRouteLocatorConfigurationEnabledTest {
 
   @Test
   void should_route() {
-    deduplication.stubFor(get(urlPathMatching("/nbs/deduplication/")).willReturn(ok()));
+    deduplication.stubFor(get(urlPathMatching("/nbs/api/deduplication/")).willReturn(ok()));
 
     webClient
         .get().uri(
             builder -> builder
-                .path("/nbs/deduplication/")
+                .path("/nbs/api/deduplication/")
                 .build())
         .exchange()
         .expectStatus()
