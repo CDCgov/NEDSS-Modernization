@@ -19,14 +19,6 @@ import java.util.*;
 @JsonInclude(Include.NON_NULL)
 public class PatientSearchCriteria {
 
-  enum Gender {
-    FEMALE,
-    MALE,
-    UNKNOWN,
-    NO_VALUE;
-  }
-
-
   @JsonInclude(Include.NON_NULL)
   public record Identification(
       String identificationNumber,
@@ -66,7 +58,8 @@ public class PatientSearchCriteria {
     }
 
     Filter withSex(final String sex) {
-      return new Filter(id(), name(), ageOrDateOfBirth(), sex, address(), email(), null, null);
+      return new Filter(id(), name(), ageOrDateOfBirth(), sex, address(), email(), null,
+          null);
     }
 
     Filter withAddress(final String address) {
@@ -138,7 +131,7 @@ public class PatientSearchCriteria {
   private String email;
   private LocalDate dateOfBirth;
   private String dateOfBirthOperator;
-  private String gender;
+  private SearchableGender gender;
   private Deceased deceased;
   private LocationCriteria location;
   private String address;
@@ -201,6 +194,10 @@ public class PatientSearchCriteria {
     return filter;
   }
 
+  public Optional<Filter> maybeFilter() {
+    return Optional.ofNullable(this.filter);
+  }
+
   public List<RecordStatus> adjustedStatus() {
     return adjustedStatus == null ? List.copyOf(this.recordStatus) : List.copyOf(this.adjustedStatus);
   }
@@ -211,8 +208,20 @@ public class PatientSearchCriteria {
   }
 
   public PatientSearchCriteria withGender(final String gender) {
-    this.gender = gender;
+    this.gender = SearchableGender.resolve(gender);
     return this;
+  }
+
+  public String getGender() {
+    return gender == null ? null : gender.value();
+  }
+
+  public void setGender(final String gender) {
+    this.gender = SearchableGender.resolve(gender);
+  }
+
+  public Optional<SearchableGender> maybeGender() {
+    return Optional.ofNullable(gender);
   }
 
   public PatientSearchCriteria withId(final String id) {

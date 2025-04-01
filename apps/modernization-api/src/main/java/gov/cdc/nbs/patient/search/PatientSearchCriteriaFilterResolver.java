@@ -2,16 +2,8 @@ package gov.cdc.nbs.patient.search;
 
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.Script;
-import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.ChildScoreMode;
-import co.elastic.clients.elasticsearch._types.query_dsl.NestedQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.QueryVariant;
-import co.elastic.clients.elasticsearch._types.query_dsl.ScriptQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.date.DateCriteria.Equals;
 import org.springframework.stereotype.Component;
@@ -23,14 +15,21 @@ import java.util.stream.Stream;
 @Component
 class PatientSearchCriteriaFilterResolver {
 
-  private static final String CURRENT_GENDER = "curr_sex_cd";
+  private static final String GENDER_FIELD = "curr_sex_cd";
   private static final String STATUS = "record_status_cd";
   private static final String DECEASED = "deceased_ind_cd";
   private static final String PERSON_TYPE = "cd";
   private static final String PERSON_TYPE_PATIENT = "PAT";
   private static final String PAINLESS = "painless";
-  private static final String NOT_FOUND_GENDER_CODE = "x";
 
+
+  /**
+   * Translates the {@code criteria} into a {@link Query} that can be submitted to Elasticsearch.
+   *
+   * @param criteria The {@link PatientSearchCriteria} representing the criteria used to search for patients.
+   * @return A {@link Query}
+   * @throws UnresolvableSearchException when values of the criteria is known to result in no results.
+   */
   Query resolve(final PatientSearchCriteria criteria) throws UnresolvableSearchException {
     return Stream.of(
             onlyPatients(),
@@ -75,35 +74,33 @@ class PatientSearchCriteriaFilterResolver {
     return Optional.of(statuses);
   }
 
-  private String getImpliedGenderFromSexFilter(final String sexFilter) {
-    return switch (sexFilter.toLowerCase()) {
-      case "f", "female" -> Gender.F.value();
-      case "m", "male" -> Gender.M.value();
-      case "u", "unknown" -> Gender.U.value();
-      default -> NOT_FOUND_GENDER_CODE;
-    };
+  private Optional<QueryVariant> applyGenderCriteria(final PatientSearchCriteria criteria) {
+
+    Optional<SearchableGender> maybeCriteria = criteria.maybeGender();
+
+    //  filtering on gender/sex does not work like the other filters due to the gender field being a coded value and not
+    //  the description.
+    Optional<SearchableGender> maybeFilter = criteria.maybeFilter()
+        .map(PatientSearchCriteria.Filter::sex)
+        .map(SearchableGender::resolve);
+
+    if (maybeCriteria.isPresent() && maybeFilter.isPresent() && maybeCriteria.get() != maybeFilter.get()) {
+      //  short circuit search, there will be no results
+      throw new UnresolvableSearchException("Conflicting gender criteria and gender filter");
+    }
+
+    return maybeCriteria.or(() -> maybeFilter)
+        .map(this::resolveGenderQuery);
   }
 
-  private Optional<QueryVariant> applyGenderCriteria(final PatientSearchCriteria criteria)
-      throws UnresolvableSearchException {
-    String genderCriteria = criteria.getGender();
-    String sexFilter = criteria.getFilter().sex();
-    if (sexFilter != null) {
-      String impliedSex = getImpliedGenderFromSexFilter(sexFilter);
-      if (impliedSex != null) {
-        if (genderCriteria == null) {
-          genderCriteria = impliedSex;
-        } else if (!genderCriteria.equals(impliedSex)) {
-          //  short circuit search, there will be no results
-          throw new UnresolvableSearchException("Conflicting gender criteria and gender filter");
-        }
-      }
-    }
-    final String termValue = genderCriteria;
-    return (termValue == null) ? Optional.empty()
-        : Optional.of(
-        TermQuery.of(
-            query -> query.field(CURRENT_GENDER).value(termValue)));
+  private QueryVariant resolveGenderQuery(final SearchableGender gender) {
+    return switch (gender) {
+      case UNRECOGNIZED -> throw new UnresolvableSearchException("Unrecognized gender");
+      case NO_VALUE -> BoolQuery.of(bool -> bool.mustNot(not -> not.exists(exists -> exists.field(GENDER_FIELD))));
+      default -> TermQuery.of(query -> query.field(GENDER_FIELD).value(gender.value()));
+    };
+
+
   }
 
   private Optional<QueryVariant> applyDeceasedCriteria(final PatientSearchCriteria criteria) {

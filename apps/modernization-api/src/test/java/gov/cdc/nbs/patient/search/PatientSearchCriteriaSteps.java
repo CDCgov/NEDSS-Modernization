@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient.search;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import gov.cdc.nbs.testing.support.Active;
@@ -60,9 +59,9 @@ public class PatientSearchCriteriaSteps {
     this.activeCriteria.active(criteria -> criteria.withIdentification(criteria.getIdentification().withType(type)));
   }
 
-  @Given("I add the patient criteria for a gender of {gender}")
+  @Given("I add the patient criteria for a gender of {searchableGender}")
   public void i_add_the_patient_criteria_for_a_gender(final String value) {
-    this.activeCriteria.active(found -> found.withGender(Gender.resolve(value).value()));
+    this.activeCriteria.active(found -> found.withGender(value));
   }
 
   @Given("I would like to filter search results with a gender of {string}")

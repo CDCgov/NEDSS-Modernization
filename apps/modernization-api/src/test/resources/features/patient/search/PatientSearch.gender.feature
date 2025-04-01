@@ -26,18 +26,20 @@ Feature: Patient Search: Searching by gender
       | Unknown |
 
 
-  Scenario: I can search for a Patient with an unknown Gender
-    Given the patient has the gender Male
+  Scenario: I can search for a Patients without a gender
+    Given the patient has the legal name "This" "One"
+    And I have another patient
+    And the patient has the gender Male
     And I have another patient
     And the patient has the gender Female
     And I have another patient
     And the patient has the gender Unknown
-    And I have another patient
     And patients are available for search
-    And I add the patient criteria for a gender of Unknown
+    And I add the patient criteria for a gender of No Value
     When I search for patients
-    Then the search results have a patient with a "gender" equal to "Unknown"
-    And there is only one patient search result
+    Then there is only one patient search result
+    And the search results have a patient with a "first name" equal to "This"
+    And the search results have a patient with a "last name" equal to "One"
 
   Scenario Outline: I can find the Patient with a short sex filter
     Given the patient has the gender <gender>
