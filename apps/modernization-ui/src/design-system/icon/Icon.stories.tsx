@@ -21,3 +21,10 @@ export const Default: Story = {
         name: 'check'
     }
 };
+
+/*
+
+Double check
+aria-hidden={props['aria-hidden'] || !props['aria-label'] || !props['aria-labelledby']}
+
+*/

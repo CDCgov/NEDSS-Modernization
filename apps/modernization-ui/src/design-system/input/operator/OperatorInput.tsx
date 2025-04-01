@@ -96,7 +96,6 @@ export const OperatorInput = ({
                     </Grid>
                     <Grid col={7} className={styles.right}>
                         <Input
-                            onChange={onInputChange}
                             type="text"
                             name={id}
                             defaultValue={operatorValue.value}
@@ -104,6 +103,7 @@ export const OperatorInput = ({
                             id={id}
                             sizing={sizing}
                             error={error}
+                            onChange={onInputChange}
                         />
                     </Grid>
                 </Grid>
