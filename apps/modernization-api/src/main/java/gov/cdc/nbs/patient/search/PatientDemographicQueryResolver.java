@@ -75,13 +75,13 @@ class PatientDemographicQueryResolver {
     this.soundex = new Soundex();
   }
 
-  Stream<Query> resolve(final PatientFilter criteria) {
+  Stream<Query> resolve(final PatientSearchCriteria criteria) {
     return Stream.concat(Stream.concat(resolveDemographicCriteria(criteria),
         nameQueryResolver.resolve(criteria)), locationQueryResolver.resolve(criteria))
         .map(QueryVariant::_toQuery);
   }
 
-  private Stream<QueryVariant> resolveDemographicCriteria(final PatientFilter criteria) {
+  private Stream<QueryVariant> resolveDemographicCriteria(final PatientSearchCriteria criteria) {
     return Stream.of(
         applyPatientIdentifierCriteria(criteria),
         applyPatientIdFilterCriteria(criteria),
@@ -105,7 +105,7 @@ class PatientDemographicQueryResolver {
         .flatMap(Optional::stream);
   }
 
-  private Optional<QueryVariant> applyPatientIdFilterCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyPatientIdFilterCriteria(final PatientSearchCriteria criteria) {
     if (criteria.getFilter().id() == null) {
       return Optional.empty();
     }
@@ -119,7 +119,7 @@ class PatientDemographicQueryResolver {
 
   }
 
-  private Optional<QueryVariant> applyPatientNameFilterCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyPatientNameFilterCriteria(final PatientSearchCriteria criteria) {
     if (criteria.getFilter().name() == null) {
       return Optional.empty();
     }
@@ -128,7 +128,7 @@ class PatientDemographicQueryResolver {
         .map(value -> containsInAtLeastOneField(NAMES, value, FULL_NAME));
   }
 
-  private Optional<QueryVariant> applyPatientIdentifierCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyPatientIdentifierCriteria(final PatientSearchCriteria criteria) {
     if (criteria.getId() != null) {
       String shortOrLongIdStripped = criteria.getId().strip();
 
@@ -163,7 +163,7 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyAddressFilterCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyAddressFilterCriteria(final PatientSearchCriteria criteria) {
     if (criteria.getFilter().address() == null) {
       return Optional.empty();
     }
@@ -183,7 +183,7 @@ class PatientDemographicQueryResolver {
             query -> query.field(LOCAL_ID).terms(localIdTerms)));
   }
 
-  private Optional<QueryVariant> applyFirstNameCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyFirstNameCriteria(final PatientSearchCriteria criteria) {
     String name = criteria.getFirstName();
 
     if (name != null && !name.isBlank()) {
@@ -239,7 +239,7 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyLastNameCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyLastNameCriteria(final PatientSearchCriteria criteria) {
     String name = AdjustStrings.withoutHyphens(criteria.getLastName());
 
     if (name != null && !name.isBlank()) {
@@ -292,7 +292,7 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyPhoneNumberCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyPhoneNumberCriteria(final PatientSearchCriteria criteria) {
 
     String number = AdjustStrings.withoutSpecialCharacters(criteria.getPhoneNumber());
 
@@ -312,7 +312,7 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyPhoneFilter(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyPhoneFilter(final PatientSearchCriteria criteria) {
 
     if (criteria.getFilter().phone() == null) {
       return Optional.empty();
@@ -324,7 +324,7 @@ class PatientDemographicQueryResolver {
         .map(value -> contains(PHONES, "phone.telephoneNbr", value));
   }
 
-  private Optional<QueryVariant> applyEmailFilter(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyEmailFilter(final PatientSearchCriteria criteria) {
 
     if (criteria.getFilter().email() == null) {
       return Optional.empty();
@@ -335,7 +335,7 @@ class PatientDemographicQueryResolver {
         .map(value -> contains(EMAILS, EMAIL_ADDRESS, value));
   }
 
-  private Optional<QueryVariant> applyIdentificationFilter(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyIdentificationFilter(final PatientSearchCriteria criteria) {
 
     if (criteria.getFilter().identification() == null) {
       return Optional.empty();
@@ -348,7 +348,7 @@ class PatientDemographicQueryResolver {
         .map(value -> contains(IDENTIFICATIONS, IDENTIFICATION, value));
   }
 
-  private Optional<QueryVariant> applyEmailCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyEmailCriteria(final PatientSearchCriteria criteria) {
 
     String email = criteria.getEmail();
     if (email != null && !email.isEmpty()) {
@@ -367,9 +367,9 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyIdentificationCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyIdentificationCriteria(final PatientSearchCriteria criteria) {
 
-    PatientFilter.Identification identification = criteria.getIdentification();
+    PatientSearchCriteria.Identification identification = criteria.getIdentification();
 
     String type = identification.identificationType();
     String value = AdjustStrings.withoutSpecialCharacters(identification.identificationNumber());
@@ -393,7 +393,7 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyDateOfBirthCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyDateOfBirthCriteria(final PatientSearchCriteria criteria) {
 
     LocalDate dateOfBirth = criteria.getDateOfBirth();
 
@@ -447,7 +447,7 @@ class PatientDemographicQueryResolver {
     }
   }
 
-  private Optional<QueryVariant> applyPatientAgeOrDateOfBirthFilterCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyPatientAgeOrDateOfBirthFilterCriteria(final PatientSearchCriteria criteria) {
     String ageOrDateOfBirth = criteria.getFilter().ageOrDateOfBirth();
     if (ageOrDateOfBirth == null) {
       return Optional.empty();
@@ -472,7 +472,7 @@ class PatientDemographicQueryResolver {
                             .lt("now-" + age + "y/d")))))));
   }
 
-  private Optional<QueryVariant> applyDateOfBirthLowRangeCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyDateOfBirthLowRangeCriteria(final PatientSearchCriteria criteria) {
     DateCriteria dateCriteria = criteria.getBornOn();
     if (dateCriteria == null) {
       return Optional.empty();
@@ -490,7 +490,7 @@ class PatientDemographicQueryResolver {
                 .gte(value))));
   }
 
-  private Optional<QueryVariant> applyDateOfBirthHighRangeCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyDateOfBirthHighRangeCriteria(final PatientSearchCriteria criteria) {
     DateCriteria dateCriteria = criteria.getBornOn();
     if (dateCriteria == null) {
       return Optional.empty();
@@ -513,7 +513,7 @@ class PatientDemographicQueryResolver {
     return operator == null ? "equal" : operator.toLowerCase();
   }
 
-  private Optional<QueryVariant> applyStreetAddressCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyStreetAddressCriteria(final PatientSearchCriteria criteria) {
 
     String address = criteria.getAddress();
     if (address != null && !address.isEmpty()) {
@@ -534,7 +534,7 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyCityCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyCityCriteria(final PatientSearchCriteria criteria) {
 
     String city = criteria.getCity();
     if (city != null && !city.isEmpty()) {
@@ -553,7 +553,7 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyZipcodeCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyZipcodeCriteria(final PatientSearchCriteria criteria) {
 
     String zipcode = criteria.getZip();
     if (zipcode != null && !zipcode.isEmpty()) {

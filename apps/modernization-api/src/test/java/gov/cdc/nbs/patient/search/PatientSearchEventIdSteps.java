@@ -15,7 +15,7 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
 public class PatientSearchEventIdSteps {
-  private final Active<PatientFilter> activeCriteria;
+  private final Active<PatientSearchCriteria> activeCriteria;
   private final Active<MorbidityReportIdentifier> activeMorbidityReport;
   private final Active<LabReportIdentifier> activeLabReport;
   private final Active<CaseReportIdentifier> activeCaseReport;
@@ -29,7 +29,7 @@ public class PatientSearchEventIdSteps {
   private final Active<AccessionIdentifier> activeAccessionNumber;
 
   PatientSearchEventIdSteps(
-      final Active<PatientFilter> activeCriteria,
+      final Active<PatientSearchCriteria> activeCriteria,
       final Active<LabReportIdentifier> activeLabReport,
       final Active<CaseReportIdentifier> activeCaseReport,
       final Active<StateCaseIdentifier> activeStateCase,

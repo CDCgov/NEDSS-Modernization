@@ -13,11 +13,11 @@ import java.time.Month;
 public class PatientSearchCriteriaSteps {
 
   private final Active<PatientIdentifier> patient;
-  private final Active<PatientFilter> activeCriteria;
+  private final Active<PatientSearchCriteria> activeCriteria;
 
   PatientSearchCriteriaSteps(
       final Active<PatientIdentifier> patient,
-      final Active<PatientFilter> activeCriteria) {
+      final Active<PatientSearchCriteria> activeCriteria) {
     this.patient = patient;
     this.activeCriteria = activeCriteria;
   }
@@ -35,10 +35,10 @@ public class PatientSearchCriteriaSteps {
 
   }
 
-  private PatientFilter applyCriteria(
+  private PatientSearchCriteria applyCriteria(
       final String field,
       final String value,
-      final PatientFilter criteria) {
+      final PatientSearchCriteria criteria) {
     switch (field.toLowerCase()) {
       case "patient id" -> criteria.setId(value);
       case "first name" -> criteria.setFirstName(value);
@@ -62,19 +62,19 @@ public class PatientSearchCriteriaSteps {
 
   @Given("I add the patient criteria for a gender of {gender}")
   public void i_add_the_patient_criteria_for_a_gender(final String value) {
-    this.activeCriteria.maybeActive().ifPresent(found -> found.withGender(Gender.resolve(value).value()));
+    this.activeCriteria.active(found -> found.withGender(Gender.resolve(value).value()));
   }
 
-  @Given("I add the patient criteria for sex filter of {string}")
+  @Given("I would like to filter search results with a gender of {string}")
   public void i_add_the_patient_criteria_for_sex_filter(final String value) {
-    this.activeCriteria.maybeActive().ifPresent(found -> found.withSexFilter(value));
+    this.activeCriteria.active(found -> found.withSexFilter(value));
   }
 
   @Given("I would like patients that are {string}")
   public void i_add_the_partial_patient_criteria_record_status_of(final String status) {
     RecordStatus recordStatus = PatientStatusCriteriaResolver.resolve(status);
 
-    this.activeCriteria.active(new PatientFilter(recordStatus));
+    this.activeCriteria.active(new PatientSearchCriteria(recordStatus));
   }
 
   @Given("I would like to search for a patient using a short ID")
