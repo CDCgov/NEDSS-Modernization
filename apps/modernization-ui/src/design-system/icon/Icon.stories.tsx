@@ -1,0 +1,23 @@
+import { Meta, StoryObj } from '@storybook/react';
+import { Icon } from './Icon';
+import { IconsArray } from './types';
+
+const meta = {
+    title: 'Design System/Icon',
+    component: Icon,
+    argTypes: {
+        name: { control: 'select', options: IconsArray },
+        //sizing: { control: { type: 'select', options: ['small', 'medium', 'large'] } },
+        color: { control: 'color' }
+    }
+} satisfies Meta<typeof Icon>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        name: 'check'
+    }
+};
