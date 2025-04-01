@@ -76,7 +76,7 @@ Given("I have a HL7 message containing a {string} test", (testType: string) => {
 
 When("I submit the HL7 message", () => {
   expect(hl7Message).not.to.be.null;
-  const apiurl = Cypress.env("apiurl");
+  const baseurl = Cypress.env("DI_API");
   const authToken = Cypress.env("di_token");
   const clientid = Cypress.env("DI_CLIENT_ID");
   const clientsecret = Cypress.env("DI_SECRET");
@@ -85,7 +85,7 @@ When("I submit the HL7 message", () => {
 
   cy.request({
     method: "POST",
-    url: apiurl,
+    url: `${baseurl}/elrs`,
     headers: {
       "Content-Type": "text/plain",
       Authorization: `Bearer ${authToken}`,
