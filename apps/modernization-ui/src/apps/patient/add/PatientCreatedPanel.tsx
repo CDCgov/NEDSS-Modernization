@@ -7,6 +7,8 @@ import { NavLinkButton } from 'design-system/button';
 import { Heading } from 'components/heading';
 import { FeatureToggle } from 'feature';
 import { LinkButton } from 'components/button';
+import { ADD_LAB_REPORT_PERMISSION, Permitted } from 'libs/permission';
+import { ADD_INVESTIGATION_PERMISSION } from 'libs/permission/permissions';
 
 type Props = {
     created: CreatedPatient;
@@ -20,12 +22,16 @@ const PatientCreatedPanel = ({ created }: Props) => (
         onClose={() => {}}
         footer={() => (
             <>
-                <ClassicButton outline url={`/nbs/api/profile/${created.id}/report/lab`}>
-                    Add lab report
-                </ClassicButton>
-                <ClassicButton outline url={`/nbs/api/profile/${created.id}/investigation`}>
-                    Add investigation
-                </ClassicButton>
+                <Permitted include={[ADD_LAB_REPORT_PERMISSION]}>
+                    <ClassicButton outline url={`nbs/api/profile/${created.id}/report/lab`}>
+                        Add lab report
+                    </ClassicButton>
+                </Permitted>
+                <Permitted include={[ADD_INVESTIGATION_PERMISSION]}>
+                    <ClassicButton outline url={`nbs/api/profile/${created.id}/investigation`}>
+                        Add investigation
+                    </ClassicButton>
+                </Permitted>
                 <FeatureToggle
                     guard={(features) => features?.patient?.profile.enabled}
                     fallback={

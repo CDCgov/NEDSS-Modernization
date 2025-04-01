@@ -1,9 +1,8 @@
-import { EntryWrapper } from 'components/Entry';
 import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from './dateCriteria';
 import { ExactDateField } from './exact';
 import { DateRangeField } from './range';
 import { Radio } from 'design-system/radio';
-import { FieldProps } from 'design-system/field';
+import { Field, FieldProps } from 'design-system/field';
 import { Shown } from 'conditional-render';
 
 import styles from './date-criteria.module.scss';
@@ -42,47 +41,51 @@ const DateCriteriaField = ({
     const type = resolveInitialCriteriaType(value);
 
     return (
-        <EntryWrapper error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
-            <div className={styles.operators} data-range-operator={type}>
-                <Radio
-                    id={'equals'}
-                    name="dateOperation"
-                    label={'Exact Date'}
-                    value={'equals'}
-                    onChange={() => onChange({ equals: {} })}
-                    checked={type === 'equals'}
-                    sizing={sizing}
-                />
-                <Radio
-                    id={'between'}
-                    name="dateOperation"
-                    label={'Date Range'}
-                    value={'between'}
-                    onChange={() => onChange({ between: {} })}
-                    checked={type === 'between'}
-                    sizing={sizing}
-                />
-            </div>
-            <div key={type}>
-                <Shown when={type === 'equals'}>
-                    <ExactDateField
-                        id={`${id}-exact-date`}
-                        value={asDateEqualsCriteria(value)}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                    />
-                </Shown>
-                <Shown when={type === 'between'}>
-                    <DateRangeField
+        <Field error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
+            <div className={styles.content}>
+                <div className={styles.operators} data-range-operator={type}>
+                    <Radio
+                        id={'equals'}
+                        name="dateOperation"
+                        label={'Exact Date'}
+                        value={'equals'}
+                        onChange={() => onChange({ equals: {} })}
+                        checked={type === 'equals'}
                         sizing={sizing}
-                        id={`${id}-range-entry`}
-                        value={asDateRangeCriteria(value)}
-                        onChange={onChange}
-                        onBlur={onBlur}
+                        className={styles.radio}
                     />
-                </Shown>
+                    <Radio
+                        id={'between'}
+                        name="dateOperation"
+                        label={'Date Range'}
+                        value={'between'}
+                        onChange={() => onChange({ between: {} })}
+                        checked={type === 'between'}
+                        sizing={sizing}
+                        className={styles.radio}
+                    />
+                </div>
+                <div key={type}>
+                    <Shown when={type === 'equals'}>
+                        <ExactDateField
+                            id={`${id}-exact-date`}
+                            value={asDateEqualsCriteria(value)}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                        />
+                    </Shown>
+                    <Shown when={type === 'between'}>
+                        <DateRangeField
+                            sizing={sizing}
+                            id={`${id}-range-entry`}
+                            value={asDateRangeCriteria(value)}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                        />
+                    </Shown>
+                </div>
             </div>
-        </EntryWrapper>
+        </Field>
     );
 };
 

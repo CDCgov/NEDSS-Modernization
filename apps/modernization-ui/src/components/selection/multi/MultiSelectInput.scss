@@ -2,18 +2,20 @@
 @use 'styles/components';
 
 .multi-select-selection__indicator {
-    height: 1.25rem;
-    width: 1.25rem;
+    height: 0.75rem;
+    width: 0.75rem;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
     background-repeat: no-repeat;
     background-size: 1.25rem;
 }
 
 .multi-select {
+    max-width: 20rem;
     .multi-select__control {
         border-width: 1px;
         border-style: solid;
         border-color: colors.$base-dark;
-        min-height: 2.5rem;
         border-radius: 0;
 
         .multi-select__indicator {
@@ -25,10 +27,13 @@
 
         .multi-select__indicator-separator {
             background-color: colors.$base-lighter !important;
+            margin-top: 0.25rem !important;
+            margin-bottom: 0.25rem !important;
         }
 
         .multi-select__multi-value {
             background-color: colors.$primary-lighter !important;
+            margin: 0;
         }
 
         .multi-select_multi-value_label {
@@ -71,6 +76,30 @@
                 input {
                     height: unset;
                 }
+            }
+        }
+    }
+}
+
+.multi-select__small {
+    @extend %small;
+    .multi-select__control {
+        .multi-select__indicator {
+            padding: 0.1rem !important;
+            height: 1.3735rem !important;
+            justify-content: center;
+        }
+
+        .multi-select__value-container {
+            gap: 0.25rem;
+
+            .multi-select__multi-value__label {
+                font-size: 0.75rem !important;
+            }
+
+            .multi-select__input-container {
+                padding: 0;
+                margin: 0;
             }
         }
     }
