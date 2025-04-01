@@ -189,3 +189,7 @@ input.usa-input--error:focus {
 .usa-date-picker__calendar__date {
     padding: var(--calendar-date-padding, 10px) 0;
 }
+
+.usa-date-picker__calendar {
+    margin-top: var(--calendar-date-margin, 0.1rem);
+}
