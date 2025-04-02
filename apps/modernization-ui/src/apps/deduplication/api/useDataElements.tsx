@@ -32,7 +32,7 @@ export const useDataElements = () => {
     };
 
     const save = async (updatedDataElements: DataElements, successCallback?: () => void) => {
-        fetch(`${Config.deduplicationUrl}/api/configuration/data-elements`, {
+        fetch(`${Config.deduplicationUrl}/configuration/data-elements`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
