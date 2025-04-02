@@ -10,7 +10,9 @@ import { maxLengthRule } from 'validation/entry';
 import { BasicNewPatientEntry } from 'apps/patient/add/basic/entry';
 import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
 import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
-import { useCountyCodedValues } from 'apps/patient/data/county/useCountyCodedValues';
+import { useEffect, useState } from 'react';
+import { CountyOptionsService } from 'generated';
+import { Option } from 'generated';
 
 const STREET_ADDRESS_LABEL = 'Street address 1';
 const STREET_ADDRESS_2_LABEL = 'Street address 2';
@@ -20,10 +22,23 @@ const CENSUS_TRACT_LABEL = 'Census tract';
 
 export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control, reset } = useFormContext<BasicNewPatientEntry>();
-    const location = useLocationCodedValues();
     const selectedState = useWatch({ control, name: 'address.state' });
     const enteredCity = useWatch({ control, name: 'address.city' });
     const enteredZip = useWatch({ control, name: 'address.zipcode' });
+    const location = useLocationCodedValues();
+    const [counties, setCounties] = useState<Option[]>([]);
+
+    useEffect(() => {
+        (selectedState?.value ?? '').length == 0
+            ? []
+            : CountyOptionsService.countyAutocomplete({
+                  criteria: '',
+                  state: selectedState!.value,
+                  limit: 100000
+              }).then((response) => {
+                  setCounties(response);
+              });
+    }, [selectedState]);
 
     const handleSuggestionSelection = (selected: AddressSuggestion) => {
         reset(
@@ -150,7 +165,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={useCountyCodedValues(selectedState?.value ?? '', { lazy: false }).options}
+                        options={counties}
                     />
                 )}
             />

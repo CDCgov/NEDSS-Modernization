@@ -3,12 +3,23 @@ import userEvent from '@testing-library/user-event';
 import { AddressEntry } from 'apps/patient/data';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BasicAddressFields } from './BasicAddressFields';
+import { CountyOptionsService } from 'generated';
 
 const mockCountyCodedValues = (state: string) => [{ name: 'CountyName', value: '2' }];
 
 const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
 const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
+
+const mockLocationCodedValues = {
+    states: {
+        all: [{ name: 'StateName', value: '1' }]
+    },
+    counties: {
+        byState: (_state: string) => [{ name: 'CountyName', value: '2' }]
+    },
+    countries: [{ name: 'CountryName', value: '3' }]
+};
 
 jest.mock('apps/patient/data/country/useCountryCodedValues', () => ({
     useCountryCodedValues: () => mockCountryCodedValues
@@ -18,8 +29,8 @@ jest.mock('apps/patient/data/state/useStateCodedValues', () => ({
     useStateCodedValues: () => mockStateCodedValues
 }));
 
-jest.mock('apps/patient/data/county/useCountyCodedValues', () => ({
-    useCountyCodedValues: () => mockCountyCodedValues
+jest.mock('location/useLocationCodedValues', () => ({
+    useLocationCodedValues: () => mockLocationCodedValues
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
