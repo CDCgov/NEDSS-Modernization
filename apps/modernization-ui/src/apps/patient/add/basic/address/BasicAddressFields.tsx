@@ -150,7 +150,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={useCountyCodedValues(selectedState?.value ?? '10', { lazy: false }).options}
+                        options={useCountyCodedValues(selectedState?.value ?? '', { lazy: false }).options}
                     />
                 )}
             />

@@ -4,7 +4,7 @@ import { AddressEntry } from 'apps/patient/data';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BasicAddressFields } from './BasicAddressFields';
 
-const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+const mockCountyCodedValues = (state: string) => [{ name: 'CountyName', value: '2' }];
 
 const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 

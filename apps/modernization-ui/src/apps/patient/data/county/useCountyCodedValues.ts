@@ -16,6 +16,9 @@ const resolver = (state: string) => () =>
     CountyOptionsService.countyAutocomplete({ criteria: '', state: state, limit: 100000 });
 
 const useCountyCodedValues = (state: string, { lazy = true }: Settings): CountyCodedValues => {
+    if (state === '') {
+        return { options: [], load: () => {} };
+    }
     const cachedResolver = useMemo(() => resolver(state), []);
     return useSelectableOptions({ resolver: cachedResolver, lazy });
 };
