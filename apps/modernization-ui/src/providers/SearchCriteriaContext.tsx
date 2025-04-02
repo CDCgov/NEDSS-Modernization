@@ -20,18 +20,6 @@ export const SearchCriteriaContext = React.createContext<{
 export const SearchCriteriaProvider = (props: any) => {
     const { state } = useContext(UserContext);
     const [searchCriteria, setSearchCriteria] = React.useState({ ...initialState });
-    const [getStates] = useStatesLazyQuery({ onCompleted: setStates });
-
-    // on init, load search data from API
-    useEffect(() => {
-        try {
-            if (state.isLoggedIn) {
-                getStates();
-            }
-        } catch (error: string | any) {
-            console.log('error load search data', error);
-        }
-    }, [state.isLoggedIn]);
 
     function setStates(results: StatesQuery): void {
         setSearchCriteria((previous) => ({ ...previous, states: results.states }));

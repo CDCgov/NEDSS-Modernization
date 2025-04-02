@@ -3,15 +3,14 @@ import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { usePatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
 import { BasicIdentificationEntry } from '../entry';
+import { useIdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
 
 const TYPE_LABEL = 'Type';
 const ID_VALUE_LABEL = 'ID value';
 
 export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<BasicIdentificationEntry>();
-    const coded = usePatientIdentificationCodedValues();
 
     return (
         <section>
@@ -28,7 +27,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         sizing={sizing}
                         onChange={onChange}
                         id={`identification-${name}`}
-                        options={coded.types}
+                        options={useIdentificationCodedValues().types}
                         error={error?.message}
                         required
                     />
@@ -46,7 +45,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
-                        options={coded.authorities}
+                        options={useIdentificationCodedValues().authorities}
                     />
                 )}
             />

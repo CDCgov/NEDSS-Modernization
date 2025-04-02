@@ -8,6 +8,9 @@ import { SingleSelect } from 'design-system/select';
 import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
 import { maxLengthRule } from 'validation/entry';
 import { BasicNewPatientEntry } from 'apps/patient/add/basic/entry';
+import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
+import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
+import { useCountyCodedValues } from 'apps/patient/data/county/useCountyCodedValues';
 
 const STREET_ADDRESS_LABEL = 'Street address 1';
 const STREET_ADDRESS_2_LABEL = 'Street address 2';
@@ -21,7 +24,6 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
     const selectedState = useWatch({ control, name: 'address.state' });
     const enteredCity = useWatch({ control, name: 'address.city' });
     const enteredZip = useWatch({ control, name: 'address.zipcode' });
-    const counties = location.counties.byState(selectedState?.value ?? '');
 
     const handleSuggestionSelection = (selected: AddressSuggestion) => {
         reset(
@@ -115,7 +117,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={location.states.all}
+                        options={useStateCodedValues({ lazy: false }).options}
                     />
                 )}
             />
@@ -148,7 +150,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={counties}
+                        options={useCountyCodedValues(selectedState?.value ?? '10', { lazy: false }).options}
                     />
                 )}
             />
@@ -181,7 +183,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={location.countries}
+                        options={useCountryCodedValues({ lazy: false }).options}
                         autoComplete="off"
                     />
                 )}
