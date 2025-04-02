@@ -39,7 +39,10 @@ const dataElementKeys: (keyof DataElements)[] = [
     'wicIdentifier'
 ];
 
-export const DataElementsForm = () => {
+type Props = {
+    dataElements?: DataElements;
+};
+export const DataElementsForm = ({ dataElements }: Props) => {
     const form = useFormContext<DataElements>();
     const watch = useWatch({ control: form.control });
 
@@ -129,31 +132,55 @@ export const DataElementsForm = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <DataElementRow fieldName="First name" field="firstName" />
-                        <DataElementRow fieldName="Last name" field="lastName" />
-                        <DataElementRow fieldName="Suffix" field="suffix" />
-                        <DataElementRow fieldName="Date of birth" field="dateOfBirth" />
-                        <DataElementRow fieldName="Current sex" field="sex" />
-                        <DataElementRow fieldName="Race" field="race" />
-                        <DataElementRow fieldName="SSN" field="socialSecurity" />
-                        <DataElementRow fieldName="Street address 1" field="address" />
-                        <DataElementRow fieldName="City" field="city" />
-                        <DataElementRow fieldName="State" field="state" />
-                        <DataElementRow fieldName="Zip" field="zip" />
-                        <DataElementRow fieldName="County" field="county" />
-                        <DataElementRow fieldName="Phone number" field="telephone" />
-                        <DataElementRow fieldName="Telecom" field="telecom" />
-                        <DataElementRow fieldName="Email" field="email" />
-                        <DataElementRow fieldName="Account number" field="accountNumber" />
-                        <DataElementRow fieldName="Drivers license number" field="driversLicenseNumber" />
-                        <DataElementRow fieldName="Medicaid number" field="medicaidNumber" />
-                        <DataElementRow fieldName="Medical record number" field="medicalRecordNumber" />
-                        <DataElementRow fieldName="National unique identifier" field="nationalUniqueIdentifier" />
-                        <DataElementRow fieldName="Patient external identifier" field="patientExternalIdentifier" />
-                        <DataElementRow fieldName="Patient internal identifier" field="patientInternalIdentifier" />
-                        <DataElementRow fieldName="Person number" field="personNumber" />
-                        <DataElementRow fieldName="Visa/Passport" field="visaPassport" />
-                        <DataElementRow fieldName="WIC Identifier" field="wicIdentifier" />
+                        <DataElementRow dataElements={dataElements} fieldName="First name" field="firstName" />
+                        <DataElementRow dataElements={dataElements} fieldName="Last name" field="lastName" />
+                        <DataElementRow dataElements={dataElements} fieldName="Suffix" field="suffix" />
+                        <DataElementRow dataElements={dataElements} fieldName="Date of birth" field="dateOfBirth" />
+                        <DataElementRow dataElements={dataElements} fieldName="Current sex" field="sex" />
+                        <DataElementRow dataElements={dataElements} fieldName="Race" field="race" />
+                        <DataElementRow dataElements={dataElements} fieldName="SSN" field="socialSecurity" />
+                        <DataElementRow dataElements={dataElements} fieldName="Street address 1" field="address" />
+                        <DataElementRow dataElements={dataElements} fieldName="City" field="city" />
+                        <DataElementRow dataElements={dataElements} fieldName="State" field="state" />
+                        <DataElementRow dataElements={dataElements} fieldName="Zip" field="zip" />
+                        <DataElementRow dataElements={dataElements} fieldName="County" field="county" />
+                        <DataElementRow dataElements={dataElements} fieldName="Phone number" field="telephone" />
+                        <DataElementRow dataElements={dataElements} fieldName="Telecom" field="telecom" />
+                        <DataElementRow dataElements={dataElements} fieldName="Email" field="email" />
+                        <DataElementRow dataElements={dataElements} fieldName="Account number" field="accountNumber" />
+                        <DataElementRow
+                            dataElements={dataElements}
+                            fieldName="Drivers license number"
+                            field="driversLicenseNumber"
+                        />
+                        <DataElementRow
+                            dataElements={dataElements}
+                            fieldName="Medicaid number"
+                            field="medicaidNumber"
+                        />
+                        <DataElementRow
+                            dataElements={dataElements}
+                            fieldName="Medical record number"
+                            field="medicalRecordNumber"
+                        />
+                        <DataElementRow
+                            dataElements={dataElements}
+                            fieldName="National unique identifier"
+                            field="nationalUniqueIdentifier"
+                        />
+                        <DataElementRow
+                            dataElements={dataElements}
+                            fieldName="Patient external identifier"
+                            field="patientExternalIdentifier"
+                        />
+                        <DataElementRow
+                            dataElements={dataElements}
+                            fieldName="Patient internal identifier"
+                            field="patientInternalIdentifier"
+                        />
+                        <DataElementRow dataElements={dataElements} fieldName="Person number" field="personNumber" />
+                        <DataElementRow dataElements={dataElements} fieldName="Visa/Passport" field="visaPassport" />
+                        <DataElementRow dataElements={dataElements} fieldName="WIC Identifier" field="wicIdentifier" />
                     </tbody>
                 </table>
             </div>
