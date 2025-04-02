@@ -1,4 +1,4 @@
-import { AlertProvider, useAlert } from 'alert';
+import { useAlert } from 'alert';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { useEffect } from 'react';
@@ -11,13 +11,6 @@ import styles from './data-elements.module.scss';
 import { Shown } from 'conditional-render';
 import { Loading } from 'components/Spinner';
 
-export const DataElementConfig = () => {
-    return (
-        <AlertProvider>
-            <DataElementConfigContent />
-        </AlertProvider>
-    );
-};
 const initial: DataElements = {
     firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     lastName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
@@ -49,7 +42,7 @@ const initial: DataElements = {
     wicIdentifier: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined }
 };
 
-const DataElementConfigContent = () => {
+export const DataElementConfig = () => {
     const { showSuccess, showError } = useAlert();
     const { dataElements, save, error, loading } = useDataElements();
     const form = useForm<DataElements>({ mode: 'onBlur', defaultValues: initial });
@@ -93,7 +86,7 @@ const DataElementConfigContent = () => {
                 <main>
                     <Shown when={!loading} fallback={<Loading center />}>
                         <FormProvider {...form}>
-                            <DataElementsForm />
+                            <DataElementsForm dataElements={dataElements} />
                         </FormProvider>
                     </Shown>
                 </main>
