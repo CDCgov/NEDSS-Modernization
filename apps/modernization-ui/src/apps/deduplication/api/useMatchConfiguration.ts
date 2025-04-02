@@ -32,7 +32,7 @@ export const useMatchConfiguration = (lazy = false) => {
     const fetchConfiguration = async () => {
         setLoading(true);
 
-        fetch(`${Config.deduplicationUrl}/api/configuration`, {
+        fetch(`${Config.deduplicationUrl}/configuration`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json'
@@ -63,7 +63,7 @@ export const useMatchConfiguration = (lazy = false) => {
             setPasses(passes.filter((p) => p.id !== undefined));
             successCallback?.();
         } else {
-            fetch(`${Config.deduplicationUrl}/api/configuration/pass/${id}`, {
+            fetch(`${Config.deduplicationUrl}/configuration/pass/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Accept: 'application/json'
@@ -120,7 +120,7 @@ export const useMatchConfiguration = (lazy = false) => {
     };
 
     const makeUpdateRequest = (pass: Pass, onResponse: (passes: Pass[]) => void) => {
-        fetch(`${Config.deduplicationUrl}/api/configuration/pass/${pass.id}`, {
+        fetch(`${Config.deduplicationUrl}/configuration/pass/${pass.id}`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -152,7 +152,7 @@ export const useMatchConfiguration = (lazy = false) => {
     };
 
     const makeCreateRequest = (pass: Pass, onResponse: (passes: Pass[]) => void) => {
-        fetch(`${Config.deduplicationUrl}/api/configuration/pass`, {
+        fetch(`${Config.deduplicationUrl}/configuration/pass`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -175,7 +175,7 @@ export const useMatchConfiguration = (lazy = false) => {
     };
 
     const exportAlgorithm = () => {
-        fetch(`${Config.deduplicationUrl}/api/configuration/export`, {
+        fetch(`${Config.deduplicationUrl}/configuration/export`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json'

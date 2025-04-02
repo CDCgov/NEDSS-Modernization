@@ -10,7 +10,7 @@ export const useDataElements = () => {
     const fetchDataElements = async () => {
         setLoading(true);
 
-        fetch(`${Config.deduplicationUrl}/api/configuration/data-elements`, {
+        fetch(`${Config.deduplicationUrl}/configuration/data-elements`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json'
