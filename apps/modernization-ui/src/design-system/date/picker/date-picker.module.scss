@@ -23,7 +23,7 @@
 .small {
     @include sizedDatePicker(1rem, 17.75rem, 15rem);
 
-    --calendar-date-margin: 4px;
+    --calendar-date-margin: 2px;
     --calendar-navigation-padding: 18px;
     --calendar-day-of-week-padding: 4px;
     --calendar-date-padding: 8px;
