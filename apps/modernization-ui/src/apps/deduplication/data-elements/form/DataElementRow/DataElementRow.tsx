@@ -3,16 +3,15 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DataElements } from '../../DataElement';
 import { TableNumericInput } from '../TableNumericInput/TableNumericInput';
 import styles from './DataElementRow.module.scss';
-import { useDataElements } from 'apps/deduplication/api/useDataElements';
 import { Checkbox } from 'design-system/checkbox';
 
 type Props = {
     fieldName: string;
+    dataElements?: DataElements;
     field: keyof DataElements;
 };
 
-export const DataElementRow = ({ fieldName, field }: Props) => {
-    const { dataElements } = useDataElements();
+export const DataElementRow = ({ fieldName, field, dataElements }: Props) => {
     const form = useFormContext<DataElements>();
     const watch = useWatch({ control: form.control });
 
