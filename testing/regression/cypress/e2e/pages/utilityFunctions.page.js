@@ -66,10 +66,9 @@ class UtilityFunctions {
 
   checkTransportRequestAPI = (apiID) => {
     const authToken = Cypress.env("authTokenAPI");
-    const transportstatusurlapi = Cypress.env("transportstatusurlapi");
+    const transportstatusurlapi = Cypress.env("ON_PRIM_NOTIFICATION_STATUS_API");
     const clientid = Cypress.env("DI_CLIENT_ID");
     const clientsecret = Cypress.env("DI_SECRET");
-    const authurl = Cypress.env("authurl");
     const transportstatusurlapiUpdated = transportstatusurlapi.replace("uid", apiID);
 
     counterApi++;
@@ -101,10 +100,9 @@ class UtilityFunctions {
 
   checkTransportRequest = () => {
     const authToken = Cypress.env("authTokenAPI");
-    const transportstatusurl = Cypress.env("transportstatusurl");
+    const transportstatusurl = Cypress.env("NOTIFICATION_STATUS_API");
     const clientid = Cypress.env("DI_CLIENT_ID");
     const clientsecret = Cypress.env("DI_SECRET");
-    const authurl = Cypress.env("authurl");
 
     cy.get("body").then((body) => {
       if (body.find("table.dtTable td").length > 0) {

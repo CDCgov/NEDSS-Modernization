@@ -1,28 +1,17 @@
-import {
-  When,
-  Then,
-  attach,
-  Given,
-} from "@badeball/cypress-cucumber-preprocessor";
+import { When } from "@badeball/cypress-cucumber-preprocessor";
 import "cypress-xpath";
 import UtilityFunctions from "@pages/utilityFunctions.page";
-import { faker } from "@faker-js/faker";
 
 When("I Seed HL7 {string} messages to api", (string) => {
   
-  let messageCondition = string;
-  let fakeFullName;
   let currentMessage;
   let messageID;
-  let NBSresponse;
-  let fakeFormattedSSN;
   let fakeRandomData;
   const authToken = Cypress.env("authTokenAPI");
   const clientid = Cypress.env("DI_CLIENT_ID");
   const clientsecret = Cypress.env("DI_SECRET");
-  const apiurl = Cypress.env("apiurl");
-  const checkstatusurl = Cypress.env("checkstatusurl");
-  const authurl = Cypress.env("authurl");
+  const baseUrl = Cypress.env("DI_API");
+
   cy.readFile("cypress/fixtures/seed.json", "utf8").then((jsonData) => {
     const randomData = {
       randomFirstName: "Caden",
@@ -53,9 +42,7 @@ When("I Seed HL7 {string} messages to api", (string) => {
     cy.log(
       `${modifiedData.randomLastName}, ${modifiedData.randomFirstName} ${formattedSSN}`
     );
-    fakeFormattedSSN = formattedSSN;
     currentMessage = UtilityFunctions.formatHL7(modifiedData);
-    fakeFullName = `${randomData.randomLastName}, ${randomData.randomFirstName}`;
     fakeRandomData = randomData;
     
     Cypress.env("currentMessage", currentMessage);
@@ -67,7 +54,7 @@ When("I Seed HL7 {string} messages to api", (string) => {
 
     cy.request({
       method: "POST",
-      url: apiurl,
+      url: `${baseUrl}/elrs`,
       headers: {
         "Content-Type": "text/plain",
         Authorization: `Bearer ${authToken}`,
@@ -78,7 +65,7 @@ When("I Seed HL7 {string} messages to api", (string) => {
       body: modifiedData,
     }).then((response) => {
       messageID = response.body;
-      const checkStatusUrl = `${checkstatusurl}${messageID}`;
+      const checkStatusUrl = `${baseUrl}/elrs/status-details/${messageID}`;
 
       const checkStatusRequest = () => {
         cy.request({

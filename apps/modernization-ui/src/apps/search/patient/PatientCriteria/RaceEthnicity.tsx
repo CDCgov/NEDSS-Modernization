@@ -12,7 +12,7 @@ export const RaceEthnicity = ({ sizing, orientation }: EntryFieldsProps) => {
     const categories = useRaceCategoryOptions();
 
     return (
-        <SearchCriteria>
+        <SearchCriteria sizing={sizing}>
             <Controller
                 control={control}
                 name="ethnicity"

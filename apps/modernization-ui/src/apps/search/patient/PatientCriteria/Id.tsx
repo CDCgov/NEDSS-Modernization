@@ -11,7 +11,7 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
     const identificationType = useWatch({ control: control, name: 'identificationType' });
 
     return (
-        <SearchCriteria>
+        <SearchCriteria sizing={sizing}>
             <Controller
                 control={control}
                 name="identificationType"
