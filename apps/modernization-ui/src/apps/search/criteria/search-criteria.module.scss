@@ -5,4 +5,8 @@
     gap: 1rem;
 
     padding: 1rem;
+
+    &.small {
+        gap: 0.5rem;
+    }
 }

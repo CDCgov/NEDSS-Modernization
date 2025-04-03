@@ -15,7 +15,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     return (
-        <SearchCriteria>
+        <SearchCriteria sizing={sizing}>
             <Controller
                 control={control}
                 name="name.last"

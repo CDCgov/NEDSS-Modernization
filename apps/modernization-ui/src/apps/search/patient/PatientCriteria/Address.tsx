@@ -11,7 +11,7 @@ export const Address = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
     return (
         <SearchCriteriaProvider>
-            <SearchCriteria>
+            <SearchCriteria sizing={sizing}>
                 <Controller
                     control={control}
                     name="location.street"
