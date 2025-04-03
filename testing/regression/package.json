@@ -26,7 +26,7 @@
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": false,
-    "stepDefinitions": "./cypress/step_definitions/**/*.js",
+    "stepDefinitions": "./cypress/step_definitions/**/*.{js,ts}",
     "json": {
       "enabled": true,
       "output": "./reports/log.json",
