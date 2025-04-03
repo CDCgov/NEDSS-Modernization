@@ -1,5 +1,13 @@
-.left {
-    & > span {
-        border-width: 0 !important;
+.operatorInput {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+
+    & > :first-child {
+        flex: 0 0 40%;
+    }
+
+    & > :nth-child(2) {
+        flex: 0 0 calc(60% - 0.5rem);
     }
 }

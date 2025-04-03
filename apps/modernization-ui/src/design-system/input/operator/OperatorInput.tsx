@@ -1,8 +1,6 @@
-import { ChangeEvent, useCallback } from 'react';
-import { Grid } from '@trussworks/react-uswds';
+import { useCallback } from 'react';
 import { Field, Orientation, Sizing } from 'design-system/field';
 import { OperatorSelect } from 'design-system/select';
-import { Input } from 'components/FormInputs/Input';
 import { Selectable } from 'options';
 import {
     asTextCriteriaOrString,
@@ -12,6 +10,7 @@ import {
     asTextCriteriaValue,
     asTextCriteria
 } from 'options/operator';
+import { TextInput } from '../text';
 import styles from './operator.module.scss';
 
 export type OperatorInputProps = {
@@ -73,8 +72,7 @@ export const OperatorInput = ({
     );
 
     const onInputChange = useCallback(
-        (event?: ChangeEvent<HTMLInputElement>) => {
-            const value = event?.target.value;
+        (value?: string) => {
             const criteriaValue = asTextCriteriaOrString(value, operatorValue.operator);
             onChange(criteriaValue);
         },
@@ -82,32 +80,22 @@ export const OperatorInput = ({
     );
 
     return (
-        <Field orientation={orientation} label={label} helperText={helperText} htmlFor={id} sizing={sizing}>
-            <Grid col={12}>
-                <Grid row>
-                    <Grid col={5} className={styles.left}>
-                        <OperatorSelect
-                            id={operatorSelectId}
-                            value={asSelectableOperator(effectiveOperator)}
-                            mode={operationMode}
-                            sizing={sizing}
-                            onChange={onSelectionChange}
-                        />
-                    </Grid>
-                    <Grid col={7} className={styles.right}>
-                        <Input
-                            onChange={onInputChange}
-                            type="text"
-                            name={id}
-                            defaultValue={operatorValue.value}
-                            htmlFor={id}
-                            id={id}
-                            sizing={sizing}
-                            error={error}
-                        />
-                    </Grid>
-                </Grid>
-            </Grid>
+        <Field
+            orientation={orientation}
+            label={label}
+            helperText={helperText}
+            htmlFor={id}
+            sizing={sizing}
+            error={error}>
+            <div className={styles.operatorInput}>
+                <OperatorSelect
+                    id={operatorSelectId}
+                    value={asSelectableOperator(effectiveOperator)}
+                    mode={operationMode}
+                    onChange={onSelectionChange}
+                />
+                <TextInput onChange={onInputChange} type="text" name={id} value={operatorValue.value ?? ''} id={id} />
+            </div>
         </Field>
     );
 };
