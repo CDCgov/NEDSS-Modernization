@@ -260,7 +260,7 @@ class PatientDemographicQueryResolver {
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
                       query -> query.wildcard(
-                          wildcard -> wildcard.field("phone.telephoneNbr")
+                          wildcard -> wildcard.field(PHONE_NUMBER_FIELD)
                               .value(WildCards.contains(number))))));
 
     }
