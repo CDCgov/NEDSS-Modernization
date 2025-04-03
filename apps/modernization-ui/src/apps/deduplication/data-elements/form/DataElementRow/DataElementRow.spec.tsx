@@ -1,14 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { DataElementRow } from './DataElementRow';
-import { useDataElements } from 'apps/deduplication/api/useDataElements';
 import { DataElements } from 'apps/deduplication/data-elements/DataElement';
 import userEvent from '@testing-library/user-event';
-
-// Mock the useDataElements hook
-jest.mock('apps/deduplication/api/useDataElements', () => ({
-    useDataElements: jest.fn()
-}));
 
 // Test component that provides the form context
 const TestFormProvider = ({ fieldName, field }: { fieldName: string; field: string }) => {
@@ -16,22 +10,21 @@ const TestFormProvider = ({ fieldName, field }: { fieldName: string; field: stri
 
     return (
         <FormProvider {...methods}>
-            <DataElementRow fieldName={fieldName} field={field as keyof DataElements} />
+            <table>
+                <tbody>
+                    <DataElementRow
+                        dataElements={{ firstName: { oddsRatio: 1.5, threshold: 0.8 } }}
+                        fieldName={fieldName}
+                        field={field as keyof DataElements}
+                    />
+                </tbody>
+            </table>
         </FormProvider>
     );
 };
 
 describe('DataElementRow Component', () => {
     const field = 'firstName'; // Example field name
-
-    beforeEach(() => {
-        // Mocking configuration data for the test
-        (useDataElements as jest.Mock).mockReturnValue({
-            dataElements: {
-                firstName: { oddsRatio: 1.5, threshold: 0.8 }
-            }
-        });
-    });
 
     it('should render checkbox and numeric inputs', () => {
         render(<TestFormProvider fieldName="First Name" field={field} />);
