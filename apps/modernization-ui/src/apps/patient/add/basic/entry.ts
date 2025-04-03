@@ -84,26 +84,4 @@ const initial = (asOf: string = today()): BasicNewPatientEntry => ({
     }
 });
 
-const defaultsInitial = (defaults: BasicNewPatientEntry, asOf: string = today()): BasicNewPatientEntry => ({
-    administrative: {
-        asOf: asOf
-    },
-    name: {},
-    address: {
-        address1: defaults.address?.address1 ?? undefined,
-        address2: defaults.address?.address2 ?? undefined,
-        state: defaults.address?.state ?? undefined,
-        county: defaults.address?.county ?? undefined,
-        zipcode: defaults.address?.zipcode ?? undefined,
-        country: {
-            value: '840',
-            name: 'United States'
-        }
-    },
-    identifications: (defaults.identifications?.length ?? 0 > 0) ? defaults.identifications : [],
-    ethnicityRace: {
-        races: (defaults.ethnicityRace?.races?.length ?? 0 > 0) ? defaults.ethnicityRace?.races : []
-    }
-});
-
-export { initial, defaultsInitial };
+export { initial };
