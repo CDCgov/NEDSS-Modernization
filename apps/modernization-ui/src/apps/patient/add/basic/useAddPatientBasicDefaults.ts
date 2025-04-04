@@ -1,8 +1,18 @@
 import { useCallback } from 'react';
 import { useLocation } from 'react-router';
-import { BasicNewPatientEntry, initial as initialEntry } from './entry';
+import { BasicNewPatientEntry, initial } from './entry';
+import { asBasicNewPatientEntry } from './asBasicNewPatientEntry';
 
 type Interaction = {
+    /**
+     * Initializes the values of patient data entry based on the current Location state.
+     *
+     *  1. Use the {@code defaults} if present
+     *  2. Use the {@code criteria.values} converted to patient entry defaults if present.
+     *  3. Otherwise use the initial values for Patient data entry.
+     *
+     * @return  {BasicNewPatientEntry} The defaults values.
+     */
     initialize: () => BasicNewPatientEntry;
 };
 
@@ -16,9 +26,13 @@ const useAddPatientBasicDefaults = (): Interaction => {
 
     const initialize = useCallback(() => {
         if (location.state?.defaults) {
-            return location.state?.defaults;
+            //  first check the defaults passed when navigated to
+            return { ...location.state?.defaults };
+        } else if (location.state?.criteria?.values) {
+            //  convert the search criteria values to
+            return asBasicNewPatientEntry(initial())({ ...location.state?.criteria?.values });
         } else {
-            return initialEntry();
+            return initial();
         }
     }, [location.state?.defaults]);
 

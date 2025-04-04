@@ -4,7 +4,7 @@ import { AddPatientExtended } from './extended/AddPatientExtended';
 import { Outlet } from 'react-router';
 import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
 import { AddPatientBasic } from './basic/AddPatientBasic';
-import { SearchFromAddPatientProvider } from 'apps/search/patient/add/useSearchFromAddPatient';
+import { SearchFromAddPatientProvider } from 'apps/patient/add/useSearchFromAddPatient';
 import { ComponentSizingProvider } from 'design-system/sizing';
 
 const PatientDataProviderWrapper = () => (

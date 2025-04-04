@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useFormNavigationBlock } from 'navigation';
@@ -12,7 +12,7 @@ import { BasicNewPatientEntry } from './entry';
 import { useAddBasicPatient } from './useAddBasicPatient';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
-import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
+import { useSearchFromAddPatient } from 'apps/patient/add/useSearchFromAddPatient';
 import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
 import { useShowCancelModal, CancelAddPatientPanel } from '../cancelAddPatientPanel';
 
@@ -24,9 +24,7 @@ export const AddPatientBasic = () => {
 
     const interaction = useAddBasicPatient();
     const form = useForm<BasicNewPatientEntry>({
-        defaultValues: {
-            ...initialize()
-        },
+        defaultValues: initialize(),
         mode: 'onBlur'
     });
     const blocker = useFormNavigationBlock({ activated: !bypassBlocker, form, allowed: '/patient/add/extended' });
@@ -38,11 +36,12 @@ export const AddPatientBasic = () => {
     const { toSearch } = useSearchFromAddPatient();
     const location = useLocation();
 
-    const handleCancel = () => {
-        toSearch(location.state?.criteria ?? '');
-    };
+    const backToSearch = useCallback(
+        () => toSearch(location.state?.criteria?.encrypted),
+        [toSearch, location.state?.criteria?.encrypted]
+    );
 
-    const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state?.criteria ?? ''));
+    const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state?.criteria));
 
     const handleFormIsValid = (valid: boolean) => {
         interaction.setCanSave(valid);
@@ -52,7 +51,7 @@ export const AddPatientBasic = () => {
 
     const handleModalConfirm = () => {
         blocker.unblock();
-        toSearch(location.state?.criteria ?? '');
+        backToSearch();
     };
 
     const handleModalClose = blocker.reset;
@@ -84,7 +83,7 @@ export const AddPatientBasic = () => {
                                     Add extended data
                                 </Button>
                             </FeatureToggle>
-                            <Button onClick={handleCancel} outline>
+                            <Button onClick={backToSearch} outline>
                                 Cancel
                             </Button>
                             <Button type="submit" onClick={handleSave} disabled={working}>
