@@ -4,7 +4,7 @@ import { SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchC
 import { SingleSelect } from 'design-system/select';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
-import { OperatorInput } from 'design-system/input/operator';
+import { TextCriteriaField } from 'design-system/input/text/criteria';
 import { EntryFieldsProps } from 'design-system/entry';
 
 export const Address = ({ sizing, orientation }: EntryFieldsProps) => {
@@ -16,7 +16,7 @@ export const Address = ({ sizing, orientation }: EntryFieldsProps) => {
                     control={control}
                     name="location.street"
                     render={({ field: { onChange, value, name } }) => (
-                        <OperatorInput
+                        <TextCriteriaField
                             id={name}
                             value={value}
                             label="Street address"
@@ -31,7 +31,7 @@ export const Address = ({ sizing, orientation }: EntryFieldsProps) => {
                     control={control}
                     name="location.city"
                     render={({ field: { onChange, value, name } }) => (
-                        <OperatorInput
+                        <TextCriteriaField
                             id={name}
                             value={value}
                             label="City"

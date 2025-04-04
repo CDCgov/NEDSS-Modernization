@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { Field, Orientation, Sizing } from 'design-system/field';
-import { OperatorSelect } from 'design-system/select';
 import { Selectable } from 'options';
 import {
     asTextCriteriaOrString,
@@ -10,10 +9,11 @@ import {
     asTextCriteriaValue,
     asTextCriteria
 } from 'options/operator';
-import { TextInput } from '../text';
-import styles from './operator.module.scss';
+import { TextInput } from '../TextInput';
+import styles from './criteria.module.scss';
+import { OperatorSelect } from './operator';
 
-export type OperatorInputProps = {
+export type TextCriteriaFieldProps = {
     id: string;
     /* value is string like "Bob" or object like { "equals": "Bob" } */
     value?: string | TextCriteria | null;
@@ -44,7 +44,7 @@ const asOperatorAndValue = (value?: string | TextCriteria | null, operator?: Tex
     return { operator: operator ?? 'equals', value: null };
 };
 
-export const OperatorInput = ({
+export const TextCriteriaField = ({
     id,
     value,
     operationMode,
@@ -55,7 +55,7 @@ export const OperatorInput = ({
     orientation,
     error,
     onChange
-}: OperatorInputProps) => {
+}: TextCriteriaFieldProps) => {
     const operatorValue = asOperatorAndValue(value, operator);
     const operatorSelectId = `${id}Operator`;
     const effectiveOperator = operatorValue.operator || operator;
@@ -87,7 +87,7 @@ export const OperatorInput = ({
             htmlFor={id}
             sizing={sizing}
             error={error}>
-            <div className={styles.operatorInput}>
+            <div className={styles.criteriaField}>
                 <OperatorSelect
                     id={operatorSelectId}
                     value={asSelectableOperator(effectiveOperator)}

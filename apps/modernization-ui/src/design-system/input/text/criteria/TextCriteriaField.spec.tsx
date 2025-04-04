@@ -1,20 +1,20 @@
 import { render, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { OperatorInput, OperatorInputProps } from './OperatorInput';
+import { TextCriteriaField, TextCriteriaFieldProps } from './TextCriteriaField';
 import { TextCriteria } from 'options/operator';
 
-const renderComponent = (props: Partial<OperatorInputProps> = {}) => {
-    const combinedProps: OperatorInputProps = {
+const renderComponent = (props: Partial<TextCriteriaFieldProps> = {}) => {
+    const combinedProps: TextCriteriaFieldProps = {
         id: 'test-operator-input',
         label: 'test-operator-input',
         onChange: jest.fn(),
         ...props
     };
-    return render(<OperatorInput {...combinedProps} />);
+    return render(<TextCriteriaField {...combinedProps} />);
 };
 
-describe('OperatorInput', () => {
+describe('TextCriteriaField', () => {
     it('renders without crashing with default props', () => {
         const { getByLabelText } = renderComponent();
         expect(getByLabelText('test-operator-input')).toBeInTheDocument();

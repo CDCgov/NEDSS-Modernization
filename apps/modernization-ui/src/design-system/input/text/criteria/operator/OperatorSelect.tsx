@@ -1,6 +1,6 @@
 import { Selectable } from 'options';
 import { textOperators, defaultTextOperator, textAlphaOperators } from 'options/operator';
-import Select from '../single/Select';
+import Select from 'design-system/select/single/Select';
 
 export type OperatorSelectProps = {
     id: string;
