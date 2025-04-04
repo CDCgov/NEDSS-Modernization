@@ -1,5 +1,4 @@
 import { asSelectable, findByValue, Selectable } from 'options';
-import { PatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
 
 import { RaceEntry, AddressEntry, NameEntry, PhoneEmailEntry, IdentificationEntry } from 'apps/patient/data';
 import { NewPatientEntry } from 'apps/patient/add';
@@ -11,6 +10,7 @@ import { HOME as HOME_ADDRESS } from 'options/address/uses';
 import { HOUSE } from 'options/address/types';
 import { CELL_PHONE, PHONE, EMAIL } from 'options/phone/types';
 import { HOME as HOME_PHONE, MOBILE_CONTACT, PRIMARY_WORKPLACE } from 'options/phone/uses';
+import { NameCodedValues } from 'apps/patient/data/name/useNameCodedValues';
 
 const mapOr =
     <R, S, O>(mapping: Mapping<R, S>, fallback: O) =>
@@ -23,7 +23,7 @@ const maybeSelectable = mapOr(asSelectable, null);
 
 const asExtendedNewPatientEntry = (
     initial: NewPatientEntry,
-    nameCodes: PatientNameCodedValues,
+    nameCodes: NameCodedValues,
     raceCodes: Selectable[]
 ): ExtendedNewPatientEntry => {
     return {
@@ -53,7 +53,7 @@ const asExtendedNewPatientEntry = (
     };
 };
 
-const nameExtended = (initial: NewPatientEntry, nameCodes: PatientNameCodedValues): NameEntry[] => {
+const nameExtended = (initial: NewPatientEntry, nameCodes: NameCodedValues): NameEntry[] => {
     const suffix: CodedValue | undefined = initial.suffix
         ? nameCodes.suffixes.find((suf) => suf.value === initial.suffix)
         : undefined;
