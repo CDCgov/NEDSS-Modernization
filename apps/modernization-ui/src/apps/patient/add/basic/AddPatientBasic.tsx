@@ -25,13 +25,7 @@ export const AddPatientBasic = () => {
     const interaction = useAddBasicPatient();
     const form = useForm<BasicNewPatientEntry>({
         defaultValues: {
-            ...initialize(),
-            address: {
-                country: {
-                    value: '840',
-                    name: 'United States'
-                }
-            }
+            ...initialize()
         },
         mode: 'onBlur'
     });
