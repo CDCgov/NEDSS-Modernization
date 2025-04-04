@@ -1,6 +1,6 @@
 import { Icon } from '@trussworks/react-uswds';
 import { MatchingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement';
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';

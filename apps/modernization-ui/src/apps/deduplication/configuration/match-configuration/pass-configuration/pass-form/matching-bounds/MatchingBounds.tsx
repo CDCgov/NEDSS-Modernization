@@ -4,7 +4,7 @@ import { Card } from 'design-system/card';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { BoundEntry } from './bound-entry/BoundEntry';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement';
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import styles from './matching-bounds.module.scss';
 import { getLogOdds } from '../matching-criteria/getLogOdds';
 

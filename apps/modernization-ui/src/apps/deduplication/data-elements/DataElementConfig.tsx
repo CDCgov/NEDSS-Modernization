@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { useDataElements } from '../api/useDataElements';
-import { DataElements } from './DataElement';
+import { DataElements } from '../api/model/DataElement';
 import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
 import styles from './data-elements.module.scss';
 import { Shown } from 'conditional-render';

@@ -11,7 +11,7 @@ import { MatchingCriteria } from './matching-criteria/MatchingCriteria';
 import { MatchingBounds } from './matching-bounds/MatchingBounds';
 import { ActivateToggle } from './activate-toggle/ActivateToggle';
 import { MatchingCriteriaSidePanel } from './matching-criteria/panel/MatchingCriteriaSidePanel';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement';
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import styles from './pass-form.module.scss';
 import { exists } from 'utils';
 

@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { DataElementsForm } from './DataElementsForm';
 import { FormProvider, useForm } from 'react-hook-form';
-import { DataElements } from '../../DataElement';
+import { DataElements } from '../../../api/model/DataElement';
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
     const methods = useForm<DataElements>({ defaultValues: {} });
@@ -11,7 +11,7 @@ describe('DataElementsForm', () => {
     test('renders DataElementsForm component', () => {
         render(
             <Wrapper>
-                <DataElementsForm/>
+                <DataElementsForm />
             </Wrapper>
         );
 
@@ -25,7 +25,7 @@ describe('DataElementsForm', () => {
     test('toggles individual checkboxes', () => {
         render(
             <Wrapper>
-                <DataElementsForm/>
+                <DataElementsForm />
             </Wrapper>
         );
 
@@ -45,7 +45,7 @@ describe('DataElementsForm', () => {
     test('selects all checkboxes when "Select All" is clicked', async () => {
         render(
             <Wrapper>
-                <DataElementsForm/>
+                <DataElementsForm />
             </Wrapper>
         );
 
@@ -72,7 +72,7 @@ describe('DataElementsForm', () => {
     test('shows tooltip when info icon is hovered', async () => {
         render(
             <Wrapper>
-                <DataElementsForm/>
+                <DataElementsForm />
             </Wrapper>
         );
 
@@ -88,11 +88,10 @@ describe('DataElementsForm', () => {
         });
     });
 
-
     test('renders form with initial values', () => {
         render(
             <Wrapper>
-                <DataElementsForm/>
+                <DataElementsForm />
             </Wrapper>
         );
 

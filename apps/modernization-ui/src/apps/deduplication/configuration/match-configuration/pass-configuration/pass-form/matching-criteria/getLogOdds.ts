@@ -1,5 +1,5 @@
 import { MatchingAttribute } from 'apps/deduplication/api/model/Pass';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement';
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 
 export const getLogOdds = (dataElements: DataElements, matchingAttribute?: MatchingAttribute) => {
     switch (matchingAttribute) {

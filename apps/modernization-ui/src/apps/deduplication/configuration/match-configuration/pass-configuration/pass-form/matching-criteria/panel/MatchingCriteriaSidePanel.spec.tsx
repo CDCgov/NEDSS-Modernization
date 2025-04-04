@@ -3,7 +3,7 @@ import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { MatchingCriteriaSidePanel } from './MatchingCriteriaSidePanel';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement';
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 
 const onAccept = jest.fn();
 const onCancel = jest.fn();

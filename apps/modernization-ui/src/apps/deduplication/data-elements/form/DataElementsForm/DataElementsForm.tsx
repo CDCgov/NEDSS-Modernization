@@ -1,7 +1,7 @@
 import { Checkbox } from 'design-system/checkbox';
 import { DataElementRow } from '../DataElementRow/DataElementRow';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { DataElements } from '../../DataElement';
+import { DataElements } from '../../../api/model/DataElement';
 import { Card } from 'design-system/card/Card';
 import { useRef } from 'react';
 import { Icon } from 'design-system/icon';
