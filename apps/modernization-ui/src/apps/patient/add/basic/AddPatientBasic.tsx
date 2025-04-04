@@ -5,15 +5,15 @@ import { useFormNavigationBlock } from 'navigation';
 import { FeatureToggle } from 'feature';
 import { Shown } from 'conditional-render';
 import { Button } from 'components/button';
-import { AddPatientLayout, DataEntryLayout } from 'apps/patient/add/layout';
 import { sections } from './sections';
 import { AddPatientBasicForm } from './AddPatientBasicForm';
 import { BasicNewPatientEntry } from './entry';
 import { useAddBasicPatient } from './useAddBasicPatient';
+import { AddPatientLayout, DataEntryLayout } from '../layout';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
+import { usePatientDataEntryMethod } from '../usePatientDataEntryMethod';
 import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
-import { useSearchFromAddPatient } from 'apps/patient/add/useSearchFromAddPatient';
-import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
+import { useSearchFromAddPatient } from '../useSearchFromAddPatient';
 import { useShowCancelModal, CancelAddPatientPanel } from '../cancelAddPatientPanel';
 
 import styles from './add-patient-basic.module.scss';
@@ -29,7 +29,7 @@ export const AddPatientBasic = () => {
     });
     const blocker = useFormNavigationBlock({ activated: !bypassBlocker, form, allowed: '/patient/add/extended' });
 
-    const { toExtendedNew } = useBasicExtendedTransition();
+    const { toExtended } = usePatientDataEntryMethod();
 
     const handleSave = form.handleSubmit(interaction.create);
 
@@ -41,7 +41,10 @@ export const AddPatientBasic = () => {
         [toSearch, location.state?.criteria?.encrypted]
     );
 
-    const handleExtended = form.handleSubmit((data) => toExtendedNew(data, location.state?.criteria));
+    const handleExtended = useCallback(
+        form.handleSubmit((data) => toExtended(data, location.state?.criteria)),
+        [form.handleSubmit, toExtended, location.state?.criteria]
+    );
 
     const handleFormIsValid = (valid: boolean) => {
         interaction.setCanSave(valid);
