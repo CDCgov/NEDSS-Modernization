@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { OperatorInput } from './OperatorInput';
+import { TextCriteriaField } from './TextCriteriaField';
 
 const meta = {
-    title: 'Design System/Input/OperatorInput',
-    component: OperatorInput
-} satisfies Meta<typeof OperatorInput>;
+    title: 'Design System/Input/TextCriteriaField',
+    component: TextCriteriaField
+} satisfies Meta<typeof TextCriteriaField>;
 
 export default meta;
 
@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        id: 'operator-input',
+        id: 'criteria-input',
         label: 'Operator Input',
         operationMode: 'all',
         onChange: (value) => {
@@ -24,7 +24,7 @@ export const Default: Story = {
 export const Horizontal: Story = {
     args: {
         ...Default.args,
-        id: 'operator-horizontal',
+        id: 'criteria-horizontal',
         orientation: 'horizontal'
     }
 };
@@ -32,7 +32,7 @@ export const Horizontal: Story = {
 export const Vertical: Story = {
     args: {
         ...Default.args,
-        id: 'operator-vertical',
+        id: 'criteria-vertical',
         orientation: 'vertical'
     }
 };

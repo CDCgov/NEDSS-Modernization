@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { OperatorSelect } from './OperatorSelect';
 
 const meta = {
-    title: 'Design System/Select/OperatorSelect',
+    title: 'Design System/Input/OperatorSelect',
     component: OperatorSelect
 } satisfies Meta<typeof OperatorSelect>;
 
