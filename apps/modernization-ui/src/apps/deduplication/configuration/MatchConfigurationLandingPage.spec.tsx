@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { MatchConfiguration } from './MatchConfiguration';
+import { MatchConfigurationLandingPage } from './MatchConfigurationLandingPage';
 import { MemoryRouter } from 'react-router';
 import { AlertProvider } from 'alert';
 import { DataElements } from '../data-elements/DataElement';
@@ -20,7 +20,7 @@ const Fixture = () => {
     return (
         <MemoryRouter>
             <AlertProvider>
-                <MatchConfiguration />
+                <MatchConfigurationLandingPage />
             </AlertProvider>
         </MemoryRouter>
     );

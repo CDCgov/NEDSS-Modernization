@@ -1,0 +1,101 @@
+@use 'styles/colors';
+
+.importModal {
+    display: flex;
+    gap: 1.25rem;
+
+    .errorBar {
+        width: 0.25rem;
+        background: colors.$error-dark;
+    }
+
+    .inputSection {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        gap: 0.5rem;
+
+        .info {
+            color: colors.$base-darkest;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.09375rem;
+        }
+
+        .errorText {
+            color: colors.$error-dark;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.09375rem;
+        }
+
+        .selectFileLabel {
+            padding: 2rem;
+            background: colors.$base-white;
+            border: 1px dashed colors.$base-light;
+            cursor: pointer;
+            color: colors.$base-darkest;
+            text-align: center;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.09375rem;
+
+            & > span {
+                color: colors.$primary;
+                font-weight: 700;
+            }
+        }
+
+        .errorBorder {
+            border: 2px dashed colors.$error-dark;
+        }
+
+        .dragOver {
+            background: colors.$primary-lighter;
+        }
+
+        .selectedFile {
+            display: flex;
+            flex-direction: column;
+            border: 1px dashed colors.$base-light;
+            gap: 0.06rem;
+
+            & > div {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.5rem;
+                background: colors.$primary-lighter;
+                align-items: center;
+
+                & > div {
+                    color: colors.$base-darkest;
+                    font-size: 0.875rem;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+
+                & > label {
+                    color: colors.$primary;
+                    font-size: 0.875rem;
+                    font-weight: 700;
+                    line-height: 1.3125rem;
+                    cursor: pointer;
+                }
+            }
+
+            .fileInfo {
+                display: flex;
+                justify-content: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        & > input[type='file'] {
+            display: none;
+        }
+    }
+}

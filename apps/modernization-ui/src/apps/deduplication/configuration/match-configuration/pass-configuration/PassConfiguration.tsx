@@ -125,6 +125,7 @@ export const PassConfiguration = ({ dataElements }: Props) => {
                     onRenamePass={handleRenamePass}
                     selectedPass={selectedPass}
                 />
+
                 <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes?.length ?? 0} />}>
                     <FormProvider {...form}>
                         <PassForm

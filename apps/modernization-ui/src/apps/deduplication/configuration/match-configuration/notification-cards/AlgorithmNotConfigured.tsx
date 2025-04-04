@@ -1,9 +1,12 @@
 import { Icon } from '@trussworks/react-uswds';
 import { Button } from 'design-system/button';
-import { NotificationCard } from './NotificationCard';
 import { useNavigate } from 'react-router';
+import { NotificationCard } from './NotificationCard';
 
-export const AlgorithmNotConfigured = () => {
+type Props = {
+    onImportClick: () => void;
+};
+export const AlgorithmNotConfigured = ({ onImportClick }: Props) => {
     const nav = useNavigate();
     return (
         <NotificationCard
@@ -22,7 +25,7 @@ export const AlgorithmNotConfigured = () => {
                         Configure data elements
                     </Button>
 
-                    <Button sizing="medium">
+                    <Button sizing="medium" onClick={onImportClick}>
                         <Icon.UploadFile size={3} />
                         Import configuration file
                     </Button>

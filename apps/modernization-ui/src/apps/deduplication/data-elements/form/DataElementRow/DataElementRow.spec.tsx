@@ -93,12 +93,13 @@ describe('DataElementRow Component', () => {
     });
 
     it('should render the correct initial values based on configuration', async () => {
+        const user = userEvent.setup();
         render(<TestFormProvider fieldName="First Name" field={field} />);
 
         const checkbox = screen.getByLabelText('First Name'); // Use getByLabelText here
         const [oddsRatioInput, thresholdInput] = screen.getAllByRole('spinbutton');
 
-        await userEvent.click(checkbox);
+        await user.click(checkbox);
 
         await waitFor(() => {
             expect(oddsRatioInput).toHaveValue(1.5);

@@ -341,6 +341,7 @@ describe('When displaying Icons', () => {
         'drag',
         'expand',
         'expand-more',
+        'file-input',
         'group',
         'icon-dot-gov',
         'icon-https',
