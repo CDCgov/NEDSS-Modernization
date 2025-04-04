@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router';
 import { PatientCriteriaEntry } from '../criteria';
 import { useSearchCriteriaEncrypted } from 'apps/search/useSearchCriteriaEncrypted';
 import { useFormContext } from 'react-hook-form';
+import { initial } from 'apps/patient/add/basic/entry';
 import { asBasicNewPatientEntry } from 'apps/patient/add/basic/asBasicNewPatientEntry';
 import { useConfiguration } from 'configuration';
 import { asNewPatientEntry } from './asNewPatientEntry';
@@ -18,7 +19,7 @@ const useAddPatientFromSearch = (): Interaction => {
     const { features } = useConfiguration();
 
     const addBasic = (criteria: Partial<PatientCriteriaEntry>) => {
-        const defaults = asBasicNewPatientEntry(criteria);
+        const defaults = asBasicNewPatientEntry(initial())(criteria);
         navigate('/patient/add', { state: { defaults, criteria: found } });
     };
 
