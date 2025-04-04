@@ -29,12 +29,7 @@ export const MatchConfigurationLandingPage = () => {
         <div className={styles.matchConfigurationLandingPage}>
             <Shown
                 when={importedAlgorithm === undefined}
-                fallback={
-                    <ImportPreview
-                        importedAlgorithm={importedAlgorithm!}
-                        onCancel={() => setImportedAlgorithm(undefined)}
-                    />
-                }>
+                fallback={<ImportPreview onCancel={() => setImportedAlgorithm(undefined)} />}>
                 <MatchConfiguration
                     dataElements={dataElements}
                     loading={loading}
