@@ -29,17 +29,19 @@ Workflow:
 
 ## Storybook
 
-Storybook is a component library that gives information on how to use the reusable react components like button,checkbox, table and so on. Run storybook locally to see what components are already available.
+[Storybook](https://storybook.js.org/) is a UI framework that provides the ability to construct "stories" that allow us to view, interact, and test reusable React components like button, checkbox, table, as well as richer components like forms and menus. Currently we have implemented stories for all of our Design System components.
+
+Run storybook locally to see what components are already available.
 
 ```sh
-npm run storybook.
+npm run storybook
 ```
 
 The no lint option is to ensure there aren't any lint errors as of now. This could be an effort going forward.
 
 ## Containerizing
 
-The frontend application can be packaged as a Docker container by executing the following command from the `apps/moderniztion-ui` directory
+The frontend application can be packaged as a Docker container by executing the following command from the `apps/modernization-ui` directory.
 
 ```shell
 docker build .

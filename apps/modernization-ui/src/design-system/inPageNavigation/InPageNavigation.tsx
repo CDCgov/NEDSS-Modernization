@@ -8,7 +8,7 @@ export interface NavSection {
     label: string;
 }
 
-interface InPageNavigationProps {
+export interface InPageNavigationProps {
     sections: NavSection[];
     title?: string;
 }
