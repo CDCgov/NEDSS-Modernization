@@ -35,7 +35,6 @@ const resolveLocation = (name: string) => {
         case 'table':
         case 'file':
         case 'file-pdf':
-        case 'file-json':
         case 'sort_asc_alpha':
         case 'sort_des_alpha':
         case 'sort_asc_numeric':
@@ -83,7 +82,6 @@ type ExtendedIcons =
     | 'expand-more'
     | 'file'
     | 'file-pdf'
-    | 'file-json'
     | 'group'
     | 'icon-dot-gov'
     | 'icon-https'

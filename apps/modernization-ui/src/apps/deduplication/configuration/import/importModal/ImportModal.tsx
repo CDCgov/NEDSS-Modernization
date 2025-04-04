@@ -62,12 +62,11 @@ export const ImportModal = ({
         setDragOver(false);
     };
 
-    const fileIcon: 'file' | 'file-json' | 'file-pdf' = useMemo(() => {
+    const fileIcon: 'file' | 'file-pdf' = useMemo(() => {
         switch (selectedFile?.type) {
-            case 'application/json':
-                return 'file-json';
             case 'application/pdf':
                 return 'file-pdf';
+            case 'application/json':
             default:
                 return 'file';
         }
@@ -162,7 +161,7 @@ const Unselected = ({ htmlFor, dragOver, error, dropSectionContent }: Unselected
 
 type SelectedProps = {
     htmlFor: string;
-    fileIcon: 'file' | 'file-json' | 'file-pdf';
+    fileIcon: 'file' | 'file-pdf';
     fileName: string;
 };
 const Selected = ({ htmlFor, fileIcon, fileName }: SelectedProps) => {
