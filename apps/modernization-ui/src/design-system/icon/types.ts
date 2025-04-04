@@ -1,6 +1,5 @@
 export type Icons = USWDSIcons | ExtendedIcons;
 
-//export type { Icons };
 export const ExtendedIconsArray = [
     'calendar',
     'down-arrow-blue',

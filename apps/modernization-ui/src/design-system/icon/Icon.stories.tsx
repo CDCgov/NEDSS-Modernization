@@ -7,7 +7,6 @@ const meta = {
     component: Icon,
     argTypes: {
         name: { control: 'select', options: IconsArray },
-        //sizing: { control: { type: 'select', options: ['small', 'medium', 'large'] } },
         color: { control: 'color' }
     }
 } satisfies Meta<typeof Icon>;
