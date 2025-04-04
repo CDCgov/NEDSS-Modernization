@@ -2,10 +2,11 @@ import { useAlert } from 'alert';
 import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
 import { useDataElements } from '../api/useDataElements';
-import { AlgorithmExport, ImportConfigurationModal } from './import/ImportConfigurationModal';
+import { AlgorithmExport } from 'apps/deduplication/api/model/AlgorithmExport';
+import { ImportConfigurationModal } from './import/ImportConfigurationModal';
 import { ImportPreview } from './import/ImportPreview';
-import styles from './match-configuration-landing.module.scss';
 import { MatchConfiguration } from './match-configuration/MatchConfiguration';
+import styles from './match-configuration-landing.module.scss';
 
 export const MatchConfigurationLandingPage = () => {
     const { showError } = useAlert();

@@ -1,7 +1,7 @@
 import { useAlert } from 'alert';
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { useMatchConfiguration } from 'apps/deduplication/api/useMatchConfiguration';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement';
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormState } from 'react-hook-form';

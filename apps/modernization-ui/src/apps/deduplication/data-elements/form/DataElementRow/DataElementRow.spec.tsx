@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { DataElementRow } from './DataElementRow';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement';
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import userEvent from '@testing-library/user-event';
 
 // Test component that provides the form context

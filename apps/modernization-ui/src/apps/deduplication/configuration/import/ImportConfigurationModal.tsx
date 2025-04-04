@@ -1,12 +1,6 @@
-import { Pass } from 'apps/deduplication/api/model/Pass';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement';
 import { useState } from 'react';
 import { ImportModal } from './importModal/ImportModal';
-
-export type AlgorithmExport = {
-    dataElements: DataElements;
-    algorithm: { passes: Pass[] };
-};
+import { AlgorithmExport } from 'apps/deduplication/api/model/AlgorithmExport';
 
 type Props = {
     visible: boolean;

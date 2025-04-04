@@ -1,6 +1,6 @@
 import { Config } from 'config';
 import { useEffect, useState } from 'react';
-import { DataElements } from '../data-elements/DataElement';
+import { DataElements } from './model/DataElement';
 
 export const useDataElements = () => {
     const [dataElements, setDataElements] = useState<DataElements | undefined>();

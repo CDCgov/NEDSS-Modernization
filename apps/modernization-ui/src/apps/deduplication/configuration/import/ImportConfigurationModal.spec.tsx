@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BlockingAttribute, MatchingAttribute, MatchMethod } from 'apps/deduplication/api/model/Pass';
-import { AlgorithmExport, ImportConfigurationModal } from './ImportConfigurationModal';
+import { ImportConfigurationModal } from './ImportConfigurationModal';
+import { AlgorithmExport } from 'apps/deduplication/api/model/AlgorithmExport';
 
 const onImport = jest.fn();
 const onCancel = jest.fn();

@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { MatchConfigurationLandingPage } from './MatchConfigurationLandingPage';
 import { MemoryRouter } from 'react-router';
 import { AlertProvider } from 'alert';
-import { DataElements } from '../data-elements/DataElement';
+import { DataElements } from '../api/model/DataElement';
 
 let mockReturnValue: DataElements | undefined = { firstName: { active: true } };
 jest.mock('apps/deduplication/api/useDataElements', () => ({

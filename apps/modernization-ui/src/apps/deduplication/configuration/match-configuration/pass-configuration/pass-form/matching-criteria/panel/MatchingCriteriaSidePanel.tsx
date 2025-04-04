@@ -6,7 +6,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
 import { SidePanel } from '../../side-panel/SidePanel';
 import styles from './matching-criteria-panel.module.scss';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement';
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 
 type AttributeInfo = {
     active: boolean;

@@ -6,7 +6,7 @@ import { Icon } from 'design-system/icon';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { useMatchConfiguration } from '../../api/useMatchConfiguration';
-import { DataElements } from '../../data-elements/DataElement';
+import { DataElements } from '../../api/model/DataElement';
 import styles from './match-configuration.module.scss';
 import { AlgorithmNotConfigured } from './notification-cards/AlgorithmNotConfigured';
 import { PassConfiguration } from './pass-configuration/PassConfiguration';
