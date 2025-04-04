@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BlockingAttribute, MatchingAttribute, MatchMethod } from 'apps/deduplication/api/model/Pass';
 import { ImportConfigurationModal } from './ImportConfigurationModal';
@@ -109,7 +109,7 @@ describe('ImportConfigurationModal', () => {
     it('should show warning when invalid configuration uploaded', async () => {
         const user = userEvent.setup();
 
-        const { getAllByRole, getByLabelText, getByText } = render(<Fixture />);
+        const { getAllByRole, getByLabelText, queryByText } = render(<Fixture />);
 
         const fileInput = getByLabelText('Drag configuration file here or choose from folder');
 
@@ -123,10 +123,13 @@ describe('ImportConfigurationModal', () => {
         await user.click(importButton);
 
         expect(onImport).toHaveBeenCalledTimes(0);
-        expect(
-            getByText(
-                'The imported JSON file was invalid. Please review the file and ensure the file is the appropriate format and all values are valid.'
-            )
-        ).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(
+                queryByText(
+                    'The imported JSON file was invalid. Please review the file and ensure the file is the appropriate format and all values are valid.'
+                )
+            ).toBeInTheDocument();
+        });
     });
 });
