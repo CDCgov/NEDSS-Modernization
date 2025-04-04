@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, ReactNode, useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router';
 
 type SearchFromAddPatientContextType = {
@@ -14,13 +14,14 @@ type SearchFromAddPatientProviderProps = {
 function SearchFromAddPatientProvider({ children }: SearchFromAddPatientProviderProps) {
     const navigate = useNavigate();
 
-    const toSearch = (criteria: string | null) => {
-        if (criteria) {
-            navigate(`search/patients/?q=${criteria}`);
-        } else {
-            navigate('/search/patient');
-        }
-    };
+    const toSearch = useCallback(
+        (criteria: string | null) => {
+            const search = criteria ? `?q=${criteria}` : undefined;
+
+            navigate({ pathname: 'search/patients/', search });
+        },
+        [navigate]
+    );
 
     const value = {
         toSearch

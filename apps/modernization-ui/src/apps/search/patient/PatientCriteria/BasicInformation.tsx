@@ -6,10 +6,10 @@ import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
 import { Input } from 'components/FormInputs/Input';
 import { validNameRule } from 'validation/entry';
-import { genders } from 'options/gender';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
 import { Permitted } from 'libs/permission';
+import { searchableGenders } from './searchableGenders';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -75,7 +75,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         name={name}
                         label="Current sex"
                         id={name}
-                        options={genders}
+                        options={searchableGenders}
                         sizing={sizing}
                         orientation={orientation}
                     />
