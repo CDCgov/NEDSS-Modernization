@@ -1,10 +1,10 @@
 package gov.cdc.nbs.search.criteria.text;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import gov.cdc.nbs.search.AdjustStrings;
 
 import java.util.Optional;
-import java.util.function.Predicate;
+
+import static gov.cdc.nbs.search.AdjustStrings.maybeWithoutHyphens;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record TextCriteria(
@@ -35,28 +35,23 @@ public record TextCriteria(
   }
 
   public Optional<String> maybeEquals() {
-    return maybeText(equals);
+    return maybeWithoutHyphens(equals);
   }
 
   public Optional<String> maybeNot() {
-    return maybeText(not);
+    return maybeWithoutHyphens(not);
   }
 
   public Optional<String> maybeStartsWith() {
-    return maybeText(startsWith);
+    return maybeWithoutHyphens(startsWith);
   }
 
   public Optional<String> maybeContains() {
-    return maybeText(contains);
+    return maybeWithoutHyphens(contains);
   }
 
   public Optional<String> maybeSoundsLike() {
-    return maybeText(soundsLike);
+    return maybeWithoutHyphens(soundsLike);
   }
 
-  public static Optional<String> maybeText(String value) {
-    return Optional.ofNullable(value)
-        .filter(Predicate.not(String::isEmpty))
-        .map(AdjustStrings::withoutHyphens);
-  }
 }

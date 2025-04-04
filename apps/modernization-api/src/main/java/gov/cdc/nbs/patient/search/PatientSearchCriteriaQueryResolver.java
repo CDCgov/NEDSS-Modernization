@@ -18,7 +18,7 @@ class PatientSearchCriteriaQueryResolver {
     this.eventQueryResolver = eventQueryResolver;
   }
 
-  Query resolve(final PatientFilter criteria) {
+  Query resolve(final PatientSearchCriteria criteria) {
     return Stream.concat(
         demographicQueryResolver.resolve(criteria),
         eventQueryResolver.resolve(criteria)).reduce(

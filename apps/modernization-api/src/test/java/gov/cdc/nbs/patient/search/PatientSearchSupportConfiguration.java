@@ -10,8 +10,8 @@ class PatientSearchSupportConfiguration {
 
   @Bean
   @ScenarioScope
-  Active<PatientFilter> activePatientFilter() {
-    return new Active<>(PatientFilter::new);
+  Active<PatientSearchCriteria> activePatientFilter() {
+    return new Active<>(PatientSearchCriteria::new);
   }
 
 }

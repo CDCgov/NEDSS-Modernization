@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.profile.phone.change;
 
+import gov.cdc.nbs.data.LimitString;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
@@ -63,7 +64,7 @@ public class PatientProfilePhoneChangeSteps {
         RandomUtil.getRandomString(19),
         faker.phoneNumber().cellPhone(),
         faker.phoneNumber().extension(),
-        faker.internet().emailAddress(),
+        LimitString.toMaxLength(faker.internet().emailAddress(), 100),
         faker.internet().url(),
         RandomUtil.getRandomString(19));
 
@@ -114,7 +115,7 @@ public class PatientProfilePhoneChangeSteps {
         RandomUtil.getRandomString(15),
         faker.phoneNumber().cellPhone(),
         faker.phoneNumber().extension(),
-        faker.internet().emailAddress(),
+        LimitString.toMaxLength(faker.internet().emailAddress(),100),
         faker.internet().url(),
         RandomUtil.getRandomString(15));
 

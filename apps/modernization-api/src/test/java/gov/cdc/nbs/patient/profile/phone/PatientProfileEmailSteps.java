@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.profile.phone;
 
+import gov.cdc.nbs.data.LimitString;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.message.patient.input.PatientInput;
@@ -33,7 +34,7 @@ public class PatientProfileEmailSteps {
 
   @Given("the new patient's email address is entered")
   public void the_new_patient_email_address_is_entered() {
-	this.input.active().getEmailAddresses().add(faker.internet().emailAddress());
+	this.input.active().getEmailAddresses().add(LimitString.toMaxLength(faker.internet().emailAddress(), 100));
   }
 
   @Then("the new patient has the entered email address")

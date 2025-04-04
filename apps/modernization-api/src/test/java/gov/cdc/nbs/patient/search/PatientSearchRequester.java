@@ -78,7 +78,7 @@ class PatientSearchRequester {
   }
 
   ResultActions search(
-      final PatientFilter filter,
+      final PatientSearchCriteria filter,
       final Pageable paging,
       final SortCriteria sorting) {
     try {

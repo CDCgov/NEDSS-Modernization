@@ -15,11 +15,11 @@ class PatientLocationQueryResolver {
   private static final String STREET = "address.streetAddr1";
   private static final String CITY = "address.city";
 
-  Stream<QueryVariant> resolve(final PatientFilter criteria) {
+  Stream<QueryVariant> resolve(final PatientSearchCriteria criteria) {
     return criteria.maybeLocation().stream().flatMap(this::resolveLocationCriteria);
   }
 
-  private Stream<QueryVariant> resolveLocationCriteria(final PatientFilter.LocationCriteria criteria) {
+  private Stream<QueryVariant> resolveLocationCriteria(final PatientSearchCriteria.LocationCriteria criteria) {
     return Stream.of(
         applyStreetEquals(criteria),
         applyStreetContains(criteria),
@@ -30,37 +30,37 @@ class PatientLocationQueryResolver {
         .flatMap(Optional::stream);
   }
 
-  private Optional<QueryVariant> applyStreetEquals(final PatientFilter.LocationCriteria criteria) {
+  private Optional<QueryVariant> applyStreetEquals(final PatientSearchCriteria.LocationCriteria criteria) {
     return criteria.maybeStreet()
         .flatMap(TextCriteria::maybeEquals)
         .map(value -> equalTo(ADDRESS, STREET, value));
   }
 
-  private Optional<QueryVariant> applyStreetNotEquals(final PatientFilter.LocationCriteria criteria) {
+  private Optional<QueryVariant> applyStreetNotEquals(final PatientSearchCriteria.LocationCriteria criteria) {
     return criteria.maybeStreet()
         .flatMap(TextCriteria::maybeNot)
         .map(value -> notEquals(ADDRESS, STREET, value));
   }
 
-  private Optional<QueryVariant> applyStreetContains(final PatientFilter.LocationCriteria criteria) {
+  private Optional<QueryVariant> applyStreetContains(final PatientSearchCriteria.LocationCriteria criteria) {
     return criteria.maybeStreet()
         .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(ADDRESS, STREET, value));
   }
 
-  private Optional<QueryVariant> applyCityEquals(final PatientFilter.LocationCriteria criteria) {
+  private Optional<QueryVariant> applyCityEquals(final PatientSearchCriteria.LocationCriteria criteria) {
     return criteria.maybeCity()
         .flatMap(TextCriteria::maybeEquals)
         .map(value -> equalTo(ADDRESS, CITY, value));
   }
 
-  private Optional<QueryVariant> applyCityNotEquals(final PatientFilter.LocationCriteria criteria) {
+  private Optional<QueryVariant> applyCityNotEquals(final PatientSearchCriteria.LocationCriteria criteria) {
     return criteria.maybeCity()
         .flatMap(TextCriteria::maybeNot)
         .map(value -> notEquals(ADDRESS, CITY, value));
   }
 
-  private Optional<QueryVariant> applyCityContains(final PatientFilter.LocationCriteria criteria) {
+  private Optional<QueryVariant> applyCityContains(final PatientSearchCriteria.LocationCriteria criteria) {
     return criteria.maybeCity()
         .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(ADDRESS, CITY, value));

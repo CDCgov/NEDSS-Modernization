@@ -16,12 +16,12 @@ import java.util.OptionalLong;
 
 public class PatientSearchRandomizedCriteriaSteps {
 
-  private final Active<PatientFilter> criteria;
+  private final Active<PatientSearchCriteria> criteria;
   private final PatientShortIdentifierResolver resolver;
   private final Active<SearchablePatient> searchable;
 
   public PatientSearchRandomizedCriteriaSteps(
-      final Active<PatientFilter> criteria,
+      final Active<PatientSearchCriteria> criteria,
       final PatientShortIdentifierResolver resolver,
       final Active<SearchablePatient> searchable) {
     this.criteria = criteria;
@@ -39,8 +39,8 @@ public class PatientSearchRandomizedCriteriaSteps {
 
   }
 
-  private PatientFilter applyCriteriaFromTarget(
-      final PatientFilter filter,
+  private PatientSearchCriteria applyCriteriaFromTarget(
+      final PatientSearchCriteria filter,
       final String field,
       final String qualifier) {
     switch (field) {
@@ -239,12 +239,12 @@ public class PatientSearchRandomizedCriteriaSteps {
 
   }
 
-  private PatientFilter applyPartialCriteriaFromTarget(
-      final PatientFilter filter,
+  private PatientSearchCriteria applyPartialCriteriaFromTarget(
+      final PatientSearchCriteria filter,
       final String field) {
     switch (field.toLowerCase()) {
       case "identification" -> identificationFromTarget().map(
-          found -> new PatientFilter.Identification(
+          found -> new PatientSearchCriteria.Identification(
               RandomUtil.randomPartialDataSearchString(found.value()),
               null,
               found.type()))

@@ -17,12 +17,12 @@ import org.springframework.stereotype.Controller;
 class PatientSearchResultResolver {
 
   private final SearchPageableMapper mapper;
-  private final SearchResolver<PatientFilter, PatientSearchResult> resolver;
+  private final SearchResolver<PatientSearchCriteria, PatientSearchResult> resolver;
   private final AuthorizedPatientFilterAdjuster adjuster;
 
   PatientSearchResultResolver(
       final SearchPageableMapper mapper,
-      final SearchResolver<PatientFilter, PatientSearchResult> resolver
+      final SearchResolver<PatientSearchCriteria, PatientSearchResult> resolver
   ) {
     this.mapper = mapper;
     this.resolver = resolver;
@@ -33,11 +33,11 @@ class PatientSearchResultResolver {
   @PreAuthorize("hasAuthority('FIND-PATIENT')")
   SearchResult<PatientSearchResult> resolve(
       @AuthenticationPrincipal final NbsUserDetails user,
-      @Argument final PatientFilter filter,
+      @Argument final PatientSearchCriteria filter,
       @Argument("page") PaginationRequest paginated
   ) {
 
-    PatientFilter adjusted = PatientFilterValidator.validate(this.adjuster.adjusted(user, filter));
+    PatientSearchCriteria adjusted = PatientFilterValidator.validate(this.adjuster.adjusted(user, filter));
     Pageable pageable = mapper.from(paginated);
 
     return resolver.search(

@@ -2,16 +2,8 @@ package gov.cdc.nbs.patient.search;
 
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.Script;
-import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.ChildScoreMode;
-import co.elastic.clients.elasticsearch._types.query_dsl.NestedQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.QueryVariant;
-import co.elastic.clients.elasticsearch._types.query_dsl.ScriptQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.date.DateCriteria.Equals;
 import org.springframework.stereotype.Component;
@@ -23,28 +15,35 @@ import java.util.stream.Stream;
 @Component
 class PatientSearchCriteriaFilterResolver {
 
-  private static final String CURRENT_GENDER = "curr_sex_cd";
+  private static final String GENDER_FIELD = "curr_sex_cd";
   private static final String STATUS = "record_status_cd";
   private static final String DECEASED = "deceased_ind_cd";
   private static final String PERSON_TYPE = "cd";
   private static final String PERSON_TYPE_PATIENT = "PAT";
   private static final String PAINLESS = "painless";
-  private static final String NOT_FOUND_GENDER_CODE = "x";
 
-  Query resolve(final PatientFilter criteria) {
+
+  /**
+   * Translates the {@code criteria} into a {@link Query} that can be submitted to Elasticsearch.
+   *
+   * @param criteria The {@link PatientSearchCriteria} representing the criteria used to search for patients.
+   * @return A {@link Query}
+   * @throws UnresolvableSearchException when values of the criteria is known to result in no results.
+   */
+  Query resolve(final PatientSearchCriteria criteria) throws UnresolvableSearchException {
     return Stream.of(
-        onlyPatients(),
-        applyStatusCriteria(criteria),
-        applyGenderCriteria(criteria),
-        applyDeceasedCriteria(criteria),
-        applyRaceCriteria(criteria),
-        applyEthnicityCriteria(criteria),
-        applyIdentificationCriteria(criteria),
-        applyStateCriteria(criteria),
-        applyDateOfBirthDayCriteria(criteria),
-        applyDateOfBirthMonthCriteria(criteria),
-        applyDateOfBirthYearCriteria(criteria),
-        applyCountryCriteria(criteria)).flatMap(Optional::stream)
+            onlyPatients(),
+            applyStatusCriteria(criteria),
+            applyGenderCriteria(criteria),
+            applyDeceasedCriteria(criteria),
+            applyRaceCriteria(criteria),
+            applyEthnicityCriteria(criteria),
+            applyIdentificationCriteria(criteria),
+            applyStateCriteria(criteria),
+            applyDateOfBirthDayCriteria(criteria),
+            applyDateOfBirthMonthCriteria(criteria),
+            applyDateOfBirthYearCriteria(criteria),
+            applyCountryCriteria(criteria)).flatMap(Optional::stream)
         .map(QueryVariant::_toQuery)
         .reduce(
             new BoolQuery.Builder(),
@@ -60,7 +59,7 @@ class PatientSearchCriteriaFilterResolver {
                 .value(PERSON_TYPE_PATIENT)));
   }
 
-  private Optional<QueryVariant> applyStatusCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyStatusCriteria(final PatientSearchCriteria criteria) {
     TermsQuery statuses = criteria.adjustedStatus()
         .stream()
         .map(RecordStatus::name)
@@ -75,46 +74,36 @@ class PatientSearchCriteriaFilterResolver {
     return Optional.of(statuses);
   }
 
-  private String getImpliedGenderFromSexFilter(String sexFilter) {
-    String lowerSexFilter = sexFilter.toLowerCase();
-    if (lowerSexFilter.equals(Gender.F.display().toLowerCase())
-        || lowerSexFilter.equals(Gender.F.value().toLowerCase())) {
-      return Gender.F.value();
+  private Optional<QueryVariant> applyGenderCriteria(final PatientSearchCriteria criteria) {
+
+    Optional<SearchableGender> maybeCriteria = criteria.maybeGender();
+
+    //  filtering on gender/sex does not work like the other filters due to the gender field being a coded value and not
+    //  the description.
+    Optional<SearchableGender> maybeFilter = criteria.maybeFilter()
+        .map(PatientSearchCriteria.Filter::sex)
+        .map(SearchableGender::resolve);
+
+    if (maybeCriteria.isPresent() && maybeFilter.isPresent() && maybeCriteria.get() != maybeFilter.get()) {
+      //  short circuit search, there will be no results
+      throw new UnresolvableSearchException("Conflicting gender criteria and gender filter");
     }
-    if (lowerSexFilter.equals(Gender.M.display().toLowerCase())
-        || lowerSexFilter.equals(Gender.M.value().toLowerCase())) {
-      return Gender.M.value();
-    }
-    if (lowerSexFilter.equals(Gender.U.display().toLowerCase())
-        || lowerSexFilter.equals(Gender.U.value().toLowerCase())) {
-      return Gender.U.value();
-    }
-    return NOT_FOUND_GENDER_CODE;
+
+    return maybeCriteria.or(() -> maybeFilter)
+        .map(this::resolveGenderQuery);
   }
 
-  private Optional<QueryVariant> applyGenderCriteria(final PatientFilter criteria) {
+  private QueryVariant resolveGenderQuery(final SearchableGender gender) {
+    return switch (gender) {
+      case UNRECOGNIZED -> throw new UnresolvableSearchException("Unrecognized gender");
+      case NO_VALUE -> BoolQuery.of(bool -> bool.mustNot(not -> not.exists(exists -> exists.field(GENDER_FIELD))));
+      default -> TermQuery.of(query -> query.field(GENDER_FIELD).value(gender.value()));
+    };
 
-    Gender gender = Gender.resolve(criteria.getGender());
-    String genderValue = gender == null ? null : gender.value();
-    String sexFilter = criteria.getFilter().sex();
-    if (sexFilter != null) {
-      String impliedSex = getImpliedGenderFromSexFilter(sexFilter);
-      if (impliedSex != null) {
-        if (genderValue == null) {
-          genderValue = impliedSex;
-        } else if (!genderValue.equals(impliedSex)) {
-          genderValue = NOT_FOUND_GENDER_CODE;
-        }
-      }
-    }
-    final String termValue = genderValue;
-    return (termValue == null) ? Optional.empty()
-        : Optional.of(
-            TermQuery.of(
-                query -> query.field(CURRENT_GENDER).value(termValue)));
+
   }
 
-  private Optional<QueryVariant> applyDeceasedCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyDeceasedCriteria(final PatientSearchCriteria criteria) {
     if (criteria.getDeceased() != null) {
       return Optional.of(
           TermQuery.of(
@@ -124,7 +113,7 @@ class PatientSearchCriteriaFilterResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyRaceCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyRaceCriteria(final PatientSearchCriteria criteria) {
     if (criteria.getRace() != null) {
       return Optional.of(
           NestedQuery.of(
@@ -139,7 +128,7 @@ class PatientSearchCriteriaFilterResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyEthnicityCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyEthnicityCriteria(final PatientSearchCriteria criteria) {
     if (criteria.getEthnicity() != null) {
       return Optional.of(
           TermQuery.of(
@@ -150,7 +139,7 @@ class PatientSearchCriteriaFilterResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyDateOfBirthDayCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyDateOfBirthDayCriteria(final PatientSearchCriteria criteria) {
     DateCriteria dateCriteria = criteria.getBornOn();
     if (dateCriteria == null) {
       return Optional.empty();
@@ -164,11 +153,11 @@ class PatientSearchCriteriaFilterResolver {
         ScriptQuery.of(q -> q.script(
             Script.of(
                 script -> script.source(
-                    "doc['birth_time'].size()!=0 && doc['birth_time'].value.getDayOfMonth() == " + equalsDate.day())
+                        "doc['birth_time'].size()!=0 && doc['birth_time'].value.getDayOfMonth() == " + equalsDate.day())
                     .lang(PAINLESS)))));
   }
 
-  private Optional<QueryVariant> applyDateOfBirthMonthCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyDateOfBirthMonthCriteria(final PatientSearchCriteria criteria) {
     DateCriteria dateCriteria = criteria.getBornOn();
     if (dateCriteria == null) {
       return Optional.empty();
@@ -188,7 +177,7 @@ class PatientSearchCriteriaFilterResolver {
                     .lang(PAINLESS)))));
   }
 
-  private Optional<QueryVariant> applyDateOfBirthYearCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyDateOfBirthYearCriteria(final PatientSearchCriteria criteria) {
     DateCriteria dateCriteria = criteria.getBornOn();
     if (dateCriteria == null) {
       return Optional.empty();
@@ -203,13 +192,13 @@ class PatientSearchCriteriaFilterResolver {
             query -> query.script(
                 Script.of(
                     script -> script.source(
-                        "doc['birth_time'].size()!=0 && doc['birth_time'].value.getYear() == " + equalsDate.year())
+                            "doc['birth_time'].size()!=0 && doc['birth_time'].value.getYear() == " + equalsDate.year())
                         .lang(PAINLESS)))));
   }
 
-  private Optional<QueryVariant> applyIdentificationCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyIdentificationCriteria(final PatientSearchCriteria criteria) {
 
-    PatientFilter.Identification identification = criteria.getIdentification();
+    PatientSearchCriteria.Identification identification = criteria.getIdentification();
 
     String type = identification.identificationType();
     String value = identification.identificationNumber();
@@ -229,7 +218,7 @@ class PatientSearchCriteriaFilterResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyStateCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyStateCriteria(final PatientSearchCriteria criteria) {
     if (criteria.getState() != null && !criteria.getState().isEmpty()) {
       return Optional.of(
           NestedQuery.of(
@@ -244,7 +233,7 @@ class PatientSearchCriteriaFilterResolver {
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyCountryCriteria(final PatientFilter criteria) {
+  private Optional<QueryVariant> applyCountryCriteria(final PatientSearchCriteria criteria) {
     if (criteria.getCountry() != null && !criteria.getCountry().isEmpty()) {
       return Optional.of(
           NestedQuery.of(

@@ -1,7 +1,7 @@
 package gov.cdc.nbs.search.redirect.simple;
 
-import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.option.Option;
+import gov.cdc.nbs.patient.search.SearchableGender;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import org.junit.jupiter.api.Test;
@@ -123,7 +123,7 @@ class SimplePatientSearchCriteriaResolverTest {
 
   @ParameterizedTest
   @MethodSource("searchableGenders")
-  void should_resolve_gender(final String gender, final Gender expected) {
+  void should_resolve_gender(final String gender, final SearchableGender expected) {
     Map<String, String> parameters = Map.of("patientSearchVO.currentSex", gender);
 
     Optional<SimplePatientSearchCriteria> resolved = new SimplePatientSearchCriteriaResolver().resolve(parameters);
@@ -142,12 +142,12 @@ class SimplePatientSearchCriteriaResolverTest {
 
   public static Stream<Arguments> searchableGenders() {
     return Stream.of(
-        arguments("F", Gender.F),
-        arguments("f", Gender.F),
-        arguments("M", Gender.M),
-        arguments("m", Gender.M),
-        arguments("U", Gender.U),
-        arguments("u", Gender.U)
+        arguments("F", SearchableGender.FEMALE),
+        arguments("f", SearchableGender.FEMALE),
+        arguments("M", SearchableGender.MALE),
+        arguments("m", SearchableGender.MALE),
+        arguments("U", SearchableGender.UNKNOWN),
+        arguments("u", SearchableGender.UNKNOWN)
     );
   }
 }
