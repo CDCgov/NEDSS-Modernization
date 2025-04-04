@@ -9,7 +9,6 @@ describe('OperatorSelect', () => {
     const defaultProps: OperatorSelectProps = {
         id: 'operator-select',
         value: null,
-        showLabel: false,
         onChange: mockOnChange
     };
 
@@ -17,24 +16,6 @@ describe('OperatorSelect', () => {
         const { getByRole } = render(<OperatorSelect {...defaultProps} />);
         const selectElement = getByRole('combobox');
         expect(selectElement).toBeInTheDocument();
-    });
-
-    it('displays the operator label when showLabel is true', () => {
-        const { getByLabelText } = render(<OperatorSelect {...defaultProps} showLabel={true} />);
-        const labelElement = getByLabelText('Operator');
-        expect(labelElement).toBeInTheDocument();
-    });
-
-    it('does not display the label when showLabel is false', () => {
-        const { queryByLabelText } = render(<OperatorSelect {...defaultProps} showLabel={false} />);
-        const labelElement = queryByLabelText('Operator');
-        expect(labelElement).not.toBeInTheDocument();
-    });
-
-    it('does not display a placeholder', () => {
-        const { getByRole } = render(<OperatorSelect {...defaultProps} showLabel={false} />);
-        const selectElement = getByRole('combobox') as HTMLSelectElement;
-        expect(selectElement.options).toHaveLength(textOperators.length);
     });
 
     it('calls onChange when an option is selected', async () => {

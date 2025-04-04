@@ -23,6 +23,8 @@ $radio-large: 1.25rem;
     label {
         &::before {
             margin: 0;
+            // modified left property because the box shadow has 2px outside the border
+            left: 2px !important;
         }
     }
 

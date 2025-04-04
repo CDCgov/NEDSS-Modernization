@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 import { DateCriteriaField, validateDateCriteria } from 'design-system/date/criteria';
-import { OperatorInput } from 'design-system/input/operator';
+import { TextCriteriaField } from 'design-system/input/text/criteria';
 import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
 import { Input } from 'components/FormInputs/Input';
@@ -21,7 +21,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                 name="name.last"
                 rules={validNameRule}
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                    <OperatorInput
+                    <TextCriteriaField
                         id={name}
                         value={value}
                         label="Last name"
@@ -37,7 +37,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                 name="name.first"
                 rules={validNameRule}
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                    <OperatorInput
+                    <TextCriteriaField
                         id={name}
                         value={value}
                         label="First name"
