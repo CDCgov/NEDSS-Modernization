@@ -1,8 +1,5 @@
-import { ChangeEvent, useCallback } from 'react';
-import { Grid } from '@trussworks/react-uswds';
+import { useCallback } from 'react';
 import { Field, Orientation, Sizing } from 'design-system/field';
-import { OperatorSelect } from 'design-system/select';
-import { Input } from 'components/FormInputs/Input';
 import { Selectable } from 'options';
 import {
     asTextCriteriaOrString,
@@ -12,9 +9,11 @@ import {
     asTextCriteriaValue,
     asTextCriteria
 } from 'options/operator';
-import styles from './operator.module.scss';
+import { TextInput } from '../TextInput';
+import styles from './criteria.module.scss';
+import { OperatorSelect } from './operator';
 
-export type OperatorInputProps = {
+export type TextCriteriaFieldProps = {
     id: string;
     /* value is string like "Bob" or object like { "equals": "Bob" } */
     value?: string | TextCriteria | null;
@@ -45,7 +44,7 @@ const asOperatorAndValue = (value?: string | TextCriteria | null, operator?: Tex
     return { operator: operator ?? 'equals', value: null };
 };
 
-export const OperatorInput = ({
+export const TextCriteriaField = ({
     id,
     value,
     operationMode,
@@ -56,7 +55,7 @@ export const OperatorInput = ({
     orientation,
     error,
     onChange
-}: OperatorInputProps) => {
+}: TextCriteriaFieldProps) => {
     const operatorValue = asOperatorAndValue(value, operator);
     const operatorSelectId = `${id}Operator`;
     const effectiveOperator = operatorValue.operator || operator;
@@ -73,8 +72,7 @@ export const OperatorInput = ({
     );
 
     const onInputChange = useCallback(
-        (event?: ChangeEvent<HTMLInputElement>) => {
-            const value = event?.target.value;
+        (value?: string) => {
             const criteriaValue = asTextCriteriaOrString(value, operatorValue.operator);
             onChange(criteriaValue);
         },
@@ -82,32 +80,22 @@ export const OperatorInput = ({
     );
 
     return (
-        <Field orientation={orientation} label={label} helperText={helperText} htmlFor={id} sizing={sizing}>
-            <Grid col={12}>
-                <Grid row>
-                    <Grid col={5} className={styles.left}>
-                        <OperatorSelect
-                            id={operatorSelectId}
-                            value={asSelectableOperator(effectiveOperator)}
-                            mode={operationMode}
-                            sizing={sizing}
-                            onChange={onSelectionChange}
-                        />
-                    </Grid>
-                    <Grid col={7} className={styles.right}>
-                        <Input
-                            type="text"
-                            name={id}
-                            defaultValue={operatorValue.value}
-                            htmlFor={id}
-                            id={id}
-                            sizing={sizing}
-                            error={error}
-                            onChange={onInputChange}
-                        />
-                    </Grid>
-                </Grid>
-            </Grid>
+        <Field
+            orientation={orientation}
+            label={label}
+            helperText={helperText}
+            htmlFor={id}
+            sizing={sizing}
+            error={error}>
+            <div className={styles.criteriaField}>
+                <OperatorSelect
+                    id={operatorSelectId}
+                    value={asSelectableOperator(effectiveOperator)}
+                    mode={operationMode}
+                    onChange={onSelectionChange}
+                />
+                <TextInput onChange={onInputChange} type="text" name={id} value={operatorValue.value ?? ''} id={id} />
+            </div>
         </Field>
     );
 };

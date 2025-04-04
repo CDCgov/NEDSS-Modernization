@@ -1,22 +1,6 @@
-import { ChangeEvent } from 'react';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
-import { Selectable, findByValue } from 'options';
-import classNames from 'classnames';
-
-const renderOptions = (options: Selectable[], placeholder?: string) => (
-    <>
-        {placeholder && (
-            <option key={-1} value="">
-                {placeholder}
-            </option>
-        )}
-        {options?.map((item, index) => (
-            <option key={index} value={item.value}>
-                {item.name}
-            </option>
-        ))}
-    </>
-);
+import { Selectable } from 'options';
+import Select from './Select';
 
 type Props = {
     id: string;
@@ -49,15 +33,6 @@ const SingleSelect = ({
     placeholder = '- Select -',
     ...inputProps
 }: Props) => {
-    const find = findByValue(options);
-
-    const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        if (onChange) {
-            const selected = find(event.target.value);
-            onChange(selected);
-        }
-    };
-
     return (
         <EntryWrapper
             orientation={orientation}
@@ -68,16 +43,15 @@ const SingleSelect = ({
             required={required}
             error={error}
             warning={warning}>
-            <select
-                key={value?.value ?? ''}
+            <Select
+                className={className}
                 id={id}
-                className={classNames('usa-select', className)}
-                name={inputProps.name ?? id}
-                value={value?.value}
-                onChange={handleChange}
-                {...inputProps}>
-                {renderOptions(options, placeholder)}
-            </select>
+                options={options}
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+                {...inputProps}
+            />
         </EntryWrapper>
     );
 };
