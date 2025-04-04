@@ -43,7 +43,7 @@ describe('ImportConfigurationModal', () => {
         const { getByLabelText } = render(<Fixture />);
 
         const input = getByLabelText('Drag configuration file here or choose from folder');
-        expect(input).toHaveAttribute('accept', '.json');
+        expect(input).toHaveAttribute('accept', 'application/json');
     });
 
     it('should trigger on cancel when close button clicked', async () => {

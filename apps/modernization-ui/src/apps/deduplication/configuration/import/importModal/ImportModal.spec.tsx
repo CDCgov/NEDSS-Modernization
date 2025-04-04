@@ -85,9 +85,12 @@ describe('ImportModal', () => {
 
     // Accept
     it('should allow limiting of input type', () => {
-        const { getByLabelText } = render(<Fixture accept=".json,.csv" />);
+        const { getByLabelText } = render(<Fixture accept="application/json,text/csv" />);
 
-        expect(getByLabelText('Drag file here or choose from folder')).toHaveAttribute('accept', '.json,.csv');
+        expect(getByLabelText('Drag file here or choose from folder')).toHaveAttribute(
+            'accept',
+            'application/json,text/csv'
+        );
     });
 
     // Cancel - close button

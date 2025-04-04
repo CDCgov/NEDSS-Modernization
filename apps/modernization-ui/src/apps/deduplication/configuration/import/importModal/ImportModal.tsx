@@ -11,7 +11,7 @@ type Props = {
     title?: string;
     infoText?: string;
     dropSectionContent?: ReactNode | ReactNode[];
-    accept?: string;
+    accept?: string; // mime type to accept. Ex: 'application/json,application/pdf'
     visible: boolean;
     error?: string;
     onImport: (file: File) => void;
@@ -45,7 +45,10 @@ export const ImportModal = ({
 
     const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
-        setSelectedFile(e.dataTransfer.files[0]);
+        const file = e.dataTransfer.files[0];
+        if (accept === undefined || accept?.includes(file.type)) {
+            setSelectedFile(e.dataTransfer.files[0]);
+        }
         setDragOver(false);
     };
 
