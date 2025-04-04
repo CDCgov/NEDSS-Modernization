@@ -10,7 +10,7 @@ import { MatchConfiguration } from './match-configuration/MatchConfiguration';
 export const MatchConfigurationLandingPage = () => {
     const { showError } = useAlert();
     const { dataElements, error, loading } = useDataElements();
-    const [importedDataElements] = useState<AlgorithmExport | undefined>();
+    const [importedAlgorithm, setImportedAlgorithm] = useState<AlgorithmExport | undefined>();
     const [showImportModal, setShowImportModal] = useState(false);
 
     useEffect(() => {
@@ -20,16 +20,16 @@ export const MatchConfigurationLandingPage = () => {
     }, [error]);
 
     const handleAlgorithmImport = (algorithm: AlgorithmExport) => {
-        console.log('import algorithm: ', algorithm);
         setShowImportModal(false);
+        setImportedAlgorithm(algorithm);
     };
 
     return (
         <div className={styles.matchConfigurationLandingPage}>
-            <Shown when={importedDataElements !== undefined}>
-                <ImportPreview />
+            <Shown when={importedAlgorithm !== undefined}>
+                <ImportPreview onCancel={() => setImportedAlgorithm(undefined)} />
             </Shown>
-            <Shown when={importedDataElements === undefined}>
+            <Shown when={importedAlgorithm === undefined}>
                 <MatchConfiguration
                     dataElements={dataElements}
                     loading={loading}

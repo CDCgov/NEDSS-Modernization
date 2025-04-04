@@ -320,6 +320,9 @@ describe('When displaying Icons', () => {
 
     it.each([
         'table',
+        'file',
+        'file-json',
+        'file-pdf',
         'sort_asc_alpha',
         'sort_des_alpha',
         'sort_asc_numeric',
@@ -341,7 +344,6 @@ describe('When displaying Icons', () => {
         'drag',
         'expand',
         'expand-more',
-        'file-input',
         'group',
         'icon-dot-gov',
         'icon-https',
