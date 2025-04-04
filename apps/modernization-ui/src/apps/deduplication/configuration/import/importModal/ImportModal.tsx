@@ -83,6 +83,7 @@ export const ImportModal = ({
             </Button>
         </>
     );
+
     return (
         <Shown when={visible}>
             <Modal id={id} size="small" title={title} onClose={onCancel} footer={footer}>
@@ -102,36 +103,21 @@ export const ImportModal = ({
                         <Shown when={error !== undefined}>
                             <div className={styles.errorText}>{error}</div>
                         </Shown>
-                        <Shown when={selectedFile === undefined}>
-                            <label
+                        <Shown
+                            when={selectedFile !== undefined}
+                            fallback={
+                                <Unselected
+                                    htmlFor={`${id}-file-input`}
+                                    dragOver={dragOver}
+                                    error={error}
+                                    dropSectionContent={dropSectionContent}
+                                />
+                            }>
+                            <Selected
                                 htmlFor={`${id}-file-input`}
-                                className={classNames(
-                                    styles.selectFileLabel,
-                                    dragOver ? styles.dragOver : '',
-                                    error ? styles.errorBorder : ''
-                                )}>
-                                <Shown
-                                    when={dropSectionContent !== undefined}
-                                    fallback={
-                                        <>
-                                            Drag file here or <span>choose from folder</span>
-                                        </>
-                                    }>
-                                    {dropSectionContent}
-                                </Shown>
-                            </label>
-                        </Shown>
-                        <Shown when={selectedFile !== undefined}>
-                            <div className={styles.selectedFile}>
-                                <div>
-                                    <div>Selected file</div>
-                                    <label htmlFor={`${id}-file-input`}>Change file</label>
-                                </div>
-                                <div className={styles.fileInfo}>
-                                    <Icon name={fileIcon} sizing="large" />
-                                    {selectedFile?.name}
-                                </div>
-                            </div>
+                                fileIcon={fileIcon}
+                                fileName={selectedFile?.name ?? ''}
+                            />
                         </Shown>
                         <input
                             id={`${id}-file-input`}
@@ -143,5 +129,53 @@ export const ImportModal = ({
                 </div>
             </Modal>
         </Shown>
+    );
+};
+
+type UnselectedProps = {
+    htmlFor: string;
+    dragOver: boolean;
+    error?: string;
+    dropSectionContent?: ReactNode | ReactNode[];
+};
+const Unselected = ({ htmlFor, dragOver, error, dropSectionContent }: UnselectedProps) => {
+    return (
+        <label
+            htmlFor={htmlFor}
+            className={classNames(
+                styles.selectFileLabel,
+                dragOver ? styles.dragOver : '',
+                error ? styles.errorBorder : ''
+            )}>
+            <Shown
+                when={dropSectionContent !== undefined}
+                fallback={
+                    <>
+                        Drag file here or <span>choose from folder</span>
+                    </>
+                }>
+                {dropSectionContent}
+            </Shown>
+        </label>
+    );
+};
+
+type SelectedProps = {
+    htmlFor: string;
+    fileIcon: 'file' | 'file-json' | 'file-pdf';
+    fileName: string;
+};
+const Selected = ({ htmlFor, fileIcon, fileName }: SelectedProps) => {
+    return (
+        <div className={styles.selectedFile}>
+            <div>
+                <div>Selected file</div>
+                <label htmlFor={htmlFor}>Change file</label>
+            </div>
+            <div className={styles.fileInfo}>
+                <Icon name={fileIcon} sizing="large" />
+                {fileName}
+            </div>
+        </div>
     );
 };
