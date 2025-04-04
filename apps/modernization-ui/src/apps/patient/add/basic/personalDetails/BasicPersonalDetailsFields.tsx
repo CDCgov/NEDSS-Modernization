@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { Input } from 'components/FormInputs/Input';
@@ -11,7 +10,8 @@ import { ValueView } from 'design-system/data-display/ValueView';
 import { BasicPersonalDetailsEntry } from '../entry';
 import { usePatientProfilePermissions } from 'apps/patient/profile/permission';
 import { Indicator, indicators } from 'coded';
-import { usePatientGeneralCodedValues } from 'apps/patient/profile/generalInfo';
+import { useSexBirthCodedValues } from 'apps/patient/data/sexAndBirth/useSexBirthCodedValues';
+import { useGeneralCodedValues } from 'apps/patient/data/general/useGeneralCodedValues';
 
 const BORN_ON_LABEL = 'Date of birth';
 const DECEASED_ON_LABEL = 'Date of death';
@@ -23,8 +23,6 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
     const currentBirthday = useWatch({ control, name: 'personalDetails.bornOn' });
     const selectedDeceased = useWatch({ control, name: 'personalDetails.deceased' });
     const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
-    const sexBirthValues = usePatientSexBirthCodedValues();
-    const generalValues = usePatientGeneralCodedValues();
     const { hivAccess } = usePatientProfilePermissions();
     const { invalid: bornOnInvalid } = getFieldState('personalDetails.bornOn', formState);
 
@@ -61,7 +59,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={sexBirthValues.genders}
+                        options={useSexBirthCodedValues().genders}
                     />
                 )}
             />
@@ -78,7 +76,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={sexBirthValues.genders}
+                        options={useSexBirthCodedValues().genders}
                     />
                 )}
             />
@@ -132,7 +130,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={generalValues.maritalStatuses}
+                        options={useGeneralCodedValues().maritalStatuses}
                     />
                 )}
             />

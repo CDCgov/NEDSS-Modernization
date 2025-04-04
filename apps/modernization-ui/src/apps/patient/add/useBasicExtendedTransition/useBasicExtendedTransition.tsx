@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { NewPatientEntry } from '../NewPatientEntry';
-import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
 import { useConceptOptions } from 'options/concepts';
 import { ExtendedNewPatientEntry } from '../extended';
 import { asExtendedNewPatientEntry } from '../extended/asExtendedNewPatientEntry';
@@ -8,6 +7,7 @@ import { useNavigate } from 'react-router';
 import { BasicNewPatientEntry } from '../basic/entry';
 import { asNewExtendedPatientEntry } from '../basic/asNewExtendedPatientEntry';
 import { useConfiguration } from 'configuration';
+import { useNameCodedValues } from 'apps/patient/data/name/useNameCodedValues';
 
 type BasicExtendedTransitionContextType = {
     transitionData: NewPatientEntry | null;
@@ -30,7 +30,7 @@ function BasicExtendedTransitionProvider({ children }: BasicExtendedTransitionPr
     const [newTransitionData, setNewTransitionData] = useState<BasicNewPatientEntry | null>(null);
     const { features } = useConfiguration();
     const navigate = useNavigate();
-    const nameCodes = usePatientNameCodedValues();
+    const nameCodes = useNameCodedValues();
     const raceCategories = useConceptOptions('P_RACE_CAT', { lazy: false }).options;
     const [criteria, setCriteria] = useState<string | null>(null);
 

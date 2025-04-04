@@ -14,8 +14,8 @@ const mockEthnicityValues = {
     ]
 };
 
-jest.mock('apps/patient/profile/ethnicity/usePatientEthnicityCodedValues', () => ({
-    usePatientEthnicityCodedValues: () => mockEthnicityValues
+jest.mock('apps/patient/data/ethnicity/useEthnicityCodedValues', () => ({
+    useEthnicityCodedValues: () => mockEthnicityValues
 }));
 
 jest.mock('options/race', () => ({
