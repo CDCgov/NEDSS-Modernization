@@ -8,7 +8,8 @@ import {
     NameInformationEntry,
     BasicPhoneEmail,
     BasicEthnicityRace,
-    BasicIdentificationEntry
+    BasicIdentificationEntry,
+    initial
 } from './entry';
 import { asTextCriteriaValue, TextCriteria } from 'options/operator';
 import { resolveDate } from 'design-system/date/criteria';
@@ -24,15 +25,15 @@ const asSelectableIfPresent = mapOr(asSelectable, undefined);
 const resolveCriteria = (textCriteria?: TextCriteria): string | undefined =>
     asTextCriteriaValue(textCriteria) ?? undefined;
 
-const asBasicNewPatientEntry = (initial: Partial<PatientCriteriaEntry>): BasicNewPatientEntry => {
+const asBasicNewPatientEntry = (criteria: Partial<PatientCriteriaEntry>): BasicNewPatientEntry => {
     return {
         administrative: { asOf: internalizeDate(new Date()) },
-        name: nameBasic(initial),
-        personalDetails: personalDetailsBasic(initial),
-        address: addressBasic(initial),
-        phoneEmail: phoneEmailBasic(initial),
-        ethnicityRace: ethnicityRaceBasic(initial),
-        identifications: identificationBasic(initial)
+        name: nameBasic(criteria),
+        personalDetails: personalDetailsBasic(criteria),
+        address: addressBasic(criteria, initial().address),
+        phoneEmail: phoneEmailBasic(criteria),
+        ethnicityRace: ethnicityRaceBasic(criteria),
+        identifications: identificationBasic(criteria)
     };
 };
 
@@ -50,11 +51,12 @@ const personalDetailsBasic = (initial: Partial<PatientCriteriaEntry>): BasicPers
     };
 };
 
-const addressBasic = (initial: Partial<PatientCriteriaEntry>): BasicAddressEntry => ({
+const addressBasic = (initial: Partial<PatientCriteriaEntry>, defaults?: BasicAddressEntry): BasicAddressEntry => ({
     address1: resolveCriteria(initial.location?.street),
     city: resolveCriteria(initial.location?.city),
     state: asSelectableIfPresent(initial.state?.value),
-    zipcode: initial.zip?.toString()
+    zipcode: initial.zip?.toString(),
+    country: defaults?.country
 });
 
 const phoneEmailBasic = (initial: Partial<PatientCriteriaEntry>): BasicPhoneEmail => ({
