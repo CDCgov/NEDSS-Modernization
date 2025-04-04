@@ -21,7 +21,6 @@ export const MatchConfiguration = ({ loading, dataElements, onImportClick }: Pro
     const { exportAlgorithm } = useMatchConfiguration(true);
 
     const dataElementsConfigured = useMemo(() => {
-        // check if dataElements are undefined
         if (dataElements === undefined) {
             return false;
         }
@@ -31,7 +30,7 @@ export const MatchConfiguration = ({ loading, dataElements, onImportClick }: Pro
 
     return (
         <>
-            <header>
+            <header className={styles.headerSection}>
                 <Heading level={1}>Person match configuration</Heading>
                 <Shown when={dataElementsConfigured}>
                     <div className={styles.buttons}>
@@ -52,7 +51,7 @@ export const MatchConfiguration = ({ loading, dataElements, onImportClick }: Pro
                     </div>
                 </Shown>
             </header>
-            <main>
+            <main className={styles.contentSection}>
                 <Shown when={!loading} fallback={<Loading />}>
                     <Shown
                         when={dataElementsConfigured}

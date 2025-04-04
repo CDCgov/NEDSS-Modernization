@@ -28,8 +28,6 @@
         background-color: colors.$base-white;
         @extend %thin-top;
 
-        background-color: green;
-
         & > div {
             display: flex;
             align-items: center;
