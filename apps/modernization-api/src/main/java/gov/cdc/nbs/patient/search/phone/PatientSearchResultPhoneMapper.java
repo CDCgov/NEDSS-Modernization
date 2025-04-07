@@ -36,9 +36,7 @@ class PatientSearchResultPhoneMapper implements RowMapper<PatientSearchResultPho
 
   private String resolveDisplayUse(final String typeCode, final String useCode, final String use) {
     if (useCode != null && typeCode != null) {
-      if (typeCode.equals("NET")) {
-        return "Email address";
-      } else if (typeCode.equals("PH") && (useCode.equals("WP") || useCode.equals("SB"))) {
+      if (typeCode.equals("PH") && (useCode.equals("WP") || useCode.equals("SB"))) {
         return "Work";
       } else if (typeCode.equals("PH") && useCode.equals("H")) {
         return "Home";
