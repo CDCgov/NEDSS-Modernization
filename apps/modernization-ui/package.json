@@ -14,6 +14,7 @@
     "@uswds/uswds": "3.12.0",
     "classnames": "^2.5.1",
     "date-fns": "3.6.0",
+    "globals": "^16.0.0",
     "graphql": "^16.8.1",
     "lodash.debounce": "^4.0.8",
     "lodash.merge": "^4.0.8",
@@ -31,7 +32,7 @@
   "overrides": {
     "react-refresh": "^0.14.2",
     "typescript": "5.8.2",
-    "xxxprop-types": "^15.8.1",
+    "prop-types": "^15.8.1",
     "nth-check": "^2.0.1 ",
     "postcss": "^8.4.31"
   },
