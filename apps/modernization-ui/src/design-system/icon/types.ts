@@ -7,6 +7,8 @@ export const ExtendedIconsArray = [
     'drag',
     'expand',
     'expand-more',
+    'file',
+    'file-pdf',
     'group',
     'icon-dot-gov',
     'icon-https',
