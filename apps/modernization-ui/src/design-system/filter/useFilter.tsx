@@ -50,7 +50,7 @@ const FilterProvider = ({ children }: FilterProviderProps) => {
 
     const apply = () => setFilter(pendingFilter);
 
-    const clear = (id: string) => updateFilter(withoutProperty(id)(filter) as Filter | undefined);
+    const clear = (id: string) => updateFilter(withoutProperty(id)(pendingFilter) as Filter | undefined);
 
     const clearAll = () => updateFilter(undefined);
     const reset = useCallback(() => {
