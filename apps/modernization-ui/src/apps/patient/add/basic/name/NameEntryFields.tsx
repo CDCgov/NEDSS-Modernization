@@ -1,14 +1,13 @@
-import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
 import { EntryFieldsProps } from 'design-system/entry';
 import { Controller, useFormContext } from 'react-hook-form';
 import { NameInformationEntry } from '../entry';
 import { validateExtendedNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
+import { useNameCodedValues } from 'apps/patient/data/name/useNameCodedValues';
 
 export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<{ name: NameInformationEntry }>();
-    const coded = usePatientNameCodedValues();
     return (
         <section>
             <Controller
@@ -84,7 +83,7 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' 
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={coded.suffixes}
+                        options={useNameCodedValues().suffixes}
                     />
                 )}
             />

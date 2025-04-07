@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { PatientSexBirthCodedValue } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
+import { SexBirthCodedValues } from 'apps/patient/data/sexAndBirth/useSexBirthCodedValues';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BasicPersonalDetailsFields } from './BasicPersonalDetailsFields';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
-import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
 import { BasicPersonalDetailsEntry } from '../entry';
+import { GeneralCodedValues } from 'apps/patient/data/general/useGeneralCodedValues';
 
 const mockNow = jest.fn();
 
@@ -19,7 +19,7 @@ jest.mock('apps/patient/profile/permission/usePatientProfilePermissions', () => 
     usePatientProfilePermissions: () => mockPermissions
 }));
 
-const mockPatientCodedValues: PatientGeneralCodedValue = {
+const mockPatientCodedValues: GeneralCodedValues = {
     maritalStatuses: [{ name: 'Married', value: 'M' }],
     primaryOccupations: [{ name: 'Tester', value: 'T' }],
     educationLevels: [{ name: '1 or more years of college', value: '1' }],
@@ -27,11 +27,11 @@ const mockPatientCodedValues: PatientGeneralCodedValue = {
     speaksEnglish: [{ name: 'Yes', value: 'Y' }]
 };
 
-jest.mock('apps/patient/profile/generalInfo/usePatientGeneralCodedValues', () => ({
-    usePatientGeneralCodedValues: () => mockPatientCodedValues
+jest.mock('apps/patient/data/general/useGeneralCodedValues', () => ({
+    useGeneralCodedValues: () => mockPatientCodedValues
 }));
 
-const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
+const mockSexBirthCodedValues: SexBirthCodedValues = {
     genders: [
         { name: 'Male', value: 'M' },
         { name: 'Female', value: 'F' },
@@ -39,20 +39,11 @@ const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     ],
     preferredGenders: [{ name: 'FTM', value: 'FTM' }],
     genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
-    multipleBirth: [{ name: 'Yes', value: 'Y' }],
-    states: {
-        all: [{ name: 'Alabama', value: 'AL', abbreviation: 'AL' }],
-        byValue: jest.fn(),
-        byAbbreviation: jest.fn()
-    },
-    counties: {
-        byState: jest.fn()
-    },
-    countries: [{ name: 'United States of America', value: 'US' }]
+    multipleBirth: [{ name: 'Yes', value: 'Y' }]
 };
 
-jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => ({
-    usePatientSexBirthCodedValues: () => mockSexBirthCodedValues
+jest.mock('apps/patient/data/sexAndBirth/useSexBirthCodedValues', () => ({
+    useSexBirthCodedValues: () => mockSexBirthCodedValues
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {

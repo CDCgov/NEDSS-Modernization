@@ -11,8 +11,8 @@ const mockPatientNameCodedValues = {
     degrees: [{ name: 'BA', value: 'BA' }]
 };
 
-jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
-    usePatientNameCodedValues: () => mockPatientNameCodedValues
+jest.mock('apps/patient/data/name/useNameCodedValues', () => ({
+    useNameCodedValues: () => mockPatientNameCodedValues
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {

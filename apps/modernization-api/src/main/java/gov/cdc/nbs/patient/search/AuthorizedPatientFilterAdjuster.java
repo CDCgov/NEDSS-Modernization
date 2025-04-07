@@ -16,9 +16,9 @@ class AuthorizedPatientFilterAdjuster {
     this.permission = Objects.requireNonNull(permission, "A Permission is required");
   }
 
-  PatientFilter adjusted(
+  PatientSearchCriteria adjusted(
       final NbsUserDetails user,
-      final PatientFilter filter) {
+      final PatientSearchCriteria filter) {
     return requiresAdjustment(user, filter.getRecordStatus())
         ? filter.adjustStatuses(withoutInactiveStatus(filter.getRecordStatus()))
         : filter;

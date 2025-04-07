@@ -1,17 +1,17 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { render, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
+import { IdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
 import { BasicIdentificationEntry } from '../entry';
 import { BasicIdentificationFields } from './BasicIdentificationFields';
 
-const mockPatientIdentificationCodedValues: PatientIdentificationCodedValues = {
+const mockPatientIdentificationCodedValues: IdentificationCodedValues = {
     types: [{ name: 'Account number', value: 'AN' }],
     authorities: [{ name: 'Assigning auth', value: 'AA' }]
 };
 
-jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValues', () => ({
-    usePatientIdentificationCodedValues: () => mockPatientIdentificationCodedValues
+jest.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
+    useIdentificationCodedValues: () => mockPatientIdentificationCodedValues
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {

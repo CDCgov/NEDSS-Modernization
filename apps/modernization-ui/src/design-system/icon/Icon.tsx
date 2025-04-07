@@ -32,6 +32,8 @@ const Icon = ({ name, sizing, role = 'img', className, ...props }: Props) => {
 const resolveLocation = (name: Icons) => {
     switch (name) {
         case 'table':
+        case 'file':
+        case 'file-pdf':
         case 'sort_asc_alpha':
         case 'sort_des_alpha':
         case 'sort_asc_numeric':

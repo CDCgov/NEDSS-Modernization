@@ -10,14 +10,14 @@ public class PatientSearchSteps {
 
   private final PatientSearchRequester request;
 
-  private final Active<PatientFilter> criteria;
+  private final Active<PatientSearchCriteria> criteria;
   private final Active<Pageable> paging;
   private final Active<SortCriteria> sorting;
   private final Active<ResultActions> results;
 
   PatientSearchSteps(
       final PatientSearchRequester request,
-      final Active<PatientFilter> criteria,
+      final Active<PatientSearchCriteria> criteria,
       final Active<Pageable> paging,
       final Active<SortCriteria> sorting,
       final Active<ResultActions> results

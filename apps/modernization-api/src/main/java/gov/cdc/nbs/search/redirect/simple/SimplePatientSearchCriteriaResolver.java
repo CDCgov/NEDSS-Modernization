@@ -1,7 +1,7 @@
 package gov.cdc.nbs.search.redirect.simple;
 
-import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.option.Option;
+import gov.cdc.nbs.patient.search.SearchableGender;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import gov.cdc.nbs.time.FlexibleLocalDateConverter;
@@ -53,7 +53,7 @@ class SimplePatientSearchCriteriaResolver {
         .map(DateCriteria::equals)
         .orElse(null);
 
-    Option gender = maybe(criteria, NBS_SEX).map(Gender::resolve)
+    Option gender = maybe(criteria, NBS_SEX).map(SearchableGender::resolve)
         .map(found -> new Option(found.value(), found.display()))
         .orElse(null);
 
@@ -73,24 +73,24 @@ class SimplePatientSearchCriteriaResolver {
 
     return anyExist(name, bornOn, gender, id, morbidity, document, stateCase, abcCase, cityCountyCase,
         notification, labReport, accessionNumber, investigation, treatment, vaccination)
-            ? Optional.of(
-                new SimplePatientSearchCriteria(
-                    name,
-                    bornOn,
-                    gender,
-                    id,
-                    morbidity,
-                    document,
-                    stateCase,
-                    abcCase,
-                    cityCountyCase,
-                    notification,
-                    labReport,
-                    accessionNumber,
-                    investigation,
-                    treatment,
-                    vaccination))
-            : Optional.empty();
+        ? Optional.of(
+        new SimplePatientSearchCriteria(
+            name,
+            bornOn,
+            gender,
+            id,
+            morbidity,
+            document,
+            stateCase,
+            abcCase,
+            cityCountyCase,
+            notification,
+            labReport,
+            accessionNumber,
+            investigation,
+            treatment,
+            vaccination))
+        : Optional.empty();
   }
 
   private Optional<SimplePatientSearchNameCriteria> resolveName(final Map<String, String> criteria) {

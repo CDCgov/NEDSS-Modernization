@@ -321,6 +321,8 @@ describe('When displaying Icons', () => {
 
     it.each([
         'table',
+        'file',
+        'file-pdf',
         'sort_asc_alpha',
         'sort_des_alpha',
         'sort_asc_numeric',
