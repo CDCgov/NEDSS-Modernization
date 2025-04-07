@@ -7,7 +7,7 @@ import java.util.List;
 
 class PatientFilterValidator {
 
-  static PatientFilter validate(final PatientFilter filter) {
+  static PatientSearchCriteria validate(final PatientSearchCriteria filter) {
     List<RecordStatus> selected = filter.getRecordStatus();
     if (selected == null || selected.isEmpty()) {
       throw new QueryException("At least one Status is required");

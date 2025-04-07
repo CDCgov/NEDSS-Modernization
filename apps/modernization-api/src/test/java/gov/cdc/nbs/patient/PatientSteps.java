@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
-import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -203,19 +202,9 @@ public class PatientSteps {
 
   }
 
-  @Given("the patient has the gender {gender}")
+  @Given("the patient has the gender {sex}")
   public void the_patient_has_the_gender(final String gender) {
     this.patient.maybeActive().ifPresent(found -> mother.withGender(found, gender));
-  }
-
-  @ParameterType(name = "gender", value = "(?i)(male|female|unknown)")
-  public String gender(final String value) {
-    return switch (value.toLowerCase()) {
-      case "male" -> "M";
-      case "female" -> "F";
-      case "unknown" -> "U";
-      default -> value;
-    };
   }
 
   @Given("the patient has a race")

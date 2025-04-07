@@ -8,25 +8,16 @@ import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 @JsonInclude(Include.NON_NULL)
-public class PatientFilter {
-
+public class PatientSearchCriteria {
 
   @JsonInclude(Include.NON_NULL)
   public record Identification(
@@ -44,8 +35,16 @@ public class PatientFilter {
   }
 
 
-  public record Filter(String id, String name, String ageOrDateOfBirth, String sex, String address, String email,
-                       String phone, String identification) {
+  public record Filter(
+      String id,
+      String name,
+      String ageOrDateOfBirth,
+      String sex,
+      String address,
+      String email,
+      String phone,
+      String identification
+  ) {
     Filter withId(final String id) {
       return new Filter(id, name(), ageOrDateOfBirth(), sex(), address(), email(), null, null);
     }
@@ -59,7 +58,8 @@ public class PatientFilter {
     }
 
     Filter withSex(final String sex) {
-      return new Filter(id(), name(), ageOrDateOfBirth(), sex, address(), email(), null, null);
+      return new Filter(id(), name(), ageOrDateOfBirth(), sex, address(), email(), null,
+          null);
     }
 
     Filter withAddress(final String address) {
@@ -131,7 +131,7 @@ public class PatientFilter {
   private String email;
   private LocalDate dateOfBirth;
   private String dateOfBirthOperator;
-  private String gender;
+  private SearchableGender gender;
   private Deceased deceased;
   private LocationCriteria location;
   private String address;
@@ -163,11 +163,11 @@ public class PatientFilter {
 
   private DateCriteria bornOn;
 
-  public PatientFilter() {
+  public PatientSearchCriteria() {
     this(RecordStatus.ACTIVE);
   }
 
-  public PatientFilter(RecordStatus required, RecordStatus... recordStatus) {
+  public PatientSearchCriteria(RecordStatus required, RecordStatus... recordStatus) {
     this.recordStatus = new ArrayList<>();
     this.recordStatus.add(required);
     if (recordStatus != null && recordStatus.length > 0) {
@@ -182,7 +182,7 @@ public class PatientFilter {
     return identification;
   }
 
-  public PatientFilter withIdentification(final Identification identification) {
+  public PatientSearchCriteria withIdentification(final Identification identification) {
     this.identification = identification;
     return this;
   }
@@ -194,26 +194,42 @@ public class PatientFilter {
     return filter;
   }
 
+  public Optional<Filter> maybeFilter() {
+    return Optional.ofNullable(this.filter);
+  }
+
   public List<RecordStatus> adjustedStatus() {
     return adjustedStatus == null ? List.copyOf(this.recordStatus) : List.copyOf(this.adjustedStatus);
   }
 
-  public PatientFilter adjustStatuses(final Collection<RecordStatus> statuses) {
+  public PatientSearchCriteria adjustStatuses(final Collection<RecordStatus> statuses) {
     this.adjustedStatus = List.copyOf(statuses);
     return this;
   }
 
-  public PatientFilter withGender(final String gender) {
-    this.gender = gender;
+  public PatientSearchCriteria withGender(final String gender) {
+    this.gender = SearchableGender.resolve(gender);
     return this;
   }
 
-  public PatientFilter withId(final String id) {
+  public String getGender() {
+    return gender == null ? null : gender.value();
+  }
+
+  public void setGender(final String gender) {
+    this.gender = SearchableGender.resolve(gender);
+  }
+
+  public Optional<SearchableGender> maybeGender() {
+    return Optional.ofNullable(gender);
+  }
+
+  public PatientSearchCriteria withId(final String id) {
     this.id = id;
     return this;
   }
 
-  public PatientFilter withIdFilter(final String idFilter) {
+  public PatientSearchCriteria withIdFilter(final String idFilter) {
     if (this.filter == null) {
       this.filter = new Filter(idFilter, null, null, null, null, null, null, null);
     } else {
@@ -222,7 +238,7 @@ public class PatientFilter {
     return this;
   }
 
-  public PatientFilter withNameFilter(final String nameFilter) {
+  public PatientSearchCriteria withNameFilter(final String nameFilter) {
     if (this.filter == null) {
       this.filter = new Filter(null, nameFilter, null, null, null, null, null, null);
     } else {
@@ -232,7 +248,7 @@ public class PatientFilter {
 
   }
 
-  public PatientFilter withAddressFilter(final String addressFilter) {
+  public PatientSearchCriteria withAddressFilter(final String addressFilter) {
     if (this.filter == null) {
       this.filter = new Filter(null, null, null, null, addressFilter, null, null, null);
     } else {
@@ -242,7 +258,7 @@ public class PatientFilter {
 
   }
 
-  public PatientFilter withEmailFilter(final String emailFilter) {
+  public PatientSearchCriteria withEmailFilter(final String emailFilter) {
     if (this.filter == null) {
       this.filter = new Filter(null, null, null, null, null, emailFilter, null, null);
     } else {
@@ -252,7 +268,7 @@ public class PatientFilter {
 
   }
 
-  public PatientFilter withPhoneFilter(final String phoneFilter) {
+  public PatientSearchCriteria withPhoneFilter(final String phoneFilter) {
     if (this.filter == null) {
       this.filter = new Filter(null, null, null, null, null, null, phoneFilter, null);
     } else {
@@ -262,7 +278,7 @@ public class PatientFilter {
 
   }
 
-  public PatientFilter withAgeOrDateOfBirthFilter(final String ageOrDateOfBirthFilter) {
+  public PatientSearchCriteria withAgeOrDateOfBirthFilter(final String ageOrDateOfBirthFilter) {
     if (this.filter == null) {
       this.filter = new Filter(null, null, ageOrDateOfBirthFilter, null, null, null, null, null);
     } else {
@@ -272,17 +288,17 @@ public class PatientFilter {
 
   }
 
-  public PatientFilter withSexFilter(final String sexFilter) {
+  public PatientSearchCriteria withSexFilter(final String sex) {
     if (this.filter == null) {
-      this.filter = new Filter(null, null, null, sexFilter, null, null, null, null);
+      this.filter = new Filter(null, null, null, sex, null, null, null, null);
     } else {
-      this.filter = this.filter.withSex(sexFilter);
+      this.filter = this.filter.withSex(sex);
     }
     return this;
 
   }
 
-  public PatientFilter withIdentificationFilter(final String identificationFilter) {
+  public PatientSearchCriteria withIdentificationFilter(final String identificationFilter) {
     if (this.filter == null) {
       this.filter = new Filter(null, null, null, null, null, null, null, identificationFilter);
     } else {
@@ -292,7 +308,7 @@ public class PatientFilter {
 
   }
 
-  public PatientFilter withMorbidity(final String identifier) {
+  public PatientSearchCriteria withMorbidity(final String identifier) {
     this.morbidity = identifier;
     return this;
   }
@@ -301,7 +317,7 @@ public class PatientFilter {
     return Optional.ofNullable(morbidity);
   }
 
-  public PatientFilter withDocument(final String identifier) {
+  public PatientSearchCriteria withDocument(final String identifier) {
     this.document = identifier;
     return this;
   }
@@ -311,7 +327,7 @@ public class PatientFilter {
   }
 
 
-  public PatientFilter withStateCase(final String identifier) {
+  public PatientSearchCriteria withStateCase(final String identifier) {
     this.stateCase = identifier;
     return this;
   }
@@ -321,7 +337,7 @@ public class PatientFilter {
   }
 
 
-  public PatientFilter withAbcCase(final String identifier) {
+  public PatientSearchCriteria withAbcCase(final String identifier) {
     this.abcCase = identifier;
     return this;
   }
@@ -330,7 +346,7 @@ public class PatientFilter {
     return Optional.ofNullable(abcCase);
   }
 
-  public PatientFilter withCityCountyCase(final String identifier) {
+  public PatientSearchCriteria withCityCountyCase(final String identifier) {
     this.cityCountyCase = identifier;
     return this;
   }
@@ -339,7 +355,7 @@ public class PatientFilter {
     return Optional.ofNullable(cityCountyCase);
   }
 
-  public PatientFilter withNotification(final String identifier) {
+  public PatientSearchCriteria withNotification(final String identifier) {
     this.notification = identifier;
     return this;
   }
@@ -348,7 +364,7 @@ public class PatientFilter {
     return Optional.ofNullable(notification);
   }
 
-  public PatientFilter withTreatment(final String identifier) {
+  public PatientSearchCriteria withTreatment(final String identifier) {
     this.treatment = identifier;
     return this;
   }
@@ -357,7 +373,7 @@ public class PatientFilter {
     return Optional.ofNullable(treatment);
   }
 
-  public PatientFilter withVaccination(final String identifier) {
+  public PatientSearchCriteria withVaccination(final String identifier) {
     this.vaccination = identifier;
     return this;
   }
@@ -366,7 +382,7 @@ public class PatientFilter {
     return Optional.ofNullable(vaccination);
   }
 
-  public PatientFilter withInvestigation(final String identifier) {
+  public PatientSearchCriteria withInvestigation(final String identifier) {
     this.investigation = identifier;
     return this;
   }
@@ -375,7 +391,7 @@ public class PatientFilter {
     return Optional.ofNullable(investigation);
   }
 
-  public PatientFilter withLabReport(final String identifier) {
+  public PatientSearchCriteria withLabReport(final String identifier) {
     this.labReport = identifier;
     return this;
   }
@@ -384,7 +400,7 @@ public class PatientFilter {
     return Optional.ofNullable(labReport);
   }
 
-  public PatientFilter withAccessionNumber(final String identifier) {
+  public PatientSearchCriteria withAccessionNumber(final String identifier) {
     this.accessionNumber = identifier;
     return this;
   }
@@ -393,7 +409,7 @@ public class PatientFilter {
     return Optional.ofNullable(accessionNumber);
   }
 
-  public PatientFilter withBornOnDay(final int day) {
+  public PatientSearchCriteria withBornOnDay(final int day) {
     if (this.bornOn != null) {
       this.bornOn = this.bornOn.withEquals(this.bornOn.equals().withDay(day));
     } else {
@@ -402,7 +418,7 @@ public class PatientFilter {
     return this;
   }
 
-  public PatientFilter withBornOnMonth(final int month) {
+  public PatientSearchCriteria withBornOnMonth(final int month) {
     if (this.bornOn != null) {
       this.bornOn = this.bornOn.withEquals(this.bornOn.equals().withMonth(month));
     } else {
@@ -411,7 +427,7 @@ public class PatientFilter {
     return this;
   }
 
-  public PatientFilter withBornOnYear(final int year) {
+  public PatientSearchCriteria withBornOnYear(final int year) {
     if (this.bornOn != null) {
       this.bornOn = this.bornOn.withEquals(this.bornOn.equals().withYear(year));
     } else {
@@ -420,7 +436,7 @@ public class PatientFilter {
     return this;
   }
 
-  public PatientFilter withBornBetween(final LocalDate from, final LocalDate to) {
+  public PatientSearchCriteria withBornBetween(final LocalDate from, final LocalDate to) {
     this.bornOn = DateCriteria.between(from, to);
     return this;
   }
@@ -429,7 +445,7 @@ public class PatientFilter {
     return Optional.ofNullable(this.name);
   }
 
-  public PatientFilter withLastName(final TextCriteria criteria) {
+  public PatientSearchCriteria withLastName(final TextCriteria criteria) {
     if (this.name == null) {
 
       this.name = new NameCriteria(null, criteria);
@@ -439,7 +455,7 @@ public class PatientFilter {
     return this;
   }
 
-  public PatientFilter withFirstName(final TextCriteria criteria) {
+  public PatientSearchCriteria withFirstName(final TextCriteria criteria) {
     if (this.name == null) {
       this.name = new NameCriteria(criteria, null);
     } else {
@@ -452,7 +468,7 @@ public class PatientFilter {
     return Optional.ofNullable(this.location);
   }
 
-  public PatientFilter withStreet(final TextCriteria criteria) {
+  public PatientSearchCriteria withStreet(final TextCriteria criteria) {
     if (this.location == null) {
       this.location = new LocationCriteria(criteria, null);
     } else {
@@ -461,7 +477,7 @@ public class PatientFilter {
     return this;
   }
 
-  public PatientFilter withCity(final TextCriteria criteria) {
+  public PatientSearchCriteria withCity(final TextCriteria criteria) {
     if (this.location == null) {
       this.location = new LocationCriteria(null, criteria);
     } else {
