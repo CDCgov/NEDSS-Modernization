@@ -18,7 +18,6 @@ import { orNull } from 'utils';
 import { DefaultNewPatentEntry, initialEntry, NewPatientEntry } from 'apps/patient/add';
 import { usePreFilled } from 'apps/patient/add/usePreFilled';
 import { useConfiguration } from 'configuration';
-import { useBasicExtendedTransition } from './useBasicExtendedTransition';
 import { DataEntryMenu } from './DataEntryMenu';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from './PatientCreatedPanel';
@@ -81,8 +80,6 @@ const AddPatient = () => {
     const [entryState, setEntryState] = useState<EntryState>({ step: 'entry' });
 
     const prefilled = usePreFilled(initialEntry());
-
-    const { toExtended } = useBasicExtendedTransition();
 
     const methods = useForm<NewPatientEntry, DefaultNewPatentEntry>({
         defaultValues: {
@@ -258,11 +255,7 @@ const AddPatient = () => {
                                 <h1 className="new-patient-title margin-0">New patient</h1>
                                 <div className="nav-buttons">
                                     {features.patient?.add?.extended?.enabled && (
-                                        <Button
-                                            type="button"
-                                            onClick={handleSubmit(toExtended)}
-                                            outline
-                                            className="add-patient-button">
+                                        <Button type="button" outline className="add-patient-button">
                                             Add extended data
                                         </Button>
                                     )}
