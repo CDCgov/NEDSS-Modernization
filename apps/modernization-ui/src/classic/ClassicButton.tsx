@@ -21,6 +21,8 @@ type Props = {
  * used with those API endpoints.
  *
  * @param {Props} props
+ *
+ * @return {JSX.Element}
  */
 export const ClassicButton = ({
     url,
