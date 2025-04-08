@@ -6,11 +6,11 @@ import styles from './import-preview.module.scss';
 import { PassConfigurationTable } from './pass-configuration-table/PassConfigurationTable';
 
 type Props = {
-    importedAlgorithm: AlgorithmExport;
+    previewedAlgorithm: AlgorithmExport;
     onAccept: () => void;
     onCancel: () => void;
 };
-export const ImportPreview = ({ importedAlgorithm, onAccept, onCancel }: Props) => {
+export const ImportPreview = ({ previewedAlgorithm, onAccept, onCancel }: Props) => {
     return (
         <>
             <header className={styles.importPreviewHeading}>
@@ -23,8 +23,8 @@ export const ImportPreview = ({ importedAlgorithm, onAccept, onCancel }: Props) 
                 </div>
             </header>
             <main className={styles.importPreviewContent}>
-                <DataElementsTable dataElements={importedAlgorithm.dataElements} />
-                <PassConfigurationTable algorithm={importedAlgorithm.algorithm} />
+                <DataElementsTable dataElements={previewedAlgorithm.dataElements} />
+                <PassConfigurationTable algorithm={previewedAlgorithm.algorithm} />
             </main>
         </>
     );

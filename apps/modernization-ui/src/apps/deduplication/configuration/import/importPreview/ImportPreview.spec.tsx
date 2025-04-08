@@ -3,14 +3,14 @@ import { ImportPreview } from './ImportPreview';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-const importedAlgorithm: AlgorithmExport = {
+const previewedAlgorithm: AlgorithmExport = {
     dataElements: {},
     algorithm: { passes: [] }
 };
 const onAccept = jest.fn();
 const onCancel = jest.fn();
 const Fixture = () => {
-    return <ImportPreview importedAlgorithm={importedAlgorithm} onAccept={onAccept} onCancel={onCancel} />;
+    return <ImportPreview previewedAlgorithm={previewedAlgorithm} onAccept={onAccept} onCancel={onCancel} />;
 };
 describe('Import preview', () => {
     it('should have a cancel button', async () => {
