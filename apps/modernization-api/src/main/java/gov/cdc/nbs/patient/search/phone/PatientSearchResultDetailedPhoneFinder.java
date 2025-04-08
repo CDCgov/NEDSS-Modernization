@@ -34,7 +34,6 @@ class PatientSearchResultDetailedPhoneFinder {
               and [use].code = [locators].[use_cd]
       where [locators].entity_uid = ?
           and [locators].[class_cd] = 'TELE'
-          and ([locators].cd is null or [locators].cd <> 'NET')
           and [locators].record_status_cd = 'ACTIVE'
       order by
           [locators].as_of_date desc, [locators].locator_uid desc""";
@@ -44,14 +43,14 @@ class PatientSearchResultDetailedPhoneFinder {
   private final PatientSearchResultPhoneMapper mapper;
 
   PatientSearchResultDetailedPhoneFinder(final JdbcTemplate template) {
-	this.template = template;
-	this.mapper = new PatientSearchResultPhoneMapper();
+    this.template = template;
+    this.mapper = new PatientSearchResultPhoneMapper();
   }
 
   Collection<PatientSearchResultPhone> find(final long patient) {
-	return this.template.query(
-		QUERY,
-		statement -> statement.setLong(PATIENT_PARAMETER, patient),
-		mapper);
+    return this.template.query(
+        QUERY,
+        statement -> statement.setLong(PATIENT_PARAMETER, patient),
+        mapper);
   }
 }

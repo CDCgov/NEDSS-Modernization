@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
-import { Icon, Icons } from './Icon';
+import { Icon } from './Icon';
+import { Icons } from './types';
 
 describe('When displaying Icons', () => {
     it('should render with no accessibility violations', async () => {
