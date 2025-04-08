@@ -1,4 +1,3 @@
-import { Icon } from '@trussworks/react-uswds';
 import { MatchingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { Shown } from 'conditional-render';
@@ -9,6 +8,7 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { MatchingCriteriaAttribute } from './attribute/MatchingCriteriaAttribute';
 import { getLogOdds } from './getLogOdds';
 import styles from './matching-criteria.module.scss';
+import { Icon } from 'design-system/icon';
 
 type Props = {
     dataElements: DataElements;
@@ -22,7 +22,7 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
 
     useEffect(() => {
         setDisabled(blockingCriteria === undefined || blockingCriteria.length === 0);
-    }, [blockingCriteria]);
+    }, [JSON.stringify(blockingCriteria)]);
 
     const handleRemoveAttribute = (index: number) => {
         remove(index);
@@ -84,7 +84,7 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                     </Shown>
                     <div className={styles.buttonContainer}>
                         <Button
-                            icon={<Icon.Add size={3} />}
+                            icon={<Icon name="add" />}
                             labelPosition="right"
                             outline
                             onClick={onAddAttributes}

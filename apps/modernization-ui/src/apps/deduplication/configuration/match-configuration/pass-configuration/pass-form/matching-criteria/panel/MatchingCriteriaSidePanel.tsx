@@ -27,7 +27,7 @@ export const MatchingCriteriaSidePanel = ({ visible, dataElements, onAccept, onC
 
     useEffect(() => {
         setSelectedAttributes(matchingCriteria?.map((a) => a.attribute).filter((a) => a !== undefined) ?? []);
-    }, [matchingCriteria, visible]);
+    }, [JSON.stringify(matchingCriteria), visible]);
 
     useEffect(() => {
         setAttributeList([

@@ -19,7 +19,7 @@ export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
 
     useEffect(() => {
         setSelectedAttributes(blockingCriteria ?? []);
-    }, [blockingCriteria, visible]);
+    }, [JSON.stringify(blockingCriteria), visible]);
 
     const handleOnChange = (attribute: BlockingAttribute) => {
         if (selectedAttributes.includes(attribute)) {

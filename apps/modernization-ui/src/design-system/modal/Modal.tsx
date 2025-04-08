@@ -39,7 +39,7 @@ const Modal = ({
         if (element.current) {
             element.current.focus();
         }
-    }, [element.current]);
+    }, []);
 
     const handleKeyDown = (event: ReactKeyboardEvent) => {
         if (event.key === 'Escape') {
