@@ -1,9 +1,5 @@
-import {
-    blockingAttributeLabelMap,
-    matchingAttributeLabelMap,
-    matchMethodLabelMap,
-    Pass
-} from 'apps/deduplication/api/model/Pass';
+import { BlockingAttributeLabelMap, MatchingAttributeLabelMap } from 'apps/deduplication/api/model/Labels';
+import { matchMethodLabelMap, Pass } from 'apps/deduplication/api/model/Pass';
 import { Card } from 'design-system/card';
 import { Column, DataTable } from 'design-system/table';
 
@@ -33,7 +29,7 @@ export const PassConfigurationTable = ({ algorithm }: Props) => {
                 return (
                     <>
                         {pass.blockingCriteria.map((b, k) => (
-                            <div key={k}>{blockingAttributeLabelMap.get(b)?.label}</div>
+                            <div key={k}>{BlockingAttributeLabelMap.get(b)?.label}</div>
                         ))}
                     </>
                 );
@@ -47,7 +43,7 @@ export const PassConfigurationTable = ({ algorithm }: Props) => {
                     <>
                         {pass.matchingCriteria.map((b, k) => (
                             <div key={k}>
-                                {matchingAttributeLabelMap.get(b.attribute)}: {matchMethodLabelMap.get(b.method)}
+                                {MatchingAttributeLabelMap.get(b.attribute)?.label}: {matchMethodLabelMap.get(b.method)}
                             </div>
                         ))}
                     </>

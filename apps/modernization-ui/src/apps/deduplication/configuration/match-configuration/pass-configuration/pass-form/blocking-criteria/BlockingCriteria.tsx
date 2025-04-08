@@ -1,11 +1,12 @@
 import { Icon } from '@trussworks/react-uswds';
-import { BlockingAttribute, blockingAttributeLabelMap } from 'apps/deduplication/api/model/Pass';
+import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { BlockingCriteriaAttribute } from './attribute/BlockingCriteriaAttribute';
 import styles from './blocking-criteria.module.scss';
+import { BlockingAttributeLabelMap } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
     onAddAttributes: () => void;
@@ -14,7 +15,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
     const form = useFormContext<{ blockingCriteria: BlockingAttribute[] }>();
     const registeredBlockingCriteria = form.register('blockingCriteria', { required: true, minLength: 1 });
     const { blockingCriteria } = useWatch(form);
-    const attributeList = Array.from(blockingAttributeLabelMap.entries());
+    const attributeList = Array.from(BlockingAttributeLabelMap.entries());
 
     const handleRemoveAttribute = (attribute: BlockingAttribute) => {
         const value = [...(blockingCriteria ?? [])].filter((a) => a !== attribute);

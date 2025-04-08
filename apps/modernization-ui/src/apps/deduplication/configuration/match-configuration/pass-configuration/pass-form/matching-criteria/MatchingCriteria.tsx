@@ -1,5 +1,5 @@
 import { Icon } from '@trussworks/react-uswds';
-import { matchingAttributeLabelMap, Pass } from 'apps/deduplication/api/model/Pass';
+import { Pass } from 'apps/deduplication/api/model/Pass';
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
@@ -9,6 +9,7 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { MatchingCriteriaAttribute } from './attribute/MatchingCriteriaAttribute';
 import { getLogOdds } from './getLogOdds';
 import styles from './matching-criteria.module.scss';
+import { MatchingAttributeLabelMap } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
     dataElements: DataElements;
@@ -48,7 +49,7 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                         {fields.map((entry, index) => (
                             <MatchingCriteriaAttribute
                                 key={entry.id}
-                                label={matchingAttributeLabelMap.get(entry.attribute) ?? ''}
+                                label={MatchingAttributeLabelMap.get(entry.attribute)?.label ?? ''}
                                 attribute={entry.attribute}
                                 onRemove={() => handleRemoveAttribute(index)}
                                 logOdds={getLogOdds(dataElements, entry.attribute)}

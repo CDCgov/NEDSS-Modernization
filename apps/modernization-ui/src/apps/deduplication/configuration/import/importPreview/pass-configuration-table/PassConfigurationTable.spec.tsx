@@ -69,7 +69,7 @@ describe('PassConfigurationTable', () => {
         expect(secondRow[1]).toHaveTextContent('Test description 2');
         expect(secondRow[2]).toHaveTextContent('Identifier');
         expect(secondRow[3].children[0].children[0]).toHaveTextContent('Sex: Exact');
-        expect(secondRow[3].children[0].children[1]).toHaveTextContent('WIC Identifier: Exact');
+        expect(secondRow[3].children[0].children[1]).toHaveTextContent('WIC identifier: Exact');
         expect(secondRow[4]).toHaveTextContent('0.55');
         expect(secondRow[5]).toHaveTextContent('0.9');
         expect(secondRow[6]).toHaveTextContent('No');
