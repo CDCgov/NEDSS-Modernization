@@ -13,6 +13,8 @@ type Props = {
 };
 export const MatchingBounds = ({ dataElements }: Props) => {
     const form = useFormContext<Pass>();
+    const { lowerBound } = useWatch(form);
+    const { upperBound } = useWatch(form);
     const { matchingCriteria, blockingCriteria } = useWatch<Pass>(form);
     const [disabled, setDisabled] = useState<boolean>(true);
     const [totalLogOdds, setTotalLogOdds] = useState<number | undefined>();
@@ -35,6 +37,27 @@ export const MatchingBounds = ({ dataElements }: Props) => {
         }
     }, [matchingCriteria, disabled]);
 
+    useEffect(() => {
+        if (form.formState.dirtyFields.lowerBound || form.formState.dirtyFields.upperBound) {
+            form.trigger('lowerBound');
+            form.trigger('upperBound');
+        }
+    }, [totalLogOdds]);
+
+    const validateLowerBound = (value?: number): string | undefined => {
+        if (value == undefined) {
+            return '';
+        } else if (value < 0) {
+            return 'Value must be between 0 and upper bound.';
+        } else if (upperBound !== undefined && value > upperBound) {
+            return 'Value cannot be greater than upper bound.';
+        } else if (totalLogOdds !== undefined && value > totalLogOdds) {
+            return 'Value cannot be greater than total log odds.';
+        }
+
+        return undefined;
+    };
+
     return (
         <div className={styles.matchingBounds}>
             <Shown when={disabled}>
@@ -50,7 +73,10 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                         <Controller
                             control={form.control}
                             name={'lowerBound'}
-                            rules={{ required: { value: true, message: 'Lower bound is required.' } }}
+                            rules={{
+                                required: { value: true, message: 'Lower bound is required.' },
+                                validate: validateLowerBound
+                            }}
                             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <BoundEntry
                                     label="Lower bound"
@@ -62,7 +88,10 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                             automatically kept separate and new person records created.
                                         </span>
                                     }
-                                    onBlur={onBlur}
+                                    onBlur={() => {
+                                        onBlur();
+                                        if (form.getValues('upperBound') !== undefined) form.trigger('upperBound');
+                                    }}
                                     onChange={onChange}
                                     error={error?.message}
                                     disabled={disabled}
@@ -74,7 +103,17 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                         <Controller
                             control={form.control}
                             name={'upperBound'}
-                            rules={{ required: { value: true, message: 'Upper bound is required.' } }}
+                            rules={{
+                                required: { value: true, message: 'Upper bound is required.' },
+                                max: {
+                                    value: totalLogOdds ?? 0,
+                                    message: 'Value cannot be greater than total log odds.'
+                                },
+                                min: {
+                                    value: lowerBound ?? 0,
+                                    message: `Value must be between ${lowerBound ? 'lower bound' : '0'} and total log odds.`
+                                }
+                            }}
                             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <BoundEntry
                                     label="Upper bound"
@@ -86,7 +125,10 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                             automatically merged into a single person record
                                         </span>
                                     }
-                                    onBlur={onBlur}
+                                    onBlur={() => {
+                                        onBlur();
+                                        form.trigger('lowerBound');
+                                    }}
                                     onChange={onChange}
                                     error={error?.message}
                                     disabled={disabled}
