@@ -1,8 +1,8 @@
-import { Icon } from '@trussworks/react-uswds';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import styles from './side-panel.module.scss';
 import { ReactNode, useEffect, useRef, useState } from 'react';
+import { Icon } from 'design-system/icon';
 
 type Props = {
     heading: string;
@@ -49,7 +49,7 @@ export const SidePanel = ({ heading, children, footer, visible, onClose }: Props
                     <div className={styles.heading}>
                         <Heading level={2}>{heading}</Heading>
                         <button onClick={onClose} aria-label={`Close ${heading}`}>
-                            <Icon.Close size={4} />
+                            <Icon name="close" />
                         </button>
                     </div>
                     <div className={styles.panelContent}>{children}</div>
