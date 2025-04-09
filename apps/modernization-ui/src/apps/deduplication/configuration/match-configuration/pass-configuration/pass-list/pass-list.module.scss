@@ -21,6 +21,16 @@
     .addPassButton {
         margin-top: 0.5rem !important;
         text-decoration: none;
+
+        &:disabled {
+            color: colors.$disabled-darker !important;
+            background: none !important;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
 
     .noPassesText {

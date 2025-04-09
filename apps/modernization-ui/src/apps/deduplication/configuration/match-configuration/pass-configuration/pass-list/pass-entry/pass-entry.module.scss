@@ -8,11 +8,17 @@
     gap: 0.75rem;
     width: 100%;
     @extend %thin-bottom;
+    word-break: break-all;
 
     &.selected {
         background: colors.$primary-lightest;
         .border {
             border-left: 0.25rem solid colors.$primary;
+        }
+
+        .content .passNameRow .nameLink {
+            color: colors.$primary;
+            font-weight: 700;
         }
     }
 
@@ -34,10 +40,9 @@
             align-items: center;
 
             .nameLink {
-                color: colors.$primary;
                 font-size: 1rem;
                 font-style: normal;
-                font-weight: 700;
+                font-weight: 400;
                 line-height: normal;
                 cursor: pointer;
                 text-align: left;

@@ -80,6 +80,7 @@
             padding-left: 1.125rem;
             align-items: center;
             justify-content: center;
+
             label::before {
                 margin-top: -0.85rem;
                 width: 1rem;
@@ -113,8 +114,6 @@
 }
 
 .infoIcon svg {
-    height: 1.25rem !important;
-    width: 1rem !important;
     vertical-align: middle;
     display: inline-block;
     gap: 0.125rem;
