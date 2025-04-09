@@ -26,4 +26,6 @@ const useComponentSizing = () => {
     return context;
 };
 
-export { ComponentSizingProvider, useComponentSizing };
+const maybeUseComponentSizing = () => useContext(ComponentSizingContext);
+
+export { ComponentSizingProvider, useComponentSizing, maybeUseComponentSizing };

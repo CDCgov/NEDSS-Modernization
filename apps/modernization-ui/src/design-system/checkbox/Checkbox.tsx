@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import styles from './checkbox.module.scss';
+import { maybeUseComponentSizing } from 'design-system/sizing/useComponentSizing';
 
 type Props = Omit<JSX.IntrinsicElements['input'], 'onChange' | 'checked' | 'value'> & {
     label: string;
@@ -11,8 +12,11 @@ const Checkbox = ({ id, label, className, selected = false, onChange, ...inputPr
     const handleChange = (checked: boolean) => {
         onChange?.(checked);
     };
+    const sizing = maybeUseComponentSizing();
     return (
-        <div className={classNames(styles.checkbox, className)} aria-checked={selected}>
+        <div
+            className={classNames(styles.checkbox, className, { [styles.checkbox_small]: sizing === 'small' })}
+            aria-checked={selected}>
             <input
                 id={id}
                 type="checkbox"
