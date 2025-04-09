@@ -30,9 +30,9 @@ export const MatchingCriteriaAttribute = ({ label, attribute, logOdds, onRemove 
 
     return (
         <Shown when={visible}>
-            <div className={styles.matchingAttribute}>
-                <div className={styles.info}>
-                    <div>
+            <div className={styles.matchingAttributeRow}>
+                <div className={styles.attributeInfoWrapper}>
+                    <div className={styles.attributeInfo}>
                         <div className={styles.label}>{label}</div>
                         <div className={styles.logOdds}>
                             <span>Log odds:</span>

@@ -26,8 +26,8 @@ export const BlockingCriteriaAttribute = ({ label, description, attribute, onRem
     }, [blockingCriteria]);
     return (
         <Shown when={visible}>
-            <div className={styles.blockingAttribute}>
-                <div>
+            <div className={styles.blockingAttributeRow}>
+                <div className={styles.blockingAttributeInfo}>
                     <div className={styles.label}>{label}</div>
                     <div className={styles.description}>{description}</div>
                 </div>
