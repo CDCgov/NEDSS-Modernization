@@ -332,7 +332,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should render view when view icon clicked', async () => {
-        const { getByLabelText, getByText } = render(
+        const { getByLabelText, getByText, getAllByRole } = render(
             <Fixture
                 values={[
                     {
@@ -351,6 +351,39 @@ describe('RepeatingBlock', () => {
 
         expect(getByText('Render view first value: first-value')).toBeInTheDocument();
         expect(getByText('Render view second value: second-value')).toBeInTheDocument();
+
+        const buttons = getAllByRole('button');
+        expect(buttons).toHaveLength(1);
+        expect(buttons[0]).toHaveTextContent('Add test title');
+        expect(buttons[0].innerHTML).toContain('svg');
+    });
+
+    it('should render edit when edit icon clicked', async () => {
+        const { getByLabelText, getAllByRole } = render(
+            <Fixture
+                values={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: []
+                    }
+                ]}
+            />
+        );
+
+        const editIcon = getByLabelText('Edit');
+        const user = userEvent.setup();
+
+        await user.click(editIcon);
+
+        expect(getByLabelText('First Input')).toBeInTheDocument();
+        expect(getByLabelText('Second Input')).toBeInTheDocument();
+
+        const buttons = getAllByRole('button');
+        expect(buttons).toHaveLength(2);
+        expect(buttons[0]).toHaveTextContent('Update test title');
+        expect(buttons[0].innerHTML).not.toContain('svg');
+        expect(buttons[1]).toHaveTextContent('Cancel');
     });
 
     it('should delete row when delete icon clicked', async () => {
