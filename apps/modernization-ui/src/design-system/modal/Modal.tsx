@@ -32,14 +32,16 @@ const Modal = ({
     onClose,
     footer
 }: ModalProps): ReactElement<ModalProps> => {
+    const focused = useRef<boolean>(false);
     const element = useRef<HTMLDialogElement>(null);
     const header = `${id}-header`;
 
     useEffect(() => {
-        if (element.current) {
+        if (element.current && !focused.current) {
             element.current.focus();
+            focused.current = true;
         }
-    }, []);
+    }, [element.current, focused]);
 
     const handleKeyDown = (event: ReactKeyboardEvent) => {
         if (event.key === 'Escape') {
