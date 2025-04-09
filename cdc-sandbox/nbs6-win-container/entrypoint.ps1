@@ -147,6 +147,14 @@ $subsystems | ForEach-Object {
 # Save XML file after connection url replacement
 $xmlDoc.Save($xmlFileName)
 
+# Update files needing inputs
+# update static file nndmConfig.properties
+Write-Output "Updating $env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties"
+(Get-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties" -Raw) -replace "PUBLIC_KEY_LDAP_ADDRESS=.*", "$env:NNDM_CONFIG_PUBLIC_KEY_LDAP_ADDRESS" | Set-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties"
+(Get-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties" -Raw) -replace "PUBLIC_KEY_LDAP_BASE_DN=.*", "$env:NNDM_CONFIG_PUBLIC_KEY_LDAP_BASE_DN" | Set-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties"
+(Get-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties" -Raw) -replace "PUBLIC_KEY_LDAP_DN=.*", "$env:NNDM_CONFIG_PUBLIC_KEY_LDAP_DN" | Set-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties"
+(Get-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties" -Raw) -replace "CERTIFICATE_URL=.*", "$env:NNDM_CONFIG_CERTIFICATE_URL" | Set-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties"
+
 ############# Configure User Guide #############
 # NOTE: Verify NBS User Training Guide.pdf is located in release zip file
 

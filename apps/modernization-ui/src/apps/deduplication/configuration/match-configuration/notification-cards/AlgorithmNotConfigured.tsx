@@ -1,7 +1,7 @@
-import { Icon } from '@trussworks/react-uswds';
 import { Button } from 'design-system/button';
 import { useNavigate } from 'react-router';
 import { NotificationCard } from './NotificationCard';
+import { Icon } from 'design-system/icon';
 
 type Props = {
     onImportClick: () => void;
@@ -20,13 +20,14 @@ export const AlgorithmNotConfigured = ({ onImportClick }: Props) => {
             }
             buttons={
                 <>
-                    <Button sizing="medium" onClick={() => nav('/deduplication/data_elements')}>
-                        <Icon.Settings size={3} />
+                    <Button
+                        icon={<Icon name="settings" />}
+                        labelPosition="right"
+                        onClick={() => nav('/deduplication/data_elements')}>
                         Configure data elements
                     </Button>
 
-                    <Button sizing="medium" onClick={onImportClick}>
-                        <Icon.UploadFile size={3} />
+                    <Button icon={<Icon name="file_upload" />} labelPosition="right" onClick={onImportClick}>
                         Import configuration file
                     </Button>
                 </>
