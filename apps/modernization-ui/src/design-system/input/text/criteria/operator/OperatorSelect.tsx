@@ -7,9 +7,10 @@ export type OperatorSelectProps = {
     value?: Selectable | null;
     mode?: 'alpha' | 'all';
     onChange: (value?: Selectable) => void;
+    ariaLabel?: string;
 };
 
-export const OperatorSelect = ({ id, value, mode, onChange }: OperatorSelectProps) => {
+export const OperatorSelect = ({ id, value, mode, onChange, ariaLabel }: OperatorSelectProps) => {
     return (
         <Select
             value={value || defaultTextOperator}
@@ -18,6 +19,7 @@ export const OperatorSelect = ({ id, value, mode, onChange }: OperatorSelectProp
             id={id}
             options={mode === 'alpha' ? textAlphaOperators : textOperators}
             placeholder=""
+            aria-label={ariaLabel}
         />
     );
 };
