@@ -48,11 +48,11 @@ export const MatchingBounds = ({ dataElements }: Props) => {
         if (value == undefined) {
             return '';
         } else if (value < 0) {
-            return 'Value must be between 0 and upper bound.';
+            return 'Must be between 0 and upper bound.';
         } else if (upperBound !== undefined && value > upperBound) {
-            return 'Value cannot be greater than upper bound.';
+            return 'Cannot be greater than upper bound.';
         } else if (totalLogOdds !== undefined && value > totalLogOdds) {
-            return 'Value cannot be greater than total log odds.';
+            return 'Cannot be greater than total log odds.';
         }
 
         return undefined;
@@ -107,11 +107,11 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                 required: { value: true, message: 'Upper bound is required.' },
                                 max: {
                                     value: totalLogOdds ?? 0,
-                                    message: 'Value cannot be greater than total log odds.'
+                                    message: 'Cannot be greater than total log odds.'
                                 },
                                 min: {
                                     value: lowerBound ?? 0,
-                                    message: `Value must be between ${lowerBound ? 'lower bound' : '0'} and total log odds.`
+                                    message: `Must be between ${lowerBound ? 'lower bound' : '0'} and total log odds.`
                                 }
                             }}
                             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (

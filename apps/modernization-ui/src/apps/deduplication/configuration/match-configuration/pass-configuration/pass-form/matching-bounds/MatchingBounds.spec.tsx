@@ -63,7 +63,7 @@ describe('MatchingBounds', () => {
         await user.type(lowerBoundInput, '5').then(() => user.tab());
         user.tab();
 
-        expect(await findByText('Value cannot be greater than total log odds.')).toBeInTheDocument();
+        expect(await findByText('Cannot be greater than total log odds.')).toBeInTheDocument();
     });
 
     it('should require lower bound to be less than upper bound', async () => {
@@ -78,7 +78,7 @@ describe('MatchingBounds', () => {
         user.tab();
         user.tab();
 
-        expect(await findByText('Value cannot be greater than upper bound.')).toBeInTheDocument();
+        expect(await findByText('Cannot be greater than upper bound.')).toBeInTheDocument();
     });
 
     it('should require upper bound to be more than lower bound', async () => {
@@ -93,7 +93,7 @@ describe('MatchingBounds', () => {
         user.tab();
         user.tab();
 
-        expect(await findByText('Value must be between lower bound and total log odds.')).toBeInTheDocument();
+        expect(await findByText('Must be between lower bound and total log odds.')).toBeInTheDocument();
     });
 
     it('should require upper bound to be less than total log odds', async () => {
@@ -108,6 +108,6 @@ describe('MatchingBounds', () => {
         user.tab();
         user.tab();
 
-        expect(await findByText('Value cannot be greater than total log odds.')).toBeInTheDocument();
+        expect(await findByText('Cannot be greater than total log odds.')).toBeInTheDocument();
     });
 });
