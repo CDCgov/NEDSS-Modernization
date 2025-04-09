@@ -49,6 +49,11 @@ export enum MatchMethod {
     JAROWINKLER = 'JAROWINKLER'
 }
 
+export const matchMethodLabelMap = new Map<MatchMethod, string>([
+    [MatchMethod.EXACT, 'Exact'],
+    [MatchMethod.JAROWINKLER, 'JaroWinkler']
+]);
+
 export enum BlockingAttribute {
     FIRST_NAME = 'FIRST_NAME',
     LAST_NAME = 'LAST_NAME',

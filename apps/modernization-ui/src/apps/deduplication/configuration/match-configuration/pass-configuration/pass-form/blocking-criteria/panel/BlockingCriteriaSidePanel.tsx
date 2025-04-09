@@ -6,6 +6,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
 import { SidePanel } from '../../side-panel/SidePanel';
 import styles from './blocking-criteria-panel.module.scss';
+import { BlockingAttributeLabelMap } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
     visible: boolean;
@@ -16,6 +17,7 @@ export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
     const form = useFormContext<Pass>();
     const [selectedAttributes, setSelectedAttributes] = useState<BlockingAttribute[]>([]);
     const { blockingCriteria } = useWatch(form);
+    const attributeList = Array.from(BlockingAttributeLabelMap.entries());
 
     useEffect(() => {
         setSelectedAttributes(blockingCriteria ?? []);
@@ -33,40 +35,6 @@ export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
         onCancel();
         setSelectedAttributes(blockingCriteria ?? []);
     };
-    const attributeList: { attribute: BlockingAttribute; label: string; description: string }[] = [
-        {
-            attribute: BlockingAttribute.FIRST_NAME,
-            label: 'First name',
-            description: "The first 4 characters of the person's first name."
-        },
-        {
-            attribute: BlockingAttribute.LAST_NAME,
-            label: 'Last name',
-            description: "The first 4 characters of the person's last name."
-        },
-        {
-            attribute: BlockingAttribute.BIRTHDATE,
-            label: 'Date of birth',
-            description: "The person's birthdate in the format YYYY-MM-DD."
-        },
-        { attribute: BlockingAttribute.SEX, label: 'Sex', description: "The person's sex in the format of M or F." },
-        {
-            attribute: BlockingAttribute.ADDRESS,
-            label: 'Street address 1',
-            description: "The first 4 characters of the person's address."
-        },
-        { attribute: BlockingAttribute.ZIP, label: 'Zip', description: "The person's 5 digit zip code." },
-        {
-            attribute: BlockingAttribute.EMAIL,
-            label: 'Email',
-            description: "The first 4 characters of the person's email address."
-        },
-        {
-            attribute: BlockingAttribute.PHONE,
-            label: 'Phone',
-            description: "The last 4 digits of the person's phone number."
-        }
-    ];
 
     return (
         <SidePanel
@@ -87,15 +55,15 @@ export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
                 </>
             }>
             <div className={styles.blockingCriteriaPanel}>
-                {attributeList.map((a, k) => (
+                {attributeList.map(([attribute, entry], k) => (
                     <AttributeEntry
                         key={`blockingAttribute-${k}`}
-                        label={a.label}
-                        description={a.description}
+                        label={entry.label}
+                        description={entry.description}
                         onChange={() => {
-                            handleOnChange(a.attribute);
+                            handleOnChange(attribute);
                         }}
-                        selected={selectedAttributes.includes(a.attribute)}
+                        selected={selectedAttributes.includes(attribute)}
                     />
                 ))}
             </div>
