@@ -25,6 +25,9 @@
 > **Warning:** The data created by Cypress tests is not cleaned up. Running automated testing against your database **WILL** pollute it with random data.
 
 
+> **Warning:** SSO sign in is not supported. Attempting to connect to an environment with SSO enabled will fail.
+
+
 
 ## Running Cypress (Linux / Mac)
 ### 1. Navigate to the Project Directory
