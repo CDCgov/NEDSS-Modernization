@@ -59,7 +59,7 @@ export const PassList = ({ passes, selectedPass, onSetSelectedPass, onAddPass, o
                     labelPosition="right"
                     unstyled
                     onClick={onAddPass}
-                    disabled={selectedPass?.id === undefined}
+                    disabled={selectedPass !== undefined && selectedPass?.id === undefined}
                     className={styles.addPassButton}>
                     Add pass configuration
                 </Button>
