@@ -114,7 +114,7 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                                 <span className={styles.headerWithIcon}>
                                     Threshold{' '}
                                     <span ref={thresholdRef} className={styles.infoIcon}>
-                                        <RichTooltip anchorRef={thresholdRef} marginTop={38}>
+                                        <RichTooltip anchorRef={thresholdRef} marginLeft={-300} marginTop={38}>
                                             <span>Threshold - </span>
                                             <span style={{ fontWeight: 'normal' }}>
                                                 Values above which two strings are said to be “similar enough” that

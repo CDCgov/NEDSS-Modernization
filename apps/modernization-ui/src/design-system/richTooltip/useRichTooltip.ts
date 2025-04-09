@@ -31,7 +31,7 @@ export function useTooltip({ anchorRef, richTooltipRef, marginTop, marginLeft }:
 
         if (isVisible) {
             const { top, left, width } = anchorRef.current.getBoundingClientRect();
-            setPosition({ ...calcBottomLeftPosition(marginTop || top, marginLeft || left, width) });
+            setPosition({ ...calcBottomLeftPosition(marginTop ?? top, marginLeft ? marginLeft + left : left, width) });
         }
 
         if (!isVisible) {
