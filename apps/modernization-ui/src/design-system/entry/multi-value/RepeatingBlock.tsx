@@ -171,7 +171,11 @@ const RepeatingBlock = <V extends FieldValues>({
             </Shown>
             <footer>
                 <Shown when={status === 'adding'}>
-                    <Button outline sizing={sizing} onClick={form.handleSubmit(handleAdd)}>
+                    <Button
+                        outline
+                        sizing={sizing}
+                        aria-description={`add ${title.toLowerCase()}`}
+                        onClick={form.handleSubmit(handleAdd)}>
                         <Icon name="add" sizing={sizing} />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
