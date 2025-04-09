@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Pass } from './model/Pass';
 import { Config } from 'config';
+import { AlgorithmExport } from './model/AlgorithmExport';
 
 export const useMatchConfiguration = (lazy = false) => {
     const [passes, setPasses] = useState<Pass[]>([]);
@@ -191,6 +192,31 @@ export const useMatchConfiguration = (lazy = false) => {
         });
     };
 
+    const importAlgorithm = (algorithm: AlgorithmExport, successCallback?: () => void) => {
+        setLoading(true);
+        const formData = new FormData();
+        formData.append('file', new Blob([JSON.stringify(algorithm)]));
+
+        fetch(`${Config.deduplicationUrl}/configuration/import`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json'
+            },
+            body: formData
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to import algorithm');
+                }
+                successCallback?.();
+            })
+            .catch(() => {
+                setError('Failed to import algorithm');
+            })
+
+            .finally(() => setLoading(false));
+    };
+
     useEffect(() => {
         if (!lazy) {
             fetchConfiguration();
@@ -208,6 +234,7 @@ export const useMatchConfiguration = (lazy = false) => {
         updatePassName,
         selectPass,
         addPass,
-        exportAlgorithm
+        exportAlgorithm,
+        importAlgorithm
     };
 };

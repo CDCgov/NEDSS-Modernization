@@ -62,9 +62,8 @@ describe('BlockingCriteria', () => {
     });
 
     it('should trigger onAddAttributes when button is clicked', async () => {
-        const { getByRole } = render(<Fixture />);
-
         const user = userEvent.setup();
+        const { getByRole } = render(<Fixture />);
 
         const button = getByRole('button');
 

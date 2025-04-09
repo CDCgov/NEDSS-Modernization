@@ -93,6 +93,7 @@ export const TextCriteriaField = ({
                     value={asSelectableOperator(effectiveOperator)}
                     mode={operationMode}
                     onChange={onSelectionChange}
+                    ariaLabel={`${label} search criteria operator`}
                 />
                 <TextInput onChange={onInputChange} type="text" name={id} value={operatorValue.value ?? ''} id={id} />
             </div>
