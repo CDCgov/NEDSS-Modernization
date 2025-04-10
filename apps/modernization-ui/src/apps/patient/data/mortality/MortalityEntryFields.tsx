@@ -20,7 +20,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
     const selectedState = useWatch({ control, name: 'mortality.state' });
     const selectedDeceased = useWatch({ control, name: 'mortality.deceased' });
 
-    const counties = useCountyCodedValues(selectedState?.value ?? '');
+    const counties = useCountyCodedValues(selectedState?.value);
 
     useEffect(() => {
         if (selectedDeceased?.value !== Indicator.Yes) {

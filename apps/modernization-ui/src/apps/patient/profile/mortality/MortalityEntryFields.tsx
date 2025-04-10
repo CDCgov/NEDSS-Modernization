@@ -14,7 +14,7 @@ export const MortalityEntryFields = () => {
     const selectedState = useWatch({ control, name: 'state' });
     const selectedDeceased = useWatch({ control, name: 'deceased' });
 
-    const counties = useCountyCodedValues(selectedState ?? '');
+    const counties = useCountyCodedValues(selectedState);
 
     return (
         <section>

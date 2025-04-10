@@ -7,7 +7,7 @@ type CountyCodedValues = {
     load: () => void;
 };
 
-const resolver = (state: string) => () => {
+const resolver = (state?: string) => () => {
     return state
         ? CountyOptionsService.countyAutocomplete({
               criteria: '',
@@ -17,7 +17,7 @@ const resolver = (state: string) => () => {
         : Promise.resolve([]);
 };
 
-const useCountyCodedValues = (state: string): CountyCodedValues => {
+const useCountyCodedValues = (state?: string): CountyCodedValues => {
     return useSelectableOptions({ resolver: resolver(state), lazy: false });
 };
 
