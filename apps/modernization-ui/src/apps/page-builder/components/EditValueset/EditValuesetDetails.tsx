@@ -35,10 +35,10 @@ export const EditValuesetDetails = ({ valueset, onClose, onCancel, onValuesetUpd
 
     useEffect(() => {
         if (response) {
-            showSuccess({ message: 'Successfully updated value set' });
+            showSuccess('Successfully updated value set');
             onValuesetUpdated();
         } else if (error) {
-            showError({ message: `Failed to update value set: ${valueset.name}` });
+            showError(`Failed to update value set: ${valueset.name}`);
         }
     }, [response, error]);
 

@@ -23,7 +23,7 @@ export const PassList = ({ passes, selectedPass, onSetSelectedPass, onAddPass, o
     const handleUpdateName = (name: string, description?: string) => {
         if (passToUpdate) {
             onRenamePass({ ...passToUpdate, name, description }, () => {
-                showSuccess({ message: `You have successfully updated the pass configuration.` });
+                showSuccess(`You have successfully updated the pass configuration.`);
                 setPassToUpdate(undefined);
             });
         }

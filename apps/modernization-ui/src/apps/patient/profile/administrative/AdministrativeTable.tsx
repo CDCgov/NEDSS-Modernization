@@ -97,7 +97,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
             })
                 .then(() => {
                     refetch();
-                    showAlert({ type: 'success', header: 'success', message: 'Updated Comment' });
+                    showAlert({ type: 'success', title: 'success', message: 'Updated Comment' });
                 })
                 .then(() => actions.reset());
     };

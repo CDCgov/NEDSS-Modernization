@@ -88,10 +88,10 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
 
     useEffect(() => {
         if (response) {
-            showSuccess({ message: 'Successfully updated question' });
+            showSuccess('Successfully updated question');
             onUpdated();
         } else if (error) {
-            showError({ message: 'Failed to update question' });
+            showError('Failed to update question');
         }
     }, [error, response]);
 

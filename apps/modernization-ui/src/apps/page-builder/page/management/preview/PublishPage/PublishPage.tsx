@@ -45,14 +45,14 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                 console.error(error);
                 showAlert({
                     type: 'error',
-                    header: 'error',
+                    title: 'error',
                     message: error.message
                 });
             } else {
                 console.error(error);
                 showAlert({
                     type: 'error',
-                    header: 'error',
+                    title: 'error',
                     message: 'An unknown error occurred'
                 });
             }
@@ -69,7 +69,7 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                     modalRef.current?.toggleModal();
                     showAlert({
                         type: 'success',
-                        header: 'Success',
+                        title: 'Success',
                         message: `${page.name} was successfully published.`
                     });
                     refresh();
