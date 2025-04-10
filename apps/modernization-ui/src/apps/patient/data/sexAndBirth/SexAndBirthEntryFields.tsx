@@ -29,7 +29,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
     const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
 
     const coded = useSexBirthCodedValues();
-    const counties = useCountyCodedValues(selectedState?.value ?? '');
+    const counties = useCountyCodedValues(selectedState?.value);
 
     useEffect(() => {
         if (!selectedState) {

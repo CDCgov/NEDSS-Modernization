@@ -32,7 +32,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
     const selectedState = useWatch({ control, name: 'state' });
     const enteredCity = useWatch({ control, name: 'city' });
     const enteredZip = useWatch({ control, name: 'zipcode' });
-    const counties = useCountyCodedValues(selectedState?.value ?? '');
+    const counties = useCountyCodedValues(selectedState?.value);
 
     const handleSuggestionSelection = (selected: AddressSuggestion) => {
         reset(
