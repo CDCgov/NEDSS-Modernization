@@ -1,5 +1,4 @@
-import { Icon } from '@trussworks/react-uswds';
-import { MatchingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
+import { Pass } from 'apps/deduplication/api/model/Pass';
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
@@ -9,6 +8,8 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { MatchingCriteriaAttribute } from './attribute/MatchingCriteriaAttribute';
 import { getLogOdds } from './getLogOdds';
 import styles from './matching-criteria.module.scss';
+import { Icon } from 'design-system/icon';
+import { MatchingAttributeLabelMap } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
     dataElements: DataElements;
@@ -22,38 +23,11 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
 
     useEffect(() => {
         setDisabled(blockingCriteria === undefined || blockingCriteria.length === 0);
-    }, [blockingCriteria]);
+    }, [JSON.stringify(blockingCriteria)]);
 
     const handleRemoveAttribute = (index: number) => {
         remove(index);
     };
-
-    const labelLookup: Map<MatchingAttribute, string> = new Map([
-        [MatchingAttribute.FIRST_NAME, 'First name'],
-        [MatchingAttribute.LAST_NAME, 'Last name'],
-        [MatchingAttribute.SUFFIX, 'Suffix'],
-        [MatchingAttribute.BIRTHDATE, 'Date of birth'],
-        [MatchingAttribute.SEX, 'Sex'],
-        [MatchingAttribute.RACE, 'Race'],
-        [MatchingAttribute.ADDRESS, 'Address'],
-        [MatchingAttribute.CITY, 'City'],
-        [MatchingAttribute.STATE, 'State'],
-        [MatchingAttribute.ZIP, 'Zip'],
-        [MatchingAttribute.COUNTY, 'County'],
-        [MatchingAttribute.PHONE, 'Phone'],
-        [MatchingAttribute.EMAIL, 'Email'],
-        [MatchingAttribute.SOCIAL_SECURITY, 'Social security number'],
-        [MatchingAttribute.DRIVERS_LICENSE_NUMBER, "Driver's license"],
-        [MatchingAttribute.MEDICAID_NUMBER, 'Medicaid number'],
-        [MatchingAttribute.MEDICAL_RECORD_NUMBER, 'Medical record number'],
-        [MatchingAttribute.ACCOUNT_NUMBER, 'Account number'],
-        [MatchingAttribute.NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER, 'National unique idividual identifier'],
-        [MatchingAttribute.PATIENT_EXTERNAL_IDENTIFIER, 'Patient external identifier'],
-        [MatchingAttribute.PATIENT_INTERNAL_IDENTIFIER, 'Patient internal identifier'],
-        [MatchingAttribute.PERSON_NUMBER, 'Person number'],
-        [MatchingAttribute.VISA_PASSPORT, 'VISA / Passport number'],
-        [MatchingAttribute.WIC_IDENTIFIER, 'WIC Identifier']
-    ]);
 
     return (
         <div className={styles.matchingCriteria}>
@@ -75,7 +49,7 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                         {fields.map((entry, index) => (
                             <MatchingCriteriaAttribute
                                 key={entry.id}
-                                label={labelLookup.get(entry.attribute) ?? ''}
+                                label={MatchingAttributeLabelMap.get(entry.attribute)?.label ?? ''}
                                 attribute={entry.attribute}
                                 onRemove={() => handleRemoveAttribute(index)}
                                 logOdds={getLogOdds(dataElements, entry.attribute)}
@@ -84,7 +58,7 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                     </Shown>
                     <div className={styles.buttonContainer}>
                         <Button
-                            icon={<Icon.Add size={3} />}
+                            icon={<Icon name="add" />}
                             labelPosition="right"
                             outline
                             onClick={onAddAttributes}

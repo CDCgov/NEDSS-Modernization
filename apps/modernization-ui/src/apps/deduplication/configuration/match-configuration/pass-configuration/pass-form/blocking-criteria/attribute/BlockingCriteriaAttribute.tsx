@@ -23,7 +23,7 @@ export const BlockingCriteriaAttribute = ({ label, description, attribute, onRem
         } else {
             setVisible(false);
         }
-    }, [blockingCriteria]);
+    }, [JSON.stringify(blockingCriteria)]);
     return (
         <Shown when={visible}>
             <div className={styles.blockingAttribute}>

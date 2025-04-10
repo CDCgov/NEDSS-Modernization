@@ -13,7 +13,8 @@ type Props = {
 };
 export const MatchingBounds = ({ dataElements }: Props) => {
     const form = useFormContext<Pass>();
-    const { matchingCriteria, blockingCriteria } = useWatch<Pass>(form);
+    const { blockingCriteria } = useWatch<Pass>(form);
+    const { matchingCriteria } = useWatch<Pass>(form);
     const [disabled, setDisabled] = useState<boolean>(true);
     const [totalLogOdds, setTotalLogOdds] = useState<number | undefined>();
 
@@ -24,7 +25,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                 matchingCriteria === undefined ||
                 matchingCriteria.length === 0
         );
-    }, [blockingCriteria, matchingCriteria]);
+    }, [JSON.stringify(blockingCriteria), JSON.stringify(matchingCriteria)]);
 
     useEffect(() => {
         if (disabled) {
