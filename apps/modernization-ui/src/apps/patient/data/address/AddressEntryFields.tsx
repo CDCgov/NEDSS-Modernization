@@ -2,7 +2,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
-import { useLocationCodedValues } from 'location';
+import { initial } from 'location';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
@@ -11,6 +11,9 @@ import { CensusTractInputField, validCensusTractRule } from './census-tract';
 import { AddressEntry } from './entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { useAddressCodedValues } from './useAddressCodedValues';
+import { useCountyCodedValues } from 'apps/patient/data/county/useCountyCodedValues';
+import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
+import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
 
 const AS_OF_DATE_LABEL = 'Address as of';
 const TYPE_LABEL = 'Type';
@@ -25,11 +28,11 @@ const COMMENTS_LABEL = 'Address comments';
 export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control, reset } = useFormContext<AddressEntry>();
     const coded = useAddressCodedValues();
-    const location = useLocationCodedValues();
+    const location = initial;
     const selectedState = useWatch({ control, name: 'state' });
     const enteredCity = useWatch({ control, name: 'city' });
     const enteredZip = useWatch({ control, name: 'zipcode' });
-    const counties = location.counties.byState(selectedState?.value ?? '');
+    const counties = useCountyCodedValues(selectedState?.value ?? '');
 
     const handleSuggestionSelection = (selected: AddressSuggestion) => {
         reset(
@@ -179,7 +182,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={location.states.all}
+                        options={useStateCodedValues({ lazy: false }).options}
                         sizing={sizing}
                     />
                 )}
@@ -212,7 +215,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={counties}
+                        options={counties.options}
                         sizing={sizing}
                     />
                 )}
@@ -245,7 +248,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={location.countries}
+                        options={useCountryCodedValues({ lazy: false }).options}
                         sizing={sizing}
                         autoComplete="off"
                     />

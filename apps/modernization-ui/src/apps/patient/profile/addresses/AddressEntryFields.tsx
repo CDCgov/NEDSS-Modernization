@@ -2,20 +2,22 @@ import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { useLocationCodedValues } from 'location';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { AddressFields } from './AddressEntry';
 import { usePatientAddressCodedValues } from './usePatientAddressCodedValues';
+import { useCountyCodedValues } from 'apps/patient/data/county/useCountyCodedValues';
+import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
+import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
+import { initial } from 'location';
 
 export const AddressEntryFields = () => {
     const { control, reset } = useFormContext<AddressFields>();
     const coded = usePatientAddressCodedValues();
-    const location = useLocationCodedValues();
     const selectedState = useWatch({ control, name: 'state' });
     const enteredCity = useWatch({ control, name: 'city' });
     const enteredZip = useWatch({ control, name: 'zipcode' });
-    const counties = location.counties.byState(selectedState ?? '');
+    const counties = useCountyCodedValues(selectedState ?? '');
 
     const handleSuggestionSelection = (selected: AddressSuggestion) => {
         reset(
@@ -98,7 +100,7 @@ export const AddressEntryFields = () => {
                         label="Street address 1"
                         orientation="horizontal"
                         id={name}
-                        locations={location}
+                        locations={initial}
                         criteria={{
                             city: enteredCity ?? undefined,
                             state: selectedState ?? undefined,
@@ -162,7 +164,7 @@ export const AddressEntryFields = () => {
                         htmlFor={name}
                         id={name}
                         name={name}
-                        options={location.states.all}
+                        options={useStateCodedValues({ lazy: false }).options}
                     />
                 )}
             />
@@ -204,7 +206,7 @@ export const AddressEntryFields = () => {
                         htmlFor={name}
                         id={name}
                         name={name}
-                        options={counties}
+                        options={counties.options}
                     />
                 )}
             />
@@ -239,7 +241,7 @@ export const AddressEntryFields = () => {
                         id={name}
                         name={name}
                         htmlFor={name}
-                        options={location.countries}
+                        options={useCountryCodedValues({ lazy: false }).options}
                         autoComplete="off"
                     />
                 )}

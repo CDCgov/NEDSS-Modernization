@@ -5,18 +5,22 @@ import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
 import { MortalityEntryFields } from './MortalityEntryFields';
 import { internalizeDate } from 'date';
 
-const mockLocationCodedValues = {
-    states: {
-        all: [{ name: 'StateName', value: '1' }]
-    },
-    counties: {
-        byState: (state: string) => [{ name: 'CountyName', value: '2' }]
-    },
-    countries: [{ name: 'CountryName', value: '3' }]
-};
+const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
-jest.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
+const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
+
+const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+
+jest.mock('apps/patient/data/county/useCountyCodedValues', () => ({
+    useCountyCodedValues: () => mockCountyCodedValues
+}));
+
+jest.mock('apps/patient/data/country/useCountryCodedValues', () => ({
+    useCountryCodedValues: () => mockCountryCodedValues
+}));
+
+jest.mock('apps/patient/data/state/useStateCodedValues', () => ({
+    useStateCodedValues: () => mockStateCodedValues
 }));
 
 const Fixture = () => {
