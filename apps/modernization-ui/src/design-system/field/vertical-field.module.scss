@@ -1,14 +1,19 @@
+@use 'styles/components';
+
 .entry {
     flex-direction: column;
     gap: 0.25rem;
+    padding: 0 0.75rem;
 
-    &.alert {
-        padding-left: 1.25rem;
-    }
-
-    .textContainer {
+    .labels {
         display: flex;
         flex-direction: column;
         gap: 0.125rem;
+
+        label {
+            &.required {
+                @include components.required();
+            }
+        }
     }
 }
