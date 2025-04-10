@@ -8,11 +8,13 @@ type CountyCodedValues = {
 };
 
 const resolver = (state: string) => () => {
-    return CountyOptionsService.countyAutocomplete({
-        criteria: '',
-        state: state,
-        limit: 100000
-    });
+    return state
+        ? CountyOptionsService.countyAutocomplete({
+              criteria: '',
+              state: state,
+              limit: 100000
+          })
+        : Promise.resolve([]);
 };
 
 const useCountyCodedValues = (state: string): CountyCodedValues => {
