@@ -36,4 +36,10 @@ describe('PatientCreatedPanel', () => {
         const { getByText } = render(<PatientCreatedPanel created={createdPatient} />);
         expect(getByText(/Add investigation/i)).toBeInTheDocument();
     });
+
+    it('renders Add morbidity button when permission is granted', () => {
+        mockPermissions = ['ADD-OBSERVATIONMORBIDITYREPORT'];
+        const { getByText } = render(<PatientCreatedPanel created={createdPatient} />);
+        expect(getByText(/Add morbidity/i)).toBeInTheDocument();
+    });
 });

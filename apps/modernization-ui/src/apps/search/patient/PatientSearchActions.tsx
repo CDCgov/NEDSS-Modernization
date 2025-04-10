@@ -1,7 +1,7 @@
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
 import { Button } from 'components/button';
 import { useAddPatientFromSearch } from './add/useAddPatientFromSearch';
-import { ADD_PATIENT_PERMISSION, ADD_LAB_REPORT_PERMISSION, Permitted } from 'libs/permission';
+import { permissions, Permitted } from 'libs/permission';
 import { Icon } from 'design-system/icon';
 
 type Props = {
@@ -13,8 +13,8 @@ const PatientSearchActions = ({ disabled }: Props) => {
     const handleLabReport = () => (window.location.href = '/nbs/MyTaskList1.do?ContextAction=AddLabDataEntry');
 
     return (
-        <Permitted include={[ADD_PATIENT_PERMISSION, ADD_LAB_REPORT_PERMISSION]} mode="any">
-            <Permitted include={[ADD_PATIENT_PERMISSION, ADD_LAB_REPORT_PERMISSION]} mode="all">
+        <Permitted include={[permissions.patient.add, permissions.labReport.add]} mode="any">
+            <Permitted include={[permissions.patient.add, permissions.labReport.add]} mode="all">
                 <ButtonActionMenu label="Add new" disabled={disabled}>
                     <>
                         <Button type="button" onClick={add}>
@@ -24,7 +24,7 @@ const PatientSearchActions = ({ disabled }: Props) => {
                     </>
                 </ButtonActionMenu>
             </Permitted>
-            <Permitted include={[ADD_PATIENT_PERMISSION]} exclude={[ADD_LAB_REPORT_PERMISSION]}>
+            <Permitted include={[permissions.patient.add]} exclude={[permissions.labReport.add]}>
                 <Button
                     type="button"
                     onClick={add}
@@ -34,7 +34,7 @@ const PatientSearchActions = ({ disabled }: Props) => {
                     Add new patient
                 </Button>
             </Permitted>
-            <Permitted include={[ADD_LAB_REPORT_PERMISSION]} exclude={[ADD_PATIENT_PERMISSION]}>
+            <Permitted include={[permissions.labReport.add]} exclude={[permissions.patient.add]}>
                 <Button
                     type="button"
                     onClick={handleLabReport}
