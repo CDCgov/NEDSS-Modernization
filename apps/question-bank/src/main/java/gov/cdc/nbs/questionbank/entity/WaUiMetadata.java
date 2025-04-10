@@ -36,6 +36,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "WA_UI_metadata", catalog = "NBS_ODSE")
+@SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7091"}) //  Bidirectional mappings require knowledge of each other
 public class WaUiMetadata {
   public static final String ACTIVE = "Active";
   public static final String INACTIVE = "Inactive";

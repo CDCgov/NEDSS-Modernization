@@ -42,7 +42,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "WA_template", catalog = "NBS_ODSE")
-@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
+@SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7091"}) //  Bidirectional mappings require knowledge of each other
 public class WaTemplate {
   private static final String DRAFT = "Draft";
   private static final long TAB = 1010L;
