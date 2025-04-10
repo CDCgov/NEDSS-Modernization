@@ -1,6 +1,9 @@
 import { Button } from '@trussworks/react-uswds';
 import { useRedirect } from './useRedirect';
 import { Destination } from './Destination';
+import classNames from 'classnames';
+
+import styles from './classic.module.scss';
 
 type Props = {
     url: string;
@@ -35,7 +38,12 @@ export const ClassicButton = ({
     const { redirect } = useRedirect({ destination });
 
     return (
-        <Button type="button" outline={outline} className={className} onClick={() => redirect(url)} {...defaultProps}>
+        <Button
+            type="button"
+            outline={outline}
+            className={classNames(className, styles.button)}
+            onClick={() => redirect(url)}
+            {...defaultProps}>
             {children}
         </Button>
     );

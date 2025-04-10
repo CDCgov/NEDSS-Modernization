@@ -1,6 +1,8 @@
 @use 'styles/buttons';
 
 a {
+    margin: 0 !important;
+    
     &.small {
         @extend %button-small;
     }
