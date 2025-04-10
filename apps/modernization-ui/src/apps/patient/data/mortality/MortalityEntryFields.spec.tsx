@@ -12,15 +12,21 @@ const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
 const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
 
 jest.mock('apps/patient/data/county/useCountyCodedValues', () => ({
-    useCountyCodedValues: () => mockCountyCodedValues
+    useCountyCodedValues: () => ({
+        options: mockCountyCodedValues
+    })
 }));
 
 jest.mock('apps/patient/data/country/useCountryCodedValues', () => ({
-    useCountryCodedValues: () => mockCountryCodedValues
+    useCountryCodedValues: () => ({
+        options: mockCountryCodedValues
+    })
 }));
 
 jest.mock('apps/patient/data/state/useStateCodedValues', () => ({
-    useStateCodedValues: () => mockStateCodedValues
+    useStateCodedValues: () => ({
+        options: mockStateCodedValues
+    })
 }));
 
 const Fixture = () => {
