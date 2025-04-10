@@ -6,7 +6,7 @@ import { useFormNavigationBlock } from 'navigation';
 import { CreatedPatient } from 'apps/patient/add/api';
 import { DataEntryMenu } from 'apps/patient/add/DataEntryMenu';
 import { PatientCreatedPanel } from 'apps/patient/add/PatientCreatedPanel';
-import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
+import { usePatientDataEntryMethod } from 'apps/patient/add/usePatientDataEntryMethod';
 import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
@@ -21,7 +21,7 @@ export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient();
     const { initialize } = useAddPatientExtendedDefaults();
     const { value: bypassBlocker } = useShowCancelModal();
-    const { toBasic } = useBasicExtendedTransition();
+    const { toBasic } = usePatientDataEntryMethod();
 
     const created = useMemo<CreatedPatient | undefined>(
         () => (interaction.status === 'created' ? interaction.created : undefined),

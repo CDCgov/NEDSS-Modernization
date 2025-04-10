@@ -1,25 +1,12 @@
 import { FeatureGuard } from 'feature';
+import { PatientDataEntryProvider } from './PatientDataEntryProvider';
 import { AddPatient } from './AddPatient';
-import { AddPatientExtended } from './extended/AddPatientExtended';
-import { Outlet } from 'react-router';
-import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
+import { AddPatientExtended } from './extended';
 import { AddPatientBasic } from './basic/AddPatientBasic';
-import { SearchFromAddPatientProvider } from 'apps/search/patient/add/useSearchFromAddPatient';
-import { ComponentSizingProvider } from 'design-system/sizing';
-
-const PatientDataProviderWrapper = () => (
-    <ComponentSizingProvider>
-        <SearchFromAddPatientProvider>
-            <BasicExtendedTransitionProvider>
-                <Outlet />
-            </BasicExtendedTransitionProvider>
-        </SearchFromAddPatientProvider>
-    </ComponentSizingProvider>
-);
 
 const routing = [
     {
-        element: <PatientDataProviderWrapper />,
+        element: <PatientDataEntryProvider />,
         children: [
             {
                 path: '/add-patient',
