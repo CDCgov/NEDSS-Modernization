@@ -1,5 +1,5 @@
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { useLocationCodedValues } from 'location';
+import { initial } from 'location';
 import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
 import { validCensusTractRule, CensusTractInputField } from 'apps/patient/data/address';
 import { Input } from 'components/FormInputs/Input';
@@ -25,7 +25,6 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
     const selectedState = useWatch({ control, name: 'address.state' });
     const enteredCity = useWatch({ control, name: 'address.city' });
     const enteredZip = useWatch({ control, name: 'address.zipcode' });
-    const location = useLocationCodedValues();
     const [counties, setCounties] = useState<Option[]>([]);
 
     useEffect(() => {
@@ -66,7 +65,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         orientation={orientation}
                         sizing={sizing}
                         id={name}
-                        locations={location}
+                        locations={initial}
                         criteria={{
                             city: enteredCity ?? undefined,
                             state: selectedState?.value ?? undefined,

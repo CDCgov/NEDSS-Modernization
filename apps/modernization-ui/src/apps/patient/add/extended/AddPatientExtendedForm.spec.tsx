@@ -12,6 +12,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { internalizeDate } from 'date';
 import { ValidationErrors } from './useAddExtendedPatientInteraction';
 import { Selectable } from 'options';
+const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -32,6 +33,10 @@ const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     },
     countries: [{ name: 'United States of America', value: 'US' }]
 };
+
+jest.mock('apps/patient/data/state/useStateCodedValues', () => ({
+    useStateCodedValues: () => mockStateCodedValues
+}));
 
 jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => ({
     usePatientSexBirthCodedValues: () => mockSexBirthCodedValues

@@ -5,11 +5,13 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { Input } from 'components/FormInputs/Input';
 import { displayAgeAsOfToday } from 'date/displayAge';
-import { useCountyCodedValues, useLocationCodedValues } from 'location';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { BirthEntry, SexEntry } from 'apps/patient/data/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';
+import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
+import { useCountyCodedValues } from 'apps/patient/data/county/useCountyCodedValues';
+import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
 
 const UNKNOWN_GENDER = 'U';
 
@@ -27,8 +29,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
     const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
 
     const coded = useSexBirthCodedValues();
-    const location = useLocationCodedValues();
-    const { counties } = useCountyCodedValues(selectedState?.value);
+    const counties = useCountyCodedValues(selectedState?.value ?? '');
 
     useEffect(() => {
         if (!selectedState) {
@@ -251,7 +252,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={location.states.all}
+                        options={useStateCodedValues({ lazy: false }).options}
                         sizing={sizing}
                     />
                 )}
@@ -268,7 +269,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={counties}
+                        options={counties.options}
                         sizing={sizing}
                     />
                 )}
@@ -286,7 +287,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={location.countries}
+                        options={useCountryCodedValues({ lazy: false }).options}
                         sizing={sizing}
                     />
                 )}

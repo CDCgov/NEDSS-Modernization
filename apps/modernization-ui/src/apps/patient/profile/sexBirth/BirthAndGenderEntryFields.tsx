@@ -9,6 +9,8 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { BirthAndGenderEntry } from './BirthAndGenderEntry';
 import { usePatientSexBirthCodedValues } from './usePatientSexBirthCodedValues';
+import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
+import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
 
 const UNKNOWN_GENDER = 'U';
 const ENTRY_FIELD_PLACEHOLDER = '';
@@ -230,7 +232,7 @@ export const BirthAndGenderEntryFields = () => {
                         id={name}
                         name={name}
                         htmlFor={name}
-                        options={coded.states.all}
+                        options={useStateCodedValues({ lazy: false }).options}
                     />
                 )}
             />
@@ -265,7 +267,7 @@ export const BirthAndGenderEntryFields = () => {
                         id={name}
                         name={name}
                         htmlFor={name}
-                        options={coded.countries}
+                        options={useCountryCodedValues({ lazy: false }).options}
                     />
                 )}
             />
