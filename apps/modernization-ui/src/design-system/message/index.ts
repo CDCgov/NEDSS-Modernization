@@ -1,2 +1,2 @@
 export { Message } from './Message';
-export { AlertMessage } from '../alert/alert-message/AlertMessage';
+export { AlertMessage } from '../alert/AlertMessage';

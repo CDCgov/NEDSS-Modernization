@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Heading } from 'components/heading';
 import { Icon } from 'design-system/icon';
 import { ReactNode } from 'react';
-import { resolveIcon } from '../../message/Message';
+import { resolveIcon } from '../message/Message';
 import styles from './alert-message.module.scss';
 
 type Props = {
