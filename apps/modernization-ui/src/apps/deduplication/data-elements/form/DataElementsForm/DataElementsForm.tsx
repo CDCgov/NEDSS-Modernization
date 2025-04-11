@@ -7,6 +7,7 @@ import { useRef } from 'react';
 import { Icon } from 'design-system/icon';
 import styles from './DataElementsForm.module.scss';
 import RichTooltip from 'design-system/richTooltip/RichTooltip';
+import { DataElementLabelLookup } from 'apps/deduplication/api/model/Labels';
 
 const dataElementKeys: (keyof DataElements)[] = [
     'firstName',
@@ -21,7 +22,6 @@ const dataElementKeys: (keyof DataElements)[] = [
     'state',
     'zip',
     'county',
-    'telecom',
     'telephone',
     'email',
     // Identification Details
@@ -132,60 +132,14 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        <DataElementRow dataElements={dataElements} fieldName="First name" field="firstName" />
-                        <DataElementRow dataElements={dataElements} fieldName="Last name" field="lastName" />
-                        <DataElementRow dataElements={dataElements} fieldName="Suffix" field="suffix" />
-                        <DataElementRow dataElements={dataElements} fieldName="Date of birth" field="dateOfBirth" />
-                        <DataElementRow dataElements={dataElements} fieldName="Current sex" field="sex" />
-                        <DataElementRow dataElements={dataElements} fieldName="Race" field="race" />
-                        <DataElementRow dataElements={dataElements} fieldName="SSN" field="socialSecurity" />
-                        <DataElementRow dataElements={dataElements} fieldName="Street address 1" field="address" />
-                        <DataElementRow dataElements={dataElements} fieldName="City" field="city" />
-                        <DataElementRow dataElements={dataElements} fieldName="State" field="state" />
-                        <DataElementRow dataElements={dataElements} fieldName="Zip" field="zip" />
-                        <DataElementRow dataElements={dataElements} fieldName="County" field="county" />
-                        <DataElementRow dataElements={dataElements} fieldName="Phone number" field="telephone" />
-                        <DataElementRow dataElements={dataElements} fieldName="Telecom" field="telecom" />
-                        <DataElementRow dataElements={dataElements} fieldName="Email" field="email" />
-                        <DataElementRow dataElements={dataElements} fieldName="Account number" field="accountNumber" />
-                        <DataElementRow
-                            dataElements={dataElements}
-                            fieldName="Drivers license number"
-                            field="driversLicenseNumber"
-                        />
-                        <DataElementRow
-                            dataElements={dataElements}
-                            fieldName="Medicaid number"
-                            field="medicaidNumber"
-                        />
-                        <DataElementRow
-                            dataElements={dataElements}
-                            fieldName="Medical record number"
-                            field="medicalRecordNumber"
-                        />
-                        <DataElementRow
-                            dataElements={dataElements}
-                            fieldName="Medicare number"
-                            field="medicareNumber"
-                        />
-                        <DataElementRow
-                            dataElements={dataElements}
-                            fieldName="National unique identifier"
-                            field="nationalUniqueIdentifier"
-                        />
-                        <DataElementRow
-                            dataElements={dataElements}
-                            fieldName="Patient external identifier"
-                            field="patientExternalIdentifier"
-                        />
-                        <DataElementRow
-                            dataElements={dataElements}
-                            fieldName="Patient internal identifier"
-                            field="patientInternalIdentifier"
-                        />
-                        <DataElementRow dataElements={dataElements} fieldName="Person number" field="personNumber" />
-                        <DataElementRow dataElements={dataElements} fieldName="Visa/Passport" field="visaPassport" />
-                        <DataElementRow dataElements={dataElements} fieldName="WIC Identifier" field="wicIdentifier" />
+                        {dataElementKeys.map((field, k) => (
+                            <DataElementRow
+                                key={`data-element-row-${k}`}
+                                dataElements={dataElements}
+                                field={field}
+                                fieldName={DataElementLabelLookup.get(field) ?? 'Unknown field'}
+                            />
+                        ))}
                     </tbody>
                 </table>
             </div>

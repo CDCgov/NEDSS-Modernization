@@ -84,6 +84,37 @@ const MatchingAttributeLabelMap: Map<MatchingAttribute, { label: string; isActiv
         ]
     ]);
 
+const DataElementLabelLookup: Map<keyof DataElements, string | undefined> = new Map([
+    ['firstName', MatchingAttributeLabelMap.get(MatchingAttribute.FIRST_NAME)?.label],
+    ['lastName', MatchingAttributeLabelMap.get(MatchingAttribute.LAST_NAME)?.label],
+    ['suffix', MatchingAttributeLabelMap.get(MatchingAttribute.SUFFIX)?.label],
+    ['dateOfBirth', MatchingAttributeLabelMap.get(MatchingAttribute.BIRTHDATE)?.label],
+    ['sex', MatchingAttributeLabelMap.get(MatchingAttribute.SEX)?.label],
+    ['race', MatchingAttributeLabelMap.get(MatchingAttribute.RACE)?.label],
+    ['socialSecurity', MatchingAttributeLabelMap.get(MatchingAttribute.SOCIAL_SECURITY)?.label],
+    ['address', MatchingAttributeLabelMap.get(MatchingAttribute.ADDRESS)?.label],
+    ['city', MatchingAttributeLabelMap.get(MatchingAttribute.CITY)?.label],
+    ['state', MatchingAttributeLabelMap.get(MatchingAttribute.STATE)?.label],
+    ['zip', MatchingAttributeLabelMap.get(MatchingAttribute.ZIP)?.label],
+    ['county', MatchingAttributeLabelMap.get(MatchingAttribute.COUNTY)?.label],
+    ['telephone', MatchingAttributeLabelMap.get(MatchingAttribute.PHONE)?.label],
+    ['email', MatchingAttributeLabelMap.get(MatchingAttribute.EMAIL)?.label],
+    ['accountNumber', MatchingAttributeLabelMap.get(MatchingAttribute.ACCOUNT_NUMBER)?.label],
+    ['driversLicenseNumber', MatchingAttributeLabelMap.get(MatchingAttribute.DRIVERS_LICENSE_NUMBER)?.label],
+    ['medicaidNumber', MatchingAttributeLabelMap.get(MatchingAttribute.MEDICAID_NUMBER)?.label],
+    ['medicalRecordNumber', MatchingAttributeLabelMap.get(MatchingAttribute.MEDICAL_RECORD_NUMBER)?.label],
+    ['medicareNumber', MatchingAttributeLabelMap.get(MatchingAttribute.MEDICARE_NUMBER)?.label],
+    [
+        'nationalUniqueIdentifier',
+        MatchingAttributeLabelMap.get(MatchingAttribute.NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER)?.label
+    ],
+    ['patientExternalIdentifier', MatchingAttributeLabelMap.get(MatchingAttribute.PATIENT_EXTERNAL_IDENTIFIER)?.label],
+    ['patientInternalIdentifier', MatchingAttributeLabelMap.get(MatchingAttribute.PATIENT_INTERNAL_IDENTIFIER)?.label],
+    ['personNumber', MatchingAttributeLabelMap.get(MatchingAttribute.PERSON_NUMBER)?.label],
+    ['visaPassport', MatchingAttributeLabelMap.get(MatchingAttribute.VISA_PASSPORT)?.label],
+    ['wicIdentifier', MatchingAttributeLabelMap.get(MatchingAttribute.WIC_IDENTIFIER)?.label]
+]);
+
 const BlockingAttributeLabelMap = new Map<BlockingAttribute, { label: string; description: string }>([
     [
         BlockingAttribute.FIRST_NAME,
@@ -114,4 +145,4 @@ const BlockingAttributeLabelMap = new Map<BlockingAttribute, { label: string; de
     ]
 ]);
 
-export { BlockingAttributeLabelMap, MatchingAttributeLabelMap };
+export { BlockingAttributeLabelMap, MatchingAttributeLabelMap, DataElementLabelLookup };
