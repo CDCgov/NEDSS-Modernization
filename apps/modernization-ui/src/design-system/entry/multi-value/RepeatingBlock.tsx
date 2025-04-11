@@ -100,7 +100,8 @@ const RepeatingBlock = <V extends FieldValues>({
 
     const iconColumn: Column<V> = {
         id: 'actions',
-        name: '',
+        name: 'Actions',
+        className: styles.iconColumn,
         render: (value: V) => (
             <div className={classNames(styles.actions, sizing && styles[sizing])}>
                 <div data-tooltip-position="top" aria-label="View" onClick={() => view(value)}>
@@ -207,7 +208,11 @@ const RepeatingBlock = <V extends FieldValues>({
                     </Button>
                 </Shown>
                 <Shown when={status === 'viewing'}>
-                    <Button outline sizing={sizing} onClick={handleReset}>
+                    <Button
+                        outline
+                        sizing={sizing}
+                        aria-description={`add ${title.toLowerCase()}`}
+                        onClick={handleReset}>
                         <Icon name="add" sizing={sizing} />
                         {`Add ${title.toLowerCase()}`}
                     </Button>

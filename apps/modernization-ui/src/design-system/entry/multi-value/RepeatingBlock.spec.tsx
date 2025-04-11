@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import { RepeatingBlock, RepeatingBlockProps } from './RepeatingBlock';
+import { axe } from 'jest-axe';
 
 type TestType = {
     firstInput: string;
@@ -139,6 +140,7 @@ describe('RepeatingBlock', () => {
 
         const button = getByRole('button', { name: 'Add test title' });
         expect(button).toBeInTheDocument();
+        expect(button).toHaveAttribute('aria-description');
     });
 
     it('should display add button with correct size', () => {
@@ -200,7 +202,10 @@ describe('RepeatingBlock', () => {
 
         await user.type(input1, '-change');
 
-        expect(getByRole('button', { name: 'Clear' })).toBeInTheDocument();
+        const button = getByRole('button', { name: 'Clear' });
+
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveAttribute('aria-description');
     });
 
     it('should reset values to default state when Clear is clicked.', async () => {
@@ -356,6 +361,7 @@ describe('RepeatingBlock', () => {
         expect(buttons).toHaveLength(1);
         expect(buttons[0]).toHaveTextContent('Add test title');
         expect(buttons[0].innerHTML).toContain('svg');
+        expect(buttons[0]).toHaveAttribute('aria-description');
     });
 
     it('should render edit when edit icon clicked', async () => {
@@ -382,8 +388,10 @@ describe('RepeatingBlock', () => {
         const buttons = getAllByRole('button');
         expect(buttons).toHaveLength(2);
         expect(buttons[0]).toHaveTextContent('Update test title');
+        expect(buttons[0]).toHaveAttribute('aria-description');
         expect(buttons[0].innerHTML).not.toContain('svg');
         expect(buttons[1]).toHaveTextContent('Cancel');
+        expect(buttons[1]).toHaveAttribute('aria-description');
     });
 
     it('should delete row when delete icon clicked', async () => {
@@ -550,5 +558,11 @@ describe('RepeatingBlock', () => {
 
         expect(getByText('First input is required.')).toBeInTheDocument();
         expect(isValid).toHaveBeenCalledWith(false);
+    });
+
+    it('should render with no accessibility violations', async () => {
+        const { container } = render(<Fixture />);
+
+        expect(await axe(container)).toHaveNoViolations();
     });
 });
