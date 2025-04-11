@@ -37,6 +37,8 @@ export const getLogOdds = (dataElements: DataElements, matchingAttribute?: Match
             return dataElements.medicaidNumber?.logOdds ?? 0;
         case MatchingAttribute.MEDICAL_RECORD_NUMBER:
             return dataElements.medicalRecordNumber?.logOdds ?? 0;
+        case MatchingAttribute.MEDICARE_NUMBER:
+            return dataElements.medicareNumber?.logOdds ?? 0;
         case MatchingAttribute.NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER:
             return dataElements.nationalUniqueIdentifier?.logOdds ?? 0;
         case MatchingAttribute.PATIENT_EXTERNAL_IDENTIFIER:
