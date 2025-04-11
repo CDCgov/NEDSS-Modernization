@@ -5,6 +5,7 @@ import { Button } from 'design-system/button';
 import { Modal } from 'design-system/modal';
 import { Controller, useFormContext, useFormState } from 'react-hook-form';
 import styles from './save-pass-modal.module.scss';
+import { useEffect } from 'react';
 
 type Props = {
     visible: boolean;
@@ -14,6 +15,22 @@ type Props = {
 export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
     const form = useFormContext<Pass>();
     const { isValid } = useFormState({ control: form.control });
+
+    useEffect(() => {
+        if (visible) {
+            const isNewPass = form.getValues('id') === undefined;
+            const blockingCriteria = form.getValues('blockingCriteria');
+            if (isNewPass && blockingCriteria.length > 0) {
+                const newName = blockingCriteria
+                    .map((b) => {
+                        const name = b.toString().replaceAll('_', '');
+                        return name[0].toUpperCase() + name.substring(1).toLowerCase();
+                    })
+                    .join('_');
+                form.setValue('name', newName);
+            }
+        }
+    }, [visible]);
 
     const footer = () => (
         <>

@@ -171,7 +171,11 @@ const RepeatingBlock = <V extends FieldValues>({
             </Shown>
             <footer>
                 <Shown when={status === 'adding'}>
-                    <Button outline sizing={sizing} onClick={form.handleSubmit(handleAdd)}>
+                    <Button
+                        outline
+                        sizing={sizing}
+                        aria-description={`add ${title.toLowerCase()}`}
+                        onClick={form.handleSubmit(handleAdd)}>
                         <Icon name="add" sizing={sizing} />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
@@ -179,7 +183,7 @@ const RepeatingBlock = <V extends FieldValues>({
                         <Button
                             outline
                             sizing={sizing}
-                            aria-details={`clear ${title.toLowerCase()}`}
+                            aria-description={`clear ${title.toLowerCase()}`}
                             onClick={handleClear}
                             onMouseDown={(e) => e.preventDefault() /* prevent need to double click after blur */}>
                             Clear
@@ -187,14 +191,17 @@ const RepeatingBlock = <V extends FieldValues>({
                     </Shown>
                 </Shown>
                 <Shown when={status === 'editing'}>
-                    <Button outline sizing={sizing} onClick={form.handleSubmit(handleUpdate)}>
-                        <Icon name="add" sizing={sizing} />
+                    <Button
+                        outline
+                        sizing={sizing}
+                        aria-description={`update ${title.toLowerCase()}`}
+                        onClick={form.handleSubmit(handleUpdate)}>
                         {`Update ${title.toLowerCase()}`}
                     </Button>
                     <Button
                         outline
                         sizing={sizing}
-                        aria-details={`cancel editing current ${title.toLowerCase()}`}
+                        aria-description={`cancel editing current ${title.toLowerCase()}`}
                         onClick={handleReset}>
                         Cancel
                     </Button>
