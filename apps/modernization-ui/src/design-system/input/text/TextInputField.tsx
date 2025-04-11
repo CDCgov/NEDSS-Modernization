@@ -8,6 +8,7 @@ const TextInputField = ({
     label,
     orientation,
     sizing,
+    helperText,
     error,
     warning,
     required,
@@ -19,6 +20,7 @@ const TextInputField = ({
             sizing={sizing}
             label={label}
             htmlFor={id}
+            helperText={helperText}
             required={required}
             error={error}
             warning={warning}>
