@@ -2,6 +2,7 @@ import { Term, fromDateBetweenCriteria, fromDateEqualsCriteria, fromSelectable, 
 import { PatientCriteriaEntry } from './criteria';
 import { asTextCriteriaValue, TextCriteria, asTextCriteriaOperator } from 'options/operator';
 import { splitStringByCommonDelimiters } from 'utils';
+import { isEmptyObject } from 'utils/object';
 
 const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];
@@ -10,7 +11,7 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         // get the operator i.e. "contains" to populate the operator field in the term
         const stringValue = asTextCriteriaValue(value);
         const operator = asTextCriteriaOperator(value);
-        if (stringValue) {
+        if (stringValue && !isEmptyObject(stringValue)) {
             if (operator) {
                 terms.push(fromValue(source, title)(stringValue, operator));
             } else {
