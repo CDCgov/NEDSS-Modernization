@@ -1,4 +1,5 @@
 import { DataElement, DataElements } from 'apps/deduplication/api/model/DataElement';
+import { DataElementLabelLookup } from 'apps/deduplication/api/model/Labels';
 import { Card } from 'design-system/card';
 import { Column, DataTable } from 'design-system/table';
 import { useEffect, useState } from 'react';
@@ -12,35 +13,6 @@ type Props = {
 };
 export const DataElementsTable = ({ dataElements }: Props) => {
     const [data, setData] = useState<DataElementEntry[]>([]);
-
-    // maps DataElements property name to label
-    const fieldNameLookup = new Map([
-        ['firstName', 'First name'],
-        ['lastName', 'Last name'],
-        ['suffix', 'Suffix'],
-        ['dateOfBirth', 'Date of birth'],
-        ['sex', 'Current sex'],
-        ['race', 'Race'],
-        ['socialSecurity', 'SSN'],
-        ['address', 'Street address 1'],
-        ['city', 'City'],
-        ['state', 'State'],
-        ['zip', 'Zip'],
-        ['county', 'County'],
-        ['telephone', 'Phone number'],
-        ['telecom', 'Telecom'],
-        ['email', 'Email'],
-        ['accountNumber', 'Account number'],
-        ['driversLicenseNumber', 'Drivers license number'],
-        ['medicaidNumber', 'Medicaid number'],
-        ['medicalRecordNumber', 'Medical record number'],
-        ['nationalUniqueIdentifier', 'National unique identifier'],
-        ['patientExternalIdentifier', 'Patient external identifier'],
-        ['patientInternalIdentifier', 'Patient internal identifier'],
-        ['personNumber', 'Person number'],
-        ['visaPassport', 'Visa/Passport'],
-        ['wicIdentifier', 'WIC Identifier']
-    ]);
 
     const columns: Column<DataElementEntry>[] = [
         {
@@ -78,7 +50,7 @@ export const DataElementsTable = ({ dataElements }: Props) => {
             .filter((value) => value[1].active)
             .map(([key, value]) => {
                 return {
-                    field: fieldNameLookup.get(key) ?? 'Unknown data element',
+                    field: DataElementLabelLookup.get(key as keyof DataElements) ?? 'Unknown data element',
                     ...value
                 };
             });
