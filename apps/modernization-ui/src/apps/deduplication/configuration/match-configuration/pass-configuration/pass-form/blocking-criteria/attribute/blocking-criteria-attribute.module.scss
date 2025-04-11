@@ -1,7 +1,7 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.blockingAttribute {
+.blockingAttributeRow {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -9,19 +9,25 @@
     gap: 1rem;
     @extend %thin-bottom;
 
-    .label {
-        color: colors.$base-darkest;
-        font-size: 1rem;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 1.25rem;
-    }
+    .blockingAttributeInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
 
-    .description {
-        color: colors.$base-darkest;
-        font-size: 0.875rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 1.09375rem;
+        .label {
+            color: colors.$base-darkest;
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.25rem;
+        }
+
+        .description {
+            color: colors.$base-darkest;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.09375rem;
+        }
     }
 }

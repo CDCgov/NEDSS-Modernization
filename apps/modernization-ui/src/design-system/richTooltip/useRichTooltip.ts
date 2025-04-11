@@ -13,7 +13,7 @@ type Position = {
     width?: number;
 };
 
-export function useTooltip({ anchorRef, richTooltipRef, marginTop, marginLeft }: UseTooltipProps) {
+export function useTooltip({ anchorRef, richTooltipRef, marginTop, marginLeft = 0 }: UseTooltipProps) {
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [position, setPosition] = useState<Position>({});
 
@@ -31,7 +31,7 @@ export function useTooltip({ anchorRef, richTooltipRef, marginTop, marginLeft }:
 
         if (isVisible) {
             const { top, left, width } = anchorRef.current.getBoundingClientRect();
-            setPosition({ ...calcBottomLeftPosition(marginTop || top, marginLeft || left, width) });
+            setPosition({ ...calcBottomLeftPosition(marginTop ?? top, marginLeft + left, width) });
         }
 
         if (!isVisible) {
