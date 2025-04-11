@@ -1,7 +1,7 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.matchingAttribute {
+.matchingAttributeRow {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -9,29 +9,36 @@
     gap: 1rem;
     @extend %thin-bottom;
 
-    .info {
+    .attributeInfoWrapper {
         display: flex;
         gap: 2rem;
         align-items: center;
 
-        .label {
-            color: colors.$base-darkest;
-            font-size: 1rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 1.25rem;
-            width: 17.5rem;
+        .attributeInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .label {
+                color: colors.$base-darkest;
+                font-size: 1rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 1.25rem;
+                width: 17.5rem;
+            }
+
+            .logOdds {
+                display: flex;
+                gap: 0.5rem;
+                color: colors.$base-darkest;
+                font-size: 0.875rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 1.09375rem;
+            }
         }
 
-        .logOdds {
-            display: flex;
-            gap: 0.5rem;
-            color: colors.$base-darkest;
-            font-size: 0.875rem;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1.09375rem;
-        }
         & > span {
             width: 19.8125rem;
             gap: 0;

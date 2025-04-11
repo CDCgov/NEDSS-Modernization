@@ -1,8 +1,10 @@
 import { InlineErrorMessage } from 'design-system/field/InlineErrorMessage';
 import { Icon } from 'design-system/icon';
 import { Numeric } from 'design-system/input/numeric/Numeric';
-import RichTooltip from 'design-system/richTooltip/RichTooltip';
 import { ReactNode, useRef } from 'react';
+import RichTooltip from 'design-system/richTooltip/RichTooltip';
+import styles from './bound-entry.module.scss';
+import classNames from 'classnames';
 
 type Props = {
     name: string;
@@ -18,7 +20,7 @@ export const BoundEntry = ({ name, label, value, error, tooltip, disabled = fals
     const lowerBoundRef = useRef(null);
 
     return (
-        <>
+        <div className={classNames(styles.boundEntry, error ? styles.hasError : '')}>
             <label htmlFor={name}>
                 {label}
                 <div ref={lowerBoundRef} style={{ position: 'relative' }}>
@@ -28,15 +30,17 @@ export const BoundEntry = ({ name, label, value, error, tooltip, disabled = fals
                     </RichTooltip>
                 </div>
             </label>
-            <Numeric
-                inputMode="decimal"
-                id={name}
-                value={value}
-                disabled={disabled}
-                onBlur={onBlur}
-                onChange={onChange}
-            />
-            {error && <InlineErrorMessage id={`${name}-error`}>{error}</InlineErrorMessage>}
-        </>
+            <div>
+                {error && <InlineErrorMessage id={`${name}-error`}>{error}</InlineErrorMessage>}
+                <Numeric
+                    inputMode="decimal"
+                    id={name}
+                    value={value}
+                    disabled={disabled}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                />
+            </div>
+        </div>
     );
 };

@@ -117,7 +117,6 @@ export const DataElementRow = ({ fieldName, field, dataElements }: Props) => {
                     )}
                 />
             </td>
-            <td></td>
         </tr>
     );
 };

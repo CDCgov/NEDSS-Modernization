@@ -63,7 +63,7 @@ export const DataElementsForm = ({ dataElements }: Props) => {
         <Card
             id="dataElementsCard"
             title="Data elements"
-            subtext="This table contains all the possible data elements that are available for use as person matching criteria">
+            subtext="This table contains all the possible data elements that are available for use as person matching criteria.">
             <div className={styles.dataElementsForm}>
                 <table>
                     <thead>
@@ -114,7 +114,7 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                                 <span className={styles.headerWithIcon}>
                                     Threshold{' '}
                                     <span ref={thresholdRef} className={styles.infoIcon}>
-                                        <RichTooltip anchorRef={thresholdRef} marginTop={38}>
+                                        <RichTooltip anchorRef={thresholdRef} marginLeft={-300} marginTop={38}>
                                             <span>Threshold - </span>
                                             <span style={{ fontWeight: 'normal' }}>
                                                 Values above which two strings are said to be “similar enough” that
@@ -128,7 +128,7 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                             </th>
                         </tr>
                         <tr className={styles.border}>
-                            <th colSpan={6} />
+                            <th colSpan={5} />
                         </tr>
                     </thead>
                     <tbody>
