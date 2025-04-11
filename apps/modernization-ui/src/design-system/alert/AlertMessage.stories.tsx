@@ -19,7 +19,15 @@ export const Default: Story = {
     }
 };
 
-export const SuccessMessage: Story = {
+const InfoMessage: Story = {
+    args: {
+        ...Default.args,
+        type: 'information',
+        title: 'Info status'
+    }
+};
+
+const SuccessMessage: Story = {
     args: {
         ...Default.args,
         type: 'success',
@@ -27,7 +35,7 @@ export const SuccessMessage: Story = {
     }
 };
 
-export const WarningMessage: Story = {
+const WarningMessage: Story = {
     args: {
         ...Default.args,
         type: 'warning',
@@ -35,7 +43,7 @@ export const WarningMessage: Story = {
     }
 };
 
-export const ErrorMessage: Story = {
+const ErrorMessage: Story = {
     args: {
         ...Default.args,
         type: 'error',
@@ -43,7 +51,7 @@ export const ErrorMessage: Story = {
     }
 };
 
-export const InfoSlim: Story = {
+const InfoSlim: Story = {
     args: {
         ...Default.args,
         type: 'information',
@@ -53,7 +61,7 @@ export const InfoSlim: Story = {
     }
 };
 
-export const SuccessSlim: Story = {
+const SuccessSlim: Story = {
     args: {
         ...Default.args,
         type: 'success',
@@ -63,7 +71,7 @@ export const SuccessSlim: Story = {
     }
 };
 
-export const WarningSlim: Story = {
+const WarningSlim: Story = {
     args: {
         ...Default.args,
         type: 'warning',
@@ -73,7 +81,7 @@ export const WarningSlim: Story = {
     }
 };
 
-export const ErrorSlim: Story = {
+const ErrorSlim: Story = {
     args: {
         ...Default.args,
         type: 'error',
@@ -83,7 +91,7 @@ export const ErrorSlim: Story = {
     }
 };
 
-export const InfoIconless: Story = {
+const InfoIconless: Story = {
     args: {
         ...Default.args,
         type: 'information',
@@ -92,7 +100,7 @@ export const InfoIconless: Story = {
     }
 };
 
-export const SuccessIconless: Story = {
+const SuccessIconless: Story = {
     args: {
         ...Default.args,
         type: 'success',
@@ -101,7 +109,7 @@ export const SuccessIconless: Story = {
     }
 };
 
-export const WarningIconless: Story = {
+const WarningIconless: Story = {
     args: {
         ...Default.args,
         type: 'warning',
@@ -110,7 +118,7 @@ export const WarningIconless: Story = {
     }
 };
 
-export const ErrorIconless: Story = {
+const ErrorIconless: Story = {
     args: {
         ...Default.args,
         type: 'error',
@@ -118,3 +126,29 @@ export const ErrorIconless: Story = {
         iconless: true
     }
 };
+const standard = [InfoMessage, SuccessMessage, WarningMessage, ErrorMessage];
+export const Standard = () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {standard.map((s, k) => (
+            <AlertMessage {...s.args} key={`standard-${k}`} />
+        ))}
+    </div>
+);
+
+const slim = [InfoSlim, SuccessSlim, WarningSlim, ErrorSlim];
+export const Slim = () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {slim.map((s, k) => (
+            <AlertMessage {...s.args} key={`slim-${k}`} />
+        ))}
+    </div>
+);
+
+const iconless = [InfoIconless, SuccessIconless, WarningIconless, ErrorIconless];
+export const Iconless = () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {iconless.map((s, k) => (
+            <AlertMessage {...s.args} key={`iconless-${k}`} />
+        ))}
+    </div>
+);
