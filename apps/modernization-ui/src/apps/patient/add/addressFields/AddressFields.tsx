@@ -10,6 +10,9 @@ import { maxLengthRule } from 'validation/entry';
 import { SingleSelect } from 'design-system/select';
 import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
 import { CensusTractInputField, validCensusTractRule } from 'apps/patient/data/address';
+import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
+import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
+import { useCountyCodedValues } from 'apps/patient/data/county/useCountyCodedValues';
 
 const CENSUS_TRACT_LABEL = 'Census tract';
 
@@ -26,7 +29,7 @@ export default function AddressFields({ id, title, coded }: Props) {
     const enteredCity = useWatch({ control, name: 'city' });
     const enteredZip = useWatch({ control, name: 'zip' });
 
-    const counties = coded.counties.byState(selectedState?.value);
+    const counties = useCountyCodedValues(selectedState);
 
     const handleSuggestionSelection = (selected: AddressSuggestion) => {
         setValue('streetAddress1', selected.address1);
@@ -115,7 +118,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     value={value}
                                     name={name}
                                     label="State"
-                                    options={coded.states.all}
+                                    options={useStateCodedValues({ lazy: false }).options}
                                 />
                             )}
                         />
@@ -152,7 +155,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     value={value}
                                     name={name}
                                     label="County"
-                                    options={counties}
+                                    options={counties.options}
                                 />
                             )}
                         />
@@ -189,7 +192,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     value={value}
                                     name={name}
                                     label="Country"
-                                    options={coded.countries}
+                                    options={useCountryCodedValues({ lazy: false }).options}
                                 />
                             )}
                         />

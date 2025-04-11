@@ -1,4 +1,3 @@
-import { CountiesCodedValues, useCountyCodedValues, useLocationCodedValues } from 'location';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { MortalityEntry } from './MortalityEntry';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
@@ -6,15 +5,17 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Indicator, indicators } from 'coded';
 import { maxLengthRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
+import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
+import { useCountyCodedValues } from 'apps/patient/data/county/useCountyCodedValues';
+import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
 
 export const MortalityEntryFields = () => {
     const { control } = useFormContext<MortalityEntry>();
     const selectedState = useWatch({ control, name: 'state' });
     const selectedDeceased = useWatch({ control, name: 'deceased' });
 
-    const coded = useLocationCodedValues();
+    const counties = useCountyCodedValues(selectedState ?? '');
 
-    const byState: CountiesCodedValues = useCountyCodedValues(selectedState);
     return (
         <section>
             <Controller
@@ -101,7 +102,7 @@ export const MortalityEntryFields = () => {
                                 id={name}
                                 name={name}
                                 htmlFor={name}
-                                options={coded.states.all}
+                                options={useStateCodedValues({ lazy: false }).options}
                             />
                         )}
                     />
@@ -118,7 +119,7 @@ export const MortalityEntryFields = () => {
                                 id={name}
                                 name={name}
                                 htmlFor={name}
-                                options={byState.counties}
+                                options={counties.options}
                             />
                         )}
                     />
@@ -136,7 +137,7 @@ export const MortalityEntryFields = () => {
                                 id={name}
                                 name={name}
                                 htmlFor={name}
-                                options={coded.countries}
+                                options={useCountryCodedValues({ lazy: false }).options}
                             />
                         )}
                     />
