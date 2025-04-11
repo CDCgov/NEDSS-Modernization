@@ -9,6 +9,7 @@ export * from './focusedTarget';
 export * from './mapIf';
 export * from './isEmpty';
 export * from './text';
+export * from './isEmptyObject';
 
 export type { Predicate } from './predicate';
 
