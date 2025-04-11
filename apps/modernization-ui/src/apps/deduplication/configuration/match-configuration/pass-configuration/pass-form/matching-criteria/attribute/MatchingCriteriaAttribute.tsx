@@ -26,7 +26,7 @@ export const MatchingCriteriaAttribute = ({ label, attribute, logOdds, onRemove 
         } else {
             setVisible(false);
         }
-    }, [matchingCriteria]);
+    }, [JSON.stringify(matchingCriteria)]);
 
     return (
         <Shown when={visible}>

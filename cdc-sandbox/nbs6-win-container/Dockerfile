@@ -45,7 +45,11 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
     JAVA_MEMORY="4096M" \
     MAX_META_SPACE_SIZE="512M" \
     # Task names for tasks to be disabled correspond to filename in tasks.csv (suggested removal SendAlertEMail.bat)
-    DISABLED_SCHEDULED_TASKS=""
+    DISABLED_SCHEDULED_TASKS="" \
+    NNDM_CONFIG_PUBLIC_KEY_LDAP_ADDRESS="PUBLIC_KEY_LDAP_ADDRESS=" \
+    NNDM_CONFIG_PUBLIC_KEY_LDAP_BASE_DN="PUBLIC_KEY_LDAP_BASE_DN=" \
+    NNDM_CONFIG_PUBLIC_KEY_LDAP_DN="PUBLIC_KEY_LDAP_DN=" \
+    NNDM_CONFIG_CERTIFICATE_URL="CERTIFICATE_URL="
 
 # Configure NBS from Local Directory
 # NOTE: 

@@ -38,11 +38,9 @@ class PatientSearchResultPhoneMapper implements RowMapper<PatientSearchResultPho
     if (useCode != null && typeCode != null) {
       if (typeCode.equals("PH") && (useCode.equals("WP") || useCode.equals("SB"))) {
         return "Work";
-      }
-      else if (typeCode.equals("PH") && useCode.equals("H")) {
+      } else if (typeCode.equals("PH") && useCode.equals("H")) {
         return "Home";
-      }
-      else if (typeCode.equals("CP") && useCode.equals("MC")) {
+      } else if (typeCode.equals("CP") && useCode.equals("MC")) {
         return "Cell";
       }
     }

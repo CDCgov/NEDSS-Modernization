@@ -100,7 +100,7 @@ public class WaNndMetadatum {
 
   @SuppressWarnings(
   //  Bidirectional mappings require knowledge of each other
-  "javaarchitecture:S7027")
+  {"javaarchitecture:S7027", "javaarchitecture:S7091"})
   @OneToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "wa_ui_metadata_uid", nullable = false)
   private WaUiMetadata waUiMetadataUid;

@@ -7,8 +7,7 @@ import { NavLinkButton } from 'design-system/button';
 import { Heading } from 'components/heading';
 import { FeatureToggle } from 'feature';
 import { LinkButton } from 'components/button';
-import { ADD_LAB_REPORT_PERMISSION, Permitted } from 'libs/permission';
-import { ADD_INVESTIGATION_PERMISSION } from 'libs/permission/permissions';
+import { permissions, Permitted } from 'libs/permission';
 
 type Props = {
     created: CreatedPatient;
@@ -22,13 +21,18 @@ const PatientCreatedPanel = ({ created }: Props) => (
         onClose={() => {}}
         footer={() => (
             <>
-                <Permitted include={[ADD_LAB_REPORT_PERMISSION]}>
-                    <ClassicButton outline url={`nbs/api/profile/${created.id}/report/lab`}>
+                <Permitted include={[permissions.morbidityReport.add]}>
+                    <ClassicButton outline url={`/nbs/api/profile/${created.id}/report/morbidity`}>
+                        Add morbidity report
+                    </ClassicButton>
+                </Permitted>
+                <Permitted include={[permissions.labReport.add]}>
+                    <ClassicButton outline url={`/nbs/api/profile/${created.id}/report/lab`}>
                         Add lab report
                     </ClassicButton>
                 </Permitted>
-                <Permitted include={[ADD_INVESTIGATION_PERMISSION]}>
-                    <ClassicButton outline url={`nbs/api/profile/${created.id}/investigation`}>
+                <Permitted include={[permissions.investigation.add]}>
+                    <ClassicButton outline url={`/nbs/api/profile/${created.id}/investigation`}>
                         Add investigation
                     </ClassicButton>
                 </Permitted>

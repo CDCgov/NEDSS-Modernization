@@ -90,7 +90,16 @@ describe('BlockingCriteriaSidePanel', () => {
         const { queryByText } = render(<Fixture />);
 
         await waitFor(() => expect(queryByText('Phone')).toBeInTheDocument());
-        await waitFor(() => expect(queryByText("The last 4 digits of the person's phone number.")).toBeInTheDocument());
+        await waitFor(() =>
+            expect(queryByText("The first 4 digits of the person's phone number.")).toBeInTheDocument()
+        );
+    });
+
+    it('should display identifier attribute', async () => {
+        const { queryByText } = render(<Fixture />);
+
+        await waitFor(() => expect(queryByText('Identifier')).toBeInTheDocument());
+        await waitFor(() => expect(queryByText("Any of the person's identifiers.")).toBeInTheDocument());
     });
 
     it('should not render fields when closed', () => {

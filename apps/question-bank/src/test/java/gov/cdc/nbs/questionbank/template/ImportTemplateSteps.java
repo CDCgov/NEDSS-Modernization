@@ -53,9 +53,6 @@ public class ImportTemplateSteps {
           </xml-fragment>
           """;
 
-  record TemplateXml(String name, String xml) {
-  }
-
   private final Active<TemplateXml> template = new Active<>();
 
   private final MockRestServiceServer server;
