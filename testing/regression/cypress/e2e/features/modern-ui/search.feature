@@ -13,7 +13,7 @@ Feature: Classic NBS - Modern Search - User can search and sort for patients
     Then Verify top Search result by "Abbottnsyci"
     Then Sort Search results by "Sort Patient name"
     Then Sort Search results by "Sort Patient name"
-    Then Verify top Search result by "Ratkezmefu"
+    Then Verify top Search result by "Ratkeyklkb"
     Then Verify top Search result is not "05/16/1961"
     Then Sort Search results by "Sort DOB/Age"
     Then Sort Search results by "Sort DOB/Age"
