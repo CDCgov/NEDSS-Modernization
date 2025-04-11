@@ -165,6 +165,11 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                         />
                         <DataElementRow
                             dataElements={dataElements}
+                            fieldName="Medicare number"
+                            field="medicareNumber"
+                        />
+                        <DataElementRow
+                            dataElements={dataElements}
                             fieldName="National unique identifier"
                             field="nationalUniqueIdentifier"
                         />

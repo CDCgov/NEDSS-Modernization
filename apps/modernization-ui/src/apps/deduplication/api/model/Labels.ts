@@ -42,6 +42,10 @@ const MatchingAttributeLabelMap: Map<MatchingAttribute, { label: string; isActiv
             { label: 'Medical record number', isActive: (d: DataElements) => d.medicalRecordNumber?.active ?? false }
         ],
         [
+            MatchingAttribute.MEDICARE_NUMBER,
+            { label: 'Medicare number', isActive: (d: DataElements) => d.medicareNumber?.active ?? false }
+        ],
+        [
             MatchingAttribute.ACCOUNT_NUMBER,
             { label: 'Account number', isActive: (d: DataElements) => d.accountNumber?.active ?? false }
         ],
