@@ -36,6 +36,10 @@ type PatientProfileFeatures = {
     enabled: boolean;
 };
 
+type PatientFileFeatures = {
+    enabled: boolean;
+};
+
 type PatientAddFeatures = {
     enabled: boolean;
     extended: {
@@ -52,6 +56,7 @@ type PatientSearchFeatures = {
 type PatientFeatures = {
     search: PatientSearchFeatures;
     profile: PatientProfileFeatures;
+    file: PatientFileFeatures;
     add: PatientAddFeatures;
 };
 

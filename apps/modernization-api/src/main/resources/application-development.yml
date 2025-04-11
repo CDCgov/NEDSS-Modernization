@@ -72,6 +72,8 @@ nbs:
             enabled: true
         profile:
           enabled: true
+        file:
+          enabled: true
         add:
           enabled: true
           extended:

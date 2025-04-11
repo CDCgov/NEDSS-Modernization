@@ -52,6 +52,9 @@ const defaultFeatures: Features = {
         profile: {
             enabled: false
         },
+        file: {
+            enabled: false
+        },
         add: {
             enabled: false,
             extended: {

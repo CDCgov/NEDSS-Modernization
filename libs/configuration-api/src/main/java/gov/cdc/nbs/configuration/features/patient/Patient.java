@@ -1,6 +1,6 @@
 package gov.cdc.nbs.configuration.features.patient;
 
-public record Patient(Search search, Profile profile, Add add) {
+public record Patient(Search search, Profile profile, Add add, File file) {
 
   public record Search(Filters filters) {
 
@@ -12,6 +12,9 @@ public record Patient(Search search, Profile profile, Add add) {
 
 
   public record Profile(Boolean enabled) {
+  }
+
+  public record File(Boolean enabled) {
   }
 
 
