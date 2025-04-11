@@ -9,6 +9,7 @@ import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionR
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 
 
+@SuppressWarnings({"javaarchitecture:S7091"}) //  Sealed interfaces require listing implementations
 public sealed interface PageContentCommand {
   long userId();
 

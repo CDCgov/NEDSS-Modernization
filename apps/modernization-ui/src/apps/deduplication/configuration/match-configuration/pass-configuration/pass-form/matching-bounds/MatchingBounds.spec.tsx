@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
-import { Pass } from 'apps/deduplication/api/model/Pass';
+import userEvent from '@testing-library/user-event';
+import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
 import { FormProvider, useForm } from 'react-hook-form';
 import { MatchingBounds } from './MatchingBounds';
 
@@ -8,14 +9,21 @@ const Fixture = () => {
         defaultValues: {
             name: 'Pass name',
             description: 'This is my description for this pass',
-            blockingCriteria: [],
-            matchingCriteria: [],
+            blockingCriteria: [BlockingAttribute.ADDRESS],
+            matchingCriteria: [
+                {
+                    attribute: MatchingAttribute.FIRST_NAME,
+                    method: MatchMethod.EXACT
+                }
+            ],
+            lowerBound: undefined,
+            upperBound: undefined,
             active: true
         }
     });
     return (
         <FormProvider {...form}>
-            <MatchingBounds dataElements={{}} />
+            <MatchingBounds dataElements={{ firstName: { active: true, logOdds: 3 } }} />
         </FormProvider>
     );
 };
@@ -44,5 +52,62 @@ describe('MatchingBounds', () => {
         const { getByLabelText } = render(<Fixture />);
 
         expect(getByLabelText('Upper bound')).toBeInTheDocument();
+    });
+
+    it('should require lower bound to be less than total log odds', async () => {
+        const user = userEvent.setup();
+        const { getByLabelText, findByText } = render(<Fixture />);
+
+        const lowerBoundInput = getByLabelText('Lower bound');
+
+        await user.type(lowerBoundInput, '5').then(() => user.tab());
+        user.tab();
+
+        expect(await findByText('Cannot be greater than total log odds.')).toBeInTheDocument();
+    });
+
+    it('should require lower bound to be less than upper bound', async () => {
+        const user = userEvent.setup();
+        const { getByLabelText, findByText } = render(<Fixture />);
+
+        const lowerBoundInput = getByLabelText('Lower bound');
+        const upperBoundInput = getByLabelText('Upper bound');
+
+        await user.type(lowerBoundInput, '5').then(() => user.tab());
+        await user.type(upperBoundInput, '4').then(() => user.tab());
+        user.tab();
+        user.tab();
+
+        expect(await findByText('Cannot be greater than upper bound.')).toBeInTheDocument();
+    });
+
+    it('should require upper bound to be more than lower bound', async () => {
+        const user = userEvent.setup();
+        const { getByLabelText, findByText } = render(<Fixture />);
+
+        const lowerBoundInput = getByLabelText('Lower bound');
+        const upperBoundInput = getByLabelText('Upper bound');
+
+        await user.type(lowerBoundInput, '2').then(() => user.tab());
+        await user.type(upperBoundInput, '1').then(() => user.tab());
+        user.tab();
+        user.tab();
+
+        expect(await findByText('Must be between lower bound and total log odds.')).toBeInTheDocument();
+    });
+
+    it('should require upper bound to be less than total log odds', async () => {
+        const user = userEvent.setup();
+        const { getByLabelText, findByText } = render(<Fixture />);
+
+        const lowerBoundInput = getByLabelText('Lower bound');
+        const upperBoundInput = getByLabelText('Upper bound');
+
+        await user.type(lowerBoundInput, '1').then(() => user.tab());
+        await user.type(upperBoundInput, '4').then(() => user.tab());
+        user.tab();
+        user.tab();
+
+        expect(await findByText('Cannot be greater than total log odds.')).toBeInTheDocument();
     });
 });
