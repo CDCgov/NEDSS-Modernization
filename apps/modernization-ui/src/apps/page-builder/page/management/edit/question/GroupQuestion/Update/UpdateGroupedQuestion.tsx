@@ -65,7 +65,7 @@ export const UpdateGroupedQuestion = ({ page, subsection, onSuccess, onCancel }:
         if (response) {
             showAlert({
                 type: 'success',
-                header: 'Grouped',
+                title: 'Grouped',
                 message: `You've successfully grouped ${form.getValues('blockName')} subsection`
             });
             form.reset();
@@ -73,13 +73,13 @@ export const UpdateGroupedQuestion = ({ page, subsection, onSuccess, onCancel }:
         } else if (error && !subsection.questions.every((question) => question.isPublished === false)) {
             showAlert({
                 type: 'error',
-                header: 'error',
+                title: 'error',
                 message: 'Subsection includes a question(s) that has already been published”'
             });
         } else if (error) {
             showAlert({
                 type: 'error',
-                header: 'error',
+                title: 'error',
                 message: 'Failed to group subsection'
             });
         }

@@ -43,7 +43,7 @@ export const PassConfiguration = ({ dataElements }: Props) => {
 
     useEffect(() => {
         if (error) {
-            showError({ message: 'Failed to retrieve Pass configuration' });
+            showError('Failed to retrieve Pass configuration');
         }
     }, [error]);
 
@@ -82,25 +82,21 @@ export const PassConfiguration = ({ dataElements }: Props) => {
             return;
         }
         deletePass(selectedPass.id, () => {
-            showSuccess({
-                message: (
-                    <span>
-                        You have successfully deleted the <strong>{selectedPass?.name}</strong> configuration.
-                    </span>
-                )
-            });
+            showSuccess(
+                <span>
+                    You have successfully deleted the <strong>{selectedPass?.name}</strong> configuration.
+                </span>
+            );
         });
     };
 
     const handleSave = () => {
         savePass(form.getValues(), (passName: string) => {
-            showSuccess({
-                message: (
-                    <span>
-                        You have successfully updated the <strong>{passName}</strong> pass configuration.
-                    </span>
-                )
-            });
+            showSuccess(
+                <span>
+                    You have successfully updated the <strong>{passName}</strong> pass configuration.
+                </span>
+            );
             setShowSaveModal(false);
         });
     };

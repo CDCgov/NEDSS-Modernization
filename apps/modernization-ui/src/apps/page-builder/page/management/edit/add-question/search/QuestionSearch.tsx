@@ -50,7 +50,7 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
             const currentPage = response.number ? response.number + 1 : 1;
             ready(response.totalElements ?? 0, currentPage);
         } else if (error) {
-            showError({ message: 'Failed to retrieve questions' });
+            showError('Failed to retrieve questions');
         }
     }, [response, error]);
 

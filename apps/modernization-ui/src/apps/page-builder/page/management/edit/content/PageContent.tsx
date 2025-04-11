@@ -72,7 +72,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
 
     const handleAddQuestionClose = (questions: number[]) => {
         if (currentSubsection?.isGrouped && (currentSubsection?.questions.length ?? 0) + questions.length > 20) {
-            showError({ message: 'Grouped subsections are limited to a total of 20 questions' });
+            showError('Grouped subsections are limited to a total of 20 questions');
         } else if (questions.length > 0 && currentSubsection?.id && page.id) {
             addQuestionsToPage(questions, currentSubsection.id, page.id);
         }

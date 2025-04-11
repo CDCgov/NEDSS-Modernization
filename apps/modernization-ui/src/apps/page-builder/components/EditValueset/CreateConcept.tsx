@@ -31,10 +31,10 @@ export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Pr
             codeSetNm: valuesetName
         })
             .then(() => {
-                showSuccess({ message: `Successfully created concept: ${form.getValues('localCode')}` });
+                showSuccess(`Successfully created concept: ${form.getValues('localCode')}`);
                 onCreated();
             })
-            .catch((error) => showError({ message: error?.body?.message ?? 'Failed to create concept' }));
+            .catch((error) => showError(error?.body?.message ?? 'Failed to create concept'));
     };
     return (
         <>

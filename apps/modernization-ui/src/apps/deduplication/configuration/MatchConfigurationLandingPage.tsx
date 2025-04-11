@@ -18,13 +18,13 @@ export const MatchConfigurationLandingPage = () => {
 
     useEffect(() => {
         if (error) {
-            showError({ message: 'Failed to retrieve data elements' });
+            showError('Failed to retrieve data elements');
         }
     }, [error]);
 
     useEffect(() => {
         if (importError) {
-            showError({ message: 'Failed to import algorithm' });
+            showError('Failed to import algorithm');
         }
     }, [importError]);
 
@@ -36,7 +36,7 @@ export const MatchConfigurationLandingPage = () => {
     const handleAlgorithmUpload = () => {
         if (previewedAlgorithm) {
             importAlgorithm(previewedAlgorithm, () => {
-                showSuccess({ message: 'Successfully imported algorithm' });
+                showSuccess('Successfully imported algorithm');
                 fetchDataElements();
                 setPreviewedAlgorithm(undefined);
             });

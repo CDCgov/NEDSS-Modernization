@@ -70,12 +70,12 @@ export const PageDetails = () => {
             }
         })
             .then(() => {
-                showSuccess({ message: 'You have successfully performed a task' });
+                showSuccess('You have successfully performed a task');
                 navigate('..');
                 form.reset();
             })
             .catch((error) => {
-                showError({ message: error.body.message || 'Failed to save page' });
+                showError(error.body.message || 'Failed to save page');
             });
     });
 

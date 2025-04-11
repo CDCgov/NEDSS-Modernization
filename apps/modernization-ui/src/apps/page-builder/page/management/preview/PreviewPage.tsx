@@ -68,7 +68,7 @@ const PreviewPageContent = () => {
             .then((response) => {
                 showAlert({
                     type: 'success',
-                    header: 'Success',
+                    title: 'Success',
                     message: `${page.name} is in Draft mode. You can edit the page details, rules, and layout.`
                 });
                 if (response?.templateId) {
@@ -81,14 +81,14 @@ const PreviewPageContent = () => {
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: error.message
                     });
                 } else {
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: 'An unknown error occurred'
                     });
                 }
@@ -103,7 +103,7 @@ const PreviewPageContent = () => {
                 deleteDraftRef.current?.toggleModal();
                 showAlert({
                     type: 'success',
-                    header: 'Success',
+                    title: 'Success',
                     message: `${page.name} draft was successfully deleted.`
                 });
                 navigate('/page-builder/pages');
@@ -113,14 +113,14 @@ const PreviewPageContent = () => {
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: error.message
                     });
                 } else {
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: 'An unknown error occurred'
                     });
                 }

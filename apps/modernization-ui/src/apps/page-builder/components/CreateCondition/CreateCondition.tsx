@@ -48,7 +48,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     const onSubmit = handleSubmit(async (data) => {
         await createCondition(data)
             .then((response: Condition) => {
-                showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
+                showAlert({ type: 'success', title: 'Created', message: 'Condition created successfully' });
                 resetInput();
                 if (conditionCreated) {
                     conditionCreated(response);
@@ -57,7 +57,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
             })
             .catch((error: any) => {
                 console.log(error.body);
-                showAlert({ type: 'error', header: 'Error', message: error.body.message });
+                showAlert({ type: 'error', title: 'Error', message: error.body.message });
             });
     });
 

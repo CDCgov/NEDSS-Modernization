@@ -202,7 +202,7 @@ export const NamesTable = ({ patient }: Props) => {
                     refetch();
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Added name`
                     });
                     changed();
@@ -234,7 +234,7 @@ export const NamesTable = ({ patient }: Props) => {
                 .then(() => {
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Updated name`
                     });
                     refetch();
@@ -257,7 +257,7 @@ export const NamesTable = ({ patient }: Props) => {
                 .then(() => {
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Deleted name`
                     });
                     refetch();

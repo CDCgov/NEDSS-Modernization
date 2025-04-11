@@ -19,11 +19,11 @@ export const AddValueset = ({ onClose, onCancel, onCreated }: Props) => {
     const handleCreate = () => {
         ValueSetControllerService.create({ requestBody: { ...form.getValues() } })
             .then((response: Valueset) => {
-                showSuccess({ message: `Successfully created value set: ${response.name}` });
+                showSuccess(`Successfully created value set: ${response.name}`);
                 onCreated(response.code);
             })
             .catch((error) => {
-                showError({ message: error?.body?.message ?? 'Failed to create value set' });
+                showError(error?.body?.message ?? 'Failed to create value set');
             });
     };
 

@@ -163,7 +163,7 @@ export const AddressesTable = ({ patient }: Props) => {
                 .then(() => {
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Added address`
                     });
                     refetch();
@@ -200,7 +200,7 @@ export const AddressesTable = ({ patient }: Props) => {
                     refetch();
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Updated address`
                     });
                     changed();
@@ -223,7 +223,7 @@ export const AddressesTable = ({ patient }: Props) => {
                     refetch();
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Deleted address`
                     });
                     changed();

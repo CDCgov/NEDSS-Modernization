@@ -67,7 +67,7 @@ export const Mortality = ({ patient }: Props) => {
         isEditing(false);
         showAlert({
             type: 'success',
-            header: 'success',
+            title: 'success',
             message: `Updated mortality`
         });
     };

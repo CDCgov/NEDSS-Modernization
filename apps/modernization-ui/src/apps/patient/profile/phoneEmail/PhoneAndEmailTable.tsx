@@ -140,7 +140,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     refetch();
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Added Phone & Email`
                     });
                     changed();
@@ -168,7 +168,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     refetch();
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Updated Phone & Email`
                     });
                     changed();
@@ -191,7 +191,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     refetch();
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Deleted Phone & Email`
                     });
                     changed();

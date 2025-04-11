@@ -92,14 +92,14 @@ const RacesTable = ({ patient }: RacesTableProps) => {
     }, [selected]);
 
     const handleSuccess = (message: string) => () => {
-        showSuccess({ message: message });
+        showSuccess(message);
         refetch()
             .then(() => changed())
             .finally(actions.reset);
     };
 
     const handleFailure = (reason: string) => {
-        showError({ message: reason });
+        showError(reason);
         actions.reset();
     };
 
@@ -115,7 +115,7 @@ const RacesTable = ({ patient }: RacesTableProps) => {
                     }
                 }
             })
-                .then(() => showSuccess({ message: 'Updated race' }))
+                .then(() => showSuccess('Updated race'))
                 .then(() => refetch())
                 .then(() => changed())
                 .finally(actions.reset);
@@ -132,7 +132,7 @@ const RacesTable = ({ patient }: RacesTableProps) => {
                     }
                 }
             })
-                .then(() => showSuccess({ message: 'Deleted race' }))
+                .then(() => showSuccess('Deleted race'))
                 .then(() => refetch())
                 .then(() => changed())
                 .finally(actions.reset);

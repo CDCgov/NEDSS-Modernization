@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { Button } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import { AlertBanner } from 'alert';
 import { LinkButton } from 'components/button';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
 
 import styles from './signIn.module.scss';
+import { AlertMessage } from 'design-system/message';
 
 export type SignInProps = {
     handleWelcomeEvent?: (value: string) => void;
@@ -22,12 +22,12 @@ export const SignIn = ({ handleWelcomeEvent }: SignInProps) => {
         <div className="">
             <h2 className={classNames(styles.heading)}>Login</h2>
             <div className={classNames(styles['alert-banner'])}>
-                <AlertBanner type="info" noIcon>
+                <AlertMessage type="information" iconless slim>
                     <p>
                         Please be sure to avoid entering any real PHI/PII data on the demo site. All information entered
                         will be viewable by other users.
                     </p>
-                </AlertBanner>
+                </AlertMessage>
             </div>
             <LinkButton id="login" href="/nbs/login" type="solid" className={styles['sign-in']} target="_self">
                 Login to NBS demo site

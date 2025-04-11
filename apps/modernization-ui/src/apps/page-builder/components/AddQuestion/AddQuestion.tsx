@@ -40,7 +40,7 @@ export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
             onQuestionCreated(questionId);
         }
         if (error) {
-            showError({ message: error });
+            showError(error);
         }
     }, [questionId, error]);
 
