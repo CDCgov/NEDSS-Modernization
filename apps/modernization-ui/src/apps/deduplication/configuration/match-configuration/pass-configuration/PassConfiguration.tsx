@@ -35,7 +35,10 @@ export const PassConfiguration = ({ dataElements }: Props) => {
 
     useEffect(() => {
         // Reset form when selected pass changes
-        form.reset({ ...selectedPass }, { keepDefaultValues: false, keepDirty: false });
+        form.reset(
+            { lowerBound: undefined, upperBound: undefined, ...selectedPass },
+            { keepDefaultValues: false, keepDirty: false }
+        );
     }, [selectedPass]);
 
     useEffect(() => {
