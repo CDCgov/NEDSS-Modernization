@@ -83,7 +83,7 @@ $checkbox-large: 1.25rem;
     }
 
     &.small {
-        @include sizedCheckbox($checkbox-small, $checkbox-small, 1.75rem, '%small');
+        @include sizedCheckbox($checkbox-small, $checkbox-small, 2rem, '%small');
     }
 
     &.medium {
