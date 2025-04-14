@@ -4,12 +4,12 @@ import { DateCriteriaField, validateDateCriteria } from 'design-system/date/crit
 import { TextCriteriaField } from 'design-system/input/text/criteria';
 import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
-import { Input } from 'components/FormInputs/Input';
 import { validNameRule } from 'validation/entry';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
 import { Permitted } from 'libs/permission';
 import { searchableGenders } from './searchableGenders';
+import { TextInputField } from 'design-system/input';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control, clearErrors } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -92,15 +92,14 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                     }
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <TextInputField
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
+                        value={value}
                         type="text"
                         label="Patient ID(s)"
                         helperText="Separate IDs by commas, semicolons, or spaces"
                         name={name}
-                        htmlFor={name}
                         id={name}
                         sizing={sizing}
                         orientation={orientation}

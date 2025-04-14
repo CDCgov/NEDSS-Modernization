@@ -28,7 +28,6 @@ const Field = ({ sizing = 'large', orientation = 'vertical', className, children
     const resolvedClasses = classNames(
         styles.entry,
         className,
-        styles.vertical,
         sizing && styles[sizing],
         { [styles.warn]: remaining.warning && !remaining.error },
         { [styles.error]: remaining.error }
