@@ -1,6 +1,7 @@
 import { ButtonActionMenu } from './ButtonActionMenu';
 import { Button } from 'design-system/button';
 import { render } from '@testing-library/react';
+import { axe } from 'jest-axe';
 
 describe('When ButtonActionMenu renders', () => {
     it('should not display menu by default', () => {
@@ -42,5 +43,19 @@ describe('When ButtonActionMenu renders', () => {
 
         expect(getByText('Add new')).toBeInTheDocument();
         expect(getByText('Add new').nextElementSibling).toBeNull();
+    });
+
+    it('should render with no accessibility violations', async () => {
+        const { container } = render(
+            <ButtonActionMenu label="Add new">
+                <>
+                    <Button type="button" onClick={() => jest.fn()}>
+                        Test this
+                    </Button>
+                </>
+            </ButtonActionMenu>
+        );
+
+        expect(await axe(container)).toHaveNoViolations();
     });
 });
