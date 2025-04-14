@@ -1,3 +1,4 @@
+@frontend-features
 Feature: Frontend Feature Configuration
 
   Scenario: Features enabled by defaults
@@ -25,7 +26,7 @@ Feature: Frontend Feature Configuration
       | tabular search results     | enabled  |
       | tabular search results     | disabled |
       | patient search filters     | enabled  |
-      | patient search filters     | disabled  |
+      | patient search filters     | disabled |
       | patient add                | enabled  |
       | patient add                | disabled |
       | patient add extended       | enabled  |
@@ -41,4 +42,4 @@ Feature: Frontend Feature Configuration
       | deduplication              | disabled |
       | deduplication              | enabled  |
       | patient file               | enabled  |
-      | patient file               | disbaled |
+      | patient file               | disabled |
