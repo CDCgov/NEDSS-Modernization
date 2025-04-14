@@ -14,26 +14,62 @@ export const Default: Story = {
     args: {
         id: 'text-input',
         label: 'Text Input',
-        placeholder: 'No Data',
-        value: 'some text',
-        onChange: (value) => {
-            console.log('Value changed:', value);
-        }
+        onChange: () => {}
     }
 };
 
 export const Horizontal: Story = {
     args: {
         ...Default.args,
-        id: 'text-input-horizontal',
         orientation: 'horizontal'
+    }
+};
+
+export const HorizontalHelperText: Story = {
+    args: {
+        ...Horizontal.args,
+        helperText: 'Helper text'
+    }
+};
+
+export const HorizontalError: Story = {
+    args: {
+        ...Horizontal.args,
+        error: 'Helpful error message'
+    }
+};
+
+export const HorizontalWarning: Story = {
+    args: {
+        ...Horizontal.args,
+        error: 'Helpful warning message'
     }
 };
 
 export const Vertical: Story = {
     args: {
         ...Default.args,
-        id: 'text-input-vertical',
         orientation: 'vertical'
+    }
+};
+
+export const VerticalHelperText: Story = {
+    args: {
+        ...Vertical.args,
+        helperText: 'Helper text'
+    }
+};
+
+export const VerticalError: Story = {
+    args: {
+        ...Vertical.args,
+        error: 'Helpful error message'
+    }
+};
+
+export const VerticalWarning: Story = {
+    args: {
+        ...Vertical.args,
+        warning: 'Helpful warning message'
     }
 };
