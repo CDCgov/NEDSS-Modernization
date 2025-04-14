@@ -1,22 +1,18 @@
 import { useAlert } from 'alert';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
+import { Loading } from 'components/Spinner';
+import { Shown } from 'conditional-render';
+import { AlertMessage } from 'design-system/message';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { useDataElements } from '../api/useDataElements';
 import { DataElements } from '../api/model/DataElement';
-import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
-import styles from './data-elements.module.scss';
-import { Shown } from 'conditional-render';
-import { Loading } from 'components/Spinner';
+import { useDataElements } from '../api/useDataElements';
 import { useMatchConfiguration } from '../api/useMatchConfiguration';
-import { MatchingAttribute } from '../api/model/Pass';
-import { DataElementToMatchingAttribute } from '../api/model/Conversion';
-import { AlertMessage } from 'design-system/message';
-import { MatchingAttributeLabelMap } from '../api/model/Labels';
-
-type ValidationError = { passes: string[]; fields: string[] };
+import styles from './data-elements.module.scss';
+import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
+import { InUseDataElements, validateElementsInUse } from './validation/validateDataElementInUse';
 
 const initial: DataElements = {
     firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
@@ -31,7 +27,6 @@ const initial: DataElements = {
     state: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     zip: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     county: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    telecom: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     telephone: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     email: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     // Identification Details
@@ -53,22 +48,13 @@ export const DataElementConfig = () => {
     const { showSuccess, showError } = useAlert();
     const { dataElements, save, error, loading } = useDataElements();
     const { passes } = useMatchConfiguration();
-    const [inUseDataElements, setInUseDataElements] = useState<MatchingAttribute[]>([]);
-    const [validationError, setValidationError] = useState<ValidationError | undefined>();
+    const [validationError, setValidationError] = useState<InUseDataElements | undefined>();
     const form = useForm<DataElements>({ mode: 'onBlur', defaultValues: initial });
     const nav = useNavigate();
 
     useEffect(() => {
         form.reset(dataElements, { keepDefaultValues: false, keepDirty: false });
     }, [dataElements]);
-
-    useEffect(() => {
-        console.log('passes', passes);
-        if (passes && passes.length > 0) {
-            const inUse = [...new Set(passes.flatMap((p) => p.matchingCriteria.flatMap((m) => m.attribute)))];
-            setInUseDataElements(inUse);
-        }
-    }, [JSON.stringify(passes)]);
 
     useEffect(() => {
         if (error) {
@@ -80,41 +66,10 @@ export const DataElementConfig = () => {
         nav({ pathname: '/deduplication/configuration' });
     };
 
-    // TODO -- make this more betters, move it somewhere, create new component
-    const validateElementsInUse = (toValidate: DataElements): ValidationError | undefined => {
-        const invalidPasses: string[] = [];
-        const invalidElements: string[] = [];
-        const disabledElements = Object.entries(toValidate)
-            .filter((value) => !value[1].active) // get all entries that are set to 'active: false'
-            .map((value) => DataElementToMatchingAttribute.get(value[0] as keyof DataElements)) // map to MatchingAttribute
-            .filter((m) => m !== undefined);
-
-        // Check each pass to see if its matchingCriteria includes any of the disabled elements
-        passes.forEach((p) => {
-            // get a list of in use matching criteria for the pass
-            const passMatchCriteria = p.matchingCriteria.map((m) => m.attribute);
-
-            // check if any of the disabled data elements are in use in the pass
-            const conflictingCriteria = passMatchCriteria.filter((c) => disabledElements.includes(c));
-            // if so, add pass to invalid pass list
-            if (conflictingCriteria.length > 0) {
-                invalidPasses.push(p.name);
-                invalidElements.push(...conflictingCriteria.map((c) => MatchingAttributeLabelMap.get(c)?.label ?? ''));
-            }
-        });
-        if (invalidPasses.length === 0) {
-            return;
-        }
-
-        return { passes: invalidPasses, fields: [...new Set(invalidElements)] };
-    };
     const handleSubmit = () => {
         const dataElements = form.getValues();
-        const validationError = validateElementsInUse(dataElements);
+        const validationError = validateElementsInUse(dataElements, passes);
 
-        // need to display Pass names
-        // as well as fields
-        console.log('inUseCriteria', inUseDataElements);
         if (validationError === undefined) {
             setValidationError(undefined);
             save(form.getValues(), () =>

@@ -9,7 +9,7 @@ import { MatchingCriteriaAttribute } from './attribute/MatchingCriteriaAttribute
 import { getLogOdds } from './getLogOdds';
 import styles from './matching-criteria.module.scss';
 import { Icon } from 'design-system/icon';
-import { MatchingAttributeLabelMap } from 'apps/deduplication/api/model/Labels';
+import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
     dataElements: DataElements;
@@ -49,7 +49,7 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                         {fields.map((entry, index) => (
                             <MatchingCriteriaAttribute
                                 key={entry.id}
-                                label={MatchingAttributeLabelMap.get(entry.attribute)?.label ?? ''}
+                                label={MatchingAttributeLabels[entry.attribute].label}
                                 attribute={entry.attribute}
                                 onRemove={() => handleRemoveAttribute(index)}
                                 logOdds={getLogOdds(dataElements, entry.attribute)}

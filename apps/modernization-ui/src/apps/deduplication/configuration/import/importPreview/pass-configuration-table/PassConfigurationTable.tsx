@@ -1,4 +1,4 @@
-import { BlockingAttributeLabelMap, MatchingAttributeLabelMap } from 'apps/deduplication/api/model/Labels';
+import { BlockingAttributeLabelMap, MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
 import { matchMethodLabelMap, Pass } from 'apps/deduplication/api/model/Pass';
 import { Card } from 'design-system/card';
 import { Column, DataTable } from 'design-system/table';
@@ -43,7 +43,7 @@ export const PassConfigurationTable = ({ algorithm }: Props) => {
                     <>
                         {pass.matchingCriteria.map((b, k) => (
                             <div key={k}>
-                                {MatchingAttributeLabelMap.get(b.attribute)?.label}: {matchMethodLabelMap.get(b.method)}
+                                {MatchingAttributeLabels[b.attribute].label}: {matchMethodLabelMap.get(b.method)}
                             </div>
                         ))}
                     </>

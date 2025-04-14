@@ -19,7 +19,6 @@ type DataElements = {
     state?: DataElement;
     zip?: DataElement;
     county?: DataElement;
-    telecom?: DataElement;
     telephone?: DataElement;
     email?: DataElement;
     // Identification Details
