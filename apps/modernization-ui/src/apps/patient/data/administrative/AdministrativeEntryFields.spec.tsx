@@ -1,11 +1,11 @@
-import { act, render } from '@testing-library/react';
-import { AdministrativeEntryFields } from './AdministrativeEntryFields';
-import { FormProvider, useForm } from 'react-hook-form';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { NewPatientEntry } from 'apps/patient/add';
+import { FormProvider, useForm } from 'react-hook-form';
+import { AdministrativeEntryFields } from './AdministrativeEntryFields';
+import { AdministrativeEntry } from 'apps/patient/data/entry';
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
-    const methods = useForm<NewPatientEntry>({ mode: 'onBlur' });
+    const methods = useForm<AdministrativeEntry>({ mode: 'onBlur' });
     return (
         <FormProvider {...methods}>
             <AdministrativeEntryFields sizing={props.sizing} />

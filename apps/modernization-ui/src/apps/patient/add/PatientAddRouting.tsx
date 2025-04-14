@@ -1,17 +1,12 @@
 import { FeatureGuard } from 'feature';
 import { PatientDataEntryProvider } from './PatientDataEntryProvider';
-import { AddPatient } from './AddPatient';
-import { AddPatientExtended } from './extended';
+import { AddPatientExtended } from './extended/AddPatientExtended';
 import { AddPatientBasic } from './basic/AddPatientBasic';
 
 const routing = [
     {
         element: <PatientDataEntryProvider />,
         children: [
-            {
-                path: '/add-patient',
-                element: <AddPatient />
-            },
             {
                 path: '/patient/add',
                 element: (
