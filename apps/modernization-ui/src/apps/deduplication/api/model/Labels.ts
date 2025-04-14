@@ -74,10 +74,10 @@ const MatchingAttributeLabels: Record<MatchingAttribute, { label: string; isActi
     }
 };
 
-const MatchingAttributeLabelsList = Array.from(Object.entries(MatchingAttributeLabels)).map(([key, value]) => [
-    key,
-    value
-]) as [MatchingAttribute, { label: string; isActive: (d: DataElements) => boolean }][];
+const MatchingAttributeLabelsList = Array.from(Object.entries(MatchingAttributeLabels)) as [
+    MatchingAttribute,
+    { label: string; isActive: (d: DataElements) => boolean }
+][];
 
 const BlockingAttributeLabels: Record<BlockingAttribute, { label: string; description: string }> = {
     [BlockingAttribute.FIRST_NAME]: {
@@ -106,9 +106,9 @@ const BlockingAttributeLabels: Record<BlockingAttribute, { label: string; descri
     }
 };
 
-const BlockingAttributeLabelsList = Array.from(Object.entries(BlockingAttributeLabels)).map(([key, value]) => [
-    key,
-    value
-]) as [BlockingAttribute, { label: string; description: string }][];
+const BlockingAttributeLabelsList = Array.from(Object.entries(BlockingAttributeLabels)) as [
+    BlockingAttribute,
+    { label: string; description: string }
+][];
 
 export { BlockingAttributeLabels, BlockingAttributeLabelsList, MatchingAttributeLabels, MatchingAttributeLabelsList };
