@@ -21,17 +21,6 @@ export const Default: Story = {
     }
 };
 
-export const Vertical: Story = {
-    args: {
-        label: 'Name',
-        helperText: 'This is a helper text',
-        children: <span>Field</span>,
-        sizing: 'medium',
-        orientation: 'vertical',
-        htmlFor: 'name'
-    }
-};
-
 export const ErrorWarning: Story = {
     args: {
         label: 'Name',

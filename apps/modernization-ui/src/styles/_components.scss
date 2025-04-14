@@ -1,5 +1,13 @@
 @use 'styles/colors';
 
+@mixin required() {
+    &::after {
+        content: '*';
+        padding-left: 0.25rem;
+        color: colors.$mandatory;
+    }
+}
+
 $small-font-size: 0.75rem;
 $small-height: 1.5rem;
 $small-textarea-height: 5.0625rem;

@@ -1,9 +1,16 @@
 import { useCallback } from 'react';
 import { useLocation } from 'react-router';
-import { ExtendedNewPatientEntry, initial as initialEntry } from './entry';
+import { ExtendedNewPatientEntry, initial } from './entry';
 
 type Interaction = {
-    /** provides the default values for Extended New Patient Entry  */
+    /**
+     * Initializes the values of extended patient data entry based on the current Location state.
+     *
+     *  1. Use the {@code extended} if present
+     *  2. Otherwise use the initial values for Extended patient data entry.
+     *
+     * @return  {ExtendedNewPatientEntry} The defaults values.
+     */
     initialize: () => ExtendedNewPatientEntry;
 };
 
@@ -16,10 +23,10 @@ const useAddPatientExtendedDefaults = (): Interaction => {
     const location = useLocation();
 
     const initialize = useCallback(() => {
-        if (location.state?.defaults) {
-            return location.state?.defaults;
+        if (location.state?.extended) {
+            return location.state?.extended;
         } else {
-            return initialEntry();
+            return initial();
         }
     }, [location.state?.defaults]);
 

@@ -9,7 +9,7 @@ import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
 import { useShowCancelModal } from '../cancelAddPatientPanel';
-import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
+import { PatientDataEntryMethodProvider } from '../usePatientDataEntryMethod';
 import { Selectable } from 'options';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
@@ -166,9 +166,9 @@ const renderWithRouter = () => {
         {
             path: '/',
             element: (
-                <BasicExtendedTransitionProvider>
+                <PatientDataEntryMethodProvider>
                     <AddPatientExtended />
-                </BasicExtendedTransitionProvider>
+                </PatientDataEntryMethodProvider>
             )
         },
         {
