@@ -6,7 +6,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
 import { SidePanel } from '../../side-panel/SidePanel';
 import styles from './blocking-criteria-panel.module.scss';
-import { BlockingAttributeLabelMap } from 'apps/deduplication/api/model/Labels';
+import { BlockingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
     visible: boolean;
@@ -17,7 +17,6 @@ export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
     const form = useFormContext<Pass>();
     const [selectedAttributes, setSelectedAttributes] = useState<BlockingAttribute[]>([]);
     const { blockingCriteria } = useWatch(form);
-    const attributeList = Array.from(BlockingAttributeLabelMap.entries());
 
     useEffect(() => {
         setSelectedAttributes(blockingCriteria ?? []);
@@ -55,7 +54,7 @@ export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
                 </>
             }>
             <div className={styles.blockingCriteriaPanel}>
-                {attributeList.map(([attribute, entry], k) => (
+                {BlockingAttributeLabelsList.map(([attribute, entry], k) => (
                     <AttributeEntry
                         key={`blockingAttribute-${k}`}
                         label={entry.label}

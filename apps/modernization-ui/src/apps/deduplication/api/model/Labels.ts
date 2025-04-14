@@ -74,34 +74,41 @@ const MatchingAttributeLabels: Record<MatchingAttribute, { label: string; isActi
     }
 };
 
-const BlockingAttributeLabelMap = new Map<BlockingAttribute, { label: string; description: string }>([
-    [
-        BlockingAttribute.FIRST_NAME,
-        { label: 'First name', description: "The first 4 characters of the person's first name." }
-    ],
-    [
-        BlockingAttribute.LAST_NAME,
-        { label: 'Last name', description: "The first 4 characters of the person's last name." }
-    ],
-    [
-        BlockingAttribute.BIRTHDATE,
-        { label: 'Date of birth', description: "The person's birthdate in the format YYYY-MM-DD." }
-    ],
-    [BlockingAttribute.SEX, { label: 'Sex', description: "The person's sex in the format of M or F." }],
-    [
-        BlockingAttribute.ADDRESS,
-        { label: 'Street address 1', description: "The first 4 characters of the person's address." }
-    ],
-    [BlockingAttribute.ZIP, { label: 'Zip', description: "The person's 5 digit zip code." }],
-    [BlockingAttribute.EMAIL, { label: 'Email', description: "The first 4 characters of the person's email address." }],
-    [BlockingAttribute.PHONE, { label: 'Phone', description: "The first 4 digits of the person's phone number." }],
-    [
-        BlockingAttribute.IDENTIFIER,
-        {
-            label: 'Identifier',
-            description: "Any of the person's identifiers."
-        }
-    ]
-]);
+const MatchingAttributeLabelsList = Array.from(Object.entries(MatchingAttributeLabels)).map(([key, value]) => [
+    key,
+    value
+]) as [MatchingAttribute, { label: string; isActive: (d: DataElements) => boolean }][];
 
-export { BlockingAttributeLabelMap, MatchingAttributeLabels };
+const BlockingAttributeLabels: Record<BlockingAttribute, { label: string; description: string }> = {
+    [BlockingAttribute.FIRST_NAME]: {
+        label: 'First name',
+        description: "The first 4 characters of the person's first name."
+    },
+    [BlockingAttribute.LAST_NAME]: {
+        label: 'Last name',
+        description: "The first 4 characters of the person's last name."
+    },
+    [BlockingAttribute.BIRTHDATE]: {
+        label: 'Date of birth',
+        description: "The person's birthdate in the format YYYY-MM-DD."
+    },
+    [BlockingAttribute.SEX]: { label: 'Sex', description: "The person's sex in the format of M or F." },
+    [BlockingAttribute.ADDRESS]: {
+        label: 'Street address 1',
+        description: "The first 4 characters of the person's address."
+    },
+    [BlockingAttribute.ZIP]: { label: 'Zip', description: "The person's 5 digit zip code." },
+    [BlockingAttribute.EMAIL]: { label: 'Email', description: "The first 4 characters of the person's email address." },
+    [BlockingAttribute.PHONE]: { label: 'Phone', description: "The first 4 digits of the person's phone number." },
+    [BlockingAttribute.IDENTIFIER]: {
+        label: 'Identifier',
+        description: "Any of the person's identifiers."
+    }
+};
+
+const BlockingAttributeLabelsList = Array.from(Object.entries(BlockingAttributeLabels)).map(([key, value]) => [
+    key,
+    value
+]) as [BlockingAttribute, { label: string; description: string }][];
+
+export { BlockingAttributeLabels, BlockingAttributeLabelsList, MatchingAttributeLabels, MatchingAttributeLabelsList };

@@ -7,7 +7,7 @@ import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
 import { SidePanel } from '../../side-panel/SidePanel';
 import styles from './matching-criteria-panel.module.scss';
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
-import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
+import { MatchingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
     visible: boolean;
@@ -19,9 +19,6 @@ export const MatchingCriteriaSidePanel = ({ visible, dataElements, onAccept, onC
     const form = useFormContext<Pass>();
     const [selectedAttributes, setSelectedAttributes] = useState<MatchingAttribute[]>([]);
     const { matchingCriteria } = useWatch(form);
-    const attributeList = Array.from(Object.entries(MatchingAttributeLabels)).map(([key, value]) => {
-        return [key, value];
-    }) as [MatchingAttribute, { label: string; isActive: (d: DataElements) => boolean }][];
 
     useEffect(() => {
         setSelectedAttributes(matchingCriteria?.map((a) => a.attribute).filter((a) => a !== undefined) ?? []);
@@ -54,18 +51,16 @@ export const MatchingCriteriaSidePanel = ({ visible, dataElements, onAccept, onC
                 </>
             }>
             <div className={styles.matchingCriteriaPanel}>
-                {attributeList
-                    .filter((a) => a[1].isActive(dataElements))
-                    .map(([attribute, entry], k) => (
-                        <AttributeEntry
-                            key={`matchingAttribute-${k}`}
-                            label={entry.label}
-                            onChange={() => {
-                                handleOnChange(attribute);
-                            }}
-                            selected={selectedAttributes.includes(attribute)}
-                        />
-                    ))}
+                {MatchingAttributeLabelsList.filter((a) => a[1].isActive(dataElements)).map(([attribute, entry], k) => (
+                    <AttributeEntry
+                        key={`matchingAttribute-${k}`}
+                        label={entry.label}
+                        onChange={() => {
+                            handleOnChange(attribute);
+                        }}
+                        selected={selectedAttributes.includes(attribute)}
+                    />
+                ))}
             </div>
         </SidePanel>
     );
