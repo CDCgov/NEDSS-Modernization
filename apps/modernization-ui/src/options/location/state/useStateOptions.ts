@@ -5,7 +5,7 @@ import { useSelectableOptions } from 'options/useSelectableOptions';
 const resolver = () => StatesOptionsService.states();
 
 const useStateOptions = (): Selectable[] => {
-    const { options } = useSelectableOptions({ resolver, lazy: true });
+    const { options } = useSelectableOptions({ resolver, lazy: false });
 
     return options;
 };
