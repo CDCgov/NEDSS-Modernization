@@ -10,7 +10,6 @@ import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
 import styles from './data-elements.module.scss';
 import { Shown } from 'conditional-render';
 import { Loading } from 'components/Spinner';
-import { AlertMessage } from 'design-system/message';
 
 const initial: DataElements = {
     firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
@@ -83,9 +82,6 @@ export const DataElementConfig = () => {
             </div>
             <div className={styles.content}>
                 <main>
-                    <AlertMessage type="error" title="Some title">
-                        Message content
-                    </AlertMessage>
                     <Shown when={!loading} fallback={<Loading center />}>
                         <FormProvider {...form}>
                             <DataElementsForm dataElements={dataElements} />
