@@ -109,9 +109,6 @@ export const DataElementConfig = () => {
             </Shown>
             <div className={styles.content}>
                 <main>
-                    <AlertMessage type="error" title="Some title">
-                        Message content
-                    </AlertMessage>
                     <Shown when={!loading} fallback={<Loading center />}>
                         <FormProvider {...form}>
                             <DataElementsForm dataElements={dataElements} />
