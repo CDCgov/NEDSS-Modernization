@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, ReactNode } from 'react';
 import styles from './buttonActionMenu.module.scss';
-import { Icon } from '@trussworks/react-uswds';
 import { Button } from 'design-system/button';
+import { Icon } from 'design-system/icon';
 import classNames from 'classnames';
 
 type Props = {
@@ -54,7 +54,7 @@ export const ButtonActionMenu = ({
                 disabled={disabled}
                 outline={outline}
                 labelPosition={labelPosition}
-                icon={icon ? icon : <Icon.ArrowDropDown size={4} />}>
+                icon={icon ? icon : <Icon name="arrow_drop_down" sizing="medium" />}>
                 {label}
             </Button>
             {open && (
