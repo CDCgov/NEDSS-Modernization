@@ -54,7 +54,7 @@ export const ButtonActionMenu = ({
                 disabled={disabled}
                 outline={outline}
                 labelPosition={labelPosition}
-                icon={icon ? icon : <Icon name="arrow_drop_down" />}>
+                icon={icon ? icon : <Icon name="arrow_drop_down" sizing="medium" />}>
                 {label}
             </Button>
             {open && (
