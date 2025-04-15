@@ -13,11 +13,15 @@ import { PassForm } from './pass-form/PassForm';
 import { SavePassModal } from './pass-form/save-modal/SavePassModal';
 import { PassList } from './pass-list/PassList';
 import { Loading } from 'components/Spinner';
+import { PersonMatchHeader } from '../header/PersonMatchHeader';
+import { useNavigate } from 'react-router';
 
 type Props = {
     dataElements: DataElements;
+    onImportClick: () => void;
 };
-export const PassConfiguration = ({ dataElements }: Props) => {
+export const PassConfiguration = ({ dataElements, onImportClick }: Props) => {
+    const nav = useNavigate();
     const { showSuccess, showError } = useAlert();
     const { passes, selectedPass, error, selectPass, addPass, deletePass, savePass, updatePassName, loading } =
         useMatchConfiguration();
@@ -26,7 +30,7 @@ export const PassConfiguration = ({ dataElements }: Props) => {
 
     const [confirmationState, setConfirmationState] = useState<{
         visible: boolean;
-        onAccept: (() => void) | undefined;
+        onAccept: (() => void) | (() => Promise<void>) | undefined;
     }>({
         visible: false,
         onAccept: undefined
@@ -58,6 +62,15 @@ export const PassConfiguration = ({ dataElements }: Props) => {
 
     const handleAddPass = () => {
         addPass();
+    };
+
+    const handleConfigureDataElementsClick = () => {
+        // if dirty or new pass, confirm
+        if ((isDirty && exists(dirtyFields)) || (selectedPass !== undefined && selectedPass.id === undefined)) {
+            setConfirmationState({ visible: true, onAccept: () => nav('/deduplication/data_elements') });
+        } else {
+            nav('/deduplication/data_elements');
+        }
     };
 
     const handleChangePass = (pass: Pass) => {
@@ -106,42 +119,49 @@ export const PassConfiguration = ({ dataElements }: Props) => {
     };
 
     return (
-        <div className={styles.passConfiguration}>
-            <Shown when={!loading} fallback={<Loading center />}>
-                <UnsavedChangesConfirmation
-                    passName={selectedPass?.name ?? ''}
-                    onAccept={() => {
-                        confirmationState.onAccept?.();
-                        setConfirmationState({ visible: false, onAccept: undefined });
-                    }}
-                    visible={confirmationState.visible}
-                    onCancel={() => setConfirmationState({ visible: false, onAccept: undefined })}
-                />
-                <PassList
-                    passes={passes}
-                    onSetSelectedPass={(p) => handleChangePass(p)}
-                    onAddPass={handleAddPassClick}
-                    onRenamePass={handleRenamePass}
-                    selectedPass={selectedPass}
-                />
+        <>
+            <PersonMatchHeader
+                showButtons
+                onImportClick={onImportClick}
+                onConfigureDataElementsClick={handleConfigureDataElementsClick}
+            />
+            <main className={styles.passConfiguration}>
+                <Shown when={!loading} fallback={<Loading center />}>
+                    <UnsavedChangesConfirmation
+                        passName={selectedPass?.name ?? ''}
+                        onAccept={() => {
+                            confirmationState.onAccept?.();
+                            setConfirmationState({ visible: false, onAccept: undefined });
+                        }}
+                        visible={confirmationState.visible}
+                        onCancel={() => setConfirmationState({ visible: false, onAccept: undefined })}
+                    />
+                    <PassList
+                        passes={passes}
+                        onSetSelectedPass={(p) => handleChangePass(p)}
+                        onAddPass={handleAddPassClick}
+                        onRenamePass={handleRenamePass}
+                        selectedPass={selectedPass}
+                    />
 
-                <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes?.length ?? 0} />}>
-                    <FormProvider {...form}>
-                        <PassForm
-                            dataElements={dataElements}
-                            passCount={passes.length}
-                            onCancel={handleCancel}
-                            onDelete={handleDelete}
-                            onSave={() => setShowSaveModal(true)}
-                        />
-                        <SavePassModal
-                            visible={showSaveModal}
-                            onAccept={handleSave}
-                            onCancel={() => setShowSaveModal(false)}
-                        />
-                    </FormProvider>
+                    <Shown when={selectedPass !== undefined} fallback={<SelectPass passCount={passes?.length ?? 0} />}>
+                        <FormProvider {...form}>
+                            <PassForm
+                                dataElements={dataElements}
+                                passCount={passes.length}
+                                onCancel={handleCancel}
+                                onDelete={handleDelete}
+                                onSave={() => setShowSaveModal(true)}
+                            />
+                            <SavePassModal
+                                visible={showSaveModal}
+                                onAccept={handleSave}
+                                onCancel={() => setShowSaveModal(false)}
+                            />
+                        </FormProvider>
+                    </Shown>
                 </Shown>
-            </Shown>
-        </div>
+            </main>
+        </>
     );
 };

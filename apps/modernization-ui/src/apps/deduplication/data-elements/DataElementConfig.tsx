@@ -11,8 +11,8 @@ import { useDataElements } from '../api/useDataElements';
 import { useMatchConfiguration } from '../api/useMatchConfiguration';
 import styles from './data-elements.module.scss';
 import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
-import { validateElementsInUse } from './validation/validateDataElementInUse';
 import { DataElementValidationError, InUseDataElements } from './validation/DataElementValidationError';
+import { validateElementsInUse } from './validation/validateDataElementInUse';
 
 const initial: DataElements = {
     firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
