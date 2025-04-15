@@ -1,5 +1,6 @@
+import { DataElementToMatchingAttribute } from 'apps/deduplication/api/model/Conversion';
 import { DataElement, DataElements } from 'apps/deduplication/api/model/DataElement';
-import { DataElementLabelLookup } from 'apps/deduplication/api/model/Labels';
+import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
 import { Card } from 'design-system/card';
 import { Column, DataTable } from 'design-system/table';
 import { useEffect, useState } from 'react';
@@ -50,7 +51,7 @@ export const DataElementsTable = ({ dataElements }: Props) => {
             .filter((value) => value[1].active)
             .map(([key, value]) => {
                 return {
-                    field: DataElementLabelLookup.get(key as keyof DataElements) ?? 'Unknown data element',
+                    field: MatchingAttributeLabels[DataElementToMatchingAttribute[key as keyof DataElements]].label,
                     ...value
                 };
             });

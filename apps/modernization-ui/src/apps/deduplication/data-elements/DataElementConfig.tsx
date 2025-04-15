@@ -1,15 +1,18 @@
 import { useAlert } from 'alert';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
-import { useEffect } from 'react';
+import { Loading } from 'components/Spinner';
+import { Shown } from 'conditional-render';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { useDataElements } from '../api/useDataElements';
 import { DataElements } from '../api/model/DataElement';
-import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
+import { useDataElements } from '../api/useDataElements';
+import { useMatchConfiguration } from '../api/useMatchConfiguration';
 import styles from './data-elements.module.scss';
-import { Shown } from 'conditional-render';
-import { Loading } from 'components/Spinner';
+import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
+import { DataElementValidationError, InUseDataElements } from './validation/DataElementValidationError';
+import { validateElementsInUse } from './validation/validateDataElementInUse';
 
 const initial: DataElements = {
     firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
@@ -24,7 +27,6 @@ const initial: DataElements = {
     state: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     zip: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     county: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    telecom: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     telephone: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     email: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
     // Identification Details
@@ -45,6 +47,8 @@ const initial: DataElements = {
 export const DataElementConfig = () => {
     const { showSuccess, showError } = useAlert();
     const { dataElements, save, error, loading } = useDataElements();
+    const { passes } = useMatchConfiguration();
+    const [validationError, setValidationError] = useState<InUseDataElements | undefined>();
     const form = useForm<DataElements>({ mode: 'onBlur', defaultValues: initial });
     const nav = useNavigate();
 
@@ -61,8 +65,17 @@ export const DataElementConfig = () => {
     const handleCancel = () => {
         nav({ pathname: '/deduplication/configuration' });
     };
+
     const handleSubmit = () => {
-        save(form.getValues(), () => showSuccess('You have successfully updated the data elements configuration.'));
+        const dataElements = form.getValues();
+        const validationError = validateElementsInUse(dataElements, passes);
+
+        if (validationError === undefined) {
+            setValidationError(undefined);
+            save(form.getValues(), () => showSuccess('You have successfully updated the data elements configuration.'));
+        } else {
+            setValidationError(validationError);
+        }
     };
 
     const allValues = form.watch(); // Use watch to get live updates
@@ -80,7 +93,9 @@ export const DataElementConfig = () => {
             <div className={styles.heading}>
                 <Heading level={1}>Data elements configuration for match criteria</Heading>
             </div>
+
             <div className={styles.content}>
+                <DataElementValidationError validationError={validationError} />
                 <main>
                     <Shown when={!loading} fallback={<Loading center />}>
                         <FormProvider {...form}>

@@ -6,7 +6,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { BlockingCriteriaAttribute } from './attribute/BlockingCriteriaAttribute';
 import styles from './blocking-criteria.module.scss';
 import { Icon } from 'design-system/icon';
-import { BlockingAttributeLabelMap } from 'apps/deduplication/api/model/Labels';
+import { BlockingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
     onAddAttributes: () => void;
@@ -15,7 +15,6 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
     const form = useFormContext<{ blockingCriteria: BlockingAttribute[] }>();
     const registeredBlockingCriteria = form.register('blockingCriteria', { required: true, minLength: 1 });
     const { blockingCriteria } = useWatch(form);
-    const attributeList = Array.from(BlockingAttributeLabelMap.entries());
 
     const handleRemoveAttribute = (attribute: BlockingAttribute) => {
         const value = [...(blockingCriteria ?? [])].filter((a) => a !== attribute);
@@ -39,7 +38,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                             Please add blocking criteria to get started.
                         </div>
                     }>
-                    {attributeList.map(([attribute, entry], k) => {
+                    {BlockingAttributeLabelsList.map(([attribute, entry], k) => {
                         return (
                             <BlockingCriteriaAttribute
                                 key={k}

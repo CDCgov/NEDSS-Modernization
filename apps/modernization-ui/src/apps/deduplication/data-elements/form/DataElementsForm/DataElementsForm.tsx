@@ -7,7 +7,8 @@ import { useRef } from 'react';
 import { Icon } from 'design-system/icon';
 import styles from './DataElementsForm.module.scss';
 import RichTooltip from 'design-system/richTooltip/RichTooltip';
-import { DataElementLabelLookup } from 'apps/deduplication/api/model/Labels';
+import { DataElementToMatchingAttribute } from 'apps/deduplication/api/model/Conversion';
+import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
 
 const dataElementKeys: (keyof DataElements)[] = [
     'firstName',
@@ -137,7 +138,7 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                                 key={`data-element-row-${k}`}
                                 dataElements={dataElements}
                                 field={field}
-                                fieldName={DataElementLabelLookup.get(field) ?? 'Unknown field'}
+                                fieldName={MatchingAttributeLabels[DataElementToMatchingAttribute[field]].label}
                             />
                         ))}
                     </tbody>
