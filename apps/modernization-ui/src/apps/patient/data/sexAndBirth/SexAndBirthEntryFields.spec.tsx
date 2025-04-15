@@ -1,23 +1,9 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
-import { CountiesCodedValues } from 'location/useCountyCodedValues';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SexAndBirthEntryFields } from './SexAndBirthEntryFields';
-import { LocationCodedValues } from 'location';
 import { SexBirthCodedValues } from './useSexBirthCodedValues';
-
-const mockLocationCodedValues: LocationCodedValues = {
-    states: {
-        all: [{ name: 'Alabama', value: 'AL', abbreviation: 'AL' }],
-        byValue: jest.fn(),
-        byAbbreviation: jest.fn()
-    },
-    counties: {
-        byState: jest.fn()
-    },
-    countries: [{ name: 'United States of America', value: 'US' }]
-};
 
 const mockSexBirthCodedValues: SexBirthCodedValues = {
     genders: [
@@ -30,17 +16,20 @@ const mockSexBirthCodedValues: SexBirthCodedValues = {
     multipleBirth: [{ name: 'Yes', value: 'Y' }]
 };
 
-jest.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
+const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
+
+const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
+
+const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+
+jest.mock('options/location', () => ({
+    useCountyOptions: () => mockCountyCodedValues,
+    useCountryOptions: () => mockCountryCodedValues,
+    useStateOptions: () => mockStateCodedValues
 }));
 
 jest.mock('./useSexBirthCodedValues', () => ({
     useSexBirthCodedValues: () => mockSexBirthCodedValues
-}));
-
-const mockCountyCodedValues: CountiesCodedValues = { counties: [{ name: 'CountyA', value: 'A', group: 'G' }] };
-jest.mock('location/useCountyCodedValues', () => ({
-    useCountyCodedValues: () => mockCountyCodedValues
 }));
 
 const Fixture = () => {

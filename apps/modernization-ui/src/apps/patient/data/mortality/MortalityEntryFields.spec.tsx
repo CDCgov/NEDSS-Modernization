@@ -1,22 +1,20 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
 import { MortalityEntryFields } from './MortalityEntryFields';
 import { internalizeDate } from 'date';
 
-const mockLocationCodedValues = {
-    states: {
-        all: [{ name: 'StateName', value: '1' }]
-    },
-    counties: {
-        byState: (state: string) => [{ name: 'CountyName', value: '2' }]
-    },
-    countries: [{ name: 'CountryName', value: '3' }]
-};
+const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
-jest.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
+const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
+
+const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+
+jest.mock('options/location', () => ({
+    useCountyOptions: () => mockCountyCodedValues,
+    useCountryOptions: () => mockCountryCodedValues,
+    useStateOptions: () => mockStateCodedValues
 }));
 
 const Fixture = () => {

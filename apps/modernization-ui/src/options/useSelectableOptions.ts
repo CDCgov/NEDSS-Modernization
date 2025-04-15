@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 import { SelectableResolver, findByValue } from './findByValue';
 import { Selectable } from './selectable';
 
@@ -48,7 +48,7 @@ const useSelectableOptions = ({ resolver, lazy = false }: Settings): Interaction
     }, [state.status]);
 
     const options = state.status === 'loaded' ? state.options : [];
-    const load = () => dispatch({ type: 'load' });
+    const load = useCallback(() => dispatch({ type: 'load' }), [dispatch]);
     const resolve = findByValue(options);
 
     return {
