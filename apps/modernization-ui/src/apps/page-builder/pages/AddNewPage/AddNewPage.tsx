@@ -83,7 +83,7 @@ export const AddNewPage = () => {
                 }
             })
             .catch((error) => {
-                showError({ message: error.body.message || 'Failed to create page' });
+                showError(error.body.message || 'Failed to create page');
             });
     });
 

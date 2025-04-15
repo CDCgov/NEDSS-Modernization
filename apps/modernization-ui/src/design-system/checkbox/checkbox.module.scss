@@ -5,7 +5,7 @@ $checkbox-small: 1rem;
 $checkbox-medium: 1.125rem;
 $checkbox-large: 1.25rem;
 
-@mixin sizedCheckbox($height: $checkbox-small, $width: $checkbox-small, $padding: 1.75rem, $extend: '%small') {
+@mixin sizedCheckbox($height: $checkbox-small, $width: $checkbox-small, $padding: 2rem, $extend: '%small') {
     height: $height;
     min-height: $height;
 
@@ -83,14 +83,14 @@ $checkbox-large: 1.25rem;
     }
 
     &.small {
-        @include sizedCheckbox($checkbox-small, $checkbox-small, 1.75rem, '%small');
+        @include sizedCheckbox($checkbox-small, $checkbox-small, 2rem, '%small');
     }
 
     &.medium {
-        @include sizedCheckbox($checkbox-medium, $checkbox-medium, 1.75rem, '%medium');
+        @include sizedCheckbox($checkbox-medium, $checkbox-medium, 2rem, '%medium');
     }
 
     &.large {
-        @include sizedCheckbox($checkbox-large, $checkbox-large, 1.75rem, '%large');
+        @include sizedCheckbox($checkbox-large, $checkbox-large, 2rem, '%large');
     }
 }

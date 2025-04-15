@@ -44,7 +44,7 @@ export const SubsectionHeader = ({
             .then(() => {
                 showAlert({
                     type: 'success',
-                    header: 'Ungrouped',
+                    title: 'Ungrouped',
                     message: `You've successfully ungrouped ${subsection.name}`
                 });
                 refresh();
@@ -54,14 +54,14 @@ export const SubsectionHeader = ({
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: error.message
                     });
                 } else {
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: 'An unknown error occurred'
                     });
                 }

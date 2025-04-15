@@ -69,7 +69,7 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
         if (response) {
             showAlert({
                 type: 'success',
-                header: 'Grouped',
+                title: 'Grouped',
                 message: `You've successfully grouped ${form.getValues('blockName')} subsection`
             });
             form.reset();
@@ -77,7 +77,7 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
         } else if (error) {
             showAlert({
                 type: 'error',
-                header: 'error',
+                title: 'error',
                 message: 'Failed to group subsection'
             });
         }

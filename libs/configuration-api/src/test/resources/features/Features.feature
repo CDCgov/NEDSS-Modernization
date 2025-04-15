@@ -1,3 +1,4 @@
+@frontend-features
 Feature: Frontend Feature Configuration
 
   Scenario: Features enabled by defaults
@@ -11,6 +12,7 @@ Feature: Frontend Feature Configuration
     And the investigation search feature is disabled
     And the laboratory report search feature is disabled
     And the deduplication feature is disabled
+    And the patient file feature is disabled
 
   Scenario Outline: I can configure Frontend features
     Given I <toggle> the <feature> feature
@@ -24,7 +26,7 @@ Feature: Frontend Feature Configuration
       | tabular search results     | enabled  |
       | tabular search results     | disabled |
       | patient search filters     | enabled  |
-      | patient search filters     | disabled  |
+      | patient search filters     | disabled |
       | patient add                | enabled  |
       | patient add                | disabled |
       | patient add extended       | enabled  |
@@ -39,3 +41,5 @@ Feature: Frontend Feature Configuration
       | modernized patient profile | disabled |
       | deduplication              | disabled |
       | deduplication              | enabled  |
+      | patient file               | enabled  |
+      | patient file               | disabled |

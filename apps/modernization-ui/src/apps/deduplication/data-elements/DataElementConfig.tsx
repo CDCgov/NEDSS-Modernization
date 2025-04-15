@@ -58,7 +58,7 @@ export const DataElementConfig = () => {
 
     useEffect(() => {
         if (error) {
-            showError({ message: error });
+            showError(error);
         }
     }, [error]);
 
@@ -72,9 +72,7 @@ export const DataElementConfig = () => {
 
         if (validationError === undefined) {
             setValidationError(undefined);
-            save(form.getValues(), () =>
-                showSuccess({ message: 'You have successfully updated the data elements configuration.' })
-            );
+            save(form.getValues(), () => showSuccess('You have successfully updated the data elements configuration.'));
         } else {
             setValidationError(validationError);
             console.log('error happened: ', validationError);
@@ -111,6 +109,9 @@ export const DataElementConfig = () => {
             </Shown>
             <div className={styles.content}>
                 <main>
+                    <AlertMessage type="error" title="Some title">
+                        Message content
+                    </AlertMessage>
                     <Shown when={!loading} fallback={<Loading center />}>
                         <FormProvider {...form}>
                             <DataElementsForm dataElements={dataElements} />

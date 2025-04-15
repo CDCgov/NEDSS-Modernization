@@ -57,7 +57,7 @@ export const Subsection = ({
                     handleAlert(`Element deleted successfully`);
                     refresh();
                 })
-                .catch(() => showError({ message: 'Failed to delete static element' }));
+                .catch(() => showError('Failed to delete static element'));
         } else {
             PageQuestionControllerService.deleteQuestion({
                 page: page.id,
@@ -68,7 +68,7 @@ export const Subsection = ({
                     handleAlert(`Question deleted successfully`);
                 })
                 .catch((error) => {
-                    showError({ message: error.body?.message ?? 'Failed to delete question' });
+                    showError(error.body?.message ?? 'Failed to delete question');
                 });
         }
     };
