@@ -10,6 +10,7 @@ import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
 import styles from './data-elements.module.scss';
 import { Shown } from 'conditional-render';
 import { Loading } from 'components/Spinner';
+import { AlertMessage } from 'design-system/message';
 
 const initial: DataElements = {
     firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
@@ -54,7 +55,7 @@ export const DataElementConfig = () => {
 
     useEffect(() => {
         if (error) {
-            showError({ message: error });
+            showError(error);
         }
     }, [error]);
 
@@ -62,9 +63,7 @@ export const DataElementConfig = () => {
         nav({ pathname: '/deduplication/configuration' });
     };
     const handleSubmit = () => {
-        save(form.getValues(), () =>
-            showSuccess({ message: 'You have successfully updated the data elements configuration.' })
-        );
+        save(form.getValues(), () => showSuccess('You have successfully updated the data elements configuration.'));
     };
 
     const allValues = form.watch(); // Use watch to get live updates
@@ -84,6 +83,9 @@ export const DataElementConfig = () => {
             </div>
             <div className={styles.content}>
                 <main>
+                    <AlertMessage type="error" title="Some title">
+                        Message content
+                    </AlertMessage>
                     <Shown when={!loading} fallback={<Loading center />}>
                         <FormProvider {...form}>
                             <DataElementsForm dataElements={dataElements} />

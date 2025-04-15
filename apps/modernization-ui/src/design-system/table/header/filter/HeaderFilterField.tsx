@@ -31,7 +31,14 @@ const HeaderFilterField = ({ descriptor, label, filtering, sizing }: HeaderFilte
 
     const handleClear = () => clear(descriptor.id);
 
-    const handleChange = (next?: string) => add(descriptor.id, next);
+    const handleChange = (next?: string) => {
+        if (next) {
+            add(descriptor.id, next);
+        } else {
+            add(descriptor.id, next);
+            clear(descriptor.id);
+        }
+    };
 
     return (
         <Shown when={descriptor.type === 'text'}>

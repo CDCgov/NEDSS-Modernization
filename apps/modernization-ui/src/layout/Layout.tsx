@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router';
-import { AlertProvider } from 'alert';
 import { ApolloWrapper } from 'providers/ApolloContext';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import NavBar from 'shared/header/NavBar';
 import { ScrollToTop } from './ScrollToTop';
+import { AlertProvider } from 'alert/useAlert';
 
 const Layout = () => {
     return (
