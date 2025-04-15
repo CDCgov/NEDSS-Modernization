@@ -1,16 +1,14 @@
+import { useEffect, useMemo } from 'react';
 import { EntryWrapper } from 'components/Entry';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { calculateAge } from 'date';
-import { useCountyCodedValues } from 'location';
-import { useEffect, useMemo } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { BirthAndGenderEntry } from './BirthAndGenderEntry';
 import { usePatientSexBirthCodedValues } from './usePatientSexBirthCodedValues';
-import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
-import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
+import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 
 const UNKNOWN_GENDER = 'U';
 const ENTRY_FIELD_PLACEHOLDER = '';
@@ -25,7 +23,9 @@ export const BirthAndGenderEntryFields = () => {
 
     const coded = usePatientSexBirthCodedValues();
 
-    const { counties } = useCountyCodedValues(selectedState);
+    const countries = useCountryOptions();
+    const states = useStateOptions();
+    const counties = useCountyOptions(selectedState);
 
     useEffect(() => {
         if (!selectedState) {
@@ -232,7 +232,7 @@ export const BirthAndGenderEntryFields = () => {
                         id={name}
                         name={name}
                         htmlFor={name}
-                        options={useStateCodedValues({ lazy: false }).options}
+                        options={states}
                     />
                 )}
             />
@@ -267,7 +267,7 @@ export const BirthAndGenderEntryFields = () => {
                         id={name}
                         name={name}
                         htmlFor={name}
-                        options={useCountryCodedValues({ lazy: false }).options}
+                        options={countries}
                     />
                 )}
             />

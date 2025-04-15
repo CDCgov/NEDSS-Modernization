@@ -7,9 +7,7 @@ import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { MortalityEntry } from 'apps/patient/data/entry';
-import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
-import { useCountyCodedValues } from 'apps/patient/data/county/useCountyCodedValues';
-import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
+import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 
 const AS_OF_DATE_LABEL = 'Mortality information as of';
 const DECEASED_ON_LABEL = 'Date of death';
@@ -20,7 +18,9 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
     const selectedState = useWatch({ control, name: 'mortality.state' });
     const selectedDeceased = useWatch({ control, name: 'mortality.deceased' });
 
-    const counties = useCountyCodedValues(selectedState?.value);
+    const countries = useCountryOptions();
+    const states = useStateOptions();
+    const counties = useCountyOptions(selectedState?.value);
 
     useEffect(() => {
         if (selectedDeceased?.value !== Indicator.Yes) {
@@ -123,7 +123,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                                 onBlur={onBlur}
                                 id={name}
                                 name={name}
-                                options={useStateCodedValues({ lazy: false }).options}
+                                options={states}
                                 sizing={sizing}
                             />
                         )}
@@ -141,7 +141,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                                 onBlur={onBlur}
                                 id={name}
                                 name={name}
-                                options={counties.options}
+                                options={counties}
                                 sizing={sizing}
                             />
                         )}
@@ -160,7 +160,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                                 onBlur={onBlur}
                                 id={name}
                                 name={name}
-                                options={useCountryCodedValues({ lazy: false }).options}
+                                options={countries}
                                 sizing={sizing}
                             />
                         )}

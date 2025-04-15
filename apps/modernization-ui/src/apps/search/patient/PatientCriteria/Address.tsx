@@ -5,10 +5,12 @@ import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 import { TextCriteriaField } from 'design-system/input/text/criteria';
 import { EntryFieldsProps } from 'design-system/entry';
-import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
+import { useStateOptions } from 'options/location';
 
 export const Address = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
+
+    const states = useStateOptions();
 
     return (
         <SearchCriteria>
@@ -53,7 +55,7 @@ export const Address = ({ sizing, orientation }: EntryFieldsProps) => {
                         id={name}
                         sizing={sizing}
                         orientation={orientation}
-                        options={useStateCodedValues({ lazy: false }).options}
+                        options={states}
                     />
                 )}
             />

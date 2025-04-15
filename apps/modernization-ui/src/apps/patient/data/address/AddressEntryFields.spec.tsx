@@ -1,7 +1,6 @@
-import { act } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { AddressEntry } from './entry';
 import { AddressEntryFields } from './AddressEntryFields';
 import { AddressCodedValues } from './useAddressCodedValues';
@@ -15,36 +14,16 @@ jest.mock('./useAddressCodedValues', () => ({
     useAddressCodedValues: () => mockAddressCodedValues
 }));
 
-const mockLocationCodedValues = {
-    states: {
-        all: [{ name: 'StateName', value: '1' }]
-    },
-    counties: {
-        byState: (state: string) => [{ name: 'CountyName', value: '2' }]
-    },
-    countries: [{ name: 'CountryName', value: '3' }]
-};
-
 const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
 const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
 
 const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
 
-jest.mock('apps/patient/data/county/useCountyCodedValues', () => ({
-    useCountyCodedValues: () => mockCountyCodedValues
-}));
-
-jest.mock('apps/patient/data/country/useCountryCodedValues', () => ({
-    useCountryCodedValues: () => mockCountryCodedValues
-}));
-
-jest.mock('apps/patient/data/state/useStateCodedValues', () => ({
-    useStateCodedValues: () => mockStateCodedValues
-}));
-
-jest.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
+jest.mock('options/location', () => ({
+    useCountyOptions: () => mockCountyCodedValues,
+    useCountryOptions: () => mockCountryCodedValues,
+    useStateOptions: () => mockStateCodedValues
 }));
 
 const Fixture = () => {

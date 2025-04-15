@@ -1,5 +1,5 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
 import { MortalityEntryFields } from './MortalityEntryFields';
@@ -11,22 +11,10 @@ const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
 
 const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
 
-jest.mock('apps/patient/data/county/useCountyCodedValues', () => ({
-    useCountyCodedValues: () => ({
-        options: mockCountyCodedValues
-    })
-}));
-
-jest.mock('apps/patient/data/country/useCountryCodedValues', () => ({
-    useCountryCodedValues: () => ({
-        options: mockCountryCodedValues
-    })
-}));
-
-jest.mock('apps/patient/data/state/useStateCodedValues', () => ({
-    useStateCodedValues: () => ({
-        options: mockStateCodedValues
-    })
+jest.mock('options/location', () => ({
+    useCountyOptions: () => mockCountyCodedValues,
+    useCountryOptions: () => mockCountryCodedValues,
+    useStateOptions: () => mockStateCodedValues
 }));
 
 const Fixture = () => {

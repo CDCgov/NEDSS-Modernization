@@ -1,6 +1,4 @@
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { initial } from 'location';
-import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
 import { validCensusTractRule, CensusTractInputField } from 'apps/patient/data/address';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
@@ -8,11 +6,8 @@ import { SingleSelect } from 'design-system/select';
 import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
 import { maxLengthRule } from 'validation/entry';
 import { BasicNewPatientEntry } from 'apps/patient/add/basic/entry';
-import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
-import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
-import { useEffect, useState } from 'react';
-import { CountyOptionsService } from 'generated';
-import { Option } from 'generated';
+import { TextInputField } from 'design-system/input';
+import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 
 const STREET_ADDRESS_LABEL = 'Street address 1';
 const STREET_ADDRESS_2_LABEL = 'Street address 2';
@@ -21,37 +16,12 @@ const ZIP_LABEL = 'Zip';
 const CENSUS_TRACT_LABEL = 'Census tract';
 
 export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
-    const { control, reset } = useFormContext<BasicNewPatientEntry>();
+    const { control } = useFormContext<BasicNewPatientEntry>();
     const selectedState = useWatch({ control, name: 'address.state' });
-    const enteredCity = useWatch({ control, name: 'address.city' });
-    const enteredZip = useWatch({ control, name: 'address.zipcode' });
-    const [counties, setCounties] = useState<Option[]>([]);
 
-    useEffect(() => {
-        (selectedState?.value ?? '').length == 0
-            ? []
-            : CountyOptionsService.countyAutocomplete({
-                  criteria: '',
-                  state: selectedState!.value,
-                  limit: 100000
-              }).then((response) => {
-                  setCounties(response);
-              });
-    }, [selectedState]);
-
-    const handleSuggestionSelection = (selected: AddressSuggestion) => {
-        reset(
-            {
-                address: {
-                    address1: selected.address1,
-                    city: selected.city,
-                    state: selected.state ?? undefined,
-                    zipcode: selected.zip
-                }
-            },
-            { keepDefaultValues: true }
-        );
-    };
+    const countries = useCountryOptions();
+    const states = useStateOptions();
+    const counties = useCountyOptions(selectedState?.value);
 
     return (
         <section>
@@ -60,21 +30,14 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                 name="address.address1"
                 rules={maxLengthRule(100, STREET_ADDRESS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <AddressSuggestionInput
+                    <TextInputField
                         label={STREET_ADDRESS_LABEL}
                         orientation={orientation}
                         sizing={sizing}
                         id={name}
-                        locations={initial}
-                        criteria={{
-                            city: enteredCity ?? undefined,
-                            state: selectedState?.value ?? undefined,
-                            zip: enteredZip ?? undefined
-                        }}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        onSelection={handleSuggestionSelection}
                         error={error?.message}
                     />
                 )}
@@ -131,7 +94,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={useStateCodedValues({ lazy: false }).options}
+                        options={states}
                     />
                 )}
             />
@@ -197,7 +160,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={useCountryCodedValues({ lazy: false }).options}
+                        options={countries}
                         autoComplete="off"
                     />
                 )}

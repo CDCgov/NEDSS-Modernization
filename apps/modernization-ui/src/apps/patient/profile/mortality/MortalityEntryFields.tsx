@@ -5,16 +5,16 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Indicator, indicators } from 'coded';
 import { maxLengthRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
-import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
-import { useCountyCodedValues } from 'apps/patient/data/county/useCountyCodedValues';
-import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
+import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 
 export const MortalityEntryFields = () => {
     const { control } = useFormContext<MortalityEntry>();
     const selectedState = useWatch({ control, name: 'state' });
     const selectedDeceased = useWatch({ control, name: 'deceased' });
 
-    const counties = useCountyCodedValues(selectedState ?? '');
+    const countries = useCountryOptions();
+    const states = useStateOptions();
+    const counties = useCountyOptions(selectedState);
 
     return (
         <section>
@@ -102,7 +102,7 @@ export const MortalityEntryFields = () => {
                                 id={name}
                                 name={name}
                                 htmlFor={name}
-                                options={useStateCodedValues({ lazy: false }).options}
+                                options={states}
                             />
                         )}
                     />
@@ -119,7 +119,7 @@ export const MortalityEntryFields = () => {
                                 id={name}
                                 name={name}
                                 htmlFor={name}
-                                options={counties.options}
+                                options={counties}
                             />
                         )}
                     />
@@ -137,7 +137,7 @@ export const MortalityEntryFields = () => {
                                 id={name}
                                 name={name}
                                 htmlFor={name}
-                                options={useCountryCodedValues({ lazy: false }).options}
+                                options={countries}
                             />
                         )}
                     />

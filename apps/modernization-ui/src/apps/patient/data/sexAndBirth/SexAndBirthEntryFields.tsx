@@ -9,9 +9,7 @@ import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { BirthEntry, SexEntry } from 'apps/patient/data/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';
-import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
-import { useCountyCodedValues } from 'apps/patient/data/county/useCountyCodedValues';
-import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
+import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 
 const UNKNOWN_GENDER = 'U';
 
@@ -29,7 +27,10 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
     const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
 
     const coded = useSexBirthCodedValues();
-    const counties = useCountyCodedValues(selectedState?.value);
+
+    const countries = useCountryOptions();
+    const states = useStateOptions();
+    const counties = useCountyOptions(selectedState?.value);
 
     useEffect(() => {
         if (!selectedState) {
@@ -252,7 +253,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={useStateCodedValues({ lazy: false }).options}
+                        options={states}
                         sizing={sizing}
                     />
                 )}
@@ -269,7 +270,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={counties.options}
+                        options={counties}
                         sizing={sizing}
                     />
                 )}
@@ -287,7 +288,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={useCountryCodedValues({ lazy: false }).options}
+                        options={countries}
                         sizing={sizing}
                     />
                 )}

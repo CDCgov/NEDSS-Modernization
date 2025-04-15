@@ -6,9 +6,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { AddressFields } from './AddressEntry';
 import { usePatientAddressCodedValues } from './usePatientAddressCodedValues';
-import { useCountyCodedValues } from 'apps/patient/data/county/useCountyCodedValues';
-import { useCountryCodedValues } from 'apps/patient/data/country/useCountryCodedValues';
-import { useStateCodedValues } from 'apps/patient/data/state/useStateCodedValues';
+import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 import { initial } from 'location';
 
 export const AddressEntryFields = () => {
@@ -17,7 +15,10 @@ export const AddressEntryFields = () => {
     const selectedState = useWatch({ control, name: 'state' });
     const enteredCity = useWatch({ control, name: 'city' });
     const enteredZip = useWatch({ control, name: 'zipcode' });
-    const counties = useCountyCodedValues(selectedState ?? '');
+
+    const countries = useCountryOptions();
+    const states = useStateOptions();
+    const counties = useCountyOptions(selectedState);
 
     const handleSuggestionSelection = (selected: AddressSuggestion) => {
         reset(
@@ -164,7 +165,7 @@ export const AddressEntryFields = () => {
                         htmlFor={name}
                         id={name}
                         name={name}
-                        options={useStateCodedValues({ lazy: false }).options}
+                        options={states}
                     />
                 )}
             />
@@ -206,7 +207,7 @@ export const AddressEntryFields = () => {
                         htmlFor={name}
                         id={name}
                         name={name}
-                        options={counties.options}
+                        options={counties}
                     />
                 )}
             />
@@ -241,7 +242,7 @@ export const AddressEntryFields = () => {
                         id={name}
                         name={name}
                         htmlFor={name}
-                        options={useCountryCodedValues({ lazy: false }).options}
+                        options={countries}
                         autoComplete="off"
                     />
                 )}
