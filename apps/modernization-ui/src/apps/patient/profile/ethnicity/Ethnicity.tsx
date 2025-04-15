@@ -64,7 +64,7 @@ export const Ethnicity = ({ patient }: Props) => {
         isEditing(false);
         showAlert({
             type: 'success',
-            header: 'success',
+            title: 'success',
             message: `Updated ethnicity`
         });
     };

@@ -118,7 +118,7 @@ export const GeneralPatient = ({ patient }: Props) => {
                 .then(() =>
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Updated General patient information`
                     })
                 )
