@@ -1,0 +1,17 @@
+@use 'styles/borders';
+@use 'styles/colors';
+
+.personMatchHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: colors.$base-white;
+    padding: 1rem;
+    @extend %thin-bottom;
+
+    .buttons {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}
