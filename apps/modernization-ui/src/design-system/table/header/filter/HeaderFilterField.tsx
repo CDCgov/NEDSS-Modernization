@@ -20,12 +20,7 @@ const HeaderFilterField = ({ descriptor, label, filtering, sizing }: HeaderFilte
     const handleKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.stopPropagation();
-            const next = (event.target as HTMLInputElement).value;
-            if (next) {
-                apply();
-            } else {
-                clear(descriptor.id);
-            }
+            apply();
         }
     };
 
