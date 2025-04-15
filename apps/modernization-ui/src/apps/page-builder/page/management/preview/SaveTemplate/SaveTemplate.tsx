@@ -40,7 +40,7 @@ export const SaveTemplate = ({ modalRef }: Props) => {
                     modalRef.current?.toggleModal();
                     showAlert({
                         type: 'success',
-                        header: 'Success',
+                        title: 'Success',
                         message: `${data.name} was saved successfully`
                     });
                 });
@@ -50,14 +50,14 @@ export const SaveTemplate = ({ modalRef }: Props) => {
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: error.message
                     });
                 } else {
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: 'An unknown error occurred'
                     });
                 }
