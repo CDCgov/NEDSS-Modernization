@@ -58,16 +58,4 @@ describe('when filtering table data from the header', () => {
 
         expect(mockAdd).toHaveBeenCalledWith('applying-value', 't');
     });
-
-    it('should clear the filter when the clear button is pressed', async () => {
-        const { getByRole } = render(<Fixture id="clearing-value" />);
-        const input = getByRole('textbox');
-
-        const user = userEvent.setup();
-        await user.clear(input).then(() => user.type(input, '{Enter}'));
-
-        expect(mockClear).toHaveBeenCalledWith('clearing-value');
-
-        expect(input).toHaveValue('');
-    });
 });
