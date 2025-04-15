@@ -41,10 +41,10 @@ export const EditConcept = ({ valueset, concept, onClose, onCancel, onUpdated }:
 
     useEffect(() => {
         if (response) {
-            showSuccess({ message: `Successfully update concept: ${concept.localCode}` });
+            showSuccess(`Successfully update concept: ${concept.localCode}`);
             onUpdated();
         } else if (error) {
-            showError({ message: `Failed to update concept: ${concept.localCode}` });
+            showError(`Failed to update concept: ${concept.localCode}`);
         }
     }, [response, error]);
 

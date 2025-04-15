@@ -26,14 +26,12 @@ const DeletePatient = ({ patient }: Props) => {
 
     const handleDeleteComplete = (data: DeletePatientMutation) => {
         if (data.deletePatient.__typename === 'PatientDeleteSuccessful') {
-            showSuccess({
-                message: `Deleted patient ${(summary?.legalName && displayName('short')(summary.legalName)) || patient.shortId}`
-            });
+            showSuccess(
+                `Deleted patient ${(summary?.legalName && displayName('short')(summary.legalName)) || patient.shortId}`
+            );
             go();
         } else if (data.deletePatient.__typename === 'PatientDeleteFailed') {
-            showError({
-                message: 'Delete failed. Please try again later.'
-            });
+            showError('Delete failed. Please try again later.');
         }
     };
 
