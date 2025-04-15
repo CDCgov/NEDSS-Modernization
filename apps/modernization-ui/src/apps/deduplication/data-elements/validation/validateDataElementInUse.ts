@@ -2,8 +2,7 @@ import { DataElementToMatchingAttribute } from 'apps/deduplication/api/model/Con
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
 import { Pass } from 'apps/deduplication/api/model/Pass';
-
-export type InUseDataElements = { passes: string[]; fields: string[] };
+import { InUseDataElements } from './DataElementValidationError';
 
 export const validateElementsInUse = (toValidate: DataElements, passes: Pass[]): InUseDataElements | undefined => {
     const invalidPasses: string[] = [];

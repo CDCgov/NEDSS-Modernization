@@ -3,7 +3,6 @@ import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Loading } from 'components/Spinner';
 import { Shown } from 'conditional-render';
-import { AlertMessage } from 'design-system/message';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
@@ -12,7 +11,8 @@ import { useDataElements } from '../api/useDataElements';
 import { useMatchConfiguration } from '../api/useMatchConfiguration';
 import styles from './data-elements.module.scss';
 import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
-import { InUseDataElements, validateElementsInUse } from './validation/validateDataElementInUse';
+import { validateElementsInUse } from './validation/validateDataElementInUse';
+import { DataElementValidationError, InUseDataElements } from './validation/DataElementValidationError';
 
 const initial: DataElements = {
     firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
@@ -75,7 +75,6 @@ export const DataElementConfig = () => {
             save(form.getValues(), () => showSuccess('You have successfully updated the data elements configuration.'));
         } else {
             setValidationError(validationError);
-            console.log('error happened: ', validationError);
         }
     };
 
@@ -96,19 +95,7 @@ export const DataElementConfig = () => {
             </div>
 
             <div className={styles.content}>
-                <Shown when={validationError !== undefined}>
-                    <AlertMessage title="Data element currently in use" type="error">
-                        <span>
-                            The request to remove the{' '}
-                            <span style={{ fontWeight: '700' }}>{validationError?.fields.join(', ')}</span> data element
-                            {(validationError?.fields.length ?? 0) > 1 ? 's' : ''} is not possible because{' '}
-                            {(validationError?.fields.length ?? 0) > 1 ? 'they are' : 'it is'} currently being used in a
-                            pass configuration. If you would like to remove this data element, first remove it from the
-                            following pass configurations:
-                        </span>
-                        <ul>{validationError?.passes.map((p, k) => <li key={k}>{p}</li>)}</ul>
-                    </AlertMessage>
-                </Shown>
+                <DataElementValidationError validationError={validationError} />
                 <main>
                     <Shown when={!loading} fallback={<Loading center />}>
                         <FormProvider {...form}>
