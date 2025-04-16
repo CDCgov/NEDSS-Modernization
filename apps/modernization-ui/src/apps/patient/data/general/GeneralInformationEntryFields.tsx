@@ -6,7 +6,7 @@ import { SingleSelect } from 'design-system/select';
 import { usePatientProfilePermissions } from 'apps/patient/profile/permission';
 import { useGeneralCodedValues } from './useGeneralCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 
 const AS_OF_DATE_LABEL = 'General information as of';
@@ -80,7 +80,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
             <Controller
                 control={control}
                 name="general.adultsInResidence"
-                rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
+                rules={numericRangeRule(0, 99999)}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <NumericInput
                         label="Number of adults in residence"
@@ -100,7 +100,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
             <Controller
                 control={control}
                 name="general.childrenInResidence"
-                rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
+                rules={numericRangeRule(0, 99999)}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <NumericInput
                         label="Number of children in residence"

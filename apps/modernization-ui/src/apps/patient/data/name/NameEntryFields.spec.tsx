@@ -1,5 +1,5 @@
-import { act, render, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NameEntry } from './entry';
 import { NameEntryFields } from './NameEntryFields';
@@ -56,46 +56,42 @@ describe('when entering patient name demographics', () => {
     });
 
     it('should require as of', async () => {
+        const user = userEvent.setup();
         const { getByLabelText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Name as of');
-        act(() => {
-            userEvent.click(asOf);
-            userEvent.tab();
-        });
+
+        await user.click(asOf);
+        await user.tab();
 
         expect(await findByText('The Name as of is required.')).toBeInTheDocument();
     });
 
     it('should require type', async () => {
+        const user = userEvent.setup();
         const { getByLabelText, findByText } = render(<Fixture />);
 
         const type = getByLabelText('Type');
 
-        act(() => {
-            userEvent.click(type);
-            userEvent.tab();
-        });
+        await user.click(type);
+        await user.tab();
 
         expect(await findByText('The Type is required.')).toBeInTheDocument();
     });
 
     it('should be valid with as of, race', async () => {
+        const user = userEvent.setup();
         const { getByLabelText, queryByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Name as of');
         const type = getByLabelText('Type');
 
-        act(() => {
-            userEvent.paste(asOf, '01/20/2020');
-            userEvent.tab();
-            userEvent.selectOptions(type, 'AN');
-            userEvent.tab();
-        });
+        await user
+            .type(asOf, '01/20/2020{tab}')
+            .then(() => user.selectOptions(type, 'AN'))
+            .then(() => user.tab());
 
-        await waitFor(() => {
-            expect(queryByText('The Name as of is required')).not.toBeInTheDocument();
-            expect(queryByText('The Type is required')).not.toBeInTheDocument();
-        });
+        expect(queryByText('The Name as of is required')).not.toBeInTheDocument();
+        expect(queryByText('The Type is required')).not.toBeInTheDocument();
     });
 });

@@ -2,13 +2,13 @@ import { ReactNode, useEffect, useMemo } from 'react';
 import { DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 import { Button } from 'components/button';
-import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { Icon } from 'design-system/icon';
 import { AlertMessage } from 'design-system/message';
 import { Column, DataTable } from 'design-system/table';
 import { useMultiValueEntryState } from './useMultiValueEntryState';
 import { Sizing } from 'design-system/field';
+import { Card } from 'design-system/card';
 
 import styles from './RepeatingBlock.module.scss';
 
@@ -64,6 +64,9 @@ const RepeatingBlock = <V extends FieldValues>({
         // fixes issue with coded values not being selected within the form
         if (status === 'editing') {
             form.reset(selected);
+        } else {
+            // Conversely, if status is not editing, reset to default values to clear form between state changes
+            form.reset(defaultValues);
         }
     }, [status, selected, form.reset]);
 
@@ -97,7 +100,8 @@ const RepeatingBlock = <V extends FieldValues>({
 
     const iconColumn: Column<V> = {
         id: 'actions',
-        name: '',
+        name: 'Actions',
+        className: styles.iconColumn,
         render: (value: V) => (
             <div className={classNames(styles.actions, sizing && styles[sizing])}>
                 <div data-tooltip-position="top" aria-label="View" onClick={() => view(value)}>
@@ -134,12 +138,11 @@ const RepeatingBlock = <V extends FieldValues>({
     }, [errorMessages]);
 
     return (
-        <section id={id} className={classNames(styles.input, sizing && styles[sizing])}>
-            <header>
-                <Heading level={2}>{title}</Heading>
-                <span className="required-before">Required</span>
-            </header>
-
+        <Card
+            id={id}
+            title={title}
+            className={classNames(styles.input, sizing && styles[sizing])}
+            info={<span className="required-before">Required</span>}>
             <Shown when={errorMessages && errorMessages.length > 0}>
                 <AlertMessage title="Please fix the following errors:" type="error">
                     <ul className={styles.errorList}>
@@ -169,7 +172,11 @@ const RepeatingBlock = <V extends FieldValues>({
             </Shown>
             <footer>
                 <Shown when={status === 'adding'}>
-                    <Button outline sizing={sizing} onClick={form.handleSubmit(handleAdd)}>
+                    <Button
+                        outline
+                        sizing={sizing}
+                        aria-description={`add ${title.toLowerCase()}`}
+                        onClick={form.handleSubmit(handleAdd)}>
                         <Icon name="add" sizing={sizing} />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
@@ -177,33 +184,41 @@ const RepeatingBlock = <V extends FieldValues>({
                         <Button
                             outline
                             sizing={sizing}
-                            aria-details={`clear ${title.toLowerCase()}`}
-                            onClick={handleClear}>
+                            aria-description={`clear ${title.toLowerCase()}`}
+                            onClick={handleClear}
+                            onMouseDown={(e) => e.preventDefault() /* prevent need to double click after blur */}>
                             Clear
                         </Button>
                     </Shown>
                 </Shown>
                 <Shown when={status === 'editing'}>
-                    <Button outline sizing={sizing} onClick={form.handleSubmit(handleUpdate)}>
-                        <Icon name="add" sizing={sizing} />
+                    <Button
+                        outline
+                        sizing={sizing}
+                        aria-description={`update ${title.toLowerCase()}`}
+                        onClick={form.handleSubmit(handleUpdate)}>
                         {`Update ${title.toLowerCase()}`}
                     </Button>
                     <Button
                         outline
                         sizing={sizing}
-                        aria-details={`cancel editing current ${title.toLowerCase()}`}
+                        aria-description={`cancel editing current ${title.toLowerCase()}`}
                         onClick={handleReset}>
                         Cancel
                     </Button>
                 </Shown>
                 <Shown when={status === 'viewing'}>
-                    <Button outline sizing={sizing} onClick={handleReset}>
+                    <Button
+                        outline
+                        sizing={sizing}
+                        aria-description={`add ${title.toLowerCase()}`}
+                        onClick={handleReset}>
                         <Icon name="add" sizing={sizing} />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
                 </Shown>
             </footer>
-        </section>
+        </Card>
     );
 };
 

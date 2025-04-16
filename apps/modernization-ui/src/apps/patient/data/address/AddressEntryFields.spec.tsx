@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
-import { render, waitFor, act } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { AddressEntry } from './entry';
 import { AddressEntryFields } from './AddressEntryFields';
 import { AddressCodedValues } from './useAddressCodedValues';
@@ -14,18 +14,16 @@ jest.mock('./useAddressCodedValues', () => ({
     useAddressCodedValues: () => mockAddressCodedValues
 }));
 
-const mockLocationCodedValues = {
-    states: {
-        all: [{ name: 'StateName', value: '1' }]
-    },
-    counties: {
-        byState: (state: string) => [{ name: 'CountyName', value: '2' }]
-    },
-    countries: [{ name: 'CountryName', value: '3' }]
-};
+const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
-jest.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
+const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
+
+const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+
+jest.mock('options/location', () => ({
+    useCountyOptions: () => mockCountyCodedValues,
+    useCountryOptions: () => mockCountryCodedValues,
+    useStateOptions: () => mockStateCodedValues
 }));
 
 const Fixture = () => {
@@ -72,65 +70,60 @@ describe('when entering patient address demographics', () => {
     });
 
     it('should require type', async () => {
+        const user = userEvent.setup();
         const { getByLabelText, getByText } = render(<Fixture />);
 
         const typeInput = getByLabelText('Type');
-        act(() => {
-            userEvent.click(typeInput);
-            userEvent.tab();
-        });
-        await waitFor(() => {
-            expect(getByText('The Type is required.')).toBeInTheDocument();
-        });
+
+        await user.click(typeInput);
+        await user.tab();
+
+        expect(getByText('The Type is required.')).toBeInTheDocument();
     });
 
     it('should require use', async () => {
+        const user = userEvent.setup();
         const { getByLabelText, getByText } = render(<Fixture />);
 
         const useInput = getByLabelText('Use');
-        act(() => {
-            userEvent.click(useInput);
-            userEvent.tab();
-        });
-        await waitFor(() => {
-            expect(getByText('The Use is required.')).toBeInTheDocument();
-        });
+
+        await user.click(useInput);
+        await user.tab();
+
+        expect(getByText('The Use is required.')).toBeInTheDocument();
     });
 
     it('should require as of', async () => {
+        const user = userEvent.setup();
         const { getByLabelText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Address as of');
-        act(() => {
-            userEvent.click(asOf);
-            userEvent.tab();
-        });
+
+        await user.click(asOf);
+        await user.tab();
 
         expect(await findByText('The Address as of is required.')).toBeInTheDocument();
     });
 
     it('should be valid with as of, type, and use', async () => {
+        const user = userEvent.setup();
         const { getByLabelText, queryByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Address as of');
         const type = getByLabelText('Type');
         const use = getByLabelText('Use');
-        await waitFor(() => expect(use).toBeInTheDocument());
+        expect(use).toBeInTheDocument();
 
-        act(() => {
-            userEvent.paste(asOf, '01/20/2020');
-            userEvent.tab();
-            userEvent.selectOptions(use, 'HM');
-            userEvent.tab();
-            userEvent.selectOptions(type, 'H');
-            userEvent.tab();
-        });
+        await user.type(asOf, '01/20/2020');
+        await user.tab();
+        await user.selectOptions(use, 'HM');
+        await user.tab();
+        await user.selectOptions(type, 'H');
+        await user.tab();
 
-        await waitFor(() => {
-            expect(queryByText('Type is required.')).not.toBeInTheDocument();
-            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
-            expect(queryByText('Use is required.')).not.toBeInTheDocument();
-        });
+        expect(queryByText('Type is required.')).not.toBeInTheDocument();
+        expect(queryByText('As of date is required.')).not.toBeInTheDocument();
+        expect(queryByText('Use is required.')).not.toBeInTheDocument();
     });
 
     test.each([
@@ -147,24 +140,22 @@ describe('when entering patient address demographics', () => {
         { value: '0001.99', valid: false },
         { value: '1234.56', valid: true }
     ])('should validate Census Tract format for value: $value', async ({ value, valid }) => {
+        const user = userEvent.setup();
         const { getByLabelText, queryByText } = render(<Fixture />);
         const censusTractInput = getByLabelText('Census tract');
 
-        userEvent.clear(censusTractInput);
-        userEvent.paste(censusTractInput, value);
-        userEvent.tab();
+        await user.clear(censusTractInput);
+        await user.type(censusTractInput, value);
+        await userEvent.tab();
 
-        const validationMessage =
-            'The Census tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.';
-
-        await waitFor(() => {
-            const validationError = queryByText(validationMessage);
-            if (valid) {
-                expect(validationError).not.toBeInTheDocument();
-            } else {
-                expect(validationError).toBeInTheDocument();
-            }
-        });
+        const validationError = queryByText(
+            'The Census tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.'
+        );
+        if (valid) {
+            expect(validationError).not.toBeInTheDocument();
+        } else {
+            expect(validationError).toBeInTheDocument();
+        }
     });
 
     test.each([
@@ -177,23 +168,21 @@ describe('when entering patient address demographics', () => {
         { value: '12345 678', valid: false },
         { value: '1234-5678', valid: false }
     ])('should validate ZIP code format for value: $value', async ({ value, valid }) => {
+        const user = userEvent.setup();
         const { getByLabelText, queryByText } = render(<Fixture />);
         const zipCodeInput = getByLabelText('Zip');
 
-        userEvent.clear(zipCodeInput);
-        userEvent.paste(zipCodeInput, value);
-        userEvent.tab();
+        await user.clear(zipCodeInput);
+        await user.type(zipCodeInput, value);
+        await user.tab();
 
-        const validationMessage =
-            'Please enter a valid Zip (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).';
-
-        await waitFor(() => {
-            const validationError = queryByText(validationMessage);
-            if (valid) {
-                expect(validationError).not.toBeInTheDocument();
-            } else {
-                expect(validationError).toBeInTheDocument();
-            }
-        });
+        const validationError = queryByText(
+            'Please enter a valid Zip (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).'
+        );
+        if (valid) {
+            expect(validationError).not.toBeInTheDocument();
+        } else {
+            expect(validationError).toBeInTheDocument();
+        }
     });
 });

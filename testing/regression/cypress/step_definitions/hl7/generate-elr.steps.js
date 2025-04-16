@@ -1,9 +1,4 @@
-import {
-  When,
-  Then,
-  attach,
-  Given,
-} from "@badeball/cypress-cucumber-preprocessor";
+import { When, attach, Given } from "@badeball/cypress-cucumber-preprocessor";
 import "cypress-xpath";
 import UtilityFunctions from "@pages/utilityFunctions.page";
 import { faker } from "@faker-js/faker";
@@ -11,11 +6,11 @@ import { faker } from "@faker-js/faker";
 Given("I login for HL7 API generate token", () => {
   const clientid = Cypress.env("DI_CLIENT_ID");
   const clientsecret = Cypress.env("DI_SECRET");
-  const authurl = Cypress.env("authurl");
+  const baseUrl = Cypress.env("DI_API");
 
   cy.request({
     method: "POST",
-    url: authurl,
+    url: `${baseUrl}/auth/token`,
     headers: {
       "Content-Type": "text/plain",
       clientid: clientid,
@@ -32,19 +27,14 @@ Given("I login for HL7 API generate token", () => {
 
 When("I Generate HL7 {string} messages to api", (string) => {
   let messageCondition = string;
-  let fakeFullName;
   let currentMessage;
   let messageID;
-  let NBSresponse;
-  let fakeFormattedSSN;
   let fakeRandomData;
 
   const authToken = Cypress.env("authTokenAPI");
   const clientid = Cypress.env("DI_CLIENT_ID");
   const clientsecret = Cypress.env("DI_SECRET");
-  const apiurl = Cypress.env("apiurl");
-  const checkstatusurl = Cypress.env("checkstatusurl");
-  const authurl = Cypress.env("authurl");
+  const baseUrl = Cypress.env("DI_API");
 
   cy.readFile(`cypress/fixtures/${messageCondition}.json`, "utf8").then((jsonData) => {
     const randomData = {
@@ -52,10 +42,10 @@ When("I Generate HL7 {string} messages to api", (string) => {
       randomLastName: UtilityFunctions.generateRandomLastName(),
       fakeSSN: UtilityFunctions.generateRandomSSN(),
       fakeEmail: faker.internet.email(),
-      fakeStreetAddress: faker.address.streetAddress(),
-      fakeState: faker.address.stateAbbr(),
-      fakeCity: faker.address.city(),
-      fakeBuildingNumber: faker.address.buildingNumber(),
+      fakeStreetAddress: faker.location.streetAddress(),
+      fakeState: faker.location.state({abbreviated: true}),
+      fakeCity: faker.location.city(),
+      fakeBuildingNumber: faker.location.buildingNumber(),
       fakeDOB: `19${faker.number.int(9)}${faker.number.int(9)}`,
       faketimestamp: UtilityFunctions.generateTimestamp(),
     };
@@ -82,9 +72,7 @@ When("I Generate HL7 {string} messages to api", (string) => {
     cy.log(
       `${randomData.randomLastName}, ${randomData.randomFirstName} ${formattedSSN}`
     );
-    fakeFormattedSSN = formattedSSN;
     currentMessage = UtilityFunctions.formatHL7(modifiedData);
-    fakeFullName = `${randomData.randomLastName}, ${randomData.randomFirstName}`;
     fakeRandomData = randomData;
     Cypress.env("currentMessage", currentMessage);
     Cypress.env(
@@ -95,7 +83,7 @@ When("I Generate HL7 {string} messages to api", (string) => {
 
     cy.request({
       method: "POST",
-      url: apiurl,
+      url: `${baseUrl}/elrs`,
       headers: {
         "Content-Type": "text/plain",
         Authorization: `Bearer ${authToken}`,
@@ -106,7 +94,7 @@ When("I Generate HL7 {string} messages to api", (string) => {
       body: modifiedData,
     }).then((response) => {
       messageID = response.body;
-      const checkStatusUrl = `${checkstatusurl}${messageID}`;
+      const checkStatusUrl = `${baseUrl}/elrs/status-details/${messageID}`;
 
       const checkStatusRequest = () => {
         cy.request({

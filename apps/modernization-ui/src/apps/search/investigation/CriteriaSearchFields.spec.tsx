@@ -4,6 +4,10 @@ import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import userEvent from '@testing-library/user-event';
 import CriteriaSearchFields from './CriteriaSearchFields';
 
+jest.mock('options/concepts/useConceptOptions', () => ({
+    useConceptOptions: () => ({ options: [] })
+}));
+
 const InvestigationFormWithFields = () => {
     const investigationForm = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
         mode: 'onBlur'
@@ -25,18 +29,19 @@ describe('CriteriaSearchFields', () => {
             expect(select).toBeInTheDocument();
         });
 
-        it('should update the selection', () => {
+        it('should update the selection', async () => {
             const { getByRole } = render(<InvestigationFormWithFields />);
 
             const select = getByRole('combobox', { name: 'Investigation status' });
 
-            userEvent.selectOptions(select, 'Open');
+            const user = userEvent.setup();
+            await user.selectOptions(select, 'Open');
 
             expect(getByRole('option', { name: 'Open', selected: true })).toBeInTheDocument();
         });
     });
 
-    it('should contain Outbeak name', () => {
+    it('should contain Outbreak name', () => {
         const { getByText } = render(<InvestigationFormWithFields />);
 
         expect(getByText('Outbreak name')).toBeInTheDocument();

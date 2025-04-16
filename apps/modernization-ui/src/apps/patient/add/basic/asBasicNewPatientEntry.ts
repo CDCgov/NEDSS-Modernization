@@ -1,6 +1,3 @@
-import { asSelectable } from 'options';
-import { internalizeDate } from 'date';
-import { Mapping } from 'utils';
 import {
     BasicAddressEntry,
     BasicNewPatientEntry,
@@ -11,49 +8,49 @@ import {
     BasicIdentificationEntry
 } from './entry';
 import { asTextCriteriaValue, TextCriteria } from 'options/operator';
-import { resolveDate } from 'design-system/date/entry';
+import { resolveDate } from 'design-system/date/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
-
-const mapOr =
-    <R, S, O>(mapping: Mapping<R, S>, fallback: O) =>
-    (value?: R | null): S | O =>
-        value ? mapping(value) : fallback;
-
-const asSelectableIfPresent = mapOr(asSelectable, undefined);
+import { Selectable } from 'options';
 
 const resolveCriteria = (textCriteria?: TextCriteria): string | undefined =>
     asTextCriteriaValue(textCriteria) ?? undefined;
 
-const asBasicNewPatientEntry = (initial: Partial<PatientCriteriaEntry>): BasicNewPatientEntry => {
-    return {
-        administrative: { asOf: internalizeDate(new Date()) },
-        name: nameBasic(initial),
-        personalDetails: personalDetailsBasic(initial),
-        address: addressBasic(initial),
-        phoneEmail: phoneEmailBasic(initial),
-        ethnicityRace: ethnicityRaceBasic(initial),
-        identifications: identificationBasic(initial)
+const asBasicNewPatientEntry =
+    (defaults: BasicNewPatientEntry) =>
+    (criteria: Partial<PatientCriteriaEntry>): BasicNewPatientEntry => {
+        return {
+            ...defaults,
+            name: nameBasic(criteria),
+            personalDetails: personalDetailsBasic(criteria),
+            address: addressBasic(criteria, defaults?.address),
+            phoneEmail: phoneEmailBasic(criteria),
+            ethnicityRace: ethnicityRaceBasic(criteria),
+            identifications: identificationBasic(criteria)
+        };
     };
-};
 
 const nameBasic = (initial: Partial<PatientCriteriaEntry>): NameInformationEntry => ({
     first: resolveCriteria(initial.name?.first),
     last: resolveCriteria(initial.name?.last)
 });
 
+const resolveGender = (gender?: Selectable) => (gender?.value === 'NO_VALUE' ? undefined : gender);
+
 const personalDetailsBasic = (initial: Partial<PatientCriteriaEntry>): BasicPersonalDetailsEntry => {
     const bornOn = resolveDate(initial.bornOn);
+    const currentSex = resolveGender(initial.gender);
 
     return {
         bornOn,
-        currentSex: asSelectableIfPresent(initial.gender?.value)
+        currentSex
     };
 };
 
-const addressBasic = (initial: Partial<PatientCriteriaEntry>): BasicAddressEntry => ({
+const addressBasic = (initial: Partial<PatientCriteriaEntry>, defaults?: BasicAddressEntry): BasicAddressEntry => ({
+    ...defaults,
     address1: resolveCriteria(initial.location?.street),
     city: resolveCriteria(initial.location?.city),
-    state: asSelectableIfPresent(initial.state?.value),
+    state: initial.state,
     zipcode: initial.zip?.toString()
 });
 
@@ -63,19 +60,19 @@ const phoneEmailBasic = (initial: Partial<PatientCriteriaEntry>): BasicPhoneEmai
 });
 
 const ethnicityRaceBasic = (initial: Partial<PatientCriteriaEntry>): BasicEthnicityRace => ({
-    ethnicity: asSelectableIfPresent(initial.ethnicity?.value),
+    ethnicity: initial.ethnicity,
     races: initial.race && [initial.race]
 });
 
 const identificationBasic = (initial: Partial<PatientCriteriaEntry>): BasicIdentificationEntry[] => {
-    const identifications: BasicIdentificationEntry[] = [];
-    if (initial.identification && initial.identificationType) {
-        identifications.push({
-            type: asSelectable(initial.identificationType.value),
-            id: initial.identification
-        });
-    }
-    return identifications;
+    return initial.identification && initial.identificationType
+        ? [
+              {
+                  type: initial.identificationType,
+                  id: initial.identification
+              }
+          ]
+        : [];
 };
 
 export { asBasicNewPatientEntry };

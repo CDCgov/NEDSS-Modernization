@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import gov.cdc.nbs.search.SearchResolver;
 import gov.cdc.nbs.search.SearchResult;
@@ -14,9 +15,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Component
-class ElasticsearchPatientSearcher implements SearchResolver<PatientFilter, PatientSearchResult> {
+class ElasticsearchPatientSearcher implements SearchResolver<PatientSearchCriteria, PatientSearchResult> {
+
+  public static final String PATIENT_INDEX_NAME = "person";
 
   private final ElasticsearchClient client;
   private final PatientSearchResultFinder finder;
@@ -31,7 +35,8 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientFilter, Pati
       final PatientSearchCriteriaFilterResolver filterResolver,
       final PatientSearchCriteriaQueryResolver queryResolver,
       final PatientSearchCriteriaSortResolver sortResolver,
-      final SearchResultResolver resultResolver) {
+      final SearchResultResolver resultResolver
+  ) {
     this.client = client;
     this.finder = finder;
     this.filterResolver = filterResolver;
@@ -42,30 +47,47 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientFilter, Pati
 
   @Override
   public SearchResult<PatientSearchResult> search(
-      final PatientFilter criteria,
-      final Pageable pageable) {
+      final PatientSearchCriteria criteria,
+      final Pageable pageable
+  ) {
+    try {
+      Query filter = filterResolver.resolve(criteria);
+      Query query = queryResolver.resolve(criteria);
+      List<SortOptions> sorting = sortResolver.resolve(pageable);
 
-    Query filter = filterResolver.resolve(criteria);
-    Query query = queryResolver.resolve(criteria);
-    List<SortOptions> sorting = sortResolver.resolve(pageable);
+      return search(pageable, filter, query, sorting);
 
+    } catch (UnresolvableSearchException exception) {
+      return resultResolver.empty(pageable);
+    }
+  }
+
+  private SearchResult<PatientSearchResult> search(
+      final Pageable pageable,
+      final Query filter,
+      final Query query,
+      final List<SortOptions> sorting
+  ) {
     try {
       SearchResponse<SearchablePatient> response = client.search(
-          search -> search.index("person")
+          search -> search.index(PATIENT_INDEX_NAME)
+              //  we don't want to return the documents, just the identifiers
               .source(source -> source.fetch(false))
               .postFilter(filter)
               .query(query)
               .sort(sorting)
               .from((int) pageable.getOffset())
-              .size(pageable.getPageSize()),
-          SearchablePatient.class);
+              .size(pageable.getPageSize()
+              ),
+          SearchablePatient.class
+      );
 
       HitsMetadata<SearchablePatient> hits = response.hits();
 
-      long total = hits.total().value();
+      long total = total(hits);
 
       return total > 0
-          ? paged(hits, pageable)
+          ? paged(hits, pageable, total)
           : resultResolver.empty(pageable);
 
     } catch (RuntimeException | IOException exception) {
@@ -75,10 +97,14 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientFilter, Pati
 
   private SearchResult<PatientSearchResult> paged(
       final HitsMetadata<SearchablePatient> hits,
-      final Pageable pageable) {
+      final Pageable pageable,
+      final long total
+  ) {
     List<Long> ids = hits.hits()
         .stream()
-        .map(hit -> Long.parseLong(hit.id()))
+        .map(Hit::id)
+        .filter(Objects::nonNull)
+        .map(Long::parseLong)
         .toList();
 
     List<PatientSearchResult> results = finder.find(ids)
@@ -89,6 +115,11 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientFilter, Pati
     return resultResolver.resolve(
         results,
         pageable,
-        hits.total().value());
+        total
+    );
+  }
+
+  private long total(final HitsMetadata<SearchablePatient> hits) {
+    return hits.total() == null ? 0 : hits.total().value();
   }
 }

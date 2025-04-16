@@ -30,11 +30,11 @@ export const ChangeValuesetModal = ({ modal, question, page, onValuesetChanged }
 
     useEffect(() => {
         if (response) {
-            showSuccess({ message: 'Successfully updated question value set' });
+            showSuccess('Successfully updated question value set');
             onValuesetChanged();
             modal.current?.toggleModal(undefined, false);
         } else if (error) {
-            showError({ message: 'Failed to update question value set' });
+            showError('Failed to update question value set');
         }
     }, [response, error]);
 

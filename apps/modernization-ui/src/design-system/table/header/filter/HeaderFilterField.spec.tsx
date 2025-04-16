@@ -1,4 +1,4 @@
-import { render, act, waitFor } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FilterInteraction, FilterType } from 'design-system/filter';
 import { HeaderFilterField } from './HeaderFilterField';
@@ -48,32 +48,41 @@ describe('when filtering table data from the header', () => {
         expect(input).toHaveValue('applied-value');
     });
 
-    it('should apply the filter when enter is pressed', () => {
+    it('should apply the filter when enter is pressed', async () => {
         const { getByRole } = render(<Fixture id="applying-value" />);
         const input = getByRole('textbox');
 
-        act(() => {
-            userEvent.type(input, 't');
-        });
+        const user = userEvent.setup();
 
-        act(() => {
-            userEvent.type(input, '{Enter}');
-        });
+        await user.type(input, 't{Enter}');
 
         expect(mockAdd).toHaveBeenCalledWith('applying-value', 't');
     });
 
-    it('should clear the filter when the clear button is pressed', () => {
+    it('should clear the filter when clearing text from an input with existing value', async () => {
+        mockValueOf.mockReturnValue('existing value');
+        
         const { getByRole } = render(<Fixture id="clearing-value" />);
         const input = getByRole('textbox');
 
-        act(() => {
-            userEvent.clear(input);
-            userEvent.type(input, '{Enter}');
-        });
+        const user = userEvent.setup();
+        await user.clear(input);
 
+        expect(mockAdd).toHaveBeenCalledWith('clearing-value', undefined);
         expect(mockClear).toHaveBeenCalledWith('clearing-value');
+    });
+    
+    it('should not clear the filter when there is no existing filter value', async () => {
+        mockValueOf.mockReturnValue('');
+        
+        const { getByRole } = render(<Fixture id="clearing-value" />);
+        const input = getByRole('textbox');
 
-        expect(input).toHaveValue('');
+        mockClear.mockClear();
+        
+        const user = userEvent.setup();
+        await user.clear(input);
+
+        expect(mockClear).not.toHaveBeenCalled();
     });
 });

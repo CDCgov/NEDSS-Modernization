@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient;
 
+import gov.cdc.nbs.data.LimitString;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.message.enums.Deceased;
@@ -466,7 +467,7 @@ public class PatientMother {
 	}
 
 	public void withEmail(final PatientIdentifier identifier) {
-		withEmail(identifier, faker.internet().emailAddress());
+		withEmail(identifier, LimitString.toMaxLength(faker.internet().emailAddress(), 100));
 	}
 
 	public void withEmail(final PatientIdentifier identifier, final String email) {

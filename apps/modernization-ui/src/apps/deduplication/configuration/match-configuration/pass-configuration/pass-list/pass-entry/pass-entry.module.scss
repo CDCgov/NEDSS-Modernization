@@ -1,0 +1,100 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.passEntry {
+    display: flex;
+    padding: 0.0625rem 0rem;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    @extend %thin-bottom;
+    word-break: break-all;
+
+    &.selected {
+        background: colors.$primary-lightest;
+        .border {
+            border-left: 0.25rem solid colors.$primary;
+        }
+
+        .content .passNameRow .nameLink {
+            color: colors.$primary;
+            font-weight: 700;
+        }
+    }
+
+    .border {
+        width: 0.25rem;
+        height: 100%;
+        border-radius: 1.875rem;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0.625rem 0;
+
+        .passNameRow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .nameLink {
+                font-size: 1rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                cursor: pointer;
+                text-align: left;
+
+                // Remove button styling
+                background: none;
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .editButton {
+                padding: 0.18731rem;
+                color: colors.$base;
+                cursor: pointer;
+                background: none;
+                border: none;
+                margin: 0;
+
+                svg {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+            }
+        }
+
+        .description {
+            color: colors.$base-darkest;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.3125rem;
+        }
+
+        .status {
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.125rem;
+            width: fit-content;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 400;
+
+            &.active {
+                background: colors.$success;
+                color: colors.$base-white;
+                font-size: 0.875rem;
+            }
+
+            &.inactive {
+                background: colors.$base-lighter;
+                color: colors.$base-black;
+            }
+        }
+    }
+}

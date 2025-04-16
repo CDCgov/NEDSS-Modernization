@@ -1,76 +1,102 @@
-# Cypress Cucumber Automation Framework with Cucumber Reporting
+## Cypress Testing – Overview
 
-This repository contains an automation framework built using Cypress and Cucumber for creating feature-rich, maintainable, and efficient automated tests. The framework offers the following features:
+**[Cypress](https://www.cypress.io/)** is a modern, open-source JavaScript-based end-to-end testing framework built for web applications. It is known for its **fast**, **reliable**, and **developer-friendly** features.
 
-## Features
+### Key Features
 
-- Utilizes the Cypress testing framework, which provides a powerful API for interacting with web applications.
-- Integrates the Cucumber framework for writing tests in a behavior-driven development (BDD) style using Gherkin syntax.
-- Supports the execution of tests in both headless and interactive modes, allowing for flexible testing options.
-- Provides easy-to-use commands and assertions for validating the behavior of web applications.
-- Enables test execution and reporting using various plugins, including html reporting, to generate comprehensive test reports.
-- Offers reusable step definitions and custom commands to improve test maintainability and reduce duplication.
-- Allows for easy integration with continuous integration (CI) systems, such as Jenkins or GitLab CI, for seamless test execution as part of the development pipeline.
+- **Runs in the browser**: Cypress executes tests in the same run loop as your app, giving it native access to the DOM, network requests, etc.
+- **Automatic waiting**: No need to add manual waits or sleeps; Cypress waits for commands and assertions to pass.
+- **Real-time reloads**: As you save your test files, Cypress automatically reloads the test runner.
+- **Time travel debugging**: Cypress captures snapshots of your test steps, so you can go back in time and see exactly what happened.
 
-## Prerequisites
 
-Make sure you have the following dependencies installed:
+### Prerequisites
 
-- Node.js (version 18 or higher)
-- NPM (Node Package Manager)
+### 1. Clone or Download project
+[NEDSS Modernization Git Repository](https://github.com/CDCgov/NEDSS-Modernization)
 
-## Getting Started
+### 2. Install Node
+[Node Page](https://nodejs.org/en)
 
-1. Clone this repository to your local machine.
-2. Navigate to the project directory.
-3. Install the project dependencies by running the command: `npm install`
-4. Install Cypress by running the command `./node_modules/cypress/bin/cypress install`
-5. Configure your test scenarios by creating feature files in the `cypress/e2e/features` directory using Gherkin syntax.
-6. Implement step definitions for your scenarios in the `cypress/e2e/step_definitions` directory.
-7. Run the tests using one of the available commands:
-   - Run cypress ui: `npm run cypress`
-   - Run tests in interactive mode: `npm run cy:e2e -- --browser=chrome --headed`
-   - Run tests in headless mode: `npm run cy:e2e`
-   - Run tests in interactive mode for a specific spec: `npx cypress run --spec "./cypress/e2e/features/race.feature" --headed`
+### Minimum Requirements
+- **npm**: `10.5.0`
+- **Node.js**: `v21.7.2`
 
-## Configuration
+> **Warning:** The data created by Cypress tests is not cleaned up. Running automated testing against your database **WILL** pollute it with random data.
 
-- `cypress.config.json`: Cypress configuration file containing various settings for test execution.
-- `cypress/support/commands.js`: Custom commands and global configurations for Cypress.
-- `cypress/support/e2e.js`: Cypress e2e configuration file.
-- `.cypress-cucumber-preprocessorrc.json`: The preprocessor uses [cosmiconfig](https://github.com/davidtheclark/cosmiconfig), which means you can place configuration options in EG. `.cypress-cucumber-preprocessorrc.json` or `package.json`. An example configuration is shown below.
 
-   ```json
-    {
-    "json": {
-      "enabled": true,
-      "output": "jsonlogs/log.json",
-      "formatter": "cucumber-json-formatter.exe"
-    },
-    "messages": {
-      "enabled": false,
-      "output": "jsonlogs/messages.ndjson"
-    },
-    "html": {
-      "enabled": false
-    },
-    "stepDefinitions": [
-      "[filepath]/**/*.{js,ts}",
-      "[filepath].{js,ts}",
-      "cypress/e2e/step_definitions/*.{js,ts}",
-      "[filepath]\\***.{js,ts}",
-      "[filepath].{js,ts}",
-      "cypress\\e2e\\step_definitions\\*.{js,ts}"
-    ]
-  }
-   ```
+> **Warning:** SSO sign in is not supported. Attempting to connect to an environment with SSO enabled will fail.
 
-## Viewing Reports
-Once the tests have been executed, the [multiple-cucumber-html-reporter](https://github.com/WasiqB/multiple-cucumber-html-reporter) reports will be generated in the specified output directory. You can view the reports by running the following command:
+
+
+## Running Cypress (Linux / Mac)
+### 1. Navigate to the Project Directory
+
+```bash
+cd testing/regression
 ```
-npm run report
-```
-This command will open a web browser displaying the cucumber-html report, which provide detailed information about the test results, including screenshots, logs, and more.
 
-## Continuous Integration
-This framework can be seamlessly integrated with popular CI/CD tools such as Jenkins, CircleCI, or GitLab CI. Configure your CI/CD pipeline to execute the `npm run test` command and generate cucumber-html report as part of your build process.
+### 2. Install Project Dependencies
+
+```bash
+npm install
+```
+
+### 3. Install Cypress
+
+```bash
+./node_modules/cypress/bin/cypress install
+# or
+npm install cypress --save-dev
+```
+
+### 4. Create and Configure `cypress.env.json`
+Create a new `cypress.env.json` file in the `testing/regression` directory.
+
+The following content will configure Cypress to connect to the INT1 environment.
+
+```json
+{
+  "DI_API": "https://dataingestion.int1.nbspreview.com/ingestion/api",
+  "NOTIFICATION_STATUS_API": "https://app.int1.nbspreview.com/nbs/api/investigations/uid/notifications/transport/status",
+  "ON_PRIM_NOTIFICATION_STATUS_API": "https://testsync.dts1.nbspreview.com/notifications/uid/status",
+  "DI_CLIENT_ID": "<di-keycloak-client>",
+  "DI_SECRET": "<data-ingestion-secret",
+  "LOGIN_USERNAME": "<username>",
+  "LOGIN_PASSWORD": "<password>"
+}
+```
+
+|Environment variable|Use|
+|-----|-----|
+|DI_API| Base route for Data Ingestion API|
+|NOTIFICATION_STATUS_API|API that returns the processing status of HL7 messages created by `DI_API`|
+|ON_PRIM_NOTIFICATION_STATUS_API|API that returns the final data has been processed into a simulated STLT environment|
+|DI_CLIENT_ID| Data ingestion keycloak client|
+|DI_SECRET | Data ingestion keycloak secret|
+|LOGIN_USERNAME| Username for UI authentication|
+|LOGIN_PASSWORD| Password for UI authentication|
+
+> **Note**: `cypress.env.json` is ignored by git via `.gitignore` and should never be committed.
+
+### 5. Set `baseUrl` in `cypress.config.js`
+The default values for `baseUrl` within `cypress.config.js` point to a local environment. To connect to the INT1 environment, set the `baseUrl` value as follows:
+```js
+module.exports = defineConfig({
+  e2e: {
+    setupNodeEvents,
+    specPattern: "./cypress/**/**/*.feature",
+    baseUrl: "https://app.int1.nbspreview.com/",
+    chromeWebSecurity: false,
+    video: false,
+  },
+});
+```
+
+### 7. Open Cypress
+
+```bash
+npx cypress open
+```
+
+> **Note**: An error will show if `baseUrl` has not been changed or the local dev server is not running.

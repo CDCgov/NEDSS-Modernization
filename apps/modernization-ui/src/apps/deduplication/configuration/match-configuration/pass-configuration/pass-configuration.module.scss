@@ -1,0 +1,11 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.passConfiguration {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}

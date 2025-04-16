@@ -1,6 +1,6 @@
 import { Investigation } from 'generated/graphql/schema';
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { InvestigationSearchResultListItem } from './InvestigationSearchResultListItem';
 
 describe('when showing an investigation search results', () => {

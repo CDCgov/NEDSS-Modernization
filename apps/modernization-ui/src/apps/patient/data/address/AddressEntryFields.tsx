@@ -2,15 +2,14 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
-import { useLocationCodedValues } from 'location';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { Input } from 'components/FormInputs/Input';
-import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
 import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
 import { CensusTractInputField, validCensusTractRule } from './census-tract';
 import { AddressEntry } from './entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { useAddressCodedValues } from './useAddressCodedValues';
+import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
+import { TextInputField } from 'design-system/input';
 
 const AS_OF_DATE_LABEL = 'Address as of';
 const TYPE_LABEL = 'Type';
@@ -23,25 +22,14 @@ const CENSUS_TRACT_LABEL = 'Census tract';
 const COMMENTS_LABEL = 'Address comments';
 
 export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
-    const { control, reset } = useFormContext<AddressEntry>();
+    const { control } = useFormContext<AddressEntry>();
     const coded = useAddressCodedValues();
-    const location = useLocationCodedValues();
-    const selectedState = useWatch({ control, name: 'state' });
-    const enteredCity = useWatch({ control, name: 'city' });
-    const enteredZip = useWatch({ control, name: 'zipcode' });
-    const counties = location.counties.byState(selectedState?.value ?? '');
 
-    const handleSuggestionSelection = (selected: AddressSuggestion) => {
-        reset(
-            {
-                address1: selected.address1,
-                city: selected.city,
-                state: selected.state ?? undefined,
-                zipcode: selected.zip
-            },
-            { keepDefaultValues: true }
-        );
-    };
+    const selectedState = useWatch({ control, name: 'state' });
+
+    const countries = useCountryOptions();
+    const states = useStateOptions();
+    const counties = useCountyOptions(selectedState?.value);
 
     return (
         <section>
@@ -109,20 +97,13 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                 name="address1"
                 rules={maxLengthRule(100, STREET_ADDRESS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <AddressSuggestionInput
+                    <TextInputField
                         label={STREET_ADDRESS_LABEL}
                         orientation={orientation}
                         id={name}
-                        locations={location}
-                        criteria={{
-                            city: enteredCity ?? undefined,
-                            state: selectedState?.value ?? undefined,
-                            zip: enteredZip ?? undefined
-                        }}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        onSelection={handleSuggestionSelection}
                         error={error?.message}
                         sizing={sizing}
                     />
@@ -133,15 +114,13 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                 name="address2"
                 rules={maxLengthRule(100, STREET_ADDRESS_2_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <TextInputField
                         label={STREET_ADDRESS_2_LABEL}
                         orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={value}
+                        value={value}
                         type="text"
-                        name={name}
-                        htmlFor={name}
                         id={name}
                         error={error?.message}
                         sizing={sizing}
@@ -153,15 +132,13 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                 name="city"
                 rules={maxLengthRule(100, CITY_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <TextInputField
                         label={CITY_LABEL}
                         orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={value}
+                        value={value}
                         type="text"
-                        name={name}
-                        htmlFor={name}
                         id={name}
                         error={error?.message}
                         sizing={sizing}
@@ -179,7 +156,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={location.states.all}
+                        options={states}
                         sizing={sizing}
                     />
                 )}
@@ -245,7 +222,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={location.countries}
+                        options={countries}
                         sizing={sizing}
                         autoComplete="off"
                     />

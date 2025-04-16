@@ -1,0 +1,33 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.blockingAttributeRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    gap: 1rem;
+    @extend %thin-bottom;
+
+    .blockingAttributeInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        .label {
+            color: colors.$base-darkest;
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.25rem;
+        }
+
+        .description {
+            color: colors.$base-darkest;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.09375rem;
+        }
+    }
+}

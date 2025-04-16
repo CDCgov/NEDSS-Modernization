@@ -1,22 +1,20 @@
+import { FormProvider, useForm } from 'react-hook-form';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
 import { MortalityEntryFields } from './MortalityEntryFields';
-import { FormProvider, useForm } from 'react-hook-form';
 import { internalizeDate } from 'date';
-import { act, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
-const mockLocationCodedValues = {
-    states: {
-        all: [{ name: 'StateName', value: '1' }]
-    },
-    counties: {
-        byState: (state: string) => [{ name: 'CountyName', value: '2' }]
-    },
-    countries: [{ name: 'CountryName', value: '3' }]
-};
+const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
-jest.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
+const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
+
+const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+
+jest.mock('options/location', () => ({
+    useCountyOptions: () => mockCountyCodedValues,
+    useCountryOptions: () => mockCountryCodedValues,
+    useStateOptions: () => mockStateCodedValues
 }));
 
 const Fixture = () => {
@@ -45,23 +43,24 @@ describe('when entering patient mortality demographics', () => {
     });
 
     it('should require as of', async () => {
+        const user = userEvent.setup();
         const { getByLabelText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Mortality information as of');
-        act(() => {
-            userEvent.clear(asOf);
-            userEvent.tab();
-        });
+
+        await user.clear(asOf);
+        await user.tab();
 
         expect(await findByText('The Mortality information as of is required.')).toBeInTheDocument();
     });
 
-    it('should render the death information when deceased is true', () => {
+    it('should render the death information when deceased is true', async () => {
+        const user = userEvent.setup();
         const { getByLabelText } = render(<Fixture />);
 
         const deceased = getByLabelText('Is the patient deceased?');
 
-        userEvent.selectOptions(deceased, 'Y');
+        await user.selectOptions(deceased, 'Y');
 
         expect(getByLabelText('Date of death')).toBeInTheDocument();
         expect(getByLabelText('Death city')).toBeInTheDocument();
@@ -70,21 +69,23 @@ describe('when entering patient mortality demographics', () => {
         expect(getByLabelText('Death country')).toBeInTheDocument();
     });
 
-    it('should reset the death information when deceased is reverted to false', () => {
+    it('should reset the death information when deceased is reverted to false', async () => {
+        const user = userEvent.setup();
+
         const { getByLabelText } = render(<Fixture />);
         // Set patient deceased Y
-        userEvent.selectOptions(getByLabelText('Is the patient deceased?'), 'Y');
+        await user.selectOptions(getByLabelText('Is the patient deceased?'), 'Y');
 
         // Enter data in previously hidden fields
-        userEvent.paste(getByLabelText('Date of death'), '12/01/2020');
-        userEvent.type(getByLabelText('Death city'), 'City value');
-        userEvent.selectOptions(getByLabelText('Death state'), '1');
-        userEvent.selectOptions(getByLabelText('Death county'), '2');
-        userEvent.selectOptions(getByLabelText('Death country'), '3');
+        await user.type(getByLabelText('Date of death'), '12/01/2020');
+        await user.type(getByLabelText('Death city'), 'City value');
+        await user.selectOptions(getByLabelText('Death state'), '1');
+        await user.selectOptions(getByLabelText('Death county'), '2');
+        await user.selectOptions(getByLabelText('Death country'), '3');
 
         // Toggle deceased to N then back to Y
-        userEvent.selectOptions(getByLabelText('Is the patient deceased?'), 'N');
-        userEvent.selectOptions(getByLabelText('Is the patient deceased?'), 'Y');
+        await user.selectOptions(getByLabelText('Is the patient deceased?'), 'N');
+        await user.selectOptions(getByLabelText('Is the patient deceased?'), 'Y');
 
         // Verify previously input data is cleared
         expect(getByLabelText('Date of death')).toHaveValue('');

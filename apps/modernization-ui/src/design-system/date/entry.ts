@@ -6,45 +6,6 @@ type DateEntry = {
     year?: number;
 };
 
-type DateEqualsCriteria = {
-    equals: DateEntry;
-};
-
-type DateBetweenCriteria = {
-    between: {
-        from?: string;
-        to?: string;
-    };
-};
-
-type DateCriteria = DateEqualsCriteria | DateBetweenCriteria;
-
-const isDateEqualsCriteria = (criteria?: DateCriteria): criteria is DateEqualsCriteria =>
-    !!criteria && 'equals' in criteria;
-const isDateBetweenCriteria = (criteria?: DateCriteria): criteria is DateBetweenCriteria =>
-    !!criteria && 'between' in criteria;
-
-/**
- * Resolves the string representation of date equals criteria if the
- * criteria contains a date with a month, day, and year.
- *
- * @param {DateCriteria | undefined} criteria The DateCriteria to resolve a date from
- * @return {string | undefined} A MM/DD/YYYY formatted string that represents a Date.
- */
-const resolveDate = (criteria?: DateCriteria) => {
-    if (criteria && isDateEqualsCriteria(criteria)) {
-        const date = criteria.equals;
-        return date.day && date.month && date.year ? displayDateEntry(date) : undefined;
-    }
-};
-
-const initialDateEqualsCriteria: DateEqualsCriteria = { equals: {} };
-const initialDateBetweenCriteria: DateBetweenCriteria = { between: {} };
-
-export { isDateEqualsCriteria, isDateBetweenCriteria, resolveDate };
-export { initialDateEqualsCriteria, initialDateBetweenCriteria };
-export type { DateCriteria, DateBetweenCriteria, DateEqualsCriteria };
-
 const maybeNumber = maybeMap(Number);
 
 const DATE_ENTRY_FORMAT = /^(?<month>\d{2})\/(?<day>\d{2})\/(?<year>\d{4})$/;
@@ -76,7 +37,7 @@ const maybeWithLeadingZero = mapOr(withLeadingZero, MISSING_VALUE_PLACEHOLDER);
 const displayDateEntry = (value: DateEntry) => {
     const month = maybeWithLeadingZero(value.month);
     const day = maybeWithLeadingZero(value.day);
-    const year = value.year ?? MISSING_VALUE_PLACEHOLDER;
+    const year = value.year ?? '----';
 
     return `${month}/${day}/${year}`;
 };

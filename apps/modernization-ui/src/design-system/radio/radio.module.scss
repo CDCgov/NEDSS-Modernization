@@ -5,7 +5,7 @@ $radio-small: 1rem;
 $radio-medium: 1.125rem;
 $radio-large: 1.25rem;
 
-@mixin sizedRadio($height: $radio-small, $width: $radio-small, $padding: 1.5rem, $extend: '%small') {
+@mixin sizedRadio($height: $radio-small, $width: $radio-small, $padding: 1.75rem, $extend: '%small') {
     height: $height;
     min-height: $height;
 
@@ -23,11 +23,13 @@ $radio-large: 1.25rem;
     label {
         &::before {
             margin: 0;
+            // modified left property because the box shadow has 2px outside the border
+            left: 2px !important;
         }
     }
 
     &.small {
-        @include sizedRadio($radio-small, $radio-small, 1.5rem, '%small');
+        @include sizedRadio($radio-small, $radio-small, 1.75rem, '%small');
     }
 
     &.medium {

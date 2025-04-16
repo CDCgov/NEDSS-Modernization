@@ -41,7 +41,7 @@ const DataTable = <V,>({
     noDataFallback,
     rowHeightConstrained = true
 }: DataTableProps<V>) => {
-    const resolvedClasses = classNames('usa-table--borderless', styles.table, sizing ? styles[sizing] : undefined);
+    const resolvedClasses = classNames('usa-table--borderless', styles.table, sizing && styles[sizing]);
     return (
         <div id={id} className={resolvedClasses}>
             <table className={classNames('usa-table', className)}>

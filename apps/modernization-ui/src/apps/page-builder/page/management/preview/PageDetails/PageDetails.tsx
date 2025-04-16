@@ -9,7 +9,7 @@ import { useFindConditionsNotInUse } from 'apps/page-builder/hooks/api/useFindCo
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { useAlert } from 'alert';
 import { LinkButton } from 'components/button';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
@@ -70,12 +70,12 @@ export const PageDetails = () => {
             }
         })
             .then(() => {
-                showSuccess({ message: 'You have successfully performed a task' });
+                showSuccess('You have successfully performed a task');
                 navigate('..');
                 form.reset();
             })
             .catch((error) => {
-                showError({ message: error.body.message || 'Failed to save page' });
+                showError(error.body.message || 'Failed to save page');
             });
     });
 

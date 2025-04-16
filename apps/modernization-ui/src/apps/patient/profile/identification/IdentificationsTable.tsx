@@ -156,7 +156,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
             .then(() => {
                 showAlert({
                     type: 'success',
-                    header: 'success',
+                    title: 'success',
                     message: `Added Identification`
                 });
                 refetch();
@@ -182,7 +182,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                 .then(() => {
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Updated Identification`
                     });
                     refetch();
@@ -205,7 +205,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                 .then(() => {
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Deleted Identification`
                     });
                     refetch();

@@ -140,7 +140,7 @@ export const SexBirth = ({ patient }: Props) => {
                     refetch();
                     showAlert({
                         type: 'success',
-                        header: 'success',
+                        title: 'success',
                         message: `Updated sex & birth`
                     });
                     changed();

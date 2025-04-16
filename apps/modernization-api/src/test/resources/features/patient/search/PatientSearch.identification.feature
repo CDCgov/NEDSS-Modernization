@@ -114,7 +114,7 @@ Feature: Patient Search Result Identifications
     And the patient has the gender Female
     And patients are available for search
     And I add the patient criteria for an "identification value" equal to "4099"
-    And I add the patient criteria for sex filter of "F"
+    And I would like to filter search results with a gender of "F"
     And I would like to filter search results with identification "09"
     When I search for patients
     Then there are 1 patient search results

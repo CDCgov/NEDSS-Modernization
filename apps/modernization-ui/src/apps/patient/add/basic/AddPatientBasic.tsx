@@ -1,19 +1,19 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useFormNavigationBlock } from 'navigation';
 import { FeatureToggle } from 'feature';
 import { Shown } from 'conditional-render';
 import { Button } from 'components/button';
-import { AddPatientLayout, DataEntryLayout } from 'apps/patient/add/layout';
 import { sections } from './sections';
 import { AddPatientBasicForm } from './AddPatientBasicForm';
 import { BasicNewPatientEntry } from './entry';
 import { useAddBasicPatient } from './useAddBasicPatient';
+import { AddPatientLayout, DataEntryLayout } from '../layout';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
+import { usePatientDataEntryMethod } from '../usePatientDataEntryMethod';
 import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
-import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
-import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
+import { useSearchFromAddPatient } from '../useSearchFromAddPatient';
 import { useShowCancelModal, CancelAddPatientPanel } from '../cancelAddPatientPanel';
 
 import styles from './add-patient-basic.module.scss';
@@ -24,34 +24,27 @@ export const AddPatientBasic = () => {
 
     const interaction = useAddBasicPatient();
     const form = useForm<BasicNewPatientEntry>({
-        defaultValues: {
-            ...initialize(),
-            address: {
-                country: {
-                    value: '840',
-                    name: 'United States'
-                }
-            }
-        },
+        defaultValues: initialize(),
         mode: 'onBlur'
     });
-    const blocker = useFormNavigationBlock({ activated: !bypassBlocker, form });
+    const blocker = useFormNavigationBlock({ activated: !bypassBlocker, form, allowed: '/patient/add/extended' });
 
-    const { toExtendedNew } = useBasicExtendedTransition();
+    const { toExtended } = usePatientDataEntryMethod();
 
     const handleSave = form.handleSubmit(interaction.create);
 
     const { toSearch } = useSearchFromAddPatient();
     const location = useLocation();
 
-    const handleCancel = () => {
-        toSearch(location.state?.criteria ?? '');
-    };
+    const backToSearch = useCallback(
+        () => toSearch(location.state?.criteria?.encrypted),
+        [toSearch, location.state?.criteria?.encrypted]
+    );
 
-    const handleExtended = form.handleSubmit((data) => {
-        blocker.allow();
-        toExtendedNew(data, location.state?.criteria ?? '');
-    });
+    const handleExtended = useCallback(
+        form.handleSubmit((data) => toExtended(data, location.state?.criteria)),
+        [form.handleSubmit, toExtended, location.state?.criteria]
+    );
 
     const handleFormIsValid = (valid: boolean) => {
         interaction.setCanSave(valid);
@@ -61,7 +54,7 @@ export const AddPatientBasic = () => {
 
     const handleModalConfirm = () => {
         blocker.unblock();
-        toSearch(location.state?.criteria ?? '');
+        backToSearch();
     };
 
     const handleModalClose = blocker.reset;
@@ -93,7 +86,7 @@ export const AddPatientBasic = () => {
                                     Add extended data
                                 </Button>
                             </FeatureToggle>
-                            <Button onClick={handleCancel} outline>
+                            <Button onClick={backToSearch} outline>
                                 Cancel
                             </Button>
                             <Button type="submit" onClick={handleSave} disabled={working}>

@@ -1,27 +1,28 @@
 import { Checkbox } from 'design-system/checkbox';
 import { DataElementRow } from '../DataElementRow/DataElementRow';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { DataElements } from '../../DataElement';
+import { DataElements } from '../../../api/model/DataElement';
 import { Card } from 'design-system/card/Card';
 import { useRef } from 'react';
 import { Icon } from 'design-system/icon';
 import styles from './DataElementsForm.module.scss';
 import RichTooltip from 'design-system/richTooltip/RichTooltip';
+import { DataElementToMatchingAttribute } from 'apps/deduplication/api/model/Conversion';
+import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
 
 const dataElementKeys: (keyof DataElements)[] = [
     'firstName',
     'lastName',
     'dateOfBirth',
-    'currentSex',
+    'sex',
     'race',
     'suffix',
     // Address Details
-    'streetAddress1',
+    'address',
     'city',
     'state',
     'zip',
     'county',
-    'telecom',
     'telephone',
     'email',
     // Identification Details
@@ -39,7 +40,10 @@ const dataElementKeys: (keyof DataElements)[] = [
     'wicIdentifier'
 ];
 
-export const DataElementsForm = () => {
+type Props = {
+    dataElements?: DataElements;
+};
+export const DataElementsForm = ({ dataElements }: Props) => {
     const form = useFormContext<DataElements>();
     const watch = useWatch({ control: form.control });
 
@@ -60,7 +64,7 @@ export const DataElementsForm = () => {
         <Card
             id="dataElementsCard"
             title="Data elements"
-            subtext="This table contains all the possible data elements that are available for use as person matching criteria">
+            subtext="This table contains all the possible data elements that are available for use as person matching criteria.">
             <div className={styles.dataElementsForm}>
                 <table>
                     <thead>
@@ -79,10 +83,10 @@ export const DataElementsForm = () => {
                             <th>Field</th>
                             <th className={styles.numericColumn}>
                                 <span className={styles.headerWithIcon}>
-                                    Odds ratio
+                                    Odds ratio{' '}
                                     <span ref={oddsRatioRef} className={styles.infoIcon}>
                                         <RichTooltip anchorRef={oddsRatioRef} marginTop={38}>
-                                            <span>Odds Ratio – </span>
+                                            <span>Odds Ratio - </span>
                                             <span style={{ fontWeight: 'normal' }}>
                                                 Once checked, enter predetermined odds ratio value for each data element
                                                 as calculated from previous testing of local data
@@ -94,10 +98,10 @@ export const DataElementsForm = () => {
                             </th>
                             <th className={styles.calculatedColumn}>
                                 <span className={styles.headerWithIcon}>
-                                    Log odds
+                                    Log odds{' '}
                                     <span ref={logOddsRef} className={styles.infoIcon}>
                                         <RichTooltip anchorRef={logOddsRef} marginTop={38}>
-                                            <span>Log odds – </span>
+                                            <span>Log odds - </span>
                                             <span style={{ fontWeight: 'normal' }}>
                                                 The corresponding log odds value used by the algorithm will be
                                                 calculated and displayed.
@@ -109,13 +113,13 @@ export const DataElementsForm = () => {
                             </th>
                             <th className={styles.numericColumn}>
                                 <span className={styles.headerWithIcon}>
-                                    Threshold
+                                    Threshold{' '}
                                     <span ref={thresholdRef} className={styles.infoIcon}>
-                                        <RichTooltip anchorRef={thresholdRef} marginTop={38}>
-                                            <span>Threshold – </span>
+                                        <RichTooltip anchorRef={thresholdRef} marginLeft={-300} marginTop={38}>
+                                            <span>Threshold - </span>
                                             <span style={{ fontWeight: 'normal' }}>
                                                 Values above which two strings are said to be “similar enough” that
-                                                they’re probably the same thing. Values that are less than the threshold
+                                                they're probably the same thing. Values that are less than the threshold
                                                 will be calculated as 0.
                                             </span>
                                         </RichTooltip>
@@ -125,35 +129,18 @@ export const DataElementsForm = () => {
                             </th>
                         </tr>
                         <tr className={styles.border}>
-                            <th colSpan={6} />
+                            <th colSpan={5} />
                         </tr>
                     </thead>
                     <tbody>
-                        <DataElementRow fieldName="First name" field="firstName" />
-                        <DataElementRow fieldName="Last name" field="lastName" />
-                        <DataElementRow fieldName="Suffix" field="suffix" />
-                        <DataElementRow fieldName="Date of birth" field="dateOfBirth" />
-                        <DataElementRow fieldName="Current sex" field="currentSex" />
-                        <DataElementRow fieldName="Race" field="race" />
-                        <DataElementRow fieldName="SSN" field="socialSecurity" />
-                        <DataElementRow fieldName="Street address 1" field="streetAddress1" />
-                        <DataElementRow fieldName="City" field="city" />
-                        <DataElementRow fieldName="State" field="state" />
-                        <DataElementRow fieldName="Zip" field="zip" />
-                        <DataElementRow fieldName="County" field="county" />
-                        <DataElementRow fieldName="Phone number" field="telephone" />
-                        <DataElementRow fieldName="Telecom" field="telecom" />
-                        <DataElementRow fieldName="Email" field="email" />
-                        <DataElementRow fieldName="Account number" field="accountNumber" />
-                        <DataElementRow fieldName="Drivers license number" field="driversLicenseNumber" />
-                        <DataElementRow fieldName="Medicaid number" field="medicaidNumber" />
-                        <DataElementRow fieldName="Medical record number" field="medicalRecordNumber" />
-                        <DataElementRow fieldName="National unique identifier" field="nationalUniqueIdentifier" />
-                        <DataElementRow fieldName="Patient external identifier" field="patientExternalIdentifier" />
-                        <DataElementRow fieldName="Patient internal identifier" field="patientInternalIdentifier" />
-                        <DataElementRow fieldName="Person number" field="personNumber" />
-                        <DataElementRow fieldName="Visa/Passport" field="visaPassport" />
-                        <DataElementRow fieldName="WIC Identifier" field="wicIdentifier" />
+                        {dataElementKeys.map((field, k) => (
+                            <DataElementRow
+                                key={`data-element-row-${k}`}
+                                dataElements={dataElements}
+                                field={field}
+                                fieldName={MatchingAttributeLabels[DataElementToMatchingAttribute[field]].label}
+                            />
+                        ))}
                     </tbody>
                 </table>
             </div>

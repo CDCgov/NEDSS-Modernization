@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 
 import { Confirmation } from './Confirmation';
-import userEvent from '@testing-library/user-event';
 
 describe('when a confirmation is displayed', () => {
     it('should render with no accessibility violations', async () => {
@@ -75,7 +75,7 @@ describe('when a confirmation is displayed', () => {
         expect(cancel).toBeInTheDocument();
     });
 
-    it('should invoke onCancel when the "No, go back" button is clicked', () => {
+    it('should invoke onCancel when the "No, go back" button is clicked', async () => {
         const onConfirm = jest.fn();
         const onCancel = jest.fn();
 
@@ -89,13 +89,14 @@ describe('when a confirmation is displayed', () => {
 
         expect(cancel).toBeInTheDocument();
 
-        userEvent.click(cancel);
+        const user = userEvent.setup();
+        await user.click(cancel);
 
         expect(onCancel).toBeCalled();
         expect(onConfirm).not.toBeCalled();
     });
 
-    it('should invoke onCancel when the close icon is clicked', () => {
+    it('should invoke onCancel when the close icon is clicked', async () => {
         const onConfirm = jest.fn();
         const onCancel = jest.fn();
 
@@ -109,7 +110,8 @@ describe('when a confirmation is displayed', () => {
 
         expect(cancel).toBeInTheDocument();
 
-        userEvent.click(cancel);
+        const user = userEvent.setup();
+        await user.click(cancel);
 
         expect(onCancel).toBeCalled();
         expect(onConfirm).not.toBeCalled();
@@ -139,7 +141,7 @@ describe('when a confirmation is displayed', () => {
         expect(confirmation).toBeInTheDocument();
     });
 
-    it('should invoke onConfirm when the "Confirm" button is clicked', () => {
+    it('should invoke onConfirm when the "Confirm" button is clicked', async () => {
         const onConfirm = jest.fn();
         const onCancel = jest.fn();
 
@@ -153,33 +155,34 @@ describe('when a confirmation is displayed', () => {
 
         expect(confirm).toBeInTheDocument();
 
-        userEvent.click(confirm);
+        const user = userEvent.setup();
+        await user.click(confirm);
 
         expect(onConfirm).toBeCalled();
         expect(onCancel).not.toBeCalled();
     });
 
     it('should render close icon by default', () => {
-        const result = render(
+        const { getByRole } = render(
             <Confirmation title="Hello Modal" onCancel={() => {}} onConfirm={() => {}}>
                 Confirmation of something
             </Confirmation>
         );
 
-        const closeX = result.container.querySelector('svg[data-close-modal]');
+        const closeX = getByRole('button', { name: 'Close Hello Modal' });
 
-        expect(closeX).not.toBeNull();
+        expect(closeX).toBeInTheDocument();
     });
 
     it('should not render close icon when forceAction is true', () => {
-        const result = render(
+        const { queryByRole } = render(
             <Confirmation title="Hello Modal" onCancel={() => {}} onConfirm={() => {}} forceAction={true}>
                 Confirmation of something
             </Confirmation>
         );
 
-        const closeX = result.container.querySelector('svg[data-close-modal]');
+        const closeX = queryByRole('button', { name: 'Close Hello Modal' });
 
-        expect(closeX).toBeNull();
+        expect(closeX).not.toBeInTheDocument();
     });
 });

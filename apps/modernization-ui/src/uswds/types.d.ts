@@ -4,3 +4,4 @@ declare module '@uswds/uswds/img/icon-dot-gov.svg';
 
 declare module '@uswds/uswds/js/usa-date-picker';
 declare module '@uswds/uswds/js/usa-input-mask';
+declare module '@uswds/uswds/js/usa-date-range-picker';

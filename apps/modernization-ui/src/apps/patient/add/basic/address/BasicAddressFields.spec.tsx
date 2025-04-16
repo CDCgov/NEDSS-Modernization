@@ -1,21 +1,19 @@
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { AddressEntry } from 'apps/patient/data';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BasicAddressFields } from './BasicAddressFields';
-import { render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
-const mockLocationCodedValues = {
-    states: {
-        all: [{ name: 'StateName', value: '1' }]
-    },
-    counties: {
-        byState: (state: string) => [{ name: 'CountyName', value: '2' }]
-    },
-    countries: [{ name: 'CountryName', value: '3' }]
-};
+const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
-jest.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
+const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
+
+const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+
+jest.mock('options/location', () => ({
+    useCountyOptions: () => mockCountyCodedValues,
+    useCountryOptions: () => mockCountryCodedValues,
+    useStateOptions: () => mockStateCodedValues
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
@@ -80,77 +78,75 @@ describe('when entering address section', () => {
         { value: '0001.99', valid: false },
         { value: '1234.56', valid: true }
     ])('should validate Census Tract format for value: $value', async ({ value, valid }) => {
+        const user = userEvent.setup();
+
         const { getByLabelText, queryByText } = render(<Fixture />);
         const censusTractInput = getByLabelText('Census tract');
 
-        userEvent.clear(censusTractInput);
-        userEvent.paste(censusTractInput, value);
-        userEvent.tab();
+        await user.clear(censusTractInput);
+        await user.type(censusTractInput, value);
+        await user.tab();
 
         const validationMessage =
             'The Census tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.';
 
-        await waitFor(() => {
-            const validationError = queryByText(validationMessage);
-            if (valid) {
-                expect(validationError).not.toBeInTheDocument();
-            } else {
-                expect(validationError).toBeInTheDocument();
-            }
-        });
+        const validationError = queryByText(validationMessage);
+        if (valid) {
+            expect(validationError).not.toBeInTheDocument();
+        } else {
+            expect(validationError).toBeInTheDocument();
+        }
     });
     it('should validate address 1', async () => {
+        const user = userEvent.setup({ delay: null });
+
         const { getByLabelText, queryByText } = render(<Fixture />);
 
         const address = getByLabelText('Street address 1');
-        userEvent.clear(address);
-        userEvent.paste(
+        await user.clear(address);
+        await user.type(
             address,
             'hsdfjhsjfjshkfhskhfkhskjfhkjshfhsdskjhfjsdhfjshjfhjsdhfsdhdfjsdhfhjshjfsdhfsdfhjsfjhsjdfsfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhjhsdfjhsjfjshkfhskhfkhskjfhkjshfhsdskjhfjsdhfjshjfhjsdhfsdhdfjsdhfhjshjfsdhfsdfhjsfjhsjdfsfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhj dkacindijsnjpasdfilksbdvsdovbadkhv zcasjkfasnj hasb fkasj asjks s jdasjaksdb fbashf asfasfaskbf as faskj bfkdsbfkasb f'
         );
-        userEvent.tab();
+        await user.tab();
 
         const validationMessage = 'The Street address 1 only allows 100 characters max.';
 
-        await waitFor(() => {
-            const validationError = queryByText(validationMessage);
-            expect(validationError).toBeInTheDocument();
-        });
+        const validationError = queryByText(validationMessage);
+        expect(validationError).toBeInTheDocument();
     });
     it('should validate address 2', async () => {
+        const user = userEvent.setup({ delay: null });
         const { getByLabelText, queryByText } = render(<Fixture />);
 
         const address = getByLabelText('Street address 2');
-        userEvent.clear(address);
-        userEvent.paste(
+        await user.clear(address);
+        await user.type(
             address,
             'hsdfjhsjfjshkfhskhfkhskjfhkjshfhsdskjhfjsdhfjshjfhjsdhfsdhdfjsdhfhjshjfsdhfsdfhjsfjhsjdfsfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhjhsdfjhsjfjshkfhskhfkhskjfhkjshfhsdskjhfjsdhfjshjfhjsdhfsdhdfjsdhfhjshjfsdhfsdfhjsfjhsjdfsfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhj dkacindijsnjpasdfilksbdvsdovbadkhv zcasjkfasnj hasb fkasj asjks s jdasjaksdb fbashf asfasfaskbf as faskj bfkdsbfkasb f'
         );
-        userEvent.tab();
+        await user.tab();
 
         const validationMessage = 'The Street address 2 only allows 100 characters max.';
 
-        await waitFor(() => {
-            const validationError = queryByText(validationMessage);
-            expect(validationError).toBeInTheDocument();
-        });
+        const validationError = queryByText(validationMessage);
+        expect(validationError).toBeInTheDocument();
     });
     it('should validate city', async () => {
+        const user = userEvent.setup({ delay: null });
         const { getByLabelText, queryByText } = render(<Fixture />);
 
         const city = getByLabelText('City');
-        userEvent.clear(city);
-        userEvent.paste(
+        await user.clear(city);
+        await user.type(
             city,
             'hsdfjhsjfjshkfhskhfkhskjfhkjshfhsdskjhfjsdhfjshjfhjsdhfsdhdfjsdhfhjshjfsdhfsdfhjsfjhsjdfsfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhjhsdfjhsjfjshkfhskhfkhskjfhkjshfhsdskjhfjsdhfjshjfhjsdhfsdhdfjsdhfhjshjfsdhfsdfhjsfjhsjdfsfasdjhvmbsauhcjdbkashjiodjbkdsnachudihbjsnjacibhj dkacindijsnjpasdfilksbdvsdovbadkhv zcasjkfasnj hasb fkasj asjks s jdasjaksdb fbashf asfasfaskbf as faskj bfkdsbfkasb f'
         );
-        userEvent.tab();
+        await user.tab();
 
         const validationMessage = 'The City only allows 100 characters max.';
 
-        await waitFor(() => {
-            const validationError = queryByText(validationMessage);
-            expect(validationError).toBeInTheDocument();
-        });
+        const validationError = queryByText(validationMessage);
+        expect(validationError).toBeInTheDocument();
     });
 });

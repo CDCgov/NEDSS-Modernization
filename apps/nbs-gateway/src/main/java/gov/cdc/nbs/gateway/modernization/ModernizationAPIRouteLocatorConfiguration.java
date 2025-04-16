@@ -6,9 +6,8 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
-
+import gov.cdc.nbs.gateway.RouteOrdering;
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ class ModernizationAPIRouteLocatorConfiguration {
     return builder.routes()
         .route(
             "modernization-api",
-            route -> route.order(Ordered.HIGHEST_PRECEDENCE)
+            route -> route.order(RouteOrdering.MODERNIZATION_API.order())
                 .path("/nbs/api/**", "/encryption/**")
                 .filters(filter -> filter.filters(defaults))
                 .uri(service.uri())

@@ -13,6 +13,18 @@ import { internalizeDate } from 'date';
 import { ValidationErrors } from './useAddExtendedPatientInteraction';
 import { Selectable } from 'options';
 
+const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
+
+const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
+
+const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+
+jest.mock('options/location', () => ({
+    useCountyOptions: () => mockCountyCodedValues,
+    useCountryOptions: () => mockCountryCodedValues,
+    useStateOptions: () => mockStateCodedValues
+}));
+
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
         { name: 'Male', value: 'M' },
@@ -39,11 +51,6 @@ jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => (
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
-const mockCountyCodedValues: CountiesCodedValues = { counties: [{ name: 'CountyA', value: 'A', group: 'G' }] };
-
-jest.mock('location/useCountyCodedValues', () => ({
-    useCountyCodedValues: () => mockCountyCodedValues
-}));
 const mockPatientAddressCodedValues = {
     types: [{ name: 'House', value: 'H' }],
     uses: [{ name: 'Home', value: 'HM' }]

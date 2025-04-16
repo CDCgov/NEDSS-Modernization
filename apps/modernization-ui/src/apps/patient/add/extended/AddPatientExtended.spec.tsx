@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
-import { createMemoryRouter, MemoryRouter, Navigate, RouterProvider, useNavigate } from 'react-router-dom';
-import { CodedValue } from 'coded';
+import { createMemoryRouter, Navigate, RouterProvider, useNavigate } from 'react-router';
 import { MockedProvider } from '@apollo/react-testing';
 import { CountiesCodedValues } from 'location';
 import { PatientSexBirthCodedValue } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
@@ -10,7 +9,7 @@ import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
 import { useShowCancelModal } from '../cancelAddPatientPanel';
-import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
+import { PatientDataEntryMethodProvider } from '../usePatientDataEntryMethod';
 import { Selectable } from 'options';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
@@ -69,8 +68,8 @@ jest.mock('apps/patient/profile/addresses/usePatientAddressCodedValues', () => (
     usePatientAddressCodedValues: () => mockPatientAddressCodedValues
 }));
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
     useNavigate: jest.fn()
 }));
 
@@ -167,9 +166,9 @@ const renderWithRouter = () => {
         {
             path: '/',
             element: (
-                <BasicExtendedTransitionProvider>
+                <PatientDataEntryMethodProvider>
                     <AddPatientExtended />
-                </BasicExtendedTransitionProvider>
+                </PatientDataEntryMethodProvider>
             )
         },
         {

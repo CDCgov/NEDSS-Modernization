@@ -26,13 +26,13 @@ const initial = (asOf: string = today()): Partial<AddressEntry> => ({
     address2: '',
     city: '',
     state: undefined,
-    zipcode: '',
+    zipcode: undefined,
     county: undefined,
     country: {
         value: '840',
         name: 'United States'
     },
-    censusTract: '',
+    censusTract: undefined,
     comment: ''
 });
 

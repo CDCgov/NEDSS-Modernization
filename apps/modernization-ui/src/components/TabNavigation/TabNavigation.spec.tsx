@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { TabNavigationEntry, TabNavigation } from './TabNavigation';
 import style from './tabNavigation.module.scss';
 import { ReactElement } from 'react';

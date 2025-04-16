@@ -43,8 +43,13 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
     # Full zip file name and file format to be downloaded from latest Release Assets in Modernization Repository. <version> will be replaced in entrypoint script.
     GITHUB_ZIP_FILE_NAME="<version>.NEDSS.NBS.Modernized.Documentation.zip" \
     JAVA_MEMORY="4096M" \
+    MAX_META_SPACE_SIZE="512M" \
     # Task names for tasks to be disabled correspond to filename in tasks.csv (suggested removal SendAlertEMail.bat)
-    DISABLED_SCHEDULED_TASKS=""
+    DISABLED_SCHEDULED_TASKS="" \
+    NNDM_CONFIG_PUBLIC_KEY_LDAP_ADDRESS="PUBLIC_KEY_LDAP_ADDRESS=" \
+    NNDM_CONFIG_PUBLIC_KEY_LDAP_BASE_DN="PUBLIC_KEY_LDAP_BASE_DN=" \
+    NNDM_CONFIG_PUBLIC_KEY_LDAP_DN="PUBLIC_KEY_LDAP_DN=" \
+    NNDM_CONFIG_CERTIFICATE_URL="CERTIFICATE_URL="
 
 # Configure NBS from Local Directory
 # NOTE: 

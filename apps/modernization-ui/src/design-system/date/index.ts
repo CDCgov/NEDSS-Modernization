@@ -1,4 +1,4 @@
-export { asDateEntry, asDate, displayDateEntry, asISODate, resolveDate } from './entry';
+export { asDateEntry, asDate, displayDateEntry, asISODate } from './entry';
 export type { DateEntry } from './entry';
 
 export { validateDate } from './validateDate';

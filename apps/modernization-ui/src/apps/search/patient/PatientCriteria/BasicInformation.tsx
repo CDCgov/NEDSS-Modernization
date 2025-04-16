@@ -1,28 +1,27 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
+import { DateCriteriaField, validateDateCriteria } from 'design-system/date/criteria';
+import { TextCriteriaField } from 'design-system/input/text/criteria';
 import { SingleSelect } from 'design-system/select';
-import { OperatorInput } from 'design-system/input/operator';
-import { Input } from 'components/FormInputs/Input';
+import { EntryFieldsProps } from 'design-system/entry';
 import { validNameRule } from 'validation/entry';
-import { genders } from 'options/gender';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
-import { DateCriteriaEntry } from 'design-system/date/criteria/DateCriteriaEntry';
-import { validateDateCriteria } from 'design-system/date/criteria/validateDateCriteria';
-import { EntryFieldsProps } from 'design-system/entry';
 import { Permitted } from 'libs/permission';
+import { searchableGenders } from './searchableGenders';
+import { TextInputField } from 'design-system/input';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     return (
-        <SearchCriteria>
+        <SearchCriteria sizing={sizing}>
             <Controller
                 control={control}
                 name="name.last"
                 rules={validNameRule}
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                    <OperatorInput
+                    <TextCriteriaField
                         id={name}
                         value={value}
                         label="Last name"
@@ -38,7 +37,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                 name="name.first"
                 rules={validNameRule}
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                    <OperatorInput
+                    <TextCriteriaField
                         id={name}
                         value={value}
                         label="First name"
@@ -54,7 +53,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                 name="bornOn"
                 rules={{ validate: (value) => !value || validateDateCriteria('Date of birth')(value) }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <DateCriteriaEntry
+                    <DateCriteriaField
                         id={name}
                         label="Date of birth"
                         value={value}
@@ -76,7 +75,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         name={name}
                         label="Current sex"
                         id={name}
-                        options={genders}
+                        options={searchableGenders}
                         sizing={sizing}
                         orientation={orientation}
                     />
@@ -85,19 +84,26 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
             <Controller
                 control={control}
                 name="id"
-                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                    <Input
+                rules={{
+                    pattern: {
+                        value: /^[0-9,; ]*$/,
+                        message: 'Only numbers, spaces, commas, and semicolons are allowed'
+                    }
+                }}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                    <TextInputField
+                        onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
+                        value={value}
                         type="text"
                         label="Patient ID(s)"
                         helperText="Separate IDs by commas, semicolons, or spaces"
                         name={name}
-                        htmlFor={name}
                         id={name}
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
+                        aria-description={'Separate IDs by commas, semicolons, or spaces'}
                     />
                 )}
             />

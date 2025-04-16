@@ -5,11 +5,11 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { Input } from 'components/FormInputs/Input';
 import { displayAgeAsOfToday } from 'date/displayAge';
-import { useCountyCodedValues, useLocationCodedValues } from 'location';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { BirthEntry, SexEntry } from 'apps/patient/data/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';
+import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 
 const UNKNOWN_GENDER = 'U';
 
@@ -27,8 +27,10 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
     const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
 
     const coded = useSexBirthCodedValues();
-    const location = useLocationCodedValues();
-    const { counties } = useCountyCodedValues(selectedState?.value);
+
+    const countries = useCountryOptions();
+    const states = useStateOptions();
+    const counties = useCountyOptions(selectedState?.value);
 
     useEffect(() => {
         if (!selectedState) {
@@ -78,7 +80,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                             error={error?.message}
                             orientation={orientation}
                         />
-                        <ValueView title="Current age" value={!error ? age : ''} />
+                        <ValueView title="Current age" value={!error ? age : ''} sizing={sizing} />
                     </>
                 )}
             />
@@ -197,7 +199,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                     control={control}
                     name="birthAndSex.order"
                     shouldUnregister
-                    rules={{ min: { value: 0, message: 'Must be a positive number' } }}
+                    rules={{ min: { value: 0, message: 'Must be a positive number.' } }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             label="Birth order"
@@ -251,7 +253,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={location.states.all}
+                        options={states}
                         sizing={sizing}
                     />
                 )}
@@ -286,7 +288,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={location.countries}
+                        options={countries}
                         sizing={sizing}
                     />
                 )}

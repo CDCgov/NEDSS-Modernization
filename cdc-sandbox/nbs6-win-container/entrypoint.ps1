@@ -1,6 +1,11 @@
 # ./entrypoint.ps1
 # Prepare NBS Configuration and Start NBS 6.0
 
+# Update files needing inputs
+if ($null -ne $env:PHCRImporter_user -and $env:PHCRImporter_user -ne "") {
+    (Get-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\BatchFiles\PHCRImporter.bat" -Raw) -replace "%1  %2", "$env:PHCRImporter_user" | Set-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\BatchFiles\PHCRImporter.bat"
+}
+
 # Get current csv columns and create new file
 $csvRows = Get-Content -Path "C:\tasks.csv" -TotalCount 1
 Add-Content -Path "C:\updatedTasks.csv" -Value $csvRows
@@ -49,7 +54,8 @@ foreach ($item in $disabledTasksArray) {
 }
 
 # Set environment memory allocation (override standalone.conf.bat)
-$env:JAVA_OPTS="-Xms$env:JAVA_MEMORY -Xmx$env:JAVA_MEMORY -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Xss4m"
+$env:JAVA_OPTS="-Xms$env:JAVA_MEMORY -Xmx$env:JAVA_MEMORY -XX:MetaspaceSize=96M"
+$env:JAVA_OPTS="$env:JAVA_OPTS -XX:MaxMetaspaceSize=$env:MAX_META_SPACE_SIZE -Xss4m -XX:+UseG1GC -XX:+AggressiveOpts"
 $env:JAVA_OPTS="$env:JAVA_OPTS -Djava.net.preferIPv4Stack=true"
 $env:JAVA_OPTS="$env:JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman"
 
@@ -140,6 +146,14 @@ $subsystems | ForEach-Object {
 
 # Save XML file after connection url replacement
 $xmlDoc.Save($xmlFileName)
+
+# Update files needing inputs
+# update static file nndmConfig.properties
+Write-Output "Updating $env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties"
+(Get-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties" -Raw) -replace "PUBLIC_KEY_LDAP_ADDRESS=.*", "$env:NNDM_CONFIG_PUBLIC_KEY_LDAP_ADDRESS" | Set-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties"
+(Get-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties" -Raw) -replace "PUBLIC_KEY_LDAP_BASE_DN=.*", "$env:NNDM_CONFIG_PUBLIC_KEY_LDAP_BASE_DN" | Set-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties"
+(Get-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties" -Raw) -replace "PUBLIC_KEY_LDAP_DN=.*", "$env:NNDM_CONFIG_PUBLIC_KEY_LDAP_DN" | Set-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties"
+(Get-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties" -Raw) -replace "CERTIFICATE_URL=.*", "$env:NNDM_CONFIG_CERTIFICATE_URL" | Set-Content -Path "$env:JBOSS_HOME\nedssdomain\Nedss\Properties\nndmConfig.properties"
 
 ############# Configure User Guide #############
 # NOTE: Verify NBS User Training Guide.pdf is located in release zip file

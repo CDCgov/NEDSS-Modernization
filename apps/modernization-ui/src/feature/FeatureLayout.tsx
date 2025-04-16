@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import { RedirectHome } from 'routes';
 import { Guard } from './guard';
 import { FeatureToggle } from './FeatureToggle';

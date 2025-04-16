@@ -5,9 +5,9 @@ import { EntryFieldsProps } from 'design-system/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
-import { useLocationCodedValues } from 'location';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { MortalityEntry } from 'apps/patient/data/entry';
+import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 
 const AS_OF_DATE_LABEL = 'Mortality information as of';
 const DECEASED_ON_LABEL = 'Date of death';
@@ -18,8 +18,9 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
     const selectedState = useWatch({ control, name: 'mortality.state' });
     const selectedDeceased = useWatch({ control, name: 'mortality.deceased' });
 
-    const location = useLocationCodedValues();
-    const counties = location.counties.byState(selectedState?.value);
+    const countries = useCountryOptions();
+    const states = useStateOptions();
+    const counties = useCountyOptions(selectedState?.value);
 
     useEffect(() => {
         if (selectedDeceased?.value !== Indicator.Yes) {
@@ -122,7 +123,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                                 onBlur={onBlur}
                                 id={name}
                                 name={name}
-                                options={location.states.all}
+                                options={states}
                                 sizing={sizing}
                             />
                         )}
@@ -159,7 +160,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                                 onBlur={onBlur}
                                 id={name}
                                 name={name}
-                                options={location.countries}
+                                options={countries}
                                 sizing={sizing}
                             />
                         )}

@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
 @Component
+@SuppressWarnings("javaarchitecture:S7027")
 public class NbsPropertiesFinder {
   public static final String STD_PROGRAM_AREAS = "STD_PROGRAM_AREAS";
   public static final String HIV_PROGRAM_AREAS = "HIV_PROGRAM_AREAS";

@@ -1,6 +1,5 @@
-import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { SearchTerms } from './SearchTerms';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { useSearchInteraction } from 'apps/search';
@@ -56,10 +55,13 @@ describe('SearchTerms', () => {
         });
     });
 
-    it('calls without function when chip close button is clicked', () => {
+    it('calls without function when chip close button is clicked', async () => {
+        const user = userEvent.setup();
         const { getAllByRole } = render(<SearchTerms total={2} terms={terms} />);
         const closeButton = getAllByRole('img')[0];
-        fireEvent.click(closeButton);
+
+        await user.click(closeButton);
+
         expect(mockWithout).toHaveBeenCalledWith(terms[0]);
     });
 

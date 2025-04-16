@@ -21,6 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@SuppressWarnings("javaarchitecture:S7027")
 public class Treatment {
     @Id
     @Column(name = "treatment_uid", nullable = false)

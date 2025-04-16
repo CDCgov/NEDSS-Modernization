@@ -14,7 +14,7 @@ import { LinkButton } from 'components/button';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { ConfirmationModal } from 'confirmation';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { PageControllerService } from '../../../generated/services/PageControllerService';
 import { PublishPage } from './PublishPage/PublishPage';
 import { SaveTemplate } from './SaveTemplate/SaveTemplate';
@@ -68,7 +68,7 @@ const PreviewPageContent = () => {
             .then((response) => {
                 showAlert({
                     type: 'success',
-                    header: 'Success',
+                    title: 'Success',
                     message: `${page.name} is in Draft mode. You can edit the page details, rules, and layout.`
                 });
                 if (response?.templateId) {
@@ -81,14 +81,14 @@ const PreviewPageContent = () => {
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: error.message
                     });
                 } else {
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: 'An unknown error occurred'
                     });
                 }
@@ -103,7 +103,7 @@ const PreviewPageContent = () => {
                 deleteDraftRef.current?.toggleModal();
                 showAlert({
                     type: 'success',
-                    header: 'Success',
+                    title: 'Success',
                     message: `${page.name} draft was successfully deleted.`
                 });
                 navigate('/page-builder/pages');
@@ -113,14 +113,14 @@ const PreviewPageContent = () => {
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: error.message
                     });
                 } else {
                     console.error(error);
                     showAlert({
                         type: 'error',
-                        header: 'error',
+                        title: 'error',
                         message: 'An unknown error occurred'
                     });
                 }

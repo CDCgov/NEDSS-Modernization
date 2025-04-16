@@ -1,9 +1,4 @@
-import {
-  When,
-  Then,
-  attach,
-  Given,
-} from "@badeball/cypress-cucumber-preprocessor";
+import { When } from "@badeball/cypress-cucumber-preprocessor";
 import "cypress-xpath";
 import UtilityFunctions from "@pages/utilityFunctions.page";
 import { faker } from "@faker-js/faker";
@@ -15,15 +10,12 @@ When(
     let fakeFullName;
     let currentMessage;
     let messageID;
-    let NBSresponse;
     let fakeFormattedSSN;
     let fakeRandomData;
     const authToken = Cypress.env("authTokenAPI");
     const clientid = Cypress.env("DI_CLIENT_ID");
     const clientsecret = Cypress.env("DI_SECRET");
-    const apiurl = Cypress.env("apiurl");
-    const checkstatusurl = Cypress.env("checkstatusurl");
-    const authurl = Cypress.env("authurl");
+    const baseUrl = Cypress.env("DI_API");
 
     cy.readFile("cypress/fixtures/try.json", "utf8").then((jsonData) => {
       const randomData = {
@@ -76,7 +68,7 @@ When(
       Cypress.env("randomData", randomData);
       cy.request({
         method: "POST",
-        url: apiurl,
+        url: `${baseUrl}/elrs`,
         headers: {
           "Content-Type": "text/plain",
           Authorization: `Bearer ${authToken}`,
@@ -87,7 +79,7 @@ When(
         body: modifiedData,
       }).then((response) => {
         messageID = response.body;
-        const checkStatusUrl = `${checkstatusurl}${messageID}`;
+        const checkStatusUrl = `${baseUrl}/elrs/status-details/${messageID}`;
 
         const checkStatusRequest = () => {
           cy.request({

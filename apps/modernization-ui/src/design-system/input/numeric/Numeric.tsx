@@ -1,9 +1,7 @@
-import { ChangeEvent as ReactChangeEvent, useEffect, useMemo } from 'react';
+import { ChangeEvent as ReactChangeEvent, useEffect } from 'react';
 import classNames from 'classnames';
-import { onlyNumericKeys } from './onlyNumericKeys';
+import { onlyNumericKeys, onlyDecimalKeys } from './onlyNumericKeys';
 import { useNumeric } from './useNumeric';
-
-const asDisplay = (value?: string | number | null) => (value === undefined ? '' : `${value}`);
 
 type NumericOnChange = (value?: number) => void;
 
@@ -30,8 +28,6 @@ const Numeric = ({
     useEffect(() => {
         onChange?.(current);
     }, [current]);
-
-    const display = useMemo(() => asDisplay(current), [current]);
 
     const handleChange = (event: ReactChangeEvent<HTMLInputElement>) => {
         const next = event.target.value;
@@ -62,9 +58,9 @@ const Numeric = ({
             onChange={handleChange}
             onBlur={onBlur}
             placeholder={placeholder}
-            value={display}
+            value={current ?? ''}
             pattern="[0-9]*"
-            onKeyDown={onlyNumericKeys}
+            onKeyDown={inputMode === 'numeric' ? onlyNumericKeys : onlyDecimalKeys}
             {...props}
         />
     );

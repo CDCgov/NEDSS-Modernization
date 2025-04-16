@@ -1,0 +1,50 @@
+@use 'styles/colors';
+.alertMessage {
+    display: flex;
+    flex-grow: 1;
+    gap: 0.75rem;
+    padding: 1rem 1rem 1rem 0.875rem;
+    border-left-style: solid;
+    border-left-width: 8px;
+
+    &.information {
+        border-left-color: colors.$info;
+        background-color: colors.$info-lighter;
+    }
+
+    &.success {
+        border-left-color: colors.$success;
+        background-color: colors.$success-lighter;
+    }
+
+    &.warning {
+        border-left-color: colors.$warning;
+        background-color: colors.$warning-lighter;
+    }
+
+    &.error {
+        border-left-color: colors.$error;
+        background-color: colors.$error-lighter;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+
+        & > h2 {
+            line-height: normal;
+        }
+
+        color: colors.$base-darkest;
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.3125rem;
+    }
+
+    &.slim {
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+    }
+}

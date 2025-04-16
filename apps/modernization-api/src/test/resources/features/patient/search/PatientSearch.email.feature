@@ -53,7 +53,7 @@ Feature: Patient Search Result Addresses
     And the patient has an email address of "other@mail.com"
     And patients are available for search
     And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
-    And I add the patient criteria for sex filter of "u"
+    And I would like to filter search results with a gender of "u"
     And I would like to filter search results with email "address"
     When I search for patients
     Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"

@@ -1,23 +1,9 @@
-import { act, render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
-import { CountiesCodedValues } from 'location/useCountyCodedValues';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SexAndBirthEntryFields } from './SexAndBirthEntryFields';
-import { LocationCodedValues } from 'location';
 import { SexBirthCodedValues } from './useSexBirthCodedValues';
-
-const mockLocationCodedValues: LocationCodedValues = {
-    states: {
-        all: [{ name: 'Alabama', value: 'AL', abbreviation: 'AL' }],
-        byValue: jest.fn(),
-        byAbbreviation: jest.fn()
-    },
-    counties: {
-        byState: jest.fn()
-    },
-    countries: [{ name: 'United States of America', value: 'US' }]
-};
 
 const mockSexBirthCodedValues: SexBirthCodedValues = {
     genders: [
@@ -30,17 +16,20 @@ const mockSexBirthCodedValues: SexBirthCodedValues = {
     multipleBirth: [{ name: 'Yes', value: 'Y' }]
 };
 
-jest.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
+const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
+
+const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
+
+const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+
+jest.mock('options/location', () => ({
+    useCountyOptions: () => mockCountyCodedValues,
+    useCountryOptions: () => mockCountryCodedValues,
+    useStateOptions: () => mockStateCodedValues
 }));
 
 jest.mock('./useSexBirthCodedValues', () => ({
     useSexBirthCodedValues: () => mockSexBirthCodedValues
-}));
-
-const mockCountyCodedValues: CountiesCodedValues = { counties: [{ name: 'CountyA', value: 'A', group: 'G' }] };
-jest.mock('location/useCountyCodedValues', () => ({
-    useCountyCodedValues: () => mockCountyCodedValues
 }));
 
 const Fixture = () => {
@@ -77,51 +66,55 @@ describe('when entering patient sex and birth demographics', () => {
     });
 
     it('should require as of', async () => {
+        const user = userEvent.setup();
+
         const { getByLabelText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Sex & birth information as of');
-        act(() => {
-            userEvent.click(asOf);
-            userEvent.tab();
-        });
+
+        await user.click(asOf);
+        await user.tab();
 
         expect(await findByText('The Sex & birth information as of is required.')).toBeInTheDocument();
     });
 
     it('should be valid with as of', async () => {
+        const user = userEvent.setup();
+
         const { getByLabelText, queryByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Sex & birth information as of');
 
-        act(() => {
-            userEvent.paste(asOf, '01/20/2020');
-            userEvent.tab();
-        });
+        await user.type(asOf, '01/20/2020');
+        await user.tab();
 
-        await waitFor(() => {
-            expect(queryByText('The Sex & birth information as of is required.')).not.toBeInTheDocument();
-        });
+        expect(queryByText('The Sex & birth information as of is required.')).not.toBeInTheDocument();
     });
 
     it('should enable unknown reason when current sex is unknown', async () => {
+        const user = userEvent.setup();
+
         const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
         const currentSex = getByLabelText('Current sex');
         expect(queryByLabelText('Unknown reason')).not.toBeInTheDocument();
 
-        userEvent.selectOptions(currentSex, 'U');
+        await user.selectOptions(currentSex, 'U');
         expect(getByLabelText('Unknown reason')).not.toBeDisabled();
     });
 
     it('should reset unknown reason when current sex is changed from unknown', async () => {
+        const user = userEvent.setup();
+
         const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
         const currentSex = getByLabelText('Current sex');
         expect(queryByLabelText('Unknown reason')).not.toBeInTheDocument();
 
-        userEvent.selectOptions(currentSex, 'U');
+        await user.selectOptions(currentSex, 'U');
         expect(getByLabelText('Unknown reason')).not.toBeDisabled();
-        userEvent.selectOptions(getByLabelText('Unknown reason'), 'DNA');
+
+        await user.selectOptions(getByLabelText('Unknown reason'), 'DNA');
         expect(getByLabelText('Unknown reason')).toHaveValue('DNA');
     });
 });

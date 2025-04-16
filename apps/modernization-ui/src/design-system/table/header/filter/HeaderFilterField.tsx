@@ -20,18 +20,20 @@ const HeaderFilterField = ({ descriptor, label, filtering, sizing }: HeaderFilte
     const handleKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.stopPropagation();
-            const next = (event.target as HTMLInputElement).value;
-            if (next) {
-                apply();
-            } else {
-                clear(descriptor.id);
-            }
+            apply();
         }
     };
 
     const handleClear = () => clear(descriptor.id);
 
-    const handleChange = (next?: string) => add(descriptor.id, next);
+    const handleChange = (next?: string) => {
+        if (next) {
+            add(descriptor.id, next);
+        } else {
+            add(descriptor.id, next);
+            clear(descriptor.id);
+        }
+    };
 
     return (
         <Shown when={descriptor.type === 'text'}>

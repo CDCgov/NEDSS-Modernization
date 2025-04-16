@@ -1,14 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { DataElementRow } from './DataElementRow';
-import { useDataElements } from 'apps/deduplication/api/useDataElements';
-import { DataElements } from 'apps/deduplication/data-elements/DataElement'
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import userEvent from '@testing-library/user-event';
-
-// Mock the useDataElements hook
-jest.mock('apps/deduplication/api/useDataElements', () => ({
-    useDataElements: jest.fn(),
-}));
 
 // Test component that provides the form context
 const TestFormProvider = ({ fieldName, field }: { fieldName: string; field: string }) => {
@@ -16,7 +10,15 @@ const TestFormProvider = ({ fieldName, field }: { fieldName: string; field: stri
 
     return (
         <FormProvider {...methods}>
-            <DataElementRow fieldName={fieldName} field={field as keyof DataElements} />
+            <table>
+                <tbody>
+                    <DataElementRow
+                        dataElements={{ firstName: { oddsRatio: 1.5, threshold: 0.8 } }}
+                        fieldName={fieldName}
+                        field={field as keyof DataElements}
+                    />
+                </tbody>
+            </table>
         </FormProvider>
     );
 };
@@ -24,20 +26,11 @@ const TestFormProvider = ({ fieldName, field }: { fieldName: string; field: stri
 describe('DataElementRow Component', () => {
     const field = 'firstName'; // Example field name
 
-    beforeEach(() => {
-        // Mocking configuration data for the test
-        (useDataElements as jest.Mock).mockReturnValue({
-            configuration: {
-                firstName: { oddsRatio: 1.5, threshold: 0.8 },
-            },
-        });
-    });
-
     it('should render checkbox and numeric inputs', () => {
         render(<TestFormProvider fieldName="First Name" field={field} />);
 
         // Query the checkbox via aria-labelledby or aria-label
-        expect(screen.getByLabelText('First Name')).toBeInTheDocument();  // This will be the field name
+        expect(screen.getByLabelText('First Name')).toBeInTheDocument(); // This will be the field name
 
         // Assert numeric inputs (Odds Ratio & Threshold)
         const inputs = screen.getAllByRole('spinbutton');
@@ -67,7 +60,6 @@ describe('DataElementRow Component', () => {
     it('should calculate and display logOdds correctly when oddsRatio is updated', async () => {
         render(<TestFormProvider fieldName="First Name" field={field} />);
 
-        const logOddsDisplay = screen.getByText('--');
         const [oddsRatioInput] = screen.getAllByRole('spinbutton');
 
         fireEvent.change(oddsRatioInput, { target: { value: '0.5' } });
@@ -101,12 +93,13 @@ describe('DataElementRow Component', () => {
     });
 
     it('should render the correct initial values based on configuration', async () => {
+        const user = userEvent.setup();
         render(<TestFormProvider fieldName="First Name" field={field} />);
 
         const checkbox = screen.getByLabelText('First Name'); // Use getByLabelText here
         const [oddsRatioInput, thresholdInput] = screen.getAllByRole('spinbutton');
 
-        await userEvent.click(checkbox);
+        await user.click(checkbox);
 
         await waitFor(() => {
             expect(oddsRatioInput).toHaveValue(1.5);

@@ -2,7 +2,6 @@ package gov.cdc.nbs.questionbank.entity;
 
 import java.time.Instant;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,6 +23,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+// Bidirectional mappings require knowledge of each other
+@SuppressWarnings({ "javaarchitecture:S7027", "javaarchitecture:S7091" })
 @Table(name = "WA_NND_metadata", catalog = "NBS_ODSE")
 public class WaNndMetadatum {
   @Id
@@ -98,9 +99,6 @@ public class WaNndMetadatum {
   @Column(name = "local_id", length = 50)
   private String localId;
 
-  @SuppressWarnings(
-  //  Bidirectional mappings require knowledge of each other
-  "javaarchitecture:S7027")
   @OneToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "wa_ui_metadata_uid", nullable = false)
   private WaUiMetadata waUiMetadataUid;
@@ -110,7 +108,6 @@ public class WaNndMetadatum {
 
   @Column(name = "indicator_cd", length = 2000)
   private String indicatorCd;
-
 
   public WaNndMetadatum(
       WaUiMetadata uiMetadata,
@@ -133,7 +130,6 @@ public class WaNndMetadatum {
 
     added(user, requestedOn);
   }
-
 
   public void update(
       String messageVariableId,
@@ -163,7 +159,6 @@ public class WaNndMetadatum {
     this.lastChgUserId = user;
     this.lastChgTime = requestedOn;
   }
-
 
   public static WaNndMetadatum clone(WaNndMetadatum original, WaTemplate template, WaUiMetadata metadata) {
     return new WaNndMetadatum(
