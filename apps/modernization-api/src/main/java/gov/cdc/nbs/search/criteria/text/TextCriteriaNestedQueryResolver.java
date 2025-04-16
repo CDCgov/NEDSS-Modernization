@@ -46,19 +46,6 @@ public class TextCriteriaNestedQueryResolver {
                                 .defaultOperator(Operator.And))))));
   }
 
-  public static BoolQuery containsWithNamePunctuation(final String path, final String name, final String value) {
-    String adjusted = WildCards.containsWithNamePunctuation(value);
-    return BoolQuery.of(
-        bool -> bool.should(
-            should -> should.nested(
-                nested -> nested.path(path)
-                    .query(
-                        query -> query.queryString(
-                            simple -> simple.fields(name)
-                                .query(adjusted)
-                                .defaultOperator(Operator.And))))));
-  }
-
   public static BoolQuery startsWith(final String path, final String name, final String value) {
     String adjusted = WildCards.startsWith(value);
     return BoolQuery.of(

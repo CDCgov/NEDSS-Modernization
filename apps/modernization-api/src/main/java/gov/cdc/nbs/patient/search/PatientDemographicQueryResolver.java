@@ -23,7 +23,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static gov.cdc.nbs.search.criteria.text.TextCriteriaNestedQueryResolver.contains;
-import static gov.cdc.nbs.search.criteria.text.TextCriteriaNestedQueryResolver.containsWithNamePunctuation;
 
 @Component
 class PatientDemographicQueryResolver {
@@ -447,7 +446,7 @@ class PatientDemographicQueryResolver {
     return Optional.ofNullable(criteria.getFilter().name())
         .map(TextCriteria::contains)
         .flatMap(TextCriteria::maybeContains)
-        .map(value -> containsWithNamePunctuation(NAMES, FULL_NAME, value));
+        .map(value -> contains(NAMES, FULL_NAME, value));
   }
 
   private Script searchDateOfBirthScript(final String value) {
