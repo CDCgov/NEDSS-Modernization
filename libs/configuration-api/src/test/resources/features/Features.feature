@@ -37,6 +37,8 @@ Feature: Frontend Feature Configuration
       | investigation search       | disabled |
       | laboratory report search   | enabled  |
       | laboratory report search   | disabled |
+      | modernized patient profile | enabled  |
+      | modernized patient profile | disabled |
       | deduplication              | disabled |
       | deduplication              | enabled  |
       | patient file               | enabled  |

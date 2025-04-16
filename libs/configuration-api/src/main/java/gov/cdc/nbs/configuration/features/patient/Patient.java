@@ -10,6 +10,10 @@ public record Patient(Search search, Profile profile, Add add, File file) {
 
   }
 
+
+  public record Profile(Boolean enabled) {
+  }
+
   public record File(Boolean enabled) {
   }
 
