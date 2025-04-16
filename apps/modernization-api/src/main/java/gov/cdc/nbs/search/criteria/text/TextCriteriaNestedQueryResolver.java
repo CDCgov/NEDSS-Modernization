@@ -43,8 +43,14 @@ public class TextCriteriaNestedQueryResolver {
                         query -> query.queryString(
                             simple -> simple.fields(name)
                                 .query(adjusted)
-                                .defaultOperator(Operator.And))))));
+                                .defaultOperator(Operator.And)
+                        )
+                    )
+            )
+        )
+    );
   }
+
 
   public static BoolQuery startsWith(final String path, final String name, final String value) {
     String adjusted = WildCards.startsWith(value);
