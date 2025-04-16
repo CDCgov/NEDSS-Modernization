@@ -14,7 +14,7 @@ const withModernizedPatientProfile = (enabled: boolean) => ({
     ...defaultConfiguration.features,
     patient: {
         ...defaultConfiguration.features.patient,
-        profile: {
+        file: {
             enabled: enabled
         }
     }
@@ -47,7 +47,7 @@ describe('when navigating to the patient profile from a list view search result'
 
             const { getByText } = render(<BrowserRouter>{displayProfileLegalName(searchResult)}</BrowserRouter>);
             const link = getByText('Doe, John');
-            expect(link).toHaveAttribute('href', '/patient-profile/84001/summary');
+            expect(link).toHaveAttribute('href', '/patient/84001');
         });
 
         it('should link to the modernized patient profile with "No Data" as the link text when there is no legal name', () => {
@@ -68,7 +68,7 @@ describe('when navigating to the patient profile from a list view search result'
 
             const { getByText } = render(<BrowserRouter>{displayProfileLegalName(searchResult)}</BrowserRouter>);
             const link = getByText('No Data');
-            expect(link).toHaveAttribute('href', '/patient-profile/84001/summary');
+            expect(link).toHaveAttribute('href', '/patient/84001');
         });
     });
 
