@@ -22,7 +22,7 @@ const withPatient =
         mapping(resolving(containing));
 
 const displayProfileLink = (patient: Maybe<BasicPatient>) => (
-    <Link to={`/patient-profile/${patient?.shortId}`}>
+    <Link to={`/patient/${patient?.shortId}`}>
         {(patient && displayName('short')({ first: patient.firstName, last: patient.lastName })) || 'No Data'}
     </Link>
 );
