@@ -12,7 +12,7 @@ import { searchableGenders } from './searchableGenders';
 import { TextInputField } from 'design-system/input';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
-    const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
+    const { control, clearErrors } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     return (
         <SearchCriteria sizing={sizing}>
@@ -58,6 +58,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         label="Date of birth"
                         value={value}
                         onBlur={onBlur}
+                        clearErrors={() => clearErrors('bornOn')}
                         onChange={onChange}
                         sizing={sizing}
                         orientation={orientation}

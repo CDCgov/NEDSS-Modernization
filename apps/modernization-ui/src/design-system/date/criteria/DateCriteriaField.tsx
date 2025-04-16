@@ -26,6 +26,7 @@ type DateCriteriaFieldProps = {
     value?: DateCriteria | null;
     onChange: (value?: DateCriteria) => void;
     onBlur?: () => void;
+    clearErrors?: () => void;
 } & FieldProps;
 
 const DateCriteriaField = ({
@@ -36,7 +37,8 @@ const DateCriteriaField = ({
     value,
     error,
     onChange,
-    onBlur
+    onBlur,
+    clearErrors
 }: DateCriteriaFieldProps) => {
     const type = resolveInitialCriteriaType(value);
 
@@ -49,7 +51,10 @@ const DateCriteriaField = ({
                         name="dateOperation"
                         label={'Exact Date'}
                         value={'equals'}
-                        onChange={() => onChange({ equals: {} })}
+                        onChange={() => {
+                            onChange({ equals: {} });
+                            clearErrors?.();
+                        }}
                         checked={type === 'equals'}
                         sizing={sizing}
                         className={styles.radio}
@@ -59,7 +64,10 @@ const DateCriteriaField = ({
                         name="dateOperation"
                         label={'Date Range'}
                         value={'between'}
-                        onChange={() => onChange({ between: {} })}
+                        onChange={() => {
+                            onChange({ between: {} });
+                            clearErrors?.();
+                        }}
                         checked={type === 'between'}
                         sizing={sizing}
                         className={styles.radio}
