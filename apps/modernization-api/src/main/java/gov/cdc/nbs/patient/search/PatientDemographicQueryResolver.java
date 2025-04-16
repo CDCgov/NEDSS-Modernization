@@ -61,7 +61,8 @@ class PatientDemographicQueryResolver {
       final PatientSearchSettings settings,
       final PatientLocalIdentifierResolver resolver,
       final PatientNameDemographicQueryResolver nameQueryResolver,
-      final PatientLocationQueryResolver locationQueryResolver) {
+      final PatientLocationQueryResolver locationQueryResolver
+  ) {
     this.settings = settings;
     this.resolver = resolver;
     this.nameQueryResolver = nameQueryResolver;
@@ -71,34 +72,36 @@ class PatientDemographicQueryResolver {
 
   Stream<Query> resolve(final PatientSearchCriteria criteria) {
     return Stream.concat(
-        Stream.concat(
-            resolveDemographicCriteria(criteria),
-            nameQueryResolver.resolve(criteria)),
-        locationQueryResolver.resolve(criteria))
+            Stream.concat(
+                resolveDemographicCriteria(criteria),
+                nameQueryResolver.resolve(criteria)
+            ),
+            locationQueryResolver.resolve(criteria)
+        )
         .map(QueryVariant::_toQuery);
   }
 
   private Stream<QueryVariant> resolveDemographicCriteria(final PatientSearchCriteria criteria) {
     return Stream.of(
-        applyPatientIdentifierCriteria(criteria),
-        applyPatientIdFilter(criteria),
-        applyPatientNameFilter(criteria),
-        applyFirstNameCriteria(criteria),
-        applyLastNameCriteria(criteria),
-        applyPhoneFilter(criteria),
-        applyPhoneNumberCriteria(criteria),
-        applyEmailCriteria(criteria),
-        applyEmailFilter(criteria),
-        applyIdentificationCriteria(criteria),
-        applyIdentificationFilter(criteria),
-        applyDateOfBirthCriteria(criteria),
-        applyPatientAgeOrDateOfBirthFilter(criteria),
-        applyStreetAddressCriteria(criteria),
-        applyAddressFilter(criteria),
-        applyCityCriteria(criteria),
-        applyDateOfBirthHighRangeCriteria(criteria),
-        applyDateOfBirthLowRangeCriteria(criteria),
-        applyZipcodeCriteria(criteria))
+            applyPatientIdentifierCriteria(criteria),
+            applyPatientIdFilter(criteria),
+            applyPatientNameFilter(criteria),
+            applyFirstNameCriteria(criteria),
+            applyLastNameCriteria(criteria),
+            applyPhoneFilter(criteria),
+            applyPhoneNumberCriteria(criteria),
+            applyEmailCriteria(criteria),
+            applyEmailFilter(criteria),
+            applyIdentificationCriteria(criteria),
+            applyIdentificationFilter(criteria),
+            applyDateOfBirthCriteria(criteria),
+            applyPatientAgeOrDateOfBirthFilter(criteria),
+            applyStreetAddressCriteria(criteria),
+            applyAddressFilter(criteria),
+            applyCityCriteria(criteria),
+            applyDateOfBirthHighRangeCriteria(criteria),
+            applyDateOfBirthLowRangeCriteria(criteria),
+            applyZipcodeCriteria(criteria))
         .flatMap(Optional::stream);
   }
 
@@ -150,12 +153,15 @@ class PatientDemographicQueryResolver {
   private Optional<QueryVariant> applyFirstNameCriteria(final PatientSearchCriteria criteria) {
     return Optional.ofNullable(criteria.getFirstName())
         .filter(Predicate.not(String::isBlank))
-        .map(value -> legalNameQuery(
-            FIRST_NAME_FIELD,
-            value,
-            FIRST_NAME_SOUNDEX_FIELD,
-            soundexEncoded(value, criteria.isDisableSoundex()),
-            settings.first()));
+        .map(value ->
+            legalNameQuery(
+                FIRST_NAME_FIELD,
+                value,
+                FIRST_NAME_SOUNDEX_FIELD,
+                soundexEncoded(value, criteria.isDisableSoundex()),
+                settings.first()
+            )
+        );
   }
 
 
@@ -164,12 +170,15 @@ class PatientDemographicQueryResolver {
     return Optional.ofNullable(criteria.getLastName())
         .map(AdjustStrings::withoutHyphens)
         .filter(Predicate.not(String::isBlank))
-        .map(value -> legalNameQuery(
-            LAST_NAME_FIELD,
-            value,
-            LAST_NAME_SOUNDEX_FIELD,
-            soundexEncoded(value, criteria.isDisableSoundex()),
-            settings.last()));
+        .map(value ->
+            legalNameQuery(
+                LAST_NAME_FIELD,
+                value,
+                LAST_NAME_SOUNDEX_FIELD,
+                soundexEncoded(value, criteria.isDisableSoundex()),
+                settings.last()
+            )
+        );
   }
 
   private String soundexEncoded(final String value, final boolean disabled) {
@@ -181,24 +190,33 @@ class PatientDemographicQueryResolver {
       final String value,
       final String encodedField,
       final String encodedValue,
-      final PatientSearchSettings.NameBoost boost) {
+      final PatientSearchSettings.NameBoost boost
+  ) {
     return BoolQuery.of(
         bool -> bool.should(
-            should -> should.nested(
-                nested -> nested.path(NAMES)
-                    .scoreMode(ChildScoreMode.Max)
-                    .query(
-                        query -> query.bool(
-                            legal -> legal.filter(
-                                filter -> filter.term(
-                                    term -> term.field(NAME_USE_FIELD)
-                                        .value(LEGAL_NAME_CODE)))
-                                .must(
-                                    primary -> primary.match(
-                                        match -> match
-                                            .field(field)
-                                            .query(value)
-                                            .boost(boost.primary())))))))
+                should -> should.nested(
+                    nested -> nested.path(NAMES)
+                        .scoreMode(ChildScoreMode.Max)
+                        .query(
+                            query -> query.bool(
+                                legal -> legal.filter(
+                                        filter -> filter.term(
+                                            term -> term.field(NAME_USE_FIELD)
+                                                .value(LEGAL_NAME_CODE)
+                                        )
+                                    )
+                                    .must(
+                                        primary -> primary.match(
+                                            match -> match
+                                                .field(field)
+                                                .query(value)
+                                                .boost(boost.primary())
+                                        )
+                                    )
+                            )
+                        )
+                )
+            )
             .should(
                 should -> should.nested(
                     nested -> nested.path(NAMES)
@@ -208,7 +226,11 @@ class PatientDemographicQueryResolver {
                                 nonPrimary -> nonPrimary
                                     .fields(field)
                                     .query(WildCards.startsWith(value))
-                                    .boost(boost.nonPrimary())))))
+                                    .boost(boost.nonPrimary())
+                            )
+                        )
+                )
+            )
             .should(
                 should -> should.nested(
                     nested -> nested.path(NAMES)
@@ -218,7 +240,12 @@ class PatientDemographicQueryResolver {
                             query -> query.term(
                                 term -> term
                                     .field(encodedField)
-                                    .value(encodedValue))))));
+                                    .value(encodedValue)
+                            )
+                        )
+                )
+            )
+    );
   }
 
   private Optional<QueryVariant> applyPhoneNumberCriteria(final PatientSearchCriteria criteria) {
@@ -275,9 +302,9 @@ class PatientDemographicQueryResolver {
                   .query(
                       query -> query.bool(
                           bool -> bool.filter(
-                              filter -> filter.term(
-                                  term -> term.field("entity_id.typeCd.keyword")
-                                      .value(type)))
+                                  filter -> filter.term(
+                                      term -> term.field("entity_id.typeCd.keyword")
+                                          .value(type)))
                               .must(
                                   must -> must.wildcard(
                                       match -> match.field(IDENTIFICATION).caseInsensitive(true)
@@ -414,11 +441,11 @@ class PatientDemographicQueryResolver {
 
       QueryVariant q = zipcode.length() < 5
           ? PrefixQuery.of(
-              prefix -> prefix.field(ZIP_CODE)
-                  .value(zipcode))
+          prefix -> prefix.field(ZIP_CODE)
+              .value(zipcode))
           : MatchQuery.of(
-              match -> match.field(ZIP_CODE)
-                  .query(zipcode));
+          match -> match.field(ZIP_CODE)
+              .query(zipcode));
 
       return Optional.of(
           NestedQuery.of(
@@ -439,7 +466,11 @@ class PatientDemographicQueryResolver {
                     query -> query.queryString(
                         simple -> simple.fields(SHORT_ID)
                             .query(value)
-                            .defaultOperator(Operator.And)))));
+                            .defaultOperator(Operator.And)
+                    )
+                )
+            )
+        );
   }
 
   private Optional<QueryVariant> applyPatientNameFilter(final PatientSearchCriteria criteria) {
@@ -452,8 +483,8 @@ class PatientDemographicQueryResolver {
   private Script searchDateOfBirthScript(final String value) {
     return Script.of(
         script -> script.source(
-            "doc['birth_time'].size()!=0 && (doc['birth_time'].value.toString().substring(5,10)+'-'+doc['birth_time'].value.toString().substring(0,4)).contains('"
-                + value + "')")
+                "doc['birth_time'].size()!=0 && (doc['birth_time'].value.toString().substring(5,10)+'-'+doc['birth_time'].value.toString().substring(0,4)).contains('"
+                    + value + "')")
             .lang(PAINLESS));
   }
 
@@ -482,7 +513,7 @@ class PatientDemographicQueryResolver {
     return Optional.of(
         BoolQuery.of(
             bool -> bool.should(
-                should -> should.script(s -> s.script(searchDateOfBirthScript(value))))
+                    should -> should.script(s -> s.script(searchDateOfBirthScript(value))))
                 .should(
                     s -> s.range(RangeQuery.of(
                         range -> range.term(term -> term.field(BIRTHDAY)
