@@ -37,13 +37,13 @@ const PatientCreatedPanel = ({ created }: Props) => (
                     </ClassicButton>
                 </Permitted>
                 <FeatureToggle
-                    guard={(features) => features?.patient?.profile.enabled}
+                    guard={(features) => features?.patient?.file.enabled}
                     fallback={
                         <LinkButton type="solid" target="_self" href={`/nbs/api/patient/${created.id}/file/redirect`}>
                             View patient
                         </LinkButton>
                     }>
-                    <NavLinkButton to={`/patient-profile/${created.shortId}`}>View patient</NavLinkButton>
+                    <NavLinkButton to={`/patient/${created.shortId}`}>View patient</NavLinkButton>
                 </FeatureToggle>
             </>
         )}>
