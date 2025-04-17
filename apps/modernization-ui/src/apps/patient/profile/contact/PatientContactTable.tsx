@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { ClassicLink, ClassicModalLink } from 'classic';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import { Direction } from 'sorting';
 import { AssociatedWith, Tracing, Contact, Headers } from './PatientContacts';
 import { SortCriteria, sort } from './PatientContactSorter';
@@ -55,7 +55,7 @@ type Props = {
 };
 
 export const PatientContactTable = ({ patient, tracings, title, headings }: Props) => {
-    const { page, request, reload } = usePage();
+    const { page, request, reload } = usePagination();
     const [criteria, setCriteria] = useState<SortCriteria>({});
 
     const [bodies, setBodies] = useState<TableBody[]>([]);

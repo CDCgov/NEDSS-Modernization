@@ -3,7 +3,7 @@ import './BusinessRulesLibrary.scss';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { Breadcrumb } from 'breadcrumb';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
-import { Status, usePage } from 'page';
+import { Status, usePagination } from 'pagination';
 import { BusinessRuleSort, RuleSortField, useFetchPageRules } from 'apps/page-builder/hooks/api/useFetchPageRules';
 import { useAlert } from 'alert';
 import { useDownloadPageLibrary } from 'apps/page-builder/hooks/api/useDownloadPageLibrary';
@@ -11,7 +11,7 @@ import { Direction } from '../../../../sorting';
 
 export const BusinessRulesLibrary = ({ modalRef }: any) => {
     const { search, response, error, isLoading } = useFetchPageRules();
-    const { page: curPage, ready, firstPage, reload } = usePage();
+    const { page: curPage, ready, firstPage, reload } = usePagination();
     const [sort, setSort] = useState<BusinessRuleSort | undefined>({
         field: RuleSortField.FUNCTION,
         direction: Direction.Descending

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { Direction } from 'sorting';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import { ClassicLink } from 'classic';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { Document, AssociatedWith, Headers } from './PatientDocuments';
@@ -62,7 +62,7 @@ type Props = {
 };
 
 export const PatientDocumentTable = ({ patient, documents }: Props) => {
-    const { page, request } = usePage();
+    const { page, request } = usePagination();
     const [criteria, setCriteria] = useState<SortCriteria>({});
 
     const [bodies, setBodies] = useState<TableBody[]>([]);

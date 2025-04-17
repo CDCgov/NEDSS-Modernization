@@ -1,6 +1,6 @@
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { format } from 'date-fns';
-import { usePage } from 'page/usePage';
+import { usePagination } from 'pagination/usePagination';
 import { useEffect, useState } from 'react';
 import { Direction } from 'sorting/Sort';
 import { ClassicLink } from 'classic';
@@ -163,7 +163,7 @@ export const DocumentsRequiringReviewTable = ({
     documents: DocumentReview[] | undefined;
     patient: string | undefined;
 }) => {
-    const { page, request } = usePage();
+    const { page, request } = usePagination();
     const [bodies, setBodies] = useState<TableBody[]>([]);
     const [criteria, setCriteria] = useState<SortCriteria>({});
 

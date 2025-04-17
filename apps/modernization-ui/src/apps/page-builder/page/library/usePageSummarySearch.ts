@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react';
 
 import { PageSummary, PageSummaryService, Date, DateRange, MultiValue, SingleValue } from 'apps/page-builder/generated';
-import { Status as PageStatus, usePage } from 'page';
+import { Status as PageStatus, usePagination } from 'pagination';
 import { Filter, externalize } from 'filters';
 import { useSorting } from 'sorting';
 
@@ -49,7 +49,7 @@ const initial: State = {
 const usePageSummarySearch = () => {
     const [state, dispatch] = useReducer(reducer, initial);
 
-    const { page, firstPage, ready } = usePage();
+    const { page, firstPage, ready } = usePagination();
     const { sorting } = useSorting();
 
     useEffect(() => {

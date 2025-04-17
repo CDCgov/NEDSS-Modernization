@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import { Vaccination } from './PatientVaccination';
 import { PatientVaccinationTable } from './PatientVaccinationTable';
 
@@ -13,7 +13,7 @@ type Props = {
 
 export const PatientVaccinationContainer = ({ source, patient, allowAdd }: Props) => {
     const tracing = source(patient);
-    const { firstPage } = usePage();
+    const { firstPage } = usePagination();
 
     useEffect(() => {
         if (patient) {

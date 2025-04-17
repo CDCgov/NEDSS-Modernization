@@ -1,4 +1,4 @@
-import { PageProvider } from 'page';
+import { PaginationProvider } from 'pagination';
 import { PatientVaccinationContainer } from './PatientVaccinationContainer';
 import { usePatientProfileVaccinationAPI } from './usePatientProfileVaccinationAPI';
 
@@ -11,13 +11,13 @@ type Props = {
 export const PatientProfileVaccinations = ({ patient, pageSize, allowAdd = false }: Props) => {
     return (
         <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-            <PageProvider pageSize={pageSize}>
+            <PaginationProvider pageSize={pageSize}>
                 <PatientVaccinationContainer
                     source={usePatientProfileVaccinationAPI}
                     patient={patient}
                     allowAdd={allowAdd}
                 />
-            </PageProvider>
+            </PaginationProvider>
         </div>
     );
 };

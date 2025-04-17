@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { SearchResultsShowing } from './SearchResultsShowing';
-import { Page } from 'page';
+import { Page } from 'pagination';
 
 describe('when displaying search results totals', () => {
     it('should render with no accessibility violations', async () => {
