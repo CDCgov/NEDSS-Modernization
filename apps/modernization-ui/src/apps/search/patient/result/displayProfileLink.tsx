@@ -6,7 +6,7 @@ const nbs6PatientProfile = (identifier: number, shortId: number, display?: strin
 );
 
 const modernizedPatientProfile = (shortId: number, display?: string) => (
-    <Link to={`/patient-profile/${shortId}/summary`}>{display || shortId}</Link>
+    <Link to={`/patient/${shortId}`}>{display || shortId}</Link>
 );
 
 const displayProfileLink = (identifier: number, shortId: number, display?: string) => {
