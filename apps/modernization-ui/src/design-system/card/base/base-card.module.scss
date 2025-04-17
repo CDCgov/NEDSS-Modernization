@@ -1,0 +1,18 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.card {
+    @extend %thin;
+    background-color: colors.$base-white;
+    @include borders.rounded();
+
+    & > header {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        display: flex;
+        padding: 1rem;
+        justify-content: space-between;
+        align-items: center;
+        @extend %thin-bottom;
+    }
+}
