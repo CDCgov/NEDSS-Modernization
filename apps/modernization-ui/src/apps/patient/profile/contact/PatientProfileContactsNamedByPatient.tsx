@@ -1,4 +1,4 @@
-import { PageProvider } from 'page';
+import { PaginationProvider } from 'pagination';
 import { Headers } from './PatientContacts';
 import { PatientContactsContainer } from './PatientContactContainer';
 import { usePatientProfileContactNamedByPatientAPI } from './usePatientProfileContactNamedByPatientAPI';
@@ -21,14 +21,14 @@ type Props = {
 export const PatientProfileContactsNamedByPatient = ({ patient, pageSize }: Props) => {
     return (
         <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-            <PageProvider pageSize={pageSize}>
+            <PaginationProvider pageSize={pageSize}>
                 <PatientContactsContainer
                     source={usePatientProfileContactNamedByPatientAPI}
                     patient={patient}
                     title={title}
                     headings={headings}
                 />
-            </PageProvider>
+            </PaginationProvider>
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
-import { usePage, Status as PageStatus } from 'page';
+import { usePagination, Status as PageStatus } from 'pagination';
 import { useSorting } from 'sorting';
 import { Predicate } from 'utils';
 import { Filter, maybeUseFilter } from 'design-system/filter';
@@ -180,7 +180,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     noInputCheck = defaultNoInputCheck,
     defaultValues
 }: SearchResultSettings<C, A, R>): SearchResultsInteraction<C, R> => {
-    const { page, ready, reset: pageReset } = usePage();
+    const { page, ready, reset: pageReset } = usePagination();
 
     const { property, direction } = useSorting();
 

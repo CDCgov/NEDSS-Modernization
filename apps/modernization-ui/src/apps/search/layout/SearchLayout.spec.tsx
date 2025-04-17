@@ -5,8 +5,8 @@ import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { SearchResultDisplayProvider } from '../useSearchResultDisplay';
 import { FilterProvider } from 'design-system/filter/useFilter';
 
-jest.mock('page', () => ({
-    usePage: () => ({
+jest.mock('pagination', () => ({
+    usePagination: () => ({
         page: {
             status: 0,
             pageSize: 1,

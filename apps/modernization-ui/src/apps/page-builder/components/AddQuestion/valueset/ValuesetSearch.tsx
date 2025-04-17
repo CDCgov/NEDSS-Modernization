@@ -4,7 +4,7 @@ import { ButtonBar } from '../../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../../CloseableHeader/CloseableHeader';
 import { ValuesetSearchTable } from '../../ValuesetSearchTable/ValuesetSearchTable';
 import styles from './valueset-search.module.scss';
-import { Status, usePage } from 'page';
+import { Status, usePagination } from 'pagination';
 import { ValuesetSort, useFindValuesets } from 'apps/page-builder/hooks/api/useFindValueset';
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
 };
 export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Props) => {
     const [selectedValueset, setSelectedValueset] = useState<number | undefined>(undefined);
-    const { page, ready, firstPage, reload } = usePage();
+    const { page, ready, firstPage, reload } = usePagination();
     const [query, setQuery] = useState<string>('');
     const [sort, setSort] = useState<ValuesetSort | undefined>(undefined);
     const { isLoading, search, response } = useFindValuesets();

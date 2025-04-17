@@ -1,7 +1,7 @@
 import { Button } from '@trussworks/react-uswds';
 import { AddableQuestionSort, useFindAddableQuestions } from 'apps/page-builder/hooks/api/useFindAvailableQuestions';
 import { SelectionMode } from 'components/Table';
-import { Status, usePage } from 'page';
+import { Status, usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
 
 import { QuestionSearchTable } from './table/QuestionSearchTable';
@@ -17,7 +17,7 @@ type Props = {
     onAccept: (questions: number[]) => void;
 };
 export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Props) => {
-    const { page, ready, firstPage, reload } = usePage();
+    const { page, ready, firstPage, reload } = usePagination();
     const [query, setQuery] = useState<string>('');
     const [sort, setSort] = useState<AddableQuestionSort | undefined>(undefined);
     const { isLoading, search, response, error } = useFindAddableQuestions();

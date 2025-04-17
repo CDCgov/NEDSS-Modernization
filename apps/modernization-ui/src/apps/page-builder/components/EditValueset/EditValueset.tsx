@@ -1,6 +1,6 @@
 import { Concept, Valueset } from 'apps/page-builder/generated';
 import { ConceptSort, useFindConcepts } from 'apps/page-builder/hooks/api/useFindConcepts';
-import { PageProvider, Status, usePage } from 'page';
+import { PaginationProvider, Status, usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
 import { EditValuesetDetails } from './EditValuesetDetails';
 import { ViewValueset } from './ViewValueset';
@@ -17,9 +17,9 @@ type Props = {
 };
 export const EditValueset = (props: Props) => {
     return (
-        <PageProvider>
+        <PaginationProvider>
             <EditValuesetContent {...props}></EditValuesetContent>
-        </PageProvider>
+        </PaginationProvider>
     );
 };
 
@@ -27,7 +27,7 @@ const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel, onValueset
     const [state, setState] = useState<'view' | 'create-concept' | 'edit-concept' | 'edit-valueset'>('view');
     const [editedConcept, setEditedConcept] = useState<Concept | undefined>(undefined);
     const { response, isLoading, search } = useFindConcepts();
-    const { page, ready, firstPage, reload } = usePage();
+    const { page, ready, firstPage, reload } = usePagination();
 
     const [sort, setSort] = useState<ConceptSort | undefined>(undefined);
 

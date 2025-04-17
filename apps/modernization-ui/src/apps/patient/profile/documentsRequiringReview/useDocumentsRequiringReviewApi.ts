@@ -3,14 +3,14 @@ import {
     FindDocumentsRequiringReviewForPatientQuery,
     useFindDocumentsRequiringReviewForPatientLazyQuery
 } from 'generated/graphql/schema';
-import { usePage, Status } from 'page';
+import { usePagination, Status } from 'pagination';
 import { transform } from './DocumentRequiringReviewTransformer';
 import { DocumentReview } from './ReviewDocuments';
 
 export const useDocumentsRequiringReviewApi = (patient?: string) => {
     const [documents, setDocuments] = useState<DocumentReview[]>();
 
-    const { page, ready } = usePage();
+    const { page, ready } = usePagination();
 
     const handleComplete = (data: FindDocumentsRequiringReviewForPatientQuery) => {
         const total = data?.findDocumentsRequiringReviewForPatient?.total || 0;

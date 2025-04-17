@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { format } from 'date-fns';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import { Direction } from 'sorting';
 import { ClassicLink, ClassicModalButton, ClassicModalLink } from 'classic';
 import { Vaccination, AssociatedWith, Headers } from './PatientVaccination';
@@ -34,7 +34,7 @@ type Props = {
 };
 
 export const PatientVaccinationTable = ({ patient, vaccinations, allowAdd = false }: Props) => {
-    const { page, request, reload } = usePage();
+    const { page, request, reload } = usePagination();
     const [criteria, setCriteria] = useState<SortCriteria>({});
 
     const [bodies, setBodies] = useState<TableBody[]>([]);

@@ -1,7 +1,7 @@
 import { Button, Icon } from '@trussworks/react-uswds';
 import { ConditionSort, useConditionSearch } from 'apps/page-builder/condition/search/useConditionSearch';
 import { Search } from 'components/Search';
-import { PageProvider, Status, usePage } from 'page';
+import { PaginationProvider, Status, usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
 import { ConditionTable } from './ConditionTable';
 import styles from './condition-search.module.scss';
@@ -13,19 +13,19 @@ type Props = {
 };
 export const ConditionSearch = ({ onConditionSelect, onCancel, onCreateNew }: Props) => {
     return (
-        <PageProvider>
+        <PaginationProvider>
             <ConditionSearchContent
                 onCreateNew={onCreateNew}
                 onCancel={onCancel}
                 onConditionSelect={onConditionSelect}
             />
-        </PageProvider>
+        </PaginationProvider>
     );
 };
 
 const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Props) => {
     const { search, response, isLoading, keyword, reset } = useConditionSearch();
-    const { page, ready, request } = usePage();
+    const { page, ready, request } = usePagination();
     const [sort, setSort] = useState<ConditionSort | undefined>();
     const [selected, setSelected] = useState<number[]>([]);
     const [resetTable, setResetTable] = useState<boolean>(false);

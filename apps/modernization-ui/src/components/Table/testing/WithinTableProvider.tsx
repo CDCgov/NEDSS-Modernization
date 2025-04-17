@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { PagingSettings } from 'page';
+import { PaginationSettings } from 'pagination';
 import { SortingSettings } from 'sorting';
 import { MemoryRouter } from 'react-router';
 import { TableProvider } from '../TableProvider';
@@ -7,7 +7,7 @@ import { TableProvider } from '../TableProvider';
 type WithinTableProviderProps = {
     children: ReactNode;
     sorting?: SortingSettings;
-    paging?: PagingSettings;
+    paging?: PaginationSettings;
 };
 
 const WithinTableProvider = ({ sorting, paging, children }: WithinTableProviderProps) => (
