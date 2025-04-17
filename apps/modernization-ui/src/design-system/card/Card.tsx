@@ -1,7 +1,7 @@
 import { Heading, HeadingLevel } from 'components/heading';
 import { ReactNode } from 'react';
-import styles from './card.module.scss';
 import { BaseCard } from './base/BaseCard';
+import styles from './card.module.scss';
 
 type Props = {
     id: string;

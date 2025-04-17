@@ -9,8 +9,8 @@
     & > header {
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
-        display: flex;
         padding: 1rem;
+        display: flex;
         justify-content: space-between;
         align-items: center;
         @extend %thin-bottom;

@@ -24,7 +24,7 @@ export const CollapsibleCard = ({ id, header, children, className }: Collapsible
     return (
         <BaseCard
             id={id}
-            className={className}
+            className={classNames(styles.card, className)}
             header={
                 <>
                     <div className={styles.headerContext}>{header}</div>
@@ -33,7 +33,7 @@ export const CollapsibleCard = ({ id, header, children, className }: Collapsible
                             type="button"
                             aria-label={collapsed ? `Show card content` : `Hide card content`}
                             onClick={() => setCollapsed((current) => !current)}>
-                            <Icon name={collapsed ? 'expand_more' : 'expand_less'} sizing="small" />
+                            <Icon name={collapsed ? 'expand_more' : 'expand_less'} sizing="medium" />
                         </button>
                     </div>
                 </>

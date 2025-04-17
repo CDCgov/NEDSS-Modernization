@@ -13,38 +13,32 @@
     transition-timing-function: ease-in;
 }
 
+.card {
+    header {
+        padding-right: 0;
+    }
+}
+
 .collapsible {
     position: relative;
-    xxheight: 10;
     max-height: auto;
     overflow: hidden;
-    xxanimation: expanding 0.3s forwards;
     @include expanded('max-height');
 
     &.collapsed {
-        xxheight: 0;
         @include collapsed('max-height');
         max-height: 0;
         overflow: hidden;
-        xxanimation: collapsing 0.3s forwards;
-    }
-}
-
-@keyframes expanding {
-    to {
-        overflow: inherit;
-    }
-}
-
-@keyframes collapsing {
-    to {
-        display: none;
-        visibility: hidden;
     }
 }
 
 .control {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     border-left: 1px solid colors.$base-lighter;
+    min-height: 2rem;
 
     &.no-border {
         border-left: none;
@@ -57,6 +51,14 @@
         background: none;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: stretch;
+        margin: 0 0.25rem;
+        height: fit-content;
+
+        svg {
+            width: 1.5rem !important;
+            height: 1.5rem !important;
+            color: colors.$base-darker;
+        }
     }
 }
