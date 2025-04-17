@@ -1,0 +1,62 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+@mixin expanded($property) {
+    transition-duration: 0.3s;
+    transition-property: #{$property};
+    transition-timing-function: ease-out;
+}
+
+@mixin collapsed($property) {
+    transition-duration: 0.3s;
+    transition-property: #{$property};
+    transition-timing-function: ease-in;
+}
+
+.collapsible {
+    position: relative;
+    xxheight: 10;
+    max-height: auto;
+    overflow: hidden;
+    xxanimation: expanding 0.3s forwards;
+    @include expanded('max-height');
+
+    &.collapsed {
+        xxheight: 0;
+        @include collapsed('max-height');
+        max-height: 0;
+        overflow: hidden;
+        xxanimation: collapsing 0.3s forwards;
+    }
+}
+
+@keyframes expanding {
+    to {
+        overflow: inherit;
+    }
+}
+
+@keyframes collapsing {
+    to {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+.control {
+    border-left: 1px solid colors.$base-lighter;
+
+    &.no-border {
+        border-left: none;
+    }
+
+    button {
+        display: flex;
+        cursor: pointer;
+        border: none;
+        background: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
