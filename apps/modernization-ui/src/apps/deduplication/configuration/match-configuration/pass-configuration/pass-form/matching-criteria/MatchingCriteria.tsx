@@ -49,7 +49,7 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                         {fields.map((entry, index) => (
                             <MatchingCriteriaAttribute
                                 key={entry.id}
-                                label={MatchingAttributeLabels[entry.attribute].label}
+                                label={MatchingAttributeLabels[entry.attribute]?.label ?? ''}
                                 attribute={entry.attribute}
                                 onRemove={() => handleRemoveAttribute(index)}
                                 logOdds={getLogOdds(dataElements, entry.attribute)}
