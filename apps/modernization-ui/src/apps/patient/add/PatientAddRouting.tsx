@@ -17,7 +17,7 @@ const routing = [
             },
             {
                 path: '/patient/add/extended',
-                element:  <AddPatientExtended />
+                element: <AddPatientExtended />
             }
         ]
     }
