@@ -1,5 +1,6 @@
 import { Meta } from '@storybook/react';
 import { Hint } from './Hint';
+import { ComponentProps } from 'react';
 
 const meta = {
     title: 'Design System/Hint',
@@ -14,11 +15,14 @@ const meta = {
 
 export default meta;
 
-export const Default = (args: any) => {
+export const Default = (args: ComponentProps<typeof Hint>) => {
     return (
         <div
             style={{
-                height: 100
+                height: 150,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
             }}>
             <Hint {...args}>{args.children}</Hint>
         </div>
