@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { DataElementsForm } from './DataElementsForm';
 import { FormProvider, useForm } from 'react-hook-form';
 import { DataElements } from '../../../api/model/DataElement';
+import userEvent from '@testing-library/user-event';
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
     const methods = useForm<DataElements>({ defaultValues: {} });
@@ -70,22 +71,22 @@ describe('DataElementsForm', () => {
     });
 
     test('shows tooltip when info icon is hovered', async () => {
-        render(
+        const user = userEvent.setup();
+        const { container, findByText } = render(
             <Wrapper>
                 <DataElementsForm />
             </Wrapper>
         );
 
         // Find the info icon using its data-testid
-        const infoIcon = screen.getByTestId('infoIcon');
+        const icon = container.querySelectorAll('svg')[2];
 
         // Simulate hovering over the info icon
-        fireEvent.mouseOver(infoIcon);
+        await user.hover(icon);
 
         // Wait for the tooltip to appear and check its content
-        await waitFor(() => {
-            expect(screen.getByText(/Threshold/i)).toBeInTheDocument();
-        });
+
+        expect(await findByText(/Values between/i)).toBeInTheDocument();
     });
 
     test('renders form with initial values', () => {
