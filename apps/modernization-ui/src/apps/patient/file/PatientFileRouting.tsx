@@ -1,6 +1,6 @@
 import { FeatureGuard } from 'feature';
 import { PatientFile } from './PatientFile';
-import { PageTitle } from 'PageTitle';
+import { PageTitle } from 'page';
 
 const routing = [
     {
