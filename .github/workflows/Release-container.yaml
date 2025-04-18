@@ -38,6 +38,10 @@ on:
 
 jobs:
   call-build-microservice-container-workflow:
+    permissions:
+      id-token: write
+      contents: read
+      security-events: write
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
       microservice_name: ${{inputs.microservice_name}}
@@ -52,6 +56,10 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   call-update-helm:
+    permissions:
+      id-token: write
+      contents: write      
+      pull-requests: write
     needs: call-build-microservice-container-workflow
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
     with:
