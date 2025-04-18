@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { Heading } from 'components/heading';
+import { PatientFileHeader } from './PatientFileHeader';
 
 import styles from './patient-file.module.scss';
 
@@ -8,9 +8,7 @@ export const PatientFile = () => {
 
     return (
         <div className={styles.file}>
-            <header>
-                <Heading level={1}>Patient ID: {id}</Heading>
-            </header>
+            <PatientFileHeader id={id || ''} />
             <main className="main-body"></main>
         </div>
     );
