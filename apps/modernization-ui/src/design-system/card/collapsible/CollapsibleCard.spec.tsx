@@ -53,4 +53,19 @@ describe('CollapsibleCard', () => {
         await userEvent.click(toggleButton);
         expect(toggleButton).toHaveAttribute('aria-label', 'Show card content');
     });
+
+    it('does not show collapse control when collapsible is false', () => {
+        const { queryByRole } = render(<Fixture collapsible={false} />);
+        expect(queryByRole('button')).not.toBeInTheDocument();
+    });
+
+    it('does not show collapse separator when showCollapseSeparator is false', () => {
+        const { getByRole } = render(<Fixture showCollapseSeparator={false} />);
+        expect(getByRole('button').parentElement).not.toHaveClass('separator');
+    });
+
+    it('shows collapse separator when showCollapseSeparator is true', () => {
+        const { getByRole } = render(<Fixture showCollapseSeparator={true} />);
+        expect(getByRole('button').parentElement).toHaveClass('separator');
+    });
 });

@@ -1,17 +1,27 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
-import { BaseCard } from '../base/BaseCard';
 import { Icon } from 'design-system/icon';
 import styles from './collapsible-card.module.scss';
 import classNames from 'classnames';
+import { Shown } from 'conditional-render';
 
 export type CollapsibleCardProps = {
     id: string;
     className?: string;
+    /** Whether the card is collapsible (shows the collapse header control). Default is true. */
+    collapsible?: boolean;
+    showCollapseSeparator?: boolean;
     header: ReactNode;
     children: ReactNode;
 };
 
-export const CollapsibleCard = ({ id, header, children, className }: CollapsibleCardProps) => {
+export const CollapsibleCard = ({
+    id,
+    header,
+    children,
+    className,
+    collapsible = true,
+    showCollapseSeparator
+}: CollapsibleCardProps) => {
     const [height, setHeight] = useState('auto');
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -22,13 +32,14 @@ export const CollapsibleCard = ({ id, header, children, className }: Collapsible
     }, [collapsed]);
 
     return (
-        <BaseCard
-            id={id}
-            className={classNames(styles.card, className)}
-            header={
-                <>
-                    <div className={styles.headerContext}>{header}</div>
-                    <div className={styles.control}>
+        <section id={id} className={classNames(styles.card, { [styles.showControl]: collapsible }, className)}>
+            <header>
+                <div className={styles.headerContext}>{header}</div>
+                <Shown when={collapsible}>
+                    <div
+                        className={classNames(styles.control, {
+                            [styles.separator]: showCollapseSeparator
+                        })}>
                         <button
                             type="button"
                             aria-label={collapsed ? `Show card content` : `Hide card content`}
@@ -36,8 +47,8 @@ export const CollapsibleCard = ({ id, header, children, className }: Collapsible
                             <Icon name={collapsed ? 'expand_more' : 'expand_less'} sizing="medium" />
                         </button>
                     </div>
-                </>
-            }>
+                </Shown>
+            </header>
             <div
                 ref={contentRef}
                 className={classNames(styles.collapsible, { [styles.collapsed]: collapsed })}
@@ -46,6 +57,6 @@ export const CollapsibleCard = ({ id, header, children, className }: Collapsible
                 }}>
                 {children}
             </div>
-        </BaseCard>
+        </section>
     );
 };

@@ -21,6 +21,15 @@ export const Default: Story = {
                 <br />
                 World
             </p>
-        )
+        ),
+        collapsible: true
+    }
+};
+
+export const ShowCollapseSeparator: Story = {
+    args: {
+        ...Default.args,
+        id: 'card-separator',
+        showCollapseSeparator: true
     }
 };
