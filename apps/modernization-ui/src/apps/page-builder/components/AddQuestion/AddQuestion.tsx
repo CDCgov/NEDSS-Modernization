@@ -3,7 +3,7 @@ import { useAlert } from 'alert';
 import { CreateCodedQuestionRequest } from 'apps/page-builder/generated';
 import { CreateQuestionRequest, useCreateQuestion } from 'apps/page-builder/hooks/api/useCreateQuestion';
 import classNames from 'classnames';
-import { PageProvider } from 'page';
+import { PaginationProvider } from 'pagination';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
@@ -55,13 +55,13 @@ export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
                 />
             )}
             {state === 'findValueset' && (
-                <PageProvider>
+                <PaginationProvider>
                     <FindValueSet
                         onCancel={() => setState('create')}
                         onClose={onClose}
                         onCreateNew={() => setState('createValueset')}
                     />
-                </PageProvider>
+                </PaginationProvider>
             )}
             {state === 'createValueset' && (
                 <CreateEditValueset

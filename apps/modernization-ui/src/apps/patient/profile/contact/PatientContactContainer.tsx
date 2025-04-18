@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import { Tracing, Headers } from './PatientContacts';
 import { PatientContactTable } from './PatientContactTable';
 
@@ -14,7 +14,7 @@ type Props = {
 
 export const PatientContactsContainer = ({ source, patient, title, headings }: Props) => {
     const tracing = source(patient);
-    const { firstPage } = usePage();
+    const { firstPage } = usePagination();
 
     useEffect(() => {
         if (patient) {

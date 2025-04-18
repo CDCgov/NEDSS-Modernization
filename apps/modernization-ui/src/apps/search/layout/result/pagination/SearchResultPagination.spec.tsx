@@ -8,8 +8,8 @@ let mockTotal: number;
 let mockPageSize: number;
 let mockCurrent: number;
 
-jest.mock('page', () => ({
-    usePage: () => ({
+jest.mock('pagination', () => ({
+    usePagination: () => ({
         request: mockRequest,
         page: {
             total: mockTotal,

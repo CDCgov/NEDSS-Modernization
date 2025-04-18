@@ -3,7 +3,7 @@ import { Concept } from 'apps/page-builder/generated';
 import { ConceptSort, SortField } from 'apps/page-builder/hooks/api/useFindConcepts';
 import { TableBody, TableComponent } from 'components/Table';
 import { internalizeDate } from 'date';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
 import { Direction } from 'sorting/Sort';
 import styles from './concept-table.module.scss';
@@ -30,7 +30,7 @@ type Props = {
     onEditConcept: (concept: Concept) => void;
 };
 export const ConceptTable = ({ concepts, loading, onSort, onEditConcept }: Props) => {
-    const { page, request } = usePage();
+    const { page, request } = usePagination();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
 
     const toRow = (concept: Concept): TableBody => {

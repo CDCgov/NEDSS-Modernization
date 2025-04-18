@@ -1,16 +1,16 @@
-import { screen, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ViewBusinessRule } from './ViewBusinessRule';
 import { BrowserRouter } from 'react-router';
-import { Rule } from 'apps/page-builder/generated';
-import { PageProvider } from 'page';
+
+import { PaginationProvider } from 'pagination';
 
 describe('when ViewBusinessRule rendered', () => {
     it('should display heading', () => {
         const { container } = render(
             <BrowserRouter>
-                <PageProvider>
+                <PaginationProvider>
                     <ViewBusinessRule />
-                </PageProvider>
+                </PaginationProvider>
             </BrowserRouter>
         );
         const heading = container.querySelector('h2');
@@ -20,9 +20,9 @@ describe('when ViewBusinessRule rendered', () => {
     it('should display table headers', async () => {
         const { findAllByRole } = render(
             <BrowserRouter>
-                <PageProvider>
+                <PaginationProvider>
                     <ViewBusinessRule />
-                </PageProvider>
+                </PaginationProvider>
             </BrowserRouter>
         );
 
@@ -33,9 +33,9 @@ describe('when ViewBusinessRule rendered', () => {
     it('should rule fields', async () => {
         const { findAllByRole } = render(
             <BrowserRouter>
-                <PageProvider>
+                <PaginationProvider>
                     <ViewBusinessRule />
-                </PageProvider>
+                </PaginationProvider>
             </BrowserRouter>
         );
 

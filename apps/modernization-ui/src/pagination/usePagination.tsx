@@ -60,18 +60,22 @@ type PageContextState = {
     reset: () => void;
 };
 
-const PageContext = createContext<PageContextState | undefined>(undefined);
+const PaginationContext = createContext<PageContextState | undefined>(undefined);
 
-type PagingSettings = {
+type PaginationSettings = {
     appendToUrl?: boolean;
     pageSize?: number;
 };
 
-type PageProviderProps = {
-    children: ReactNode;
-} & PagingSettings;
+type PaginationProviderProps = {
+    children: ReactNode | ReactNode[];
+} & PaginationSettings;
 
-const PageProvider = ({ pageSize = TOTAL_TABLE_DATA, appendToUrl = false, children }: PageProviderProps) => {
+const PaginationProvider = ({
+    pageSize = TOTAL_TABLE_DATA,
+    appendToUrl = false,
+    children
+}: PaginationProviderProps) => {
     const [page, dispatch] = useReducer(pageReducer, pageSize, initialize);
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -109,26 +113,20 @@ const PageProvider = ({ pageSize = TOTAL_TABLE_DATA, appendToUrl = false, childr
 
     const value = { page, firstPage, reload, request, ready, resize, reset };
 
-    return <PageContext.Provider value={value}>{children}</PageContext.Provider>;
+    return <PaginationContext.Provider value={value}>{children}</PaginationContext.Provider>;
 };
 
-const usePage = () => {
-    const context = useContext(PageContext);
+const usePagination = () => {
+    const context = useContext(PaginationContext);
 
     if (context === undefined) {
-        throw new Error('usePage must be used within a PageProvider');
+        throw new Error('usePagination must be used within a PaginationProvider');
     }
 
     return context;
 };
 
-const usePageMaybe = () => {
-    const context = useContext(PageContext);
-
-    return context;
-};
-
-export { PageProvider, usePage, usePageMaybe };
+export { PaginationProvider, usePagination };
 
 export { Status };
-export type { PageState as Page, PagingSettings };
+export type { PageState as Page, PaginationSettings };

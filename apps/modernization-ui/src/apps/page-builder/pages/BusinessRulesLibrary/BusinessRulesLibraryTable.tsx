@@ -5,7 +5,7 @@ import { BusinessRuleSort, RuleSortField } from 'apps/page-builder/hooks/api/use
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import React, { RefObject, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Direction } from 'sorting';
@@ -56,7 +56,7 @@ export const BusinessRulesLibraryTable = ({
     const [selectedQuestion, setSelectedQuestion] = useState<Rule[]>([]);
 
     const { page } = useGetPageDetails();
-    const { page: curPage, request } = usePage();
+    const { page: curPage, request } = usePagination();
 
     const getSubsections = () => {
         if (page) {

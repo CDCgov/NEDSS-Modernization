@@ -1,7 +1,7 @@
 import { ConditionSort, ConditionSortField } from 'apps/page-builder/condition/search/useConditionSearch';
 import { Condition } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 
@@ -68,7 +68,7 @@ type Props = {
     onSort?: (sort?: ConditionSort) => void;
 };
 export const ConditionTable = ({ conditions, isLoading, onSelectionChange, onSort }: Props) => {
-    const { page, request } = usePage();
+    const { page, request } = usePagination();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selected, setSelected] = useState<number[]>([]);
 

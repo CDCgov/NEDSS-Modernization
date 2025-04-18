@@ -1,5 +1,5 @@
 import { RefObject } from 'react';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import { Shown } from 'conditional-render';
 import { Pagination } from 'design-system/pagination';
 import { SearchResultPageSizeSelect } from './page-size-select';
@@ -15,7 +15,7 @@ type SearchPaginationProps = {
 };
 
 const SearchResultPagination = ({ id, elementRef }: SearchPaginationProps) => {
-    const { request, resize, page } = usePage();
+    const { request, resize, page } = usePagination();
 
     const minimum = Math.min(...pageSizes);
     const visible = page.total > minimum;

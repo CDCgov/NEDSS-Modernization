@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { FindVaccinationsForPatientQuery, useFindVaccinationsForPatientLazyQuery } from 'generated/graphql/schema';
-import { usePage, Status } from 'page';
+import { usePagination, Status } from 'pagination';
 import { Vaccination } from './PatientVaccination';
 import { transform } from './PatientVaccinationTransformer';
 
 export const usePatientProfileVaccinationAPI = (patient?: string): Vaccination[] => {
     const [tracings, setTracings] = useState<Vaccination[]>([]);
-    const { page, ready } = usePage();
+    const { page, ready } = usePagination();
 
     const handleComplete = (data: FindVaccinationsForPatientQuery) => {
         const total = data?.findVaccinationsForPatient?.total || 0;
