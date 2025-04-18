@@ -2,7 +2,6 @@ import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useFormNavigationBlock } from 'navigation';
-import { FeatureToggle } from 'feature';
 import { Shown } from 'conditional-render';
 import { Button } from 'components/button';
 import { sections } from './sections';
