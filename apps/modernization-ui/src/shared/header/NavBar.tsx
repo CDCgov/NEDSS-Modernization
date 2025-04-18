@@ -105,9 +105,7 @@ export default function NavBar() {
                     <tbody>
                         <tr>
                             <td className={styles.pageHeader} style={{ padding: '5px', marginBottom: '0px' }}>
-                                <a style={{ textTransform: 'capitalize' }}>
-                                    {title || location?.pathname?.split('/')[1]?.split('-').join(' ')}
-                                </a>
+                                <a>{title || location?.pathname?.split('/')[1]?.split('-').join(' ')}</a>
                             </td>
 
                             <td className={styles.currentUser} style={{ paddingBottom: '0px', marginBottom: '0px' }}>
