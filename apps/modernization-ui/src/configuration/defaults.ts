@@ -56,10 +56,7 @@ const defaultFeatures: Features = {
             enabled: false
         },
         add: {
-            enabled: false,
-            extended: {
-                enabled: false
-            }
+            enabled: false
         }
     }
 };
