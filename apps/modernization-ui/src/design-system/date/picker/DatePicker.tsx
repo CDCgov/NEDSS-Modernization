@@ -84,50 +84,58 @@ const DatePicker = ({
     );
 
     useLayoutEffect(() => {
-        const datePickerElement = datePickerRef.current as HTMLDivElement;
-        const wrapper = datePickerElement.querySelector('.usa-date-picker__wrapper');
+        if (!externalInputRef.current) {
+            const datePickerElement = datePickerRef.current as HTMLDivElement;
+            const wrapper = datePickerElement.querySelector('.usa-date-picker__wrapper');
 
-        datePicker.on(datePickerElement);
+            datePicker.on(datePickerElement);
 
-        const context = datePicker.getDatePickerContext(datePickerElement);
+            const context = datePicker.getDatePickerContext(datePickerElement);
 
-        if (label) {
-            const toggle = context.toggleBtnEl as HTMLButtonElement;
+            if (label) {
+                const toggle = context.toggleBtnEl as HTMLButtonElement;
 
-            toggle.ariaLabel = `Toggle ${label} calendar`;
-        }
-
-        externalInputRef.current = context.externalInputEl as HTMLInputElement;
-
-        return () => {
-            if (wrapper) {
-                datePicker.off(datePickerElement);
+                toggle.ariaLabel = `Toggle ${label} calendar`;
             }
-        };
-    }, []);
+
+            externalInputRef.current = context.externalInputEl as HTMLInputElement;
+
+            return () => {
+                if (wrapper) {
+                    datePicker.off(datePickerElement);
+                    externalInputRef.current = null;
+                }
+            };
+        }
+    }, [externalInputRef.current]);
 
     useEffect(() => {
         if (externalInputRef.current) {
-            externalInputRef.current.addEventListener('blur', handleExternalOnBlur);
-            externalInputRef.current.addEventListener('change', handleExternalOnChange);
-            externalInputRef.current.addEventListener('keyup', handleExternalKeyUp);
-            externalInputRef.current.addEventListener('keydown', onlyNumericKeys);
-        }
+            const external = externalInputRef.current;
 
-        return () => {
-            if (externalInputRef.current) {
-                externalInputRef.current.removeEventListener('blur', handleExternalOnBlur);
-                externalInputRef.current.removeEventListener('change', handleExternalOnChange);
-                externalInputRef.current.removeEventListener('keyup', handleExternalKeyUp);
-                externalInputRef.current.removeEventListener('keydown', onlyNumericKeys);
-            }
-        };
+            external.addEventListener('blur', handleExternalOnBlur);
+            external.addEventListener('change', handleExternalOnChange);
+            external.addEventListener('keyup', handleExternalKeyUp);
+            external.addEventListener('keydown', onlyNumericKeys);
+
+            return () => {
+                external.removeEventListener('blur', handleExternalOnBlur);
+                external.removeEventListener('change', handleExternalOnChange);
+                external.removeEventListener('keyup', handleExternalKeyUp);
+                external.removeEventListener('keydown', onlyNumericKeys);
+            };
+        }
     }, [externalInputRef.current, handleExternalOnBlur, handleExternalOnChange]);
 
     return (
         <div
             ref={datePickerRef}
-            className={classNames(styles[sizing ?? ''], 'usa-date-picker')}
+            className={classNames('usa-date-picker', {
+                [styles.sized]: sizing,
+                [styles.small]: sizing === 'small',
+                [styles.medium]: sizing === 'medium',
+                [styles.large]: sizing === 'large'
+            })}
             data-default-value={date}
             data-max-date={adjustedMaxValue}
             data-min-date={adjustedMinValue}>
