@@ -1,7 +1,7 @@
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { ValuesetSearch } from 'apps/page-builder/components/AddQuestion/valueset/ValuesetSearch';
 import { PagesQuestion } from 'apps/page-builder/generated';
-import { PageProvider } from 'page';
+import { PaginationProvider } from 'pagination';
 import { RefObject, useEffect } from 'react';
 import './ChangeValuesetModal.scss';
 import styles from './change-valueset-modal.module.scss';
@@ -53,9 +53,9 @@ export const ChangeValuesetModal = ({ modal, question, page, onValuesetChanged }
                         <Spinner />
                     </div>
                 )}
-                <PageProvider>
+                <PaginationProvider>
                     <ValuesetSearch onCancel={handleClose} onClose={handleClose} onAccept={handleSetValueset} />
-                </PageProvider>
+                </PaginationProvider>
             </div>
         </Modal>
     );

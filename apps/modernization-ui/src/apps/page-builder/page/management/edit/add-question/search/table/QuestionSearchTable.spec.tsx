@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 
-import { PageProvider } from 'page';
+import { PaginationProvider } from 'pagination';
 import { MemoryRouter } from 'react-router';
 import { QuestionSearchTable } from './QuestionSearchTable';
 
@@ -8,9 +8,9 @@ describe('question search table tests', () => {
     it('should render No Data when empty', () => {
         const { getByText } = render(
             <MemoryRouter>
-                <PageProvider>
+                <PaginationProvider>
                     <QuestionSearchTable questions={[]} onCreateNew={jest.fn()} />
-                </PageProvider>
+                </PaginationProvider>
             </MemoryRouter>
         );
         expect(getByText('No Data')).toBeInTheDocument();
@@ -19,9 +19,9 @@ describe('question search table tests', () => {
     it('should render headers when empty', () => {
         const { getAllByRole } = render(
             <MemoryRouter>
-                <PageProvider>
+                <PaginationProvider>
                     <QuestionSearchTable questions={[]} onCreateNew={jest.fn()} />
-                </PageProvider>
+                </PaginationProvider>
             </MemoryRouter>
         );
 
@@ -35,7 +35,7 @@ describe('question search table tests', () => {
     it('should display proper values for a question', async () => {
         const { findAllByRole } = render(
             <MemoryRouter>
-                <PageProvider>
+                <PaginationProvider>
                     <QuestionSearchTable
                         questions={[
                             {
@@ -49,7 +49,7 @@ describe('question search table tests', () => {
                         ]}
                         onCreateNew={jest.fn()}
                     />
-                </PageProvider>
+                </PaginationProvider>
             </MemoryRouter>
         );
 

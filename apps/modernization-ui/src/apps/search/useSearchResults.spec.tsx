@@ -1,7 +1,7 @@
 import { ReactNode, act } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { SearchResultSettings, useSearchResults } from './useSearchResults';
-import { Page } from 'page';
+import { Page } from 'pagination';
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 
 let mockCriteria: Criteria | undefined = undefined;
@@ -16,7 +16,7 @@ jest.mock('./useSearchCriteria', () => ({
     })
 }));
 
-const { Status } = jest.requireActual('page');
+const { Status } = jest.requireActual('pagination');
 
 const mockPage: Page = {
     status: Status.Ready,
@@ -32,8 +32,8 @@ const mockReady = jest.fn();
 const mockResize = jest.fn();
 const mockPageReset = jest.fn();
 
-jest.mock('page', () => ({
-    usePage: () => ({
+jest.mock('pagination', () => ({
+    usePagination: () => ({
         page: mockPage,
         firstPage: mockFirstPage,
         reload: mockReload,

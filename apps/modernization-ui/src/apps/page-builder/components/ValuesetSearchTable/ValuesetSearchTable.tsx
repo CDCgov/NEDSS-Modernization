@@ -3,7 +3,7 @@ import { ValueSetOption } from 'apps/page-builder/generated';
 import { SortField, ValuesetSort } from 'apps/page-builder/hooks/api/useFindValueset';
 import { Search } from 'components/Search/Search';
 import { TableBody, TableComponent } from 'components/Table';
-import { Status, usePage } from 'page';
+import { Status, usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import styles from './valueset-search-table.module.scss';
@@ -40,7 +40,7 @@ export const ValuesetSearchTable = ({
     onSortChange,
     onCreateNew
 }: Props) => {
-    const { page, request } = usePage();
+    const { page, request } = usePagination();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
 
     const doQuerySearch = (query?: string) => {

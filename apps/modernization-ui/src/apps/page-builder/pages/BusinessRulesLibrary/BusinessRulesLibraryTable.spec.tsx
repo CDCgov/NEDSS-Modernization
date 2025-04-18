@@ -2,7 +2,7 @@ import { screen, render } from '@testing-library/react';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { BrowserRouter } from 'react-router';
 import { Rule } from 'apps/page-builder/generated';
-import { PageProvider } from 'page';
+import { PaginationProvider } from 'pagination';
 
 describe('BusinessRulesLibraryTable', () => {
     const modalRef = { current: null };
@@ -25,7 +25,7 @@ describe('BusinessRulesLibraryTable', () => {
             const summaries = [rulesSummary];
             render(
                 <BrowserRouter>
-                    <PageProvider>
+                    <PaginationProvider>
                         <BusinessRulesLibraryTable
                             rules={summaries}
                             qtnModalRef={modalRef}
@@ -34,7 +34,7 @@ describe('BusinessRulesLibraryTable', () => {
                             onDownloadCsv={jest.fn()}
                             onDownloadPdf={jest.fn()}
                         />
-                    </PageProvider>
+                    </PaginationProvider>
                 </BrowserRouter>
             );
 
@@ -69,7 +69,7 @@ describe('BusinessRulesLibraryTable', () => {
 
             const { findAllByRole } = render(
                 <BrowserRouter>
-                    <PageProvider>
+                    <PaginationProvider>
                         <BusinessRulesLibraryTable
                             rules={summaries}
                             qtnModalRef={modalRef}
@@ -78,7 +78,7 @@ describe('BusinessRulesLibraryTable', () => {
                             onDownloadCsv={jest.fn()}
                             onDownloadPdf={jest.fn()}
                         />
-                    </PageProvider>
+                    </PaginationProvider>
                 </BrowserRouter>
             );
 

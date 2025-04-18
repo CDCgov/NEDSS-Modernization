@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { FindPatientNamedByContactQuery, useFindPatientNamedByContactLazyQuery } from 'generated/graphql/schema';
-import { usePage, Status } from 'page';
+import { usePagination, Status } from 'pagination';
 import { Tracing } from './PatientContacts';
 import { transform } from './PatientContactTransformer';
 
 export const usePatientProfilePatientNamedByContactAPI = (patient?: string): Tracing[] => {
     const [tracings, setTracings] = useState<Tracing[]>([]);
-    const { page, ready } = usePage();
+    const { page, ready } = usePagination();
 
     const handleComplete = (data: FindPatientNamedByContactQuery) => {
         const total = data?.findPatientNamedByContact?.total || 0;

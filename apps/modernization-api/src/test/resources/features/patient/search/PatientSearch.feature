@@ -139,6 +139,28 @@ Feature: Patient Search
     And search result 1 has a "last name" of "Smith"
     And there are 1 patient search results    
 
+  Scenario: I can filter search results with punctuation period in name
+    Given I have a patient
+    And the patient has the legal name "Joe" "Jacob" "Smith", Jr. as of 01/01/2000
+    And I have another patient
+    And the patient has the legal name "Joel" "Jacob" "Smith", Jr. as of 01/01/2000
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith"
+    And I would like to filter search results with name "jacob. jr."
+    When I search for patients
+    And there are 2 patient search results 
+
+  Scenario: I can filter search results with punctuation commas in name
+    Given I have a patient
+    And the patient has the legal name "Joe" "Jacob" "Smith", Jr as of 01/01/2000
+    And I have another patient
+    And the patient has the legal name "Joel" "Jacob" "Smith", Jr as of 01/01/2000
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith"
+    And I would like to filter search results with name "smith,joe"
+    When I search for patients
+    And there are 2 patient search results 
+
   Scenario: I can filter search results by partial middle suffix
     Given I have a patient
     And the patient has the legal name "Joe" "Jacob" "Smith", Jr. as of 01/01/2000

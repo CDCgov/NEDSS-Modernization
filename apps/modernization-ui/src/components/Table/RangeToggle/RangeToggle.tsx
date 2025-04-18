@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import styles from './range-toggle.module.scss';
 
 export type SupportedContext = 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates' | 'businessRules';
@@ -15,7 +15,7 @@ export const RangeToggle = ({
     name = 'range-toggle',
     ...props
 }: RangeToggleProps) => {
-    const pagination = usePage();
+    const pagination = usePagination();
     const [range, setRange] = useState(Number(initial));
 
     useEffect(() => {
