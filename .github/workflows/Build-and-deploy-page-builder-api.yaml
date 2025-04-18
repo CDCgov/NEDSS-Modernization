@@ -10,6 +10,9 @@ on:
 
 jobs:
   sonar_scan:
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/sonar.yaml
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
