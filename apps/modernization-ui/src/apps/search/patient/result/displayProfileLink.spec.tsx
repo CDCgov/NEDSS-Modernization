@@ -28,7 +28,7 @@ describe('when navigating to the patient profile', () => {
 
         const { getByText } = render(<BrowserRouter>{displayProfileLink(719, 84001, 'John Doe')}</BrowserRouter>);
         const link = getByText('John Doe');
-        expect(link).toHaveAttribute('href', '/patient-profile/84001/summary');
+        expect(link).toHaveAttribute('href', '/patient/84001');
     });
 
     it('should link to the NBS6 patient profile when the feature is disabled', () => {
