@@ -76,16 +76,14 @@ export const AddPatientBasic = () => {
                     sections={sections}
                     headerActions={() => (
                         <div className={styles.buttonGroup}>
-                            <FeatureToggle guard={(features) => features.patient?.add?.extended?.enabled}>
-                                <Button
-                                    type="button"
-                                    onClick={handleExtended}
-                                    outline
-                                    className="add-patient-button"
-                                    disabled={working}>
-                                    Add extended data
-                                </Button>
-                            </FeatureToggle>
+                            <Button
+                                type="button"
+                                onClick={handleExtended}
+                                outline
+                                className="add-patient-button"
+                                disabled={working}>
+                                Add extended data
+                            </Button>
                             <Button onClick={backToSearch} outline>
                                 Cancel
                             </Button>
