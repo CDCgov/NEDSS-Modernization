@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { usePage } from '.';
 
 type PageTitleProps = {
     title: string;
-    children: React.ReactNode;
+    children: React.ReactNode | ReactNode[];
 };
 
 export const PageTitle = ({ title, children }: PageTitleProps) => {
