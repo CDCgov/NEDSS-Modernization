@@ -3,7 +3,7 @@ import { AvailableQuestion } from 'apps/page-builder/generated';
 import { AddableQuestionSort, SortField } from '../../../../../../hooks/api/useFindAvailableQuestions';
 import { Search } from 'components/Search';
 import { SelectionMode, TableBody, TableComponent } from 'components/Table';
-import { Status, usePage } from 'page';
+import { Status, usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import { ExpandedQuestion } from './ExpandedQuestion';
@@ -27,7 +27,7 @@ export const QuestionSearchTable = ({
     onSelectionChange,
     onCreateNew
 }: Props) => {
-    const { page, request } = usePage();
+    const { page, request } = usePagination();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [expanded, setExpanded] = useState<number | undefined>(undefined);
 

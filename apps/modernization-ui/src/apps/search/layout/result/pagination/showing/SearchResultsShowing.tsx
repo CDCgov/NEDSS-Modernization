@@ -1,4 +1,4 @@
-import { Page } from 'page';
+import { Page } from 'pagination';
 
 type SearchResultsShowingProps = {
     className?: string;

@@ -1,5 +1,5 @@
 import { Modal, ModalRef } from '@trussworks/react-uswds';
-import { PageProvider, usePage } from 'page';
+import { PaginationProvider, usePagination } from 'pagination';
 import { RefObject, useEffect, useState } from 'react';
 import { usePageManagement } from '../../../usePageManagement';
 import { QuestionSearch } from '../search/QuestionSearch';
@@ -36,13 +36,13 @@ export const AddQuestionModal = ({ modal, onAddQuestion }: Props) => {
             aria-describedby="modal-1-description">
             <div className={styles.modal}>
                 {state === 'search' ? (
-                    <PageProvider>
+                    <PaginationProvider>
                         <QuestionSearchWrapper
                             onClose={handleClose}
                             onAccept={handleAccept}
                             onCreateNew={() => setState('add')}
                         />
-                    </PageProvider>
+                    </PaginationProvider>
                 ) : (
                     <AddQuestion
                         onBack={() => setState('search')}
@@ -61,7 +61,7 @@ type WrapperProps = {
     onCreateNew: () => void;
 };
 const QuestionSearchWrapper = ({ onClose, onCreateNew, onAccept }: WrapperProps) => {
-    const { firstPage } = usePage();
+    const { firstPage } = usePagination();
     const { page } = usePageManagement();
 
     useEffect(() => {

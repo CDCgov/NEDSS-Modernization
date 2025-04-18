@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import { Document } from './PatientDocuments';
 import { PatientDocumentTable } from './PatientDocumentTable';
 
@@ -10,7 +10,7 @@ type Props = {
 
 export const PatientDocumentContainer = ({ source, patient }: Props) => {
     const documents = source(patient);
-    const { firstPage } = usePage();
+    const { firstPage } = usePagination();
 
     useEffect(() => {
         if (patient) {

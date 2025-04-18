@@ -1,5 +1,5 @@
 import { DocumentRequiringReviewSortableField, SortDirection } from 'generated/graphql/schema';
-import { PageProvider, usePage } from 'page';
+import { PaginationProvider, usePagination } from 'pagination';
 import { useEffect } from 'react';
 import { DocumentsRequiringReviewTable } from './DocumentRequiringReviewTable';
 import { useDocumentsRequiringReviewApi } from './useDocumentsRequiringReviewApi';
@@ -14,15 +14,15 @@ export type Sort = {
 };
 export const DocumentRequiringReview = ({ patient }: Props) => {
     return (
-        <PageProvider pageSize={10}>
+        <PaginationProvider pageSize={10}>
             <DocumentsRequiringReviewContainer patient={patient} />
-        </PageProvider>
+        </PaginationProvider>
     );
 };
 
 const DocumentsRequiringReviewContainer = ({ patient }: Props) => {
     const documents = useDocumentsRequiringReviewApi(patient);
-    const { firstPage } = usePage();
+    const { firstPage } = usePagination();
 
     useEffect(() => {
         if (patient) {

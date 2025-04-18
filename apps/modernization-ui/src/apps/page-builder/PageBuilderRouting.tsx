@@ -1,5 +1,5 @@
 import { FeatureGuard, FeatureLayout } from 'feature';
-import { PageProvider } from 'page';
+import { PaginationProvider } from 'pagination';
 import { Navigate, RouteObject } from 'react-router';
 import { PageLibrary } from './page/library/PageLibrary';
 import { Edit } from './page/management/edit/Edit';
@@ -65,9 +65,9 @@ const routing: RouteObject[] = [
                                     {
                                         index: true,
                                         element: (
-                                            <PageProvider>
+                                            <PaginationProvider>
                                                 <BusinessRulesLibrary />
-                                            </PageProvider>
+                                            </PaginationProvider>
                                         )
                                     },
                                     {

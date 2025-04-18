@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FindDocumentsForPatientQuery, useFindDocumentsForPatientLazyQuery } from 'generated/graphql/schema';
-import { usePage, Status } from 'page';
+import { usePagination, Status } from 'pagination';
 import { Document } from './PatientDocuments';
 import { transform } from './PatientDocumentTransformer';
 
@@ -13,7 +13,7 @@ import { transform } from './PatientDocumentTransformer';
 export const usePatientProfileDocumentsAPI = (patient?: string) => {
     const [documents, setDocuments] = useState<Document[]>([]);
 
-    const { page, ready } = usePage();
+    const { page, ready } = usePagination();
 
     const handleComplete = (data: FindDocumentsForPatientQuery) => {
         const total = data?.findDocumentsForPatient?.total || 0;

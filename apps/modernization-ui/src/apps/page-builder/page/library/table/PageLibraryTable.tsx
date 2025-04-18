@@ -1,7 +1,7 @@
 import { PageSummary } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { internalizeDate } from 'date';
-import { usePage } from 'page';
+import { usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Direction } from 'sorting';
@@ -68,7 +68,7 @@ export const PageLibraryTable = ({ enableEdit, summaries, searching = false, onS
     const {
         page: { pageSize, total, current },
         request
-    } = usePage();
+    } = usePagination();
 
     useEffect(() => {
         setTableRows(asTableRows(summaries, enableEdit));

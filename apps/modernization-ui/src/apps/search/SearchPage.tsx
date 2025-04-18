@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Outlet } from 'react-router';
-import { PageProvider, PagingSettings } from 'page';
+import { PaginationProvider, PaginationSettings } from 'pagination';
 import { SortingProvider, SortingSettings } from 'sorting';
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 import { ComponentSizingProvider } from 'design-system/sizing';
@@ -8,19 +8,19 @@ import { FilterProvider } from 'design-system/filter';
 
 const SEARCH_PAGE_SIZE = 20;
 
-type SearchPageProviderProps = { sorting?: SortingSettings; paging?: PagingSettings; children: ReactNode };
+type SearchPageProviderProps = { sorting?: SortingSettings; paging?: PaginationSettings; children: ReactNode };
 
 const SearchPageProvider = ({ sorting, paging, children }: SearchPageProviderProps) => (
     <ComponentSizingProvider>
         <SortingProvider {...sorting} appendToUrl={sorting?.appendToUrl === undefined ? false : sorting.appendToUrl}>
-            <PageProvider
+            <PaginationProvider
                 {...paging}
                 pageSize={paging?.pageSize || SEARCH_PAGE_SIZE}
                 appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
                 <FilterProvider>
                     <SearchResultDisplayProvider>{children}</SearchResultDisplayProvider>
                 </FilterProvider>
-            </PageProvider>
+            </PaginationProvider>
         </SortingProvider>
     </ComponentSizingProvider>
 );
