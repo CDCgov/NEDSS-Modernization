@@ -8,7 +8,7 @@ export const PatientFile = () => {
 
     return (
         <div className={styles.file}>
-            <PatientFileHeader id={id || ''} />
+            <PatientFileHeader id={id ?? ''} />
             <main className="main-body"></main>
         </div>
     );
