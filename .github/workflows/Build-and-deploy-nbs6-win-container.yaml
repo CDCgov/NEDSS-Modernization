@@ -7,6 +7,10 @@ on:
       - "cdc-sandbox/nbs6-win-container/**"
 jobs:
   push-call-build-windows-container-workflow:
+    permissions:
+      id-token: write
+      contents: read
+      security-events: write
     name: On Push Build Windows Container
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@main
     with:
