@@ -24,11 +24,6 @@ describe('PageContext', () => {
     });
 
     it('should throw an error if usePage is used outside of PageProvider', () => {
-        const consoleError = console.error;
-        console.error = jest.fn();
-
         expect(() => renderHook(() => usePage())).toThrow('usePage must be used within a PageProvider');
-
-        console.error = consoleError;
     });
 });
