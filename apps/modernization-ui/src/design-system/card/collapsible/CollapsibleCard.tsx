@@ -34,7 +34,7 @@ export const CollapsibleCard = ({
     return (
         <section id={id} className={classNames(styles.card, { [styles.showControl]: collapsible }, className)}>
             <header>
-                <div className={styles.headerContext}>{header}</div>
+                {header}
                 <Shown when={collapsible}>
                     <div
                         className={classNames(styles.control, {

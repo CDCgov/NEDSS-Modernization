@@ -12,6 +12,7 @@
     transition-property: #{$property};
     transition-timing-function: ease-in;
 }
+
 .card {
     @extend %thin;
     background-color: colors.$base-white;

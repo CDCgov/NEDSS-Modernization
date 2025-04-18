@@ -1,6 +1,6 @@
 import { Heading, HeadingLevel } from 'components/heading';
 import { ReactNode } from 'react';
-import { BaseCard } from './base/BaseCard';
+import { CollapsibleCard } from './collapsible';
 import styles from './card.module.scss';
 
 type Props = {
@@ -14,9 +14,10 @@ type Props = {
 };
 export const Card = ({ id, title, info, subtext, children, className, level = 2 }: Props) => {
     return (
-        <BaseCard
+        <CollapsibleCard
             id={id}
             className={className}
+            collapsible={false}
             header={
                 <>
                     <div className={styles.titleBlock}>
@@ -27,6 +28,6 @@ export const Card = ({ id, title, info, subtext, children, className, level = 2 
                 </>
             }>
             {children}
-        </BaseCard>
+        </CollapsibleCard>
     );
 };
