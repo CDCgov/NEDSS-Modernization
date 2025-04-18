@@ -29,6 +29,10 @@ on:
 
 jobs:
   build-nbs-gateway-release-candidate:
+    permissions:
+      id-token: write
+      contents: read
+      security-events: write
     name: Build NBS Gateway Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
@@ -43,6 +47,10 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   prepare-nbs-gateway-release-candidate:
+    permissions:
+      id-token: write
+      contents: write      
+      pull-requests: write
     name: Prepare NBS Gateway Release Candidate Deployment
     needs: build-nbs-gateway-release-candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
@@ -55,6 +63,10 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   build-modernization-api-release-candidate:
+    permissions:
+      id-token: write
+      contents: read
+      security-events: write
     name: Build Modernization API Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
@@ -69,6 +81,10 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   prepare-modernization-api-release-candidate:
+    permissions:
+      id-token: write
+      contents: write      
+      pull-requests: write
     name: Prepare Modernization API Candidate Deployment
     needs: build-modernization-api-release-candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
@@ -81,6 +97,10 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   build-page-builder-api-release-candidate:
+    permissions:
+      id-token: write
+      contents: read
+      security-events: write
     name: Build Page Builder API Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
@@ -95,6 +115,10 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   prepare-page-builder-api-release-candidate:
+    permissions:
+      id-token: write
+      contents: write      
+      pull-requests: write
     name: Prepare Page Builder API Candidate Deployment
     needs: build-page-builder-api-release-candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
@@ -107,6 +131,10 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   build-elasticsearch-release-candidate:
+    permissions:
+      id-token: write
+      contents: read
+      security-events: write
     if: ${{ inputs.build-elasticsearch == 'true' }}
     name: Build Elasticsearch Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
@@ -122,6 +150,10 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   prepare-elasticsearch-release-candidate:
+    permissions:
+      id-token: write
+      contents: write      
+      pull-requests: write
     name: Prepare Elasticsearch Release Candidate Deployment
     needs: build-elasticsearch-release-candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
@@ -134,6 +166,10 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}        
   build-nifi-release-candidate:
+    permissions:
+      id-token: write
+      contents: read
+      security-events: write
     if: ${{ inputs.build-nifi == 'true' }}
     name: Build NiFi Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
@@ -149,6 +185,10 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   prepare-nifi-release-candidate:
+    permissions:
+      id-token: write
+      contents: write      
+      pull-requests: write
     name: Prepare NiFi Release Candidate Deployment
     needs: build-nifi-release-candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
