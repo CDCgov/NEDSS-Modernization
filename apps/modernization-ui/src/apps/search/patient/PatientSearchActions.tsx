@@ -12,7 +12,7 @@ const PatientSearchActions = ({ disabled }: Props) => {
 
     return (
         <Permitted include={[permissions.patient.add, permissions.labReport.add]} mode="any">
-            <Permitted include={[permissions.patient.add]} exclude={[permissions.labReport.add]}>
+            <Permitted include={[permissions.patient.add]}>
                 <Button
                     type="button"
                     onClick={add}
