@@ -1,14 +1,12 @@
-import { Checkbox } from 'design-system/checkbox';
-import { DataElementRow } from '../DataElementRow/DataElementRow';
-import { useFormContext, useWatch } from 'react-hook-form';
-import { DataElements } from '../../../api/model/DataElement';
-import { Card } from 'design-system/card/Card';
-import { useRef } from 'react';
-import { Icon } from 'design-system/icon';
-import styles from './DataElementsForm.module.scss';
-import RichTooltip from 'design-system/richTooltip/RichTooltip';
 import { DataElementToMatchingAttribute } from 'apps/deduplication/api/model/Conversion';
 import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
+import { Card } from 'design-system/card/Card';
+import { Checkbox } from 'design-system/checkbox';
+import { Hint } from 'design-system/hint/Hint';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { DataElements } from '../../../api/model/DataElement';
+import { DataElementRow } from '../DataElementRow/DataElementRow';
+import styles from './DataElementsForm.module.scss';
 
 const dataElementKeys: (keyof DataElements)[] = [
     'firstName',
@@ -47,10 +45,6 @@ export const DataElementsForm = ({ dataElements }: Props) => {
     const form = useFormContext<DataElements>();
     const watch = useWatch({ control: form.control });
 
-    const oddsRatioRef = useRef<HTMLSpanElement>(null);
-    const logOddsRef = useRef<HTMLSpanElement>(null);
-    const thresholdRef = useRef<HTMLSpanElement>(null);
-
     // Checks all keys in DataElements for an active property of false.
     const hasInactive = (): boolean => {
         return dataElementKeys.map((k) => watch[k]?.active).includes(false);
@@ -84,46 +78,34 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                             <th className={styles.numericColumn}>
                                 <span className={styles.headerWithIcon}>
                                     Odds ratio{' '}
-                                    <span ref={oddsRatioRef} className={styles.infoIcon}>
-                                        <RichTooltip anchorRef={oddsRatioRef} marginTop={38}>
-                                            <span>Odds Ratio - </span>
-                                            <span style={{ fontWeight: 'normal' }}>
-                                                Once checked, enter predetermined odds ratio value for each data element
-                                                as calculated from previous testing of local data
-                                            </span>
-                                        </RichTooltip>
-                                        <Icon name="info_outline" className="infoIcon" data-testid="infoIcon" />
+                                    <span className={styles.infoIcon}>
+                                        <Hint>
+                                            <b>Odds Ratio -</b> Once checked, enter predetermined odds ratio value for
+                                            each data element as calculated from previous testing of local data
+                                        </Hint>
                                     </span>
                                 </span>
                             </th>
                             <th className={styles.calculatedColumn}>
                                 <span className={styles.headerWithIcon}>
                                     Log odds{' '}
-                                    <span ref={logOddsRef} className={styles.infoIcon}>
-                                        <RichTooltip anchorRef={logOddsRef} marginTop={38}>
-                                            <span>Log odds - </span>
-                                            <span style={{ fontWeight: 'normal' }}>
-                                                The corresponding log odds value used by the algorithm will be
-                                                calculated and displayed.
-                                            </span>
-                                        </RichTooltip>
-                                        <Icon name="info_outline" className="infoIcon" />
-                                    </span>
+                                    <div className={styles.infoIcon}>
+                                        <Hint>
+                                            <b>Log odds -</b> The corresponding log odds value used by the algorithm
+                                            will be calculated and displayed.
+                                        </Hint>
+                                    </div>
                                 </span>
                             </th>
                             <th className={styles.numericColumn}>
                                 <span className={styles.headerWithIcon}>
                                     Threshold{' '}
-                                    <span ref={thresholdRef} className={styles.infoIcon}>
-                                        <RichTooltip anchorRef={thresholdRef} marginLeft={-300} marginTop={38}>
-                                            <span>Threshold - </span>
-                                            <span style={{ fontWeight: 'normal' }}>
-                                                Values above which two strings are said to be “similar enough” that
-                                                they're probably the same thing. Values that are less than the threshold
-                                                will be calculated as 0.
-                                            </span>
-                                        </RichTooltip>
-                                        <Icon name="info_outline" className="infoIcon" />
+                                    <span className={styles.infoIcon}>
+                                        <Hint position="left">
+                                            <b>Threshold -</b> Values between 0 and 1, above which two strings are said
+                                            to be "similar enough" that they are probably the same thing. Values that
+                                            are less than the threshold will be calculated as 0.
+                                        </Hint>
                                     </span>
                                 </span>
                             </th>
