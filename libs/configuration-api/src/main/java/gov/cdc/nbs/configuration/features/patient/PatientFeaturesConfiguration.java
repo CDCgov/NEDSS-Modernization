@@ -35,7 +35,7 @@ class PatientFeaturesConfiguration {
 
   @Bean
   @Scope("prototype")
-  Patient.File patientFileFeatures(@Value("${nbs.ui.features.patient.file.enabled:true}") final boolean enabled) {
+  Patient.File patientFileFeatures(@Value("${nbs.ui.features.patient.file.enabled:false}") final boolean enabled) {
     return new Patient.File(enabled);
   }
 
