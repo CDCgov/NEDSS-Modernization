@@ -27,8 +27,8 @@ export const CollapsibleCard = ({
     const contentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const curHeight = contentRef.current?.scrollHeight;
-        setHeight(collapsed ? '0' : curHeight ? `${curHeight}px` : 'auto');
+        const currentHeight = contentRef.current?.scrollHeight;
+        setHeight(collapsed ? '0' : currentHeight ? `${currentHeight}px` : 'auto');
     }, [collapsed]);
 
     return (
