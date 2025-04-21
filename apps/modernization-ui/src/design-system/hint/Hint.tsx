@@ -25,17 +25,11 @@ type Props = {
  */
 export const Hint = ({ id, children, marginTop = 0, marginLeft = 0, position = 'right' }: Props) => {
     const [visible, setVisible] = useState(false);
-    const [offset, setOffset] = useState<{ top: number; left: number }>({
-        top: marginTop + DEFAULT_TOP,
-        left: marginLeft + 0
-    });
 
-    useMemo(() => {
-        if (position === 'left') {
-            setOffset({ top: marginTop + DEFAULT_TOP, left: marginLeft - LEFT_OFFSET });
-        } else {
-            setOffset({ top: marginTop + DEFAULT_TOP, left: marginLeft + 0 });
-        }
+    const offset = useMemo(() => {
+        const top = marginTop + DEFAULT_TOP;
+        const left = position === 'left' ? marginLeft - LEFT_OFFSET : marginLeft;
+        return { top, left };
     }, [marginLeft, marginTop, position]);
 
     return (
