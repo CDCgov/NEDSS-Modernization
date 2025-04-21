@@ -80,6 +80,9 @@ type Features = {
     };
     deduplication: {
         enabled: boolean;
+        merge: {
+            enabled: boolean;
+        };
     };
     search: Search;
     patient: PatientFeatures;

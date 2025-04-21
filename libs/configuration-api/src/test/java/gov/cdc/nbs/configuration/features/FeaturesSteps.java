@@ -17,6 +17,7 @@ public class FeaturesSteps {
       case "patient file" -> "features.patient.file.enabled";
       case "patient search filters" -> "features.patient.search.filters.enabled";
       case "deduplication" -> "features.deduplication.enabled";
+      case "deduplication merge" -> "features.deduplication.merge.enabled";
       default -> value;
     };
   }
