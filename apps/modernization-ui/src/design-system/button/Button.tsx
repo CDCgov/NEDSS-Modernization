@@ -4,7 +4,7 @@ import styles from './Button.module.scss';
 import classNames from 'classnames';
 import { Sizing } from 'design-system/field';
 
-type Props = {
+type ButtonProps = {
     className?: string;
     icon?: ReactNode;
     children?: ReactNode;
@@ -33,7 +33,7 @@ const Button = ({
     labelPosition = 'left',
     sizing,
     ...defaultProps
-}: Props) => {
+}: ButtonProps) => {
     const isIconOnly = icon && !children;
     const isSecondary = secondary || outline;
     const classesArray = classNames(className, sizing && styles[sizing], {
@@ -69,3 +69,4 @@ const Button = ({
 };
 
 export { Button };
+export type { ButtonProps };

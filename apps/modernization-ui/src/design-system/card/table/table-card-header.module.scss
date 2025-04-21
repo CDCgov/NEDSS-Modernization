@@ -1,0 +1,24 @@
+@use 'styles/colors';
+
+.title {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+}
+
+.subtext {
+    font-size: 0.875rem;
+    line-height: 1.3125rem;
+    color: colors.$base-darker;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-right: 1rem;
+    gap: 0.5rem;
+}
+
+
