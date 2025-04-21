@@ -5,6 +5,7 @@ import { ComponentProps } from 'react';
 const meta = {
     title: 'Design System/Hint',
     args: {
+        id: 'storybook-hint',
         position: 'right',
         marginTop: 0,
         marginLeft: 0,

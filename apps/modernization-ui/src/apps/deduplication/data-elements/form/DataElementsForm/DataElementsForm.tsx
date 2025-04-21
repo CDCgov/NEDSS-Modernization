@@ -2,7 +2,7 @@ import { DataElementToMatchingAttribute } from 'apps/deduplication/api/model/Con
 import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
 import { Card } from 'design-system/card/Card';
 import { Checkbox } from 'design-system/checkbox';
-import { Hint } from 'design-system/hint/Hint';
+import { Hint } from 'design-system/hint';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { DataElements } from '../../../api/model/DataElement';
 import { DataElementRow } from '../DataElementRow/DataElementRow';
@@ -76,37 +76,31 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                             </th>
                             <th>Field</th>
                             <th className={styles.numericColumn}>
-                                <span className={styles.headerWithIcon}>
+                                <span className={styles.headerWithIcon} aria-describedby="odds-ratio-hint">
                                     Odds ratio{' '}
-                                    <span className={styles.infoIcon}>
-                                        <Hint>
-                                            <b>Odds Ratio -</b> Once checked, enter predetermined odds ratio value for
-                                            each data element as calculated from previous testing of local data
-                                        </Hint>
-                                    </span>
+                                    <Hint id="odds-ratio-hint">
+                                        <b>Odds Ratio -</b> Once checked, enter predetermined odds ratio value for each
+                                        data element as calculated from previous testing of local data
+                                    </Hint>
                                 </span>
                             </th>
                             <th className={styles.calculatedColumn}>
-                                <span className={styles.headerWithIcon}>
+                                <span className={styles.headerWithIcon} aria-describedby="log-odds-hint">
                                     Log odds{' '}
-                                    <div className={styles.infoIcon}>
-                                        <Hint>
-                                            <b>Log odds -</b> The corresponding log odds value used by the algorithm
-                                            will be calculated and displayed.
-                                        </Hint>
-                                    </div>
+                                    <Hint id="log-odds-hint">
+                                        <b>Log odds -</b> The corresponding log odds value used by the algorithm will be
+                                        calculated and displayed.
+                                    </Hint>
                                 </span>
                             </th>
                             <th className={styles.numericColumn}>
-                                <span className={styles.headerWithIcon}>
+                                <span className={styles.headerWithIcon} aria-describedby="threshold-hint">
                                     Threshold{' '}
-                                    <span className={styles.infoIcon}>
-                                        <Hint position="left">
-                                            <b>Threshold -</b> Values between 0 and 1, above which two strings are said
-                                            to be "similar enough" that they are probably the same thing. Values that
-                                            are less than the threshold will be calculated as 0.
-                                        </Hint>
-                                    </span>
+                                    <Hint id="threshold-hint" position="left">
+                                        <b>Threshold -</b> Values between 0 and 1, above which two strings are said to
+                                        be "similar enough" that they are probably the same thing. Values that are less
+                                        than the threshold will be calculated as 0.
+                                    </Hint>
                                 </span>
                             </th>
                         </tr>

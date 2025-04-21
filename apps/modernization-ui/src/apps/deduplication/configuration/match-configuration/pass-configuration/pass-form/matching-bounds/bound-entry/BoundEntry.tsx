@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { InlineErrorMessage } from 'design-system/field/InlineErrorMessage';
-import { Hint } from 'design-system/hint/Hint';
+import { Hint } from 'design-system/hint';
 import { Numeric } from 'design-system/input/numeric/Numeric';
 import { ReactNode } from 'react';
 import styles from './bound-entry.module.scss';
@@ -18,9 +18,9 @@ type Props = {
 export const BoundEntry = ({ name, label, value, error, tooltip, disabled = false, onBlur, onChange }: Props) => {
     return (
         <div className={classNames(styles.boundEntry, error ? styles.hasError : '')}>
-            <label htmlFor={name}>
+            <label htmlFor={name} aria-describedby={`${name}-info`}>
                 {label}
-                <Hint>{tooltip}</Hint>
+                <Hint id={`${name}-info`}>{tooltip}</Hint>
             </label>
             <div>
                 {error && <InlineErrorMessage id={`${name}-error`}>{error}</InlineErrorMessage>}
