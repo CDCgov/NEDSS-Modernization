@@ -2,7 +2,6 @@ import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useFormNavigationBlock } from 'navigation';
-import { FeatureToggle } from 'feature';
 import { Shown } from 'conditional-render';
 import { Button } from 'components/button';
 import { sections } from './sections';
@@ -76,16 +75,14 @@ export const AddPatientBasic = () => {
                     sections={sections}
                     headerActions={() => (
                         <div className={styles.buttonGroup}>
-                            <FeatureToggle guard={(features) => features.patient?.add?.extended?.enabled}>
-                                <Button
-                                    type="button"
-                                    onClick={handleExtended}
-                                    outline
-                                    className="add-patient-button"
-                                    disabled={working}>
-                                    Add extended data
-                                </Button>
-                            </FeatureToggle>
+                            <Button
+                                type="button"
+                                onClick={handleExtended}
+                                outline
+                                className="add-patient-button"
+                                disabled={working}>
+                                Add extended data
+                            </Button>
                             <Button onClick={backToSearch} outline>
                                 Cancel
                             </Button>

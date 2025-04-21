@@ -4,6 +4,7 @@ import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import NavBar from 'shared/header/NavBar';
 import { ScrollToTop } from './ScrollToTop';
 import { AlertProvider } from 'alert/useAlert';
+import { PageProvider } from 'page';
 
 const Layout = () => {
     return (
@@ -11,8 +12,10 @@ const Layout = () => {
             <ScrollToTop>
                 <AlertProvider>
                     <SkipLinkProvider>
-                        <NavBar />
-                        <Outlet />
+                        <PageProvider>
+                            <NavBar />
+                            <Outlet />
+                        </PageProvider>
                     </SkipLinkProvider>
                 </AlertProvider>
             </ScrollToTop>
