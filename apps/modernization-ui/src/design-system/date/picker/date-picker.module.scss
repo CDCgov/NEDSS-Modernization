@@ -1,37 +1,33 @@
-@mixin sizedDatePicker($backgroundSize: 1rem, $calendarWidth: 17.75rem, $calendarHeight: 16.75rem) {
-    & > div > button {
-        background-size: $backgroundSize;
-        background-position: left;
-        width: $backgroundSize;
+.sized {
+    --calendar-icon-width: 1rem;
 
-        &:focus {
-            width: calc($backgroundSize + 0.5rem);
-            background-position: center;
-        }
+    & > div > button {
+        //  usa-date-picker__button
+        background-size: var(--calendar-icon-width);
+        max-width: var(--calendar-icon-width);
     }
 
     & > div > input {
+        // usa-date-picker__external-input
         margin-right: 0.25rem !important;
     }
 
     & > div > div {
-        min-width: $calendarWidth !important;
-        min-height: $calendarHeight !important;
+        // usa-date-picker__calendar
+        min-width: 17.75rem !important;
     }
-}
 
-.small {
-    @include sizedDatePicker(1rem, 17.75rem, 15rem);
+    &.small {
+        --calendar-navigation-padding: 18px;
+        --calendar-day-of-week-padding: 4px;
+        --calendar-date-padding: 8px;
+    }
 
-    --calendar-navigation-padding: 18px;
-    --calendar-day-of-week-padding: 4px;
-    --calendar-date-padding: 8px;
-}
+    &.medium {
+        --calendar-icon-width: 1.125rem;
+    }
 
-.medium {
-    @include sizedDatePicker(1.125rem);
-}
-
-.large {
-    @include sizedDatePicker(1.25rem);
+    &.large {
+        --calendar-icon-width: 1.25rem;
+    }
 }

@@ -18,8 +18,6 @@ public record Patient(Search search, Profile profile, Add add, File file) {
   }
 
 
-  public record Add(Boolean enabled, Add.Extended extended) {
-    public record Extended(Boolean enabled) {
-    }
+  public record Add(Boolean enabled) {
   }
 }

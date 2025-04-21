@@ -4,6 +4,10 @@
     flex-direction: column;
     gap: 0.25rem;
 
+    & > label {
+        line-height: 1.25rem;
+    }
+
     & > div input {
         margin: 0;
     }
