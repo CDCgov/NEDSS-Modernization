@@ -1,18 +1,30 @@
-import { renderHook } from '@testing-library/react';
-import { PageProvider, usePage } from '.';
-import { act } from 'react';
+import { renderHook, act } from '@testing-library/react';
+import { Location } from 'react-router';
+import { PageProvider, usePage } from './PageContext';
+
+const mockLocation = {} as Location;
+
+jest.mock('react-router', () => ({
+    useLocation: () => mockLocation
+}));
 
 const setup = () => {
     return renderHook(() => usePage(), {
         wrapper: PageProvider
-    })
-}
+    });
+};
 
 describe('PageContext', () => {
+    beforeEach(() => {
+        mockLocation.pathname = '/';
+    });
+
     it('should provide a default page title', () => {
+        mockLocation.pathname = '/some-longish-name/path';
+
         const { result } = setup();
 
-        expect(result.current.title).toBeUndefined();
+        expect(result.current.title).toEqual('Some Longish Name');
     });
 
     it('should update the page title', () => {
@@ -26,6 +38,7 @@ describe('PageContext', () => {
     });
 
     it('should reset the page title', () => {
+        mockLocation.pathname = '/default';
         const { result } = setup();
 
         act(() => {
@@ -37,11 +50,6 @@ describe('PageContext', () => {
         act(() => {
             result.current.resetTitle();
         });
-        expect(result.current.title).toBeUndefined();
-    });
-
-
-    it('should throw an error if usePage is used outside of PageProvider', () => {
-        expect(() => renderHook(() => usePage())).toThrow('usePage must be used within a PageProvider');
+        expect(result.current.title).toEqual('Default');
     });
 });
