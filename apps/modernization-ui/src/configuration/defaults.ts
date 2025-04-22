@@ -54,9 +54,6 @@ const defaultFeatures: Features = {
         },
         file: {
             enabled: false
-        },
-        add: {
-            enabled: false
         }
     }
 };
