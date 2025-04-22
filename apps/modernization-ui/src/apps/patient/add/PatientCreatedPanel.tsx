@@ -54,8 +54,8 @@ const PatientCreatedPanel = ({ created }: Props) => (
                 <strong>
                     {resolveName(created)} (Patient ID: {created.shortId})
                 </strong>{' '}
-                has been added. You can now either view the patient, add a report for this patient or add an
-                investigation for this patient using the buttons below.
+                has been added. You can now view the patient, or if you have permissions, add a lab report, morbidity
+                report or investigation for this patient using the buttons below.
             </p>
         </Message>
     </Modal>
