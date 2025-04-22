@@ -74,6 +74,4 @@ nbs:
           enabled: true
         add:
           enabled: true
-          extended:
-            enabled: true
 

@@ -3,8 +3,14 @@ import { useLocation } from 'react-router';
 import { UserContext } from 'providers/UserContext';
 import { useNavigationBarPermissions } from 'shared/header/permissions';
 import styles from './NavBar.module.scss';
+import { usePage } from 'page';
 
-// eslint-disable-next-line no-undef
+const formatPageTitle = (title?: string, locationPath?: string) => {
+    if (title) return title;
+    const pathTitle = locationPath?.split('/')[1]?.split('-').join(' ') ?? '';
+    if (!pathTitle) return '';
+    return pathTitle.charAt(0).toUpperCase() + pathTitle.slice(1).toLowerCase();
+};
 
 export default function NavBar() {
     const {
@@ -16,6 +22,7 @@ export default function NavBar() {
         logout();
     };
     const { systemManagementAccess } = useNavigationBarPermissions();
+    const { title } = usePage();
 
     return (
         <div className={styles.navbar}>
@@ -103,9 +110,7 @@ export default function NavBar() {
                     <tbody>
                         <tr>
                             <td className={styles.pageHeader} style={{ padding: '5px', marginBottom: '0px' }}>
-                                <a style={{ textTransform: 'capitalize' }}>
-                                    {location?.pathname?.split('/')[1]?.split('-').join(' ')}
-                                </a>
+                                <a>{formatPageTitle(title, location?.pathname)}</a>
                             </td>
 
                             <td className={styles.currentUser} style={{ paddingBottom: '0px', marginBottom: '0px' }}>

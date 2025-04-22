@@ -16,7 +16,6 @@ class LoginPage {
         }
         cy.get("#id_Submit_bottom_ToolbarButtonGraphic").click();
         cy.get("#homePageAdvancedSearch").click();
-        cy.wait("@loginRequest");
       } else {
         cy.intercept("POST", "/graphql").as("loginRequest");
         cy.get("#username").type(user);
@@ -25,7 +24,6 @@ class LoginPage {
         }
         cy.get("#kc-login").click();
         cy.get("#homePageAdvancedSearch").click();
-        cy.wait("@loginRequest");
       }
     });
   }

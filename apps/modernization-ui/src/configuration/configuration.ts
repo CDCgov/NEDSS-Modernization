@@ -38,9 +38,6 @@ type PatientFileFeatures = {
 
 type PatientAddFeatures = {
     enabled: boolean;
-    extended: {
-        enabled: boolean;
-    };
 };
 
 type PatientSearchFeatures = {

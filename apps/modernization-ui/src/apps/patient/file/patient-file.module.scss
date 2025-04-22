@@ -1,0 +1,24 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.file {
+    & > header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        background-color: colors.$base-white;
+        padding: 1rem;
+
+        @extend %thin-bottom;
+
+        & > .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+    }
+
+    & > main {
+        padding: 1rem;
+    }
+}
