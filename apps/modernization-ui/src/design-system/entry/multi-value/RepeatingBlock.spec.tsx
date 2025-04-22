@@ -337,7 +337,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should render view when view icon clicked', async () => {
-        const { getByLabelText, getByText, getByRole } = render(
+        const { getByLabelText, getByText, getAllByRole } = render(
             <Fixture
                 values={[
                     {
@@ -357,14 +357,15 @@ describe('RepeatingBlock', () => {
         expect(getByText('Render view first value: first-value')).toBeInTheDocument();
         expect(getByText('Render view second value: second-value')).toBeInTheDocument();
 
-        const addButton = getByRole('button', { name: 'Add test title' });
-        expect(addButton).toBeInTheDocument();
-        expect(addButton.innerHTML).toContain('svg');
-        expect(addButton).toHaveAttribute('aria-description');
+        const buttons = getAllByRole('button');
+        expect(buttons).toHaveLength(1);
+        expect(buttons[0]).toHaveTextContent('Add test title');
+        expect(buttons[0].innerHTML).toContain('svg');
+        expect(buttons[0]).toHaveAttribute('aria-description');
     });
 
     it('should render edit when edit icon clicked', async () => {
-        const { getByLabelText, getByRole } = render(
+        const { getByLabelText, getAllByRole } = render(
             <Fixture
                 values={[
                     {
@@ -384,14 +385,13 @@ describe('RepeatingBlock', () => {
         expect(getByLabelText('First Input')).toBeInTheDocument();
         expect(getByLabelText('Second Input')).toBeInTheDocument();
 
-        const updateButton = getByRole('button', { name: 'Update test title' });
-        expect(updateButton).toBeInTheDocument();
-        expect(updateButton).toHaveAttribute('aria-description');
-        expect(updateButton.innerHTML).not.toContain('svg');
-
-        const cancelButton = getByRole('button', { name: 'Cancel' });
-        expect(cancelButton).toBeInTheDocument();
-        expect(cancelButton).toHaveAttribute('aria-description');
+        const buttons = getAllByRole('button');
+        expect(buttons).toHaveLength(2);
+        expect(buttons[0]).toHaveTextContent('Update test title');
+        expect(buttons[0]).toHaveAttribute('aria-description');
+        expect(buttons[0].innerHTML).not.toContain('svg');
+        expect(buttons[1]).toHaveTextContent('Cancel');
+        expect(buttons[1]).toHaveAttribute('aria-description');
     });
 
     it('should delete row when delete icon clicked', async () => {
