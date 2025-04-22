@@ -5,7 +5,11 @@ import { useNavigationBarPermissions } from 'shared/header/permissions';
 import styles from './NavBar.module.scss';
 import { usePage } from 'page';
 
-// eslint-disable-next-line no-undef
+const formatPageTitle = (title?: string, locationPath?: string) => {
+    const text = title ?? locationPath?.split('/')[1]?.split('-').join(' ') ?? '';
+    if (!text) return '';
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+};
 
 export default function NavBar() {
     const {
@@ -105,7 +109,7 @@ export default function NavBar() {
                     <tbody>
                         <tr>
                             <td className={styles.pageHeader} style={{ padding: '5px', marginBottom: '0px' }}>
-                                <a>{title ?? location?.pathname?.split('/')[1]?.split('-').join(' ')}</a>
+                                <a>{formatPageTitle(title, location?.pathname)}</a>
                             </td>
 
                             <td className={styles.currentUser} style={{ paddingBottom: '0px', marginBottom: '0px' }}>
