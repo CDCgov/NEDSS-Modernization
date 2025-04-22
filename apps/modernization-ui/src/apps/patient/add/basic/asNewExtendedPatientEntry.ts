@@ -99,7 +99,7 @@ const phoneEmailsExtended = (initial: BasicNewPatientEntry): PhoneEmailEntry[] =
             });
         }
 
-        if (initial.phoneEmail?.work) {
+        if (initial.phoneEmail?.work?.phone) {
             phoneEmails.push({
                 asOf: initial.administrative.asOf,
                 type: PHONE,
