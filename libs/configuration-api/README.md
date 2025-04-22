@@ -43,5 +43,4 @@ the response of the `/nbs/api/configuration` endpoint.
 | nbs.ui.features.search.investigations.enabled       | false   | Enables access to modernized Investigation search   |
 | nbs.ui.features.search.laboratoryReports.enabled    | false   | Enables access to modernized Laboratory search      |
 | nbs.ui.features.patient.search.filters.enabled      | false   | Enables access to modernized Patient search filters |
-| nbs.ui.features.patient.add.enabled                 | false   | Enables access to modernized Patient short form add |
 | nbs.ui.features.patient.profile.enabled             | false   | Enables access to modernized Patient Profile        |

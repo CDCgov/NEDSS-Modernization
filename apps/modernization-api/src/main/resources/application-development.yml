@@ -74,6 +74,4 @@ nbs:
           enabled: true
         file:
           enabled: true
-        add:
-          enabled: true
 
