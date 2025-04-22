@@ -357,11 +357,11 @@ describe('RepeatingBlock', () => {
         expect(getByText('Render view first value: first-value')).toBeInTheDocument();
         expect(getByText('Render view second value: second-value')).toBeInTheDocument();
 
-        const buttons = getAllByRole('button');
-        expect(buttons).toHaveLength(4);
-        expect(buttons[3]).toHaveTextContent('Add test title');
-        expect(buttons[3].innerHTML).toContain('svg');
-        expect(buttons[3]).toHaveAttribute('aria-description');
+        const buttons = getAllByRole('button', { name: /Add/ });
+        expect(buttons).toHaveLength(1);
+        expect(buttons[0]).toHaveTextContent('Add test title');
+        expect(buttons[0].innerHTML).toContain('svg');
+        expect(buttons[0]).toHaveAttribute('aria-description');
     });
 
     it('should render edit when edit icon clicked', async () => {
@@ -385,13 +385,13 @@ describe('RepeatingBlock', () => {
         expect(getByLabelText('First Input')).toBeInTheDocument();
         expect(getByLabelText('Second Input')).toBeInTheDocument();
 
-        const buttons = getAllByRole('button');
-        expect(buttons).toHaveLength(5);
-        expect(buttons[3]).toHaveTextContent('Update test title');
-        expect(buttons[3]).toHaveAttribute('aria-description');
-        expect(buttons[3].innerHTML).not.toContain('svg');
-        expect(buttons[4]).toHaveTextContent('Cancel');
-        expect(buttons[4]).toHaveAttribute('aria-description');
+        const buttons = getAllByRole('button', { name: /(Update.*|Cancel)/ });
+        expect(buttons).toHaveLength(2);
+        expect(buttons[0]).toHaveTextContent('Update test title');
+        expect(buttons[0]).toHaveAttribute('aria-description');
+        expect(buttons[0].innerHTML).not.toContain('svg');
+        expect(buttons[1]).toHaveTextContent('Cancel');
+        expect(buttons[1]).toHaveAttribute('aria-description');
     });
 
     it('should delete row when delete icon clicked', async () => {
