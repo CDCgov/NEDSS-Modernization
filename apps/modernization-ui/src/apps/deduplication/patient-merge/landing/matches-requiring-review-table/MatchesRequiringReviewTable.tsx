@@ -10,6 +10,8 @@ import { Status, usePagination } from 'pagination';
 import { useEffect } from 'react';
 import styles from './matches-requiring-review.module.scss';
 
+const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
+
 export const MatchesRequiringReviewTable = () => {
     const { response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
     const { page, ready, request, resize } = usePagination();
@@ -43,14 +45,14 @@ export const MatchesRequiringReviewTable = () => {
             id: 'date-created',
             name: 'Date created',
             render(match) {
-                return <>{format(parseISO(match.createdDate), 'MM/dd/yyyy hh:mm a')}</>;
+                return <>{format(parseISO(match.createdDate), DATE_FORMAT)}</>;
             }
         },
         {
             id: 'date-identified',
             name: 'Date identified',
             render(match) {
-                return <>{format(parseISO(match.identifiedDate), 'MM/dd/yyyy hh:mm a')}</>;
+                return <>{format(parseISO(match.identifiedDate), DATE_FORMAT)}</>;
             }
         },
         {
@@ -84,7 +86,7 @@ export const MatchesRequiringReviewTable = () => {
                 <SearchResultPageSizeSelect
                     id={`page-size-select`}
                     value={page.pageSize}
-                    selections={[20, 30, 40, 50]}
+                    selections={[20, 30, 50, 100]}
                     onPageSizeChanged={resize}
                 />
                 <SearchResultsShowing page={page} />
