@@ -12,7 +12,7 @@ import styles from './matches-requiring-review.module.scss';
 
 export const MatchesRequiringReviewTable = () => {
     const { response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
-    const { page, ready, request, firstPage } = usePagination();
+    const { page, ready, request, resize } = usePagination();
 
     useEffect(() => {
         ready(response.total, Math.max(1, page.current));
@@ -84,8 +84,8 @@ export const MatchesRequiringReviewTable = () => {
                 <SearchResultPageSizeSelect
                     id={`page-size-select`}
                     value={page.pageSize}
-                    selections={[1, 30, 40, 50]}
-                    onPageSizeChanged={firstPage}
+                    selections={[20, 30, 40, 50]}
+                    onPageSizeChanged={resize}
                 />
                 <SearchResultsShowing page={page} />
                 <Pagination

@@ -7,7 +7,7 @@ import styles from './merge-landing.module.scss';
 
 export const MergeLanding = () => {
     return (
-        <div>
+        <>
             <header>
                 <Heading level={1}>Matches requiring review</Heading>
                 <div className={styles.buttons}>
@@ -20,6 +20,6 @@ export const MergeLanding = () => {
                     <MatchesRequiringReviewTable />
                 </PaginationProvider>
             </main>
-        </div>
+        </>
     );
 };
