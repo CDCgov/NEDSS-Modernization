@@ -6,9 +6,10 @@ import styles from './NavBar.module.scss';
 import { usePage } from 'page';
 
 const formatPageTitle = (title?: string, locationPath?: string) => {
-    const text = title ?? locationPath?.split('/')[1]?.split('-').join(' ') ?? '';
-    if (!text) return '';
-    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+    if (title) return title;
+    const pathTitle = locationPath?.split('/')[1]?.split('-').join(' ') ?? '';
+    if (!pathTitle) return '';
+    return pathTitle.charAt(0).toUpperCase() + pathTitle.slice(1).toLowerCase();
 };
 
 export default function NavBar() {
