@@ -12,8 +12,8 @@ jest.mock('react-router', () => ({
 
 describe('NavBar component tests', () => {
     it('should render navigation bar', () => {
-        (usePage as jest.Mock).mockReturnValue({ title: 'Test Page' });
+        (usePage as jest.Mock).mockReturnValue({ title: 'Test page' });
         const { getByText } = render(<NavBar />);
-        expect(getByText('Test Page')).toBeInTheDocument();
+        expect(getByText('Test page')).toBeInTheDocument();
     });
 });

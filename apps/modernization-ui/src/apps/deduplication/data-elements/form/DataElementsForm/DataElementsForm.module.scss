@@ -99,23 +99,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.1875rem;
-    max-height: 1rem;
-}
-
-.infoIcon use {
-    fill: colors.$primary !important;
-    align-items: center;
-    display: inline-flex;
-    vertical-align: middle;
-    max-height: 1rem !important;
-    margin-left: 0.3125rem;
-    transform: translateY(-0.125rem);
-}
-
-.infoIcon svg {
-    vertical-align: middle;
-    display: inline-block;
-    gap: 0.125rem;
+    line-height: 1.25rem;
 }
 
 .cardInfo {

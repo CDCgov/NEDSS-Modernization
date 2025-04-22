@@ -13,9 +13,8 @@ class PatientFeaturesConfiguration {
   Patient patientFeatures(
       final Patient.Search search,
       final Patient.Profile profile,
-      final Patient.Add add,
       final Patient.File file) {
-    return new Patient(search, profile, add, file);
+    return new Patient(search, profile, file);
   }
 
   @Bean
@@ -37,12 +36,5 @@ class PatientFeaturesConfiguration {
   @Scope("prototype")
   Patient.File patientFileFeatures(@Value("${nbs.ui.features.patient.file.enabled:false}") final boolean enabled) {
     return new Patient.File(enabled);
-  }
-
-  @Bean
-  @Scope("prototype")
-  Patient.Add patientAddFeatures(
-      @Value("${nbs.ui.features.patient.add.enabled:false}") final boolean enabled) {
-    return new Patient.Add(enabled);
   }
 }

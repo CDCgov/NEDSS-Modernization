@@ -46,15 +46,17 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                                 Please add matching criteria to continue.
                             </div>
                         }>
-                        {fields.map((entry, index) => (
-                            <MatchingCriteriaAttribute
-                                key={entry.id}
-                                label={MatchingAttributeLabels[entry.attribute].label}
-                                attribute={entry.attribute}
-                                onRemove={() => handleRemoveAttribute(index)}
-                                logOdds={getLogOdds(dataElements, entry.attribute)}
-                            />
-                        ))}
+                        {fields
+                            .filter((f) => f !== undefined)
+                            .map((entry, index) => (
+                                <MatchingCriteriaAttribute
+                                    key={entry.id}
+                                    label={MatchingAttributeLabels[entry.attribute]?.label ?? ''}
+                                    attribute={entry.attribute}
+                                    onRemove={() => handleRemoveAttribute(index)}
+                                    logOdds={getLogOdds(dataElements, entry.attribute)}
+                                />
+                            ))}
                     </Shown>
                     <div className={styles.buttonContainer}>
                         <Button

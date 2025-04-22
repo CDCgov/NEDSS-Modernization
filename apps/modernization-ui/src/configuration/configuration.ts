@@ -40,10 +40,6 @@ type PatientFileFeatures = {
     enabled: boolean;
 };
 
-type PatientAddFeatures = {
-    enabled: boolean;
-};
-
 type PatientSearchFeatures = {
     filters: {
         enabled: boolean;
@@ -54,7 +50,6 @@ type PatientFeatures = {
     search: PatientSearchFeatures;
     profile: PatientProfileFeatures;
     file: PatientFileFeatures;
-    add: PatientAddFeatures;
 };
 
 type Features = {
