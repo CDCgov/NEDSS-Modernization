@@ -35,5 +35,7 @@ Feature: Frontend Feature Configuration
       | modernized patient profile | disabled |
       | deduplication              | disabled |
       | deduplication              | enabled  |
+      | deduplication merge        | disabled |
+      | deduplication merge        | enabled  |
       | patient file               | enabled  |
       | patient file               | disabled |

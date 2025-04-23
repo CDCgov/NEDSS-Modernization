@@ -1,0 +1,24 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.table {
+    @include borders.rounded();
+    @extend %thin;
+    overflow: hidden;
+
+    .reviewButton {
+        display: flex;
+        width: 4.5rem;
+        height: 1.5rem;
+        align-items: center;
+        line-height: normal;
+    }
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    background-color: colors.$base-white;
+}
