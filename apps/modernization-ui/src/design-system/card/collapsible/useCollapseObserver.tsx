@@ -26,6 +26,12 @@ const useCollapseObserver = <T extends HTMLElement>({
             }
         };
 
+        // Initial height update
+        updateHeight();
+
+        if (!collapsible) {
+            return;
+        }
         // Create observers to handle resize and mutation events
         // These observers will detect changes in size of the content
         const resizeObserver = new ResizeObserver(updateHeight);
@@ -35,9 +41,6 @@ const useCollapseObserver = <T extends HTMLElement>({
             resizeObserver.observe(contentRef.current);
             mutationObserver.observe(contentRef.current, { childList: true, subtree: true, characterData: true });
         }
-
-        // Initial height update
-        updateHeight();
 
         return () => {
             if (contentRef.current) {
