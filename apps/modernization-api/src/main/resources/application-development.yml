@@ -70,8 +70,6 @@ nbs:
         search:
           filters:
             enabled: true
-        profile:
-          enabled: true
         file:
           enabled: true
 

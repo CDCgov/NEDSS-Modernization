@@ -12,7 +12,7 @@ const modernizedPatientProfile = (shortId: number, display?: string) => (
 const displayProfileLink = (identifier: number, shortId: number, display?: string) => {
     return (
         <FeatureToggle
-            guard={(features) => features?.patient?.profile.enabled}
+            guard={(features) => features?.patient?.file.enabled}
             fallback={nbs6PatientProfile(identifier, shortId, display)}>
             {modernizedPatientProfile(shortId, display)}
         </FeatureToggle>

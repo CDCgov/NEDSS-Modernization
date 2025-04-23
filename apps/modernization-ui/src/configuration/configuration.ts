@@ -32,10 +32,6 @@ type Search = {
     view: SearchView;
 };
 
-type PatientProfileFeatures = {
-    enabled: boolean;
-};
-
 type PatientFileFeatures = {
     enabled: boolean;
 };
@@ -48,7 +44,7 @@ type PatientSearchFeatures = {
 
 type PatientFeatures = {
     search: PatientSearchFeatures;
-    profile: PatientProfileFeatures;
+
     file: PatientFileFeatures;
 };
 
