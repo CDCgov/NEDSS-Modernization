@@ -1,5 +1,5 @@
 import { differenceInYears } from 'date-fns';
-import { displayAgeAsOf, displayAgeAsOfToday } from './displayAge';
+import { asDate, displayAgeAsOf, displayAgeAsOfToday } from './displayAge';
 
 describe('displayAgeAsOf', () => {
     it('should display age in years', () => {
@@ -55,6 +55,24 @@ describe('displayAgeAsOf', () => {
 
         expect(actual).toBeUndefined();
     });
+
+    it('should display 1 year when from is string', () => {
+        const actual = displayAgeAsOf('1984-09-01', '1985-09-01');
+
+        expect(actual).toEqual('1 year');
+    });
+
+    it('should display age in years when from is string', () => {
+        const actual = displayAgeAsOf('1984-09-01', '2023-01-01');
+
+        expect(actual).toEqual('38 years');
+    });
+
+    it('should display age in months when from is string', () => {
+        const actual = displayAgeAsOf('2022-10-01', '2022-12-01');
+
+        expect(actual).toEqual('2 months');
+    });
 });
 
 describe('displayAgeAsOfToday', () => {
@@ -62,4 +80,30 @@ describe('displayAgeAsOfToday', () => {
     const actual = displayAgeAsOfToday(birthDate);
     const expected = `${differenceInYears(new Date(), birthDate)} years`;
     expect(actual).toEqual(expected);
+});
+
+describe('asDate', () => {
+    it('should convert a valid date string to a Date object', () => {
+        const dateString = '2023-10-01';
+        const result = asDate(dateString);
+        expect(result).toEqual(new Date(dateString));
+    });
+
+    it('should convert a Date object to a Date object', () => {
+        const dateObject = new Date('2023-10-01');
+        const result = asDate(dateObject);
+        expect(result).toEqual(dateObject);
+    });
+
+    it('should return undefined for an invalid date string', () => {
+        const invalidDateString = 'invalid-date';
+        const result = asDate(invalidDateString);
+        expect(result).toBeUndefined();
+    });
+
+    it('should return undefined for an invalid Date object', () => {
+        const invalidDateObject = new Date('invalid-date');
+        const result = asDate(invalidDateObject);
+        expect(result).toBeUndefined();
+    });
 });
