@@ -15,7 +15,7 @@ export const Default: Story = {
         id: 'card-default',
         header: <h2 style={{ margin: '0' }}>Card Header</h2>,
         children: (
-            <p style={{ padding: '1rem' }}>
+            <p style={{ padding: '0 1rem' }}>
                 This is a long sentence with multiple line breaks. <br />
                 Hello
                 <br />
