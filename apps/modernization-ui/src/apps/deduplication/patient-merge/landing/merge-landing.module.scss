@@ -1,7 +1,7 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-header {
+.mergeLandingHeader {
     display: flex;
     padding: 1rem;
     justify-content: space-between;
@@ -14,6 +14,6 @@ header {
     }
 }
 
-main {
+.mergeLandingContent {
     padding: 1rem;
 }
