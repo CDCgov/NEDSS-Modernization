@@ -4,7 +4,7 @@ import { Heading } from 'components/heading';
 import { Loading } from 'components/Spinner';
 import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useFormState, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { DataElements } from '../api/model/DataElement';
 import { useDataElements } from '../api/useDataElements';
@@ -13,6 +13,7 @@ import styles from './data-elements.module.scss';
 import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
 import { DataElementValidationError, InUseDataElements } from './validation/DataElementValidationError';
 import { validateElementsInUse } from './validation/validateDataElementInUse';
+import { exists } from 'utils';
 
 const initial: DataElements = {
     firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
@@ -50,6 +51,8 @@ export const DataElementConfig = () => {
     const { passes } = useMatchConfiguration();
     const [validationError, setValidationError] = useState<InUseDataElements | undefined>();
     const form = useForm<DataElements>({ mode: 'onBlur', defaultValues: initial });
+    const { isValid, isDirty, dirtyFields } = useFormState(form);
+    const allValues = useWatch(form);
     const nav = useNavigate();
 
     useEffect(() => {
@@ -78,15 +81,9 @@ export const DataElementConfig = () => {
         }
     };
 
-    const allValues = form.watch(); // Use watch to get live updates
-
-    const hasInvalidValues = Object.values(allValues).some(
-        (element) => element.active && (!element.oddsRatio || !element.threshold)
-    );
-
     const hasActiveElements = Object.values(allValues).some((element) => element.active);
 
-    const isSaveDisabled = hasInvalidValues || !hasActiveElements;
+    const isSaveDisabled = !(isDirty || exists(dirtyFields)) || !isValid || !hasActiveElements;
 
     return (
         <div className={styles.dataElements}>
