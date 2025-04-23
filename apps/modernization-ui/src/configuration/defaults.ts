@@ -40,7 +40,10 @@ const defaultFeatures: Features = {
         }
     },
     deduplication: {
-        enabled: false
+        enabled: false,
+        merge: {
+            enabled: false
+        }
     },
     search,
     patient: {

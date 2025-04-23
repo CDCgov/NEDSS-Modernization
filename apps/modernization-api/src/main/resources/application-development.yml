@@ -55,6 +55,8 @@ nbs:
               enabled: true
       deduplication:
         enabled: true
+        merge:
+          enabled: true
       search:
         events:
           enabled: true
