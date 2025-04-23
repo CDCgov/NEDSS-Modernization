@@ -1,0 +1,63 @@
+@use 'styles/colors.scss';
+
+@mixin tag($color: colors.$base-white, $bg-color: colors.$base-dark) {
+    color: $color;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.125rem;
+    background-color: $bg-color;
+    width: max-content;
+}
+
+@mixin tag-size($font-size: 0.75rem) {
+    font-size: $font-size;
+}
+
+@mixin tag-weight($font-weight: 400) {
+    font-weight: $font-weight;
+}
+
+.default {
+    @include tag;
+}
+
+.success {
+    @include tag(colors.$base-white, colors.$success);
+}
+
+.warning {
+    @include tag(colors.$base-dark, colors.$warning);
+}
+
+.error {
+    @include tag(colors.$base-white, colors.$error);
+}
+
+.info {
+    @include tag(colors.$base-dark, colors.$info);
+}
+
+.gray {
+    @include tag(colors.$base-dark, colors.$base-lighter);
+}
+
+// Size variations
+.small {
+    @include tag-size(0.75rem);
+}
+
+.medium {
+    @include tag-size(0.875rem);
+}
+
+.large {
+    @include tag-size(1rem);
+}
+
+// Weight variations
+.regular {
+    @include tag-weight(400);
+}
+
+.bold {
+    @include tag-weight(700);
+}
