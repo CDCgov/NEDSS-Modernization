@@ -32,6 +32,8 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
         }
     }, [selectedDeceased?.value]);
 
+    console.log('selectedDeceased', selectedDeceased, Indicator.Yes);
+
     return (
         <section>
             <Controller
