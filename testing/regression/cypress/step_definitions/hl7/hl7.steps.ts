@@ -29,6 +29,86 @@ Given("I am authenticated with the DI API", () => {
   });
 });
 
+
+function replacePlaceholders(template: string, replacements: Record<string, string>): string {
+  return Object.entries(replacements).reduce((result, [placeholder, value]) => {
+    const regex = new RegExp(placeholder, "g");
+    return result.replace(regex, value);
+  }, template);
+}
+
+Given(
+  "I have a HL7 seed with: gender {string}, test type {string}, first {string}, last {string}, middle {string}, suffix {string}, ssn {string}, email {string}, street {string}, state {string}, city {string}, zipcode {string}, building {string}, dob {string}",
+  (
+    gender: string,
+    testType: string,
+    firstName: string,
+    lastName: string,
+    middleName: string,
+    suffix: string,
+    ssn: string,
+    email: string,
+    street: string,
+    state: string,
+    city: string,
+    zipcode: string,
+    buildingNumber: string,
+    dob: string
+  ) => {
+    const fixtureName: string = (() => {
+      switch (testType) {
+        case "Hepatitis B":
+          return "hepb";
+        case "Hepatitis A":
+          return "hepa";
+        default:
+          return testType.toLowerCase().replace(/\s+/g, "");
+      }
+    })();
+
+
+    patientData = {
+      firstName,
+      lastName,
+      middleName,
+      suffix,
+      ssn,
+      email,
+      street,
+      state,
+      city,
+      zipcode,
+      buildingNumber,
+      dob,
+      timestamp: generateTimestamp(),
+    };
+
+    const replacements = {
+      PATIENTFIRSTNAME: patientData.firstName,
+      PATIENTLASTNAME: patientData.lastName,
+      PATIENTMIDDLENAME: patientData.middleName,
+      PATIENTSUFFIX: patientData.suffix,
+      PATIENTSSN: patientData.ssn,
+      PATIENTDOB: patientData.dob,
+      PATIENTCITY: patientData.city,
+      PATIENTSTATEADDRESS: patientData.state,
+      PATIENTZIPCODE: patientData.zipcode,
+      PATIENTSTREET: patientData.street,
+      PATIENTUNITADDRESS: patientData.buildingNumber,
+      PATIENTEMAIL: patientData.email,
+      UUIDTIMESTAMP: patientData.timestamp,
+      PATIENTGENDER: gender,
+    };
+
+    cy.readFile(`cypress/fixtures/${fixtureName}.json`, "utf8").then(
+      (file: { data: string }[]) => {
+        cy.log("updating HL7 patient data...");
+        hl7Message = replacePlaceholders(file[0].data, replacements);       
+      }
+    );
+  }
+);
+
 Given("I have a HL7 message containing a {string} test", (testType: string) => {
   const fixtureName: string = (() => {
     switch (testType) {
@@ -49,6 +129,8 @@ Given("I have a HL7 message containing a {string} test", (testType: string) => {
     street: faker.location.streetAddress(),
     state: faker.location.state({ abbreviated: true }),
     city: faker.location.city(),
+    zip: generateRandomNumbers(5),
+    gender: "M",
     buildingNumber: `unit ${faker.location.buildingNumber()}`,
     dob: `19${faker.number.int(9)}${faker.number.int(9)}`,
     timestamp: generateTimestamp(),
@@ -59,14 +141,18 @@ Given("I have a HL7 message containing a {string} test", (testType: string) => {
     (file: { data: string }[]) => {
       cy.log("updating hl7 patient data...");
       hl7Message = file[0].data
-        .replace(/PawnlandFirstName/g, patientData.firstName)
-        .replace(/PawnlandLastName/g, patientData.lastName)
-        .replace(/SSNHOLDER/g, patientData.ssn)
-        .replace(/BIRTHYEAR/g, patientData.dob)
+        .replace(/PATIENTFIRSTNAME/g, patientData.firstName)
+        .replace(/PATIENTLASTNAME/g, patientData.lastName)
+        .replace(/PATIENTMIDDLENAME/g, patientData.lastName)
+        .replace(/PATIENTSSN/g, patientData.ssn)
+        .replace(/PATIENTDOB/g, patientData.dob)
+        .replace(/PATIENTGENDER/g, patientData.gender)
         .replace(/PATIENTCITY/g, patientData.city)
-        .replace(/STREETADDRESS/g, patientData.street)
+        .replace(/PATIENTEMAIL/g, patientData.email)
+        .replace(/PATIENTSTREET/g, patientData.street)
         .replace(/PATIENTUNITADDRESS/g, patientData.buildingNumber)
         .replace(/PATIENTSTATEADDRESS/g, patientData.state)
+        .replace(/PATIENTZIPCODE/g, patientData.zip)
         .replace(/UUIDTIMESTAMP/g, patientData.timestamp);
 
       console.log("updated hl7:", hl7Message);
@@ -289,11 +375,14 @@ const generateTimestamp = (): string => {
 type Patient = {
   firstName: string;
   lastName: string;
+  middleName: string;
+  suffix: string;
   ssn: string;
   email: string;
   street: string;
   state: string;
   city: string;
+  zipcode: string;
   buildingNumber: string;
   dob: string;
   timestamp: string;
