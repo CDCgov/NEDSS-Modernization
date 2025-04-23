@@ -13,6 +13,7 @@ import styles from './data-elements.module.scss';
 import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
 import { DataElementValidationError, InUseDataElements } from './validation/DataElementValidationError';
 import { validateElementsInUse } from './validation/validateDataElementInUse';
+import { exists } from 'utils';
 
 const initial: DataElements = {
     firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
@@ -50,7 +51,7 @@ export const DataElementConfig = () => {
     const { passes } = useMatchConfiguration();
     const [validationError, setValidationError] = useState<InUseDataElements | undefined>();
     const form = useForm<DataElements>({ mode: 'onBlur', defaultValues: initial });
-    const { isValid } = useFormState(form);
+    const { isValid, isDirty, dirtyFields } = useFormState(form);
     const allValues = useWatch(form);
     const nav = useNavigate();
 
@@ -82,7 +83,7 @@ export const DataElementConfig = () => {
 
     const hasActiveElements = Object.values(allValues).some((element) => element.active);
 
-    const isSaveDisabled = !isValid || !hasActiveElements;
+    const isSaveDisabled = !(isDirty || exists(dirtyFields)) || !isValid || !hasActiveElements;
 
     return (
         <div className={styles.dataElements}>
