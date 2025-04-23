@@ -104,21 +104,21 @@ const RepeatingBlock = <V extends FieldValues>({
         className: styles.iconColumn,
         render: (value: V) => (
             <div className={classNames(styles.actions, sizing && styles[sizing])}>
-                <div data-tooltip-position="top" aria-label="View" onClick={() => view(value)}>
+                <div data-tooltip-position="top" aria-label="View" role="button" onClick={() => view(value)}>
                     <Icon
                         name="visibility"
                         sizing={sizing}
                         className={classNames({ [styles.active]: status === 'viewing' && value === selected })}
                     />
                 </div>
-                <div data-tooltip-position="top" aria-label="Edit" onClick={() => edit(value)}>
+                <div data-tooltip-position="top" aria-label="Edit" role="button" onClick={() => edit(value)}>
                     <Icon
                         name="edit"
                         sizing={sizing}
                         className={classNames({ [styles.active]: status === 'editing' && value === selected })}
                     />
                 </div>
-                <div data-tooltip-position="top" aria-label="Delete" onClick={() => handleRemove(value)}>
+                <div data-tooltip-position="top" aria-label="Delete" role="button" onClick={() => handleRemove(value)}>
                     <Icon name="delete" sizing={sizing} />
                 </div>
             </div>
