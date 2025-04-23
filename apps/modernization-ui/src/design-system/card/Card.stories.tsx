@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Card } from './Card';
 
 const meta = {
-    title: 'Design System/Card',
+    title: 'Design System/Cards/Card',
     component: Card
 } satisfies Meta<typeof Card>;
 
