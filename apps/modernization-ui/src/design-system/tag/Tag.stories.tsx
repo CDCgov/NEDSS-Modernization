@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Tag } from './Tag';
+import { Tag, TagProps } from './Tag';
 
 const meta = {
     title: 'Design System/Tag',
@@ -10,37 +10,24 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const renderTag = (args: any) => <Tag {...args} />;
-
-const renderTags = (args: any) => (
+const renderTags = (args: TagProps) => (
     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-        <Tag {...args} size="small" weight="bold" />
-        <Tag {...args} size="medium" weight="regular" />
-        <Tag {...args} size="large" weight="bold" />
+        <Tag size="small" {...args} />
+        <Tag size="medium" {...args} />
+        <Tag size="large" {...args} />
     </div>
 );
 
 export const Default: Story = {
     args: {
-        children: '10',
-        variant: 'default',
-        size: 'medium',
-        weight: 'bold'
-    },
-    render: renderTag
-};
-
-export const DefaultTags: Story = {
-    args: {
-        children: '10',
-        variant: 'default'
+        children: '10'
     },
     render: renderTags
 };
 
 export const Success: Story = {
     args: {
-        children: '10',
+        ...Default.args,
         variant: 'success'
     },
     render: renderTags
@@ -48,15 +35,16 @@ export const Success: Story = {
 
 export const Warning: Story = {
     args: {
-        children: '10',
+        ...Default.args,
         variant: 'warning'
     },
     render: renderTags
 };
 
-export const Error: Story = {
+export const ErrorVariant: Story = {
+    name: 'error',
     args: {
-        children: '10',
+        ...Default.args,
         variant: 'error'
     },
     render: renderTags
@@ -64,7 +52,7 @@ export const Error: Story = {
 
 export const Info: Story = {
     args: {
-        children: '10',
+        ...Default.args,
         variant: 'info'
     },
     render: renderTags
@@ -72,7 +60,7 @@ export const Info: Story = {
 
 export const Gray: Story = {
     args: {
-        children: '10',
+        ...Default.args,
         variant: 'gray'
     },
     render: renderTags

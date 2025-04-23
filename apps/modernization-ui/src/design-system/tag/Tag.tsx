@@ -3,9 +3,9 @@ import { Sizing } from 'design-system/field';
 import styles from './tag.module.scss';
 import classNames from 'classnames';
 
-type TagProps = {
+export type TagProps = {
     children: React.ReactNode | React.ReactNode[];
-    variant: 'default' | 'success' | 'warning' | 'error' | 'info' | 'gray';
+    variant?: 'default' | 'success' | 'warning' | 'error' | 'info' | 'gray';
     size?: Sizing;
     weight?: 'regular' | 'bold';
 };
