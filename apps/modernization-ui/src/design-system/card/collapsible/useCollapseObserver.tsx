@@ -9,7 +9,7 @@ type CollapseObserverProps<T extends HTMLElement> = {
 /**
  * Observes the height of a collapsible element and returns the appropriate height value.
  * @param {CollapseObserverProps} props - The properties for the observer.
- * @returns {string} The current HTML height value of the ref object being observed i.e. 'auto', '0', '100px'
+ * @return {string} The current HTML height value of the ref object being observed i.e. 'auto', '0', '100px'
  */
 const useCollapseObserver = <T extends HTMLElement>({
     contentRef,
