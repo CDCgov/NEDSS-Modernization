@@ -21,15 +21,8 @@ const useCollapseObserver = <T extends HTMLElement>({
     useEffect(() => {
         const updateHeight = () => {
             if (contentRef.current) {
-                // Temporarily disable overflow to measure the full height
-                //const previousOverflow = contentRef.current.style.overflow;
-                //contentRef.current.style.overflow = 'visible';
                 const currentHeight = contentRef.current.scrollHeight;
-
                 setHeight(!collapsible || !currentHeight ? 'auto' : collapsed ? '0' : `${currentHeight}px`);
-
-                // Restore the previous overflow style
-                //contentRef.current.style.overflow = previousOverflow;
             }
         };
 
@@ -54,10 +47,6 @@ const useCollapseObserver = <T extends HTMLElement>({
         };
     }, [collapsible, collapsed]);
 
-    // if (contentRef?.current) {
-    //     // Set the height of the contentRef element
-    //     contentRef.current.style.maxHeight = height;
-    // }
     // return final height to the component
     return height;
 };
