@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { TextInput, TextInputProps } from './TextInput';
 import { masked } from './masked';
 import { orUndefined } from 'utils';
@@ -11,9 +11,11 @@ const MaskedTextInput = ({ mask, value, onChange, ...props }: MaskedTextInputPro
     const [current, setCurrent] = useState(value);
     const applyMask = useCallback(masked(mask), [mask]);
 
-    if (current !== value) {
-        setCurrent(value);
-    }
+    useEffect(() => {
+        if (value === '') {
+            setCurrent(value);
+        }
+    }, [value]);
 
     const handleChange = (value?: string) => {
         if (value) {
