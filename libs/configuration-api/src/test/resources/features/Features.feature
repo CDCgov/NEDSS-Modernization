@@ -6,7 +6,6 @@ Feature: Frontend Feature Configuration
     Then the search view feature is enabled
     And the tabular search results feature is enabled
     And the patient search filters feature is disabled
-    And the patient add feature is disabled
     And the NBS6 event search feature is enabled
     And the investigation search feature is disabled
     And the laboratory report search feature is disabled
@@ -26,8 +25,6 @@ Feature: Frontend Feature Configuration
       | tabular search results     | disabled |
       | patient search filters     | enabled  |
       | patient search filters     | disabled |
-      | patient add                | enabled  |
-      | patient add                | disabled |
       | NBS6 event search          | enabled  |
       | NBS6 event search          | disabled |
       | investigation search       | enabled  |
@@ -38,5 +35,7 @@ Feature: Frontend Feature Configuration
       | modernized patient profile | disabled |
       | deduplication              | disabled |
       | deduplication              | enabled  |
+      | deduplication merge        | disabled |
+      | deduplication merge        | enabled  |
       | patient file               | enabled  |
       | patient file               | disabled |

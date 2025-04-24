@@ -14,7 +14,7 @@ describe('when displaying a search result with basic patient information', () =>
 
         const actual = getByRole('link', { name: 'patient-first-name patient-last-name' });
 
-        expect(actual).toHaveAttribute('href', '/patient-profile/919');
+        expect(actual).toHaveAttribute('href', '/patient/919');
     });
 
     it('should resolve the patient name as No Data when not present', () => {
@@ -26,7 +26,7 @@ describe('when displaying a search result with basic patient information', () =>
 
         const actual = getByRole('link', { name: 'No Data' });
 
-        expect(actual).toHaveAttribute('href', '/patient-profile/919');
+        expect(actual).toHaveAttribute('href', '/patient/919');
     });
 
     it('should resolve the patient gender when present', () => {

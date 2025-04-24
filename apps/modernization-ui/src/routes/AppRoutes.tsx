@@ -4,7 +4,6 @@ import { initializationLoader, ProtectedLayout } from 'authorization';
 import { RedirectHome } from './RedirectHome';
 
 import { routing as searchRouting } from 'apps/search';
-import { routing as patientProfileRouting } from 'apps/patient/profile';
 import { routing as addPatientRouting } from 'apps/patient/add';
 import { routing as pageBuilderRouting } from 'apps/page-builder';
 import { routing as deduplicationRouting } from 'apps/deduplication';
@@ -26,7 +25,6 @@ const routing = [
             { index: true, element: <RedirectHome /> },
             ...searchRouting,
             ...addPatientRouting,
-            ...patientProfileRouting,
             ...pageBuilderRouting,
             ...deduplicationRouting,
             ...patientFileRouting

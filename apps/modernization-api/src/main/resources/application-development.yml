@@ -55,6 +55,8 @@ nbs:
               enabled: true
       deduplication:
         enabled: true
+        merge:
+          enabled: true
       search:
         events:
           enabled: true
@@ -70,10 +72,6 @@ nbs:
         search:
           filters:
             enabled: true
-        profile:
-          enabled: true
         file:
-          enabled: true
-        add:
           enabled: true
 

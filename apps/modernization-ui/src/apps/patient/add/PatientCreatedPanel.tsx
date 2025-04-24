@@ -37,13 +37,13 @@ const PatientCreatedPanel = ({ created }: Props) => (
                     </ClassicButton>
                 </Permitted>
                 <FeatureToggle
-                    guard={(features) => features?.patient?.profile.enabled}
+                    guard={(features) => features?.patient?.file.enabled}
                     fallback={
                         <LinkButton type="solid" target="_self" href={`/nbs/api/patient/${created.id}/file/redirect`}>
                             View patient
                         </LinkButton>
                     }>
-                    <NavLinkButton to={`/patient-profile/${created.shortId}`}>View patient</NavLinkButton>
+                    <NavLinkButton to={`/patient/${created.shortId}`}>View patient</NavLinkButton>
                 </FeatureToggle>
             </>
         )}>
@@ -54,8 +54,8 @@ const PatientCreatedPanel = ({ created }: Props) => (
                 <strong>
                     {resolveName(created)} (Patient ID: {created.shortId})
                 </strong>{' '}
-                has been added. You can now either view the patient, add a report for this patient or add an
-                investigation for this patient using the buttons below.
+                has been added. You can now view the patient, or if you have permissions, add a lab report, morbidity
+                report or investigation for this patient using the buttons below.
             </p>
         </Message>
     </Modal>

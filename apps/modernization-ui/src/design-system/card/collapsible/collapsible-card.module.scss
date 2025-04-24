@@ -1,0 +1,87 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+@mixin expanded($property) {
+    transition-duration: 0.3s;
+    transition-property: #{$property};
+    transition-timing-function: ease-out;
+}
+
+@mixin collapsed($property) {
+    transition-duration: 0.3s;
+    transition-property: #{$property};
+    transition-timing-function: ease-in;
+}
+
+.card {
+    @extend %thin;
+    background-color: colors.$base-white;
+    @include borders.rounded();
+
+    & > header {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @extend %thin-bottom;
+    }
+
+    &.showControl {
+        header{
+            padding-right: 0.5rem;
+        }
+    }
+}
+
+.body {
+    position: relative;
+    max-height: auto;
+    overflow: initial;
+
+    &.collapsible {
+        position: relative;
+        max-height: auto;
+        overflow: hidden;
+        @include expanded('max-height');
+    
+        &.collapsed {
+            @include collapsed('max-height');
+            max-height: 0;
+            overflow: hidden;
+        }
+    }
+}
+
+
+.control {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-left: none;
+    min-height: 1.5rem;
+
+    &.separator {
+        border-left: 1px solid colors.$base-lighter;
+    }
+
+    button {
+        display: flex;
+        cursor: pointer;
+        border: none;
+        background: none;
+        display: flex;
+        align-items: center;
+        justify-content: stretch;
+        padding: 0;
+        margin: 0 0.25rem 0 0.5rem;
+
+        svg {
+            width: 1.5rem !important;
+            height: 1.5rem !important;
+            color: colors.$base-darker;
+        }
+    }
+}

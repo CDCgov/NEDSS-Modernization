@@ -40,7 +40,10 @@ const defaultFeatures: Features = {
         }
     },
     deduplication: {
-        enabled: false
+        enabled: false,
+        merge: {
+            enabled: false
+        }
     },
     search,
     patient: {
@@ -49,13 +52,7 @@ const defaultFeatures: Features = {
                 enabled: false
             }
         },
-        profile: {
-            enabled: false
-        },
         file: {
-            enabled: false
-        },
-        add: {
             enabled: false
         }
     }

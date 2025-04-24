@@ -1,0 +1,19 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.mergeLandingHeader {
+    display: flex;
+    padding: 1rem;
+    justify-content: space-between;
+    background-color: colors.$base-white;
+    @extend %thin-bottom;
+
+    .buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+}
+
+.mergeLandingContent {
+    padding: 1rem;
+}
