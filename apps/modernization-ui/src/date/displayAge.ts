@@ -5,7 +5,7 @@ import { Maybe } from 'utils';
 /**
  * Converts a string or Date to a Date object.
  * If the input is a string, it must be in a valid date format.
- * @param date - The date to be converted
+ * @param {string | Date | undefined} date - The date to be converted
  * @return {Date | undefined} - The converted Date object or undefined if the input is invalid
  */
 const asDate = (date: Maybe<string | Date>): Date | undefined => {
@@ -27,8 +27,8 @@ const asDate = (date: Maybe<string | Date>): Date | undefined => {
  * Converts the given date of birth and the reference date to a human-readable age string.
  * The age is calculated as the difference in years, months, or days.
  * If the date of birth is invalid or greater than the reference date, it returns undefined.
- * @param dateOfBirth The date of birth to be converted
- * @param from The reference date to calculate the age from
+ * @param {string | Date | undefined} dateOfBirth The date of birth to be converted
+ * @param {string | Date | undefined} from The reference date to calculate the age from
  * @return {string | undefined} - The human-readable age string or undefined if the input is invalid
  * @example
  * displayAgeAsOf('2000-01-01', '2023-10-01') // returns '23 years'
@@ -56,7 +56,7 @@ const displayAgeAsOf = (dateOfBirth: Maybe<string | Date>, from: Maybe<string | 
 
 /**
  * Converts the given date of birth from now to a human-readable age string.
- * @param dateOfBirth The date of birth to be converted
+ * @param {string | Date | undefined} dateOfBirth The date of birth to be converted
  * @return {string | undefined} - The human-readable age string as of today or undefined if the dateOfBirth is invalid
  */
 const displayAgeAsOfToday = (dateOfBirth: Maybe<string | Date>) => displayAgeAsOf(dateOfBirth, now());
