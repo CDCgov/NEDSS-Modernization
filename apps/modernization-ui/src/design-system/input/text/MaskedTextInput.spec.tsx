@@ -4,6 +4,10 @@ import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 
+const PHONE_MASK = '___-___-____';
+const TEST_PHONE_NUMBER = '123-456-7890';
+const TEST_DIGITS = '1234567890';
+
 describe('MaskedTextInput', () => {
     it('should render with no accessibilty violations', async () => {
         const { container } = render(
@@ -11,7 +15,7 @@ describe('MaskedTextInput', () => {
                 <label htmlFor="test-input">Test Input</label>
                 <MaskedTextInput 
                 id="test-input"
-                mask="___-___-____"
+                mask={PHONE_MASK}
                 value=""
                 onChange={() => {}}
             />
@@ -27,7 +31,7 @@ describe('MaskedTextInput', () => {
                 <label htmlFor="phone-input">Phone Input</label>
                 <MaskedTextInput 
                     id="phone-input"
-                    mask="___-___-____"
+                    mask={PHONE_MASK}
                     value=""
                     onChange={handleChange}
                 />
@@ -37,20 +41,20 @@ describe('MaskedTextInput', () => {
         const input = getByRole('textbox');
         await userEvent.type(input, '1234567890');
 
-        expect(input).toHaveValue('123-456-7890');
-        expect(handleChange).toHaveBeenCalledWith('123-456-7890');
+        expect(input).toHaveValue(TEST_PHONE_NUMBER);
+        expect(handleChange).toHaveBeenCalledWith(TEST_PHONE_NUMBER);
     });
 
     it('should respond to parent component clearing value', async () => {
         const TestWrapper = () => {
-            const [value, setValue] = useState('123-456-7890')
+            const [value, setValue] = useState(TEST_PHONE_NUMBER);
 
             return (
                 <div>
                 <label htmlFor="clearable-input">Clearable Input</label>
                 <MaskedTextInput 
                     id="clearable-input"
-                    mask="___-___-____"
+                    mask={PHONE_MASK}
                     value={value}
                     onChange={(newValue) => {setValue(newValue ?? '')}}
                 />
