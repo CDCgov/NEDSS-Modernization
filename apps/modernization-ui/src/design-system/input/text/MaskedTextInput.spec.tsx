@@ -39,7 +39,7 @@ describe('MaskedTextInput', () => {
         );
 
         const input = getByRole('textbox');
-        await userEvent.type(input, '1234567890');
+        await userEvent.type(input, TEST_DIGITS);
 
         expect(input).toHaveValue(TEST_PHONE_NUMBER);
         expect(handleChange).toHaveBeenCalledWith(TEST_PHONE_NUMBER);
