@@ -8,14 +8,14 @@ import styles from './merge-landing.module.scss';
 export const MergeLanding = () => {
     return (
         <>
-            <header>
+            <header className={styles.mergeLandingHeader}>
                 <Heading level={1}>Matches requiring review</Heading>
                 <div className={styles.buttons}>
                     <Button icon={<Icon name="print" />} sizing="medium" secondary />
                     <Button icon={<Icon name="file_download" />} sizing="medium" secondary />
                 </div>
             </header>
-            <main>
+            <main className={styles.mergeLandingContent}>
                 <PaginationProvider>
                     <MatchesRequiringReviewTable />
                 </PaginationProvider>
