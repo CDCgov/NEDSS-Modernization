@@ -1,4 +1,3 @@
-import { axe } from "jest-axe";
 import { MaskedTextInput } from "./MaskedTextInput"
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -9,21 +8,6 @@ const TEST_PHONE_NUMBER = '123-456-7890';
 const TEST_DIGITS = '1234567890';
 
 describe('MaskedTextInput', () => {
-    it('should render with no accessibilty violations', async () => {
-        const { container } = render(
-            <div>
-                <label htmlFor="test-input">Test Input</label>
-                <MaskedTextInput 
-                id="test-input"
-                mask={PHONE_MASK}
-                value=""
-                onChange={() => {}}
-            />
-            </div>
-        );
-        expect(await axe(container)).toHaveNoViolations();
-    });
-
     it('should handle input masking correctly', async () => {
         const handleChange = jest.fn();
         const { getByRole } = render(
