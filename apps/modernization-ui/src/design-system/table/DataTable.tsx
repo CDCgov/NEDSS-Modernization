@@ -67,4 +67,4 @@ const DataTable = <V,>({
 
 export { DataTable };
 
-export type { Column, FilterDescriptor, SortIconType };
+export type { Column, FilterDescriptor, SortIconType, DataTableProps };

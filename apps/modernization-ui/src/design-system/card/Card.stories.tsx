@@ -16,6 +16,6 @@ export const Default: Story = {
         title: 'The Card',
         info: 'Info',
         level: 1,
-        children: 'Card text'
+        children: <p>This is the card text</p>
     }
 };
