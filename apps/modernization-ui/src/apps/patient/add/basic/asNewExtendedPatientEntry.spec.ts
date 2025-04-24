@@ -82,18 +82,18 @@ describe('Basic form to extended transfer', () => {
             expect.arrayContaining([
                 expect.objectContaining({
                     phoneNumber: '1231231234',
-                    type: expect.objectContaining({ label: 'Phone' }),
-                    use: expect.objectContaining({ label: 'Home' })
+                    type: expect.objectContaining({ name: 'Phone' }),
+                    use: expect.objectContaining({ name: 'Home' })
                 }),
                 expect.objectContaining({
                     phoneNumber: '1231231234',
-                    type: expect.objectContaining({ label: 'Cellular phone' }),
-                    use: expect.objectContaining({ label: 'Mobile contact' })
+                    type: expect.objectContaining({ name: 'Cellular phone' }),
+                    use: expect.objectContaining({ name: 'Mobile contact' })
                 }),
                 expect.objectContaining({
                     phoneNumber: '1231231234',
-                    type: expect.objectContaining({ label: 'Phone' }),
-                    use: expect.objectContaining({ label: 'Primary work place' })
+                    type: expect.objectContaining({ name: 'Phone' }),
+                    use: expect.objectContaining({ name: 'Primary work place' })
                 }),
                 expect.objectContaining({
                     email: 'test@test.com'
@@ -147,7 +147,7 @@ describe('Basic form to extended transfer', () => {
             expect.objectContaining({
                 detailed: [],
                 asOf: date,
-                ethnicGroup: { label: 'Test', name: 'Test', value: 'T' }
+                ethnicGroup: { name: 'Test', value: 'T' }
             })
         );
     });

@@ -1,7 +1,7 @@
-import { FocusEventHandler, useEffect, useMemo, useState } from 'react';
+import { FocusEventHandler, useEffect, useState } from 'react';
 import ReactSelect, { MultiValue } from 'react-select';
 import { mapNonNull } from 'utils';
-import { Selectable, asSelectable, asValue as asSelectableValue } from 'options';
+import { Selectable, asValues, asValue, asName } from 'options';
 import { EntryWrapper } from 'components/Entry';
 
 import { theme, styles, CheckboxOption } from 'design-system/select/multi';
@@ -11,15 +11,13 @@ import './MultiSelectInput.scss';
 const asSelected = (selectables: Selectable[]) => (item: string) =>
     selectables.find((option) => option.value === item) || null;
 
-type Options = { name: string; value: string };
-
 type MultiSelectInputProps = {
     label?: string;
     id?: string;
     name?: string;
     placeholder?: string;
     orientation?: 'horizontal' | 'vertical';
-    options?: Options[];
+    options?: Selectable[];
     value?: string[];
     onChange?: (value: any) => void;
     onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
@@ -42,23 +40,18 @@ export const MultiSelectInput = ({
     orientation = 'vertical',
     disabled = false
 }: MultiSelectInputProps) => {
-    const selectableOptions = useMemo(
-        () => options.map((item) => asSelectable(item.value, item.name)),
-        [JSON.stringify(options)]
-    );
-
     const [selectedOptions, setSelectedOptions] = useState<Selectable[]>([]);
     const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
-        const selected = mapNonNull(asSelected(selectableOptions), value);
+        const selected = mapNonNull(asSelected(options), value);
         setSelectedOptions(selected);
-    }, [JSON.stringify(value), selectableOptions]);
+    }, [...value, ...options]);
 
     const handleOnChange = (newValue: MultiValue<Selectable>) => {
         setSelectedOptions([...newValue]);
         if (onChange) {
-            const values = newValue.map((item) => item.value);
+            const values = asValues(newValue as Selectable[]);
             onChange(values);
         }
     };
@@ -91,11 +84,12 @@ export const MultiSelectInput = ({
                 closeMenuOnScroll={false}
                 onChange={handleOnChange}
                 onBlur={onBlur}
-                options={selectableOptions}
+                options={options}
                 components={{ Option: CheckboxOption }}
                 inputValue={searchText}
                 onInputChange={handleInputChange}
-                getOptionValue={asSelectableValue}
+                getOptionValue={asValue}
+                getOptionLabel={asName}
                 isDisabled={disabled}
             />
         </EntryWrapper>
