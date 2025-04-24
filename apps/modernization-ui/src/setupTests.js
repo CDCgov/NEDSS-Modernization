@@ -8,3 +8,16 @@ import 'jest-axe/extend-expect';
 import { TextEncoder } from 'util';
 
 global.TextEncoder = TextEncoder;
+
+Object.defineProperty(window, 'ResizeObserver', {
+    writable: true,
+    configurable: true,
+    value: function (callback) {
+        return {
+            observe: () => {},
+            unobserve: () => {},
+            disconnect: () => {},
+            callback
+        };
+    }
+});

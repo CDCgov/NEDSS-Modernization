@@ -36,18 +36,25 @@
     }
 }
 
-.collapsible {
+.body {
     position: relative;
     max-height: auto;
-    overflow: hidden;
-    @include expanded('max-height');
+    overflow: initial;
 
-    &.collapsed {
-        @include collapsed('max-height');
-        max-height: 0;
+    &.collapsible {
+        position: relative;
+        max-height: auto;
         overflow: hidden;
+        @include expanded('max-height');
+    
+        &.collapsed {
+            @include collapsed('max-height');
+            max-height: 0;
+            overflow: hidden;
+        }
     }
 }
+
 
 .control {
     display: flex;

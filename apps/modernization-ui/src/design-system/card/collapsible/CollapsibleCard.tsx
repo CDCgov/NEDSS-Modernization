@@ -1,8 +1,9 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { Icon } from 'design-system/icon';
 import styles from './collapsible-card.module.scss';
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
+import { useCollapseObserver } from './useCollapseObserver';
 
 export type CollapsibleCardProps = {
     id: string;
@@ -22,14 +23,9 @@ export const CollapsibleCard = ({
     collapsible = true,
     showCollapseSeparator
 }: CollapsibleCardProps) => {
-    const [height, setHeight] = useState('auto');
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const contentRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const currentHeight = contentRef.current?.scrollHeight;
-        setHeight(collapsed ? '0' : currentHeight ? `${currentHeight}px` : 'auto');
-    }, [collapsed]);
+    const currentHeight = useCollapseObserver({ contentRef, collapsible, collapsed });
 
     return (
         <section id={id} className={classNames(styles.card, { [styles.showControl]: collapsible }, className)}>
@@ -51,9 +47,12 @@ export const CollapsibleCard = ({
             </header>
             <div
                 ref={contentRef}
-                className={classNames(styles.collapsible, { [styles.collapsed]: collapsed })}
+                className={classNames(styles.body, {
+                    [styles.collapsible]: collapsible,
+                    [styles.collapsed]: collapsed
+                })}
                 style={{
-                    maxHeight: height
+                    maxHeight: currentHeight
                 }}>
                 {children}
             </div>
