@@ -1,61 +1,73 @@
-import { MaskedTextInput } from "./MaskedTextInput"
-import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import userEvent from '@testing-library/user-event';
+import { render } from '@testing-library/react';
+import { MaskedTextInput, MaskedTextInputProps } from './MaskedTextInput';
 
-const PHONE_MASK = '___-___-____';
-const TEST_PHONE_NUMBER = '123-456-7890';
-const TEST_DIGITS = '1234567890';
+const Fixture = ({
+    id = 'clearable-input',
+    onChange = jest.fn(),
+    mask = '_',
+    ...remaining
+}: Partial<MaskedTextInputProps>) => {
+    return <MaskedTextInput id={id} mask={mask} {...remaining} onChange={onChange} />;
+};
 
-describe('MaskedTextInput', () => {
-    it('should handle input masking correctly', async () => {
-        const handleChange = jest.fn();
-        const { getByRole } = render(
-            <div>
-                <label htmlFor="phone-input">Phone Input</label>
-                <MaskedTextInput 
-                    id="phone-input"
-                    mask={PHONE_MASK}
-                    value=""
-                    onChange={handleChange}
-                />
-            </div>
-        );
+describe('when entering text input with a specific format', () => {
+    it('should accept a value that matches the mask', async () => {
+        const { getByRole } = render(<Fixture />);
 
         const input = getByRole('textbox');
-        await userEvent.type(input, TEST_DIGITS);
 
-        expect(input).toHaveValue(TEST_PHONE_NUMBER);
-        expect(handleChange).toHaveBeenCalledWith(TEST_PHONE_NUMBER);
+        await userEvent.type(input, '7{tab}');
+
+        expect(input).toHaveValue('7');
     });
 
-    it('should respond to parent component clearing value', async () => {
-        const TestWrapper = () => {
-            const [value, setValue] = useState(TEST_PHONE_NUMBER);
+    it('should format the value using the mask', async () => {
+        const { getByRole } = render(<Fixture mask="(___)-___-____" />);
 
-            return (
-                <div>
-                <label htmlFor="clearable-input">Clearable Input</label>
-                <MaskedTextInput 
-                    id="clearable-input"
-                    mask={PHONE_MASK}
-                    value={value}
-                    onChange={(newValue) => {setValue(newValue ?? '')}}
-                />
-                <button onClick={() => setValue('')}>Clear</button>
-            </div>
-            );
-        };
+        const input = getByRole('textbox');
 
-        const { getByRole } = render(<TestWrapper />);
+        await userEvent.type(input, '1234567890{tab}');
+
+        expect(input).toHaveValue('(123)-456-7890');
+    });
+
+    it('should accept a values that do no match the mask', async () => {
+        const { getByRole } = render(<Fixture mask="__" />);
+
+        const input = getByRole('textbox');
+
+        await userEvent.type(input, '777{tab}');
+
+        expect(input).toHaveValue('77');
+    });
+
+    it('should default to the given value', () => {
+        const { getByRole } = render(<Fixture value="7" />);
+
+        const input = getByRole('textbox');
+        expect(input).toHaveValue('7');
+    });
+
+    it('should allow the current value to change', async () => {
+        const { getByRole } = render(<Fixture mask="___-___-____" value="123-456-7890" />);
+
         const input = getByRole('textbox');
         expect(input).toHaveValue('123-456-7890');
 
-        const clearButton = getByRole('button', { name: 'Clear' });
-        await userEvent.click(clearButton);
+        await userEvent.type(input, '{backspace}{backspace}');
 
-        await waitFor(() => {
-            expect(input).toHaveValue('');
-        });
+        expect(input).toHaveValue('123-456-78');
+    });
+
+    it('should clear the current value', async () => {
+        const { getByRole } = render(<Fixture mask="___-___-____" value="123-456-7890" />);
+
+        const input = getByRole('textbox');
+        expect(input).toHaveValue('123-456-7890');
+
+        await userEvent.clear(input);
+
+        expect(input).toHaveValue('');
     });
 });

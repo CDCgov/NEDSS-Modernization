@@ -14,13 +14,9 @@ export const Default: Story = {
     args: {
         id: 'masked-text-input',
         label: 'Masked Text Input',
-        placeholder: 'No Data',
-        value: '12345-67890',
-        mask: '_____-_____',
-        pattern: '^.*$',
-        onChange: (value) => {
-            console.log('Value changed:', value);
-        }
+        helperText: 'Values will be formatted accorded to the given mask',
+        mask: '(_)____-____@_',
+        onChange: () => {}
     }
 };
 

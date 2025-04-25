@@ -10,10 +10,18 @@ const MaskedTextInputField = ({
     sizing,
     error,
     required,
+    helperText,
     ...remaining
 }: MaskedTextInputFieldProps) => {
     return (
-        <Field orientation={orientation} sizing={sizing} label={label} htmlFor={id} required={required} error={error}>
+        <Field
+            orientation={orientation}
+            sizing={sizing}
+            label={label}
+            htmlFor={id}
+            required={required}
+            error={error}
+            helperText={helperText}>
             <MaskedTextInput id={id} {...remaining} />
         </Field>
     );
