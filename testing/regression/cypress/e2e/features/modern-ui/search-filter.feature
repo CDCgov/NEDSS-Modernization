@@ -25,6 +25,13 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     Then I search filter column "text-filter-ageOrDateOfBirth" with "05/16/1977"
     Then I verify unique search row contains "05/16/1977"
 
+  Scenario: Search patient by exact Gender
+    Then I feel input id "name.last" with text "rat"
+    And Click on Search in Patient Search pane
+    Then I click search filter result icon
+    Then I search filter column "text-filter-sex" with "M"
+    Then I verify unique search row contains "Male"
+
   Scenario: Search patient by exact Patient Address
     Then I feel input id "name.last" with text "rat"
     And Click on Search in Patient Search pane
@@ -48,7 +55,7 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     Then I search filter column "text-filter-identification" with "123-45-6789"
     Then I verify unique search row contains "123-45-6789"
 
-  Scenario: Search patient by exact ID
+  Scenario: Search patient by exact Email
     Then I feel input id "name.last" with text "rat"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
