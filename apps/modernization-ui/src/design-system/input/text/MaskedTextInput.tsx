@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { TextInput, TextInputProps } from './TextInput';
 import { masked } from './masked';
-import { orUndefined } from 'utils';
+import { mapOr } from 'utils/mapping';
 
 type MaskedTextInputProps = {
     mask: string;
@@ -9,17 +9,15 @@ type MaskedTextInputProps = {
 
 const MaskedTextInput = ({ mask, value, onChange, ...props }: MaskedTextInputProps) => {
     const [current, setCurrent] = useState(value);
-    const applyMask = useCallback(masked(mask), [mask]);
+    const applyMask = useCallback(mapOr(masked(mask), undefined), [mask]);
 
-    useEffect(() => {
-        if (value === '') {
-            setCurrent(value);
-        }
-    }, [value]);
+    if (current !== value) {
+        setCurrent(applyMask(value));
+    }
 
     const handleChange = (value?: string) => {
         if (value) {
-            const next = orUndefined(applyMask(value));
+            const next = applyMask(value);
             setCurrent(next);
             onChange?.(next);
         } else {
