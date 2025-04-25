@@ -1,42 +1,36 @@
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 import { useLocation } from 'react-router';
 import { BasicNewPatientEntry, initial } from './entry';
 import { asBasicNewPatientEntry } from './asBasicNewPatientEntry';
 
 type Interaction = {
-    /**
-     * Initializes the values of basic patient data entry based on the current Location state.
-     *
-     *  1. Use the {@code basic} if present
-     *  2. Use the {@code criteria.values} converted to patient entry defaults if present.
-     *  3. Otherwise use the initial values for basic patient data entry.
-     *
-     * @return  {BasicNewPatientEntry} The defaults values.
-     */
-    initialize: () => BasicNewPatientEntry;
+    defaults: BasicNewPatientEntry | undefined;
 };
 
 /**
- * Provides a function to initialize the default form values for New patient - basic.
+ * Provides any defaulted values of basic patient data entry based on the Location state.  Values are currently
+ * defaulted in two ways; from Patient search criteria, or from basic patient entry values that are stored when
+ * transitioning to extended patient entry.
+ *
+ *  1. Use the {@code basic} if present
+ *  2. Use the {@code criteria.values} converted to patient entry defaults if present.
  *
  * @return {Interaction} to initialize the default state of BasicNewPatientEntry
  */
 const useAddPatientBasicDefaults = (): Interaction => {
     const location = useLocation();
 
-    const initialize = useCallback(() => {
+    const defaults = useMemo(() => {
         if (location.state?.basic) {
             //  first check if basic was passed during navigation
-            return { ...location.state?.basic };
+            return { ...location.state?.basic } as BasicNewPatientEntry;
         } else if (location.state?.criteria?.values) {
             //  convert the search criteria values to
             return asBasicNewPatientEntry(initial())({ ...location.state?.criteria?.values });
-        } else {
-            return initial();
         }
-    }, [location.state?.defaults]);
+    }, [location.state?.basic, location.state?.criteria?.values]);
 
-    return { initialize };
+    return { defaults };
 };
 
 export { useAddPatientBasicDefaults };

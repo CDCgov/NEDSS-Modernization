@@ -6,7 +6,7 @@ import { Shown } from 'conditional-render';
 import { Button } from 'components/button';
 import { sections } from './sections';
 import { AddPatientBasicForm } from './AddPatientBasicForm';
-import { BasicNewPatientEntry } from './entry';
+import { BasicNewPatientEntry, initial } from './entry';
 import { useAddBasicPatient } from './useAddBasicPatient';
 import { AddPatientLayout, DataEntryLayout } from '../layout';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
@@ -18,14 +18,21 @@ import { useShowCancelModal, CancelAddPatientPanel } from '../cancelAddPatientPa
 import styles from './add-patient-basic.module.scss';
 
 export const AddPatientBasic = () => {
-    const { initialize } = useAddPatientBasicDefaults();
+    const { defaults } = useAddPatientBasicDefaults();
     const { value: bypassBlocker } = useShowCancelModal();
 
     const interaction = useAddBasicPatient();
     const form = useForm<BasicNewPatientEntry>({
-        defaultValues: initialize(),
+        defaultValues: initial(),
         mode: 'onBlur'
     });
+
+    useEffect(() => {
+        if (defaults) {
+            form.reset(defaults, { keepDefaultValues: true });
+        }
+    }, [defaults]);
+    defaults;
     const blocker = useFormNavigationBlock({ activated: !bypassBlocker, form, allowed: '/patient/add/extended' });
 
     const { toExtended } = usePatientDataEntryMethod();
