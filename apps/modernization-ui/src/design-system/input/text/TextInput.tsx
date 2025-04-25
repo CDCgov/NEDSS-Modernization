@@ -40,12 +40,12 @@ const TextInput = ({
         if (next) {
             onChange?.(next);
         } else {
-            onChange?.();
+            onChange?.('');
         }
     };
 
     const handleClear = () => {
-        onChange?.();
+        onChange?.('');
         onClear?.();
     };
 

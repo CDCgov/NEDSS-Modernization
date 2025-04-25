@@ -61,25 +61,25 @@ describe('when filtering table data from the header', () => {
 
     it('should clear the filter when clearing text from an input with existing value', async () => {
         mockValueOf.mockReturnValue('existing value');
-        
+
         const { getByRole } = render(<Fixture id="clearing-value" />);
         const input = getByRole('textbox');
 
         const user = userEvent.setup();
         await user.clear(input);
 
-        expect(mockAdd).toHaveBeenCalledWith('clearing-value', undefined);
+        expect(mockAdd).toHaveBeenCalledWith('clearing-value', '');
         expect(mockClear).toHaveBeenCalledWith('clearing-value');
     });
-    
+
     it('should not clear the filter when there is no existing filter value', async () => {
         mockValueOf.mockReturnValue('');
-        
+
         const { getByRole } = render(<Fixture id="clearing-value" />);
         const input = getByRole('textbox');
 
         mockClear.mockClear();
-        
+
         const user = userEvent.setup();
         await user.clear(input);
 
