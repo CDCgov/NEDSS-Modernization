@@ -68,7 +68,7 @@ describe('when filtering table data from the header', () => {
         const user = userEvent.setup();
         await user.clear(input);
 
-        expect(mockAdd).toHaveBeenCalledWith('clearing-value', '');
+        expect(mockAdd).toHaveBeenCalledWith('clearing-value', undefined);
         expect(mockClear).toHaveBeenCalledWith('clearing-value');
     });
 

@@ -69,7 +69,7 @@ describe('when entering text values', () => {
 
         await user.click(svgIcon);
 
-        expect(onChange).toHaveBeenCalledWith('');
+        expect(onChange).toHaveBeenCalledWith();
         expect(onClear).toHaveBeenCalled();
     });
 });
