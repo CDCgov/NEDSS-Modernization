@@ -28,14 +28,20 @@ jest.mock('options/location', () => ({
     useStateOptions: () => mockStateCodedValues
 }));
 
+const mockNow = jest.fn();
+
+jest.mock('design-system/date/clock', () => ({
+    now: () => mockNow()
+}));
+
 jest.mock('./useSexBirthCodedValues', () => ({
     useSexBirthCodedValues: () => mockSexBirthCodedValues
 }));
 
-const Fixture = () => {
+const Fixture = ({ formValues }: { formValues?: Partial<ExtendedNewPatientEntry> }) => {
     const form = useForm<ExtendedNewPatientEntry>({
         mode: 'onBlur',
-        defaultValues: { birthAndSex: { multiple: { value: 'Y', name: 'Yes' } } }
+        defaultValues: { birthAndSex: { multiple: { value: 'Y', name: 'Yes' } }, ...formValues }
     });
 
     return (
@@ -46,6 +52,10 @@ const Fixture = () => {
 };
 
 describe('when entering patient sex and birth demographics', () => {
+    beforeEach(() => {
+        mockNow.mockReturnValue(new Date('2022-01-25T00:00:00'));
+    });
+
     it('should render the proper labels', () => {
         const { getByLabelText, getByText, queryByLabelText } = render(<Fixture />);
 
@@ -116,5 +126,32 @@ describe('when entering patient sex and birth demographics', () => {
 
         await user.selectOptions(getByLabelText('Unknown reason'), 'DNA');
         expect(getByLabelText('Unknown reason')).toHaveValue('DNA');
+    });
+
+    it('should render age only when date of birth is valid', async () => {
+        const user = userEvent.setup();
+
+        const { queryByText, getByText, getByLabelText } = render(<Fixture />);
+        const dateOfBirth = getByLabelText('Date of birth');
+
+        expect(getByText('Current age')).toBeInTheDocument();
+        expect(queryByText(/year|month|day/)).not.toBeInTheDocument();
+
+        await user.clear(dateOfBirth).then(() => user.type(dateOfBirth, '12012012{tab}'));
+
+        expect(getByText('9 years')).toBeInTheDocument();
+    });
+
+    it('should calculate currentAge against the deceasedOn date when provided', async () => {
+        const user = userEvent.setup();
+
+        const { getByLabelText, getByText } = render(
+            <Fixture formValues={{ mortality: { deceasedOn: '12/12/2022', asOf: '05/05/2025' } }} />
+        );
+        const dateOfBirth = getByLabelText('Date of birth');
+
+        await user.clear(dateOfBirth).then(() => user.type(dateOfBirth, '12012012{tab}'));
+
+        expect(getByText('10 years')).toBeInTheDocument();
     });
 });

@@ -4,9 +4,9 @@ import { useSexBirthCodedValues } from './useSexBirthCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { Input } from 'components/FormInputs/Input';
-import { displayAgeAsOfToday } from 'date/displayAge';
+import { displayAgeAsOf, displayAgeAsOfToday } from 'date/displayAge';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { BirthEntry, SexEntry } from 'apps/patient/data/entry';
+import { BirthEntry, MortalityEntry, SexEntry } from 'apps/patient/data/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';
 import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
@@ -19,12 +19,16 @@ const BIRTH_CITY_LABEL = 'Birth city';
 const ENTRY_FIELD_PLACEHOLDER = '';
 
 export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
-    const { control, setValue } = useFormContext<{ birthAndSex: BirthEntry & SexEntry }>();
+    const { control, setValue } = useFormContext<{ birthAndSex: BirthEntry & SexEntry; mortality: MortalityEntry }>();
     const currentBirthday = useWatch({ control, name: 'birthAndSex.bornOn' });
     const selectedCurrentGender = useWatch({ control, name: 'birthAndSex.current' });
     const selectedState = useWatch({ control, name: 'birthAndSex.state' });
     const selectedMultipleBirth = useWatch({ control, name: 'birthAndSex.multiple' });
-    const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
+    const deceasedOn = useWatch({ control, name: 'mortality.deceasedOn' });
+    const age = useMemo(
+        () => (deceasedOn ? displayAgeAsOf(currentBirthday, deceasedOn) : displayAgeAsOfToday(currentBirthday)),
+        [currentBirthday, deceasedOn]
+    );
 
     const coded = useSexBirthCodedValues();
 
