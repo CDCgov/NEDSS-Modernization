@@ -35,7 +35,7 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur }: DateRangeFieldP
             if (between) {
                 onChange({ between });
             } else {
-                onChange();
+                onChange({ between: { from: undefined, to: undefined } });
             }
         },
         [onChange, value?.between]
