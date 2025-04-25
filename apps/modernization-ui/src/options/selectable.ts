@@ -1,18 +1,17 @@
-import { Mapping, Maybe } from 'utils';
+import { Mapping } from 'utils';
 
 type Selectable = {
     value: string;
     name: string;
     label?: string;
-    order?: number;
 };
 
 export type { Selectable };
 
 /* eslint-disable no-redeclare */
 function mapExisting<V>(mapping: Mapping<Selectable, V>, selectable: Selectable): V;
-function mapExisting<V>(mapping: Mapping<Selectable, V>, selectable: null | undefined): undefined;
-function mapExisting<V>(mapping: Mapping<Selectable, V>, selectable: Maybe<Selectable>) {
+function mapExisting<V>(mapping: Mapping<Selectable, V>, selectable?: null): undefined;
+function mapExisting<V>(mapping: Mapping<Selectable, V>, selectable?: Selectable | null) {
     return selectable ? mapping(selectable) : undefined;
 }
 
@@ -25,9 +24,8 @@ function mapAllExisting<V>(items: Selectable[] | undefined, mapping: Mapping<Sel
 
 /* eslint-disable no-redeclare */
 function asNumericValue(selectable: Selectable): number;
-function asNumericValue(selectable: null | undefined): undefined;
-function asNumericValue(selectable: Maybe<Selectable>): undefined;
-function asNumericValue(selectable: Maybe<Selectable>) {
+function asNumericValue(selectable?: null): undefined;
+function asNumericValue(selectable?: Selectable | null) {
     return selectable ? mapExisting((s) => Number(s.value), selectable) : undefined;
 }
 
@@ -42,9 +40,9 @@ export { asNumericValue, asNumericValues };
 
 /* eslint-disable no-redeclare */
 function asValue(selectable: Selectable): string;
-function asValue(selectable: null | undefined): undefined;
-function asValue(selectable: Maybe<Selectable>): undefined;
-function asValue(selectable: Maybe<Selectable>) {
+function asValue(selectable?: null | undefined): undefined;
+function asValue(selectable?: Selectable | null): undefined;
+function asValue(selectable?: Selectable | null) {
     return selectable ? mapExisting((s) => s?.value, selectable) : undefined;
 }
 
@@ -59,18 +57,18 @@ export { asValue, asValues };
 
 /* eslint-disable no-redeclare */
 function asName(selectable: Selectable): string;
-function asName(selectable: null | undefined): undefined;
-function asName(selectable: Maybe<Selectable>): undefined;
-function asName(selectable: Maybe<Selectable>) {
+function asName(selectable?: null): undefined;
+function asName(selectable?: Selectable | null): undefined;
+function asName(selectable?: Selectable | null) {
     return selectable ? mapExisting((s) => s?.name, selectable) : undefined;
 }
 
 export { asName };
 
-const asSelectable = (value: string, name?: string): Selectable => ({
+const asSelectable = (value: string, name?: string, label?: string): Selectable => ({
+    value,
     name: name ?? value,
-    label: name ?? value,
-    value
+    label
 });
 
 export { asSelectable };

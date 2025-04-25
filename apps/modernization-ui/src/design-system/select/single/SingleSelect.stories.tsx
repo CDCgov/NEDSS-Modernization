@@ -3,7 +3,7 @@ import { SingleSelect } from './SingleSelect';
 import { asSelectable, Selectable } from 'options';
 
 const meta = {
-    title: 'Design System/Select/SingleSelect',
+    title: 'Design System/Select/Single',
     component: SingleSelect
 } satisfies Meta<typeof SingleSelect>;
 
@@ -12,11 +12,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const options: Selectable[] = [
-    asSelectable('apple', 'Apple'),
-    asSelectable('banana', 'Banana'),
-    asSelectable('mango', 'Mango'),
-    asSelectable('orange', 'Orange'),
-    asSelectable('watermelon', 'Watermelon')
+    asSelectable('Apple'),
+    asSelectable('Banana'),
+    asSelectable('Mango'),
+    asSelectable('Orange'),
+    asSelectable('Watermelon')
 ];
 
 export const Default: Story = {
@@ -24,18 +24,20 @@ export const Default: Story = {
         id: 'single-select',
         label: 'Single Select',
         options: options,
-        onChange: (selected) => {
-            console.log('Selected options:', selected);
-        }
+        onChange: () => {}
     }
 };
 
 export const Horizontal: Story = {
     args: {
         ...Default.args,
-        id: 'horizontal-single-select',
-        name: 'HorizontalSingleSelect',
-        label: 'Single Select',
         orientation: 'horizontal'
+    }
+};
+
+export const Vertical: Story = {
+    args: {
+        ...Default.args,
+        orientation: 'vertical'
     }
 };
