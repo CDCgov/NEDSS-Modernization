@@ -5,9 +5,9 @@ import { MultiSelectInput } from './MultiSelectInput';
 
 describe('Given a MultiSelectInput component', () => {
     const options = [
-        { name: 'label-one', value: '1' },
-        { name: 'label-two', value: '2' },
-        { name: 'label-three', value: '3' }
+        { name: 'name-one', value: '1' },
+        { name: 'name-two', value: '2' },
+        { name: 'name-three', value: '3' }
     ];
 
     it('should display options when clicked', async () => {
@@ -21,37 +21,37 @@ describe('Given a MultiSelectInput component', () => {
 
         await user.click(component);
 
-        expect(getByText('label-one')).toBeInTheDocument();
-        expect(getByText('label-two')).toBeInTheDocument();
-        expect(getByText('label-three')).toBeInTheDocument();
+        expect(getByText('name-one')).toBeInTheDocument();
+        expect(getByText('name-two')).toBeInTheDocument();
+        expect(getByText('name-three')).toBeInTheDocument();
     });
 
     it('should display single selected value', () => {
         const { getByText, queryByText } = render(<MultiSelectInput options={options} value={['2']} />);
 
-        expect(getByText('label-two')).toBeInTheDocument();
+        expect(getByText('name-two')).toBeInTheDocument();
 
-        expect(queryByText('label-one')).not.toBeInTheDocument();
-        expect(queryByText('label-three')).not.toBeInTheDocument();
+        expect(queryByText('name-one')).not.toBeInTheDocument();
+        expect(queryByText('name-three')).not.toBeInTheDocument();
     });
 
     it('should display multiple selected value', () => {
         const { getByText, queryByText } = render(<MultiSelectInput options={options} value={['2', '1']} />);
 
-        expect(getByText('label-two')).toBeInTheDocument();
+        expect(getByText('name-two')).toBeInTheDocument();
 
-        expect(queryByText('label-three')).not.toBeInTheDocument();
+        expect(queryByText('name-three')).not.toBeInTheDocument();
     });
 
     it('should remove the selected item when clicked', async () => {
         const { queryByText, getByLabelText } = render(<MultiSelectInput options={options} value={['2']} />);
 
-        const selected = getByLabelText('Remove label-two');
+        const selected = getByLabelText('Remove name-two');
 
         const user = userEvent.setup();
 
         await user.click(selected);
 
-        expect(queryByText('label-two')).not.toBeInTheDocument();
+        expect(queryByText('name-two')).not.toBeInTheDocument();
     });
 });
