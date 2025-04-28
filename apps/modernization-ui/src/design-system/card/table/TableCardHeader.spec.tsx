@@ -55,4 +55,9 @@ describe('TableCardHeader', () => {
         expect(queryByText('Action 1')).not.toBeInTheDocument();
         expect(queryByText('Action 2')).not.toBeInTheDocument();
     });
+
+    it('renders the result count', () => {
+        const { getByText } = render(<Fixture resultCount={10} />);
+        expect(getByText('10')).toBeInTheDocument();
+    });
 });
