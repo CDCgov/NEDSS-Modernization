@@ -73,7 +73,7 @@ describe('ImportConfigurationModal', () => {
         const fileInput = getByLabelText('Drag configuration file here or choose from folder');
         const algorithmExport: AlgorithmExport = {
             dataElements: {
-                firstName: { active: true, oddsRatio: 5.0, logOdds: 1.609437, threshold: 0.5 }
+                firstName: { active: true, oddsRatio: 5.0, logOdds: 1.609437 }
             },
             algorithm: {
                 passes: [
