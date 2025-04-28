@@ -8,10 +8,10 @@ interface PatientFileHeaderProps {
 
 export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
     return (
-        <div className={styles.header}>
-            <div className={styles.headerContent}>
+        <header className={styles.header}>
+            <head className={styles.headerContent}>
                 <Heading level={1}>Patient ID: {id}</Heading>
-            </div>
+            </head>
             <div className={styles.tabNavigation}>
                 <TabNavigation className="grid-row flex-align-center" newTab>
                     <TabNavigationEntry path={`/patient/${id}/summary`}>Summary</TabNavigationEntry>
@@ -19,6 +19,6 @@ export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
                     <TabNavigationEntry path={`/patient/${id}/demographics`}>Demographics</TabNavigationEntry>
                 </TabNavigation>
             </div>
-        </div>
+        </header>
     );
 };
