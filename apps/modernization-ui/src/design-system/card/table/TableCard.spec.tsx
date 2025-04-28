@@ -1,6 +1,19 @@
 import { render } from '@testing-library/react';
 import { TableCard, TableCardProps } from './TableCard';
 import { Column } from 'design-system/table';
+import { axe } from 'jest-axe';
+
+const mockApply = jest.fn();
+
+jest.mock('design-system/table/preferences/useColumnPreferences', () => ({
+    useMaybeColumnPreferences: () => ({
+        apply: mockApply
+    })
+}));
+
+jest.mock('design-system/table/preferences/withColumnPreferences', () => ({
+    withColumnPreferences: (Component: any) => (props: any) => <Component {...props} />
+}));
 
 type TestData = {
     id: number;
@@ -32,9 +45,19 @@ const Fixture = (props: Partial<TableCardProps<TestData>>) => {
 };
 
 describe('TableCard', () => {
+    beforeEach(() => {
+        jest.resetAllMocks();
+        mockApply.mockReturnValue(columns);
+    });
+
     it('renders without crashing', () => {
         const { container } = render(<Fixture />);
         expect(container.querySelector('section#tablecard')).toBeInTheDocument();
+    });
+
+    it('should render with no accessibility violations', async () => {
+        const { container } = render(<Fixture />);
+        expect(await axe(container)).toHaveNoViolations();
     });
 
     it('renders header with correct title', () => {
@@ -42,7 +65,7 @@ describe('TableCard', () => {
         expect(getByRole('heading')).toHaveTextContent('Test Title');
     });
 
-    it('renders DataTable with correct props', () => {
+    it('renders DataTable with correct props and column length', () => {
         const { getByRole } = render(<Fixture />);
         const table = getByRole('table');
         expect(table).toBeInTheDocument();
@@ -61,5 +84,29 @@ describe('TableCard', () => {
         const { getByRole } = render(<Fixture tableClassName="custom-table-class" />);
         expect(getByRole('table')).toBeInTheDocument();
         expect(getByRole('table')).toHaveClass('custom-table-class');
+    });
+
+    it('does not render the settings button by default', () => {
+        const { queryByLabelText } = render(<Fixture />);
+        expect(queryByLabelText('Settings')).not.toBeInTheDocument();
+    });
+
+    it('renders settings button when columnPreferencesKey is provided', () => {
+        const { getByLabelText } = render(<Fixture columnPreferencesKey="test-key" />);
+        expect(getByLabelText('Settings')).toBeInTheDocument();
+    });
+
+    it('renders with mocked column preferences', () => {
+        mockApply.mockReturnValue(columns.slice(0, 1));
+
+        const { getByRole } = render(<Fixture columnPreferencesKey="test-key" />);
+
+        expect(mockApply).toHaveBeenCalledTimes(1);
+        expect(mockApply).toHaveBeenCalledWith(columns);
+
+        const table = getByRole('table');
+        expect(table).toBeInTheDocument();
+        const headerCells = table.querySelectorAll('thead tr:nth-child(1) th');
+        expect(headerCells).toHaveLength(1); // Only one column should be shown
     });
 });
