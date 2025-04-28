@@ -58,7 +58,15 @@ export const TableCard = <V,>({
             id={id}
             className={className}
             collapsible={collapsible}
-            header={<TableCardHeader title={title} actions={actions} showSettings={columnPreferencesKey != null} />}
+            header={
+                <TableCardHeader
+                    title={title}
+                    actions={actions}
+                    resultCount={props?.data?.length ?? 0}
+                    showSettings={columnPreferencesKey != null}
+                    sizing={props?.sizing}
+                />
+            }
             showCollapseSeparator={true}>
             <ManagedDataTable {...props} id={`${id}-table`} className={tableClassName} columns={columns} />
         </ColumnPreferencesCard>

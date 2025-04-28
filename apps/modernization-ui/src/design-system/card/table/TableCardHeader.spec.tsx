@@ -68,4 +68,9 @@ describe('TableCardHeader', () => {
         await user.click(settingsButton);
         expect(queryByText('Mocked Column Preferences Panel')).toBeInTheDocument();
     });
+
+    it('renders the result count', () => {
+        const { getByText } = render(<Fixture resultCount={10} />);
+        expect(getByText('10')).toBeInTheDocument();
+    });
 });
