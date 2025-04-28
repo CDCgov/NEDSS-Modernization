@@ -14,10 +14,17 @@ export type TableCardProps<V> = {
     sizing?: Sizing;
     tableClassName?: string;
     actions?: TableCardAction[];
+    /** When provided, will be used to store/retrieve column preferences in local storage */
     columnPreferencesKey?: string;
+    /** When provided, uses these preferences as the starting point if no data in local storage */
     defaultColumnPreferences?: ColumnPreference[];
 } & Omit<DataTableProps<V>, 'id' | 'className'>;
 
+/**
+ * Represents a specialized card component that contains a DataTable and settings to manage the column preferences.
+ * @param {TableCardProps} props Component props
+ * @return TableCard component
+ */
 export const TableCard = <V,>({
     id,
     className,
@@ -53,11 +60,17 @@ export const TableCard = <V,>({
             collapsible={collapsible}
             header={<TableCardHeader title={title} actions={actions} showSettings={columnPreferencesKey != null} />}
             showCollapseSeparator={true}>
-            <ManagedDataTable id={`${id}-table`} className={tableClassName} columns={columns} {...props} />
+            <ManagedDataTable {...props} id={`${id}-table`} className={tableClassName} columns={columns} />
         </ColumnPreferencesCard>
     );
 };
 
+/**
+ * Higher-order component to wrap a DataTable component with columns applied according to column preferences.
+ * If there is no column preferences context, the original columns are used.
+ * @param {FC} WrappedComponent DataTable component
+ * @return A modified DataTable component with columns applied
+ */
 const withMaybeColumnPreferencesDataTable = <V,>(WrappedComponent: ComponentType<DataTableProps<V>>) => {
     const EnhancedComponent: FC<DataTableProps<V>> = (props) => {
         const interaction = useMaybeColumnPreferences();

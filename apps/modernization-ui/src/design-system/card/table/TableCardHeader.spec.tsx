@@ -1,5 +1,11 @@
 import { render } from '@testing-library/react';
 import { TableCardHeader, TableCardHeaderProps } from './TableCardHeader';
+import userEvent from '@testing-library/user-event';
+
+// mock ColumnPreferencesPanel component
+jest.mock('design-system/table/preferences/ColumnPreferencesPanel', () => ({
+    ColumnPreferencesPanel: () => <div>Mocked Column Preferences Panel</div>
+}));
 
 const Fixture = (props: Partial<TableCardHeaderProps>) => {
     return (
@@ -50,9 +56,16 @@ describe('TableCardHeader', () => {
         expect(queryByText('Test Subtext')).not.toBeInTheDocument();
     });
 
-    it('renders without actions if not provided', () => {
-        const { queryByText } = render(<Fixture actions={undefined} />);
-        expect(queryByText('Action 1')).not.toBeInTheDocument();
-        expect(queryByText('Action 2')).not.toBeInTheDocument();
+    it('renders without settings overlay panel by default', async () => {
+        const { queryByText } = render(<Fixture />);
+        expect(queryByText('Mocked Column Preferences Panel')).not.toBeInTheDocument();
+    });
+
+    it('shows settings overlay panel when settings button clicked', async () => {
+        const { getByLabelText, queryByText } = render(<Fixture />);
+        const settingsButton = getByLabelText('Settings');
+        const user = userEvent.setup();
+        await user.click(settingsButton);
+        expect(queryByText('Mocked Column Preferences Panel')).toBeInTheDocument();
     });
 });

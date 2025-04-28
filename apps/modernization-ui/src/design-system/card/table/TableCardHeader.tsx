@@ -47,7 +47,8 @@ export const TableCardHeader = ({
                                 sizing="small"
                             />
                         )}
-                        render={(close) => <ColumnPreferencesPanel close={close} />}></OverlayPanel>
+                        render={(close) => <ColumnPreferencesPanel close={close} />}
+                    />
                 </Shown>
             </div>
         </>
