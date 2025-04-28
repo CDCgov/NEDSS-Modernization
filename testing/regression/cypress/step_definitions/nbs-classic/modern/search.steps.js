@@ -123,3 +123,6 @@ Then("I verify all search rows contains {string}", (string) => {
     cy.get("div#patient-search-results table.usa-table tbody tr td").contains(string);
 });
 
+Then("Clear search filter {string}", (string) => {
+    cy.get(`input[id="${string}"]`).siblings('span').click();    
+});
