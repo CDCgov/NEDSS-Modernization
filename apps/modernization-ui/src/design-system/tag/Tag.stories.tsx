@@ -87,12 +87,12 @@ const data: Data[] = [
 ];
 
 const columns: Column[] = [
-    { name: 'ID', id: 'id', render: (row: Data) => row.id.toString() },
-    { name: 'Name', id: 'name', render: (row: Data) => row.name },
+    { name: 'ID', id: 'id', render: (row) => row.id.toString() },
+    { name: 'Name', id: 'name', render: (row) => row.name },
     {
         name: 'Case status',
         id: 'status',
-        render: (row: Data) =>
+        render: (row) =>
             row.status === 'Open' ? (
                 <Tag variant="success" size="small">
                     Open
@@ -104,7 +104,7 @@ const columns: Column[] = [
     {
         id: 'notification',
         name: 'Notification',
-        render: (row: Data) =>
+        render: (row) =>
             row.notification === 'Rejected' ? (
                 <Tag variant="error" size="small">
                     Rejected
