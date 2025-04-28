@@ -20,7 +20,7 @@ export default function NavBar() {
     const { title } = usePage();
 
     return (
-        <div className={styles.navbar}>
+        <head className={styles.navbar}>
             <table role="presentation" className={styles.nedssNavTable}>
                 <tbody>
                     <tr>
@@ -139,6 +139,6 @@ export default function NavBar() {
                     </tbody>
                 </table>
             </h1>
-        </div>
+        </head>
     );
 }
