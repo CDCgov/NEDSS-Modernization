@@ -14,7 +14,7 @@ const routing = [
             </FeatureGuard>
         ),
         children: [
-            { path: '', element: <Navigate to="summary" /> },
+            { path: '', index: true, element: <Navigate to="summary" /> },
             {
                 path: 'summary',
                 element: <div></div>
