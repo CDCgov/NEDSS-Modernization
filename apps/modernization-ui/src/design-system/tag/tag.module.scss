@@ -29,7 +29,7 @@
 }
 
 .error {
-    @include tag(colors.$base-white, colors.$error);
+    @include tag(colors.$base-white, colors.$error-dark);
 }
 
 .info {

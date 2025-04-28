@@ -2,6 +2,8 @@ import { Heading, HeadingLevel } from 'components/heading';
 import { Button, ButtonProps } from 'design-system/button';
 import { Icon } from 'design-system/icon';
 import styles from './table-card-header.module.scss';
+import { Tag } from 'design-system/tag';
+import { Sizing } from 'design-system/field';
 
 export type TableCardAction = ButtonProps;
 
@@ -11,7 +13,9 @@ export type TableCardHeaderProps = {
     headingLevel?: HeadingLevel;
     tagText?: string;
     showSettings?: boolean;
+    resultCount?: number;
     actions?: TableCardAction[];
+    sizing?: Sizing;
 };
 
 export const TableCardHeader = ({
@@ -19,12 +23,17 @@ export const TableCardHeader = ({
     headingLevel = 2,
     subtext,
     showSettings = true,
-    actions
+    actions,
+    resultCount,
+    sizing
 }: TableCardHeaderProps) => {
     return (
         <>
             <div className={styles.title}>
-                <Heading level={headingLevel}>{title}</Heading>
+                <div className={styles.titleContent}>
+                    <Heading level={headingLevel}>{title}</Heading>
+                    <Tag size={sizing}>{resultCount}</Tag>
+                </div>
                 {subtext && <div className={styles.subtext}>{subtext}</div>}
             </div>
             {showSettings && (
