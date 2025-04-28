@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Tag, TagProps } from './Tag';
 import React from 'react';
+import { DataTable } from 'design-system/table';
 
 const meta = {
     title: 'Design System/Tag',
@@ -8,6 +9,18 @@ const meta = {
 } satisfies Meta<typeof Tag>;
 
 export default meta;
+
+type Data = {
+    id: number;
+    name: string;
+    status: string;
+    notification: string | null;
+};
+type Column = {
+    id: keyof Data;
+    name: string;
+    render: (value: Data) => React.ReactNode | string;
+};
 
 type Story = StoryObj<typeof meta>;
 
@@ -67,71 +80,49 @@ export const Gray: Story = {
     render: renderTags
 };
 
+const data: Data[] = [
+    { id: 1, name: 'Item 1', status: 'Open', notification: 'Rejected' },
+    { id: 2, name: 'Item 2', status: 'Closed', notification: null },
+    { id: 3, name: 'Item 3', status: 'Open', notification: 'Rejected' }
+];
+
+const columns: Column[] = [
+    { name: 'ID', id: 'id', render: (row: Data) => row.id.toString() },
+    { name: 'Name', id: 'name', render: (row: Data) => row.name },
+    {
+        name: 'Case status',
+        id: 'status',
+        render: (row: Data) =>
+            row.status === 'Open' ? (
+                <Tag variant="success" size="small">
+                    Open
+                </Tag>
+            ) : (
+                row.status
+            )
+    },
+    {
+        id: 'notification',
+        name: 'Notification',
+        render: (row: Data) =>
+            row.notification === 'Rejected' ? (
+                <Tag variant="error" size="small">
+                    Rejected
+                </Tag>
+            ) : (
+                row.notification
+            )
+    }
+];
+
 export const TagInTableColumn: Story = {
     args: {
         ...Default.args
     },
     render: () => {
-        const data = [
-            { id: 1, name: 'Item 1', status: 'Open' },
-            { id: 2, name: 'Item 2', status: 'Closed' },
-            { id: 3, name: 'Item 3', status: 'Open' }
-        ];
-
-        type ColumnDef = {
-            header: string;
-            accessor: keyof (typeof data)[0];
-            cell?: (value: any) => React.ReactNode;
-        };
-
-        const columns: ColumnDef[] = [
-            { header: 'ID', accessor: 'id' },
-            { header: 'Name', accessor: 'name' },
-            {
-                header: 'Status',
-                accessor: 'status',
-                cell: (value: any) => {
-                    if (value === 'Open') {
-                        return (
-                            <Tag variant="success" size="small">
-                                Open
-                            </Tag>
-                        );
-                    } else {
-                        return <span style={{ color: 'var(--base-dark)', fontSize: '0.75rem' }}>Closed</span>;
-                    }
-                }
-            }
-        ];
-
         return (
-            <div style={{ border: '1px solid #eee', padding: '1rem' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                    <thead>
-                        <tr>
-                            {columns.map((col) => (
-                                <th
-                                    key={col.accessor}
-                                    style={{ textAlign: 'left', padding: '8px', borderBottom: '1px solid #eee' }}>
-                                    {col.header}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((row) => (
-                            <tr key={row.id}>
-                                {columns.map((col) => (
-                                    <td
-                                        key={`${row.id}-${col.accessor}`}
-                                        style={{ padding: '8px', borderBottom: '1px solid #eee' }}>
-                                        {col.cell ? col.cell(row[col.accessor]) : row[col.accessor]}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div style={{ padding: '1rem' }}>
+                <DataTable<Data> id={'tag-table'} columns={columns} data={data} />
             </div>
         );
     }
