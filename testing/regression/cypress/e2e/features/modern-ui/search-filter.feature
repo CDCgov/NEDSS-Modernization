@@ -4,14 +4,22 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     Given I am logged in as secure user and stay on classic
     Given I am on the modernized Patient Search page
 
-  Scenario: Search patient by exact Patient ID    
+  Scenario: Search by patient contains filter with Patient ID
+    Then I feel input id "name.last" with text "rat"
+    When I select input id "name.lastOperator" with type "Contains"
+    And Click on Search in Patient Search pane
+    Then I click search filter result icon
+    Then I search filter column "text-filter-id" with "8917"
+    Then I verify unique search row contains "78917"
+
+  Scenario: Search patient by exact filter with Patient ID
     Then I feel input id "name.last" with text "rat"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
     Then I search filter column "text-filter-id" with "78917"
     Then I verify unique search row contains "78917"
 
-  Scenario: Search patient by exact Patient exact Last Name    
+  Scenario: Search patient by exact Patient exact Last Name
     Then I feel input id "name.last" with text "rat"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
