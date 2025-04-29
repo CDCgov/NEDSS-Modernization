@@ -5,4 +5,4 @@ Feature: Patient File Header
     Given I have a patient
 
   Scenario: I can retrieve the patient file header for a patient
-    I view the Patient File Header
+    Then I view the Patient File Header
