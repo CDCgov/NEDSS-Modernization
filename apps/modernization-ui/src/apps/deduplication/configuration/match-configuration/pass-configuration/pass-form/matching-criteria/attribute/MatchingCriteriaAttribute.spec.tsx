@@ -22,12 +22,14 @@ const Fixture = () => {
             <MatchingCriteriaAttribute
                 label="First name"
                 attribute={MatchingAttribute.FIRST_NAME}
+                index={0}
                 logOdds={2.3938}
                 onRemove={onRemove}
             />
             <MatchingCriteriaAttribute
                 label="Last name"
                 attribute={MatchingAttribute.LAST_NAME}
+                index={1}
                 logOdds={2.3938}
                 onRemove={onRemove}
             />
@@ -110,6 +112,6 @@ describe('MatchingCriteriaAttribute', () => {
 
         await user.click(deleteButton);
 
-        expect(onRemove).toHaveBeenCalledWith(MatchingAttribute.FIRST_NAME);
+        expect(onRemove).toHaveBeenCalledWith(0);
     });
 });

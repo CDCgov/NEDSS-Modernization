@@ -53,7 +53,8 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                                     key={entry.id}
                                     label={MatchingAttributeLabels[entry.attribute]?.label ?? ''}
                                     attribute={entry.attribute}
-                                    onRemove={() => handleRemoveAttribute(index)}
+                                    index={index}
+                                    onRemove={handleRemoveAttribute}
                                     logOdds={getLogOdds(dataElements, entry.attribute)}
                                 />
                             ))}

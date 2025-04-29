@@ -11,13 +11,13 @@ import styles from './matching-criteria-attribute.module.scss';
 type AttributeProps = {
     label: string;
     attribute: MatchingAttribute;
+    index: number;
     logOdds: number;
-    onRemove: (attribute: MatchingAttribute) => void;
+    onRemove: (index: number) => void;
 };
-export const MatchingCriteriaAttribute = ({ label, attribute, logOdds, onRemove }: AttributeProps) => {
+export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, onRemove }: AttributeProps) => {
     const form = useFormContext<Pass>();
     const { matchingCriteria } = useWatch<Pass>(form);
-    const [index, setIndex] = useState(0);
     const [visible, setVisible] = useState(false);
     const method = useWatch({ control: form.control, name: `matchingCriteria.${index}.method` });
 
@@ -31,7 +31,6 @@ export const MatchingCriteriaAttribute = ({ label, attribute, logOdds, onRemove 
 
     useEffect(() => {
         if (matchingCriteria && matchingCriteria.length > 0) {
-            setIndex(matchingCriteria?.findIndex((m) => m.attribute === attribute));
             setVisible(matchingCriteria.find((m) => m.attribute === attribute) !== undefined);
         } else {
             setVisible(false);
@@ -110,7 +109,7 @@ export const MatchingCriteriaAttribute = ({ label, attribute, logOdds, onRemove 
                                 }}
                                 onChange={onChange}
                                 error={error?.message}
-                                disabled={method !== MatchMethod.JAROWINKLER}
+                                disabled={method === MatchMethod.EXACT}
                             />
                         )}
                     />
@@ -121,7 +120,7 @@ export const MatchingCriteriaAttribute = ({ label, attribute, logOdds, onRemove 
                         sizing="small"
                         outline
                         destructive
-                        onClick={() => onRemove(attribute)}
+                        onClick={() => onRemove(index)}
                     />
                 </div>
             </div>
