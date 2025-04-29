@@ -1,10 +1,13 @@
 .sized {
     --calendar-icon-width: 1rem;
-
+    
     & > div > button {
         //  usa-date-picker__button
         background-size: var(--calendar-icon-width);
         max-width: var(--calendar-icon-width);
+    }
+    & > div > button:focus {
+        outline-offset: 0rem !important;
     }
 
     & > div > input {
