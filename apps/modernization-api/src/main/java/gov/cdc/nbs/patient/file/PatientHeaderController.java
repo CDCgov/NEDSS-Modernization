@@ -67,14 +67,16 @@ public class PatientHeaderController {
     long personUid = patientProfile.id();
 
     Optional<PatientSearchResultName> optionalName = this.nameFinder.find(personUid, LocalDate.now(clock));
-    Collection<PatientSearchResult> results = patientFinder.find(Arrays.asList(personUid));
-    if (optionalName.isEmpty() || results.isEmpty()) {
+    if (optionalName.isEmpty()) {
       return null;
     }
-    // isPresent to appease lint
-    PatientSearchResult patientInfo =
-        results.stream().findFirst().isPresent() ? results.stream().findFirst().get() : null;
     PatientSearchResultName name = optionalName.get();
+
+    Collection<PatientSearchResult> results = patientFinder.find(Arrays.asList(personUid));
+    if (results.isEmpty()) {
+      return null;
+    }
+    PatientSearchResult patientInfo = results.stream().findFirst().get();
 
     return new PatientFileHeader(personUid, String.valueOf(patientId), patientInfo.local(),
         statusMap.get(patientInfo.status()),
