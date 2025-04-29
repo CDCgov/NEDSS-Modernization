@@ -18,6 +18,6 @@ class PatientHeaderRequester {
 
   ResultActions request(long patientId) throws Exception {
     return mvc.perform(
-        get("nbs/api/patient/" + String.valueOf(patientId) + "/file")).andDo(print());
+        get("/nbs/api/patient/" + String.valueOf(patientId) + "/file")).andDo(print());
   }
 }
