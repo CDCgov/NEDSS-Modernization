@@ -12,13 +12,13 @@ export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
         <header className={styles.header}>
             <div className={styles.headerContent}>
                 <div className={styles.headerContentTitle}>
-                    <p className={styles.headerPatientName}>Smith, John</p>
-                    <p className={styles.headerPatientDivider}>|</p>
-                    <p className={styles.headerPatientDetail}>Male</p>
-                    <p className={styles.headerPatientDivider}>|</p>
-                    <p className={styles.headerPatientDetail}>01/07/1972 (57 years)</p>
-                    <p className={styles.headerPatientDivider}>|</p>
-                    <p className={styles.headerPatientDetail}>Patient ID: {id}</p>
+                    <span className={styles.headerPatientName}>Smith, John</span>
+                    <span className={styles.headerPatientDivider}> | </span>
+                    <span className={styles.headerPatientDetail}>Male</span>
+                    <span className={styles.headerPatientDivider}> | </span>
+                    <span className={styles.headerPatientDetail}>01/07/1972 (57 years)</span>
+                    <span className={styles.headerPatientDivider}> | </span>
+                    <span className={styles.headerPatientDetail}>Patient ID: {id}</span>
                 </div>
                 <div className={styles.actions}>
                     <Button icon={<Icon name="delete" sizing="small" />} secondary disabled />

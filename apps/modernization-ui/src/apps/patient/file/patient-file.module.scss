@@ -1,10 +1,6 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-p {
-    margin: 0;
-}
-
 .file {
     .header {
         background-color: colors.$base-white;
@@ -19,10 +15,6 @@ p {
 
             
             .headerContentTitle {
-                display: flex;
-                gap: 0.5rem;
-                flex-direction: row;
-                align-items: flex-end;
 
                 .headerPatientName {
                     color: var(--Base-Black, #000);
@@ -52,6 +44,7 @@ p {
                     font-weight: 400;
                     line-height: normal;
                 }
+                
             }
 
             .actions {
