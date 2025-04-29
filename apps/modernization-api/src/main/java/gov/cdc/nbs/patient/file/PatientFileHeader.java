@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.file;
 
-import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record PatientFileHeader(

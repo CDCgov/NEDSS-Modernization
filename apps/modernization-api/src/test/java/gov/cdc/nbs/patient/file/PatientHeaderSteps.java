@@ -7,16 +7,14 @@ import org.springframework.test.web.servlet.ResultActions;
 
 public class PatientHeaderSteps {
 
-  private final Active<PatientIdentifier> activePatient;
   private final PatientHeaderRequester requester;
   private final Active<ResultActions> response;
-
+  Exception exception;
 
   PatientHeaderSteps(
       final Active<PatientIdentifier> activePatient,
       final PatientHeaderRequester requester,
       final Active<ResultActions> response) {
-    this.activePatient = activePatient;
     this.requester = requester;
     this.response = response;
   }
@@ -27,6 +25,7 @@ public class PatientHeaderSteps {
       this.response.active(
           this.requester.request(patientId));
     } catch (Exception thrown) {
+      this.exception = thrown;
     }
 
   }
