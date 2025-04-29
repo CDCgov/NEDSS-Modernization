@@ -22,6 +22,7 @@ export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
                 </div>
                 <div className={styles.actions}>
                     <Button
+                        className={styles['usa-button']}
                         aria-label="Delete"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
