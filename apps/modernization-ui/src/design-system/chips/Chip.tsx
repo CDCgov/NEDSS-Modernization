@@ -11,8 +11,14 @@ type ChipProps = {
 };
 
 const Chip = ({ name, value, operator, handleClose }: ChipProps) => {
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        if (event.code === 'Enter' || event.code === 'Space') {
+            event.preventDefault();
+            handleClose();
+        }
+    };
     return (
-        <div className={classNames(styles['chip-container'])}>
+        <div className={classNames(styles['chip-container'])} tabIndex={0} onKeyDown={handleKeyDown}>
             <span>{operator ? `${name} ${operator} '${value}'` : `${name}: ${value}`}</span>
             <Icon.Close aria-label="Close chip" onClick={() => handleClose()} className={styles.closeIcon} />
         </div>
