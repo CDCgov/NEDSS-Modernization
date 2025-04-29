@@ -1,6 +1,10 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
+p {
+    margin: 0;
+}
+
 .file {
     .header {
         background-color: colors.$base-white;
@@ -10,8 +14,14 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px colors.$base-lighter solid;
+            padding: 1rem 0.5rem 1rem 1rem;
+            
+            .headerContentTitle {
+                display: flex;
+                gap: 0.5rem;
+                flex-direction: row;
+            }
 
-            padding: 1rem;
             & > .actions {
                 display: flex;
                 gap: 0.5rem;
