@@ -35,4 +35,30 @@ describe('Chip', () => {
         const closeIcon = getByLabelText('Close chip');
         expect(closeIcon).toBeInTheDocument();
     });
+    it('calls handleClose when Enter key is pressed', async () => {
+        const user = userEvent.setup();
+        const { handleClose } = mockProps;
+        const { getByText } = render(<Chip {...mockProps} />);
+
+        const chip = getByText(`${mockProps.name}: ${mockProps.value}`).closest('div');
+        expect(chip).toBeInTheDocument();
+
+        await user.tab();
+        await user.keyboard('{Enter}');
+
+        expect(handleClose).toHaveBeenCalled();
+    })
+    it('calls handleClose when Space key is pressed', async () => {
+        const user = userEvent.setup();
+        const { handleClose } = mockProps;
+        const { getByText } = render(<Chip {...mockProps} />);
+
+        const chip = getByText(`${mockProps.name}: ${mockProps.value}`).closest('div');
+        expect(chip).toBeInTheDocument();
+
+        await user.tab();
+        await user.keyboard(' ');
+
+        expect(handleClose).toHaveBeenCalled();
+    })
 });
