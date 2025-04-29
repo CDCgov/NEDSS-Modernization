@@ -54,6 +54,7 @@ public class PatientHeaderController {
     return deleteResolver.resolve(patientProfile) ? "Deletable" : "Has_Associations";
   }
 
+  @SuppressWarnings("java:S3655")
   @Operation(operationId = "patientFileHeader", summary = "Patient File Header", description = "Patient File Header",
       tags = "PatientFileHeader")
   @GetMapping("/nbs/api/patient/{patientId}/file")
