@@ -9,6 +9,7 @@ import { Column, DataTable } from 'design-system/table';
 import { Status, usePagination } from 'pagination';
 import { useEffect } from 'react';
 import styles from './matches-requiring-review.module.scss';
+import { Shown } from 'conditional-render';
 
 const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
 
@@ -80,24 +81,26 @@ export const MatchesRequiringReviewTable = () => {
     ];
 
     return (
-        <div className={styles.table}>
+        <div className={styles.matchesRequiringReviewTable}>
             <DataTable<MatchRequiringReview> id="review-table" columns={columns} data={response.matches} />
-            <div className={styles.pagination}>
-                <SearchResultPageSizeSelect
-                    id={`page-size-select`}
-                    value={page.pageSize}
-                    selections={[20, 30, 50, 100]}
-                    onPageSizeChanged={resize}
-                />
-                <SearchResultsShowing page={page} />
-                <Pagination
-                    total={Math.ceil(page.total / page.pageSize)}
-                    current={page.current}
-                    onNext={() => request(page.current + 1)}
-                    onPrevious={() => request(page.current - 1)}
-                    onSelectPage={(page) => request(page)}
-                />
-            </div>
+            <Shown when={page.total > 0}>
+                <div className={styles.pagination}>
+                    <SearchResultPageSizeSelect
+                        id={`page-size-select`}
+                        value={page.pageSize}
+                        selections={[20, 30, 50, 100]}
+                        onPageSizeChanged={resize}
+                    />
+                    <SearchResultsShowing page={page} />
+                    <Pagination
+                        total={Math.ceil(page.total / page.pageSize)}
+                        current={page.current}
+                        onNext={() => request(page.current + 1)}
+                        onPrevious={() => request(page.current - 1)}
+                        onSelectPage={(page) => request(page)}
+                    />
+                </div>
+            </Shown>
         </div>
     );
 };

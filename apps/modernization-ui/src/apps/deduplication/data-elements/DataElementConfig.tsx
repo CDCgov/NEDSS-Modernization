@@ -6,6 +6,7 @@ import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormState, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router';
+import { exists } from 'utils';
 import { DataElements } from '../api/model/DataElement';
 import { useDataElements } from '../api/useDataElements';
 import { useMatchConfiguration } from '../api/useMatchConfiguration';
@@ -13,36 +14,35 @@ import styles from './data-elements.module.scss';
 import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
 import { DataElementValidationError, InUseDataElements } from './validation/DataElementValidationError';
 import { validateElementsInUse } from './validation/validateDataElementInUse';
-import { exists } from 'utils';
 
 const initial: DataElements = {
-    firstName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    lastName: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    dateOfBirth: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    sex: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    race: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    suffix: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    firstName: { active: false, oddsRatio: undefined, logOdds: undefined },
+    lastName: { active: false, oddsRatio: undefined, logOdds: undefined },
+    dateOfBirth: { active: false, oddsRatio: undefined, logOdds: undefined },
+    sex: { active: false, oddsRatio: undefined, logOdds: undefined },
+    race: { active: false, oddsRatio: undefined, logOdds: undefined },
+    suffix: { active: false, oddsRatio: undefined, logOdds: undefined },
     // Address Details
-    address: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    city: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    state: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    zip: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    county: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    telephone: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    email: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
+    address: { active: false, oddsRatio: undefined, logOdds: undefined },
+    city: { active: false, oddsRatio: undefined, logOdds: undefined },
+    state: { active: false, oddsRatio: undefined, logOdds: undefined },
+    zip: { active: false, oddsRatio: undefined, logOdds: undefined },
+    county: { active: false, oddsRatio: undefined, logOdds: undefined },
+    telephone: { active: false, oddsRatio: undefined, logOdds: undefined },
+    email: { active: false, oddsRatio: undefined, logOdds: undefined },
     // Identification Details
-    accountNumber: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    driversLicenseNumber: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    medicaidNumber: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    medicalRecordNumber: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    medicareNumber: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    nationalUniqueIdentifier: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    patientExternalIdentifier: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    patientInternalIdentifier: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    personNumber: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    socialSecurity: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    visaPassport: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined },
-    wicIdentifier: { active: false, oddsRatio: undefined, logOdds: undefined, threshold: undefined }
+    accountNumber: { active: false, oddsRatio: undefined, logOdds: undefined },
+    driversLicenseNumber: { active: false, oddsRatio: undefined, logOdds: undefined },
+    medicaidNumber: { active: false, oddsRatio: undefined, logOdds: undefined },
+    medicalRecordNumber: { active: false, oddsRatio: undefined, logOdds: undefined },
+    medicareNumber: { active: false, oddsRatio: undefined, logOdds: undefined },
+    nationalUniqueIdentifier: { active: false, oddsRatio: undefined, logOdds: undefined },
+    patientExternalIdentifier: { active: false, oddsRatio: undefined, logOdds: undefined },
+    patientInternalIdentifier: { active: false, oddsRatio: undefined, logOdds: undefined },
+    personNumber: { active: false, oddsRatio: undefined, logOdds: undefined },
+    socialSecurity: { active: false, oddsRatio: undefined, logOdds: undefined },
+    visaPassport: { active: false, oddsRatio: undefined, logOdds: undefined },
+    wicIdentifier: { active: false, oddsRatio: undefined, logOdds: undefined }
 };
 
 export const DataElementConfig = () => {
@@ -50,8 +50,10 @@ export const DataElementConfig = () => {
     const { dataElements, save, error, loading } = useDataElements();
     const { passes } = useMatchConfiguration();
     const [validationError, setValidationError] = useState<InUseDataElements | undefined>();
+
     const form = useForm<DataElements>({ mode: 'onBlur', defaultValues: initial });
     const { isValid, isDirty, dirtyFields } = useFormState(form);
+    const [isSaveDisabled, setIsSaveDisabled] = useState(true);
     const allValues = useWatch(form);
     const nav = useNavigate();
 
@@ -64,6 +66,11 @@ export const DataElementConfig = () => {
             showError(error);
         }
     }, [error]);
+
+    useEffect(() => {
+        const hasActiveElements = Object.values(allValues).some((element) => element.active);
+        setIsSaveDisabled(!(isDirty && exists(dirtyFields)) || !isValid || !hasActiveElements);
+    }, [JSON.stringify(allValues), isDirty, dirtyFields, isValid]);
 
     const handleCancel = () => {
         nav({ pathname: '/deduplication/configuration' });
@@ -80,10 +87,6 @@ export const DataElementConfig = () => {
             setValidationError(validationError);
         }
     };
-
-    const hasActiveElements = Object.values(allValues).some((element) => element.active);
-
-    const isSaveDisabled = !(isDirty || exists(dirtyFields)) || !isValid || !hasActiveElements;
 
     return (
         <div className={styles.dataElements}>

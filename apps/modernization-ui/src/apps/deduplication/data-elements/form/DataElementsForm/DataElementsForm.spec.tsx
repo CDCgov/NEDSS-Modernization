@@ -20,7 +20,6 @@ describe('DataElementsForm', () => {
         expect(screen.getByText('Field')).toBeInTheDocument();
         expect(screen.getByText('Odds ratio')).toBeInTheDocument();
         expect(screen.getByText('Log odds')).toBeInTheDocument();
-        expect(screen.getByText('Threshold')).toBeInTheDocument();
     });
 
     test('toggles individual checkboxes', () => {
@@ -78,15 +77,15 @@ describe('DataElementsForm', () => {
             </Wrapper>
         );
 
-        // Find the info icon using its data-testid
-        const icon = container.querySelectorAll('svg')[2];
+        // Find the info icon
+        const icon = container.querySelectorAll('svg')[1];
 
         // Simulate hovering over the info icon
         await user.hover(icon);
 
         // Wait for the tooltip to appear and check its content
 
-        expect(await findByText(/Values between/i)).toBeInTheDocument();
+        expect(await findByText(/The corresponding log/i)).toBeInTheDocument();
     });
 
     test('renders form with initial values', () => {
