@@ -67,11 +67,11 @@ public class PatientHeaderController {
     long personUid = patientProfile.id();
 
     Optional<PatientSearchResultName> optionalName = this.nameFinder.find(personUid, LocalDate.now(clock));
-    Collection<PatientSearchResult> optionalResults = patientFinder.find(Arrays.asList(personUid));
-    if (optionalName.isEmpty() || optionalResults.isEmpty()) {
+    Collection<PatientSearchResult> results = patientFinder.find(Arrays.asList(personUid));
+    if (optionalName.isEmpty() || results.isEmpty()) {
       return null;
     }
-    PatientSearchResult patientInfo = optionalResults.stream().findFirst().get();
+    PatientSearchResult patientInfo = results.stream().findFirst().get();
     PatientSearchResultName name = optionalName.get();
 
     return new PatientFileHeader(personUid, String.valueOf(patientId), patientInfo.local(),
