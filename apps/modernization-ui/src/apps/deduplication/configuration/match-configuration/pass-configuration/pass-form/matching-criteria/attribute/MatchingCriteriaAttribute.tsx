@@ -2,26 +2,35 @@ import { MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/mod
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
+import { Icon } from 'design-system/icon';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { NumericHintInput } from '../../matching-bounds/numeric-hint-input/NumericHintInput';
 import styles from './matching-criteria-attribute.module.scss';
-import { Icon } from 'design-system/icon';
 
 type AttributeProps = {
     label: string;
     attribute: MatchingAttribute;
+    index: number;
     logOdds: number;
-    onRemove: (attribute: MatchingAttribute) => void;
+    onRemove: (index: number) => void;
 };
-export const MatchingCriteriaAttribute = ({ label, attribute, logOdds, onRemove }: AttributeProps) => {
+export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, onRemove }: AttributeProps) => {
     const form = useFormContext<Pass>();
     const { matchingCriteria } = useWatch<Pass>(form);
-    const [index, setIndex] = useState(0);
     const [visible, setVisible] = useState(false);
+    const method = useWatch({ control: form.control, name: `matchingCriteria.${index}.method` });
+
+    useEffect(() => {
+        if (method === MatchMethod.EXACT) {
+            form.setValue(`matchingCriteria.${index}.threshold`, 1);
+        } else {
+            form.resetField(`matchingCriteria.${index}.threshold`);
+        }
+    }, [method]);
 
     useEffect(() => {
         if (matchingCriteria && matchingCriteria.length > 0) {
-            setIndex(matchingCriteria?.findIndex((m) => m.attribute === attribute));
             setVisible(matchingCriteria.find((m) => m.attribute === attribute) !== undefined);
         } else {
             setVisible(false);
@@ -46,6 +55,7 @@ export const MatchingCriteriaAttribute = ({ label, attribute, logOdds, onRemove 
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <SelectInput
                                 defaultValue={value}
+                                label="Method"
                                 onBlur={onBlur}
                                 onChange={(e) => {
                                     onChange(e);
@@ -62,6 +72,47 @@ export const MatchingCriteriaAttribute = ({ label, attribute, logOdds, onRemove 
                             />
                         )}
                     />
+                    <Controller
+                        control={form.control}
+                        name={`matchingCriteria.${index}.threshold`}
+                        rules={{
+                            required: { value: true, message: 'Threshold is required.' },
+                            max: {
+                                value: 1,
+                                message: 'Cannot be greater 1.'
+                            },
+                            min: {
+                                value: 0,
+                                message: 'Cannot be a negative number.'
+                            }
+                        }}
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                            <NumericHintInput
+                                label="Threshold"
+                                name={name}
+                                value={value}
+                                min={0}
+                                max={1}
+                                step={0.01}
+                                className={styles.thresholdInput}
+                                tooltip={
+                                    <span className={styles.thresholdLabel}>
+                                        <b>Threshold -</b> Values between 0 and 1, above which two strings are said to
+                                        be "similar enough" that they are probably the same thing. Values that are less
+                                        than the threshold will be calculated as 0. Attributes that use “Exact Match”
+                                        will automatically have a threshold of 1 and cannot be adjusted.
+                                    </span>
+                                }
+                                onBlur={() => {
+                                    onBlur();
+                                    if (form.getValues('upperBound') !== undefined) form.trigger('upperBound');
+                                }}
+                                onChange={onChange}
+                                error={error?.message}
+                                disabled={method === MatchMethod.EXACT}
+                            />
+                        )}
+                    />
                 </div>
                 <div className={styles.deleteButton}>
                     <Button
@@ -69,7 +120,7 @@ export const MatchingCriteriaAttribute = ({ label, attribute, logOdds, onRemove 
                         sizing="small"
                         outline
                         destructive
-                        onClick={() => onRemove(attribute)}
+                        onClick={() => onRemove(index)}
                     />
                 </div>
             </div>

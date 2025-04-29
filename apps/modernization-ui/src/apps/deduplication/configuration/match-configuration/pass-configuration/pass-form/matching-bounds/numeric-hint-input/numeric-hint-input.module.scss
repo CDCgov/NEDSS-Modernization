@@ -5,12 +5,17 @@
     gap: 0.25rem;
 
     & > label {
+        display: flex;
+        gap: 0.25rem;
         line-height: 1.25rem;
+        align-items: center;
     }
 
     & > div input {
         margin: 0;
+        height: 2.25rem;
     }
+
     &.hasError {
         padding-left: 1rem;
         border-left: solid 4px colors.$secondary-dark;

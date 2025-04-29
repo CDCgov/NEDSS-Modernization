@@ -12,9 +12,11 @@ const TabNavigationEntry = ({ children, path }: NavigationProps) => {
     const { pathname } = useLocation();
 
     return (
-        <Link to={path} className={classNames(style.tab, { [style.active]: isActive(path, pathname) })}>
-            {children}
-        </Link>
+        <div className={classNames(style.tab, { [style.active]: isActive(path, pathname) })}>
+            <Link to={path} className={classNames(style.tabContent, { [style.active]: isActive(path, pathname) })}>
+                {children}
+            </Link>
+        </div>
     );
 };
 
@@ -23,11 +25,12 @@ type Children = ReactElement<NavigationProps>;
 type TabNavigationProps = {
     className?: string;
     children?: Children | Children[];
+    newTab?: boolean;
 };
 
-const TabNavigation = ({ children = [], className }: TabNavigationProps) => {
+const TabNavigation = ({ newTab = false, children = [], className }: TabNavigationProps) => {
     return (
-        <div className={classNames(style['tab-navigation'], className)}>
+        <div className={classNames(newTab ? style['new-tab-navigation'] : style['tab-navigation'], className)}>
             {ensureArray(children).map((child, index) => (
                 <div key={index}>{child}</div>
             ))}
