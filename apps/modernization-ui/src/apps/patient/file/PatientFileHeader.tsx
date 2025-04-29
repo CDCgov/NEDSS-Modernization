@@ -1,7 +1,7 @@
 import { Icon } from 'design-system/icon';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import styles from './patient-file.module.scss';
-import { Button } from 'design-system/button';
+import { Button } from 'components/button';
 
 interface PatientFileHeaderProps {
     id: string;
@@ -21,9 +21,29 @@ export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
                     <span className={styles.headerPatientDetail}>Patient ID: {id}</span>
                 </div>
                 <div className={styles.actions}>
-                    <Button icon={<Icon name="delete" sizing="small" />} secondary disabled />
-                    <Button icon={<Icon name="print" sizing="small" />} secondary />
-                    <Button icon={<Icon name="edit" sizing="small" />} secondary labelPosition="right">
+                    <Button
+                        aria-label="Delete"
+                        data-tooltip-position="top"
+                        data-tooltip-offset="center"
+                        icon={<Icon name="delete" />}
+                        sizing={'medium'}
+                        secondary
+                        disabled
+                    />
+                    <Button
+                        aria-label="Print"
+                        data-tooltip-position="top"
+                        data-tooltip-offset="center"
+                        icon={<Icon name="print" />}
+                        sizing={'medium'}
+                        secondary
+                    />
+                    <Button
+                        aria-label="Edit"
+                        icon={<Icon name="edit" />}
+                        secondary
+                        labelPosition="right"
+                        sizing={'medium'}>
                         Edit
                     </Button>
                 </div>
