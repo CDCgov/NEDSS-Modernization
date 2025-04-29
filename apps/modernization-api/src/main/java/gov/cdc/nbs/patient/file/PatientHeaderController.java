@@ -71,7 +71,9 @@ public class PatientHeaderController {
     if (optionalName.isEmpty() || results.isEmpty()) {
       return null;
     }
-    PatientSearchResult patientInfo = results.stream().findFirst().get();
+    // isPresent to appease lint
+    PatientSearchResult patientInfo =
+        results.stream().findFirst().isPresent() ? results.stream().findFirst().get() : null;
     PatientSearchResultName name = optionalName.get();
 
     return new PatientFileHeader(personUid, String.valueOf(patientId), patientInfo.local(),

@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.file;
 
-import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
@@ -12,7 +11,6 @@ public class PatientHeaderSteps {
   Exception exception;
 
   PatientHeaderSteps(
-      final Active<PatientIdentifier> activePatient,
       final PatientHeaderRequester requester,
       final Active<ResultActions> response) {
     this.requester = requester;
