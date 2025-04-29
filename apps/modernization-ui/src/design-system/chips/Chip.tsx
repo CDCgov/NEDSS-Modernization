@@ -1,3 +1,4 @@
+import React from 'react';
 import { Icon } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 
@@ -13,7 +14,7 @@ type ChipProps = {
 const Chip = ({ name, value, operator, handleClose }: ChipProps) => {
     const handleKeyDown = (event: React.KeyboardEvent) => {
         if (event.code === 'Enter' || event.code === 'Space') {
-            event.preventDefault();
+            event.stopPropagation();
             handleClose();
         }
     };
