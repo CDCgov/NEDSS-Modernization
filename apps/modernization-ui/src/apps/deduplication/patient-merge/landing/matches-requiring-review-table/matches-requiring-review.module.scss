@@ -1,10 +1,14 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.table {
+.matchesRequiringReviewTable {
     @include borders.rounded();
     @extend %thin;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: colors.$base-white;
+    overflow: auto;
 
     .reviewButton {
         display: flex;
@@ -21,4 +25,5 @@
     align-items: center;
     padding: 0 1rem;
     background-color: colors.$base-white;
+    @extend %thin-top;
 }
