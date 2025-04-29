@@ -10,10 +10,13 @@ export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
         <header className={styles.header}>
             <div className={styles.headerContent}>
                 <div className={styles.headerContentTitle}>
-                    <p>Smith, John</p>
-                    <p>Male</p>
-                    <p>01/07/1972 (57 years)</p>
-                    <p>Patient ID: {id}</p>
+                    <p className={styles.headerPatientName}>Smith, John</p>
+                    <p className={styles.headerPatientDivider}>|</p>
+                    <p className={styles.headerPatientDetail}>Male</p>
+                    <p className={styles.headerPatientDivider}>|</p>
+                    <p className={styles.headerPatientDetail}>01/07/1972 (57 years)</p>
+                    <p className={styles.headerPatientDivider}>|</p>
+                    <p className={styles.headerPatientDetail}>Patient ID: {id}</p>
                 </div>
             </div>
             <div className={styles.tabNavigation}>

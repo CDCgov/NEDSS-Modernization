@@ -20,6 +20,36 @@ p {
                 display: flex;
                 gap: 0.5rem;
                 flex-direction: row;
+                align-items: flex-end;
+
+                .headerPatientName {
+                    color: var(--Base-Black, #000);
+                    /* H1 */
+                    font-family: "Public Sans";
+                    font-size: 2rem;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+                
+                .headerPatientDetail {
+                    color: var(--Base-Black, #000);
+                    /* H2 */
+                    font-family: "Public Sans";
+                    font-size: 1.375rem;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;                }
+                
+                .headerPatientDivider {
+                    color: var(--Base-light, #A9AEB1);
+                    /* H2 */
+                    font-family: "Public Sans";
+                    font-size: 1.375rem;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                }
             }
 
             & > .actions {
