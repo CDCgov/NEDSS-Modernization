@@ -1,3 +1,4 @@
+import { Icon } from 'design-system/icon';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import styles from './patient-file.module.scss';
 import { Button } from 'design-system/button';
@@ -20,9 +21,11 @@ export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
                     <p className={styles.headerPatientDetail}>Patient ID: {id}</p>
                 </div>
                 <div className={styles.actions}>
-                    <Button type="button">Delete</Button>
-                    <Button type="button">Print</Button>
-                    <Button type="button">Edit</Button>
+                    <Button icon={<Icon name="delete" sizing="small" />} secondary disabled />
+                    <Button icon={<Icon name="print" sizing="small" />} secondary />
+                    <Button icon={<Icon name="edit" sizing="small" />} secondary labelPosition="right">
+                        Edit
+                    </Button>
                 </div>
             </div>
             <div className={styles.tabNavigation}>
