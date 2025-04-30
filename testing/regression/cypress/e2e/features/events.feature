@@ -8,35 +8,35 @@ Feature: User accesses patient profile and can view existing patient data here.
         Then I set patient id profile ENV
 
     Scenario: User compares investigations
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         When the user has selected multiple investigations
         When user clicks on the "Compare investigations" button
 
     Scenario: User wants to add a new investigation
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         When user clicks on the "Add investigation" button
         And Add a new investigation
 
     Scenario: User wants to add a new lab report
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         When user clicks on the "Add lab report" button  
 
     Scenario: User wants to add a new morbidity report
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         When user clicks on the "Add morbidity report" button
 
     Scenario: User wants to add a new vaccination record and delete it
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         When user clicks on the "Add vaccination" button
         Then user submits "anthrax" vaccination with a popup and deletes it
 
     Scenario: Display all investigations related to the patient in the "Investigations" section
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Investigations" table
             | Investigation # | A link to the selected open investigation screen                       |
@@ -50,7 +50,7 @@ Feature: User accesses patient profile and can view existing patient data here.
             | Co-infection #  | All co-infection(s) related to this investigation are listed           |
 
     Scenario: Display all lab reports related to the patient in the "Lab reports" section
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Lab reports" table
             | Date received       | Date and time the document is received                              |
@@ -63,7 +63,7 @@ Feature: User accesses patient profile and can view existing patient data here.
             | Event #             | System generated ID.                                                |
 
     Scenario: Display all morbidity reports related to the patient in the "Morbidity reports" section
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Morbidity reports" table
             | Date received   | date and time the report is received.                      |
@@ -75,7 +75,7 @@ Feature: User accesses patient profile and can view existing patient data here.
             | Event #         | System generated ID.                                       |
 
     Scenario: Display all vaccinations related to the patient in the "Vaccinations" section
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Vaccinations" table
             | Date created         | Date the vaccination record is created.                     |
@@ -86,7 +86,7 @@ Feature: User accesses patient profile and can view existing patient data here.
             | Event #              | System generated ID.                                        |
 
     Scenario: Display all treatment related to the patient in the "Treatment" section
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Treatment" table
             | Date created    | Date the treatment record is created                        |
@@ -97,7 +97,7 @@ Feature: User accesses patient profile and can view existing patient data here.
             | Event #         | System generated ID.                                        |
 
     Scenario: Display documents electronically received (eCR) related to the patient in the "Documents" section
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Documents" table
             | Date received    | Date the treatment record is created |
@@ -109,7 +109,7 @@ Feature: User accesses patient profile and can view existing patient data here.
             | Event ID         | System generated ID                  |
 
     Scenario: Display contact record(s) (contact(s) named by patient) in the "Contact records (contacts named by patient)" section
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Contact records (contacts named by patient)" table
             | Date created    | Date the contact record is created.                                  |
@@ -120,7 +120,7 @@ Feature: User accesses patient profile and can view existing patient data here.
             | Event #         | Event#: System generated ID.                                         |
 
     Scenario: Display contact record(s) (patient named by contact(s)) in the "Contact records (patient named by contacts)" section
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Contact records (patient named by contacts)" table
             | Date created    | Date the contact record is created.                                  |
