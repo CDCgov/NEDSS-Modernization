@@ -6,7 +6,6 @@ import { useExportMatchesCSV } from '../../api/useExportMatchesCSV';
 import { useExportMatchesPDF } from '../../api/useExportMatchesPDF'; // Import the new hook for PDF
 import { useSearchParams } from "react-router";
 
-// Mocking the useExportMatchesCSV and useExportMatchesPDF hooks
 jest.mock('../../api/useExportMatchesCSV', () => ({
     useExportMatchesCSV: jest.fn(),
 }));
@@ -15,7 +14,6 @@ jest.mock('../../api/useExportMatchesPDF', () => ({
     useExportMatchesPDF: jest.fn(),
 }));
 
-// Mocking the useSearchParams hook
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
     useSearchParams: jest.fn(),
@@ -25,11 +23,9 @@ const mockExportMatchesCSV = jest.fn();
 const mockExportMatchesPDF = jest.fn(); // Mock the PDF export function
 
 beforeEach(() => {
-    // Mock the implementation of useExportMatchesCSV and useExportMatchesPDF
     (useExportMatchesCSV as jest.Mock).mockReturnValue({ exportMatchesCSV: mockExportMatchesCSV });
     (useExportMatchesPDF as jest.Mock).mockReturnValue({ exportMatchesPDF: mockExportMatchesPDF });
 
-    // Mock useSearchParams to return a default value
     (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams(), jest.fn()]);
 });
 
