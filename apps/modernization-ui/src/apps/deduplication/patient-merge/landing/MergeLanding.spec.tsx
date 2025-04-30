@@ -77,7 +77,7 @@ describe('MergeLanding', () => {
         const { getByRole } = render(<Fixture />);
         const buttons = within(getByRole('heading').parentElement!).getAllByRole('button');
 
-        // Find the PDF download button (can be identified based on the icon or other criteria)
+        // Find the PDF download button
         const downloadButton = buttons.find((btn) =>
             btn.querySelector('use')?.getAttribute('xlink:href')?.endsWith('#print')
         );
