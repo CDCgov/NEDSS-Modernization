@@ -7,6 +7,7 @@ import styles from './icon.module.scss';
 
 import uswds from '@uswds/uswds/img/sprite.svg';
 import extended from './extended-sprite.svg';
+import { triggerOnEnterOrSpace } from 'utils';
 
 type Props = {
     name: Icons;
@@ -19,20 +20,12 @@ const Icon = ({ name, sizing, role = 'img', className, onAccessibleKeyDown, ...p
 
     const hidden = props['aria-hidden'] || !(props['aria-label'] || props['aria-labelledby']);
 
-    const handleKeyDown = (event: React.KeyboardEvent) => {
-        if (event.code === 'Enter' || event.code === 'Space') {
-            event.stopPropagation();
-            event.preventDefault();
-            onAccessibleKeyDown?.();
-        }
-    };
-
     return (
         <svg
             className={classNames(styles.icon, className, sizing && styles[sizing])}
             role={role}
             aria-hidden={hidden}
-            onKeyDown={handleKeyDown}
+            onKeyDown={(event) => triggerOnEnterOrSpace(event, onAccessibleKeyDown)}
             {...props}>
             <use xlinkHref={location} />
         </svg>
