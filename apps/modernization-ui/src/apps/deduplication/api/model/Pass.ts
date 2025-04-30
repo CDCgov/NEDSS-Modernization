@@ -12,6 +12,7 @@ export type Pass = {
 export type MatchingAttributeEntry = {
     attribute: MatchingAttribute;
     method: MatchMethod;
+    threshold?: number;
 };
 
 export enum MatchingAttribute {

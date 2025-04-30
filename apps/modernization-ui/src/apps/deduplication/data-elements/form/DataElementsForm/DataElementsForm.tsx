@@ -93,19 +93,9 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                                     </Hint>
                                 </span>
                             </th>
-                            <th className={styles.numericColumn}>
-                                <span className={styles.headerWithIcon} aria-describedby="threshold-hint">
-                                    Threshold{' '}
-                                    <Hint id="threshold-hint" position="left">
-                                        <b>Threshold -</b> Values between 0 and 1, above which two strings are said to
-                                        be "similar enough" that they are probably the same thing. Values that are less
-                                        than the threshold will be calculated as 0.
-                                    </Hint>
-                                </span>
-                            </th>
                         </tr>
                         <tr className={styles.border}>
-                            <th colSpan={5} />
+                            <th colSpan={4} />
                         </tr>
                     </thead>
                     <tbody>
