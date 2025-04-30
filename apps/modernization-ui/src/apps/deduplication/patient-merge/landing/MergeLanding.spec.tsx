@@ -1,6 +1,6 @@
 import { render, within } from '@testing-library/react';
 import { MergeLanding } from './MergeLanding';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import userEvent from "@testing-library/user-event";
 import { useExportMatchesCSV } from '../../api/useExportMatchesCSV';
 import { useSearchParams } from "react-router";
