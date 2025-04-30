@@ -14,11 +14,7 @@ export const MergeLanding = () => {
                 <Heading level={1}>Matches requiring review</Heading>
                 <div className={styles.buttons}>
                     <Button icon={<Icon name="print" />} sizing="medium" secondary />
-                    <Button
-                        icon={<Icon name="file_download" />}
-                        sizing="medium"
-                        secondary
-                        onClick={exportMatchesCSV}
+                    <Button icon={<Icon name="file_download" />} sizing="medium" secondary onClick={exportMatchesCSV}
                     />
                 </div>
             </header>
