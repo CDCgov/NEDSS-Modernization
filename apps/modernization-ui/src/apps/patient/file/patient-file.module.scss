@@ -11,7 +11,7 @@
             align-items: center;
             border-bottom: 1px colors.$base-lighter solid;
             gap: 0.5rem;
-            padding: 1rem 0.5rem 1rem 1rem;
+            padding: 1rem ;
 
 
             .headerContentTitle {
@@ -50,7 +50,6 @@
 
             .actions {
                 display: flex;
-                padding-right: 0.5rem;
                 align-items: center;
                 gap: 0.5rem;
 
