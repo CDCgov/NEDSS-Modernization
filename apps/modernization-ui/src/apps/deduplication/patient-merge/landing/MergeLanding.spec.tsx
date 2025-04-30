@@ -45,13 +45,12 @@ describe('MergeLanding', () => {
         expect(getByRole('heading')).toHaveTextContent('Matches requiring review');
     });
 
-    it('should have three buttons in the header (including PDF button)', () => {
+    it('should have two buttons in the header', () => {
         const { getByRole } = render(<Fixture />);
         const buttons = within(getByRole('heading').parentElement!).getAllByRole('button');
-        expect(buttons).toHaveLength(3); // Expecting 3 buttons now
+        expect(buttons).toHaveLength(2);
         expect(buttons[0].children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#print');
         expect(buttons[1].children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#file_download');
-        expect(buttons[2].children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#file_download'); // PDF button should have similar href
     });
 
     it('should trigger CSV download when the CSV download button is clicked', async () => {
