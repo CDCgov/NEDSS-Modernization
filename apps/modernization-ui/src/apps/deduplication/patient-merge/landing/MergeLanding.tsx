@@ -4,16 +4,19 @@ import { Icon } from 'design-system/icon';
 import { PaginationProvider } from 'pagination';
 import { MatchesRequiringReviewTable } from './matches-requiring-review-table/MatchesRequiringReviewTable';
 import { useExportMatchesCSV } from 'apps/deduplication/api/useExportMatchesCSV';
+import { useExportMatchesPDF } from 'apps/deduplication/api/useExportMatchesPDF';
 import styles from './merge-landing.module.scss';
 
 export const MergeLanding = () => {
     const { exportMatchesCSV } = useExportMatchesCSV();
+    const { exportMatchesPDF } = useExportMatchesPDF();
+
     return (
         <>
             <header className={styles.mergeLandingHeader}>
                 <Heading level={1}>Matches requiring review</Heading>
                 <div className={styles.buttons}>
-                    <Button icon={<Icon name="print" />} sizing="medium" secondary onClick={exportMatchesCSV} />
+                    <Button icon={<Icon name="print" />} sizing="medium" secondary onClick={exportMatchesPDF} />
                     <Button icon={<Icon name="file_download" />} sizing="medium" secondary onClick={exportMatchesCSV} />
                 </div>
             </header>
