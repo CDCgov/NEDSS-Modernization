@@ -1,19 +1,28 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.mergeLandingHeader {
+.mergeLandingPage {
     display: flex;
-    padding: 1rem;
-    justify-content: space-between;
-    background-color: colors.$base-white;
-    @extend %thin-bottom;
+    flex-direction: column;
+    height: calc(100vh - 75px);
+    overflow: hidden;
 
-    .buttons {
+    .mergeLandingHeader {
         display: flex;
-        gap: 0.5rem;
-    }
-}
+        padding: 1rem;
+        justify-content: space-between;
+        background-color: colors.$base-white;
+        @extend %thin-bottom;
 
-.mergeLandingContent {
-    padding: 1rem;
+        .buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+    }
+
+    .mergeLandingContent {
+        padding: 1rem;
+        flex-grow: 1;
+        overflow: auto;
+    }
 }

@@ -60,7 +60,7 @@ export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }
         const newValue = attributes.map((m) => {
             // if attribute was already selected, set method to pre-selected method
             const method = matchingCriteria?.find((x) => x.attribute === m)?.method ?? MatchMethod.NONE;
-            return { attribute: m, method: method };
+            return { attribute: m, method: method, threshold: method === MatchMethod.EXACT ? 1 : undefined };
         });
         form.setValue('matchingCriteria', newValue, { shouldDirty: true, shouldValidate: true });
         closePanel();
