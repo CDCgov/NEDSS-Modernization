@@ -207,31 +207,6 @@ public class PatientSteps {
     this.patient.maybeActive().ifPresent(found -> mother.withGender(found, gender));
   }
 
-  @Given("the patient has a race")
-  public void the_patient_has_a_race() {
-    patient.maybeActive().ifPresent(mother::withRace);
-  }
-
-  @Given("the patient has the race category {raceCategory}")
-  public void the_patient_has_the_race_category(final String category) {
-    patient.maybeActive().ifPresent(current -> mother.withRace(current, category));
-  }
-
-  @Given("the patient race of {raceCategory} includes {raceDetail}")
-  public void the_patient_race_of_category_includes(final String category, final String detail) {
-    patient.maybeActive().ifPresent(current -> mother.withRaceIncluding(current, category, detail));
-  }
-
-  @Given("$the patient has the ethnicity {ethnicity}^")
-  public void the_patient_has_the_ethnicity(final String ethnicity) {
-    patient.maybeActive().ifPresent(current -> mother.withEthnicity(current, ethnicity));
-  }
-
-  @Given("the patient has the ethnicity {ethnicity}, specifically {ethnicityDetail}")
-  public void the_patient_has_the_ethnicity_specifically(final String ethnicity, final String detail) {
-    patient.maybeActive().ifPresent(current -> mother.withSpecificEthnicity(current, ethnicity, detail));
-  }
-
   @Given("the patient is associated with state HIV case {string}")
   public void the_patient_is_associated_with_state_HIV_case(final String value) {
     patient.maybeActive().ifPresent(current -> mother.withStateHIVCase(current, value));
