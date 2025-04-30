@@ -1,11 +1,11 @@
 import React from 'react';
-import { ColumnPreference, ColumnPreferenceProvider } from './ColumnPreferenceProvider';
+import { ColumnPreference, ColumnPreferenceProvider } from './useColumnPreferences';
 
 type WithColumnPreferencesOptions = {
-    /** The local storage key to use to read/write column preferences. If not provided, then component not wrapped
-     * in a provider. Example: 'search.patients.preferences.columns'
+    /** The local storage key to use to read/write column preferences.
+     *  Example: 'search.patients.preferences.columns'
      */
-    storageKey?: string;
+    storageKey: string;
     defaults?: ColumnPreference[];
 };
 
@@ -16,15 +16,11 @@ export function withColumnPreferences<T extends object>(
     const { storageKey, defaults } = options;
 
     const EnhancedComponent: React.FC<T> = (props) => {
-        if (storageKey) {
-            return (
-                <ColumnPreferenceProvider id={storageKey} defaults={defaults}>
-                    <WrappedComponent {...props} />
-                </ColumnPreferenceProvider>
-            );
-        }
-
-        return <WrappedComponent {...props} />;
+        return (
+            <ColumnPreferenceProvider id={storageKey} defaults={defaults}>
+                <WrappedComponent {...props} />
+            </ColumnPreferenceProvider>
+        );
     };
 
     return EnhancedComponent;

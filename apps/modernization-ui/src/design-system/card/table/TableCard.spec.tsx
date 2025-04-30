@@ -6,7 +6,7 @@ import { axe } from 'jest-axe';
 const mockApply = jest.fn();
 
 jest.mock('design-system/table/preferences/useColumnPreferences', () => ({
-    useMaybeColumnPreferences: () => ({
+    useColumnPreferences: () => ({
         apply: mockApply
     })
 }));
@@ -107,6 +107,6 @@ describe('TableCard', () => {
         const table = getByRole('table');
         expect(table).toBeInTheDocument();
         const headerCells = table.querySelectorAll('thead tr:nth-child(1) th');
-        expect(headerCells).toHaveLength(1); // Only one column should be shown
+        expect(headerCells).toHaveLength(1);
     });
 });

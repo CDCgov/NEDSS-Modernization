@@ -1,5 +1,4 @@
-export { useColumnPreferences, useMaybeColumnPreferences } from './useColumnPreferences';
-export type { ColumnPreference } from './ColumnPreferenceProvider';
+export { useColumnPreferences, ColumnPreferenceProvider } from './useColumnPreferences';
 export { ColumnPreferencesPanel } from './ColumnPreferencesPanel';
-export { ColumnPreferenceProvider } from './ColumnPreferenceProvider';
+export type { ColumnPreference } from './useColumnPreferences';
 export { withColumnPreferences } from './withColumnPreferences';

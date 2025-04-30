@@ -2,7 +2,7 @@ import { CollapsibleCard } from '../collapsible';
 import { Sizing } from 'design-system/field';
 import { Column, DataTable, DataTableProps } from 'design-system/table';
 import { TableCardAction, TableCardHeader } from './TableCardHeader';
-import { ColumnPreference, useMaybeColumnPreferences, withColumnPreferences } from 'design-system/table/preferences';
+import { ColumnPreference, useColumnPreferences, withColumnPreferences } from 'design-system/table/preferences';
 import { ComponentType, FC, useMemo } from 'react';
 
 export type TableCardProps<V> = {
@@ -48,11 +48,14 @@ export const TableCard = <V,>({
             })),
         [defaultColumnPreferences, columns]
     );
-    const ColumnPreferencesCard = withColumnPreferences(CollapsibleCard, {
-        storageKey: columnPreferencesKey,
-        defaults: columnPreferences
-    });
-    const ManagedDataTable = withMaybeColumnPreferencesDataTable(DataTable<V>);
+    const showingSettings = columnPreferencesKey != null;
+    const ColumnPreferencesCard = showingSettings
+        ? withColumnPreferences(CollapsibleCard, {
+              storageKey: columnPreferencesKey,
+              defaults: columnPreferences
+          })
+        : CollapsibleCard;
+    const ManagedDataTable = withColumnPreferencesDataTable(DataTable<V>);
     return (
         <ColumnPreferencesCard
             id={id}
@@ -63,7 +66,7 @@ export const TableCard = <V,>({
                     title={title}
                     actions={actions}
                     resultCount={props?.data?.length ?? 0}
-                    showSettings={columnPreferencesKey != null}
+                    showSettings={showingSettings}
                     sizing={props?.sizing}
                 />
             }
@@ -79,9 +82,9 @@ export const TableCard = <V,>({
  * @param {FC} WrappedComponent DataTable component
  * @return A modified DataTable component with columns applied
  */
-const withMaybeColumnPreferencesDataTable = <V,>(WrappedComponent: ComponentType<DataTableProps<V>>) => {
+const withColumnPreferencesDataTable = <V,>(WrappedComponent: ComponentType<DataTableProps<V>>) => {
     const EnhancedComponent: FC<DataTableProps<V>> = (props) => {
-        const interaction = useMaybeColumnPreferences();
+        const interaction = useColumnPreferences(false);
         const apply = interaction?.apply ?? ((columns: Array<Column<V>>) => columns);
         const columns = apply(props.columns);
         return <WrappedComponent {...props} columns={columns} />;
