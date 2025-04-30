@@ -22,7 +22,7 @@ const TabNavigationEntry = ({ children, path }: NavigationProps) => {
 
 type Children = ReactElement<NavigationProps>;
 
-type TabNavigationProps = {
+export type TabNavigationProps = {
     className?: string;
     children?: Children | Children[];
     newTab?: boolean;
