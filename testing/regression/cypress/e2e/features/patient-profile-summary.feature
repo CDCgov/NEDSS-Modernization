@@ -4,7 +4,7 @@ Feature: User access the Patient Profile Summary page.
         Given I am logged in as secure user
 
     Scenario: User accesses patient profile
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Summary" tab
         Then I should see the following elements
             | Patient ID    |
@@ -17,12 +17,12 @@ Feature: User access the Patient Profile Summary page.
             | RACE          |
 
     Scenario: User navigates to the top of the page
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         When the user clicks on the Back to top button
         Then the user is taken to the top of the page
 
     Scenario: Display all investigations related to the patient in the "Investigations" section
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Summary" tab
         Then I should see the following columns for "Open investigations" table
             | Investigation # | A link to the selected open investigation screen                  |
@@ -38,7 +38,7 @@ Feature: User access the Patient Profile Summary page.
         Then user clicks on a patient's profile "Summary" tab
 
     Scenario: Display only open documents in the "Documents requiring review" section
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Summary" tab
         Then I should see the following columns for "Documents requiring review" table
             | Document type                 |
@@ -55,7 +55,7 @@ Feature: User access the Patient Profile Summary page.
         Then user clicks on a patient's profile "Summary" tab
 
     Scenario Outline: User sorts records by column value
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Summary" tab
         When the User sorts Open Investigations by "<column>" "<sorted>"
         Then Open Investigations are sorted by "<column>" "<sorted>"
@@ -68,7 +68,7 @@ Feature: User access the Patient Profile Summary page.
             | Condition    | descending |
 
     Scenario Outline: User sorts records by column value
-        Given the user navigate to the patient profile page for "72045"
+        Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Summary" tab
         When the User sorts Documents requiring review by "<column>" "<sorted>"
         Then Documents requiring review are sorted by "<column>" "<sorted>"

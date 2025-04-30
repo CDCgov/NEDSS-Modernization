@@ -12,7 +12,7 @@ Feature: Patient Search by Basic Info
     Then I should see Results with the first name "Caden"
 
   Scenario: Basic Info - Search by DOB
-    When I search by dob as "05/16/1961"
+    When I search by dob as "05/16/1977"
     Then I should see "Ratkeyklkb, Caden Benjamin, Esquire"
     When I search by dob as "03/07/1910"
     Then I should see no result found text
@@ -30,7 +30,7 @@ Feature: Patient Search by Basic Info
   Scenario: Search by Multiple Criteria
     When I fill last name as "Ratkeyklkb"
     When I fill first name as "Caden"
-    When I search by dob as "05/16/1961"
+    When I search by dob as "05/16/1977"
     Then I should see "Ratkeyklkb, Caden Benjamin, Esquire"
 
   Scenario: Search for Deleted Patients
