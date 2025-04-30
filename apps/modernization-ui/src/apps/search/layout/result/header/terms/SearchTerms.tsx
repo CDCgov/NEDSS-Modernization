@@ -27,9 +27,9 @@ const SearchTerms = ({ total, terms }: Props) => {
     const { without } = useSearchInteraction();
 
     return (
-        <div className={styles.terms} aria-label={ariaLabel}>
+        <div tabIndex={0} id="resultsCount" className={styles.terms} aria-label={ariaLabel}>
             <div className={styles.term}>
-                <h2 tabIndex={0} id="resultsCount">
+                <h2>
                     {total} {resultsText.toLowerCase()} for:
                 </h2>
                 {terms.map((term, index) => (
