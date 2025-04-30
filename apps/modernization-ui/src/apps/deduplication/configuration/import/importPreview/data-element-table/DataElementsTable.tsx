@@ -36,13 +36,6 @@ export const DataElementsTable = ({ dataElements }: Props) => {
             render(entry) {
                 return <>{entry.logOdds}</>;
             }
-        },
-        {
-            id: 'data-element-threshold',
-            name: 'Threshold',
-            render(entry) {
-                return <>{entry.threshold}</>;
-            }
         }
     ];
 

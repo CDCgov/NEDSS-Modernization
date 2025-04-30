@@ -132,6 +132,34 @@ describe('when entering patient sex and birth demographics', () => {
         expect(getByLabelText('Date of death')).toBeInTheDocument();
     });
 
+    it('should not enable Date of death when deceased is false', async () => {
+        const { getByLabelText, queryByLabelText } = render(<Fixture />);
+
+        const deceased = getByLabelText('Is the patient deceased?');
+        expect(queryByLabelText('Date of death')).not.toBeInTheDocument();
+
+        const user = userEvent.setup();
+
+        await user.selectOptions(deceased, 'N');
+
+        expect(queryByLabelText('Date of death')).not.toBeInTheDocument();
+    });
+
+    it('should calculate currentAge against the deceasedOn date when provided', async () => {
+        const { getByLabelText, getByText } = render(<Fixture />);
+        const dateOfBirth = getByLabelText('Date of birth');
+        const deceased = getByLabelText('Is the patient deceased?');
+
+        const user = userEvent.setup();
+        await user.selectOptions(deceased, 'Y');
+
+        const deceasedOn = getByLabelText('Date of death');
+        await user.clear(dateOfBirth).then(() => user.type(dateOfBirth, '12012012{tab}'));
+        await user.clear(deceasedOn).then(() => user.type(deceasedOn, '01012018{tab}'));
+
+        expect(getByText('5 years')).toBeInTheDocument();
+    });
+
     it('should not render the HIV case ID when user does not have permission', async () => {
         mockPermissions.hivAccess = false;
         const { queryByLabelText } = render(<Fixture />);

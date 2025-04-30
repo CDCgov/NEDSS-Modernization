@@ -16,12 +16,12 @@ type SelectProps = {
 const renderOptions = (options: Selectable[], placeholder?: string) => (
     <>
         {placeholder && (
-            <option key={-1} value="">
+            <option key={-1} value="" aria-label="no value selected">
                 {placeholder}
             </option>
         )}
         {options?.map((item, index) => (
-            <option key={index} value={item.value}>
+            <option key={index} value={item.value} aria-label={item.label}>
                 {item.name}
             </option>
         ))}

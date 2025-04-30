@@ -2,22 +2,22 @@
 @use 'styles/borders';
 
 .file {
-    & > header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
+    .header {
         background-color: colors.$base-white;
-        padding: 1rem;
 
-        @extend %thin-bottom;
-
-        & > .actions {
+        .headerContent {
             display: flex;
-            gap: 0.5rem;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px colors.$base-lighter solid;
+
+            padding: 1rem;
+            & > .actions {
+                display: flex;
+                gap: 0.5rem;
+            }
         }
     }
-
     & > main {
         padding: 1rem;
     }

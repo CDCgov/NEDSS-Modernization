@@ -22,19 +22,19 @@ export const DataElementRow = ({ fieldName, field, dataElements }: Props) => {
                 form.setValue(field, {
                     active,
                     oddsRatio: undefined,
-                    logOdds: undefined,
-                    threshold: undefined
+                    logOdds: undefined
                 });
                 form.clearErrors(field);
             } else {
                 const defaultValue = {
                     active,
                     oddsRatio: dataElements?.[field]?.oddsRatio,
-                    logOdds: 0, // Will be recalculated when oddsRatio changes
-                    threshold: dataElements?.[field]?.threshold
+                    logOdds: 0 // Will be recalculated when oddsRatio changes
                 };
                 form.setValue(field, defaultValue);
             }
+            // triggers the onBlur of the form, updating the save disabled state
+            form.trigger(`${field}.active`);
         }
     }, [watch[field]?.active]);
 
@@ -53,13 +53,14 @@ export const DataElementRow = ({ fieldName, field, dataElements }: Props) => {
                 <Controller
                     control={form.control}
                     name={`${field}.active`}
-                    render={({ field: { value, onChange } }) => (
+                    render={({ field: { value, onChange, onBlur } }) => (
                         <Checkbox
                             name={`${field}.active`}
                             label=""
                             id={`${field}-checkbox`}
                             selected={value}
                             onChange={onChange}
+                            onBlur={onBlur}
                             aria-label={fieldName}
                             aria-checked={value}
                             aria-labelledby={`${field}-checkbox-label`}
@@ -93,30 +94,6 @@ export const DataElementRow = ({ fieldName, field, dataElements }: Props) => {
                 />
             </td>
             <td>{watch[field]?.logOdds ?? '--'}</td>
-            <td>
-                <Controller
-                    control={form.control}
-                    name={`${field}.threshold`}
-                    rules={{
-                        required: {
-                            value: watch[field]?.active ?? false,
-                            message: 'Missing threshold'
-                        }
-                    }}
-                    render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
-                        <TableNumericInput
-                            name={name}
-                            value={value}
-                            onChange={onChange}
-                            onBlur={onBlur} // Validation triggered only onBlur
-                            error={error?.message}
-                            min={0}
-                            step={0.01}
-                            disabled={!watch[field]?.active}
-                        />
-                    )}
-                />
-            </td>
         </tr>
     );
 };

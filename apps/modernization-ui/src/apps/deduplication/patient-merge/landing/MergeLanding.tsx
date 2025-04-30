@@ -12,7 +12,7 @@ export const MergeLanding = () => {
     const { exportMatchesPDF } = useExportMatchesPDF();
 
     return (
-        <>
+        <div className={styles.mergeLandingPage}>
             <header className={styles.mergeLandingHeader}>
                 <Heading level={1}>Matches requiring review</Heading>
                 <div className={styles.buttons}>
@@ -25,6 +25,6 @@ export const MergeLanding = () => {
                     <MatchesRequiringReviewTable />
                 </PaginationProvider>
             </main>
-        </>
+        </div>
     );
 };

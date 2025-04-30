@@ -28,7 +28,14 @@ export const TableCard = <V,>({
             id={id}
             className={className}
             collapsible={collapsible}
-            header={<TableCardHeader title={title} actions={actions} />}
+            header={
+                <TableCardHeader
+                    sizing={props?.sizing}
+                    resultCount={props?.data?.length ?? 0}
+                    title={title}
+                    actions={actions}
+                />
+            }
             showCollapseSeparator={true}>
             <DataTable id={`${id}-table`} className={tableClassName} {...props} />
         </CollapsibleCard>

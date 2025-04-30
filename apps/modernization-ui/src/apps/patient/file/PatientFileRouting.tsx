@@ -1,6 +1,7 @@
 import { FeatureGuard } from 'feature';
 import { PatientFile } from './PatientFile';
 import { PageTitle } from 'page';
+import { Navigate } from 'react-router';
 
 const routing = [
     {
@@ -11,7 +12,22 @@ const routing = [
                     <PatientFile />
                 </PageTitle>
             </FeatureGuard>
-        )
+        ),
+        children: [
+            { path: '', index: true, element: <Navigate to="summary" /> },
+            {
+                path: 'summary',
+                element: <div></div>
+            },
+            {
+                path: 'events',
+                element: <div></div>
+            },
+            {
+                path: 'demographics',
+                element: <div></div>
+            }
+        ]
     }
 ];
 

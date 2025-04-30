@@ -1,30 +1,34 @@
 import { useCallback, useEffect, useState } from 'react';
 import { TextInput, TextInputProps } from './TextInput';
 import { masked } from './masked';
-import { orUndefined } from 'utils';
+import { mapOr } from 'utils/mapping';
 
 type MaskedTextInputProps = {
     mask: string;
 } & Omit<TextInputProps, 'maxLength'>;
 
 const MaskedTextInput = ({ mask, value, onChange, ...props }: MaskedTextInputProps) => {
-    const [current, setCurrent] = useState(value);
-    const applyMask = useCallback(masked(mask), [mask]);
+    const applyMask = useCallback(mapOr(masked(mask), undefined), [mask]);
+
+    const [current, setCurrent] = useState(applyMask(value));
 
     useEffect(() => {
-        if (value === '') {
-            setCurrent(value);
+        const adjusted = applyMask(value);
+        if (adjusted !== current) {
+            //  the value passed to the component has changed and is out of sync with current
+            //  update current to match the incoming value.
+            setCurrent(adjusted);
         }
     }, [value]);
 
     const handleChange = (value?: string) => {
         if (value) {
-            const next = orUndefined(applyMask(value));
-            setCurrent(next);
+            const next = applyMask(value);
             onChange?.(next);
+            setCurrent(next);
         } else {
-            setCurrent(undefined);
             onChange?.();
+            setCurrent(undefined);
         }
     };
 

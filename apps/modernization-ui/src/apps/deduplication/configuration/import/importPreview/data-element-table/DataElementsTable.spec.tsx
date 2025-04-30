@@ -6,14 +6,12 @@ const dataElements: DataElements = {
     firstName: {
         active: true,
         oddsRatio: 5,
-        logOdds: 2.3154,
-        threshold: 0.84
+        logOdds: 2.3154
     },
     lastName: {
         active: false,
         oddsRatio: 3,
-        logOdds: 1.44,
-        threshold: 0.87
+        logOdds: 1.44
     }
 };
 const Fixture = () => {
@@ -34,7 +32,6 @@ describe('DataElementsTable', () => {
         expect(headerCells[0]).toHaveTextContent('Field');
         expect(headerCells[1]).toHaveTextContent('Odds ratio');
         expect(headerCells[2]).toHaveTextContent('Log odds');
-        expect(headerCells[3]).toHaveTextContent('Threshold');
     });
 
     it('renders the proper data', () => {
@@ -44,7 +41,6 @@ describe('DataElementsTable', () => {
         expect(firstRow[0]).toHaveTextContent('First name');
         expect(firstRow[1]).toHaveTextContent('5');
         expect(firstRow[2]).toHaveTextContent('2.3154');
-        expect(firstRow[3]).toHaveTextContent('0.84');
     });
 
     it('does not render inactive elements', () => {

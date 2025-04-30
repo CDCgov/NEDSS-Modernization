@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { Icon } from './Icon';
 import { Icons } from './types';
+import userEvent from '@testing-library/user-event';
 
 describe('When displaying Icons', () => {
     it('should render with no accessibility violations', async () => {
@@ -364,4 +365,39 @@ describe('When displaying Icons', () => {
 
         expect(icon.querySelector('use')?.getAttribute('xlink:href')).toContain(`/icons/${name}.svg`);
     });
+    it('should trigger onAccessibleKeyDown when Enter key is pressed', async () => {
+        const onAccessibleKeyDown = jest.fn();
+        const user = userEvent.setup();
+
+        render(<Icon name='close' onAccessibleKeyDown={onAccessibleKeyDown} tabIndex={0} />);
+
+        await user.tab();
+        await user.keyboard('{Enter}');
+
+        expect(onAccessibleKeyDown).toHaveBeenCalledTimes(1);
+    });
+
+    it('should trigger onAccessibleKeyDown when Space key is pressed', async () => {
+        const onAccessibleKeyDown = jest.fn();
+        const user = userEvent.setup();
+
+        render(<Icon name='close' onAccessibleKeyDown={onAccessibleKeyDown} tabIndex={0} />);
+
+        await user.tab();
+        await user.keyboard(' ');
+
+        expect(onAccessibleKeyDown).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not trigger onAccessibleKeyDown for other keys', async () => {
+        const onAccessibleKeyDown = jest.fn();
+        const user = userEvent.setup();
+
+        render(<Icon name='calendar' onAccessibleKeyDown={onAccessibleKeyDown} tabIndex={0} />);
+
+        await user.tab();
+        await user.keyboard('{Tab}');
+
+        expect(onAccessibleKeyDown).not.toHaveBeenCalled();
+    })
 });

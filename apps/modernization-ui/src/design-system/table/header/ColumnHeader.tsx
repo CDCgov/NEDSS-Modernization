@@ -63,6 +63,7 @@ const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }:
                 <div className={styles.sortable}>
                     {children.name}
                     <Icon
+                        tabIndex={0}
                         name={icon}
                         aria-label={`Sort ${children.name}`}
                         onClick={() => sorting.toggle(children.id)}
