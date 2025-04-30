@@ -23,7 +23,7 @@ describe('Chip', () => {
         const { handleClose } = mockProps;
         const { getByLabelText } = render(<Chip {...mockProps} />);
 
-        const closeIcon = getByLabelText('Close chip');
+        const closeIcon = getByLabelText('Close Test');
         await user.click(closeIcon);
 
         expect(handleClose).toHaveBeenCalled();
@@ -32,7 +32,7 @@ describe('Chip', () => {
     it('renders close icon', () => {
         const { getByLabelText } = render(<Chip {...mockProps} />);
 
-        const closeIcon = getByLabelText('Close chip');
+        const closeIcon = getByLabelText('Close Test');
         expect(closeIcon).toBeInTheDocument();
     });
     it('calls handleClose when Enter key is pressed', async () => {

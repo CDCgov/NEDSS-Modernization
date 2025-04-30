@@ -1,8 +1,7 @@
-import React from 'react';
-import { Icon } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 
 import styles from './chip.module.scss';
+import { Icon } from 'design-system/icon';
 
 type ChipProps = {
     name: string;
@@ -12,16 +11,17 @@ type ChipProps = {
 };
 
 const Chip = ({ name, value, operator, handleClose }: ChipProps) => {
-    const handleKeyDown = (event: React.KeyboardEvent) => {
-        if (event.code === 'Enter' || event.code === 'Space') {
-            event.stopPropagation();
-            handleClose();
-        }
-    };
     return (
-        <div className={classNames(styles['chip-container'])} tabIndex={0} onKeyDown={handleKeyDown}>
+        <div className={classNames(styles['chip-container'])}>
             <span>{operator ? `${name} ${operator} '${value}'` : `${name}: ${value}`}</span>
-            <Icon.Close aria-label="Close chip" onClick={() => handleClose()} className={styles.closeIcon} />
+            <Icon
+                name={'close'}
+                aria-label={`Close ${name}`}
+                onClick={() => handleClose()}
+                className={styles.closeIcon}
+                tabIndex={0}
+                onAccessibleKeyDown={() => handleClose()}
+            />
         </div>
     );
 };
