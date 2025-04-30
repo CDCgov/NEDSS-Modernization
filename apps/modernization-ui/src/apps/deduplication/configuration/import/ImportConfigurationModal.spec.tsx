@@ -132,4 +132,31 @@ describe('ImportConfigurationModal', () => {
             ).toBeInTheDocument();
         });
     });
+
+    it('should show warning when non configuration file is uploaded', async () => {
+        const user = userEvent.setup();
+
+        const { getAllByRole, getByLabelText, queryByText } = render(<Fixture />);
+
+        const fileInput = getByLabelText('Drag configuration file here or choose from folder');
+
+        const fileContent = '{ "valid": "json" }';
+        const file = new File([fileContent], 'test.json', { type: 'application/json' });
+
+        await user.upload(fileInput, file);
+        const importButton = getAllByRole('button')[2];
+        expect(importButton).toHaveTextContent('Import');
+
+        await user.click(importButton);
+
+        expect(onImport).toHaveBeenCalledTimes(0);
+
+        await waitFor(() => {
+            expect(
+                queryByText(
+                    'The imported JSON file was invalid. Please review the file and ensure the file is the appropriate format and all values are valid.'
+                )
+            ).toBeInTheDocument();
+        });
+    });
 });
