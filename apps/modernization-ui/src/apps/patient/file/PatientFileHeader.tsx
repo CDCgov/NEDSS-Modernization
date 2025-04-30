@@ -23,7 +23,7 @@ export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
     return (
         <header className={styles.header}>
             <div className={styles.headerContent}>
-                <div className={styles.headerContentTitle}>
+                <h1 className={styles.headerContentTitle}>
                     <span className={styles.headerPatientName}>
                         {(summary?.legalName && displayName('fullLastFirst')(summary.legalName)) ?? '---'}
                     </span>
@@ -35,7 +35,7 @@ export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
                     </span>
                     <span className={styles.headerPatientDivider}> | </span>
                     <span className={styles.headerPatientDetail}>Patient ID: {id}</span>
-                </div>
+                </h1>
                 <div className={styles.actions}>
                     <Button
                         className={styles['usa-button']}

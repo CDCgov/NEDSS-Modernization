@@ -1,6 +1,8 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
+
+
 .file {
     .header {
         background-color: colors.$base-white;
@@ -15,7 +17,8 @@
 
 
             .headerContentTitle {
-
+                margin: 0;
+                
                 .headerPatientName {
                     color: var(--Base-Black, #000);
                     /* H1 */
