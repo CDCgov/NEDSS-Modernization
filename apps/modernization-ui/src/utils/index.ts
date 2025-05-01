@@ -9,7 +9,6 @@ export * from './focusedTarget';
 export * from './mapIf';
 export * from './isEmpty';
 export * from './text';
-export * from './triggerOnEnterOrSpace';
 
 export type { Predicate } from './predicate';
 
