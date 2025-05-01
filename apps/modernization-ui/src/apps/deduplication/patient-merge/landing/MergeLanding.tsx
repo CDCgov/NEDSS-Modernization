@@ -9,7 +9,7 @@ import styles from './merge-landing.module.scss';
 export const MergeLanding = () => {
     const { exportMatchesCSV } = useExportMatchesCSV();
     return (
-        <>
+        <div className={styles.mergeLandingPage}>
             <header className={styles.mergeLandingHeader}>
                 <Heading level={1}>Matches requiring review</Heading>
                 <div className={styles.buttons}>
@@ -22,6 +22,6 @@ export const MergeLanding = () => {
                     <MatchesRequiringReviewTable />
                 </PaginationProvider>
             </main>
-        </>
+        </div>
     );
 };

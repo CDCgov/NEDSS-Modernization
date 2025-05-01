@@ -47,10 +47,10 @@ describe('when selecting a single item from a specific set of items', () => {
                 id="test-id"
                 label="Test Label"
                 options={[
-                    { name: 'name-one', value: 'value-one', label: 'label-one' },
-                    { name: 'name-two', value: 'value-two', label: 'label-two' },
-                    { name: 'name-three', value: 'value-three', label: 'label-three' },
-                    { name: 'name-four', value: 'value-four', label: 'label-four' }
+                    { name: 'name-one', value: 'value-one' },
+                    { name: 'name-two', value: 'value-two' },
+                    { name: 'name-three', value: 'value-three' },
+                    { name: 'name-four', value: 'value-four' }
                 ]}
                 value={{ name: 'name-three', value: 'value-three', label: 'label-three' }}
             />

@@ -1,7 +1,7 @@
-import { Icon } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 
 import styles from './chip.module.scss';
+import { Icon } from 'design-system/icon';
 
 type ChipProps = {
     name: string;
@@ -14,7 +14,14 @@ const Chip = ({ name, value, operator, handleClose }: ChipProps) => {
     return (
         <div className={classNames(styles['chip-container'])}>
             <span>{operator ? `${name} ${operator} '${value}'` : `${name}: ${value}`}</span>
-            <Icon.Close aria-label="Close chip" onClick={() => handleClose()} className={styles.closeIcon} />
+            <Icon
+                name={'close'}
+                aria-label={`Close ${name}`}
+                onClick={() => handleClose()}
+                className={styles.closeIcon}
+                tabIndex={0}
+                onAccessibleKeyDown={() => handleClose()}
+            />
         </div>
     );
 };

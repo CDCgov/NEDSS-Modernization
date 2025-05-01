@@ -33,7 +33,6 @@ export type { RaceDemographic } from './models/RaceDemographic';
 export { CodedResultOptionsService } from './services/CodedResultOptionsService';
 export { ConceptOptionsService } from './services/ConceptOptionsService';
 export { ConditionOptionsService } from './services/ConditionOptionsService';
-export { CountriesListControllerService } from './services/CountriesListControllerService';
 export { CountryOptionsService } from './services/CountryOptionsService';
 export { CountyOptionsService } from './services/CountyOptionsService';
 export { EncryptionControllerService } from './services/EncryptionControllerService';

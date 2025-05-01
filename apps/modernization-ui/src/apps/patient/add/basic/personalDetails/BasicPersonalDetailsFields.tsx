@@ -3,7 +3,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { Input } from 'components/FormInputs/Input';
-import { displayAgeAsOfToday } from 'date/displayAge';
+import { displayAgeAsOfToday, displayAgeAsOf } from 'date/displayAge';
 import { maxLengthRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';
@@ -21,8 +21,12 @@ const ENTRY_FIELD_PLACEHOLDER = '';
 export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control, formState, getFieldState } = useFormContext<{ personalDetails: BasicPersonalDetailsEntry }>();
     const currentBirthday = useWatch({ control, name: 'personalDetails.bornOn' });
+    const deceasedOn = useWatch({ control, name: 'personalDetails.deceasedOn' });
     const selectedDeceased = useWatch({ control, name: 'personalDetails.deceased' });
-    const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
+    const age = useMemo(
+        () => (deceasedOn ? displayAgeAsOf(currentBirthday, deceasedOn) : displayAgeAsOfToday(currentBirthday)),
+        [currentBirthday, deceasedOn]
+    );
     const { hivAccess } = usePatientProfilePermissions();
     const { invalid: bornOnInvalid } = getFieldState('personalDetails.bornOn', formState);
 

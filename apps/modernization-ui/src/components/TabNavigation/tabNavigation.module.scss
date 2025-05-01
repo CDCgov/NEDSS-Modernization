@@ -12,22 +12,62 @@
     padding-bottom: 1rem;
 
     .tab {
-        border: 0;
-        color: var(--tab-text-color);
-        text-decoration: none !important;
-        border-bottom: 0.4375rem solid transparent;
-        padding-bottom: 0.5rem;
-        line-height: 1.25;
-        cursor: pointer;
+        .tabContent {
+            border: 0;
+            color: var(--tab-text-color);
+            text-decoration: none !important;
+            border-bottom: 0.4375rem solid transparent;
+            padding-bottom: 0.5rem;
+            line-height: 1.25;
+            cursor: pointer;
+
+            &.active {
+                font-weight: 700;
+                color: var(--tab-text-active-color);
+                border-bottom-color: colors.$primary;
+            }
+
+            &:hover {
+                color: var(--tab-text-hover-color);
+            }
+        }
+    }
+}
+
+.new-tab-navigation {
+    --tab-text-color: #{colors.$base-darkest};
+    --tab-text-active-color: #{colors.$primary};
+    --tab-text-hover-color: #{colors.$primary};
+    display: flex;
+    align-items: flex-start;
+    background-color: colors.$clear;
+
+    .tab {
+        padding: 1rem 1rem 1rem 1rem;
 
         &.active {
-            font-weight: 700;
-            color: var(--tab-text-active-color);
-            border-bottom-color: colors.$primary;
+            background-color: colors.$primary-lightest;
         }
 
-        &:hover {
-            color: var(--tab-text-hover-color);
+        .tabContent {
+            border: 0;
+            text-decoration: none !important;
+            line-height: 1.25;
+            padding-bottom: 0.5rem;
+
+            cursor: pointer;
+            border-bottom: 0.5rem solid transparent;
+            color: var(--tab-text-color);
+
+            &.active {
+                font-weight: 700;
+                color: var(--tab-text-active-color);
+                border-bottom-color: colors.$primary;
+            }
+
+            &:hover {
+                color: var(--tab-text-hover-color);
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ import { Shown } from 'conditional-render';
 import { Card } from 'design-system/card';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { BoundEntry } from './bound-entry/BoundEntry';
+import { NumericHintInput } from './numeric-hint-input/NumericHintInput';
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import styles from './matching-bounds.module.scss';
 import { getLogOdds } from '../matching-criteria/getLogOdds';
@@ -79,7 +79,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                 validate: validateLowerBound
                             }}
                             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                                <BoundEntry
+                                <NumericHintInput
                                     label="Lower bound"
                                     name={name}
                                     value={value}
@@ -116,7 +116,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                 }
                             }}
                             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                                <BoundEntry
+                                <NumericHintInput
                                     label="Upper bound"
                                     name={name}
                                     value={value}

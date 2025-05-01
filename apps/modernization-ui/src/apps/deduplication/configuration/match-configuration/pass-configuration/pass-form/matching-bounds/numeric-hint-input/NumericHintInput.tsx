@@ -3,7 +3,7 @@ import { InlineErrorMessage } from 'design-system/field/InlineErrorMessage';
 import { Hint } from 'design-system/hint';
 import { Numeric } from 'design-system/input/numeric/Numeric';
 import { ReactNode } from 'react';
-import styles from './bound-entry.module.scss';
+import styles from './numeric-hint-input.module.scss';
 
 type Props = {
     name: string;
@@ -11,13 +11,30 @@ type Props = {
     error?: string;
     onBlur: () => void;
     onChange: () => void;
+    min?: number;
+    max?: number;
+    step?: number;
     value?: number;
     tooltip: ReactNode;
     disabled?: boolean;
+    className?: string;
 };
-export const BoundEntry = ({ name, label, value, error, tooltip, disabled = false, onBlur, onChange }: Props) => {
+export const NumericHintInput = ({
+    name,
+    label,
+    value,
+    error,
+    tooltip,
+    min,
+    max,
+    step,
+    className,
+    disabled = false,
+    onBlur,
+    onChange
+}: Props) => {
     return (
-        <div className={classNames(styles.boundEntry, error ? styles.hasError : '')}>
+        <div className={classNames(className, styles.boundEntry, error ? styles.hasError : '')}>
             <label htmlFor={name} aria-describedby={`${name}-info`}>
                 {label}
                 <Hint id={`${name}-info`}>{tooltip}</Hint>
@@ -29,6 +46,9 @@ export const BoundEntry = ({ name, label, value, error, tooltip, disabled = fals
                     id={name}
                     value={value}
                     disabled={disabled}
+                    min={min}
+                    max={max}
+                    step={step}
                     onBlur={onBlur}
                     onChange={onChange}
                 />

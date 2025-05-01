@@ -93,7 +93,9 @@ export default function NavBar() {
                                             <span> | </span>
                                         </td>
                                         <td className={styles.navLink}>
-                                            <a onClick={logoutClick}>Logout</a>
+                                            <a onClick={logoutClick} tabIndex={0}>
+                                                Logout
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
