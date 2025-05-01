@@ -8,7 +8,7 @@ export type PatientFileHeader = {
     patientId: string;
     local: string;
     status: string;
-    deletable: string;
+    deletablity: string;
     sex: string;
     birthday: string;
     name?: MostRecentLegalName;
