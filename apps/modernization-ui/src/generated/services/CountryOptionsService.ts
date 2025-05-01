@@ -8,6 +8,18 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class CountryOptionsService {
     /**
+     * Countries Option
+     * Provides all Country options.
+     * @returns Option OK
+     * @throws ApiError
+     */
+    public static countries(): CancelablePromise<Array<Option>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/options/countries',
+        });
+    }
+    /**
      * NBS Country Option Autocomplete
      * Provides options from Counties that have a name matching a criteria.
      * @returns Option OK
