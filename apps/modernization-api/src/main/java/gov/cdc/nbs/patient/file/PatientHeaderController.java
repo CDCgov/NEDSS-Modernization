@@ -60,10 +60,10 @@ public class PatientHeaderController {
   @GetMapping("/nbs/api/patient/{patientId}/file")
   public PatientFileHeader find(@PathVariable final long patientId) {
     Optional<PatientProfile> optionalPatientProfile = ppResolver.findByShortId(patientId);
-
     if (optionalPatientProfile.isEmpty()) {
       return null;
     }
+
     PatientProfile patientProfile = optionalPatientProfile.get();
     long personUid = patientProfile.id();
 
@@ -71,14 +71,14 @@ public class PatientHeaderController {
     if (optionalName.isEmpty()) {
       return null;
     }
-    PatientSearchResultName name = optionalName.get();
 
+    PatientSearchResultName name = optionalName.get();
     Collection<PatientSearchResult> results = patientFinder.find(Arrays.asList(personUid));
     if (results.isEmpty()) {
       return null;
     }
-    PatientSearchResult patientInfo = results.stream().findFirst().get();
 
+    PatientSearchResult patientInfo = results.stream().findFirst().get();
     return new PatientFileHeader(personUid, String.valueOf(patientId), patientInfo.local(),
         statusMap.get(patientInfo.status()),
         deletable(patientInfo.status(), patientProfile),
@@ -86,5 +86,4 @@ public class PatientHeaderController {
         new MostRecentLegalName(name.first(), name.last(), name.middle(), name.suffix()));
   }
 }
-// birthday as the value of Person.birth_time formatted as MM/DD/YYYY
 
