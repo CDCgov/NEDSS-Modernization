@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.file;
 
-import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
@@ -17,7 +16,6 @@ public class PatientHeaderSteps {
   PatientHeaderSteps(
       final Active<PatientIdentifier> activePatient,
       final PatientHeaderRequester requester,
-      final SoundexResolver soundexResolver,
       final EntityManager entityManager,
       final Active<ResultActions> response) {
     this.activePatient = activePatient;
