@@ -9,11 +9,11 @@ import styles from './merge-landing.module.scss';
 export const MergeLanding = () => {
     const { exportCSV, exportPDF } = useExportMatches();
 
-    const handleCSVExport = async() => {
+    const handleCSVExport = async () => {
         await exportCSV();
     };
 
-    const handlePDFExport = async() => {
+    const handlePDFExport = async () => {
         await exportPDF();
     };
 
