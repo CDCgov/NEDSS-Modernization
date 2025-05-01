@@ -1,33 +1,27 @@
 package gov.cdc.nbs.testing.authorization.permission;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.authentication.entity.QAuthUserRole;
-import org.springframework.stereotype.Component;
-
+import gov.cdc.nbs.authentication.entity.AuthUserRole;
 import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Component;
 
 @Component
 class AuthorizationRoleCleaner {
 
-    private static final QAuthUserRole AUTHORIZATION_ROLE = QAuthUserRole.authUserRole;
+  private final EntityManager entityManager;
 
-    private final EntityManager entityManager;
+  AuthorizationRoleCleaner(final EntityManager entityManager) {
+    this.entityManager = entityManager;
 
-    private final JPAQueryFactory factory;
+  }
 
-    AuthorizationRoleCleaner(
-            final EntityManager entityManager,
-            final JPAQueryFactory factory) {
-        this.entityManager = entityManager;
-        this.factory = factory;
+  void clean(final long identifier) {
+
+    AuthUserRole found = this.entityManager.find(AuthUserRole.class, identifier);
+
+    if (found != null) {
+      this.entityManager.remove(found);
     }
 
-    void clean(final long identifier) {
-        this.factory.select(AUTHORIZATION_ROLE)
-                .from(AUTHORIZATION_ROLE)
-                .where(AUTHORIZATION_ROLE.id.eq(identifier))
-                .fetch()
-                .forEach(this.entityManager::remove);
-    }
+  }
 
 }

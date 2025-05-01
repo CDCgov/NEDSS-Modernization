@@ -4,12 +4,15 @@ import gov.cdc.nbs.authentication.entity.AuthAudit;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Available;
+import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PreDestroy;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 
-import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
 @Component
+@ScenarioScope
 class ActiveUserMother {
 
   private final AuthenticationSupportSettings settings;
@@ -23,7 +26,8 @@ class ActiveUserMother {
       final SequentialIdentityGenerator idGenerator,
       final EntityManager entityManager,
       final ActiveUserCleaner cleaner,
-      final Available<ActiveUser> users) {
+      final Available<ActiveUser> users
+  ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.entityManager = entityManager;
@@ -31,9 +35,9 @@ class ActiveUserMother {
     this.users = users;
   }
 
+  @PreDestroy
   public void reset() {
     this.users.all().forEach(this.cleaner::clean);
-    this.users.reset();
   }
 
   ActiveUser create(final String name) {
@@ -43,7 +47,8 @@ class ActiveUserMother {
   ActiveUser create(
       final String username,
       final String first,
-      final String last) {
+      final String last
+  ) {
     AuthUser user = new AuthUser();
     user.setUserId(username);
     user.setUserType("internalUser");

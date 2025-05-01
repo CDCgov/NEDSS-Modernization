@@ -74,7 +74,8 @@ public class PermissionSetMother {
     private void createRight(
             final AuthPermSet set,
             final String operation,
-            final String object) {
+            final String object
+    ) {
         AuthBusObjType objectType = this.objectFinder.find(object);
         AuthBusOpType operationType = this.operationFinder.find(operation);
         set.addObjectRight(operationType, objectType);

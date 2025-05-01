@@ -4,6 +4,8 @@ import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.authentication.enums.SecurityEventType;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
+import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PostConstruct;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,6 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
+@ScenarioScope
 class SessionMother {
 
   private static final String INSERT = """
@@ -61,6 +64,7 @@ class SessionMother {
     this.available = new Available<>();
   }
 
+  @PostConstruct
   void reset() {
     List<String> identifiers = this.available.all()
         .map(SessionCookie::identifier)

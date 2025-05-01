@@ -1,26 +1,24 @@
 package gov.cdc.nbs.testing.authorization.permission;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.authentication.entity.AuthBusObjType;
-import gov.cdc.nbs.authentication.entity.QAuthBusObjType;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 
 @Component
 class AuthorizationObjectTypeFinder {
 
-    private final JPAQueryFactory factory;
-    private final QAuthBusObjType objectType;
+  private final EntityManager entityManager;
 
-    AuthorizationObjectTypeFinder(final JPAQueryFactory factory) {
-        this.factory = factory;
-        this.objectType = QAuthBusObjType.authBusObjType;
-    }
+  AuthorizationObjectTypeFinder(final EntityManager entityManager) {
+    this.entityManager = entityManager;
+  }
 
-    AuthBusObjType find(final String name) {
-        return this.factory.select(objectType).from(objectType)
-            .where(objectType.busObjNm.eq(name.toUpperCase()))
-            .limit(1)
-            .fetchFirst();
-    }
+  AuthBusObjType find(final String name) {
+    return this.entityManager.createQuery(
+            "select op from AuthBusObjType op where op.busObjNm = :name",
+            AuthBusObjType.class
+        ).setParameter("name", name)
+        .getSingleResult();
+  }
 
 }

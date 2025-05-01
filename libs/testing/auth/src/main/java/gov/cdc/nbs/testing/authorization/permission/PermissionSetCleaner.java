@@ -1,33 +1,29 @@
 package gov.cdc.nbs.testing.authorization.permission;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.authentication.entity.QAuthPermSet;
-import org.springframework.stereotype.Component;
-
+import gov.cdc.nbs.authentication.entity.AuthPermSet;
 import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Component;
 
 @Component
 class PermissionSetCleaner {
 
-  private static final QAuthPermSet PERMISSION_SET = QAuthPermSet.authPermSet;
+
 
   private final EntityManager entityManager;
 
-  private final JPAQueryFactory factory;
-
-  PermissionSetCleaner(
-      final EntityManager entityManager,
-      final JPAQueryFactory factory) {
+  PermissionSetCleaner(final EntityManager entityManager) {
     this.entityManager = entityManager;
-    this.factory = factory;
   }
 
   void clean(final long identifier) {
-    this.factory.select(PERMISSION_SET)
-        .from(PERMISSION_SET)
-        .where(PERMISSION_SET.id.eq(identifier))
-        .fetch()
-        .forEach(this.entityManager::remove);
+
+    AuthPermSet found = this.entityManager.find(AuthPermSet.class, identifier);
+
+    if (found != null) {
+      this.entityManager.remove(found);
+    }
+
+
   }
 
 }

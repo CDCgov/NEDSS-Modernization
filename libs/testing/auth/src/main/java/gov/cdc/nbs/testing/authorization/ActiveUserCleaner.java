@@ -1,36 +1,29 @@
 package gov.cdc.nbs.testing.authorization;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.authentication.entity.AuthUser;
-import gov.cdc.nbs.authentication.entity.QAuthUser;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import jakarta.persistence.EntityManager;
 
 
 @Component
 class ActiveUserCleaner {
 
-    private static final QAuthUser USER = QAuthUser.authUser;
+  private static final String DELETE = """
+      delete from auth_user
+      where auth_user_id = :id
+      """;
 
-    private final EntityManager entityManager;
-    private final JPAQueryFactory factory;
 
-    ActiveUserCleaner(final EntityManager entityManager, final JPAQueryFactory factory) {
-        this.entityManager = entityManager;
-        this.factory = factory;
-    }
+  private final JdbcClient client;
 
-    void clean(final ActiveUser user) {
-        this.factory.select(USER)
-                .from(USER)
-                .where(USER.id.eq(user.id()))
-                .fetch()
-                .forEach(this::remove);
-    }
+  ActiveUserCleaner(final JdbcClient client) {
 
-    private void remove(final AuthUser user) {
+    this.client = client;
+  }
 
-        this.entityManager.remove(user);
-    }
+  void clean(final ActiveUser user) {
+    this.client.sql(DELETE)
+        .param("id", user.id())
+        .update();
+  }
+
 }

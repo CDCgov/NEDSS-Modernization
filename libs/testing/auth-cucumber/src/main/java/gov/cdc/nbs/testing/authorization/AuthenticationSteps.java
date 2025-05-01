@@ -35,7 +35,6 @@ public class AuthenticationSteps {
 
   @Before
   public void clean() {
-    userMother.reset();
     sessionMother.reset();
   }
 
