@@ -82,6 +82,6 @@ export const NoSettings: Story = {
     args: {
         ...Default.args,
         id: 'tablecard-no-settings',
-        columnPreferencesKey: undefined
+        showSettings: false
     }
 };
