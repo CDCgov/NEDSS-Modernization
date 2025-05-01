@@ -35,23 +35,6 @@ public class PatientHeaderSteps {
     this.soundexResolver = soundexResolver;
   }
 
-  @Transactional
-  @Given("the patient has a legal name")
-  public void patient_has_a_legal_name() {
-    Person patient = this.entityManager.find(Person.class, activePatient.active().id());
-    patient.add(soundexResolver, new PatientCommand.AddName(
-        activePatient.active().id(),
-        LocalDate.parse("2023-01-17"),
-        "first",
-        null,
-        "last",
-        null,
-        "L",
-        131L,
-        LocalDateTime.parse("2020-03-03T10:15:30")));
-    this.entityManager.persist(patient);
-  }
-
   @Then("I view the Patient File Header")
   public void i_view_the_patient_file_header() {
     try {

@@ -4,7 +4,7 @@ Feature: Patient File Header
   Scenario: I can retrieve the patient file header for a patient
     Given I am logged into NBS
     And I have a patient
-    And the patient has a legal name
+    And the patient has the legal name "Joe" "Jacob" "Smith", Jr. as of 01/01/2000
     And the patient has a Case Report
     Then I view the Patient File Header
 
@@ -17,7 +17,7 @@ Feature: Patient File Header
   Scenario: I get a blank body when no events are associated
     Given I am logged into NBS
     And I have a patient
-    And the patient has a legal name
+    And the patient has the legal name "Joe" "Jacob" "Smith", Jr. as of 01/01/2000
     Then I view the Patient File Header
 
   Scenario: I get a blank body when no events or names
