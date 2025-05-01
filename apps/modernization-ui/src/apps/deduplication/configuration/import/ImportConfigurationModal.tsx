@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { ImportModal } from './importModal/ImportModal';
 import { AlgorithmExport } from 'apps/deduplication/api/model/AlgorithmExport';
 
+const ERROR_MESSAGE =
+    'The imported JSON file was invalid. Please review the file and ensure the file is the appropriate format and all values are valid.';
+
 type Props = {
     visible: boolean;
     onImport: (algorithm: AlgorithmExport) => void;
@@ -15,11 +18,13 @@ export const ImportConfigurationModal = ({ visible, onImport, onCancel }: Props)
         file.text().then((content) => {
             try {
                 const algorithm: AlgorithmExport = JSON.parse(content);
-                onImport(algorithm);
-            } catch (error) {
-                setImportError(
-                    'The imported JSON file was invalid. Please review the file and ensure the file is the appropriate format and all values are valid.'
-                );
+                if (algorithm?.algorithm?.passes && algorithm?.dataElements) {
+                    onImport(algorithm);
+                } else {
+                    setImportError(ERROR_MESSAGE);
+                }
+            } catch {
+                setImportError(ERROR_MESSAGE);
             }
         });
     };
