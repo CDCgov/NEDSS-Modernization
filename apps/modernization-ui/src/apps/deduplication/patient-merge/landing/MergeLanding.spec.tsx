@@ -2,7 +2,7 @@ import { render, within } from '@testing-library/react';
 import { MergeLanding } from './MergeLanding';
 import { MemoryRouter } from 'react-router';
 import userEvent from "@testing-library/user-event";
-import { useExportMatches } from '../../api/useExportMatches'; // Import the new combined hook
+import { useExportMatches } from '../../api/useExportMatches';
 import { useSearchParams } from "react-router";
 
 jest.mock('../../api/useExportMatches', () => ({
@@ -19,8 +19,8 @@ const mockExportMatchesPDF = jest.fn();
 
 beforeEach(() => {
     (useExportMatches as jest.Mock).mockReturnValue({
-        exportCSV: mockExportMatchesCSV,
-        exportPDF: mockExportMatchesPDF,
+        exportCSV: jest.fn().mockResolvedValue(undefined),
+        exportPDF: jest.fn().mockResolvedValue(undefined),
     });
     (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams(), jest.fn()]);
 });

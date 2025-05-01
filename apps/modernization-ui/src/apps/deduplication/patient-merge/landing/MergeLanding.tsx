@@ -9,16 +9,12 @@ import styles from './merge-landing.module.scss';
 export const MergeLanding = () => {
     const { exportCSV, exportPDF } = useExportMatches();
 
-    const handleCSVExport = () => {
-        exportCSV().catch((error) => {
-            console.error('Failed to export CSV:', error);
-        });
+    const handleCSVExport = async() => {
+        await exportCSV();
     };
 
-    const handlePDFExport = () => {
-        exportPDF().catch((error) => {
-            console.error('Failed to export CSV:', error);
-        });
+    const handlePDFExport = async() => {
+        await exportPDF()
     };
 
     return (
