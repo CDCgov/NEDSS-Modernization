@@ -6,8 +6,8 @@ export const useExportMatches = () => {
             const response = await fetch(`${Config.deduplicationUrl}/merge/export/csv`, {
                 method: 'GET',
                 headers: {
-                    Accept: 'text/csv',
-                },
+                    Accept: 'text/csv'
+                }
             });
 
             if (!response.ok) {
@@ -32,8 +32,8 @@ export const useExportMatches = () => {
             const response = await fetch(`${Config.deduplicationUrl}/merge/export/pdf`, {
                 method: 'GET',
                 headers: {
-                    Accept: 'application/pdf',
-                },
+                    Accept: 'application/pdf'
+                }
             });
 
             if (!response.ok) {
@@ -55,6 +55,6 @@ export const useExportMatches = () => {
 
     return {
         exportCSV: exportMatchesCSV,
-        exportPDF: exportMatchesPDF,
+        exportPDF: exportMatchesPDF
     };
 };
