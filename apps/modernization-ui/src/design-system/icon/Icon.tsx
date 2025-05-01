@@ -1,4 +1,4 @@
-import React, { SVGProps as ReactSVGProps } from 'react';
+import { SVGProps as ReactSVGProps } from 'react';
 import classNames from 'classnames';
 import { Sizing } from 'design-system/field';
 import { Icons } from './types';
@@ -7,15 +7,13 @@ import styles from './icon.module.scss';
 
 import uswds from '@uswds/uswds/img/sprite.svg';
 import extended from './extended-sprite.svg';
-import { triggerOnEnterOrSpace } from 'utils';
 
-type Props = {
+export type IconProps = {
     name: Icons;
     sizing?: Sizing;
-    onAccessibleKeyDown?: () => void;
 } & Omit<ReactSVGProps<SVGSVGElement>, 'width' | 'height'>;
 
-const Icon = ({ name, sizing, role = 'img', className, onAccessibleKeyDown, ...props }: Props) => {
+const Icon = ({ name, sizing, role = 'img', className, ...props }: IconProps) => {
     const location = resolveLocation(name);
 
     const hidden = props['aria-hidden'] || !(props['aria-label'] || props['aria-labelledby']);
@@ -25,7 +23,6 @@ const Icon = ({ name, sizing, role = 'img', className, onAccessibleKeyDown, ...p
             className={classNames(styles.icon, className, sizing && styles[sizing])}
             role={role}
             aria-hidden={hidden}
-            onKeyDown={(event) => triggerOnEnterOrSpace(event, onAccessibleKeyDown)}
             {...props}>
             <use xlinkHref={location} />
         </svg>
