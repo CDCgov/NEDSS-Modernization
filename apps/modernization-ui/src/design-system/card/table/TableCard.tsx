@@ -1,6 +1,6 @@
 import { CollapsibleCard } from '../collapsible';
 import { Sizing } from 'design-system/field';
-import { Column, DataTable, DataTableProps } from 'design-system/table';
+import { DataTable, DataTableProps } from 'design-system/table';
 import { TableCardAction, TableCardHeader } from './TableCardHeader';
 import { ColumnPreference, useColumnPreferences, withColumnPreferences } from 'design-system/table/preferences';
 import { ComponentType, FC, useMemo } from 'react';
@@ -14,8 +14,9 @@ export type TableCardProps<V> = {
     sizing?: Sizing;
     tableClassName?: string;
     actions?: TableCardAction[];
-    /** When provided, will be used to store/retrieve column preferences in local storage */
-    columnPreferencesKey?: string;
+    showSettings?: boolean;
+    /** Used to store/retrieve column preferences in local storage */
+    columnPreferencesKey: string;
     /** When provided, uses these preferences as the starting point if no data in local storage */
     defaultColumnPreferences?: ColumnPreference[];
 } & Omit<DataTableProps<V>, 'id' | 'className'>;
@@ -33,6 +34,7 @@ export const TableCard = <V,>({
     tableClassName,
     actions,
     columns,
+    showSettings = true,
     columnPreferencesKey,
     defaultColumnPreferences,
     ...props
@@ -48,13 +50,10 @@ export const TableCard = <V,>({
             })),
         [defaultColumnPreferences, columns]
     );
-    const showingSettings = columnPreferencesKey != null;
-    const ColumnPreferencesCard = showingSettings
-        ? withColumnPreferences(CollapsibleCard, {
-              storageKey: columnPreferencesKey,
-              defaults: columnPreferences
-          })
-        : CollapsibleCard;
+    const ColumnPreferencesCard = withColumnPreferences(CollapsibleCard, {
+        storageKey: columnPreferencesKey,
+        defaults: columnPreferences
+    });
     const ManagedDataTable = withColumnPreferencesDataTable(DataTable<V>);
     return (
         <ColumnPreferencesCard
@@ -66,7 +65,7 @@ export const TableCard = <V,>({
                     title={title}
                     actions={actions}
                     resultCount={props?.data?.length ?? 0}
-                    showSettings={showingSettings}
+                    showSettings={showSettings}
                     sizing={props?.sizing}
                 />
             }
@@ -84,8 +83,7 @@ export const TableCard = <V,>({
  */
 const withColumnPreferencesDataTable = <V,>(WrappedComponent: ComponentType<DataTableProps<V>>) => {
     const EnhancedComponent: FC<DataTableProps<V>> = (props) => {
-        const interaction = useColumnPreferences(false);
-        const apply = interaction?.apply ?? ((columns: Array<Column<V>>) => columns);
+        const { apply } = useColumnPreferences();
         const columns = apply(props.columns);
         return <WrappedComponent {...props} columns={columns} />;
     };

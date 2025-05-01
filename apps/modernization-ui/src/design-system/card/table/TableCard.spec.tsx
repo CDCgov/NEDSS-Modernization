@@ -41,7 +41,16 @@ const data: TestData[] = [
 ];
 
 const Fixture = (props: Partial<TableCardProps<TestData>>) => {
-    return <TableCard id="tablecard" title="Test Title" columns={columns} data={data} {...props} />;
+    return (
+        <TableCard
+            id="tablecard"
+            title="Test Title"
+            columnPreferencesKey="test-key"
+            columns={columns}
+            data={data}
+            {...props}
+        />
+    );
 };
 
 describe('TableCard', () => {
@@ -86,14 +95,14 @@ describe('TableCard', () => {
         expect(getByRole('table')).toHaveClass('custom-table-class');
     });
 
-    it('does not render the settings button by default', () => {
+    it('renders the settings button by default', () => {
         const { queryByLabelText } = render(<Fixture />);
-        expect(queryByLabelText('Settings')).not.toBeInTheDocument();
+        expect(queryByLabelText('Settings')).toBeInTheDocument();
     });
 
-    it('renders settings button when columnPreferencesKey is provided', () => {
-        const { getByLabelText } = render(<Fixture columnPreferencesKey="test-key" />);
-        expect(getByLabelText('Settings')).toBeInTheDocument();
+    it('does not render settings button when showSettings is false', () => {
+        const { queryByLabelText } = render(<Fixture showSettings={false} />);
+        expect(queryByLabelText('Settings')).not.toBeInTheDocument();
     });
 
     it('renders with mocked column preferences', () => {

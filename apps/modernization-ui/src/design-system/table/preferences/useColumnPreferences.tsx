@@ -93,21 +93,14 @@ const ColumnPreferenceProvider = ({ id, children, defaults = [] }: Props) => {
     return <ColumnPreferenceContext.Provider value={interaction}>{children}</ColumnPreferenceContext.Provider>;
 };
 
-const useColumnPreferences = (throwError = true): Interaction => {
+const useColumnPreferences = (): Interaction => {
     const context = useContext(ColumnPreferenceContext);
 
-    if (throwError && context === undefined) {
+    if (context === undefined) {
         throw new Error('useColumnPreferences must be used within a ColumnPreferenceProvider');
     }
 
-    return (
-        context ?? {
-            preferences: [],
-            save: () => {},
-            reset: () => {},
-            apply: <C extends HasPreference>(columns: C[]) => columns
-        }
-    );
+    return context;
 };
 
 const applyPreferences =
@@ -127,4 +120,4 @@ const applyPreferences =
     };
 
 export { useColumnPreferences, ColumnPreferenceProvider };
-export type { Interaction, ColumnPreference };
+export type { ColumnPreference };
