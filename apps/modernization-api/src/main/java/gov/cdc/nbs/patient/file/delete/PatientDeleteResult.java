@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.delete;
+package gov.cdc.nbs.patient.file.delete;
 
 sealed interface PatientDeleteResult {
 

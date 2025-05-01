@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.delete;
+package gov.cdc.nbs.patient.file.delete;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityUtil;
@@ -14,14 +14,14 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 
 @Controller
-class PatientDeleteController {
+class GraphQLPatientDeleteController {
 
   private final Clock clock;
   private final PatientDeleter deleter;
 
   private final PatientIndexer indexer;
 
-  PatientDeleteController(
+  GraphQLPatientDeleteController(
       final Clock clock,
       final PatientDeleter deleter,
       final PatientIndexer indexer
