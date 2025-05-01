@@ -1,7 +1,7 @@
-import { Icon } from 'design-system/icon';
+import { ReactNode } from 'react';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import styles from './patient-file.module.scss';
-import { Button } from 'components/button';
+
 import { displayName } from 'name';
 import { NoData } from 'components/NoData';
 import { displayAgeAsOfToday, internalizeDate } from 'date';
@@ -9,6 +9,7 @@ import { usePatientFile } from './patientData/usePatientFile';
 
 interface PatientFileHeaderProps {
     id: string;
+    headerActions: () => ReactNode;
 }
 
 const RenderAge = (props: { birthday?: Date }) => {
@@ -17,7 +18,7 @@ const RenderAge = (props: { birthday?: Date }) => {
     return value || <NoData />;
 };
 
-export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
+export const PatientFileHeader = ({ id, headerActions }: PatientFileHeaderProps) => {
     const { summary } = usePatientFile(id);
 
     return (
@@ -36,34 +37,7 @@ export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
                     <span className={styles.headerPatientDivider}> | </span>
                     <span className={styles.headerPatientDetail}>Patient ID: {id}</span>
                 </h1>
-                <div className={styles.actions}>
-                    <Button
-                        className={styles['usa-button']}
-                        aria-label="Delete"
-                        data-tooltip-position="top"
-                        data-tooltip-offset="center"
-                        icon={<Icon name="delete" />}
-                        sizing={'medium'}
-                        secondary
-                        disabled
-                    />
-                    <Button
-                        aria-label="Print"
-                        data-tooltip-position="top"
-                        data-tooltip-offset="center"
-                        icon={<Icon name="print" />}
-                        sizing={'medium'}
-                        secondary
-                    />
-                    <Button
-                        aria-label="Edit"
-                        icon={<Icon name="edit" />}
-                        secondary
-                        labelPosition="right"
-                        sizing={'medium'}>
-                        Edit
-                    </Button>
-                </div>
+                <div className={styles.actions}>{headerActions()}</div>
             </div>
             <div className={styles.tabNavigation}>
                 <TabNavigation className="grid-row flex-align-center" newTab>
