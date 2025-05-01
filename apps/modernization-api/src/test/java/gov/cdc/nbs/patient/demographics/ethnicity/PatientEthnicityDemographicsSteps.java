@@ -23,11 +23,7 @@ public class PatientEthnicityDemographicsSteps {
     patient.maybeActive().ifPresent(current -> mother.withEthnicity(current, ethnicity));
   }
 
-  @Given("the patient has the ethnicity {ethnicity}, specifically {ethnicityDetail}")
-  public void the_patient_has_the_ethnicity_specifically(final String ethnicity, final String detail) {
-    patient.maybeActive().ifPresent(current -> mother.withSpecificEthnicity(current, ethnicity, detail));
-  }
-
+  @Given("the patient ethnicity includes the Spanish origin of {ethnicityDetail}")
   @Given("the patient ethnicity includes {ethnicityDetail}")
   public void the_patient_ethnicity_includes(final String detail) {
     patient.maybeActive().ifPresent(current -> mother.withSpecificEthnicity(current, detail));
