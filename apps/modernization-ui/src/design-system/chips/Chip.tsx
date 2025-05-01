@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import styles from './chip.module.scss';
-import { ActionIcon } from './actionIcon';
+import { ActionIcon } from 'design-system/icon';
 
 type ChipProps = {
     name: string;
@@ -18,8 +18,7 @@ const Chip = ({ name, value, operator, handleClose }: ChipProps) => {
                 name={'close'}
                 aria-label={`Close ${name}`}
                 tabIndex={0}
-                onClick={handleClose}
-                onKeyAction={handleClose}
+                onAction={handleClose}
                 className={styles.closeIcon}
             />
         </div>
