@@ -24,3 +24,7 @@ Feature: Patient File Header
     Given I am logged into NBS
     And I have a patient
     Then I view the Patient File Header
+
+  Scenario: I get a blank body when no patient
+    Given I am logged into NBS
+    Then I view the Patient File Header

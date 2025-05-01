@@ -1,8 +1,6 @@
 package gov.cdc.nbs.patient.file;
 
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PersonName;
-import gov.cdc.nbs.entity.odse.PersonNameId;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -12,7 +10,6 @@ import io.cucumber.java.en.Then;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
