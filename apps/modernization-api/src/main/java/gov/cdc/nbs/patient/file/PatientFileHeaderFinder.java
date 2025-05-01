@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.web.bind.annotation.PathVariable;
 import gov.cdc.nbs.patient.search.name.PatientSearchResultName;
 import gov.cdc.nbs.patient.search.PatientSearchResult;
 import gov.cdc.nbs.patient.search.PatientSearchResultFinder;
@@ -51,8 +50,7 @@ class PatientFileHeaderFinder {
     this.deleteResolver = deleteResolver;
   }
 
-  @SuppressWarnings("java:S3655")
-  public PatientFileHeader find(@PathVariable final long patientId) {
+  public PatientFileHeader find(final long patientId) {
     Optional<PatientProfile> optionalPatientProfile = ppResolver.findByShortId(patientId);
     if (optionalPatientProfile.isEmpty()) {
       return null;
@@ -72,7 +70,12 @@ class PatientFileHeaderFinder {
       return null;
     }
 
-    PatientSearchResult patientInfo = results.stream().findFirst().get();
+    Optional<PatientSearchResult> optionalPatientInfo = results.stream().findFirst();
+    if (optionalPatientInfo.isEmpty()) {
+      return null;
+    }
+
+    PatientSearchResult patientInfo = optionalPatientInfo.get();
     return new PatientFileHeader(personUid, String.valueOf(patientId), patientInfo.local(),
         statusMap.get(patientInfo.status()),
         deletable(patientInfo.status(), patientProfile),

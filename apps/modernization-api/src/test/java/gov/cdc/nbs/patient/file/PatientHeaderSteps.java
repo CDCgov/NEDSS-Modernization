@@ -1,25 +1,17 @@
 package gov.cdc.nbs.patient.file;
 
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import jakarta.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 
 public class PatientHeaderSteps {
 
   private final Active<PatientIdentifier> activePatient;
   private final PatientHeaderRequester requester;
   private final Active<ResultActions> response;
-  private final SoundexResolver soundexResolver;
-  private final EntityManager entityManager;
   Exception exception;
 
   PatientHeaderSteps(
@@ -31,8 +23,6 @@ public class PatientHeaderSteps {
     this.activePatient = activePatient;
     this.requester = requester;
     this.response = response;
-    this.entityManager = entityManager;
-    this.soundexResolver = soundexResolver;
   }
 
   @Then("I view the Patient File Header")
