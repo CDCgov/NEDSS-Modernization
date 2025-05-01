@@ -79,7 +79,9 @@ class PatientFileHeaderFinder {
     return new PatientFileHeader(personUid, String.valueOf(patientId), patientInfo.local(),
         statusMap.get(patientInfo.status()),
         deletable(patientInfo.status(), patientProfile),
-        patientInfo.gender(), patientInfo.birthday().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+        patientInfo.gender(),
+        patientInfo.birthday() == null ? null
+            : patientInfo.birthday().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
         new MostRecentLegalName(name.first(), name.last(), name.middle(), name.suffix()));
   }
 }
