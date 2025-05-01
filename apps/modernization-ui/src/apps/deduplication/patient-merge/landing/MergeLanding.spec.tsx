@@ -1,9 +1,9 @@
 import { render, within } from '@testing-library/react';
 import { MergeLanding } from './MergeLanding';
 import { MemoryRouter } from 'react-router';
-import userEvent from "@testing-library/user-event";
+import userEvent from '@testing-library/user-event';
 import { useExportMatchesCSV } from '../../api/useExportMatchesCSV';
-import { useSearchParams } from "react-router";
+import { useSearchParams } from 'react-router';
 
 // Mocking the useExportMatchesCSV hook
 jest.mock('../../api/useExportMatchesCSV', () => ({
@@ -19,10 +19,7 @@ jest.mock('react-router', () => ({
 const mockExportMatchesCSV = jest.fn();
 
 beforeEach(() => {
-    // Mock the implementation of useExportMatchesCSV
     (useExportMatchesCSV as jest.Mock).mockReturnValue({ exportMatchesCSV: mockExportMatchesCSV });
-
-    // Mock useSearchParams to return a default value
     (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams(), jest.fn()]);
 });
 
@@ -47,21 +44,18 @@ describe('MergeLanding', () => {
     });
 
     it('should trigger CSV download when the download button is clicked', async () => {
-        // Arrange
+        const user = userEvent.setup();
         const { getByRole } = render(<Fixture />);
         const buttons = within(getByRole('heading').parentElement!).getAllByRole('button');
 
-        // Find the download button
         const downloadButton = buttons.find((btn) =>
             btn.querySelector('use')?.getAttribute('xlink:href')?.endsWith('#file_download')
         );
 
         expect(downloadButton).toBeDefined();
 
-        // Act
-        await userEvent.click(downloadButton!);
+        await user.click(downloadButton!); // Use the user instance
 
-        // Assert: Make sure the mock function was called
         expect(mockExportMatchesCSV).toHaveBeenCalledTimes(1);
     });
 });
