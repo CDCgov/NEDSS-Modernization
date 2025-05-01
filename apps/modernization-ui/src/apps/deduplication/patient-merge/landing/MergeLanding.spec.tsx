@@ -18,10 +18,14 @@ const mockExportMatchesCSV = jest.fn();
 const mockExportMatchesPDF = jest.fn();
 
 beforeEach(() => {
+    mockExportMatchesCSV.mockClear();
+    mockExportMatchesPDF.mockClear();
+
     (useExportMatches as jest.Mock).mockReturnValue({
-        exportCSV: jest.fn().mockResolvedValue(undefined),
-        exportPDF: jest.fn().mockResolvedValue(undefined),
+        exportCSV: mockExportMatchesCSV,
+        exportPDF: mockExportMatchesPDF,
     });
+
     (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams(), jest.fn()]);
 });
 
