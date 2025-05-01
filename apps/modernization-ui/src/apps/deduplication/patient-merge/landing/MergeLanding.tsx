@@ -3,21 +3,31 @@ import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
 import { PaginationProvider } from 'pagination';
 import { MatchesRequiringReviewTable } from './matches-requiring-review-table/MatchesRequiringReviewTable';
-import { useExportMatchesCSV } from 'apps/deduplication/api/useExportMatchesCSV';
-import { useExportMatchesPDF } from 'apps/deduplication/api/useExportMatchesPDF';
+import { useExportMatches } from 'apps/deduplication/api/useExportMatches';
 import styles from './merge-landing.module.scss';
 
 export const MergeLanding = () => {
-    const { exportMatchesCSV } = useExportMatchesCSV();
-    const { exportMatchesPDF } = useExportMatchesPDF();
+    const { exportCSV, exportPDF } = useExportMatches();
+
+    const handleCSVExport = () => {
+        exportCSV().catch((error) => {
+            console.error('Failed to export CSV:', error);
+        });
+    };
+
+    const handlePDFExport = () => {
+        exportPDF().catch((error) => {
+            console.error('Failed to export CSV:', error);
+        });
+    };
 
     return (
         <div className={styles.mergeLandingPage}>
             <header className={styles.mergeLandingHeader}>
                 <Heading level={1}>Matches requiring review</Heading>
                 <div className={styles.buttons}>
-                    <Button icon={<Icon name="print" />} sizing="medium" secondary onClick={exportMatchesPDF} />
-                    <Button icon={<Icon name="file_download" />} sizing="medium" secondary onClick={exportMatchesCSV} />
+                    <Button icon={<Icon name="print" />} sizing="medium" secondary onClick={handlePDFExport} />
+                    <Button icon={<Icon name="file_download" />} sizing="medium" secondary onClick={handleCSVExport} />
                 </div>
             </header>
             <main className={styles.mergeLandingContent}>
