@@ -14,7 +14,7 @@ export const MergeLanding = () => {
     };
 
     const handlePDFExport = async() => {
-        await exportPDF()
+        await exportPDF();
     };
 
     return (
