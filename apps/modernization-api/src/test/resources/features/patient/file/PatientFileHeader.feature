@@ -7,3 +7,20 @@ Feature: Patient File Header
     And the patient has a legal name
     And the patient has a Case Report
     Then I view the Patient File Header
+
+  Scenario: I get a blank body when no name is found
+    Given I am logged into NBS
+    And I have a patient
+    And the patient has a Case Report
+    Then I view the Patient File Header
+
+  Scenario: I get a blank body when no events are associated
+    Given I am logged into NBS
+    And I have a patient
+    And the patient has a legal name
+    Then I view the Patient File Header
+
+  Scenario: I get a blank body when no events or names
+    Given I am logged into NBS
+    And I have a patient
+    Then I view the Patient File Header
