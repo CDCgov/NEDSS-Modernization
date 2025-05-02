@@ -4,14 +4,14 @@ import org.springframework.http.ResponseEntity;
 
 public class Failures {
 
-  public static <R> ResponseEntity<StandardResponse<R>> failure(final Throwable throwable) {
+  public static ResponseEntity<StandardResponse> failure(final Throwable throwable) {
     return failure(throwable.getMessage());
   }
 
-  public static <R> ResponseEntity<StandardResponse<R>> failure(final String reason) {
+  public static ResponseEntity<StandardResponse> failure(final String reason) {
 
     return ResponseEntity.badRequest()
-        .body(new Failure<R>(reason));
+        .body(new Failure(reason));
   }
 
   private Failures() {

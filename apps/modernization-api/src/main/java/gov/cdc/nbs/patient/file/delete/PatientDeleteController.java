@@ -5,6 +5,7 @@ import gov.cdc.nbs.patient.PatientException;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.search.indexing.PatientIndexer;
 import gov.cdc.nbs.web.response.Failure;
+import gov.cdc.nbs.web.response.StandardResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -61,7 +62,7 @@ class PatientDeleteController {
   )
   @PreAuthorize("hasAuthority('DELETE-PATIENT')")
   @DeleteMapping("/nbs/api/patients/{patient}")
-  ResponseEntity<?> delete(
+  ResponseEntity<StandardResponse> delete(
       final @PathVariable("patient") long patient,
       @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails user
   ) {
