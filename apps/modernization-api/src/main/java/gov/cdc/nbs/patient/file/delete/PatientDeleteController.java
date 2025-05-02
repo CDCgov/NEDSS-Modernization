@@ -4,7 +4,6 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.patient.PatientException;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.search.indexing.PatientIndexer;
-import gov.cdc.nbs.web.response.Failure;
 import gov.cdc.nbs.web.response.StandardResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +21,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 
 import static gov.cdc.nbs.web.response.Failures.failure;
+import static gov.cdc.nbs.web.response.Successes.accepted;
 
 @RestController
 class PatientDeleteController {
@@ -54,7 +54,7 @@ class PatientDeleteController {
                   @Content(
                       mediaType = "application/json",
                       schema =
-                      @Schema(implementation = Failure.class)
+                      @Schema(implementation = StandardResponse.Failure.class)
 
                   )
               })
@@ -75,7 +75,7 @@ class PatientDeleteController {
 
       this.indexer.index(patient);
 
-      return ResponseEntity.accepted().build();
+      return accepted();
 
     } catch (PatientException exception) {
       return failure(exception);
