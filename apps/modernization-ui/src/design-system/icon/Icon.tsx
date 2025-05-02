@@ -8,12 +8,12 @@ import styles from './icon.module.scss';
 import uswds from '@uswds/uswds/img/sprite.svg';
 import extended from './extended-sprite.svg';
 
-type Props = {
+export type IconProps = {
     name: Icons;
     sizing?: Sizing;
 } & Omit<ReactSVGProps<SVGSVGElement>, 'width' | 'height'>;
 
-const Icon = ({ name, sizing, role = 'img', className, ...props }: Props) => {
+const Icon = ({ name, sizing, role = 'img', className, ...props }: IconProps) => {
     const location = resolveLocation(name);
 
     const hidden = props['aria-hidden'] || !(props['aria-label'] || props['aria-labelledby']);

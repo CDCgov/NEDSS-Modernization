@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import static gov.cdc.nbs.patient.profile.PatientProfile.STATUS_INACTIVE;
 
 @Controller
-class PatientProfileDeletableResolver {
+public class PatientProfileDeletableResolver {
 
   private final PatientAssociationCountFinder finder;
 
@@ -16,7 +16,7 @@ class PatientProfileDeletableResolver {
   }
 
   @SchemaMapping("deletable")
-  boolean resolve(final PatientProfile profile) {
+  public boolean resolve(final PatientProfile profile) {
     return !profile.status().equals(STATUS_INACTIVE) && finder.count(profile.id()) == 0;
   }
 }

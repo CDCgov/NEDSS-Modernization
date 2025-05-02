@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { Icon } from './Icon';
 import { Icons } from './types';
+import userEvent from '@testing-library/user-event';
 
 describe('When displaying Icons', () => {
     it('should render with no accessibility violations', async () => {
@@ -363,5 +364,28 @@ describe('When displaying Icons', () => {
         const icon = getByRole('img', { hidden: true });
 
         expect(icon.querySelector('use')?.getAttribute('xlink:href')).toContain(`/icons/${name}.svg`);
+    });
+    it('should trigger onKeyDown when Enter key is pressed', async () => {
+        const onKeyDown = jest.fn();
+        const user = userEvent.setup();
+
+        render(<Icon name="close" onKeyDown={onKeyDown} tabIndex={0} />);
+
+        await user.tab();
+        await user.keyboard('{Enter}');
+
+        expect(onKeyDown).toHaveBeenCalledTimes(1);
+    });
+
+    it('should trigger onKeyDown when Space key is pressed', async () => {
+        const onKeyDown = jest.fn();
+        const user = userEvent.setup();
+
+        render(<Icon name="close" onKeyDown={onKeyDown} tabIndex={0} />);
+
+        await user.tab();
+        await user.keyboard(' ');
+
+        expect(onKeyDown).toHaveBeenCalledTimes(1);
     });
 });

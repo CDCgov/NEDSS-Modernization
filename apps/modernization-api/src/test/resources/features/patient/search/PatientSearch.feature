@@ -66,6 +66,7 @@ Feature: Patient Search
     And the patient has a "local id" of "PSN09999999GA01"
     And the patient has the legal name "Joe" "Other"
     And I have another patient
+    And the patient has a "local id" of "PSN09999998GA01"
     And the patient has the legal name "Joe" "Smith"
     And patients are available for search
     And I add the patient criteria for a first name that equals "Joe"
