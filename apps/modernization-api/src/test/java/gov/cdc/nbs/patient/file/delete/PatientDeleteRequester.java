@@ -6,6 +6,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
 class PatientDeleteRequester {
@@ -24,7 +25,7 @@ class PatientDeleteRequester {
           this.authenticated.withUser(
               delete("/nbs/api/patients/{patient}", patient)
           )
-      );
+      ).andDo(print());
     } catch (Exception exception) {
       throw new IllegalStateException(
           "An unexpected error occurred when deleting a patient.",

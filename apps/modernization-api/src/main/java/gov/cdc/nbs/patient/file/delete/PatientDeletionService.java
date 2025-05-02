@@ -8,12 +8,12 @@ import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
 
 @Component
-class PatientDeleter {
+class PatientDeletionService {
 
   private final PatientAssociationCountFinder finder;
   private final PatientProfileService service;
 
-  PatientDeleter(
+  PatientDeletionService(
       final PatientAssociationCountFinder finder,
       final PatientProfileService service
   ) {

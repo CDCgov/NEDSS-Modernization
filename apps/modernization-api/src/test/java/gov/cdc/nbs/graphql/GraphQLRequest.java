@@ -10,7 +10,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
 public class GraphQLRequest {
@@ -45,7 +44,7 @@ public class GraphQLRequest {
           this.authenticated.withUser(post("/graphql"))
               .content(content)
               .contentType(MediaType.APPLICATION_JSON)
-      ).andDo(print());
+      );
 
     } catch (Exception exception) {
       throw new IllegalStateException((exception));
