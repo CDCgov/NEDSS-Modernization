@@ -6,6 +6,8 @@
     background-color: colors.$primary-lighter;
     color: colors.$primary-dark;
     border-radius: 2px;
+    display: flex;
+    align-items: center;
 
     .name {
         text-transform: uppercase;

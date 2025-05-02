@@ -93,11 +93,11 @@ const ColumnPreferenceProvider = ({ id, children, defaults = [] }: Props) => {
     return <ColumnPreferenceContext.Provider value={interaction}>{children}</ColumnPreferenceContext.Provider>;
 };
 
-const useColumnPreferences = () => {
+const useColumnPreferences = (): Interaction => {
     const context = useContext(ColumnPreferenceContext);
 
     if (context === undefined) {
-        throw new Error('useColumnPreferences must be used within a SearchResultDisplayProvider');
+        throw new Error('useColumnPreferences must be used within a ColumnPreferenceProvider');
     }
 
     return context;

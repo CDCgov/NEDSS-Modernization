@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { TableCard } from './TableCard';
 import { Column } from 'design-system/table';
 import { Icon } from 'design-system/icon';
+import { ColumnPreference } from 'design-system/table/preferences';
 
 type Person = {
     id: string;
@@ -36,6 +37,15 @@ const columns: Column<Person>[] = [
     }
 ];
 
+const columnIDs = columns.map((column) => ({ id: column.id, name: column.name }));
+
+// column preferences
+const columnPreferences: ColumnPreference[] = [
+    { ...columnIDs[0] },
+    { ...columnIDs[1], moveable: true, toggleable: true },
+    { ...columnIDs[2], moveable: true, toggleable: true }
+];
+
 export const Default: Story = {
     args: {
         id: 'tablecard-default',
@@ -45,7 +55,9 @@ export const Default: Story = {
             { id: '2', name: 'Jane Smith', age: 34 },
             { id: '3', name: 'Sam Wilson', age: 23 }
         ],
-        columns: columns
+        columns: columns,
+        columnPreferencesKey: 'storybook.tablecard',
+        defaultColumnPreferences: columnPreferences
     }
 };
 
@@ -63,5 +75,13 @@ export const Actions: Story = {
                 onClick: () => console.log('Add Person clicked')
             }
         ]
+    }
+};
+
+export const NoSettings: Story = {
+    args: {
+        ...Default.args,
+        id: 'tablecard-no-settings',
+        showSettings: false
     }
 };
