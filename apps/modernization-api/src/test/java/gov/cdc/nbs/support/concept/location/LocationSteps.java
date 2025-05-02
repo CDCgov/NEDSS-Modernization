@@ -30,6 +30,9 @@ public class LocationSteps {
         .orElse(null);
   }
 
+  @ParameterType(name = "postalCode", value = "\\d{5}([ \\-]\\d{4})?")
+  public String postalCode(final String value) { return value; }
+
   @ParameterType(name = "country", value = ".+")
   public String country(final String value) {
     return countryResolver.resolve(value).orElse(null);
