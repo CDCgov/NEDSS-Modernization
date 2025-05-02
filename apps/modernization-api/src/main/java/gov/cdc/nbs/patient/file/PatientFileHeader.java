@@ -7,7 +7,7 @@ public record PatientFileHeader(
     @JsonProperty(required = true) String patientId,
     @JsonProperty(required = true) String local,
     @JsonProperty(required = true) String status,
-    @JsonProperty(required = true) String deletable,
+    @JsonProperty(required = true) String deletablity,
     @JsonProperty(required = true) String sex,
     @JsonProperty(required = true) String birthday,
     MostRecentLegalName name) {

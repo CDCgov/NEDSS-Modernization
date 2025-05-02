@@ -4,6 +4,8 @@ Feature: Patient File Header
   Scenario: I can retrieve the patient file header for a patient
     Given I am logged into NBS
     And I have a patient
+    And the patient has a "birthday" of "1980-09-29"
+    And the patient has a "sex" of "M"
     And the patient has the legal name "Joe" "Jacob" "Smith", Jr. as of 01/01/2000
     And the patient has a Case Report
     When I view the Patient File Header

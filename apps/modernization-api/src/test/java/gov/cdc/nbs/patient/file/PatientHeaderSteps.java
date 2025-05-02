@@ -47,6 +47,6 @@ public class PatientHeaderSteps {
 
   @Then("the patient deletability is {string}")
   public void the_patient_deletability_is(String deletability) throws Exception {
-    this.response.active().andExpect(jsonPath("$.deletable", equalTo(deletability)));
+    this.response.active().andExpect(jsonPath("$.deletablity", equalTo(deletability)));
   }
 }
