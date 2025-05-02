@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-class PatientSearchResultFinder {
+public class PatientSearchResultFinder {
 
   private static final String QUERY = """
       select
@@ -38,25 +38,21 @@ class PatientSearchResultFinder {
     this.template = new NamedParameterJdbcTemplate(template);
     this.mapper = new PatientSearchResultMapper(
         new PatientSearchResultMapper.Columns(
-            1, 2, 3, 4, 5
-        )
-    );
+            1, 2, 3, 4, 5));
   }
 
-  Collection<PatientSearchResult> find(final Collection<Long> patients) {
+  public Collection<PatientSearchResult> find(final Collection<Long> patients) {
 
     if (patients.isEmpty()) {
       return List.of();
     }
 
     SqlParameterSource parameters = new MapSqlParameterSource(
-        Map.of("patients", patients)
-    );
+        Map.of("patients", patients));
 
     return this.template.query(
         QUERY,
         parameters,
-        this.mapper
-    );
+        this.mapper);
   }
 }

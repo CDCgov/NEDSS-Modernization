@@ -22,11 +22,13 @@ export type { LoginRequest } from './models/LoginRequest';
 export type { LoginResponse } from './models/LoginResponse';
 export type { Me } from './models/Me';
 export type { MortalityDemographic } from './models/MortalityDemographic';
+export type { MostRecentLegalName } from './models/MostRecentLegalName';
 export type { Name } from './models/Name';
 export type { NameDemographic } from './models/NameDemographic';
 export type { NewPatient } from './models/NewPatient';
 export type { NotificationStatus } from './models/NotificationStatus';
 export type { Option } from './models/Option';
+export type { PatientFileHeader } from './models/PatientFileHeader';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
 
@@ -41,6 +43,7 @@ export { JurisdictionOptionsService } from './services/JurisdictionOptionsServic
 export { LoginService } from './services/LoginService';
 export { NotificationStatusControllerService } from './services/NotificationStatusControllerService';
 export { OccupationOptionsService } from './services/OccupationOptionsService';
+export { PatientFileHeaderService } from './services/PatientFileHeaderService';
 export { PatientProfileService } from './services/PatientProfileService';
 export { PatientRaceService } from './services/PatientRaceService';
 export { PrimaryLanguageOptionsService } from './services/PrimaryLanguageOptionsService';

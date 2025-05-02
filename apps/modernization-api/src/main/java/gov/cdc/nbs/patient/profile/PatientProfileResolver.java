@@ -9,40 +9,38 @@ import org.springframework.stereotype.Controller;
 import java.util.Optional;
 
 @Controller
-class PatientProfileResolver {
+public class PatientProfileResolver {
 
-    private final PatientProfileFinder finder;
-    private final PatientLocalIdentifierResolver localIdentifierResolver;
+  private final PatientProfileFinder finder;
+  private final PatientLocalIdentifierResolver localIdentifierResolver;
 
-    PatientProfileResolver(
-        final PatientProfileFinder finder,
-        final PatientLocalIdentifierResolver localIdentifierResolver
-    ) {
-        this.finder = finder;
-        this.localIdentifierResolver = localIdentifierResolver;
+  PatientProfileResolver(
+      final PatientProfileFinder finder,
+      final PatientLocalIdentifierResolver localIdentifierResolver) {
+    this.finder = finder;
+    this.localIdentifierResolver = localIdentifierResolver;
+  }
+
+  @QueryMapping("findPatientProfile")
+  @PreAuthorize("hasAuthority('FIND-PATIENT')")
+  Optional<PatientProfile> find(
+      @Argument("patient") final String patient,
+      @Argument("shortId") final String shortId) {
+
+    if (patient != null) {
+      return this.finder.findById(Long.parseLong(patient));
+    } else if (shortId != null) {
+      return findByShortId(Long.parseLong(shortId));
     }
 
-    @QueryMapping("findPatientProfile")
-    @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    Optional<PatientProfile> find(
-        @Argument("patient") final String patient,
-        @Argument("shortId") final String shortId
-    ) {
-
-        if (patient != null) {
-            return this.finder.findById(Long.parseLong(patient));
-        } else if (shortId != null) {
-            return findByShortId(Long.parseLong(shortId));
-        }
-
-        return Optional.empty();
-    }
+    return Optional.empty();
+  }
 
 
-    private Optional<PatientProfile> findByShortId(final long shortId) {
-        String local = this.localIdentifierResolver.resolve(shortId);
+  public Optional<PatientProfile> findByShortId(final long shortId) {
+    String local = this.localIdentifierResolver.resolve(shortId);
 
-        return this.finder.findByLocalId(local);
-    }
+    return this.finder.findByLocalId(local);
+  }
 
 }
