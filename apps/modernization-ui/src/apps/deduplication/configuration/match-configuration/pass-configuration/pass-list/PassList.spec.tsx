@@ -78,7 +78,7 @@ describe('PassList', () => {
 
         const user = userEvent.setup();
 
-        const selectPassButton = getByRole('button', { name: 'Pass name 1' });
+        const selectPassButton = getByRole('button', { name: 'Select Pass name 1' });
 
         await user.click(selectPassButton);
 
