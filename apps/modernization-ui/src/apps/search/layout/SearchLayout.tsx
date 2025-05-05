@@ -93,9 +93,9 @@ const SearchLayout = <R,>({
                             total={total}
                             terms={terms}
                             loading={status === 'reloading'}>
-                            {total === 0 && noResults()}
                             {view === 'list' && total > 0 && resultsAsList()}
-                            {view === 'table' && total > 0 && resultsAsTable()}
+                            {view === 'table' && resultsAsTable()}
+                            {total === 0 && noResults()}
                         </SearchResults>
                     </Shown>
                     <Shown when={status === 'no-input'}>

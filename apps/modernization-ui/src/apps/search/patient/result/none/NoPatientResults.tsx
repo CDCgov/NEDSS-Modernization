@@ -1,18 +1,13 @@
 import styles from './no-patient-result.module.scss';
 import { useAddPatientFromSearch } from 'apps/search/patient/add/useAddPatientFromSearch';
-import { PatientSearchResultTable } from '../table';
-import { Sizing } from 'design-system/field';
 import { permissions, Permitted } from 'libs/permission';
 import { AlertMessage } from 'design-system/message';
 
-type Props = { sizing: Sizing };
-
-const NoPatientResults = ({ sizing }: Props) => {
+const NoPatientResults = () => {
     const { add } = useAddPatientFromSearch();
 
     return (
         <>
-            <PatientSearchResultTable results={[]} sizing={sizing} />
             <div className={styles.noResults}>
                 <AlertMessage type="information">
                     <div className={styles.noResultsContent}>
