@@ -18,6 +18,7 @@ export type { DisplayablePhone } from './models/DisplayablePhone';
 export type { EncryptionResponse } from './models/EncryptionResponse';
 export type { EthnicityDemographic } from './models/EthnicityDemographic';
 export type { ExistingRaceCategory } from './models/ExistingRaceCategory';
+export type { Failure } from './models/Failure';
 export type { GenderDemographic } from './models/GenderDemographic';
 export type { GeneralInformationDemographic } from './models/GeneralInformationDemographic';
 export type { IdentificationDemographic } from './models/IdentificationDemographic';
@@ -35,6 +36,7 @@ export type { PatientDemographicsSummary } from './models/PatientDemographicsSum
 export type { PatientFileHeader } from './models/PatientFileHeader';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
+export type { StandardResponse } from './models/StandardResponse';
 
 export { CodedResultOptionsService } from './services/CodedResultOptionsService';
 export { ConceptOptionsService } from './services/ConceptOptionsService';

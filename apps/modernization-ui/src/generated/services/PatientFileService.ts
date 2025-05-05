@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
+import type { StandardResponse } from '../models/StandardResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -23,6 +24,27 @@ export class PatientFileService {
             url: '/nbs/api/patients/{patient}/demographics',
             path: {
                 'patient': patient,
+            },
+        });
+    }
+    /**
+     * Allows deleting of a patient.
+     * @returns StandardResponse The patient has been deleted
+     * @throws ApiError
+     */
+    public static delete({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<StandardResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/nbs/api/patients/{patient}',
+            path: {
+                'patient': patient,
+            },
+            errors: {
+                400: `The patient could not be deleted.`,
             },
         });
     }
