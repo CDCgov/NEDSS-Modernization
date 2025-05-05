@@ -19,6 +19,13 @@ type NavigationGuardProps<V extends FieldValues, C, D extends FieldValues | unde
     allowed?: Paths;
 };
 
+/**
+ * Adds a guard to a form that prompts the user to confirm navigation away from a page that contains
+ * pending data.  The guard can be bypassed by the user to prevent any future warnings from appearing.
+ *
+ * @param {NavigationGuardProps} props
+ * @return {NavigationGuard}
+ */
 const NavigationGuard = <V extends FieldValues, C, D extends FieldValues | undefined = undefined>({
     id,
     form,
