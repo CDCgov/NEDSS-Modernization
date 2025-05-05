@@ -99,8 +99,9 @@ export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, on
                                     <span className={styles.thresholdLabel}>
                                         <b>Threshold -</b> Values between 0 and 1, above which two strings are said to
                                         be "similar enough" that they are probably the same thing. Values that are less
-                                        than the threshold will be calculated as 0. Attributes that use “Exact Match”
-                                        will automatically have a threshold of 1 and cannot be adjusted.
+                                        than the threshold will be calculated as 0. <br /> <br />
+                                        Attributes that use “Exact Match” will automatically have a threshold of 1 and
+                                        cannot be adjusted.
                                     </span>
                                 }
                                 onBlur={() => {
