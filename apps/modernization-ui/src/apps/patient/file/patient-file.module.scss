@@ -1,6 +1,8 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
+
+
 .file {
     .header {
         background-color: colors.$base-white;
@@ -10,11 +12,55 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px colors.$base-lighter solid;
+            gap: 0.5rem;
+            padding: 1rem ;
 
-            padding: 1rem;
-            & > .actions {
+
+            .headerContentTitle {
+                margin: 0;
+                
+                .headerPatientName {
+                    color: var(--Base-Black, #000);
+                    /* H1 */
+                    font-family: "Public Sans";
+                    font-size: 2rem;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+
+                .headerPatientDetail {
+                    color: var(--Base-Black, #000);
+                    /* H2 */
+                    font-family: "Public Sans";
+                    font-size: 1.375rem;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                }
+
+                .headerPatientDivider {
+                    color: var(--Base-light, #A9AEB1);
+                    /* H2 */
+                    font-family: "Public Sans";
+                    font-size: 1.375rem;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                }
+
+            }
+
+            .actions {
                 display: flex;
+                align-items: center;
                 gap: 0.5rem;
+
+                .usa-button:disabled {
+                    color: #757575 !important;
+                    background: none !important;
+                    box-shadow: inset 0 0 0 2px #C9C9C9 !important;
+                }
             }
         }
     }
