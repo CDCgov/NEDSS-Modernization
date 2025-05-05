@@ -246,14 +246,15 @@ public class PatientProfileAddressSteps {
             .isInstanceOf(AccessDeniedException.class);
   }
 
-  @Given("the patient has a {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
+  @Given("the patient has a(n) {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
   public void the_patient_has_an_address_as_of_at(
       final String type,
       final String use,
       final String address,
       final String city,
       final String zip,
-      final LocalDate asOf) {
+      final LocalDate asOf
+  ) {
 
     PatientIdentifier identifier = activePatient.active();
 
@@ -267,6 +268,33 @@ public class PatientProfileAddressSteps {
         null,
         zip,
         asOf);
+
+  }
+
+  @Given("the patient has a(n) {addressType} - {addressUse} address at {string} {string} {state} {postalCode} as of {localDate}")
+  public void the_patient_has_an_address_as_of_at(
+      final String type,
+      final String use,
+      final String address,
+      final String city,
+      final String state,
+      final String zip,
+      final LocalDate asOf
+  ) {
+
+    PatientIdentifier identifier = activePatient.active();
+
+    mother.withAddress(
+        identifier,
+        type,
+        use,
+        address,
+        city,
+        null,
+        state,
+        zip,
+        asOf
+    );
 
   }
 

@@ -1,16 +1,43 @@
-import { Heading } from 'components/heading';
+import { ReactNode } from 'react';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import styles from './patient-file.module.scss';
 
+import { displayName } from 'name';
+import { NoData } from 'components/NoData';
+import { displayAgeAsOfToday, internalizeDate } from 'date';
+import { usePatientFile } from './patientData/usePatientFile';
+
 interface PatientFileHeaderProps {
     id: string;
+    headerActions: () => ReactNode;
 }
 
-export const PatientFileHeader = ({ id }: PatientFileHeaderProps) => {
+const RenderAge = (props: { birthday?: Date }) => {
+    const { birthday } = props;
+    const value = birthday && `${internalizeDate(birthday)} (${displayAgeAsOfToday(birthday)})`;
+    return value || <NoData />;
+};
+
+export const PatientFileHeader = ({ id, headerActions }: PatientFileHeaderProps) => {
+    const { summary } = usePatientFile(id);
+
     return (
         <header className={styles.header}>
             <div className={styles.headerContent}>
-                <Heading level={1}>Patient ID: {id}</Heading>
+                <h1 className={styles.headerContentTitle}>
+                    <span className={styles.headerPatientName}>
+                        {(summary?.legalName && displayName('fullLastFirst')(summary.legalName)) ?? '---'}
+                    </span>
+                    <span className={styles.headerPatientDivider}> | </span>
+                    <span className={styles.headerPatientDetail}>{summary?.gender || <NoData />}</span>
+                    <span className={styles.headerPatientDivider}> | </span>
+                    <span className={styles.headerPatientDetail}>
+                        <RenderAge birthday={summary?.birthday} />
+                    </span>
+                    <span className={styles.headerPatientDivider}> | </span>
+                    <span className={styles.headerPatientDetail}>Patient ID: {id}</span>
+                </h1>
+                <div className={styles.actions}>{headerActions()}</div>
             </div>
             <div className={styles.tabNavigation}>
                 <TabNavigation className="grid-row flex-align-center" newTab>
