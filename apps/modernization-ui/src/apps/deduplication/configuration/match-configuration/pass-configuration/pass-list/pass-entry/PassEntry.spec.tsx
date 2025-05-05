@@ -101,4 +101,16 @@ describe('PassEntry', () => {
 
         expect(editButton).not.toBeInTheDocument();
     });
+
+    it('should not trigger edit name when main pass button is clicked', async () => {
+        const { getByRole } = render(<Fixture />);
+        const user = userEvent.setup();
+
+        const mainButton = getByRole('button', { name: 'Select Pass name' });
+
+        await user.click(mainButton);
+
+        expect(selectPass).toHaveBeenCalledWith(pass);
+        expect(editName).not.toHaveBeenCalled();
+    });
 });

@@ -2,6 +2,12 @@
 @use 'styles/borders';
 
 .passEntry {
+    background: none;
+    border: none;
+    margin: 0;
+    text-align: left;
+    font: inherit;
+    color: inherit;
     display: flex;
     padding: 0.0625rem 0rem;
     align-items: center;
