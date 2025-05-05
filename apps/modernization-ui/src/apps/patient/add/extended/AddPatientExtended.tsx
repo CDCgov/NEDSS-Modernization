@@ -1,33 +1,34 @@
-import { useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Button } from 'components/button';
-import { Shown } from 'conditional-render';
-import { useFormNavigationBlock } from 'navigation';
-import { CreatedPatient } from 'apps/patient/add/api';
-import { DataEntryMenu } from 'apps/patient/add/DataEntryMenu';
+import { SkipLink } from 'SkipLink';
+import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
+import { NavigationGuard } from 'design-system/entry/navigation-guard';
+import { Button } from 'design-system/button';
 import { PatientCreatedPanel } from 'apps/patient/add/PatientCreatedPanel';
 import { usePatientDataEntryMethod } from 'apps/patient/add/usePatientDataEntryMethod';
-import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
+import { AddPatientLayout } from 'apps/patient/add/layout';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
-import { CancelAddPatientPanel, useShowCancelModal } from '../cancelAddPatientPanel';
 import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
-import { SkipLink } from 'SkipLink';
 
-import styles from './add-patient-extended.module.scss';
+const sections: NavSection[] = [
+    { id: 'administrative', label: 'Administrative' },
+    { id: 'names', label: 'Name' },
+    { id: 'addresses', label: 'Address' },
+    { id: 'phoneEmails', label: 'Phone & email' },
+    { id: 'identifications', label: 'Identification' },
+    { id: 'races', label: 'Race' },
+    { id: 'ethnicity', label: 'Ethnicity' },
+    { id: 'sexAndBirth', label: 'Sex & birth' },
+    { id: 'mortality', label: 'Mortality' },
+    { id: 'generalInformation', label: 'General patient information' }
+];
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient();
     const { initialize } = useAddPatientExtendedDefaults();
-    const { value: bypassBlocker } = useShowCancelModal();
     const { toBasic } = usePatientDataEntryMethod();
-
-    const created = useMemo<CreatedPatient | undefined>(
-        () => (interaction.status === 'created' ? interaction.created : undefined),
-        [interaction.status]
-    );
 
     const form = useForm<ExtendedNewPatientEntry>({
         defaultValues: initialize(),
@@ -43,58 +44,39 @@ export const AddPatientExtended = () => {
         toBasic();
     };
 
-    // Setup navigation blocking for back button
-    const blocker = useFormNavigationBlock({ activated: !bypassBlocker, form });
-
-    const handleModalConfirm = () => {
-        blocker.unblock();
-    };
-
-    const handleModalClose = blocker.reset;
-
-    // Reset the blocker after a successful submission
-    useEffect(() => {
-        if (interaction.status === 'created') {
-            blocker.allow();
-        }
-    }, [interaction.status]);
-
     return (
-        <AddExtendedPatientInteractionProvider interaction={interaction}>
+        <>
             <SkipLink id="administrative.asOf" />
-            <Shown when={interaction.status === 'created'}>
-                {created && <PatientCreatedPanel created={created} />}
-            </Shown>
-            <FormProvider {...form}>
-                <div className={styles.addPatientExtended}>
-                    <DataEntryMenu />
-                    <div className={styles.content}>
-                        <header>
-                            <h1>New patient - extended</h1>
-                            <div className={styles.buttonGroup}>
+            <AddExtendedPatientInteractionProvider interaction={interaction}>
+                {interaction.status === 'created' && <PatientCreatedPanel created={interaction.created} />}
+                <FormProvider {...form}>
+                    <AddPatientLayout
+                        title="New patient - extended"
+                        sections={sections}
+                        actions={() => (
+                            <>
                                 <Button onClick={handleCancel} outline>
                                     Cancel
                                 </Button>
                                 <Button onClick={handleSave} disabled={working}>
                                     Save
                                 </Button>
-                            </div>
-                        </header>
-                        <main>
-                            <AddPatientExtendedForm
-                                validationErrors={
-                                    interaction.status === 'invalid' ? interaction.validationErrors : undefined
-                                }
-                                setSubFormState={interaction.setSubFormState}
-                            />
-                            <AddPatientExtendedInPageNav />
-                        </main>
-                    </div>
-                    <Shown when={blocker.blocked}>
-                        <CancelAddPatientPanel onConfirm={handleModalConfirm} onClose={handleModalClose} />
-                    </Shown>
-                </div>
-            </FormProvider>
-        </AddExtendedPatientInteractionProvider>
+                            </>
+                        )}>
+                        <AddPatientExtendedForm
+                            validationErrors={
+                                interaction.status === 'invalid' ? interaction.validationErrors : undefined
+                            }
+                            setSubFormState={interaction.setSubFormState}
+                        />
+                    </AddPatientLayout>
+                </FormProvider>
+                <NavigationGuard
+                    id="patient.create.extended.cancel"
+                    form={form}
+                    activated={interaction.status !== 'created'}
+                />
+            </AddExtendedPatientInteractionProvider>
+        </>
     );
 };

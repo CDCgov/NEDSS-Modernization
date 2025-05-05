@@ -1,23 +1,47 @@
 @use 'styles/colors';
+@use 'styles/borders';
+
+$header-height: 4.75rem;
+$in-page-navigation-width: 12.1875rem;
 
 .layout {
-    main {
+    background-color: colors.$background;
+
+    .header {
+        display: flex;
+        height: $header-height;
+        width: 100%;
+        justify-content: space-between;
+        padding: 1rem;
+        align-items: center;
+        background-color: colors.$base-white;
+
+        @extend %thin-bottom;
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+    }
+
+    & > main {
+        height: calc(100vh - #{$header-height} - var(--nav-bar-height, 75px));
         display: flex;
         gap: 1rem;
-        height: 100%;
+
         padding: 1rem 1rem 0 1rem;
-        background-color: colors.$background;
         overflow-y: scroll;
 
         .content {
+            min-width: 36rem;
             width: 100%;
-            max-width: calc(100% - 12.1875rem - 1rem);
         }
 
-        aside {
+        & > aside {
             position: sticky;
             top: 0;
-            min-width: 12.1875rem;
+            min-width: $in-page-navigation-width;
+            max-width: $in-page-navigation-width;
         }
     }
 }

@@ -1,9 +1,14 @@
 @use 'styles/colors';
+@use 'styles/borders';
 
 .layout {
     display: flex;
-    height: calc(100vh - 75px);
+    height: calc(100% - 75px);
     background-color: colors.$base-white;
+
+    .menu {
+        @extend %thin-right;
+    }
 
     .content {
         width: 100%;
