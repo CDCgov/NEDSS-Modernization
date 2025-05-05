@@ -13,7 +13,7 @@ const NoPatientResults = () => {
                     <div className={styles.noResultsContent}>
                         <span className={styles.noResultsHeader}> No result found</span>
                         <span className={styles.noResultsSubHeading}>
-                            <Permitted include={[permissions.patient.add]} fallback="Try refining your search.">
+                            <Permitted permission={permissions.patient.add} fallback="Try refining your search.">
                                 Try refining your search, or{' '}
                                 <a className={styles.link} onClick={add}>
                                     add a new patient.

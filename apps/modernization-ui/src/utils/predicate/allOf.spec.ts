@@ -1,10 +1,10 @@
 import { allOf } from './allOf';
 
 describe('allOf', () => {
-    it('should return true no predicates are given', () => {
+    it('should return true when no predicates are given', () => {
         const actual = allOf()(3);
 
-        expect(actual).toBe(true);
+        expect(actual).toBe(false);
     });
 
     it('should return true if all predicates pass', () => {

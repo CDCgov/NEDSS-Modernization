@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useUser } from 'user';
 import { Predicate } from 'utils';
+import { permits } from './permits';
 
 type Interaction = {
     permissions: string[];
@@ -13,11 +14,7 @@ const usePermissions = (): Interaction => {
     } = useUser();
 
     const permissions = useMemo(() => user?.permissions ?? [], [user?.identifier]);
-    const allows = useCallback(
-        (permission: string) =>
-            permissions.find((granted) => granted.toUpperCase() == permission.toUpperCase()) !== undefined,
-        [user?.identifier]
-    );
+    const allows = useCallback((permission: string) => permits(permission)(permissions), [user?.identifier]);
 
     return { permissions, allows };
 };
