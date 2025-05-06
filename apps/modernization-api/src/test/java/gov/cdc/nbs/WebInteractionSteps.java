@@ -40,6 +40,11 @@ public class WebInteractionSteps {
     this.activeAction.active().andExpect(status().isBadRequest());
   }
 
+  @Then("it was not found")
+  public void not_found() throws Exception {
+    this.activeAction.active().andExpect(status().isNotFound());
+  }
+
   @Then("I am redirected to the timeout page")
   public void i_am_redirected_to_the_timeout_page() throws Exception {
     this.activeAction.active()

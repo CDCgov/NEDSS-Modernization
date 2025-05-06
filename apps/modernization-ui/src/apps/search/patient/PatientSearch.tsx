@@ -58,7 +58,7 @@ const PatientSearch = () => {
                             )}
                             searchEnabled={interaction.enabled}
                             onSearch={interaction.search}
-                            noResults={() => <NoPatientResults sizing={sizing} />}
+                            noResults={() => <NoPatientResults />}
                             onClear={interaction.clear}
                         />
                     </FormProvider>

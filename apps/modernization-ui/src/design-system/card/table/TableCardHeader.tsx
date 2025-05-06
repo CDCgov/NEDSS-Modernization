@@ -1,9 +1,12 @@
 import { Heading, HeadingLevel } from 'components/heading';
 import { Button, ButtonProps } from 'design-system/button';
 import { Icon } from 'design-system/icon';
-import styles from './table-card-header.module.scss';
+import { OverlayPanel } from 'overlay';
+import { ColumnPreferencesPanel } from 'design-system/table/preferences';
+import { Shown } from 'conditional-render';
 import { Tag } from 'design-system/tag';
 import { Sizing } from 'design-system/field';
+import styles from './table-card-header.module.scss';
 
 export type TableCardAction = ButtonProps;
 
@@ -36,19 +39,27 @@ export const TableCardHeader = ({
                 </div>
                 {subtext && <div className={styles.subtext}>{subtext}</div>}
             </div>
-            {showSettings && (
-                <div className={styles.actions}>
-                    {actions?.map((action, index) => <Button key={index} {...action} />)}
-                    <Button
-                        aria-label="Settings"
-                        data-tooltip-position="top"
-                        data-tooltip-offset="center"
-                        secondary
-                        sizing="small"
-                        icon={<Icon name="settings" />}
+            <div className={styles.actions}>
+                {actions?.map((action, index) => <Button key={index} {...action} />)}
+                <Shown when={showSettings}>
+                    <OverlayPanel
+                        className={styles.overlay}
+                        position="right"
+                        toggle={({ toggle }) => (
+                            <Button
+                                aria-label="Settings"
+                                data-tooltip-position="top"
+                                data-tooltip-offset="center"
+                                secondary
+                                icon={<Icon name="settings" />}
+                                onClick={toggle}
+                                sizing="small"
+                            />
+                        )}
+                        render={(close) => <ColumnPreferencesPanel close={close} />}
                     />
-                </div>
-            )}
+                </Shown>
+            </div>
         </>
     );
 };

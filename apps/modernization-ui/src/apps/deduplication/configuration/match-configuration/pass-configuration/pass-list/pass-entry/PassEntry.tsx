@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Icon } from 'design-system/icon';
 import styles from './pass-entry.module.scss';
 import { Shown } from 'conditional-render';
+import React from 'react';
 
 type Props = {
     pass: Pass;
@@ -10,18 +11,30 @@ type Props = {
     onSelectPass: (pass: Pass) => void;
     onEditName: (pass: Pass) => void;
 };
+
 export const PassEntry = ({ pass, onSelectPass, onEditName, isSelected = false }: Props) => {
+    const handleEditClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onEditName(pass);
+    };
+
     return (
-        <div className={classNames(styles.passEntry, isSelected ? styles.selected : '')}>
+        <button
+            type="button"
+            className={classNames(styles.passEntry, isSelected && styles.selected)}
+            aria-label={`Select ${pass.name}`}
+            onClick={() => onSelectPass(pass)}>
             <div className={styles.border} />
             <div className={styles.content}>
                 <div className={styles.passNameRow}>
-                    <button className={styles.nameLink} onClick={() => onSelectPass(pass)}>
-                        {pass.name}
-                    </button>
+                    <span className={styles.nameLink}>{pass.name}</span>
                     <Shown when={pass.id !== undefined}>
-                        <button className={styles.editButton} onClick={() => onEditName(pass)}>
-                            <Icon name="edit" aria-label={`Edit ${pass.name}`} />
+                        <button
+                            type="button"
+                            className={styles.editButton}
+                            onClick={handleEditClick}
+                            aria-label={`Edit ${pass.name}`}>
+                            <Icon name="edit" />
                         </button>
                     </Shown>
                 </div>
@@ -30,6 +43,6 @@ export const PassEntry = ({ pass, onSelectPass, onEditName, isSelected = false }
                     {pass.active ? 'Active' : 'Inactive'}
                 </div>
             </div>
-        </div>
+        </button>
     );
 };

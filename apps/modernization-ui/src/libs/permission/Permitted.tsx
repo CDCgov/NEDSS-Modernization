@@ -1,29 +1,39 @@
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { Shown } from 'conditional-render';
 import { usePermissions } from './usePermissions';
+import { Predicate } from 'utils';
 
 type PermittedProps = {
-    /** @deprecated Use include or exclude properties */
-    permission?: string;
-    /** One or more permissions that MUST be present in the user's permission */
-    include?: string[];
-    /** One or more permissions that MUST NOT be present in the user's permissions */
-    exclude?: string[];
-    /** Whether all or any permissions are included or excluded */
-    mode?: 'all' | 'any';
+    /** The name of the permission required or a predicate that resolves the permission */
+    permission: string | Predicate<string[]>;
     /** The children to render if permissions are satisfied */
     children: ReactNode | ReactNode[];
     /** The fallback to render if permissions are not satisfied */
     fallback?: ReactNode | ReactNode[];
 };
 
-const Permitted = ({ permission, include, exclude, mode, children, fallback }: PermittedProps) => {
-    const { allows } = usePermissions();
-    const permissionList = permission ? [permission] : undefined;
-    include = include ?? permissionList;
-    const checkIncluded = !include || (mode === 'any' ? include.some(allows) : include.every(allows));
-    const checkExcluded = !exclude || (mode === 'any' ? !exclude.some(allows) : !exclude.every(allows));
-    const allowed = checkIncluded && checkExcluded;
+/**
+ * Renders the children of this component only if the permission is allowed.  If specified the fallback component is displayed
+ * when the permission fails.
+ *
+ * A permission of 'string' is equivalent to using {@link permits}.
+ *
+ *
+ * @param {PermittedProps} props
+ * @return {ReactNode}
+ */
+const Permitted = ({ permission, children, fallback }: PermittedProps) => {
+    const { allows, permissions } = usePermissions();
+
+    const allowed = useMemo(() => {
+        if (typeof permission === 'string') {
+            return allows(permission);
+        } else if (permission) {
+            return permission(permissions);
+        } else {
+            return false;
+        }
+    }, [permission, allows, ...permissions]);
 
     return (
         <Shown fallback={fallback} when={allowed}>

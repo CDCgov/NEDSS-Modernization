@@ -21,17 +21,17 @@ const PatientCreatedPanel = ({ created }: Props) => (
         onClose={() => {}}
         footer={() => (
             <>
-                <Permitted include={[permissions.morbidityReport.add]}>
+                <Permitted permission={permissions.morbidityReport.add}>
                     <ClassicButton outline url={`/nbs/api/profile/${created.id}/report/morbidity`}>
                         Add morbidity report
                     </ClassicButton>
                 </Permitted>
-                <Permitted include={[permissions.labReport.add]}>
+                <Permitted permission={permissions.labReport.add}>
                     <ClassicButton outline url={`/nbs/api/profile/${created.id}/report/lab`}>
                         Add lab report
                     </ClassicButton>
                 </Permitted>
-                <Permitted include={[permissions.investigation.add]}>
+                <Permitted permission={permissions.investigation.add}>
                     <ClassicButton outline url={`/nbs/api/profile/${created.id}/investigation`}>
                         Add investigation
                     </ClassicButton>

@@ -496,55 +496,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Create Extended",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"const patient = pm.response.json().id;",
-											"pm.collectionVariables.set(\"patient\", patient);"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disabledSystemHeaders": {
-									"accept": true,
-									"accept-encoding": true,
-									"connection": true,
-									"user-agent": true
-								}
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"administrative\": {\n        \"asOf\": \"{{localDate}}\",\n        \"comment\": \"testing extended patient data\"\n    }\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base}}/nbs/api/profile",
-									"host": [
-										"{{base}}"
-									],
-									"path": [
-										"nbs",
-										"api",
-										"profile"
-									]
-								}
-							},
-							"response": []
 						}
 					]
 				},
@@ -3959,6 +3910,106 @@
 									"key": "limit",
 									"value": "4"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patient",
+			"item": [
+				{
+					"name": "File",
+					"item": [
+						{
+							"name": "Demographics Summary",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"patients",
+										"{{patient}}",
+										"demographics"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base}}/nbs/api/patients/{{patient}}",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"nbs",
+								"api",
+								"patients",
+								"{{patient}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const patient = pm.response.json().id;",
+									"pm.collectionVariables.set(\"patient\", patient);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"administrative\": {\n        \"asOf\": \"{{localDate}}\",\n        \"comment\": \"testing extended patient data\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/nbs/api/profile",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"nbs",
+								"api",
+								"profile"
 							]
 						}
 					},

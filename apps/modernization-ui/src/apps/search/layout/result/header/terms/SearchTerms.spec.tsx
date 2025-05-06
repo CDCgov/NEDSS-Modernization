@@ -58,7 +58,7 @@ describe('SearchTerms', () => {
     it('calls without function when chip close button is clicked', async () => {
         const user = userEvent.setup();
         const { getAllByRole } = render(<SearchTerms total={2} terms={terms} />);
-        const closeButton = getAllByRole('img')[0];
+        const closeButton = getAllByRole('button')[0];
 
         await user.click(closeButton);
 
