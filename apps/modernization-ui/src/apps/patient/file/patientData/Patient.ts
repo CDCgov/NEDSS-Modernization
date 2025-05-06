@@ -3,6 +3,7 @@ export type Patient = {
     local: string;
     version: number;
     shortId: number;
+    /** Whether the patient is deletable: has no associations and is active */
     deletable: boolean;
     status: string;
 };

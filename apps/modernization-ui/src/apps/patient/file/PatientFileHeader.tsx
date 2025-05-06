@@ -5,7 +5,7 @@ import styles from './patient-file.module.scss';
 import { displayName } from 'name';
 import { NoData } from 'components/NoData';
 import { displayAgeAsOfToday, internalizeDate } from 'date';
-import { usePatientFile } from './patientData/usePatientFile';
+import { usePatientFileContext } from './PatientFileContext';
 
 interface PatientFileHeaderProps {
     id: string;
@@ -19,7 +19,7 @@ const RenderAge = (props: { birthday?: Date }) => {
 };
 
 export const PatientFileHeader = ({ id, headerActions }: PatientFileHeaderProps) => {
-    const { summary } = usePatientFile(id);
+    const { summary } = usePatientFileContext();
 
     return (
         <header className={styles.header}>

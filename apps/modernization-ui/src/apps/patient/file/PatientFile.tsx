@@ -4,10 +4,13 @@ import { Button } from 'components/button';
 import { Icon } from 'design-system/icon';
 
 import styles from './patient-file.module.scss';
+import { PatientFileProvider } from './PatientFileContext';
+import { DeleteAction } from './delete';
 
 const ViewActions = () => {
     return (
         <>
+            <DeleteAction buttonClassName={styles['usa-button']} />
             <Button
                 className={styles['usa-button']}
                 aria-label="Delete"
@@ -37,9 +40,11 @@ export const PatientFile = () => {
     const { id } = useParams();
 
     return (
-        <div className={styles.file}>
-            <PatientFileHeader id={id ?? ''} headerActions={ViewActions} />
-            <Outlet />
-        </div>
+        <PatientFileProvider id={id}>
+            <div className={styles.file}>
+                <PatientFileHeader id={id ?? ''} headerActions={ViewActions} />
+                <Outlet />
+            </div>
+        </PatientFileProvider>
     );
 };
