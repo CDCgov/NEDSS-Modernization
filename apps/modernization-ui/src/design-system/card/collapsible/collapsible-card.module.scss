@@ -26,11 +26,13 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        font-weight: 700;
+        font-size: 1.375rem;
         @extend %thin-bottom;
     }
 
     &.showControl {
-        header{
+        header {
             padding-right: 0.5rem;
         }
     }
@@ -46,7 +48,7 @@
         max-height: auto;
         overflow: hidden;
         @include expanded('max-height');
-    
+
         &.collapsed {
             @include collapsed('max-height');
             max-height: 0;
@@ -54,7 +56,6 @@
         }
     }
 }
-
 
 .control {
     display: flex;

@@ -1,0 +1,32 @@
+@use 'styles/colors';
+
+.content {
+    display: flex;
+    padding: 1rem;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .summaryItem {
+        display: flex;
+        flex-direction: column;
+        gap: 0.31rem;
+
+        .summaryLabel {
+            font-size: 0.8125rem;
+            color: colors.$base-dark;
+        }
+
+        .summaryContent {
+            font-size: 0.875rem;
+            color: colors.$base-darkest;
+        }
+    }
+
+    .group {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}

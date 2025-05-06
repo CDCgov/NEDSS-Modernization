@@ -21,4 +21,12 @@
     & > main {
         padding: 1rem;
     }
+    body {
+        padding: 1rem 1rem 2.5rem 1rem;
+        gap: 1rem;
+
+        .summaryContent {
+            padding: 1rem;
+        }
+    }
 }
