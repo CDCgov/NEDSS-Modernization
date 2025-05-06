@@ -42,7 +42,7 @@ const SearchResults = ({ children, total, view, terms, loading = false, sizing }
     }, [total]);
 
     return (
-        <div className={styles.results}>
+        <div className={`search-results-container ${styles.results}`}>
             <div ref={headerRef}>
                 <SearchResultsHeader sizing={sizing} view={view} total={total} terms={terms} />
             </div>
