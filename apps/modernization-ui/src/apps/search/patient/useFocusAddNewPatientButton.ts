@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 /**
- * This hook is going to handle the tab interaction for when we have patient results and want the user to be able to navigate 
+ * This hook is going to handle the tab interaction for when we have patient results and want the user to be able to navigate
  * using the tab keyboard to the "Add new patient" button instead of other elements in between.
  */
 
@@ -10,7 +10,7 @@ function useFocusAddNewPatientButton() {
             if (event.key === 'Tab' && !event.shiftKey) {
                 const resultsContainer = document.querySelector('.search-results-container');
                 const addButton = document.querySelector<HTMLButtonElement>('#add-new-patient-button');
-                
+
                 if (!resultsContainer || !addButton) return;
 
                 const focusableElement = Array.from(
