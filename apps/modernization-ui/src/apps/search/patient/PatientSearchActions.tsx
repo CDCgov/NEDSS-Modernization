@@ -15,7 +15,7 @@ const PatientSearchActions = ({ disabled }: Props) => {
     return (
         <Permitted permission={permissions.patient.add}>
             <Button
-            id="add-new-patient-button"
+                id="add-new-patient-button"
                 type="button"
                 onClick={add}
                 disabled={disabled}
