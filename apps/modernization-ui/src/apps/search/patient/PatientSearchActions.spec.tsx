@@ -2,14 +2,14 @@ import { permissions } from "libs/permission";
 import { useAddPatientFromSearch } from "./add"
 import { useFocusAddNewPatientButton } from "./useFocusAddNewPatientButton";
 import { PatientSearchActions } from "./PatientSearchActions";
-import { getByText, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
 
 jest.mock('./add/useAddPatientFromSearch', () => ({
     useAddPatientFromSearch: jest.fn()
 }));
 
-jest.mock('lib/permission', () => ({
+jest.mock('libs/permission', () => ({
     permissions: {
         patient: {
             add: 'patient:add'
