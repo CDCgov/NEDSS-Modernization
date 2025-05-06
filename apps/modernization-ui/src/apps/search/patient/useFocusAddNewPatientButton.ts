@@ -15,7 +15,7 @@ function useFocusAddNewPatientButton() {
 
                 const focusableElement = Array.from(
                     document.querySelectorAll<HTMLElement>(
-                        'a, button, input, textarea, select, svg, [tabidex]:not((tabindex="-1"])'
+                        'a, button, input, textarea, select, svg, [tabindex]:not([tabindex="-1"])'
                     )
                 ).filter((element) => {
                     const style = window.getComputedStyle(element);
