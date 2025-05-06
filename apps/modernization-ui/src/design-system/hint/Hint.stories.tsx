@@ -1,9 +1,37 @@
-import { Meta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Hint } from './Hint';
-import { ComponentProps } from 'react';
+import { ComponentProps, ReactNode } from 'react';
 
 const meta = {
     title: 'Design System/Hint',
+    component: Hint
+} satisfies Meta<typeof Hint>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+const Container = ({ children }: { children: ReactNode }) => (
+    <div
+        style={{
+            height: 150,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        }}>
+        {children}
+    </div>
+);
+
+// export const Default = (args: ComponentProps<typeof Hint>) => {
+//     return (
+//         <Container>
+//             <Hint {...args}>{args.children}</Hint>
+//         </Container>
+//     );
+// };
+
+export const Default: Story = {
     args: {
         id: 'storybook-hint',
         position: 'right',
@@ -11,21 +39,27 @@ const meta = {
         marginLeft: 0,
         children: 'This is some additional information that is available in a tooltip.'
     },
-    component: Hint
-} satisfies Meta<typeof Hint>;
+    render: (args: ComponentProps<typeof Hint>) => {
+        return (
+            <Container>
+                <Hint {...args}>{args.children}</Hint>
+            </Container>
+        );
+    }
+};
 
-export default meta;
+export const CustomTarget: Story = {
+    args: {
+        ...Default.args,
+        target: <span>Hover over me</span>
+    },
+    render: Default.render
+};
 
-export const Default = (args: ComponentProps<typeof Hint>) => {
-    return (
-        <div
-            style={{
-                height: 150,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
-            <Hint {...args}>{args.children}</Hint>
-        </div>
-    );
+export const PositionLeft: Story = {
+    args: {
+        ...Default.args,
+        position: 'left'
+    },
+    render: Default.render
 };
