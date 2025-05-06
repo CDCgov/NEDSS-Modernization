@@ -31,6 +31,7 @@ const Icon = ({ name, sizing, role = 'img', className, ...props }: IconProps) =>
 
 const resolveLocation = (name: Icons) => {
     switch (name) {
+        case 'drag':
         case 'table':
         case 'file':
         case 'file-pdf':
@@ -45,7 +46,6 @@ const resolveLocation = (name: Icons) => {
         case 'calendar':
         case 'down-arrow-blue':
         case 'down-arrow-white':
-        case 'drag':
         case 'expand':
         case 'expand-more':
         case 'group':
