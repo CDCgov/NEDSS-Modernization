@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from 'react-beautiful-dnd';
-import { Icon as TrussworksIcon } from '@trussworks/react-uswds';
 import { useColumnPreferences, ColumnPreference } from 'design-system/table/preferences';
 import { Checkbox } from 'design-system/checkbox';
+import { ActionIcon, Icon } from 'design-system/icon';
 import { Button } from 'components/button';
-import { Icon } from 'components/Icon/Icon';
+
 import styles from './column-preference-panel.module.scss';
 
 const swap =
@@ -63,7 +63,12 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
         <div className={styles.panel}>
             <header>
                 <h2>Columns</h2>
-                <TrussworksIcon.Close size={3} onClick={close} />
+                <ActionIcon
+                    name="close"
+                    className={styles.close}
+                    aria-label="close the column preferences"
+                    onAction={close}
+                />
             </header>
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="preferences">
