@@ -75,6 +75,7 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
                     onCancel={hide}
                     confirmText="Delete"
                     destructive
+                    forceAction
                     onConfirm={handleDeletePatient}>
                     You have indicated that you would like to delete this patient file. Select Delete to continue or
                     Cancel to return to the patient file.
