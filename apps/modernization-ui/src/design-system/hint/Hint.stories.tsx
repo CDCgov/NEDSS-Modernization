@@ -23,14 +23,6 @@ const Container = ({ children }: { children: ReactNode }) => (
     </div>
 );
 
-// export const Default = (args: ComponentProps<typeof Hint>) => {
-//     return (
-//         <Container>
-//             <Hint {...args}>{args.children}</Hint>
-//         </Container>
-//     );
-// };
-
 export const Default: Story = {
     args: {
         id: 'storybook-hint',

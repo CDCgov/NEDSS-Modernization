@@ -12,16 +12,6 @@ const ViewActions = () => {
         <>
             <DeleteAction buttonClassName={styles['usa-button']} />
             <Button
-                className={styles['usa-button']}
-                aria-label="Delete"
-                data-tooltip-position="top"
-                data-tooltip-offset="center"
-                icon={<Icon name="delete" />}
-                sizing={'medium'}
-                secondary
-                disabled
-            />
-            <Button
                 aria-label="Print"
                 data-tooltip-position="top"
                 data-tooltip-offset="center"

@@ -41,14 +41,6 @@ export const Hint = ({ id, children, target, marginTop = 0, marginLeft = 0, posi
 
     const offset = calcOffset();
 
-    // const offset = useMemo(() => {
-    //     const offsetHeight = targetRef.current?.clientHeight ?? DEFAULT_TOP;
-    //     const offsetWidth = targetRef.current?.clientWidth ?? LEFT_OFFSET;
-    //     const top = marginTop + offsetHeight;
-    //     const left = position === 'left' ? marginLeft - offsetWidth : marginLeft;
-    //     return { top, left };
-    // }, [marginLeft, marginTop, position]);
-
     return (
         <div className={styles.hint}>
             <div
