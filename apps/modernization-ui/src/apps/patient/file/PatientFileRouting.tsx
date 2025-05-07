@@ -1,7 +1,8 @@
-import { FeatureGuard } from 'feature';
-import { PatientFile } from './PatientFile';
-import { PageTitle } from 'page';
 import { Navigate } from 'react-router';
+import { FeatureGuard } from 'feature';
+import { PageTitle } from 'page';
+import { PatientFile } from './PatientFile';
+import { loader } from './loader';
 
 const routing = [
     {
@@ -13,6 +14,7 @@ const routing = [
                 </PageTitle>
             </FeatureGuard>
         ),
+        loader,
         children: [
             { path: '', index: true, element: <Navigate to="summary" /> },
             {

@@ -1,51 +1,39 @@
 import { ReactNode } from 'react';
-import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
-import styles from './patient-file.module.scss';
-
 import { displayName } from 'name';
+import { mapOr } from 'utils/mapping';
+import { displayAgeAsOfToday } from 'date';
 import { NoData } from 'components/NoData';
-import { displayAgeAsOfToday, internalizeDate } from 'date';
-import { usePatientFile } from './patientData/usePatientFile';
+import { Heading } from 'components/heading';
+import { Patient } from './patient';
 
-interface PatientFileHeaderProps {
-    id: string;
-    headerActions: () => ReactNode;
-}
+import styles from './patient-file-header.module.scss';
 
-const RenderAge = (props: { birthday?: Date }) => {
-    const { birthday } = props;
-    const value = birthday && `${internalizeDate(birthday)} (${displayAgeAsOfToday(birthday)})`;
-    return value || <NoData />;
+const maybeDisplayName = mapOr(displayName('fullLastFirst'), '---');
+const maybeDisplayAge = mapOr((birthday: string) => `${birthday} (${displayAgeAsOfToday(birthday)})`, undefined);
+
+type ValueProps = {
+    children?: ReactNode | undefined;
 };
 
-export const PatientFileHeader = ({ id, headerActions }: PatientFileHeaderProps) => {
-    const { summary } = usePatientFile(id);
+const Value = ({ children }: ValueProps) => {
+    return <span className={styles.value}>{children || <NoData display="dashes" />}</span>;
+};
 
+type PatientFileHeaderProps = {
+    patient: Patient;
+    actions: ReactNode;
+};
+
+export const PatientFileHeader = ({ patient, actions }: PatientFileHeaderProps) => {
     return (
         <header className={styles.header}>
-            <div className={styles.headerContent}>
-                <h1 className={styles.headerContentTitle}>
-                    <span className={styles.headerPatientName}>
-                        {(summary?.legalName && displayName('fullLastFirst')(summary.legalName)) ?? '---'}
-                    </span>
-                    <span className={styles.headerPatientDivider}> | </span>
-                    <span className={styles.headerPatientDetail}>{summary?.gender || <NoData />}</span>
-                    <span className={styles.headerPatientDivider}> | </span>
-                    <span className={styles.headerPatientDetail}>
-                        <RenderAge birthday={summary?.birthday} />
-                    </span>
-                    <span className={styles.headerPatientDivider}> | </span>
-                    <span className={styles.headerPatientDetail}>Patient ID: {id}</span>
-                </h1>
-                <div className={styles.actions}>{headerActions()}</div>
+            <div className={styles.title}>
+                <Heading level={1}>{maybeDisplayName(patient.name)}</Heading>
+                <Value>{patient.sex}</Value>
+                <Value>{maybeDisplayAge(patient.birthday)}</Value>
+                <Value>Patient ID: {patient.id}</Value>
             </div>
-            <div className={styles.tabNavigation}>
-                <TabNavigation className="grid-row flex-align-center" newTab>
-                    <TabNavigationEntry path={`/patient/${id}/summary`}>Summary</TabNavigationEntry>
-                    <TabNavigationEntry path={`/patient/${id}/events`}>Events</TabNavigationEntry>
-                    <TabNavigationEntry path={`/patient/${id}/demographics`}>Demographics</TabNavigationEntry>
-                </TabNavigation>
-            </div>
+            <div className={styles.actions}>{actions}</div>
         </header>
     );
 };
