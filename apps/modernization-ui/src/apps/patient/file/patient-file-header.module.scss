@@ -1,0 +1,44 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 1rem;
+
+    @extend %thin-bottom;
+
+    background-color: colors.$base-white;
+
+    .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .usa-button:disabled {
+            color: colors.$disabled-darker !important;
+            background: none !important;
+            box-shadow: inset 0 0 0 2px colors.$disabled !important;
+        }
+    }
+}
+
+.value {
+    font-size: 1.375rem;
+
+    &::before {
+        content: '|';
+
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        color: colors.$base-light;
+    }
+}
