@@ -7,7 +7,7 @@ type Props = {
     title?: string;
     children?: ReactNode;
     confirmText?: string;
-    confirmDestructive?: boolean;
+    destructive?: boolean;
     forceAction?: boolean;
     onConfirm: () => void;
     cancelText?: string;
@@ -18,8 +18,8 @@ const Confirmation = ({
     title = 'Confirmation',
     children,
     confirmText = 'Confirm',
-    confirmDestructive = false,
     forceAction,
+    destructive = false,
     onConfirm,
     cancelText = 'No, go back',
     onCancel
@@ -36,7 +36,7 @@ const Confirmation = ({
                     <Button onClick={close} outline data-close-modal>
                         {cancelText}
                     </Button>
-                    <Button onClick={onConfirm} destructive={confirmDestructive}>
+                    <Button onClick={onConfirm} destructive={destructive}>
                         {confirmText}
                     </Button>
                 </>
