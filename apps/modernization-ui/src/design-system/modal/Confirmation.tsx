@@ -1,11 +1,13 @@
 import { ReactNode } from 'react';
 import { Modal } from './Modal';
 import { Message } from 'design-system/message';
+import { Button } from 'design-system/button';
 
 type Props = {
     title?: string;
     children?: ReactNode;
     confirmText?: string;
+    confirmDestructive?: boolean;
     forceAction?: boolean;
     onConfirm: () => void;
     cancelText?: string;
@@ -16,6 +18,7 @@ const Confirmation = ({
     title = 'Confirmation',
     children,
     confirmText = 'Confirm',
+    confirmDestructive = false,
     forceAction,
     onConfirm,
     cancelText = 'No, go back',
@@ -30,12 +33,12 @@ const Confirmation = ({
             onClose={onCancel}
             footer={(close) => (
                 <>
-                    <button type="button" className="usa-button usa-button--outline" onClick={close} data-close-modal>
+                    <Button onClick={close} outline data-close-modal>
                         {cancelText}
-                    </button>
-                    <button type="button" className="usa-button usa-button" onClick={onConfirm}>
+                    </Button>
+                    <Button onClick={onConfirm} destructive={confirmDestructive}>
                         {confirmText}
-                    </button>
+                    </Button>
                 </>
             )}>
             <Message type="warning">{children}</Message>
