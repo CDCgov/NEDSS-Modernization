@@ -13,20 +13,21 @@ function useFocusAddNewPatientButton() {
 
                 if (!resultsContainer || !addButton) return;
 
-                const focusableElement = Array.from(
+                const focusableElements = Array.from(
                     document.querySelectorAll<HTMLElement>(
-                        'a, button, input, textarea, select, svg, [tabindex]:not([tabindex="-1"])'
+                        'a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
                     )
                 ).filter((element) => {
                     const style = window.getComputedStyle(element);
                     return style.display !== 'none' && style.visibility !== 'hidden';
                 });
-                const resultsElement = focusableElement.filter((element) => resultsContainer.contains(element));
 
-                if (resultsElement.includes(document.activeElement as HTMLElement)) {
-                    const activeElementIndex = resultsElement.indexOf(document.activeElement as HTMLElement);
+                const resultsElements = focusableElements.filter((element) => resultsContainer.contains(element));
 
-                    if (activeElementIndex === resultsElement.length - 1) {
+                if (resultsElements.includes(document.activeElement as HTMLElement)) {
+                    const activeElementIndex = resultsElements.indexOf(document.activeElement as HTMLElement);
+
+                    if (activeElementIndex === resultsElements.length - 1) {
                         event.preventDefault();
                         addButton.focus();
                         return;
