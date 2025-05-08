@@ -2,6 +2,8 @@ import { CollapsibleCard } from 'design-system/card';
 
 import styles from './patient-file-summary.module.scss';
 import { Key, ReactNode } from 'react';
+import { usePatientFileContext } from '../PatientFileContext';
+import { PatientDemographicsSummary } from 'generated';
 
 type SummaryItemProps = {
     index?: Key;
@@ -16,10 +18,14 @@ const SummaryItem = ({ index, label, children }: SummaryItemProps) => (
     </div>
 );
 
-const SummaryContent = () => {
+type SummaryContentProps = {
+    summary?: PatientDemographicsSummary;
+};
+
+const SummaryContent = ({ summary }: SummaryContentProps) => {
     return (
         <div className={styles.content}>
-            <SummaryItem label="ADDRESS">1 test st</SummaryItem>
+            <SummaryItem label="ADDRESS">{summary?.address?.address2}</SummaryItem>
             <div className={styles.group}>
                 <SummaryItem label="PHONE">1112223333</SummaryItem>
                 <SummaryItem label="EMAIL">test@test.com</SummaryItem>
@@ -34,10 +40,12 @@ const SummaryContent = () => {
 };
 
 export const PatientFileSummary = () => {
+    const { summary } = usePatientFileContext();
+
     return (
         <body>
             <CollapsibleCard header={'Patient Summary'} id={'summary-card'}>
-                <SummaryContent />
+                <SummaryContent summary={summary} />
             </CollapsibleCard>
         </body>
     );

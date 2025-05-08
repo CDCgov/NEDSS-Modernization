@@ -1,9 +1,10 @@
-import { Outlet, useParams } from 'react-router';
+import { Outlet, useLoaderData, useParams } from 'react-router';
 import { PatientFileHeader } from './PatientFileHeader';
 import { Button } from 'components/button';
 import { Icon } from 'design-system/icon';
 
 import styles from './patient-file.module.scss';
+import { PatientFileProvider } from './PatientFileContext';
 
 const ViewActions = () => {
     return (
@@ -37,9 +38,11 @@ export const PatientFile = () => {
     const { id } = useParams();
 
     return (
-        <div className={styles.file}>
-            <PatientFileHeader id={id ?? ''} headerActions={ViewActions} />
-            <Outlet />
-        </div>
+        <PatientFileProvider id={id}>
+            <div className={styles.file}>
+                <PatientFileHeader id={id ?? ''} headerActions={ViewActions} />
+                <Outlet />
+            </div>
+        </PatientFileProvider>
     );
 };
