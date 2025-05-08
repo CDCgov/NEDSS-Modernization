@@ -12,7 +12,7 @@ class SQLPatientAssociationCountFinder implements PatientAssociationCountFinder 
 
   private static final String QUERY = """
       select
-          [revision].person_parent_uid,count(*)
+          count(*)
       from Person [revision]
       where   [revision].person_parent_uid = ?
           and [revision].record_status_cd <> 'LOG_DEL'
