@@ -9,7 +9,7 @@ import { Checkbox } from 'design-system/checkbox';
 type Paths = string | string[];
 
 type NavigationGuardProps<V extends FieldValues, C, D extends FieldValues | undefined = undefined> = {
-    /** unique identifier of the  */
+    /** unique identifier of the storage key used to persist this value */
     id: string;
     /** The form being guarded from navigation  */
     form: UseFormReturn<V, C, D>;
