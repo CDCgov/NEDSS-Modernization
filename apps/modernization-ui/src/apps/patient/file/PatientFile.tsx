@@ -9,7 +9,6 @@ import { PatientLoaderResult } from './loader';
 import { PatientFileLayout } from './PatientFileLayout';
 
 import styles from './patient-file.module.scss';
-import { PatientFileProvider } from './PatientFileContext';
 import { DeleteAction } from './delete';
 
 const PatientFile = () => {

@@ -2,30 +2,17 @@ import { ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { DeleteAction } from './DeleteAction';
-import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
-import { Patient } from '../patientData';
-import { PatientSummary } from 'generated/graphql/schema';
+import { Patient } from '../patient';
 import { Permitted } from 'libs/permission';
 import { useDeletePatientFile } from './useDeletePatientFile';
+import { usePatient } from '../usePatient';
 
-const mockPatient: Patient = {
-    id: '10056284',
+const mockPatient: Partial<Patient> = {
+    id: 10056284,
     local: 'PSN10091000GA01',
-    shortId: 91000,
-    version: 10,
-    deletable: true,
+    patientId: '91000',
+    deletability: 'Deletable',
     status: 'ACTIVE'
-};
-
-const mockSummary: Partial<PatientSummary> = {
-    legalName: {
-        first: 'John',
-        middle: null,
-        last: 'Deletable'
-    },
-    birthday: null,
-    age: null,
-    gender: 'Female'
 };
 
 const mockShowSuccess = jest.fn();
@@ -49,12 +36,8 @@ jest.mock('./useDeletePatientFile', () => ({
     useDeletePatientFile: jest.fn()
 }));
 
-jest.mock('../PatientFileContext', () => ({
-    usePatientFileContext: () => ({
-        patient: mockPatient,
-        summary: mockSummary,
-        changed: jest.fn()
-    })
+jest.mock('../usePatient', () => ({
+    usePatient: jest.fn(() => mockPatient)
 }));
 
 jest.mock('libs/permission', () => ({
@@ -66,24 +49,16 @@ jest.mock('libs/permission', () => ({
     }
 }));
 
-jest.mock('./resolveDeletability', () => ({
-    resolveDeletability: jest.fn(),
-    DeletabilityResult: {
-        Deletable: 'Deletable',
-        Has_Associations: 'Has_Associations',
-        Is_Inactive: 'Is_Inactive'
-    }
-}));
-
 describe('DeleteAction', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        (usePatient as jest.Mock).mockReturnValue(mockPatient);
         (Permitted as jest.Mock).mockImplementation(({ children }: { children: ReactNode }) => <>{children}</>);
     });
 
     it('should handle the deletion flow', async () => {
         const user = userEvent.setup();
-        (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
+        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
         const { getByRole, getByText } = render(<DeleteAction />);
 
         const deleteButton = getByRole('button');
@@ -102,7 +77,11 @@ describe('DeleteAction', () => {
 
     it('should show warning if patient has associations', async () => {
         const user = userEvent.setup();
-        (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Has_Associations);
+        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Has_Associations);
+        (usePatient as jest.Mock).mockReturnValue({
+            ...mockPatient,
+            deletability: 'Has_Associations'
+        });
         const { getByRole, getByText } = render(<DeleteAction />);
 
         const deleteButton = getByRole('button');
@@ -117,7 +96,11 @@ describe('DeleteAction', () => {
 
     it('should show warning if patient is inactive', async () => {
         const user = userEvent.setup();
-        (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Is_Inactive);
+        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Is_Inactive);
+        (usePatient as jest.Mock).mockReturnValue({
+            ...mockPatient,
+            deletability: 'Is_Inactive'
+        });
         const { getByRole, getByText } = render(<DeleteAction />);
 
         const deleteButton = getByRole('button');
@@ -130,7 +113,7 @@ describe('DeleteAction', () => {
         const mockDeletePatient = jest.fn(() => Promise.resolve({ success: true }));
         (useDeletePatientFile as jest.Mock).mockReturnValue(mockDeletePatient);
         const user = userEvent.setup();
-        (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
+        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
         const { getByRole, getByText } = render(<DeleteAction />);
 
         const deleteButton = getByRole('button');
@@ -141,12 +124,12 @@ describe('DeleteAction', () => {
         const confirmButton = getByText('Delete', { selector: 'button' });
 
         await user.click(confirmButton);
-        expect(mockDeletePatient).toHaveBeenCalledWith(parseInt(mockPatient.id));
+        expect(mockDeletePatient).toHaveBeenCalledWith(mockPatient.id);
     });
 
     it('should show success message when patient successfully deleted', async () => {
         (useDeletePatientFile as jest.Mock).mockImplementation((onComplete) => () => onComplete({ success: true }));
-        (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
+        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
         const user = userEvent.setup();
         const { getByRole, getByText } = render(<DeleteAction />);
 
@@ -164,7 +147,7 @@ describe('DeleteAction', () => {
         (useDeletePatientFile as jest.Mock).mockImplementation(
             (onComplete) => () => onComplete({ success: false, message: 'Error in delete' })
         );
-        (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
+        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
         const user = userEvent.setup();
         const { getByRole, getByText } = render(<DeleteAction />);
 

@@ -7,7 +7,7 @@ type Patient = {
     patientId: string;
     local: string;
     status: string;
-    deletablity: Deletability;
+    deletability: Deletability;
     sex: string;
     birthday?: string;
     name?: DisplayableName;

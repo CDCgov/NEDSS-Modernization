@@ -1,4 +1,4 @@
-import { ComponentType, ReactNode, useMemo } from 'react';
+import { ComponentType, ReactNode } from 'react';
 import { useAlert } from 'alert';
 import { Button } from 'design-system/button';
 import { Hint } from 'design-system/hint';
@@ -6,12 +6,11 @@ import { Icon } from 'design-system/icon';
 import { Confirmation } from 'design-system/modal';
 
 import { useConditionalRender } from 'conditional-render';
-import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
-
 import { useSearchNavigation } from 'apps/search';
 import { DeletePatientFileResponse, useDeletePatientFile } from './useDeletePatientFile';
-import { usePatientFileContext } from '../PatientFileContext';
 import { Permitted, permissions } from 'libs/permission';
+import { usePatient } from '../usePatient';
+import { Deletability } from '../patient';
 
 type DeleteActionProps = {
     buttonClassName?: string;
@@ -26,8 +25,8 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
     const { showSuccess, showError } = useAlert();
     const { go } = useSearchNavigation();
     const { show, hide, render } = useConditionalRender();
-    const { patient } = usePatientFileContext();
-    const deletability = useMemo(() => resolveDeletability(patient), [patient]);
+    const patient = usePatient();
+    const deletability = patient.deletability;
 
     const handleDeleteComplete = (response: DeletePatientFileResponse) => {
         if (response.success) {
@@ -41,15 +40,12 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
     const deletePatient = useDeletePatientFile(handleDeleteComplete);
 
     const handleDeletePatient = () => {
-        if (patient?.id) {
-            deletePatient(parseInt(patient?.id));
-        }
+        deletePatient(patient.id);
     };
 
     const HintableButton = withHintable(Button);
 
-    const showHint =
-        deletability === DeletabilityResult.Has_Associations || deletability === DeletabilityResult.Is_Inactive;
+    const showHint = deletability === 'Has_Associations' || deletability === 'Is_Inactive';
 
     return (
         <Permitted permission={permissions.patient.delete}>
@@ -66,7 +62,7 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
                 hintContent={<DeletabilityContent deletability={deletability} />}
                 secondary
                 destructive
-                disabled={!patient?.deletable}
+                disabled={deletability !== 'Deletable'}
             />
             {render(
                 <Confirmation
@@ -85,8 +81,8 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
     );
 };
 
-const DeletabilityContent = ({ deletability }: { deletability: DeletabilityResult }) =>
-    deletability === DeletabilityResult.Has_Associations ? (
+const DeletabilityContent = ({ deletability }: { deletability: Deletability }) =>
+    deletability === 'Has_Associations' ? (
         <div>
             The file cannot be deleted until all associated event records have been deleted. If you are unable to see
             the associated event records due to your user permission settings, please contact your system administrator.

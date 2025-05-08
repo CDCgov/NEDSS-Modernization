@@ -16,7 +16,7 @@ const asDeletability = (value: string): Deletability => {
 
 const loader = ({ params }: LoaderParams): Promise<PatientLoaderResult> =>
     PatientFileHeaderService.patientFileHeader({ patientId: Number(params.id) })
-        .then((patient) => ({ ...patient, deletablity: asDeletability(patient.deletablity) }))
+        .then((patient) => ({ ...patient, deletability: asDeletability(patient.deletablity) }) as Patient)
         .then((patient) => ({
             patient
         }));
