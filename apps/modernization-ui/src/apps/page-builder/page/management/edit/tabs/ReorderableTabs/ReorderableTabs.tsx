@@ -2,7 +2,7 @@ import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { PagesTab } from 'apps/page-builder/generated';
 import { deleteTab, updateTab } from 'apps/page-builder/services/tabsAPI';
 import { useState } from 'react';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { ManageTabsTile } from '../ManageTabsTile/ManageTabsTile';
 import styles from './reorderable-tabs.module.scss';
 

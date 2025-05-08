@@ -4,7 +4,7 @@ import { RefObject, useState } from 'react';
 import styles from './reorder-modal.module.scss';
 import { ReorderTab } from '../ReorderTab/ReorderTab';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { Spinner } from 'components/Spinner/Spinner';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { ModalToggleButton } from '@trussworks/react-uswds';

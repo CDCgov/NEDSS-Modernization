@@ -1,5 +1,5 @@
 import { PagesTab } from 'apps/page-builder/generated';
-import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
+import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
 import { Icon } from '@trussworks/react-uswds';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 import styles from './manageTabsTile.module.scss';

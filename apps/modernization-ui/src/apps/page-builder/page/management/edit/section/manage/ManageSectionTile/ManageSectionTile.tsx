@@ -1,5 +1,5 @@
 import { PagesSection } from 'apps/page-builder/generated';
-import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
+import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 import { Button, Icon } from '@trussworks/react-uswds';
 import styles from './manageSectionTile.module.scss';

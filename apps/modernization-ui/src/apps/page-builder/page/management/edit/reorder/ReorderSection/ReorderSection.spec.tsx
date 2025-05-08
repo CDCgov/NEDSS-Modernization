@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { ReorderSection } from './ReorderSection';
 import { PagesSection, PagesResponse } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 
 describe('when ReorderSection renders', () => {
     const content: PagesResponse = {

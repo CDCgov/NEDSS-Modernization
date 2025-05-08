@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { DragStart, DragUpdate, DraggableLocation, DropResult } from 'react-beautiful-dnd';
+import { DragStart, DragUpdate, DraggableLocation, DropResult } from '@hello-pangea/dnd';
 import { PagesResponse } from '../generated';
 import { reorderObjects } from '../services/reorderObjectsAPI';
 
