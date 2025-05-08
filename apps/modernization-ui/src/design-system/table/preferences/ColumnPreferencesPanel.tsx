@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from '@hello-pangea/dnd';
 import { Icon as TrussworksIcon } from '@trussworks/react-uswds';
-import { useColumnPreferences, ColumnPreference } from 'design-system/table/preferences';
+import { useColumnPreferences, ColumnPreference } from './useColumnPreferences';
 import { Checkbox } from 'design-system/checkbox';
 import { Button } from 'components/button';
 import { Icon } from 'components/Icon/Icon';
