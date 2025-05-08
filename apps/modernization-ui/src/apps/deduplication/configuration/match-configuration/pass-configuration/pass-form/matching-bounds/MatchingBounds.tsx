@@ -19,8 +19,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
     const { matchingCriteria } = useWatch<Pass>(form);
     const [disabled, setDisabled] = useState<boolean>(true);
     const [totalLogOdds, setTotalLogOdds] = useState<number | undefined>();
-    const [hasInteractedLower, setHasInteractedLower] = useState(false);
-    const [hasInteractedUpper, setHasInteractedUpper] = useState(false);
+    const hasMatchingCriteria = matchingCriteria && matchingCriteria?.length > 0;
 
     useEffect(() => {
         setDisabled(
@@ -41,7 +40,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
     }, [matchingCriteria, disabled]);
 
     useEffect(() => {
-        if (matchingCriteria && matchingCriteria.length > 0) {
+        if (hasMatchingCriteria) {
             form.trigger(['lowerBound', 'upperBound']);
         }
     }, [totalLogOdds, matchingCriteria]);
@@ -76,7 +75,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                             control={form.control}
                             name={'lowerBound'}
                             rules={{
-                                required: hasInteractedLower
+                                required: hasMatchingCriteria
                                     ? { value: true, message: 'Lower bound is required.' }
                                     : undefined,
                                 validate: validateLowerBound
@@ -93,7 +92,6 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                         </span>
                                     }
                                     onBlur={() => {
-                                        setHasInteractedLower(true);
                                         onBlur();
                                         if (form.getValues('upperBound') !== undefined) form.trigger('upperBound');
                                     }}
@@ -109,7 +107,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                             control={form.control}
                             name={'upperBound'}
                             rules={{
-                                required: hasInteractedUpper
+                                required: hasMatchingCriteria
                                     ? { value: true, message: 'Upper bound is required.' }
                                     : undefined,
                                 max: {
@@ -133,7 +131,6 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                         </span>
                                     }
                                     onBlur={() => {
-                                        setHasInteractedUpper(true);
                                         onBlur();
                                         form.trigger('lowerBound');
                                     }}
