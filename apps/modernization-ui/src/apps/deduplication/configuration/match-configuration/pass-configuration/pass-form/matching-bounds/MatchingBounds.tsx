@@ -19,6 +19,8 @@ export const MatchingBounds = ({ dataElements }: Props) => {
     const { matchingCriteria } = useWatch<Pass>(form);
     const [disabled, setDisabled] = useState<boolean>(true);
     const [totalLogOdds, setTotalLogOdds] = useState<number | undefined>();
+    const [hasInteractedLower, setHasInteractedLower] = useState(false);
+    const [hasInteractedUpper, setHasInteractedUpper] = useState(false);
 
     useEffect(() => {
         setDisabled(
@@ -39,11 +41,10 @@ export const MatchingBounds = ({ dataElements }: Props) => {
     }, [matchingCriteria, disabled]);
 
     useEffect(() => {
-        if (form.formState.dirtyFields.lowerBound || form.formState.dirtyFields.upperBound) {
-            form.trigger('lowerBound');
-            form.trigger('upperBound');
+        if (matchingCriteria && matchingCriteria.length > 0) {
+            form.trigger(['lowerBound', 'upperBound']);
         }
-    }, [totalLogOdds]);
+    }, [totalLogOdds, matchingCriteria]);
 
     const validateLowerBound = (value?: number): string | undefined => {
         if (value == undefined) {
@@ -75,7 +76,9 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                             control={form.control}
                             name={'lowerBound'}
                             rules={{
-                                required: { value: true, message: 'Lower bound is required.' },
+                                required: hasInteractedLower
+                                    ? { value: true, message: 'Lower bound is required.' }
+                                    : undefined,
                                 validate: validateLowerBound
                             }}
                             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
@@ -90,6 +93,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                         </span>
                                     }
                                     onBlur={() => {
+                                        setHasInteractedLower(true);
                                         onBlur();
                                         if (form.getValues('upperBound') !== undefined) form.trigger('upperBound');
                                     }}
@@ -105,7 +109,9 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                             control={form.control}
                             name={'upperBound'}
                             rules={{
-                                required: { value: true, message: 'Upper bound is required.' },
+                                required: hasInteractedUpper
+                                    ? { value: true, message: 'Upper bound is required.' }
+                                    : undefined,
                                 max: {
                                     value: totalLogOdds ?? 0,
                                     message: 'Cannot be greater than total log odds.'
@@ -127,6 +133,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                         </span>
                                     }
                                     onBlur={() => {
+                                        setHasInteractedUpper(true);
                                         onBlur();
                                         form.trigger('lowerBound');
                                     }}
