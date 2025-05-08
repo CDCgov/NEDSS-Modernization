@@ -74,13 +74,6 @@ export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }
         }
     };
 
-    const { trigger } = useFormContext();
-
-    useEffect(() => {
-        // When matchingCriteria changes, revalidate bounds
-        trigger(['lowerBound', 'upperBound']);
-    }, [matchingCriteria, trigger]);
-
     return (
         <div className={styles.passForm}>
             <Shown when={panelState.content === 'blocking'}>
