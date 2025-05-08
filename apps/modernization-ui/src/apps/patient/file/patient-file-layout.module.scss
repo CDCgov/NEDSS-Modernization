@@ -1,0 +1,11 @@
+@use 'styles/colors';
+
+.file {
+    & > main {
+        padding: 1rem;
+    }
+
+    nav {
+        background-color: colors.$base-white;
+    }
+}
