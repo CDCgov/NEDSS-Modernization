@@ -27,7 +27,7 @@ Feature: Patient Investigations
     And the patient is a subject of an investigation
     And the investigation was started on 04/05/1974
     And the investigation is for the Mumps condition
-    And the investigation is for ARBO within Gwinnett County
+    And the investigation is for STD within Gwinnett County
     When I view the open patient investigations
     Then investigations are returned
     Then the 1st investigation has a "status" of "Open"
