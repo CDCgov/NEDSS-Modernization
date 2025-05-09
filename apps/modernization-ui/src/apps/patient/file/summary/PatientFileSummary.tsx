@@ -9,6 +9,7 @@ import { displayAddress } from 'address/display';
 import { displayPhone } from '../phone/displayPhone';
 import { NoData } from 'components/NoData';
 import { displayIdentification } from '../identification/displayIdentification';
+import { ItemGroup } from 'design-system/item';
 
 type SummaryItemProps = {
     index?: Key;
@@ -33,17 +34,19 @@ const maybeRenderAddress = (address?: DisplayableAddress) => (
 
 const maybeRenderPhone = (phone?: DisplayablePhone) => <div className={styles.itemContent}>{displayPhone(phone)}</div>;
 
-const maybeRenderEmail = (email?: string) => <div className={styles.itemContent}>{email ? email : <NoData />}</div>;
-
-const maybeRenderIdentification = (identifications?: Array<DisplayableIdentification>) => (
+const maybeRenderEmail = (email?: string) => (
     <div className={styles.itemContent}>
-        {(identifications?.length ?? 0 > 0) ? displayIdentification(identifications) : <NoData />}
+        <ItemGroup>{email}</ItemGroup>
     </div>
 );
 
-const maybeRenderRace = (races?: Array<string>) => (
-    <>{(races?.length ?? 0 > 0) ? races?.map((race) => race).join(', ') : <NoData />}</>
+const maybeRenderIdentification = (identifications?: Array<DisplayableIdentification>) => (
+    <div className={styles.itemContent}>
+        {(identifications?.length ?? 0 > 0) ? displayIdentification(identifications) : <NoData display="dashes" />}
+    </div>
 );
+
+const maybeRenderRace = (races?: Array<string>) => <ItemGroup>{races?.map((race) => race).join(', ')}</ItemGroup>;
 
 const SummaryContent = ({ summary }: SummaryContentProps) => {
     return (
@@ -56,7 +59,9 @@ const SummaryContent = ({ summary }: SummaryContentProps) => {
             <SummaryItem label="IDENTIFICATION">{maybeRenderIdentification(summary?.identifications)}</SummaryItem>
             <div className={styles.group}>
                 <SummaryItem label="RACE">{maybeRenderRace(summary?.races)}</SummaryItem>
-                <SummaryItem label="ETHNICITY">{summary?.ethnicity ? summary.ethnicity : <NoData />}</SummaryItem>
+                <SummaryItem label="ETHNICITY">
+                    <ItemGroup>{summary?.ethnicity}</ItemGroup>
+                </SummaryItem>
             </div>
         </div>
     );
