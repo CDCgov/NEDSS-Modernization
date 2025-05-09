@@ -59,7 +59,7 @@ export const AddPatientBasic = () => {
     const working = !form.formState.isValid || !interaction.canSave || interaction.status !== 'waiting';
 
     useEffect(() => {
-        skipTo('administrative.asOf')
+        skipTo('administrative.asOf');
     }, []);
 
     return (
