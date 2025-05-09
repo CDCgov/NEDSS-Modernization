@@ -14,6 +14,7 @@ import { CancelAddPatientPanel, useShowCancelModal } from '../cancelAddPatientPa
 import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
+import { useSkipLink } from 'SkipLink/SkipLinkContext';
 
 import styles from './add-patient-extended.module.scss';
 
@@ -22,6 +23,7 @@ export const AddPatientExtended = () => {
     const { initialize } = useAddPatientExtendedDefaults();
     const { value: bypassBlocker } = useShowCancelModal();
     const { toBasic } = usePatientDataEntryMethod();
+    const { skipTo } = useSkipLink();
 
     const created = useMemo<CreatedPatient | undefined>(
         () => (interaction.status === 'created' ? interaction.created : undefined),
@@ -57,6 +59,10 @@ export const AddPatientExtended = () => {
             blocker.allow();
         }
     }, [interaction.status]);
+
+    useEffect(() => {
+        skipTo('administrative.asOf');
+    }, []);
 
     return (
         <AddExtendedPatientInteractionProvider interaction={interaction}>
