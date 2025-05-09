@@ -2,10 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type MostRecentLegalName = {
+export type DisplayableName = {
+    type?: string;
     first?: string;
-    last?: string;
     middle?: string;
+    last?: string;
     suffix?: string;
 };
 
