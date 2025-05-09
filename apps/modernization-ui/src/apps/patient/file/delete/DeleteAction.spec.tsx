@@ -10,7 +10,7 @@ import { usePatient } from '../usePatient';
 const mockPatient: Partial<Patient> = {
     id: 10056284,
     local: 'PSN10091000GA01',
-    patientId: '91000',
+    patientId: 91000,
     deletability: 'Deletable',
     status: 'ACTIVE'
 };
