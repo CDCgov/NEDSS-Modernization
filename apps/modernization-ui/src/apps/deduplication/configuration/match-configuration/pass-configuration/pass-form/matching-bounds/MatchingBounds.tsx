@@ -19,6 +19,8 @@ export const MatchingBounds = ({ dataElements }: Props) => {
     const { matchingCriteria } = useWatch<Pass>(form);
     const [disabled, setDisabled] = useState<boolean>(true);
     const [totalLogOdds, setTotalLogOdds] = useState<number | undefined>();
+    const hasMatchingCriteria = matchingCriteria && matchingCriteria?.length > 0;
+    const exists = (value: unknown): boolean => value !== undefined && value !== null && value !== '';
 
     useEffect(() => {
         setDisabled(
@@ -39,11 +41,10 @@ export const MatchingBounds = ({ dataElements }: Props) => {
     }, [matchingCriteria, disabled]);
 
     useEffect(() => {
-        if (form.formState.dirtyFields.lowerBound || form.formState.dirtyFields.upperBound) {
-            form.trigger('lowerBound');
-            form.trigger('upperBound');
+        if (hasMatchingCriteria && exists(lowerBound) && exists(upperBound)) {
+            form.trigger(['lowerBound', 'upperBound']);
         }
-    }, [totalLogOdds]);
+    }, [totalLogOdds, matchingCriteria, lowerBound, upperBound]);
 
     const validateLowerBound = (value?: number): string | undefined => {
         if (value == undefined) {

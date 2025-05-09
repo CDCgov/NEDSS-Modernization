@@ -110,4 +110,22 @@ describe('MatchingBounds', () => {
 
         expect(await findByText('Cannot be greater than total log odds.')).toBeInTheDocument();
     });
+
+    it('should not show validation error when only one bound is present', async () => {
+        const user = userEvent.setup();
+        const { getByLabelText, queryByText } = render(<Fixture />);
+
+        const lowerBoundInput = getByLabelText('Lower bound');
+
+        await user.type(lowerBoundInput, '2').then(() => user.tab());
+
+        // Should not trigger error about being greater than upper or total log odds
+        expect(queryByText('Cannot be greater than upper bound.')).not.toBeInTheDocument();
+        expect(queryByText('Cannot be greater than total log odds.')).not.toBeInTheDocument();
+    });
+
+    it('should calculate and display total log odds when matching criteria exists', () => {
+        const { getByText } = render(<Fixture />);
+        expect(getByText(/Total log odds:/)).toHaveTextContent('Total log odds: 3');
+    });
 });
