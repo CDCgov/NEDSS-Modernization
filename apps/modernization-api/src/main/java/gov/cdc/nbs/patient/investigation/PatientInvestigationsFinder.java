@@ -64,6 +64,7 @@ class PatientInvestigationsFinder {
                 left join [Person] [investigator] on
                         [investigator].[person_uid] = [investigated_by].subject_entity_uid
             where  [patient].person_parent_uid = ?
+            ORDER BY investigation_id DESC
               """;
   }
 
