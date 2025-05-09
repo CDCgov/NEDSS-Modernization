@@ -2,11 +2,14 @@ package gov.cdc.nbs.patient.investigation;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 class PatientInvestigationsFinder {
-  private String query(boolean isOpen) {
+  private String query(boolean isOpen, Collection<Long> oids) {
     return """
         select distinct
             [investigation].[local_id]                  as [investigation_id],
@@ -31,7 +34,10 @@ class PatientInvestigationsFinder {
                 join Public_health_case [investigation] on
                         [investigation].public_health_case_uid = [investigated].act_uid
                     and [investigation].record_status_cd <> 'LOG_DEL'
-                """ +
+                    and [investigation].program_jurisdiction_oid in (
+                    """ +
+        oids.stream().map(String::valueOf).collect(Collectors.joining(","))
+        + " ) " +
         (isOpen ? " and [investigation].investigation_status_cd='O'" : "")
         + """
 
@@ -104,16 +110,16 @@ class PatientInvestigationsFinder {
             INVESTIGATION_FORM_CODE_COLUMN));
   }
 
-  List<PatientInvestigation> findAll(final long personUid) {
+  List<PatientInvestigation> findAll(final long personUid, Collection<Long> oids) {
     return this.template.query(
-        query(false),
+        query(false, oids),
         statement -> statement.setLong(PERSON_UID_PARAMETER, personUid),
         this.mapper);
   }
 
-  List<PatientInvestigation> findOpen(final long personUid) {
+  List<PatientInvestigation> findOpen(final long personUid, Collection<Long> oids) {
     return this.template.query(
-        query(true),
+        query(true, oids),
         statement -> statement.setLong(PERSON_UID_PARAMETER, personUid),
         this.mapper);
   }
