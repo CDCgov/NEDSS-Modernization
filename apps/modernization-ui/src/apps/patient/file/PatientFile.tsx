@@ -23,6 +23,8 @@ const PatientFile = () => {
 export { PatientFile };
 
 const ViewActions = () => {
+    const print = () => {};
+
     return (
         <>
             <Button
@@ -41,6 +43,7 @@ const ViewActions = () => {
                 data-tooltip-offset="center"
                 icon={<Icon name="print" />}
                 sizing={'medium'}
+                onClick={() => print()}
                 secondary
             />
             <Button aria-label="Edit" icon={<Icon name="edit" />} secondary labelPosition="right" sizing={'medium'}>
