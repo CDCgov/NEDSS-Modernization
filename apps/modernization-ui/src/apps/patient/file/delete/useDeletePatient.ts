@@ -8,8 +8,8 @@ export type DeletePatientResponse = {
 
 /**
  * Hook to delete a patient.
- * @param onDeleteComplete Callback function to be called after deletion is complete
- * @return A function that takes a patient ID (long) and returns a promise with the deletion result
+ * @param {function} onDeleteComplete Callback function to be called after deletion is complete
+ * @return {function} A function that takes a patient ID (long) and returns a promise with the deletion result
  */
 export const useDeletePatient = (
     onDeleteComplete: (data: DeletePatientResponse) => void
