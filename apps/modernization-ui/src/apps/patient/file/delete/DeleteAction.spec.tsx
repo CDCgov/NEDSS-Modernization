@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { DeleteAction } from './DeleteAction';
 import { Patient } from '../patient';
 import { Permitted } from 'libs/permission';
-import { useDeletePatientFile } from './useDeletePatientFile';
+import { useDeletePatient } from './useDeletePatient';
 import { usePatient } from '../usePatient';
 
 const mockPatient: Partial<Patient> = {
@@ -32,8 +32,8 @@ jest.mock('apps/search', () => ({
     })
 }));
 
-jest.mock('./useDeletePatientFile', () => ({
-    useDeletePatientFile: jest.fn()
+jest.mock('./useDeletePatient', () => ({
+    useDeletePatient: jest.fn()
 }));
 
 jest.mock('../usePatient', () => ({
@@ -111,7 +111,7 @@ describe('DeleteAction', () => {
 
     it('should call deletePatient function when deleted confirmation button is clicked', async () => {
         const mockDeletePatient = jest.fn(() => Promise.resolve({ success: true }));
-        (useDeletePatientFile as jest.Mock).mockReturnValue(mockDeletePatient);
+        (useDeletePatient as jest.Mock).mockReturnValue(mockDeletePatient);
         const user = userEvent.setup();
         // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
         const { getByRole, getByText } = render(<DeleteAction />);
@@ -128,7 +128,7 @@ describe('DeleteAction', () => {
     });
 
     it('should show success message when patient successfully deleted', async () => {
-        (useDeletePatientFile as jest.Mock).mockImplementation((onComplete) => () => onComplete({ success: true }));
+        (useDeletePatient as jest.Mock).mockImplementation((onComplete) => () => onComplete({ success: true }));
         // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
         const user = userEvent.setup();
         const { getByRole, getByText } = render(<DeleteAction />);
@@ -144,7 +144,7 @@ describe('DeleteAction', () => {
     });
 
     it('should show error message when patient failed to delete', async () => {
-        (useDeletePatientFile as jest.Mock).mockImplementation(
+        (useDeletePatient as jest.Mock).mockImplementation(
             (onComplete) => () => onComplete({ success: false, message: 'Error in delete' })
         );
         // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);

@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react';
-import { useDeletePatientFile } from './useDeletePatientFile';
+import { useDeletePatient } from './useDeletePatient';
 import { PatientFileService } from 'generated';
 
 jest.mock('generated', () => ({
@@ -8,7 +8,7 @@ jest.mock('generated', () => ({
     }
 }));
 
-describe('useDeletePatientFile', () => {
+describe('useDeletePatient', () => {
     let onDeleteCompleteMock: jest.Mock;
 
     beforeEach(() => {
@@ -19,7 +19,7 @@ describe('useDeletePatientFile', () => {
     it('should call PatientFileService.delete and onDeleteComplete with success when deletion is successful', async () => {
         // useDeletePatientFile(onDeleteCompleteMock);
         (PatientFileService.delete as jest.Mock).mockResolvedValueOnce({});
-        const { result } = renderHook(() => useDeletePatientFile(onDeleteCompleteMock));
+        const { result } = renderHook(() => useDeletePatient(onDeleteCompleteMock));
         const deletePatientFile = result.current;
         await deletePatientFile(123);
 
@@ -29,7 +29,7 @@ describe('useDeletePatientFile', () => {
 
     it('should call onDeleteComplete with failure when deletion fails', async () => {
         (PatientFileService.delete as jest.Mock).mockRejectedValueOnce(new Error('Deletion failed'));
-        const { result } = renderHook(() => useDeletePatientFile(onDeleteCompleteMock));
+        const { result } = renderHook(() => useDeletePatient(onDeleteCompleteMock));
         const deletePatientFile = result.current;
 
         await deletePatientFile(123);
@@ -37,7 +37,7 @@ describe('useDeletePatientFile', () => {
         expect(PatientFileService.delete).toHaveBeenCalledWith({ patient: 123 });
         expect(onDeleteCompleteMock).toHaveBeenCalledWith({
             success: false,
-            message: 'Failed to delete patient file.'
+            message: 'Failed to delete patient.'
         });
     });
 });

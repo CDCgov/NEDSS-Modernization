@@ -1,39 +1,35 @@
 import { useCallback } from 'react';
 import { PatientFileService } from 'generated';
 
-export type DeletePatientFileResponse = {
+export type DeletePatientResponse = {
     success: boolean;
     message?: string;
 };
 
 /**
- * Hook to delete a patient file.
+ * Hook to delete a patient.
  * @param onDeleteComplete Callback function to be called after deletion is complete
  * @return A function that takes a patient ID (long) and returns a promise with the deletion result
  */
-export const useDeletePatientFile = (
-    onDeleteComplete: (data: DeletePatientFileResponse) => void
+export const useDeletePatient = (
+    onDeleteComplete: (data: DeletePatientResponse) => void
 ): ((patientId: number) => Promise<void>) => {
-    const deletePatientFile = useCallback(
+    const deletePatient = useCallback(
         async (patientId: number) => {
             try {
                 console.log('Deleting patient file with ID:', patientId);
-                // const response = {
-                //     success: true,
-                //     message: 'Patient file deleted successfully'
-                // };
                 await PatientFileService.delete({ patient: patientId });
                 onDeleteComplete({ success: true });
             } catch (error) {
-                console.error('Error deleting patient file:', error);
+                console.error('Error deleting patient:', error);
                 onDeleteComplete({
                     success: false,
-                    message: 'Failed to delete patient file.'
+                    message: 'Failed to delete patient.'
                 });
             }
         },
         [onDeleteComplete]
     );
 
-    return deletePatientFile;
+    return deletePatient;
 };

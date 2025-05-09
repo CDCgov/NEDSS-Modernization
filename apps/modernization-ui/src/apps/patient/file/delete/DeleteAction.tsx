@@ -7,7 +7,7 @@ import { Confirmation } from 'design-system/modal';
 
 import { useConditionalRender } from 'conditional-render';
 import { useSearchNavigation } from 'apps/search';
-import { DeletePatientFileResponse, useDeletePatientFile } from './useDeletePatientFile';
+import { DeletePatientResponse, useDeletePatient } from './useDeletePatient';
 import { Permitted, permissions } from 'libs/permission';
 import { usePatient } from '../usePatient';
 import { Deletability } from '../patient';
@@ -28,7 +28,7 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
     const patient = usePatient();
     const deletability = patient.deletability;
 
-    const handleDeleteComplete = (response: DeletePatientFileResponse) => {
+    const handleDeleteComplete = (response: DeletePatientResponse) => {
         if (response.success) {
             showSuccess(`Deleted patient: ${patient?.id}`);
             go();
@@ -37,7 +37,7 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
         }
     };
 
-    const deletePatient = useDeletePatientFile(handleDeleteComplete);
+    const deletePatient = useDeletePatient(handleDeleteComplete);
 
     const handleDeletePatient = () => {
         deletePatient(patient.id);
