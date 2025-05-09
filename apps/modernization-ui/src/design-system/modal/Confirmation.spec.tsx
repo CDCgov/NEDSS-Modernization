@@ -185,4 +185,17 @@ describe('when a confirmation is displayed', () => {
 
         expect(closeX).not.toBeInTheDocument();
     });
+
+    it('should render a confirmation with the confirm button as destructive', () => {
+        const { getByRole } = render(
+            <Confirmation onCancel={() => {}} onConfirm={() => {}} confirmText="Delete" destructive>
+                confirmation message
+            </Confirmation>
+        );
+
+        const confirmation = getByRole('button', { name: 'Delete' });
+
+        expect(confirmation).toBeInTheDocument();
+        expect(confirmation).toHaveClass('destructive');
+    });
 });
