@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.CoreMatchers.not;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.hamcrest.Matcher;
-import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
 import static org.hamcrest.Matchers.*;
 
 public class PatientInvestigationsSteps {
