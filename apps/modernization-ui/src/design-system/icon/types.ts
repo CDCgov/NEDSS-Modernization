@@ -1,6 +1,4 @@
-export type Icons = USWDSIcons | ExtendedIcons;
-
-export const ExtendedIconsArray = [
+const AvailableExtended = [
     'calendar',
     'down-arrow-blue',
     'down-arrow-white',
@@ -31,9 +29,9 @@ export const ExtendedIconsArray = [
     'sort_des_default'
 ] as const;
 
-export type ExtendedIcons = (typeof ExtendedIconsArray)[number];
+type ExtendedIcons = (typeof AvailableExtended)[number];
 
-export const USWDSIconsArray = [
+const AvailableUSWDS = [
     'accessibility_new',
     'accessible_forward',
     'account_balance',
@@ -280,6 +278,12 @@ export const USWDSIconsArray = [
     'zoom_out_map'
 ] as const;
 
-export type USWDSIcons = (typeof USWDSIconsArray)[number];
+type USWDSIcons = (typeof AvailableUSWDS)[number];
 
-export const IconsArray = [...USWDSIconsArray, ...ExtendedIconsArray] as const;
+type Icons = USWDSIcons | ExtendedIcons;
+
+export type { Icons };
+
+const available: readonly string[] = [...AvailableUSWDS, ...AvailableExtended].sort((a, b) => a.localeCompare(b));
+
+export { available };

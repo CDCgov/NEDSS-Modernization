@@ -24,7 +24,7 @@ export type TableCardProps<V> = {
 /**
  * Represents a specialized card component that contains a DataTable and settings to manage the column preferences.
  * @param {TableCardProps} props Component props
- * @return TableCard component
+ * @return {TableCard} component
  */
 export const TableCard = <V,>({
     id,
@@ -79,7 +79,7 @@ export const TableCard = <V,>({
  * Higher-order component to wrap a DataTable component with columns applied according to column preferences.
  * If there is no column preferences context, the original columns are used.
  * @param {FC} WrappedComponent DataTable component
- * @return A modified DataTable component with columns applied
+ * @return {FC<DataTableProps<V>>} A modified DataTable component with columns applied
  */
 const withColumnPreferencesDataTable = <V,>(WrappedComponent: ComponentType<DataTableProps<V>>) => {
     const EnhancedComponent: FC<DataTableProps<V>> = (props) => {

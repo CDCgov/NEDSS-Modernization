@@ -321,6 +321,7 @@ describe('When displaying Icons', () => {
     });
 
     it.each([
+        'drag',
         'table',
         'file',
         'file-pdf',
@@ -342,7 +343,6 @@ describe('When displaying Icons', () => {
         'calendar',
         'down-arrow-blue',
         'down-arrow-white',
-        'drag',
         'expand',
         'expand-more',
         'group',

@@ -44,4 +44,13 @@
   <symbol id="sort_des_default" viewBox="0 0 36 36">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M21.3164 28.6186L21.3164 11.3839L24.9331 15.0008L27.2831 12.6506L19.6498 5L11.9998 12.6506L14.3664 15.0008L17.9831 11.3839L17.9831 28.6186V35.0024H21.3164V28.6186Z" />
   </symbol>
+
+  <symbol id="drag" viewBox="0 0 21 20">
+    <path d="M14.7266 17C14.1744 17 13.7266 17.4477 13.7266 18C13.7266 18.5523 14.1744 19 14.7266 19C15.2788 19 15.7266 18.5523 15.7266 18C15.7266 17.4477 15.2788 17 14.7266 17Z" fill="#A9AEB1" stroke="#A9AEB1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14.7266 9C14.1744 9 13.7266 9.4478 13.7266 10C13.7266 10.5522 14.1744 11 14.7266 11C15.2788 11 15.7266 10.5522 15.7266 10C15.7266 9.4478 15.2788 9 14.7266 9Z" fill="#A9AEB1" stroke="#A9AEB1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14.7266 1C14.1744 1 13.7266 1.4478 13.7266 2C13.7266 2.5522 14.1744 3 14.7266 3C15.2788 3 15.7266 2.5522 15.7266 2C15.7266 1.4478 15.2788 1 14.7266 1Z" fill="#A9AEB1" stroke="#A9AEB1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.72658 17C6.17438 17 5.72658 17.4477 5.72658 18C5.72658 18.5523 6.17438 19 6.72658 19C7.27878 19 7.72658 18.5523 7.72658 18C7.72658 17.4477 7.27878 17 6.72658 17Z" fill="#A9AEB1" stroke="#A9AEB1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.72658 9C6.17438 9 5.72658 9.4478 5.72658 10C5.72658 10.5522 6.17438 11 6.72658 11C7.27878 11 7.72658 10.5522 7.72658 10C7.72658 9.4478 7.27878 9 6.72658 9Z" fill="#A9AEB1" stroke="#A9AEB1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.72658 1C6.17438 1 5.72658 1.4478 5.72658 2C5.72658 2.5522 6.17438 3 6.72658 3C7.27878 3 7.72658 2.5522 7.72658 2C7.72658 1.4478 7.27878 1 6.72658 1Z" fill="#A9AEB1" stroke="#A9AEB1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
 </svg>

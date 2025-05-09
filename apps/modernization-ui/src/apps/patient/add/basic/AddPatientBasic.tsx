@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useFormNavigationBlock } from 'navigation';
 import { Shown } from 'conditional-render';
 import { Button } from 'components/button';
+import { NavigationGuard } from 'design-system/entry/navigation-guard';
 import { sections } from './sections';
 import { AddPatientBasicForm } from './AddPatientBasicForm';
 import { BasicNewPatientEntry, initial } from './entry';
@@ -13,15 +13,14 @@ import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { usePatientDataEntryMethod } from '../usePatientDataEntryMethod';
 import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
 import { useSearchFromAddPatient } from '../useSearchFromAddPatient';
-import { useShowCancelModal, CancelAddPatientPanel } from '../cancelAddPatientPanel';
 
 import styles from './add-patient-basic.module.scss';
 
 export const AddPatientBasic = () => {
     const { defaults } = useAddPatientBasicDefaults();
-    const { value: bypassBlocker } = useShowCancelModal();
 
     const interaction = useAddBasicPatient();
+
     const form = useForm<BasicNewPatientEntry>({
         defaultValues: initial(),
         mode: 'onBlur'
@@ -33,7 +32,6 @@ export const AddPatientBasic = () => {
         }
     }, [defaults]);
     defaults;
-    const blocker = useFormNavigationBlock({ activated: !bypassBlocker, form, allowed: '/patient/add/extended' });
 
     const { toExtended } = usePatientDataEntryMethod();
 
@@ -57,19 +55,6 @@ export const AddPatientBasic = () => {
     };
 
     const working = !form.formState.isValid || !interaction.canSave || interaction.status !== 'waiting';
-
-    const handleModalConfirm = () => {
-        blocker.unblock();
-        backToSearch();
-    };
-
-    const handleModalClose = blocker.reset;
-
-    useEffect(() => {
-        if (interaction.status === 'created') {
-            blocker.allow();
-        }
-    }, [interaction.status]);
 
     return (
         <DataEntryLayout>
@@ -101,9 +86,12 @@ export const AddPatientBasic = () => {
                     <AddPatientBasicForm isValid={handleFormIsValid} />
                 </AddPatientLayout>
             </FormProvider>
-            <Shown when={blocker.blocked}>
-                <CancelAddPatientPanel onConfirm={handleModalConfirm} onClose={handleModalClose} />
-            </Shown>
+            <NavigationGuard
+                id="patient.create.basic.cancel"
+                form={form}
+                allowed={'/patient/add/extended'}
+                activated={interaction.status !== 'created'}
+            />
         </DataEntryLayout>
     );
 };

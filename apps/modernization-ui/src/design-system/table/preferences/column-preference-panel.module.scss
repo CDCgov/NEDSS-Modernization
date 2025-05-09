@@ -8,17 +8,22 @@
     header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
-        padding: 1.5rem;
+        padding: 1rem;
+        padding-right: 0.5rem;
 
         @extend %thin-bottom;
 
-        svg {
-            cursor: pointer;
-        }
-
         h2 {
             margin: 0;
+        }
+
+        .close {
+            width: 1.5rem;
+            height: 1.5rem;
+
+            cursor: pointer;
         }
     }
 
@@ -57,8 +62,6 @@
     .handle {
         cursor: pointer;
         display: flex;
-        width: 2.625rem;
-        height: 2.625rem;
         justify-content: center;
         align-items: center;
         flex-shrink: 0;
