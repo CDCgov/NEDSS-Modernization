@@ -73,13 +73,14 @@ public class PatientInvestigationsSteps {
 
   private Matcher<?> matchingValue(final String field, final String value) {
     return switch (field.toLowerCase()) {
-      case "status", "start date", "condition" -> equalTo(value);
+      case "status", "start date", "condition", "jurisdiction" -> equalTo(value);
       default -> hasItem(value);
     };
   }
 
   private JsonPathResultMatchers matchingPath(final String field, final String position) {
     return switch (field.toLowerCase()) {
+      case "jurisdiction" -> jsonPath("$[%s].jurisdiction", position);
       case "condition" -> jsonPath("$[%s].condition", position);
       case "status" -> jsonPath("$[%s].status", position);
       case "start date" -> jsonPath("$[%s].startedOn", position);
