@@ -48,6 +48,8 @@ const maybeRenderIdentification = (identifications?: Array<DisplayableIdentifica
 
 const maybeRenderRace = (races?: Array<string>) => <ItemGroup>{races?.map((race) => race).join(', ')}</ItemGroup>;
 
+const maybeRenderEthnicity = (ethnicity?: string) => <ItemGroup>{ethnicity}</ItemGroup>;
+
 const SummaryContent = ({ summary }: SummaryContentProps) => {
     return (
         <div className={styles.content}>
@@ -59,9 +61,7 @@ const SummaryContent = ({ summary }: SummaryContentProps) => {
             <SummaryItem label="IDENTIFICATION">{maybeRenderIdentification(summary?.identifications)}</SummaryItem>
             <div className={styles.group}>
                 <SummaryItem label="RACE">{maybeRenderRace(summary?.races)}</SummaryItem>
-                <SummaryItem label="ETHNICITY">
-                    <ItemGroup>{summary?.ethnicity}</ItemGroup>
-                </SummaryItem>
+                <SummaryItem label="ETHNICITY">{maybeRenderEthnicity(summary?.ethnicity)}</SummaryItem>
             </div>
         </div>
     );
