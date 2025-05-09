@@ -2,8 +2,13 @@ import { CollapsibleCard } from 'design-system/card';
 
 import styles from './patient-file-summary.module.scss';
 import { Key, ReactNode } from 'react';
-import { usePatientFileContext } from '../PatientFileContext';
-import { PatientDemographicsSummary } from 'generated';
+import { DisplayableAddress, DisplayableIdentification, DisplayablePhone, PatientDemographicsSummary } from 'generated';
+import { usePatient } from '../usePatient';
+import { usePatientFileSummary } from '../usePatientFileSummary';
+import { displayAddress } from 'address/display';
+import { displayPhone } from '../phone/displayPhone';
+import { NoData } from 'components/NoData';
+import { displayIdentification } from '../identification/displayIdentification';
 
 type SummaryItemProps = {
     index?: Key;
@@ -22,26 +27,45 @@ type SummaryContentProps = {
     summary?: PatientDemographicsSummary;
 };
 
+const maybeRenderAddress = (address?: DisplayableAddress) => (
+    <div className={styles.itemContent}>{displayAddress(address ?? {})}</div>
+);
+
+const maybeRenderPhone = (phone?: DisplayablePhone) => <div className={styles.itemContent}>{displayPhone(phone)}</div>;
+
+const maybeRenderEmail = (email?: string) => <div className={styles.itemContent}>{email ? email : <NoData />}</div>;
+
+const maybeRenderIdentification = (identifications?: Array<DisplayableIdentification>) => (
+    <div className={styles.itemContent}>
+        {(identifications?.length ?? 0 > 0) ? displayIdentification(identifications) : <NoData />}
+    </div>
+);
+
+const maybeRenderRace = (races?: Array<string>) => (
+    <>{(races?.length ?? 0 > 0) ? races?.map((race) => race).join(', ') : <NoData />}</>
+);
+
 const SummaryContent = ({ summary }: SummaryContentProps) => {
     return (
         <div className={styles.content}>
-            <SummaryItem label="ADDRESS">{summary?.address?.address2}</SummaryItem>
+            <SummaryItem label="ADDRESS">{maybeRenderAddress(summary?.address)}</SummaryItem>
             <div className={styles.group}>
-                <SummaryItem label="PHONE">1112223333</SummaryItem>
-                <SummaryItem label="EMAIL">test@test.com</SummaryItem>
+                <SummaryItem label="PHONE">{maybeRenderPhone(summary?.phone)}</SummaryItem>
+                <SummaryItem label="EMAIL">{maybeRenderEmail(summary?.email)}</SummaryItem>
             </div>
-            <SummaryItem label="IDENTIFICATION">PID</SummaryItem>
+            <SummaryItem label="IDENTIFICATION">{maybeRenderIdentification(summary?.identifications)}</SummaryItem>
             <div className={styles.group}>
-                <SummaryItem label="RACE">Asian, American</SummaryItem>
-                <SummaryItem label="ETHNICITY">Race</SummaryItem>
+                <SummaryItem label="RACE">{maybeRenderRace(summary?.races)}</SummaryItem>
+                <SummaryItem label="ETHNICITY">{summary?.ethnicity ? summary.ethnicity : <NoData />}</SummaryItem>
             </div>
         </div>
     );
 };
 
 export const PatientFileSummary = () => {
-    const { summary } = usePatientFileContext();
+    const { id } = usePatient();
 
+    const { summary } = usePatientFileSummary(id);
     return (
         <body>
             <CollapsibleCard header={'Patient Summary'} id={'summary-card'}>

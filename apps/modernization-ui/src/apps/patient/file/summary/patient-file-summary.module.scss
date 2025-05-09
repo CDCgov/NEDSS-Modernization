@@ -2,11 +2,11 @@
 
 .content {
     display: flex;
-    padding: 1rem;
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
+    padding: 1rem;
 
     .summaryItem {
         display: flex;
@@ -21,6 +21,9 @@
         .summaryContent {
             font-size: 0.875rem;
             color: colors.$base-darkest;
+            .itemContent {
+                line-height: 150%;
+            }
         }
     }
 

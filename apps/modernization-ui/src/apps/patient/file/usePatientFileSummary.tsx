@@ -3,12 +3,12 @@ import { useEffect, useReducer } from 'react';
 
 type State =
     | { status: 'idle' }
-    | { status: 'fetching'; id: string }
+    | { status: 'fetching'; id: number }
     | { status: 'complete'; summary: PatientDemographicsSummary }
     | { status: 'error'; error: string };
 
 type Action =
-    | { type: 'fetch'; id: string }
+    | { type: 'fetch'; id: number }
     | { type: 'complete'; summary: PatientDemographicsSummary }
     | { type: 'error'; error: string };
 
@@ -25,12 +25,12 @@ const reducer = (_state: State, action: Action): State => {
     }
 };
 
-export const usePatientFileSummary = (id: string) => {
+export const usePatientFileSummary = (id: number) => {
     const [state, dispatch] = useReducer(reducer, id ? { status: 'fetching', id } : { status: 'idle' });
 
     useEffect(() => {
         if (state.status === 'fetching') {
-            PatientFileService.summary({ patient: parseInt(id) })
+            PatientFileService.summary({ patient: id })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
                     return response
@@ -44,7 +44,7 @@ export const usePatientFileSummary = (id: string) => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'fetching',
         summary: state.status === 'complete' ? state.summary : undefined,
-        fetch: (id: string) => dispatch({ type: 'fetch', id })
+        fetch: (id: number) => dispatch({ type: 'fetch', id })
     };
 
     return patient;
