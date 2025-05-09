@@ -20,6 +20,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
     const [disabled, setDisabled] = useState<boolean>(true);
     const [totalLogOdds, setTotalLogOdds] = useState<number | undefined>();
     const hasMatchingCriteria = matchingCriteria && matchingCriteria?.length > 0;
+    const exists = (value: unknown): boolean => value !== undefined && value !== null && value !== '';
 
     useEffect(() => {
         setDisabled(
@@ -40,10 +41,10 @@ export const MatchingBounds = ({ dataElements }: Props) => {
     }, [matchingCriteria, disabled]);
 
     useEffect(() => {
-        if (hasMatchingCriteria) {
+        if (hasMatchingCriteria && exists(lowerBound) && exists(upperBound)) {
             form.trigger(['lowerBound', 'upperBound']);
         }
-    }, [totalLogOdds, matchingCriteria]);
+    }, [totalLogOdds, matchingCriteria, lowerBound, upperBound]);
 
     const validateLowerBound = (value?: number): string | undefined => {
         if (value == undefined) {
@@ -75,9 +76,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                             control={form.control}
                             name={'lowerBound'}
                             rules={{
-                                required: hasMatchingCriteria
-                                    ? { value: true, message: 'Lower bound is required.' }
-                                    : undefined,
+                                required: { value: true, message: 'Lower bound is required.' },
                                 validate: validateLowerBound
                             }}
                             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
@@ -107,9 +106,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                             control={form.control}
                             name={'upperBound'}
                             rules={{
-                                required: hasMatchingCriteria
-                                    ? { value: true, message: 'Upper bound is required.' }
-                                    : undefined,
+                                required: { value: true, message: 'Upper bound is required.' },
                                 max: {
                                     value: totalLogOdds ?? 0,
                                     message: 'Cannot be greater than total log odds.'
