@@ -1,5 +1,4 @@
 import { CollapsibleCard } from 'design-system/card';
-
 import styles from './patient-file-summary.module.scss';
 import { Key, ReactNode } from 'react';
 import { DisplayableAddress, DisplayableIdentification, DisplayablePhone, PatientDemographicsSummary } from 'generated';
