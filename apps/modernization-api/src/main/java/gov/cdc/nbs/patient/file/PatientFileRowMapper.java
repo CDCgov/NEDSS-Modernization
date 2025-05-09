@@ -10,12 +10,12 @@ import java.time.LocalDate;
 class PatientFileRowMapper implements RowMapper<PatientFile> {
 
   record Columns(int id, int patientId, int local, int status, int sex, int birthday, int deceasedOn) {
+    Columns() {
+      this(1, 2, 3, 4, 5, 6, 7);
+    }
   }
 
-
-
   private final Columns columns;
-
 
   PatientFileRowMapper(final Columns columns) {
 

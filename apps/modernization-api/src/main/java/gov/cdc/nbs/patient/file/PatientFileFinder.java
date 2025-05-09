@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.file;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
@@ -55,12 +54,10 @@ public class PatientFileFinder {
   private final JdbcClient client;
   private final RowMapper<PatientFile> mapper;
 
-  PatientFileFinder(final JdbcTemplate template, final JdbcClient client) {
+  PatientFileFinder(final JdbcClient client) {
     this.client = client;
     this.mapper = new PatientFileRowMapper(
-        new PatientFileRowMapper.Columns(
-            1, 2, 3, 4, 5, 6, 7
-        )
+        new PatientFileRowMapper.Columns()
     );
   }
 
