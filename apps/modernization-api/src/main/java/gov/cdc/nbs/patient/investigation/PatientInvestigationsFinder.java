@@ -108,14 +108,14 @@ class PatientInvestigationsFinder {
     return this.template.query(
         query(false),
         statement -> statement.setLong(PERSON_UID_PARAMETER, personUid),
-        this.mapper).stream().toList();
+        this.mapper);
   }
 
   List<PatientInvestigation> findOpen(final long personUid) {
     return this.template.query(
         query(true),
         statement -> statement.setLong(PERSON_UID_PARAMETER, personUid),
-        this.mapper).stream().toList();
+        this.mapper);
   }
 }
 
