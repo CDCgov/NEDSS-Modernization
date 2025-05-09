@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.file;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -50,13 +51,12 @@ public class PatientFileFinder {
           and [patient].person_uid = [patient].person_parent_uid
           and [patient].local_id = ?
       """;
-  private static final int LOCAL_PARAMETER = 1;
 
-  private final JdbcTemplate template;
+  private final JdbcClient client;
   private final RowMapper<PatientFile> mapper;
 
-  PatientFileFinder(final JdbcTemplate template) {
-    this.template = template;
+  PatientFileFinder(final JdbcTemplate template, final JdbcClient client) {
+    this.client = client;
     this.mapper = new PatientFileRowMapper(
         new PatientFileRowMapper.Columns(
             1, 2, 3, 4, 5, 6, 7
@@ -65,12 +65,6 @@ public class PatientFileFinder {
   }
 
   Optional<PatientFile> find(final String local) {
-
-    return this.template.query(
-            QUERY,
-            statement -> statement.setString(LOCAL_PARAMETER, local),
-            this.mapper
-        ).stream()
-        .findFirst();
+    return this.client.sql(QUERY).param(local).query(this.mapper).optional();
   }
 }

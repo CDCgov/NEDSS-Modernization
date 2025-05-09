@@ -1,11 +1,7 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.data.SingleResultSetExtractor;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 class SQLPatientAssociationCountFinder implements PatientAssociationCountFinder {
@@ -20,24 +16,19 @@ class SQLPatientAssociationCountFinder implements PatientAssociationCountFinder 
       group by
           [revision].person_parent_uid
       """;
-  private static final int PATIENT_PARAMETER = 1;
-  private static final int RESULT_INDEX = 1;
 
-  private final JdbcTemplate template;
-  private final ResultSetExtractor<Optional<Long>> extractor;
+  private final JdbcClient client;
 
-  SQLPatientAssociationCountFinder(final JdbcTemplate template) {
-    this.template = template;
-    this.extractor = new SingleResultSetExtractor<>((resultSet, r) -> resultSet.getLong(RESULT_INDEX));
+  SQLPatientAssociationCountFinder(final JdbcClient client) {
+    this.client = client;
   }
 
   @Override
   public long count(long patient) {
-    return template.query(
-            QUERY,
-            statement -> statement.setLong(PATIENT_PARAMETER, patient),
-            extractor
-        )
+    return client.sql(QUERY)
+        .param(patient)
+        .query(Long.class)
+        .optional()
         .orElse(0L);
   }
 }
