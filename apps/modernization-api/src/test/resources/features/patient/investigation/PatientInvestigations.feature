@@ -26,10 +26,12 @@ Feature: Patient Investigations
     And I can "VIEW" any "INVESTIGATION" for "STD" within all jurisdictions
     And the patient is a subject of an investigation
     And the investigation was started on 04/05/1974
+    And the investigation is for the Mumps condition
     When I view the open patient investigations
     Then investigations are returned
     Then the 1st investigation has a "status" of "Open"
     Then the 1st investigation has a "start date" of "1974-04-05"
+    Then the 1st investigation has a "condition" of "Mumps"
 
   Scenario: I cannot retrieve investigations for a patient not the subject of an investigation
     Given I can "Find" any "Patient" for "STD" within all jurisdictions
