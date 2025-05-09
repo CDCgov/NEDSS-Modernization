@@ -6,14 +6,14 @@ import type { InvestigatorName } from './InvestigatorName';
 export type PatientInvestigation = {
     investigationId: string;
     identifier: number;
-    startedOn: string;
+    startedOn?: string;
     condition: string;
     status: string;
-    caseStatus: string;
+    caseStatus?: string;
     jurisdiction: string;
-    coInfection: string;
-    notification: string;
-    investigatorName: InvestigatorName;
+    coInfection?: string;
+    notification?: string;
+    investigatorName?: InvestigatorName;
     comparable: boolean;
 };
 

@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type InvestigatorName = {
-    first: string;
-    last: string;
+    first?: string;
+    last?: string;
 };
 
