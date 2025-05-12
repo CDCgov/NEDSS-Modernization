@@ -53,8 +53,6 @@ const PatientSearch = () => {
                             onSearch={interaction.search}
                             noResults={() => <NoPatientResults />}
                             onClear={interaction.clear}
-                            resultsFocusTarget="resultsCount"
-                            criteriaFocusTarget="name.lastOperator"
                         />
                     </FormProvider>
                 </SearchInteractionProvider>

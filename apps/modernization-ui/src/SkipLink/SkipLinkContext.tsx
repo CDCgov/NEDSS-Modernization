@@ -2,7 +2,8 @@ import React, { createContext, useContext, useState } from 'react';
 
 interface SkipLinkContextType {
     skipTo: (id: string) => void;
-    currentFocusTarget: string;
+    remove: (id: string) => void;
+    currentFocusTargets: string[];
 }
 
 // Create the context
@@ -22,22 +23,29 @@ interface SkipLinkProviderProps {
 }
 
 export const SkipLinkProvider = ({ children }: SkipLinkProviderProps) => {
-    const [currentFocusTarget, setCurrentFocusTarget] = useState('');
+    const [currentFocusTargets, setCurrentFocusTargets] = useState<string[]>([]);
 
     const skipTo = (id: string) => {
-        setCurrentFocusTarget(id);
+        setCurrentFocusTargets((prev) => [...prev, id]);
     };
 
-    // Setting up the id to pass it to the anchor tag
+    const remove = (id: string) => {
+        setCurrentFocusTargets((prev) => prev.filter((target) => target !== id));
+    };
+
     const contextValue: SkipLinkContextType = {
         skipTo,
-        currentFocusTarget
+        remove,
+        currentFocusTargets
     };
+
+    const currentTarget =
+        currentFocusTargets.length > 0 ? currentFocusTargets[currentFocusTargets.length - 1] : undefined;
 
     return (
         <SkipLinkContext.Provider value={contextValue}>
-            {currentFocusTarget && (
-                <a href={`#${currentFocusTarget}`} className="usa-skipnav">
+            {currentTarget && (
+                <a href={`#${currentFocusTargets}`} className="usa-skipnav">
                     Skip to main content
                 </a>
             )}

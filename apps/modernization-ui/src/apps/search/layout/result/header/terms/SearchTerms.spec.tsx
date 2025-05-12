@@ -1,11 +1,16 @@
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SearchTerms } from './SearchTerms';
+import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { useSearchInteraction } from 'apps/search';
+import { focusedTarget } from 'utils/focusedTarget';
 import { Term } from 'apps/search/terms';
 
+const mockSkipTo = jest.fn();
+const mockFocusedTarget = jest.fn();
 const mockWithout = jest.fn();
 
+jest.mock('SkipLink/SkipLinkContext');
 jest.mock('apps/search');
 jest.mock('utils/focusedTarget');
 
@@ -16,6 +21,8 @@ const terms: Term[] = [
 
 describe('SearchTerms', () => {
     beforeEach(() => {
+        (useSkipLink as jest.Mock).mockReturnValue({ skipTo: mockSkipTo });
+        (focusedTarget as jest.Mock).mockImplementation(mockFocusedTarget);
         (useSearchInteraction as jest.Mock).mockReturnValue({ without: mockWithout });
     });
 
@@ -37,6 +44,15 @@ describe('SearchTerms', () => {
         const { getByText } = render(<SearchTerms total={2} terms={terms} />);
         expect(getByText('Term1: term1')).toBeInTheDocument();
         expect(getByText('Term2: term2')).toBeInTheDocument();
+    });
+
+    it('calls skipTo and focusedTarget on mount', async () => {
+        render(<SearchTerms total={2} terms={terms} />);
+
+        await waitFor(() => {
+            expect(mockSkipTo).toHaveBeenCalledWith('resultsCount');
+            expect(mockFocusedTarget).toHaveBeenCalledWith('resultsCount');
+        });
     });
 
     it('calls without function when chip close button is clicked', async () => {
