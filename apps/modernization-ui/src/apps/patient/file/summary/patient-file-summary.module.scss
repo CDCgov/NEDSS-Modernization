@@ -16,14 +16,13 @@
         .summaryLabel {
             font-size: 0.8125rem;
             color: colors.$base-dark;
+            text-transform: uppercase;
         }
 
         .summaryContent {
             font-size: 0.875rem;
             color: colors.$base-darkest;
-            .itemContent {
-                line-height: 150%;
-            }
+            line-height: 150%;
         }
     }
 
