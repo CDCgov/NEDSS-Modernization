@@ -16,6 +16,7 @@ import { Direction } from 'sorting';
 import { useComponentSizing } from 'design-system/sizing';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { useEffect } from 'react';
+import { focusedTarget } from 'utils';
 
 const PatientSearch = () => {
     const { skipTo } = useSkipLink();
@@ -28,9 +29,15 @@ const PatientSearch = () => {
     const interaction = usePatientSearch({ form });
     const sizing = useComponentSizing();
 
-    useEffect(() => {
+   useEffect(() => {
+    if (interaction.status === 'completed' || interaction.status === 'loading') {
+        skipTo('resultsCount');
+        focusedTarget('resultsCount');
+    } else {
         skipTo('name.lastOperator');
-    }, []);
+    }
+   }, [interaction.status]);
+
 
     return (
         <ColumnPreferenceProvider id="search.patients.preferences.columns" defaults={preferences}>
