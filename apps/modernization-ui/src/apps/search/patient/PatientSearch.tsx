@@ -29,15 +29,14 @@ const PatientSearch = () => {
     const interaction = usePatientSearch({ form });
     const sizing = useComponentSizing();
 
-   useEffect(() => {
-    if (interaction.status === 'completed' || interaction.status === 'loading') {
-        skipTo('resultsCount');
-        focusedTarget('resultsCount');
-    } else {
-        skipTo('name.lastOperator');
-    }
-   }, [interaction.status]);
-
+    useEffect(() => {
+        if (interaction.status === 'completed' || interaction.status === 'loading') {
+            skipTo('resultsCount');
+            focusedTarget('resultsCount');
+        } else {
+            skipTo('name.lastOperator');
+        }
+    }, [interaction.status]);
 
     return (
         <ColumnPreferenceProvider id="search.patients.preferences.columns" defaults={preferences}>
