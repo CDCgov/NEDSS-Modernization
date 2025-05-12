@@ -1,10 +1,11 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
     const [tabPressed, setTabPressed] = useState(false);
     const [prevPathname, setPrevPathname] = useState(location.pathname);
+    const focusRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -12,6 +13,10 @@ const ScrollToTop = ({ children }: { children: ReactNode }) => {
         if (location.pathname !== prevPathname) {
             setTabPressed(false);
             setPrevPathname(location.pathname);
+
+            if (focusRef.current) {
+                focusRef.current.focus();
+            }
         }
 
         const handleFirstTab = (event: KeyboardEvent) => {
@@ -37,7 +42,12 @@ const ScrollToTop = ({ children }: { children: ReactNode }) => {
         };
     }, [location.pathname, tabPressed, prevPathname]);
 
-    return <>{children}</>;
+    return (
+        <>
+            <div ref={focusRef} tabIndex={-1} style={{ outline: 'none' }} aria-hidden="true" />
+            {children}
+        </>
+    );
 };
 
 export { ScrollToTop };
