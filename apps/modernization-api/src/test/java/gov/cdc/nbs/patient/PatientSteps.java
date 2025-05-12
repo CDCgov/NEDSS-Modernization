@@ -53,6 +53,17 @@ public class PatientSteps {
 
   }
 
+  @Given("the patient died on {localDate}")
+  public void the_patient_died_on(final LocalDate value) {
+    this.patient.maybeActive().ifPresent(
+        found -> mother.withDeceasedOn(
+            found,
+            value
+        )
+    );
+
+  }
+
   @Given("the patient was born {int} years ago")
   public void the_patient_was_born_on(final int value) {
     this.patient.maybeActive().ifPresent(
