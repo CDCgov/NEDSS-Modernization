@@ -37,6 +37,7 @@ Feature: Summarizing the demographics of a patient
     Given the patient has the Email Address - Home number of "555-555-5555" as of 11/07/2023
     And the patient has the Fax - Home number of "555-444-4444" as of 11/07/2024
     And the patient has the Phone - Home number of "555-111-1111" as of 11/07/2024
+    And the patient has the Email Address - Home email address of "xyz@test.com" as of 11/07/2024
     When I view the demographics summary of the patient
     Then the demographics summary of the patient has a phone with a type of "Phone"
     And the demographics summary of the patient has a phone with a use of "Home"
