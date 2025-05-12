@@ -14,12 +14,8 @@ import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { usePatientSearch } from './usePatientSearch';
 import { Direction } from 'sorting';
 import { useComponentSizing } from 'design-system/sizing';
-import { useSkipLink } from 'SkipLink/SkipLinkContext';
-import { useEffect } from 'react';
-import { focusedTarget } from 'utils';
 
 const PatientSearch = () => {
-    const { skipTo } = useSkipLink();
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
         defaultValues,
         mode: 'onBlur',
@@ -28,15 +24,6 @@ const PatientSearch = () => {
 
     const interaction = usePatientSearch({ form });
     const sizing = useComponentSizing();
-
-    useEffect(() => {
-        if (interaction.status === 'completed') {
-            skipTo('resultsCount');
-            focusedTarget('resultsCount');
-        } else {
-            skipTo('name.lastOperator');
-        }
-    }, [interaction.status]);
 
     return (
         <ColumnPreferenceProvider id="search.patients.preferences.columns" defaults={preferences}>
@@ -66,6 +53,8 @@ const PatientSearch = () => {
                             onSearch={interaction.search}
                             noResults={() => <NoPatientResults />}
                             onClear={interaction.clear}
+                            resultsFocusTarget="resultsCount"
+                            criteriaFocusTarget="name.lastOperator"
                         />
                     </FormProvider>
                 </SearchInteractionProvider>

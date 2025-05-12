@@ -1,4 +1,4 @@
-import { ReactNode, KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { ReactNode, KeyboardEvent as ReactKeyboardEvent, useEffect } from 'react';
 import { Button } from 'components/button';
 import { Loading } from 'components/Spinner';
 import { Sizing } from 'design-system/field';
@@ -14,6 +14,8 @@ import { NoInput } from './result/NoInput';
 import { FeatureToggle } from 'feature';
 
 import styles from './search-layout.module.scss';
+import { focusedTarget } from 'utils';
+import { useSkipLink } from 'SkipLink/SkipLinkContext';
 
 type Renderer = () => ReactNode;
 
@@ -28,6 +30,8 @@ type Props = {
     searchEnabled?: boolean;
     onSearch: () => void;
     onClear: () => void;
+    resultsFocusTarget?: string;
+    criteriaFocusTarget?: string;
 };
 
 const SearchLayout = <R,>({
@@ -39,6 +43,8 @@ const SearchLayout = <R,>({
     onSearch,
     searchEnabled = true,
     onClear,
+    resultsFocusTarget,
+    criteriaFocusTarget,
     noInput = () => <NoInput />,
     noResults = () => <NoResults />
 }: Props) => {
@@ -46,6 +52,7 @@ const SearchLayout = <R,>({
         status,
         results: { total, terms }
     } = useSearchInteraction<R>();
+    const { skipTo } = useSkipLink();
 
     const { view } = useSearchResultDisplay();
 
@@ -54,6 +61,15 @@ const SearchLayout = <R,>({
             onSearch();
         }
     };
+
+    useEffect(() => {
+        if (status === 'completed') {
+            skipTo(resultsFocusTarget ?? '');
+            focusedTarget(resultsFocusTarget ?? '');
+        } else {
+            skipTo(criteriaFocusTarget ?? '');
+        }
+    }, [status]);
 
     return (
         <section className={styles.search} onKeyDown={handleKey}>
