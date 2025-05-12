@@ -48,6 +48,11 @@ public class PatientInvestigationsSteps {
     }
   }
 
+  @Then("the packet is blank")
+  public void the_packet_is_blank() throws Exception {
+    this.response.active().andExpect(content().string(""));
+  }
+
   @Then("an empty array is returned")
   public void an_empty_array_is_returned() throws Exception {
     this.response.active().andExpect(content().string("[]"));
