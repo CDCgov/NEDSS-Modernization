@@ -60,7 +60,6 @@ const ViewNavigation = (patient: Patient) => (
 );
 
 const openPrintableView = (patient: string | undefined) => () => {
-    console.log('work?');
     if (patient) {
         window.open(`/nbs/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${patient}`, '_blank', 'noreferrer');
     }
