@@ -10,6 +10,7 @@ type Patient = {
     deletability: Deletability;
     sex?: string;
     birthday?: string;
+    deceasedOn?: string;
     name?: DisplayableName;
 };
 
