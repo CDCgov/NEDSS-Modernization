@@ -6,7 +6,7 @@ import { parseISO, format } from 'date-fns';
 import { Button } from 'design-system/button';
 import { Pagination } from 'design-system/pagination';
 import { Column, DataTable } from 'design-system/table';
-import { Status, usePagination } from 'pagination';
+import { PaginationProvider, Status, usePagination } from 'pagination';
 import { useEffect } from 'react';
 import styles from './matches-requiring-review.module.scss';
 import { Shown } from 'conditional-render';
@@ -16,19 +16,25 @@ const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
 
 export const MatchesRequiringReviewTable = () => {
     return (
-        <SortingProvider>
-            <SortableMatchesRequiringReviewTable />
-        </SortingProvider>
+        <PaginationProvider>
+            <SortingProvider>
+                <SortableMatchesRequiringReviewTable />
+            </SortingProvider>
+        </PaginationProvider>
     );
 };
 
 const SortableMatchesRequiringReviewTable = () => {
     const { response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
     const { sorting } = useSorting();
-    const { page, ready, request, resize } = usePagination();
+    const { page, ready, request, resize, firstPage } = usePagination();
 
     useEffect(() => {
-        fetchMatchesRequiringReview(undefined, undefined, sorting);
+        if (page.current === 1) {
+            fetchMatchesRequiringReview(0, page.pageSize, sorting);
+        } else {
+            firstPage();
+        }
     }, [sorting]);
 
     useEffect(() => {
