@@ -46,6 +46,7 @@ Feature: Summarizing the demographics of a patient
   Scenario: I can view the patient's most recent email address in the summarized demographics
     Given the patient has the Email Address - Home email address of "other@ema.il" as of 11/07/2024
     And the patient has the Phone - Home email address of "abc@test.com" as of 11/07/2024
+    And the patient has the Phone - Home number of "555-111-1111" as of 11/07/2024
     And the patient has the Email Address - Home email address of "xyz@test.com" as of 11/07/2023
     When I view the demographics summary of the patient
     Then the demographics summary of the patient has an email address of "abc@test.com"
