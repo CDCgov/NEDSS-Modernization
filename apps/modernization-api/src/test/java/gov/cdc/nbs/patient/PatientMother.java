@@ -601,6 +601,25 @@ public class PatientMother {
     patient.setId(id);
   }
 
+  public void withDeceasedOn(final PatientIdentifier identifier, final LocalDate date) {
+    Person patient = managed(identifier);
+    patient.update(
+        new PatientCommand.UpdateMortality(
+            identifier.id(),
+            RandomUtil.dateInPast(),
+            Deceased.Y.value(),
+            date,
+            null,
+            null,
+            null,
+            null,
+            this.settings.createdBy(),
+            this.settings.createdOn()),
+        this.addressIdentifierGenerator
+    );
+  }
+
+
   public void withMortality(final PatientIdentifier identifier) {
 
     Person patient = managed(identifier);

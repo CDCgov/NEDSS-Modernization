@@ -1,23 +1,32 @@
-import { Outlet, useParams } from 'react-router';
-import { PatientFileHeader } from './PatientFileHeader';
+import { Suspense } from 'react';
+import { Await, Outlet, useLoaderData } from 'react-router';
 import { Button } from 'components/button';
+import { Spinner } from 'components/Spinner';
+import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { Icon } from 'design-system/icon';
+import { Patient } from './patient';
+import { PatientLoaderResult } from './loader';
+import { PatientFileLayout } from './PatientFileLayout';
 
 import styles from './patient-file.module.scss';
+import { DeleteAction } from './delete';
+
+const PatientFile = () => {
+    const data = useLoaderData<PatientLoaderResult>();
+
+    return (
+        <Suspense fallback={<Spinner />}>
+            <Await resolve={data.patient}>{WithMeta}</Await>
+        </Suspense>
+    );
+};
+
+export { PatientFile };
 
 const ViewActions = () => {
     return (
         <>
-            <Button
-                className={styles['usa-button']}
-                aria-label="Delete"
-                data-tooltip-position="top"
-                data-tooltip-offset="center"
-                icon={<Icon name="delete" />}
-                sizing={'medium'}
-                secondary
-                disabled
-            />
+            <DeleteAction buttonClassName={styles['usa-button']} />
             <Button
                 aria-label="Print"
                 data-tooltip-position="top"
@@ -33,13 +42,16 @@ const ViewActions = () => {
     );
 };
 
-export const PatientFile = () => {
-    const { id } = useParams();
+const ViewNavigation = (patient: Patient) => (
+    <TabNavigation newTab>
+        <TabNavigationEntry path={`/patient/${patient.patientId}/summary`}>Summary</TabNavigationEntry>
+        <TabNavigationEntry path={`/patient/${patient.patientId}/events`}>Events</TabNavigationEntry>
+        <TabNavigationEntry path={`/patient/${patient.patientId}/demographics`}>Demographics</TabNavigationEntry>
+    </TabNavigation>
+);
 
-    return (
-        <div className={styles.file}>
-            <PatientFileHeader id={id ?? ''} headerActions={ViewActions} />
-            <Outlet />
-        </div>
-    );
-};
+const WithMeta = (meta: Patient) => (
+    <PatientFileLayout patient={meta} actions={ViewActions} navigation={ViewNavigation}>
+        <Outlet />
+    </PatientFileLayout>
+);

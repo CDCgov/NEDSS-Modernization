@@ -48,6 +48,6 @@ describe('ItemGroup Component', () => {
 
     it('renders NoData element when children not defined', () => {
         const { getByText } = render(<ItemGroup type="other"></ItemGroup>);
-        expect(getByText('No Data')).toBeInTheDocument();
+        expect(getByText('---')).toBeInTheDocument();
     });
 });

@@ -11,13 +11,14 @@ type Props = {
     level?: HeadingLevel;
     className?: string;
     children: ReactNode;
+    collapsible?: boolean;
 };
-export const Card = ({ id, title, info, subtext, children, className, level = 2 }: Props) => {
+export const Card = ({ id, title, info, subtext, children, className, level = 2, collapsible = false }: Props) => {
     return (
         <CollapsibleCard
             id={id}
             className={className}
-            collapsible={false}
+            collapsible={collapsible}
             header={
                 <>
                     <div className={styles.titleBlock}>

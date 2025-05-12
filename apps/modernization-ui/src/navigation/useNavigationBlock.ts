@@ -58,13 +58,13 @@ const useNavigationBlock = ({
 
     const blockingFn = useCallback<BlockerFunction>(
         ({ currentLocation, nextLocation }) => {
-            return isEngaged
+            return activated && isEngaged
                 ? isNavigating(currentLocation, nextLocation) &&
                       !isAllowedPath(allowed, nextLocation.pathname) &&
                       isBlockedPath(nextLocation.pathname)
                 : false;
         },
-        [isEngaged]
+        [isEngaged, activated]
     );
 
     const { state: blockerState, proceed, reset: blockerReset, location } = useBlocker(blockingFn);

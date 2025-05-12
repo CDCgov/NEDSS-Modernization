@@ -98,19 +98,6 @@ table.usa-table {
     }
 }
 
-.usa-button:disabled {
-    color: colors.$disabled-darkest !important;
-    background-color: colors.$disabled !important;
-    cursor: default;
-}
-
-.usa-button--outline-disabled,
-.usa-button--outline:disabled {
-    background-color: transparent !important;
-    color: colors.$disabled !important;
-    border: 2px solid colors.$disabled !important;
-}
-
 .historyPagination {
     overflow: scroll;
 
@@ -127,13 +114,6 @@ table.usa-table {
         &:not([disabled]):focus {
             outline: none;
         }
-    }
-}
-
-.usa-button-group--segmented {
-    .usa-button--secondary:not(.usa-button--outline) {
-        background-color: colors.$primary-darker;
-        color: colors.$base-white;
     }
 }
 

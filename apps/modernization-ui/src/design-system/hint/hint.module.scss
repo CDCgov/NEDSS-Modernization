@@ -1,10 +1,15 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.infoIcon {
+.hint {
     display: flex;
     align-items: center;
     position: relative;
+
+    .target {
+        margin: 0;
+        padding: 0;
+    }
 
     .icon {
         color: colors.$primary;
