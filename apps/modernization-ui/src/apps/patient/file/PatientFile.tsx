@@ -9,6 +9,7 @@ import { PatientLoaderResult } from './loader';
 import { PatientFileLayout } from './PatientFileLayout';
 
 import styles from './patient-file.module.scss';
+import { DeleteAction } from './delete';
 
 const PatientFile = () => {
     const data = useLoaderData<PatientLoaderResult>();
@@ -25,16 +26,7 @@ export { PatientFile };
 const ViewActions = () => {
     return (
         <>
-            <Button
-                className={styles['icon-button']}
-                aria-label="Delete"
-                data-tooltip-position="top"
-                data-tooltip-offset="center"
-                icon={<Icon name="delete" />}
-                sizing={'medium'}
-                secondary
-                disabled
-            />
+            <DeleteAction buttonClassName={styles['usa-button']} />
             <Button
                 aria-label="Print"
                 data-tooltip-position="top"
