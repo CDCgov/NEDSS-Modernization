@@ -22,9 +22,7 @@ const PatientFile = () => {
 
 export { PatientFile };
 
-const ViewActions = () => {
-    const print = () => {};
-
+const ViewActions = (patient: Patient) => {
     return (
         <>
             <Button
@@ -38,12 +36,12 @@ const ViewActions = () => {
                 disabled
             />
             <Button
+                onClick={openPrintableView(patient.id.toString())}
                 aria-label="Print"
                 data-tooltip-position="top"
                 data-tooltip-offset="center"
                 icon={<Icon name="print" />}
                 sizing={'medium'}
-                onClick={() => print()}
                 secondary
             />
             <Button aria-label="Edit" icon={<Icon name="edit" />} secondary labelPosition="right" sizing={'medium'}>
@@ -60,6 +58,13 @@ const ViewNavigation = (patient: Patient) => (
         <TabNavigationEntry path={`/patient/${patient.patientId}/demographics`}>Demographics</TabNavigationEntry>
     </TabNavigation>
 );
+
+const openPrintableView = (patient: string | undefined) => () => {
+    console.log('work?');
+    if (patient) {
+        window.open(`/nbs/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${patient}`, '_blank', 'noreferrer');
+    }
+};
 
 const WithMeta = (meta: Patient) => (
     <PatientFileLayout patient={meta} actions={ViewActions} navigation={ViewNavigation}>
