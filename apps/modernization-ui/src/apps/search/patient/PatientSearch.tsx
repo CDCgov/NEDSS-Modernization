@@ -30,7 +30,7 @@ const PatientSearch = () => {
     const sizing = useComponentSizing();
 
     useEffect(() => {
-        if (interaction.status === 'completed' || interaction.status === 'loading') {
+        if (interaction.status === 'completed') {
             skipTo('resultsCount');
             focusedTarget('resultsCount');
         } else {
