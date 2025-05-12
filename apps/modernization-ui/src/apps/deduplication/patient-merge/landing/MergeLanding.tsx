@@ -1,7 +1,6 @@
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
-import { PaginationProvider } from 'pagination';
 import { MatchesRequiringReviewTable } from './matches-requiring-review-table/MatchesRequiringReviewTable';
 import { useExportMatches } from 'apps/deduplication/api/useExportMatches';
 import styles from './merge-landing.module.scss';
@@ -27,9 +26,7 @@ export const MergeLanding = () => {
                 </div>
             </header>
             <main className={styles.mergeLandingContent}>
-                <PaginationProvider>
-                    <MatchesRequiringReviewTable />
-                </PaginationProvider>
+                <MatchesRequiringReviewTable />
             </main>
         </div>
     );
