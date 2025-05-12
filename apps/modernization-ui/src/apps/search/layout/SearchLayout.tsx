@@ -1,4 +1,4 @@
-import { ReactNode, KeyboardEvent as ReactKeyboardEvent, useEffect } from 'react';
+import { ReactNode, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button } from 'components/button';
 import { Loading } from 'components/Spinner';
 import { Sizing } from 'design-system/field';
@@ -45,7 +45,7 @@ const SearchLayout = <R,>({
     const {
         status,
         results: { total, terms }
-    } = useSearchInteraction<R>();;
+    } = useSearchInteraction<R>();
 
     const { view } = useSearchResultDisplay();
 
