@@ -1,5 +1,7 @@
-package gov.cdc.nbs.patient.search.name;
+package gov.cdc.nbs.patient.name;
 
+import gov.cdc.nbs.demographics.name.DisplayableName;
+import gov.cdc.nbs.demographics.name.DisplayableNameRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -9,7 +11,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Component
-public class PatientSearchResultLegalNameFinder {
+public class PatientLegalNameFinder {
 
   private static final String QUERY = """
       select
@@ -19,15 +21,15 @@ public class PatientSearchResultLegalNameFinder {
           [name].last_nm,
           [suffix].code_short_desc_txt
       from Person_name [name]
-
+      
       join NBS_SRTE..Code_value_general [use] on
                  [use].[code_set_nm] = 'P_NM_USE'
              and [use].[code] = [name].nm_use_cd
-
+      
           left join NBS_SRTE..Code_value_general [suffix] on
                   [suffix].[code_set_nm] = 'P_NM_SFX'
               and [suffix].[code] = [name].nm_suffix
-
+      
       where   [name].person_uid = ?
           and [name].nm_use_cd = 'L'
           and [name].record_status_cd = 'ACTIVE'
@@ -55,21 +57,21 @@ public class PatientSearchResultLegalNameFinder {
   private static final int AS_OF_PARAMETER = 2;
 
   private final JdbcTemplate template;
-  private final RowMapper<PatientSearchResultName> mapper;
+  private final RowMapper<DisplayableName> mapper;
 
-  PatientSearchResultLegalNameFinder(final JdbcTemplate template) {
+  PatientLegalNameFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new PatientSearchResultNameMapper();
+    this.mapper = new DisplayableNameRowMapper();
   }
 
-  public Optional<PatientSearchResultName> find(final long patient, final LocalDate asOf) {
+  public Optional<DisplayableName> find(final long patient, final LocalDate asOf) {
     return this.template.query(
-        QUERY,
-        statement -> {
-          statement.setTimestamp(AS_OF_PARAMETER, Timestamp.valueOf(asOf.atStartOfDay()));
-          statement.setLong(PATIENT_PARAMETER, patient);
-        },
-        this.mapper).stream()
+            QUERY,
+            statement -> {
+              statement.setTimestamp(AS_OF_PARAMETER, Timestamp.valueOf(asOf.atStartOfDay()));
+              statement.setLong(PATIENT_PARAMETER, patient);
+            },
+            this.mapper).stream()
         .findFirst();
   }
 }

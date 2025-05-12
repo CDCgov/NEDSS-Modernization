@@ -2923,7 +2923,8 @@
 									"const patient = pm.response.json().data?.findPatientProfile?.id;",
 									"pm.collectionVariables.set(\"patient\", patient);"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -2954,7 +2955,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query profile($short: Int!) {\n  findPatientProfile(shortId: $short) {\n    id\n    local\n    shortId\n    deletable\n  }\n}\n",
-								"variables": "{\n    \"short\": \"75010\"\n}"
+								"variables": "{\n    \"short\": 128175\n}"
 							}
 						},
 						"url": {
@@ -3943,6 +3944,53 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Patient File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const patient = pm.response.json().id;",
+											"pm.collectionVariables.set(\"patient\", patient);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base}}/nbs/api/patients/{{patient-id}}/file",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"patients",
+										"{{patient-id}}",
+										"file"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -3974,7 +4022,10 @@
 							"script": {
 								"exec": [
 									"const patient = pm.response.json().id;",
-									"pm.collectionVariables.set(\"patient\", patient);"
+									"pm.collectionVariables.set(\"patient\", patient);",
+									"",
+									"const patientId = pm.response.json().shortId;",
+									"pm.collectionVariables.set(\"patient-id\", patientId);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -3994,7 +4045,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"administrative\": {\n        \"asOf\": \"{{localDate}}\",\n        \"comment\": \"testing extended patient data\"\n    }\n}",
+							"raw": "{\n    \"administrative\": {\n        \"asOf\": \"{{localDate}}\",\n        \"comment\": \"Developer testing the creation of a patient\"\n    },\n    \"names\": [\n        {\n            \"asOf\": \"{{localDate}}\",\n            \"type\": \"L\",\n            \"first\": \"{{$randomFirstName}}\",\n            \"middle\": \"{{$randomFirstName}}\",\n            \"last\": \"{{$randomLastName}}\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4166,6 +4217,10 @@
 		},
 		{
 			"key": "localDate",
+			"value": ""
+		},
+		{
+			"key": "patient-id",
 			"value": ""
 		}
 	]
