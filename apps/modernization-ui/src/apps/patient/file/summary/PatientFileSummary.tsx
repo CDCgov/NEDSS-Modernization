@@ -52,12 +52,16 @@ const maybeRenderEthnicity = (ethnicity?: string) => <ItemGroup>{ethnicity}</Ite
 const SummaryContent = ({ summary }: SummaryContentProps) => {
     return (
         <div className={styles.content}>
-            <SummaryItem label="ADDRESS">{maybeRenderAddress(summary?.address)}</SummaryItem>
+            <div className={styles.group}>
+                <SummaryItem label="ADDRESS">{maybeRenderAddress(summary?.address)}</SummaryItem>
+            </div>
             <div className={styles.group}>
                 <SummaryItem label="PHONE">{maybeRenderPhone(summary?.phone)}</SummaryItem>
                 <SummaryItem label="EMAIL">{maybeRenderEmail(summary?.email)}</SummaryItem>
             </div>
-            <SummaryItem label="IDENTIFICATION">{maybeRenderIdentification(summary?.identifications)}</SummaryItem>
+            <div className={styles.groupID}>
+                <SummaryItem label="IDENTIFICATION">{maybeRenderIdentification(summary?.identifications)}</SummaryItem>
+            </div>
             <div className={styles.group}>
                 <SummaryItem label="RACE">{maybeRenderRace(summary?.races)}</SummaryItem>
                 <SummaryItem label="ETHNICITY">{maybeRenderEthnicity(summary?.ethnicity)}</SummaryItem>
