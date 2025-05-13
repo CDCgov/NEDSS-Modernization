@@ -1,17 +1,16 @@
 import { render, within } from '@testing-library/react';
 import { MergeLanding } from './MergeLanding';
-import { MemoryRouter } from 'react-router';
-import userEvent from "@testing-library/user-event";
+import { MemoryRouter, useSearchParams } from 'react-router';
+import userEvent from '@testing-library/user-event';
 import { useExportMatches } from '../../api/useExportMatches';
-import { useSearchParams } from "react-router";
 
 jest.mock('../../api/useExportMatches', () => ({
-    useExportMatches: jest.fn(),
+    useExportMatches: jest.fn()
 }));
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
-    useSearchParams: jest.fn(),
+    useSearchParams: jest.fn()
 }));
 
 const mockExportMatchesCSV = jest.fn();
@@ -23,7 +22,7 @@ beforeEach(() => {
 
     (useExportMatches as jest.Mock).mockReturnValue({
         exportCSV: mockExportMatchesCSV,
-        exportPDF: mockExportMatchesPDF,
+        exportPDF: mockExportMatchesPDF
     });
 
     (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams(), jest.fn()]);
