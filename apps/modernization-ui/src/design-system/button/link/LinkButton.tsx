@@ -1,7 +1,7 @@
 import { StandardButtonProps } from '../Button';
 import { buttonClassnames } from '../buttonClassNames';
 
-type Props = { href: string } & StandardButtonProps & Omit<JSX.IntrinsicElements['a'], 'href'>;
+type LinkButtonProps = { href: string } & StandardButtonProps & Omit<JSX.IntrinsicElements['a'], 'href'>;
 
 const LinkButton = ({
     href,
@@ -16,7 +16,7 @@ const LinkButton = ({
     destructive = false,
     children,
     ...defaultProps
-}: Props) => (
+}: LinkButtonProps) => (
     <a
         className={buttonClassnames({
             className,
@@ -38,3 +38,4 @@ const LinkButton = ({
 );
 
 export { LinkButton };
+export type { LinkButtonProps };
