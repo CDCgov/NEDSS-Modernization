@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BasicInformation } from './BasicInformation';
 import { PatientCriteriaEntry } from '../criteria';
+import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 
 const mockAllows = jest.fn();
 
@@ -16,9 +17,12 @@ const Fixture = () => {
     });
 
     return (
-        <FormProvider {...form}>
+        <SkipLinkProvider>
+             <FormProvider {...form}>
             <BasicInformation />
         </FormProvider>
+        </SkipLinkProvider>
+       
     );
 };
 

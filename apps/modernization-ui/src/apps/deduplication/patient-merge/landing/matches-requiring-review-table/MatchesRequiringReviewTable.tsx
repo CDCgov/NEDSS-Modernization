@@ -6,16 +6,36 @@ import { parseISO, format } from 'date-fns';
 import { Button } from 'design-system/button';
 import { Pagination } from 'design-system/pagination';
 import { Column, DataTable } from 'design-system/table';
-import { Status, usePagination } from 'pagination';
+import { PaginationProvider, Status, usePagination } from 'pagination';
 import { useEffect } from 'react';
 import styles from './matches-requiring-review.module.scss';
 import { Shown } from 'conditional-render';
+import { SortingProvider, useSorting } from 'sorting';
 
 const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
 
 export const MatchesRequiringReviewTable = () => {
+    return (
+        <PaginationProvider>
+            <SortingProvider>
+                <SortableMatchesRequiringReviewTable />
+            </SortingProvider>
+        </PaginationProvider>
+    );
+};
+
+const SortableMatchesRequiringReviewTable = () => {
     const { response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
-    const { page, ready, request, resize } = usePagination();
+    const { sorting } = useSorting();
+    const { page, ready, request, resize, firstPage } = usePagination();
+
+    useEffect(() => {
+        if (page.current === 1) {
+            fetchMatchesRequiringReview(0, page.pageSize, sorting);
+        } else {
+            firstPage();
+        }
+    }, [sorting]);
 
     useEffect(() => {
         ready(response.total, Math.max(1, page.current));
@@ -23,7 +43,7 @@ export const MatchesRequiringReviewTable = () => {
 
     useEffect(() => {
         if (page.status === Status.Requested) {
-            fetchMatchesRequiringReview(page.current - 1, page.pageSize);
+            fetchMatchesRequiringReview(page.current - 1, page.pageSize, sorting);
         }
     }, [page.status]);
 
@@ -31,27 +51,31 @@ export const MatchesRequiringReviewTable = () => {
         {
             id: 'patient-id',
             name: 'Patient ID',
+            sortable: true,
             render(match) {
                 return <>{match.patientId}</>;
             }
         },
         {
-            id: 'person-name',
+            id: 'name',
             name: 'Person name',
+            sortable: true,
             render(match) {
                 return <>{match.patientName}</>;
             }
         },
         {
-            id: 'date-created',
+            id: 'created',
             name: 'Date created',
+            sortable: true,
             render(match) {
                 return <>{format(parseISO(match.createdDate), DATE_FORMAT)}</>;
             }
         },
         {
-            id: 'date-identified',
+            id: 'identified',
             name: 'Date identified',
+            sortable: true,
             render(match) {
                 return <>{format(parseISO(match.identifiedDate), DATE_FORMAT)}</>;
             }
@@ -59,6 +83,7 @@ export const MatchesRequiringReviewTable = () => {
         {
             id: 'count',
             name: 'Number of matching records',
+            sortable: true,
             render(match) {
                 return <>{match.numOfMatchingRecords}</>;
             }
@@ -71,7 +96,6 @@ export const MatchesRequiringReviewTable = () => {
                     <Button
                         sizing="small"
                         className={styles.reviewButton}
-                        secondary
                         onClick={() => console.log('clicked review for patient', match.patientId)}>
                         Review
                     </Button>

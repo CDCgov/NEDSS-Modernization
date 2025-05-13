@@ -11,6 +11,7 @@ import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
 import { useShowCancelModal } from '../cancelAddPatientPanel';
 import { PatientDataEntryMethodProvider } from '../usePatientDataEntryMethod';
 import { Selectable } from 'options';
+import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -167,7 +168,9 @@ const renderWithRouter = () => {
             path: '/',
             element: (
                 <PatientDataEntryMethodProvider>
-                    <AddPatientExtended />
+                    <SkipLinkProvider>
+                        <AddPatientExtended />
+                    </SkipLinkProvider>
                 </PatientDataEntryMethodProvider>
             )
         },

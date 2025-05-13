@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
+import type { PatientFile } from '../models/PatientFile';
 import type { StandardResponse } from '../models/StandardResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -24,6 +25,24 @@ export class PatientFileService {
             url: '/nbs/api/patients/{patient}/demographics',
             path: {
                 'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Header
+     * @returns PatientFile OK
+     * @throws ApiError
+     */
+    public static file({
+        patientId,
+    }: {
+        patientId: number,
+    }): CancelablePromise<PatientFile> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patientId}/file',
+            path: {
+                'patientId': patientId,
             },
         });
     }

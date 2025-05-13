@@ -3,6 +3,7 @@ import { FeatureGuard } from 'feature';
 import { PageTitle } from 'page';
 import { PatientFile } from './PatientFile';
 import { loader } from './loader';
+import { PatientFileSummary } from './summary/PatientFileSummary';
 
 const routing = [
     {
@@ -19,7 +20,7 @@ const routing = [
             { path: '', index: true, element: <Navigate to="summary" /> },
             {
                 path: 'summary',
-                element: <div></div>
+                element: <PatientFileSummary />
             },
             {
                 path: 'events',

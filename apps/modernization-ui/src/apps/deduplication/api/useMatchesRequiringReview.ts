@@ -11,10 +11,11 @@ export const useMatchesRequiringReview = () => {
         fetchMatchesRequiringReview();
     }, []);
 
-    const fetchMatchesRequiringReview = async (page = 0, pageSize = 20) => {
+    const fetchMatchesRequiringReview = async (page = 0, pageSize = 20, sort: string | undefined = undefined) => {
         setLoading(true);
 
-        fetch(`${Config.deduplicationUrl}/merge?page=${page}&size=${pageSize}`, {
+        const sortString = sort !== undefined ? `&sort=${sort}` : '';
+        fetch(`${Config.deduplicationUrl}/merge?page=${page}&size=${pageSize}${sortString}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json'

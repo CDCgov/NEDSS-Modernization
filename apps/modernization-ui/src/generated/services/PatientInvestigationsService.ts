@@ -2,25 +2,25 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { PatientFileHeader } from '../models/PatientFileHeader';
+import type { PatientInvestigation } from '../models/PatientInvestigation';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-export class PatientFileHeaderService {
+export class PatientInvestigationsService {
     /**
-     * Patient File Header
-     * Patient File Header
-     * @returns PatientFileHeader OK
+     * Patient Investigations
+     * Patient Investigations
+     * @returns PatientInvestigation OK
      * @throws ApiError
      */
-    public static patientFileHeader({
+    public static patientInvestigations({
         patientId,
     }: {
         patientId: number,
-    }): CancelablePromise<PatientFileHeader> {
+    }): CancelablePromise<Array<PatientInvestigation>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/api/patient/{patientId}/file',
+            url: '/nbs/api/patient/{patientId}/investigations',
             path: {
                 'patientId': patientId,
             },
