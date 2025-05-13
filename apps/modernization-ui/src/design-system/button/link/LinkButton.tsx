@@ -11,9 +11,10 @@ const LinkButton = ({
     sizing,
     icon,
     labelPosition = 'right',
-    tertiary = false,
-    secondary = false,
-    destructive = false,
+    active,
+    tertiary,
+    secondary,
+    destructive,
     children,
     ...defaultProps
 }: LinkButtonProps) => (
@@ -23,8 +24,9 @@ const LinkButton = ({
             sizing,
             icon,
             labelPosition,
-            tertiary: tertiary,
-            secondary: secondary,
+            active,
+            tertiary,
+            secondary,
             destructive,
             children
         })}

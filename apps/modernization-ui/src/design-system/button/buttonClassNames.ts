@@ -8,6 +8,7 @@ const buttonClassnames = ({
     sizing,
     icon,
     labelPosition = 'right',
+    active = false,
     tertiary = false,
     secondary = false,
     destructive = false,
@@ -16,6 +17,7 @@ const buttonClassnames = ({
     classNames(
         styles.button,
         {
+            [styles.active]: active,
             [styles.secondary]: secondary,
             [styles.destructive]: destructive,
             [styles.tertiary]: tertiary,
