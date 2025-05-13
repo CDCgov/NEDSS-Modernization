@@ -3,7 +3,7 @@ import { useLocation } from 'react-router';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
-    const [tabPressed, setTabPressed] = useState(false);
+    const [initialTabPress, setInitialTabPress] = useState(false);
     const [prevPathname, setPrevPathname] = useState(location.pathname);
     const focusRef = useRef<HTMLDivElement>(null);
 
@@ -11,7 +11,7 @@ const ScrollToTop = ({ children }: { children: ReactNode }) => {
         window.scrollTo(0, 0);
 
         if (location.pathname !== prevPathname) {
-            setTabPressed(false);
+            setInitialTabPress(false);
             setPrevPathname(location.pathname);
 
             if (focusRef.current) {
@@ -23,13 +23,15 @@ const ScrollToTop = ({ children }: { children: ReactNode }) => {
             const activeElement = document.activeElement;
             const isBodyOrNonFocusable = activeElement === document.body || activeElement === null;
 
-            if (event.code === 'Tab' && !tabPressed && isBodyOrNonFocusable) {
-                setTabPressed(true);
-                const skipLinkElement: HTMLElement | null = document.querySelector('.usa-skipnav');
-                if (skipLinkElement) {
-                    requestAnimationFrame(() => {
-                        skipLinkElement.focus();
-                    });
+            if (event.code === 'Tab') {
+                if (!initialTabPress && isBodyOrNonFocusable) {
+                    setInitialTabPress(true);
+                    const skipLinkElement: HTMLElement | null = document.querySelector('.usa-skipnav');
+                    if (skipLinkElement) {
+                        requestAnimationFrame(() => {
+                            skipLinkElement.focus();
+                        });
+                    }
                 }
                 window.removeEventListener('keydown', handleFirstTab);
             }
@@ -40,7 +42,7 @@ const ScrollToTop = ({ children }: { children: ReactNode }) => {
         return () => {
             window.removeEventListener('keydown', handleFirstTab);
         };
-    }, [location.pathname, tabPressed, prevPathname]);
+    }, [location.pathname, initialTabPress, prevPathname]);
 
     return (
         <>
