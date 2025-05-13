@@ -7,7 +7,7 @@ import { PagesSection, PagesSubSection, SubSectionControllerService } from 'apps
 import { ManageSubsectionTile } from './ManageSubsectionTile/ManageSubsectionTile';
 import { AddSubSection } from './AddSubSection';
 import { usePageManagement } from '../../../usePageManagement';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 
 type ManageSubsectionProps = {
