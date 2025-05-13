@@ -1,7 +1,12 @@
+import classNames from 'classnames';
 import { StandardButtonProps } from '../Button';
 import { buttonClassnames } from '../buttonClassNames';
 
-type LinkButtonProps = { href: string } & StandardButtonProps & Omit<JSX.IntrinsicElements['a'], 'href'>;
+import styles from './link-button.module.scss';
+
+type InternalLinkProps = { href: string } & Omit<JSX.IntrinsicElements['a'], 'href'>;
+
+type LinkButtonProps = InternalLinkProps & StandardButtonProps;
 
 const LinkButton = ({
     href,
@@ -19,17 +24,20 @@ const LinkButton = ({
     ...defaultProps
 }: LinkButtonProps) => (
     <a
-        className={buttonClassnames({
-            className,
-            sizing,
-            icon,
-            labelPosition,
-            active,
-            tertiary,
-            secondary,
-            destructive,
-            children
-        })}
+        className={classNames(
+            styles.link,
+            buttonClassnames({
+                className,
+                sizing,
+                icon,
+                labelPosition,
+                active,
+                tertiary,
+                secondary,
+                destructive,
+                children
+            })
+        )}
         href={href}
         target={target}
         rel={rel}

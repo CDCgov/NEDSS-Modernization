@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { LinkButton, LinkButtonProps } from './LinkButton';
 import { Icon } from 'design-system/icon';
+import { LinkButton, LinkButtonProps } from './LinkButton';
 
 const meta = {
-    title: 'Design System/LinkButton',
+    title: 'Design System/Button/Link',
     component: LinkButton
 } satisfies Meta<typeof LinkButton>;
 
