@@ -6,10 +6,8 @@ interface SkipLinkContextType {
     currentFocusTargets: string[];
 }
 
-// Create the context
 export const SkipLinkContext = createContext<SkipLinkContextType | undefined>(undefined);
 
-// Custom hook for the context
 export function useSkipLink() {
     const context = useContext(SkipLinkContext);
     if (context === undefined) {

@@ -7,6 +7,7 @@ import { focusedTarget } from 'utils/focusedTarget';
 import { Term } from 'apps/search/terms';
 
 const mockSkipTo = jest.fn();
+const mockRemove = jest.fn();
 const mockFocusedTarget = jest.fn();
 const mockWithout = jest.fn();
 
@@ -21,7 +22,7 @@ const terms: Term[] = [
 
 describe('SearchTerms', () => {
     beforeEach(() => {
-        (useSkipLink as jest.Mock).mockReturnValue({ skipTo: mockSkipTo });
+        (useSkipLink as jest.Mock).mockReturnValue({ skipTo: mockSkipTo, remove: mockRemove });
         (focusedTarget as jest.Mock).mockImplementation(mockFocusedTarget);
         (useSearchInteraction as jest.Mock).mockReturnValue({ without: mockWithout });
     });
