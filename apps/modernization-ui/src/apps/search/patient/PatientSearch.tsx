@@ -14,11 +14,8 @@ import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { usePatientSearch } from './usePatientSearch';
 import { Direction } from 'sorting';
 import { useComponentSizing } from 'design-system/sizing';
-import { useSkipLink } from 'SkipLink/SkipLinkContext';
-import { useEffect } from 'react';
 
 const PatientSearch = () => {
-    const { skipTo } = useSkipLink();
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
         defaultValues,
         mode: 'onBlur',
@@ -27,10 +24,6 @@ const PatientSearch = () => {
 
     const interaction = usePatientSearch({ form });
     const sizing = useComponentSizing();
-
-    useEffect(() => {
-        skipTo('name.lastOperator');
-    }, []);
 
     return (
         <ColumnPreferenceProvider id="search.patients.preferences.columns" defaults={preferences}>
