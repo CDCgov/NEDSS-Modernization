@@ -21,7 +21,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
         skipTo('name.last');
 
         return () => remove('name.last');
-    }, [skipTo, remove]);
+    }, []);
 
     return (
         <SearchCriteria sizing={sizing}>

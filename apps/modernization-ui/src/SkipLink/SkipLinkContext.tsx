@@ -45,7 +45,7 @@ export const SkipLinkProvider = ({ children }: SkipLinkProviderProps) => {
     return (
         <SkipLinkContext.Provider value={contextValue}>
             {currentTarget && (
-                <a href={`#${currentFocusTargets}`} className="usa-skipnav">
+                <a href={`#${currentTarget}`} className="usa-skipnav">
                     Skip to main content
                 </a>
             )}
