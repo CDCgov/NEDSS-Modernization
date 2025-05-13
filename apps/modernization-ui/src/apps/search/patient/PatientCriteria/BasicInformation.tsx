@@ -18,9 +18,9 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { skipTo, remove } = useSkipLink();
 
     useEffect(() => {
-        skipTo('name.last');
+        skipTo('name.lastOperator');
 
-        return () => remove('name.last');
+        return () => remove('name.lastOperator');
     }, []);
 
     return (
