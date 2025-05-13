@@ -7,23 +7,29 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: colors.$base-white;
-    overflow: auto;
+    overflow: hidden;
 
-    .reviewButton {
+    .tableWrapper {
         display: flex;
-        width: 4.5rem;
-        height: 1.5rem;
-        align-items: center;
-        line-height: normal;
-    }
-}
+        flex-grow: 1;
+        overflow: auto;
+        background-color: colors.$base-white;
 
-.pagination {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1rem;
-    background-color: colors.$base-white;
-    @extend %thin-top;
+        .reviewButton {
+            display: flex;
+            width: 4.5rem;
+            height: 1.5rem;
+            align-items: center;
+            line-height: normal;
+        }
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        background-color: colors.$base-white;
+        @extend %thin-top;
+    }
 }
