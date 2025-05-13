@@ -59,11 +59,6 @@ describe('Button component tests', () => {
         expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
     });
 
-    it('renders the correct sizing className when set', () => {
-        render(<Button sizing="large">Click me</Button>);
-        expect(screen.getByRole('button')).toHaveClass('large');
-    });
-
     it('renders the destructive className when set', () => {
         render(<Button destructive>Destructive</Button>);
         expect(screen.getByRole('button')).toHaveClass('destructive');
@@ -84,8 +79,8 @@ describe('Button component tests', () => {
         expect(screen.getByRole('button')).toHaveClass('destructive');
     });
 
-    it('renders the unpadded className when set', () => {
-        render(<Button unpadded>Unpadded</Button>);
-        expect(screen.getByRole('button')).toHaveClass('unpadded');
+    it('renders the tertiary className when set', () => {
+        render(<Button tertiary>tertiary</Button>);
+        expect(screen.getByRole('button')).toHaveClass('tertiary');
     });
 });
