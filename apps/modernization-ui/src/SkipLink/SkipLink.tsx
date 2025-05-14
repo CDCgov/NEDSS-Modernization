@@ -19,5 +19,5 @@ export const SkipLink = ({ id, focus = false }: SkipLinkProps) => {
         return () => remove(id);
     }, []);
 
-    return null;
+    return <></>;
 };
