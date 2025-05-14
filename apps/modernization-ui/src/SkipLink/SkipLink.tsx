@@ -4,15 +4,15 @@ import { useEffect } from 'react';
 
 interface SkipLinkProps {
     id: string;
-    focus?: boolean;
+    autoFocus?: boolean;
 }
 
-export const SkipLink = ({ id, focus = false }: SkipLinkProps) => {
+export const SkipLink = ({ id, autoFocus = false }: SkipLinkProps) => {
     const { skipTo, remove } = useSkipLink();
 
     useEffect(() => {
         skipTo(id);
-        if (focus) {
+        if (autoFocus) {
             focusedTarget(id);
         }
 

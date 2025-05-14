@@ -20,7 +20,7 @@ const SearchTerms = ({ total, terms }: Props) => {
 
     return (
         <div tabIndex={0} id="resultsCount" className={styles.terms} aria-label={ariaLabel}>
-            <SkipLink id="resultsCount" focus />
+            <SkipLink id="resultsCount" autoFocus />
             <div className={styles.term}>
                 <h2>
                     {total} {resultsText.toLowerCase()} for:
