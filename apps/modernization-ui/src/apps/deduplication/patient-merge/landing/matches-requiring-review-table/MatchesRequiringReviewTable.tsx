@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import styles from './matches-requiring-review.module.scss';
 import { Shown } from 'conditional-render';
 import { SortingProvider, useSorting } from 'sorting';
+import { useNavigate } from 'react-router';
 
 const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
 
@@ -25,6 +26,7 @@ export const MatchesRequiringReviewTable = () => {
 };
 
 const SortableMatchesRequiringReviewTable = () => {
+    const nav = useNavigate();
     const { response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
     const { sorting } = useSorting();
     const { page, ready, request, resize, firstPage } = usePagination();
@@ -96,7 +98,7 @@ const SortableMatchesRequiringReviewTable = () => {
                     <Button
                         sizing="small"
                         className={styles.reviewButton}
-                        onClick={() => console.log('clicked review for patient', match.patientId)}>
+                        onClick={() => nav(`/deduplication/merge/${match.patientId}`)}>
                         Review
                     </Button>
                 );
