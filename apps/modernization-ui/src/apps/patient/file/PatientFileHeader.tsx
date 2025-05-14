@@ -1,22 +1,31 @@
 import { ReactNode } from 'react';
 import { displayName } from 'name';
 import { mapOr } from 'utils/mapping';
-import { displayAgeAsOfToday } from 'date';
+import { defaultTo } from 'libs/supplying';
+import { displayAgeAsOf, today } from 'date';
 import { NoData } from 'components/NoData';
 import { Heading } from 'components/heading';
 import { Patient } from './patient';
 
 import styles from './patient-file-header.module.scss';
+import { Shown } from 'conditional-render';
+import classNames from 'classnames';
 
 const maybeDisplayName = mapOr(displayName('fullLastFirst'), '---');
-const maybeDisplayAge = mapOr((birthday: string) => `${birthday} (${displayAgeAsOfToday(birthday)})`, undefined);
+
+const maybeDisplayBirthday = (birthday?: string, asOf?: string) => {
+    if (birthday) {
+        return `${birthday} (${displayAgeAsOf(birthday, defaultTo(today, asOf))})`;
+    }
+};
 
 type ValueProps = {
+    className?: string;
     children?: ReactNode | undefined;
 };
 
-const Value = ({ children }: ValueProps) => {
-    return <span className={styles.value}>{children || <NoData display="dashes" />}</span>;
+const Value = ({ className, children }: ValueProps) => {
+    return <span className={classNames(styles.value, className)}>{children || <NoData display="dashes" />}</span>;
 };
 
 type PatientFileHeaderProps = {
@@ -29,9 +38,14 @@ export const PatientFileHeader = ({ patient, actions }: PatientFileHeaderProps) 
         <header className={styles.header}>
             <div className={styles.title}>
                 <Heading level={1}>{maybeDisplayName(patient.name)}</Heading>
-                <Value>{patient.sex}</Value>
-                <Value>{maybeDisplayAge(patient.birthday)}</Value>
-                <Value>Patient ID: {patient.id}</Value>
+                <span className={styles.values}>
+                    <Value>{patient.sex}</Value>
+                    <Value>{maybeDisplayBirthday(patient.birthday, patient.deceasedOn)}</Value>
+                    <Value>Patient ID: {patient.patientId}</Value>
+                    <Shown when={patient.status === 'INACTIVE'}>
+                        <Value className={styles.inactive}>{patient.status}</Value>
+                    </Shown>
+                </span>
             </div>
             <div className={styles.actions}>{actions}</div>
         </header>
