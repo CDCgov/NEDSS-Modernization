@@ -15,7 +15,7 @@ import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
 import { useSearchFromAddPatient } from '../useSearchFromAddPatient';
 
 import styles from './add-patient-basic.module.scss';
-import { useSkipLink } from 'SkipLink/SkipLinkContext';
+import { SkipLink } from 'SkipLink';
 
 export const AddPatientBasic = () => {
     const { defaults } = useAddPatientBasicDefaults();
@@ -40,7 +40,6 @@ export const AddPatientBasic = () => {
 
     const { toSearch } = useSearchFromAddPatient();
     const location = useLocation();
-    const { skipTo } = useSkipLink();
 
     const backToSearch = useCallback(
         () => toSearch(location.state?.criteria?.encrypted),
@@ -58,12 +57,9 @@ export const AddPatientBasic = () => {
 
     const working = !form.formState.isValid || !interaction.canSave || interaction.status !== 'waiting';
 
-    useEffect(() => {
-        skipTo('administrative.asOf');
-    }, []);
-
     return (
         <DataEntryLayout>
+            <SkipLink id="administrative.asOf" />
             <Shown when={interaction.status === 'created'}>
                 {interaction.status === 'created' && <PatientCreatedPanel created={interaction.created} />}
             </Shown>
