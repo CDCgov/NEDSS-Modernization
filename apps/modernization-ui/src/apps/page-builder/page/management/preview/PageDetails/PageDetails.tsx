@@ -90,7 +90,7 @@ export const PageDetails = () => {
                         <LinkButton
                             className="page-details-printer"
                             href={`/nbs/page-builder/api/v1/pages/${pageId}/print`}
-                            label="open simplified page details view for printing">
+                            aria-label="open simplified page details view for printing">
                             <Icon.Print size={3} />
                         </LinkButton>
                         <h2 className="page-title">Page Details</h2>

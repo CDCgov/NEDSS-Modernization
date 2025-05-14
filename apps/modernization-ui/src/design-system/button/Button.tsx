@@ -1,8 +1,6 @@
 import { ReactNode } from 'react';
-import classNames from 'classnames';
 import { Sizing } from 'design-system/field';
-
-import styles from './Button.module.scss';
+import { buttonClassnames } from './buttonClassNames';
 
 type StandardButtonProps = {
     className?: string;
@@ -32,31 +30,27 @@ const Button = ({
     type = 'button',
     icon,
     labelPosition = 'right',
-    active = false,
-    disabled = false,
-    tertiary = false,
-    outline = false,
-    secondary = false,
-    destructive = false,
-    unstyled = false,
+    active,
+    disabled,
+    tertiary,
+    secondary,
+    destructive,
+    outline,
+    unstyled,
     children,
     ...defaultProps
 }: ButtonProps) => {
-    const isIconOnly = Boolean(icon && !children);
-
-    const classes = classNames(
-        styles.button,
-        {
-            [styles.active]: active,
-            [styles.secondary]: secondary || outline,
-            [styles.destructive]: destructive,
-            [styles.tertiary]: tertiary || unstyled,
-            [styles.icon]: isIconOnly,
-            [styles['icon-last']]: labelPosition === 'left',
-            [styles.small]: sizing === 'small'
-        },
-        className
-    );
+    const classes = buttonClassnames({
+        className,
+        sizing,
+        icon,
+        labelPosition,
+        active,
+        tertiary: tertiary || unstyled,
+        secondary: secondary || outline,
+        destructive,
+        children
+    });
 
     return (
         <button className={classes} {...defaultProps} type={type} disabled={disabled}>

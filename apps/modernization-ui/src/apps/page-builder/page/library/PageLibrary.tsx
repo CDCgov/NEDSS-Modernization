@@ -19,7 +19,7 @@ import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 import { PageLibraryMenu } from './menu/PageLibraryMenu';
 import { PageLibraryTable } from './table/PageLibraryTable';
 
-import { LinkButton } from 'components/button';
+import { LinkButton } from 'design-system/button';
 import { useConfiguration } from 'configuration';
 import styles from './page-library.module.scss';
 import { downloadPageLibraryPdf } from 'utils/ExportUtil';
@@ -78,7 +78,7 @@ const PageLibraryContent = () => {
                                 Create new page
                             </NavLinkButton>
                         ) : (
-                            <LinkButton type="solid" target="_self" href="/nbs/page-builder/api/v1/pages/create">
+                            <LinkButton target="_self" href="/nbs/page-builder/api/v1/pages/create">
                                 Create new page
                             </LinkButton>
                         )}
