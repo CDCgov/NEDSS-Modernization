@@ -3,15 +3,6 @@ import { internalizeDate } from 'date';
 import { AddressRepeatingBlock } from './AddressRepeatingBlock';
 import { AddressEntry } from 'apps/patient/data';
 
-const mockPatientAddressCodedValues = {
-    types: [{ name: 'House', value: 'H' }],
-    uses: [{ name: 'Home', value: 'HM' }]
-};
-
-jest.mock('apps/patient/profile/addresses/usePatientAddressCodedValues', () => ({
-    usePatientAddressCodedValues: () => mockPatientAddressCodedValues
-}));
-
 const mockLocationCodedValues = {
     states: {
         all: [{ name: 'StateName', value: '1' }]

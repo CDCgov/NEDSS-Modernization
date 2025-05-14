@@ -2,14 +2,14 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
 import { GeneralCodedValues } from './useGeneralCodedValues';
-import { PatientProfilePermission } from 'apps/patient/profile/permission';
+
 import { FormProvider, useForm } from 'react-hook-form';
 import { GeneralInformationEntryFields } from './GeneralInformationEntryFields';
 
-const mockPermissions: PatientProfilePermission = { delete: true, compareInvestigation: false, hivAccess: false };
+let mockPermissions: string[] = [];
 
-jest.mock('apps/patient/profile/permission/usePatientProfilePermissions', () => ({
-    usePatientProfilePermissions: () => mockPermissions
+jest.mock('user', () => ({
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
 }));
 
 const mockGeneralCodedValues: GeneralCodedValues = {
@@ -51,7 +51,7 @@ describe('when entering patient general information demographics', () => {
     });
 
     it('should render the HIV case ID when user has permission', async () => {
-        mockPermissions.hivAccess = true;
+        mockPermissions = ['HIVQUESTIONS-GLOBAL'];
         const { getByLabelText } = render(<Fixture />);
         expect(getByLabelText('State HIV case ID')).toBeInTheDocument();
     });

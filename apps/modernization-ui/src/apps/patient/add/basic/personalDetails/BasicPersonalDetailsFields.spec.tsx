@@ -3,20 +3,19 @@ import userEvent from '@testing-library/user-event';
 import { SexBirthCodedValues } from 'apps/patient/data/sexAndBirth/useSexBirthCodedValues';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BasicPersonalDetailsFields } from './BasicPersonalDetailsFields';
-import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { BasicPersonalDetailsEntry } from '../entry';
 import { GeneralCodedValues } from 'apps/patient/data/general/useGeneralCodedValues';
 
 const mockNow = jest.fn();
 
-jest.mock('design-system/date/clock', () => ({
-    now: () => mockNow()
+let mockPermissions: string[] = [];
+
+jest.mock('user', () => ({
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
 }));
 
-const mockPermissions: PatientProfilePermission = { delete: true, compareInvestigation: false, hivAccess: true };
-
-jest.mock('apps/patient/profile/permission/usePatientProfilePermissions', () => ({
-    usePatientProfilePermissions: () => mockPermissions
+jest.mock('design-system/date/clock', () => ({
+    now: () => mockNow()
 }));
 
 const mockPatientCodedValues: GeneralCodedValues = {
@@ -72,7 +71,6 @@ describe('when entering patient sex and birth demographics', () => {
         expect(getByLabelText('Birth sex')).toBeInTheDocument();
         expect(getByLabelText('Is the patient deceased?')).toBeInTheDocument();
         expect(getByLabelText('Marital status')).toBeInTheDocument();
-        expect(getByLabelText('State HIV case ID')).toBeInTheDocument();
     });
 
     it('should render the proper labels with the small size when sizing is set to small', () => {
@@ -83,7 +81,6 @@ describe('when entering patient sex and birth demographics', () => {
         expect(getByText('Birth sex').parentElement?.parentElement).toHaveClass('small');
         expect(getByText('Is the patient deceased?').parentElement?.parentElement).toHaveClass('small');
         expect(getByText('Marital status').parentElement?.parentElement).toHaveClass('small');
-        expect(getByText('State HIV case ID').parentElement?.parentElement).toHaveClass('small');
     });
 
     it('should validate date of birth', async () => {
@@ -161,8 +158,13 @@ describe('when entering patient sex and birth demographics', () => {
     });
 
     it('should not render the HIV case ID when user does not have permission', async () => {
-        mockPermissions.hivAccess = false;
         const { queryByLabelText } = render(<Fixture />);
         expect(queryByLabelText('State HIV case ID')).not.toBeInTheDocument();
+    });
+
+    it('should render the HIV case ID when user does has the correct permission', async () => {
+        mockPermissions = ['HIVQUESTIONS-GLOBAL'];
+        const { getByLabelText } = render(<Fixture />);
+        expect(getByLabelText('State HIV case ID')).toBeInTheDocument();
     });
 });

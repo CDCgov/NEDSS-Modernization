@@ -2,17 +2,6 @@ import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
 import { NameRepeatingBlock, NameRepeatingBlockProps } from './NameRepeatingBlock';
 
-const mockPatientNameCodedValues = {
-    types: [{ name: 'Adopted name', value: 'AN' }],
-    prefixes: [{ name: 'Miss', value: 'MS' }],
-    suffixes: [{ name: 'Sr.', value: 'SR' }],
-    degrees: [{ name: 'BA', value: 'BA' }]
-};
-
-jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
-    usePatientNameCodedValues: () => mockPatientNameCodedValues
-}));
-
 const Fixture = ({ values, onChange = jest.fn(), isDirty = jest.fn() }: Partial<NameRepeatingBlockProps>) => (
     <NameRepeatingBlock id="names" values={values} onChange={onChange} isDirty={isDirty} />
 );
