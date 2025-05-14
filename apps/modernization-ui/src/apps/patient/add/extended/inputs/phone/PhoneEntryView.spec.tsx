@@ -2,15 +2,6 @@ import { render } from '@testing-library/react';
 import { PhoneEmailEntry } from 'apps/patient/data';
 import { PhoneEntryView } from './PhoneEntryView';
 
-const mockPatientPhoneCodedValues = {
-    types: [{ name: 'Phone', value: 'PH' }],
-    uses: [{ name: 'Home', value: 'H' }]
-};
-
-jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
-    usePatientPhoneCodedValues: () => mockPatientPhoneCodedValues
-}));
-
 const entry: PhoneEmailEntry = {
     asOf: '12/25/2020',
     type: { name: 'Phone', value: 'PH' },

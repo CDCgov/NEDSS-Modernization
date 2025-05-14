@@ -8,10 +8,10 @@ import { maxLengthRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';
 import { BasicPersonalDetailsEntry } from '../entry';
-import { usePatientProfilePermissions } from 'apps/patient/profile/permission';
 import { Indicator, indicators } from 'coded';
 import { useSexBirthCodedValues } from 'apps/patient/data/sexAndBirth/useSexBirthCodedValues';
 import { useGeneralCodedValues } from 'apps/patient/data/general/useGeneralCodedValues';
+import { Permitted } from 'libs/permission';
 
 const BORN_ON_LABEL = 'Date of birth';
 const DECEASED_ON_LABEL = 'Date of death';
@@ -27,7 +27,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
         () => (deceasedOn ? displayAgeAsOf(currentBirthday, deceasedOn) : displayAgeAsOfToday(currentBirthday)),
         [currentBirthday, deceasedOn]
     );
-    const { hivAccess } = usePatientProfilePermissions();
+
     const { invalid: bornOnInvalid } = getFieldState('personalDetails.bornOn', formState);
 
     return (
@@ -138,7 +138,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                     />
                 )}
             />
-            {hivAccess && (
+            <Permitted permission="HIVQUESTIONS-GLOBAL">
                 <Controller
                     control={control}
                     name="personalDetails.stateHIVCase"
@@ -161,7 +161,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         />
                     )}
                 />
-            )}
+            </Permitted>
         </section>
     );
 };

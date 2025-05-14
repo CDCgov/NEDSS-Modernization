@@ -1,14 +1,7 @@
-import { render, waitFor, within } from '@testing-library/react';
-import { PatientSexBirthCodedValue } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
-import { CodedValue } from 'coded';
-import { CountiesCodedValues } from 'location';
-import { AddPatientExtendedForm } from './AddPatientExtendedForm';
-import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
-import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
-import { PatientProfilePermission } from 'apps/patient/profile/permission';
-import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
-import { ExtendedNewPatientEntry, initial } from './entry';
 import { FormProvider, useForm } from 'react-hook-form';
+import { render, waitFor, within } from '@testing-library/react';
+import { AddPatientExtendedForm } from './AddPatientExtendedForm';
+import { ExtendedNewPatientEntry, initial } from './entry';
 import { internalizeDate } from 'date';
 import { ValidationErrors } from './useAddExtendedPatientInteraction';
 import { Selectable } from 'options';
@@ -25,40 +18,7 @@ jest.mock('options/location', () => ({
     useStateOptions: () => mockStateCodedValues
 }));
 
-const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
-    genders: [
-        { name: 'Male', value: 'M' },
-        { name: 'Female', value: 'F' },
-        { name: 'Unknown', value: 'U' }
-    ],
-    preferredGenders: [{ name: 'FTM', value: 'FTM' }],
-    genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
-    multipleBirth: [{ name: 'Yes', value: 'Y' }],
-    states: {
-        all: [{ name: 'Alabama', value: 'AL', abbreviation: 'AL' }],
-        byValue: jest.fn(),
-        byAbbreviation: jest.fn()
-    },
-    counties: {
-        byState: jest.fn()
-    },
-    countries: [{ name: 'United States of America', value: 'US' }]
-};
-
-jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => ({
-    usePatientSexBirthCodedValues: () => mockSexBirthCodedValues
-}));
-
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
-const mockPatientAddressCodedValues = {
-    types: [{ name: 'House', value: 'H' }],
-    uses: [{ name: 'Home', value: 'HM' }]
-};
-
-jest.mock('apps/patient/profile/addresses/usePatientAddressCodedValues', () => ({
-    usePatientAddressCodedValues: () => mockPatientAddressCodedValues
-}));
 
 const mockLocationCodedValues = {
     states: {
@@ -78,10 +38,6 @@ const mockPatientPhoneCodedValues = {
     uses: [{ name: 'Home', value: 'H' }]
 };
 
-jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
-    usePatientPhoneCodedValues: () => mockPatientPhoneCodedValues
-}));
-
 const mockRaceCategories: Selectable[] = [{ value: '1', name: 'race name' }];
 
 const mockDetailedRaces: Selectable[] = [
@@ -92,56 +48,6 @@ const mockDetailedRaces: Selectable[] = [
 jest.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
     useDetailedRaceOptions: () => mockDetailedRaces
-}));
-
-const mockPatientNameCodedValues = {
-    types: [{ name: 'Adopted name', value: 'AN' }],
-    prefixes: [{ name: 'Miss', value: 'MS' }],
-    suffixes: [{ name: 'Sr.', value: 'SR' }],
-    degrees: [{ name: 'BA', value: 'BA' }]
-};
-jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
-    usePatientNameCodedValues: () => mockPatientNameCodedValues
-}));
-
-const mockPatientIdentificationCodedValues: PatientIdentificationCodedValues = {
-    types: [{ name: 'Account number', value: 'AN' }],
-    authorities: [{ name: 'Assigning auth', value: 'AA' }]
-};
-
-jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValues', () => ({
-    usePatientIdentificationCodedValues: () => mockPatientIdentificationCodedValues
-}));
-
-const mockEthnicityValues: PatientEthnicityCodedValue = {
-    ethnicGroups: [
-        { name: 'Hispanic or Latino', value: '2135-2' },
-        { name: 'Unknown', value: 'UNK' }
-    ],
-    ethnicityUnknownReasons: [{ name: 'Not asked', value: '6' }],
-    detailedEthnicities: [{ name: 'Central American', value: '2155-0' }]
-};
-
-jest.mock('apps/patient/profile/ethnicity/usePatientEthnicityCodedValues', () => ({
-    usePatientEthnicityCodedValues: () => mockEthnicityValues
-}));
-
-const mockPermissions: PatientProfilePermission = { delete: true, compareInvestigation: false, hivAccess: false };
-
-jest.mock('apps/patient/profile/permission/usePatientProfilePermissions', () => ({
-    usePatientProfilePermissions: () => mockPermissions
-}));
-
-const mockPatientCodedValues: PatientGeneralCodedValue = {
-    maritalStatuses: [{ name: 'Married', value: 'M' }],
-    primaryOccupations: [{ name: 'Tester', value: 'T' }],
-    educationLevels: [{ name: '1 or more years of college', value: '1' }],
-    primaryLanguages: [{ name: 'Welsh', value: 'W' }],
-    speaksEnglish: [{ name: 'Yes', value: 'Y' }]
-};
-
-jest.mock('apps/patient/profile/generalInfo/usePatientGeneralCodedValues', () => ({
-    usePatientGeneralCodedValues: () => mockPatientCodedValues
 }));
 
 type Props = {
