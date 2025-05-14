@@ -3,6 +3,7 @@ import { MatchesRequiringReviewTable } from './MatchesRequiringReviewTable';
 import { render, within } from '@testing-library/react';
 import { PaginationProvider } from 'pagination';
 import { MemoryRouter } from 'react-router';
+import userEvent from '@testing-library/user-event';
 
 let mockReturnValue: MatchRequiringReviewResponse | undefined = {
     matches: [
@@ -17,9 +18,10 @@ let mockReturnValue: MatchRequiringReviewResponse | undefined = {
     page: 0,
     total: 0
 };
+const mockFetch = jest.fn();
 jest.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
     useMatchesRequiringReview: () => {
-        return { response: mockReturnValue };
+        return { response: mockReturnValue, fetchMatchesRequiringReview: mockFetch };
     }
 }));
 const Fixture = () => {
@@ -43,6 +45,65 @@ describe('MatchesRequiringReviewTable', () => {
         expect(tableHeads[3]).toHaveTextContent('Date identified');
         expect(tableHeads[4]).toHaveTextContent('Number of matching records');
         expect(tableHeads[5]).toHaveTextContent('');
+    });
+
+    it('should display sorting icons', () => {
+        const { getByText } = render(<Fixture />);
+
+        const patientId = getByText('Patient ID');
+        expect(patientId).toHaveClass('sortable');
+        expect(patientId.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_arrow');
+
+        const personName = getByText('Person name');
+        expect(personName).toHaveClass('sortable');
+        expect(personName.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_arrow');
+
+        const dateCreated = getByText('Date created');
+        expect(dateCreated).toHaveClass('sortable');
+        expect(dateCreated.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_arrow');
+
+        const dateIdentified = getByText('Date identified');
+        expect(dateIdentified).toHaveClass('sortable');
+        expect(dateIdentified.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_arrow');
+
+        const numberOfMatching = getByText('Number of matching records');
+        expect(numberOfMatching).toHaveClass('sortable');
+        expect(numberOfMatching.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_arrow');
+    });
+
+    it('should sort on click', async () => {
+        const user = userEvent.setup();
+        const { getByText } = render(<Fixture />);
+
+        await user.click(getByText('Patient ID').children[0]); // sort on patient Id asc
+        expect(mockFetch).lastCalledWith(0, 20, 'patient-id,asc');
+
+        await user.click(getByText('Patient ID').children[0]); // sort on patient Id desc
+        expect(mockFetch).lastCalledWith(0, 20, 'patient-id,desc');
+
+        await user.click(getByText('Person name').children[0]); // sort on Person name
+        expect(mockFetch).lastCalledWith(0, 20, 'name,asc');
+
+        await user.click(getByText('Person name').children[0]); // sort on Person name desc
+        expect(mockFetch).lastCalledWith(0, 20, 'name,desc');
+
+        await user.click(getByText('Date created').children[0]); // sort on Date created
+        expect(mockFetch).lastCalledWith(0, 20, 'created,asc');
+
+        await user.click(getByText('Date created').children[0]); // sort on Date created desc
+        expect(mockFetch).lastCalledWith(0, 20, 'created,desc');
+
+        await user.click(getByText('Date identified').children[0]); // sort on Date identified
+        expect(mockFetch).lastCalledWith(0, 20, 'identified,asc');
+
+        await user.click(getByText('Date identified').children[0]); // sort on Date identified desc
+        expect(mockFetch).lastCalledWith(0, 20, 'identified,desc');
+
+        await user.click(getByText('Number of matching records').children[0]); // sort on Number of matching records
+        expect(mockFetch).lastCalledWith(0, 20, 'count,asc');
+
+        await user.click(getByText('Number of matching records').children[0]); // sort on Number of matching records desc
+        expect(mockFetch).lastCalledWith(0, 20, 'count,desc');
     });
 
     it('should display the proper match data', () => {

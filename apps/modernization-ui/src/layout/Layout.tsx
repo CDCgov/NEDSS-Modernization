@@ -9,16 +9,15 @@ import { PageProvider } from 'page';
 const Layout = () => {
     return (
         <ApolloWrapper>
-            <ScrollToTop>
-                <AlertProvider>
-                    <SkipLinkProvider>
-                        <PageProvider>
-                            <NavBar />
-                            <Outlet />
-                        </PageProvider>
-                    </SkipLinkProvider>
-                </AlertProvider>
-            </ScrollToTop>
+            <ScrollToTop />
+            <AlertProvider>
+                <SkipLinkProvider>
+                    <PageProvider>
+                        <NavBar />
+                        <Outlet />
+                    </PageProvider>
+                </SkipLinkProvider>
+            </AlertProvider>
         </ApolloWrapper>
     );
 };

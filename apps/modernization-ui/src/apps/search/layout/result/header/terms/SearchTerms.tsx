@@ -1,12 +1,10 @@
-import { useEffect } from 'react';
 import { Chip } from 'design-system/chips';
 import { useSearchInteraction } from 'apps/search';
 import { Term } from 'apps/search/terms';
-
-import { useSkipLink } from 'SkipLink/SkipLinkContext';
-import { focusedTarget, pluralize } from 'utils';
+import { pluralize } from 'utils';
 
 import styles from './search-terms.module.scss';
+import { SkipLink } from 'SkipLink';
 
 type Props = {
     total: number;
@@ -14,20 +12,15 @@ type Props = {
 };
 
 const SearchTerms = ({ total, terms }: Props) => {
-    const { skipTo } = useSkipLink();
     const resultsText = pluralize('Result', total);
     const verbText = pluralize('has', total, 'have');
     const ariaLabel = `${total} ${resultsText} ${verbText} been found`;
-
-    useEffect(() => {
-        skipTo('resultsCount');
-        focusedTarget('resultsCount');
-    }, []);
 
     const { without } = useSearchInteraction();
 
     return (
         <div tabIndex={0} id="resultsCount" className={styles.terms} aria-label={ariaLabel}>
+            <SkipLink id="resultsCount" autoFocus />
             <div className={styles.term}>
                 <h2>
                     {total} {resultsText.toLowerCase()} for:

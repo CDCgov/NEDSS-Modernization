@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Button } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import { LinkButton } from 'components/button';
+import { LinkButton } from 'design-system/button';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
 
 import styles from './signIn.module.scss';
@@ -19,7 +19,7 @@ export const SignIn = ({ handleWelcomeEvent }: SignInProps) => {
     }, []);
 
     return (
-        <div className="">
+        <div>
             <h2 className={classNames(styles.heading)}>Login</h2>
             <div className={classNames(styles['alert-banner'])}>
                 <AlertMessage type="information" iconless slim>
@@ -29,7 +29,7 @@ export const SignIn = ({ handleWelcomeEvent }: SignInProps) => {
                     </p>
                 </AlertMessage>
             </div>
-            <LinkButton id="login" href="/nbs/login" type="solid" className={styles['sign-in']} target="_self">
+            <LinkButton id="login" href="/nbs/login" className={styles['sign-in']} target="_self">
                 Login to NBS demo site
             </LinkButton>
             <div className={classNames(styles.participation)}>

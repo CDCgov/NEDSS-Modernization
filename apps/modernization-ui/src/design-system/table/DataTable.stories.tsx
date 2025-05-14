@@ -14,22 +14,13 @@ type Person = {
 };
 
 const meta = {
-    title: 'Design System/DataTable',
+    title: 'Design System/Table/DataTable',
     component: DataTable<Person>
 } satisfies Meta<typeof DataTable<Person>>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-// const options: Selectable[] = [
-//     asSelectable('apple', 'Apple'),
-//     asSelectable('banana', 'Banana'),
-//     asSelectable('mango', 'Mango'),
-//     asSelectable('orange', 'Orange'),
-//     asSelectable('watermelon', 'Watermelon')
-// ];
-// const [, banana, mango] = options;
 
 const columns: Column<Person>[] = [
     {
@@ -94,7 +85,7 @@ function sortData<V extends AnyObject>(data: V[], property?: string, direction?:
         return 0;
     });
 }
-// , W extends DataTableProps<V>
+
 const withSortable = <W extends AnyObjectWithData>(Component: ComponentType<W>) => {
     const SortableComponent = (props: W) => {
         const { property, direction } = useSorting();
@@ -105,7 +96,6 @@ const withSortable = <W extends AnyObjectWithData>(Component: ComponentType<W>) 
     SortableComponent.displayName = 'SortableComponent';
     return SortableComponent;
 };
-// const SortableDataTable = withSortable(DataTable);
 
 export const Default: Story = {
     args: {

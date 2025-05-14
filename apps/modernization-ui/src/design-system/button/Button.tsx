@@ -1,72 +1,64 @@
-import { Button as TrussworksButton } from '@trussworks/react-uswds';
 import { ReactNode } from 'react';
-import styles from './Button.module.scss';
-import classNames from 'classnames';
 import { Sizing } from 'design-system/field';
+import { buttonClassnames } from './buttonClassNames';
 
-type ButtonProps = {
+type StandardButtonProps = {
     className?: string;
     icon?: ReactNode;
     children?: ReactNode;
-    outline?: boolean; // Deprecated - replaced by secondary
+    active?: boolean;
     secondary?: boolean;
     destructive?: boolean;
     disabled?: boolean;
-    type?: 'button' | 'submit' | 'reset';
     sizing?: Sizing;
-    unstyled?: boolean;
-    unpadded?: boolean;
+    tertiary?: boolean;
     labelPosition?: 'left' | 'right';
+};
+
+type ButtonProps = {
+    /** Deprecated - replaced by secondary */
+    outline?: boolean;
+    /** Deprecated - replaced by tertiary */
+    unstyled?: boolean;
     onClick?: () => void;
-} & JSX.IntrinsicElements['button'];
+} & StandardButtonProps &
+    JSX.IntrinsicElements['button'];
 
 const Button = ({
     className,
+    sizing,
     type = 'button',
     icon,
-    unpadded,
+    labelPosition = 'right',
+    active,
+    disabled,
+    tertiary,
+    secondary,
+    destructive,
+    outline,
+    unstyled,
     children,
-    outline = false,
-    secondary = false,
-    destructive = false,
-    unstyled = false,
-    labelPosition = 'left',
-    sizing,
     ...defaultProps
 }: ButtonProps) => {
-    const isIconOnly = icon && !children;
-    const isSecondary = secondary || outline;
-    const classesArray = classNames(className, sizing && styles[sizing], {
-        [styles.destructive]: destructive,
-        [styles.secondary]: isSecondary,
-        [styles.icon]: isIconOnly,
-        [styles.unpadded]: unpadded
+    const classes = buttonClassnames({
+        className,
+        sizing,
+        icon,
+        labelPosition,
+        active,
+        tertiary: tertiary || unstyled,
+        secondary: secondary || outline,
+        destructive,
+        children
     });
 
     return (
-        <TrussworksButton
-            className={classNames(classesArray, styles['button-component'])}
-            {...defaultProps}
-            type={type}
-            unstyled={unstyled}
-            size={isIconOnly ? 'big' : undefined}>
-            {labelPosition === 'left' && children && icon ? (
-                <>
-                    <span>{children}</span>
-                    {icon}
-                </>
-            ) : null}
-            {labelPosition === 'right' && children && icon ? (
-                <>
-                    {icon}
-                    <span>{children}</span>
-                </>
-            ) : null}
-            {isIconOnly ? icon : null}
-            {children && !icon ? children : null}
-        </TrussworksButton>
+        <button className={classes} {...defaultProps} type={type} disabled={disabled}>
+            {icon}
+            {children}
+        </button>
     );
 };
 
 export { Button };
-export type { ButtonProps };
+export type { ButtonProps, StandardButtonProps };

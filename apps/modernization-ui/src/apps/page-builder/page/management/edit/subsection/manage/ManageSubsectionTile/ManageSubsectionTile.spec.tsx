@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { PagesSubSection, PagesResponse } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { ManageSubsectionTile } from './ManageSubsectionTile';
 
 describe('when ReorderSubsection renders', () => {

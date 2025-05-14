@@ -1,17 +1,7 @@
-@use 'styles/buttons';
+.link {
+    text-decoration: none;
 
-a {
-    margin: 0 !important;
-    
-    &.small {
-        @extend %button-small;
-    }
-
-    &.medium {
-        @extend %button-medium;
-    }
-
-    &.large {
-        @extend %button-large;
+    &:hover {
+        text-decoration: none;
     }
 }

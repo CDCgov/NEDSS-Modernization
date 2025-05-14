@@ -1,8 +1,9 @@
+import { FeatureGuard } from 'feature';
+import { PageTitle } from 'page';
 import { MatchConfigurationLandingPage } from './configuration/MatchConfigurationLandingPage';
 import { DataElementConfig } from './data-elements/DataElementConfig';
-import { FeatureGuard } from 'feature';
+import { MergeDetails } from './patient-merge/details/MergeDetails';
 import { MergeLanding } from './patient-merge/landing/MergeLanding';
-import { PageTitle } from 'page';
 
 const routing = [
     {
@@ -31,6 +32,16 @@ const routing = [
             <FeatureGuard guard={(features) => features?.deduplication?.merge.enabled}>
                 <PageTitle title="Patient Merge">
                     <MergeLanding />
+                </PageTitle>
+            </FeatureGuard>
+        )
+    },
+    {
+        path: '/deduplication/merge/:patientId',
+        element: (
+            <FeatureGuard guard={(features) => features?.deduplication?.merge.enabled}>
+                <PageTitle title="Patient matches requiring review">
+                    <MergeDetails />
                 </PageTitle>
             </FeatureGuard>
         )

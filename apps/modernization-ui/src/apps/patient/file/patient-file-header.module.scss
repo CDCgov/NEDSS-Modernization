@@ -6,6 +6,8 @@
     justify-content: space-between;
     align-items: center;
 
+    gap: 0.5rem;
+
     padding: 1rem;
 
     @extend %thin-bottom;
@@ -14,11 +16,41 @@
 
     .title {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        h1 {
+            flex-basis: 1;
+        }
+
+        .values {
+            font-size: 1.375rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+
+            .value {
+                min-width: fit-content;
+
+                &::before {
+                    content: '|';
+
+                    padding-right: 0.5rem;
+                    color: colors.$base-light;
+                }
+
+                &.inactive {
+                    color: colors.$error-dark;
+                    font-weight: 700;
+                }
+            }
+        }
     }
 
     .actions {
+        flex-shrink: 0;
+
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -28,17 +60,5 @@
             background: none !important;
             box-shadow: inset 0 0 0 2px colors.$disabled !important;
         }
-    }
-}
-
-.value {
-    font-size: 1.375rem;
-
-    &::before {
-        content: '|';
-
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        color: colors.$base-light;
     }
 }

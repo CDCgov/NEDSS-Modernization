@@ -6,7 +6,7 @@ import { ClassicButton } from 'classic';
 import { NavLinkButton } from 'design-system/button';
 import { Heading } from 'components/heading';
 import { FeatureToggle } from 'feature';
-import { LinkButton } from 'components/button';
+import { LinkButton } from 'design-system/button';
 import { permissions, Permitted } from 'libs/permission';
 
 type Props = {
@@ -39,7 +39,7 @@ const PatientCreatedPanel = ({ created }: Props) => (
                 <FeatureToggle
                     guard={(features) => features?.patient?.file.enabled}
                     fallback={
-                        <LinkButton type="solid" target="_self" href={`/nbs/api/patient/${created.id}/file/redirect`}>
+                        <LinkButton target="_self" href={`/nbs/api/patient/${created.id}/file/redirect`}>
                             View patient
                         </LinkButton>
                     }>

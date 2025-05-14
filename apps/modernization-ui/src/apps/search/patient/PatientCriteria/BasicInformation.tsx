@@ -10,12 +10,14 @@ import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteri
 import { Permitted } from 'libs/permission';
 import { searchableGenders } from './searchableGenders';
 import { TextInputField } from 'design-system/input';
+import { SkipLink } from 'SkipLink';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control, clearErrors } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     return (
         <SearchCriteria sizing={sizing}>
+            <SkipLink id="name.lastOperator" />
             <Controller
                 control={control}
                 name="name.last"
