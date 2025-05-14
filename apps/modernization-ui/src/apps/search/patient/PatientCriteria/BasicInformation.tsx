@@ -10,21 +10,14 @@ import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteri
 import { Permitted } from 'libs/permission';
 import { searchableGenders } from './searchableGenders';
 import { TextInputField } from 'design-system/input';
-import { useSkipLink } from 'SkipLink/SkipLinkContext';
-import { useEffect } from 'react';
+import { SkipLink } from 'SkipLink';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control, clearErrors } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
-    const { skipTo, remove } = useSkipLink();
-
-    useEffect(() => {
-        skipTo('name.lastOperator');
-
-        return () => remove('name.lastOperator');
-    }, []);
 
     return (
         <SearchCriteria sizing={sizing}>
+            <SkipLink id="name.lastOperator" />
             <Controller
                 control={control}
                 name="name.last"
