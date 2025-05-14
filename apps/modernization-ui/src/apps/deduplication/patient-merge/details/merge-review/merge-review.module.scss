@@ -1,0 +1,30 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.mergeReview {
+    header {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem;
+        background-color: colors.$base-white;
+        @extend %thin-bottom;
+
+        .buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1rem 1rem 6.25rem 1rem;
+
+        .infoText {
+            color: var colors.$base-darkest;
+            font-size: 0.875rem;
+            line-height: 1.4175rem;
+        }
+    }
+}
