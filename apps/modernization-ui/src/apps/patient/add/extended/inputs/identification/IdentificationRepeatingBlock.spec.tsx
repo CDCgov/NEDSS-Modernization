@@ -1,16 +1,6 @@
 import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
 import { IdentificationRepeatingBlock, IdentificationRepeatingBlockProps } from './IdentificationRepeatingBlock';
-import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
-
-const mockPatientIdentificationCodedValues: PatientIdentificationCodedValues = {
-    types: [{ name: 'Account number', value: 'AN' }],
-    authorities: [{ name: 'Assigning auth', value: 'AA' }]
-};
-
-jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValues', () => ({
-    usePatientIdentificationCodedValues: () => mockPatientIdentificationCodedValues
-}));
 
 const Fixture = ({ values, onChange = jest.fn(), isDirty = jest.fn() }: Partial<IdentificationRepeatingBlockProps>) => (
     <IdentificationRepeatingBlock id="identifications" values={values} onChange={onChange} isDirty={isDirty} />

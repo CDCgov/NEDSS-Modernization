@@ -1,9 +1,9 @@
 import { Controller, useFormContext } from 'react-hook-form';
+import { Permitted } from 'libs/permission';
 import { GeneralInformationEntry } from '../entry';
 import { NumericInput } from 'design-system/input';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { usePatientProfilePermissions } from 'apps/patient/profile/permission';
 import { useGeneralCodedValues } from './useGeneralCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
@@ -16,7 +16,6 @@ const ENTRY_FIELD_PLACEHOLDER = '';
 
 export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<{ general: GeneralInformationEntry }>();
-    const { hivAccess } = usePatientProfilePermissions();
     const coded = useGeneralCodedValues();
 
     return (
@@ -185,7 +184,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                     />
                 )}
             />
-            {hivAccess && (
+            <Permitted permission="HIVQUESTIONS-GLOBAL">
                 <Controller
                     control={control}
                     name="general.stateHIVCase"
@@ -208,7 +207,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         />
                     )}
                 />
-            )}
+            </Permitted>
         </section>
     );
 };

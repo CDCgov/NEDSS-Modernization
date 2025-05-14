@@ -3,17 +3,6 @@ import { NameEntry } from 'apps/patient/data/name';
 import { NameEntryView } from './NameEntryView';
 import { asSelectable } from 'options/selectable';
 
-const mockPatientNameCodedValues = {
-    types: [{ name: 'Adopted name', value: 'AN' }],
-    prefixes: [{ name: 'Miss', value: 'MS' }],
-    suffixes: [{ name: 'Sr.', value: 'SR' }],
-    degrees: [{ name: 'BA', value: 'BA' }]
-};
-
-jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
-    usePatientNameCodedValues: () => mockPatientNameCodedValues
-}));
-
 const entry: NameEntry = {
     asOf: '12/25/2020',
     type: asSelectable('AN', 'Adopted name'),

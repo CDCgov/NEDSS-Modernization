@@ -1,18 +1,8 @@
 import { render } from '@testing-library/react';
-import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
 import {
     BasicIdentificationRepeatingBlock,
     BasicIdentificationRepeatingBlockProps
 } from './BasicIdentificationRepeatingBlock';
-
-const mockPatientIdentificationCodedValues: PatientIdentificationCodedValues = {
-    types: [{ name: 'Account number', value: 'AN' }],
-    authorities: [{ name: 'Assigning auth', value: 'AA' }]
-};
-
-jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValues', () => ({
-    usePatientIdentificationCodedValues: () => mockPatientIdentificationCodedValues
-}));
 
 const Fixture = ({
     values,
