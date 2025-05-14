@@ -158,14 +158,6 @@ const fallbackComparator = (left: any, right: any): number => {
     }
 };
 
-// TODO: don't need jsdoc if not exporting !!
-/**
- * Returns the appropriate comparator function based on the provided comparator name and property.
- * @template T The type of the object being compared. For example, `Person`.
- * @param {ComparatorName} name The name of the comparator to use.
- * @param {keyof T} property The property of the object to compare.
- * @return {Comparator<T>} The comparator function.
- */
 const resolveComparator = <T>(type: ComparatorType | undefined, property: keyof T): Comparator<T> => {
     switch (type) {
         case 'alpha':

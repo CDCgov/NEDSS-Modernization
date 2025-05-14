@@ -2,13 +2,6 @@ import { ComponentType } from 'react';
 import { maybeSortData, useSorting, SortingProvider } from 'sorting';
 import { DataTable, DataTableProps } from './DataTable';
 
-// export type SortableDataTableProps<T> = DataTableProps<T> & {
-//     comparator?: (a: T, b: T) => number;
-// };
-
-// export const sortData = <T,>(data: T[], property: keyof T, direction: Direction | undefined): T[] =>
-//     investigations.slice().sort(withDirection(resolveComparator(property), type));
-
 export const withSortable = <T,>(Component: ComponentType<DataTableProps<T>>) => {
     const SortableComponent = (props: DataTableProps<T>) => {
         const { property, direction } = useSorting();
@@ -18,12 +11,6 @@ export const withSortable = <T,>(Component: ComponentType<DataTableProps<T>>) =>
         const sortedData = maybeSortData(props.data, comparator, property as keyof T, direction);
         return <Component {...props} data={sortedData} />;
     };
-
-    // const WrappedSortableComponent: FC<DataTableProps<T>> = (props: DataTableProps<T>) => (
-    //     <SortingProvider appendToUrl={false}>
-    //         <SortableComponent {...props} />
-    //     </SortingProvider>
-    // );
 
     SortableComponent.displayName = 'SortableComponent';
     return SortableComponent;
