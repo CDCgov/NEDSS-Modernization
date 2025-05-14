@@ -3,7 +3,7 @@ import styles from './managesubsectiontile.module.scss';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
 import { Icon, Button } from '@trussworks/react-uswds';
 import { useState } from 'react';
-import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
+import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
 
 type ManageSubsectionTileProps = {
     subsection: PagesSubSection;

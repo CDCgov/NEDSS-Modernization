@@ -7,7 +7,7 @@ import { AddSection } from './AddSection';
 import { AlertInLineProps } from './ManageSectionModal';
 import { ManageSectionTile } from './ManageSectionTile/ManageSectionTile';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 
 type ManageSectionProps = {
     pageId: number;

@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { ReorderQuestion } from './ReorderQuestion';
 import { PagesQuestion, PagesResponse } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 
 describe('when ReorderQuestion renders', () => {
     const content: PagesResponse = {
