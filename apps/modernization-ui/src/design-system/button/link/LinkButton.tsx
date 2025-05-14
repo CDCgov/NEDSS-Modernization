@@ -1,38 +1,51 @@
-import { ReactNode } from 'react';
-import classnames from 'classnames';
-import { Sizing } from 'design-system/field';
+import classNames from 'classnames';
+import { StandardButtonProps } from '../Button';
+import { buttonClassnames } from '../buttonClassNames';
+
 import styles from './link-button.module.scss';
 
-type Props = {
-    href: string;
-    label?: string;
-    type?: 'outline' | 'solid';
-    sizing?: Sizing;
-    children: ReactNode;
-} & JSX.IntrinsicElements['a'];
+type InternalLinkProps = { href: string } & Omit<JSX.IntrinsicElements['a'], 'href'>;
+
+type LinkButtonProps = InternalLinkProps & StandardButtonProps;
 
 const LinkButton = ({
-    type = 'outline',
     href,
-    label,
-    className,
-    children,
     target = '_blank',
     rel = 'noreferrer',
+    className,
     sizing,
+    icon,
+    labelPosition = 'right',
+    active,
+    tertiary,
+    secondary,
+    destructive,
+    children,
     ...defaultProps
-}: Props) => (
+}: LinkButtonProps) => (
     <a
-        className={classnames('usa-button', className, sizing && styles[sizing], {
-            'usa-button--outline': type === 'outline'
-        })}
+        className={classNames(
+            styles.link,
+            buttonClassnames({
+                className,
+                sizing,
+                icon,
+                labelPosition,
+                active,
+                tertiary,
+                secondary,
+                destructive,
+                children
+            })
+        )}
         href={href}
         target={target}
         rel={rel}
-        aria-label={label}
         {...defaultProps}>
+        {icon}
         {children}
     </a>
 );
 
 export { LinkButton };
+export type { LinkButtonProps };

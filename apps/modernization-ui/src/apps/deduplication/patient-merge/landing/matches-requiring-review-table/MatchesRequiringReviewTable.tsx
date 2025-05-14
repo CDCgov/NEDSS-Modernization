@@ -16,7 +16,7 @@ const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
 
 export const MatchesRequiringReviewTable = () => {
     return (
-        <PaginationProvider>
+        <PaginationProvider pageSize={20}>
             <SortingProvider>
                 <SortableMatchesRequiringReviewTable />
             </SortingProvider>
@@ -106,7 +106,9 @@ const SortableMatchesRequiringReviewTable = () => {
 
     return (
         <div className={styles.matchesRequiringReviewTable}>
-            <DataTable<MatchRequiringReview> id="review-table" columns={columns} data={response.matches} />
+            <div className={styles.tableWrapper}>
+                <DataTable<MatchRequiringReview> id="review-table" columns={columns} data={response.matches} />
+            </div>
             <Shown when={page.total > 0}>
                 <div className={styles.pagination}>
                     <SearchResultPageSizeSelect

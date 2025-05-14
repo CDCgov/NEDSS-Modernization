@@ -10,7 +10,7 @@ import {
 } from 'apps/page-builder/page/management';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { Loading } from 'components/Spinner';
-import { LinkButton } from 'components/button';
+import { LinkButton } from 'design-system/button';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { ConfirmationModal } from 'confirmation';
 import { useEffect, useRef, useState } from 'react';
@@ -158,7 +158,6 @@ const PreviewPageContent = () => {
                             <LinkButton
                                 href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}
                                 className={styles.link}
-                                target="_blank"
                                 rel="noopener noreferrer"
                                 data-tooltip-position="top"
                                 aria-label="Preview in NBS Classic">
@@ -168,7 +167,6 @@ const PreviewPageContent = () => {
                                 <LinkButton
                                     href={`https://app.int1.nbspreview.com/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true`}
                                     className={styles.link}
-                                    target="_blank"
                                     rel="noopener noreferrer"
                                     data-tooltip-position="top"
                                     aria-label="Page porting">
@@ -178,7 +176,6 @@ const PreviewPageContent = () => {
                             <LinkButton
                                 href={`/nbs/page-builder/api/v1/pages/${page.id}/print`}
                                 className={styles.link}
-                                target="_blank"
                                 rel="noopener noreferrer"
                                 data-tooltip-position="top"
                                 aria-label="Print this page">

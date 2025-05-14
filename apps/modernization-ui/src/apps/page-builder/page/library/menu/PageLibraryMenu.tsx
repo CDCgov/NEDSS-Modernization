@@ -1,7 +1,7 @@
-import { Icon } from '@trussworks/react-uswds';
 import { OverlayPanel } from 'overlay';
 import { Filter, FilterPanel, Property } from 'filters';
-import { LinkButton, Button } from 'components/button';
+import { Icon } from 'design-system/icon';
+import { LinkButton, Button } from 'design-system/button';
 import { Search } from 'components/Search';
 
 import styles from './page-library-menu.module.scss';
@@ -28,10 +28,9 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                 toggle={() => (
                     <Button
                         id="filter-button"
-                        type="button"
                         onClick={() => setOverlayVisible(!overlayVisible)}
-                        outline
-                        icon={<Icon.FilterAlt />}
+                        secondary
+                        icon={<Icon name="filter_alt" />}
                         labelPosition="left"
                         className={styles.filterButton}>
                         Filter
@@ -69,8 +68,8 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     type="button"
                     onClick={onDownloadPdf}
                     className={styles.icon}
-                    icon={<Icon.Print data-testid="print-icon" />}
-                    outline
+                    icon={<Icon name="print" />}
+                    secondary
                 />
 
                 <Button
@@ -78,10 +77,9 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     aria-label="Download as csv"
                     type="button"
                     className={styles.icon}
-                    outline
+                    secondary
                     onClick={onDownloadCsv}
-                    data-testid="file-download"
-                    icon={<Icon.FileDownload />}
+                    icon={<Icon name="file_download" />}
                 />
             </menu>
         </section>
