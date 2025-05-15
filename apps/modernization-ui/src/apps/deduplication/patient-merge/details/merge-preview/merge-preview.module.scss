@@ -1,0 +1,18 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.mergePreview {
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: colors.$base-white;
+    @extend %thin-bottom;
+
+    .buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+}

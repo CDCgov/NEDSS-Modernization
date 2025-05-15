@@ -1,10 +1,12 @@
 import { render } from '@testing-library/react';
 import { MergeReview } from './MergeReview';
 import { MemoryRouter } from 'react-router';
+import { useState } from "react";
 
+const [pageState, setPageState] = useState<'review' | 'preview'>('review');
 const Fixture = () => (
     <MemoryRouter>
-        <MergeReview />
+        <MergeReview onPreviewClick={() => setPageState('preview')} />
     </MemoryRouter>
 );
 describe('MergeReview', () => {
