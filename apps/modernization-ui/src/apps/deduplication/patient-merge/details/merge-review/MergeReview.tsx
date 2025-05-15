@@ -8,7 +8,7 @@ export const MergeReview = () => {
     return (
         <div className={styles.mergeReview}>
             <header>
-                <Heading level={1}>Matches requiring review</Heading>
+                <Heading level={1}>Patient matches requiring review</Heading>
                 <div className={styles.buttons}>
                     <Button secondary onClick={() => nav('/deduplication/merge')}>
                         Back

@@ -38,6 +38,6 @@ describe('MergeDetails', () => {
     it('should default to review display', () => {
         const { getByText } = render(<Fixture />);
 
-        expect(getByText('Matches requiring review')).toBeInTheDocument();
+        expect(getByText('Patient matches requiring review')).toBeInTheDocument();
     });
 });
