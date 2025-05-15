@@ -19,8 +19,8 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
         "nbs.gateway.modernization.service=localhost:10001",
-        "nbs.gateway.deduplication.service=localhost:10002",
-        "nbs.gateway.deduplication.enabled=false"
+        "nbs.gateway.deduplication.api.service=localhost:10002",
+        "nbs.gateway.deduplication.api.enabled=false"
     })
 class DeduplicationAPIRouteLocatorConfigurationDisabledTest {
 
