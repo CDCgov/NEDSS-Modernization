@@ -60,7 +60,7 @@ const SearchLayout = <R,>({
             <FeatureToggle
                 guard={(features) => features?.search?.events?.enabled}
                 fallback={<SearchNavigation className={styles.navigation} actions={actions} />}>
-                <PatientSearchHeader className={styles.navigation} actions={actions} />
+                <PatientSearchHeader className={styles.navigation} />
             </FeatureToggle>
 
             <div className={styles.content}>
@@ -105,6 +105,9 @@ const SearchLayout = <R,>({
                     </Shown>
                 </div>
             </div>
+            <Shown when={!!actions}>
+                <div className={styles.actionButtons}>{actions?.()}</div>
+            </Shown>
         </section>
     );
 };
