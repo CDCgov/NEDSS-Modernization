@@ -1,50 +1,49 @@
 import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
+import { PatientInvestigation } from 'generated/graphql/schema';
 // import { useFindOpenInvestigations } from '../../patientData/useFindOpenInvestigations';
 // import { usePatient } from '../../usePatient';
 
-type Investigation = {
-    investigationId: string;
-    startDate: Date;
-    condition: string;
-    caseStatus: string;
-    notification: string;
-    jurisdiction: string;
-    investigator: string;
-    coinfectionId: string;
-};
-
-const sampleData: Investigation[] = [
+const sampleData: PatientInvestigation[] = [
     {
-        investigationId: 'INV001',
-        startDate: new Date('2023-01-01'),
+        investigation: 'INV001',
+        startedOn: new Date('2023-01-01'),
         condition: 'Influenza',
         caseStatus: 'Confirmed',
         notification: 'Sent',
         jurisdiction: 'New York',
         investigator: 'Dr. Smith',
-        coinfectionId: 'CO001'
+        coInfection: 'CO001',
+        comparable: true,
+        event: 'EVENT001',
+        status: 'Open'
     },
     {
-        investigationId: 'INV002',
-        startDate: new Date('2023-02-15'),
+        investigation: 'INV002',
+        startedOn: new Date('2023-02-15'),
         condition: 'COVID-19',
         caseStatus: 'Probable',
         notification: 'Pending',
         jurisdiction: 'California',
         investigator: 'Dr. Johnson',
-        coinfectionId: 'CO002'
+        coInfection: 'CO002',
+        comparable: true,
+        event: 'EVENT002',
+        status: 'Open'
     },
     {
-        investigationId: 'INV003',
-        startDate: new Date('2023-03-10'),
+        investigation: 'INV003',
+        startedOn: new Date('2023-03-10'),
         condition: 'Measles',
         caseStatus: 'Suspected',
         notification: 'Not Sent',
         jurisdiction: 'Texas',
         investigator: 'Dr. Lee',
-        coinfectionId: 'CO003'
+        coInfection: 'CO003',
+        comparable: true,
+        event: 'EVENT003',
+        status: 'Open'
     }
 ];
 
@@ -72,38 +71,38 @@ const OpenInvestigationsCard = () => {
         { ...COINFECTION_ID, moveable: true, toggleable: true }
     ];
 
-    const columns: Column<Investigation>[] = [
+    const columns: Column<PatientInvestigation>[] = [
         {
             ...INVESTIGATION_ID,
-            render: (value: Investigation) => <a href={`#${value.investigationId}`}>{value.investigationId}</a> // render link
+            render: (value: PatientInvestigation) => <a href={`#${value.investigation}`}>{value.investigation}</a> // render link
         },
         {
             ...START_DATE,
-            render: (value: Investigation) => value.startDate.toLocaleDateString()
+            render: (value: PatientInvestigation) => value.startedOn.toLocaleDateString()
         },
         {
             ...CONDITION,
-            render: (value: Investigation) => value.condition
+            render: (value: PatientInvestigation) => value.condition
         },
         {
             ...CASE_STATUS,
-            render: (value: Investigation) => value.caseStatus
+            render: (value: PatientInvestigation) => value.caseStatus
         },
         {
             ...NOTIFICATION,
-            render: (value: Investigation) => value.notification
+            render: (value: PatientInvestigation) => value.notification
         },
         {
             ...JURISDICTION,
-            render: (value: Investigation) => value.jurisdiction
+            render: (value: PatientInvestigation) => value.jurisdiction
         },
         {
             ...INVESTIGATOR,
-            render: (value: Investigation) => value.investigator
+            render: (value: PatientInvestigation) => value.investigator
         },
         {
             ...COINFECTION_ID,
-            render: (value: Investigation) => value.coinfectionId
+            render: (value: PatientInvestigation) => value.coInfection
         }
     ];
 
