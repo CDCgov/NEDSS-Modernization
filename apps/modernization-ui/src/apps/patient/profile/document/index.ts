@@ -1,1 +1,0 @@
-export { PatientProfileDocuments } from './PatientProfileDocuments';
