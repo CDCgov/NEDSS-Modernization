@@ -10,7 +10,7 @@ const Fixture = () => (
 describe('MergeReview', () => {
     it('should display proper header', () => {
         const { getByRole } = render(<Fixture />);
-        expect(getByRole('heading')).toHaveTextContent('Matches requiring review');
+        expect(getByRole('heading')).toHaveTextContent('Patient matches requiring review');
     });
 
     it('should display buttons in header', () => {
