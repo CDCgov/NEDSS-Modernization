@@ -2,7 +2,7 @@ import { ComponentType } from 'react';
 import { maybeSortData, useSorting, SortingProvider } from 'sorting';
 import { DataTable, DataTableProps } from './DataTable';
 
-export const withSortable = <T,>(Component: ComponentType<DataTableProps<T>>) => {
+const withSortable = <T,>(Component: ComponentType<DataTableProps<T>>) => {
     const SortableComponent = (props: DataTableProps<T>) => {
         const { property, direction } = useSorting();
         const column = props.columns.find((column) => column.id === property);
