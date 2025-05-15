@@ -1,6 +1,6 @@
-package gov.cdc.nbs.support.programarea;
+package gov.cdc.nbs.testing.authorization.programarea;
 
-import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
+import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;

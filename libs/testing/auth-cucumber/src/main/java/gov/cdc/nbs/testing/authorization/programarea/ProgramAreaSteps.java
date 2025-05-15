@@ -1,4 +1,4 @@
-package gov.cdc.nbs.support.programarea;
+package gov.cdc.nbs.testing.authorization.programarea;
 
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
@@ -21,7 +21,7 @@ public class ProgramAreaSteps {
     this.mother.create(name);
   }
 
-  @ParameterType(name = "programArea", value = ".*")
+  @ParameterType(name = "programArea", value = "\"?([\\w ]*)\"?")
   public ProgramAreaIdentifier program_area(final String value) {
     return resolver.resolve(value).orElse(null);
   }
