@@ -88,6 +88,11 @@ describe('DeleteAction', () => {
         await user.hover(deleteButton);
 
         expect(
+            getByText('This patient file has associated event records.', {
+                exact: false
+            })
+        ).toBeInTheDocument();
+        expect(
             getByText('The file cannot be deleted until all associated event records have been deleted.', {
                 exact: false
             })
