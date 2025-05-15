@@ -2,13 +2,9 @@ import { Config } from 'config';
 import { PatientInvestigation } from 'generated/graphql/schema';
 import { useEffect, useState } from 'react';
 
-export type PatientOpenInvestigationsResponse = {
-    patientOpenInvestigations: PatientInvestigation[];
-};
-
 export const useFindOpenInvestigations = (patientId: string) => {
     const [loading, setLoading] = useState(false);
-    const [response, setResponse] = useState<PatientOpenInvestigationsResponse>({ patientOpenInvestigations: [] });
+    const [response, setResponse] = useState<PatientInvestigation[]>([]);
     const [error, setError] = useState<string | undefined>(undefined);
 
     useEffect(() => {

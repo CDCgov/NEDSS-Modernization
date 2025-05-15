@@ -1,8 +1,8 @@
 import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { useFindOpenInvestigations } from '../../patientData/useFindOpenInvestigations';
-import { usePatient } from '../../usePatient';
+// import { useFindOpenInvestigations } from '../../patientData/useFindOpenInvestigations';
+// import { usePatient } from '../../usePatient';
 
 type Investigation = {
     investigationId: string;
@@ -49,8 +49,8 @@ const sampleData: Investigation[] = [
 ];
 
 const OpenInvestigationsCard = () => {
-    const patient = usePatient();
-    useFindOpenInvestigations(patient.id.toString());
+    // const patient = usePatient();
+    // const { response } = useFindOpenInvestigations(patient.id.toString());
 
     const INVESTIGATION_ID = { id: 'patient-file-open-investigations-investigationId', name: 'Investigation ID' };
     const START_DATE = { id: 'patient-file-open-investigations-startDate', name: 'Start date' };
