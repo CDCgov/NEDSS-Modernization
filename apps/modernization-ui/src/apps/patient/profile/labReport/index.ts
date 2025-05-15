@@ -1,1 +1,0 @@
-export { LabReportTable } from './LabReportTable';

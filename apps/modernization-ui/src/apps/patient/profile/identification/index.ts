@@ -1,1 +1,0 @@
-export { IdentificationsTable } from './IdentificationsTable';

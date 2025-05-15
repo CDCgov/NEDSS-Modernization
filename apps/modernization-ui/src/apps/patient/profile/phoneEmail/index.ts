@@ -1,1 +1,0 @@
-export { PhoneAndEmailTable } from './PhoneAndEmailTable';
