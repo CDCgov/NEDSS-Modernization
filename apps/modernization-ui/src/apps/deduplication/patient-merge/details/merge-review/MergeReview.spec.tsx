@@ -1,14 +1,18 @@
+import React from 'react';
 import { render } from '@testing-library/react';
 import { MergeReview } from './MergeReview';
 import { MemoryRouter } from 'react-router';
-import { useState } from "react";
 
-const [pageState, setPageState] = useState<'review' | 'preview'>('review');
-const Fixture = () => (
-    <MemoryRouter>
-        <MergeReview onPreviewClick={() => setPageState('preview')} />
-    </MemoryRouter>
-);
+const Fixture = () => {
+    const [pageState, setPageState] = React.useState<'review' | 'preview'>('review');
+
+    return (
+        <MemoryRouter>
+            <MergeReview onPreviewClick={() => setPageState('preview')} />
+        </MemoryRouter>
+    );
+};
+
 describe('MergeReview', () => {
     it('should display proper header', () => {
         const { getByRole } = render(<Fixture />);
