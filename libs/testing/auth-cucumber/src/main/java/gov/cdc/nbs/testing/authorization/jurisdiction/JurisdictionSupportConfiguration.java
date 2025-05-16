@@ -1,4 +1,4 @@
-package gov.cdc.nbs.support.jurisdiction;
+package gov.cdc.nbs.testing.authorization.jurisdiction;
 
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;

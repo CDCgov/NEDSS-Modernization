@@ -31,4 +31,5 @@ dependencies {
     implementation project(':testing-auth')
 
     implementation libs.cucumber.java
+    implementation libs.cucumber.spring
 }

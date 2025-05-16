@@ -1,9 +1,9 @@
 package gov.cdc.nbs.event.report.lab;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
+import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
-import gov.cdc.nbs.support.programarea.ProgramAreaIdentifier;
+import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
