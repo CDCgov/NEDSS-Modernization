@@ -1,55 +1,14 @@
+import { ClassicLink } from 'classic';
 import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { PatientInvestigation } from 'generated/graphql/schema';
-// import { useFindOpenInvestigations } from '../../patientData/useFindOpenInvestigations';
-// import { usePatient } from '../../usePatient';
-
-const sampleData: PatientInvestigation[] = [
-    {
-        investigation: 'INV001',
-        startedOn: new Date('2023-01-01'),
-        condition: 'Influenza',
-        caseStatus: 'Confirmed',
-        notification: 'Sent',
-        jurisdiction: 'New York',
-        investigator: 'Dr. Smith',
-        coInfection: 'CO001',
-        comparable: true,
-        event: 'EVENT001',
-        status: 'Open'
-    },
-    {
-        investigation: 'INV002',
-        startedOn: new Date('2023-02-15'),
-        condition: 'COVID-19',
-        caseStatus: '',
-        notification: 'Pending',
-        jurisdiction: 'California',
-        investigator: 'Dr. Johnson',
-        coInfection: 'CO002',
-        comparable: true,
-        event: 'EVENT002',
-        status: 'Open'
-    },
-    {
-        investigation: 'INV003',
-        startedOn: new Date('2023-03-10'),
-        condition: 'Measles',
-        caseStatus: 'Suspected',
-        notification: 'Not Sent',
-        jurisdiction: 'Texas',
-        investigator: 'Dr. Lee',
-        coInfection: 'CO003',
-        comparable: true,
-        event: 'EVENT003',
-        status: 'Open'
-    }
-];
+import { useFindOpenInvestigations } from '../../patientData/useFindOpenInvestigations';
+import { usePatient } from '../../usePatient';
 
 const OpenInvestigationsCard = () => {
-    // const patient = usePatient();
-    // const { response } = useFindOpenInvestigations(patient.id.toString());
+    const patient = usePatient();
+    const { response } = useFindOpenInvestigations(patient.id.toString());
 
     const INVESTIGATION_ID = { id: 'patient-file-open-investigations-investigationId', name: 'Investigation ID' };
     const START_DATE = { id: 'patient-file-open-investigations-startDate', name: 'Start date' };
@@ -74,7 +33,11 @@ const OpenInvestigationsCard = () => {
     const columns: Column<PatientInvestigation>[] = [
         {
             ...INVESTIGATION_ID,
-            render: (value: PatientInvestigation) => <a href={`#${value.investigation}`}>{value.investigation}</a> // render link
+            render: (value: PatientInvestigation) => (
+                <ClassicLink url={`/nbs/api/profile/{patient}/investigation/{investigation}`}>
+                    {value.investigation}
+                </ClassicLink>
+            )
         },
         {
             ...START_DATE,
@@ -106,15 +69,13 @@ const OpenInvestigationsCard = () => {
         }
     ];
 
-    console.log(sampleData);
-
     return (
         <div>
             <TableCard
                 id="patient-file-open-investigations-table-card"
                 title="Open investigations"
-                data={sampleData}
-                defaultCollapsed={sampleData.length > 0 ? false : true}
+                data={response}
+                defaultCollapsed={response.length > 0 ? false : true}
                 columns={columns}
                 columnPreferencesKey="patient-file-open-investigations-table-card-column-preferences"
                 defaultColumnPreferences={columnPreferences}
