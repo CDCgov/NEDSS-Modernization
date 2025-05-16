@@ -1,40 +1,45 @@
 @use 'styles/colors';
 
-.content {
+.summary {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
+    flex-direction: column;
     gap: 1rem;
-    padding: 1rem;
-
-    .summaryItem {
+    .content {
         display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem;
 
-        .summaryLabel {
-            font-size: 0.8125rem;
-            color: colors.$base-dark;
-            text-transform: uppercase;
+        .summaryItem {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .summaryLabel {
+                font-size: 0.8125rem;
+                color: colors.$base-dark;
+                text-transform: uppercase;
+            }
+
+            .summaryContent {
+                font-size: 0.875rem;
+                color: colors.$base-darkest;
+                line-height: 150%;
+            }
         }
 
-        .summaryContent {
-            font-size: 0.875rem;
-            color: colors.$base-darkest;
-            line-height: 150%;
+        .group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 12rem;
         }
-    }
-
-    .group {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        width: 12rem;
-    }
-    .groupID {
-        display: flex;
-        flex-direction: column;
-        width: 10rem;
+        .groupID {
+            display: flex;
+            flex-direction: column;
+            width: 10rem;
+        }
     }
 }
