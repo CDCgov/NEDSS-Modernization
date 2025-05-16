@@ -10,34 +10,61 @@ import { PaginationProvider, Status, usePagination } from 'pagination';
 import { useEffect } from 'react';
 import styles from './matches-requiring-review.module.scss';
 import { Shown } from 'conditional-render';
-import { SortingProvider, useSorting } from 'sorting';
+import { SortingProvider, useSorting, Direction } from 'sorting';
 import { useNavigate } from 'react-router';
 
 const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
 
-export const MatchesRequiringReviewTable = () => {
+export const MatchesRequiringReviewTable = ({ onSortChange }: { onSortChange?: (sort: string) => void }) => {
     return (
         <PaginationProvider pageSize={20}>
             <SortingProvider>
-                <SortableMatchesRequiringReviewTable />
+                <SortableMatchesRequiringReviewTable onSortChange={onSortChange} />
             </SortingProvider>
         </PaginationProvider>
     );
 };
 
-const SortableMatchesRequiringReviewTable = () => {
+type SortableMatchesRequiringReviewTableProps = {
+    onSortChange?: (sort: string) => void;
+};
+
+const SortableMatchesRequiringReviewTable = ({ onSortChange }: SortableMatchesRequiringReviewTableProps) => {
     const nav = useNavigate();
     const { response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
-    const { sorting } = useSorting();
+    const { property, direction } = useSorting();
     const { page, ready, request, resize, firstPage } = usePagination();
+
+    // Helper to convert Direction enum to string 'asc' or 'desc'
+    const fromDirection = (dir: Direction) => {
+        switch (dir) {
+            case Direction.Ascending:
+                return 'asc';
+            case Direction.Descending:
+                return 'desc';
+            default:
+                return undefined;
+        }
+    };
+
+    const sorting =
+        property && direction && direction !== Direction.None
+            ? [{ field: property, direction: fromDirection(direction) }]
+            : [];
+
+    const sortingString = sorting.length > 0 ? `${sorting[0].field},${sorting[0].direction}` : undefined;
 
     useEffect(() => {
         if (page.current === 1) {
-            fetchMatchesRequiringReview(0, page.pageSize, sorting);
+            fetchMatchesRequiringReview(0, page.pageSize, sortingString);
         } else {
             firstPage();
         }
-    }, [sorting]);
+
+        if (onSortChange && sortingString) {
+            onSortChange(sortingString);
+        }
+    }, [sortingString]);
 
     useEffect(() => {
         ready(response.total, Math.max(1, page.current));
@@ -45,7 +72,7 @@ const SortableMatchesRequiringReviewTable = () => {
 
     useEffect(() => {
         if (page.status === Status.Requested) {
-            fetchMatchesRequiringReview(page.current - 1, page.pageSize, sorting);
+            fetchMatchesRequiringReview(page.current - 1, page.pageSize, sortingString);
         }
     }, [page.status]);
 

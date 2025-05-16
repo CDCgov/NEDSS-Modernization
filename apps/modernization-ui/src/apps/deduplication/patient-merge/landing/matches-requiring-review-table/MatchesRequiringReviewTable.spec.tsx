@@ -119,4 +119,24 @@ describe('MatchesRequiringReviewTable', () => {
         expect(tableData[5]).toHaveTextContent('Review');
         expect(within(tableData[5]).getByRole('button')).toBeInTheDocument();
     });
+
+    it('should call onSortChange with correct sort string when sorted (for export)', async () => {
+        const user = userEvent.setup();
+        const onSortChange = jest.fn();
+
+        const { getByText } = render(
+            <MemoryRouter>
+                <PaginationProvider>
+                    <MatchesRequiringReviewTable onSortChange={onSortChange} />
+                </PaginationProvider>
+            </MemoryRouter>
+        );
+
+        await user.click(getByText('Patient ID').children[0]);
+        expect(onSortChange).toHaveBeenLastCalledWith('patient-id,asc');
+
+        await user.click(getByText('Date identified').children[0]);
+        expect(onSortChange).toHaveBeenLastCalledWith('identified,asc');
+    });
+
 });
