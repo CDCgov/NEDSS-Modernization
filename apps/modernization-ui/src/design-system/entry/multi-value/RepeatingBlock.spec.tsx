@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
@@ -287,7 +287,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should display icons in last column of table', () => {
-        const { getAllByRole, debug } = render(
+        render(
             <Fixture
                 values={[
                     {
@@ -299,20 +299,20 @@ describe('RepeatingBlock', () => {
             />
         );
 
-        const iconContainer = getAllByRole('cell')[2].children[0].children[0];
-        expect(iconContainer.children).toHaveLength(3);
-
         // View icon
-        expect(iconContainer.children[0]).toHaveAttribute('aria-label', 'View');
-        expect(iconContainer.children[0]).toHaveAttribute('data-tooltip-position', 'top');
+        const view = screen.getByRole('button', { name: 'View' });
+
+        expect(view).toHaveAttribute('data-tooltip-position', 'top');
 
         // Edit icon
-        expect(iconContainer.children[1]).toHaveAttribute('aria-label', 'Edit');
-        expect(iconContainer.children[1]).toHaveAttribute('data-tooltip-position', 'top');
+        const edit = screen.getByRole('button', { name: 'Edit' });
+
+        expect(edit).toHaveAttribute('data-tooltip-position', 'top');
 
         // Delete icon
-        expect(iconContainer.children[2]).toHaveAttribute('aria-label', 'Delete');
-        expect(iconContainer.children[2]).toHaveAttribute('data-tooltip-position', 'top');
+        const remove = screen.getByRole('button', { name: 'Delete' });
+
+        expect(remove).toHaveAttribute('data-tooltip-position', 'top');
     });
 
     it('should render icons with correct sizing', async () => {
