@@ -106,7 +106,7 @@ const SearchLayout = <R,>({
                 </div>
             </div>
             <Shown when={!!actions}>
-                <div className={styles.actionButtons}>{actions?.()}</div>
+                <div className={styles.actionsContainer}>{actions?.()}</div>
             </Shown>
         </section>
     );
