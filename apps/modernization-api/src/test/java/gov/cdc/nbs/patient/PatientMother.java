@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.data.LimitString;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
@@ -25,6 +26,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Component
 @Transactional
@@ -309,15 +312,35 @@ public class PatientMother {
   public void withRaceIncluding(
       final PatientIdentifier identifier,
       final String race,
-      final String detail) {
+      final String detail
+  ) {
     Person patient = managed(identifier);
+
+    LocalDate asOf = patient.getRace().races()
+        .stream()
+        .filter(r -> Objects.equals(r.getRaceCategoryCd(), race) && Objects.equals(r.getRaceCd(), race))
+        .findFirst()
+        .map(PersonRace::getAsOfDate)
+        .orElseThrow();
+
+    List<String> details =
+        Stream.concat(
+                patient.getRace().races()
+                    .stream()
+                    .filter(r -> !Objects.equals(r.getRaceCategoryCd(), race) && Objects.equals(r.getRaceCd(), race))
+                    .map(PersonRace::getRaceCd),
+                Stream.of(detail)
+            )
+            .toList();
+
+
 
     patient.update(
         new PatientCommand.UpdateRaceInfo(
             identifier.id(),
-            RandomUtil.dateInPast(),
+            asOf,
             race,
-            List.of(detail),
+            details,
             this.settings.createdBy(),
             this.settings.createdOn()));
   }
