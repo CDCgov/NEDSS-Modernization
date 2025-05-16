@@ -106,15 +106,18 @@ const OpenInvestigationsCard = () => {
         }
     ];
 
+    console.log(sampleData);
+
     return (
         <div>
             <TableCard
                 id="patient-file-open-investigations-table-card"
                 title="Open investigations"
-                data={sampleData}
+                data={[]}
                 columns={columns}
                 columnPreferencesKey="patient-file-open-investigations-table-card-column-preferences"
                 defaultColumnPreferences={columnPreferences}
+                noDataFallback
             />
         </div>
     );
