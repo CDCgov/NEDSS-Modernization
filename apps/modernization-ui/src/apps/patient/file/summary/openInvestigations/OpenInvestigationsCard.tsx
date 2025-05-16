@@ -82,7 +82,7 @@ const OpenInvestigationsCard = () => {
         },
         {
             ...CONDITION,
-            render: (value: PatientInvestigation) => value.condition
+            render: (value: PatientInvestigation) => <b>{value.condition}</b>
         },
         {
             ...CASE_STATUS,
