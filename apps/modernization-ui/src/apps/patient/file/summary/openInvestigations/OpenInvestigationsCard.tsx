@@ -114,6 +114,7 @@ const OpenInvestigationsCard = () => {
                 id="patient-file-open-investigations-table-card"
                 title="Open investigations"
                 data={[]}
+                defaultCollapsed={[].length > 0 ? false : true}
                 columns={columns}
                 columnPreferencesKey="patient-file-open-investigations-table-card-column-preferences"
                 defaultColumnPreferences={columnPreferences}
