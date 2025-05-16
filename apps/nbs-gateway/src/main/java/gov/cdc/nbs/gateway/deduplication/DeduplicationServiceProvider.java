@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnExpression("${nbs.gateway.deduplication.api.enabled}")
+@ConditionalOnExpression("${nbs.gateway.deduplication.enabled}")
 public class DeduplicationServiceProvider {
 
   @Bean
-  DeduplicationService deduplicationService(@Value("${nbs.gateway.deduplication.api.uri}") final String host)
+  DeduplicationService deduplicationService(@Value("${nbs.gateway.deduplication.uri}") final String host)
       throws URISyntaxException {
     URI uri = new URI(host);
     return new DeduplicationService(uri);

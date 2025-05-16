@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 
 @Configuration
-@ConditionalOnExpression("${nbs.gateway.deduplication.api.enabled}")
+@ConditionalOnExpression("${nbs.gateway.deduplication.enabled}")
 class DeduplicationAPIRouteLocatorConfiguration {
 
   @Bean
