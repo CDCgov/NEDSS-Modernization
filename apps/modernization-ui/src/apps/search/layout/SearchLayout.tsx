@@ -69,7 +69,7 @@ const SearchLayout = <R,>({
                     contentClassName={styles.criteria}
                     ariaLabel="Search criteria">
                     <div className={styles.inputs}>{criteria()}</div>
-                    <div className={styles.actions}>
+                    <div className={styles.criteriaActions}>
                         <Button type="button" onClick={onSearch} disabled={!searchEnabled} sizing={sizing}>
                             Search
                         </Button>

@@ -43,7 +43,7 @@ $content-height: calc($search-height - $navigation-height - 3rem);
                 padding: 0rem;
             }
 
-            .actions {
+            .criteriaActions {
                 @extend %thin-top;
 
                 height: $actions-height;
