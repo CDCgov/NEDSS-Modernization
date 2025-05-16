@@ -66,16 +66,4 @@ describe('DataTable', () => {
         const tableContainer = container.querySelector('.table');
         expect(tableContainer).toHaveClass('large');
     });
-
-    it('renders with row height constraint by default', () => {
-        const { queryAllByTestId } = render(<DataTable id="test-table" columns={columns} data={data} />);
-        expect(queryAllByTestId('height-constrained')).not.toHaveLength(0);
-    });
-
-    it('renders without row height constraints when specified', () => {
-        const { queryAllByTestId } = render(
-            <DataTable id="test-table" columns={columns} data={data} rowHeightConstrained={false} />
-        );
-        expect(queryAllByTestId('height-constrained')).toHaveLength(0);
-    });
 });

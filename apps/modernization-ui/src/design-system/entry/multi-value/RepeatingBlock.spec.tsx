@@ -287,7 +287,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should display icons in last column of table', () => {
-        const { getAllByRole } = render(
+        const { getAllByRole, debug } = render(
             <Fixture
                 values={[
                     {

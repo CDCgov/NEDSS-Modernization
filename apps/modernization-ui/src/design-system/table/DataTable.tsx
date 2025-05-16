@@ -12,13 +12,16 @@ import { Comparator, ComparatorType } from 'sorting';
 
 type SortIconType = 'default' | 'alpha' | 'numeric';
 
-type Column<V> = {
+type CellValue = string | number | boolean | Date;
+
+type Column<R, C extends CellValue = CellValue> = {
     id: string;
     name: string;
     fixed?: boolean;
     sortable?: boolean;
     className?: string;
-    render: (value: V, index: number) => ReactNode | undefined;
+    render?: (value: R, index: number) => ReactNode | undefined;
+    value?: (row: R) => C | undefined;
     filter?: FilterDescriptor;
     sortIconType?: SortIconType;
     comparator?: ComparatorType | Comparator<V>;
@@ -34,15 +37,7 @@ type DataTableProps<V> = {
     noDataFallback?: boolean;
 };
 
-const DataTable = <V,>({
-    id,
-    className,
-    columns,
-    data,
-    sizing,
-    noDataFallback,
-    rowHeightConstrained = true
-}: DataTableProps<V>) => {
+const DataTable = <V,>({ id, className, columns, data, sizing, noDataFallback }: DataTableProps<V>) => {
     const resolvedClasses = classNames('usa-table--borderless', styles.table, sizing && styles[sizing]);
     return (
         <div id={id} className={resolvedClasses}>
@@ -51,14 +46,7 @@ const DataTable = <V,>({
                 <tbody>
                     <Shown when={data.length > 0} fallback={noDataFallback && <NoDataRow colSpan={columns.length} />}>
                         {data.map((row, index) => (
-                            <DataTableRow
-                                index={index}
-                                row={row}
-                                columns={columns}
-                                sizing={sizing}
-                                heightConstrained={rowHeightConstrained}
-                                key={index}
-                            />
+                            <DataTableRow index={index} row={row} columns={columns} sizing={sizing} key={index} />
                         ))}
                     </Shown>
                 </tbody>
@@ -69,4 +57,4 @@ const DataTable = <V,>({
 
 export { DataTable };
 
-export type { Column, FilterDescriptor, SortIconType, DataTableProps };
+export type { Column, CellValue, FilterDescriptor, SortIconType, DataTableProps };
