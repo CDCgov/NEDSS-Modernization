@@ -2,16 +2,17 @@ import { MatchRequiringReview } from 'apps/deduplication/api/model/MatchRequirin
 import { useMatchesRequiringReview } from 'apps/deduplication/api/useMatchesRequiringReview';
 import { SearchResultPageSizeSelect } from 'apps/search/layout/result/pagination/page-size-select';
 import { SearchResultsShowing } from 'apps/search/layout/result/pagination/showing';
-import { parseISO, format } from 'date-fns';
+import { Loading } from 'components/Spinner';
+import { Shown } from 'conditional-render';
+import { format, parseISO } from 'date-fns';
 import { Button } from 'design-system/button';
 import { Pagination } from 'design-system/pagination';
 import { Column, DataTable } from 'design-system/table';
 import { PaginationProvider, Status, usePagination } from 'pagination';
-import { useEffect } from 'react';
-import styles from './matches-requiring-review.module.scss';
-import { Shown } from 'conditional-render';
-import { SortingProvider, useSorting } from 'sorting';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Direction, SortingProvider, useSorting } from 'sorting';
+import styles from './matches-requiring-review.module.scss';
 
 const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
 
@@ -27,16 +28,23 @@ export const MatchesRequiringReviewTable = () => {
 
 const SortableMatchesRequiringReviewTable = () => {
     const nav = useNavigate();
-    const { response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
-    const { sorting } = useSorting();
+    const { loading, response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
+    const { sorting, sortBy } = useSorting();
     const { page, ready, request, resize, firstPage } = usePagination();
+    // required to prevent toggling through date identified sort triggering default sort
+    const [previousSort, setPreviousSort] = useState<string | undefined>();
 
     useEffect(() => {
-        if (page.current === 1) {
-            fetchMatchesRequiringReview(0, page.pageSize, sorting);
+        if (sorting === undefined) {
+            if (previousSort === 'identified,desc') {
+                sortBy('identified', Direction.Ascending);
+            } else {
+                sortBy('identified', Direction.Descending);
+            }
         } else {
             firstPage();
         }
+        setPreviousSort(sorting);
     }, [sorting]);
 
     useEffect(() => {
@@ -54,6 +62,7 @@ const SortableMatchesRequiringReviewTable = () => {
             id: 'patient-id',
             name: 'Patient ID',
             sortable: true,
+            sortIconType: 'numeric',
             render(match) {
                 return <>{match.patientId}</>;
             }
@@ -62,6 +71,7 @@ const SortableMatchesRequiringReviewTable = () => {
             id: 'name',
             name: 'Person name',
             sortable: true,
+            sortIconType: 'alpha',
             render(match) {
                 return <>{match.patientName}</>;
             }
@@ -70,6 +80,7 @@ const SortableMatchesRequiringReviewTable = () => {
             id: 'created',
             name: 'Date created',
             sortable: true,
+            sortIconType: 'numeric',
             render(match) {
                 return <>{format(parseISO(match.createdDate), DATE_FORMAT)}</>;
             }
@@ -78,6 +89,7 @@ const SortableMatchesRequiringReviewTable = () => {
             id: 'identified',
             name: 'Date identified',
             sortable: true,
+            sortIconType: 'numeric',
             render(match) {
                 return <>{format(parseISO(match.identifiedDate), DATE_FORMAT)}</>;
             }
@@ -86,6 +98,7 @@ const SortableMatchesRequiringReviewTable = () => {
             id: 'count',
             name: 'Number of matching records',
             sortable: true,
+            sortIconType: 'numeric',
             render(match) {
                 return <>{match.numOfMatchingRecords}</>;
             }
@@ -108,6 +121,11 @@ const SortableMatchesRequiringReviewTable = () => {
 
     return (
         <div className={styles.matchesRequiringReviewTable}>
+            <Shown when={loading}>
+                <div className={styles.loadingContainer}>
+                    <Loading center />
+                </div>
+            </Shown>
             <div className={styles.tableWrapper}>
                 <DataTable<MatchRequiringReview> id="review-table" columns={columns} data={response.matches} />
             </div>
