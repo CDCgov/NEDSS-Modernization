@@ -4,16 +4,18 @@ import { Icon } from 'design-system/icon';
 import { MatchesRequiringReviewTable } from './matches-requiring-review-table/MatchesRequiringReviewTable';
 import { useExportMatches } from 'apps/deduplication/api/useExportMatches';
 import styles from './merge-landing.module.scss';
+import { useState } from 'react';
 
 export const MergeLanding = () => {
     const { exportCSV, exportPDF } = useExportMatches();
+    const [sort, setSort] = useState('patient-id,desc');
 
     const handleCSVExport = async () => {
-        await exportCSV();
+        await exportCSV(sort);
     };
 
     const handlePDFExport = async () => {
-        await exportPDF();
+        await exportPDF(sort);
     };
 
     return (
@@ -26,7 +28,7 @@ export const MergeLanding = () => {
                 </div>
             </header>
             <main className={styles.mergeLandingContent}>
-                <MatchesRequiringReviewTable />
+                <MatchesRequiringReviewTable onSortChange={setSort} />
             </main>
         </div>
     );
