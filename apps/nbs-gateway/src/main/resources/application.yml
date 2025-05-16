@@ -19,32 +19,32 @@ spring:
 nbs:
   gateway:
     defaults:
-      protocol: "http"
-    classic: "${nbs.gateway.defaults.protocol}://localhost:7001"
+      protocol: 'http'
+    classic: '${nbs.gateway.defaults.protocol}://localhost:7001'
     home:
       uri: ${nbs.gateway.classic}
-      base: "/nbs/HomePage.do?method=loadHomePage"
+      base: '/nbs/HomePage.do?method=loadHomePage'
     landing:
-      uri: "${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}"
-      base: "/welcome"
+      uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
+      base: '/welcome'
     welcome:
       enabled: true
     ui:
-      service: "localhost:3000"
-      uri: "${nbs.gateway.defaults.protocol}://${nbs.gateway.ui.service}"
+      service: 'localhost:3000'
+      uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.ui.service}'
     modernization:
-      service: "localhost:8080"
-      uri: "${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}"
+      service: 'localhost:8080'
+      uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
     patient:
       search:
         enabled: true
-        service: "localhost:8080"
+        service: 'localhost:8080'
       profile:
         enabled: false
-        service: "localhost:8080"
+        service: 'localhost:8080'
     pagebuilder:
       enabled: false
-      service: "localhost:8095"
+      service: 'localhost:8095'
       page:
         library:
           enabled: false
@@ -55,8 +55,8 @@ nbs:
             enabled: false
     deduplication:
       enabled: false
-      service: "localhost:8083"
-      uri: "${nbs.gateway.defaults.protocol}://${nbs.gateway.deduplication.service}"
+      service: 'localhost:8083'
+      uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.deduplication.service}'
       merge:
         enabled: false
 
