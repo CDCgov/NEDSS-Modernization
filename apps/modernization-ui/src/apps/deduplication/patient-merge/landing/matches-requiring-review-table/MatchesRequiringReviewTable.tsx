@@ -42,7 +42,12 @@ const SortableMatchesRequiringReviewTable = () => {
                 sortBy('identified', Direction.Descending);
             }
         } else {
-            firstPage();
+            if (page.current === 1) {
+                // TODO -- clean that error
+                fetchMatchesRequiringReview(page.current - 1, page.pageSize, sorting);
+            } else {
+                firstPage();
+            }
         }
         setPreviousSort(sorting);
     }, [sorting]);
@@ -63,50 +68,40 @@ const SortableMatchesRequiringReviewTable = () => {
             name: 'Patient ID',
             sortable: true,
             sortIconType: 'numeric',
-            render(match) {
-                return <>{match.patientId}</>;
-            }
+            render: (match) => match.patientId
         },
         {
             id: 'name',
             name: 'Person name',
             sortable: true,
             sortIconType: 'alpha',
-            render(match) {
-                return <>{match.patientName}</>;
-            }
+            render: (match) => match.patientName
         },
         {
             id: 'created',
             name: 'Date created',
             sortable: true,
             sortIconType: 'numeric',
-            render(match) {
-                return <>{format(parseISO(match.createdDate), DATE_FORMAT)}</>;
-            }
+            render: (match) => format(parseISO(match.createdDate), DATE_FORMAT)
         },
         {
             id: 'identified',
             name: 'Date identified',
             sortable: true,
             sortIconType: 'numeric',
-            render(match) {
-                return <>{format(parseISO(match.identifiedDate), DATE_FORMAT)}</>;
-            }
+            render: (match) => format(parseISO(match.identifiedDate), DATE_FORMAT)
         },
         {
             id: 'count',
             name: 'Number of matching records',
             sortable: true,
             sortIconType: 'numeric',
-            render(match) {
-                return <>{match.numOfMatchingRecords}</>;
-            }
+            render: (match) => match.numOfMatchingRecords
         },
         {
             id: 'review',
             name: '',
-            render(match) {
+            render: (match) => {
                 return (
                     <Button
                         sizing="small"

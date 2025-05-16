@@ -1,4 +1,6 @@
 import { Page } from 'pagination';
+import styles from './search-result-showing.module.scss';
+import classNames from 'classnames';
 
 type SearchResultsShowingProps = {
     className?: string;
@@ -13,7 +15,13 @@ const SearchResultsShowing = ({ className, page }: SearchResultsShowingProps) =>
     const last = first + offset;
     const adjustedLast = last > total ? total : last;
 
-    return <div className={className}>{`Showing ${first} to ${adjustedLast} of ${total}`}</div>;
+    return (
+        <div
+            className={classNames(
+                styles.searchResultsShowing,
+                className
+            )}>{`Showing ${first} to ${adjustedLast} of ${total}`}</div>
+    );
 };
 
 export { SearchResultsShowing };
