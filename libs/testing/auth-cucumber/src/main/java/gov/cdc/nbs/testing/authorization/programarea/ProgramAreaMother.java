@@ -1,19 +1,15 @@
 package gov.cdc.nbs.testing.authorization.programarea;
 
-import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
-import jakarta.annotation.PostConstruct;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import jakarta.annotation.PreDestroy;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @ScenarioScope
@@ -22,51 +18,45 @@ public class ProgramAreaMother {
   private static final String DELETE_IN = """
       delete
       from NBS_SRTE.[dbo].Program_area_code
-      where program_area_cd in (:identifiers);
+      where nbs_uid in (:identifiers)
       """;
 
   private static final String CREATE = """
       insert into NBS_SRTE.[dbo].Program_area_code(
         nbs_uid,
-        program_area_cd,
-        program_area_desc_txt
+        prog_area_cd,
+        prog_area_desc_txt
       )
       values (:identifier, :code, :name)
       """;
 
   private final SequentialIdentityGenerator idGenerator;
-  private final NamedParameterJdbcTemplate template;
-  private final Available<JurisdictionIdentifier> available;
-  private final Active<JurisdictionIdentifier> active;
+  private final JdbcClient client;
+  private final Available<ProgramAreaIdentifier> available;
+  private final Active<ProgramAreaIdentifier> active;
+  private final List<Long> identifiers;
 
   ProgramAreaMother(
       final SequentialIdentityGenerator idGenerator,
-      final NamedParameterJdbcTemplate template,
-      final Available<JurisdictionIdentifier> available,
-      final Active<JurisdictionIdentifier> active) {
+      final JdbcClient client,
+      final Available<ProgramAreaIdentifier> available,
+      final Active<ProgramAreaIdentifier> active
+  ) {
     this.idGenerator = idGenerator;
-    this.template = template;
+    this.client = client;
+    this.identifiers = new ArrayList<>();
     this.available = available;
     this.active = active;
   }
 
-  @PostConstruct
+  @PreDestroy
   void reset() {
+    if (!identifiers.isEmpty()) {
+      client.sql(DELETE_IN)
+          .param("identifiers", identifiers)
+          .update();
 
-    List<String> created = this.available.all()
-        .map(JurisdictionIdentifier::code)
-        .toList();
-
-    if (!created.isEmpty()) {
-
-      Map<String, List<String>> parameters = Map.of("identifiers", created);
-
-      template.execute(
-          DELETE_IN,
-          new MapSqlParameterSource(parameters),
-          PreparedStatement::executeUpdate
-      );
-      this.active.reset();
+      this.identifiers.clear();
     }
   }
 
@@ -75,19 +65,15 @@ public class ProgramAreaMother {
     long identifier = idGenerator.next();
     String code = String.valueOf(identifier);
 
-    Map<String, ? extends Serializable> parameters = Map.of(
-        "identifier", identifier,
-        "code", code,
-        "name", name
-    );
+    client.sql(CREATE)
+        .param("identifier", identifier)
+        .param("code", code)
+        .param("name", name)
+        .update();
 
-    template.execute(
-        CREATE,
-        new MapSqlParameterSource(parameters),
-        PreparedStatement::executeUpdate
-    );
+    ProgramAreaIdentifier created = new ProgramAreaIdentifier(identifier, code);
 
-    JurisdictionIdentifier created = new JurisdictionIdentifier(identifier, code);
+    this.identifiers.add(identifier);
 
     this.available.available(created);
     this.active.active(created);

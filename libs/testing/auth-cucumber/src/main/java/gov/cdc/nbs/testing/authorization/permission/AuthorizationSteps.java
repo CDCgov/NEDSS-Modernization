@@ -22,7 +22,7 @@ public class AuthorizationSteps {
   private final AuthorizationRoleMother roleMother;
 
 
-  public AuthorizationSteps(
+  AuthorizationSteps(
       final Active<ActiveUser> activeUser,
       final Available<ActiveUser> users,
       final PermissionSetMother setMother,
@@ -41,7 +41,7 @@ public class AuthorizationSteps {
   }
 
   @Given("I can {string} any {string}")
-  public void the_active_user_can_operate_on_any_object(
+  public void authorize(
       final String operation,
       final String object
   ) {
@@ -55,7 +55,7 @@ public class AuthorizationSteps {
   }
 
   @Given("I can {string} any {string} for {programArea} within all jurisdictions")
-  public void the_active_user_can_operate_on_any_object_for_a_program_area_within_all_jurisdictions(
+  public void authorize(
       final String operation,
       final String object,
       final ProgramAreaIdentifier programArea
@@ -70,7 +70,7 @@ public class AuthorizationSteps {
   }
 
   @Given("I can {string} any {string} for {programArea} in {jurisdiction}")
-  public void the_active_user_can_operate_on_any_object_for_a_program_area_within_a_jurisdiction(
+  public void authorize(
       final String operation,
       final String object,
       final ProgramAreaIdentifier programArea,
@@ -87,7 +87,7 @@ public class AuthorizationSteps {
   }
 
   @Given("I can {string} a shared {string}")
-  public void the_active_user_can_operate_on_a_shared_object(
+  public void shared(
       final String operation,
       final String object
   ) {
@@ -101,7 +101,7 @@ public class AuthorizationSteps {
   }
 
   @Given("I can {string} a shared {string} for {programArea} in {jurisdiction}")
-  public void the_active_user_can_operate_on_a_shared_object_for_a_program_area_within_a_jurisdiction(
+  public void shared(
       final String operation,
       final String object,
       final ProgramAreaIdentifier programArea,
@@ -115,13 +115,13 @@ public class AuthorizationSteps {
   }
 
   @Given("the {string} user can {string} any {string} for {programArea} within all jurisdictions")
-  public void the_user_can_operate_on_any_object_for_a_program_area_within_all_jurisdictions(
+  public void shared(
       final String user,
       final String operation,
       final String object,
       final ProgramAreaIdentifier programArea
   ) {
-    the_user_can_operate_on_any_object_for_a_program_area_within_a_jurisdiction(
+    authorize(
         user,
         operation,
         object,
@@ -131,7 +131,7 @@ public class AuthorizationSteps {
   }
 
   @Given("the {string} user can {string} any {string} for {programArea} only within {jurisdiction}")
-  public void the_user_can_operate_on_any_object_for_a_program_area_within_a_jurisdiction(
+  public void authorize(
       final String user,
       final String operation,
       final String object,

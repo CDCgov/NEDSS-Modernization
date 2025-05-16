@@ -4,15 +4,12 @@ import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
-import jakarta.annotation.PostConstruct;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import jakarta.annotation.PreDestroy;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @ScenarioScope
@@ -21,7 +18,7 @@ class JurisdictionMother {
   private static final String DELETE_IN = """
       delete
       from NBS_SRTE.[dbo].Jurisdiction_code
-      where code in (:identifiers);
+      where nbs_uid in (:identifiers);
       """;
 
   private static final String CREATE = """
@@ -36,38 +33,34 @@ class JurisdictionMother {
       """;
 
   private final SequentialIdentityGenerator idGenerator;
-  private final NamedParameterJdbcTemplate template;
+  private final JdbcClient client;
   private final Available<JurisdictionIdentifier> available;
   private final Active<JurisdictionIdentifier> active;
+  private final List<Long> identifiers;
 
   JurisdictionMother(
       final SequentialIdentityGenerator idGenerator,
-      final NamedParameterJdbcTemplate template,
+      final JdbcClient client,
       final Available<JurisdictionIdentifier> available,
-      final Active<JurisdictionIdentifier> active) {
+      final Active<JurisdictionIdentifier> active
+  ) {
     this.idGenerator = idGenerator;
-    this.template = template;
+    this.client = client;
+    this.identifiers = new ArrayList<>();
     this.available = available;
     this.active = active;
   }
 
-  @PostConstruct
+  @PreDestroy
   void reset() {
 
-    List<String> created = this.available.all()
-        .map(JurisdictionIdentifier::code)
-        .toList();
+    if (!identifiers.isEmpty()) {
 
-    if (!created.isEmpty()) {
+      client.sql(DELETE_IN)
+          .param("identifiers", identifiers)
+          .update();
 
-      Map<String, List<String>> parameters = Map.of("identifiers", created);
-
-      template.execute(
-          DELETE_IN,
-          new MapSqlParameterSource(parameters),
-          PreparedStatement::executeUpdate
-      );
-      this.active.reset();
+      this.identifiers.clear();
     }
   }
 
@@ -76,19 +69,15 @@ class JurisdictionMother {
     long identifier = idGenerator.next();
     String code = String.valueOf(identifier);
 
-    Map<String, ? extends Serializable> parameters = Map.of(
-        "identifier", identifier,
-        "code", code,
-        "name", name
-    );
-
-    template.execute(
-        CREATE,
-        new MapSqlParameterSource(parameters),
-        PreparedStatement::executeUpdate
-    );
+    client.sql(CREATE)
+        .param("identifier", identifier)
+        .param("code", code)
+        .param("name", name)
+        .update();
 
     JurisdictionIdentifier created = new JurisdictionIdentifier(identifier, code);
+
+    this.identifiers.add(identifier);
 
     this.available.available(created);
     this.active.active(created);

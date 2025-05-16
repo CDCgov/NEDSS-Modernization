@@ -17,7 +17,7 @@ public class JurisdictionSteps {
   }
 
   @Given("there is a jurisdiction named {string}")
-  public void there_is_a_jurisdiction_named(final String name) {
+  public void create(final String name) {
     this.mother.create(name);
   }
 

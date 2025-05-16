@@ -3,6 +3,8 @@ Feature: Permissions are available on the client
 
   Background:
     Given I am logged into NBS
+    And there is a program area named "Greyscale"
+    And there is a program area named "Entitilitus"
     And there is a jurisdiction named "Coruscant"
     And there is a jurisdiction named "Pawnee"
 
@@ -23,8 +25,8 @@ Feature: Permissions are available on the client
 
     Examples:
       | operation | object          | program-area | jurisdiction |
-      | "View"    | "Investigation" | STD          | Coruscant    |
-      | "View"    | "Patient"       | ARBO         | Pawnee       |
+      | "View"    | "Investigation" | Greyscale    | Coruscant    |
+      | "View"    | "Patient"       | Entitilitus  | Pawnee       |
 
   Scenario Outline: A user is permitted to <operation> shared <object>s
     And I can <operation> a shared <object>
@@ -43,5 +45,5 @@ Feature: Permissions are available on the client
 
     Examples:
       | operation | object          | program-area | jurisdiction |
-      | "View"    | "Investigation" | STD          | Coruscant    |
-      | "View"    | "Patient"       | ARBO         | Pawnee       |
+      | "View"    | "Investigation" | Entitilitus  | Coruscant    |
+      | "View"    | "Patient"       | Greyscale    | Pawnee       |

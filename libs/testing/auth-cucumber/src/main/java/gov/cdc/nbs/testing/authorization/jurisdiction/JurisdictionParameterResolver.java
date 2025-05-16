@@ -1,6 +1,6 @@
 package gov.cdc.nbs.testing.authorization.jurisdiction;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
@@ -19,22 +19,18 @@ class JurisdictionParameterResolver {
       from NBS_SRTE.[dbo].Jurisdiction_code
       where code_desc_txt = ?
       """;
-  private static final int NAME_INDEX = 1;
 
-  private final JdbcTemplate template;
+  private final JdbcClient client;
 
-  JurisdictionParameterResolver(final JdbcTemplate template) {
-    this.template = template;
+  JurisdictionParameterResolver(final JdbcClient client) {
+    this.client = client;
   }
 
   Optional<JurisdictionIdentifier> resolve(final String value) {
-    return this.template.query(
-        QUERY,
-        statement -> {
-          statement.setString(NAME_INDEX, value);
-        },
-        this::map
-    ).stream().findFirst();
+    return this.client.sql(QUERY)
+        .param(value)
+        .query(this::map)
+        .optional();
   }
 
   private JurisdictionIdentifier map(final ResultSet resultSet, final int row) throws SQLException {

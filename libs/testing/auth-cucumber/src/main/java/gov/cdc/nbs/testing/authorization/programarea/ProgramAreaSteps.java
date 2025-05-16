@@ -17,12 +17,12 @@ public class ProgramAreaSteps {
   }
 
   @Given("there is a program area named {string}")
-  public void there_is_a_program_area_named(final String name) {
+  public void create(final String name) {
     this.mother.create(name);
   }
 
   @ParameterType(name = "programArea", value = "\"?([\\w ]*)\"?")
-  public ProgramAreaIdentifier program_area(final String value) {
+  public ProgramAreaIdentifier programArea(final String value) {
     return resolver.resolve(value).orElse(null);
   }
 
