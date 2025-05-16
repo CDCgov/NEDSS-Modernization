@@ -23,7 +23,7 @@ const sampleData: PatientInvestigation[] = [
         investigation: 'INV002',
         startedOn: new Date('2023-02-15'),
         condition: 'COVID-19',
-        caseStatus: 'Probable',
+        caseStatus: '',
         notification: 'Pending',
         jurisdiction: 'California',
         investigator: 'Dr. Johnson',
@@ -113,8 +113,8 @@ const OpenInvestigationsCard = () => {
             <TableCard
                 id="patient-file-open-investigations-table-card"
                 title="Open investigations"
-                data={[]}
-                defaultCollapsed={[].length > 0 ? false : true}
+                data={sampleData}
+                defaultCollapsed={sampleData.length > 0 ? false : true}
                 columns={columns}
                 columnPreferencesKey="patient-file-open-investigations-table-card-column-preferences"
                 defaultColumnPreferences={columnPreferences}
