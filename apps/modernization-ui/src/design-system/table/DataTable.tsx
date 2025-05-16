@@ -8,6 +8,7 @@ import { FilterDescriptor } from 'design-system/filter';
 import { NoDataRow } from './NoDataRow';
 
 import styles from './data-table.module.scss';
+import { Comparator, ComparatorType } from 'sorting';
 
 type SortIconType = 'default' | 'alpha' | 'numeric';
 
@@ -20,6 +21,7 @@ type Column<V> = {
     render: (value: V, index: number) => ReactNode | undefined;
     filter?: FilterDescriptor;
     sortIconType?: SortIconType;
+    comparator?: ComparatorType | Comparator<V>;
 };
 
 type DataTableProps<V> = {

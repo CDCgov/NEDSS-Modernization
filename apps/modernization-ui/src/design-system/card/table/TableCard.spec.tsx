@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { TableCard, TableCardProps } from './TableCard';
 import { Column } from 'design-system/table';
 import { axe } from 'jest-axe';
+import { MemoryRouter } from 'react-router';
 
 const mockApply = jest.fn();
 
@@ -42,14 +43,16 @@ const data: TestData[] = [
 
 const Fixture = (props: Partial<TableCardProps<TestData>>) => {
     return (
-        <TableCard
-            id="tablecard"
-            title="Test Title"
-            columnPreferencesKey="test-key"
-            columns={columns}
-            data={data}
-            {...props}
-        />
+        <MemoryRouter>
+            <TableCard
+                id="tablecard"
+                title="Test Title"
+                columnPreferencesKey="test-key"
+                columns={columns}
+                data={data}
+                {...props}
+            />
+        </MemoryRouter>
     );
 };
 
