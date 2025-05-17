@@ -11,6 +11,7 @@ export type CollapsibleCardProps = {
     /** Whether the card is collapsible (shows the collapse header control). Default is true. */
     collapsible?: boolean;
     showCollapseSeparator?: boolean;
+    defaultCollapsed?: boolean;
     header: ReactNode;
     children: ReactNode;
 };
@@ -21,9 +22,10 @@ export const CollapsibleCard = ({
     children,
     className,
     collapsible = true,
-    showCollapseSeparator
+    showCollapseSeparator,
+    defaultCollapsed = false
 }: CollapsibleCardProps) => {
-    const [collapsed, setCollapsed] = useState<boolean>(false);
+    const [collapsed, setCollapsed] = useState<boolean>(defaultCollapsed);
     const contentRef = useRef<HTMLDivElement>(null);
     const currentHeight = useCollapseObserver({ contentRef, collapsible, collapsed });
 
