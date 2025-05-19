@@ -4,11 +4,23 @@ import { Icon } from 'design-system/icon';
 import { MatchesRequiringReviewTable } from './matches-requiring-review-table/MatchesRequiringReviewTable';
 import { useExportMatches } from 'apps/deduplication/api/useExportMatches';
 import styles from './merge-landing.module.scss';
-import { useState } from 'react';
+import { SortingProvider, useSorting } from 'sorting';
+import { PaginationProvider } from 'pagination';
 
 export const MergeLanding = () => {
+    return (
+        <PaginationProvider pageSize={20}>
+            <SortingProvider>
+                <MergeLandingContent />
+            </SortingProvider>
+        </PaginationProvider>
+    );
+};
+
+export const MergeLandingContent = () => {
     const { exportCSV, exportPDF } = useExportMatches();
-    const [sort, setSort] = useState('patient-id,desc');
+    const { sorting } = useSorting();
+    const sort = sorting ?? 'patient-id,desc';
 
     const handleCSVExport = async () => {
         await exportCSV(sort);
@@ -28,7 +40,7 @@ export const MergeLanding = () => {
                 </div>
             </header>
             <main className={styles.mergeLandingContent}>
-                <MatchesRequiringReviewTable onSortChange={setSort} />
+                <MatchesRequiringReviewTable />
             </main>
         </div>
     );

@@ -1,8 +1,11 @@
 import { render, within } from '@testing-library/react';
-import { MergeLanding } from './MergeLanding';
+import { MergeLandingContent } from './MergeLanding';
 import { MemoryRouter, useSearchParams } from 'react-router';
 import userEvent from '@testing-library/user-event';
 import { useExportMatches } from '../../api/useExportMatches';
+import { PaginationProvider } from 'pagination';
+import { PageProvider } from "../../../../page";
+import {SortingProvider} from "../../../../sorting";
 
 jest.mock('../../api/useExportMatches', () => ({
     useExportMatches: jest.fn()
@@ -30,7 +33,13 @@ beforeEach(() => {
 
 const Fixture = () => (
     <MemoryRouter initialEntries={['/merge']}>
-        <MergeLanding />
+        <SortingProvider>
+            <PageProvider>
+                <PaginationProvider>
+                    <MergeLandingContent />
+                </PaginationProvider>
+            </PageProvider>
+        </SortingProvider>
     </MemoryRouter>
 );
 

@@ -6,65 +6,41 @@ import { parseISO, format } from 'date-fns';
 import { Button } from 'design-system/button';
 import { Pagination } from 'design-system/pagination';
 import { Column, DataTable } from 'design-system/table';
-import { PaginationProvider, Status, usePagination } from 'pagination';
-import { useEffect } from 'react';
+import { Status, usePagination } from 'pagination';
+import { useEffect, useState } from 'react';
 import styles from './matches-requiring-review.module.scss';
 import { Shown } from 'conditional-render';
-import { SortingProvider, useSorting, Direction } from 'sorting';
+import { Direction, useSorting } from 'sorting';
 import { useNavigate } from 'react-router';
 
 const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
 
-export const MatchesRequiringReviewTable = ({ onSortChange }: { onSortChange?: (sort: string) => void }) => {
-    return (
-        <PaginationProvider pageSize={20}>
-            <SortingProvider>
-                <SortableMatchesRequiringReviewTable onSortChange={onSortChange} />
-            </SortingProvider>
-        </PaginationProvider>
-    );
+export const MatchesRequiringReviewTable = () => {
+    return <SortableMatchesRequiringReviewTable />;
 };
 
-type SortableMatchesRequiringReviewTableProps = {
-    onSortChange?: (sort: string) => void;
-};
-
-const SortableMatchesRequiringReviewTable = ({ onSortChange }: SortableMatchesRequiringReviewTableProps) => {
+const SortableMatchesRequiringReviewTable = () => {
     const nav = useNavigate();
     const { response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
-    const { property, direction } = useSorting();
+    const { sorting, sortBy } = useSorting();
     const { page, ready, request, resize, firstPage } = usePagination();
-
-    // Helper to convert Direction enum to string 'asc' or 'desc'
-    const fromDirection = (dir: Direction) => {
-        switch (dir) {
-            case Direction.Ascending:
-                return 'asc';
-            case Direction.Descending:
-                return 'desc';
-            default:
-                return undefined;
-        }
-    };
-
-    const sorting =
-        property && direction && direction !== Direction.None
-            ? [{ field: property, direction: fromDirection(direction) }]
-            : [];
-
-    const sortingString = sorting.length > 0 ? `${sorting[0].field},${sorting[0].direction}` : undefined;
+    // required to prevent toggling through date identified sort triggering default sort
+    const [previousSort, setPreviousSort] = useState<string | undefined>();
 
     useEffect(() => {
-        if (page.current === 1) {
-            fetchMatchesRequiringReview(0, page.pageSize, sortingString);
+        if (sorting === undefined) {
+            if (previousSort === 'identified,desc') {
+                sortBy('identified', Direction.Ascending);
+            } else {
+                sortBy('identified', Direction.Descending);
+            }
+        } else if (page.current === 1) {
+            fetchMatchesRequiringReview(page.current - 1, page.pageSize, sorting);
         } else {
             firstPage();
         }
-
-        if (onSortChange && sortingString) {
-            onSortChange(sortingString);
-        }
-    }, [sortingString]);
+        setPreviousSort(sorting);
+    }, [sorting]);
 
     useEffect(() => {
         ready(response.total, Math.max(1, page.current));
@@ -72,7 +48,7 @@ const SortableMatchesRequiringReviewTable = ({ onSortChange }: SortableMatchesRe
 
     useEffect(() => {
         if (page.status === Status.Requested) {
-            fetchMatchesRequiringReview(page.current - 1, page.pageSize, sortingString);
+            fetchMatchesRequiringReview(page.current - 1, page.pageSize, sorting);
         }
     }, [page.status]);
 
@@ -97,6 +73,7 @@ const SortableMatchesRequiringReviewTable = ({ onSortChange }: SortableMatchesRe
             id: 'created',
             name: 'Date created',
             sortable: true,
+            sortIconType: 'numeric',
             render(match) {
                 return <>{format(parseISO(match.createdDate), DATE_FORMAT)}</>;
             }
@@ -105,6 +82,7 @@ const SortableMatchesRequiringReviewTable = ({ onSortChange }: SortableMatchesRe
             id: 'identified',
             name: 'Date identified',
             sortable: true,
+            sortIconType: 'numeric',
             render(match) {
                 return <>{format(parseISO(match.identifiedDate), DATE_FORMAT)}</>;
             }
@@ -113,6 +91,7 @@ const SortableMatchesRequiringReviewTable = ({ onSortChange }: SortableMatchesRe
             id: 'count',
             name: 'Number of matching records',
             sortable: true,
+            sortIconType: 'numeric',
             render(match) {
                 return <>{match.numOfMatchingRecords}</>;
             }
