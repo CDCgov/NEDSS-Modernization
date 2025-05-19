@@ -1,1 +1,0 @@
-export { PatientInvestigationsTable } from './PatientInvestigationsTable';

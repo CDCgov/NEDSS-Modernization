@@ -1,15 +1,17 @@
 package gov.cdc.nbs.testing.authorization.permission;
 
-import java.util.Objects;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
+import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
+import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-@SuppressWarnings("java:S100")
+import java.util.Objects;
+
 @Transactional
 public class AuthorizationSteps {
 
@@ -20,7 +22,7 @@ public class AuthorizationSteps {
   private final AuthorizationRoleMother roleMother;
 
 
-  public AuthorizationSteps(
+  AuthorizationSteps(
       final Active<ActiveUser> activeUser,
       final Available<ActiveUser> users,
       final PermissionSetMother setMother,
@@ -39,9 +41,10 @@ public class AuthorizationSteps {
   }
 
   @Given("I can {string} any {string}")
-  public void the_active_user_can_operate_on_any_object(
+  public void authorize(
       final String operation,
-      final String object) {
+      final String object
+  ) {
 
     ActiveUser user = activeUser.active();
 
@@ -51,35 +54,43 @@ public class AuthorizationSteps {
 
   }
 
-  @Given("I can {string} any {string} for {string} within all jurisdictions")
-  public void the_active_user_can_operate_on_any_object_for_a_program_area_within_all_jurisdictions(
+  @Given("I can {string} any {string} for {programArea} within all jurisdictions")
+  public void authorize(
       final String operation,
       final String object,
-      final String programArea) {
-    the_active_user_can_operate_on_any_object_for_a_program_area_within_a_jurisdiction(
-        operation,
-        object,
-        programArea,
-        "all");
+      final ProgramAreaIdentifier programArea
+  ) {
+    activeUser.maybeActive().ifPresent(user -> roleMother.allowAny(
+            user.id(),
+            setMother.allow(operation, object),
+            programArea.code(),
+            "ALL"
+        )
+    );
   }
 
-  @Given("I can {string} any {string} for {string} within {string}")
-  public void the_active_user_can_operate_on_any_object_for_a_program_area_within_a_jurisdiction(
+  @Given("I can {string} any {string} for {programArea} in {jurisdiction}")
+  public void authorize(
       final String operation,
       final String object,
-      final String programArea,
-      final String jurisdiction) {
-    ActiveUser user = activeUser.active();
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction
+  ) {
 
-    long set = setMother.allow(operation, object);
-
-    roleMother.allowAny(user.id(), set, programArea, jurisdiction);
+    activeUser.maybeActive().ifPresent(user -> roleMother.allowAny(
+            user.id(),
+            setMother.allow(operation, object),
+            programArea.code(),
+            jurisdiction.code()
+        )
+    );
   }
 
   @Given("I can {string} a shared {string}")
-  public void the_active_user_can_operate_on_a_shared_object(
+  public void shared(
       final String operation,
-      final String object) {
+      final String object
+  ) {
 
     ActiveUser user = activeUser.active();
 
@@ -89,40 +100,44 @@ public class AuthorizationSteps {
 
   }
 
-  @Given("I can {string} a shared {string} for {string} within {string}")
-  public void the_active_user_can_operate_on_a_shared_object_for_a_program_area_within_a_jurisdiction(
+  @Given("I can {string} a shared {string} for {programArea} in {jurisdiction}")
+  public void shared(
       final String operation,
       final String object,
-      final String programArea,
-      final String jurisdiction) {
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction
+  ) {
     ActiveUser user = activeUser.active();
 
     long set = setMother.allow(operation, object);
 
-    roleMother.allowShared(user.id(), set, programArea, jurisdiction);
+    roleMother.allowShared(user.id(), set, programArea.code(), jurisdiction.code());
   }
 
-  @Given("the {string} user can {string} any {string} for {string} within all jurisdictions")
-  public void the_user_can_operate_on_any_object_for_a_program_area_within_all_jurisdictions(
+  @Given("the {string} user can {string} any {string} for {programArea} within all jurisdictions")
+  public void shared(
       final String user,
       final String operation,
       final String object,
-      final String programArea) {
-    the_user_can_operate_on_any_object_for_a_program_area_within_a_jurisdiction(
+      final ProgramAreaIdentifier programArea
+  ) {
+    authorize(
         user,
         operation,
         object,
         programArea,
-        "all");
+        JurisdictionIdentifier.ALL
+    );
   }
 
-  @Given("the {string} user can {string} any {string} for {string} within {string}")
-  public void the_user_can_operate_on_any_object_for_a_program_area_within_a_jurisdiction(
+  @Given("the {string} user can {string} any {string} for {programArea} only within {jurisdiction}")
+  public void authorize(
       final String user,
       final String operation,
       final String object,
-      final String programArea,
-      final String jurisdiction) {
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction
+  ) {
 
     ActiveUser authorizedUser = this.users.all().filter(u -> Objects.equals(user, u.username()))
         .findFirst()
@@ -130,6 +145,6 @@ public class AuthorizationSteps {
 
     long set = setMother.allow(operation, object);
 
-    roleMother.allowAny(authorizedUser.id(), set, programArea, jurisdiction);
+    roleMother.allowAny(authorizedUser.id(), set, programArea.code(), jurisdiction.code());
   }
 }

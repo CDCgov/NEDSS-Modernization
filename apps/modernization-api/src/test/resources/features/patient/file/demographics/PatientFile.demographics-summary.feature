@@ -64,6 +64,8 @@ Feature: Summarizing the demographics of a patient
   Scenario: I can view the patient's races in the summarized demographics
     Given the patient's race is Unknown as of 07/24/1974
     And the patient's race is Asian as of 11/05/2022
+    And the patient race of Asian includes Japanese
+    And the patient race of Asian includes Burmese
     And the patient's race is Other as of 08/17/2000
     When I view the demographics summary of the patient
     Then the 1st race in the demographics summary of the patient is "Asian"

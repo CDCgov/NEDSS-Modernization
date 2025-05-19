@@ -5,6 +5,7 @@ import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PatientDemographicsSummaryVerificationSteps {
@@ -159,6 +160,7 @@ public class PatientDemographicsSummaryVerificationSteps {
       throws Exception {
     int position = nth - 1;
     this.results.active()
+        .andDo(print())
         .andExpect(jsonPath("$.races[%d]", position).value(value));
   }
 }
