@@ -57,6 +57,8 @@ nbs:
       enabled: false
       service: 'localhost:8083'
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.deduplication.service}'
+      merge:
+        enabled: false
 
 logging:
   level:

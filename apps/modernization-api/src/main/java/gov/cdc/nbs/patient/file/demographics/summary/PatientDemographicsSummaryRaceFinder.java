@@ -16,9 +16,11 @@ class PatientDemographicsSummaryRaceFinder {
               left join NBS_SRTE..Code_value_general [race] on
                   [race].code_set_nm = 'RACE_CALCULATED'
               and [race].[code] = [patient].race_category_cd
+                                                              
       
       where [patient].person_uid = ?
           and [patient].record_status_cd = 'ACTIVE'
+          and [patient].race_category_cd = [patient].race_cd
       order by
           [patient].[as_of_date] desc
       """;
