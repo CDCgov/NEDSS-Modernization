@@ -150,7 +150,7 @@ describe('DeleteAction', () => {
         await user.click(confirmButton);
 
         // eslint-disable-next-line prettier/prettier
-        expect(mockShowSuccess).toHaveBeenCalledWith(<>You have successfully deleted<strong>Doe, John (Patient ID: 91000)</strong>.</>);
+        expect(mockShowSuccess).toHaveBeenCalledWith(<span>You have successfully deleted <strong>Doe, John (Patient ID: 91000)</strong>.</span>);
         expect(mockGo).toHaveBeenCalled();
     });
 
@@ -158,7 +158,6 @@ describe('DeleteAction', () => {
         (useDeletePatient as jest.Mock).mockImplementation(
             (onComplete) => () => onComplete({ success: false, message: 'Error in delete' })
         );
-        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
         const user = userEvent.setup();
         const { getByRole, getByText } = render(<DeleteAction />);
 

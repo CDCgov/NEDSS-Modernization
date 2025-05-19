@@ -33,10 +33,9 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
         if (response.success) {
             const name = patient.name ? displayName('fullLastFirst')(patient.name) : 'patient';
             showSuccess(
-                <>
-                    You have successfully deleted
-                    <strong>{`${name} (Patient ID: ${patient.patientId})`}</strong>.
-                </>
+                <span>
+                    You have successfully deleted <strong>{`${name} (Patient ID: ${patient.patientId})`}</strong>.
+                </span>
             );
             go();
         } else {
