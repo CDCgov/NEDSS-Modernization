@@ -795,7 +795,7 @@
 									"mode": "graphql",
 									"graphql": {
 										"query": "query investigations($patient: ID!, $page: Page, $openOnly: Boolean) {\n  findInvestigationsForPatient(\n    patient: $patient\n    openOnly: $openOnly\n    page: $page\n  ) {\n    total\n    number\n    content {\n      investigation\n      startedOn\n      condition\n      status\n      caseStatus\n      jurisdiction\n      event\n      coInfection\n      notification\n      investigator\n    }\n  }\n}\n",
-										"variables": "{\n    \"patient\": \"{{patient}}\",\n    \"page\": {\n        \"pageNumber\": \"0\",\n        \"pageSize\": \"25\"\n    }\n}"
+										"variables": "{\n    \"patient\": \"{{patient}}\",\n    \"page\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 25\n    }\n}"
 									}
 								},
 								"url": {
@@ -3925,6 +3925,80 @@
 					"name": "File",
 					"item": [
 						{
+							"name": "Summary",
+							"item": [
+								{
+									"name": "Open Investigations",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patient/{{patient}}/investigations/open",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patient",
+												"{{patient}}",
+												"investigations",
+												"open"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Documents Requiring Review",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/documents-requiring-review",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"documents-requiring-review"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Events",
+							"item": [
+								{
+									"name": "Investigations",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patient/{{patient}}/investigations",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patient",
+												"{{patient}}",
+												"investigations"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Demographics Summary",
 							"request": {
 								"method": "GET",
@@ -4076,9 +4150,10 @@
 					"script": {
 						"exec": [
 							"const token = pm.response.json().token;",
-							"pm.collectionVariables.set(\"token\", token);"
+							"pm.environment.set(\"token\", token);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -4171,11 +4246,28 @@
 	],
 	"variable": [
 		{
-			"key": "token",
+			"key": "user",
+			"value": "superuser",
+			"type": "string"
+		},
+		{
+			"key": "now",
+			"value": ""
+		},
+		{
+			"key": "dateInPast",
+			"value": ""
+		},
+		{
+			"key": "localDate",
 			"value": ""
 		},
 		{
 			"key": "patient",
+			"value": ""
+		},
+		{
+			"key": "patient-id",
 			"value": ""
 		},
 		{
@@ -4200,27 +4292,6 @@
 		},
 		{
 			"key": "identification",
-			"value": ""
-		},
-		{
-			"key": "dateInPast",
-			"value": ""
-		},
-		{
-			"key": "now",
-			"value": ""
-		},
-		{
-			"key": "user",
-			"value": "superuser",
-			"type": "string"
-		},
-		{
-			"key": "localDate",
-			"value": ""
-		},
-		{
-			"key": "patient-id",
 			"value": ""
 		}
 	]
