@@ -7,7 +7,8 @@ const withSortable = <T,>(Component: ComponentType<DataTableProps<T>>) => {
         const { property, direction } = useSorting();
         const column = props.columns.find((column) => column.id === property);
         const comparator = column?.comparator;
-        const sortedData = maybeSortData(props.data, comparator, property as keyof T, direction);
+        const resolvedProperty = column ? (property as keyof T) : undefined;
+        const sortedData = maybeSortData(props.data, comparator, resolvedProperty, direction);
         return <Component {...props} data={sortedData} />;
     };
 
