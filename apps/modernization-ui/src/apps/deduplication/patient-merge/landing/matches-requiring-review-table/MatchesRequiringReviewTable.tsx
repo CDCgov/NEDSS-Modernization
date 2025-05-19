@@ -17,10 +17,6 @@ import styles from './matches-requiring-review.module.scss';
 const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
 
 export const MatchesRequiringReviewTable = () => {
-    return <SortableMatchesRequiringReviewTable />;
-};
-
-const SortableMatchesRequiringReviewTable = () => {
     const nav = useNavigate();
     const { loading, response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
     const { sorting, sortBy } = useSorting();
