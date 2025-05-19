@@ -12,7 +12,12 @@ const mockPatient: Partial<Patient> = {
     local: 'PSN10091000GA01',
     patientId: 91000,
     deletability: 'Deletable',
-    status: 'ACTIVE'
+    status: 'ACTIVE',
+    name: {
+        first: 'John',
+        last: 'Doe'
+    },
+    birthday: '1990-01-01'
 };
 
 const mockShowSuccess = jest.fn();
@@ -144,7 +149,8 @@ describe('DeleteAction', () => {
         const confirmButton = getByText('Delete', { selector: 'button' });
         await user.click(confirmButton);
 
-        expect(mockShowSuccess).toHaveBeenCalledWith('Deleted patient: 10056284');
+        // eslint-disable-next-line prettier/prettier
+        expect(mockShowSuccess).toHaveBeenCalledWith(<>You have successfully deleted<strong>Doe, John (Patient ID: 91000)</strong>.</>);
         expect(mockGo).toHaveBeenCalled();
     });
 
