@@ -3,18 +3,15 @@ import { useMatchesRequiringReview } from 'apps/deduplication/api/useMatchesRequ
 import { SearchResultPageSizeSelect } from 'apps/search/layout/result/pagination/page-size-select';
 import { SearchResultsShowing } from 'apps/search/layout/result/pagination/showing';
 import { Loading } from 'components/Spinner';
-import { Shown } from 'conditional-render';
 import { format, parseISO } from 'date-fns';
 import { Button } from 'design-system/button';
 import { Pagination } from 'design-system/pagination';
 import { Column, DataTable } from 'design-system/table';
 import { Status, usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
-import styles from './matches-requiring-review.module.scss';
 import { Shown } from 'conditional-render';
 import { Direction, useSorting } from 'sorting';
 import { useNavigate } from 'react-router';
-import { Direction, SortingProvider, useSorting } from 'sorting';
 import styles from './matches-requiring-review.module.scss';
 
 const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
