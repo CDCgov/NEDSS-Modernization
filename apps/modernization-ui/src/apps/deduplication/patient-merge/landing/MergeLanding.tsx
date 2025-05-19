@@ -17,7 +17,7 @@ export const MergeLanding = () => {
     );
 };
 
-export const MergeLandingContent = () => {
+const MergeLandingContent = () => {
     const { exportCSV, exportPDF } = useExportMatches();
     const { sorting } = useSorting();
     const sort = sorting ?? 'patient-id,desc';
