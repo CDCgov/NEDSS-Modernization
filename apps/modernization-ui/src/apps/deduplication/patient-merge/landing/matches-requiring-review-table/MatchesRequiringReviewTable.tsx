@@ -41,13 +41,10 @@ const SortableMatchesRequiringReviewTable = () => {
             } else {
                 sortBy('identified', Direction.Descending);
             }
+        } else if (page.current === 1) {
+            fetchMatchesRequiringReview(page.current - 1, page.pageSize, sorting);
         } else {
-            if (page.current === 1) {
-                // TODO -- clean that error
-                fetchMatchesRequiringReview(page.current - 1, page.pageSize, sorting);
-            } else {
-                firstPage();
-            }
+            firstPage();
         }
         setPreviousSort(sorting);
     }, [sorting]);
