@@ -39,7 +39,7 @@ const DataTable = <V,>({
     data,
     sizing,
     noDataFallback,
-    rowHeightConstrained = true
+    rowHeightConstrained = false
 }: DataTableProps<V>) => {
     const resolvedClasses = classNames('usa-table--borderless', styles.table, sizing && styles[sizing]);
     return (

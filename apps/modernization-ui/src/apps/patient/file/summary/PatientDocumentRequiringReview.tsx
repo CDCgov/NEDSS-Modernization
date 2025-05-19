@@ -2,23 +2,95 @@ import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 
-type Test = {
-    id: number;
-    type: string;
-    received: number;
-    reporting: string;
-    eventDate: number;
-    description: string;
+type Description = {
+    title?: string;
+    value?: string;
+};
+
+type DocumentRequiringReview = {
+    id?: number;
+    local?: string;
+    type?: string;
+    eventDate?: Date;
+    dateReceived?: Date;
+    isElectronic?: boolean;
+    isUpdate?: boolean;
+    reportingFacility?: string;
+    orderingProvider?: string;
+    sendingFacility?: string;
+    descriptions?: Description[];
+};
+
+const renderReporting = (value: DocumentRequiringReview) => {
+    return (
+        <>
+            {value.reportingFacility && (
+                <>
+                    <strong>Reporting facility:</strong>
+                    <br />
+                    {value.reportingFacility}
+                    <br />
+                </>
+            )}
+
+            {value.orderingProvider && (
+                <>
+                    <strong>Ordering provider:</strong>
+                    <br />
+                    {value.orderingProvider}
+                    <br />
+                </>
+            )}
+            {value.sendingFacility && (
+                <>
+                    <strong>Sending facility:</strong>
+                    <br />
+                    {value.sendingFacility}
+                </>
+            )}
+        </>
+    );
+};
+
+const renderDescription = (value: DocumentRequiringReview) => {
+    return (
+        <>
+            {value.descriptions?.map((description) => (
+                <>
+                    <strong>{description.title}</strong>
+                    <br />
+                    {description.value}
+                    <br />
+                </>
+            ))}
+        </>
+    );
 };
 
 export const PatientDocumentRequiringReview = () => {
-    const columns: Column<Test>[] = [
-        { id: 'id', name: 'Event ID', render: (value: Test) => <>{value.id}</> },
-        { id: 'type', name: 'Document type', render: (value: Test) => <>{value.type}</> },
-        { id: 'received', name: 'Date received', render: (value: Test) => <>{value.received}</> },
-        { id: 'reporting', name: 'Reporting facility/provider', render: (value: Test) => <>{value.reporting}</> },
-        { id: 'eventDate', name: 'Event date', render: (value: Test) => <>{value.eventDate}</> },
-        { id: 'description', name: 'Description', render: (value: Test) => <>{value.description}</> }
+    const columns: Column<DocumentRequiringReview>[] = [
+        { id: 'id', name: 'Event ID', render: (value: DocumentRequiringReview) => <>{value.id}</> },
+        { id: 'type', name: 'Document type', render: (value: DocumentRequiringReview) => <>{value.type}</> },
+        {
+            id: 'dateReceived',
+            name: 'Date received',
+            render: (value: DocumentRequiringReview) => <>{value.dateReceived?.toLocaleString()}</>
+        },
+        {
+            id: 'reporting',
+            name: 'Reporting facility/provider',
+            render: (value: DocumentRequiringReview) => <>{renderReporting(value)}</>
+        },
+        {
+            id: 'eventDate',
+            name: 'Event date',
+            render: (value: DocumentRequiringReview) => <>{value.eventDate?.toLocaleString()}</>
+        },
+        {
+            id: 'description',
+            name: 'Description',
+            render: (value: DocumentRequiringReview) => <>{renderDescription(value)}</>
+        }
     ];
 
     const columnIDs = columns.map((column) => ({ id: column.id, name: column.name }));
@@ -32,14 +104,18 @@ export const PatientDocumentRequiringReview = () => {
         { ...columnIDs[5], toggleable: true }
     ];
 
-    const data: Test[] = [
+    const data: DocumentRequiringReview[] = [
         {
             id: 1234,
             type: 'Lab report',
-            received: Date.now(),
-            reporting: 'Reporting facility',
-            eventDate: Date.now(),
-            description: 'Test description'
+            eventDate: new Date(Date.now()),
+            dateReceived: new Date(Date.now()),
+            reportingFacility: 'California Hospital',
+            sendingFacility: 'Something',
+            descriptions: [
+                { title: 'testing', value: 'bloah blah bloah balalahaha' },
+                { title: 'testing122222', value: 'ewifhkhfkjhsdkhfkhjkahfluwgfibuwibcw wohefwkjhfkjwhfw fwouhfwjkbfwf' }
+            ]
         }
     ];
 
