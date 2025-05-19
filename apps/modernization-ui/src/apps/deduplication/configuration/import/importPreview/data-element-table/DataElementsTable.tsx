@@ -19,23 +19,17 @@ export const DataElementsTable = ({ dataElements }: Props) => {
         {
             id: 'data-element-field',
             name: 'Field',
-            render(entry) {
-                return <>{entry.field}</>;
-            }
+            render: (entry) => entry.field
         },
         {
             id: 'data-element-odds-ratio',
             name: 'Odds ratio',
-            render(entry) {
-                return <>{entry.oddsRatio}</>;
-            }
+            render: (entry) => entry.oddsRatio
         },
         {
             id: 'data-element-log-odss',
             name: 'Log odds',
-            render(entry) {
-                return <>{entry.logOdds}</>;
-            }
+            render: (entry) => entry.logOdds
         }
     ];
 

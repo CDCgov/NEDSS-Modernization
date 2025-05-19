@@ -1,16 +1,22 @@
+import React from 'react';
 import { render } from '@testing-library/react';
 import { MergeReview } from './MergeReview';
 import { MemoryRouter } from 'react-router';
 
-const Fixture = () => (
-    <MemoryRouter>
-        <MergeReview />
-    </MemoryRouter>
-);
+const Fixture = () => {
+    const [pageState, setPageState] = React.useState<'review' | 'preview'>('review');
+
+    return (
+        <MemoryRouter>
+            <MergeReview onPreviewClick={() => setPageState('preview')} />
+        </MemoryRouter>
+    );
+};
+
 describe('MergeReview', () => {
     it('should display proper header', () => {
         const { getByRole } = render(<Fixture />);
-        expect(getByRole('heading')).toHaveTextContent('Matches requiring review');
+        expect(getByRole('heading')).toHaveTextContent('Patient matches requiring review');
     });
 
     it('should display buttons in header', () => {

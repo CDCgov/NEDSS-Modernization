@@ -1,4 +1,4 @@
-package gov.cdc.nbs.support.programarea;
+package gov.cdc.nbs.testing.authorization.programarea;
 
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;

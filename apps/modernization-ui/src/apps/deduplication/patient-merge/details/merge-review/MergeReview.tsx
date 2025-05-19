@@ -3,17 +3,17 @@ import { Button } from 'design-system/button';
 import { useNavigate } from 'react-router';
 import styles from './merge-review.module.scss';
 
-export const MergeReview = () => {
+export const MergeReview = ({ onPreviewClick }: { onPreviewClick: () => void }) => {
     const nav = useNavigate();
     return (
         <div className={styles.mergeReview}>
             <header>
-                <Heading level={1}>Matches requiring review</Heading>
+                <Heading level={1}>Patient matches requiring review</Heading>
                 <div className={styles.buttons}>
                     <Button secondary onClick={() => nav('/deduplication/merge')}>
                         Back
                     </Button>
-                    <Button secondary onClick={() => console.log('Preview merge NYI')}>
+                    <Button secondary onClick={onPreviewClick}>
                         Preview merge
                     </Button>
                     <Button onClick={() => console.log('Keep all separate NYI')}>Keep all separate</Button>

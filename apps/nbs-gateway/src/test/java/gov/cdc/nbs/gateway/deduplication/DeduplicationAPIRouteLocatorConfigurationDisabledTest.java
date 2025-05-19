@@ -13,15 +13,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 
-
-
-@SpringBootTest(
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    properties = {
-        "nbs.gateway.modernization.service=localhost:10001",
-        "nbs.gateway.deduplication.service=localhost:10002",
-        "nbs.gateway.deduplication.enabled=false"
-    })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
+    "nbs.gateway.modernization.service=localhost:10001",
+    "nbs.gateway.deduplication.service=localhost:10002",
+    "nbs.gateway.deduplication.enabled=false"
+})
 class DeduplicationAPIRouteLocatorConfigurationDisabledTest {
 
   @RegisterExtension

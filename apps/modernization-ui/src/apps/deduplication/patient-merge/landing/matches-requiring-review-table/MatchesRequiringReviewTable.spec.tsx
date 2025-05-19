@@ -64,7 +64,7 @@ describe('MatchesRequiringReviewTable', () => {
 
         const dateIdentified = getByText('Date identified');
         expect(dateIdentified).toHaveClass('sortable');
-        expect(dateIdentified.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_arrow');
+        expect(dateIdentified.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_des_numeric');
 
         const numberOfMatching = getByText('Number of matching records');
         expect(numberOfMatching).toHaveClass('sortable');
@@ -74,6 +74,9 @@ describe('MatchesRequiringReviewTable', () => {
     it('should sort on click', async () => {
         const user = userEvent.setup();
         const { getByText } = render(<Fixture />);
+
+        // default sort
+        expect(mockFetch).lastCalledWith(0, 20, 'identified,desc');
 
         await user.click(getByText('Patient ID').children[0]); // sort on patient Id asc
         expect(mockFetch).lastCalledWith(0, 20, 'patient-id,asc');
@@ -104,6 +107,9 @@ describe('MatchesRequiringReviewTable', () => {
 
         await user.click(getByText('Number of matching records').children[0]); // sort on Number of matching records desc
         expect(mockFetch).lastCalledWith(0, 20, 'count,desc');
+
+        await user.click(getByText('Number of matching records').children[0]); // clear sort on Number
+        expect(mockFetch).lastCalledWith(0, 20, 'identified,desc'); // back to default
     });
 
     it('should display the proper match data', () => {
