@@ -1,5 +1,5 @@
 import { render, within } from '@testing-library/react';
-import { MergeLandingContent } from './MergeLanding';
+import { MergeLanding } from './MergeLanding';
 import { MemoryRouter, useSearchParams } from 'react-router';
 import userEvent from '@testing-library/user-event';
 import { useExportMatches } from '../../api/useExportMatches';
@@ -34,11 +34,9 @@ beforeEach(() => {
 const Fixture = () => (
     <MemoryRouter initialEntries={['/merge']}>
         <SortingProvider>
-            <PageProvider>
                 <PaginationProvider>
-                    <MergeLandingContent />
+                    <MergeLanding />
                 </PaginationProvider>
-            </PageProvider>
         </SortingProvider>
     </MemoryRouter>
 );
