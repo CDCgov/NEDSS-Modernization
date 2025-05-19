@@ -2,7 +2,9 @@ import { MatchRequiringReview } from 'apps/deduplication/api/model/MatchRequirin
 import { useMatchesRequiringReview } from 'apps/deduplication/api/useMatchesRequiringReview';
 import { SearchResultPageSizeSelect } from 'apps/search/layout/result/pagination/page-size-select';
 import { SearchResultsShowing } from 'apps/search/layout/result/pagination/showing';
-import { parseISO, format } from 'date-fns';
+import { Loading } from 'components/Spinner';
+import { Shown } from 'conditional-render';
+import { format, parseISO } from 'date-fns';
 import { Button } from 'design-system/button';
 import { Pagination } from 'design-system/pagination';
 import { Column, DataTable } from 'design-system/table';
@@ -12,6 +14,8 @@ import styles from './matches-requiring-review.module.scss';
 import { Shown } from 'conditional-render';
 import { Direction, useSorting } from 'sorting';
 import { useNavigate } from 'react-router';
+import { Direction, SortingProvider, useSorting } from 'sorting';
+import styles from './matches-requiring-review.module.scss';
 
 const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
 
@@ -21,7 +25,7 @@ export const MatchesRequiringReviewTable = () => {
 
 const SortableMatchesRequiringReviewTable = () => {
     const nav = useNavigate();
-    const { response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
+    const { loading, response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
     const { sorting, sortBy } = useSorting();
     const { page, ready, request, resize, firstPage } = usePagination();
     // required to prevent toggling through date identified sort triggering default sort
@@ -57,49 +61,41 @@ const SortableMatchesRequiringReviewTable = () => {
             id: 'patient-id',
             name: 'Patient ID',
             sortable: true,
-            render(match) {
-                return <>{match.patientId}</>;
-            }
+            sortIconType: 'numeric',
+            render: (match) => match.patientId
         },
         {
             id: 'name',
             name: 'Person name',
             sortable: true,
-            render(match) {
-                return <>{match.patientName}</>;
-            }
+            sortIconType: 'alpha',
+            render: (match) => match.patientName
         },
         {
             id: 'created',
             name: 'Date created',
             sortable: true,
             sortIconType: 'numeric',
-            render(match) {
-                return <>{format(parseISO(match.createdDate), DATE_FORMAT)}</>;
-            }
+            render: (match) => format(parseISO(match.createdDate), DATE_FORMAT)
         },
         {
             id: 'identified',
             name: 'Date identified',
             sortable: true,
             sortIconType: 'numeric',
-            render(match) {
-                return <>{format(parseISO(match.identifiedDate), DATE_FORMAT)}</>;
-            }
+            render: (match) => format(parseISO(match.identifiedDate), DATE_FORMAT)
         },
         {
             id: 'count',
             name: 'Number of matching records',
             sortable: true,
             sortIconType: 'numeric',
-            render(match) {
-                return <>{match.numOfMatchingRecords}</>;
-            }
+            render: (match) => match.numOfMatchingRecords
         },
         {
             id: 'review',
             name: '',
-            render(match) {
+            render: (match) => {
                 return (
                     <Button
                         sizing="small"
@@ -114,6 +110,11 @@ const SortableMatchesRequiringReviewTable = () => {
 
     return (
         <div className={styles.matchesRequiringReviewTable}>
+            <Shown when={loading}>
+                <div className={styles.loadingContainer}>
+                    <Loading center />
+                </div>
+            </Shown>
             <div className={styles.tableWrapper}>
                 <DataTable<MatchRequiringReview> id="review-table" columns={columns} data={response.matches} />
             </div>

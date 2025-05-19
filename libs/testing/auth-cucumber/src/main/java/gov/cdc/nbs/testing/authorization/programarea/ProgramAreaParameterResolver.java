@@ -1,6 +1,6 @@
-package gov.cdc.nbs.support.programarea;
+package gov.cdc.nbs.testing.authorization.programarea;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
@@ -19,22 +19,17 @@ class ProgramAreaParameterResolver {
       from NBS_SRTE.[dbo].Program_area_code
       where prog_area_desc_txt = ?
       """;
-  private static final int NAME_INDEX = 1;
+  private final JdbcClient client;
 
-  private final JdbcTemplate template;
-
-  ProgramAreaParameterResolver(final JdbcTemplate template) {
-    this.template = template;
+  ProgramAreaParameterResolver(final JdbcClient client) {
+    this.client = client;
   }
 
   Optional<ProgramAreaIdentifier> resolve(final String value) {
-    return this.template.query(
-        QUERY,
-        statement -> {
-          statement.setString(NAME_INDEX, value);
-        },
-        this::map
-    ).stream().findFirst();
+    return client.sql(QUERY)
+        .param(value)
+        .query(this::map)
+        .optional();
   }
 
   private ProgramAreaIdentifier map(final ResultSet resultSet, final int row) throws SQLException {
