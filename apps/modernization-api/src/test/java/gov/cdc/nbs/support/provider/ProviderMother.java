@@ -5,15 +5,11 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PostConstruct;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Component
 @ScenarioScope
@@ -29,11 +25,12 @@ class ProviderMother {
   private static final String CREATE = """
       insert into Entity(entity_uid, class_cd) values (:identifier, 'PSN');
       insert into Person(person_uid, version_ctrl_nbr, cd) values (:identifier, 1, 'PRV');
-
+      
       insert into Person_name(
         person_uid,
         person_name_seq,
         nm_use_cd,
+        nm_prefix,
         first_nm,
         last_nm,
         status_cd,
@@ -42,6 +39,7 @@ class ProviderMother {
         :identifier,
         1,
         'L',
+        :prefix,
         :first,
         :last,
         'A',
@@ -50,56 +48,52 @@ class ProviderMother {
       """;
 
   private final SequentialIdentityGenerator idGenerator;
-  private final NamedParameterJdbcTemplate template;
+  private final JdbcClient client;
   private final Available<ProviderIdentifier> available;
   private final Active<ProviderIdentifier> active;
+  private final Collection<Long> identifiers;
 
   ProviderMother(
       final SequentialIdentityGenerator idGenerator,
-      final JdbcTemplate template,
+      final JdbcClient client,
       final Available<ProviderIdentifier> available,
-      final Active<ProviderIdentifier> active) {
+      final Active<ProviderIdentifier> active
+  ) {
     this.idGenerator = idGenerator;
-    this.template = new NamedParameterJdbcTemplate(template);
+    this.client = client;
     this.available = available;
     this.active = active;
+
+    this.identifiers = new ArrayList<>();
   }
 
   @PostConstruct
   void reset() {
+    if (!identifiers.isEmpty()) {
 
-    List<Long> created = this.available.all()
-        .map(ProviderIdentifier::identifier)
-        .toList();
+      this.client.sql(DELETE_IN)
+          .param("identifiers", identifiers)
+          .update();
 
-    if (!created.isEmpty()) {
-
-      Map<String, List<Long>> parameters = Map.of("identifiers", created);
-
-      template.execute(
-          DELETE_IN,
-          new MapSqlParameterSource(parameters),
-          PreparedStatement::executeUpdate);
-      this.active.reset();
+      this.identifiers.clear();
     }
   }
 
-  void create(final String first, final String last) {
+  void create(final String prefix, final String first, final String last) {
 
     long identifier = idGenerator.next();
 
-    Map<String, ? extends Serializable> parameters = Map.of(
-        "identifier", identifier,
-        "first", first,
-        "last", last);
-
-    template.execute(
-        CREATE,
-        new MapSqlParameterSource(parameters),
-        PreparedStatement::executeUpdate);
+    client.sql(CREATE)
+        .param("identifier", identifier)
+        .param("prefix", prefix)
+        .param("first", first)
+        .param("last", last)
+        .update();
 
 
     ProviderIdentifier created = new ProviderIdentifier(identifier);
+
+    this.identifiers.add(identifier);
 
     this.available.available(created);
     this.active.active(created);

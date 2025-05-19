@@ -1,5 +1,5 @@
 @documents-requiring-review @case-report
-Feature: Patient Profile Documents Requiring Review: Case Report
+Feature: Patient File Documents Requiring Review: Case Report
 
   Background:
     Given I am logged in
@@ -20,7 +20,7 @@ Feature: Patient Profile Documents Requiring Review: Case Report
     And the case report requiring review is not electronic
     And the case report requiring review was sent by "Weyland-Yutani Corporation"
     And the case report requiring review has the description title "Diphtheria"
-    And the case report requiring review was received on 07/11/1989 10:17:19
+    And the case report requiring review was received on 07/11/1989 at 10:17:19
 
   Scenario: Unprocessed Cases Reports for a patient do not require review
     When I search for documents requiring review for the patient

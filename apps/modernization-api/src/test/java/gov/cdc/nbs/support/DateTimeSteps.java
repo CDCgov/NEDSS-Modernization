@@ -8,9 +8,8 @@ import java.time.format.DateTimeFormatter;
 public class DateTimeSteps {
 
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-  private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
 
-  @ParameterType(name = "time", value = "(?:\\d{2}.){2}\\d{2}")
+  @ParameterType(name = "time", value = "(?:\\d{2}:\\d{2}:\\d{2})")
   public LocalTime localTime(final String value) {
     return LocalTime.parse(value);
   }
@@ -20,10 +19,6 @@ public class DateTimeSteps {
     return LocalDate.parse(value, DATE_FORMATTER);
   }
 
-  @ParameterType(name = "dateTime", value = "(?:[0]\\d|1[0-2])/(?:[0-2]\\d|3[01])/(?:(?:19|20)\\d{2}) (?:\\d{2}.){2}\\d{2}")
-  public LocalDateTime localDateTime(final String value) {
-    return LocalDateTime.parse(value, DATE_TIME_FORMATTER);
-  }
 
   @ParameterType(name = "date", value = "(?:[0]\\d|1[0-2])/(?:[0-2]\\d|3[01])/(?:(?:19|20)\\d{2})")
   public Instant date(final String value) {

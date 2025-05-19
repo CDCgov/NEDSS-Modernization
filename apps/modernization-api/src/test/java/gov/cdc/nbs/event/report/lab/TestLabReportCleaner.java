@@ -8,8 +8,8 @@ import java.util.Collection;
 @Component
 class TestLabReportCleaner {
 
-  private final static String DELETE_IN = """
-      delete from Participation where act_class_cd = 'OBS' and and act_uid in (:identifiers);
+  private static final String DELETE_IN = """
+      delete from Participation where act_class_cd = 'OBS' and act_uid in (:identifiers);
       
       delete from Observation 
       where   ctrl_cd_display_form = 'LabReport' 

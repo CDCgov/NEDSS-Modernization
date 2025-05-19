@@ -110,8 +110,7 @@ public class LabReportMother {
 
     entityManager.persist(observation);
 
-    LabReportIdentifier created = new LabReportIdentifier(identifier, local);
-    include(created);
+    include(new LabReportIdentifier(identifier, local));
   }
 
   private void within(
@@ -193,12 +192,12 @@ public class LabReportMother {
     lab.setElectronicInd('E');
   }
 
-  void orderedBy(final LabReportIdentifier lab, final long organization) {
+  void orderedBy(final LabReportIdentifier lab, final OrganizationIdentifier organization) {
     Observation observation = managed(lab);
     Act act = observation.getAct();
 
     // create the participation
-    ParticipationId identifier = new ParticipationId(organization, observation.getId(), ORDERED_BY);
+    ParticipationId identifier = new ParticipationId(organization.identifier(), observation.getId(), ORDERED_BY);
 
     Participation participation = new Participation();
     participation.setId(identifier);
