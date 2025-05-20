@@ -1,6 +1,6 @@
 import { CollapsibleCard } from '../collapsible';
 import { Sizing } from 'design-system/field';
-import { DataTable, DataTableProps } from 'design-system/table';
+import { SortableDataTable, DataTableProps } from 'design-system/table';
 import { TableCardAction, TableCardHeader } from './TableCardHeader';
 import { ColumnPreference, useColumnPreferences, withColumnPreferences } from 'design-system/table/preferences';
 import { ComponentType, FC, useMemo } from 'react';
@@ -56,7 +56,7 @@ export const TableCard = <V,>({
         storageKey: columnPreferencesKey,
         defaults: columnPreferences
     });
-    const ManagedDataTable = withColumnPreferencesDataTable(DataTable<V>);
+    const ManagedDataTable = withColumnPreferencesDataTable(SortableDataTable<V>);
     return (
         <ColumnPreferencesCard
             id={id}

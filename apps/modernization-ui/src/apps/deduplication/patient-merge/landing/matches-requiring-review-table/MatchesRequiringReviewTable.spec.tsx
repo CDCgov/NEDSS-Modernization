@@ -1,35 +1,67 @@
 import { MatchRequiringReviewResponse } from 'apps/deduplication/api/model/MatchRequiringReview';
 import { MatchesRequiringReviewTable } from './MatchesRequiringReviewTable';
-import { render, within } from '@testing-library/react';
+import { render, waitFor, within } from '@testing-library/react';
 import { PaginationProvider } from 'pagination';
 import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
+import {SortingProvider, useSorting} from "../../../../../sorting";
+import React from 'react';
 
-let mockReturnValue: MatchRequiringReviewResponse | undefined = {
-    matches: [
-        {
-            patientId: '1234',
-            patientName: 'John Smith',
-            createdDate: '2014-02-11T11:30:30',
-            identifiedDate: '2024-02-11T12:30:30',
-            numOfMatchingRecords: 2
-        }
-    ],
-    page: 0,
-    total: 0
-};
+let mockReturnValue: MatchRequiringReviewResponse;
+beforeEach(() => {
+    jest.clearAllMocks();
+    mockReturnValue = {
+        matches: [
+            {
+                patientId: '1234',
+                patientName: 'John Smith',
+                createdDate: '2014-02-11T11:30:30',
+                identifiedDate: '2024-02-11T12:30:30',
+                numOfMatchingRecords: 2
+            }
+        ],
+        page: 0,
+        total: 0
+    };
+});
+
+jest.mock('pagination', () => {
+    const original = jest.requireActual('pagination');
+    return {
+        ...original,
+        usePagination: () => ({
+            page: {
+                current: 1,
+                pageSize: 20,
+                status: 'Requested',
+                total: 1,
+            },
+            ready: jest.fn(),
+            request: jest.fn(),
+            resize: jest.fn(),
+            firstPage: jest.fn(),
+        }),
+    };
+});
+
+
+
 const mockFetch = jest.fn();
 jest.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
-    useMatchesRequiringReview: () => {
-        return { response: mockReturnValue, fetchMatchesRequiringReview: mockFetch };
-    }
+    useMatchesRequiringReview: () => ({
+        response: mockReturnValue,
+        fetchMatchesRequiringReview: mockFetch,
+    }),
 }));
+
 const Fixture = () => {
     return (
         <MemoryRouter>
-            <PaginationProvider>
-                <MatchesRequiringReviewTable />
-            </PaginationProvider>
+            <SortingProvider>
+                <PaginationProvider>
+                    <MatchesRequiringReviewTable />
+                </PaginationProvider>
+            </SortingProvider>
         </MemoryRouter>
     );
 };
@@ -76,7 +108,9 @@ describe('MatchesRequiringReviewTable', () => {
         const { getByText } = render(<Fixture />);
 
         // default sort
-        expect(mockFetch).lastCalledWith(0, 20, 'identified,desc');
+        await waitFor(() => {
+            expect(mockFetch).lastCalledWith(0, 20, 'identified,desc');
+        });
 
         await user.click(getByText('Patient ID').children[0]); // sort on patient Id asc
         expect(mockFetch).lastCalledWith(0, 20, 'patient-id,asc');
