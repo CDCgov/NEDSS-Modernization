@@ -33,6 +33,7 @@ const OpenInvestigationsCard = () => {
     const columns: Column<PatientInvestigation>[] = [
         {
             ...INVESTIGATION_ID,
+            sortable: true,
             render: (value: PatientInvestigation) => (
                 <ClassicLink url={`/nbs/api/profile/{patient}/investigation/{investigation}`}>
                     {value.investigation}
@@ -41,14 +42,17 @@ const OpenInvestigationsCard = () => {
         },
         {
             ...START_DATE,
+            sortable: true,
             render: (value: PatientInvestigation) => value.startedOn.toLocaleDateString()
         },
         {
             ...CONDITION,
+            sortable: true,
             render: (value: PatientInvestigation) => <b>{value.condition}</b>
         },
         {
             ...CASE_STATUS,
+            sortable: true,
             render: (value: PatientInvestigation) => value.caseStatus
         },
         {
@@ -57,14 +61,17 @@ const OpenInvestigationsCard = () => {
         },
         {
             ...JURISDICTION,
+            sortable: true,
             render: (value: PatientInvestigation) => value.jurisdiction
         },
         {
             ...INVESTIGATOR,
+            sortable: true,
             render: (value: PatientInvestigation) => value.investigator
         },
         {
             ...COINFECTION_ID,
+            sortable: true,
             render: (value: PatientInvestigation) => value.coInfection
         }
     ];
