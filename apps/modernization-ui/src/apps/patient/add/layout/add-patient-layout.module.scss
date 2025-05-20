@@ -39,13 +39,13 @@ $in-page-navigation-width: 12.1875rem;
             min-width: $in-page-navigation-width;
             max-width: $in-page-navigation-width;
         }
-
-        .actions {
-            display: flex;
-            gap: 0.5rem;
-            position: absolute;
-            right: 1rem;
-            top: 1rem;
-        }
+    }
+    
+    .actions {
+        display: flex;
+        gap: 0.5rem;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
     }
 }
