@@ -6,6 +6,7 @@ $in-page-navigation-width: 12.1875rem;
 
 .layout {
     background-color: colors.$background;
+    position: relative;
 
     .header {
         display: flex;
@@ -17,11 +18,6 @@ $in-page-navigation-width: 12.1875rem;
         background-color: colors.$base-white;
 
         @extend %thin-bottom;
-
-        .actions {
-            display: flex;
-            gap: 0.5rem;
-        }
     }
 
     & > main {
@@ -42,6 +38,14 @@ $in-page-navigation-width: 12.1875rem;
             top: 0;
             min-width: $in-page-navigation-width;
             max-width: $in-page-navigation-width;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
         }
     }
 }
