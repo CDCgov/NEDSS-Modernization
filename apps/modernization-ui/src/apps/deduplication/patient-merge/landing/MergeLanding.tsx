@@ -4,16 +4,30 @@ import { Icon } from 'design-system/icon';
 import { MatchesRequiringReviewTable } from './matches-requiring-review-table/MatchesRequiringReviewTable';
 import { useExportMatches } from 'apps/deduplication/api/useExportMatches';
 import styles from './merge-landing.module.scss';
+import { SortingProvider, useSorting } from 'sorting';
+import { PaginationProvider } from 'pagination';
 
 export const MergeLanding = () => {
+    return (
+        <PaginationProvider pageSize={20}>
+            <SortingProvider>
+                <MergeLandingContent />
+            </SortingProvider>
+        </PaginationProvider>
+    );
+};
+
+const MergeLandingContent = () => {
     const { exportCSV, exportPDF } = useExportMatches();
+    const { sorting } = useSorting();
+    const sort = sorting ?? 'patient-id,desc';
 
     const handleCSVExport = async () => {
-        await exportCSV();
+        await exportCSV(sort);
     };
 
     const handlePDFExport = async () => {
-        await exportPDF();
+        await exportPDF(sort);
     };
 
     return (

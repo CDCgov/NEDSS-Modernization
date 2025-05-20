@@ -11,25 +11,21 @@ export const PassConfigurationTable = ({ algorithm }: Props) => {
         {
             id: 'pass-name',
             name: 'Pass name',
-            render(pass) {
-                return <>{pass.name}</>;
-            }
+            render: (pass) => pass.name
         },
         {
             id: 'pass-description',
             name: 'Description',
-            render(pass) {
-                return <>{pass.description}</>;
-            }
+            render: (pass) => pass.description
         },
         {
             id: 'pass-blocking-criteria',
             name: 'Blocking criteria',
-            render(pass) {
+            render: (pass) => {
                 return (
                     <>
-                        {pass.blockingCriteria.map((b, k) => (
-                            <div key={k}>{BlockingAttributeLabels[b].label}</div>
+                        {pass.blockingCriteria.map((b) => (
+                            <div key={`blockingCriteria-${b}`}>{BlockingAttributeLabels[b].label}</div>
                         ))}
                     </>
                 );
@@ -38,11 +34,11 @@ export const PassConfigurationTable = ({ algorithm }: Props) => {
         {
             id: 'pass-matchin-criteria',
             name: 'Matching criteria',
-            render(pass) {
+            render: (pass) => {
                 return (
                     <>
-                        {pass.matchingCriteria.map((b, k) => (
-                            <div key={k}>
+                        {pass.matchingCriteria.map((b) => (
+                            <div key={`matchingCriteria-${b.attribute}`}>
                                 {MatchingAttributeLabels[b.attribute].label}: {matchMethodLabelMap.get(b.method)}
                             </div>
                         ))}
@@ -53,23 +49,17 @@ export const PassConfigurationTable = ({ algorithm }: Props) => {
         {
             id: 'pass-lower-bounds',
             name: 'Lower bounds',
-            render(pass) {
-                return <>{pass.lowerBound}</>;
-            }
+            render: (pass) => pass.lowerBound
         },
         {
             id: 'pass-upper-bounds',
             name: 'Upper bounds',
-            render(pass) {
-                return <>{pass.upperBound}</>;
-            }
+            render: (pass) => pass.upperBound
         },
         {
             id: 'pass-active',
             name: 'Active',
-            render(pass) {
-                return <>{pass.active ? 'Yes' : 'No'}</>;
-            }
+            render: (pass) => (pass.active ? 'Yes' : 'No')
         }
     ];
     return (
