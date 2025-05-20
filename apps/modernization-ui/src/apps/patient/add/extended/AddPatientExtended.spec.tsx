@@ -105,8 +105,8 @@ describe('AddPatientExtended', () => {
         const { getAllByRole } = renderWithRouter();
 
         const buttons = getAllByRole('button');
-        expect(buttons[0]).toHaveTextContent('Cancel');
-        expect(buttons[1]).toHaveTextContent('Save');
+        expect(buttons[buttons.length - 2]).toHaveTextContent('Cancel');
+        expect(buttons[buttons.length - 1]).toHaveTextContent('Save');
     });
 
     it('should not be showing modal by default', () => {
