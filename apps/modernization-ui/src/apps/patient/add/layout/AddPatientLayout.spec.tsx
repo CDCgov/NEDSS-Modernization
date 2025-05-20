@@ -18,7 +18,7 @@ describe('AddPatientLayout', () => {
 
     it('should render the header title and actions', () => {
         const { getByText } = render(
-            <AddPatientLayout headerActions={headerActions} headerTitle={headerTitle} sections={sections}>
+            <AddPatientLayout actions={headerActions} title={headerTitle} sections={sections}>
                 {children}
             </AddPatientLayout>
         );
@@ -29,7 +29,7 @@ describe('AddPatientLayout', () => {
 
     it('should render the children content', () => {
         const { getByText } = render(
-            <AddPatientLayout headerActions={headerActions} headerTitle={headerTitle} sections={sections}>
+            <AddPatientLayout actions={headerActions} title={headerTitle} sections={sections}>
                 {children}
             </AddPatientLayout>
         );
@@ -39,7 +39,7 @@ describe('AddPatientLayout', () => {
 
     it('should render the in-page navigation with sections', () => {
         const { getByText } = render(
-            <AddPatientLayout headerActions={headerActions} headerTitle={headerTitle} sections={sections}>
+            <AddPatientLayout actions={headerActions} title={headerTitle} sections={sections}>
                 {children}
             </AddPatientLayout>
         );

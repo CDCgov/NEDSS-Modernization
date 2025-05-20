@@ -1,5 +1,8 @@
+import React, { useEffect, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useComponentSizing } from 'design-system/sizing';
 import { Card } from 'design-system/card';
+import { AlertMessage } from 'design-system/message';
 import { ExtendedNewPatientEntry } from './entry';
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
 import { EthnicityEntryFields } from 'apps/patient/data/ethnicity/EthnicityEntryFields';
@@ -12,11 +15,8 @@ import { NameRepeatingBlock } from './inputs/name/NameRepeatingBlock';
 import { PhoneAndEmailRepeatingBlock } from './inputs/phone/PhoneAndEmailRepeatingBlock';
 import { RaceRepeatingBlock } from './inputs/race/RaceRepeatingBlock';
 
-import { AlertMessage } from 'design-system/message';
-import styles from './add-patient-extended-form.module.scss';
 import { SubFormDirtyState, ValidationErrors } from './useAddExtendedPatientInteraction';
-import React, { useEffect, useRef } from 'react';
-import { useComponentSizing } from 'design-system/sizing';
+import styles from './add-patient-extended-form.module.scss';
 
 type Props = {
     validationErrors?: ValidationErrors;
