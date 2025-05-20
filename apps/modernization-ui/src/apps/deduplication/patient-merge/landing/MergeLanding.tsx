@@ -20,14 +20,13 @@ export const MergeLanding = () => {
 const MergeLandingContent = () => {
     const { exportCSV, exportPDF } = useExportMatches();
     const { sorting } = useSorting();
-    const sort = sorting ?? 'patient-id,desc';
 
     const handleCSVExport = async () => {
-        await exportCSV(sort);
+        await exportCSV(sorting);
     };
 
     const handlePDFExport = async () => {
-        await exportPDF(sort);
+        await exportPDF(sorting);
     };
 
     return (
