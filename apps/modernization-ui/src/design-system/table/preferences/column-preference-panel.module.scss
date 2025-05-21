@@ -29,19 +29,21 @@
 
     footer {
         display: flex;
-        justify-content: center;
-        padding: 1.5rem;
-        gap: 2.2rem;
+        justify-content: space-between;
+        padding: 1rem;
 
         @extend %thin-top;
 
-        .reset {
+        .resetxxx {
             padding: 0;
+            box-shadow: none;
             background-color: transparent;
             color: colors.$primary;
 
             &:hover {
                 text-decoration: underline;
+                background-color: transparent;
+                color: colors.$primary;
             }
         }
     }

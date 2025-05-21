@@ -40,3 +40,13 @@ export const Default: Story = {
         close: () => {}
     }
 };
+
+export const InPanel: Story = {
+    decorators: Default.decorators,
+    args: Default.args,
+    render: (args) => (
+        <div style={{ width: '300px', height: 'auto', backgroundColor: 'white', border: '1px solid black' }}>
+            <ColumnPreferencesPanel {...args} />
+        </div>
+    )
+};
