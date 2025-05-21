@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.labreport;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record PatientLabReport(
@@ -8,7 +9,7 @@ public record PatientLabReport(
     @JsonProperty String processingDecision,
     @JsonProperty FacilityProviders facilityProviders,
     @JsonProperty String collectedDate,
-    @JsonProperty TestResult testResult,
+    @JsonProperty List<TestResult> testResults,
     @JsonProperty AssociatedInvestigation associatedInvestigation,
     @JsonProperty String programArea,
     @JsonProperty(required = true) String jurisdiction,

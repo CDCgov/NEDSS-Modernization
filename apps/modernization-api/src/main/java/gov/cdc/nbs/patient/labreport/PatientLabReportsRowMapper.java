@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.labreport;
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
   record Column(
@@ -21,13 +22,7 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
       int jurisdiction,
       int eventId,
       int specimenSite,
-      int specimenSource,
-      int labTest,
-      int labResultStatus,
-      int codedResult,
-      int numericResult,
-      int highRange,
-      int lowRange) {
+      int specimenSource) {
   }
 
   private final Column columns;
@@ -48,12 +43,6 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
     String labIdentifier = resultSet.getString(this.columns.investigationId());
     String reportingFacility = resultSet.getString(this.columns.facilityName());
     String providerLastName = resultSet.getString(this.columns.providerLastName());
-    String labTest = resultSet.getString(this.columns.labTest());
-    String labResultStatus = resultSet.getString(this.columns.labResultStatus());
-    String codedResult = resultSet.getString(this.columns.codedResult());
-    String numericResult = resultSet.getString(this.columns.numericResult());
-    String highRange = resultSet.getString(this.columns.highRange());
-    String lowRange = resultSet.getString(this.columns.lowRange());
     String associatedWithId = resultSet.getString(this.columns.associatedWithId());
     String associatedWithLocal = resultSet.getString(this.columns.associatedWithLocal());
     String associatedWithCondition = resultSet.getString(this.columns.associatedWithCondition());
@@ -64,8 +53,7 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
         processingDecision,
         new PatientLabReport.FacilityProviders(reportingFacility, providerLastName, null),
         dateCollected,
-        new PatientLabReport.TestResult(1, labTest, codedResult, numericResult, lowRange, highRange,
-            labResultStatus),
+        new ArrayList<>(),
         new PatientLabReport.AssociatedInvestigation(associatedWithId, associatedWithCondition, associatedWithLocal),
         programArea, jurisdiction, labIdentifier);
   }

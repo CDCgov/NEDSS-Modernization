@@ -27,15 +27,7 @@ class PatientLabReportsFinder {
             [jurisdiction].code_short_desc_txt                  as [Jurisduction],
             [lab].[local_id]                                    as [Event Id],
             [specimen_site].[code_desc_txt]                     as [Specimen Site],
-            [specimen_source].[code_desc_txt]                   as [Speciman Source],
-          [lab_test].lab_test_desc_txt                        as [Lab Test],
-          [lab_result_status].[code_short_desc_txt]           as [Lab Result Status],
-          [coded_result].lab_result_desc_txt                  as [coded_result],
-          [numeric].numeric_value_1                           as [numeric_result],
-          [numeric].high_range                                as [high_range],
-          [numeric].low_range                                 as [low_range],
-          [numeric].numeric_unit_cd                           as [unit]
-
+            [specimen_source].[code_desc_txt]                   as [Speciman Source]
         from [Observation] [lab]
             left join NBS_SRTE..Jurisdiction_code [jurisdiction] on
                     [jurisdiction].[code]  = [lab].[jurisdiction_cd]
@@ -88,33 +80,6 @@ class PatientLabReportsFinder {
                     [specimen_source].code = [specimen_source_material].cd
                 and [specimen_source].code_set_nm = 'SPECMN_SRC'
 
-
-            left join Act_relationship [lab_result_components] on
-                    [lab_result_components].target_act_uid = [lab].observation_uid
-                and [lab_result_components].type_cd = 'COMP'
-                and [lab_result_components].source_class_cd = 'OBS'
-                and [lab_result_components].target_class_cd = 'OBS'
-
-            left join observation [lab_result] on
-                    [lab_result].observation_uid = [lab_result_components].[source_act_uid]
-                and [lab_result].obs_domain_cd_st_1 = 'Result'
-
-            left join NBS_SRTE..Code_value_general [lab_result_status] on
-                    [lab_result_status].[code_set_nm] = 'ACT_OBJ_ST'
-                and [lab_result_status].code =  [lab_result].[status_cd]
-
-            left join NBS_SRTE..Lab_test [lab_test] on
-                    [lab_test].lab_test_cd = [lab_result].cd
-
-            left join [Obs_value_coded] [coded] on
-                    [coded].[observation_uid] = [lab_result].[observation_uid]
-
-            left join NBS_SRTE..Lab_result [coded_result] on
-                    [coded_result].[lab_result_cd] = [coded].code
-
-            left join [Obs_value_numeric] [numeric] on
-                    [numeric].[observation_uid] = [lab_result].[observation_uid]
-
               where   [lab].[ctrl_cd_display_form] = 'LabReport'
               and [subject].person_parent_uid = ?
                             """;
@@ -138,12 +103,6 @@ class PatientLabReportsFinder {
   private static final int EVENT_ID_COLUMN = 14;
   private static final int SPECIMEN_SITE_COLUMN = 15;
   private static final int SPECIMEN_SOURCE_COLUMN = 16;
-  private static final int LAB_TEST_COLUMN = 17;
-  private static final int LAB_RESULT_STATUS_COLUMN = 18;
-  private static final int CODED_RESULT_COLUMN = 19;
-  private static final int NUMERIC_RESULT_COLUMN = 20;
-  private static final int HIGH_RANGE_COLUMN = 21;
-  private static final int LOW_RANGE_COLUMN = 22;
 
   private final JdbcTemplate template;
   private final PatientLabReportsRowMapper mapper;
@@ -167,13 +126,7 @@ class PatientLabReportsFinder {
             JURISDICTION_COLUMN,
             EVENT_ID_COLUMN,
             SPECIMEN_SITE_COLUMN,
-            SPECIMEN_SOURCE_COLUMN,
-            LAB_TEST_COLUMN,
-            LAB_RESULT_STATUS_COLUMN,
-            CODED_RESULT_COLUMN,
-            NUMERIC_RESULT_COLUMN,
-            HIGH_RANGE_COLUMN,
-            LOW_RANGE_COLUMN));
+            SPECIMEN_SOURCE_COLUMN));
   }
 
   List<PatientLabReport> find(final long personUid, Collection<Long> oids) {

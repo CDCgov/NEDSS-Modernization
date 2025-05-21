@@ -11,17 +11,28 @@ class PatientLabReportsResolver {
   private static final Permission PERMISSION = new Permission("view", "ObservationLabReport");
 
   private final PatientLabReportsFinder patientLabReportsFinder;
+  private final PatientTestResultsFinder patientTestResultsFinder;
   private final PermissionScopeResolver scopeResolver;
 
   PatientLabReportsResolver(
       final PatientLabReportsFinder patientLabReportsFinder,
+      final PatientTestResultsFinder patientTestResultsFinder,
       final PermissionScopeResolver scopeResolver) {
     this.patientLabReportsFinder = patientLabReportsFinder;
+    this.patientTestResultsFinder = patientTestResultsFinder;
     this.scopeResolver = scopeResolver;
   }
 
   public List<PatientLabReport> resolve(final long patientId) {
     PermissionScope scope = this.scopeResolver.resolve(PERMISSION);
-    return patientLabReportsFinder.find(patientId, scope.any());
+    List<PatientLabReport> labReportResults = patientLabReportsFinder.find(patientId, scope.any());
+    List<PatientLabReport.TestResult> patientTestResults = patientTestResultsFinder.find();
+    for (int i = 0; i < labReportResults.size(); ++i) {
+      PatientLabReport patientLabReport = labReportResults.get(i);
+      for (int j = 0; j < patientTestResults.size(); ++j) {
+        patientLabReport.testResults().add(patientTestResults.get(j));
+      }
+    }
+    return labReportResults;
   }
 }
