@@ -43,11 +43,6 @@ public class LabReportSteps {
     this.reportMother = reportMother;
   }
 
-  @Before("@lab-report")
-  public void clean() {
-    this.reportMother.reset();
-  }
-
   @Given("^(?i)the patient has a lab report")
   @Given("^(?i)the patient has another lab report")
   public void the_patient_has_a_lab_report() {
