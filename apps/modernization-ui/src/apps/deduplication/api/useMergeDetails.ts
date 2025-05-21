@@ -1,9 +1,10 @@
 import { Config } from 'config';
 import { useState } from 'react';
+import { PatientData } from './model/PatientData';
 
 export const useMergeDetails = () => {
     const [loading, setLoading] = useState(false);
-    const [response, setResponse] = useState('');
+    const [response, setResponse] = useState<PatientData[] | undefined>();
     const [error, setError] = useState<string | undefined>(undefined);
 
     const fetchPatientMergeDetails = (patientId: string) => {

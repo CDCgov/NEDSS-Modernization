@@ -3,12 +3,12 @@ import { render } from '@testing-library/react';
 import { MergeReview } from './MergeReview';
 import { MemoryRouter } from 'react-router';
 
+const setPageState = jest.fn();
+const removePatient = jest.fn();
 const Fixture = () => {
-    const [pageState, setPageState] = React.useState<'review' | 'preview'>('review');
-
     return (
         <MemoryRouter>
-            <MergeReview onPreviewClick={() => setPageState('preview')} />
+            <MergeReview patientData={[]} onPreview={setPageState} onRemovePatient={removePatient} />
         </MemoryRouter>
     );
 };
