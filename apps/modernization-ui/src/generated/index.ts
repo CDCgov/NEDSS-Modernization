@@ -9,6 +9,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { AddressDemographic } from './models/AddressDemographic';
 export type { Administrative } from './models/Administrative';
+export type { AssociatedInvestigation } from './models/AssociatedInvestigation';
 export type { BirthDemographic } from './models/BirthDemographic';
 export type { ConceptOptionsResponse } from './models/ConceptOptionsResponse';
 export type { CreatedPatient } from './models/CreatedPatient';
@@ -21,6 +22,7 @@ export type { DocumentRequiringReview } from './models/DocumentRequiringReview';
 export type { EncryptionResponse } from './models/EncryptionResponse';
 export type { EthnicityDemographic } from './models/EthnicityDemographic';
 export type { ExistingRaceCategory } from './models/ExistingRaceCategory';
+export type { FacilityProviders } from './models/FacilityProviders';
 export type { Failure } from './models/Failure';
 export type { GenderDemographic } from './models/GenderDemographic';
 export type { GeneralInformationDemographic } from './models/GeneralInformationDemographic';
@@ -38,9 +40,11 @@ export type { Option } from './models/Option';
 export type { PatientDemographicsSummary } from './models/PatientDemographicsSummary';
 export { PatientFile } from './models/PatientFile';
 export type { PatientInvestigation } from './models/PatientInvestigation';
+export type { PatientLabReport } from './models/PatientLabReport';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
 export type { StandardResponse } from './models/StandardResponse';
+export type { TestResult } from './models/TestResult';
 
 export { CodedResultOptionsService } from './services/CodedResultOptionsService';
 export { ConceptOptionsService } from './services/ConceptOptionsService';
@@ -55,6 +59,7 @@ export { NotificationStatusControllerService } from './services/NotificationStat
 export { OccupationOptionsService } from './services/OccupationOptionsService';
 export { PatientFileService } from './services/PatientFileService';
 export { PatientInvestigationsService } from './services/PatientInvestigationsService';
+export { PatientLabReportsService } from './services/PatientLabReportsService';
 export { PatientOpenInvestigationsService } from './services/PatientOpenInvestigationsService';
 export { PatientProfileService } from './services/PatientProfileService';
 export { PatientRaceService } from './services/PatientRaceService';
