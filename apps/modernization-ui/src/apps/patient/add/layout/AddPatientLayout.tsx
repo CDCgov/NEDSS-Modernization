@@ -18,14 +18,14 @@ export const AddPatientLayout = ({ actions, title, sections, children }: AddPati
             <div className={styles.layout}>
                 <header className={styles.header}>
                     <Heading level={1}>{title}</Heading>
-                    <div className={styles.actions}>{actions()}</div>
                 </header>
                 <main>
-                    <div className={styles.content}>{children}</div>
                     <aside>
                         <InPageNavigation sections={sections} />
                     </aside>
+                    <div className={styles.content}>{children}</div>
                 </main>
+                <div className={styles.actions}>{actions()}</div>
             </div>
         </DataEntryLayout>
     );
