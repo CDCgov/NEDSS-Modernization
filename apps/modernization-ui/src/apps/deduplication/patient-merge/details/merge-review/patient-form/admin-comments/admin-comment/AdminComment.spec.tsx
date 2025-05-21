@@ -27,6 +27,11 @@ describe('AdminComment', () => {
         expect(getByLabelText('As of date')).toBeInTheDocument();
     });
 
+    it('should render date in MM/dd/yyyy format', () => {
+        const { getByText } = render(<Fixture />);
+        expect(getByText('05/01/2025')).toBeInTheDocument();
+    });
+
     it('should render comments label', () => {
         const { getByText } = render(<Fixture />);
 
