@@ -47,7 +47,7 @@ describe('MergePreview', () => {
         expect(screen.getByText(/Mario/i)).toBeInTheDocument();
         expect(screen.getByText(/Male/i)).toBeInTheDocument();
         expect(screen.getByText(/12\/04\/1975/i)).toBeInTheDocument();
-        expect(screen.getByText(/40/i)).toBeInTheDocument();
+        expect(screen.getByText(/49/i)).toBeInTheDocument();
         expect(screen.getByText(/98765/i)).toBeInTheDocument();
     });
 
