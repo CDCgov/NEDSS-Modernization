@@ -22,7 +22,6 @@ class PatientLabReportsResolver {
 
   public List<PatientLabReport> resolve(final long patientId) {
     PermissionScope scope = this.scopeResolver.resolve(PERMISSION);
-    List<PatientLabReport> labReportResults = patientLabReportsFinder.find(patientId, scope.any());
-    return labReportResults;
+    return patientLabReportsFinder.find(patientId, scope.any());
   }
 }

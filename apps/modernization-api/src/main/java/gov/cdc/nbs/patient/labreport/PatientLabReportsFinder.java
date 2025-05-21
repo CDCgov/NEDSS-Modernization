@@ -178,7 +178,7 @@ class PatientLabReportsFinder {
 
   List<PatientLabReport> find(final long personUid, Collection<Long> oids) {
     if (oids.isEmpty()) {
-      return new ArrayList<PatientLabReport>();
+      return new ArrayList<>();
     }
     return this.template.query(
         query(oids),
