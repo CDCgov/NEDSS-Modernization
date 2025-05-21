@@ -25,6 +25,7 @@ Feature: Patient Lab Reports API
   Scenario: The api returns detailed results the patient has lab reports
     And I can "view" any "ObservationLabReport" for "STD" within all jurisdictions
     And the patient has a lab report reported by Northside Hospital
+    And the patient is a subject of an investigation
     And the investigation was reported by the Emory University Hospital facility
     And the lab report has an Acid-Fast Stain test with a coded result of abnormal
     And the lab report was ordered by the Emory University Hospital facility
