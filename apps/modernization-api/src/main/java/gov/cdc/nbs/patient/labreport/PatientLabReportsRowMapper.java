@@ -1,10 +1,8 @@
 package gov.cdc.nbs.patient.labreport;
 
 import org.springframework.jdbc.core.RowMapper;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
   record Column(

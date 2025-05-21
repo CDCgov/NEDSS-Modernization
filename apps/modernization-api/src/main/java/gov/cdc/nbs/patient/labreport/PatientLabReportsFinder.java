@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.labreport;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.patient.labreport.PatientLabReport.AssociatedInvestigation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.stream.Collectors;
 
 @Component
 class PatientLabReportsFinder {
-  private String query(boolean isOpen, Collection<Long> oids) {
+  private String query(Collection<Long> oids) {
     return """
         select
             [lab].[observation_uid]                             as [id],
@@ -178,12 +177,11 @@ class PatientLabReportsFinder {
   }
 
   List<PatientLabReport> find(final long personUid, Collection<Long> oids) {
-    System.out.println("XXX oids:" + oids.toString());
     if (oids.isEmpty()) {
       return new ArrayList<PatientLabReport>();
     }
     return this.template.query(
-        query(false, oids),
+        query(oids),
         statement -> statement.setLong(PERSON_UID_PARAMETER, personUid),
         this.mapper);
   }

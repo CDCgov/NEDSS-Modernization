@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.labreport;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record PatientLabReport(
