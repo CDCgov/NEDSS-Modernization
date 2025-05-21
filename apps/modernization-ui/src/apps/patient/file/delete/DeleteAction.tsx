@@ -11,6 +11,7 @@ import { DeletePatientResponse, useDeletePatient } from './useDeletePatient';
 import { Permitted, permissions } from 'libs/permission';
 import { usePatient } from '../usePatient';
 import { Deletability } from '../patient';
+import { displayName } from 'name';
 
 type DeleteActionProps = {
     buttonClassName?: string;
@@ -30,7 +31,12 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
 
     const handleDeleteComplete = (response: DeletePatientResponse) => {
         if (response.success) {
-            showSuccess(`Deleted patient: ${patient?.id}`);
+            const name = patient.name ? displayName('fullLastFirst')(patient.name) : 'patient';
+            showSuccess(
+                <span>
+                    You have successfully deleted <strong>{`${name} (Patient ID: ${patient.patientId})`}</strong>.
+                </span>
+            );
             go();
         } else {
             showError('Delete failed. Please try again later.');

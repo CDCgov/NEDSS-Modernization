@@ -1,0 +1,20 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+$menu-width: 258px;
+
+.layout {
+    display: flex;
+    height: calc(100% - var(--nav-bar-height, 75px));
+    background-color: colors.$base-white;
+
+    .menu {
+        @extend %thin-right;
+        width: $menu-width;
+    }
+
+    .content {
+        width: 100%;
+        max-width: calc(100% - #{$menu-width});
+    }
+}

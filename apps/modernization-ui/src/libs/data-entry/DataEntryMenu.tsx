@@ -1,9 +1,13 @@
 import { NavEntry, SideNavigation } from 'design-system/side-nav';
 import { Permitted } from 'libs/permission';
 
-const DataEntryMenu = () => {
+type DataEntryMenuProps = {
+    className?: string;
+};
+
+const DataEntryMenu = ({ className }: DataEntryMenuProps) => {
     return (
-        <SideNavigation title="Data entry">
+        <SideNavigation title="Data entry" className={className}>
             <Permitted permission="find-patient">
                 <NavEntry name="New patient" path="/search/patient" active />
             </Permitted>

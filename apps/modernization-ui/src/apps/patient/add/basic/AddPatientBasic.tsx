@@ -1,26 +1,22 @@
 import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Shown } from 'conditional-render';
 import { Button } from 'components/button';
 import { NavigationGuard } from 'design-system/entry/navigation-guard';
 import { sections } from './sections';
 import { AddPatientBasicForm } from './AddPatientBasicForm';
 import { BasicNewPatientEntry, initial } from './entry';
 import { useAddBasicPatient } from './useAddBasicPatient';
-import { AddPatientLayout, DataEntryLayout } from '../layout';
+import { AddPatientLayout } from '../layout';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { usePatientDataEntryMethod } from '../usePatientDataEntryMethod';
 import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
 import { useSearchFromAddPatient } from '../useSearchFromAddPatient';
 
-import styles from './add-patient-basic.module.scss';
 import { SkipLink } from 'SkipLink';
 
 export const AddPatientBasic = () => {
     const { defaults } = useAddPatientBasicDefaults();
-
-    const interaction = useAddBasicPatient();
 
     const form = useForm<BasicNewPatientEntry>({
         defaultValues: initial(),
@@ -32,10 +28,10 @@ export const AddPatientBasic = () => {
             form.reset(defaults, { keepDefaultValues: true });
         }
     }, [defaults]);
-    defaults;
 
     const { toExtended } = usePatientDataEntryMethod();
 
+    const interaction = useAddBasicPatient();
     const handleSave = form.handleSubmit(interaction.create);
 
     const { toSearch } = useSearchFromAddPatient();
@@ -58,17 +54,15 @@ export const AddPatientBasic = () => {
     const working = !form.formState.isValid || !interaction.canSave || interaction.status !== 'waiting';
 
     return (
-        <DataEntryLayout>
+        <>
             <SkipLink id="administrative.asOf" />
-            <Shown when={interaction.status === 'created'}>
-                {interaction.status === 'created' && <PatientCreatedPanel created={interaction.created} />}
-            </Shown>
+            {interaction.status === 'created' && <PatientCreatedPanel created={interaction.created} />}
             <FormProvider {...form}>
                 <AddPatientLayout
-                    headerTitle="New patient"
+                    title="New patient"
                     sections={sections}
-                    headerActions={() => (
-                        <div className={styles.buttonGroup}>
+                    actions={() => (
+                        <>
                             <Button
                                 type="button"
                                 onClick={handleExtended}
@@ -83,7 +77,7 @@ export const AddPatientBasic = () => {
                             <Button type="submit" onClick={handleSave} disabled={working}>
                                 Save
                             </Button>
-                        </div>
+                        </>
                     )}>
                     <AddPatientBasicForm isValid={handleFormIsValid} />
                 </AddPatientLayout>
@@ -94,6 +88,6 @@ export const AddPatientBasic = () => {
                 allowed={'/patient/add/extended'}
                 activated={interaction.status !== 'created'}
             />
-        </DataEntryLayout>
+        </>
     );
 };
