@@ -16,17 +16,25 @@ public record DocumentRequiringReview(
     String reportingFacility,
     DisplayableSimpleName orderingProvider,
     String sendingFacility,
-    List<Description> descriptions
-
+    String condition,
+    List<String> treatments
 ) {
 
-  public record Description(
-      String title,
-      String value
-  ) {
-    public Description(String title) {
-      this(title, "");
-    }
+  public DocumentRequiringReview withTreatments(final List<String> treatments) {
+    return new DocumentRequiringReview(
+        id(),
+        local(),
+        type(),
+        eventDate(),
+        dateReceived(),
+        isElectronic(),
+        isUpdate(),
+        reportingFacility(),
+        orderingProvider(),
+        sendingFacility(),
+        condition(),
+        treatments
+    );
   }
 
 }

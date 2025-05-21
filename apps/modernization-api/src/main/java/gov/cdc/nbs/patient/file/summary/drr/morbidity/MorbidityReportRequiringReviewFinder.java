@@ -1,5 +1,7 @@
-package gov.cdc.nbs.patient.file.summary.drr;
+package gov.cdc.nbs.patient.file.summary.drr.morbidity;
 
+import gov.cdc.nbs.patient.file.summary.drr.DocumentRequiringReview;
+import gov.cdc.nbs.patient.file.summary.drr.DocumentsRequiringReviewCriteria;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;

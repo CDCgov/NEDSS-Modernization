@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.file.summary.drr;
 import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
+import gov.cdc.nbs.patient.file.summary.drr.morbidity.MorbidityReportRequiringReviewResolver;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -14,6 +15,7 @@ class DocumentRequiringReviewResolver {
 
   private static final Permission DOCUMENT_PERMISSION = new Permission("View", "Document");
   private static final Permission MORBIDITY_PERMISSION = new Permission("View", "ObservationMorbidityReport");
+  private static final Permission TREATMENT_PERMISSION = new Permission("View", "Treatment");
   private static final Permission LAB_PERMISSION = new Permission("View", "ObservationLabReport");
   private static final Permission INVESTIGATION_PERMISSION = new Permission("View", "Investigation");
 
@@ -45,6 +47,7 @@ class DocumentRequiringReviewResolver {
   private DocumentsRequiringReviewCriteria asCriteria(final long patient) {
     PermissionScope document = this.scopeResolver.resolve(DOCUMENT_PERMISSION);
     PermissionScope morbidity = this.scopeResolver.resolve(MORBIDITY_PERMISSION);
+    PermissionScope treatment = this.scopeResolver.resolve(TREATMENT_PERMISSION);
     PermissionScope lab = this.scopeResolver.resolve(LAB_PERMISSION);
     PermissionScope investigation = this.scopeResolver.resolve(INVESTIGATION_PERMISSION);
 
@@ -53,6 +56,7 @@ class DocumentRequiringReviewResolver {
         document,
         lab,
         morbidity,
+        treatment,
         investigation
     );
   }

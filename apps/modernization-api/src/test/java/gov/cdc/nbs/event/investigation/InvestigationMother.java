@@ -1,20 +1,15 @@
 package gov.cdc.nbs.event.investigation;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.Act;
-import gov.cdc.nbs.entity.odse.ActId;
-import gov.cdc.nbs.entity.odse.ActIdId;
-import gov.cdc.nbs.entity.odse.Participation;
-import gov.cdc.nbs.entity.odse.ParticipationId;
-import gov.cdc.nbs.entity.odse.PublicHealthCase;
+import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
+import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
-import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
+import gov.cdc.nbs.testing.patient.RevisionMother;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import jakarta.persistence.EntityManager;
@@ -39,7 +34,7 @@ public class InvestigationMother {
   private final Active<AbcCaseIdentifier> activeAbcCase;
   private final Active<StateCaseIdentifier> activeStateCase;
   private final Active<CityCountyCaseIdentifier> activeCityCountyCase;
-  private final PatientMother patientMother;
+  private final RevisionMother revisionMother;
   private final TestInvestigationCleaner cleaner;
 
   InvestigationMother(
@@ -49,7 +44,7 @@ public class InvestigationMother {
       final TestInvestigations investigations,
       final Available<InvestigationIdentifier> available,
       final Active<InvestigationIdentifier> active,
-      final PatientMother patientMother,
+      final RevisionMother revisionMother,
       final Active<AbcCaseIdentifier> activeAbcCase,
       final Active<StateCaseIdentifier> activeStateCase,
       final Active<CityCountyCaseIdentifier> activeCityCountyCase,
@@ -60,7 +55,7 @@ public class InvestigationMother {
     this.investigations = investigations;
     this.available = available;
     this.active = active;
-    this.patientMother = patientMother;
+    this.revisionMother = revisionMother;
     this.activeAbcCase = activeAbcCase;
     this.activeStateCase = activeStateCase;
     this.activeCityCountyCase = activeCityCountyCase;
@@ -97,7 +92,7 @@ public class InvestigationMother {
 
     this.entityManager.persist(investigation);
 
-    include(new InvestigationIdentifier(identifier, local));
+    include(new InvestigationIdentifier(identifier, local, subject, null, null));
 
     return investigation;
   }
@@ -105,8 +100,9 @@ public class InvestigationMother {
   void create(
       final PatientIdentifier patient,
       final JurisdictionIdentifier jurisdiction,
-      final ProgramAreaIdentifier programArea) {
-    PatientIdentifier revision = patientMother.revise(patient);
+      final ProgramAreaIdentifier programArea
+  ) {
+    PatientIdentifier revision = revisionMother.revise(patient);
 
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal(INVESTIGATION_CODE);
@@ -129,7 +125,7 @@ public class InvestigationMother {
 
     this.entityManager.persist(investigation);
 
-    include(new InvestigationIdentifier(identifier, local));
+    include(new InvestigationIdentifier(identifier, local, revision.id(), programArea, jurisdiction));
   }
 
   private void include(final InvestigationIdentifier investigation) {
