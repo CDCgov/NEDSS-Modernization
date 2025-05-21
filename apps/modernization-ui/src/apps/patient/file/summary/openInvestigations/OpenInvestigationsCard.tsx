@@ -2,13 +2,13 @@ import { ClassicLink } from 'classic';
 import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { PatientInvestigation } from 'generated/graphql/schema';
-import { useFindOpenInvestigations } from '../../patientData/useFindOpenInvestigations';
+import { PatientInvestigation } from 'generated';
+import { usePatientFileOpenInvestigations } from './usePatientFileOpenInvestigations';
 import { usePatient } from '../../usePatient';
 
 const OpenInvestigationsCard = () => {
     const patient = usePatient();
-    const { response } = useFindOpenInvestigations(patient.id.toString());
+    const { patientOpenInvestigations } = usePatientFileOpenInvestigations(patient.id);
 
     const INVESTIGATION_ID = { id: 'patient-file-open-investigations-investigationId', name: 'Investigation ID' };
     const START_DATE = { id: 'patient-file-open-investigations-startDate', name: 'Start date' };
@@ -35,15 +35,16 @@ const OpenInvestigationsCard = () => {
             ...INVESTIGATION_ID,
             sortable: true,
             render: (value: PatientInvestigation) => (
-                <ClassicLink url={`/nbs/api/profile/${patient.id.toString()}/investigation/${value.investigation}`}>
-                    {value.investigation}
+                <ClassicLink url={`/nbs/api/profile/${patient.id.toString()}/investigation/${value.investigationId}`}>
+                    {value.investigationId}
                 </ClassicLink>
             )
         },
         {
             ...START_DATE,
             sortable: true,
-            render: (value: PatientInvestigation) => value.startedOn.toLocaleDateString()
+            render: (value: PatientInvestigation) =>
+                value.startedOn ? new Date(value.startedOn).toLocaleDateString() : ''
         },
         {
             ...CONDITION,
@@ -67,7 +68,7 @@ const OpenInvestigationsCard = () => {
         {
             ...INVESTIGATOR,
             sortable: true,
-            render: (value: PatientInvestigation) => value.investigator
+            render: (value: PatientInvestigation) => `${value.investigatorName?.first} ${value.investigatorName?.last}`
         },
         {
             ...COINFECTION_ID,
@@ -81,8 +82,8 @@ const OpenInvestigationsCard = () => {
             <TableCard
                 id="patient-file-open-investigations-table-card"
                 title="Open investigations"
-                data={response}
-                defaultCollapsed={response.length > 0 ? false : true}
+                data={patientOpenInvestigations || []}
+                defaultCollapsed={patientOpenInvestigations && patientOpenInvestigations.length > 0 ? false : true}
                 columns={columns}
                 columnPreferencesKey="patient-file-open-investigations-table-card-column-preferences"
                 defaultColumnPreferences={columnPreferences}
