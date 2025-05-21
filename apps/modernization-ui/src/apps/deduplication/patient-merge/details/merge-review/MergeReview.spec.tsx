@@ -1,14 +1,21 @@
-import React from 'react';
 import { render } from '@testing-library/react';
-import { MergeReview } from './MergeReview';
+import userEvent from '@testing-library/user-event';
+import { PatientData } from 'apps/deduplication/api/model/PatientData';
+import { FormProvider, useForm } from 'react-hook-form';
 import { MemoryRouter } from 'react-router';
+import { MergeReview } from './MergeReview';
+import { PatientMergeForm } from './model/PatientMergeForm';
 
-const setPageState = jest.fn();
-const removePatient = jest.fn();
+const onPreview = jest.fn();
+const onRemove = jest.fn();
 const Fixture = () => {
+    const form = useForm<PatientMergeForm>();
+    const data: Partial<PatientData>[] = [{ personUid: '100' }, { personUid: '200' }, { personUid: '300' }];
     return (
         <MemoryRouter>
-            <MergeReview patientData={[]} onPreview={setPageState} onRemovePatient={removePatient} />
+            <FormProvider {...form}>
+                <MergeReview patientData={data as PatientData[]} onPreview={onPreview} onRemovePatient={onRemove} />
+            </FormProvider>
         </MemoryRouter>
     );
 };
@@ -33,6 +40,14 @@ describe('MergeReview', () => {
         expect(buttons[3]).not.toHaveClass('secondary');
     });
 
+    it('should handle preview click', async () => {
+        const user = userEvent.setup();
+        const { getByText } = render(<Fixture />);
+
+        await user.click(getByText('Preview merge'));
+        expect(onPreview).toHaveBeenCalled();
+    });
+
     it('should display informational text', () => {
         const { getByText } = render(<Fixture />);
         expect(
@@ -40,5 +55,21 @@ describe('MergeReview', () => {
                 'Only one record is selected for Patient ID. By default, the oldest record is selected as the surviving ID. If this is not correct, select the appropriate record.'
             )
         ).toBeInTheDocument();
+    });
+
+    it('should display patient id selection', () => {
+        const { getByLabelText } = render(<Fixture />);
+
+        expect(getByLabelText('100')).toBeInTheDocument();
+        expect(getByLabelText('200')).toBeInTheDocument();
+        expect(getByLabelText('300')).toBeInTheDocument();
+    });
+
+    it('should handle patient remove', async () => {
+        const user = userEvent.setup();
+        const { getAllByRole } = render(<Fixture />);
+
+        await user.click(getAllByRole('button', { name: 'Remove' })[0]);
+        expect(onRemove).toHaveBeenLastCalledWith('100');
     });
 });

@@ -109,7 +109,12 @@ export const MatchesRequiringReviewTable = () => {
                 </div>
             </Shown>
             <div className={styles.tableWrapper}>
-                <DataTable<MatchRequiringReview> id="review-table" columns={columns} data={response.matches} />
+                <DataTable<MatchRequiringReview>
+                    id="review-table"
+                    columns={columns}
+                    data={response.matches}
+                    className={styles.dataTable}
+                />
             </div>
             <Shown when={page.total > 0}>
                 <div className={styles.pagination}>
