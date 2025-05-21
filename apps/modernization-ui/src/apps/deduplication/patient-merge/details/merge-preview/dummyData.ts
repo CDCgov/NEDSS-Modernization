@@ -116,7 +116,7 @@ export interface PatientPreviewData {
 }
 
 // Helper function to get the latest 'Legal' name entry
-const getLatestLegalName = (entries: NameEntry[]) =>
+export const getLatestLegalName = (entries: NameEntry[]): NameEntry | undefined =>
     entries
         .filter((e) => e.type === 'Legal')
         .sort((a, b) => new Date(b.asOf).getTime() - new Date(a.asOf).getTime())[0];
@@ -409,15 +409,4 @@ export const dummySelectedCounts = {
     phoneAndEmailCount: dummyPatientData.phoneAndEmail.filter((entry) => entry.selected).length,
     identificationCount: dummyPatientData.identification.filter((entry) => entry.selected).length,
     raceCount: dummyPatientData.race.filter((entry) => entry.selected).length
-};
-
-// Extract fields for summary card
-const latestLegalName = getLatestLegalName(dummyPatientData.name);
-
-export const patientSummaryDummy = {
-    firstName: latestLegalName?.first || '---',
-    lastName: latestLegalName?.last || '---',
-    dob: dummyPatientData.selectedSexAndBirth.dateOfBirth || '---',
-    age: dummyPatientData.selectedSexAndBirth.currentAge ?? '---',
-    gender: dummyPatientData.selectedSexAndBirth.birthSex
 };
