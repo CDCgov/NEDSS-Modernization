@@ -33,19 +33,6 @@
         padding: 1rem;
 
         @extend %thin-top;
-
-        .resetxxx {
-            padding: 0;
-            box-shadow: none;
-            background-color: transparent;
-            color: colors.$primary;
-
-            &:hover {
-                text-decoration: underline;
-                background-color: transparent;
-                color: colors.$primary;
-            }
-        }
     }
 }
 

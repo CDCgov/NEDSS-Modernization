@@ -110,7 +110,7 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
                 </Droppable>
             </DragDropContext>
             <footer>
-                <Button className={styles.reset} tertiary sizing={sizing} onClick={handleReset}>
+                <Button tertiary sizing={sizing} onClick={handleReset}>
                     Reset
                 </Button>
                 <Button type="button" id="save-column-preferences" outline sizing={sizing} onClick={handleSave}>
