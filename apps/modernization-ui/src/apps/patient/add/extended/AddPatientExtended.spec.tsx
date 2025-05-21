@@ -102,11 +102,13 @@ describe('AddPatientExtended', () => {
     });
 
     it('should have cancel and save buttons', () => {
-        const { getAllByRole } = renderWithRouter();
+        const { getByRole } = renderWithRouter();
 
-        const buttons = getAllByRole('button');
-        expect(buttons[buttons.length - 2]).toHaveTextContent('Cancel');
-        expect(buttons[buttons.length - 1]).toHaveTextContent('Save');
+        const cancelButton = getByRole('button', { name: 'Cancel' });
+        const saveButton = getByRole('button', { name: 'Save' });
+        
+        expect(cancelButton).toBeInTheDocument();
+        expect(saveButton).toBeInTheDocument();
     });
 
     it('should not be showing modal by default', () => {
