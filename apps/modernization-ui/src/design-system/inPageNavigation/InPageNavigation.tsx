@@ -22,7 +22,6 @@ export const InPageNavigation: React.FC<InPageNavigationProps> = ({ sections, ti
             <div className={styles.navOptions}>
                 {sections.map((section) => (
                     <a
-                        tabIndex={-1}
                         key={section.id}
                         id={`inPageNav-${section.id}`}
                         href={`#${section.id}`}

@@ -24,13 +24,13 @@ $in-page-navigation-width: 12.1875rem;
         height: calc(100vh - #{$header-height} - var(--nav-bar-height, 75px));
         display: flex;
         gap: 1rem;
-
         padding: 1rem 1rem 0 1rem;
         overflow-y: scroll;
 
         .content {
             min-width: 36rem;
             width: 100%;
+            order: 1;
         }
 
         & > aside {
@@ -38,6 +38,7 @@ $in-page-navigation-width: 12.1875rem;
             top: 0;
             min-width: $in-page-navigation-width;
             max-width: $in-page-navigation-width;
+            order: 2;
         }
     }
     
