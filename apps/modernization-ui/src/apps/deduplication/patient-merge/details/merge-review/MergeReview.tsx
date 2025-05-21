@@ -4,6 +4,7 @@ import { Button } from 'design-system/button';
 import { useNavigate } from 'react-router';
 import styles from './merge-review.module.scss';
 import { PatientIdSelection } from './patient-form/patient-id/PatientIdSelection';
+import { AdminCommentsSelection } from './patient-form/admin-comments/AdminCommentsSelection';
 
 export type Props = {
     patientData: PatientData[];
@@ -35,6 +36,7 @@ export const MergeReview = ({ patientData, onPreview, onRemovePatient }: Props) 
                 </div>
                 <div className={styles.patientContent}>
                     <PatientIdSelection patientData={patientData} onRemovePatient={onRemovePatient} />
+                    <AdminCommentsSelection patientData={patientData} />
                 </div>
             </main>
         </div>

@@ -15,7 +15,7 @@ export const PatientIdSelection = ({ patientData, onRemovePatient }: Props) => {
     const form = useFormContext<PatientMergeForm>();
 
     return (
-        <div className={styles.patientIdSelection}>
+        <section className={styles.patientIdSelection}>
             {patientData.map((p) => (
                 <Controller
                     key={`id-selection:${p.personUid}`}
@@ -44,6 +44,6 @@ export const PatientIdSelection = ({ patientData, onRemovePatient }: Props) => {
                     )}
                 />
             ))}
-        </div>
+        </section>
     );
 };

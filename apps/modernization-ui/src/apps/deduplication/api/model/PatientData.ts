@@ -3,7 +3,7 @@ export type PatientData = {
     adminComments: AdminComments;
 };
 
-type AdminComments = {
+export type AdminComments = {
     date: string;
     comment: string;
 };

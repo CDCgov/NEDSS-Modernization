@@ -2,7 +2,6 @@
 
 .patientIdSelection {
     display: flex;
-    background-color: colors.$base-white;
 
     & > :not(:last-child) {
         border-right: 1px solid colors.$base-black;
@@ -10,13 +9,10 @@
 
     .idEntry {
         display: flex;
-        align-items: center;
+        width: 100%;
         justify-content: space-between;
         height: 3rem;
         padding: 0.5rem 0.75rem;
-        flex-grow: 1;
-        min-width: 33%;
-        max-width: 50%;
 
         &.selected {
             background-color: colors.$primary-lighter;
