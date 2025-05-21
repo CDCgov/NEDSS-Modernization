@@ -1,31 +1,26 @@
 import { dummyPatientData, getLatestLegalName } from '../dummyData';
-import { PatientSummaryCard } from './PatientSummary/PatientSummaryCard';
+import { PatientFileHeader } from '../../../../../patient/file/PatientFileHeader';
+import styles from './PreviewHeader.module.scss';
 
 export const PreviewHeader = () => {
-    const { patientId } = dummyPatientData;
+    const { patientId, name, selectedSexAndBirth } = dummyPatientData;
+    const latestLegalName = getLatestLegalName(name);
 
-    // Extract fields for summary card
-    const latestLegalName = getLatestLegalName(dummyPatientData.name);
-
-    const patientSummaryDummy = {
-        firstName: latestLegalName?.first || '---',
-        lastName: latestLegalName?.last || '---',
-        dob: dummyPatientData.selectedSexAndBirth.dateOfBirth || '---',
-        age: dummyPatientData.selectedSexAndBirth.currentAge ?? '---',
-        gender: dummyPatientData.selectedSexAndBirth.birthSex
+    const patient = {
+        id: Number(patientId),
+        patientId: Number(patientId),
+        name: latestLegalName,
+        birthday: selectedSexAndBirth.dateOfBirth,
+        deceasedOn: undefined,
+        sex: selectedSexAndBirth.birthSex,
+        local: 'local-id-value',
+        status: 'status',
+        deletability: 'Deletable' as const
     };
 
-    const { firstName, lastName, dob, age, gender } = patientSummaryDummy;
-
     return (
-        <PatientSummaryCard
-            firstName={firstName}
-            lastName={lastName}
-            dob={dob}
-            age={age}
-            gender={gender}
-            patientId={patientId}
-            separator
-        />
+        <div className={styles.headerOverride}>
+            <PatientFileHeader patient={patient} actions={null} />
+        </div>
     );
 };
