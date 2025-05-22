@@ -104,21 +104,6 @@ export const PatientDocumentRequiringReview = () => {
         { ...columnIDs[5], toggleable: true }
     ];
 
-    const data: DocumentRequiringReview[] = [
-        {
-            id: 1234,
-            type: 'Lab report',
-            eventDate: new Date(Date.now()),
-            dateReceived: new Date(Date.now()),
-            reportingFacility: 'California Hospital',
-            sendingFacility: 'Something',
-            descriptions: [
-                { title: 'testing', value: 'bloah blah bloah balalahaha' },
-                { title: 'testing122222', value: 'ewifhkhfkjhsdkhfkhjkahfluwgfibuwibcw wohefwkjhfkjwhfw fwouhfwjkbfwf' }
-            ]
-        }
-    ];
-
     return (
         <TableCard
             id="document-requiring-review"
@@ -126,7 +111,7 @@ export const PatientDocumentRequiringReview = () => {
             columnPreferencesKey="document-requiring-review"
             defaultColumnPreferences={columnPreferences}
             columns={columns}
-            data={data}
+            data={[]}
             showSettings={true}
             collapsible
         />
