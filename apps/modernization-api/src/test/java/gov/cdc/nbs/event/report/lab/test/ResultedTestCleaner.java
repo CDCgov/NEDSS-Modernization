@@ -8,7 +8,7 @@ import java.util.Collection;
 @Component
  class ResultedTestCleaner {
 
-  private final static String DELETE_IN = """
+  private static final String DELETE_IN = """
       delete from Participation where act_class_cd = 'OBS' and and act_uid in (:identifiers);
       
       delete from Obs_value_coded where observation_uid in (:identifiers);

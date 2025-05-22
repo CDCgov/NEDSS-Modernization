@@ -5,6 +5,7 @@ import gov.cdc.nbs.event.investigation.NotificationIdentifier;
 import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.support.organization.OrganizationIdentifier;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
@@ -277,18 +278,18 @@ public class InvestigationSearchCriteriaSteps {
   }
 
   @Given("I want to find investigations reported by the {organization} facility")
-  public void i_want_to_find_investigations_reported_by_the_organization(final long organization) {
+  public void i_want_to_find_investigations_reported_by_the_organization(final OrganizationIdentifier organization) {
     this.activeCriteria.maybeActive().ifPresent(
         criteria -> criteria.setProviderFacilitySearch(
             new InvestigationFilter.ProviderFacilitySearch(
                 InvestigationFilter.ReportingEntityType.FACILITY,
-                organization)));
+                organization.identifier())));
   }
 
   @Given("I want to find investigations reported by the {organization} facility using the new api")
-  public void i_want_to_find_investigations_reported_by_the_organization_using_the_new_api(final long organization) {
+  public void i_want_to_find_investigations_reported_by_the_organization_using_the_new_api(final OrganizationIdentifier organization) {
     this.activeCriteria.maybeActive().ifPresent(
-        criteria -> criteria.setReportingFacilityId(String.valueOf(organization)));
+        criteria -> criteria.setReportingFacilityId(String.valueOf(organization.identifier())));
   }
 
   @Given("I want to find investigations reported by the provider")

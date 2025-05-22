@@ -1,6 +1,7 @@
 package gov.cdc.nbs.event.investigation;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.support.organization.OrganizationIdentifier;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
@@ -187,7 +188,7 @@ public class InvestigationSteps {
   }
 
   @Given("the investigation was reported by the {organization} facility")
-  public void the_lab_report_was_ordered_by_the_organization(final long organization) {
+  public void the_lab_report_was_ordered_by_the_organization(final OrganizationIdentifier organization) {
     this.activeInvestigation.maybeActive()
         .ifPresent(active -> mother.reportedBy(active, organization));
   }

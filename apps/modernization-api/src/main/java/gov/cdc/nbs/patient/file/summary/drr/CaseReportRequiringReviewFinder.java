@@ -15,8 +15,9 @@ class CaseReportRequiringReviewFinder {
               [patient].[person_uid]
           from  Person [patient]
           where   [patient].person_parent_uid = :patient
-          and [patient].cd = 'PAT'
-          and [patient].record_status_cd = 'ACTIVE'
+              and [patient].person_parent_uid <> [patient].person_uid
+              and [patient].cd = 'PAT'
+              and [patient].record_status_cd = 'ACTIVE'
       )  
       select
           [document].nbs_document_uid             as [id],
