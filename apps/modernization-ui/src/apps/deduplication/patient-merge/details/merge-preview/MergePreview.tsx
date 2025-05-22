@@ -1,6 +1,7 @@
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
 import styles from './merge-preview.module.scss';
+import { PreviewHeader } from './PreviewHeader/PreviewHeader';
 
 type MergePreviewProps = {
     onBack: () => void;
@@ -22,6 +23,9 @@ export const MergePreview = ({ onBack }: MergePreviewProps) => {
                     </Button>
                 </div>
             </header>
+            <section className={styles.summaryCardSection}>
+                <PreviewHeader />
+            </section>
         </div>
     );
 };

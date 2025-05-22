@@ -1,0 +1,21 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.headerOverride {
+  background-color: colors.$base-white;
+  border-radius: 0.3125rem 0.3125rem 0 0;
+  padding: 1rem 0.5rem 1rem 1rem;
+  font-size: 1.375rem;
+
+  @extend %thin;
+
+  :global(header) {
+    border: none !important;
+    padding: 0;
+  }
+
+  :global(h1) {
+    font-size: 1.375rem;
+    font-weight: 700;
+  }
+}
