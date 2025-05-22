@@ -8,6 +8,7 @@ import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
+import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
@@ -17,8 +18,6 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @ScenarioScope
@@ -62,6 +61,12 @@ public class MorbidityReportMother {
       );
       """;
 
+  private static final String DELETE_IN = """
+      delete from Participation where act_class_cd = 'OBS' and act_uid in (:identifiers);
+      delete from Observation where observation_uid in (:identifiers);
+      delete from Act where class_cd = 'OBS' and act_uid in (:identifiers);
+      """;
+
   private static final String PARTICIPATE_IN = """
       insert into Participation(
           act_uid,
@@ -98,17 +103,15 @@ public class MorbidityReportMother {
 
   private final JdbcClient client;
 
-  private final TestMorbidityCleaner cleaner;
+  private final TestingDataCleaner<Long> cleaner;
   private final Available<MorbidityReportIdentifier> available;
   private final Active<MorbidityReportIdentifier> active;
   private final PatientMother patientMother;
-  private final List<Long> identifiers;
 
   MorbidityReportMother(
       final MotherSettings settings,
       final SequentialIdentityGenerator idGenerator,
       final JdbcClient client,
-      final TestMorbidityCleaner cleaner,
       final Available<MorbidityReportIdentifier> available,
       final Active<MorbidityReportIdentifier> active,
       final PatientMother patientMother
@@ -116,16 +119,16 @@ public class MorbidityReportMother {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.client = client;
-    this.cleaner = cleaner;
     this.available = available;
     this.active = active;
     this.patientMother = patientMother;
-    this.identifiers = new ArrayList<>();
+
+    this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
   }
 
   @PreDestroy
   void reset() {
-    this.cleaner.clean(this.identifiers);
+    this.cleaner.clean();
   }
 
   /**
@@ -165,7 +168,7 @@ public class MorbidityReportMother {
   private void include(final MorbidityReportIdentifier identifier) {
     this.available.available(identifier);
     this.active.active(identifier);
-    this.identifiers.add(identifier.identifier());
+    this.cleaner.include(identifier.identifier());
   }
 
   void unprocessed(final MorbidityReportIdentifier report) {
