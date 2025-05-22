@@ -5,12 +5,12 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class TestingDataCleaner<ID> {
+public class TestingDataCleaner<I> {
 
   private final JdbcClient client;
   private final String sql;
   private final String parameter;
-  private final Collection<ID> identifiers;
+  private final Collection<I> identifiers;
 
   public TestingDataCleaner(
       final JdbcClient client,
@@ -23,7 +23,7 @@ public class TestingDataCleaner<ID> {
     this.identifiers = new ArrayList<>();
   }
 
-  public void include(final ID identifier) {
+  public void include(final I identifier) {
     identifiers.add(identifier);
   }
 
