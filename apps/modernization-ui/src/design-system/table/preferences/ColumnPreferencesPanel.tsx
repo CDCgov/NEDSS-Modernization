@@ -6,6 +6,7 @@ import { ActionIcon, Icon } from 'design-system/icon';
 import { Button } from 'design-system/button';
 
 import styles from './column-preference-panel.module.scss';
+import { Sizing } from 'design-system/field';
 
 const swap =
     <I,>(items: I[]) =>
@@ -16,10 +17,11 @@ const swap =
     };
 
 type Props = {
+    sizing?: Sizing;
     close: () => void;
 };
 
-const ColumnPreferencesPanel = ({ close }: Props) => {
+const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
     const { preferences, save, reset } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
@@ -108,10 +110,10 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
                 </Droppable>
             </DragDropContext>
             <footer>
-                <Button className={styles.reset} onClick={handleReset}>
+                <Button tertiary sizing={sizing} onClick={handleReset}>
                     Reset
                 </Button>
-                <Button type="button" id="save-column-preferences" outline onClick={handleSave}>
+                <Button type="button" id="save-column-preferences" outline sizing={sizing} onClick={handleSave}>
                     Save columns
                 </Button>
             </footer>
