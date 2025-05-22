@@ -43,7 +43,10 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
     String programArea = resultSet.getString(this.columns.programArea());
     long labIdentifier = resultSet.getLong(this.columns.investigationId());
     String reportingFacility = resultSet.getString(this.columns.facilityName());
+    String providerPrefix = resultSet.getString(this.columns.providerPrefix());
     String providerLastName = resultSet.getString(this.columns.providerLastName());
+    String providerFirstName = resultSet.getString(this.columns.providerFirstName());
+    String providerSuffix = resultSet.getString(this.columns.providerSuffix());
     String associatedWithId = resultSet.getString(this.columns.associatedWithId());
     String associatedWithLocal = resultSet.getString(this.columns.associatedWithLocal());
     String associatedWithCondition = resultSet.getString(this.columns.associatedWithCondition());
@@ -52,7 +55,8 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
         eventId,
         dateReceived,
         processingDecision,
-        new PatientLabReport.FacilityProviders(reportingFacility, providerLastName, null),
+        new PatientLabReport.FacilityProviders(reportingFacility, new PatientLabReport.OrderingProvider(
+            providerPrefix, providerFirstName, providerLastName, providerSuffix), null),
         dateCollected,
         new ArrayList<>(),
         new PatientLabReport.AssociatedInvestigation(associatedWithId, associatedWithCondition, associatedWithLocal),
