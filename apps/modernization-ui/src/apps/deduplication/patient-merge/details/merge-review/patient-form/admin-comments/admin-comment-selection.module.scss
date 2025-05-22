@@ -1,0 +1,15 @@
+@use 'styles/colors';
+
+.adminCommentSelection {
+    display: flex;
+
+    & > :not(:last-child) {
+        border-right: 1px solid colors.$base-black;
+    }
+
+    .entry {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+}

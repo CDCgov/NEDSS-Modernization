@@ -27,10 +27,14 @@
 
         .reviewButton {
             display: flex;
-            width: 4.5rem;
-            height: 1.5rem;
             align-items: center;
             line-height: normal;
+        }
+    }
+
+    .dataTable {
+        & > tbody tr td {
+            vertical-align: middle;
         }
     }
 

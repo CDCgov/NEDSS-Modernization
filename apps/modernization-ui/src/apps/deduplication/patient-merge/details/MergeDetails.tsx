@@ -6,11 +6,14 @@ import { MergePreview } from './merge-preview/MergePreview';
 import { useMergeDetails } from 'apps/deduplication/api/useMergeDetails';
 import styles from './MergeDetails.module.scss';
 import { Loading } from 'components/Spinner';
+import { FormProvider, useForm } from 'react-hook-form';
+import { PatientMergeForm } from './merge-review/model/PatientMergeForm';
 
 export const MergeDetails = () => {
     const [pageState, setPageState] = useState<'review' | 'preview'>('review');
     const { patientId } = useParams();
-    const { loading, fetchPatientMergeDetails } = useMergeDetails();
+    const { response, loading, fetchPatientMergeDetails } = useMergeDetails();
+    const form = useForm<PatientMergeForm>({ mode: 'onBlur' });
 
     useEffect(() => {
         if (patientId !== undefined) {
@@ -18,15 +21,25 @@ export const MergeDetails = () => {
         }
     }, [patientId]);
 
+    const handleRemovePatient = (personUid: string) => {
+        console.log('Remove patient NYI', personUid);
+    };
+
     return (
         <div className={styles.mergeDetails}>
             <Shown when={loading === false} fallback={<Loading center />}>
-                <Shown when={pageState === 'review'}>
-                    <MergeReview onPreviewClick={() => setPageState('preview')} />
-                </Shown>
-                <Shown when={pageState === 'preview'}>
-                    <MergePreview onBack={() => setPageState('review')} />
-                </Shown>
+                <FormProvider {...form}>
+                    <Shown when={pageState === 'review'}>
+                        <MergeReview
+                            patientData={response ?? []}
+                            onPreview={() => setPageState('preview')}
+                            onRemovePatient={handleRemovePatient}
+                        />
+                    </Shown>
+                    <Shown when={pageState === 'preview'}>
+                        <MergePreview onBack={() => setPageState('review')} />
+                    </Shown>
+                </FormProvider>
             </Shown>
         </div>
     );
