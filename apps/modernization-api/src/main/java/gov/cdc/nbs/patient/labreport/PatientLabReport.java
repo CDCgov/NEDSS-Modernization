@@ -13,7 +13,7 @@ public record PatientLabReport(
     @JsonProperty AssociatedInvestigation associatedInvestigation,
     @JsonProperty String programArea,
     @JsonProperty(required = true) String jurisdiction,
-    @JsonProperty String labIdentifier) {
+    @JsonProperty long labIdentifier) {
 
   public record AssociatedInvestigation(
       @JsonProperty String investigationId,
@@ -22,12 +22,14 @@ public record PatientLabReport(
   }
 
   public record TestResult(
+      long observationUid,
       @JsonProperty long eventId,
-      @JsonProperty String resutedTest,
+      @JsonProperty String resultedTest,
       @JsonProperty String codedResult,
       @JsonProperty String numericResult,
       @JsonProperty String units,
-      @JsonProperty String range,
+      @JsonProperty String highRange,
+      @JsonProperty String lowRange,
       @JsonProperty String statusDetails) {
   }
 

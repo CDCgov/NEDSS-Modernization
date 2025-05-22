@@ -26,11 +26,14 @@ class PatientLabReportsResolver {
   public List<PatientLabReport> resolve(final long patientId) {
     PermissionScope scope = this.scopeResolver.resolve(PERMISSION);
     List<PatientLabReport> labReportResults = patientLabReportsFinder.find(patientId, scope.any());
-    List<PatientLabReport.TestResult> patientTestResults = patientTestResultsFinder.find();
+    List<PatientLabReport.TestResult> patientTestResults = patientTestResultsFinder.find(patientId);
     for (int i = 0; i < labReportResults.size(); ++i) {
       PatientLabReport patientLabReport = labReportResults.get(i);
       for (int j = 0; j < patientTestResults.size(); ++j) {
-        patientLabReport.testResults().add(patientTestResults.get(j));
+        PatientLabReport.TestResult testResult = patientTestResults.get(j);
+        if (testResult.observationUid() == patientLabReport.labIdentifier()) {
+          patientLabReport.testResults().add(testResult);
+        }
       }
     }
     return labReportResults;

@@ -7,12 +7,15 @@ import java.sql.SQLException;
 
 class PatientTestResultsRowMapper implements RowMapper<PatientLabReport.TestResult> {
   record Column(
-      int identifier,
-      int investigationid,
-      int startDate,
-      int status,
-      int condition,
-      int caseStatus) {
+      int observationUid,
+      int eventId,
+      int resultedTest,
+      int codedResult,
+      int numericResult,
+      int highRange,
+      int lowRange,
+      int unit,
+      int status) {
   }
 
   private final Column columns;
@@ -23,21 +26,26 @@ class PatientTestResultsRowMapper implements RowMapper<PatientLabReport.TestResu
 
   @Override
   public PatientLabReport.TestResult mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
-    long identifier = resultSet.getLong(this.columns.identifier());
-    String investigationid = resultSet.getString(this.columns.investigationid());
-    String startDate = resultSet.getString(this.columns.startDate());
-    startDate = startDate == null ? null : startDate.substring(0, 10);
+    long observationUid = resultSet.getLong(this.columns.observationUid());
+    long eventId = resultSet.getLong(this.columns.eventId());
+    String resultedTest = resultSet.getString(this.columns.resultedTest());
+    String codedResult = resultSet.getString(this.columns.codedResult());
+    String numericResult = resultSet.getString(this.columns.numericResult());
+    String highRange = resultSet.getString(this.columns.highRange());
+    String lowRange = resultSet.getString(this.columns.lowRange());
+    String unit = resultSet.getString(this.columns.unit());
     String status = resultSet.getString(this.columns.status());
-    String caseStatus = resultSet.getString(this.columns.caseStatus());
-    String condition = resultSet.getString(this.columns.condition());
 
     return new PatientLabReport.TestResult(
-        identifier,
-        investigationid,
-        startDate,
-        startDate,
-        status,
-        condition,
-        caseStatus);
+        observationUid,
+        eventId,
+        resultedTest,
+        codedResult,
+        numericResult,
+        unit,
+        highRange,
+        lowRange,
+        status);
   }
 }
+

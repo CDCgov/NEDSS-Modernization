@@ -38,9 +38,10 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
     dateReceived = dateReceived == null ? null : dateReceived.substring(0, 10);
     String processingDecision = resultSet.getString(this.columns.specimenSite());
     String dateCollected = resultSet.getString(this.columns.dateCollected());
+    dateCollected = dateCollected == null ? null : dateCollected.substring(0, 10);
     String jurisdiction = resultSet.getString(this.columns.jurisdiction());
     String programArea = resultSet.getString(this.columns.programArea());
-    String labIdentifier = resultSet.getString(this.columns.investigationId());
+    long labIdentifier = resultSet.getLong(this.columns.investigationId());
     String reportingFacility = resultSet.getString(this.columns.facilityName());
     String providerLastName = resultSet.getString(this.columns.providerLastName());
     String associatedWithId = resultSet.getString(this.columns.associatedWithId());
