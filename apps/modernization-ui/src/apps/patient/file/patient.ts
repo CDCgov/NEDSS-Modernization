@@ -1,4 +1,4 @@
-import { DisplayableName } from 'name/types';
+import { DisplayableName } from 'name';
 
 type Deletability = 'Deletable' | 'Has_Associations' | 'Is_Inactive';
 

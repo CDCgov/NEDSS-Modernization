@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { PatientFileHeader } from './PatientFileHeader';
-import { Patient } from './patient';
+import { PatientDescriptor } from './PatientDescriptor';
 
 const mockNow = jest.fn();
 
@@ -14,85 +13,61 @@ describe('when displaying the demographics summary of a patient', () => {
     });
 
     it('should display "---" when a name is not present', () => {
-        const patient: Patient = {
+        const patient = {
             id: 17,
             patientId: 397,
-            local: 'local-id-value',
-            status: 'ACTIVE',
-            deletability: 'Deletable'
+            status: 'ACTIVE'
         };
 
-        render(<PatientFileHeader patient={patient} actions={<></>} />);
+        render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
         expect(screen.getByRole('heading', { name: '---' })).toBeInTheDocument();
         expect(screen.queryByText('status value')).not.toBeInTheDocument();
     });
 
     it('should display the patient ID', () => {
-        const patient: Patient = {
+        const patient = {
             id: 17,
             patientId: 397,
-            local: 'local-id-value',
-            status: 'status value',
-            deletability: 'Deletable'
+            status: 'status value'
         };
 
-        render(<PatientFileHeader patient={patient} actions={<></>} />);
+        render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
         expect(screen.getByText('Patient ID: 397')).toBeInTheDocument();
     });
 
     it('should display gender of the patient', () => {
-        const patient: Patient = {
+        const patient = {
             id: 17,
             patientId: 397,
-            local: 'local-id-value',
             status: 'status value',
-            deletability: 'Deletable',
             sex: 'gender-value'
         };
 
-        render(<PatientFileHeader patient={patient} actions={<></>} />);
+        render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
         expect(screen.getByText('gender-value')).toBeInTheDocument();
     });
 
-    it('should include the patient actions', () => {
-        const patient: Patient = {
-            id: 17,
-            patientId: 397,
-            local: 'local-id-value',
-            status: 'status value',
-            deletability: 'Deletable'
-        };
-
-        render(<PatientFileHeader patient={patient} actions={'actions'} />);
-
-        expect(screen.getByText('actions')).toBeInTheDocument();
-    });
-
     it('should display status when a patient is INACTIVE', () => {
-        const patient: Patient = {
+        const patient = {
             id: 17,
             patientId: 397,
-            local: 'local-id-value',
-            status: 'INACTIVE',
-            deletability: 'Deletable'
+            status: 'INACTIVE'
         };
 
-        render(<PatientFileHeader patient={patient} actions={<></>} />);
+        render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
         expect(screen.getByText('INACTIVE')).toBeInTheDocument();
     });
 
     describe('and a name is present', () => {
         it('should display the full name', () => {
-            const patient: Patient = {
+            const patient = {
                 id: 17,
                 patientId: 397,
-                local: 'local-id-value',
                 status: 'status value',
-                deletability: 'Deletable',
                 name: {
                     first: 'first-name-value',
                     middle: 'middle-name-value',
@@ -101,7 +76,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 }
             };
 
-            render(<PatientFileHeader patient={patient} actions={<></>} />);
+            render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(
                 screen.getByRole('heading', {
@@ -111,18 +86,16 @@ describe('when displaying the demographics summary of a patient', () => {
         });
 
         it('should display only the first name', () => {
-            const patient: Patient = {
+            const patient = {
                 id: 17,
                 patientId: 397,
-                local: 'local-id-value',
                 status: 'status value',
-                deletability: 'Deletable',
                 name: {
                     first: 'first-name-value'
                 }
             };
 
-            render(<PatientFileHeader patient={patient} actions={<></>} />);
+            render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(
                 screen.getByRole('heading', {
@@ -132,18 +105,16 @@ describe('when displaying the demographics summary of a patient', () => {
         });
 
         it('should display only the middle name', () => {
-            const patient: Patient = {
+            const patient = {
                 id: 17,
                 patientId: 397,
-                local: 'local-id-value',
                 status: 'status value',
-                deletability: 'Deletable',
                 name: {
                     middle: 'middle-name-value'
                 }
             };
 
-            render(<PatientFileHeader patient={patient} actions={<></>} />);
+            render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(
                 screen.getByRole('heading', {
@@ -153,18 +124,16 @@ describe('when displaying the demographics summary of a patient', () => {
         });
 
         it('should display only the last name', () => {
-            const patient: Patient = {
+            const patient = {
                 id: 17,
                 patientId: 397,
-                local: 'local-id-value',
                 status: 'status value',
-                deletability: 'Deletable',
                 name: {
                     last: 'last-name-value'
                 }
             };
 
-            render(<PatientFileHeader patient={patient} actions={<></>} />);
+            render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(
                 screen.getByRole('heading', {
@@ -174,18 +143,16 @@ describe('when displaying the demographics summary of a patient', () => {
         });
 
         it('should display the name suffix', () => {
-            const patient: Patient = {
+            const patient = {
                 id: 17,
                 patientId: 397,
-                local: 'local-id-value',
                 status: 'status value',
-                deletability: 'Deletable',
                 name: {
                     suffix: 'suffix-value'
                 }
             };
 
-            render(<PatientFileHeader patient={patient} actions={<></>} />);
+            render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(
                 screen.getByRole('heading', {
@@ -199,16 +166,14 @@ describe('when displaying the demographics summary of a patient', () => {
         it('should display the age based on today', () => {
             mockNow.mockReturnValue(new Date('2022-01-25T00:00:00'));
 
-            const patient: Patient = {
+            const patient = {
                 id: 17,
                 patientId: 397,
-                local: 'local-id-value',
                 status: 'status value',
-                deletability: 'Deletable',
                 birthday: '08/09/1979'
             };
 
-            render(<PatientFileHeader patient={patient} actions={<></>} />);
+            render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(screen.getByText('08/09/1979 (42 years)')).toBeInTheDocument();
         });
@@ -216,17 +181,15 @@ describe('when displaying the demographics summary of a patient', () => {
         it('should display the age based on the date of death', () => {
             mockNow.mockReturnValue(new Date('2022-01-25T00:00:00'));
 
-            const patient: Patient = {
+            const patient = {
                 id: 17,
                 patientId: 397,
-                local: 'local-id-value',
                 status: 'status value',
-                deletability: 'Deletable',
                 birthday: '08/09/1979',
                 deceasedOn: '11/18/2010'
             };
 
-            render(<PatientFileHeader patient={patient} actions={<></>} />);
+            render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(screen.getByText('08/09/1979 (31 years)')).toBeInTheDocument();
         });
