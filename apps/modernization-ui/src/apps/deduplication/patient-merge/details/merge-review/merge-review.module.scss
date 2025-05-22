@@ -29,6 +29,7 @@
 
         .patientContent {
             background-color: colors.$base-white;
+            overflow-x: auto;
         }
     }
 }
