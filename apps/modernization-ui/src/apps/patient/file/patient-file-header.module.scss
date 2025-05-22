@@ -14,40 +14,6 @@
 
     background-color: colors.$base-white;
 
-    .title {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-
-        h1 {
-            flex-basis: 1;
-        }
-
-        .values {
-            font-size: 1.375rem;
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-
-            .value {
-                min-width: fit-content;
-
-                &::before {
-                    content: '|';
-
-                    padding-right: 0.5rem;
-                    color: colors.$base-light;
-                }
-
-                &.inactive {
-                    color: colors.$error-dark;
-                    font-weight: 700;
-                }
-            }
-        }
-    }
-
     .actions {
         flex-shrink: 0;
 

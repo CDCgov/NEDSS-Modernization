@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { mapOr } from 'utils/mapping';
+import { equalsIgnoreCase, not } from 'utils/predicate';
 import { defaultTo } from 'libs/supplying';
 import { displayName, DisplayableName } from 'name';
 import { displayAgeAsOf, today } from 'date';
@@ -30,7 +31,6 @@ const Value = ({ className, children }: ValueProps) => {
 type PatientDescription = {
     id: number;
     patientId: number;
-    local: string;
     status: string;
     sex?: string;
     birthday?: string;
@@ -43,6 +43,8 @@ type PatientDescriptorProps = {
     patient: PatientDescription;
 };
 
+const notActive = not(equalsIgnoreCase('active'));
+
 const PatientDescriptor = ({ patient, headingLevel }: PatientDescriptorProps) => (
     <div className={styles.title}>
         <Heading level={headingLevel}>{maybeDisplayName(patient.name)}</Heading>
@@ -50,7 +52,7 @@ const PatientDescriptor = ({ patient, headingLevel }: PatientDescriptorProps) =>
             <Value>{patient.sex}</Value>
             <Value>{maybeDisplayBirthday(patient.birthday, patient.deceasedOn)}</Value>
             <Value>Patient ID: {patient.patientId}</Value>
-            <Shown when={patient.status !== 'ACTIVE'}>
+            <Shown when={notActive(patient.status)}>
                 <Value className={styles.inactive}>{patient.status}</Value>
             </Shown>
         </span>
