@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { DocumentRequiringReview } from '../models/DocumentRequiringReview';
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientFile } from '../models/PatientFile';
 import type { StandardResponse } from '../models/StandardResponse';
@@ -9,6 +10,25 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class PatientFileService {
+    /**
+     * Patient File Documents Requiring Review
+     * Provides Documents Requiring Review for a patient
+     * @returns DocumentRequiringReview OK
+     * @throws ApiError
+     */
+    public static documentsRequiringReview({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<DocumentRequiringReview>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/documents-requiring-review',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
     /**
      * Patient File Demographics Summary
      * Provides summarized demographics of a patient

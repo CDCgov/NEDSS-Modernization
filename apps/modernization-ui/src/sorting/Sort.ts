@@ -1,5 +1,7 @@
 export type Comparator<T> = (left: T, right: T) => number;
 
+export type ComparatorType = 'numeric' | 'alpha' | 'alphanumeric' | 'date';
+
 export enum Direction {
     None = 'all',
     Ascending = 'asc',
@@ -22,6 +24,26 @@ export const withDirection = <T>(c: Comparator<T>, type?: Direction): Comparator
         default:
             return c;
     }
+};
+
+export const sortData = <T>(
+    data: T[],
+    comparator: ComparatorType | Comparator<T> | undefined,
+    property: keyof T,
+    direction: Direction | undefined
+): T[] => {
+    const comparatorFunc = typeof comparator === 'function' ? comparator : resolveComparator<T>(comparator, property);
+    return data.slice().sort(withDirection(comparatorFunc, direction));
+};
+
+export const maybeSortData = <T>(
+    data: T[],
+    comparator: ComparatorType | Comparator<T> | undefined,
+    property: keyof T | undefined,
+    direction: Direction | undefined
+): T[] => {
+    if (!property || !data) return data;
+    return sortData(data, comparator, property, direction);
 };
 
 export const sortBy =
@@ -133,6 +155,19 @@ const fallbackComparator = (left: any, right: any): number => {
         return -1;
     } else {
         return 0;
+    }
+};
+
+const resolveComparator = <T>(type: ComparatorType | undefined, property: keyof T): Comparator<T> => {
+    switch (type) {
+        case 'alpha':
+            return sortByAlpha<T>(property);
+        case 'alphanumeric':
+            return sortByAlphanumeric<T>(property);
+        case 'date':
+            return sortByDate<T>(property);
+        default:
+            return sortBy<T>(property);
     }
 };
 

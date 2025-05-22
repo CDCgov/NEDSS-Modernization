@@ -10,8 +10,9 @@ import gov.cdc.nbs.entity.odse.PublicHealthCase;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
-import gov.cdc.nbs.support.programarea.ProgramAreaIdentifier;
+import gov.cdc.nbs.support.organization.OrganizationIdentifier;
+import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
+import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
@@ -288,13 +289,13 @@ public class InvestigationMother {
     investigation.outbreak(outbreak);
   }
 
-  void reportedBy(final InvestigationIdentifier identifier, final long organization) {
+  void reportedBy(final InvestigationIdentifier identifier, final OrganizationIdentifier organization) {
     PublicHealthCase investigation = managed(identifier);
     Act act = investigation.act();
 
 
     Participation participation = new Participation();
-    participation.setId(new ParticipationId(organization, identifier.identifier(), "OrgAsReporterOfPHC"));
+    participation.setId(new ParticipationId(organization.identifier(), identifier.identifier(), "OrgAsReporterOfPHC"));
     participation.setActClassCd(act.getClassCd());
     participation.setSubjectClassCd("ORG");
     participation.setRecordStatusCd(RecordStatus.ACTIVE);

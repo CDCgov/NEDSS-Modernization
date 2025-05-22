@@ -1,25 +1,32 @@
 import { ReactNode } from 'react';
-import { AddPatientHeaderContent } from './headerContent/AddPatientHeaderContent';
 import { InPageNavigation, NavSection } from 'design-system/inPageNavigation/InPageNavigation';
-import styles from './add-layout.module.scss';
+
+import styles from './add-patient-layout.module.scss';
+import { DataEntryLayout } from 'libs/data-entry';
+import { Heading } from 'components/heading';
 
 type AddPatientLayoutProps = {
-    headerActions: () => ReactNode;
-    headerTitle: string;
+    actions: () => ReactNode | ReactNode[];
+    title: string;
     sections: NavSection[];
     children: ReactNode;
 };
 
-export const AddPatientLayout = ({ headerActions, headerTitle, sections, children }: AddPatientLayoutProps) => {
+export const AddPatientLayout = ({ actions, title, sections, children }: AddPatientLayoutProps) => {
     return (
-        <div className={styles.content}>
-            <AddPatientHeaderContent title={headerTitle}>{headerActions()}</AddPatientHeaderContent>
-            <main>
-                {children}
-                <aside className={styles.aside}>
-                    <InPageNavigation sections={sections} />
-                </aside>
-            </main>
-        </div>
+        <DataEntryLayout>
+            <div className={styles.layout}>
+                <header className={styles.header}>
+                    <Heading level={1}>{title}</Heading>
+                </header>
+                <main>
+                    <aside>
+                        <InPageNavigation sections={sections} />
+                    </aside>
+                    <div className={styles.content}>{children}</div>
+                </main>
+                <div className={styles.actions}>{actions()}</div>
+            </div>
+        </DataEntryLayout>
     );
 };

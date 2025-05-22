@@ -11,7 +11,12 @@ public class ProviderSteps {
   }
 
   @Given("there is a provider named {string} {string}")
-  public void there_is_a_provider_named(final String first, final String last) {
-    this.mother.create(first, last);
+  public void named(final String first, final String last) {
+    this.mother.create(null, first, last);
+  }
+
+  @Given("there is a provider named {namePrefix} {string} {string}")
+  public void named(final String prefix, final String first, final String last) {
+    this.mother.create(prefix, first, last);
   }
 }

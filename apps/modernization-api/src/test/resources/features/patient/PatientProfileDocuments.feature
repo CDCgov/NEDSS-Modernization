@@ -15,7 +15,8 @@ Feature: Patient Profile Documents
     Then the profile has no associated document
 
   Scenario: I cannot view documents that do not have a program area and jurisdiction assigned
-    When the patient only has a Case Report with no program area or jurisdiction
+    When the patient has a Case report
+    And the case report requires security assignment
     Then the profile has no associated document
 
   @web-interaction

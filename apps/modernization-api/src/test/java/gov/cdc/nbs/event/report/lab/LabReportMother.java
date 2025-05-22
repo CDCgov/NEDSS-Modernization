@@ -1,31 +1,31 @@
 package gov.cdc.nbs.event.report.lab;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.Act;
-import gov.cdc.nbs.entity.odse.ActId;
-import gov.cdc.nbs.entity.odse.ActIdId;
-import gov.cdc.nbs.entity.odse.Observation;
-import gov.cdc.nbs.entity.odse.Participation;
-import gov.cdc.nbs.entity.odse.ParticipationId;
+import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
-import gov.cdc.nbs.support.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
+import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
+import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PreDestroy;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Component
+@ScenarioScope
 @Transactional
 public class LabReportMother {
 
@@ -41,6 +41,8 @@ public class LabReportMother {
   private final MotherSettings settings;
   private final SequentialIdentityGenerator idGenerator;
   private final EntityManager entityManager;
+
+  private final Collection<Long> created;
   private final TestLabReportCleaner cleaner;
   private final Active<AccessionIdentifier> activeAccessionIdentifier;
   private final Active<LabReportIdentifier> active;
@@ -65,11 +67,12 @@ public class LabReportMother {
     this.available = available;
     this.activeAccessionIdentifier = activeAccessionIdentifier;
     this.patientMother = patientMother;
+    this.created = new ArrayList<>();
   }
 
+  @PreDestroy
   public void reset() {
-    this.cleaner.clean(this.settings.starting());
-    this.available.reset();
+    this.cleaner.clean(this.created);
   }
 
   void create(
@@ -107,8 +110,7 @@ public class LabReportMother {
 
     entityManager.persist(observation);
 
-    LabReportIdentifier created = new LabReportIdentifier(identifier, local);
-    include(created);
+    include(new LabReportIdentifier(identifier, local));
   }
 
   private void within(
@@ -161,6 +163,8 @@ public class LabReportMother {
   }
 
   private void include(final LabReportIdentifier identifier) {
+    this.created.add(identifier.identifier());
+
     this.available.available(identifier);
     this.active.active(identifier);
   }
@@ -188,12 +192,12 @@ public class LabReportMother {
     lab.setElectronicInd('E');
   }
 
-  void orderedBy(final LabReportIdentifier lab, final long organization) {
+  void orderedBy(final LabReportIdentifier lab, final OrganizationIdentifier organization) {
     Observation observation = managed(lab);
     Act act = observation.getAct();
 
     // create the participation
-    ParticipationId identifier = new ParticipationId(organization, observation.getId(), ORDERED_BY);
+    ParticipationId identifier = new ParticipationId(organization.identifier(), observation.getId(), ORDERED_BY);
 
     Participation participation = new Participation();
     participation.setId(identifier);

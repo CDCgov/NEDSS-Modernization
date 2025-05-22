@@ -1,34 +1,37 @@
 package gov.cdc.nbs.event.document;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.Act;
-import gov.cdc.nbs.entity.odse.NbsDocument;
-import gov.cdc.nbs.entity.odse.NbsDocumentMetadatum;
-import gov.cdc.nbs.entity.odse.Participation;
-import gov.cdc.nbs.entity.odse.ParticipationId;
+import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
+import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
+import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PreDestroy;
 import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Component;
+
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 @Component
-@Transactional
+@ScenarioScope
 public class CaseReportMother {
 
   private static final String DOCUMENT_CLASS = "DOC";
   private static final String PERSON_CLASS = "PSN";
+
   private final MotherSettings settings;
   private final SequentialIdentityGenerator idGenerator;
   private final EntityManager entityManager;
   private final TestDocumentCleaner cleaner;
+
 
   private final Active<CaseReportIdentifier> active;
   private final Available<CaseReportIdentifier> available;
@@ -52,22 +55,30 @@ public class CaseReportMother {
     this.patientMother = patientMother;
   }
 
+  @PreDestroy
   void reset() {
     this.cleaner.clean(this.settings.starting());
-    this.available.reset();
-    this.active.reset();
   }
 
-  CaseReportIdentifier create(final PatientIdentifier patient) {
+  CaseReportIdentifier create(
+      final PatientIdentifier patient,
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction
+  ) {
     // Condition: Flu activity code (Influenza)
-    return create(patient, "10570");
+    return create(patient, programArea, jurisdiction, "10570");
   }
 
   /**
    * Creates a Case Report associated with the given {@code patient} with the Out of System and STD
    * programJurisdictionOid
    */
-  CaseReportIdentifier create(final PatientIdentifier patient, final String condition) {
+  CaseReportIdentifier create(
+      final PatientIdentifier patient,
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction,
+      final String condition
+  ) {
     PatientIdentifier revision = patientMother.revise(patient);
     //  create a document
     NbsDocument document = new NbsDocument();
@@ -86,10 +97,9 @@ public class CaseReportMother {
 
     document.setCd(condition);
 
-    // Jurisdiction: Out of system
-    document.setProgAreaCd("STD");
-    document.setJurisdictionCd("999999");
-    document.setProgramJurisdictionOid(1300200015L);   //  STD Out of System
+    document.setProgAreaCd(programArea.code());
+    document.setJurisdictionCd(jurisdiction.code());
+    document.setProgramJurisdictionOid(programArea.oid(jurisdiction));   //  STD Out of System
 
     document.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
     document.setAddUserId(settings.createdBy());
@@ -168,6 +178,11 @@ public class CaseReportMother {
     document.setAddTime(received);
   }
 
+  void receivedOn(final CaseReportIdentifier identifier, final LocalDateTime received) {
+    NbsDocument document = managed(identifier);
+    document.setAddTime(ZonedDateTime.of(received, ZoneOffset.UTC).toInstant());
+  }
+
   void requiresSecurityAssignment(final CaseReportIdentifier identifier) {
     NbsDocument document = managed(identifier);
     document.setJurisdictionCd(null);
@@ -188,6 +203,18 @@ public class CaseReportMother {
   void withCondition(final CaseReportIdentifier identifier, final String condition) {
     NbsDocument document = managed(identifier);
     document.setCd(condition);
+  }
+
+  void within(
+      final CaseReportIdentifier identifier,
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction
+  ) {
+    NbsDocument document = managed(identifier);
+
+    document.setProgAreaCd(programArea.code());
+    document.setJurisdictionCd(jurisdiction.code());
+    document.setProgramJurisdictionOid(programArea.oid(jurisdiction));
   }
 
   private NbsDocument managed(final CaseReportIdentifier identifier) {

@@ -27,8 +27,8 @@ const SearchResultPageSizeSelect = ({
         <div className={styles.selector}>
             <label htmlFor={id}>Results per page</label>
             <select key={current} className={classNames('usa-select')} id={id} value={current} onChange={handleChange}>
-                {selections.map((selection, index) => (
-                    <option key={index} value={selection}>
+                {selections.map((selection) => (
+                    <option key={`page-size-option-${selection}`} value={selection}>
                         {selection}
                     </option>
                 ))}

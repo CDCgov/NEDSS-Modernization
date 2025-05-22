@@ -1,6 +1,6 @@
 import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
 import { PassConfigurationTable } from './PassConfigurationTable';
-import { render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 
 const algorithm: { passes: Pass[] } = {
     passes: [
@@ -40,8 +40,8 @@ describe('PassConfigurationTable', () => {
     });
 
     it('renders the proper columns labels', () => {
-        const { container } = render(<Fixture />);
-        const headerCells = container.querySelectorAll('thead tr:nth-child(1) th');
+        const { getAllByRole } = render(<Fixture />);
+        const headerCells = getAllByRole('columnheader');
         expect(headerCells[0]).toHaveTextContent('Pass name');
         expect(headerCells[1]).toHaveTextContent('Description');
         expect(headerCells[2]).toHaveTextContent('Blocking criteria');
@@ -52,26 +52,28 @@ describe('PassConfigurationTable', () => {
     });
 
     it('renders the proper data', () => {
-        const { container } = render(<Fixture />);
-        const firstRow = container.querySelectorAll('tbody tr:nth-child(1) td');
+        const { getAllByRole } = render(<Fixture />);
 
-        expect(firstRow[0]).toHaveTextContent('Test pass');
-        expect(firstRow[1]).toHaveTextContent('Test description');
-        expect(firstRow[2]).toHaveTextContent('Street address 1');
-        expect(firstRow[3]).toHaveTextContent('First name: JaroWinkler');
-        expect(firstRow[4]).toHaveTextContent('0.25');
-        expect(firstRow[5]).toHaveTextContent('0.88');
-        expect(firstRow[6]).toHaveTextContent('Yes');
+        const rows = getAllByRole('row');
+        expect(rows).toHaveLength(3);
 
-        const secondRow = container.querySelectorAll('tbody tr:nth-child(2) td');
+        const firstRowCells = within(rows[1]).getAllByRole('cell');
+        expect(firstRowCells[0]).toHaveTextContent('Test pass');
+        expect(firstRowCells[1]).toHaveTextContent('Test description');
+        expect(firstRowCells[2]).toHaveTextContent('Street address 1');
+        expect(firstRowCells[3]).toHaveTextContent('First name: JaroWinkler');
+        expect(firstRowCells[4]).toHaveTextContent('0.25');
+        expect(firstRowCells[5]).toHaveTextContent('0.88');
+        expect(firstRowCells[6]).toHaveTextContent('Yes');
 
-        expect(secondRow[0]).toHaveTextContent('Test pass2');
-        expect(secondRow[1]).toHaveTextContent('Test description 2');
-        expect(secondRow[2]).toHaveTextContent('Identifier');
-        expect(secondRow[3].children[0].children[0]).toHaveTextContent('Sex: Exact');
-        expect(secondRow[3].children[0].children[1]).toHaveTextContent('WIC identifier: Exact');
-        expect(secondRow[4]).toHaveTextContent('0.55');
-        expect(secondRow[5]).toHaveTextContent('0.9');
-        expect(secondRow[6]).toHaveTextContent('No');
+        const secondRowCells = within(rows[2]).getAllByRole('cell');
+        expect(secondRowCells[0]).toHaveTextContent('Test pass2');
+        expect(secondRowCells[1]).toHaveTextContent('Test description 2');
+        expect(secondRowCells[2]).toHaveTextContent('Identifier');
+        expect(secondRowCells[3]).toHaveTextContent('Sex: Exact');
+        expect(secondRowCells[3]).toHaveTextContent('WIC identifier: Exact');
+        expect(secondRowCells[4]).toHaveTextContent('0.55');
+        expect(secondRowCells[5]).toHaveTextContent('0.9');
+        expect(secondRowCells[6]).toHaveTextContent('No');
     });
 });

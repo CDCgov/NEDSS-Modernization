@@ -1,13 +1,12 @@
 package gov.cdc.nbs.event.report.lab;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
-import gov.cdc.nbs.support.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
+import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
+import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,11 +42,6 @@ public class LabReportSteps {
     this.reportMother = reportMother;
   }
 
-  @Before("@lab-report")
-  public void clean() {
-    this.reportMother.reset();
-  }
-
   @Given("^(?i)the patient has a lab report")
   @Given("^(?i)the patient has another lab report")
   public void the_patient_has_a_lab_report() {
@@ -63,12 +57,12 @@ public class LabReportSteps {
   }
 
   @Given("the patient has a lab report reported by {organization}")
-  public void patient_has_an_unprocessed_lab_report(final long organization) {
+  public void patient_has_an_unprocessed_lab_report(final OrganizationIdentifier organization) {
     activePatient.maybeActive()
         .ifPresent(
             patient -> reportMother.create(
                 patient,
-                new OrganizationIdentifier(organization),
+                organization,
                 this.activeJurisdiction.active(),
                 this.activeProgramArea.active()
             )
@@ -116,7 +110,7 @@ public class LabReportSteps {
   }
 
   @Given("the lab report was ordered by the {organization} facility")
-  public void the_lab_report_was_ordered_by_the_organization(final long organization) {
+  public void the_lab_report_was_ordered_by_the_organization(final OrganizationIdentifier organization) {
     activeReport.maybeActive()
         .ifPresent(lab -> reportMother.orderedBy(lab, organization));
   }

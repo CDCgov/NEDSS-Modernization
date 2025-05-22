@@ -54,7 +54,8 @@ public class AuthorizationRoleMother {
       final long set,
       final char guest,
       final String programArea,
-      final String jurisdiction) {
+      final String jurisdiction
+  ) {
     AuthUser authUser = this.entityManager.find(AuthUser.class, user);
     AuthPermSet authPermSet = this.entityManager.find(AuthPermSet.class, set);
 

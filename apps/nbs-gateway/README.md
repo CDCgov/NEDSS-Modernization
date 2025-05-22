@@ -67,7 +67,7 @@ always enabled.
 
 Any `RouteLocators` that route NBS6.x paths to a modernized service should be configured to be enabled and disabled via
 deployment time configuration. This has been implemented using Spring's `@Configuration` and `@ConditionalOnExpression`
-annotations to ensure that a `RouteLocator` is configured only when the value of a configuration property is `true`.  
+annotations to ensure that a `RouteLocator` is configured only when the value of a configuration property is `true`.
 
 It is important to make sure that any NBS6.x paths are unique enough to only target the desired pages.
 
@@ -79,7 +79,7 @@ Variable,and [other useful means](https://docs.spring.io/spring-boot/reference/f
 The default profile contains the following properties configuration most likely to change.
 
 | Name                                                   | Default                 | Description                                                                         |
-|--------------------------------------------------------|-------------------------|-------------------------------------------------------------------------------------|
+| ------------------------------------------------------ | ----------------------- | ----------------------------------------------------------------------------------- |
 | nbs.gateway.defaults.protocol                          | `http`                  | The default protocol used to connect to services. Intra-pod communication is `http` |
 | nbs.gateway.classic                                    | `http://localhost:7001` | The URI location of the classic NBS Application                                     |
 | nbs.gateway.patient.search.enabled                     | `true`                  | Enables the Patient Search routing                                                  |
@@ -91,6 +91,10 @@ The default profile contains the following properties configuration most likely 
 | nbs.gateway.pagebuilder.page.library.enabled           | `false`                 | Enables the Page Builder Page Library routing                                       |
 | nbs.gateway.pagebuilder.page.management.create.enabled | `false`                 | Enables the Page Builder Page creation routing                                      |
 | nbs.gateway.pagebuilder.page.management.edit.enabled   | `false`                 | Enables the Page Builder Page preview/edit routing                                  |
+| nbs.gateway.deduplication.enabled                      | `false`                 | Enables routing to the Deduplication Api                                            |
+| nbs.gateway.deduplication.service                      | `localhost:8083`        | The host name of the Deduplication Api                                              |
+| nbs.gateway.deduplication.uri                          | `http://localhost:8083` | The full URI of the Deduplication Api                                               |
+| nbs.gateway.deduplication.merge.enabled                | `false`                 | Enables the routing for modernized System Identified merge list                     |
 
 ### Logo
 
@@ -99,7 +103,7 @@ the `nbs.gateway.classic` service. The logo can be changed by setting the `nbs.g
 the file to use as the logo.
 
 | Name                  | Default                 | Description                                                 |
-|-----------------------|-------------------------|-------------------------------------------------------------|
+| --------------------- | ----------------------- | ----------------------------------------------------------- |
 | nbs.gateway.logo.path | `/images/nedssLogo.jpg` | The path to serve the NBS logo on.                          |
 | nbs.gateway.logo.file |                         | The file system path to the image to serve as the NBS logo. |
 
@@ -109,7 +113,7 @@ Shortcut configurations have been created for logging of Spring resources. Each 
 including `ERROR`, `WARN`, `INFO`, `DEBUG`, and `TRACE`.
 
 | Name                           | Default | Description                                                                                                                                  |
-|--------------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | nbs.gateway.log.level          | `INFO`  | A shortcut to the logging level for `org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping` which logs the routing handler. |
 | nbs.gateway.security.log.level | `INFO`  | A shortcut to the logging level for `org.springframework.security` which logs Spring Security.                                               |
 
@@ -122,13 +126,12 @@ NBS_GATEWAY_LOG_LEVEL=DEBUG docker compose up -d nbs-gateway
 Authentication is not enabled by default. The `nbs-gateway` has been preconfigured to work as an OIDC Client by
 enabling the `oidc` profile. The profile requires a specific set of configuration values.
 
-| Name                            | Default                                                                              | Description                                                                           |
-|---------------------------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| spring.profiles.include         |                                                                                      | The Spring property to include profiles.  Set to `oidc` to enable OIDC authentication |
-| nbs.security.oidc.protocol      | `http`                                                                               | The protocol used to communicate with the OIDC compatible Identity Provider           |
-| nbs.security.oidc.host          |                                                                                      | The hostname of the OIDC compatible Identity Provider                                 |
-| nbs.security.oidc.base          | `/realms/nbs-users`                                                                  | The path to the OIDC endpoints                                                        |
-| nbs.security.oidc.uri           | `${nbs.security.oidc.protocol}://${nbs.security.oidc.host}${nbs.security.oidc.base}` | The URI for the OIDC issuer                                                           |
-| nbs.security.oidc.client.id     |                                                                                      | The client id used to initiate Authentication                                         |
-| nbs.security.oidc.client.secret |                                                                                      | The client secret used to initiate Authentication                                     |
-
+| Name                            | Default                                                                              | Description                                                                          |
+| ------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| spring.profiles.include         |                                                                                      | The Spring property to include profiles. Set to `oidc` to enable OIDC authentication |
+| nbs.security.oidc.protocol      | `http`                                                                               | The protocol used to communicate with the OIDC compatible Identity Provider          |
+| nbs.security.oidc.host          |                                                                                      | The hostname of the OIDC compatible Identity Provider                                |
+| nbs.security.oidc.base          | `/realms/nbs-users`                                                                  | The path to the OIDC endpoints                                                       |
+| nbs.security.oidc.uri           | `${nbs.security.oidc.protocol}://${nbs.security.oidc.host}${nbs.security.oidc.base}` | The URI for the OIDC issuer                                                          |
+| nbs.security.oidc.client.id     |                                                                                      | The client id used to initiate Authentication                                        |
+| nbs.security.oidc.client.secret |                                                                                      | The client secret used to initiate Authentication                                    |

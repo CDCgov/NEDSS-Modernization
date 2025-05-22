@@ -32,7 +32,7 @@ public record PermissionScope(Collection<Long> any, Collection<Long> shared) {
     }
 
     public boolean allowed() {
-        return !any().isEmpty() || !shared().isEmpty();
+        return !any.isEmpty() || !shared.isEmpty();
     }
 
 }

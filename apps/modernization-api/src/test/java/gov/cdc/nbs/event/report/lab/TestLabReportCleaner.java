@@ -1,56 +1,35 @@
 package gov.cdc.nbs.event.report.lab;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.entity.odse.Act;
-import gov.cdc.nbs.entity.odse.Observation;
-import gov.cdc.nbs.entity.odse.QObservation;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
+import java.util.Collection;
 
 @Component
 class TestLabReportCleaner {
 
-  private static final QObservation LAB = QObservation.observation;
-  private final EntityManager entityManager;
-  private final JPAQueryFactory factory;
+  private static final String DELETE_IN = """
+      delete from Participation where act_class_cd = 'OBS' and act_uid in (:identifiers);
+      
+      delete from Observation 
+      where   ctrl_cd_display_form = 'LabReport' 
+          and obs_domain_cd_st_1 = 'Order'
+          and observation_uid in (:identifiers);
+      
+      delete from Act where class_cd = 'OBS' and act_uid in (:identifiers);
+      """;
 
-  TestLabReportCleaner(final EntityManager entityManager, final JPAQueryFactory factory) {
-    this.entityManager = entityManager;
-    this.factory = factory;
+  private final JdbcClient client;
+
+  TestLabReportCleaner(final JdbcClient client) {
+    this.client = client;
   }
 
-  @Transactional
-  void clean(final long starting) {
-    this.factory.select(LAB)
-        .from(LAB)
-        .where(criteria(starting), LAB.ctrlCdDisplayForm.eq("LabReport"))
-        .fetch()
-        .forEach(this::remove);
-  }
-
-  private BooleanExpression criteria(final long starting) {
-    BooleanExpression threshold = LAB.id.goe(starting);
-    return starting < 0
-        ? threshold.and(LAB.id.lt(0))
-        : threshold;
-  }
-
-  private void remove(final Observation observation) {
-    removeParticipation(observation);
-
-    this.entityManager.remove(observation);
-  }
-
-  private void removeParticipation(final Observation observation) {
-    //  The all observation participation instances are associated with the Act entity.  Removing the Act will remove any
-    //  associations.
-    Act existing = this.entityManager.find(Act.class, observation.getId());
-
-    if (existing != null) {
-      this.entityManager.remove(existing);
+  void clean(final Collection<Long> identifiers) {
+    if (!identifiers.isEmpty()) {
+      this.client.sql(DELETE_IN)
+          .param("identifiers", identifiers)
+          .update();
     }
   }
 }
