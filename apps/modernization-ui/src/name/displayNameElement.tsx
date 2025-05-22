@@ -1,6 +1,7 @@
 import { ItemGroup } from 'design-system/item';
 import { displayName } from './displayName';
-import { DisplayableName, NameFormat } from './types';
+import { DisplayableName } from './displayableName';
+import { NameFormat } from './format';
 
 /** Returns the full text + label name element. Example: "Alias Name\nMarty McFly"
  * @param {DisplayableName} name - The name object to display.

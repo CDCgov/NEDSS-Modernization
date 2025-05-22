@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { displayNameElement } from './displayNameElement';
-import { DisplayableName } from './types';
+import { DisplayableName } from './format';
 
 describe('displayNameElement', () => {
     it('should render short name format by default with label', () => {
