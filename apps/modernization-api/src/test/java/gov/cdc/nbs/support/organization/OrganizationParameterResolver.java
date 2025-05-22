@@ -1,6 +1,6 @@
 package gov.cdc.nbs.support.organization;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -15,21 +15,19 @@ class OrganizationParameterResolver {
       from Organization
       where display_nm = ?
       """;
-  private static final int NAME_INDEX = 1;
 
-  private final JdbcTemplate template;
+  private final JdbcClient client;
 
-  OrganizationParameterResolver(final JdbcTemplate template) {
-    this.template = template;
+  OrganizationParameterResolver(final JdbcClient client) {
+    this.client = client;
   }
 
-  Optional<Long> resolve(final String value) {
-    return this.template.query(
-        QUERY,
-        statement -> {
-          statement.setString(NAME_INDEX, value);
-        },
-        (rs, row) -> rs.getLong(IDENTIFIER_COLUMN)
-    ).stream().findFirst();
+  Optional<OrganizationIdentifier> resolve(final String value) {
+    return this.client.sql(QUERY)
+        .param(value)
+        .query((rs, row) -> new OrganizationIdentifier(rs.getLong(IDENTIFIER_COLUMN)))
+        .optional();
   }
+
+
 }

@@ -22,8 +22,8 @@ public class OrganizationSteps {
   }
 
   @ParameterType(name = "organization", value = ".*")
-  public long organization(final String value) {
-    return resolver.resolve(value).orElse(-1L);
+  public OrganizationIdentifier organization(final String value) {
+    return resolver.resolve(value).orElse(null);
   }
 
 }

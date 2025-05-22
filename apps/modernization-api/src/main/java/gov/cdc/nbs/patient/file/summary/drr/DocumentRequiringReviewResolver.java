@@ -5,8 +5,9 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 class DocumentRequiringReviewResolver {
@@ -18,20 +19,27 @@ class DocumentRequiringReviewResolver {
 
 
   private final PermissionScopeResolver scopeResolver;
-  private final CaseReportRequiringReviewFinder caseReportFinder;
+  private final CaseReportRequiringReviewResolver caseReportResolver;
+  private final MorbidityReportRequiringReviewResolver morbidityReportResolver;
 
   DocumentRequiringReviewResolver(
       final PermissionScopeResolver scopeResolver,
-      final CaseReportRequiringReviewFinder caseReportFinder
+      final CaseReportRequiringReviewResolver caseReportResolver,
+      final MorbidityReportRequiringReviewResolver morbidityReportResolver
   ) {
     this.scopeResolver = scopeResolver;
-    this.caseReportFinder = caseReportFinder;
+    this.caseReportResolver = caseReportResolver;
+    this.morbidityReportResolver = morbidityReportResolver;
   }
 
   List<DocumentRequiringReview> resolve(final long patient) {
     DocumentsRequiringReviewCriteria criteria = asCriteria(patient);
 
-    return caseReports(criteria);
+    return Stream.of(
+            morbidityReportResolver.resolve(criteria),
+            caseReportResolver.resolve(criteria)
+        ).flatMap(Collection::stream)
+        .toList();
   }
 
   private DocumentsRequiringReviewCriteria asCriteria(final long patient) {
@@ -47,12 +55,6 @@ class DocumentRequiringReviewResolver {
         morbidity,
         investigation
     );
-  }
-
-  private List<DocumentRequiringReview> caseReports(final DocumentsRequiringReviewCriteria criteria) {
-    return criteria.documentScope().allowed()
-        ? this.caseReportFinder.find(criteria)
-        : Collections.emptyList();
   }
 
 }

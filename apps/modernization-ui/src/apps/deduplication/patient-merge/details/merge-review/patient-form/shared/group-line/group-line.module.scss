@@ -1,0 +1,29 @@
+@use 'styles/colors';
+
+.groupLine {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 1.25rem;
+
+    .row {
+        display: flex;
+        justify-content: space-evenly;
+        height: 50%;
+
+        & > div {
+            display: flex;
+            width: 100%;
+        }
+
+        .top {
+            border-left: solid 1px colors.$base-lighter;
+            border-bottom: solid 1px colors.$base-lighter;
+            height: 100%;
+        }
+
+        .bottom {
+            border-left: solid 1px colors.$base-lighter;
+        }
+    }
+}

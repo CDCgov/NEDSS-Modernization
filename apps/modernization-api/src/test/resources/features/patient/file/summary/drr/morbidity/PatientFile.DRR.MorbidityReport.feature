@@ -1,0 +1,44 @@
+@documents-requiring-review @morbidity-report
+Feature: Patient File Documents Requiring Review: Morbidity Report
+
+  Background:
+    Given I am logged in
+    And I can "find" any "patient"
+    And I can "view" any "ObservationMorbidityReport"
+    And I have a patient
+    And the patient has a Morbidity Report
+    And the morbidity report has not been processed
+
+  Scenario: I can view Morbidity Reports requiring review for a patient
+    Given the morbidity report was received on 03/29/2010 at 02:51:07
+    And the morbidity report was reported on 07/11/1989 at 10:17:19
+    And the morbidity report is for the condition Diphtheria
+    When I view the documents requiring review for the patient
+    Then the patient file has the morbidity report requiring review
+    And the morbidity report requiring review was received on 03/29/2010 at 02:51:07
+    And the morbidity report requiring review has the event date 07/11/1989 at 10:17:19
+    And the morbidity report requiring review is not electronic
+    And the morbidity report requiring review has the description title "Diphtheria"
+
+  Scenario: I can view Morbidity Reports requiring review for a patient that were ordered by a Provider
+    Given there is a provider named Doctor/Dr. "Lucien" "Sanchez"
+    And the morbidity report was ordered by the provider
+    When I view the documents requiring review for the patient
+    Then the patient file has the morbidity report requiring review
+    And the morbidity report requiring review was ordered by "Doctor/Dr." "Lucien" "Sanchez"
+
+  Scenario: I can view Morbidity Reports requiring review for a patient that were reported by a facility
+    Given there is an organization named "Darkplace Hospital"
+    And the patient has a morbidity report reported by Darkplace Hospital
+    And the morbidity report has not been processed
+    When I view the documents requiring review for the patient
+    Then the patient file has the morbidity report requiring review
+    And the morbidity report requiring review was reported by "Darkplace Hospital"
+
+  Scenario: I can view electronic Morbidity Reports requiring review for a patient
+    Given  the morbidity report is electronic
+    When I view the documents requiring review for the patient
+    Then the patient file has the morbidity report requiring review
+    And the morbidity report requiring review is electronic
+
+

@@ -1,5 +1,7 @@
 package gov.cdc.nbs.patient.file.summary.drr;
 
+import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,12 +14,11 @@ public record DocumentRequiringReview(
     boolean isElectronic,
     boolean isUpdate,
     String reportingFacility,
-    String orderingProvider,
+    DisplayableSimpleName orderingProvider,
     String sendingFacility,
     List<Description> descriptions
 
 ) {
-
 
   public record Description(
       String title,

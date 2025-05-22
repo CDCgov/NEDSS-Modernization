@@ -1,0 +1,42 @@
+@use 'styles/colors';
+
+.adminComment {
+    display: flex;
+    flex-direction: column;
+    gap: 0.06rem;
+
+    .asOfDate {
+        display: flex;
+        align-items: center;
+        padding: 0.25rem 1.5rem 0.25rem 1rem;
+
+        & > div {
+            display: flex;
+            width: 50%;
+            font-size: 0.75rem;
+
+            & > label {
+                display: flex;
+                color: colors.$base-darkest;
+                margin: 0;
+                font-weight: 700;
+                line-height: 1rem;
+            }
+        }
+    }
+
+    .comment {
+        display: flex;
+        padding-left: 1rem;
+
+        .commentText {
+            width: 100%;
+            padding: 0.25rem 1.5rem 0.25rem 0.5rem;
+            font-size: 0.75rem;
+
+            .label {
+                font-weight: 700;
+            }
+        }
+    }
+}

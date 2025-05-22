@@ -9,7 +9,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
@@ -60,7 +62,20 @@ public class PatientFileDocumentsRequiringReviewSteps {
       default -> null;
     };
     this.response.active()
-        .andExpect(jsonPath("$.[?(@.type=='%s')].local", documentType).value(local));
+        .andExpect(jsonPath("$.[?(@.type=='%s')].[?(@.local=='%s')]", documentType, local).exists());
+  }
+
+  @Then("the {documentType} requiring review is electronic")
+  public void the_patient_document_requiring_review_is_electronic(final String documentType)
+      throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.type=='%s')].isElectronic",
+                documentType
+            )
+                .value(hasItem(equalTo(true)))
+        );
   }
 
   @Then("the {documentType} requiring review is not electronic")
@@ -101,28 +116,78 @@ public class PatientFileDocumentsRequiringReviewSteps {
     this.response.active()
         .andExpect(
             jsonPath(
-                "$.[?(@.type=='%s')].descriptions[*].title",
-                documentType
+                "$.[?(@.type=='%s')].descriptions[?(@.title=='%s')]",
+                documentType, title
             )
-                .value(hasItem(equalTo(title)))
+                .exists()
         );
   }
 
-  @Then("the {documentType} requiring review was received on {dateTime}")
-  public void the_patient_document_requiring_review_was_received_on(
+  @Then("the {documentType} requiring review was received on {localDate} at {time}")
+  public void receivedOn(
       final String documentType,
-      final LocalDateTime received
+      final LocalDate on,
+      final LocalTime at
   )
       throws Exception {
     this.response.active()
         .andExpect(
             jsonPath(
-                "$.[?(@.type=='%s')].dateReceived",
-                documentType
+                "$.[?(@.type=='%s')].[?(@.dateReceived=='%s')]",
+                documentType,
+                LocalDateTime.of(on, at)
             )
-                .value(hasItem(equalTo(received.toString())))
+                .exists()
         );
-
   }
 
+  @Then("the {documentType} requiring review has the event date {localDate} at {time}")
+  public void eventDate(
+      final String documentType,
+      final LocalDate on,
+      final LocalTime at
+  )
+      throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.type=='%s')].[?(@.eventDate=='%s')]",
+                documentType,
+                LocalDateTime.of(on, at)
+            )
+                .exists()
+        );
+  }
+
+  @Then("the {documentType} requiring review was reported by {string}")
+  public void reportedBy(final String type, final String value)
+      throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.type=='%s')].reportingFacility",
+                type
+            )
+                .value(hasItem(equalTo(value)))
+        );
+  }
+
+  @Then("the {documentType} requiring review was ordered by {string} {string} {string}")
+  public void orderedBy(
+      final String type,
+      final String prefix,
+      final String first,
+      final String last
+  )
+      throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.type=='%s')].orderingProvider.[?(@.prefix=='%s' && @.first=='%s' && @.last=='%s')]",
+                type,
+                prefix,
+                first,
+                last
+            ).exists());
+  }
 }
