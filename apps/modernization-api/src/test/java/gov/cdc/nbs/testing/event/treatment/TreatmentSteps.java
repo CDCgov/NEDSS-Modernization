@@ -2,7 +2,6 @@ package gov.cdc.nbs.testing.event.treatment;
 
 import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.event.report.morbidity.MorbidityReportIdentifier;
-import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
@@ -14,7 +13,6 @@ public class TreatmentSteps {
 
   TreatmentSteps(
       final TreatmentMother mother,
-      final Active<PatientIdentifier> activePatient,
       final Active<MorbidityReportIdentifier> activeMorbidity,
       final Active<InvestigationIdentifier> activeInvestigation
   ) {

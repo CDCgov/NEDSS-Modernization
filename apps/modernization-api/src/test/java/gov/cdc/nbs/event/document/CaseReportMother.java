@@ -3,7 +3,6 @@ package gov.cdc.nbs.event.document;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
