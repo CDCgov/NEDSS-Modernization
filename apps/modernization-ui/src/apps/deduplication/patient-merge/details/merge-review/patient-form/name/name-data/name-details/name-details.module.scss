@@ -1,0 +1,24 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.nameDetails {
+    display: flex;
+    flex-direction: column;
+    color: colors.$base-darkest;
+    font-size: 0.75rem;
+
+    .row {
+        display: flex;
+        width: 100%;
+        padding: 0.5rem 1.5rem 0.5rem 1rem;
+        @extend %thin-bottom;
+
+        & > div {
+            width: 50%;
+        }
+    }
+
+    .label {
+        font-weight: 700;
+    }
+}

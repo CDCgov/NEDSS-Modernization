@@ -1,0 +1,16 @@
+@use 'styles/colors';
+
+.section {
+    display: flex;
+
+    & > :not(:last-child) {
+        border-right: 1px solid colors.$base-black;
+    }
+
+    .entry {
+        display: flex;
+        width: 100%;
+        min-width: 33%;
+        flex-direction: column;
+    }
+}
