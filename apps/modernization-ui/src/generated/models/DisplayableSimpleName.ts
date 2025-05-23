@@ -2,8 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type Description = {
-    title?: string;
-    value?: string;
+export type DisplayableSimpleName = {
+    prefix?: string;
+    first?: string;
+    last?: string;
 };
 
