@@ -64,12 +64,6 @@ export type CodedValue = {
   value: Scalars['String']['output'];
 };
 
-export type ConditionCode = {
-  __typename?: 'ConditionCode';
-  conditionDescTxt?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
-};
-
 export type ContactsNamedByPatientResults = {
   __typename?: 'ContactsNamedByPatientResults';
   content: Array<Maybe<NamedByPatient>>;
@@ -161,29 +155,12 @@ export enum EntryMethod {
   Manual = 'MANUAL'
 }
 
-export type Ethnicity = {
-  __typename?: 'Ethnicity';
-  codeDescTxt: Scalars['String']['output'];
-  id: EthnicityId;
-};
-
-export type EthnicityId = {
-  __typename?: 'EthnicityId';
-  code: Scalars['String']['output'];
-};
-
 export type EthnicityInput = {
   asOf: Scalars['Date']['input'];
   detailed?: InputMaybe<Array<Scalars['String']['input']>>;
   ethnicGroup?: InputMaybe<Scalars['String']['input']>;
   patient: Scalars['String']['input'];
   unknownReason?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type EthnicityResults = {
-  __typename?: 'EthnicityResults';
-  content: Array<Maybe<Ethnicity>>;
-  total: Scalars['Int']['output'];
 };
 
 export type EventId = {
@@ -245,17 +222,6 @@ export type IdentificationCriteria = {
   assigningAuthority?: InputMaybe<Scalars['String']['input']>;
   identificationNumber?: InputMaybe<Scalars['String']['input']>;
   identificationType?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type IdentificationType = {
-  __typename?: 'IdentificationType';
-  codeDescTxt: Scalars['String']['output'];
-  id: IdentificationTypeId;
-};
-
-export type IdentificationTypeId = {
-  __typename?: 'IdentificationTypeId';
-  code: Scalars['String']['output'];
 };
 
 export type Investigation = {
@@ -770,24 +736,6 @@ export type OrganizationParticipation2 = {
   typeCd?: Maybe<Scalars['String']['output']>;
 };
 
-export type Outbreak = {
-  __typename?: 'Outbreak';
-  codeShortDescTxt?: Maybe<Scalars['String']['output']>;
-  id: OutbreakId;
-};
-
-export type OutbreakId = {
-  __typename?: 'OutbreakId';
-  code: Scalars['String']['output'];
-  codeSetNm: Scalars['String']['output'];
-};
-
-export type OutbreakResults = {
-  __typename?: 'OutbreakResults';
-  content: Array<Maybe<Outbreak>>;
-  total: Scalars['Int']['output'];
-};
-
 export type Page = {
   pageNumber: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
@@ -1037,12 +985,6 @@ export type PatientIdentificationType = {
   __typename?: 'PatientIdentificationType';
   description: Scalars['String']['output'];
   id: Scalars['String']['output'];
-};
-
-export type PatientIdentificationTypeResults = {
-  __typename?: 'PatientIdentificationTypeResults';
-  content: Array<Maybe<IdentificationType>>;
-  total: Scalars['Int']['output'];
 };
 
 export type PatientIndicatorCodedValue = {
@@ -1670,14 +1612,8 @@ export type Query = {
   educationLevels: Array<CodedValue>;
   ethnicGroups: Array<CodedValue>;
   ethnicityUnknownReasons: Array<CodedValue>;
-  findAllConditionCodes: Array<Maybe<ConditionCode>>;
-  findAllEthnicityValues: EthnicityResults;
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
-  findAllOutbreaks: OutbreakResults;
-  findAllPatientIdentificationTypes: PatientIdentificationTypeResults;
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
-  findAllRaceValues: RaceResults;
-  findAllUsers: UserResults;
   findContactsNamedByPatient?: Maybe<ContactsNamedByPatientResults>;
   findDistinctCodedResults: Array<CodedResult>;
   findDistinctResultedTest: Array<ResultedTest>;
@@ -1720,42 +1656,12 @@ export type QueryDetailedRacesArgs = {
 };
 
 
-export type QueryFindAllConditionCodesArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindAllEthnicityValuesArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
 export type QueryFindAllJurisdictionsArgs = {
   page?: InputMaybe<Page>;
 };
 
 
-export type QueryFindAllOutbreaksArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindAllPatientIdentificationTypesArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
 export type QueryFindAllProgramAreasArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindAllRaceValuesArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindAllUsersArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -1849,28 +1755,11 @@ export type QueryFindVaccinationsForPatientArgs = {
   patient: Scalars['ID']['input'];
 };
 
-export type Race = {
-  __typename?: 'Race';
-  codeDescTxt: Scalars['String']['output'];
-  id: RaceId;
-};
-
-export type RaceId = {
-  __typename?: 'RaceId';
-  code: Scalars['String']['output'];
-};
-
 export type RaceInput = {
   asOf?: InputMaybe<Scalars['Date']['input']>;
   category: Scalars['String']['input'];
   detailed?: InputMaybe<Array<Scalars['String']['input']>>;
   patient: Scalars['Int']['input'];
-};
-
-export type RaceResults = {
-  __typename?: 'RaceResults';
-  content: Array<Maybe<Race>>;
-  total: Scalars['Int']['output'];
 };
 
 export enum RecordStatus {
@@ -2060,21 +1949,6 @@ export type UpdatePatientPhoneInput = {
   type: Scalars['String']['input'];
   url?: InputMaybe<Scalars['String']['input']>;
   use: Scalars['String']['input'];
-};
-
-export type User = {
-  __typename?: 'User';
-  nedssEntryId: Scalars['ID']['output'];
-  recordStatusCd?: Maybe<RecordStatus>;
-  userFirstNm: Scalars['String']['output'];
-  userId: Scalars['String']['output'];
-  userLastNm: Scalars['String']['output'];
-};
-
-export type UserResults = {
-  __typename?: 'UserResults';
-  content: Array<Maybe<User>>;
-  total: Scalars['Int']['output'];
 };
 
 export enum UserType {
@@ -2274,20 +2148,6 @@ export type EthnicityUnknownReasonsQueryVariables = Exact<{ [key: string]: never
 
 export type EthnicityUnknownReasonsQuery = { __typename?: 'Query', ethnicityUnknownReasons: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
 
-export type FindAllConditionCodesQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllConditionCodesQuery = { __typename?: 'Query', findAllConditionCodes: Array<{ __typename?: 'ConditionCode', id: string, conditionDescTxt?: string | null } | null> };
-
-export type FindAllEthnicityValuesQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllEthnicityValuesQuery = { __typename?: 'Query', findAllEthnicityValues: { __typename?: 'EthnicityResults', total: number, content: Array<{ __typename?: 'Ethnicity', codeDescTxt: string, id: { __typename?: 'EthnicityId', code: string } } | null> } };
-
 export type FindAllJurisdictionsQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
@@ -2295,40 +2155,12 @@ export type FindAllJurisdictionsQueryVariables = Exact<{
 
 export type FindAllJurisdictionsQuery = { __typename?: 'Query', findAllJurisdictions: Array<{ __typename?: 'Jurisdiction', id: string, typeCd: string, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, stateDomainCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeqNum?: number | null, nbsUid?: string | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null, exportInd?: string | null } | null> };
 
-export type FindAllOutbreaksQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllOutbreaksQuery = { __typename?: 'Query', findAllOutbreaks: { __typename?: 'OutbreakResults', total: number, content: Array<{ __typename?: 'Outbreak', codeShortDescTxt?: string | null, id: { __typename?: 'OutbreakId', codeSetNm: string, code: string } } | null> } };
-
-export type FindAllPatientIdentificationTypesQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllPatientIdentificationTypesQuery = { __typename?: 'Query', findAllPatientIdentificationTypes: { __typename?: 'PatientIdentificationTypeResults', total: number, content: Array<{ __typename?: 'IdentificationType', codeDescTxt: string, id: { __typename?: 'IdentificationTypeId', code: string } } | null> } };
-
 export type FindAllProgramAreasQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
 
 
 export type FindAllProgramAreasQuery = { __typename?: 'Query', findAllProgramAreas: Array<{ __typename?: 'ProgramAreaCode', id: string, progAreaDescTxt?: string | null, nbsUid?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeq?: number | null } | null> };
-
-export type FindAllRaceValuesQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllRaceValuesQuery = { __typename?: 'Query', findAllRaceValues: { __typename?: 'RaceResults', total: number, content: Array<{ __typename?: 'Race', codeDescTxt: string, id: { __typename?: 'RaceId', code: string } } | null> } };
-
-export type FindAllUsersQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllUsersQuery = { __typename?: 'Query', findAllUsers: { __typename?: 'UserResults', total: number, content: Array<{ __typename?: 'User', nedssEntryId: string, userId: string, userFirstNm: string, userLastNm: string, recordStatusCd?: RecordStatus | null } | null> } };
 
 export type FindContactsNamedByPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -3617,93 +3449,6 @@ export type EthnicityUnknownReasonsQueryHookResult = ReturnType<typeof useEthnic
 export type EthnicityUnknownReasonsLazyQueryHookResult = ReturnType<typeof useEthnicityUnknownReasonsLazyQuery>;
 export type EthnicityUnknownReasonsSuspenseQueryHookResult = ReturnType<typeof useEthnicityUnknownReasonsSuspenseQuery>;
 export type EthnicityUnknownReasonsQueryResult = Apollo.QueryResult<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>;
-export const FindAllConditionCodesDocument = gql`
-    query findAllConditionCodes($page: Page) {
-  findAllConditionCodes(page: $page) {
-    id
-    conditionDescTxt
-  }
-}
-    `;
-
-/**
- * __useFindAllConditionCodesQuery__
- *
- * To run a query within a React component, call `useFindAllConditionCodesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllConditionCodesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllConditionCodesQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllConditionCodesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
-      }
-export function useFindAllConditionCodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
-        }
-export function useFindAllConditionCodesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
-        }
-export type FindAllConditionCodesQueryHookResult = ReturnType<typeof useFindAllConditionCodesQuery>;
-export type FindAllConditionCodesLazyQueryHookResult = ReturnType<typeof useFindAllConditionCodesLazyQuery>;
-export type FindAllConditionCodesSuspenseQueryHookResult = ReturnType<typeof useFindAllConditionCodesSuspenseQuery>;
-export type FindAllConditionCodesQueryResult = Apollo.QueryResult<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>;
-export const FindAllEthnicityValuesDocument = gql`
-    query findAllEthnicityValues($page: Page) {
-  findAllEthnicityValues(page: $page) {
-    content {
-      id {
-        code
-      }
-      codeDescTxt
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindAllEthnicityValuesQuery__
- *
- * To run a query within a React component, call `useFindAllEthnicityValuesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllEthnicityValuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllEthnicityValuesQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllEthnicityValuesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
-      }
-export function useFindAllEthnicityValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
-        }
-export function useFindAllEthnicityValuesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
-        }
-export type FindAllEthnicityValuesQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesQuery>;
-export type FindAllEthnicityValuesLazyQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesLazyQuery>;
-export type FindAllEthnicityValuesSuspenseQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesSuspenseQuery>;
-export type FindAllEthnicityValuesQueryResult = Apollo.QueryResult<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>;
 export const FindAllJurisdictionsDocument = gql`
     query findAllJurisdictions($page: Page) {
   findAllJurisdictions(page: $page) {
@@ -3764,99 +3509,6 @@ export type FindAllJurisdictionsQueryHookResult = ReturnType<typeof useFindAllJu
 export type FindAllJurisdictionsLazyQueryHookResult = ReturnType<typeof useFindAllJurisdictionsLazyQuery>;
 export type FindAllJurisdictionsSuspenseQueryHookResult = ReturnType<typeof useFindAllJurisdictionsSuspenseQuery>;
 export type FindAllJurisdictionsQueryResult = Apollo.QueryResult<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>;
-export const FindAllOutbreaksDocument = gql`
-    query findAllOutbreaks($page: Page) {
-  findAllOutbreaks(page: $page) {
-    content {
-      id {
-        codeSetNm
-        code
-      }
-      codeShortDescTxt
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindAllOutbreaksQuery__
- *
- * To run a query within a React component, call `useFindAllOutbreaksQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllOutbreaksQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllOutbreaksQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllOutbreaksQuery(baseOptions?: Apollo.QueryHookOptions<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
-      }
-export function useFindAllOutbreaksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
-        }
-export function useFindAllOutbreaksSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
-        }
-export type FindAllOutbreaksQueryHookResult = ReturnType<typeof useFindAllOutbreaksQuery>;
-export type FindAllOutbreaksLazyQueryHookResult = ReturnType<typeof useFindAllOutbreaksLazyQuery>;
-export type FindAllOutbreaksSuspenseQueryHookResult = ReturnType<typeof useFindAllOutbreaksSuspenseQuery>;
-export type FindAllOutbreaksQueryResult = Apollo.QueryResult<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>;
-export const FindAllPatientIdentificationTypesDocument = gql`
-    query findAllPatientIdentificationTypes($page: Page) {
-  findAllPatientIdentificationTypes(page: $page) {
-    content {
-      id {
-        code
-      }
-      codeDescTxt
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindAllPatientIdentificationTypesQuery__
- *
- * To run a query within a React component, call `useFindAllPatientIdentificationTypesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllPatientIdentificationTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllPatientIdentificationTypesQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllPatientIdentificationTypesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
-      }
-export function useFindAllPatientIdentificationTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
-        }
-export function useFindAllPatientIdentificationTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
-        }
-export type FindAllPatientIdentificationTypesQueryHookResult = ReturnType<typeof useFindAllPatientIdentificationTypesQuery>;
-export type FindAllPatientIdentificationTypesLazyQueryHookResult = ReturnType<typeof useFindAllPatientIdentificationTypesLazyQuery>;
-export type FindAllPatientIdentificationTypesSuspenseQueryHookResult = ReturnType<typeof useFindAllPatientIdentificationTypesSuspenseQuery>;
-export type FindAllPatientIdentificationTypesQueryResult = Apollo.QueryResult<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>;
 export const FindAllProgramAreasDocument = gql`
     query findAllProgramAreas($page: Page) {
   findAllProgramAreas(page: $page) {
@@ -3903,99 +3555,6 @@ export type FindAllProgramAreasQueryHookResult = ReturnType<typeof useFindAllPro
 export type FindAllProgramAreasLazyQueryHookResult = ReturnType<typeof useFindAllProgramAreasLazyQuery>;
 export type FindAllProgramAreasSuspenseQueryHookResult = ReturnType<typeof useFindAllProgramAreasSuspenseQuery>;
 export type FindAllProgramAreasQueryResult = Apollo.QueryResult<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>;
-export const FindAllRaceValuesDocument = gql`
-    query findAllRaceValues($page: Page) {
-  findAllRaceValues(page: $page) {
-    content {
-      id {
-        code
-      }
-      codeDescTxt
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindAllRaceValuesQuery__
- *
- * To run a query within a React component, call `useFindAllRaceValuesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllRaceValuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllRaceValuesQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllRaceValuesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
-      }
-export function useFindAllRaceValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
-        }
-export function useFindAllRaceValuesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
-        }
-export type FindAllRaceValuesQueryHookResult = ReturnType<typeof useFindAllRaceValuesQuery>;
-export type FindAllRaceValuesLazyQueryHookResult = ReturnType<typeof useFindAllRaceValuesLazyQuery>;
-export type FindAllRaceValuesSuspenseQueryHookResult = ReturnType<typeof useFindAllRaceValuesSuspenseQuery>;
-export type FindAllRaceValuesQueryResult = Apollo.QueryResult<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>;
-export const FindAllUsersDocument = gql`
-    query findAllUsers($page: Page) {
-  findAllUsers(page: $page) {
-    content {
-      nedssEntryId
-      userId
-      userFirstNm
-      userLastNm
-      recordStatusCd
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindAllUsersQuery__
- *
- * To run a query within a React component, call `useFindAllUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllUsersQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllUsersQuery(baseOptions?: Apollo.QueryHookOptions<FindAllUsersQuery, FindAllUsersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
-      }
-export function useFindAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllUsersQuery, FindAllUsersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
-        }
-export function useFindAllUsersSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllUsersQuery, FindAllUsersQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
-        }
-export type FindAllUsersQueryHookResult = ReturnType<typeof useFindAllUsersQuery>;
-export type FindAllUsersLazyQueryHookResult = ReturnType<typeof useFindAllUsersLazyQuery>;
-export type FindAllUsersSuspenseQueryHookResult = ReturnType<typeof useFindAllUsersSuspenseQuery>;
-export type FindAllUsersQueryResult = Apollo.QueryResult<FindAllUsersQuery, FindAllUsersQueryVariables>;
 export const FindContactsNamedByPatientDocument = gql`
     query findContactsNamedByPatient($patient: ID!, $page: Page) {
   findContactsNamedByPatient(patient: $patient, page: $page) {

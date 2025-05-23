@@ -43,48 +43,6 @@ extend type Query {
     assigningAuthorities: [CodedValue!]!
 }
 extend type Query {
-    findAllConditionCodes(page: Page): [ConditionCode]!
-}
-
-type ConditionCode {
-    id: String!
-    conditionDescTxt: String
-}
-extend type Query {
-    findAllEthnicityValues(page: Page): EthnicityResults!
-}
-
-type EthnicityResults {
-    content: [Ethnicity]!
-    total: Int!
-}
-
-type Ethnicity {
-    id: EthnicityId!
-    codeDescTxt: String!
-}
-
-type EthnicityId {
-    code: String!
-}
-extend type Query {
-    findAllPatientIdentificationTypes(page: Page): PatientIdentificationTypeResults!
-}
-
-type PatientIdentificationTypeResults {
-    content: [IdentificationType]!
-    total: Int!
-}
-
-type IdentificationType {
-    id: IdentificationTypeId!
-    codeDescTxt: String!
-}
-
-type IdentificationTypeId {
-    code: String!
-}
-extend type Query {
     findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
 }
 
@@ -388,24 +346,6 @@ extend type Query {
 
 type ResultedTest {
     name: String!
-}
-extend type Query {
-    findAllOutbreaks(page: Page): OutbreakResults!
-}
-
-type OutbreakResults {
-    content: [Outbreak]!
-    total: Int!
-}
-
-type Outbreak {
-    id: OutbreakId!
-    codeShortDescTxt: String
-}
-
-type OutbreakId {
-    codeSetNm: String!
-    code: String!
 }
 type NamedContact {
     id: ID!
@@ -1598,23 +1538,6 @@ type ProgramAreaCode {
     codeSetNm: String
     codeSeq: Int
 }
-extend type Query {
-    findAllRaceValues(page: Page): RaceResults!
-}
-
-type RaceResults {
-    content: [Race]!
-    total: Int!
-}
-
-type Race {
-    id: RaceId!
-    codeDescTxt: String!
-}
-
-type RaceId {
-    code: String!
-}
 scalar Date
 scalar DateTime
 
@@ -1680,20 +1603,4 @@ enum PregnancyStatus {
     YES
     NO
     UNKNOWN
-}
-extend type Query {
-    findAllUsers(page: Page): UserResults!
-}
-
-type UserResults {
-    content: [User]!
-    total: Int!
-}
-
-type User {
-    nedssEntryId: ID!
-    userId: String!
-    userFirstNm: String!
-    userLastNm: String!
-    recordStatusCd: RecordStatus
 }
