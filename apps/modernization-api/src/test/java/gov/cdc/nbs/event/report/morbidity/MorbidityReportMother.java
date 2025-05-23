@@ -1,7 +1,6 @@
 package gov.cdc.nbs.event.report.morbidity;
 
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
@@ -10,6 +9,7 @@ import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
+import gov.cdc.nbs.testing.patient.RevisionMother;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
@@ -106,7 +106,7 @@ public class MorbidityReportMother {
   private final TestingDataCleaner<Long> cleaner;
   private final Available<MorbidityReportIdentifier> available;
   private final Active<MorbidityReportIdentifier> active;
-  private final PatientMother patientMother;
+  private final RevisionMother revisionMother;
 
   MorbidityReportMother(
       final MotherSettings settings,
@@ -114,14 +114,14 @@ public class MorbidityReportMother {
       final JdbcClient client,
       final Available<MorbidityReportIdentifier> available,
       final Active<MorbidityReportIdentifier> active,
-      final PatientMother patientMother
+      final RevisionMother revisionMother
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.client = client;
     this.available = available;
     this.active = active;
-    this.patientMother = patientMother;
+    this.revisionMother = revisionMother;
 
     this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
   }
@@ -142,7 +142,7 @@ public class MorbidityReportMother {
       final JurisdictionIdentifier jurisdiction,
       final OrganizationIdentifier organization
   ) {
-    PatientIdentifier revision = patientMother.revise(patient);
+    PatientIdentifier revision = revisionMother.revise(patient);
     long identifier = idGenerator.next();
     String localId = idGenerator.nextLocal(MORBIDITY_CLASS_CODE);
 
@@ -161,7 +161,7 @@ public class MorbidityReportMother {
     forPatient(identifier, revision.id());
     reportedBy(identifier, organization.identifier());
 
-    include(new MorbidityReportIdentifier(identifier, localId));
+    include(new MorbidityReportIdentifier(identifier, localId, revision.id(), programArea, jurisdiction));
 
   }
 
