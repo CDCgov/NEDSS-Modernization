@@ -14,7 +14,7 @@ public record PatientLabReport(
     AssociatedInvestigation associatedInvestigation,
     String programArea,
     @JsonProperty(required = true) String jurisdiction,
-    long labIdentifier) {
+    long id) {
 
   public record AssociatedInvestigation(
       String investigationId,

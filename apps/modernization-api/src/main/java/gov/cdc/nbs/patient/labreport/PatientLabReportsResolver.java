@@ -31,7 +31,7 @@ class PatientLabReportsResolver {
       PatientLabReport patientLabReport = labReportResults.get(i);
       for (int j = 0; j < patientTestResults.size(); ++j) {
         PatientLabReport.TestResult testResult = patientTestResults.get(j);
-        if (testResult.observationUid() == patientLabReport.labIdentifier()) {
+        if (testResult.observationUid() == patientLabReport.id()) {
           patientLabReport.testResults().add(testResult);
         }
       }
