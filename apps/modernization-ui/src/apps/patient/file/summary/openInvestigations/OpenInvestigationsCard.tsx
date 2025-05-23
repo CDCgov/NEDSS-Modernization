@@ -60,6 +60,7 @@ const OpenInvestigationsCard = () => {
         },
         {
             ...NOTIFICATION,
+            sortable: true,
             render: (value: PatientInvestigation) => value.notification
         },
         {
