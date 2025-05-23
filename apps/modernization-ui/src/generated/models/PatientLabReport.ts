@@ -11,10 +11,10 @@ export type PatientLabReport = {
     processingDecision?: string;
     facilityProviders?: FacilityProviders;
     collectedDate?: string;
-    testResult?: TestResult;
+    testResults?: Array<TestResult>;
     associatedInvestigation?: AssociatedInvestigation;
     programArea?: string;
     jurisdiction: string;
-    labIdentifier?: string;
+    id?: number;
 };
 

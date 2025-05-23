@@ -3,12 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 export type TestResult = {
-    eventId?: number;
-    resutedTest?: string;
+    resultedTest?: string;
     codedResult?: string;
     numericResult?: string;
     units?: string;
-    range?: string;
+    highRange?: string;
+    lowRange?: string;
     statusDetails?: string;
 };
 

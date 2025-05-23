@@ -37,6 +37,7 @@ export type { NameDemographic } from './models/NameDemographic';
 export type { NewPatient } from './models/NewPatient';
 export type { NotificationStatus } from './models/NotificationStatus';
 export type { Option } from './models/Option';
+export type { OrderingProvider } from './models/OrderingProvider';
 export type { PatientDemographicsSummary } from './models/PatientDemographicsSummary';
 export { PatientFile } from './models/PatientFile';
 export type { PatientInvestigation } from './models/PatientInvestigation';

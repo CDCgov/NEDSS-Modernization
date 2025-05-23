@@ -17,7 +17,7 @@ public record PatientLabReport(
     long id) {
 
   public record AssociatedInvestigation(
-      String investigationId,
+      String id,
       String condition,
       String status) {
   }

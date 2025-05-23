@@ -2,9 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type AssociatedInvestigation = {
-    id?: string;
-    condition?: string;
-    status?: string;
+export type OrderingProvider = {
+    prefix?: string;
+    first?: string;
+    last?: string;
+    suffix?: string;
 };
 

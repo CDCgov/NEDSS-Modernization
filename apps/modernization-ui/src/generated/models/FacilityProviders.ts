@@ -2,9 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { OrderingProvider } from './OrderingProvider';
 export type FacilityProviders = {
     reportingFacility?: string;
-    orderingProvider?: string;
+    orderingProvider?: OrderingProvider;
     sendingFacility?: string;
 };
 
