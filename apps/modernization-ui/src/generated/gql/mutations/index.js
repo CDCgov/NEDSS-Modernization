@@ -1,12 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports.createPatient = fs.readFileSync(path.join(__dirname, 'createPatient.gql'), 'utf8');
-module.exports.deletePatient = fs.readFileSync(path.join(__dirname, 'deletePatient.gql'), 'utf8');
 module.exports.updatePatientGeneralInfo = fs.readFileSync(path.join(__dirname, 'updatePatientGeneralInfo.gql'), 'utf8');
 module.exports.updatePatientBirthAndGender = fs.readFileSync(path.join(__dirname, 'updatePatientBirthAndGender.gql'), 'utf8');
 module.exports.updatePatientMortality = fs.readFileSync(path.join(__dirname, 'updatePatientMortality.gql'), 'utf8');
 module.exports.deletePatientEmail = fs.readFileSync(path.join(__dirname, 'deletePatientEmail.gql'), 'utf8');
+module.exports.updatePatientAdministrative = fs.readFileSync(path.join(__dirname, 'updatePatientAdministrative.gql'), 'utf8');
 module.exports.updateEthnicity = fs.readFileSync(path.join(__dirname, 'updateEthnicity.gql'), 'utf8');
 module.exports.addPatientRace = fs.readFileSync(path.join(__dirname, 'addPatientRace.gql'), 'utf8');
 module.exports.updatePatientRace = fs.readFileSync(path.join(__dirname, 'updatePatientRace.gql'), 'utf8');
