@@ -2,9 +2,27 @@ import { ClassicLink } from 'classic';
 import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { PatientInvestigation } from 'generated';
+import { InvestigatorName, PatientInvestigation } from 'generated';
 import { usePatientFileOpenInvestigations } from './usePatientFileOpenInvestigations';
 import { usePatient } from '../../usePatient';
+
+const maybeInvestigatorName = (investigatorName: InvestigatorName | undefined) => {
+    if (!investigatorName) {
+        return undefined;
+    }
+    const { first, last } = investigatorName;
+    if (
+        typeof first === 'string' &&
+        typeof last === 'string' &&
+        first.length > 0 &&
+        last.length > 0 &&
+        first !== 'null' &&
+        last !== 'null'
+    ) {
+        return `${first} ${last}`;
+    }
+    return undefined;
+};
 
 const OpenInvestigationsCard = () => {
     const patient = usePatient();
@@ -71,7 +89,7 @@ const OpenInvestigationsCard = () => {
         {
             ...INVESTIGATOR,
             sortable: true,
-            render: (value: PatientInvestigation) => `${value.investigatorName?.first} ${value.investigatorName?.last}`
+            render: (value: PatientInvestigation) => maybeInvestigatorName(value.investigatorName)
         },
         {
             ...COINFECTION_ID,
