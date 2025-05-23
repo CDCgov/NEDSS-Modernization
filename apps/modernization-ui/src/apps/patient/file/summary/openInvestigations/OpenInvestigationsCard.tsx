@@ -35,7 +35,9 @@ const OpenInvestigationsCard = () => {
             ...INVESTIGATION_ID,
             sortable: true,
             render: (value: PatientInvestigation) => (
-                <ClassicLink url={`/nbs/api/profile/${patient.id.toString()}/investigation/${value.investigationId}`}>
+                <ClassicLink
+                    id="condition"
+                    url={`/nbs/api/profile/${patient.id.toString()}/investigation/${value.identifier}`}>
                     {value.investigationId}
                 </ClassicLink>
             )
