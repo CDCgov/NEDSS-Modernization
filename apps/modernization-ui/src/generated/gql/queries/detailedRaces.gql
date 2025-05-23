@@ -1,7 +1,0 @@
-query detailedRaces($category: String){
-    detailedRaces(category: $category){
-        value
-        name
-        group
-    }
-}

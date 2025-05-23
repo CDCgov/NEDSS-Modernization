@@ -1,466 +1,430 @@
-type CodedValue {
-    value: String!
-    name: String!
-}
-
-type GroupedCodedValue {
-    value: String!
-    name: String!
-    group: String!
-}
-
-type StateCodedValue {
-    value: ID!
-    name: String!
-    abbreviation: String!
-}
-
 extend type Query {
-    maritalStatuses: [CodedValue!]!
-    primaryOccupations: [CodedValue!]!
-    educationLevels: [CodedValue!]!
-    primaryLanguages: [CodedValue!]!
-    raceCategories: [CodedValue!]!
-    detailedRaces(category: String): [GroupedCodedValue!]!
-    ethnicGroups: [CodedValue!]!
-    ethnicityUnknownReasons: [CodedValue!]!
-    detailedEthnicities: [CodedValue!]!
-    genders: [CodedValue!]!
-    genderUnknownReasons: [CodedValue!]!
-    preferredGenders: [CodedValue!]!
-    countries: [CodedValue!]!
-    states: [StateCodedValue!]!
-    counties(state: String): [GroupedCodedValue!]!
-    nameTypes: [CodedValue!]!
-    prefixes: [CodedValue!]!
-    suffixes: [CodedValue!]!
-    degrees: [CodedValue!]!
-    addressUses: [CodedValue!]!
-    addressTypes: [CodedValue!]!
-    phoneUses: [CodedValue!]!
-    phoneTypes: [CodedValue!]!
-    identificationTypes: [CodedValue!]!
-    assigningAuthorities: [CodedValue!]!
-}
-extend type Query {
-    findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
+  findInvestigationsByFilter(
+    filter: InvestigationFilter!
+    page: SortablePage
+  ): InvestigationResults!
 }
 
 type InvestigationResults {
-    content: [Investigation!]!
-    total: Int!
-    page: Int!
-    size: Int!
+  content: [Investigation!]!
+  total: Int!
+  page: Int!
+  size: Int!
 }
 
 type InvestigationPersonParticipation {
-    birthTime: Date
-    currSexCd: String
-    typeCd: String!
-    firstName: String
-    lastName: String
-    personCd: String!
-    personParentUid: Int
-    shortId: Int
+  birthTime: Date
+  currSexCd: String
+  typeCd: String!
+  firstName: String
+  lastName: String
+  personCd: String!
+  personParentUid: Int
+  shortId: Int
 }
 
 type Investigation {
-    relevance: Float!
-    id: ID
-    cdDescTxt: String
-    jurisdictionCodeDescTxt: String
-    localId: String
-    addTime: Date
-    startedOn: Date
-    investigationStatusCd: String
-    notificationRecordStatusCd: String
-    investigatorLastName: String
-    personParticipations: [InvestigationPersonParticipation!]!
+  relevance: Float!
+  id: ID
+  cdDescTxt: String
+  jurisdictionCodeDescTxt: String
+  localId: String
+  addTime: Date
+  startedOn: Date
+  investigationStatusCd: String
+  notificationRecordStatusCd: String
+  investigatorLastName: String
+  personParticipations: [InvestigationPersonParticipation!]!
 }
 
 input InvestigationFilter {
-    patientId: Int
-    conditions: [String!]
-    programAreas: [String!]
-    jurisdictions: [Int!]
-    pregnancyStatus: PregnancyStatus
-    eventId: EventId
-    eventDate: InvestigationEventDateSearch
-    createdBy: String
-    lastUpdatedBy: String
-    providerFacilitySearch: ProviderFacilitySearch
-    investigatorId: Int
-    investigationStatus: InvestigationStatus
-    outbreakNames: [String]
-    caseStatuses: [CaseStatus!]
-    notificationStatuses: [NotificationStatus]
-    processingStatuses: [ProcessingStatus]
-    reportingFacilityId: String
-    reportingProviderId: String
+  patientId: Int
+  conditions: [String!]
+  programAreas: [String!]
+  jurisdictions: [Int!]
+  pregnancyStatus: PregnancyStatus
+  eventId: EventId
+  eventDate: InvestigationEventDateSearch
+  createdBy: String
+  lastUpdatedBy: String
+  providerFacilitySearch: ProviderFacilitySearch
+  investigatorId: Int
+  investigationStatus: InvestigationStatus
+  outbreakNames: [String]
+  caseStatuses: [CaseStatus!]
+  notificationStatuses: [NotificationStatus]
+  processingStatuses: [ProcessingStatus]
+  reportingFacilityId: String
+  reportingProviderId: String
 }
 
 input EventId {
-    investigationEventType: InvestigationEventIdType!
-    id: String!
+  investigationEventType: InvestigationEventIdType!
+  id: String!
 }
 
 input InvestigationEventDateSearch {
-    type: InvestigationEventDateType!
-    from: Date!
-    to: Date!
+  type: InvestigationEventDateType!
+  from: Date!
+  to: Date!
 }
 
 input ProviderFacilitySearch {
-    entityType: ReportingEntityType!
-    id: ID!
+  entityType: ReportingEntityType!
+  id: ID!
 }
 
 enum InvestigationEventIdType {
-    ABCS_CASE_ID
-    CITY_COUNTY_CASE_ID
-    INVESTIGATION_ID
-    NOTIFICATION_ID
-    STATE_CASE_ID
+  ABCS_CASE_ID
+  CITY_COUNTY_CASE_ID
+  INVESTIGATION_ID
+  NOTIFICATION_ID
+  STATE_CASE_ID
 }
 
 enum ReportingEntityType {
-    FACILITY
-    PROVIDER
+  FACILITY
+  PROVIDER
 }
 
 enum ProcessingStatus {
-    UNASSIGNED
-    AWAITING_INTERVIEW
-    CLOSED_CASE
-    FIELD_FOLLOW_UP
-    NO_FOLLOW_UP
-    OPEN_CASE
-    SURVEILLANCE_FOLLOW_UP
+  UNASSIGNED
+  AWAITING_INTERVIEW
+  CLOSED_CASE
+  FIELD_FOLLOW_UP
+  NO_FOLLOW_UP
+  OPEN_CASE
+  SURVEILLANCE_FOLLOW_UP
 }
 
 enum NotificationStatus {
-    UNASSIGNED
-    APPROVED
-    COMPLETED
-    MESSAGE_FAILED
-    PENDING_APPROVAL
-    REJECTED
+  UNASSIGNED
+  APPROVED
+  COMPLETED
+  MESSAGE_FAILED
+  PENDING_APPROVAL
+  REJECTED
 }
 
 enum CaseStatus {
-    UNASSIGNED
-    CONFIRMED
-    NOT_A_CASE
-    PROBABLE
-    SUSPECT
-    UNKNOWN
+  UNASSIGNED
+  CONFIRMED
+  NOT_A_CASE
+  PROBABLE
+  SUSPECT
+  UNKNOWN
 }
 
 enum InvestigationEventDateType {
-    DATE_OF_REPORT
-    INVESTIGATION_CLOSED_DATE
-    INVESTIGATION_CREATE_DATE
-    INVESTIGATION_START_DATE
-    LAST_UPDATE_DATE
-    NOTIFICATION_CREATE_DATE
+  DATE_OF_REPORT
+  INVESTIGATION_CLOSED_DATE
+  INVESTIGATION_CREATE_DATE
+  INVESTIGATION_START_DATE
+  LAST_UPDATE_DATE
+  NOTIFICATION_CREATE_DATE
 }
 
 enum InvestigationStatus {
-    OPEN
-    CLOSED
+  OPEN
+  CLOSED
 }
 extend type Query {
-    findAllJurisdictions(page: Page): [Jurisdiction]!
+  findAllJurisdictions(page: Page): [Jurisdiction]!
 }
 
 type Jurisdiction {
-    id: String!
-    typeCd: String!
-    assigningAuthorityCd: String
-    assigningAuthorityDescTxt: String
-    codeDescTxt: String
-    codeShortDescTxt: String
-    effectiveFromTime: DateTime
-    effectiveToTime: DateTime
-    indentLevelNbr: Int
-    isModifiableInd: String
-    parentIsCd: String
-    stateDomainCd: String
-    statusCd: String
-    statusTime: DateTime
-    codeSetNm: String
-    codeSeqNum: Int
-    nbsUid: ID
-    sourceConceptId: String
-    codeSystemCd: String
-    codeSystemDescTxt: String
-    exportInd: String
+  id: String!
+  typeCd: String!
+  assigningAuthorityCd: String
+  assigningAuthorityDescTxt: String
+  codeDescTxt: String
+  codeShortDescTxt: String
+  effectiveFromTime: DateTime
+  effectiveToTime: DateTime
+  indentLevelNbr: Int
+  isModifiableInd: String
+  parentIsCd: String
+  stateDomainCd: String
+  statusCd: String
+  statusTime: DateTime
+  codeSetNm: String
+  codeSeqNum: Int
+  nbsUid: ID
+  sourceConceptId: String
+  codeSystemCd: String
+  codeSystemDescTxt: String
+  exportInd: String
 }
 extend type Query {
-    findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
+  findLabReportsByFilter(
+    filter: LabReportFilter!
+    page: SortablePage
+  ): LabReportResults!
 }
 
 input LaboratoryEventDateSearch {
-    type: LaboratoryReportEventDateType!
-    from: Date!
-    to: Date!
+  type: LaboratoryReportEventDateType!
+  from: Date!
+  to: Date!
 }
 
 input LabReportProviderSearch {
-    providerType: ProviderType!
-    providerId: ID!
+  providerType: ProviderType!
+  providerId: ID!
 }
 
 enum ProviderType {
-    ORDERING_FACILITY
-    ORDERING_PROVIDER
-    REPORTING_FACILITY
+  ORDERING_FACILITY
+  ORDERING_PROVIDER
+  REPORTING_FACILITY
 }
 
 enum LaboratoryEventIdType {
-    ACCESSION_NUMBER
-    LAB_ID
+  ACCESSION_NUMBER
+  LAB_ID
 }
 
 enum LaboratoryReportEventDateType {
-    DATE_OF_REPORT
-    DATE_RECEIVED_BY_PUBLIC_HEALTH
-    DATE_OF_SPECIMEN_COLLECTION
-    LAB_REPORT_CREATE_DATE
-    LAST_UPDATE_DATE
+  DATE_OF_REPORT
+  DATE_RECEIVED_BY_PUBLIC_HEALTH
+  DATE_OF_SPECIMEN_COLLECTION
+  LAB_REPORT_CREATE_DATE
+  LAST_UPDATE_DATE
 }
 
 enum EntryMethod {
-    ELECTRONIC
-    MANUAL
+  ELECTRONIC
+  MANUAL
 }
 
 enum UserType {
-    INTERNAL
-    EXTERNAL
+  INTERNAL
+  EXTERNAL
 }
 
 enum EventStatus {
-    NEW
-    UPDATE
+  NEW
+  UPDATE
 }
 
 enum LaboratoryReportStatus {
-    PROCESSED
-    UNPROCESSED
+  PROCESSED
+  UNPROCESSED
 }
 
 input LabReportFilter {
-    patientId: Int
-    programAreas: [String!]
-    jurisdictions: [Int!]
-    pregnancyStatus: PregnancyStatus
-    eventId: LabReportEventId
-    eventDate: LaboratoryEventDateSearch
-    entryMethods: [EntryMethod!]
-    enteredBy: [UserType!]
-    eventStatus: [EventStatus!]
-    processingStatus: [LaboratoryReportStatus!]
-    createdBy: Int
-    lastUpdatedBy: Int
-    providerSearch: LabReportProviderSearch
-    resultedTest: String
-    codedResult: String
-    orderingLabId: Int
-    orderingProviderId: Int
-    reportingLabId: Int
+  patientId: Int
+  programAreas: [String!]
+  jurisdictions: [Int!]
+  pregnancyStatus: PregnancyStatus
+  eventId: LabReportEventId
+  eventDate: LaboratoryEventDateSearch
+  entryMethods: [EntryMethod!]
+  enteredBy: [UserType!]
+  eventStatus: [EventStatus!]
+  processingStatus: [LaboratoryReportStatus!]
+  createdBy: Int
+  lastUpdatedBy: Int
+  providerSearch: LabReportProviderSearch
+  resultedTest: String
+  codedResult: String
+  orderingLabId: Int
+  orderingProviderId: Int
+  reportingLabId: Int
 }
 
 input LabReportEventId {
-    labEventType: LaboratoryEventIdType!
-    labEventId: String!
+  labEventType: LaboratoryEventIdType!
+  labEventId: String!
 }
 
 type LabReportResults {
-    content: [LabReport!]!
-    total: Int!
-    page: Int!
-    size: Int!
+  content: [LabReport!]!
+  total: Int!
+  page: Int!
+  size: Int!
 }
 
 type LabTestSummary {
-    name: String
-    status: String
-    coded: String
-    numeric: Float
-    high: String
-    low: String
-    unit: String
+  name: String
+  status: String
+  coded: String
+  numeric: Float
+  high: String
+  low: String
+  unit: String
 }
 
 type LabReport {
-    relevance: Float!
-    id: String!
-    jurisdictionCd: Int!
-    localId: String!
-    addTime: Date!
-    personParticipations: [LabReportPersonParticipation!]!
-    organizationParticipations: [LabReportOrganizationParticipation!]!
-    observations: [Observation!]!
-    associatedInvestigations: [AssociatedInvestigation!]!
-    tests: [LabTestSummary!]!
+  relevance: Float!
+  id: String!
+  jurisdictionCd: Int!
+  localId: String!
+  addTime: Date!
+  personParticipations: [LabReportPersonParticipation!]!
+  organizationParticipations: [LabReportOrganizationParticipation!]!
+  observations: [Observation!]!
+  associatedInvestigations: [AssociatedInvestigation!]!
+  tests: [LabTestSummary!]!
 }
 
 type LabReportPersonParticipation {
-    birthTime: Date
-    currSexCd: String
-    typeCd: String
-    firstName: String
-    lastName: String
-    personCd: String!
-    personParentUid: Int
-    shortId: Int
+  birthTime: Date
+  currSexCd: String
+  typeCd: String
+  firstName: String
+  lastName: String
+  personCd: String!
+  personParentUid: Int
+  shortId: Int
 }
 
 type LabReportOrganizationParticipation {
-    typeCd: String!
-    name: String!
+  typeCd: String!
+  name: String!
 }
 
 type Observation {
-    cdDescTxt: String
-    statusCd: String
-    altCd: String
-    displayName: String
+  cdDescTxt: String
+  statusCd: String
+  altCd: String
+  displayName: String
 }
 
 type AssociatedInvestigation {
-    cdDescTxt: String!
-    localId: String!
+  cdDescTxt: String!
+  localId: String!
 }
 extend type Query {
-    findDistinctCodedResults(searchText: String!): [CodedResult!]!
+  findDistinctCodedResults(searchText: String!): [CodedResult!]!
 }
 
 type CodedResult {
-    name: String!
+  name: String!
 }
 extend type Query {
-    findDistinctResultedTest(searchText: String!): [ResultedTest!]!
+  findDistinctResultedTest(searchText: String!): [ResultedTest!]!
 }
 
 type ResultedTest {
-    name: String!
+  name: String!
 }
 type NamedContact {
-    id: ID!
-    name: String!
+  id: ID!
+  name: String!
 }
 
 type TracedCondition {
-    id: String
-    description: String
+  id: String,
+  description: String
 }
 
 type PatientContactInvestigation {
-    id: ID!
-    local: String!
-    condition: String!
+  id: ID!
+  local: String!
+  condition: String!
 }
 
 type NamedByPatient {
-    contactRecord: ID!
-    createdOn: DateTime!
-    condition: TracedCondition!
-    contact: NamedContact!
-    namedOn: DateTime!
-    priority: String
-    disposition: String
-    event: String!
-    associatedWith: PatientContactInvestigation
+  contactRecord: ID!
+  createdOn: DateTime!
+  condition: TracedCondition!
+  contact: NamedContact!
+  namedOn: DateTime!
+  priority: String
+  disposition: String
+  event: String!
+  associatedWith: PatientContactInvestigation
 }
 
 type ContactsNamedByPatientResults {
-    content: [NamedByPatient]!
-    total: Int!
-    number: Int!
+  content: [NamedByPatient]!
+  total: Int!
+  number: Int!
 }
 
 type NamedByContact {
-    contactRecord: ID!
-    createdOn: DateTime!
-    contact: NamedContact!
-    namedOn: DateTime!
-    condition: TracedCondition!
-    event: String!
-    associatedWith: PatientContactInvestigation
+  contactRecord: ID!
+  createdOn: DateTime!
+  contact: NamedContact!
+  namedOn: DateTime!
+  condition: TracedCondition!
+  event: String!
+  associatedWith: PatientContactInvestigation
 }
 
 type PatientNamedByContactResults {
-    content: [NamedByPatient]!
-    total: Int!
-    number: Int!
+  content: [NamedByPatient]!
+  total: Int!
+  number: Int!
 }
+
 
 extend type Query {
-    findContactsNamedByPatient(patient: ID!, page: Page): ContactsNamedByPatientResults
 
-    findPatientNamedByContact(patient: ID!, page: Page): PatientNamedByContactResults
+  findContactsNamedByPatient(patient:ID!, page: Page) : ContactsNamedByPatientResults
+
+  findPatientNamedByContact(patient:ID!, page: Page) : PatientNamedByContactResults
 }
 type DocumentRequiringReview {
-    id: ID!
-    localId: String!
-    type: String!
-    dateReceived: DateTime!
-    eventDate: DateTime
-    isElectronic: Boolean!
-    facilityProviders: FacilityProviders!
-    descriptions: [Description]!
+  id: ID!
+  localId: String!
+  type: String!
+  dateReceived: DateTime!
+  eventDate: DateTime
+  isElectronic: Boolean!
+  facilityProviders: FacilityProviders!
+  descriptions: [Description]!
 }
 
 type FacilityProviders {
-    reportingFacility: ReportingFacility
-    orderingProvider: OrderingProvider
-    sendingFacility: SendingFacility
+  reportingFacility: ReportingFacility
+  orderingProvider: OrderingProvider
+  sendingFacility: SendingFacility
 }
 
 type ReportingFacility {
-    name: String
+  name: String
 }
 
 type OrderingProvider {
-    name: String
+  name: String
 }
 
 type SendingFacility {
-    name: String
+  name: String
 }
 
 type Description {
-    title: String
-    value: String
+  title: String
+  value: String
 }
 
 type PatientDocumentRequiringReviewResults {
-    content: [DocumentRequiringReview]!
-    total: Int!
-    number: Int!
+  content: [DocumentRequiringReview]!
+  total: Int!
+  number: Int!
 }
 
 enum DocumentRequiringReviewSortableField {
-    type
-    dateReceived
-    eventDate
-    localId
+  type
+  dateReceived
+  eventDate
+  localId
 }
 
 input DocumentRequiringReviewSortablePage {
-    pageSize: Int
-    pageNumber: Int
-    sortField: DocumentRequiringReviewSortableField
-    sortDirection: SortDirection
+  pageSize: Int
+  pageNumber: Int
+  sortField: DocumentRequiringReviewSortableField
+  sortDirection: SortDirection
 }
 
 extend type Query {
-    findDocumentsRequiringReviewForPatient(
-        patient: Int!
-        page: DocumentRequiringReviewSortablePage
-    ): PatientDocumentRequiringReviewResults!
+  findDocumentsRequiringReviewForPatient(
+    patient: Int!
+    page: DocumentRequiringReviewSortablePage
+  ): PatientDocumentRequiringReviewResults!
 }
 type PatientDocument {
     document: ID!
@@ -511,85 +475,85 @@ extend type Query {
     findInvestigationsForPatient(patient: ID!, page: Page, openOnly: Boolean): PatientInvestigationResults
 }
 extend type Query {
-    findLabReportsForPatient(personUid: Int!, page: Page): PatientLabReportResults
+  findLabReportsForPatient(personUid: Int!, page: Page): PatientLabReportResults
 }
 
 type PatientLabReportResults {
-    content: [PatientLabReport]!
-    total: Int!
-    number: Int!
+  content: [PatientLabReport]!
+  total: Int!
+  number: Int!
 }
 
 input PatientLabReportFilter {
-    patientId: Int
-    programAreas: [String]
-    jurisdictions: [ID]
-    pregnancyStatus: PregnancyStatus
-    eventId: LabReportEventId
-    eventDate: LaboratoryEventDateSearch
-    entryMethods: [EntryMethod]
-    enteredBy: [UserType]
-    eventStatus: [EventStatus]
-    processingStatus: [LaboratoryReportStatus]
-    createdBy: ID
-    lastUpdatedBy: ID
-    providerSearch: LabReportProviderSearch
-    resultedTest: String
-    codedResult: String
-    orderingLabId: ID
-    orderingProviderId: ID
-    reportingLabId: ID
+  patientId: Int
+  programAreas: [String]
+  jurisdictions: [ID]
+  pregnancyStatus: PregnancyStatus
+  eventId: LabReportEventId
+  eventDate: LaboratoryEventDateSearch
+  entryMethods: [EntryMethod]
+  enteredBy: [UserType]
+  eventStatus: [EventStatus]
+  processingStatus: [LaboratoryReportStatus]
+  createdBy: ID
+  lastUpdatedBy: ID
+  providerSearch: LabReportProviderSearch
+  resultedTest: String
+  codedResult: String
+  orderingLabId: ID
+  orderingProviderId: ID
+  reportingLabId: ID
 }
 
 type PatientLabReport {
-    id: String!
-    observationUid: Int!
-    addTime: DateTime!
-    effectiveFromTime: DateTime
-    programAreaCd: String!
-    jurisdictionCodeDescTxt: String!
-    localId: String!
-    electronicInd: String
-    associatedInvestigations: [AssociatedInvestigation2!]!
-    personParticipations: [PersonParticipation2!]!
-    organizationParticipations: [OrganizationParticipation2!]!
-    observations: [Observation2!]!
+  id: String!
+  observationUid: Int!
+  addTime: DateTime!
+  effectiveFromTime: DateTime
+  programAreaCd: String!
+  jurisdictionCodeDescTxt: String!
+  localId: String!
+  electronicInd: String
+  associatedInvestigations: [AssociatedInvestigation2!]!
+  personParticipations: [PersonParticipation2!]!
+  organizationParticipations: [OrganizationParticipation2!]!
+  observations: [Observation2!]!
 }
 
 type PersonParticipation2 {
-    typeCd: String!
-    personCd: String!
-    firstName: String
-    lastName: String
+  typeCd: String!
+  personCd: String!
+  firstName: String
+  lastName: String
 }
 
 type OrganizationParticipation2 {
-    typeCd: String
-    name: String
+  typeCd: String
+  name: String
 }
 
 type MaterialParticipation2 {
-    actUid: Int!
-    typeCd: String!
-    entityId: String
-    subjectClassCd: String!
-    typeDescTxt: String
-    participationRecordStatus: String
-    participationLastChangeTime: DateTime
-    cd: String!
-    cdDescTxt: String!
+  actUid: Int!
+  typeCd: String!
+  entityId: String
+  subjectClassCd: String!
+  typeDescTxt: String
+  participationRecordStatus: String
+  participationLastChangeTime: DateTime
+  cd: String!
+  cdDescTxt: String!
 }
 
 type Observation2 {
-    domainCd: String!
-    cdDescTxt: String!
-    displayName: String
+  domainCd: String!
+  cdDescTxt: String!
+  displayName: String
 }
 
 type AssociatedInvestigation2 {
-    publicHealthCaseUid: Int!
-    cdDescTxt: String!
-    localId: String!
+  publicHealthCaseUid: Int!
+  cdDescTxt: String!
+  localId: String!
 }
 type PatientMorbidity {
     morbidity: ID!
@@ -625,7 +589,7 @@ type PatientMorbidityResults {
 }
 
 extend type Query {
-    findMorbidityReportsForPatient(patient: ID!, page: Page): PatientMorbidityResults
+    findMorbidityReportsForPatient(patient: ID! page: Page ): PatientMorbidityResults
 }
 
 type PatientIndicatorCodedValue {
@@ -685,12 +649,12 @@ type PatientNameUse {
     description: String!
 }
 
-type PatientNamePrefix {
+type PatientNamePrefix{
     id: String!
     description: String!
 }
 
-type PatientNameSuffix {
+type PatientNameSuffix{
     id: String!
     description: String!
 }
@@ -846,6 +810,8 @@ type PatientGender {
     preferred: PatientPreferredGender
     additional: String
 }
+
+
 
 type PatientIdentificationType {
     id: String!
@@ -1007,192 +973,196 @@ extend type Query {
     findPatientProfile(patient: ID, shortId: Int): PatientProfile
 }
 input DateEqualsCriteria {
-    day: Int
-    month: Int
-    year: Int
+  day: Int
+  month: Int
+  year: Int
 }
 
 input DateBetweenCriteria {
-    from: Date
-    to: Date
+  from: Date
+  to: Date
 }
 
 input DateCriteria {
-    equals: DateEqualsCriteria
-    between: DateBetweenCriteria
+  equals: DateEqualsCriteria
+  between: DateBetweenCriteria
 }
 
 input TextCriteria {
-    equals: String
-    not: String
-    startsWith: String
-    contains: String
-    soundsLike: String
+  equals: String
+  not: String
+  startsWith: String
+  contains: String
+  soundsLike: String
 }
 
 input IdentificationCriteria {
-    identificationNumber: String
-    identificationType: String
-    assigningAuthority: String
+  identificationNumber: String
+  identificationType: String
+  assigningAuthority: String
 }
 
 input PatientNameCriteria {
-    first: TextCriteria
-    last: TextCriteria
+  first: TextCriteria
+  last: TextCriteria
 }
 
 input LocationCriteria {
-    street: TextCriteria
-    city: TextCriteria
+  street: TextCriteria
+  city: TextCriteria
 }
 
 input Filter {
-    id: String
-    address: String
-    ageOrDateOfBirth: String
-    name: String
-    sex: String
-    email: String
-    phone: String
-    identification: String
+  id: String
+  address: String
+  ageOrDateOfBirth: String
+  name: String
+  sex: String
+  email: String
+  phone: String
+  identification: String
 }
 
 input PersonFilter {
-    id: String
-    name: PatientNameCriteria
-    lastName: String
-    firstName: String
-    race: String
-    identification: IdentificationCriteria
-    phoneNumber: String
-    email: String
-    dateOfBirth: Date
-    bornOn: DateCriteria
-    dateOfBirthOperator: Operator
-    gender: String
-    deceased: Deceased
-    location: LocationCriteria
-    address: String
-    city: String
-    state: String
-    country: String
-    zip: String
-    mortalityStatus: String
-    ethnicity: String
-    vaccination: String
-    morbidity: String
-    document: String
-    stateCase: String
-    abcCase: String
-    cityCountyCase: String
-    notification: String
-    treatment: String
-    investigation: String
-    labReport: String
-    accessionNumber: String
-    disableSoundex: Boolean
-    recordStatus: [RecordStatus!]!
-    filter: Filter
+  id: String
+  name: PatientNameCriteria
+  lastName: String
+  firstName: String
+  race: String
+  identification: IdentificationCriteria
+  phoneNumber: String
+  email: String
+  dateOfBirth: Date
+  bornOn: DateCriteria
+  dateOfBirthOperator: Operator
+  gender: String
+  deceased: Deceased
+  location: LocationCriteria
+  address: String
+  city: String
+  state: String
+  country: String
+  zip: String
+  mortalityStatus: String
+  ethnicity: String
+  vaccination: String
+  morbidity: String
+  document: String
+  stateCase: String
+  abcCase: String
+  cityCountyCase: String
+  notification: String
+  treatment: String
+  investigation: String
+  labReport: String
+  accessionNumber: String
+  disableSoundex: Boolean
+  recordStatus: [RecordStatus!]!
+  filter: Filter
 }
 
 enum Gender {
-    M
-    F
-    U
+  M
+  F
+  U
 }
 
 enum Deceased {
-    Y
-    N
-    UNK
+  Y
+  N
+  UNK
 }
 
 enum Operator {
-    EQUAL
-    BEFORE
-    AFTER
+  EQUAL
+  BEFORE
+  AFTER
 }
 
 type PatientSearchResultIdentification {
-    type: String!
-    value: String!
+  type: String!
+  value: String!
 }
 
 type PatientSearchResultName {
-    type: String
-    first: String
-    middle: String
-    last: String
-    suffix: String
+  type: String
+  first: String
+  middle: String
+  last: String
+  suffix: String
 }
 
 type PatientSearchResultPhone {
-    type: String!
-    use: String!
-    number: String
+  type: String!
+  use: String!
+  number: String
 }
 
 type PatientSearchResultAddress {
-    type: String
-    use: String
-    address: String
-    address2: String
-    city: String
-    county: String
-    state: String
-    zipcode: String
+  type: String
+  use: String
+  address: String
+  address2: String
+  city: String
+  county: String
+  state: String
+  zipcode: String
 }
 
 type PatientSearchResult {
-    patient: Int!
-    birthday: Date
-    age: Int
-    gender: String
-    status: String!
-    shortId: Int!
-    legalName: PatientSearchResultName
-    names: [PatientSearchResultName!]!
-    identification: [PatientSearchResultIdentification!]!
-    addresses: [PatientSearchResultAddress!]!
-    phones: [String!]!
-    emails: [String!]!
-    detailedPhones: [PatientSearchResultPhone!]!
+  patient: Int!
+  birthday: Date
+  age: Int
+  gender: String
+  status: String!
+  shortId: Int!
+  legalName: PatientSearchResultName
+  names: [PatientSearchResultName!]!
+  identification: [PatientSearchResultIdentification!]!
+  addresses: [PatientSearchResultAddress!]!
+  phones: [String!]!
+  emails: [String!]!
+  detailedPhones: [PatientSearchResultPhone!]!
 }
 
 type PatientSearchResults {
-    content: [PatientSearchResult!]!
-    total: Int!
-    page: Int!
-    size: Int!
+  content: [PatientSearchResult!]!
+  total: Int!
+  page: Int!
+  size: Int!
 }
 
 type Query {
-    findPatientsByFilter(filter: PersonFilter!, page: SortablePage, share: String): PatientSearchResults!
+  findPatientsByFilter(
+    filter: PersonFilter!
+    page: SortablePage
+    share: String
+  ): PatientSearchResults!
 }
 type PatientTreatment {
-    treatment: ID!
-    createdOn: DateTime!
-    provider: String
-    treatedOn: DateTime!
-    description: String!
-    event: String!
-    associatedWith: PatientTreatmentInvestigation!
+  treatment: ID!
+  createdOn: DateTime!
+  provider: String
+  treatedOn: DateTime!
+  description: String!
+  event: String!
+  associatedWith: PatientTreatmentInvestigation!
 }
 
 type PatientTreatmentInvestigation {
-    id: ID!
-    local: String!
-    condition: String!
+  id: ID!
+  local: String!
+  condition: String!
 }
 
 type PatientTreatmentResults {
-    content: [PatientTreatment]!
-    total: Int!
-    number: Int!
+  content: [PatientTreatment]!
+  total: Int!
+  number: Int!
 }
 
 extend type Query {
-    findTreatmentsForPatient(patient: ID!, page: Page): PatientTreatmentResults
+  findTreatmentsForPatient(patient: ID!, page: Page): PatientTreatmentResults
 }
 type PatientVaccination {
     vaccination: ID!
@@ -1223,8 +1193,6 @@ type Mutation {
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientGeneralChangeResult!
     updatePatientBirthAndGender(input: UpdateBirthAndGenderInput!): PatientBirthAndGenderChangeResult!
     updatePatientMortality(input: MortalityInput!): PatientMortalityChangeResult!
-    deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
-    updatePatientAdministrative(input: AdministrativeInput!): PatientAdministrativeChangeResult!
     updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     addPatientRace(input: RaceInput!): PatientRaceAddResult!
     updatePatientRace(input: RaceInput!): PatientRaceChangeSuccessful!
@@ -1315,6 +1283,7 @@ input AdministrativeInput {
 type PatientAdministrativeChangeResult {
     patient: Int!
 }
+
 
 input EthnicityInput {
     patient: String!
@@ -1441,8 +1410,8 @@ input NewPatientPhoneInput {
     countryCode: String
     number: String
     extension: String
-    email: String
-    url: String
+    email:String
+    url:String
     comment: String
 }
 
@@ -1455,8 +1424,8 @@ input UpdatePatientPhoneInput {
     countryCode: String
     number: String
     extension: String
-    email: String
-    url: String
+    email:String
+    url:String
     comment: String
 }
 
@@ -1506,7 +1475,7 @@ input UpdateBirthAndGenderInput {
 
 input UpdateBirthInput {
     bornOn: Date
-    gender: String
+    gender:String
     multipleBirth: String
     birthOrder: Int
     city: String
@@ -1526,81 +1495,81 @@ type PatientBirthAndGenderChangeResult {
     patient: Int!
 }
 extend type Query {
-    findAllProgramAreas(page: Page): [ProgramAreaCode]!
+  findAllProgramAreas(page: Page): [ProgramAreaCode]!
 }
 
 type ProgramAreaCode {
-    id: String!
-    progAreaDescTxt: String
-    nbsUid: ID
-    statusCd: String
-    statusTime: DateTime
-    codeSetNm: String
-    codeSeq: Int
+  id: String!
+  progAreaDescTxt: String
+  nbsUid: ID
+  statusCd: String
+  statusTime: DateTime
+  codeSetNm: String
+  codeSeq: Int
 }
 scalar Date
 scalar DateTime
 
 input Page {
-    pageSize: Int!
-    pageNumber: Int!
+  pageSize: Int!
+  pageNumber: Int!
 }
 
 enum SortDirection {
-    ASC
-    DESC
+  ASC
+  DESC
 }
 
 scalar Direction
 
 input Sort {
-    property: String!
-    direction: Direction!
+  property: String!
+  direction: Direction!
 }
 
 input SortablePage {
-    pageSize: Int
-    pageNumber: Int
-    sort: Sort
-    sortField: SortField
-    sortDirection: SortDirection
+  pageSize: Int
+  pageNumber: Int
+  sort: Sort
+  sortField: SortField
+  sortDirection: SortDirection
 }
 
 enum SortField {
-    address
-    birthTime
-    city
-    condition
-    country
-    county
-    email
-    firstNm
-    id
-    identification
-    investigator
-    investigationId
-    jurisdiction
-    lastNm
-    local_id
-    notification
-    phoneNumber
-    relevance
-    startDate
-    state
-    status
-    sex
-    zip
+  address
+  birthTime
+  city
+  condition
+  country
+  county
+  email
+  firstNm
+  id
+  identification
+  investigator
+  investigationId
+  jurisdiction
+  lastNm
+  local_id
+  notification
+  phoneNumber
+  relevance
+  startDate
+  state
+  status
+  sex
+  zip
 }
 
 enum RecordStatus {
-    ACTIVE
-    INACTIVE
-    LOG_DEL
-    SUPERCEDED
+  ACTIVE
+  INACTIVE
+  LOG_DEL
+  SUPERCEDED
 }
 
 enum PregnancyStatus {
-    YES
-    NO
-    UNKNOWN
+  YES
+  NO
+  UNKNOWN
 }
