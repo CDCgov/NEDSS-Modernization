@@ -1,4 +1,5 @@
 import { PatientSearchResult } from 'generated/graphql/schema';
+import { useSorting } from 'sorting';
 import { Sizing } from 'design-system/field';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
@@ -14,6 +15,7 @@ import {
 } from 'apps/search/patient/result';
 
 import styles from './patient-search-result-table.module.scss';
+import { useFilter } from 'design-system/filter';
 
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
@@ -110,6 +112,8 @@ type Props = { results: PatientSearchResult[]; sizing?: Sizing };
 
 const PatientSearchResultTable = ({ results, sizing }: Props) => {
     const { apply } = useColumnPreferences();
+    const sorting = useSorting();
+    const filtering = useFilter();
 
     return (
         <DataTable<PatientSearchResult>
@@ -118,7 +122,7 @@ const PatientSearchResultTable = ({ results, sizing }: Props) => {
             columns={apply(columns)}
             data={results}
             sizing={sizing}
-            rowHeightConstrained={false}
+            features={{ sorting, filtering }}
         />
     );
 };

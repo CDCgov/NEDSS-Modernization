@@ -155,8 +155,6 @@ const useSorting = () => {
     return context;
 };
 
-const maybeUseSorting = () => useContext(SortingContext);
-
 export type { Sorting, SortingSettings, Interaction as SortingInteraction };
 
-export { SortingProvider, useSorting, maybeUseSorting };
+export { SortingProvider, useSorting };

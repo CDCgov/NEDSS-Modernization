@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { Direction, SortingInteraction, maybeUseSorting } from 'sorting';
-import { FilterInteraction, maybeUseFilter } from 'design-system/filter';
+import { Direction, SortingInteraction } from 'sorting';
+import { FilterInteraction } from 'design-system/filter';
 import { HeaderFilterField } from './filter';
 import { Column, SortIconType } from 'design-system/table';
 import { Icon } from 'design-system/icon';
@@ -8,12 +8,15 @@ import { Sizing } from 'design-system/field';
 
 import styles from './column-header.module.scss';
 
-type Props<V> = { className?: string; sizing?: Sizing; children: Column<V> };
+type ColumnHeaderProps<V> = {
+    className?: string;
+    sizing?: Sizing;
+    sorting?: SortingInteraction;
+    filtering?: FilterInteraction;
+    children: Column<V>;
+};
 
-const ColumnHeader = <V,>({ children, ...remaining }: Props<V>) => {
-    const sorting = maybeUseSorting();
-    const filtering = maybeUseFilter();
-
+const ColumnHeader = <V,>({ sorting, filtering, children, ...remaining }: ColumnHeaderProps<V>) => {
     const isSortable = sorting && children.sortable;
 
     return isSortable ? (
@@ -27,7 +30,7 @@ const ColumnHeader = <V,>({ children, ...remaining }: Props<V>) => {
     );
 };
 
-type StandardHeaderProps<V> = Props<V> & { filtering?: FilterInteraction };
+type StandardHeaderProps<V> = ColumnHeaderProps<V> & { filtering?: FilterInteraction };
 
 const StandardHeader = <V,>({ className, children, filtering, sizing }: StandardHeaderProps<V>) => (
     <th className={classNames(styles.header, className, sizing && styles[sizing], { [styles.fixed]: children.fixed })}>

@@ -61,57 +61,6 @@ export const sortBy =
         }
     };
 
-export const sortByNestedProperty =
-    (property: any): Comparator<any> =>
-    (left: any, right: any): number => {
-        const value: any = left[property] && left[property]['description'];
-        const comparing: any = right[property] && right[property]['description'];
-
-        if (value > comparing) {
-            return 1;
-        } else if (value < comparing) {
-            return -1;
-        } else {
-            return 0;
-        }
-    };
-
-export const sortByNestedPatientLabReportTestArray =
-    (property: any): Comparator<any> =>
-    (left: any, right: any): number => {
-        const value: any = left[property].length && left[property].map((item: any) => item.test)[0];
-        const comparing: any = right[property].length && right[property].map((item: any) => item.test)[0];
-        if (value > comparing) {
-            return 1;
-        } else if (value < comparing) {
-            return -1;
-        } else if (value === 0) {
-            return -1;
-        } else if (comparing === 0) {
-            return 1;
-        } else {
-            return 0;
-        }
-    };
-
-export const sortByNestedPatientLabReportAssociatedArray =
-    (property: any): Comparator<any> =>
-    (left: any, right: any): number => {
-        const value: any = left[property].length && left[property].map((item: any) => item.condition)[0];
-        const comparing: any = right[property].length && right[property].map((item: any) => item.condition)[0];
-        if (value > comparing) {
-            return 1;
-        } else if (value < comparing) {
-            return -1;
-        } else if (value === 0) {
-            return -1;
-        } else if (comparing === 0) {
-            return 1;
-        } else {
-            return 0;
-        }
-    };
-
 export const sortByAlpha =
     <T>(property: keyof T): Comparator<T> =>
     (left: T, right: T): number => {

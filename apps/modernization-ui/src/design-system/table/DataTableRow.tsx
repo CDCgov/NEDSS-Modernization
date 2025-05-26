@@ -1,4 +1,4 @@
-import { maybeUseSorting } from 'sorting';
+import { SortingInteraction } from 'sorting';
 import { Column } from './DataTable';
 import classNames from 'classnames';
 import { NoData } from 'components/NoData';
@@ -13,12 +13,10 @@ type Props<V> = {
     row: V;
     index: number;
     sizing?: Sizing;
-    heightConstrained?: boolean;
+    sorting?: SortingInteraction;
 };
 
-export const DataTableRow = <V,>({ columns, row, index }: Props<V>) => {
-    const sorting = maybeUseSorting();
-
+export const DataTableRow = <V,>({ columns, sorting, row, index }: Props<V>) => {
     return (
         <tr key={index}>
             {columns.map((column, y) => {
@@ -42,4 +40,7 @@ export const DataTableRow = <V,>({ columns, row, index }: Props<V>) => {
 };
 
 const renderColumn = <R,>(row: R, index: number, column: Column<R>) =>
-    column.render?.(row, index) ?? defaultCellValueRenderer(column.value?.(row));
+    'render' in column
+        ? //  render function takes precedence
+          column.render(row, index)
+        : defaultCellValueRenderer(column.value(row));

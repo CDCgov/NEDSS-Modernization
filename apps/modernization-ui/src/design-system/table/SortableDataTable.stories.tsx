@@ -1,18 +1,19 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Column, DataTable } from './DataTable';
-import { Checkbox } from 'design-system/checkbox';
+import { Column } from './DataTable';
+import { MemoryRouter } from 'react-router';
+import { SortableDataTable } from './SortableDataTable';
 
 type Person = {
     id: string;
     name: string;
-    email: string;
+    email?: string;
     dob: Date;
 };
 
 const meta = {
-    title: 'Design System/Table',
-    component: DataTable<Person>
-} satisfies Meta<typeof DataTable<Person>>;
+    title: 'Design System/Table/Sorted',
+    component: SortableDataTable<Person>
+} satisfies Meta<typeof SortableDataTable<Person>>;
 
 export default meta;
 
@@ -44,36 +45,21 @@ const columns: Column<Person>[] = [
         comparator: 'date'
     }
 ];
-const checkboxColumns = [
-    {
-        id: 'select',
-        name: 'X',
-        render: (value: Person) => (
-            <Checkbox
-                id={value.id}
-                label=" "
-                onChange={(checked) => console.log('Checkbox changed', checked, value.id)}
-            />
-        )
-    },
-    ...columns
-];
 
 const data = [
     {
-        id: '1001',
+        id: '1002',
+        name: 'Samwise Gamgee',
+        dob: new Date('1993-04-28')
+    },
+    {
+        id: 'A257',
         name: 'Frodo Baggins',
         email: 'frodob@theshire.gov',
         dob: new Date('1990-10-11')
     },
     {
-        id: '1002',
-        name: 'Samwise Gamgee',
-        email: 'bigwisesam@theshire.gov',
-        dob: new Date('1993-04-28')
-    },
-    {
-        id: '1003',
+        id: 'A107',
         name: 'Meriadoc Brandybuck',
         email: 'merry@theshire.gov',
         dob: new Date('2000-05-21')
@@ -81,16 +67,11 @@ const data = [
 ];
 
 export const Default: Story = {
+    decorators: [(story) => <MemoryRouter>{story()}</MemoryRouter>],
     args: {
-        id: 'people',
-        columns,
+        id: '',
+        // make all columns sortable
+        columns: columns.map((column) => ({ ...column, sortable: true })),
         data
-    }
-};
-
-export const Checkboxes: Story = {
-    args: {
-        ...Default.args,
-        columns: checkboxColumns
     }
 };
