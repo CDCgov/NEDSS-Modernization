@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collections;
 
 class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringReview> {
 
@@ -46,7 +46,7 @@ class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringR
     boolean updated = resultSet.getBoolean(columns.updated());
     String local = resultSet.getString(columns.local());
 
-    List<DocumentRequiringReview.Description> descriptions = mapDescription(resultSet);
+    String condition = resultSet.getString(this.columns.condition());
 
     return new DocumentRequiringReview(
         identifier,
@@ -59,14 +59,9 @@ class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringR
         null,
         null,
         sendingFacility,
-        descriptions
+        condition,
+        Collections.emptyList()
     );
   }
 
-  private List<DocumentRequiringReview.Description> mapDescription(final ResultSet resultSet)
-      throws SQLException {
-    String condition = resultSet.getString(this.columns.condition());
-
-    return List.of(new DocumentRequiringReview.Description(condition));
-  }
 }

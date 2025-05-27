@@ -13,8 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PatientFileDocumentsRequiringReviewSteps {
@@ -51,6 +50,17 @@ public class PatientFileDocumentsRequiringReviewSteps {
   public void no_documents_are_requiring_review(final String documentType) throws Exception {
     this.response.active()
         .andExpect(jsonPath("$.[?(@.type=='%s')]", documentType).doesNotExist());
+  }
+
+  @Then("there is one {documentType} requiring review")
+  public void count(final String type) throws Exception {
+    count(type, 1);
+  }
+
+  @Then("there {int} {documentType}(s) requiring review")
+  public void count(final String type, final int count) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[?(@.type=='%s')]", type).value(hasSize(count)));
   }
 
   @Then("the patient file has the {documentType} requiring review")
@@ -107,8 +117,8 @@ public class PatientFileDocumentsRequiringReviewSteps {
         );
   }
 
-  @Then("the {documentType} requiring review has the description title {string}")
-  public void the_patient_document_requiring_review_has_the_description_title(
+  @Then("the {documentType} requiring review has the condition {string}")
+  public void the_patient_document_requiring_review_has_the_condition(
       final String documentType,
       final String title
   )
@@ -116,7 +126,7 @@ public class PatientFileDocumentsRequiringReviewSteps {
     this.response.active()
         .andExpect(
             jsonPath(
-                "$.[?(@.type=='%s')].descriptions[?(@.title=='%s')]",
+                "$.[?(@.type=='%s')].[?(@.condition=='%s')]",
                 documentType, title
             )
                 .exists()
@@ -189,5 +199,21 @@ public class PatientFileDocumentsRequiringReviewSteps {
                 first,
                 last
             ).exists());
+  }
+
+  @Then("the {documentType} requiring review contains the {string} treatment")
+  public void hasTreatment(final String type, final String value) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.[?(@.type=='%s')].treatments[?(@=='%s')]", type, value).exists()
+        );
+  }
+
+  @Then("the {documentType} requiring review does not contain treatments")
+  public void noTreatments(final String type) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.[?(@.type=='%s')].treatments]", type).isEmpty()
+        );
   }
 }

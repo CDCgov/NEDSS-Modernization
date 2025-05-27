@@ -44,6 +44,7 @@ public class MorbidityReportSteps {
   }
 
   @Given("^(?i)the patient has a morbidity report")
+  @Given("^(?i)the patient has another morbidity report")
   public void create() {
     activePatient.maybeActive()
         .ifPresent(
