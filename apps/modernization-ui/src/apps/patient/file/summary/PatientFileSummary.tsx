@@ -3,6 +3,7 @@ import { usePatientFileSummary } from './usePatientFileSummary';
 import { PatientSummaryContent } from './PatientSummaryContent';
 import { PatientDocumentRequiringReview } from './PatientDocumentRequiringReview';
 
+import OpenInvestigationsCard from './openInvestigations/OpenInvestigationsCard';
 import styles from './patient-file-summary.module.scss';
 
 export const PatientFileSummary = () => {
@@ -10,9 +11,10 @@ export const PatientFileSummary = () => {
 
     const { summary } = usePatientFileSummary(id);
     return (
-        <body className={styles.summary}>
+        <div className={styles['summary-layout']}>
             <PatientSummaryContent summary={summary} />
+            <OpenInvestigationsCard />
             <PatientDocumentRequiringReview />
-        </body>
+        </div>
     );
 };

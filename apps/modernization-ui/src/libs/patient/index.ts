@@ -1,0 +1,1 @@
+export { PatientDescriptor } from './PatientDescriptor';

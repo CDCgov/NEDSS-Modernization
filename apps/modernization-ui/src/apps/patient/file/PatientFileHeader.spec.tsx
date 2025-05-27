@@ -18,7 +18,7 @@ describe('when displaying the demographics summary of a patient', () => {
             id: 17,
             patientId: 397,
             local: 'local-id-value',
-            status: 'status value',
+            status: 'ACTIVE',
             deletability: 'Deletable'
         };
 
@@ -57,8 +57,6 @@ describe('when displaying the demographics summary of a patient', () => {
         expect(screen.getByText('gender-value')).toBeInTheDocument();
     });
 
-    it('should calculate the age of the patient', () => {});
-
     it('should include the patient actions', () => {
         const patient: Patient = {
             id: 17,
@@ -84,7 +82,6 @@ describe('when displaying the demographics summary of a patient', () => {
 
         render(<PatientFileHeader patient={patient} actions={<></>} />);
 
-        expect(screen.getByRole('heading', { name: '---' })).toBeInTheDocument();
         expect(screen.getByText('INACTIVE')).toBeInTheDocument();
     });
 

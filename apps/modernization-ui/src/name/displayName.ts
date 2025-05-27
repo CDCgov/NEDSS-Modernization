@@ -1,5 +1,6 @@
 import { exists } from 'utils';
-import { DisplayableName, NameFormat } from './types';
+import { NameFormat } from './format';
+import { DisplayableName } from './displayableName';
 
 /**
  * Displays a name in a 'full' or 'short' format.  Where the 'short' format will

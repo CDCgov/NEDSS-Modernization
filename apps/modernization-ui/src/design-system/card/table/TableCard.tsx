@@ -10,6 +10,7 @@ export type TableCardProps<V> = {
     className?: string;
     /** Whether the card is collapsible (shows the collapse header control). Default is true. */
     collapsible?: boolean;
+    defaultCollapsed?: boolean;
     title: string;
     sizing?: Sizing;
     tableClassName?: string;
@@ -30,6 +31,7 @@ export const TableCard = <V,>({
     id,
     className,
     collapsible = true,
+    defaultCollapsed = false,
     title,
     tableClassName,
     actions,
@@ -60,6 +62,7 @@ export const TableCard = <V,>({
             id={id}
             className={className}
             collapsible={collapsible}
+            defaultCollapsed={defaultCollapsed}
             header={
                 <TableCardHeader
                     title={title}
