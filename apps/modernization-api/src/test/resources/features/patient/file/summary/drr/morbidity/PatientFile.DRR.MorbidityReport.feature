@@ -64,7 +64,9 @@ Feature: Patient File Documents Requiring Review: Morbidity Report
   Scenario:I can view Resulted Tests of Morbidity Reports requiring review for a patient
     Given the morbidity report has an Aldolase test with a coded result of above threshold
     And the morbidity report has a Digoxin test with a numeric result of "1013" (drop)
+    And the morbidity report has a Paracentesis test with a text result of "yikes!"
     When I view the documents requiring review for the patient
     Then the patient file has the morbidity report requiring review
     And the morbidity report requiring review contains a "Aldolase" test with a result containing "above threshold"
     And the morbidity report requiring review contains a "Digoxin" test with a result containing "=1013 (drop)"
+    And the morbidity report requiring review contains a "Paracentesis" test with a result containing "yikes!"

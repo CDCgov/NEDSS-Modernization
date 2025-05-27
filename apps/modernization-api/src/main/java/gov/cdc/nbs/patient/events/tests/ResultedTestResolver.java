@@ -22,28 +22,31 @@ public class ResultedTestResolver {
               [numeric].numeric_scale_1                   as [scale],
               [numeric].high_range                        as [high_range],
               [numeric].low_range                         as [low_range],
-              [numeric].numeric_unit_cd                   as [unit]
+              [numeric].numeric_unit_cd                   as [unit],
+              [text].value_txt                            as [text]
       from  Act_relationship [lab_result_components]
-              join observation [lab_result] on
+              join observation [lab_result] with (nolock) on
                           [lab_result].observation_uid = [lab_result_components].[source_act_uid]
                       and [lab_result].obs_domain_cd_st_1 = 'Result'
       
-          left join NBS_SRTE..Code_value_general [lab_result_status] on
+          left join NBS_SRTE..Code_value_general [lab_result_status] with (nolock) on
                   [lab_result_status].[code_set_nm] = 'ACT_OBJ_ST'
               and [lab_result_status].code =  [lab_result].[status_cd]
       
-          left join NBS_SRTE..Lab_test [lab_test] on
+          left join NBS_SRTE..Lab_test [lab_test] with (nolock) on
                   [lab_test].lab_test_cd = [lab_result].cd
       
-          left join [Obs_value_coded] [coded] on
+          left join [Obs_value_coded] [coded] with (nolock) on
                   [coded].[observation_uid] = [lab_result].[observation_uid]
       
-          left join NBS_SRTE..Lab_result [coded_result] on
+          left join NBS_SRTE..Lab_result [coded_result] with (nolock) on
                   [coded_result].[lab_result_cd] = [coded].code
       
-          left join [Obs_value_numeric] [numeric] on
+          left join [Obs_value_numeric] [numeric] with (nolock) on
                   [numeric].[observation_uid] = [lab_result].[observation_uid]
       
+          left join [Obs_value_txt] [text] with (nolock) on
+                   [text].observation_uid = [lab_result].[observation_uid]
       
       where [lab_result_components].target_act_uid in (:identifiers)
               and [lab_result_components].type_cd = 'COMP'
@@ -59,7 +62,7 @@ public class ResultedTestResolver {
     this.extractor = new ResultedTestByObservationResultSetExtractor(
         new ResultedTestByObservationResultSetExtractor.Column(
             1,
-            new ResultedTestRowMapper.Column(2, 3, 4, 5, 6, 7, 8, 9, 10))
+            new ResultedTestRowMapper.Column(2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
     );
 
   }

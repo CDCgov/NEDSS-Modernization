@@ -22,7 +22,8 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
       int scale,
       int high,
       int low,
-      int unit
+      int unit,
+      int text
   ) {
   }
 
@@ -37,9 +38,9 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
   public ResultedTest mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
     String name = resultSet.getString(columns.name());
     String coded = resultSet.getString(columns.coded());
-
-    String numeric = resolveNumericDescription(columns, resultSet);
-    String description = Stream.of(coded, numeric)
+    String text = maybeDisplayTextResult(columns, resultSet);
+    String numeric = maybeDisplayNumericResult(columns, resultSet);
+    String description = Stream.of(coded, text, numeric)
         .filter(Objects::nonNull)
         .collect(joining("\n"));
 
@@ -49,7 +50,23 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     );
   }
 
-  private static String resolveNumericDescription(final Column columns, final ResultSet resultSet) throws SQLException {
+  private static String maybeDisplayTextResult(final Column columns, final ResultSet resultSet) throws SQLException {
+    StringBuilder builder = new StringBuilder();
+    String text = resultSet.getString(columns.text());
+
+    if (text != null) {
+      builder.append(text);
+
+      String status = maybeDisplayStatus(columns, resultSet);
+      if (status != null) {
+        builder.append(status);
+      }
+    }
+
+    return builder.isEmpty() ? null : builder.toString();
+  }
+
+  private static String maybeDisplayNumericResult(final Column columns, final ResultSet resultSet) throws SQLException {
     StringBuilder builder = new StringBuilder();
 
     BigDecimal numeric = resultSet.getBigDecimal(columns.numeric());
@@ -67,7 +84,7 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
       }
 
       if (!builder.isEmpty()) {
-        String range = resolveRangeDisplay(columns, resultSet);
+        String range = maybeDisplayRange(columns, resultSet);
 
         if (range != null) {
           builder.append("\n")
@@ -79,9 +96,8 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     return builder.isEmpty() ? null : builder.toString();
   }
 
-  private static String resolveRangeDisplay(final Column columns, final ResultSet resultSet) throws SQLException {
+  private static String maybeDisplayRange(final Column columns, final ResultSet resultSet) throws SQLException {
     StringBuilder builder = new StringBuilder();
-    String status = resultSet.getString(columns.status());
 
     String high = resultSet.getString(columns.high());
     String low = resultSet.getString(columns.low());
@@ -99,13 +115,23 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
 
       builder.append(range);
 
+      String status = maybeDisplayStatus(columns, resultSet);
       if (status != null) {
-        builder.append(" - (")
-            .append(status)
-            .append(")");
+        builder.append(status);
       }
     }
 
+    return builder.isEmpty() ? null : builder.toString();
+  }
+
+  private static String maybeDisplayStatus(final Column columns, final ResultSet resultSet) throws SQLException {
+    String status = resultSet.getString(columns.status());
+    StringBuilder builder = new StringBuilder();
+    if (status != null) {
+      builder.append(" - (")
+          .append(status)
+          .append(")");
+    }
     return builder.isEmpty() ? null : builder.toString();
   }
 }

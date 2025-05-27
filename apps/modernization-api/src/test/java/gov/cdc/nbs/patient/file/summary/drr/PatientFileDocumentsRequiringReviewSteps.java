@@ -227,7 +227,7 @@ public class PatientFileDocumentsRequiringReviewSteps {
         );
   }
 
-  @Then("the {documentType} requiring review does not contain resulted tets")
+  @Then("the {documentType} requiring review does not contain resulted tests")
   public void noResultedTests(final String type) throws Exception {
     this.response.active()
         .andExpect(
