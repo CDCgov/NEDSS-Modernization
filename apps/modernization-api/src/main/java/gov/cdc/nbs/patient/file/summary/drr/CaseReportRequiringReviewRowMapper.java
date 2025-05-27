@@ -59,8 +59,7 @@ class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringR
         null,
         null,
         sendingFacility,
-        condition,
-        Collections.emptyList()
+        condition
     );
   }
 

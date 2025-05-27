@@ -1,9 +1,12 @@
 package gov.cdc.nbs.patient.file.summary.drr.morbidity;
 
+import gov.cdc.nbs.patient.events.tests.ResultedTest;
+import gov.cdc.nbs.patient.events.tests.ResultedTestResolver;
 import gov.cdc.nbs.patient.file.summary.drr.DocumentRequiringReview;
 import gov.cdc.nbs.patient.file.summary.drr.DocumentsRequiringReviewCriteria;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -13,27 +16,39 @@ public class MorbidityReportRequiringReviewResolver {
 
   private final MorbidityReportRequiringReviewFinder reportFinder;
   private final MorbidityReportTreatmentFinder treatmentFinder;
+  private final ResultedTestResolver resultedTestResolver;
 
   MorbidityReportRequiringReviewResolver(
       final MorbidityReportRequiringReviewFinder reportFinder,
-      final MorbidityReportTreatmentFinder treatmentFinder
+      final MorbidityReportTreatmentFinder treatmentFinder,
+      final ResultedTestResolver resultedTestResolver
   ) {
     this.reportFinder = reportFinder;
     this.treatmentFinder = treatmentFinder;
+    this.resultedTestResolver = resultedTestResolver;
   }
 
   public List<DocumentRequiringReview> resolve(final DocumentsRequiringReviewCriteria criteria) {
     if (criteria.morbidityReportScope().allowed()) {
       List<DocumentRequiringReview> reports = reportFinder.find(criteria);
 
+      List<Long> identifiers = reports.stream()
+          .map(DocumentRequiringReview::id)
+          .toList();
+
       Map<Long, List<String>> treatments = treatments(criteria);
 
-      if (treatments.isEmpty()) {
+      Map<Long, Collection<ResultedTest>> resultedTests = resultedTests(identifiers);
+
+
+      if (treatments.isEmpty() && resultedTests.isEmpty()) {
         return reports;
       }
 
       return reports.stream()
-          .map(report -> report.withTreatments(treatments.getOrDefault(report.id(), Collections.emptyList())))
+          .map(report -> report.withTreatments(treatments.getOrDefault(report.id(), Collections.emptyList()))
+              .withResultedTests(resultedTests.getOrDefault(report.id(), Collections.emptyList()))
+          )
           .toList();
     }
 
@@ -44,5 +59,9 @@ public class MorbidityReportRequiringReviewResolver {
     return criteria.treatmentScope().allowed()
         ? this.treatmentFinder.find(criteria.patient(), criteria.morbidityReportScope())
         : Collections.emptyMap();
+  }
+
+  private Map<Long, Collection<ResultedTest>> resultedTests(final Collection<Long> identifiers) {
+    return this.resultedTestResolver.resolve(identifiers);
   }
 }

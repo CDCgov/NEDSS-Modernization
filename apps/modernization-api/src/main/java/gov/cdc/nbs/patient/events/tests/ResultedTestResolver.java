@@ -1,0 +1,76 @@
+package gov.cdc.nbs.patient.events.tests;
+
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
+@Component
+public class ResultedTestResolver {
+
+  private static final String QUERY = """
+      select
+              [lab_result_components].target_act_uid      as [observation],
+              [lab_test].lab_test_desc_txt                as [name],
+              [lab_result_status].[code_short_desc_txt]   as [status],
+              [coded_result].lab_result_desc_txt          as [coded],
+              [numeric].comparator_cd_1                   as [comparator],
+              [numeric].numeric_value_1                   as [numeric],
+              [numeric].high_range                        as [high_range],
+              [numeric].low_range                         as [low_range],
+              [numeric].numeric_unit_cd                   as [unit]
+      from  Act_relationship [lab_result_components]
+              join observation [lab_result] on
+                          [lab_result].observation_uid = [lab_result_components].[source_act_uid]
+                      and [lab_result].obs_domain_cd_st_1 = 'Result'
+      
+          left join NBS_SRTE..Code_value_general [lab_result_status] on
+                  [lab_result_status].[code_set_nm] = 'ACT_OBJ_ST'
+              and [lab_result_status].code =  [lab_result].[status_cd]
+      
+          left join NBS_SRTE..Lab_test [lab_test] on
+                  [lab_test].lab_test_cd = [lab_result].cd
+      
+          left join [Obs_value_coded] [coded] on
+                  [coded].[observation_uid] = [lab_result].[observation_uid]
+      
+          left join NBS_SRTE..Lab_result [coded_result] on
+                  [coded_result].[lab_result_cd] = [coded].code
+      
+          left join [Obs_value_numeric] [numeric] on
+                  [numeric].[observation_uid] = [lab_result].[observation_uid]
+      
+      
+      where [lab_result_components].target_act_uid in (:identifiers)
+              and [lab_result_components].type_cd = 'COMP'
+              and [lab_result_components].source_class_cd = 'OBS'
+              and [lab_result_components].target_class_cd = 'OBS'
+      """;
+
+  private final JdbcClient client;
+  private final ResultSetExtractor<Map<Long, Collection<ResultedTest>>> extractor;
+
+  public ResultedTestResolver(final JdbcClient client) {
+    this.client = client;
+    this.extractor = new ResultedTestByObservationResultSetExtractor(
+        new ResultedTestByObservationResultSetExtractor.Column(
+            1,
+            new ResultedTestRowMapper.Column(2, 3, 4, 5, 6, 7, 8, 9))
+    );
+
+  }
+
+  public Map<Long, Collection<ResultedTest>> resolve(final Collection<Long> identifiers) {
+    if (identifiers.isEmpty()) {
+      return Collections.emptyMap();
+    }
+
+    return this.client.sql(QUERY)
+        .param("identifiers", identifiers)
+        .query(extractor);
+  }
+
+}
