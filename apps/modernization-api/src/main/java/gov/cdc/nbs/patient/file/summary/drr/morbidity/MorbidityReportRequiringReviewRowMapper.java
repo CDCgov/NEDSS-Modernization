@@ -1,13 +1,14 @@
-package gov.cdc.nbs.patient.file.summary.drr;
+package gov.cdc.nbs.patient.file.summary.drr.morbidity;
 
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleNameRowMapper;
+import gov.cdc.nbs.patient.file.summary.drr.DocumentRequiringReview;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collections;
 
 class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringReview> {
 
@@ -27,7 +28,7 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
   ) {
 
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7, new DisplayableSimpleNameRowMapper.Columns(8,9,10));
+      this(1, 2, 3, 4, 5, 6, 7, new DisplayableSimpleNameRowMapper.Columns(8, 9, 10));
     }
 
   }
@@ -57,7 +58,7 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
 
     DisplayableSimpleName orderingProvider = this.providerMapper.mapRow(resultSet, rowNum);
 
-    List<DocumentRequiringReview.Description> descriptions = condition(resultSet);
+    String condition = resultSet.getString(this.columns.condition());
 
     return new DocumentRequiringReview(
         identifier,
@@ -70,14 +71,9 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
         reportingFacility,
         orderingProvider,
         null,
-        descriptions
+        condition,
+        Collections.emptyList()
     );
   }
 
-  private List<DocumentRequiringReview.Description> condition(final ResultSet resultSet)
-      throws SQLException {
-    String condition = resultSet.getString(this.columns.condition());
-
-    return List.of(new DocumentRequiringReview.Description(condition));
-  }
 }

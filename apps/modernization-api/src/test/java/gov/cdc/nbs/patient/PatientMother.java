@@ -43,7 +43,6 @@ public class PatientMother {
   private final Available<PatientIdentifier> available;
   private final Active<PatientIdentifier> active;
   private final PatientCleaner cleaner;
-  private final RevisionPatientCreator revisionCreator;
   private final JdbcClient jdbcClient;
   private final SoundexResolver soundexResolver;
 
@@ -57,7 +56,6 @@ public class PatientMother {
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
       final PatientCleaner cleaner,
-      final RevisionPatientCreator revisionCreator,
       final JdbcClient jdbcClient,
       final SoundexResolver soundexResolver) {
     this.settings = settings;
@@ -69,7 +67,6 @@ public class PatientMother {
     this.available = available;
     this.active = active;
     this.cleaner = cleaner;
-    this.revisionCreator = revisionCreator;
     this.jdbcClient = jdbcClient;
     this.soundexResolver = soundexResolver;
     this.faker = new Faker(Locale.of("en-us"));
@@ -115,10 +112,6 @@ public class PatientMother {
 
   private Person managed(final PatientIdentifier identifier) {
     return this.entityManager.find(Person.class, identifier.id());
-  }
-
-  public PatientIdentifier revise(final PatientIdentifier identifier) {
-    return this.revisionCreator.revise(identifier);
   }
 
   public void deleted(final PatientIdentifier identifier) {

@@ -1,53 +1,61 @@
 package gov.cdc.nbs.patient.profile.treatment;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-import org.springframework.beans.factory.annotation.Autowired;
+import gov.cdc.nbs.authentication.SessionCookie;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.testing.event.treatment.TreatmentIdentifier;
+import gov.cdc.nbs.testing.support.Active;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import gov.cdc.nbs.authentication.SessionCookie;
-import gov.cdc.nbs.patient.TestPatients;
-import gov.cdc.nbs.patient.treatment.TestTreatments;
-import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.java.Before;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 public class PatientProfileViewTreatmentSteps {
 
-  @Value("${nbs.wildfly.url:http://wildfly:7001}")
-  String classicUrl;
+  private final String classicUrl;
 
-  @Autowired
-  TestPatients patients;
+  private final Active<PatientIdentifier> activePatient;
 
-  @Autowired
-  TestTreatments treatments;
+  private final Active<TreatmentIdentifier> activeTreatment;
 
-  @Autowired
-  MockMvc mvc;
+  private final MockMvc mvc;
 
-  @Autowired
-  Active<SessionCookie> activeSession;
+  private final Active<SessionCookie> activeSession;
 
-  @Autowired
-  Active<MockHttpServletResponse> activeResponse;
+  private final Active<MockHttpServletResponse> activeResponse;
 
-  @Autowired
-  Active<UserDetails> activeUserDetails;
 
-  @Autowired
   @Qualifier("classicRestService")
-  MockRestServiceServer server;
+  private final MockRestServiceServer server;
+
+  PatientProfileViewTreatmentSteps(
+      @Value("${nbs.wildfly.url:http://wildfly:7001}") final String classicUrl,
+      final Active<PatientIdentifier> activePatient,
+      final Active<TreatmentIdentifier> activeTreatment,
+      final MockMvc mvc,
+      final Active<SessionCookie> activeSession,
+      final Active<MockHttpServletResponse> activeResponse,
+      final MockRestServiceServer server
+  ) {
+    this.classicUrl = classicUrl;
+    this.activePatient = activePatient;
+    this.activeTreatment = activeTreatment;
+    this.mvc = mvc;
+    this.activeSession = activeSession;
+    this.activeResponse = activeResponse;
+    this.server = server;
+  }
 
   @Before
   public void reset() {
@@ -57,10 +65,10 @@ public class PatientProfileViewTreatmentSteps {
 
   @When("the Treatment is viewed from the Patient Profile")
   public void the_treatment_is_viewed_from_the_patient_profile() throws Exception {
-    long patient = patients.one();
+    long patient = activePatient.active().id();
 
     server.expect(
-        requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+            requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
@@ -68,17 +76,17 @@ public class PatientProfileViewTreatmentSteps {
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    long treatment = treatments.one();
+    long treatment = activeTreatment.active().identifier();
 
-    String request = 
+    String request =
         "/nbs/api/profile/%d/treatment/%d".formatted(
-        patient,
-        treatment);
+            patient,
+            treatment);
 
     activeResponse.active(
         mvc.perform(
-            MockMvcRequestBuilders.get(request)
-                .cookie(activeSession.active().asCookie()))
+                MockMvcRequestBuilders.get(request)
+                    .cookie(activeSession.active().asCookie()))
             .andReturn()
             .getResponse());
   }
@@ -90,8 +98,8 @@ public class PatientProfileViewTreatmentSteps {
 
   @Then("I am redirected to Classic NBS to view a Treatment")
   public void i_am_redirected_to_classic_nbs_to_view_a_treatment() {
-    long patient = patients.one();
-    long treatment = treatments.one();
+    long patient = activePatient.active().id();
+    long treatment = activeTreatment.active().identifier();
 
     String expected = "/nbs/ViewFile1.do?ContextAction=TreatmentIDOnEvents&treatmentUID=" + treatment;
 

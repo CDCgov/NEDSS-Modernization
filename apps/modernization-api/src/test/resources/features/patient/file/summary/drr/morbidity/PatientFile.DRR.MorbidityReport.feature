@@ -6,7 +6,8 @@ Feature: Patient File Documents Requiring Review: Morbidity Report
     And I can "find" any "patient"
     And I can "view" any "ObservationMorbidityReport"
     And I have a patient
-    And the patient has a Morbidity Report
+    And the patient has a morbidity report
+    And the patient has another Morbidity Report
     And the morbidity report has not been processed
 
   Scenario: I can view Morbidity Reports requiring review for a patient
@@ -17,8 +18,9 @@ Feature: Patient File Documents Requiring Review: Morbidity Report
     Then the patient file has the morbidity report requiring review
     And the morbidity report requiring review was received on 03/29/2010 at 02:51:07
     And the morbidity report requiring review has the event date 07/11/1989 at 10:17:19
+    And there is one morbidity report requiring review
     And the morbidity report requiring review is not electronic
-    And the morbidity report requiring review has the description title "Diphtheria"
+    And the morbidity report requiring review has the condition "Diphtheria"
 
   Scenario: I can view Morbidity Reports requiring review for a patient that were ordered by a Provider
     Given there is a provider named Doctor/Dr. "Lucien" "Sanchez"
@@ -41,4 +43,18 @@ Feature: Patient File Documents Requiring Review: Morbidity Report
     Then the patient file has the morbidity report requiring review
     And the morbidity report requiring review is electronic
 
+  Scenario: I can view treatments of Morbidity Reports requiring review for a patient
+    Given I can "view" any "treatment"
+    And the morbidity report includes a Laser Surgery treatment
+    And the morbidity report includes the custom "Chicken Soup" treatment
+    When I view the documents requiring review for the patient
+    Then the patient file has the morbidity report requiring review
+    And the morbidity report requiring review contains the "Laser Surgery" treatment
+    And the morbidity report requiring review contains the "Chicken Soup" treatment
 
+  Scenario: I can only view treatments of Morbidity Reports requiring review for a patient if I can View Treatments
+    Given the morbidity report includes a Laser Surgery treatment
+    And the morbidity report includes the custom "Chicken Soup" treatment
+    When I view the documents requiring review for the patient
+    Then the patient file has the morbidity report requiring review
+    And the morbidity report requiring review does not contain treatments

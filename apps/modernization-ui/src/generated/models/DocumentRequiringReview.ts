@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Description } from './Description';
+import type { DisplayableSimpleName } from './DisplayableSimpleName';
 export type DocumentRequiringReview = {
     id?: number;
     local?: string;
@@ -12,8 +12,9 @@ export type DocumentRequiringReview = {
     isElectronic?: boolean;
     isUpdate?: boolean;
     reportingFacility?: string;
-    orderingProvider?: string;
+    orderingProvider?: DisplayableSimpleName;
     sendingFacility?: string;
-    descriptions?: Array<Description>;
+    condition?: string;
+    treatments?: Array<string>;
 };
 

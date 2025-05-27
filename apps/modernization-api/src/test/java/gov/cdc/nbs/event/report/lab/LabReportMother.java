@@ -3,7 +3,6 @@ package gov.cdc.nbs.event.report.lab;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
@@ -11,6 +10,7 @@ import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
+import gov.cdc.nbs.testing.patient.RevisionMother;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
@@ -48,7 +48,7 @@ public class LabReportMother {
   private final Active<LabReportIdentifier> active;
   private final Available<LabReportIdentifier> available;
 
-  private final PatientMother patientMother;
+  private final RevisionMother revisionMother;
 
   LabReportMother(
       final MotherSettings settings,
@@ -58,7 +58,8 @@ public class LabReportMother {
       final Active<LabReportIdentifier> active,
       final Available<LabReportIdentifier> available,
       final Active<AccessionIdentifier> activeAccessionIdentifier,
-      final PatientMother patientMother) {
+      final RevisionMother revisionMother
+  ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.entityManager = entityManager;
@@ -66,7 +67,7 @@ public class LabReportMother {
     this.active = active;
     this.available = available;
     this.activeAccessionIdentifier = activeAccessionIdentifier;
-    this.patientMother = patientMother;
+    this.revisionMother = revisionMother;
     this.created = new ArrayList<>();
   }
 
@@ -80,7 +81,7 @@ public class LabReportMother {
       final OrganizationIdentifier organization,
       final JurisdictionIdentifier jurisdiction,
       final ProgramAreaIdentifier programArea) {
-    PatientIdentifier revision = patientMother.revise(patient);
+    PatientIdentifier revision = revisionMother.revise(patient);
     // Observation
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal(LAB_REPORT_CLASS_CODE);

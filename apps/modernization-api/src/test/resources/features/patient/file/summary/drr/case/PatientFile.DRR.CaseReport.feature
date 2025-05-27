@@ -19,7 +19,7 @@ Feature: Patient File Documents Requiring Review: Case Report
     Then the patient file has the case report requiring review
     And the case report requiring review is not electronic
     And the case report requiring review was sent by "Weyland-Yutani Corporation"
-    And the case report requiring review has the description title "Diphtheria"
+    And the case report requiring review has the condition "Diphtheria"
     And the case report requiring review was received on 07/11/1989 at 10:17:19
 
   Scenario: Unprocessed Cases Reports for a patient do not require review

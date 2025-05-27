@@ -3,11 +3,11 @@ package gov.cdc.nbs.event.document;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
+import gov.cdc.nbs.testing.patient.RevisionMother;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
@@ -35,7 +35,7 @@ public class CaseReportMother {
 
   private final Active<CaseReportIdentifier> active;
   private final Available<CaseReportIdentifier> available;
-  private final PatientMother patientMother;
+  private final RevisionMother revisionMother;
 
   CaseReportMother(
       final MotherSettings settings,
@@ -44,7 +44,7 @@ public class CaseReportMother {
       final TestDocumentCleaner cleaner,
       final Active<CaseReportIdentifier> active,
       final Available<CaseReportIdentifier> available,
-      final PatientMother patientMother
+      final RevisionMother revisionMother
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
@@ -52,7 +52,7 @@ public class CaseReportMother {
     this.cleaner = cleaner;
     this.active = active;
     this.available = available;
-    this.patientMother = patientMother;
+    this.revisionMother = revisionMother;
   }
 
   @PreDestroy
@@ -79,7 +79,7 @@ public class CaseReportMother {
       final JurisdictionIdentifier jurisdiction,
       final String condition
   ) {
-    PatientIdentifier revision = patientMother.revise(patient);
+    PatientIdentifier revision = revisionMother.revise(patient);
     //  create a document
     NbsDocument document = new NbsDocument();
     long identifier = idGenerator.next();

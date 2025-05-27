@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient;
+package gov.cdc.nbs.testing.patient;
 
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;

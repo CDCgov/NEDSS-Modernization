@@ -10,7 +10,7 @@ import gov.cdc.nbs.event.report.lab.AccessionIdentifier;
 import gov.cdc.nbs.event.report.lab.LabReportIdentifier;
 import gov.cdc.nbs.event.report.morbidity.MorbidityReportIdentifier;
 import gov.cdc.nbs.patient.profile.vaccination.VaccinationIdentifier;
-import gov.cdc.nbs.patient.treatment.TreatmentIdentifier;
+import gov.cdc.nbs.testing.event.treatment.TreatmentIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 

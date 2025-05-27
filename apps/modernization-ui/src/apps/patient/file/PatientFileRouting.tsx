@@ -4,6 +4,7 @@ import { PageTitle } from 'page';
 import { PatientFile } from './PatientFile';
 import { loader } from './loader';
 import { PatientFileSummary } from './summary/PatientFileSummary';
+import { PatientFileEvents } from './events';
 
 const routing = [
     {
@@ -24,7 +25,7 @@ const routing = [
             },
             {
                 path: 'events',
-                element: <div></div>
+                element: <PatientFileEvents />
             },
             {
                 path: 'demographics',
