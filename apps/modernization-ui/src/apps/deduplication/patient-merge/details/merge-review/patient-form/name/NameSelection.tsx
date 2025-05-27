@@ -1,6 +1,6 @@
 import { PatientData, PatientName } from 'apps/deduplication/api/model/PatientData';
 import { useState } from 'react';
-import { DetailsSection } from '../shared/section/DetailsSection';
+import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
 import { NameDataTable } from './name-data/name-data-table/NameDataTable';
 import { NameDetails } from './name-data/name-details/NameDetails';
@@ -36,7 +36,7 @@ export const NameSelection = ({ patientData }: Props) => {
                     />
                 )}
             />
-            <DetailsSection
+            <DetailsRow
                 id="patient-name"
                 patientData={patientData}
                 render={(p) => {

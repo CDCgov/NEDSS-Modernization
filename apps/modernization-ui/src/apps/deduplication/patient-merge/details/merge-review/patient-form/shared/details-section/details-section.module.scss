@@ -1,7 +1,7 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.nameDetails {
+.detailsSection {
     display: flex;
     flex-direction: column;
     color: colors.$base-darkest;

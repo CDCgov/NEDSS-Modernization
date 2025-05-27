@@ -6,6 +6,7 @@ import styles from './merge-review.module.scss';
 import { AdminCommentsSelection } from './patient-form/admin-comments/AdminCommentsSelection';
 import { NameSelection } from './patient-form/name/NameSelection';
 import { PatientIdSelection } from './patient-form/patient-id/PatientIdSelection';
+import { AddressSelection } from './patient-form/address/AddressSelection';
 
 export type Props = {
     patientData: PatientData[];
@@ -39,6 +40,7 @@ export const MergeReview = ({ patientData, onPreview, onRemovePatient }: Props) 
                     <PatientIdSelection patientData={patientData} onRemovePatient={onRemovePatient} />
                     <AdminCommentsSelection patientData={patientData} />
                     <NameSelection patientData={patientData} />
+                    <AddressSelection patientData={patientData} />
                 </div>
             </main>
         </div>

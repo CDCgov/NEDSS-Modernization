@@ -7,7 +7,7 @@ type Props = {
     patientData: PatientData[];
     render: (patientData: PatientData) => ReactNode | undefined;
 };
-export const DetailsSection = ({ id, patientData, render }: Props) => {
+export const DetailsRow = ({ id, patientData, render }: Props) => {
     return (
         <section className={styles.section}>
             {patientData.map((p) => (
