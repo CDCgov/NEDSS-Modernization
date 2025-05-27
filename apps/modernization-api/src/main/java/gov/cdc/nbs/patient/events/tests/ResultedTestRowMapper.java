@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.events.tests;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -18,6 +19,7 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
       int coded,
       int comparator,
       int numeric,
+      int scale,
       int high,
       int low,
       int unit
@@ -51,10 +53,11 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     StringBuilder builder = new StringBuilder();
 
     BigDecimal numeric = resultSet.getBigDecimal(columns.numeric());
-    String unit = resultSet.getString(columns.unit);
+    String unit = resultSet.getString(columns.unit());
 
     if (numeric != null) {
-      builder.append(numeric.toPlainString());
+      int scale = resultSet.getInt(columns.scale());
+      builder.append(numeric.setScale(scale, RoundingMode.HALF_EVEN));
 
       if (unit != null) {
         builder.append(" ").append(unit);

@@ -19,6 +19,7 @@ public class ResultedTestResolver {
               [coded_result].lab_result_desc_txt          as [coded],
               [numeric].comparator_cd_1                   as [comparator],
               [numeric].numeric_value_1                   as [numeric],
+              [numeric].numeric_scale_1                   as [scale],
               [numeric].high_range                        as [high_range],
               [numeric].low_range                         as [low_range],
               [numeric].numeric_unit_cd                   as [unit]
@@ -58,7 +59,7 @@ public class ResultedTestResolver {
     this.extractor = new ResultedTestByObservationResultSetExtractor(
         new ResultedTestByObservationResultSetExtractor.Column(
             1,
-            new ResultedTestRowMapper.Column(2, 3, 4, 5, 6, 7, 8, 9))
+            new ResultedTestRowMapper.Column(2, 3, 4, 5, 6, 7, 8, 9, 10))
     );
 
   }

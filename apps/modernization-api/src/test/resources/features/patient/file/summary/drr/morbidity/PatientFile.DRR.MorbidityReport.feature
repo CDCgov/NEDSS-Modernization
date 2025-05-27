@@ -21,6 +21,8 @@ Feature: Patient File Documents Requiring Review: Morbidity Report
     And there is one morbidity report requiring review
     And the morbidity report requiring review is not electronic
     And the morbidity report requiring review has the condition "Diphtheria"
+    And the morbidity report requiring review does not contain treatments
+    And the morbidity report requiring review does not contain resulted tests
 
   Scenario: I can view Morbidity Reports requiring review for a patient that were ordered by a Provider
     Given there is a provider named Doctor/Dr. "Lucien" "Sanchez"
@@ -61,6 +63,8 @@ Feature: Patient File Documents Requiring Review: Morbidity Report
 
   Scenario:I can view Resulted Tests of Morbidity Reports requiring review for a patient
     Given the morbidity report has an Aldolase test with a coded result of above threshold
+    And the morbidity report has a Digoxin test with a numeric result of "1013" (drop)
     When I view the documents requiring review for the patient
     Then the patient file has the morbidity report requiring review
-    And the morbidity report requiring review contains an "Aldolase" test with a coded result of "above threshold"
+    And the morbidity report requiring review contains a "Aldolase" test with a result containing "above threshold"
+    And the morbidity report requiring review contains a "Digoxin" test with a result containing "1013 (drop)"

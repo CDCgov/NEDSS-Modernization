@@ -1,6 +1,6 @@
 package gov.cdc.nbs.event.report.lab.test;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -10,27 +10,24 @@ class LabTestParameterResolver {
 
   private static final int IDENTIFIER_COLUMN = 1;
   private static final String QUERY = """
-      select
+      select top 1
         lab_test_cd
       from NBS_SRTE.[dbo].Lab_test
       where lab_test_desc_txt = ?
+          and laboratory_id = 'DEFAULT'
       """;
 
-  private static final int DESCRIPTION_INDEX = 1;
+  private final JdbcClient client;
 
-  private final JdbcTemplate template;
-
-  LabTestParameterResolver(final JdbcTemplate template) {
-    this.template = template;
+  LabTestParameterResolver(final JdbcClient client) {
+    this.client = client;
   }
 
   Optional<String> resolve(final String value) {
-    return this.template.query(
-        QUERY,
-        statement -> {
-          statement.setString(DESCRIPTION_INDEX, value);
-        },
-        (rs, row) -> rs.getString(IDENTIFIER_COLUMN)
-    ).stream().findFirst();
+
+    return this.client.sql(QUERY)
+        .param(value)
+        .query((rs, row) -> rs.getString(IDENTIFIER_COLUMN))
+        .optional();
   }
 }

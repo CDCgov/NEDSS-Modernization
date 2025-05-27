@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
-class CodedResultedTestMother {
+class NumericResultedTestMother {
 
   private static final String CREATE = """
        insert into Act (
@@ -42,7 +42,8 @@ class CodedResultedTestMother {
          1,
          'N'
        from [NBS_SRTE]..[Lab_test]
-       where lab_test_cd = :test
+       where  lab_test_cd = :test
+          and laboratory_id = 'DEFAULT'
       ;
       
         insert into Act_relationship(
@@ -59,25 +60,27 @@ class CodedResultedTestMother {
          'COMP'
        );
       
-       insert into Obs_value_coded (
-         observation_uid,
-         code,
-         display_name
+       insert into Obs_value_numeric (
+          observation_uid,
+          obs_value_numeric_seq,
+          comparator_cd_1,
+          numeric_value_1,
+          numeric_unit_cd
        )
-       select
-         :identifier,
-         lab_result_cd,
-         lab_result_desc_txt
-       from [NBS_SRTE]..[Lab_result]
-       where lab_result_cd = :result
-       and laboratory_id = 'DEFAULT'
+       values (
+          :identifier,
+          (select count(*) + 1 from Obs_value_numeric where observation_uid = :identifier),
+          '=',
+          :result,
+          :unit
+      )
       ;
       """;
 
   private static final String DELETE_IN = """
       delete from Participation where act_class_cd = 'OBS' and act_uid in (:identifiers);
       
-      delete from Obs_value_coded where observation_uid in (:identifiers);
+      delete from Obs_value_numeric where observation_uid in (:identifiers);
       
       delete from Observation
       where   obs_domain_cd_st_1 = 'Result'
@@ -95,8 +98,7 @@ class CodedResultedTestMother {
   private final JdbcClient client;
   private final TestingDataCleaner<Long> cleaner;
 
-
-  CodedResultedTestMother(
+  NumericResultedTestMother(
       final SequentialIdentityGenerator idGenerator,
       final JdbcClient client
   ) {
@@ -114,7 +116,8 @@ class CodedResultedTestMother {
       final long observation,
       final String type,
       final String test,
-      final String result
+      final String result,
+      final String unit
   ) {
 
     long identifier = idGenerator.next();
@@ -125,27 +128,35 @@ class CodedResultedTestMother {
         .param("type", type)
         .param("test", test)
         .param("result", result)
+        .param("unit", unit)
         .update();
 
     this.cleaner.include(identifier);
 
   }
 
-  void create(final LabReportIdentifier report, final String test, final String result) {
+  void create(final LabReportIdentifier report, final String test, final String result, final String unit) {
     create(
         report.identifier(),
         "LabReport",
         test,
-        result
+        result,
+        unit
     );
   }
 
-  void create(final MorbidityReportIdentifier report, final String test, final String result) {
+  void create(
+      final MorbidityReportIdentifier report,
+      final String test,
+      final String result,
+      final String unit
+  ) {
     create(
         report.identifier(),
         null,
         test,
-        result
+        result,
+        unit
     );
   }
 }
