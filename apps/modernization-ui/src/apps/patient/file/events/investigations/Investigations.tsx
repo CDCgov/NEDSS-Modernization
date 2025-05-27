@@ -1,12 +1,11 @@
 import { TableCard } from 'design-system/card/table/TableCard';
-import { Headers } from './PatientInvestigation';
+import { Headers, Investigation } from './PatientInvestigation';
 import { Icon } from 'design-system/icon';
 import { Column } from 'design-system/table';
 import { format } from 'date-fns';
 import { displayName } from 'name';
 import { usePatientInvestigations } from './usePatientInvestigations';
 import { usePatient } from '../../usePatient';
-import { PatientInvestigation } from 'generated';
 import { Tag } from 'design-system/tag';
 import { TagVariant } from 'design-system/tag/Tag';
 
@@ -15,7 +14,7 @@ const displayTag = (value: string | undefined, status: boolean, variant: TagVari
     return status ? <Tag variant={variant}>{value}</Tag> : value;
 };
 
-const columns: Column<PatientInvestigation>[] = [
+const columns: Column<Investigation>[] = [
     {
         id: Headers.Investigation,
         name: Headers.Investigation,

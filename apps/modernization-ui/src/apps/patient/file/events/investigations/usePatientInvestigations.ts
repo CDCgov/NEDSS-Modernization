@@ -1,15 +1,16 @@
 import { useEffect, useReducer } from 'react';
-import { PatientInvestigation, PatientInvestigationsService } from 'generated';
+import { PatientInvestigationsService } from 'generated';
+import { Investigation } from './PatientInvestigation';
 
 type State =
     | { status: 'idle' }
     | { status: 'fetching'; id: number }
-    | { status: 'complete'; data: PatientInvestigation[] }
+    | { status: 'complete'; data: Investigation[] }
     | { status: 'error'; error: string };
 
 type Action =
     | { type: 'fetch'; id: number }
-    | { type: 'complete'; data: PatientInvestigation[] }
+    | { type: 'complete'; data: Investigation[] }
     | { type: 'error'; error: string };
 
 const reducer = (_state: State, action: Action): State => {

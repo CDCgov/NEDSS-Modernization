@@ -9,3 +9,20 @@ export enum Headers {
     Investigator = 'Investigator',
     CoInfection = 'Co-infection #'
 }
+
+export type Investigation = {
+    investigationId: string;
+    identifier: number;
+    startedOn?: string;
+    condition: string;
+    status: string;
+    caseStatus?: string;
+    jurisdiction: string;
+    coInfection?: string;
+    notification?: string;
+    investigatorName?: {
+        first?: string;
+        last?: string;
+    };
+    comparable: boolean;
+};
