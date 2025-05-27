@@ -1,25 +1,10 @@
 import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-
-type Description = {
-    title?: string;
-    value?: string;
-};
-
-type DocumentRequiringReview = {
-    id?: number;
-    local?: string;
-    type?: string;
-    eventDate?: Date;
-    dateReceived?: Date;
-    isElectronic?: boolean;
-    isUpdate?: boolean;
-    reportingFacility?: string;
-    orderingProvider?: string;
-    sendingFacility?: string;
-    descriptions?: Description[];
-};
+import { usePatientFileDocumentRequiringReview } from './usePatientFileDocumentRequiringReview';
+import { usePatient } from '../usePatient';
+import { DocumentRequiringReview } from 'generated';
+import { ClassicLink } from 'classic';
 
 const renderReporting = (value: DocumentRequiringReview) => {
     return (
@@ -67,14 +52,38 @@ const renderDescription = (value: DocumentRequiringReview) => {
     );
 };
 
+const dateTransform = (value: string) => {
+    const date = new Date(value);
+    return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+    });
+};
+
+const renderEventId = (value: DocumentRequiringReview) => {
+    var classicUrl = '';
+    if (value.type == 'Lab report') {
+        classicUrl = '/nbs/api/profile/{patient}/document/{identifier}';
+    }
+    return <ClassicLink url=""></ClassicLink>;
+};
+
 export const PatientDocumentRequiringReview = () => {
+    const { id } = usePatient();
+
+    const { documents } = usePatientFileDocumentRequiringReview(id);
+
     const columns: Column<DocumentRequiringReview>[] = [
-        { id: 'id', name: 'Event ID', render: (value: DocumentRequiringReview) => <>{value.id}</> },
+        { id: 'id', name: 'Event ID', render: (value: DocumentRequiringReview) => <>{value.local}</> },
         { id: 'type', name: 'Document type', render: (value: DocumentRequiringReview) => <>{value.type}</> },
         {
             id: 'dateReceived',
             name: 'Date received',
-            render: (value: DocumentRequiringReview) => <>{value.dateReceived?.toLocaleString()}</>
+            render: (value: DocumentRequiringReview) => <>{value.dateReceived && dateTransform(value.dateReceived)}</>
         },
         {
             id: 'reporting',
@@ -84,7 +93,7 @@ export const PatientDocumentRequiringReview = () => {
         {
             id: 'eventDate',
             name: 'Event date',
-            render: (value: DocumentRequiringReview) => <>{value.eventDate?.toLocaleString()}</>
+            render: (value: DocumentRequiringReview) => <>{value.eventDate && dateTransform(value.eventDate)}</>
         },
         {
             id: 'description',
@@ -111,7 +120,7 @@ export const PatientDocumentRequiringReview = () => {
             columnPreferencesKey="document-requiring-review"
             defaultColumnPreferences={columnPreferences}
             columns={columns}
-            data={[]}
+            data={documents ?? []}
             showSettings={true}
             collapsible
         />
