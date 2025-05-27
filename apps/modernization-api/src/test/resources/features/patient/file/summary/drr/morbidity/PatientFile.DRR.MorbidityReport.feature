@@ -58,3 +58,9 @@ Feature: Patient File Documents Requiring Review: Morbidity Report
     When I view the documents requiring review for the patient
     Then the patient file has the morbidity report requiring review
     And the morbidity report requiring review does not contain treatments
+
+  Scenario:I can view Resulted Tests of Morbidity Reports requiring review for a patient
+    Given the morbidity report has an Aldolase test with a coded result of above threshold
+    When I view the documents requiring review for the patient
+    Then the patient file has the morbidity report requiring review
+    And the morbidity report requiring review contains an "Aldolase" test with a coded result of "above threshold"
