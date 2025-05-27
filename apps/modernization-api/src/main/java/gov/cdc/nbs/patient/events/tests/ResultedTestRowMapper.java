@@ -56,8 +56,11 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     String unit = resultSet.getString(columns.unit());
 
     if (numeric != null) {
+      String comparator = resultSet.getString(columns.comparator());
+
       int scale = resultSet.getInt(columns.scale());
-      builder.append(numeric.setScale(scale, RoundingMode.HALF_EVEN));
+      builder.append(comparator)
+          .append(numeric.setScale(scale, RoundingMode.HALF_EVEN));
 
       if (unit != null) {
         builder.append(" ").append(unit);

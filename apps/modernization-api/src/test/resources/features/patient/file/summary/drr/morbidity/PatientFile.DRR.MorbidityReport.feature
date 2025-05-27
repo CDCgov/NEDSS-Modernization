@@ -67,4 +67,4 @@ Feature: Patient File Documents Requiring Review: Morbidity Report
     When I view the documents requiring review for the patient
     Then the patient file has the morbidity report requiring review
     And the morbidity report requiring review contains a "Aldolase" test with a result containing "above threshold"
-    And the morbidity report requiring review contains a "Digoxin" test with a result containing "1013 (drop)"
+    And the morbidity report requiring review contains a "Digoxin" test with a result containing "=1013 (drop)"
