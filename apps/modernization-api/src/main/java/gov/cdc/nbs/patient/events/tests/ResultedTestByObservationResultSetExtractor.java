@@ -34,8 +34,9 @@ class ResultedTestByObservationResultSetExtractor implements ResultSetExtractor<
       long observation = resultSet.getLong(columns.observation());
 
       ResultedTest resultedTest = this.mapper.mapRow(resultSet, row);
-
-      resultedTestsByObservation.put(observation, resultedTest);
+      if (resultedTest != null) {
+        resultedTestsByObservation.put(observation, resultedTest);
+      }
 
     }
 
