@@ -7,6 +7,7 @@ import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
@@ -57,10 +58,7 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     if (text != null) {
       builder.append(text);
 
-      String status = maybeDisplayStatus(columns, resultSet);
-      if (status != null) {
-        builder.append(status);
-      }
+      maybeDisplayStatus(columns, resultSet).ifPresent(builder::append);
     }
 
     return builder.isEmpty() ? null : builder.toString();
@@ -75,22 +73,25 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     if (numeric != null) {
       String comparator = resultSet.getString(columns.comparator());
 
+      if (comparator != null) {
+        builder.append(comparator);
+      }
+
       int scale = resultSet.getInt(columns.scale());
-      builder.append(comparator)
-          .append(numeric.setScale(scale, RoundingMode.HALF_EVEN));
+      builder.append(numeric.setScale(scale, RoundingMode.HALF_EVEN));
 
       if (unit != null) {
         builder.append(" ").append(unit);
       }
 
-      if (!builder.isEmpty()) {
-        String range = maybeDisplayRange(columns, resultSet);
 
-        if (range != null) {
-          builder.append("\n")
-              .append(range);
-        }
+      String range = maybeDisplayRange(columns, resultSet);
+
+      if (range != null) {
+        builder.append("\n")
+            .append(range);
       }
+
 
     }
     return builder.isEmpty() ? null : builder.toString();
@@ -115,24 +116,17 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
 
       builder.append(range);
 
-      String status = maybeDisplayStatus(columns, resultSet);
-      if (status != null) {
-        builder.append(status);
-      }
+      maybeDisplayStatus(columns, resultSet).ifPresent(builder::append);
     }
 
     return builder.isEmpty() ? null : builder.toString();
   }
 
-  private static String maybeDisplayStatus(final Column columns, final ResultSet resultSet) throws SQLException {
+  private static Optional<String> maybeDisplayStatus(final Column columns, final ResultSet resultSet)
+      throws SQLException {
     String status = resultSet.getString(columns.status());
-    StringBuilder builder = new StringBuilder();
-    if (status != null) {
-      builder.append(" - (")
-          .append(status)
-          .append(")");
-    }
-    return builder.isEmpty() ? null : builder.toString();
+
+    return status == null ? Optional.empty() : Optional.of(String.format(" - (%s)", status));
   }
 }
 
