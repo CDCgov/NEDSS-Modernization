@@ -1,12 +1,12 @@
-import { SortingInteraction } from 'sorting';
+import { SortingInteraction } from 'libs/sorting';
 import { Column } from './DataTable';
 import classNames from 'classnames';
 import { NoData } from 'components/NoData';
 import { Sizing } from 'design-system/field';
 import { Shown } from 'conditional-render';
-import { defaultCellValueRenderer } from './defaultCellValueRenderer';
 
 import styles from './data-table.module.scss';
+import { defaultCellRenderer } from './defaultCellRenderer';
 
 type Props<V> = {
     columns: Column<V>[];
@@ -43,4 +43,4 @@ const renderColumn = <R,>(row: R, index: number, column: Column<R>) =>
     'render' in column
         ? //  render function takes precedence
           column.render(row, index)
-        : defaultCellValueRenderer(column.value(row));
+        : defaultCellRenderer(column.value(row));

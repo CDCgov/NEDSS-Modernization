@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Outlet } from 'react-router';
 import { PaginationProvider, PaginationSettings } from 'pagination';
-import { SortingProvider, SortingSettings } from 'sorting';
+import { SortingProvider, SortingSettings } from 'libs/sorting';
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 import { ComponentSizingProvider } from 'design-system/sizing';
 import { FilterProvider } from 'design-system/filter';

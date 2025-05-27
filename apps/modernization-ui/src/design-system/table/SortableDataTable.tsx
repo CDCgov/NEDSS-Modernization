@@ -1,78 +1,48 @@
-import { useEffect, useState } from 'react';
-import { useSorting, SortingProvider, Direction, withDirection } from 'sorting';
-import { CellValue, DataTable, DataTableProps } from './DataTable';
-import { Mapping } from 'utils';
-
-const InMemorySorting = <T,>(props: DataTableProps<T>) => {
-    const sorting = useSorting();
-
-    const [sorted, setSorted] = useState(props.data);
-
-    useEffect(() => {
-        const column = props.columns.find((column) => column.id === sorting.property);
-
-        if (column && sorting.direction && sorting.direction !== Direction.None) {
-            //  sort using the column values
-            if ('value' in column) {
-                setSorted(sortByColumn(props.data, column.value, sorting.direction));
-            }
-        } else {
-            //  no sorting needed, pass the data as is
-            setSorted(props.data);
-        }
-    }, [sorting.property, sorting.direction]);
-
-    return <DataTable {...props} features={{ sorting }} data={sorted} />;
-};
-
-const sortByColumn = <R, C extends CellValue>(
-    data: R[],
-    mapping: Mapping<R, C | undefined>,
-    direction: Direction
-): R[] => {
-    return data.slice().sort(withDirection(mappingComparator(mapping), direction));
-};
-
-const mappingComparator =
-    <R, C extends CellValue>(mapping: Mapping<R, C | undefined>) =>
-    (left: R, right: R) => {
-        const value = mapping(left);
-        const comparing = mapping(right);
-
-        if (value instanceof Date && comparing instanceof Date) {
-            return value.getTime() - comparing.getTime();
-        } else if (typeof value === 'string' && typeof comparing === 'string') {
-            return value.localeCompare(comparing, undefined, { numeric: true });
-        }
-
-        return defaultComparator(value, comparing);
-    };
-
-const defaultComparator = <V,>(value?: V, comparing?: V) => {
-    if (value && !comparing) {
-        return 1;
-    } else if (!value && comparing) {
-        return -1;
-    } else if (value! > comparing!) {
-        return 1;
-    } else if (value! < comparing!) {
-        return -1;
-    } else {
-        return 0;
-    }
-};
+import { SortHandler, SortingInteraction, SortingProvider, useSorting } from 'libs/sorting';
+import { Column, DataTable, DataTableProps } from './DataTable';
+import { ReactNode } from 'react';
 
 /**
- * Wraps the DataTable component with SortingProvider and uses the useSorting hook to manage
- * sorting state. Uses the comparator on each column (or default one) to determine the sorting logic.
+ * A variant of DataTable that provides in memory sorting of rows based on the values of the column
+ *  being sorted.  A Column can only be sorted if it defines a value function.
+ *
  * Note: This requires React Router context to be available in the component tree.
+ *
  * @param {DataTableProps<T>} props - The props for the DataTable component.
- * @return {JSX.Element} - The wrapped DataTable component with sorting functionality.
+ * @return {JSX.Element} - A DataTable component with in memory sorting functionality.
  */
-export const SortableDataTable = <T,>(props: DataTableProps<T>) => {
-    return (
-        <SortingProvider appendToUrl={false}>
-            <InMemorySorting {...props} />
-        </SortingProvider>
-    );
+const SortableDataTable = <T,>({ columns, data, ...remaining }: DataTableProps<T>) => (
+    <SortingProvider appendToUrl={false}>
+        <UsingSort>
+            {(sorting) => (
+                <SortHandler sorting={sorting} resolver={maybeResolveMapping(columns)} data={data}>
+                    {({ sorting, sorted }) => (
+                        <DataTable {...remaining} features={{ sorting }} columns={columns} data={sorted} />
+                    )}
+                </SortHandler>
+            )}
+        </UsingSort>
+    </SortingProvider>
+);
+
+type UsingSortProps = {
+    children: (sorting: SortingInteraction) => ReactNode | ReactNode[];
 };
+
+const UsingSort = ({ children }: UsingSortProps) => {
+    const sorting = useSorting();
+
+    return children(sorting);
+};
+
+const maybeResolveMapping =
+    <R, C>(columns: Column<R, C>[]) =>
+    (property: string) => {
+        const column = columns.find((column) => column.id === property);
+
+        if (column && 'value' in column) {
+            return column.value;
+        }
+    };
+
+export { SortableDataTable };

@@ -1,6 +1,6 @@
 import { externalize, Filter } from 'filters';
 import { useState } from 'react';
-import { useSorting } from 'sorting';
+import { useSorting } from 'libs/sorting';
 import { usePageLibraryProperties } from './usePageLibraryProperties';
 import { usePageSummarySearch } from './usePageSummarySearch';
 

@@ -1,11 +1,12 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
-import { Comparator, ComparatorType, SortingInteraction } from 'sorting';
 import { Shown } from 'conditional-render';
-import { DataTableHeader } from './header/DataTableHeader';
-import { DataTableRow } from './DataTableRow';
+import { Mapping } from 'utils';
+import { SortingInteraction } from 'libs/sorting';
 import { Sizing } from 'design-system/field';
 import { FilterDescriptor, FilterInteraction } from 'design-system/filter';
+import { DataTableHeader } from './header/DataTableHeader';
+import { DataTableRow } from './DataTableRow';
 import { NoDataRow } from './NoDataRow';
 
 import styles from './data-table.module.scss';
@@ -15,14 +16,14 @@ type SortIconType = 'default' | 'alpha' | 'numeric';
 type CellValue = string | number | boolean | Date;
 
 type HasRenderFunction<R> = { render: (value: R, index: number) => ReactNode | undefined };
-type HasValueFunction<R, C extends CellValue = CellValue> = { value: (row: R) => C | undefined };
+type HasValueFunction<R, C = CellValue> = { value: Mapping<R, C | undefined> };
 
-type RenderMethod<R, C extends CellValue = CellValue> =
+type RenderMethod<R, C = CellValue> =
     | HasRenderFunction<R>
     | HasValueFunction<R, C>
     | (HasRenderFunction<R> & HasValueFunction<R, C>);
 
-type Column<R, C extends CellValue = CellValue> = {
+type Column<R, C = CellValue> = {
     id: string;
     name: string;
     fixed?: boolean;
@@ -30,7 +31,6 @@ type Column<R, C extends CellValue = CellValue> = {
     className?: string;
     filter?: FilterDescriptor;
     sortIconType?: SortIconType;
-    comparator?: ComparatorType | Comparator<R>;
 } & RenderMethod<R, C>;
 
 type DataTableFeatures = {

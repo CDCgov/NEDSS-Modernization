@@ -3,7 +3,7 @@ import { Column } from 'design-system/table';
 import { ColumnHeader } from 'design-system/table/header/ColumnHeader';
 
 import styles from '../data-table.module.scss';
-import { SortingInteraction } from 'sorting';
+import { SortingInteraction } from 'libs/sorting';
 import { FilterInteraction } from 'design-system/filter';
 
 type HeaderRowProps<V> = {

@@ -4,8 +4,7 @@ import { MemoryRouter, useSearchParams } from 'react-router';
 import userEvent from '@testing-library/user-event';
 import { useExportMatches } from '../../api/useExportMatches';
 import { PaginationProvider } from 'pagination';
-import { PageProvider } from "../../../../page";
-import {SortingProvider} from "../../../../sorting";
+import { SortingProvider } from 'libs/sorting';
 
 jest.mock('../../api/useExportMatches', () => ({
     useExportMatches: jest.fn()
@@ -34,9 +33,9 @@ beforeEach(() => {
 const Fixture = () => (
     <MemoryRouter initialEntries={['/merge']}>
         <SortingProvider>
-                <PaginationProvider>
-                    <MergeLanding />
-                </PaginationProvider>
+            <PaginationProvider>
+                <MergeLanding />
+            </PaginationProvider>
         </SortingProvider>
     </MemoryRouter>
 );

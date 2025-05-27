@@ -11,7 +11,7 @@ type Person = {
 };
 
 const meta = {
-    title: 'Design System/Table/Sorted',
+    title: 'Design System/Table/Sortable',
     component: SortableDataTable<Person>
 } satisfies Meta<typeof SortableDataTable<Person>>;
 
@@ -23,26 +23,28 @@ const columns: Column<Person>[] = [
     {
         id: 'id',
         name: 'ID',
+        sortable: true,
         value: (value: Person) => value.id,
-        render: (value: Person) => <a href={`#${value.id}`}>{value.id}</a> // render link
+        render: (value: Person) => <a href={`#${value.id}`}>{value.id}</a> // render as link
     },
     {
         id: 'name',
         name: 'Name',
+        sortable: true,
         value: (value: Person) => value.name,
         sortIconType: 'alpha'
     },
     {
         id: 'email',
         name: 'Email',
+        sortable: true,
         value: (value: Person) => value.email
     },
     {
         id: 'dob',
         name: 'DOB',
-        value: (value: Person) => value.dob,
-        render: (value: Person) => value.dob.toISOString().split('T')[0],
-        comparator: 'date'
+        sortable: true,
+        value: (value: Person) => value.dob
     }
 ];
 

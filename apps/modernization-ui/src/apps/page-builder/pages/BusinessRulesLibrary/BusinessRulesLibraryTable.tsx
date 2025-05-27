@@ -8,7 +8,7 @@ import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { usePagination } from 'pagination';
 import React, { RefObject, useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 import './BusinessRulesLibraryTable.scss';
 import { RuleSearchBar } from './RuleSearchBar';
 import { mapComparatorToString } from './helpers/mapComparatorToString';

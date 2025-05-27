@@ -44,7 +44,7 @@ jest.mock('pagination', () => ({
     })
 }));
 
-const { Direction } = jest.requireActual('sorting');
+const { Direction } = jest.requireActual('libs/sorting');
 
 let mockSortProperty: string | undefined = undefined;
 let mockSortDirection: any | undefined = undefined;
@@ -52,7 +52,7 @@ const mockSortReset = jest.fn();
 const mockSortBy = jest.fn();
 const mockToggle = jest.fn();
 
-jest.mock('sorting', () => ({
+jest.mock('libs/sorting', () => ({
     useSorting: () => ({
         property: mockSortProperty,
         direction: mockSortDirection,

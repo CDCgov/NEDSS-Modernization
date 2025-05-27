@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react';
 
 import { ValueSetControllerService, PageValueSetOption } from 'apps/page-builder/generated';
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 
 export type ValuesetSearch = {
     query?: string;

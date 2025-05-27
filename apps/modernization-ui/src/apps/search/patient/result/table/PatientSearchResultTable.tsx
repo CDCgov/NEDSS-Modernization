@@ -1,5 +1,5 @@
 import { PatientSearchResult } from 'generated/graphql/schema';
-import { useSorting } from 'sorting';
+import { useSorting } from 'libs/sorting';
 import { Sizing } from 'design-system/field';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';

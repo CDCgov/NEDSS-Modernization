@@ -5,7 +5,7 @@ import { Search } from 'components/Search';
 import { SelectionMode, TableBody, TableComponent } from 'components/Table';
 import { Status, usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 import { ExpandedQuestion } from './ExpandedQuestion';
 import styles from './question-search-table.module.scss';
 

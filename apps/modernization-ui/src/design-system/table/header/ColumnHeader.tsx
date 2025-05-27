@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Direction, SortingInteraction } from 'sorting';
+import { Direction, SortingInteraction } from 'libs/sorting';
 import { FilterInteraction } from 'design-system/filter';
 import { HeaderFilterField } from './filter';
 import { Column, SortIconType } from 'design-system/table';
@@ -87,7 +87,18 @@ const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }:
 
 const ensureDirection = (direction?: Direction) => direction ?? Direction.None;
 
-const ascIcon = (type?: SortIconType) => {
+const resolveSortIcon = (direction: Direction, type?: SortIconType) => {
+    switch (direction) {
+        case Direction.Ascending:
+            return resolveAscendingIcon(type);
+        case Direction.Descending:
+            return resolveDescendingIcon(type);
+        default:
+            return 'sort_arrow';
+    }
+};
+
+const resolveAscendingIcon = (type?: SortIconType) => {
     switch (type) {
         case 'alpha':
             return 'sort_asc_alpha';
@@ -98,7 +109,7 @@ const ascIcon = (type?: SortIconType) => {
     }
 };
 
-const desIcon = (type?: SortIconType) => {
+const resolveDescendingIcon = (type?: SortIconType) => {
     switch (type) {
         case 'alpha':
             return 'sort_des_alpha';
@@ -106,17 +117,6 @@ const desIcon = (type?: SortIconType) => {
             return 'sort_des_numeric';
         default:
             return 'sort_des_default';
-    }
-};
-
-const resolveSortIcon = (direction: Direction, type?: SortIconType) => {
-    switch (direction) {
-        case Direction.Ascending:
-            return ascIcon(type);
-        case Direction.Descending:
-            return desIcon(type);
-        default:
-            return 'sort_arrow';
     }
 };
 

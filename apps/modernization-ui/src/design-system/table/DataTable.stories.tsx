@@ -7,6 +7,7 @@ type Person = {
     name: string;
     email: string;
     dob: Date;
+    active?: boolean;
 };
 
 const meta = {
@@ -22,37 +23,40 @@ const columns: Column<Person>[] = [
     {
         id: 'id',
         name: 'ID',
-        value: (value: Person) => value.id,
-        render: (value: Person) => <a href={`#${value.id}`}>{value.id}</a> // render link
+        value: (item) => item.id,
+        render: (item) => <a href={`#${item.id}`}>{item.id}</a> // render link
     },
     {
         id: 'name',
         name: 'Name',
-        value: (value: Person) => value.name,
+        value: (item) => item.name,
         sortIconType: 'alpha'
     },
     {
         id: 'email',
         name: 'Email',
-        value: (value: Person) => value.email
+        value: (item) => item.email
     },
     {
         id: 'dob',
         name: 'DOB',
-        value: (value: Person) => value.dob,
-        render: (value: Person) => value.dob.toISOString().split('T')[0],
-        comparator: 'date'
+        value: (item) => item.dob
+    },
+    {
+        id: 'active',
+        name: 'Active',
+        value: (item) => item.active
     }
 ];
-const checkboxColumns = [
+const checkboxColumns: Column<Person>[] = [
     {
         id: 'select',
         name: 'X',
-        render: (value: Person) => (
+        render: (item) => (
             <Checkbox
-                id={value.id}
+                id={item.id}
                 label=" "
-                onChange={(checked) => console.log('Checkbox changed', checked, value.id)}
+                onChange={(checked) => console.log('Checkbox changed', checked, item.id)}
             />
         )
     },
@@ -76,7 +80,8 @@ const data = [
         id: '1003',
         name: 'Meriadoc Brandybuck',
         email: 'merry@theshire.gov',
-        dob: new Date('2000-05-21')
+        dob: new Date('2000-05-21'),
+        active: false
     }
 ];
 
