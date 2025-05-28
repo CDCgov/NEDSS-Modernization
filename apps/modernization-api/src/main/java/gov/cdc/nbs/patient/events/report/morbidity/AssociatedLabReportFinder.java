@@ -12,7 +12,7 @@ import java.util.Collection;
 class AssociatedLabReportFinder {
 
   private static final String QUERY = """
-      select\s
+      select
           [relationship].target_act_uid   as [morbidity],
           [relationship].source_act_uid   as [lab_report]
       from Act_relationship [relationship]\s
