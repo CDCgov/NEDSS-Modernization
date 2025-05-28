@@ -5,6 +5,7 @@ export type PatientData = {
     addresses: PatientAddress[];
     phoneEmails: PatientPhoneEmail[];
     identifications: PatientIdentification[];
+    races: PatientRace[];
 };
 
 export type AdminComments = {
@@ -63,4 +64,12 @@ export type PatientIdentification = {
     type: string;
     assigningAuthority?: string;
     value: string;
+};
+
+export type PatientRace = {
+    personUid: string;
+    raceCode: string;
+    asOf: string;
+    race: string;
+    detailedRaces?: string;
 };
