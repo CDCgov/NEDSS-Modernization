@@ -3,7 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export type ResultedTest = {
-    name?: string;
-    description?: string;
+    name: string;
+    result?: string;
+    reference?: string;
 };
 
