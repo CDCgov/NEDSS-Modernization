@@ -45,7 +45,7 @@ const columns = (id: number): Column<Investigation>[] => [
         id: 'condition',
         name: Headers.Condition,
         sortable: true,
-        render: (value) => value.condition,
+        render: (value) => <b>{value.condition}</b>,
         sortIconType: 'alpha'
     },
 
