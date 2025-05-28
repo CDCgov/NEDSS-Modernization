@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.file.summary.drr.morbidity;
 
 import gov.cdc.nbs.patient.events.report.morbidity.MorbidityReportResultedTestResolver;
 import gov.cdc.nbs.patient.events.tests.ResultedTest;
-import gov.cdc.nbs.patient.events.tests.ResultedTestResolver;
 import gov.cdc.nbs.patient.file.summary.drr.DocumentRequiringReview;
 import gov.cdc.nbs.patient.file.summary.drr.DocumentsRequiringReviewCriteria;
 import org.springframework.stereotype.Component;

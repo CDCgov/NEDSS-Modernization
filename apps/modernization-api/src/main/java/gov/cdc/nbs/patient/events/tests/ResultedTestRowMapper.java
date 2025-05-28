@@ -41,7 +41,7 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     String reference = maybeDisplayReferenceRange(columns, resultSet);
 
     Optional<String> status = maybeDisplayStatus(columns, resultSet)
-        .filter(_s -> reference == null);
+        .filter(unused -> reference == null);
 
     String coded = Optional.ofNullable(resultSet.getString(columns.coded()))
         .map(value -> status.map(value::concat).orElse(value))
