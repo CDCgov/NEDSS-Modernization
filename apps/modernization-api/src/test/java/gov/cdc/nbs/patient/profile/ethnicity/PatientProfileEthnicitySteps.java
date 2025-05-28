@@ -2,11 +2,9 @@ package gov.cdc.nbs.patient.profile.ethnicity;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.EthnicityInput;
-import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
-import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
@@ -23,10 +21,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 public class PatientProfileEthnicitySteps {
 
-  private final Active<PatientInput> input;
-
-  private final Active<Person> activePatient;
-
   private final EntityManager entityManager;
 
   private final Available<PatientIdentifier> patients;
@@ -36,14 +30,10 @@ public class PatientProfileEthnicitySteps {
   private EthnicityInput updates;
 
   PatientProfileEthnicitySteps(
-      final Active<PatientInput> input,
-      final Active<Person> activePatient,
       final EntityManager entityManager,
       final Available<PatientIdentifier> patients,
       final PatientEthnicityController controller
   ) {
-    this.input = input;
-    this.activePatient = activePatient;
     this.entityManager = entityManager;
     this.patients = patients;
     this.controller = controller;
