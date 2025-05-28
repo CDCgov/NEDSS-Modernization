@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
-class CodedResultedTestMother {
+class TextResultedTestMother {
 
   private static final String CREATE = """
        insert into Act (
@@ -45,38 +45,35 @@ class CodedResultedTestMother {
       ;
       
         insert into Act_relationship(
-         source_act_uid,
-         source_class_cd,
-         target_act_uid,
-         target_class_cd,
-         type_cd
+          source_act_uid,
+          source_class_cd,
+          target_act_uid,
+          target_class_cd,
+          type_cd
        ) values (
-         :identifier,
-         'OBS',
-         :observation,
-         'OBS',
-         'COMP'
+          :identifier,
+          'OBS',
+          :observation,
+          'OBS',
+          'COMP'
        );
       
-       insert into Obs_value_coded (
-         observation_uid,
-         code,
-         display_name
-       )
-       select
-         :identifier,
-         lab_result_cd,
-         lab_result_desc_txt
-       from [NBS_SRTE]..[Lab_result]
-       where lab_result_cd = :result
-       and laboratory_id = 'DEFAULT'
+      insert into Obs_value_txt (
+          observation_uid,
+          obs_value_txt_seq,
+          value_txt
+      ) values (
+          :identifier,
+          (select count(*) + 1 from Obs_value_txt where observation_uid = :identifier),
+          :result
+      )
       ;
       """;
 
   private static final String DELETE_IN = """
       delete from Participation where act_class_cd = 'OBS' and act_uid in (:identifiers);
       
-      delete from Obs_value_coded where observation_uid in (:identifiers);
+      delete from Obs_value_txt where observation_uid in (:identifiers);
       
       delete from Observation
       where   obs_domain_cd_st_1 = 'Result'
@@ -95,7 +92,7 @@ class CodedResultedTestMother {
   private final TestingDataCleaner<Long> cleaner;
 
 
-  CodedResultedTestMother(
+  TextResultedTestMother(
       final SequentialIdentityGenerator idGenerator,
       final JdbcClient client
   ) {
@@ -121,5 +118,6 @@ class CodedResultedTestMother {
 
     this.cleaner.include(identifier);
   }
+
 
 }

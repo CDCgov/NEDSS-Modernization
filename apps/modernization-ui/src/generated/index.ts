@@ -44,6 +44,7 @@ export type { PatientInvestigation } from './models/PatientInvestigation';
 export type { PatientLabReport } from './models/PatientLabReport';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
+export type { ResultedTest } from './models/ResultedTest';
 export type { StandardResponse } from './models/StandardResponse';
 export type { TestResult } from './models/TestResult';
 
