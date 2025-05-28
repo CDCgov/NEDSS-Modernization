@@ -3,6 +3,7 @@ export type PatientData = {
     adminComments: AdminComments;
     names: PatientName[];
     addresses: PatientAddress[];
+    phoneEmails: PatientPhoneEmail[];
 };
 
 export type AdminComments = {
@@ -38,5 +39,18 @@ export type PatientAddress = {
     county?: string;
     censusTract?: string;
     country?: string;
+    comments?: string;
+};
+
+export type PatientPhoneEmail = {
+    id: string;
+    asOf: string;
+    type: string;
+    use: string;
+    countryCode?: string;
+    phoneNumber?: string;
+    extension?: string;
+    email?: string;
+    url?: string;
     comments?: string;
 };

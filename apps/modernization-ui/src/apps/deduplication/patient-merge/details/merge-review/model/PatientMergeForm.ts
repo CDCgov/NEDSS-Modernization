@@ -3,6 +3,7 @@ export type PatientMergeForm = {
     adminComments: string; // corresponds to id of person to pull comments from
     names: NameId[];
     addresses: AddressId[];
+    phoneEmails: PhoneEmailId[];
 };
 
 export type NameId = {
@@ -11,5 +12,9 @@ export type NameId = {
 };
 
 export type AddressId = {
+    locatorId: string;
+};
+
+export type PhoneEmailId = {
     locatorId: string;
 };

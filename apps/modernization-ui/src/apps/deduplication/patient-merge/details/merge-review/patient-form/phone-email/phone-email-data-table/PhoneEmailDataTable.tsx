@@ -1,5 +1,4 @@
-import { displayAddressText } from 'address/display';
-import { PatientAddress, PatientData } from 'apps/deduplication/api/model/PatientData';
+import { PatientAddress, PatientData, PatientPhoneEmail } from 'apps/deduplication/api/model/PatientData';
 import { format, parseISO } from 'date-fns';
 import { Button } from 'design-system/button';
 import { Checkbox } from 'design-system/checkbox';
@@ -7,39 +6,40 @@ import { Icon } from 'design-system/icon';
 import { Column, DataTable } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
-import styles from './address-data-table.module.scss';
+import styles from './phone-email-data-table.module.scss';
+import { formatPhone } from '../formatPhone';
 
 type Props = {
     patientData: PatientData;
-    selectedAddress?: PatientAddress;
-    onViewAddress: (address: PatientAddress) => void;
+    selectedPhoneEmail?: PatientPhoneEmail;
+    onViewPhoneEmail: (phoneEmail: PatientPhoneEmail) => void;
 };
-export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }: Props) => {
+export const PhoneEmailDataTable = ({ patientData, selectedPhoneEmail, onViewPhoneEmail }: Props) => {
     const form = useFormContext<PatientMergeForm>();
     const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name: 'addresses'
+        name: 'phoneEmails'
     });
 
-    const handleAddressSelection = (address: PatientAddress) => {
-        const index = fields.findIndex((f) => f.locatorId === address.id);
+    const handlePhoneEmailSelection = (phoneEmail: PatientPhoneEmail) => {
+        const index = fields.findIndex((f) => f.locatorId === phoneEmail.id);
         if (index > -1) {
             remove(index);
         } else {
-            append({ locatorId: address.id });
+            append({ locatorId: phoneEmail.id });
         }
     };
 
-    const columns: Column<PatientAddress>[] = [
+    const columns: Column<PatientPhoneEmail>[] = [
         {
             id: 'selection',
             name: '',
             render: (a) => (
                 <Checkbox
-                    id={`address-select:${a.id}`}
+                    id={`phoneEmail-select:${a.id}`}
                     label=""
                     className={styles.checkBox}
-                    onChange={() => handleAddressSelection(a)}
+                    onChange={() => handlePhoneEmailSelection(a)}
                     selected={fields.some((f) => f.locatorId === a.id)}
                 />
             )
@@ -55,9 +55,9 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
             render: (n) => `${n.type}/${n.use}`
         },
         {
-            id: 'address',
-            name: 'Address',
-            render: (n) => displayAddressText(n)
+            id: 'phoneNumber',
+            name: 'Phone number',
+            render: (n) => formatPhone(n.phoneNumber)
         },
         {
             id: 'view-icon',
@@ -66,8 +66,8 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
                 <Button
                     unstyled
                     sizing="small"
-                    icon={<Icon name="visibility" className={selectedAddress === n ? styles.selectedName : ''} />}
-                    onClick={() => onViewAddress(n)}
+                    icon={<Icon name="visibility" className={selectedPhoneEmail === n ? styles.selectedName : ''} />}
+                    onClick={() => onViewPhoneEmail(n)}
                 />
             )
         }
@@ -78,7 +78,7 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
             className={styles.dataTable}
             sizing="small"
             columns={columns}
-            data={patientData.addresses ?? []}
+            data={patientData.phoneEmails ?? []}
         />
     );
 };

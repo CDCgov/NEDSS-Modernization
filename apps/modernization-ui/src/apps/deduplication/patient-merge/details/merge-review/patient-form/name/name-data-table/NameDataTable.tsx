@@ -5,15 +5,15 @@ import { Checkbox } from 'design-system/checkbox';
 import { Icon } from 'design-system/icon';
 import { Column, DataTable } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { PatientMergeForm } from '../../../../model/PatientMergeForm';
+import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import styles from './name-data-table.module.scss';
 
 type Props = {
     patientData: PatientData;
     selectedName?: PatientName;
-    onSelectName: (name: PatientName) => void;
+    onViewName: (name: PatientName) => void;
 };
-export const NameDataTable = ({ patientData, onSelectName, selectedName }: Props) => {
+export const NameDataTable = ({ patientData, onViewName, selectedName }: Props) => {
     const form = useFormContext<PatientMergeForm>();
     const { fields, append, remove } = useFieldArray({ control: form.control, name: 'names' });
 
@@ -69,7 +69,7 @@ export const NameDataTable = ({ patientData, onSelectName, selectedName }: Props
                     unstyled
                     sizing="small"
                     icon={<Icon name="visibility" className={selectedName === n ? styles.selectedName : ''} />}
-                    onClick={() => onSelectName(n)}
+                    onClick={() => onViewName(n)}
                 />
             )
         }

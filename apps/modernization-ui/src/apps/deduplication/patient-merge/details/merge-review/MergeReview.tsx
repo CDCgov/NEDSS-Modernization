@@ -7,6 +7,7 @@ import { AdminCommentsSelection } from './patient-form/admin-comments/AdminComme
 import { NameSelection } from './patient-form/name/NameSelection';
 import { PatientIdSelection } from './patient-form/patient-id/PatientIdSelection';
 import { AddressSelection } from './patient-form/address/AddressSelection';
+import { PhoneEmailSelection } from './patient-form/phone-email/PhoneEmailSelection';
 
 export type Props = {
     patientData: PatientData[];
@@ -41,6 +42,7 @@ export const MergeReview = ({ patientData, onPreview, onRemovePatient }: Props) 
                     <AdminCommentsSelection patientData={patientData} />
                     <NameSelection patientData={patientData} />
                     <AddressSelection patientData={patientData} />
+                    <PhoneEmailSelection patientData={patientData} />
                 </div>
             </main>
         </div>

@@ -1,6 +1,6 @@
 import { PatientName } from 'apps/deduplication/api/model/PatientData';
 import { format, parseISO } from 'date-fns';
-import { DetailsSection } from '../../../shared/details-section/DetailsSection';
+import { DetailsSection } from '../../shared/details-section/DetailsSection';
 
 type Props = {
     name: PatientName;

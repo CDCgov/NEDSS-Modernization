@@ -2,8 +2,8 @@ import { PatientData, PatientName } from 'apps/deduplication/api/model/PatientDa
 import { useState } from 'react';
 import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
-import { NameDataTable } from './name-data/name-data-table/NameDataTable';
-import { NameDetails } from './name-data/name-details/NameDetails';
+import { NameDataTable } from './name-data-table/NameDataTable';
+import { NameDetails } from './name-details/NameDetails';
 
 type Props = {
     patientData: PatientData[];
@@ -31,7 +31,7 @@ export const NameSelection = ({ patientData }: Props) => {
                 render={(p) => (
                     <NameDataTable
                         patientData={p}
-                        onSelectName={(n) => handleNameSelection(p.personUid, n)}
+                        onViewName={(n) => handleNameSelection(p.personUid, n)}
                         selectedName={selectedNames.get(p.personUid)}
                     />
                 )}
