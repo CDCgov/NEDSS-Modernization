@@ -1,11 +1,15 @@
-package gov.cdc.nbs.patient.profile.administrative;
+package gov.cdc.nbs.patient.demographics.administrative;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
 
 import java.time.LocalDate;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record Administrative(
+    @JsonProperty(required = true)
     @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
     LocalDate asOf,
     String comment

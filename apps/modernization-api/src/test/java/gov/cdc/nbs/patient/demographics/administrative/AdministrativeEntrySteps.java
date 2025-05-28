@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.administrative;
+package gov.cdc.nbs.patient.demographics.administrative;
 
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;

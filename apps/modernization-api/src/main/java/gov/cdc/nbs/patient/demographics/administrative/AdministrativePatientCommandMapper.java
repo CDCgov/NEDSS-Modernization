@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.administrative;
+package gov.cdc.nbs.patient.demographics.administrative;
 
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;

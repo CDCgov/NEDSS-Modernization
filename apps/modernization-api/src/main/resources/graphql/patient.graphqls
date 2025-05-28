@@ -15,7 +15,6 @@ type Mutation {
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientGeneralChangeResult!
     updatePatientBirthAndGender(input: UpdateBirthAndGenderInput!): PatientBirthAndGenderChangeResult!
     updatePatientMortality(input: MortalityInput!): PatientMortalityChangeResult!
-    updatePatientAdministrative(input: AdministrativeInput!): PatientAdministrativeChangeResult!
     deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     addPatientRace(input: RaceInput!): PatientRaceAddResult!
