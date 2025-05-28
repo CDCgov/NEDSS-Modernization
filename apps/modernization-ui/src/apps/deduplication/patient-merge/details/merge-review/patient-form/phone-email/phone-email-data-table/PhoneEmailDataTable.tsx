@@ -66,7 +66,7 @@ export const PhoneEmailDataTable = ({ patientData, selectedPhoneEmail, onViewPho
                 <Button
                     unstyled
                     sizing="small"
-                    icon={<Icon name="visibility" className={selectedPhoneEmail === n ? styles.selectedName : ''} />}
+                    icon={<Icon name="visibility" className={selectedPhoneEmail === n ? styles.selected : ''} />}
                     onClick={() => onViewPhoneEmail(n)}
                 />
             )

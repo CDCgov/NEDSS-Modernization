@@ -66,7 +66,7 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
                 <Button
                     unstyled
                     sizing="small"
-                    icon={<Icon name="visibility" className={selectedAddress === n ? styles.selectedName : ''} />}
+                    icon={<Icon name="visibility" className={selectedAddress === n ? styles.selected : ''} />}
                     onClick={() => onViewAddress(n)}
                 />
             )

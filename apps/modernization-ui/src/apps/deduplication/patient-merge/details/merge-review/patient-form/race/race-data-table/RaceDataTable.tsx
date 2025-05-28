@@ -65,7 +65,7 @@ export const RaceDataTable = ({ patientData, selectedRace, onViewRace }: Props) 
                 <Button
                     unstyled
                     sizing="small"
-                    icon={<Icon name="visibility" className={selectedRace === r ? styles.selectedName : ''} />}
+                    icon={<Icon name="visibility" className={selectedRace === r ? styles.selected : ''} />}
                     onClick={() => onViewRace(r)}
                 />
             )

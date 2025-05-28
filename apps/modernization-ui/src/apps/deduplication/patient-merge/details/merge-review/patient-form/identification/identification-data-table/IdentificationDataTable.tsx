@@ -67,9 +67,7 @@ export const IdentificationDataTable = ({ patientData, selectedIdentification, o
                 <Button
                     unstyled
                     sizing="small"
-                    icon={
-                        <Icon name="visibility" className={selectedIdentification === i ? styles.selectedName : ''} />
-                    }
+                    icon={<Icon name="visibility" className={selectedIdentification === i ? styles.selected : ''} />}
                     onClick={() => onViewIdentification(i)}
                 />
             )

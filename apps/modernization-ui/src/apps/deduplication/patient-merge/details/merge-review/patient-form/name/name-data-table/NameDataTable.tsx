@@ -68,7 +68,7 @@ export const NameDataTable = ({ patientData, onViewName, selectedName }: Props) 
                 <Button
                     unstyled
                     sizing="small"
-                    icon={<Icon name="visibility" className={selectedName === n ? styles.selectedName : ''} />}
+                    icon={<Icon name="visibility" className={selectedName === n ? styles.selected : ''} />}
                     onClick={() => onViewName(n)}
                 />
             )
