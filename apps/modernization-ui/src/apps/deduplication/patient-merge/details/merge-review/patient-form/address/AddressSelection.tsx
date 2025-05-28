@@ -37,7 +37,7 @@ export const AddressSelection = ({ patientData }: Props) => {
                 )}
             />
             <DetailsRow
-                id="patient-name"
+                id="patient-address"
                 patientData={patientData}
                 render={(p) => {
                     const address = selectedAddresses.get(p.personUid);

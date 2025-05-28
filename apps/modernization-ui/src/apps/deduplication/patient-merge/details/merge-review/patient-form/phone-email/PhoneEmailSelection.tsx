@@ -37,7 +37,7 @@ export const PhoneEmailSelection = ({ patientData }: Props) => {
                 )}
             />
             <DetailsRow
-                id="patient-name"
+                id="patient-phone-email"
                 patientData={patientData}
                 render={(p) => {
                     const phoneEmail = selectedPhoneEmail.get(p.personUid);

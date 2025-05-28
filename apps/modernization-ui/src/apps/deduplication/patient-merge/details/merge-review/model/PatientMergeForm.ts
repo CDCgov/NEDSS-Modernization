@@ -4,6 +4,7 @@ export type PatientMergeForm = {
     names: NameId[];
     addresses: AddressId[];
     phoneEmails: PhoneEmailId[];
+    identifications: IdentificationId[];
 };
 
 export type NameId = {
@@ -17,4 +18,9 @@ export type AddressId = {
 
 export type PhoneEmailId = {
     locatorId: string;
+};
+
+export type IdentificationId = {
+    personUid: string;
+    sequence: string;
 };

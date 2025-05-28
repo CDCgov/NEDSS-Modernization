@@ -4,6 +4,7 @@ export type PatientData = {
     names: PatientName[];
     addresses: PatientAddress[];
     phoneEmails: PatientPhoneEmail[];
+    identifications: PatientIdentification[];
 };
 
 export type AdminComments = {
@@ -53,4 +54,13 @@ export type PatientPhoneEmail = {
     email?: string;
     url?: string;
     comments?: string;
+};
+
+export type PatientIdentification = {
+    personUid: string;
+    sequence: string;
+    asOf: string;
+    type: string;
+    assigningAuthority?: string;
+    value: string;
 };
