@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.file.summary.drr.morbidity;
 
+import gov.cdc.nbs.patient.events.report.morbidity.MorbidityReportResultedTestResolver;
 import gov.cdc.nbs.patient.events.tests.ResultedTest;
 import gov.cdc.nbs.patient.events.tests.ResultedTestResolver;
 import gov.cdc.nbs.patient.file.summary.drr.DocumentRequiringReview;
@@ -16,12 +17,12 @@ public class MorbidityReportRequiringReviewResolver {
 
   private final MorbidityReportRequiringReviewFinder reportFinder;
   private final MorbidityReportTreatmentFinder treatmentFinder;
-  private final ResultedTestResolver resultedTestResolver;
+  private final MorbidityReportResultedTestResolver resultedTestResolver;
 
   MorbidityReportRequiringReviewResolver(
       final MorbidityReportRequiringReviewFinder reportFinder,
       final MorbidityReportTreatmentFinder treatmentFinder,
-      final ResultedTestResolver resultedTestResolver
+      final MorbidityReportResultedTestResolver resultedTestResolver
   ) {
     this.reportFinder = reportFinder;
     this.treatmentFinder = treatmentFinder;

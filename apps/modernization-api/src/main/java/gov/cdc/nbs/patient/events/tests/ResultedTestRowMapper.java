@@ -38,39 +38,42 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
   @Override
   public ResultedTest mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
     String name = resultSet.getString(columns.name());
-    String coded = resultSet.getString(columns.coded());
-    String text = maybeDisplayTextResult(columns, resultSet);
-    String numeric = maybeDisplayNumericResult(columns, resultSet);
-    String description = Stream.of(coded, text, numeric)
+    String reference = maybeDisplayReferenceRange(columns, resultSet);
+
+    Optional<String> status = maybeDisplayStatus(columns, resultSet)
+        .filter(_s -> reference == null);
+
+    String coded = Optional.ofNullable(resultSet.getString(columns.coded()))
+        .map(value -> status.map(value::concat).orElse(value))
+        .orElse(null);
+
+
+    String text = Optional.ofNullable(resultSet.getString(columns.text()))
+        .map(value -> status.map(value::concat).orElse(value))
+        .orElse(null);
+
+    String numeric = Optional.ofNullable(maybeDisplayNumericResult(columns, resultSet))
+        .map(value -> status.map(value::concat).orElse(value))
+        .orElse(null);
+
+    String result = Stream.of(coded, text, numeric)
         .filter(Objects::nonNull)
         .collect(joining("\n"));
 
+
     return new ResultedTest(
         name,
-        description
+        result,
+        reference
     );
   }
 
-  private static String maybeDisplayTextResult(final Column columns, final ResultSet resultSet) throws SQLException {
-    StringBuilder builder = new StringBuilder();
-    String text = resultSet.getString(columns.text());
-
-    if (text != null) {
-      builder.append(text);
-
-      maybeDisplayStatus(columns, resultSet).ifPresent(builder::append);
-    }
-
-    return builder.isEmpty() ? null : builder.toString();
-  }
-
   private static String maybeDisplayNumericResult(final Column columns, final ResultSet resultSet) throws SQLException {
-    StringBuilder builder = new StringBuilder();
 
     BigDecimal numeric = resultSet.getBigDecimal(columns.numeric());
-    String unit = resultSet.getString(columns.unit());
 
     if (numeric != null) {
+      StringBuilder builder = new StringBuilder();
       String comparator = resultSet.getString(columns.comparator());
 
       if (comparator != null) {
@@ -80,25 +83,21 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
       int scale = resultSet.getInt(columns.scale());
       builder.append(numeric.setScale(scale, RoundingMode.HALF_EVEN));
 
+      String unit = resultSet.getString(columns.unit());
       if (unit != null) {
         builder.append(" ").append(unit);
       }
 
-
-      String range = maybeDisplayRange(columns, resultSet);
-
-      if (range != null) {
-        builder.append("\n")
-            .append(range);
-      }
-
-
+      return builder.toString();
     }
-    return builder.isEmpty() ? null : builder.toString();
+    return null;
   }
 
-  private static String maybeDisplayRange(final Column columns, final ResultSet resultSet) throws SQLException {
-    StringBuilder builder = new StringBuilder();
+  private static String maybeDisplayReferenceRange(
+      final Column columns,
+      final ResultSet resultSet
+  )
+      throws SQLException {
 
     String high = resultSet.getString(columns.high());
     String low = resultSet.getString(columns.low());
@@ -109,17 +108,16 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
           .collect(
               joining(
                   "-",
-                  "Reference Range - (",
+                  "(",
                   ")"
               )
           );
 
-      builder.append(range);
 
-      maybeDisplayStatus(columns, resultSet).ifPresent(builder::append);
+      return maybeDisplayStatus(columns, resultSet).map(range::concat).orElse(range);
     }
 
-    return builder.isEmpty() ? null : builder.toString();
+    return null;
   }
 
   private static Optional<String> maybeDisplayStatus(final Column columns, final ResultSet resultSet)

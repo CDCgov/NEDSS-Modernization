@@ -59,6 +59,9 @@ public class MorbidityReportMother {
         :reportedOn,
         :condition
       );
+      
+      -- each Morbidity Report has an associated Observation that Resulted Tests are attached to
+      
       """;
 
   private static final String DELETE_IN = """
