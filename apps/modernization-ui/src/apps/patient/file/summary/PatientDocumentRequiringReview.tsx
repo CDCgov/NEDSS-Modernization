@@ -22,7 +22,8 @@ const renderReporting = (value: DocumentRequiringReview) => {
                 <>
                     <strong>Ordering provider:</strong>
                     <br />
-                    {value.orderingProvider}
+                    {value.orderingProvider.prefix}
+                    {value.orderingProvider.first} {value.orderingProvider.last}
                     <br />
                 </>
             )}
@@ -38,18 +39,7 @@ const renderReporting = (value: DocumentRequiringReview) => {
 };
 
 const renderDescription = (value: DocumentRequiringReview) => {
-    return (
-        <>
-            {value.descriptions?.map((description) => (
-                <>
-                    <strong>{description.title}</strong>
-                    <br />
-                    {description.value}
-                    <br />
-                </>
-            ))}
-        </>
-    );
+    return <>{value.type === 'Case report' && <>{value.condition}</>}</>;
 };
 
 const dateTransform = (value: string) => {
@@ -64,12 +54,26 @@ const dateTransform = (value: string) => {
     });
 };
 
-const renderEventId = (value: DocumentRequiringReview) => {
-    var classicUrl = '';
-    if (value.type == 'Lab report') {
-        classicUrl = '/nbs/api/profile/{patient}/document/{identifier}';
+const resolveUrl = (value: DocumentRequiringReview) => {
+    const { id } = usePatient();
+    switch (value.type) {
+        case 'Case Report':
+            return `/nbs/api/profile/${id}/report/document/${value.id}`;
+        case 'Morbidity Report':
+            return `/nbs/api/profile/${id}/report/morbidity/${value.id}`;
+        default:
+            return '';
     }
-    return <ClassicLink url=""></ClassicLink>;
+};
+
+const renderEventId = (value: DocumentRequiringReview) => {
+    const classicUrl = resolveUrl(value);
+
+    return (
+        <ClassicLink id="eventId" url={classicUrl} destination="current">
+            {value.local}
+        </ClassicLink>
+    );
 };
 
 export const PatientDocumentRequiringReview = () => {
@@ -78,7 +82,7 @@ export const PatientDocumentRequiringReview = () => {
     const { documents } = usePatientFileDocumentRequiringReview(id);
 
     const columns: Column<DocumentRequiringReview>[] = [
-        { id: 'id', name: 'Event ID', render: (value: DocumentRequiringReview) => <>{value.local}</> },
+        { id: 'id', name: 'Event ID', render: (value: DocumentRequiringReview) => <>{renderEventId(value)}</> },
         { id: 'type', name: 'Document type', render: (value: DocumentRequiringReview) => <>{value.type}</> },
         {
             id: 'dateReceived',
