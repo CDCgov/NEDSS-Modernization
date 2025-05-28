@@ -3,12 +3,13 @@ import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { PatientLabReport } from 'generated';
-import { usePatientLabReports } from './usePatientLabReports';
-import { usePatient } from '../../usePatient';
+// import { usePatientLabReports } from './usePatientLabReports';
+// import { usePatient } from '../../usePatient';
+import { mockPatientLabReports } from './mockPatientLabReports';
 
 const LabReports = () => {
-    const patient = usePatient();
-    const { patientLabReports } = usePatientLabReports(patient.id);
+    // const patient = usePatient();
+    // const { patientLabReports } = usePatientLabReports(patient.id);
 
     const EVENT_ID = { id: 'patient-file-lab-reports-eventId', name: 'Event ID' };
     const DATE_RECEIVED = { id: 'patient-file-lab-reports-dateReceived', name: 'Date received' };
@@ -82,8 +83,8 @@ const LabReports = () => {
             <TableCard
                 id="patient-file-lab-reports-table-card"
                 title="Lab reports"
-                data={patientLabReports || []}
-                defaultCollapsed={patientLabReports && patientLabReports.length > 0 ? false : true}
+                data={mockPatientLabReports || []}
+                defaultCollapsed={mockPatientLabReports && mockPatientLabReports.length > 0 ? false : true}
                 columns={columns}
                 columnPreferencesKey="patient-file-lab-reports-table-card-column-preferences"
                 defaultColumnPreferences={columnPreferences}
