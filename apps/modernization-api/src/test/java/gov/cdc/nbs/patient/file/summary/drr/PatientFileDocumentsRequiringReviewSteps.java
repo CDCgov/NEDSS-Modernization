@@ -218,11 +218,11 @@ public class PatientFileDocumentsRequiringReviewSteps {
   }
 
 
-  @Then("the {documentType} requiring review contains a(n) {string} test with a result containing {string}")
+  @Then("the {documentType} requiring review contains a(n) {string} test with the result {string}")
   public void hasNumericResultedTest(final String type, final String test, final String result) throws Exception {
     this.response.active()
         .andExpect(
-            jsonPath("$.[?(@.type=='%s')].resultedTests[?(@.name=='%s')].description", type, test)
+            jsonPath("$.[?(@.type=='%s')].resultedTests[?(@.name=='%s')].result", type, test)
                 .value(hasItem(containsStringIgnoringCase(result)))
         );
   }

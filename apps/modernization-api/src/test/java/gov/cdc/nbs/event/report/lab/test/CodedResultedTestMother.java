@@ -1,7 +1,6 @@
 package gov.cdc.nbs.event.report.lab.test;
 
 import gov.cdc.nbs.event.report.lab.LabReportIdentifier;
-import gov.cdc.nbs.event.report.morbidity.MorbidityReportIdentifier;
 import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import io.cucumber.spring.ScenarioScope;
@@ -35,7 +34,7 @@ class CodedResultedTestMother {
        )
        select
          :identifier,
-         :type,
+         'LabReport',
          'Result',
          lab_test_cd,
          lab_test_desc_txt,
@@ -110,42 +109,17 @@ class CodedResultedTestMother {
     this.cleaner.clean();
   }
 
-  private void create(
-      final long observation,
-      final String type,
-      final String test,
-      final String result
-  ) {
-
+  void create(final LabReportIdentifier report, final String test, final String result) {
     long identifier = idGenerator.next();
 
     this.client.sql(CREATE)
         .param("identifier", identifier)
-        .param("observation", observation)
-        .param("type", type)
+        .param("observation", report.identifier())
         .param("test", test)
         .param("result", result)
         .update();
 
     this.cleaner.include(identifier);
-
   }
 
-  void create(final LabReportIdentifier report, final String test, final String result) {
-    create(
-        report.identifier(),
-        "LabReport",
-        test,
-        result
-    );
-  }
-
-  void create(final MorbidityReportIdentifier report, final String test, final String result) {
-    create(
-        report.identifier(),
-        null,
-        test,
-        result
-    );
-  }
 }
