@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Administrative } from '../models/Administrative';
 import type { DocumentRequiringReview } from '../models/DocumentRequiringReview';
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientFile } from '../models/PatientFile';
@@ -43,6 +44,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Administrative Information
+     * Provides the administrative information for a patient
+     * @returns Administrative OK
+     * @throws ApiError
+     */
+    public static administrative({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Administrative> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/administrative',
             path: {
                 'patient': patient,
             },
