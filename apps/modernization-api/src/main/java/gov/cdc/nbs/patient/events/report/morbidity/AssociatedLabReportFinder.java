@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.events.report.morbidity;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import gov.cdc.nbs.sql.MultiMapResultSetExtractor;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -15,7 +16,7 @@ class AssociatedLabReportFinder {
       select
           [relationship].target_act_uid   as [morbidity],
           [relationship].source_act_uid   as [lab_report]
-      from Act_relationship [relationship]\s
+      from Act_relationship [relationship]
       
       where   [relationship].target_act_uid in (:identifiers)
           and [relationship].target_class_cd = 'OBS'
@@ -37,6 +38,12 @@ class AssociatedLabReportFinder {
   }
 
   Multimap<Long, Long> find(final Collection<Long> identifiers) {
+    return identifiers.isEmpty()
+        ? ArrayListMultimap.create()
+        : execute(identifiers);
+  }
+
+  private Multimap<Long, Long> execute(final Collection<Long> identifiers) {
     return this.client.sql(QUERY)
         .param("identifiers", identifiers)
         .query(extractor);

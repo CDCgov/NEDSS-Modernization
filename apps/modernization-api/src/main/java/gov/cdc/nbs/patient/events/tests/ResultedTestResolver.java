@@ -74,18 +74,18 @@ public class ResultedTestResolver {
         valueMapper
     );
 
-
   }
 
   public Map<Long, Collection<ResultedTest>> resolve(final Collection<Long> identifiers) {
-    if (identifiers.isEmpty()) {
-      return Collections.emptyMap();
-    }
+    return identifiers.isEmpty()
+        ? Collections.emptyMap()
+        : execute(identifiers);
+  }
 
+  private Map<Long, Collection<ResultedTest>> execute(final Collection<Long> identifiers) {
     return this.client.sql(QUERY)
         .param("identifiers", identifiers)
         .query(extractor)
         .asMap();
   }
-
 }

@@ -7,6 +7,7 @@ import gov.cdc.nbs.patient.events.tests.ResultedTestResolver;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 @Component
@@ -25,9 +26,16 @@ public class MorbidityReportResultedTestResolver {
   }
 
   public Map<Long, Collection<ResultedTest>> resolve(final Collection<Long> identifiers) {
+    if (identifiers.isEmpty()) {
+      return Collections.emptyMap();
+    }
 
     //  find the morbidity report -> lab report association
     Multimap<Long, Long> associations = this.associationFinder.find(identifiers);
+
+    if (associations.isEmpty()) {
+      return Collections.emptyMap();
+    }
 
     //  pass the identifiers of the lab reports to the resolver
     Collection<Long> labs = associations.values();
