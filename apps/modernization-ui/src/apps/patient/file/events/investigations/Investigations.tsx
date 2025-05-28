@@ -13,7 +13,13 @@ import { ClassicLink } from 'classic';
 
 const displayTag = (value: string | undefined, status: boolean, variant: TagVariant) => {
     if (!value) return '';
-    return status ? <Tag variant={variant}>{value}</Tag> : value;
+    return status ? (
+        <Tag size="small" variant={variant}>
+            {value}
+        </Tag>
+    ) : (
+        value
+    );
 };
 
 const columns = (id: number): Column<Investigation>[] => [
