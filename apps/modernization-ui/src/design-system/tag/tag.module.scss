@@ -21,7 +21,7 @@
 }
 
 .success {
-    @include tag(colors.$base-white, colors.$success);
+    @include tag(colors.$base-white, colors.$success-dark);
 }
 
 .warning {

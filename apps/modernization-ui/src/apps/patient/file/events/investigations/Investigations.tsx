@@ -8,70 +8,77 @@ import { usePatientInvestigations } from './usePatientInvestigations';
 import { usePatient } from '../../usePatient';
 import { Tag } from 'design-system/tag';
 import { TagVariant } from 'design-system/tag/Tag';
+import { ColumnPreference } from 'design-system/table/preferences';
+import { ClassicLink } from 'classic';
 
 const displayTag = (value: string | undefined, status: boolean, variant: TagVariant) => {
     if (!value) return '';
     return status ? <Tag variant={variant}>{value}</Tag> : value;
 };
 
-const columns: Column<Investigation>[] = [
+const columns = (id: number): Column<Investigation>[] => [
     {
-        id: Headers.Investigation,
+        id: 'investigationId',
         name: Headers.Investigation,
         sortable: true,
-        render: (value) => value.investigationId
+        render: (value) => (
+            <ClassicLink url={`/patient/${id}/investigation/${value.investigationId}`}>
+                {value.investigationId}
+            </ClassicLink>
+        )
     },
     {
-        id: Headers.StartDate,
+        id: 'startedOn',
         name: Headers.StartDate,
         sortable: true,
         render: (value) => value?.startedOn && format(value.startedOn, 'MM/dd/yyyy'),
         sortIconType: 'numeric'
     },
     {
-        id: Headers.Condition,
-        name: Headers.Condition,
-        sortable: true,
-        render: (value) => value.condition,
-        sortIconType: 'alpha'
-    },
-    {
-        id: Headers.Status,
+        id: 'status',
         name: Headers.Status,
         sortable: true,
         render: (value) => displayTag(value.status, value.status === 'Open', 'success'),
         sortIconType: 'alpha'
     },
     {
-        id: Headers.CaseStatus,
+        id: 'condition',
+        name: Headers.Condition,
+        sortable: true,
+        render: (value) => value.condition,
+        sortIconType: 'alpha'
+    },
+
+    {
+        id: 'caseStatus',
         name: Headers.CaseStatus,
         sortable: true,
         render: (value) => value.caseStatus,
         sortIconType: 'alpha'
     },
     {
-        id: Headers.Notification,
+        id: 'notification',
         name: Headers.Notification,
         sortable: true,
         render: (value) => displayTag(value.notification, value.notification === 'Rejected', 'error'),
         sortIconType: 'alpha'
     },
     {
-        id: Headers.Jurisdiction,
+        id: 'jurisdiction',
         name: Headers.Jurisdiction,
         sortable: true,
         render: (value) => value.jurisdiction,
         sortIconType: 'alpha'
     },
     {
-        id: Headers.Investigator,
+        id: 'investigatorName',
         name: Headers.Investigator,
         sortable: true,
         render: (value) => (value.investigatorName ? displayName('short')(value.investigatorName) : ''),
         sortIconType: 'alpha'
     },
     {
-        id: Headers.CoInfection,
+        id: 'coInfection',
         name: Headers.CoInfection,
         sortable: true,
         render: (value) => value.coInfection,
@@ -83,12 +90,19 @@ export const Investigations = () => {
     const { id } = usePatient();
     const { data } = usePatientInvestigations(id);
 
+    const columnPreferences: ColumnPreference[] = columns(id).map((column, index) => ({
+        id: column.id,
+        name: column.name,
+        moveable: index !== 0,
+        toggleable: index !== 0
+    }));
+
     return (
         <TableCard
             title="Investigations"
             id={'investigations'}
             columnPreferencesKey={'investigations'}
-            columns={columns}
+            columns={columns(id)}
             actions={[
                 {
                     sizing: 'small',
@@ -105,6 +119,7 @@ export const Investigations = () => {
                 }
             ]}
             data={data ?? []}
+            defaultColumnPreferences={columnPreferences}
         />
     );
 };
