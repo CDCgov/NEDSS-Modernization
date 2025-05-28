@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 
 class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringReview> {
 
@@ -71,8 +70,7 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
         reportingFacility,
         orderingProvider,
         null,
-        condition,
-        Collections.emptyList()
+        condition
     );
   }
 

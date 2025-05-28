@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { DisplayableSimpleName } from './DisplayableSimpleName';
+import type { ResultedTest } from './ResultedTest';
 export type DocumentRequiringReview = {
     id?: number;
     local?: string;
@@ -16,5 +17,6 @@ export type DocumentRequiringReview = {
     sendingFacility?: string;
     condition?: string;
     treatments?: Array<string>;
+    resultedTests?: Array<ResultedTest>;
 };
 

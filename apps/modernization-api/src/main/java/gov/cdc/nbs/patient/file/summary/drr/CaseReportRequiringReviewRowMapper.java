@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 
 class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringReview> {
 
@@ -59,8 +58,7 @@ class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringR
         null,
         null,
         sendingFacility,
-        condition,
-        Collections.emptyList()
+        condition
     );
   }
 
