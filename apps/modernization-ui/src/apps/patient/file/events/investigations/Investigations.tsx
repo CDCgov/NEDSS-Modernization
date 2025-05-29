@@ -10,6 +10,8 @@ import { TagVariant } from 'design-system/tag/Tag';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { ClassicLink } from 'classic';
 import { internalizeDate } from 'date';
+import { useMemo } from 'react';
+import { mapOr } from 'utils/mapping';
 
 const displayTag = (value: string | undefined, status: boolean, variant: TagVariant) => {
     if (!value) return '';
@@ -22,11 +24,23 @@ const displayTag = (value: string | undefined, status: boolean, variant: TagVari
     );
 };
 
-const columns = (id: number): Column<Investigation>[] => [
+const INVESTIGATION_ID = { id: 'investigationId', name: Headers.Investigation };
+const START_DATE = { id: 'startedOn', name: Headers.StartDate };
+const STATUS = { id: 'status', name: Headers.Status };
+const CONDITION = { id: 'condition', name: Headers.Condition };
+const CASE_STATUS = { id: 'caseStatus', name: Headers.CaseStatus };
+const NOTIFICATION = { id: 'notification', name: Headers.Notification };
+const JURISDICTION = { id: 'jurisdiction', name: Headers.Jurisdiction };
+const INVESTIGATOR = { id: 'investigatorName', name: Headers.Investigator };
+const CO_INFECTION = { id: 'coInfection', name: Headers.CoInfection };
+
+const maybeDisplayName = mapOr(displayName('short'), undefined);
+
+const createColumns = (id: number): Column<Investigation>[] => [
     {
-        id: 'investigationId',
-        name: Headers.Investigation,
+        ...INVESTIGATION_ID,
         sortable: true,
+        value: (row) => row.investigationId,
         render: (value) => (
             <ClassicLink url={`/patient/${id}/investigation/${value.investigationId}`}>
                 {value.investigationId}
@@ -34,76 +48,74 @@ const columns = (id: number): Column<Investigation>[] => [
         )
     },
     {
-        id: 'startedOn',
-        name: Headers.StartDate,
+        ...START_DATE,
         sortable: true,
+        value: (row) => row.startedOn,
         render: (value) => internalizeDate(value.startedOn),
         sortIconType: 'numeric'
     },
     {
-        id: 'status',
-        name: Headers.Status,
+        ...STATUS,
         sortable: true,
+        value: (row) => row.status,
         render: (value) => displayTag(value.status, value.status === 'Open', 'success'),
         sortIconType: 'alpha'
     },
     {
-        id: 'condition',
-        name: Headers.Condition,
+        ...CONDITION,
         sortable: true,
-        render: (value) => <b>{value.condition}</b>,
-        sortIconType: 'alpha'
+        value: (row) => row.condition,
+        render: (value) => <b>{value.condition}</b>
     },
-
     {
-        id: 'caseStatus',
-        name: Headers.CaseStatus,
+        ...CASE_STATUS,
         sortable: true,
-        render: (value) => value.caseStatus,
+        value: (row) => row.caseStatus,
+        render: (value) => displayTag(value.caseStatus, value.caseStatus === 'Open', 'success'),
         sortIconType: 'alpha'
     },
     {
-        id: 'notification',
-        name: Headers.Notification,
+        ...NOTIFICATION,
         sortable: true,
+        value: (row) => row.notification,
         render: (value) => displayTag(value.notification, value.notification === 'Rejected', 'error'),
         sortIconType: 'alpha'
     },
     {
-        id: 'jurisdiction',
-        name: Headers.Jurisdiction,
+        ...JURISDICTION,
         sortable: true,
-        render: (value) => value.jurisdiction,
-        sortIconType: 'alpha'
+        value: (row) => row.jurisdiction
     },
     {
-        id: 'investigatorName',
-        name: Headers.Investigator,
+        ...INVESTIGATOR,
         sortable: true,
-        render: (value) => (value.investigatorName ? displayName('short')(value.investigatorName) : ''),
-        sortIconType: 'alpha'
+        value: (row) => maybeDisplayName(row.investigatorName),
+        render: (value) => (value.investigatorName ? displayName('short')(value.investigatorName) : '')
     },
     {
-        id: 'coInfection',
-        name: Headers.CoInfection,
+        ...CO_INFECTION,
         sortable: true,
-        render: (value) => value.coInfection,
-        sortIconType: 'numeric'
+        value: (row) => row.coInfection
     }
+];
+
+const columnPreferences: ColumnPreference[] = [
+    { ...INVESTIGATION_ID },
+    { ...START_DATE, moveable: true, toggleable: true },
+    { ...STATUS, moveable: true, toggleable: true },
+    { ...CONDITION, moveable: true, toggleable: true },
+    { ...CASE_STATUS, moveable: true, toggleable: true },
+    { ...NOTIFICATION, moveable: true, toggleable: true },
+    { ...JURISDICTION, moveable: true, toggleable: true },
+    { ...INVESTIGATOR, moveable: true, toggleable: true },
+    { ...CO_INFECTION, moveable: true, toggleable: true }
 ];
 
 export const Investigations = () => {
     const { id } = usePatient();
     const { data } = usePatientInvestigations(id);
 
-    const columnPreferences: ColumnPreference[] = columns(id).map((column, index) => {
-        return {
-            id: column.id,
-            name: column.name,
-            moveable: index !== 0,
-            toggleable: index !== 0
-        };
-    });
+    const columns = useMemo(() => createColumns(id), [id]);
 
     return (
         <TableCard
@@ -112,7 +124,7 @@ export const Investigations = () => {
             id={'investigations'}
             columnPreferencesKey={'patient.file.open-investigations.preferences.${column.id}'}
             defaultCollapsed={!data?.length}
-            columns={columns(id)}
+            columns={columns}
             actions={[
                 {
                     sizing: 'small',
