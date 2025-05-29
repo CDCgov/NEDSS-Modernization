@@ -1,45 +1,30 @@
 package gov.cdc.nbs.patient.profile.address;
 
-import net.datafaker.Faker;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.patient.PatientCreateAssertions;
 import gov.cdc.nbs.patient.PatientMother;
-import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
 import gov.cdc.nbs.patient.profile.address.change.NewPatientAddressInput;
 import gov.cdc.nbs.patient.profile.address.change.UpdatePatientAddressInput;
 import gov.cdc.nbs.testing.support.Active;
-import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PatientProfileAddressSteps {
 
-  private final Faker faker = new Faker(Locale.of("en-us"));
-
   private final PatientMother mother;
 
   private final Active<PatientIdentifier> activePatient;
 
   private final PatientAddressResolver resolver;
-
-  private final Active<PatientInput> activeInput;
-
-  private final TestPatient testPatient;
 
   private final Active<NewPatientAddressInput> newRequest;
 
@@ -49,15 +34,11 @@ public class PatientProfileAddressSteps {
       final PatientMother mother,
       final Active<PatientIdentifier> activePatient,
       final PatientAddressResolver resolver,
-      final Active<PatientInput> activeInput,
-      final TestPatient testPatient,
       final Active<NewPatientAddressInput> newRequest,
       final Active<UpdatePatientAddressInput> updateRequest) {
     this.mother = mother;
     this.activePatient = activePatient;
     this.resolver = resolver;
-    this.activeInput = activeInput;
-    this.testPatient = testPatient;
     this.newRequest = newRequest;
     this.updateRequest = updateRequest;
   }
@@ -121,37 +102,6 @@ public class PatientProfileAddressSteps {
         null,
         null,
         zip);
-
-  }
-
-  @Given("the new patient's address is entered")
-  public void the_new_patient_address_is_entered() {
-
-    PatientInput.PostalAddress address = new PatientInput.PostalAddress(
-        faker.address().streetAddress(),
-        null,
-        faker.address().city(),
-        RandomUtil.getRandomStateCode(),
-        RandomUtil.getRandomString(),
-        RandomUtil.country(),
-        RandomUtil.getRandomNumericString(15),
-        null);
-
-    this.activeInput.active().getAddresses().add(address);
-  }
-
-  @Then("the new patient has the entered address")
-  @Transactional
-  public void the_new_patient_has_the_entered_address() {
-    Person actual = testPatient.managed();
-
-    Collection<PostalEntityLocatorParticipation> addresses = actual.addresses();
-
-    if (!addresses.isEmpty()) {
-
-      assertThat(addresses)
-          .satisfiesExactlyInAnyOrder(PatientCreateAssertions.containsAddresses(activeInput.active().getAddresses()));
-    }
 
   }
 
@@ -243,7 +193,7 @@ public class PatientProfileAddressSteps {
 
     assertThatThrownBy(
         () -> this.resolver.resolve(profile, page))
-            .isInstanceOf(AccessDeniedException.class);
+        .isInstanceOf(AccessDeniedException.class);
   }
 
   @Given("the patient has a(n) {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
@@ -271,7 +221,8 @@ public class PatientProfileAddressSteps {
 
   }
 
-  @Given("the patient has a(n) {addressType} - {addressUse} address at {string} {string} {state} {postalCode} as of {localDate}")
+  @Given(
+      "the patient has a(n) {addressType} - {addressUse} address at {string} {string} {state} {postalCode} as of {localDate}")
   public void the_patient_has_an_address_as_of_at(
       final String type,
       final String use,

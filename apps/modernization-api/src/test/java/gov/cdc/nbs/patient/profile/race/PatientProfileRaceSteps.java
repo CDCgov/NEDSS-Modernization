@@ -1,20 +1,14 @@
 package gov.cdc.nbs.patient.profile.race;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.patient.PatientCreateAssertions;
-import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
-import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.data.domain.Page;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -24,8 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PatientProfileRaceSteps {
 
-  private final Active<PatientInput> input;
-  private final TestPatient testPatient;
   private final Active<PatientIdentifier> activePatient;
   private final PatientRaceResolver resolver;
 
@@ -33,44 +25,24 @@ public class PatientProfileRaceSteps {
   private final Active<ResultActions> response;
 
   PatientProfileRaceSteps(
-      final Active<PatientInput> input,
-      final TestPatient testPatient,
       final Active<PatientIdentifier> activePatient,
       final PatientRaceResolver resolver,
       final PatientProfileRaceRequester requester,
       final Active<ResultActions> response
   ) {
-    this.input = input;
-    this.testPatient = testPatient;
     this.activePatient = activePatient;
     this.resolver = resolver;
     this.requester = requester;
     this.response = response;
   }
 
-  @Given("the new patient's race is entered")
-  public void the_new_patient_race_is_entered() {
-    PatientInput active = this.input.active();
 
-    active.getRaces().add(RandomUtil.getRandomString());
-  }
 
   @Given("I view the Patient Profile Races")
   public void i_view_the_patient_profile_races() {
     this.activePatient.maybeActive()
         .map(this.requester::races)
         .ifPresent(this.response::active);
-  }
-
-  @Then("the new patient has the entered race")
-  @Transactional
-  public void the_new_patient_has_the_entered_race() {
-    Person actual = testPatient.managed();
-
-    if (!actual.getRaces().isEmpty()) {
-      assertThat(actual.getRaces())
-          .satisfiesExactly(PatientCreateAssertions.containsRaceCategories(this.input.active().getRaces()));
-    }
   }
 
   @Then("the profile has associated races")

@@ -1,6 +1,0 @@
-query phoneTypes{
-    phoneTypes{
-        value
-        name
-    }
-}
