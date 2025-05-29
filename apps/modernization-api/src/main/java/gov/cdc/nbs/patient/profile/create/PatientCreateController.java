@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/nbs/api/profile")
-@PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('ADD-PATIENT')")
+@PreAuthorize("hasAuthority('ADD-PATIENT')")
 @SuppressWarnings("squid:S107")
 public class PatientCreateController {
 

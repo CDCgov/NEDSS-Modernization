@@ -1,7 +1,0 @@
-query states{
-    states{
-        value
-        name
-        abbreviation
-    }
-}

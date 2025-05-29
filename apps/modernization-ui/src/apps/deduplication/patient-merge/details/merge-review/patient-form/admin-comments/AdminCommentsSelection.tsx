@@ -1,6 +1,5 @@
 import { PatientData } from 'apps/deduplication/api/model/PatientData';
-import { SectionLabel } from '../shared/section-label/SectionLabel';
-import styles from './admin-comment-selection.module.scss';
+import { Section } from '../shared/section/Section';
 import { AdminComment } from './admin-comment/AdminComment';
 
 type Props = {
@@ -8,13 +7,10 @@ type Props = {
 };
 export const AdminCommentsSelection = ({ patientData }: Props) => {
     return (
-        <section className={styles.adminCommentSelection}>
-            {patientData.map((p) => (
-                <div key={`admin-comment: $${p.personUid}`} className={styles.entry}>
-                    <SectionLabel label="ADMINISTRATIVE COMMENTS" />
-                    <AdminComment personUid={p.personUid} adminComments={p.adminComments} />
-                </div>
-            ))}
-        </section>
+        <Section
+            title="ADMINISTRATIVE COMMENTS"
+            patientData={patientData}
+            render={(p) => <AdminComment personUid={p.personUid} adminComments={p.adminComments} />}
+        />
     );
 };

@@ -1,7 +1,0 @@
-query counties($state: String){
-    counties(state: $state){
-        value
-        name
-        group
-    }
-}

@@ -3,7 +3,7 @@ import { Condition } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table';
 import { usePagination } from 'pagination';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 
 enum ConditionColumn {
     Condition = 'Condition',

@@ -17,7 +17,7 @@ type Interaction = {
     preferences: ColumnPreference[];
     save: (preferences: ColumnPreference[]) => void;
     reset: () => void;
-    apply: <C extends HasPreference>(colums: C[]) => C[];
+    apply: <C extends HasPreference>(columns: C[]) => C[];
 };
 
 const ColumnPreferenceContext = createContext<Interaction | undefined>(undefined);

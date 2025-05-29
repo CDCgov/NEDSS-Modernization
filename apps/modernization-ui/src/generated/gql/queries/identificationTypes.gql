@@ -1,6 +1,0 @@
-query identificationTypes{
-    identificationTypes{
-        value
-        name
-    }
-}

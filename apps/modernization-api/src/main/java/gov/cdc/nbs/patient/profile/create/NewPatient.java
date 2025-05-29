@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.create;
 
 import gov.cdc.nbs.accumulation.Including;
 import gov.cdc.nbs.patient.profile.address.AddressDemographic;
-import gov.cdc.nbs.patient.profile.administrative.Administrative;
+import gov.cdc.nbs.patient.demographics.administrative.Administrative;
 import gov.cdc.nbs.patient.profile.birth.BirthDemographic;
 import gov.cdc.nbs.patient.profile.ethnicity.EthnicityDemographic;
 import gov.cdc.nbs.patient.profile.gender.GenderDemographic;

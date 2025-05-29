@@ -1,6 +1,0 @@
-query suffixes{
-    suffixes{
-        value
-        name
-    }
-}

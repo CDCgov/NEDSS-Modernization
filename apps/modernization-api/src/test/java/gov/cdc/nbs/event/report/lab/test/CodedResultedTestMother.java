@@ -1,18 +1,16 @@
 package gov.cdc.nbs.event.report.lab.test;
 
 import gov.cdc.nbs.event.report.lab.LabReportIdentifier;
+import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 @Component
 @ScenarioScope
-public class CodedResultedTestMother {
+class CodedResultedTestMother {
 
   private static final String CREATE = """
        insert into Act (
@@ -55,7 +53,7 @@ public class CodedResultedTestMother {
        ) values (
          :identifier,
          'OBS',
-         :lab,
+         :observation,
          'OBS',
          'COMP'
        );
@@ -75,40 +73,53 @@ public class CodedResultedTestMother {
       ;
       """;
 
-
+  private static final String DELETE_IN = """
+      delete from Participation where act_class_cd = 'OBS' and act_uid in (:identifiers);
+      
+      delete from Obs_value_coded where observation_uid in (:identifiers);
+      
+      delete from Observation
+      where   obs_domain_cd_st_1 = 'Result'
+          and observation_uid in (:identifiers);
+      
+      delete from Act_relationship
+      where   source_act_uid in (:identifiers)
+          and source_class_cd = 'OBS'
+          and type_cd = 'COMP';
+      
+      delete from Act where class_cd = 'OBS' and act_uid in (:identifiers);
+      """;
 
   private final SequentialIdentityGenerator idGenerator;
   private final JdbcClient client;
-  private final ResultedTestCleaner cleaner;
+  private final TestingDataCleaner<Long> cleaner;
 
-  private final Collection<Long> created;
 
   CodedResultedTestMother(
       final SequentialIdentityGenerator idGenerator,
-      final JdbcClient client,
-      final ResultedTestCleaner cleaner
+      final JdbcClient client
   ) {
     this.idGenerator = idGenerator;
     this.client = client;
-    this.cleaner = cleaner;
-    this.created = new ArrayList<>();
+    this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
   }
 
   @PreDestroy
   void cleanup() {
-    this.cleaner.clean(created);
+    this.cleaner.clean();
   }
 
-  void create(final LabReportIdentifier lab, final String test, final String result) {
+  void create(final LabReportIdentifier report, final String test, final String result) {
     long identifier = idGenerator.next();
 
     this.client.sql(CREATE)
         .param("identifier", identifier)
-        .param("lab", lab.identifier())
+        .param("observation", report.identifier())
         .param("test", test)
         .param("result", result)
         .update();
 
-    created.add(identifier);
+    this.cleaner.include(identifier);
   }
+
 }

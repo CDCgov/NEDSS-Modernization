@@ -8,7 +8,7 @@ import {
     PageConcept,
     TextQuestion
 } from 'apps/page-builder/generated';
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 
 export type ConceptSearch = {
     codeSetNm: string;
