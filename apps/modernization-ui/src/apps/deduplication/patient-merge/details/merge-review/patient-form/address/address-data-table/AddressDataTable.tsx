@@ -1,13 +1,10 @@
 import { displayAddressText } from 'address/display';
 import { PatientAddress, PatientData } from 'apps/deduplication/api/model/PatientData';
 import { format, parseISO } from 'date-fns';
-import { Button } from 'design-system/button';
-import { Checkbox } from 'design-system/checkbox';
-import { Icon } from 'design-system/icon';
-import { Column, DataTable } from 'design-system/table';
+import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
-import styles from './address-data-table.module.scss';
+import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
 
 type Props = {
     patientData: PatientData;
@@ -32,19 +29,6 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
 
     const columns: Column<PatientAddress>[] = [
         {
-            id: 'selection',
-            name: '',
-            render: (a) => (
-                <Checkbox
-                    id={`address-select:${a.id}`}
-                    label=""
-                    className={styles.checkBox}
-                    onChange={() => handleAddressSelection(a)}
-                    selected={fields.some((f) => f.locatorId === a.id)}
-                />
-            )
-        },
-        {
             id: 'as-of',
             name: 'As of',
             render: (n) => format(parseISO(n.asOf), 'MM/dd/yyyy')
@@ -58,27 +42,18 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
             id: 'address',
             name: 'Address',
             render: (n) => displayAddressText(n)
-        },
-        {
-            id: 'view-icon',
-            name: '',
-            render: (n) => (
-                <Button
-                    unstyled
-                    sizing="small"
-                    icon={<Icon name="visibility" className={selectedAddress === n ? styles.selected : ''} />}
-                    onClick={() => onViewAddress(n)}
-                />
-            )
         }
     ];
     return (
-        <DataTable<PatientAddress>
+        <MergeDataTable<PatientAddress>
             id={`address-data${patientData.personUid}`}
-            className={styles.dataTable}
-            sizing="small"
             columns={columns}
-            data={patientData.addresses ?? []}
+            data={patientData.addresses}
+            rowId={(a) => a.id}
+            isSelected={(a) => fields.some((f) => f.locatorId === a.id)}
+            onSelect={(a) => handleAddressSelection(a)}
+            isViewed={(a) => selectedAddress === a}
+            onView={(a) => onViewAddress(a)}
         />
     );
 };

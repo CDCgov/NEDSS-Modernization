@@ -1,12 +1,9 @@
 import { PatientData, PatientIdentification } from 'apps/deduplication/api/model/PatientData';
 import { format, parseISO } from 'date-fns';
-import { Button } from 'design-system/button';
-import { Checkbox } from 'design-system/checkbox';
-import { Icon } from 'design-system/icon';
-import { Column, DataTable } from 'design-system/table';
+import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
-import styles from './identification-data-table.module.scss';
+import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
 
 type Props = {
     patientData: PatientData;
@@ -33,19 +30,6 @@ export const IdentificationDataTable = ({ patientData, selectedIdentification, o
 
     const columns: Column<PatientIdentification>[] = [
         {
-            id: 'selection',
-            name: '',
-            render: (i) => (
-                <Checkbox
-                    id={`identificaiton-select:${i.personUid}-${i.sequence}`}
-                    label=""
-                    className={styles.checkBox}
-                    onChange={() => handleIdentificationSelection(i)}
-                    selected={fields.some((f) => f.personUid === i.personUid && f.sequence === i.sequence)}
-                />
-            )
-        },
-        {
             id: 'as-of',
             name: 'As of',
             render: (i) => format(parseISO(i.asOf), 'MM/dd/yyyy')
@@ -59,27 +43,18 @@ export const IdentificationDataTable = ({ patientData, selectedIdentification, o
             id: 'value',
             name: 'ID value',
             render: (i) => i.value
-        },
-        {
-            id: 'view-icon',
-            name: '',
-            render: (i) => (
-                <Button
-                    unstyled
-                    sizing="small"
-                    icon={<Icon name="visibility" className={selectedIdentification === i ? styles.selected : ''} />}
-                    onClick={() => onViewIdentification(i)}
-                />
-            )
         }
     ];
     return (
-        <DataTable<PatientIdentification>
+        <MergeDataTable<PatientIdentification>
             id={`identification-data${patientData.personUid}`}
-            className={styles.dataTable}
-            sizing="small"
             columns={columns}
-            data={patientData.identifications ?? []}
+            data={patientData.identifications}
+            rowId={(i) => `identificiation-${i.personUid}-${i.sequence}`}
+            isSelected={(i) => fields.some((f) => f.personUid === i.personUid && f.sequence === i.sequence)}
+            onSelect={(i) => handleIdentificationSelection(i)}
+            isViewed={(i) => selectedIdentification === i}
+            onView={(i) => onViewIdentification(i)}
         />
     );
 };

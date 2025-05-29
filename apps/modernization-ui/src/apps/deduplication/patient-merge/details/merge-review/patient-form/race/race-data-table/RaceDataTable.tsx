@@ -1,12 +1,9 @@
 import { PatientData, PatientRace } from 'apps/deduplication/api/model/PatientData';
 import { format, parseISO } from 'date-fns';
-import { Button } from 'design-system/button';
-import { Checkbox } from 'design-system/checkbox';
-import { Icon } from 'design-system/icon';
-import { Column, DataTable } from 'design-system/table';
+import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
-import styles from './race-data-table.module.scss';
+import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
 
 type Props = {
     patientData: PatientData;
@@ -31,19 +28,6 @@ export const RaceDataTable = ({ patientData, selectedRace, onViewRace }: Props) 
 
     const columns: Column<PatientRace>[] = [
         {
-            id: 'selection',
-            name: '',
-            render: (r) => (
-                <Checkbox
-                    id={`race-select:${r.personUid}-${r.raceCode}`}
-                    label=""
-                    className={styles.checkBox}
-                    onChange={() => handleRaceSelection(r)}
-                    selected={fields.some((f) => f.personUid === r.personUid && f.raceCode === r.raceCode)}
-                />
-            )
-        },
-        {
             id: 'as-of',
             name: 'As of',
             render: (r) => format(parseISO(r.asOf), 'MM/dd/yyyy')
@@ -57,27 +41,18 @@ export const RaceDataTable = ({ patientData, selectedRace, onViewRace }: Props) 
             id: 'detailed-race',
             name: 'Detailed race',
             render: (r) => r.detailedRaces
-        },
-        {
-            id: 'view-icon',
-            name: '',
-            render: (r) => (
-                <Button
-                    unstyled
-                    sizing="small"
-                    icon={<Icon name="visibility" className={selectedRace === r ? styles.selected : ''} />}
-                    onClick={() => onViewRace(r)}
-                />
-            )
         }
     ];
     return (
-        <DataTable<PatientRace>
+        <MergeDataTable<PatientRace>
             id={`race-data${patientData.personUid}`}
-            className={styles.dataTable}
-            sizing="small"
             columns={columns}
-            data={patientData.races ?? []}
+            data={patientData.races}
+            rowId={(r) => `race-${r.personUid}-${r.raceCode}`}
+            isSelected={(r) => fields.some((f) => f.personUid === r.personUid && f.raceCode === r.raceCode)}
+            onSelect={(r) => handleRaceSelection(r)}
+            isViewed={(r) => selectedRace === r}
+            onView={(r) => onViewRace(r)}
         />
     );
 };

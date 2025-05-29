@@ -1,12 +1,9 @@
-import { PatientAddress, PatientData, PatientPhoneEmail } from 'apps/deduplication/api/model/PatientData';
+import { PatientData, PatientPhoneEmail } from 'apps/deduplication/api/model/PatientData';
 import { format, parseISO } from 'date-fns';
-import { Button } from 'design-system/button';
-import { Checkbox } from 'design-system/checkbox';
-import { Icon } from 'design-system/icon';
-import { Column, DataTable } from 'design-system/table';
+import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
-import styles from './phone-email-data-table.module.scss';
+import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
 import { formatPhone } from '../formatPhone';
 
 type Props = {
@@ -32,19 +29,6 @@ export const PhoneEmailDataTable = ({ patientData, selectedPhoneEmail, onViewPho
 
     const columns: Column<PatientPhoneEmail>[] = [
         {
-            id: 'selection',
-            name: '',
-            render: (a) => (
-                <Checkbox
-                    id={`phoneEmail-select:${a.id}`}
-                    label=""
-                    className={styles.checkBox}
-                    onChange={() => handlePhoneEmailSelection(a)}
-                    selected={fields.some((f) => f.locatorId === a.id)}
-                />
-            )
-        },
-        {
             id: 'as-of',
             name: 'As of',
             render: (n) => format(parseISO(n.asOf), 'MM/dd/yyyy')
@@ -58,27 +42,18 @@ export const PhoneEmailDataTable = ({ patientData, selectedPhoneEmail, onViewPho
             id: 'phoneNumber',
             name: 'Phone number',
             render: (n) => formatPhone(n.phoneNumber)
-        },
-        {
-            id: 'view-icon',
-            name: '',
-            render: (n) => (
-                <Button
-                    unstyled
-                    sizing="small"
-                    icon={<Icon name="visibility" className={selectedPhoneEmail === n ? styles.selected : ''} />}
-                    onClick={() => onViewPhoneEmail(n)}
-                />
-            )
         }
     ];
     return (
-        <DataTable<PatientAddress>
-            id={`address-data${patientData.personUid}`}
-            className={styles.dataTable}
-            sizing="small"
+        <MergeDataTable<PatientPhoneEmail>
+            id={`phone-email-data${patientData.personUid}`}
             columns={columns}
-            data={patientData.phoneEmails ?? []}
+            data={patientData.phoneEmails}
+            rowId={(p) => p.id}
+            isSelected={(p) => fields.some((f) => f.locatorId === p.id)}
+            onSelect={(p) => handlePhoneEmailSelection(p)}
+            isViewed={(p) => selectedPhoneEmail === p}
+            onView={(p) => onViewPhoneEmail(p)}
         />
     );
 };
