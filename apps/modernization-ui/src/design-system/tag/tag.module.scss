@@ -6,6 +6,7 @@
     border-radius: 0.125rem;
     background-color: $bg-color;
     width: max-content;
+    line-height: normal;
 }
 
 @mixin tag-size($font-size: 0.75rem) {
@@ -21,7 +22,7 @@
 }
 
 .success {
-    @include tag(colors.$base-white, colors.$success);
+    @include tag(colors.$base-white, colors.$success-dark);
 }
 
 .warning {
