@@ -105,6 +105,7 @@ export const Investigations = () => {
 
     return (
         <TableCard
+            sizing="small"
             title="Investigations"
             id={'investigations'}
             columnPreferencesKey={'investigations'}
