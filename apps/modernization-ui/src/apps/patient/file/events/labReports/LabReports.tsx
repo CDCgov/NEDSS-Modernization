@@ -113,7 +113,8 @@ const LabReports = () => {
         {
             ...DATE_COLLECTED,
             sortable: true,
-            render: (value: PatientLabReport) => value.collectedDate?.toString()
+            render: (value: PatientLabReport) =>
+                value.collectedDate && new Date(value.collectedDate).toLocaleDateString()
         },
         {
             ...TEST_RESULTS,

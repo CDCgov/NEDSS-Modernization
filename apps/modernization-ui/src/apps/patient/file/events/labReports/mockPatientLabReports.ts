@@ -64,7 +64,7 @@ export const mockPatientLabReports: PatientLabReport[] = [
         facilityProviders: {
             reportingFacility: 'Urban Medical Center'
         },
-        collectedDate: '2024-05-30T10:15:00.000Z',
+        collectedDate: '',
         testResults: [
             {
                 resultedTest: 'Hepatitis B Surface Antigen',
