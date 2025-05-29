@@ -7,7 +7,7 @@ import { FacilityProviders, OrderingProvider, PatientLabReport } from 'generated
 import { usePatient } from '../../usePatient';
 import { mockPatientLabReports } from './mockPatientLabReports';
 
-const maybeOrderingProviderName = (orderingProvider: OrderingProvider | undefined) => {
+const maybeOrderingProviderName = (orderingProvider: OrderingProvider) => {
     if (!orderingProvider) {
         return undefined;
     }
@@ -29,19 +29,32 @@ const displayFacilityProviders = (facilityProviders: FacilityProviders | undefin
     if (!facilityProviders) {
         return undefined;
     }
+
+    const { reportingFacility, sendingFacility, orderingProvider } = facilityProviders;
+
     return (
         <div>
-            <b>Reporting Facility:</b>
-            <br />
-            {facilityProviders.reportingFacility}
-            <br />
-            <b>Ordering Facility:</b>
-            <br />
-            {facilityProviders.sendingFacility}
-            <br />
-            <b>Ordering Provider:</b>
-            <br />
-            {maybeOrderingProviderName(facilityProviders.orderingProvider)}
+            {reportingFacility && (
+                <div>
+                    <b>Reporting Facility:</b>
+                    <br />
+                    {reportingFacility}
+                </div>
+            )}
+            {sendingFacility && (
+                <div>
+                    <b>Ordering Facility:</b>
+                    <br />
+                    {sendingFacility}
+                </div>
+            )}
+            {orderingProvider && (
+                <div>
+                    <b>Ordering Provider:</b>
+                    <br />
+                    {maybeOrderingProviderName(orderingProvider)}
+                </div>
+            )}
         </div>
     );
 };

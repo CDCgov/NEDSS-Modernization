@@ -6,14 +6,7 @@ export const mockPatientLabReports: PatientLabReport[] = [
         receivedDate: '2024-05-28T00:00:00.000Z',
         processingDecision: 'Complete',
         facilityProviders: {
-            reportingFacility: 'Central Medical Laboratory',
-            orderingProvider: {
-                prefix: 'Dr.',
-                first: 'Sarah',
-                last: 'Johnson',
-                suffix: 'MD'
-            },
-            sendingFacility: 'Central Medical Laboratory'
+            reportingFacility: 'Central Medical Laboratory'
         },
         collectedDate: '2024-05-27T14:30:00.000Z',
         testResults: [
@@ -41,14 +34,7 @@ export const mockPatientLabReports: PatientLabReport[] = [
         receivedDate: '2024-05-29T09:15:33.101Z',
         processingDecision: 'Complete',
         facilityProviders: {
-            reportingFacility: 'Regional Health Center',
-            orderingProvider: {
-                prefix: 'Dr.',
-                first: 'Michael',
-                last: 'Chen',
-                suffix: 'MD'
-            },
-            sendingFacility: 'Regional Health Center Lab'
+            reportingFacility: 'Regional Health Center'
         },
         collectedDate: '2024-05-28T08:45:00.000Z',
         testResults: [
@@ -76,14 +62,7 @@ export const mockPatientLabReports: PatientLabReport[] = [
         receivedDate: '2024-05-30T11:42:55.444Z',
         processingDecision: 'Complete',
         facilityProviders: {
-            reportingFacility: 'Urban Medical Center',
-            orderingProvider: {
-                prefix: 'Dr.',
-                first: 'Emily',
-                last: 'Rodriguez',
-                suffix: 'DO'
-            },
-            sendingFacility: 'Urban Medical Center'
+            reportingFacility: 'Urban Medical Center'
         },
         collectedDate: '2024-05-30T10:15:00.000Z',
         testResults: [
@@ -111,14 +90,7 @@ export const mockPatientLabReports: PatientLabReport[] = [
         receivedDate: '2024-05-31T14:18:22.891Z',
         processingDecision: 'Complete',
         facilityProviders: {
-            reportingFacility: 'Metro Reference Lab',
-            orderingProvider: {
-                prefix: 'Dr.',
-                first: 'Robert',
-                last: 'Smith',
-                suffix: 'MD'
-            },
-            sendingFacility: 'Metro Reference Lab'
+            reportingFacility: 'Metro Reference Lab'
         },
         collectedDate: '2024-05-31T13:00:00.000Z',
         testResults: [
