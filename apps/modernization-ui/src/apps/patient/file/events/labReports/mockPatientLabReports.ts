@@ -3,7 +3,7 @@ import { PatientLabReport } from 'generated';
 export const mockPatientLabReports: PatientLabReport[] = [
     {
         eventId: 'ELR-2024-0123',
-        receivedDate: '2024-05-28T18:23:11.272Z',
+        receivedDate: '2024-05-28T00:00:00.000Z',
         processingDecision: 'Complete',
         facilityProviders: {
             reportingFacility: 'Central Medical Laboratory',

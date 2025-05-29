@@ -4,11 +4,11 @@ import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { PatientLabReport } from 'generated';
 // import { usePatientLabReports } from './usePatientLabReports';
-// import { usePatient } from '../../usePatient';
+import { usePatient } from '../../usePatient';
 import { mockPatientLabReports } from './mockPatientLabReports';
 
 const LabReports = () => {
-    // const patient = usePatient();
+    const patient = usePatient();
     // const { patientLabReports } = usePatientLabReports(patient.id);
 
     const EVENT_ID = { id: 'patient-file-lab-reports-eventId', name: 'Event ID' };
@@ -36,7 +36,7 @@ const LabReports = () => {
             ...EVENT_ID,
             sortable: true,
             render: (value: PatientLabReport) => (
-                <ClassicLink id="condition" url={''}>
+                <ClassicLink id="condition" url={`/nbs/api/profile/${patient.id}/report/lab/${value.eventId}`}>
                     {value.eventId}
                 </ClassicLink>
             )
@@ -44,7 +44,14 @@ const LabReports = () => {
         {
             ...DATE_RECEIVED,
             sortable: true,
-            render: (value: PatientLabReport) => value.receivedDate?.toString()
+            render: (value: PatientLabReport) =>
+                value.receivedDate && (
+                    <div>
+                        <span>{new Date(value.receivedDate).toLocaleDateString()}</span>
+                        <br />
+                        <span>{new Date(value.receivedDate).toLocaleTimeString()}</span>
+                    </div>
+                )
         },
         {
             ...FACILITY_PROVIDER,
