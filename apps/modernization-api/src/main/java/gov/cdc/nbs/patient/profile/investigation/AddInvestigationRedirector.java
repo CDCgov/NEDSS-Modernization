@@ -30,7 +30,5 @@ class AddInvestigationRedirector {
 
     return redirector.preparedRedirect(patient, uri);
   }
-
-
 }
-//
+

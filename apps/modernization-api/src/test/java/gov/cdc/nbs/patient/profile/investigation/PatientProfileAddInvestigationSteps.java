@@ -107,4 +107,3 @@ public class PatientProfileAddInvestigationSteps {
     assertThat(response.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
   }
 }
-//
