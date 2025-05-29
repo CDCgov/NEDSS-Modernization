@@ -2,10 +2,49 @@ import { ClassicLink } from 'classic';
 import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { PatientLabReport } from 'generated';
+import { FacilityProviders, OrderingProvider, PatientLabReport } from 'generated';
 // import { usePatientLabReports } from './usePatientLabReports';
 import { usePatient } from '../../usePatient';
 import { mockPatientLabReports } from './mockPatientLabReports';
+
+const maybeOrderingProviderName = (orderingProvider: OrderingProvider | undefined) => {
+    if (!orderingProvider) {
+        return undefined;
+    }
+    const { first, last } = orderingProvider;
+    if (
+        typeof first === 'string' &&
+        typeof last === 'string' &&
+        first.length > 0 &&
+        last.length > 0 &&
+        first !== 'null' &&
+        last !== 'null'
+    ) {
+        return `${first} ${last}`;
+    }
+    return undefined;
+};
+
+const displayFacilityProviders = (facilityProviders: FacilityProviders | undefined) => {
+    if (!facilityProviders) {
+        return undefined;
+    }
+    return (
+        <div>
+            <b>Reporting Facility:</b>
+            <br />
+            {facilityProviders.reportingFacility}
+            <br />
+            <b>Ordering Facility:</b>
+            <br />
+            {facilityProviders.sendingFacility}
+            <br />
+            <b>Ordering Provider:</b>
+            <br />
+            {maybeOrderingProviderName(facilityProviders.orderingProvider)}
+        </div>
+    );
+};
 
 const LabReports = () => {
     const patient = usePatient();
@@ -56,7 +95,7 @@ const LabReports = () => {
         {
             ...FACILITY_PROVIDER,
             sortable: true,
-            render: (value: PatientLabReport) => value.facilityProviders?.reportingFacility
+            render: (value: PatientLabReport) => displayFacilityProviders(value.facilityProviders)
         },
         {
             ...DATE_COLLECTED,
