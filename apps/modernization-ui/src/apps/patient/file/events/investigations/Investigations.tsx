@@ -2,7 +2,6 @@ import { TableCard } from 'design-system/card/table/TableCard';
 import { Headers, Investigation } from './PatientInvestigation';
 import { Icon } from 'design-system/icon';
 import { Column } from 'design-system/table';
-import { format } from 'date-fns';
 import { displayName } from 'name';
 import { usePatientInvestigations } from './usePatientInvestigations';
 import { usePatient } from '../../usePatient';
@@ -10,6 +9,7 @@ import { Tag } from 'design-system/tag';
 import { TagVariant } from 'design-system/tag/Tag';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { ClassicLink } from 'classic';
+import { internalizeDate } from 'date';
 
 const displayTag = (value: string | undefined, status: boolean, variant: TagVariant) => {
     if (!value) return '';
@@ -37,7 +37,7 @@ const columns = (id: number): Column<Investigation>[] => [
         id: 'startedOn',
         name: Headers.StartDate,
         sortable: true,
-        render: (value) => value?.startedOn && format(value.startedOn, 'MM/dd/yyyy'),
+        render: (value) => internalizeDate(value.startedOn),
         sortIconType: 'numeric'
     },
     {
