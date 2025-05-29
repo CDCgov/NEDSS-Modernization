@@ -97,9 +97,8 @@ export const Investigations = () => {
     const { data } = usePatientInvestigations(id);
 
     const columnPreferences: ColumnPreference[] = columns(id).map((column, index) => {
-        const columnId = `patient.file.open-investigations.preferences.${column.id}`;
         return {
-            id: columnId,
+            id: column.id,
             name: column.name,
             moveable: index !== 0,
             toggleable: index !== 0
@@ -111,7 +110,7 @@ export const Investigations = () => {
             sizing="small"
             title="Investigations"
             id={'investigations'}
-            columnPreferencesKey={'investigations'}
+            columnPreferencesKey={'patient.file.open-investigations.preferences.${column.id}'}
             defaultCollapsed={!data?.length}
             columns={columns(id)}
             actions={[
