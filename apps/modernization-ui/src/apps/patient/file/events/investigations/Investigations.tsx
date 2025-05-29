@@ -96,12 +96,15 @@ export const Investigations = () => {
     const { id } = usePatient();
     const { data } = usePatientInvestigations(id);
 
-    const columnPreferences: ColumnPreference[] = columns(id).map((column, index) => ({
-        id: column.id,
-        name: column.name,
-        moveable: index !== 0,
-        toggleable: index !== 0
-    }));
+    const columnPreferences: ColumnPreference[] = columns(id).map((column, index) => {
+        const columnId = `patient.file.open-investigations.prefereces.${column.id}`;
+        return {
+            id: columnId,
+            name: column.name,
+            moveable: index !== 0,
+            toggleable: index !== 0
+        };
+    });
 
     return (
         <TableCard
@@ -109,6 +112,7 @@ export const Investigations = () => {
             title="Investigations"
             id={'investigations'}
             columnPreferencesKey={'investigations'}
+            defaultCollapsed={!data?.length}
             columns={columns(id)}
             actions={[
                 {
@@ -125,6 +129,7 @@ export const Investigations = () => {
                     children: 'Compare investigations'
                 }
             ]}
+            noDataFallback
             data={data ?? []}
             defaultColumnPreferences={columnPreferences}
         />
