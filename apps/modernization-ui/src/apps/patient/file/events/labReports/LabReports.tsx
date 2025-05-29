@@ -2,7 +2,7 @@ import { ClassicLink } from 'classic';
 import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { FacilityProviders, OrderingProvider, PatientLabReport } from 'generated';
+import { FacilityProviders, OrderingProvider, PatientLabReport, TestResult } from 'generated';
 // import { usePatientLabReports } from './usePatientLabReports';
 import { usePatient } from '../../usePatient';
 import { mockPatientLabReports } from './mockPatientLabReports';
@@ -55,6 +55,22 @@ const displayFacilityProviders = (facilityProviders: FacilityProviders | undefin
                     {maybeOrderingProviderName(orderingProvider)}
                 </div>
             )}
+        </div>
+    );
+};
+
+const displayTestResults = (testResults?: TestResult[] | undefined) => {
+    if (!testResults || testResults.length < 1) {
+        return undefined;
+    }
+
+    const testResultAssignMapKays = testResults.map((v, i) => ({ ...v, renderKey: i }));
+
+    return (
+        <div>
+            {testResultAssignMapKays.map((testResult) => {
+                return <div key={testResult.renderKey}>{JSON.stringify(testResult)}</div>;
+            })}
         </div>
     );
 };
@@ -119,7 +135,7 @@ const LabReports = () => {
         {
             ...TEST_RESULTS,
             sortable: true,
-            render: (value: PatientLabReport) => value.testResults?.map((v) => v.codedResult)
+            render: (value: PatientLabReport) => displayTestResults(value.testResults)
         },
         {
             ...ASSOCIATED_WITH,

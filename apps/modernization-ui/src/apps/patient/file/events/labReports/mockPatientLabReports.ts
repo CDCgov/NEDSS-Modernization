@@ -18,6 +18,24 @@ export const mockPatientLabReports: PatientLabReport[] = [
                 highRange: '',
                 lowRange: '',
                 statusDetails: 'Final'
+            },
+            {
+                resultedTest: 'Complete Blood Count',
+                codedResult: 'Abnormal',
+                numericResult: '15.2',
+                units: 'g/dL',
+                highRange: '16.0',
+                lowRange: '12.0',
+                statusDetails: 'Final'
+            },
+            {
+                resultedTest: 'Hepatitis B Surface Antigen',
+                codedResult: 'Positive',
+                numericResult: '',
+                units: '',
+                highRange: '',
+                lowRange: '',
+                statusDetails: 'Final'
             }
         ],
         associatedInvestigation: {
