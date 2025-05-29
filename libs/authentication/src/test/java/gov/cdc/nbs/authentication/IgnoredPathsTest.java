@@ -1,12 +1,11 @@
 package gov.cdc.nbs.authentication;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.springframework.mock.web.MockHttpServletRequest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class IgnoredPathsTest {
 
@@ -16,14 +15,13 @@ class IgnoredPathsTest {
     IgnoredPaths ignoredPaths = new IgnoredPaths("/**");
 
     // and a request
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-    when(request.getServletPath()).thenReturn("/ignored/path");
+    HttpServletRequest request = new MockHttpServletRequest("GET", "/ignored/path");
 
     // When the request is checked to be ignored
-    boolean ignore = ignoredPaths.ignored(request);
+    boolean actual = ignoredPaths.ignored(request);
 
     // Then the request is ignored
-    assertTrue(ignore);
+    assertThat(actual).isTrue();
   }
 
   @Test
@@ -32,14 +30,13 @@ class IgnoredPathsTest {
     IgnoredPaths ignoredPaths = new IgnoredPaths("/some/path");
 
     // and a request with matching path
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-    when(request.getServletPath()).thenReturn("/some/path");
+    HttpServletRequest request = new MockHttpServletRequest("GET", "/some/path");
 
     // When the request is checked to be ignored
-    boolean ignore = ignoredPaths.ignored(request);
+    boolean actual = ignoredPaths.ignored(request);
 
     // Then the request is ignored
-    assertTrue(ignore);
+    assertThat(actual).isTrue();
   }
 
   @Test
@@ -48,10 +45,9 @@ class IgnoredPathsTest {
     IgnoredPaths ignoredPaths = new IgnoredPaths("/some/path");
 
     // and a request
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-    when(request.getServletPath()).thenReturn("/some/other/path");
+    HttpServletRequest request = new MockHttpServletRequest("GET", "/some/other/path");
 
-    // When the request is checked to be ignore
+    // When the request is checked to be ignored
     boolean ignore = ignoredPaths.ignored(request);
 
     // Then the request is not ignored
@@ -67,8 +63,7 @@ class IgnoredPathsTest {
     String[] paths = ignoredPaths.paths();
 
     // Then the expected paths should be returned
-    assertEquals("/some/path", paths[0]);
-    assertEquals("/some/other/path", paths[1]);
+    assertThat(paths).contains("/some/path", "/some/other/path");
   }
 
 }

@@ -1,21 +1,35 @@
 package gov.cdc.nbs.authentication;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+import org.springframework.security.web.util.matcher.AnyRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class IgnoredPaths {
 
   private final String[] paths;
-  private final Collection<AntPathRequestMatcher> matchers;
+
+  private final RequestMatcher matcher;
 
   public IgnoredPaths(final String... paths) {
     this.paths = paths;
-    this.matchers = Arrays.stream(paths)
-        .map(AntPathRequestMatcher::new)
-        .toList();
+    this.matcher = paths.length == 0
+        ? AnyRequestMatcher.INSTANCE
+        : resolveMatcher(paths);
+  }
+
+  private RequestMatcher resolveMatcher(final String... paths) {
+    PathPatternRequestMatcher.Builder builder = PathPatternRequestMatcher.withDefaults();
+    List<RequestMatcher> list = Arrays.stream(paths)
+        .map(builder::matcher)
+        .collect(Collectors.toList());
+
+    return new OrRequestMatcher(list);
   }
 
   public IgnoredPaths(final List<String> paths) {
@@ -23,7 +37,7 @@ public class IgnoredPaths {
   }
 
   public boolean ignored(final HttpServletRequest request) {
-    return this.matchers.stream().anyMatch(matcher -> matcher.matches(request));
+    return this.matcher.matches(request);
   }
 
   public String[] paths() {
