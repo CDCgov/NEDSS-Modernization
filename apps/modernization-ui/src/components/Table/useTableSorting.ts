@@ -1,4 +1,4 @@
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 import { useState } from 'react';
 
 type SortHandler = (name: string, type: Direction) => void;

@@ -5,7 +5,7 @@ import { TableBody, TableComponent } from 'components/Table';
 import { internalizeDate } from 'date';
 import { usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
-import { Direction } from 'sorting/Sort';
+import { Direction } from 'libs/sorting';
 import styles from './concept-table.module.scss';
 
 export enum Column {

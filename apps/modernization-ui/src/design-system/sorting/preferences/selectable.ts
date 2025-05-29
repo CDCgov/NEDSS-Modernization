@@ -1,4 +1,4 @@
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 
 type SortingSelectable = {
     property: string;

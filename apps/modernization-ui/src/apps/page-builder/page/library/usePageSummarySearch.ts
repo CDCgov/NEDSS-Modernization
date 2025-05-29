@@ -3,7 +3,7 @@ import { useEffect, useReducer } from 'react';
 import { PageSummary, PageSummaryService, Date, DateRange, MultiValue, SingleValue } from 'apps/page-builder/generated';
 import { Status as PageStatus, usePagination } from 'pagination';
 import { Filter, externalize } from 'filters';
-import { useSorting } from 'sorting';
+import { useSorting } from 'libs/sorting';
 
 type Sorting = {
     property: string;

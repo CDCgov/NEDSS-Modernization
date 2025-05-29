@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
 import { useSearchParams } from 'react-router';
-import { Direction } from './Sort';
+import { Direction } from './sorting';
 
 const SORT_ON_PARAMETER = 'sortOn';
 const DIRECTION_PARAMETER = 'direction';
@@ -155,8 +155,6 @@ const useSorting = () => {
     return context;
 };
 
-const maybeUseSorting = () => useContext(SortingContext);
-
 export type { Sorting, SortingSettings, Interaction as SortingInteraction };
 
-export { SortingProvider, useSorting, maybeUseSorting };
+export { SortingProvider, useSorting };

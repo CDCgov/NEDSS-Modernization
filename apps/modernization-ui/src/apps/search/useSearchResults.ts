@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { usePagination, Status as PageStatus } from 'pagination';
-import { useSorting } from 'sorting';
+import { useSorting } from 'libs/sorting';
 import { Predicate } from 'utils';
 import { Filter, maybeUseFilter } from 'design-system/filter';
 import { useSearchCriteria } from './useSearchCriteria';
