@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Collection;
 
-import static gov.cdc.nbs.patient.profile.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
+import static gov.cdc.nbs.patient.demographics.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
 import static gov.cdc.nbs.patient.profile.birth.BirthDemographicPatientCommandMapper.asUpdateBirth;
 import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asAddDetailedEthnicity;
 import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;

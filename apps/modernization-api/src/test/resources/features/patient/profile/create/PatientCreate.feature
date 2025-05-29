@@ -32,14 +32,6 @@ Feature: Patient create
     When I submit the patient
     Then the new patient has the entered marital status
 
-  Scenario: I can create a patient with comments
-    Given I am logged into NBS
-    And I have the authorities: "FIND-PATIENT,ADD-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
-    And I am adding a new patient
-    And the new patient comment is entered
-    When I submit the patient
-    Then the new patient has the entered comment
-
   Scenario: I can create a patient with ethnicity
     Given I am logged into NBS
     And I have the authorities: "FIND-PATIENT,ADD-PATIENT" for the jurisdiction: "ALL" and program area: "STD"

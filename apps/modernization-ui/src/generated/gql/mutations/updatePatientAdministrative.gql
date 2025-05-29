@@ -1,5 +1,0 @@
-mutation updatePatientAdministrative($input: AdministrativeInput!){
-    updatePatientAdministrative(input: $input){
-        patient
-    }
-}
