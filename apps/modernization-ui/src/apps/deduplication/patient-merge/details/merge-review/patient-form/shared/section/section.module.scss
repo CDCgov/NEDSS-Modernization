@@ -1,6 +1,6 @@
 @use 'styles/colors';
 
-.adminCommentSelection {
+.section {
     display: flex;
 
     & > :not(:last-child) {
@@ -8,8 +8,9 @@
     }
 
     .entry {
-        width: 100%;
         display: flex;
+        width: 100%;
+        min-width: 33%;
         flex-direction: column;
     }
 }

@@ -19,7 +19,7 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        padding: 1rem 1rem 6.25rem 1rem;
+        padding: 1rem 1rem 1rem 1rem;
 
         .infoText {
             color: var colors.$base-darkest;
@@ -29,6 +29,7 @@
 
         .patientContent {
             background-color: colors.$base-white;
+            overflow-x: auto;
         }
     }
 }

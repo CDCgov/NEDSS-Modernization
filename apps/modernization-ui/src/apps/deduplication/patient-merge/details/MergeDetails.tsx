@@ -6,7 +6,7 @@ import { MergePreview } from './merge-preview/MergePreview';
 import { useMergeDetails } from 'apps/deduplication/api/useMergeDetails';
 import styles from './MergeDetails.module.scss';
 import { Loading } from 'components/Spinner';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { PatientMergeForm } from './merge-review/model/PatientMergeForm';
 
 export const MergeDetails = () => {
@@ -14,6 +14,11 @@ export const MergeDetails = () => {
     const { patientId } = useParams();
     const { response, loading, fetchPatientMergeDetails } = useMergeDetails();
     const form = useForm<PatientMergeForm>({ mode: 'onBlur' });
+    const watch = useWatch(form);
+
+    useEffect(() => {
+        console.log('watch', watch);
+    }, [watch]);
 
     useEffect(() => {
         if (patientId !== undefined) {
