@@ -97,7 +97,7 @@ export const Investigations = () => {
     const { data } = usePatientInvestigations(id);
 
     const columnPreferences: ColumnPreference[] = columns(id).map((column, index) => {
-        const columnId = `patient.file.open-investigations.prefereces.${column.id}`;
+        const columnId = `patient.file.open-investigations.preferences.${column.id}`;
         return {
             id: columnId,
             name: column.name,
