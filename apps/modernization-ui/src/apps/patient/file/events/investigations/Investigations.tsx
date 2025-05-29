@@ -14,7 +14,7 @@ import { ClassicLink } from 'classic';
 const displayTag = (value: string | undefined, status: boolean, variant: TagVariant) => {
     if (!value) return '';
     return status ? (
-        <Tag size="small" variant={variant}>
+        <Tag size="small" weight="bold" variant={variant}>
             {value}
         </Tag>
     ) : (
