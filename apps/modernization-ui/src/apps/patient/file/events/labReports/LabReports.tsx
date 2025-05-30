@@ -164,7 +164,19 @@ const LabReports = () => {
         {
             ...ASSOCIATED_WITH,
             sortable: true,
-            render: (value: PatientLabReport) => value.associatedInvestigation?.id
+            render: (value: PatientLabReport) =>
+                value.associatedInvestigation && (
+                    <div>
+                        <ClassicLink
+                            url={`/nbs/api/profile/${patient}/investigation/${value.associatedInvestigation.id}`}>
+                            {value.associatedInvestigation.id}
+                        </ClassicLink>
+                        <p className="margin-0">
+                            <b>{value.associatedInvestigation.condition}</b>
+                        </p>
+                        <p className="margin-0">{value.associatedInvestigation.status}</p>
+                    </div>
+                )
         },
         {
             ...PROGRAM_AREA,

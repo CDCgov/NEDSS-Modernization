@@ -22,8 +22,7 @@ export const mockPatientLabReports: PatientLabReport[] = [
         ],
         associatedInvestigation: {
             id: 'INV-2024-0456',
-            condition: 'COVID-19',
-            status: 'Closed'
+            condition: 'COVID-19'
         },
         programArea: 'Communicable Disease',
         jurisdiction: 'State Health Department',
@@ -138,11 +137,6 @@ export const mockPatientLabReports: PatientLabReport[] = [
                 statusDetails: 'Final'
             }
         ],
-        associatedInvestigation: {
-            id: 'INV-2024-0460',
-            condition: 'Salmonellosis',
-            status: 'New'
-        },
         programArea: 'Communicable Disease',
         jurisdiction: 'State Health Department',
         id: 5
