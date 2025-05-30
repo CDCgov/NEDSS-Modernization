@@ -20,6 +20,25 @@ public class PatientPhoneDemographicSteps {
 	this.patient = patient;
   }
 
+	@Given("the patient has a phone")
+	public void the_patient_has_a_phone() {
+		patient.maybeActive().ifPresent(mother::withPhone);
+
+	}
+
+	@Given("the patient has the {phoneType} - {phoneUse} number of {string}")
+	public void the_patient_has_the_phone(final String type, final String use, final String number) {
+		this.patient.maybeActive()
+				.ifPresent(found -> mother.withPhone(found, type, use, null, number, null));
+	}
+
+	@Given("the patient has the {phoneType} - {phoneUse} number of {string} as of {localDate}")
+	public void the_patient_has_the_phone_as_of(final String type, final String use, final String number,
+			LocalDate asOf) {
+		this.patient.maybeActive()
+				.ifPresent(found -> mother.withPhone(found, type, use, null, number, null, asOf));
+	}
+
   @Given("the patient has the {phoneType} - {phoneUse} phone number of {string} {string} - {string} as of {localDate}")
   public void the_patient_has_phone_number(
 	  final String type,

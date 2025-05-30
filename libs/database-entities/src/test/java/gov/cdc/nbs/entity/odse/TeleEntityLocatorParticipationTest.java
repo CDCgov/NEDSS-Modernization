@@ -10,50 +10,49 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TeleEntityLocatorParticipationTest {
 
-    @Test
-    void should_inactivate_existing_phone() {
+  @Test
+  void should_inactivate_existing_phone() {
 
-        Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(117L, "local-id-value");
 
-        TeleEntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
-            patient.getNbsEntity(),
-            new EntityLocatorParticipationId(patient.getId(), 5347L),
-            new PatientCommand.AddPhone(
-                117L,
-                5347L,
-                "type-value",
-                "use-value",
-                LocalDate.parse("2023-11-27"),
-                "country-code",
-                "number",
-                "extension",
-                "email",
-                "url",
-                "comment",
-                131L,
-                LocalDateTime.parse("2020-03-03T10:15:30")
-            )
-        );
+    TeleEntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
+        patient.getNbsEntity(),
+        new EntityLocatorParticipationId(patient.getId(), 5347L),
+        new PatientCommand.AddPhone(
+            117L,
+            "type-value",
+            "use-value",
+            LocalDate.parse("2023-11-27"),
+            "country-code",
+            "number",
+            "extension",
+            "email",
+            "url",
+            "comment",
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    );
 
-        participation.delete(
-            new PatientCommand.DeletePhone(
-                117L,
-                5347L,
-                293L,
-                LocalDateTime.parse("2023-03-10T10:15:30")
-            )
-        );
+    participation.delete(
+        new PatientCommand.DeletePhone(
+            117L,
+            5347L,
+            293L,
+            LocalDateTime.parse("2023-03-10T10:15:30")
+        )
+    );
 
-        assertThat(participation.audit())
-            .describedAs("expected audit state")
-            .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
-            .satisfies(AuditAssertions.changed(293L, "2023-03-10T10:15:30"));
+    assertThat(participation.audit())
+        .describedAs("expected audit state")
+        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
+        .satisfies(AuditAssertions.changed(293L, "2023-03-10T10:15:30"));
 
-        assertThat(participation)
-            .returns(5347L, p -> p.getId().getLocatorUid())
-            .extracting(EntityLocatorParticipation::recordStatus)
-            .satisfies(RecordStatusAssertions.inactive("2023-03-10T10:15:30"))
+    assertThat(participation)
+        .returns(5347L, p -> p.getId().getLocatorUid())
+        .extracting(EntityLocatorParticipation::recordStatus)
+        .satisfies(RecordStatusAssertions.inactive("2023-03-10T10:15:30"))
 
-        ;
-    }
+    ;
+  }
 }
