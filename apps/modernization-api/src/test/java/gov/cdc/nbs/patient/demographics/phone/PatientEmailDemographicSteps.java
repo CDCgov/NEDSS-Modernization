@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.phone;
+package gov.cdc.nbs.patient.demographics.phone;
 
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
