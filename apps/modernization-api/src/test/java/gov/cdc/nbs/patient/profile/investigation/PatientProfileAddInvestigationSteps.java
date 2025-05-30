@@ -67,17 +67,6 @@ public class PatientProfileAddInvestigationSteps {
             .getResponse());
   }
 
-  @When("the user clicks the add investigation button")
-  public void the_user_clicks_the_add_investigation_button() throws Exception {
-    long patient = patients.one();
-
-    activeResponse.active(
-        mvc.perform(
-            authenticated.withUser(MockMvcRequestBuilders.get("/nbs/api/profile/{patient}/investigation", patient)))
-            .andReturn()
-            .getResponse());
-  }
-
   @Then("the classic profile is prepared to add an investigation")
   public void the_classic_profile_is_prepared_to_add_an_investigation() {
     server.verify();

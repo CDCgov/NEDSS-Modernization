@@ -58,12 +58,6 @@ Feature: Patient Profile Investigations
     And I am redirected to Classic NBS to add an Investigation
 
   @web-interaction
-  Scenario: User clicks the add investigation button
-    Given I can "Add" any "INVESTIGATION" for "STD" within all jurisdictions
-    When the user clicks the add investigation button
-    Then I am redirected to Classic NBS to add an Investigation
-
-  @web-interaction
   Scenario: An investigation is added from the Patient Profile without required permissions
     When an investigation is added from a Patient Profile
     Then I am not allowed to add a Classic NBS Investigation
