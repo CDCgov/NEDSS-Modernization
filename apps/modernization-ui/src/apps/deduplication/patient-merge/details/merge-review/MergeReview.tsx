@@ -1,4 +1,4 @@
-import { PatientData } from 'apps/deduplication/api/model/PatientData';
+import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
 import { useNavigate } from 'react-router';
@@ -12,7 +12,7 @@ import { IdentificationSelection } from './patient-form/identification/Identific
 import { RaceSelection } from './patient-form/race/RaceSelection';
 
 export type Props = {
-    patientData: PatientData[];
+    patientData: MergePatient[];
     onPreview: () => void;
     onRemovePatient: (personUid: string) => void;
 };

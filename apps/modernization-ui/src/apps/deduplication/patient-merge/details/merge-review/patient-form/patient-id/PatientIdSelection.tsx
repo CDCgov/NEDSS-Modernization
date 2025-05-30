@@ -1,4 +1,4 @@
-import { PatientData } from 'apps/deduplication/api/model/PatientData';
+import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
@@ -8,7 +8,7 @@ import { PatientMergeForm } from '../../model/PatientMergeForm';
 import styles from './patient-id-selection.module.scss';
 
 type Props = {
-    patientData: PatientData[];
+    patientData: MergePatient[];
     onRemovePatient: (personUid: string) => void;
 };
 export const PatientIdSelection = ({ patientData, onRemovePatient }: Props) => {

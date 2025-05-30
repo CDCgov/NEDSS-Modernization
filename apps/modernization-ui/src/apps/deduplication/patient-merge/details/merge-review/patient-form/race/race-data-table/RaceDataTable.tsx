@@ -1,4 +1,4 @@
-import { PatientData, PatientRace } from 'apps/deduplication/api/model/PatientData';
+import { MergePatient, MergeRace } from 'apps/deduplication/api/model/MergePatient';
 import { format, parseISO } from 'date-fns';
 import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -6,9 +6,9 @@ import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
 
 type Props = {
-    patientData: PatientData;
-    selectedRace?: PatientRace;
-    onViewRace: (race: PatientRace) => void;
+    patientData: MergePatient;
+    selectedRace?: MergeRace;
+    onViewRace: (race: MergeRace) => void;
 };
 export const RaceDataTable = ({ patientData, selectedRace, onViewRace }: Props) => {
     const form = useFormContext<PatientMergeForm>();
@@ -17,7 +17,7 @@ export const RaceDataTable = ({ patientData, selectedRace, onViewRace }: Props) 
         name: 'races'
     });
 
-    const handleRaceSelection = (race: PatientRace) => {
+    const handleRaceSelection = (race: MergeRace) => {
         const index = fields.findIndex((f) => f.personUid === race.personUid && f.raceCode === race.raceCode);
         if (index > -1) {
             remove(index);
@@ -26,7 +26,7 @@ export const RaceDataTable = ({ patientData, selectedRace, onViewRace }: Props) 
         }
     };
 
-    const columns: Column<PatientRace>[] = [
+    const columns: Column<MergeRace>[] = [
         {
             id: 'as-of',
             name: 'As of',
@@ -44,7 +44,7 @@ export const RaceDataTable = ({ patientData, selectedRace, onViewRace }: Props) 
         }
     ];
     return (
-        <MergeDataTable<PatientRace>
+        <MergeDataTable<MergeRace>
             id={`race-data${patientData.personUid}`}
             columns={columns}
             data={patientData.races}

@@ -1,10 +1,10 @@
-import { PatientData } from 'apps/deduplication/api/model/PatientData';
+import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
 import { PhoneEmailDataTable } from './PhoneEmailDataTable';
 import { render, within } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 
-const patientData: Partial<PatientData> = {
+const patientData: Partial<MergePatient> = {
     phoneEmails: [
         {
             id: '123',
@@ -36,7 +36,7 @@ const Fixture = () => {
     const form = useForm();
     return (
         <FormProvider {...form}>
-            <PhoneEmailDataTable onViewPhoneEmail={onViewPhoneEmail} patientData={patientData as PatientData} />
+            <PhoneEmailDataTable onViewPhoneEmail={onViewPhoneEmail} patientData={patientData as MergePatient} />
         </FormProvider>
     );
 };

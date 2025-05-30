@@ -1,12 +1,12 @@
-import { PatientData } from 'apps/deduplication/api/model/PatientData';
+import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
 import { ReactNode } from 'react';
 import { SectionLabel } from '../section-label/SectionLabel';
 import styles from './section.module.scss';
 
 type Props = {
     title: string;
-    patientData: PatientData[];
-    render: (patientData: PatientData) => ReactNode;
+    patientData: MergePatient[];
+    render: (patientData: MergePatient) => ReactNode;
 };
 export const Section = ({ title, patientData, render }: Props) => {
     return (

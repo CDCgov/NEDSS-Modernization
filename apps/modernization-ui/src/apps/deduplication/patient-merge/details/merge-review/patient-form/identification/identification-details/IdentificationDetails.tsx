@@ -1,9 +1,9 @@
-import { PatientIdentification } from 'apps/deduplication/api/model/PatientData';
+import { MergeIdentification } from 'apps/deduplication/api/model/MergePatient';
 import { format, parseISO } from 'date-fns';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
 
 type Props = {
-    identification: PatientIdentification;
+    identification: MergeIdentification;
 };
 export const IdentificationDetails = ({ identification }: Props) => {
     return (

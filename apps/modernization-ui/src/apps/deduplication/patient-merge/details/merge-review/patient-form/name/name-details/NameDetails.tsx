@@ -1,9 +1,9 @@
-import { PatientName } from 'apps/deduplication/api/model/PatientData';
+import { MergeName } from 'apps/deduplication/api/model/MergePatient';
 import { format, parseISO } from 'date-fns';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
 
 type Props = {
-    name: PatientName;
+    name: MergeName;
 };
 export const NameDetails = ({ name }: Props) => {
     return (

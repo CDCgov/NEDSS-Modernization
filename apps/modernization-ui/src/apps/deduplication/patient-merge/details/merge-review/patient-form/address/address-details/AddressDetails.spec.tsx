@@ -1,8 +1,8 @@
 import { render, within } from '@testing-library/react';
-import { PatientAddress } from 'apps/deduplication/api/model/PatientData';
+import { MergeAddress } from 'apps/deduplication/api/model/MergePatient';
 import { AddressDetails } from './AddressDetails';
 
-const defaultAddress: PatientAddress = {
+const defaultAddress: MergeAddress = {
     id: '123',
     asOf: '2022-06-07T14:24:44.970',
     type: 'House',
@@ -18,7 +18,7 @@ const defaultAddress: PatientAddress = {
     comments: 'Comment'
 };
 
-const Fixture = ({ address = defaultAddress }: { address?: PatientAddress }) => {
+const Fixture = ({ address = defaultAddress }: { address?: MergeAddress }) => {
     return <AddressDetails address={address} />;
 };
 
@@ -41,7 +41,7 @@ describe('AddressDetails', () => {
     });
 
     it('should render "---" for missing optional fields', () => {
-        const sparseAddress: PatientAddress = {
+        const sparseAddress: MergeAddress = {
             id: '1',
             asOf: '2022-06-07T14:24:44.970',
             type: 'Type',

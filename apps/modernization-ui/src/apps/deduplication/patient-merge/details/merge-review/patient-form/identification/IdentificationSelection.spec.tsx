@@ -1,9 +1,9 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { IdentificationSelection } from './IdentificationSelection';
 import { render } from '@testing-library/react';
-import { PatientData } from 'apps/deduplication/api/model/PatientData';
+import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
 
-const patientData: Partial<PatientData>[] = [
+const patientData: Partial<MergePatient>[] = [
     {
         identifications: [
             {
@@ -20,7 +20,7 @@ const Fixture = () => {
     const form = useForm();
     return (
         <FormProvider {...form}>
-            <IdentificationSelection patientData={patientData as PatientData[]} />
+            <IdentificationSelection patientData={patientData as MergePatient[]} />
         </FormProvider>
     );
 };

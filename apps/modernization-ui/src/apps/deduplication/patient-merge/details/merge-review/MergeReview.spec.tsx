@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { PatientData } from 'apps/deduplication/api/model/PatientData';
+import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
 import { FormProvider, useForm } from 'react-hook-form';
 import { MemoryRouter } from 'react-router';
 import { MergeReview } from './MergeReview';
@@ -10,7 +10,7 @@ const onPreview = jest.fn();
 const onRemove = jest.fn();
 const Fixture = () => {
     const form = useForm<PatientMergeForm>();
-    const data: Partial<PatientData>[] = [
+    const data: Partial<MergePatient>[] = [
         { personUid: '100', adminComments: { date: '2025-05-01T00:00', comment: 'First comment' } },
         { personUid: '200', adminComments: { date: '2005-01-21T00:00', comment: 'Second comment' } },
         { personUid: '300', adminComments: { date: '1995-04-23T00:00', comment: 'Third comment' } }
@@ -18,7 +18,7 @@ const Fixture = () => {
     return (
         <MemoryRouter>
             <FormProvider {...form}>
-                <MergeReview patientData={data as PatientData[]} onPreview={onPreview} onRemovePatient={onRemove} />
+                <MergeReview patientData={data as MergePatient[]} onPreview={onPreview} onRemovePatient={onRemove} />
             </FormProvider>
         </MemoryRouter>
     );

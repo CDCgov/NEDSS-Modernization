@@ -1,10 +1,10 @@
-import { PatientPhoneEmail } from 'apps/deduplication/api/model/PatientData';
+import { MergePhoneEmail } from 'apps/deduplication/api/model/MergePatient';
 import { format, parseISO } from 'date-fns';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
 import { formatPhone } from '../formatPhone';
 
 type Props = {
-    phoneEmail: PatientPhoneEmail;
+    phoneEmail: MergePhoneEmail;
 };
 export const PhoneEmailDetails = ({ phoneEmail }: Props) => {
     return (

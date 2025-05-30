@@ -1,8 +1,8 @@
-import { PatientName } from 'apps/deduplication/api/model/PatientData';
+import { MergeName } from 'apps/deduplication/api/model/MergePatient';
 import { NameDetails } from './NameDetails';
 import { render, within } from '@testing-library/react';
 
-const defaultName: PatientName = {
+const defaultName: MergeName = {
     personUid: '1',
     sequence: '1',
     asOf: '2022-06-07T14:24:44.970',
@@ -17,7 +17,7 @@ const defaultName: PatientName = {
     degree: 'PHD'
 };
 
-const Fixture = ({ name = defaultName }: { name?: PatientName }) => {
+const Fixture = ({ name = defaultName }: { name?: MergeName }) => {
     return <NameDetails name={name} />;
 };
 
@@ -38,7 +38,7 @@ describe('NameDetails', () => {
     });
 
     it('should render "---" for missing optional fields', () => {
-        const sparseName: PatientName = {
+        const sparseName: MergeName = {
             personUid: '1',
             sequence: '1',
             asOf: '2022-06-07T14:24:44.970',

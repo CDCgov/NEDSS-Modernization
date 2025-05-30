@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { PatientIdSelection } from './PatientIdSelection';
-import { PatientData } from 'apps/deduplication/api/model/PatientData';
+import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
 import { PatientMergeForm } from '../../model/PatientMergeForm';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -8,10 +8,10 @@ import userEvent from '@testing-library/user-event';
 const onRemove = jest.fn();
 const Fixture = () => {
     const form = useForm<PatientMergeForm>();
-    const data: Partial<PatientData>[] = [{ personUid: '100' }, { personUid: '200' }, { personUid: '300' }];
+    const data: Partial<MergePatient>[] = [{ personUid: '100' }, { personUid: '200' }, { personUid: '300' }];
     return (
         <FormProvider {...form}>
-            <PatientIdSelection patientData={data as PatientData[]} onRemovePatient={onRemove} />
+            <PatientIdSelection patientData={data as MergePatient[]} onRemovePatient={onRemove} />
         </FormProvider>
     );
 };

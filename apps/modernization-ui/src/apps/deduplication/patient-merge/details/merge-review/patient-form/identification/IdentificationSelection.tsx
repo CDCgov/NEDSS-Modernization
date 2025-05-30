@@ -1,4 +1,4 @@
-import { PatientData, PatientIdentification } from 'apps/deduplication/api/model/PatientData';
+import { MergePatient, MergeIdentification } from 'apps/deduplication/api/model/MergePatient';
 import { useState } from 'react';
 import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
@@ -6,14 +6,14 @@ import { IdentificationDataTable } from './identification-data-table/Identificat
 import { IdentificationDetails } from './identification-details/IdentificationDetails';
 
 type Props = {
-    patientData: PatientData[];
+    patientData: MergePatient[];
 };
 export const IdentificationSelection = ({ patientData }: Props) => {
     const [selectedIdentification, setSelectedIdentification] = useState(
-        new Map<string, PatientIdentification | undefined>(patientData.map((p) => [p.personUid, undefined]))
+        new Map<string, MergeIdentification | undefined>(patientData.map((p) => [p.personUid, undefined]))
     );
 
-    const handleViewIdentification = (personUid: string, identification: PatientIdentification) => {
+    const handleViewIdentification = (personUid: string, identification: MergeIdentification) => {
         const map = new Map(selectedIdentification);
         if (map.get(personUid) === identification) {
             map.set(personUid, undefined);

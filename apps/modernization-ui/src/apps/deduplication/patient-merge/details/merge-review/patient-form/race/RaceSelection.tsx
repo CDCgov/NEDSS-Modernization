@@ -1,4 +1,4 @@
-import { PatientData, PatientRace } from 'apps/deduplication/api/model/PatientData';
+import { MergePatient, MergeRace } from 'apps/deduplication/api/model/MergePatient';
 import { useState } from 'react';
 import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
@@ -6,14 +6,14 @@ import { RaceDataTable } from './race-data-table/RaceDataTable';
 import { RaceDetails } from './race-details/RaceDetails';
 
 type Props = {
-    patientData: PatientData[];
+    patientData: MergePatient[];
 };
 export const RaceSelection = ({ patientData }: Props) => {
     const [selectedRace, setSelectedRace] = useState(
-        new Map<string, PatientRace | undefined>(patientData.map((p) => [p.personUid, undefined]))
+        new Map<string, MergeRace | undefined>(patientData.map((p) => [p.personUid, undefined]))
     );
 
-    const handleViewRace = (personUid: string, race: PatientRace) => {
+    const handleViewRace = (personUid: string, race: MergeRace) => {
         const map = new Map(selectedRace);
         if (map.get(personUid) === race) {
             map.set(personUid, undefined);

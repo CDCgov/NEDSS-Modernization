@@ -1,4 +1,4 @@
-import { PatientData, PatientName } from 'apps/deduplication/api/model/PatientData';
+import { MergePatient, MergeName } from 'apps/deduplication/api/model/MergePatient';
 import { useState } from 'react';
 import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
@@ -6,14 +6,14 @@ import { NameDataTable } from './name-data-table/NameDataTable';
 import { NameDetails } from './name-details/NameDetails';
 
 type Props = {
-    patientData: PatientData[];
+    patientData: MergePatient[];
 };
 export const NameSelection = ({ patientData }: Props) => {
     const [selectedNames, setSelectedNames] = useState(
-        new Map<string, PatientName | undefined>(patientData.map((p) => [p.personUid, undefined]))
+        new Map<string, MergeName | undefined>(patientData.map((p) => [p.personUid, undefined]))
     );
 
-    const handleNameSelection = (personUid: string, name: PatientName) => {
+    const handleNameSelection = (personUid: string, name: MergeName) => {
         const map = new Map(selectedNames);
         if (map.get(personUid) === name) {
             map.set(personUid, undefined);

@@ -1,4 +1,4 @@
-import { AdminComments } from 'apps/deduplication/api/model/PatientData';
+import { AdminComments } from 'apps/deduplication/api/model/MergePatient';
 import { format, parseISO } from 'date-fns';
 import { Radio } from 'design-system/radio';
 import { Controller, useFormContext } from 'react-hook-form';
