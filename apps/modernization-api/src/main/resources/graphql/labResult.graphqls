@@ -1,7 +1,0 @@
-extend type Query {
-  findDistinctCodedResults(searchText: String!): [CodedResult!]!
-}
-
-type CodedResult {
-  name: String!
-}

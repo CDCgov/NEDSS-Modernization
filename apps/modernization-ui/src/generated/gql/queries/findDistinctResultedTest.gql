@@ -1,5 +1,0 @@
-query findDistinctResultedTest($searchText: String!){
-    findDistinctResultedTest(searchText: $searchText){
-        name
-    }
-}
