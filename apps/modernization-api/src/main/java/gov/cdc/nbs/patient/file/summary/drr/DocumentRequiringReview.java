@@ -8,7 +8,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 public record DocumentRequiringReview(
-    Long id,
+    long patient,
+    long id,
     String local,
     String type,
     LocalDateTime eventDate,
@@ -24,7 +25,8 @@ public record DocumentRequiringReview(
 ) {
 
   public DocumentRequiringReview(
-      Long id,
+      long patient,
+      long id,
       String local,
       String type,
       LocalDateTime eventDate,
@@ -37,6 +39,7 @@ public record DocumentRequiringReview(
       String condition
   ) {
     this(
+        patient,
         id,
         local,
         type,
@@ -55,6 +58,7 @@ public record DocumentRequiringReview(
 
   public DocumentRequiringReview withTreatments(final Collection<String> treatments) {
     return new DocumentRequiringReview(
+        patient(),
         id(),
         local(),
         type(),
@@ -73,6 +77,7 @@ public record DocumentRequiringReview(
 
   public DocumentRequiringReview withResultedTests(final Collection<ResultedTest> resultedTests) {
     return new DocumentRequiringReview(
+        patient(),
         id(),
         local(),
         type(),

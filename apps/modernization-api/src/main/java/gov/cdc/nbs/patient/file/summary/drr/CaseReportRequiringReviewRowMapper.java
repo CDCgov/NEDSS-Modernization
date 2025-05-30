@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringReview> {
 
   record Column(
+      int patient,
       int identifier,
       int receivedOn,
       int type,
@@ -19,7 +20,7 @@ class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringR
   ) {
 
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7);
+      this(1, 2, 3, 4, 5, 6, 7,8);
     }
 
   }
@@ -37,6 +38,7 @@ class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringR
 
   @Override
   public DocumentRequiringReview mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
+    long patient = resultSet.getLong(columns.patient());
     long identifier = resultSet.getLong(columns.identifier());
     LocalDateTime receivedOn = resultSet.getObject(columns.receivedOn(), LocalDateTime.class);
     String type = resultSet.getString(columns.type());
@@ -48,6 +50,7 @@ class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringR
     String condition = resultSet.getString(this.columns.condition());
 
     return new DocumentRequiringReview(
+        patient,
         identifier,
         local,
         type,

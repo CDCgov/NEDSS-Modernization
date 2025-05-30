@@ -15,16 +15,18 @@ class MorbidityReportRequiringReviewFinder {
   public static final String ANY_PARAMETER = "any";
 
   private static final String QUERY = """
-      with revisions (person_uid) as (
+      with revisions (person_uid, mpr_id) as (
           select
-              [patient].[person_uid]
-          from  Person [patient] with (nolock)
+              [patient].[person_uid],
+              [patient].person_parent_uid
+          from  Person [patient]
           where   [patient].person_parent_uid = :patient
               and [patient].person_parent_uid <> [patient].person_uid
               and [patient].cd = 'PAT'
               and [patient].record_status_cd = 'ACTIVE'
       )
       select
+        [revisions].mpr_id                                  as [patient],
         [morbidity].[observation_uid]                       as [identifier],
         [morbidity].[add_time]                              as [received_on],
         [morbidity].activity_to_time                        as [event_date],
