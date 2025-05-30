@@ -1,3 +1,5 @@
+@use 'styles/borders';
+
 .mergeDataDisplay {
     display: flex;
 
@@ -21,6 +23,10 @@
         .value {
             display: flex;
             width: 50%;
+        }
+
+        &.underlined {
+            @extend %thin-bottom;
         }
     }
 
