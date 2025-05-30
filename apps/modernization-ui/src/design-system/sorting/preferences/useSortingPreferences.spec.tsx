@@ -1,14 +1,14 @@
 import { ReactNode, act } from 'react';
 import { renderHook } from '@testing-library/react';
 import { ActiveSorting, SortingPreferenceProvider, useSortingPreferences } from './useSortingPreferences';
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 
 let mockProperty: string | undefined = undefined;
 let mockDirection: Direction | undefined = undefined;
 const mockReset = jest.fn();
 const mockSortBy = jest.fn();
 
-jest.mock('sorting', () => ({
+jest.mock('libs/sorting', () => ({
     useSorting: () => ({
         property: mockProperty,
         direction: mockDirection,
@@ -89,13 +89,13 @@ describe('useSortingPreferences', () => {
 
     it('should initialize the active sorting from sorting preferences when present', () => {
         mockValue = { property: 'initial-value', direction: 'desc' as Direction };
-        
+
         const { result } = renderHook(() => useSortingPreferences(), { wrapper });
-        
+
         act(() => {
             result.current.sortOn(mockValue);
         });
-        
+
         expect(result.current.active).toEqual(
             expect.objectContaining({ property: 'initial-value', direction: 'desc' })
         );

@@ -22,7 +22,7 @@ jest.mock('pagination', () => ({
     })
 }));
 
-jest.mock('sorting', () => ({
+jest.mock('libs/sorting', () => ({
     useSorting: () => ({
         reset: jest.fn(),
         sortBy: jest.fn(),

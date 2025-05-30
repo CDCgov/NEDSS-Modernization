@@ -3,7 +3,7 @@ import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
 import { PaginationProvider } from 'pagination';
-import { SortingProvider, useSorting } from 'sorting';
+import { SortingProvider, useSorting } from 'libs/sorting';
 import { MatchesRequiringReviewTable } from './matches-requiring-review-table/MatchesRequiringReviewTable';
 import styles from './merge-landing.module.scss';
 

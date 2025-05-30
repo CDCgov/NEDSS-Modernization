@@ -4,8 +4,7 @@ import { render, waitFor, within } from '@testing-library/react';
 import { PaginationProvider } from 'pagination';
 import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
-import {SortingProvider, useSorting} from "../../../../../sorting";
-import React from 'react';
+import { SortingProvider } from 'libs/sorting';
 
 let mockReturnValue: MatchRequiringReviewResponse;
 beforeEach(() => {
@@ -34,24 +33,22 @@ jest.mock('pagination', () => {
                 current: 1,
                 pageSize: 20,
                 status: 'Requested',
-                total: 1,
+                total: 1
             },
             ready: jest.fn(),
             request: jest.fn(),
             resize: jest.fn(),
-            firstPage: jest.fn(),
-        }),
+            firstPage: jest.fn()
+        })
     };
 });
-
-
 
 const mockFetch = jest.fn();
 jest.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
     useMatchesRequiringReview: () => ({
         response: mockReturnValue,
-        fetchMatchesRequiringReview: mockFetch,
-    }),
+        fetchMatchesRequiringReview: mockFetch
+    })
 }));
 
 const Fixture = () => {

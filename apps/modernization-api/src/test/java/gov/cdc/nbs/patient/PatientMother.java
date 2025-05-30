@@ -43,7 +43,7 @@ public class PatientMother {
   private final Available<PatientIdentifier> available;
   private final Active<PatientIdentifier> active;
   private final PatientCleaner cleaner;
-  private final JdbcClient jdbcClient;
+  private final JdbcClient client;
   private final SoundexResolver soundexResolver;
 
   PatientMother(
@@ -56,7 +56,7 @@ public class PatientMother {
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
       final PatientCleaner cleaner,
-      final JdbcClient jdbcClient,
+      final JdbcClient client,
       final SoundexResolver soundexResolver) {
     this.settings = settings;
     this.idGenerator = idGenerator;
@@ -67,7 +67,7 @@ public class PatientMother {
     this.available = available;
     this.active = active;
     this.cleaner = cleaner;
-    this.jdbcClient = jdbcClient;
+    this.client = client;
     this.soundexResolver = soundexResolver;
     this.faker = new Faker(Locale.of("en-us"));
   }
@@ -721,9 +721,23 @@ public class PatientMother {
   }
 
   public void withStateHIVCase(final PatientIdentifier identifier, final String value) {
-    jdbcClient.sql("update person set ehars_id = ?, as_of_date_general = GETDATE() where person_uid = ?")
+    client.sql("update person set ehars_id = ?, as_of_date_general = GETDATE() where person_uid = ?")
         .params(value, identifier.id())
         .update();
 
+  }
+
+  public void withAsOf(final PatientIdentifier identifier, final LocalDate value) {
+    client.sql("update person set as_of_date_admin = ? where person_uid = ?")
+        .param(value)
+        .param(identifier.id())
+        .update();
+  }
+
+  public void withComment(final PatientIdentifier identifier, final String value) {
+    client.sql("update person set [description] = ? where person_uid = ?")
+        .param(value)
+        .param(identifier.id())
+        .update();
   }
 }

@@ -42,8 +42,11 @@ export type { PatientDemographicsSummary } from './models/PatientDemographicsSum
 export { PatientFile } from './models/PatientFile';
 export type { PatientInvestigation } from './models/PatientInvestigation';
 export type { PatientLabReport } from './models/PatientLabReport';
+export type { PatientPhoneDemographic } from './models/PatientPhoneDemographic';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
+export type { ResultedTest } from './models/ResultedTest';
+export type { Selectable } from './models/Selectable';
 export type { StandardResponse } from './models/StandardResponse';
 export type { TestResult } from './models/TestResult';
 

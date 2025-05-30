@@ -6,7 +6,7 @@ import { ColumnPreferencesPanel } from 'design-system/table/preferences';
 import { useFilter } from 'design-system/filter';
 import { Button } from 'components/button';
 import { FeatureToggle } from 'feature';
-import { maybeUseSorting } from 'sorting';
+import { useSorting } from 'libs/sorting';
 
 import styles from './search-results-table-options.module.scss';
 
@@ -17,7 +17,7 @@ type Props = {
 
 const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
     const { active, toggle, clearAll, filter } = useFilter();
-    const sorting = maybeUseSorting();
+    const sorting = useSorting();
 
     const handleFilterSortReset = () => {
         clearAll();

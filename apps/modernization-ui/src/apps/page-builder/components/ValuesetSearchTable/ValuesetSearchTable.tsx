@@ -5,7 +5,7 @@ import { Search } from 'components/Search/Search';
 import { TableBody, TableComponent } from 'components/Table';
 import { Status, usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 import styles from './valueset-search-table.module.scss';
 
 const enum Header {
