@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.file.summary.drr;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.patient.events.tests.ResultedTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,11 +13,12 @@ public record DocumentRequiringReview(
     long id,
     String local,
     String type,
-    LocalDateTime eventDate,
+    LocalDate eventDate,
     LocalDateTime dateReceived,
     boolean isElectronic,
     boolean isUpdate,
     String reportingFacility,
+    String orderingFacility,
     DisplayableSimpleName orderingProvider,
     String sendingFacility,
     String condition,
@@ -29,11 +31,12 @@ public record DocumentRequiringReview(
       long id,
       String local,
       String type,
-      LocalDateTime eventDate,
+      LocalDate eventDate,
       LocalDateTime dateReceived,
       boolean isElectronic,
       boolean isUpdate,
       String reportingFacility,
+      String orderingFacility,
       DisplayableSimpleName orderingProvider,
       String sendingFacility,
       String condition
@@ -48,6 +51,7 @@ public record DocumentRequiringReview(
         isElectronic,
         isUpdate,
         reportingFacility,
+        orderingFacility,
         orderingProvider,
         sendingFacility,
         condition,
@@ -67,6 +71,7 @@ public record DocumentRequiringReview(
         isElectronic(),
         isUpdate(),
         reportingFacility(),
+        orderingFacility(),
         orderingProvider(),
         sendingFacility(),
         condition(),
@@ -86,6 +91,7 @@ public record DocumentRequiringReview(
         isElectronic(),
         isUpdate(),
         reportingFacility(),
+        orderingFacility(),
         orderingProvider(),
         sendingFacility(),
         condition(),

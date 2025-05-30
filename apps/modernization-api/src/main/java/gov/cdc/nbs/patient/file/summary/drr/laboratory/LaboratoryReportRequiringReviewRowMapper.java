@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.file.summary.drr.morbidity;
+package gov.cdc.nbs.patient.file.summary.drr.laboratory;
 
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
@@ -11,21 +11,21 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringReview> {
+class LaboratoryReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringReview> {
 
 
-  public static final String DOCUMENT_TYPE = "Morbidity Report";
+  public static final String DOCUMENT_TYPE = "Laboratory Report";
 
 
   record Column(
       int patient,
       int identifier,
+      int local,
       int receivedOn,
       int eventDate,
-      int reportingFacility,
-      int condition,
-      int local,
       int electronic,
+      int reportingFacility,
+      int orderingFacility,
       DisplayableSimpleNameRowMapper.Columns orderedBy
   ) {
 
@@ -39,11 +39,11 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
   private final Column columns;
   private final RowMapper<DisplayableSimpleName> providerMapper;
 
-  MorbidityReportRequiringReviewRowMapper() {
+  LaboratoryReportRequiringReviewRowMapper() {
     this(new Column());
   }
 
-  MorbidityReportRequiringReviewRowMapper(final Column columns) {
+  LaboratoryReportRequiringReviewRowMapper(final Column columns) {
     this.columns = columns;
     this.providerMapper = new DisplayableSimpleNameRowMapper(columns.orderedBy);
   }
@@ -61,7 +61,7 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
 
     DisplayableSimpleName orderingProvider = this.providerMapper.mapRow(resultSet, rowNum);
 
-    String condition = resultSet.getString(this.columns.condition());
+    String orderingFacility = resultSet.getString(this.columns.orderingFacility());
 
     return new DocumentRequiringReview(
         patient,
@@ -73,10 +73,10 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
         electronic,
         false,
         reportingFacility,
-        null,
+        orderingFacility,
         orderingProvider,
         null,
-        condition
+        null
     );
   }
 

@@ -107,10 +107,10 @@ public class MorbidityReportSteps {
         .ifPresent(report -> reportMother.receivedOn(report, LocalDateTime.of(on, at)));
   }
 
-  @Given("the morbidity report was reported on {localDate} at {time}")
-  public void reportedOn(final LocalDate on, final LocalTime at) {
+  @Given("the morbidity report was reported on {localDate}")
+  public void reportedOn(final LocalDate on) {
     activeReport.maybeActive()
-        .ifPresent(report -> reportMother.reportedOn(report, LocalDateTime.of(on, at)));
+        .ifPresent(report -> reportMother.reportedOn(report, on));
   }
 
   @Given("the morbidity report was ordered by the provider")
