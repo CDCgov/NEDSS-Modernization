@@ -20,8 +20,12 @@ type RepeatingBlockProps<V extends FieldValues> = {
     errors?: ReactNode[];
     values?: V[];
     sizing?: Sizing;
-    onChange: (data: V[]) => void;
-    isDirty: (isDirty: boolean) => void;
+    view?: boolean;
+    edit?: boolean;
+    delete?: boolean;
+    readonly?: boolean;
+    onChange?: (data: V[]) => void;
+    isDirty?: (isDirty: boolean) => void;
     isValid?: (isValid: boolean) => void;
     formRenderer: (entry?: V) => ReactNode;
     viewRenderer: (entry: V) => ReactNode;
@@ -35,6 +39,10 @@ const RepeatingBlock = <V extends FieldValues>({
     columns,
     errors,
     sizing,
+    view: viewBtn = true,
+    edit: editBtn = true,
+    delete: deleteBtn = true,
+    readonly = false,
     onChange,
     isDirty,
     isValid,
@@ -47,11 +55,11 @@ const RepeatingBlock = <V extends FieldValues>({
     });
 
     useEffect(() => {
-        onChange(entries);
+        onChange?.(entries);
     }, [JSON.stringify(entries)]);
 
     useEffect(() => {
-        isDirty(form.formState.isDirty);
+        isDirty?.(form.formState.isDirty);
 
         if (!form.formState.isDirty) {
             // If a user clears the form, remove internal form validation errors
@@ -104,23 +112,33 @@ const RepeatingBlock = <V extends FieldValues>({
         className: styles.iconColumn,
         render: (value: V) => (
             <div className={classNames(styles.actions, sizing && styles[sizing])}>
-                <div data-tooltip-position="top" aria-label="View" role="button" onClick={() => view(value)}>
-                    <Icon
-                        name="visibility"
-                        sizing={sizing}
-                        className={classNames({ [styles.active]: status === 'viewing' && value === selected })}
-                    />
-                </div>
-                <div data-tooltip-position="top" aria-label="Edit" role="button" onClick={() => edit(value)}>
-                    <Icon
-                        name="edit"
-                        sizing={sizing}
-                        className={classNames({ [styles.active]: status === 'editing' && value === selected })}
-                    />
-                </div>
-                <div data-tooltip-position="top" aria-label="Delete" role="button" onClick={() => handleRemove(value)}>
-                    <Icon name="delete" sizing={sizing} />
-                </div>
+                {viewBtn && (
+                    <div data-tooltip-position="top" aria-label="View" role="button" onClick={() => view(value)}>
+                        <Icon
+                            name="visibility"
+                            sizing={sizing}
+                            className={classNames({ [styles.active]: status === 'viewing' && value === selected })}
+                        />
+                    </div>
+                )}
+                {editBtn && (
+                    <div data-tooltip-position="top" aria-label="Edit" role="button" onClick={() => edit(value)}>
+                        <Icon
+                            name="edit"
+                            sizing={sizing}
+                            className={classNames({ [styles.active]: status === 'editing' && value === selected })}
+                        />
+                    </div>
+                )}
+                {deleteBtn && (
+                    <div
+                        data-tooltip-position="top"
+                        aria-label="Delete"
+                        role="button"
+                        onClick={() => handleRemove(value)}>
+                        <Icon name="delete" sizing={sizing} />
+                    </div>
+                )}
             </div>
         )
     };
@@ -162,62 +180,70 @@ const RepeatingBlock = <V extends FieldValues>({
                     noDataFallback
                 />
             </div>
-            <Shown when={status === 'viewing'}>{selected && viewRenderer(selected)}</Shown>
-            <Shown when={status !== 'viewing'}>
-                <FormProvider {...form}>
-                    <div className={classNames(styles.form, { [styles.changed]: form.formState.isDirty })}>
-                        {formRenderer(selected)}
-                    </div>
-                </FormProvider>
-            </Shown>
-            <footer>
-                <Shown when={status === 'adding'}>
-                    <Button
-                        outline
-                        sizing={sizing}
-                        aria-description={`add ${title.toLowerCase()}`}
-                        onClick={form.handleSubmit(handleAdd)}>
-                        <Icon name="add" sizing={sizing} />
-                        {`Add ${title.toLowerCase()}`}
-                    </Button>
-                    <Shown when={form.formState.isDirty}>
-                        <Button
-                            outline
-                            sizing={sizing}
-                            aria-description={`clear ${title.toLowerCase()}`}
-                            onClick={handleClear}
-                            onMouseDown={(e) => e.preventDefault() /* prevent need to double click after blur */}>
-                            Clear
-                        </Button>
+            {readonly === false && (
+                <>
+                    <Shown when={status === 'viewing'}>
+                        {selected && <div className={styles.viewMode}>{viewRenderer(selected)}</div>}
                     </Shown>
-                </Shown>
-                <Shown when={status === 'editing'}>
-                    <Button
-                        outline
-                        sizing={sizing}
-                        aria-description={`update ${title.toLowerCase()}`}
-                        onClick={form.handleSubmit(handleUpdate)}>
-                        {`Update ${title.toLowerCase()}`}
-                    </Button>
-                    <Button
-                        outline
-                        sizing={sizing}
-                        aria-description={`cancel editing current ${title.toLowerCase()}`}
-                        onClick={handleReset}>
-                        Cancel
-                    </Button>
-                </Shown>
-                <Shown when={status === 'viewing'}>
-                    <Button
-                        outline
-                        sizing={sizing}
-                        aria-description={`add ${title.toLowerCase()}`}
-                        onClick={handleReset}>
-                        <Icon name="add" sizing={sizing} />
-                        {`Add ${title.toLowerCase()}`}
-                    </Button>
-                </Shown>
-            </footer>
+                    <Shown when={status !== 'viewing'}>
+                        <FormProvider {...form}>
+                            <div className={classNames(styles.form, { [styles.changed]: form.formState.isDirty })}>
+                                {formRenderer(selected)}
+                            </div>
+                        </FormProvider>
+                    </Shown>
+                    <footer>
+                        <Shown when={status === 'adding'}>
+                            <Button
+                                outline
+                                sizing={sizing}
+                                aria-description={`add ${title.toLowerCase()}`}
+                                onClick={form.handleSubmit(handleAdd)}>
+                                <Icon name="add" sizing={sizing} />
+                                {`Add ${title.toLowerCase()}`}
+                            </Button>
+                            <Shown when={form.formState.isDirty}>
+                                <Button
+                                    outline
+                                    sizing={sizing}
+                                    aria-description={`clear ${title.toLowerCase()}`}
+                                    onClick={handleClear}
+                                    onMouseDown={
+                                        (e) => e.preventDefault() /* prevent need to double click after blur */
+                                    }>
+                                    Clear
+                                </Button>
+                            </Shown>
+                        </Shown>
+                        <Shown when={status === 'editing'}>
+                            <Button
+                                outline
+                                sizing={sizing}
+                                aria-description={`update ${title.toLowerCase()}`}
+                                onClick={form.handleSubmit(handleUpdate)}>
+                                {`Update ${title.toLowerCase()}`}
+                            </Button>
+                            <Button
+                                outline
+                                sizing={sizing}
+                                aria-description={`cancel editing current ${title.toLowerCase()}`}
+                                onClick={handleReset}>
+                                Cancel
+                            </Button>
+                        </Shown>
+                        <Shown when={status === 'viewing'}>
+                            <Button
+                                outline
+                                sizing={sizing}
+                                aria-description={`add ${title.toLowerCase()}`}
+                                onClick={handleReset}>
+                                <Icon name="add" sizing={sizing} />
+                                {`Add ${title.toLowerCase()}`}
+                            </Button>
+                        </Shown>
+                    </footer>
+                </>
+            )}
         </Card>
     );
 };

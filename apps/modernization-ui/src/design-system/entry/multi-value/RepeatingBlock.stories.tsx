@@ -146,3 +146,74 @@ export const Default: Story = {
         sizing: defaultSizing
     }
 };
+
+export const ReadOnlyRepeatingBlock: Story = {
+    args: {
+        id: 'repeating-block-default',
+        title: 'Person',
+        defaultValues: defaultValue,
+        columns,
+        values: [],
+        formRenderer: () => <SampleForm sizing={defaultSizing} />,
+        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
+        onChange: handleChange,
+        isDirty: () => {},
+        isValid: () => {},
+        readonly: true,
+        sizing: defaultSizing
+    }
+};
+
+export const ViewOnlyBlock: Story = {
+    args: {
+        id: 'repeating-block-default',
+        title: 'Person',
+        defaultValues: defaultValue,
+        columns,
+        values: [],
+        formRenderer: () => <SampleForm sizing={defaultSizing} />,
+        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
+        onChange: handleChange,
+        isDirty: () => {},
+        isValid: () => {},
+        edit: false,
+        delete: false,
+        sizing: defaultSizing
+    }
+};
+
+export const EditOnlyBlock: Story = {
+    args: {
+        id: 'repeating-block-default',
+        title: 'Person',
+        defaultValues: defaultValue,
+        columns,
+        values: [],
+        formRenderer: () => <SampleForm sizing={defaultSizing} />,
+        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
+        onChange: handleChange,
+        isDirty: () => {},
+        isValid: () => {},
+        view: false,
+        delete: false,
+        sizing: defaultSizing
+    }
+};
+
+export const DeleteOnlyBlock: Story = {
+    args: {
+        id: 'repeating-block-default',
+        title: 'Person',
+        defaultValues: defaultValue,
+        columns,
+        values: [],
+        formRenderer: () => <SampleForm sizing={defaultSizing} />,
+        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
+        onChange: handleChange,
+        isDirty: () => {},
+        isValid: () => {},
+        edit: false,
+        view: false,
+        sizing: defaultSizing
+    }
+};
