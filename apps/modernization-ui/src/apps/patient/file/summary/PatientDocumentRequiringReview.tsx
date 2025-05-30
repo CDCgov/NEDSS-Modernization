@@ -5,6 +5,8 @@ import { usePatientFileDocumentRequiringReview } from './usePatientFileDocumentR
 import { usePatient } from '../usePatient';
 import { DocumentRequiringReview } from 'generated';
 import { ClassicLink } from 'classic';
+import { internalizeDate } from 'date';
+import { internalizeDateTime } from 'date/InternalizeDateTime';
 
 const renderReporting = (value: DocumentRequiringReview) => {
     return (
@@ -45,6 +47,7 @@ const renderDescription = (value: DocumentRequiringReview) => {
             {value.type === 'Morbidity Report' && (
                 <>
                     <strong>{value.condition}</strong>
+                    <br />
                     {(value.resultedTests?.length ?? 0) > 0 && (
                         <>
                             {value.resultedTests?.map((result) => (
@@ -53,6 +56,7 @@ const renderDescription = (value: DocumentRequiringReview) => {
                                     <strong>{result.name}:</strong>
                                     <br />
                                     {result.result}
+                                    <br />
                                 </>
                             ))}
                         </>
@@ -73,15 +77,7 @@ const renderDescription = (value: DocumentRequiringReview) => {
 };
 
 const renderDateReceived = (value: string) => {
-    const date = new Date(value);
-    return date.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
-    });
+    return internalizeDateTime(value);
 };
 
 const resolveUrl = (value: DocumentRequiringReview) => {
@@ -97,8 +93,7 @@ const resolveUrl = (value: DocumentRequiringReview) => {
 };
 
 const renderEventDate = (value: string) => {
-    const date = new Date(value);
-    return date.toLocaleDateString();
+    return internalizeDate(value);
 };
 
 const renderEventId = (value: DocumentRequiringReview) => {
