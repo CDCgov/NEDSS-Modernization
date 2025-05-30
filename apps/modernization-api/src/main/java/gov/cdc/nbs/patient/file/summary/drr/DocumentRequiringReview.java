@@ -1,5 +1,7 @@
 package gov.cdc.nbs.patient.file.summary.drr;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.patient.events.tests.ResultedTest;
 
@@ -8,10 +10,15 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record DocumentRequiringReview(
+    @JsonProperty(required = true)
     long patient,
+    @JsonProperty(required = true)
     long id,
+    @JsonProperty(required = true)
     String local,
+    @JsonProperty(required = true)
     String type,
     LocalDate eventDate,
     LocalDateTime dateReceived,
