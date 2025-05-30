@@ -17,25 +17,7 @@ export const mockPatientLabReports: PatientLabReport[] = [
                 units: '',
                 highRange: '',
                 lowRange: '',
-                statusDetails: 'Final'
-            },
-            {
-                resultedTest: 'Complete Blood Count',
-                codedResult: 'Abnormal',
-                numericResult: '15.2',
-                units: 'g/dL',
-                highRange: '16.0',
-                lowRange: '12.0',
-                statusDetails: 'Final'
-            },
-            {
-                resultedTest: 'Hepatitis B Surface Antigen',
-                codedResult: 'Positive',
-                numericResult: '',
-                units: '',
-                highRange: '',
-                lowRange: '',
-                statusDetails: 'Final'
+                statusDetails: ''
             }
         ],
         associatedInvestigation: {
@@ -58,12 +40,12 @@ export const mockPatientLabReports: PatientLabReport[] = [
         testResults: [
             {
                 resultedTest: 'Complete Blood Count',
-                codedResult: 'Abnormal',
-                numericResult: '15.2',
-                units: 'g/dL',
-                highRange: '16.0',
-                lowRange: '12.0',
-                statusDetails: 'Final'
+                codedResult: '14',
+                numericResult: '',
+                units: '',
+                highRange: '',
+                lowRange: '',
+                statusDetails: ''
             }
         ],
         associatedInvestigation: {
@@ -91,7 +73,7 @@ export const mockPatientLabReports: PatientLabReport[] = [
                 units: '',
                 highRange: '',
                 lowRange: '',
-                statusDetails: 'Final'
+                statusDetails: ''
             }
         ],
         associatedInvestigation: {
@@ -111,17 +93,7 @@ export const mockPatientLabReports: PatientLabReport[] = [
             reportingFacility: 'Metro Reference Lab'
         },
         collectedDate: '2024-05-31T13:00:00.000Z',
-        testResults: [
-            {
-                resultedTest: 'Lead Blood Level',
-                codedResult: 'Elevated',
-                numericResult: '12',
-                units: 'µg/dL',
-                highRange: '5',
-                lowRange: '0',
-                statusDetails: 'Final'
-            }
-        ],
+        testResults: [],
         associatedInvestigation: {
             id: 'INV-2024-0459',
             condition: 'Lead Poisoning',
@@ -154,6 +126,15 @@ export const mockPatientLabReports: PatientLabReport[] = [
                 units: '',
                 highRange: '',
                 lowRange: '',
+                statusDetails: 'Final'
+            },
+            {
+                resultedTest: 'Lead Blood Level',
+                codedResult: 'Elevated',
+                numericResult: '12',
+                units: 'µg/dL',
+                highRange: '5',
+                lowRange: '0',
                 statusDetails: 'Final'
             }
         ],
