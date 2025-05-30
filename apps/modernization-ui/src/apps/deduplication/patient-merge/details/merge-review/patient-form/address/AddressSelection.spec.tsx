@@ -3,7 +3,7 @@ import { AddressSelection } from './AddressSelection';
 import { render } from '@testing-library/react';
 import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
 
-const patientData: Partial<MergePatient>[] = [
+const mergePatients: Partial<MergePatient>[] = [
     {
         addresses: [
             {
@@ -28,7 +28,7 @@ const Fixture = () => {
     const form = useForm();
     return (
         <FormProvider {...form}>
-            <AddressSelection patientData={patientData as MergePatient[]} />
+            <AddressSelection mergePatients={mergePatients as MergePatient[]} />
         </FormProvider>
     );
 };

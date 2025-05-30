@@ -11,7 +11,7 @@ const Fixture = () => {
     const data: Partial<MergePatient>[] = [{ personUid: '100' }, { personUid: '200' }, { personUid: '300' }];
     return (
         <FormProvider {...form}>
-            <PatientIdSelection patientData={data as MergePatient[]} onRemovePatient={onRemove} />
+            <PatientIdSelection mergePatients={data as MergePatient[]} onRemovePatient={onRemove} />
         </FormProvider>
     );
 };

@@ -3,7 +3,7 @@ import { PhoneEmailSelection } from './PhoneEmailSelection';
 import { render } from '@testing-library/react';
 import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
 
-const patientData: Partial<MergePatient>[] = [
+const mergePatients: Partial<MergePatient>[] = [
     {
         phoneEmails: [
             {
@@ -25,7 +25,7 @@ const Fixture = () => {
     const form = useForm();
     return (
         <FormProvider {...form}>
-            <PhoneEmailSelection patientData={patientData as MergePatient[]} />
+            <PhoneEmailSelection mergePatients={mergePatients as MergePatient[]} />
         </FormProvider>
     );
 };

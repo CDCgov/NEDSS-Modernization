@@ -6,11 +6,11 @@ import { RaceDataTable } from './race-data-table/RaceDataTable';
 import { RaceDetails } from './race-details/RaceDetails';
 
 type Props = {
-    patientData: MergePatient[];
+    mergePatients: MergePatient[];
 };
-export const RaceSelection = ({ patientData }: Props) => {
+export const RaceSelection = ({ mergePatients }: Props) => {
     const [selectedRace, setSelectedRace] = useState(
-        new Map<string, MergeRace | undefined>(patientData.map((p) => [p.personUid, undefined]))
+        new Map<string, MergeRace | undefined>(mergePatients.map((p) => [p.personUid, undefined]))
     );
 
     const handleViewRace = (personUid: string, race: MergeRace) => {
@@ -27,7 +27,7 @@ export const RaceSelection = ({ patientData }: Props) => {
         <>
             <Section
                 title="RACE"
-                patientData={patientData}
+                mergePatients={mergePatients}
                 render={(p) => (
                     <RaceDataTable
                         patientData={p}
@@ -38,7 +38,7 @@ export const RaceSelection = ({ patientData }: Props) => {
             />
             <DetailsRow
                 id="patient-race"
-                patientData={patientData}
+                mergePatients={mergePatients}
                 render={(p) => {
                     const race = selectedRace.get(p.personUid);
                     return race && <RaceDetails race={race} />;

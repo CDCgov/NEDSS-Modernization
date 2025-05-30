@@ -6,11 +6,11 @@ import { AddressDataTable } from './address-data-table/AddressDataTable';
 import { AddressDetails } from './address-details/AddressDetails';
 
 type Props = {
-    patientData: MergePatient[];
+    mergePatients: MergePatient[];
 };
-export const AddressSelection = ({ patientData }: Props) => {
+export const AddressSelection = ({ mergePatients }: Props) => {
     const [selectedAddresses, setSelectedAddresses] = useState(
-        new Map<string, MergeAddress | undefined>(patientData.map((p) => [p.personUid, undefined]))
+        new Map<string, MergeAddress | undefined>(mergePatients.map((p) => [p.personUid, undefined]))
     );
 
     const handleViewAddress = (personUid: string, address: MergeAddress) => {
@@ -27,7 +27,7 @@ export const AddressSelection = ({ patientData }: Props) => {
         <>
             <Section
                 title="ADDRESS"
-                patientData={patientData}
+                mergePatients={mergePatients}
                 render={(p) => (
                     <AddressDataTable
                         patientData={p}
@@ -38,7 +38,7 @@ export const AddressSelection = ({ patientData }: Props) => {
             />
             <DetailsRow
                 id="patient-address"
-                patientData={patientData}
+                mergePatients={mergePatients}
                 render={(p) => {
                     const address = selectedAddresses.get(p.personUid);
                     return address && <AddressDetails address={address} />;

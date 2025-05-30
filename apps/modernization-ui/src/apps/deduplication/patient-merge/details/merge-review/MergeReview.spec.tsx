@@ -18,7 +18,7 @@ const Fixture = () => {
     return (
         <MemoryRouter>
             <FormProvider {...form}>
-                <MergeReview patientData={data as MergePatient[]} onPreview={onPreview} onRemovePatient={onRemove} />
+                <MergeReview mergePatients={data as MergePatient[]} onPreview={onPreview} onRemovePatient={onRemove} />
             </FormProvider>
         </MemoryRouter>
     );

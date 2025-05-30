@@ -12,11 +12,11 @@ import { IdentificationSelection } from './patient-form/identification/Identific
 import { RaceSelection } from './patient-form/race/RaceSelection';
 
 export type Props = {
-    patientData: MergePatient[];
+    mergePatients: MergePatient[];
     onPreview: () => void;
     onRemovePatient: (personUid: string) => void;
 };
-export const MergeReview = ({ patientData, onPreview, onRemovePatient }: Props) => {
+export const MergeReview = ({ mergePatients, onPreview, onRemovePatient }: Props) => {
     const nav = useNavigate();
 
     return (
@@ -40,13 +40,13 @@ export const MergeReview = ({ patientData, onPreview, onRemovePatient }: Props) 
                     surviving ID. If this is not correct, select the appropriate record.
                 </div>
                 <div className={styles.patientContent}>
-                    <PatientIdSelection patientData={patientData} onRemovePatient={onRemovePatient} />
-                    <AdminCommentsSelection patientData={patientData} />
-                    <NameSelection patientData={patientData} />
-                    <AddressSelection patientData={patientData} />
-                    <PhoneEmailSelection patientData={patientData} />
-                    <IdentificationSelection patientData={patientData} />
-                    <RaceSelection patientData={patientData} />
+                    <PatientIdSelection mergePatients={mergePatients} onRemovePatient={onRemovePatient} />
+                    <AdminCommentsSelection mergePatients={mergePatients} />
+                    <NameSelection mergePatients={mergePatients} />
+                    <AddressSelection mergePatients={mergePatients} />
+                    <PhoneEmailSelection mergePatients={mergePatients} />
+                    <IdentificationSelection mergePatients={mergePatients} />
+                    <RaceSelection mergePatients={mergePatients} />
                 </div>
             </main>
         </div>

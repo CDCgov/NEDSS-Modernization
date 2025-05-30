@@ -6,11 +6,11 @@ import { NameDataTable } from './name-data-table/NameDataTable';
 import { NameDetails } from './name-details/NameDetails';
 
 type Props = {
-    patientData: MergePatient[];
+    mergePatients: MergePatient[];
 };
-export const NameSelection = ({ patientData }: Props) => {
+export const NameSelection = ({ mergePatients }: Props) => {
     const [selectedNames, setSelectedNames] = useState(
-        new Map<string, MergeName | undefined>(patientData.map((p) => [p.personUid, undefined]))
+        new Map<string, MergeName | undefined>(mergePatients.map((p) => [p.personUid, undefined]))
     );
 
     const handleNameSelection = (personUid: string, name: MergeName) => {
@@ -27,7 +27,7 @@ export const NameSelection = ({ patientData }: Props) => {
         <>
             <Section
                 title="NAME"
-                patientData={patientData}
+                mergePatients={mergePatients}
                 render={(p) => (
                     <NameDataTable
                         patientData={p}
@@ -38,7 +38,7 @@ export const NameSelection = ({ patientData }: Props) => {
             />
             <DetailsRow
                 id="patient-name"
-                patientData={patientData}
+                mergePatients={mergePatients}
                 render={(p) => {
                     const name = selectedNames.get(p.personUid);
                     return name && <NameDetails name={name} />;

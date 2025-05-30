@@ -36,7 +36,7 @@ export const MergeDetails = () => {
                 <FormProvider {...form}>
                     <Shown when={pageState === 'review'}>
                         <MergeReview
-                            patientData={response ?? []}
+                            mergePatients={response ?? []}
                             onPreview={() => setPageState('preview')}
                             onRemovePatient={handleRemovePatient}
                         />

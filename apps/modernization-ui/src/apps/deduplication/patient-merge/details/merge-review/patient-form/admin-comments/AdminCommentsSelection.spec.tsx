@@ -13,7 +13,7 @@ const Fixture = () => {
     ];
     return (
         <FormProvider {...form}>
-            <AdminCommentsSelection patientData={data as MergePatient[]} />
+            <AdminCommentsSelection mergePatients={data as MergePatient[]} />
         </FormProvider>
     );
 };

@@ -6,11 +6,11 @@ import { PhoneEmailDataTable } from './phone-email-data-table/PhoneEmailDataTabl
 import { PhoneEmailDetails } from './phone-email-details/PhoneEmailDetails';
 
 type Props = {
-    patientData: MergePatient[];
+    mergePatients: MergePatient[];
 };
-export const PhoneEmailSelection = ({ patientData }: Props) => {
+export const PhoneEmailSelection = ({ mergePatients }: Props) => {
     const [selectedPhoneEmail, setSelectedPhoneEmail] = useState(
-        new Map<string, MergePhoneEmail | undefined>(patientData.map((p) => [p.personUid, undefined]))
+        new Map<string, MergePhoneEmail | undefined>(mergePatients.map((p) => [p.personUid, undefined]))
     );
 
     const handleViewPhoneEmail = (personUid: string, phoneEmail: MergePhoneEmail) => {
@@ -27,7 +27,7 @@ export const PhoneEmailSelection = ({ patientData }: Props) => {
         <>
             <Section
                 title="PHONE & EMAIL"
-                patientData={patientData}
+                mergePatients={mergePatients}
                 render={(p) => (
                     <PhoneEmailDataTable
                         patientData={p}
@@ -38,7 +38,7 @@ export const PhoneEmailSelection = ({ patientData }: Props) => {
             />
             <DetailsRow
                 id="patient-phone-email"
-                patientData={patientData}
+                mergePatients={mergePatients}
                 render={(p) => {
                     const phoneEmail = selectedPhoneEmail.get(p.personUid);
                     return phoneEmail && <PhoneEmailDetails phoneEmail={phoneEmail} />;

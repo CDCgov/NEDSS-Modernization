@@ -4,13 +4,13 @@ import { ReactNode } from 'react';
 
 type Props = {
     id: string;
-    patientData: MergePatient[];
-    render: (patientData: MergePatient) => ReactNode | undefined;
+    mergePatients: MergePatient[];
+    render: (mergePatients: MergePatient) => ReactNode | undefined;
 };
-export const DetailsRow = ({ id, patientData, render }: Props) => {
+export const DetailsRow = ({ id, mergePatients, render }: Props) => {
     return (
         <section className={styles.section}>
-            {patientData.map((p) => (
+            {mergePatients.map((p) => (
                 <div key={`detailsSection-${id}-${p.personUid}`} className={styles.entry}>
                     {render(p)}
                 </div>

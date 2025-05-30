@@ -6,11 +6,11 @@ import { IdentificationDataTable } from './identification-data-table/Identificat
 import { IdentificationDetails } from './identification-details/IdentificationDetails';
 
 type Props = {
-    patientData: MergePatient[];
+    mergePatients: MergePatient[];
 };
-export const IdentificationSelection = ({ patientData }: Props) => {
+export const IdentificationSelection = ({ mergePatients }: Props) => {
     const [selectedIdentification, setSelectedIdentification] = useState(
-        new Map<string, MergeIdentification | undefined>(patientData.map((p) => [p.personUid, undefined]))
+        new Map<string, MergeIdentification | undefined>(mergePatients.map((p) => [p.personUid, undefined]))
     );
 
     const handleViewIdentification = (personUid: string, identification: MergeIdentification) => {
@@ -27,7 +27,7 @@ export const IdentificationSelection = ({ patientData }: Props) => {
         <>
             <Section
                 title="IDENTIFICATION"
-                patientData={patientData}
+                mergePatients={mergePatients}
                 render={(p) => (
                     <IdentificationDataTable
                         patientData={p}
@@ -38,7 +38,7 @@ export const IdentificationSelection = ({ patientData }: Props) => {
             />
             <DetailsRow
                 id="patient-identification"
-                patientData={patientData}
+                mergePatients={mergePatients}
                 render={(p) => {
                     const identification = selectedIdentification.get(p.personUid);
                     return identification && <IdentificationDetails identification={identification} />;

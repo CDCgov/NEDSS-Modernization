@@ -3,7 +3,7 @@ import { IdentificationSelection } from './IdentificationSelection';
 import { render } from '@testing-library/react';
 import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
 
-const patientData: Partial<MergePatient>[] = [
+const mergePatients: Partial<MergePatient>[] = [
     {
         identifications: [
             {
@@ -20,7 +20,7 @@ const Fixture = () => {
     const form = useForm();
     return (
         <FormProvider {...form}>
-            <IdentificationSelection patientData={patientData as MergePatient[]} />
+            <IdentificationSelection mergePatients={mergePatients as MergePatient[]} />
         </FormProvider>
     );
 };

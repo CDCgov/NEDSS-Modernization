@@ -8,15 +8,15 @@ import { PatientMergeForm } from '../../model/PatientMergeForm';
 import styles from './patient-id-selection.module.scss';
 
 type Props = {
-    patientData: MergePatient[];
+    mergePatients: MergePatient[];
     onRemovePatient: (personUid: string) => void;
 };
-export const PatientIdSelection = ({ patientData, onRemovePatient }: Props) => {
+export const PatientIdSelection = ({ mergePatients, onRemovePatient }: Props) => {
     const form = useFormContext<PatientMergeForm>();
 
     return (
         <section className={styles.patientIdSelection}>
-            {patientData.map((p) => (
+            {mergePatients.map((p) => (
                 <Controller
                     key={`id-selection:${p.personUid}`}
                     control={form.control}
@@ -31,7 +31,7 @@ export const PatientIdSelection = ({ patientData, onRemovePatient }: Props) => {
                                 value={p.personUid}
                                 checked={value === p.personUid}
                             />
-                            <Shown when={value !== p.personUid && patientData.length > 2}>
+                            <Shown when={value !== p.personUid && mergePatients.length > 2}>
                                 <Button
                                     secondary
                                     destructive
