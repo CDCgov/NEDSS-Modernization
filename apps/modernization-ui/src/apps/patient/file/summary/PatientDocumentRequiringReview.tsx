@@ -72,7 +72,7 @@ const renderDescription = (value: DocumentRequiringReview) => {
     );
 };
 
-const dateTransform = (value: string) => {
+const renderDateReceived = (value: string) => {
     const date = new Date(value);
     return date.toLocaleString('en-US', {
         year: 'numeric',
@@ -96,6 +96,11 @@ const resolveUrl = (value: DocumentRequiringReview) => {
     }
 };
 
+const renderEventDate = (value: string) => {
+    const date = new Date(value);
+    return date.toLocaleDateString();
+};
+
 const renderEventId = (value: DocumentRequiringReview) => {
     const classicUrl = resolveUrl(value);
 
@@ -117,7 +122,9 @@ export const PatientDocumentRequiringReview = () => {
         {
             id: 'dateReceived',
             name: 'Date received',
-            render: (value: DocumentRequiringReview) => <>{value.dateReceived && dateTransform(value.dateReceived)}</>
+            render: (value: DocumentRequiringReview) => (
+                <>{value.dateReceived && renderDateReceived(value.dateReceived)}</>
+            )
         },
         {
             id: 'reporting',
@@ -127,7 +134,7 @@ export const PatientDocumentRequiringReview = () => {
         {
             id: 'eventDate',
             name: 'Event date',
-            render: (value: DocumentRequiringReview) => <>{value.eventDate && dateTransform(value.eventDate)}</>
+            render: (value: DocumentRequiringReview) => <>{value.eventDate && renderEventDate(value.eventDate)}</>
         },
         {
             id: 'description',
