@@ -1,7 +1,6 @@
 import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
-import React from 'react';
 import { Section } from '../shared/section/Section';
-import { AdminComment } from '../admin-comments/admin-comment/AdminComment';
+import { Ethnicity } from './ethnicity/Ethnicity';
 
 type Props = {
     mergePatients: MergePatient[];
@@ -9,9 +8,9 @@ type Props = {
 export const EthnicitySelection = ({ mergePatients }: Props) => {
     return (
         <Section
-            title="ADMINISTRATIVE COMMENTS"
+            title="ETHNICITY"
             mergePatients={mergePatients}
-            render={(p) => <AdminComment personUid={p.personUid} adminComments={p.adminComments} />}
+            render={(p) => <Ethnicity personUid={p.personUid} ethnicity={p.ethnicity} />}
         />
     );
 };

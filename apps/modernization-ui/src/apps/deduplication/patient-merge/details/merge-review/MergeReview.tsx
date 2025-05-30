@@ -10,6 +10,7 @@ import { AddressSelection } from './patient-form/address/AddressSelection';
 import { PhoneEmailSelection } from './patient-form/phone-email/PhoneEmailSelection';
 import { IdentificationSelection } from './patient-form/identification/IdentificationSelection';
 import { RaceSelection } from './patient-form/race/RaceSelection';
+import { EthnicitySelection } from './patient-form/ethnicity/EthnicitySelection';
 
 export type Props = {
     mergePatients: MergePatient[];
@@ -47,6 +48,7 @@ export const MergeReview = ({ mergePatients, onPreview, onRemovePatient }: Props
                     <PhoneEmailSelection mergePatients={mergePatients} />
                     <IdentificationSelection mergePatients={mergePatients} />
                     <RaceSelection mergePatients={mergePatients} />
+                    <EthnicitySelection mergePatients={mergePatients} />
                 </div>
             </main>
         </div>
