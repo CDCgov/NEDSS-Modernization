@@ -1,6 +1,0 @@
-query findAllConditionCodes($page: Page){
-    findAllConditionCodes(page: $page){
-        id
-        conditionDescTxt
-    }
-}

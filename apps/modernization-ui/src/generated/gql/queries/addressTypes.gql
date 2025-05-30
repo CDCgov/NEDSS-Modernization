@@ -1,6 +1,0 @@
-query addressTypes{
-    addressTypes{
-        value
-        name
-    }
-}

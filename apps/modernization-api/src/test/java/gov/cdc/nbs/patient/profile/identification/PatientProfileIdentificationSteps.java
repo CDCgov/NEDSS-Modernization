@@ -1,74 +1,32 @@
 package gov.cdc.nbs.patient.profile.identification;
 
-import gov.cdc.nbs.entity.odse.EntityId;
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.patient.PatientCreateAssertions;
-import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PatientProfileIdentificationSteps {
 
   private final Active<PatientIdentifier> activePatient;
-  private final Active<PatientInput> input;
-  private final TestPatient patient;
   private final Active<Pageable> activePageable;
   private final PatientProfileIdentificationRequester requester;
   private final Active<ResultActions> response;
 
   PatientProfileIdentificationSteps(
       final Active<PatientIdentifier> activePatient,
-      final Active<PatientInput> input,
-      final TestPatient patient,
       final Active<Pageable> activePageable,
       final PatientProfileIdentificationRequester requester,
       final Active<ResultActions> response
   ) {
     this.activePatient = activePatient;
-    this.input = input;
-    this.patient = patient;
     this.activePageable = activePageable;
     this.requester = requester;
     this.response = response;
-  }
-
-  @Given("the new patient's identification is entered")
-  public void the_new_patient_identification_is_entered() {
-    PatientInput.Identification identification = new PatientInput.Identification(
-        RandomUtil.getRandomString(),
-        RandomUtil.getRandomString(),
-        RandomUtil.getRandomString());
-
-    this.input.active().getIdentifications().add(identification);
-  }
-
-  @Then("the new patient has the entered identification")
-  @Transactional
-  public void the_new_patient_has_the_entered_identification() {
-    Person actual = patient.managed();
-
-    Collection<EntityId> identifications = actual.identifications();
-
-    if (!identifications.isEmpty()) {
-
-      assertThat(identifications)
-          .satisfiesExactlyInAnyOrder(
-              PatientCreateAssertions.containsIdentifications(input.active().getIdentifications()));
-    }
-
   }
 
   @Given("I view the Patient Profile Identification")

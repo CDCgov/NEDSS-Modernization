@@ -1,6 +1,0 @@
-mutation createPatient($patient: PersonInput!){
-    createPatient(patient: $patient){
-        id
-        shortId
-    }
-}

@@ -1,6 +1,0 @@
-query detailedEthnicities{
-    detailedEthnicities{
-        value
-        name
-    }
-}

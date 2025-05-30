@@ -4023,7 +4023,7 @@
 									"response": []
 								},
 								{
-									"name": "administrative",
+									"name": "Administrative",
 									"request": {
 										"method": "GET",
 										"header": [],
@@ -4039,6 +4039,28 @@
 												"{{patient}}",
 												"demographics",
 												"administrative"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Phones",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/phones",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics",
+												"phones"
 											]
 										}
 									},
