@@ -16,4 +16,43 @@ public record PhoneDemographic(
     String url,
     String comment
 ) {
+
+  public static PhoneDemographic phoneNumber(
+      final LocalDate asOf,
+      final String type,
+      final String use,
+      final String number
+  ) {
+    return new PhoneDemographic(
+        asOf,
+        type,
+        use,
+        null,
+        number,
+        null,
+        null,
+        null,
+        null
+    );
+
+  }
+
+  public static PhoneDemographic email(
+      final LocalDate asOf,
+      final String type,
+      final String use,
+      final String email
+  ) {
+    return new PhoneDemographic(
+        asOf,
+        type,
+        use,
+        null,
+        null,
+        null,
+        email,
+        null,
+        null
+    );
+  }
 }
