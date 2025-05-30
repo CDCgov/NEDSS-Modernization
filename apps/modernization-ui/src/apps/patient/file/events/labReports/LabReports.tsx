@@ -69,7 +69,31 @@ const displayTestResults = (testResults?: TestResult[] | undefined) => {
     return (
         <div>
             {testResultAssignMapKays.map((testResult) => {
-                return <div key={testResult.renderKey}>{JSON.stringify(testResult)}</div>;
+                const { resultedTest, codedResult, numericResult, units, highRange, lowRange, statusDetails } =
+                    testResult;
+                return (
+                    <div key={testResult.renderKey}>
+                        {resultedTest && (
+                            <div>
+                                <b>{resultedTest}:</b>
+                            </div>
+                        )}
+                        {codedResult && <div>{codedResult}</div>}
+                        {numericResult && units && (
+                            <div>
+                                {numericResult} {units}
+                            </div>
+                        )}
+                        {highRange && lowRange && (
+                            <div>
+                                <b>Reference Range:</b>
+                                <br />
+                                From {lowRange} to {highRange}
+                            </div>
+                        )}
+                        {statusDetails && <div>{statusDetails}</div>}
+                    </div>
+                );
             })}
         </div>
     );
