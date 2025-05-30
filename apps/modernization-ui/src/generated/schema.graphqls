@@ -737,38 +737,6 @@ type PatientAddressResults {
     size: Int!
 }
 
-type PatientPhoneType {
-    id: String!
-    description: String!
-}
-
-type PatientPhoneUse {
-    id: String!
-    description: String!
-}
-
-type PatientPhone {
-    patient: Int!
-    id: ID!
-    version: Int!
-    asOf: Date!
-    type: PatientPhoneType
-    use: PatientPhoneUse
-    countryCode: String
-    number: String
-    extension: String
-    email: String
-    url: String
-    comment: String
-}
-
-type PatientPhoneResults {
-    content: [PatientPhone!]!
-    total: Int!
-    number: Int!
-    size: Int!
-}
-
 type PatientBirth {
     patient: Int!
     id: ID!
@@ -959,7 +927,6 @@ type PatientProfile {
     summary(asOf: Date): PatientSummary
     names(page: Page): PatientNameResults!
     addresses(page: Page): PatientAddressResults!
-    phones(page: Page): PatientPhoneResults!
     identification(page: Page): PatientIdentificationResults!
     races(page: Page): PatientRaceResults!
     birth: PatientBirth
@@ -1203,9 +1170,6 @@ type Mutation {
     addPatientAddress(input: NewPatientAddressInput!): PatientAddressChangeResult!
     updatePatientAddress(input: UpdatePatientAddressInput!): PatientAddressChangeResult!
     deletePatientAddress(input: DeletePatientAddressInput): PatientAddressChangeResult!
-    addPatientPhone(input: NewPatientPhoneInput!): PatientPhoneChangeResult!
-    updatePatientPhone(input: UpdatePatientPhoneInput!): PatientPhoneChangeResult!
-    deletePatientPhone(input: DeletePatientPhoneInput): PatientPhoneChangeResult!
     addPatientIdentification(input: NewPatientIdentificationInput!): PatientIdentificationChangeResult!
     updatePatientIdentification(input: UpdatePatientIdentificationInput!): PatientIdentificationChangeResult!
     deletePatientIdentification(input: DeletePatientIdentificationInput): PatientIdentificationChangeResult!
