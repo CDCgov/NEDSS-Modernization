@@ -6,6 +6,7 @@ import { useExportMatches } from 'apps/deduplication/api/useExportMatches';
 import styles from './merge-landing.module.scss';
 import { SortingProvider, useSorting } from 'sorting';
 import { PaginationProvider } from 'pagination';
+import { SearchBar } from 'design-system/search/SearchBar';
 
 export const MergeLanding = () => {
     return (
@@ -40,6 +41,11 @@ const MergeLandingContent = () => {
                 </div>
             </header>
             <main className={styles.mergeLandingContent}>
+                <div className={styles.searchBarContainer}>
+                    <SearchBar size="SM" placeholder="Search by name or ID..." />
+                    <SearchBar size="MD" placeholder="Search by name or ID..." />
+                    <SearchBar size="LG" />
+                </div>
                 <MatchesRequiringReviewTable />
             </main>
         </div>
