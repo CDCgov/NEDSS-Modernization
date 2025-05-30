@@ -1,7 +1,5 @@
 package gov.cdc.nbs.event.report.lab;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
@@ -16,25 +14,87 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import jakarta.persistence.EntityManager;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 @Component
 @ScenarioScope
 @Transactional
 public class LabReportMother {
 
+  private static final String CREATE = """
+      insert into Act(act_uid, class_cd, mood_cd) values (:identifier, 'OBS','EVN');
+      
+      insert into Observation(
+          observation_uid,
+          local_id,
+          ctrl_cd_display_form,
+          obs_domain_cd_st_1,
+          version_ctrl_nbr,
+          shared_ind,
+          record_status_cd,
+          record_status_time,
+          add_time,
+          add_user_id,
+          prog_area_cd,
+          jurisdiction_cd,
+          program_jurisdiction_oid,
+          effective_from_time,
+          activity_to_time,
+          rpt_to_state_time
+      ) values (
+          :identifier,
+          :local,
+          'LabReport',
+          'Order',
+          1,
+          'N',
+          'ACTIVE',
+          :addedOn,
+          :addedOn,
+          :addedBy,
+          :programArea,
+          :jurisdiction,
+          :oid,
+          :collectedOn,
+          :reportedOn,
+          :receivedOn
+      );
+      """;
+
   private static final String DELETE_IN = """
       delete from Participation where act_class_cd = 'OBS' and act_uid in (:identifiers);
       delete from Observation where observation_uid in (:identifiers);
+      delete from Act_id where act_uid in (:identifiers);
       delete from Act where class_cd = 'OBS' and act_uid in (:identifiers);
+      """;
+
+  private static final String PARTICIPATE_IN = """
+      insert into Participation(
+          act_uid,
+          act_class_cd,
+          type_cd,
+          record_status_cd,
+          record_status_time,
+          add_user_id,
+          add_time,
+          subject_class_cd,
+          subject_entity_uid
+      ) values (
+          :identifier,
+          'OBS',
+          :type,
+          'ACTIVE',
+          :addedOn,
+          :addedBy,
+          :addedOn,
+          :subjectClass,
+          :subject
+      );
       """;
 
   private static final String LAB_REPORT_CLASS_CODE = "OBS";
@@ -42,13 +102,10 @@ public class LabReportMother {
   private static final String ORGANIZATION_CLASS = "ORG";
   private static final String REPORTER = "AUT";
   private static final String PATIENT_SUBJECT = "PATSBJ";
-  private static final String LAB_REPORT_DISPLAY_FORM = "LabReport";
-  private static final String LAB_REPORT_DOMAIN = "Order";
   private static final String ORDERED_BY = "ORD";
 
   private final MotherSettings settings;
   private final SequentialIdentityGenerator idGenerator;
-  private final EntityManager entityManager;
 
   private final JdbcClient client;
   private final TestingDataCleaner<Long> cleaner;
@@ -61,7 +118,6 @@ public class LabReportMother {
   LabReportMother(
       final MotherSettings settings,
       final SequentialIdentityGenerator idGenerator,
-      final EntityManager entityManager,
       final JdbcClient client,
       final Active<LabReportIdentifier> active,
       final Available<LabReportIdentifier> available,
@@ -70,7 +126,6 @@ public class LabReportMother {
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
-    this.entityManager = entityManager;
     this.client = client;
     this.active = active;
     this.available = available;
@@ -89,83 +144,57 @@ public class LabReportMother {
       final PatientIdentifier patient,
       final OrganizationIdentifier organization,
       final JurisdictionIdentifier jurisdiction,
-      final ProgramAreaIdentifier programArea) {
+      final ProgramAreaIdentifier programArea
+  ) {
+
     PatientIdentifier revision = revisionMother.revise(patient);
     // Observation
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal(LAB_REPORT_CLASS_CODE);
 
-    Observation observation = new Observation(identifier, local);
-    observation.setEffectiveFromTime(RandomUtil.getRandomDateInPast());
-    observation.setActivityToTime(RandomUtil.getRandomDateInPast());
-    observation.setCtrlCdDisplayForm(LAB_REPORT_DISPLAY_FORM);
-    observation.setObsDomainCdSt1(LAB_REPORT_DOMAIN);
-    observation.setElectronicInd('N');
-    observation.setRecordStatusCd("ACTIVE");
+    this.client.sql(CREATE)
+        .param("identifier", identifier)
+        .param("local", local)
+        .param("addedOn", settings.createdBy())
+        .param("addedBy", settings.createdBy())
+        .param("programArea", programArea.code())
+        .param("jurisdiction", jurisdiction.code())
+        .param("oid", programArea.oid(jurisdiction))
+        .param("collectedOn", RandomUtil.dateInPast())
+        .param("reportedOn", RandomUtil.dateInPast())
+        .param("receivedOn", RandomUtil.dateInPast())
+        .update();
 
-    within(observation, programArea, jurisdiction);
 
-    observation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    observation.setAddUserId(settings.createdBy());
-    observation.setLastChgTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    observation.setLastChgUserId(settings.createdBy());
+    forPatient(identifier, revision.id());
 
-    forPatient(observation, revision.id());
-
-    reportedBy(observation, organization.identifier());
-
-    entityManager.persist(observation);
+    reportedBy(identifier, organization.identifier());
 
     include(new LabReportIdentifier(identifier, local));
   }
 
-  private void within(
-      final Observation observation,
-      final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction) {
-    observation.setProgAreaCd(programArea.code());
-    observation.setJurisdictionCd(jurisdiction.code());
-    observation.setProgramJurisdictionOid(programArea.oid(jurisdiction));
+
+  private void forPatient(final long identifier, final long patient) {
+    this.client.sql(PARTICIPATE_IN)
+        .param("identifier", identifier)
+        .param("type", PATIENT_SUBJECT)
+        .param("addedOn", settings.createdOn())
+        .param("addedBy", settings.createdBy())
+        .param("subject", patient)
+        .param("subjectClass", PERSON_CLASS)
+        .update();
   }
 
-  private void forPatient(final Observation observation, final long patient) {
-    Act act = observation.getAct();
 
-    // create the participation
-    ParticipationId identifier = new ParticipationId(patient, observation.getId(), PATIENT_SUBJECT);
-
-    Participation participation = new Participation();
-    participation.setId(identifier);
-    participation.setActClassCd(act.getClassCd());
-    participation.setSubjectClassCd(PERSON_CLASS);
-
-    participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    participation.setAddUserId(settings.createdBy());
-    participation.setActUid(act);
-
-    act.addParticipation(participation);
-  }
-
-  private void reportedBy(final Observation observation, final long organization) {
-    Act act = observation.getAct();
-
-    // create the participation
-    ParticipationId identifier = new ParticipationId(organization, observation.getId(), REPORTER);
-
-    Participation participation = new Participation();
-    participation.setId(identifier);
-    participation.setActClassCd(act.getClassCd());
-    participation.setSubjectClassCd(ORGANIZATION_CLASS);
-    participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    participation.setAddUserId(settings.createdBy());
-    participation.setActUid(act);
-
-
-    act.addParticipation(participation);
+  private void reportedBy(final long identifier, final long organization) {
+    this.client.sql(PARTICIPATE_IN)
+        .param("identifier", identifier)
+        .param("type", REPORTER)
+        .param("addedOn", settings.createdOn())
+        .param("addedBy", settings.createdBy())
+        .param("subject", organization)
+        .param("subjectClass", ORGANIZATION_CLASS)
+        .update();
   }
 
   private void include(final LabReportIdentifier identifier) {
@@ -208,59 +237,48 @@ public class LabReportMother {
   }
 
   void orderedBy(final LabReportIdentifier lab, final OrganizationIdentifier organization) {
-    Observation observation = managed(lab);
-    Act act = observation.getAct();
-
-    // create the participation
-    ParticipationId identifier = new ParticipationId(organization.identifier(), observation.getId(), ORDERED_BY);
-
-    Participation participation = new Participation();
-    participation.setId(identifier);
-    participation.setActClassCd(act.getClassCd());
-    participation.setSubjectClassCd(ORGANIZATION_CLASS);
-    participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    participation.setAddUserId(settings.createdBy());
-    participation.setActUid(act);
-
-
-    act.addParticipation(participation);
+    this.client.sql(PARTICIPATE_IN)
+        .param("identifier", lab.identifier())
+        .param("type", ORDERED_BY)
+        .param("addedOn", settings.createdOn())
+        .param("addedBy", settings.createdBy())
+        .param("subject", organization.identifier())
+        .param("subjectClass", ORGANIZATION_CLASS)
+        .update();
   }
 
   void orderedBy(final LabReportIdentifier identifier, final ProviderIdentifier provider) {
-    Observation lab = managed(identifier);
-
-    Act act = lab.getAct();
-
-    // create the participation
-    Participation participation = new Participation();
-    participation.setId(new ParticipationId(provider.identifier(), lab.getId(), ORDERED_BY));
-    participation.setActClassCd(act.getClassCd());
-    participation.setSubjectClassCd(PERSON_CLASS);
-
-    participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    participation.setAddUserId(settings.createdBy());
-    participation.setActUid(act);
-
-    act.addParticipation(participation);
+    this.client.sql(PARTICIPATE_IN)
+        .param("identifier", identifier.identifier())
+        .param("type", ORDERED_BY)
+        .param("addedOn", settings.createdOn())
+        .param("addedBy", settings.createdBy())
+        .param("subject", provider.identifier())
+        .param("subjectClass", PERSON_CLASS)
+        .update();
   }
 
-  void filledBy(final LabReportIdentifier identifier, final String number) {
-    Observation lab = managed(identifier);
+  void filledBy(final LabReportIdentifier report, final String value) {
+    this.client.sql("""
+            insert into Act_id (
+                act_uid,
+                act_id_seq,
+                type_cd,
+                type_desc_txt,
+                root_extension_txt
+            ) values (
+                :identifier,
+                (select count(*) from Act_id where act_uid = :identifier),
+                'FN',
+                'Filler Number',
+                :value
+            )
+            """
+        ).param("identifier", report.identifier())
+        .param("value", value)
+        .update();
 
-    Act act = lab.getAct();
-
-    // need an id and seq
-    ActId filler = new ActId(new ActIdId(act.getId(), act.getActIds().size()));
-    filler.setTypeCd("FN");
-    filler.setTypeDescTxt("Filler Number");
-    filler.setRootExtensionTxt(number);
-
-    act.addIdentifier(filler);
-    activeAccessionIdentifier.active(new AccessionIdentifier(act.getId(), number));
+    activeAccessionIdentifier.active(new AccessionIdentifier(report.identifier(), value));
   }
 
   void forPregnantPatient(final LabReportIdentifier report) {
@@ -270,7 +288,14 @@ public class LabReportMother {
   }
 
   void receivedOn(final LabReportIdentifier report, final LocalDateTime on) {
-    this.client.sql("update Observation set add_time = ? where observation_uid = ?")
+    this.client.sql("update Observation set rpt_to_state_time = ? where observation_uid = ?")
+        .param(on)
+        .param(report.identifier())
+        .update();
+  }
+
+  void reportedOn(final LabReportIdentifier report, final LocalDate on) {
+    this.client.sql("update Observation set activity_to_time = ? where observation_uid = ?")
         .param(on)
         .param(report.identifier())
         .update();
@@ -286,7 +311,7 @@ public class LabReportMother {
   void created(
       final LabReportIdentifier report,
       final long by,
-      final Instant on
+      final LocalDate on
   ) {
     this.client.sql("update Observation set add_user_id = ?, add_time = ? where observation_uid = ?")
         .param(by)
@@ -298,17 +323,20 @@ public class LabReportMother {
   void updated(
       final LabReportIdentifier identifier,
       final long by,
-      final Instant on
+      final LocalDate on
   ) {
-    Observation lab = managed(identifier);
-    lab.setLastChgUserId(by);
-    lab.setLastChgTime(on);
-    lab.setVersionCtrlNbr((short) (lab.getVersionCtrlNbr() + 1));
+    this.client.sql("""
+            update Observation set
+                last_chg_user_id = ?,
+                last_chg_time = ?,
+                version_ctrl_nbr = version_ctrl_nbr + 1
+            where observation_uid = ?
+            """
+        )
+        .param(by)
+        .param(on)
+        .param(identifier.identifier())
+        .update();
   }
-
-  private Observation managed(final LabReportIdentifier identifier) {
-    return this.entityManager.find(Observation.class, identifier.identifier());
-  }
-
 
 }

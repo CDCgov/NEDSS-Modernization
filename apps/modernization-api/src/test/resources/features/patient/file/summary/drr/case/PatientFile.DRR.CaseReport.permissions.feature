@@ -1,5 +1,5 @@
 @documents-requiring-review @case-report
-Feature: Patient Profile Documents Requiring Review: Case Report
+Feature: Patient File Documents Requiring Review: Case Report
 
   Background:
     Given I am logged in

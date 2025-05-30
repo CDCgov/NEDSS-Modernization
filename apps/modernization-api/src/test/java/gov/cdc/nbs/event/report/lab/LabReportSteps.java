@@ -10,7 +10,6 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -44,8 +43,8 @@ public class LabReportSteps {
     this.reportMother = reportMother;
   }
 
-  @Given("^(?i)the patient has a lab report")
-  @Given("^(?i)the patient has another lab report")
+  @Given("the patient has a(nother) Lab(oratory) Report")
+  @Given("the patient has a(nother) lab(oratory) Report")
   @Given("the patient has a(nother) lab(oratory) report")
   public void the_patient_has_a_lab_report() {
     activePatient.maybeActive()
@@ -126,14 +125,14 @@ public class LabReportSteps {
         );
   }
 
-  @Given("the lab(oratory) report was created by {user} on {date}")
-  public void the_lab_report_was_created_on(final ActiveUser user, final Instant date) {
-    activeReport.maybeActive().ifPresent(lab -> this.reportMother.created(lab, user.id(), date));
+  @Given("the lab(oratory) report was created by {user} on {localDate}")
+  public void the_lab_report_was_created_on(final ActiveUser user, final LocalDate on) {
+    activeReport.maybeActive().ifPresent(lab -> this.reportMother.created(lab, user.id(), on));
   }
 
-  @Given("the lab(oratory) report was updated by {user} on {date}")
-  public void the_lab_report_was_updated_on(final ActiveUser user, final Instant date) {
-    activeReport.maybeActive().ifPresent(lab -> this.reportMother.updated(lab, user.id(), date));
+  @Given("the lab(oratory) report was updated by {user} on {localDate}")
+  public void the_lab_report_was_updated_on(final ActiveUser user, final LocalDate on) {
+    activeReport.maybeActive().ifPresent(lab -> this.reportMother.updated(lab, user.id(), on));
   }
 
   @Given("the lab(oratory) report was received on {localDate}")
@@ -144,6 +143,12 @@ public class LabReportSteps {
   @Given("the lab(oratory) report was received on {localDate} at {time}")
   public void receivedOn(final LocalDate on, final LocalTime at) {
     activeReport.maybeActive().ifPresent(lab -> this.reportMother.receivedOn(lab, LocalDateTime.of(on, at)));
+  }
+
+  @Given("the lab(oratory) report was reported on {localDate}")
+  public void reportedOn(final LocalDate on) {
+    activeReport.maybeActive()
+        .ifPresent(report -> reportMother.reportedOn(report, on));
   }
 
   @Given("the lab(oratory) report was collected on {localDate}")
