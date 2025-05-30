@@ -1,8 +1,10 @@
-import { ReactNode, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect, ReactElement } from 'react';
+import { ReactNode, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect } from 'react';
 import classNames from 'classnames';
+
 import sprite from '@uswds/uswds/img/sprite.svg';
 
 import styles from './modal.module.scss';
+import { createPortal } from 'react-dom';
 
 type Close = () => void;
 
@@ -11,8 +13,11 @@ type FooterRenderer = (close: Close) => ReactNode;
 type ModalProps = {
     id: string;
     title: string;
-    size?: 'small' | 'large' | 'auto';
-    /** Whether to force interaction on the modal. This also hides the "X" button. */
+    size?: 'small' | 'large';
+    /**
+     * Whether to force interaction on the modal. A modal with a forced action does not display the
+     *  close button nor will it close when the escape button is pressed.
+     */
     forceAction?: boolean;
     className?: string;
     ariaDescribedBy?: string;
@@ -21,17 +26,19 @@ type ModalProps = {
     footer?: FooterRenderer;
 };
 
-const Modal = ({
+const Modal = (props: ModalProps) => createPortal(<Component {...props} />, document.body);
+
+const Component = ({
     id,
     title,
-    size = 'auto',
+    size,
     forceAction = false,
     children,
     className,
     ariaDescribedBy,
     onClose,
     footer
-}: ModalProps): ReactElement<ModalProps> => {
+}: ModalProps) => {
     const focused = useRef<boolean>(false);
     const element = useRef<HTMLDialogElement>(null);
     const header = `${id}-header`;
@@ -51,7 +58,10 @@ const Modal = ({
     };
 
     return (
-        <div className="usa-modal-wrapper" onKeyDown={(!forceAction && handleKeyDown) || undefined}>
+        <div
+            id={`${id}-wrapper`}
+            className="usa-modal-wrapper"
+            onKeyDown={(!forceAction && handleKeyDown) || undefined}>
             <div className={classNames('usa-modal-overlay', styles.overlay)}>
                 <dialog
                     ref={element}
