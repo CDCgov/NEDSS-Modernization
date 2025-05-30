@@ -73,7 +73,7 @@ const displayTestResults = (testResults?: TestResult[] | undefined) => {
                 const { resultedTest, codedResult, numericResult, units, highRange, lowRange, statusDetails } =
                     testResult;
                 return (
-                    <div key={testResult.renderKey}>
+                    <div key={testResult.renderKey} style={{ paddingBottom: '0.5rem' }}>
                         {resultedTest && (
                             <div>
                                 <b>{resultedTest}:</b>
