@@ -3,8 +3,9 @@ import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { FacilityProviders, OrderingProvider, PatientLabReport, TestResult } from 'generated';
-// import { usePatientLabReports } from './usePatientLabReports';
+import { Icon } from 'design-system/icon';
 import { usePatient } from '../../usePatient';
+// import { usePatientLabReports } from './usePatientLabReports';
 import { mockPatientLabReports } from './mockPatientLabReports';
 
 const maybeOrderingProviderName = (orderingProvider: OrderingProvider) => {
@@ -197,6 +198,16 @@ const LabReports = () => {
                 title="Lab reports"
                 data={mockPatientLabReports || []}
                 defaultCollapsed={mockPatientLabReports && mockPatientLabReports.length > 0 ? false : true}
+                actions={[
+                    {
+                        sizing: 'small',
+                        secondary: true,
+                        children: 'Add lab report',
+                        icon: <Icon name="add_circle" />,
+                        labelPosition: 'right',
+                        onClick: () => console.log('Add lab report clicked')
+                    }
+                ]}
                 columns={columns}
                 columnPreferencesKey="patient-file-lab-reports-table-card-column-preferences"
                 defaultColumnPreferences={columnPreferences}
