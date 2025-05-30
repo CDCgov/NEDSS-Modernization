@@ -3,10 +3,12 @@ package gov.cdc.nbs.patient.file.summary.drr;
 import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
+import gov.cdc.nbs.patient.file.summary.drr.laboratory.LaboratoryReportRequiringReviewResolver;
 import gov.cdc.nbs.patient.file.summary.drr.morbidity.MorbidityReportRequiringReviewResolver;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -23,24 +25,29 @@ class DocumentRequiringReviewResolver {
   private final PermissionScopeResolver scopeResolver;
   private final CaseReportRequiringReviewResolver caseReportResolver;
   private final MorbidityReportRequiringReviewResolver morbidityReportResolver;
+  private final LaboratoryReportRequiringReviewResolver laboratoryReportRequiringReviewResolver;
 
   DocumentRequiringReviewResolver(
       final PermissionScopeResolver scopeResolver,
       final CaseReportRequiringReviewResolver caseReportResolver,
-      final MorbidityReportRequiringReviewResolver morbidityReportResolver
+      final MorbidityReportRequiringReviewResolver morbidityReportResolver,
+      final LaboratoryReportRequiringReviewResolver laboratoryReportRequiringReviewResolver
   ) {
     this.scopeResolver = scopeResolver;
     this.caseReportResolver = caseReportResolver;
     this.morbidityReportResolver = morbidityReportResolver;
+    this.laboratoryReportRequiringReviewResolver = laboratoryReportRequiringReviewResolver;
   }
 
   List<DocumentRequiringReview> resolve(final long patient) {
     DocumentsRequiringReviewCriteria criteria = asCriteria(patient);
 
     return Stream.of(
+            caseReportResolver.resolve(criteria),
             morbidityReportResolver.resolve(criteria),
-            caseReportResolver.resolve(criteria)
+            laboratoryReportRequiringReviewResolver.resolve(criteria)
         ).flatMap(Collection::stream)
+        .sorted(Comparator.comparing(DocumentRequiringReview::id).reversed())
         .toList();
   }
 
