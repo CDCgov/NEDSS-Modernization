@@ -1,9 +1,8 @@
+import { ReactNode } from 'react';
 import { Column, DataTable } from 'design-system/table';
-import styles from './merge-data-table.module.scss';
 import { Checkbox } from 'design-system/checkbox';
 import { Button } from 'design-system/button';
-import { Icon } from 'design-system/icon';
-import { ReactNode } from 'react';
+import styles from './merge-data-table.module.scss';
 
 type Props<V> = {
     id: string;
@@ -63,9 +62,11 @@ export const MergeDataTable = <V,>({
             render: (v) => (
                 <div className={styles.action}>
                     <Button
-                        unstyled
-                        icon={<Icon name="visibility" className={isViewed(v) ? styles.selected : ''} />}
+                        tertiary
+                        aria-label="view"
+                        icon="visibility"
                         onClick={() => onView(v)}
+                        aria-pressed={isViewed(v)}
                     />
                 </div>
             )

@@ -75,7 +75,6 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
     return (
         <ClosablePanel
             title="Columns"
-            headingLevel={2}
             onClose={close}
             footer={() => (
                 <div className={styles.footer}>
