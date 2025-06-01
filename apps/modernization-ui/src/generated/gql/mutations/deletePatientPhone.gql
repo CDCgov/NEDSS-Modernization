@@ -1,6 +1,0 @@
-mutation deletePatientPhone($input: DeletePatientPhoneInput){
-    deletePatientPhone(input: $input){
-        patient
-        id
-    }
-}

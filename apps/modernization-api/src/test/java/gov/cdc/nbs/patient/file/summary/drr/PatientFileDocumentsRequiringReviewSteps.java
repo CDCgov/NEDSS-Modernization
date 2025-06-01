@@ -151,11 +151,10 @@ public class PatientFileDocumentsRequiringReviewSteps {
         );
   }
 
-  @Then("the {documentType} requiring review has the event date {localDate} at {time}")
+  @Then("the {documentType} requiring review has the event date {localDate}")
   public void eventDate(
       final String documentType,
-      final LocalDate on,
-      final LocalTime at
+      final LocalDate on
   )
       throws Exception {
     this.response.active()
@@ -163,9 +162,8 @@ public class PatientFileDocumentsRequiringReviewSteps {
             jsonPath(
                 "$.[?(@.type=='%s')].[?(@.eventDate=='%s')]",
                 documentType,
-                LocalDateTime.of(on, at)
-            )
-                .exists()
+                on
+            ).exists()
         );
   }
 
@@ -175,10 +173,21 @@ public class PatientFileDocumentsRequiringReviewSteps {
     this.response.active()
         .andExpect(
             jsonPath(
-                "$.[?(@.type=='%s')].reportingFacility",
-                type
-            )
-                .value(hasItem(equalTo(value)))
+                "$.[?(@.type=='%s' && @.reportingFacility=='%s')]",
+                type, value
+            ).exists()
+        );
+  }
+
+  @Then("the {documentType} requiring review was ordered by the {string} facility")
+  public void orderedBy(final String type, final String value)
+      throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.type=='%s' && @.orderingFacility=='%s')]",
+                type, value
+            ).exists()
         );
   }
 

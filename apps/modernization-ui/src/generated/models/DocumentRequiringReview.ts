@@ -5,14 +5,16 @@
 import type { DisplayableSimpleName } from './DisplayableSimpleName';
 import type { ResultedTest } from './ResultedTest';
 export type DocumentRequiringReview = {
-    id?: number;
-    local?: string;
-    type?: string;
+    patient: number;
+    id: number;
+    local: string;
+    type: string;
     eventDate?: string;
     dateReceived?: string;
     isElectronic?: boolean;
     isUpdate?: boolean;
     reportingFacility?: string;
+    orderingFacility?: string;
     orderingProvider?: DisplayableSimpleName;
     sendingFacility?: string;
     condition?: string;

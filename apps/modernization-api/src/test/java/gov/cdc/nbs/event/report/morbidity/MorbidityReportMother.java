@@ -17,6 +17,7 @@ import jakarta.annotation.PreDestroy;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
@@ -239,9 +240,9 @@ public class MorbidityReportMother {
         .update();
   }
 
-  void reportedOn(final MorbidityReportIdentifier report, final LocalDateTime of) {
+  void reportedOn(final MorbidityReportIdentifier report, final LocalDate on) {
     this.client.sql("update Observation set activity_to_time = ? where observation_uid = ?")
-        .param(of)
+        .param(on)
         .param(report.identifier())
         .update();
   }

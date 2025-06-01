@@ -18,36 +18,21 @@ import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
 import gov.cdc.nbs.patient.demographic.name.PatientLegalNameResolver;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
 @Entity
-@SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7027", "javaarchitecture:S7091"}) //  Bidirectional mappings require knowledge of each other
+@SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7027", "javaarchitecture:S7091"})
+//  Bidirectional mappings require knowledge of each other
 public class Person {
   @Id
   @Column(name = "person_uid", nullable = false)
@@ -393,18 +378,12 @@ public class Person {
     return this.nbsEntity.identifications();
   }
 
-  public EntityLocatorParticipation add(final PatientCommand.AddPhoneNumber phoneNumber) {
-    changed(phoneNumber);
-    return this.nbsEntity.add(phoneNumber);
-  }
-
-  public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
-    return this.nbsEntity.add(emailAddress);
-  }
-
-  public EntityLocatorParticipation add(final PatientCommand.AddPhone phone) {
+  public EntityLocatorParticipation add(
+      final PatientCommand.AddPhone phone,
+      final PhoneIdentifierGenerator generator
+  ) {
     changed(phone);
-    return this.nbsEntity.add(phone);
+    return this.nbsEntity.add(phone, generator);
   }
 
   public void update(final PatientCommand.UpdatePhone phone) {
@@ -415,14 +394,6 @@ public class Person {
   public void delete(final PatientCommand.DeletePhone phone) {
     this.nbsEntity.delete(phone);
     changed(phone);
-  }
-
-  public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateEmailAddress emailAddress) {
-    return this.nbsEntity.update(emailAddress);
-  }
-
-  public boolean delete(final PatientCommand.DeleteEmailAddress emailAddress) {
-    return this.nbsEntity.delete(emailAddress);
   }
 
   public void update(final PatientCommand.UpdateGeneralInfo info) {
