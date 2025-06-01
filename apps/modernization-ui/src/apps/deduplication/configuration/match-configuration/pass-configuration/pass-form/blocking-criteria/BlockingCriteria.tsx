@@ -5,7 +5,6 @@ import { Card } from 'design-system/card';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { BlockingCriteriaAttribute } from './attribute/BlockingCriteriaAttribute';
 import styles from './blocking-criteria.module.scss';
-import { Icon } from 'design-system/icon';
 import { BlockingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
@@ -52,7 +51,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                 </Shown>
                 <div className={styles.buttonContainer}>
                     <Button
-                        icon={<Icon name="add" />}
+                        icon="add"
                         labelPosition="right"
                         outline
                         onClick={onShowAttributes}

@@ -1,6 +1,5 @@
 import { OverlayPanel } from 'overlay';
 import { Filter, FilterPanel, Property } from 'filters';
-import { Icon } from 'design-system/icon';
 import { LinkButton, Button } from 'design-system/button';
 import { Search } from 'components/Search';
 
@@ -30,7 +29,7 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                         id="filter-button"
                         onClick={() => setOverlayVisible(!overlayVisible)}
                         secondary
-                        icon={<Icon name="filter_alt" />}
+                        icon="filter_alt"
                         labelPosition="left"
                         className={styles.filterButton}>
                         Filter
@@ -68,7 +67,7 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     type="button"
                     onClick={onDownloadPdf}
                     className={styles.icon}
-                    icon={<Icon name="print" />}
+                    icon="print"
                     secondary
                 />
 
@@ -79,7 +78,7 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     className={styles.icon}
                     secondary
                     onClick={onDownloadCsv}
-                    icon={<Icon name="file_download" />}
+                    icon="file_download"
                 />
             </menu>
         </section>

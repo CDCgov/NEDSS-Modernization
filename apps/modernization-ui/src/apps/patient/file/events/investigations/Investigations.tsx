@@ -1,6 +1,5 @@
 import { TableCard } from 'design-system/card/table/TableCard';
 import { Headers, Investigation } from './PatientInvestigation';
-import { Icon } from 'design-system/icon';
 import { Column } from 'design-system/table';
 import { displayName } from 'name';
 import { usePatientInvestigations } from './usePatientInvestigations';
@@ -130,7 +129,7 @@ export const Investigations = () => {
                     sizing: 'small',
                     secondary: true,
                     children: 'Add investigation',
-                    icon: <Icon name="add_circle" />,
+                    icon: 'add_circle',
                     labelPosition: 'right',
                     onClick: () => console.log('Add Person clicked')
                 },

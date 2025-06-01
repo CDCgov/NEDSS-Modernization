@@ -1,5 +1,4 @@
 import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
-import { Icon } from 'design-system/icon';
 import classNames from 'classnames';
 import { Button } from 'components/button';
 import { ButtonGroup } from 'design-system/button';
@@ -21,7 +20,7 @@ export const ToggleView = ({ sizing }: ToggleViewProps) => {
                     data-tooltip-offset="center"
                     className={view === 'table' ? styles.active : ''}
                     outline={view !== 'table'}
-                    icon={<Icon name="table" />}
+                    icon="table"
                     onClick={asTable}
                     sizing={sizing}
                 />
@@ -30,7 +29,7 @@ export const ToggleView = ({ sizing }: ToggleViewProps) => {
                     data-tooltip-position="top"
                     data-tooltip-offset="center"
                     className={view === 'list' ? styles.active : ''}
-                    icon={<Icon name="list" />}
+                    icon="list"
                     onClick={asList}
                     outline={view !== 'list'}
                     sizing={sizing}

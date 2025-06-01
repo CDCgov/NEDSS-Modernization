@@ -8,7 +8,6 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { MatchingCriteriaAttribute } from './attribute/MatchingCriteriaAttribute';
 import { getLogOdds } from './getLogOdds';
 import styles from './matching-criteria.module.scss';
-import { Icon } from 'design-system/icon';
 import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
@@ -61,7 +60,7 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                     </Shown>
                     <div className={styles.buttonContainer}>
                         <Button
-                            icon={<Icon name="add" />}
+                            icon="add"
                             labelPosition="right"
                             outline
                             onClick={onAddAttributes}
