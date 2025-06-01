@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from '@hello-pangea/dnd';
-import { useColumnPreferences, ColumnPreference } from './useColumnPreferences';
+import { Sizing } from 'design-system/field';
+import { ClosablePanel } from 'design-system/panel/closable';
 import { Checkbox } from 'design-system/checkbox';
 import { Icon } from 'design-system/icon';
 import { Button } from 'design-system/button';
+import { useColumnPreferences, ColumnPreference } from './useColumnPreferences';
 
 import styles from './column-preference-panel.module.scss';
-import { Sizing } from 'design-system/field';
-import { ClosablePanel } from 'design-system/panel/closable';
 
 const swap =
     <I,>(items: I[]) =>
@@ -64,7 +64,6 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
     return (
         <ClosablePanel
             title="Columns"
-            headingLevel={2}
             onClose={close}
             footer={() => (
                 <div className={styles.footer}>

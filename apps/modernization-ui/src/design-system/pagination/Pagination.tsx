@@ -104,10 +104,10 @@ const Pagination = ({
                         <Button
                             className="usa-pagination__link usa-pagination__next-page"
                             aria-label="Next page"
-                            unstyled
+                            secondary
+                            name="navigate_next"
                             onClick={onNext}>
                             <span className="usa-pagination__link-text">Next</span>
-                            <Icon name="navigate_next" />
                         </Button>
                     </li>
                 )}

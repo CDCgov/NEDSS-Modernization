@@ -17,32 +17,44 @@ export const Default: Story = {
     }
 };
 
-const render = ({ children, ...remaining }: LinkButtonProps) => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem', backgroundColor: '#f0f7fd' }}>
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', backgroundColor: '' }}>
-            <LinkButton {...remaining}>{children}</LinkButton>
-            <LinkButton {...remaining} icon="check_circle" labelPosition="left">
-                {children}
-            </LinkButton>
-            <LinkButton {...remaining} icon="check_circle" labelPosition="right">
-                {children}
-            </LinkButton>
-            <LinkButton {...remaining} icon="check_circle" />
+const render = (remaining: LinkButtonProps) => {
+    const content = 'children' in remaining ? remaining.children : 'Button';
+    return (
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+                padding: '1rem',
+                backgroundColor: '#f0f7fd'
+            }}>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <LinkButton {...remaining}>{content}</LinkButton>
+                <LinkButton {...remaining} icon="check_circle" labelPosition="left">
+                    {content}
+                </LinkButton>
+                <LinkButton {...remaining} icon="check_circle" labelPosition="right">
+                    {content}
+                </LinkButton>
+                <LinkButton {...remaining} icon="check_circle" aria-label={content as string}>
+                    {undefined}
+                </LinkButton>
+            </div>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <LinkButton {...remaining} disabled={true} />
+                <LinkButton {...remaining} icon="check_circle" labelPosition="left" disabled={true}>
+                    {content}
+                </LinkButton>
+                <LinkButton {...remaining} icon="check_circle" labelPosition="right" disabled={true}>
+                    {content}
+                </LinkButton>
+                <LinkButton {...remaining} icon="check_circle" disabled={true} aria-label={content as string}>
+                    {undefined}
+                </LinkButton>
+            </div>
         </div>
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <LinkButton {...remaining} disabled={true}>
-                {children}
-            </LinkButton>
-            <LinkButton {...remaining} icon="check_circle" labelPosition="left" disabled={true}>
-                {children}
-            </LinkButton>
-            <LinkButton {...remaining} icon="check_circle" labelPosition="right" disabled={true}>
-                {children}
-            </LinkButton>
-            <LinkButton {...remaining} icon="check_circle" disabled={true} />
-        </div>
-    </div>
-);
+    );
+};
 
 export const Primary: Story = {
     args: {

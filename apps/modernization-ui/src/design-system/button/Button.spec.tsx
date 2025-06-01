@@ -9,7 +9,11 @@ describe('Button component tests', () => {
     });
 
     it('should render the button with the icon', () => {
-        render(<Button icon="add" labelPosition="right" />);
+        render(
+            <Button icon="add" labelPosition="right">
+                Label on the right
+            </Button>
+        );
         const button = screen.getByRole('button');
 
         const icon = within(button).getByRole('img', { hidden: true });
