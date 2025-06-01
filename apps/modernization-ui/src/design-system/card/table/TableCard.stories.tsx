@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { TableCard } from './TableCard';
 import { Column } from 'design-system/table';
-import { Icon } from 'design-system/icon';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { MemoryRouter } from 'react-router';
 
@@ -84,7 +83,7 @@ export const Actions: Story = {
                 sizing: 'small',
                 secondary: true,
                 children: 'Add Person',
-                icon: <Icon name="add_circle" />,
+                icon: 'add_circle',
                 labelPosition: 'right',
                 onClick: () => console.log('Add Person clicked')
             }
