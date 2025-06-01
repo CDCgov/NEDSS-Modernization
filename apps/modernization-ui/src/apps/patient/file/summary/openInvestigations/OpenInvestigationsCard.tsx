@@ -98,7 +98,6 @@ const OpenInvestigationsCard = () => {
             columns={columns}
             columnPreferencesKey="patient-file-open-investigations-table-card-column-preferences"
             defaultColumnPreferences={columnPreferences}
-            noDataFallback
         />
     );
 };

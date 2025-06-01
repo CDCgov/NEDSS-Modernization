@@ -140,7 +140,6 @@ export const Investigations = () => {
                     children: 'Compare investigations'
                 }
             ]}
-            noDataFallback
             data={data ?? []}
             defaultColumnPreferences={columnPreferences}
         />
