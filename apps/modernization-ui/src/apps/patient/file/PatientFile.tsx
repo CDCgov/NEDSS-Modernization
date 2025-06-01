@@ -1,10 +1,9 @@
 import { Suspense } from 'react';
 import { Await, Outlet, useLoaderData } from 'react-router';
 import { RedirectHome } from 'routes';
+import { Button } from 'design-system/button';
 import { Spinner } from 'components/Spinner';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
-import { Button } from 'design-system/button';
-import { Icon } from 'design-system/icon';
 import { Patient } from './patient';
 import { PatientLoaderResult } from './loader';
 import { PatientFileLayout } from './PatientFileLayout';
@@ -33,11 +32,11 @@ const ViewActions = (patient: Patient) => {
                 aria-label="Print"
                 data-tooltip-position="top"
                 data-tooltip-offset="center"
-                icon={<Icon name="print" />}
+                icon="print"
                 sizing={'medium'}
                 secondary
             />
-            <Button aria-label="Edit" icon={<Icon name="edit" />} secondary labelPosition="right" sizing={'medium'}>
+            <Button aria-label="Edit" icon="edit" secondary labelPosition="right" sizing={'medium'}>
                 Edit
             </Button>
         </>
