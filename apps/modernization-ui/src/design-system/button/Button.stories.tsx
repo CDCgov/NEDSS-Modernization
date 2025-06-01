@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Button, ButtonProps } from './Button';
-import { Icon } from 'design-system/icon';
 
 const meta = {
     title: 'Design System/Button',
@@ -21,25 +20,25 @@ const render = ({ children, ...remaining }: ButtonProps) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem', backgroundColor: '#f0f7fd' }}>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', backgroundColor: '' }}>
             <Button {...remaining}>{children}</Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} labelPosition="left">
+            <Button {...remaining} icon="check_circle" labelPosition="left">
                 {children}
             </Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} labelPosition="right">
+            <Button {...remaining} icon="check_circle" labelPosition="right">
                 {children}
             </Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} />
+            <Button {...remaining} icon="check_circle" />
         </div>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <Button {...remaining} disabled={true}>
                 {children}
             </Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} labelPosition="left" disabled={true}>
+            <Button {...remaining} icon="check_circle" labelPosition="left" disabled={true}>
                 {children}
             </Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} labelPosition="right" disabled={true}>
+            <Button {...remaining} icon="check_circle" labelPosition="right" disabled={true}>
                 {children}
             </Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} disabled={true} />
+            <Button {...remaining} icon="check_circle" disabled={true} />
         </div>
     </div>
 );
