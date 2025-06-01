@@ -126,7 +126,7 @@ export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }
                     </Shown>
                 </div>
                 <div>
-                    <Button outline onClick={handleCancelClick}>
+                    <Button secondary onClick={handleCancelClick}>
                         Cancel
                     </Button>
                     <Button disabled={!isDirty || !exists(dirtyFields) || !isValid} onClick={onSave}>

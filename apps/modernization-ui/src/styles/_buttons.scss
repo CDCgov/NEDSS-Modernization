@@ -124,6 +124,16 @@ $icon-padding-medium: 0.5rem;
         min-width: 2rem;
     }
 
+    &.icon {
+        --button-padding: #{$icon-padding-medium};
+        --button-icon-size: #{$icon-only-medium};
+
+        &.small {
+            --button-padding: #{$icon-padding-small};
+            --button-icon-size: #{$icon-only-small};
+        }
+    }
+
     &.icon-last {
         flex-direction: row-reverse;
     }

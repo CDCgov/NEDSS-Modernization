@@ -63,15 +63,10 @@ export const AddPatientBasic = () => {
                     sections={sections}
                     actions={() => (
                         <>
-                            <Button
-                                type="button"
-                                onClick={handleExtended}
-                                outline
-                                className="add-patient-button"
-                                disabled={working}>
+                            <Button type="button" onClick={handleExtended} secondary disabled={working}>
                                 Add extended data
                             </Button>
-                            <Button onClick={backToSearch} outline>
+                            <Button onClick={backToSearch} secondary>
                                 Cancel
                             </Button>
                             <Button type="submit" onClick={handleSave} disabled={working}>

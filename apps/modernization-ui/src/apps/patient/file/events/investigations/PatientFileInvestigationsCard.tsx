@@ -7,17 +7,16 @@ import { ColumnPreference } from 'design-system/table/preferences';
 import { TableCard, TableCardProps } from 'design-system/card';
 import { permissions, Permitted } from 'libs/permission';
 import { LinkButton } from 'design-system/button';
-import { Icon } from 'design-system/icon';
 import { Checkbox } from 'design-system/checkbox';
 import { displayNotificationStatus, displayStatus, displayInvestigator } from 'libs/events/investigations';
 import { PatientFileInvestigation } from './investigation';
 import { useCompareInvestigation } from './useCompareInvestigation';
-
-import styles from './investigations.module.scss';
 import { either, not } from 'utils/predicate';
 import { Shown } from 'conditional-render';
 import { Hint } from 'design-system/hint';
 import { LabeledValue } from 'design-system/value';
+
+import styles from './investigations.module.scss';
 
 const SELECTION = { id: 'selection', label: 'Select to compare' };
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };
@@ -160,7 +159,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                         <LinkButton
                             secondary
                             sizing={sizing}
-                            icon={<Icon name="add_circle" />}
+                            icon="add_circle"
                             href={`/nbs/api/profile/${patient}/investigation`}>
                             Add investigation
                         </LinkButton>

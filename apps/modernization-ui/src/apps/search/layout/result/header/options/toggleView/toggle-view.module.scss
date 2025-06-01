@@ -5,28 +5,4 @@
     align-self: center;
     align-items: center;
     gap: 0.5rem;
-
-    strong {
-        width: 7ch;
-    }
-
-    button {
-        align-items: center;
-        display: flex;
-        gap: 0.25rem;
-        margin: 0;
-        &:hover {
-            border-color: colors.$primary-dark;
-            color: colors.$primary-dark;
-        }
-        &.active {
-            background-color: colors.$primary-darker;
-
-            &:hover {
-                color: colors.$base-white;
-                background-color: colors.$primary-darker;
-                border-color: colors.$primary-darker;
-            }
-        }
-    }
 }

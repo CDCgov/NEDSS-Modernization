@@ -14,7 +14,7 @@ const Chip = ({ name, value, operator, handleClose }: ChipProps) => {
     return (
         <div className={classNames(styles['chip-container'])}>
             <span>{operator ? `${name} ${operator} '${value}'` : `${name}: ${value}`}</span>
-            <Button icon="close" aria-label={`Close ${name}`} onClick={handleClose} className={styles.closeIcon} />
+            <Button tertiary icon="close" aria-label={`Close ${name}`} onClick={handleClose} className={styles.close} />
         </div>
     );
 };

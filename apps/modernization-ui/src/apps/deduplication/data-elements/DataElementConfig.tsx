@@ -106,7 +106,7 @@ export const DataElementConfig = () => {
                 </main>
             </div>
             <div className={styles.buttonBar}>
-                <Button outline onClick={handleCancel}>
+                <Button secondary onClick={handleCancel}>
                     Cancel
                 </Button>
                 <Button onClick={handleSubmit} disabled={isSaveDisabled}>
