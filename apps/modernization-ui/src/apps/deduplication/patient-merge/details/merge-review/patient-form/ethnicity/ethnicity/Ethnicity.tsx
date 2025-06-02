@@ -1,4 +1,4 @@
-import { MergeEthnicity } from 'apps/deduplication/api/model/MergePatient';
+import { MergeEthnicity } from 'apps/deduplication/api/model/MergeCandidate';
 import { format, parseISO } from 'date-fns';
 import { Controller, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';

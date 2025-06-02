@@ -1,5 +1,5 @@
 import { displayAddressText } from 'address/display';
-import { MergeAddress, MergePatient } from 'apps/deduplication/api/model/MergePatient';
+import { MergeAddress, MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { format, parseISO } from 'date-fns';
 import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -7,7 +7,7 @@ import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
 
 type Props = {
-    patientData: MergePatient;
+    patientData: MergeCandidate;
     selectedAddress?: MergeAddress;
     onViewAddress: (address: MergeAddress) => void;
 };

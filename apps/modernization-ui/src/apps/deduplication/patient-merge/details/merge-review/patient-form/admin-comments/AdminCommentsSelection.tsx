@@ -1,15 +1,15 @@
-import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { Section } from '../shared/section/Section';
 import { AdminComment } from './admin-comment/AdminComment';
 
 type Props = {
-    mergePatients: MergePatient[];
+    mergeCandidates: MergeCandidate[];
 };
-export const AdminCommentsSelection = ({ mergePatients }: Props) => {
+export const AdminCommentsSelection = ({ mergeCandidates }: Props) => {
     return (
         <Section
             title="ADMINISTRATIVE COMMENTS"
-            mergePatients={mergePatients}
+            mergeCandidates={mergeCandidates}
             render={(p) => <AdminComment personUid={p.personUid} adminComments={p.adminComments} />}
         />
     );

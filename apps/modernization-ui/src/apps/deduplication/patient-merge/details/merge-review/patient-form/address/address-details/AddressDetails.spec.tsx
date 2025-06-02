@@ -1,5 +1,5 @@
 import { render, within } from '@testing-library/react';
-import { MergeAddress } from 'apps/deduplication/api/model/MergePatient';
+import { MergeAddress } from 'apps/deduplication/api/model/MergeCandidate';
 import { AddressDetails } from './AddressDetails';
 
 const defaultAddress: MergeAddress = {

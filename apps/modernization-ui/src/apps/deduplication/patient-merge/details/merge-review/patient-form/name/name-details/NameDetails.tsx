@@ -1,4 +1,4 @@
-import { MergeName } from 'apps/deduplication/api/model/MergePatient';
+import { MergeName } from 'apps/deduplication/api/model/MergeCandidate';
 import { format, parseISO } from 'date-fns';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
 

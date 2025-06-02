@@ -1,4 +1,4 @@
-import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
@@ -8,15 +8,15 @@ import { PatientMergeForm } from '../../model/PatientMergeForm';
 import styles from './patient-id-selection.module.scss';
 
 type Props = {
-    mergePatients: MergePatient[];
+    mergeCandidates: MergeCandidate[];
     onRemovePatient: (personUid: string) => void;
 };
-export const PatientIdSelection = ({ mergePatients, onRemovePatient }: Props) => {
+export const PatientIdSelection = ({ mergeCandidates, onRemovePatient }: Props) => {
     const form = useFormContext<PatientMergeForm>();
 
     return (
         <section className={styles.patientIdSelection}>
-            {mergePatients.map((p) => (
+            {mergeCandidates.map((p) => (
                 <Controller
                     key={`id-selection:${p.personUid}`}
                     control={form.control}
@@ -31,7 +31,7 @@ export const PatientIdSelection = ({ mergePatients, onRemovePatient }: Props) =>
                                 value={p.personUid}
                                 checked={value === p.personUid}
                             />
-                            <Shown when={value !== p.personUid && mergePatients.length > 2}>
+                            <Shown when={value !== p.personUid && mergeCandidates.length > 2}>
                                 <Button
                                     secondary
                                     destructive

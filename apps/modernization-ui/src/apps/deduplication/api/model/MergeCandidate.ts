@@ -1,4 +1,4 @@
-export type MergePatient = {
+export type MergeCandidate = {
     personUid: string;
     adminComments: AdminComments;
     names: MergeName[];

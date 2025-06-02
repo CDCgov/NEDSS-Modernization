@@ -1,4 +1,4 @@
-import { MergePatient, MergeIdentification } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate, MergeIdentification } from 'apps/deduplication/api/model/MergeCandidate';
 import { useState } from 'react';
 import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
@@ -6,11 +6,11 @@ import { IdentificationDataTable } from './identification-data-table/Identificat
 import { IdentificationDetails } from './identification-details/IdentificationDetails';
 
 type Props = {
-    mergePatients: MergePatient[];
+    mergeCandidates: MergeCandidate[];
 };
-export const IdentificationSelection = ({ mergePatients }: Props) => {
+export const IdentificationSelection = ({ mergeCandidates }: Props) => {
     const [selectedIdentification, setSelectedIdentification] = useState(
-        new Map<string, MergeIdentification | undefined>(mergePatients.map((p) => [p.personUid, undefined]))
+        new Map<string, MergeIdentification | undefined>(mergeCandidates.map((p) => [p.personUid, undefined]))
     );
 
     const handleViewIdentification = (personUid: string, identification: MergeIdentification) => {
@@ -27,7 +27,7 @@ export const IdentificationSelection = ({ mergePatients }: Props) => {
         <>
             <Section
                 title="IDENTIFICATION"
-                mergePatients={mergePatients}
+                mergeCandidates={mergeCandidates}
                 render={(p) => (
                     <IdentificationDataTable
                         patientData={p}
@@ -38,7 +38,7 @@ export const IdentificationSelection = ({ mergePatients }: Props) => {
             />
             <DetailsRow
                 id="patient-identification"
-                mergePatients={mergePatients}
+                mergeCandidates={mergeCandidates}
                 render={(p) => {
                     const identification = selectedIdentification.get(p.personUid);
                     return identification && <IdentificationDetails identification={identification} />;

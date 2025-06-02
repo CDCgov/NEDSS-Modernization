@@ -1,6 +1,6 @@
 import React from 'react';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
-import { MergeAddress } from 'apps/deduplication/api/model/MergePatient';
+import { MergeAddress } from 'apps/deduplication/api/model/MergeCandidate';
 import { format, parseISO } from 'date-fns';
 
 type Props = {

@@ -1,4 +1,4 @@
-import { MergePatient, MergePhoneEmail } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate, MergePhoneEmail } from 'apps/deduplication/api/model/MergeCandidate';
 import { useState } from 'react';
 import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
@@ -6,11 +6,11 @@ import { PhoneEmailDataTable } from './phone-email-data-table/PhoneEmailDataTabl
 import { PhoneEmailDetails } from './phone-email-details/PhoneEmailDetails';
 
 type Props = {
-    mergePatients: MergePatient[];
+    mergeCandidates: MergeCandidate[];
 };
-export const PhoneEmailSelection = ({ mergePatients }: Props) => {
+export const PhoneEmailSelection = ({ mergeCandidates }: Props) => {
     const [selectedPhoneEmail, setSelectedPhoneEmail] = useState(
-        new Map<string, MergePhoneEmail | undefined>(mergePatients.map((p) => [p.personUid, undefined]))
+        new Map<string, MergePhoneEmail | undefined>(mergeCandidates.map((p) => [p.personUid, undefined]))
     );
 
     const handleViewPhoneEmail = (personUid: string, phoneEmail: MergePhoneEmail) => {
@@ -27,7 +27,7 @@ export const PhoneEmailSelection = ({ mergePatients }: Props) => {
         <>
             <Section
                 title="PHONE & EMAIL"
-                mergePatients={mergePatients}
+                mergeCandidates={mergeCandidates}
                 render={(p) => (
                     <PhoneEmailDataTable
                         patientData={p}
@@ -38,7 +38,7 @@ export const PhoneEmailSelection = ({ mergePatients }: Props) => {
             />
             <DetailsRow
                 id="patient-phone-email"
-                mergePatients={mergePatients}
+                mergeCandidates={mergeCandidates}
                 render={(p) => {
                     const phoneEmail = selectedPhoneEmail.get(p.personUid);
                     return phoneEmail && <PhoneEmailDetails phoneEmail={phoneEmail} />;

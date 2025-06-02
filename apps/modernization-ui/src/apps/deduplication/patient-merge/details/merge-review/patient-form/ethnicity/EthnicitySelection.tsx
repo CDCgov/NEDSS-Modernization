@@ -1,15 +1,15 @@
-import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { Section } from '../shared/section/Section';
 import { Ethnicity } from './ethnicity/Ethnicity';
 
 type Props = {
-    mergePatients: MergePatient[];
+    mergeCandidates: MergeCandidate[];
 };
-export const EthnicitySelection = ({ mergePatients }: Props) => {
+export const EthnicitySelection = ({ mergeCandidates }: Props) => {
     return (
         <Section
             title="ETHNICITY"
-            mergePatients={mergePatients}
+            mergeCandidates={mergeCandidates}
             render={(p) => <Ethnicity personUid={p.personUid} ethnicity={p.ethnicity} />}
         />
     );

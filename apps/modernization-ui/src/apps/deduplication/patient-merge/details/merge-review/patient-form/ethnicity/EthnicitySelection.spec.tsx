@@ -1,9 +1,9 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { EthnicitySelection } from './EthnicitySelection';
 import { render } from '@testing-library/react';
-import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 
-const data: Partial<MergePatient> = {
+const data: Partial<MergeCandidate> = {
     personUid: '123',
     ethnicity: {
         asOf: '2014-03-11T00:00:00.000',
@@ -17,7 +17,7 @@ const Fixture = () => {
 
     return (
         <FormProvider {...form}>
-            <EthnicitySelection mergePatients={[data as MergePatient]} />
+            <EthnicitySelection mergeCandidates={[data as MergeCandidate]} />
         </FormProvider>
     );
 };

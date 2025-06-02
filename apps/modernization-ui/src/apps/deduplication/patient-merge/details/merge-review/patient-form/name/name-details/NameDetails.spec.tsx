@@ -1,4 +1,4 @@
-import { MergeName } from 'apps/deduplication/api/model/MergePatient';
+import { MergeName } from 'apps/deduplication/api/model/MergeCandidate';
 import { NameDetails } from './NameDetails';
 import { render, within } from '@testing-library/react';
 

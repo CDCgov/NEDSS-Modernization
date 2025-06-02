@@ -1,4 +1,4 @@
-import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
 import { useNavigate } from 'react-router';
@@ -13,11 +13,11 @@ import { RaceSelection } from './patient-form/race/RaceSelection';
 import { EthnicitySelection } from './patient-form/ethnicity/EthnicitySelection';
 
 export type Props = {
-    mergePatients: MergePatient[];
+    mergeCandidates: MergeCandidate[];
     onPreview: () => void;
     onRemovePatient: (personUid: string) => void;
 };
-export const MergeReview = ({ mergePatients, onPreview, onRemovePatient }: Props) => {
+export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient }: Props) => {
     const nav = useNavigate();
 
     return (
@@ -41,14 +41,14 @@ export const MergeReview = ({ mergePatients, onPreview, onRemovePatient }: Props
                     surviving ID. If this is not correct, select the appropriate record.
                 </div>
                 <div className={styles.patientContent}>
-                    <PatientIdSelection mergePatients={mergePatients} onRemovePatient={onRemovePatient} />
-                    <AdminCommentsSelection mergePatients={mergePatients} />
-                    <NameSelection mergePatients={mergePatients} />
-                    <AddressSelection mergePatients={mergePatients} />
-                    <PhoneEmailSelection mergePatients={mergePatients} />
-                    <IdentificationSelection mergePatients={mergePatients} />
-                    <RaceSelection mergePatients={mergePatients} />
-                    <EthnicitySelection mergePatients={mergePatients} />
+                    <PatientIdSelection mergeCandidates={mergeCandidates} onRemovePatient={onRemovePatient} />
+                    <AdminCommentsSelection mergeCandidates={mergeCandidates} />
+                    <NameSelection mergeCandidates={mergeCandidates} />
+                    <AddressSelection mergeCandidates={mergeCandidates} />
+                    <PhoneEmailSelection mergeCandidates={mergeCandidates} />
+                    <IdentificationSelection mergeCandidates={mergeCandidates} />
+                    <RaceSelection mergeCandidates={mergeCandidates} />
+                    <EthnicitySelection mergeCandidates={mergeCandidates} />
                 </div>
             </main>
         </div>

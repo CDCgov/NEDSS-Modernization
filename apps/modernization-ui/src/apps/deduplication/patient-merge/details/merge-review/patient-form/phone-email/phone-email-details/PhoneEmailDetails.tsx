@@ -1,4 +1,4 @@
-import { MergePhoneEmail } from 'apps/deduplication/api/model/MergePatient';
+import { MergePhoneEmail } from 'apps/deduplication/api/model/MergeCandidate';
 import { format, parseISO } from 'date-fns';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
 import { formatPhone } from '../formatPhone';

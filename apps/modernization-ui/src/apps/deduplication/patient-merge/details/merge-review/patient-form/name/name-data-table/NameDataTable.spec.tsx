@@ -1,10 +1,10 @@
-import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { NameDataTable } from './NameDataTable';
 import { render, within } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 
-const patientData: Partial<MergePatient> = {
+const patientData: Partial<MergeCandidate> = {
     names: [
         {
             personUid: '1',
@@ -29,7 +29,7 @@ const Fixture = () => {
     const form = useForm();
     return (
         <FormProvider {...form}>
-            <NameDataTable onViewName={onSelectName} patientData={patientData as MergePatient} />
+            <NameDataTable onViewName={onSelectName} patientData={patientData as MergeCandidate} />
         </FormProvider>
     );
 };

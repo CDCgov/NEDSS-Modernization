@@ -1,4 +1,4 @@
-import { MergePatient, MergePhoneEmail } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate, MergePhoneEmail } from 'apps/deduplication/api/model/MergeCandidate';
 import { format, parseISO } from 'date-fns';
 import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -7,7 +7,7 @@ import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
 import { formatPhone } from '../formatPhone';
 
 type Props = {
-    patientData: MergePatient;
+    patientData: MergeCandidate;
     selectedPhoneEmail?: MergePhoneEmail;
     onViewPhoneEmail: (phoneEmail: MergePhoneEmail) => void;
 };

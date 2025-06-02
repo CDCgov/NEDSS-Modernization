@@ -1,16 +1,16 @@
-import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import styles from './section.module.scss';
 import { ReactNode } from 'react';
 
 type Props = {
     id: string;
-    mergePatients: MergePatient[];
-    render: (mergePatients: MergePatient) => ReactNode | undefined;
+    mergeCandidates: MergeCandidate[];
+    render: (mergeCandidates: MergeCandidate) => ReactNode | undefined;
 };
-export const DetailsRow = ({ id, mergePatients, render }: Props) => {
+export const DetailsRow = ({ id, mergeCandidates, render }: Props) => {
     return (
         <section className={styles.section}>
-            {mergePatients.map((p) => (
+            {mergeCandidates.map((p) => (
                 <div key={`detailsSection-${id}-${p.personUid}`} className={styles.entry}>
                     {render(p)}
                 </div>

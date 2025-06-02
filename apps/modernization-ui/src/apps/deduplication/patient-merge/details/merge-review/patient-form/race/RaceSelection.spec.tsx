@@ -1,9 +1,9 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
-import { MergePatient } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { RaceSelection } from './RaceSelection';
 
-const mergePatients: Partial<MergePatient>[] = [
+const mergeCandidates: Partial<MergeCandidate>[] = [
     {
         races: [
             {
@@ -20,7 +20,7 @@ const Fixture = () => {
     const form = useForm();
     return (
         <FormProvider {...form}>
-            <RaceSelection mergePatients={mergePatients as MergePatient[]} />
+            <RaceSelection mergeCandidates={mergeCandidates as MergeCandidate[]} />
         </FormProvider>
     );
 };

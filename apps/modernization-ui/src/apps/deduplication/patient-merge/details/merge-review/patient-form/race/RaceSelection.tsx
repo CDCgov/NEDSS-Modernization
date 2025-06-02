@@ -1,4 +1,4 @@
-import { MergePatient, MergeRace } from 'apps/deduplication/api/model/MergePatient';
+import { MergeCandidate, MergeRace } from 'apps/deduplication/api/model/MergeCandidate';
 import { useState } from 'react';
 import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
@@ -6,11 +6,11 @@ import { RaceDataTable } from './race-data-table/RaceDataTable';
 import { RaceDetails } from './race-details/RaceDetails';
 
 type Props = {
-    mergePatients: MergePatient[];
+    mergeCandidates: MergeCandidate[];
 };
-export const RaceSelection = ({ mergePatients }: Props) => {
+export const RaceSelection = ({ mergeCandidates }: Props) => {
     const [selectedRace, setSelectedRace] = useState(
-        new Map<string, MergeRace | undefined>(mergePatients.map((p) => [p.personUid, undefined]))
+        new Map<string, MergeRace | undefined>(mergeCandidates.map((p) => [p.personUid, undefined]))
     );
 
     const handleViewRace = (personUid: string, race: MergeRace) => {
@@ -27,7 +27,7 @@ export const RaceSelection = ({ mergePatients }: Props) => {
         <>
             <Section
                 title="RACE"
-                mergePatients={mergePatients}
+                mergeCandidates={mergeCandidates}
                 render={(p) => (
                     <RaceDataTable
                         patientData={p}
@@ -38,7 +38,7 @@ export const RaceSelection = ({ mergePatients }: Props) => {
             />
             <DetailsRow
                 id="patient-race"
-                mergePatients={mergePatients}
+                mergeCandidates={mergeCandidates}
                 render={(p) => {
                     const race = selectedRace.get(p.personUid);
                     return race && <RaceDetails race={race} />;
