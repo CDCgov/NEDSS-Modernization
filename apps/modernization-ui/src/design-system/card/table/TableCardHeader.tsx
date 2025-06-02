@@ -1,6 +1,5 @@
 import { Heading, HeadingLevel } from 'components/heading';
 import { Button, ButtonProps } from 'design-system/button';
-import { Icon } from 'design-system/icon';
 import { OverlayPanel } from 'overlay';
 import { ColumnPreferencesPanel } from 'design-system/table/preferences';
 import { Shown } from 'conditional-render';
@@ -51,7 +50,7 @@ export const TableCardHeader = ({
                                 data-tooltip-position="top"
                                 data-tooltip-offset="center"
                                 secondary
-                                icon={<Icon name="settings" />}
+                                icon="settings"
                                 onClick={toggle}
                                 sizing="small"
                             />

@@ -1,10 +1,11 @@
 import { ReactNode } from 'react';
 import { Sizing } from 'design-system/field';
 import { buttonClassnames } from './buttonClassNames';
+import { Icon, Icons } from 'design-system/icon';
 
 type StandardButtonProps = {
     className?: string;
-    icon?: ReactNode;
+    icon?: Icons;
     children?: ReactNode;
     active?: boolean;
     secondary?: boolean;
@@ -54,7 +55,7 @@ const Button = ({
 
     return (
         <button className={classes} {...defaultProps} type={type} disabled={disabled}>
-            {icon}
+            {icon && <Icon name={icon} />}
             {children}
         </button>
     );
