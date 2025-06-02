@@ -23,5 +23,5 @@ Feature: Patient File Documents Requiring Review: Case Report
     And the case report requiring review was received on 07/11/1989 at 10:17:19
 
   Scenario: Unprocessed Cases Reports for a patient do not require review
-    When I search for documents requiring review for the patient
+    When I view the documents requiring review for the patient
     Then the patient file has no case reports requiring review

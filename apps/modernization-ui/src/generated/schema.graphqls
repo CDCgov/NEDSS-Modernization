@@ -295,20 +295,6 @@ type AssociatedInvestigation {
   cdDescTxt: String!
   localId: String!
 }
-extend type Query {
-  findDistinctCodedResults(searchText: String!): [CodedResult!]!
-}
-
-type CodedResult {
-  name: String!
-}
-extend type Query {
-  findDistinctResultedTest(searchText: String!): [ResultedTest!]!
-}
-
-type ResultedTest {
-  name: String!
-}
 type NamedContact {
   id: ID!
   name: String!
@@ -366,66 +352,6 @@ extend type Query {
 
   findPatientNamedByContact(patient:ID!, page: Page) : PatientNamedByContactResults
 }
-type DocumentRequiringReview {
-  id: ID!
-  localId: String!
-  type: String!
-  dateReceived: DateTime!
-  eventDate: DateTime
-  isElectronic: Boolean!
-  facilityProviders: FacilityProviders!
-  descriptions: [Description]!
-}
-
-type FacilityProviders {
-  reportingFacility: ReportingFacility
-  orderingProvider: OrderingProvider
-  sendingFacility: SendingFacility
-}
-
-type ReportingFacility {
-  name: String
-}
-
-type OrderingProvider {
-  name: String
-}
-
-type SendingFacility {
-  name: String
-}
-
-type Description {
-  title: String
-  value: String
-}
-
-type PatientDocumentRequiringReviewResults {
-  content: [DocumentRequiringReview]!
-  total: Int!
-  number: Int!
-}
-
-enum DocumentRequiringReviewSortableField {
-  type
-  dateReceived
-  eventDate
-  localId
-}
-
-input DocumentRequiringReviewSortablePage {
-  pageSize: Int
-  pageNumber: Int
-  sortField: DocumentRequiringReviewSortableField
-  sortDirection: SortDirection
-}
-
-extend type Query {
-  findDocumentsRequiringReviewForPatient(
-    patient: Int!
-    page: DocumentRequiringReviewSortablePage
-  ): PatientDocumentRequiringReviewResults!
-}
 type PatientDocument {
     document: ID!
     receivedOn: DateTime!
@@ -473,87 +399,6 @@ type PatientInvestigationResults {
 
 extend type Query {
     findInvestigationsForPatient(patient: ID!, page: Page, openOnly: Boolean): PatientInvestigationResults
-}
-extend type Query {
-  findLabReportsForPatient(personUid: Int!, page: Page): PatientLabReportResults
-}
-
-type PatientLabReportResults {
-  content: [PatientLabReport]!
-  total: Int!
-  number: Int!
-}
-
-input PatientLabReportFilter {
-  patientId: Int
-  programAreas: [String]
-  jurisdictions: [ID]
-  pregnancyStatus: PregnancyStatus
-  eventId: LabReportEventId
-  eventDate: LaboratoryEventDateSearch
-  entryMethods: [EntryMethod]
-  enteredBy: [UserType]
-  eventStatus: [EventStatus]
-  processingStatus: [LaboratoryReportStatus]
-  createdBy: ID
-  lastUpdatedBy: ID
-  providerSearch: LabReportProviderSearch
-  resultedTest: String
-  codedResult: String
-  orderingLabId: ID
-  orderingProviderId: ID
-  reportingLabId: ID
-}
-
-type PatientLabReport {
-  id: String!
-  observationUid: Int!
-  addTime: DateTime!
-  effectiveFromTime: DateTime
-  programAreaCd: String!
-  jurisdictionCodeDescTxt: String!
-  localId: String!
-  electronicInd: String
-  associatedInvestigations: [AssociatedInvestigation2!]!
-  personParticipations: [PersonParticipation2!]!
-  organizationParticipations: [OrganizationParticipation2!]!
-  observations: [Observation2!]!
-}
-
-type PersonParticipation2 {
-  typeCd: String!
-  personCd: String!
-  firstName: String
-  lastName: String
-}
-
-type OrganizationParticipation2 {
-  typeCd: String
-  name: String
-}
-
-type MaterialParticipation2 {
-  actUid: Int!
-  typeCd: String!
-  entityId: String
-  subjectClassCd: String!
-  typeDescTxt: String
-  participationRecordStatus: String
-  participationLastChangeTime: DateTime
-  cd: String!
-  cdDescTxt: String!
-}
-
-type Observation2 {
-  domainCd: String!
-  cdDescTxt: String!
-  displayName: String
-}
-
-type AssociatedInvestigation2 {
-  publicHealthCaseUid: Int!
-  cdDescTxt: String!
-  localId: String!
 }
 type PatientMorbidity {
     morbidity: ID!

@@ -1,7 +1,0 @@
-extend type Query {
-  findDistinctResultedTest(searchText: String!): [ResultedTest!]!
-}
-
-type ResultedTest {
-  name: String!
-}
