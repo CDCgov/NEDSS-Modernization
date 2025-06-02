@@ -135,6 +135,60 @@ export const mockPatientLabReports: PatientLabReport[] = [
                 highRange: '5',
                 lowRange: '0',
                 statusDetails: 'Final'
+            },
+            {
+                resultedTest: 'Hepatitis B Surface Antigen',
+                codedResult: 'Positive',
+                numericResult: '',
+                units: '',
+                highRange: '',
+                lowRange: '',
+                statusDetails: ''
+            },
+            {
+                resultedTest: 'Complete Blood Count',
+                codedResult: '14',
+                numericResult: '',
+                units: '',
+                highRange: '',
+                lowRange: '',
+                statusDetails: ''
+            },
+            {
+                resultedTest: 'Salmonella Culture',
+                codedResult: 'Positive',
+                numericResult: '',
+                units: '',
+                highRange: '',
+                lowRange: '',
+                statusDetails: 'Final'
+            },
+            {
+                resultedTest: 'Lead Blood Level',
+                codedResult: 'Elevated',
+                numericResult: '12',
+                units: 'µg/dL',
+                highRange: '5',
+                lowRange: '0',
+                statusDetails: 'Final'
+            },
+            {
+                resultedTest: 'Hepatitis B Surface Antigen',
+                codedResult: 'Positive',
+                numericResult: '',
+                units: '',
+                highRange: '',
+                lowRange: '',
+                statusDetails: ''
+            },
+            {
+                resultedTest: 'Complete Blood Count',
+                codedResult: '14',
+                numericResult: '',
+                units: '',
+                highRange: '',
+                lowRange: '',
+                statusDetails: ''
             }
         ],
         programArea: 'Communicable Disease',
