@@ -2,17 +2,11 @@ import styles from './no-patient-result.module.scss';
 import { useAddPatientFromSearch } from 'apps/search/patient/add/useAddPatientFromSearch';
 import { permissions, Permitted } from 'libs/permission';
 import { AlertMessage } from 'design-system/message';
-import { KeyboardEvent } from 'react';
+import { Button } from 'design-system/button';
 
 const NoPatientResults = () => {
     const { add } = useAddPatientFromSearch();
 
-    const handleKeyDown = (event: KeyboardEvent<HTMLAnchorElement>) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            add();
-        }
-    };
     return (
         <div>
             <div className={styles.noResults} role="alert" id="no-patient-results-alert">
@@ -23,14 +17,13 @@ const NoPatientResults = () => {
                             <Permitted permission={permissions.patient.add} fallback="Try refining your search.">
                                 <span aria-label=" Try refining your search, or add a new patient.">
                                     Try refining your search, or{' '}
-                                    <a
+                                    <Button
                                         className={styles.link}
                                         onClick={add}
-                                        onKeyDown={handleKeyDown}
-                                        tabIndex={0}
-                                        role="link">
+                                        tertiary
+                                        aria-label="add a new patient">
                                         add a new patient.
-                                    </a>
+                                    </Button>
                                 </span>
                             </Permitted>
                         </span>
