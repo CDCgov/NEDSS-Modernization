@@ -211,7 +211,6 @@ const LabReports = () => {
                 columns={columns}
                 columnPreferencesKey="patient-file-lab-reports-table-card-column-preferences"
                 defaultColumnPreferences={columnPreferences}
-                noDataFallback
             />
         </div>
     );
