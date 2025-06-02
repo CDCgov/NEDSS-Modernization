@@ -123,6 +123,7 @@ const PatientSearchResultTable = ({ results, sizing }: Props) => {
             data={results}
             sizing={sizing}
             features={{ sorting, filtering }}
+            onEmpty={() => <></>}
         />
     );
 };

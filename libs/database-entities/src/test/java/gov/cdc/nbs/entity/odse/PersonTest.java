@@ -459,7 +459,6 @@ class PersonTest {
     actual.add(
         new PatientCommand.AddAddress(
             117L,
-            4861L,
             LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
@@ -471,7 +470,8 @@ class PersonTest {
             "Census Tract",
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30")
-        )
+        ),
+        () ->  4861L
     );
 
     assertThat(actual.addresses())
@@ -503,7 +503,6 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddAddress(
             117L,
-            4861L,
             LocalDate.parse("2021-07-07"),
             "type-value",
             "use-value",
@@ -518,7 +517,8 @@ class PersonTest {
             "Comments",
             131L,
             LocalDateTime.parse("2023-03-03T10:15:30")
-        )
+        ),
+        () ->  4861L
     );
 
     assertThat(patient)
@@ -567,7 +567,6 @@ class PersonTest {
 
     patient.add(
         new PatientCommand.AddAddress(
-            117L,
             4861L,
             LocalDate.parse("2021-07-07"),
             "SA1",
@@ -580,7 +579,8 @@ class PersonTest {
             "Census Tract",
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30")
-        )
+        ),
+        () ->  4861L
     );
 
     patient.update(
@@ -650,7 +650,6 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddAddress(
             117L,
-            4861L,
             LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
@@ -662,13 +661,13 @@ class PersonTest {
             "Census Tract",
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30")
-        )
+        ),
+        () ->  4861L
     );
 
     patient.add(
         new PatientCommand.AddAddress(
             117L,
-            5331L,
             LocalDate.parse("2021-07-07"),
             "Other-SA1",
             "Other-SA2",
@@ -680,7 +679,8 @@ class PersonTest {
             null,
             171L,
             LocalDateTime.parse("2020-03-04T08:45:23")
-        )
+        ),
+        () -> 5331L
     );
 
     patient.delete(

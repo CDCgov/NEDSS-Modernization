@@ -1,0 +1,50 @@
+@use 'styles/borders';
+
+.mergeDataDisplay {
+    display: flex;
+
+    .labelAndValue {
+        display: flex;
+        flex-grow: 1;
+        font-size: 0.75rem;
+        padding: 0.25rem;
+        align-items: center;
+
+        .label {
+            display: flex;
+            width: 50%;
+            font-weight: 700;
+
+            & > label {
+                cursor: pointer;
+            }
+        }
+
+        .value {
+            display: flex;
+            width: 50%;
+        }
+
+        &.underlined {
+            @extend %thin-bottom;
+        }
+    }
+
+    .groupLine {
+        padding: 0rem 0.25rem 0rem 1rem;
+    }
+
+    .radioButton {
+        padding: 0.25rem 0.5rem 0.25rem 1rem;
+
+        & > div {
+            width: 1rem;
+            height: 1rem;
+
+            & > label {
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+}

@@ -1,15 +1,17 @@
+import { ReactNode } from 'react';
 import styles from './data-table.module.scss';
 
-type Props = {
-    colSpan: number;
+type NoDataRowProps = {
+    columns: number;
+    children: ReactNode;
 };
 
-export const NoDataRow = ({ colSpan }: Props) => {
-    return (
-        <tr>
-            <td colSpan={colSpan} className={styles.noData}>
-                No data has been added.
-            </td>
-        </tr>
-    );
-};
+const NoDataRow = ({ columns, children }: NoDataRowProps) => (
+    <tr>
+        <td colSpan={columns} className={styles.noData}>
+            {children}
+        </td>
+    </tr>
+);
+
+export { NoDataRow };
