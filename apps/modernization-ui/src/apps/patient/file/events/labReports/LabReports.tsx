@@ -5,8 +5,7 @@ import { ColumnPreference } from 'design-system/table/preferences';
 import { FacilityProviders, OrderingProvider, PatientLabReport, TestResult } from 'generated';
 import { Icon } from 'design-system/icon';
 import { usePatient } from '../../usePatient';
-// import { usePatientLabReports } from './usePatientLabReports';
-import { mockPatientLabReports } from './mockPatientLabReports';
+import { usePatientLabReports } from './usePatientLabReports';
 
 const maybeOrderingProviderName = (orderingProvider: OrderingProvider) => {
     if (!orderingProvider) {
@@ -103,7 +102,7 @@ const displayTestResults = (testResults?: TestResult[] | undefined) => {
 
 const LabReports = () => {
     const patient = usePatient();
-    // const { patientLabReports } = usePatientLabReports(patient.id);
+    const { patientLabReports } = usePatientLabReports(patient.id);
 
     const EVENT_ID = { id: 'patient-file-lab-reports-eventId', name: 'Event ID' };
     const DATE_RECEIVED = { id: 'patient-file-lab-reports-dateReceived', name: 'Date received' };
@@ -197,8 +196,8 @@ const LabReports = () => {
             <TableCard
                 id="patient-file-lab-reports-table-card"
                 title="Lab reports"
-                data={mockPatientLabReports || []}
-                defaultCollapsed={mockPatientLabReports && mockPatientLabReports.length > 0 ? false : true}
+                data={patientLabReports || []}
+                defaultCollapsed={patientLabReports && patientLabReports.length > 0 ? false : true}
                 actions={[
                     {
                         sizing: 'small',
