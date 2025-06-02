@@ -1,8 +1,8 @@
 package gov.cdc.nbs.patient.profile.address.change;
 
-import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.patient.PatientException;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class PatientAddressChangeServiceTest {
   @Test
   void should_throw_patient_not_found_error_when_patient_cannot_be_resolved() {
 
-    IdGeneratorService generator = mock(IdGeneratorService.class);
+    AddressIdentifierGenerator generator = mock(AddressIdentifierGenerator.class);
 
     PatientProfileService profileService = mock(PatientProfileService.class);
 

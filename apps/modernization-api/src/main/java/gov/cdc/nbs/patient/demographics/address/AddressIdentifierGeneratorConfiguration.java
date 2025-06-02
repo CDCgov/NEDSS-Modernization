@@ -1,4 +1,4 @@
-package gov.cdc.nbs.address;
+package gov.cdc.nbs.patient.demographics.address;
 
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
