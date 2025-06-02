@@ -1,10 +1,10 @@
 import React from 'react';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
-import { PatientAddress } from 'apps/deduplication/api/model/PatientData';
+import { MergeAddress } from 'apps/deduplication/api/model/MergeCandidate';
 import { format, parseISO } from 'date-fns';
 
 type Props = {
-    address: PatientAddress;
+    address: MergeAddress;
 };
 export const AddressDetails = ({ address }: Props) => {
     return (

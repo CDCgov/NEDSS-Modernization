@@ -1,10 +1,10 @@
-import { PatientData } from 'apps/deduplication/api/model/PatientData';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { render, within } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { RaceDataTable } from './RaceDataTable';
 
-const patientData: Partial<PatientData> = {
+const patientData: Partial<MergeCandidate> = {
     races: [
         {
             personUid: '1',
@@ -27,7 +27,7 @@ const Fixture = () => {
     const form = useForm();
     return (
         <FormProvider {...form}>
-            <RaceDataTable onViewRace={onViewRace} patientData={patientData as PatientData} />
+            <RaceDataTable onViewRace={onViewRace} patientData={patientData as MergeCandidate} />
         </FormProvider>
     );
 };

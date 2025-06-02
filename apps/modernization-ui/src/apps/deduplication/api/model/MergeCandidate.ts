@@ -1,11 +1,12 @@
-export type PatientData = {
+export type MergeCandidate = {
     personUid: string;
     adminComments: AdminComments;
-    names: PatientName[];
-    addresses: PatientAddress[];
-    phoneEmails: PatientPhoneEmail[];
-    identifications: PatientIdentification[];
-    races: PatientRace[];
+    names: MergeName[];
+    addresses: MergeAddress[];
+    phoneEmails: MergePhoneEmail[];
+    identifications: MergeIdentification[];
+    races: MergeRace[];
+    ethnicity: MergeEthnicity;
 };
 
 export type AdminComments = {
@@ -13,7 +14,7 @@ export type AdminComments = {
     comment: string;
 };
 
-export type PatientName = {
+export type MergeName = {
     personUid: string;
     sequence: string;
     asOf: string;
@@ -28,7 +29,7 @@ export type PatientName = {
     degree?: string;
 };
 
-export type PatientAddress = {
+export type MergeAddress = {
     id: string;
     asOf: string;
     type: string;
@@ -44,7 +45,7 @@ export type PatientAddress = {
     comments?: string;
 };
 
-export type PatientPhoneEmail = {
+export type MergePhoneEmail = {
     id: string;
     asOf: string;
     type: string;
@@ -57,7 +58,7 @@ export type PatientPhoneEmail = {
     comments?: string;
 };
 
-export type PatientIdentification = {
+export type MergeIdentification = {
     personUid: string;
     sequence: string;
     asOf: string;
@@ -66,10 +67,18 @@ export type PatientIdentification = {
     value: string;
 };
 
-export type PatientRace = {
+export type MergeRace = {
     personUid: string;
     raceCode: string;
     asOf: string;
     race: string;
     detailedRaces?: string;
+};
+
+export type MergeEthnicity = {
+    asof?: string;
+    asOf?: string;
+    ethnicity?: string;
+    reasonUnknown?: string;
+    spanishOrigin?: string;
 };

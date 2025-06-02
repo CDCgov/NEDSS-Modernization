@@ -1,8 +1,8 @@
 import { render, within } from '@testing-library/react';
-import { PatientIdentification } from 'apps/deduplication/api/model/PatientData';
+import { MergeIdentification } from 'apps/deduplication/api/model/MergeCandidate';
 import { IdentificationDetails } from './IdentificationDetails';
 
-const defaultIdentification: PatientIdentification = {
+const defaultIdentification: MergeIdentification = {
     personUid: '1',
     sequence: '1',
     asOf: '2014-03-11T00:00:00.000',
@@ -11,7 +11,7 @@ const defaultIdentification: PatientIdentification = {
     value: '10001'
 };
 
-const Fixture = ({ identification = defaultIdentification }: { identification?: PatientIdentification }) => {
+const Fixture = ({ identification = defaultIdentification }: { identification?: MergeIdentification }) => {
     return <IdentificationDetails identification={identification} />;
 };
 
@@ -26,7 +26,7 @@ describe('IdentificationDetails', () => {
     });
 
     it('should render "---" for missing optional fields', () => {
-        const sparseIdentification: PatientIdentification = {
+        const sparseIdentification: MergeIdentification = {
             personUid: '1',
             sequence: '1',
             asOf: '2014-03-11T00:00:00.000',

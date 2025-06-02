@@ -6,6 +6,7 @@ export type PatientMergeForm = {
     phoneEmails: PhoneEmailId[];
     identifications: IdentificationId[];
     races: RaceId[];
+    ethnicity: string; // the id of the person to pull ethnicity data from
 };
 
 export type NameId = {

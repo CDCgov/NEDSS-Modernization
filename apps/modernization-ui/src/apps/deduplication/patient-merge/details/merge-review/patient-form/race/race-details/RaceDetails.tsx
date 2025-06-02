@@ -1,9 +1,9 @@
-import { PatientRace } from 'apps/deduplication/api/model/PatientData';
+import { MergeRace } from 'apps/deduplication/api/model/MergeCandidate';
 import { format, parseISO } from 'date-fns';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
 
 type Props = {
-    race: PatientRace;
+    race: MergeRace;
 };
 export const RaceDetails = ({ race }: Props) => {
     return (
