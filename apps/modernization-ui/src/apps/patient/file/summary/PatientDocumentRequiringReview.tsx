@@ -7,6 +7,7 @@ import { DocumentRequiringReview } from 'generated';
 import { ClassicLink } from 'classic';
 import { internalizeDate } from 'date';
 import { internalizeDateTime } from 'date/InternalizeDateTime';
+import { renderMorbidity } from '../renderReports';
 
 const renderReporting = (value: DocumentRequiringReview) => {
     return (
@@ -44,34 +45,7 @@ const renderDescription = (value: DocumentRequiringReview) => {
     return (
         <>
             {value.type === 'Case Report' && <strong>{value.condition}</strong>}
-            {value.type === 'Morbidity Report' && (
-                <>
-                    <strong>{value.condition}</strong>
-                    <br />
-                    {(value.resultedTests?.length ?? 0) > 0 && (
-                        <>
-                            {value.resultedTests?.map((result) => (
-                                <>
-                                    <br />
-                                    <strong>{result.name}:</strong>
-                                    <br />
-                                    {result.result}
-                                    <br />
-                                </>
-                            ))}
-                        </>
-                    )}
-                    {(value.treatments?.length ?? 0) > 0 && (
-                        <>
-                            <br />
-                            <strong>Treatment information: </strong>
-                            <strong>
-                                {value.treatments?.map((treatment) => <li key={treatment}>{treatment}</li>)}
-                            </strong>
-                        </>
-                    )}
-                </>
-            )}
+            {value.type === 'Morbidity Report' && renderMorbidity(value)}
         </>
     );
 };
