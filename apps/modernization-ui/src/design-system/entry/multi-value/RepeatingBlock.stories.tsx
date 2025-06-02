@@ -164,6 +164,25 @@ export const ReadOnlyRepeatingBlock: Story = {
     }
 };
 
+export const PatientFileBlock: Story = {
+    args: {
+        id: 'repeating-block-default',
+        title: 'Person',
+        defaultValues: defaultValue,
+        columns,
+        values: [],
+        formRenderer: () => <SampleForm sizing={defaultSizing} />,
+        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
+        onChange: handleChange,
+        isDirty: () => {},
+        isValid: () => {},
+        edit: false,
+        delete: false,
+        onViewCenter: true,
+        sizing: defaultSizing
+    }
+};
+
 export const ViewOnlyBlock: Story = {
     args: {
         id: 'repeating-block-default',

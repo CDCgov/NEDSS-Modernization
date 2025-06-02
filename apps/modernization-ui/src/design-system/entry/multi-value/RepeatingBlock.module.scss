@@ -64,10 +64,21 @@
             padding-left: 16.75rem;
         }
     }
+
+    .viewMode {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .centerAlign {
+            width: 100%;
+            justify-content: center;
+        }
+    }
 }
 
 .iconColumn {
     div {
         visibility: hidden !important;
-    }   
+    }
 }
