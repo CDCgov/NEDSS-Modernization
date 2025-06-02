@@ -9,9 +9,6 @@ type Mutation {
     addPatientName(input: NewPatientNameInput!): PatientNameChangeResult!
     updatePatientName(input: UpdatePatientNameInput!): PatientNameChangeResult!
     deletePatientName(input: DeletePatientNameInput!): PatientNameChangeResult!
-    addPatientAddress(input: NewPatientAddressInput!): PatientAddressChangeResult!
-    updatePatientAddress(input: UpdatePatientAddressInput!): PatientAddressChangeResult!
-    deletePatientAddress(input: DeletePatientAddressInput): PatientAddressChangeResult!
     addPatientIdentification(input: NewPatientIdentificationInput!): PatientIdentificationChangeResult!
     updatePatientIdentification(input: UpdatePatientIdentificationInput!): PatientIdentificationChangeResult!
     deletePatientIdentification(input: DeletePatientIdentificationInput): PatientIdentificationChangeResult!

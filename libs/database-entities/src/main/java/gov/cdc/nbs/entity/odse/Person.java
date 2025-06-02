@@ -343,9 +343,12 @@ public class Person {
     changed(information);
   }
 
-  public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {
+  public EntityLocatorParticipation add(
+      final PatientCommand.AddAddress address,
+      final AddressIdentifierGenerator generator
+  ) {
     changed(address);
-    return this.nbsEntity.add(address);
+    return this.nbsEntity.add(address, generator);
   }
 
   public void update(final PatientCommand.UpdateAddress address) {

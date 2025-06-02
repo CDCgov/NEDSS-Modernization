@@ -173,16 +173,20 @@ public class NBSEntity {
     return this.entityLocatorParticipations;
   }
 
-  public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {
+  public EntityLocatorParticipation add(
+      final PatientCommand.AddAddress address,
+      final AddressIdentifierGenerator generator
+  ) {
 
     List<EntityLocatorParticipation> locators = ensureLocators();
 
-    EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, address.id());
+    EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, generator.generate());
 
     EntityLocatorParticipation participation = new PostalEntityLocatorParticipation(
         this,
         identifier,
-        address);
+        address
+    );
 
     locators.add(participation);
 

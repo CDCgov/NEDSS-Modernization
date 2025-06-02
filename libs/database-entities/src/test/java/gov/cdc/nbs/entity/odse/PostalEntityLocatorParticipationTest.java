@@ -21,7 +21,6 @@ class PostalEntityLocatorParticipationTest {
         new EntityLocatorParticipationId(patient.getId(), 5331L),
         new PatientCommand.AddAddress(
             117L,
-            5331L,
             LocalDate.parse("2021-07-07"),
             "SA1",
             "SA2",
