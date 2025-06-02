@@ -1,14 +1,14 @@
 package gov.cdc.nbs.patient.file.summary.drr.morbidity;
 
+import com.google.common.collect.Multimap;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
+import gov.cdc.nbs.sql.MultiMapResultSetExtractor;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 class MorbidityReportTreatmentFinder {
@@ -63,34 +63,25 @@ class MorbidityReportTreatmentFinder {
   public static final int TREATMENT_COLUMN = 2;
 
   private final JdbcClient client;
+  private final ResultSetExtractor<Multimap<Long, String>> extractor;
 
   MorbidityReportTreatmentFinder(final JdbcClient client) {
     this.client = client;
+    this.extractor = new MultiMapResultSetExtractor<>(
+        (rs, rowNum) -> rs.getLong(MORBIDITY_COLUMN),
+        (rs, rowNum) -> rs.getString(TREATMENT_COLUMN)
+    );
   }
 
-  Map<Long, List<String>> find(
+  Map<Long, Collection<String>> find(
       final long patient,
       final PermissionScope scope
   ) {
     return this.client.sql(QUERY)
         .param("patient", patient)
         .param("any", scope.any())
-        .query(this::map)
-        .stream()
-        .collect(
-            Collectors.groupingBy(
-                MorbidityTreatment::morbidity,
-                Collectors.mapping(
-                    MorbidityTreatment::treatment,
-                    Collectors.toList()
-                )
-            )
-        );
+        .query(extractor)
+        .asMap();
   }
 
-  MorbidityTreatment map(final ResultSet resultSet, final int row) throws SQLException {
-    long id = resultSet.getLong(MORBIDITY_COLUMN);
-    String treatment = resultSet.getString(TREATMENT_COLUMN);
-    return new MorbidityTreatment(id, treatment);
-  }
 }
