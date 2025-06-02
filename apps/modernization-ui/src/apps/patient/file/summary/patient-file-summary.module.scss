@@ -38,10 +38,22 @@
         gap: 1.5rem;
         width: 12rem;
     }
-
     .groupID {
         display: flex;
         flex-direction: column;
         width: 10rem;
     }
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 12rem;
+}
+
+.groupID {
+    display: flex;
+    flex-direction: column;
+    width: 10rem;
 }
