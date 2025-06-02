@@ -1,13 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports.createPatient = fs.readFileSync(path.join(__dirname, 'createPatient.gql'), 'utf8');
-module.exports.deletePatient = fs.readFileSync(path.join(__dirname, 'deletePatient.gql'), 'utf8');
 module.exports.updatePatientGeneralInfo = fs.readFileSync(path.join(__dirname, 'updatePatientGeneralInfo.gql'), 'utf8');
 module.exports.updatePatientBirthAndGender = fs.readFileSync(path.join(__dirname, 'updatePatientBirthAndGender.gql'), 'utf8');
 module.exports.updatePatientMortality = fs.readFileSync(path.join(__dirname, 'updatePatientMortality.gql'), 'utf8');
-module.exports.updatePatientAdministrative = fs.readFileSync(path.join(__dirname, 'updatePatientAdministrative.gql'), 'utf8');
-module.exports.deletePatientEmail = fs.readFileSync(path.join(__dirname, 'deletePatientEmail.gql'), 'utf8');
 module.exports.updateEthnicity = fs.readFileSync(path.join(__dirname, 'updateEthnicity.gql'), 'utf8');
 module.exports.addPatientRace = fs.readFileSync(path.join(__dirname, 'addPatientRace.gql'), 'utf8');
 module.exports.updatePatientRace = fs.readFileSync(path.join(__dirname, 'updatePatientRace.gql'), 'utf8');
@@ -18,9 +14,6 @@ module.exports.deletePatientName = fs.readFileSync(path.join(__dirname, 'deleteP
 module.exports.addPatientAddress = fs.readFileSync(path.join(__dirname, 'addPatientAddress.gql'), 'utf8');
 module.exports.updatePatientAddress = fs.readFileSync(path.join(__dirname, 'updatePatientAddress.gql'), 'utf8');
 module.exports.deletePatientAddress = fs.readFileSync(path.join(__dirname, 'deletePatientAddress.gql'), 'utf8');
-module.exports.addPatientPhone = fs.readFileSync(path.join(__dirname, 'addPatientPhone.gql'), 'utf8');
-module.exports.updatePatientPhone = fs.readFileSync(path.join(__dirname, 'updatePatientPhone.gql'), 'utf8');
-module.exports.deletePatientPhone = fs.readFileSync(path.join(__dirname, 'deletePatientPhone.gql'), 'utf8');
 module.exports.addPatientIdentification = fs.readFileSync(path.join(__dirname, 'addPatientIdentification.gql'), 'utf8');
 module.exports.updatePatientIdentification = fs.readFileSync(path.join(__dirname, 'updatePatientIdentification.gql'), 'utf8');
 module.exports.deletePatientIdentification = fs.readFileSync(path.join(__dirname, 'deletePatientIdentification.gql'), 'utf8');

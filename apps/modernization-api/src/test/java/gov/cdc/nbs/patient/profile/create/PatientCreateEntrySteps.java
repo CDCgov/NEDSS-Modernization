@@ -1,11 +1,12 @@
 package gov.cdc.nbs.patient.profile.create;
 
-import gov.cdc.nbs.patient.profile.administrative.Administrative;
+import gov.cdc.nbs.patient.demographics.administrative.Administrative;
+import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;
 import gov.cdc.nbs.patient.profile.birth.BirthDemographic;
 import gov.cdc.nbs.patient.profile.ethnicity.EthnicityDemographic;
 import gov.cdc.nbs.patient.profile.gender.GenderDemographic;
-import gov.cdc.nbs.patient.profile.mortality.MortalityDemographic;
 import gov.cdc.nbs.patient.profile.general.GeneralInformationDemographic;
+import gov.cdc.nbs.patient.profile.mortality.MortalityDemographic;
 import gov.cdc.nbs.patient.profile.names.NameDemographic;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
@@ -19,6 +20,7 @@ public class PatientCreateEntrySteps {
   private final Active<EthnicityDemographic> activeEthnicity;
   private final Active<MortalityDemographic> activeMortalityDemographic;
   private final Active<GeneralInformationDemographic> activeGeneralInformation;
+  private final Active<PhoneDemographic> activePhoneDemographic;
   private final Active<NewPatient> input;
 
   public PatientCreateEntrySteps(
@@ -29,6 +31,7 @@ public class PatientCreateEntrySteps {
       final Active<EthnicityDemographic> activeEthnicity,
       final Active<MortalityDemographic> activeMortalityDemographic,
       final Active<GeneralInformationDemographic> activeGeneralInformation,
+      final Active<PhoneDemographic> activePhoneDemographic,
       final Active<NewPatient> input
   ) {
     this.activeAdministrative = activeAdministrative;
@@ -38,6 +41,7 @@ public class PatientCreateEntrySteps {
     this.activeName = activeName;
     this.activeEthnicity = activeEthnicity;
     this.activeGeneralInformation = activeGeneralInformation;
+    this.activePhoneDemographic = activePhoneDemographic;
     this.input = input;
   }
 
@@ -57,6 +61,12 @@ public class PatientCreateEntrySteps {
   public void i_add_the_current_name() {
     this.activeName.maybeActive().ifPresent(
         name -> this.input.active(current -> current.withName(name)));
+  }
+
+  @Given("the phone is included with the extended patient data")
+  public void includePhone() {
+    this.activePhoneDemographic.maybeActive().ifPresent(
+        demographic -> this.input.active(current -> current.withPhoneEmail(demographic)));
   }
 
   @Given("the birth demographics are included in the extended patient data")

@@ -1,89 +1,3 @@
-type CodedValue {
-    value: String!
-    name: String!
-}
-
-type GroupedCodedValue {
-    value: String!
-    name: String!
-    group: String!
-}
-
-type StateCodedValue {
-    value: ID!
-    name: String!
-    abbreviation: String!
-}
-
-extend type Query {
-    maritalStatuses: [CodedValue!]!
-    primaryOccupations: [CodedValue!]!
-    educationLevels: [CodedValue!]!
-    primaryLanguages: [CodedValue!]!
-    raceCategories: [CodedValue!]!
-    detailedRaces(category: String): [GroupedCodedValue!]!
-    ethnicGroups: [CodedValue!]!
-    ethnicityUnknownReasons: [CodedValue!]!
-    detailedEthnicities: [CodedValue!]!
-    genders: [CodedValue!]!
-    genderUnknownReasons: [CodedValue!]!
-    preferredGenders: [CodedValue!]!
-    countries: [CodedValue!]!
-    states: [StateCodedValue!]!
-    counties(state: String): [GroupedCodedValue!]!
-    nameTypes: [CodedValue!]!
-    prefixes: [CodedValue!]!
-    suffixes: [CodedValue!]!
-    degrees: [CodedValue!]!
-    addressUses: [CodedValue!]!
-    addressTypes: [CodedValue!]!
-    phoneUses: [CodedValue!]!
-    phoneTypes: [CodedValue!]!
-    identificationTypes: [CodedValue!]!
-    assigningAuthorities: [CodedValue!]!
-}
-extend type Query {
-    findAllConditionCodes(page: Page): [ConditionCode]!
-}
-
-type ConditionCode {
-    id: String!
-    conditionDescTxt: String
-}
-extend type Query {
-    findAllEthnicityValues(page: Page): EthnicityResults!
-}
-
-type EthnicityResults {
-    content: [Ethnicity]!
-    total: Int!
-}
-
-type Ethnicity {
-    id: EthnicityId!
-    codeDescTxt: String!
-}
-
-type EthnicityId {
-    code: String!
-}
-extend type Query {
-    findAllPatientIdentificationTypes(page: Page): PatientIdentificationTypeResults!
-}
-
-type PatientIdentificationTypeResults {
-    content: [IdentificationType]!
-    total: Int!
-}
-
-type IdentificationType {
-    id: IdentificationTypeId!
-    codeDescTxt: String!
-}
-
-type IdentificationTypeId {
-    code: String!
-}
 extend type Query {
   findInvestigationsByFilter(
     filter: InvestigationFilter!
@@ -394,24 +308,6 @@ extend type Query {
 
 type ResultedTest {
   name: String!
-}
-extend type Query {
-    findAllOutbreaks(page: Page): OutbreakResults!
-}
-
-type OutbreakResults {
-    content: [Outbreak]!
-    total: Int!
-}
-
-type Outbreak {
-    id: OutbreakId!
-    codeShortDescTxt: String
-}
-
-type OutbreakId {
-    codeSetNm: String!
-    code: String!
 }
 type NamedContact {
   id: ID!
@@ -748,21 +644,6 @@ type PatientLegalName {
     suffix: String
 }
 
-type PatientAdministrative {
-    patient: ID!
-    id: ID!
-    version: Int!
-    asOf: Date!
-    comment: String
-}
-
-type PatientAdministrativeResults {
-    content: [PatientAdministrative!]!
-    total: Int!
-    number: Int!
-    size: Int!
-}
-
 type PatientNameUse {
     id: String!
     description: String!
@@ -851,38 +732,6 @@ type PatientAddress {
 
 type PatientAddressResults {
     content: [PatientAddress!]!
-    total: Int!
-    number: Int!
-    size: Int!
-}
-
-type PatientPhoneType {
-    id: String!
-    description: String!
-}
-
-type PatientPhoneUse {
-    id: String!
-    description: String!
-}
-
-type PatientPhone {
-    patient: Int!
-    id: ID!
-    version: Int!
-    asOf: Date!
-    type: PatientPhoneType
-    use: PatientPhoneUse
-    countryCode: String
-    number: String
-    extension: String
-    email: String
-    url: String
-    comment: String
-}
-
-type PatientPhoneResults {
-    content: [PatientPhone!]!
     total: Int!
     number: Int!
     size: Int!
@@ -1077,9 +926,7 @@ type PatientProfile {
     deletable: Boolean!
     summary(asOf: Date): PatientSummary
     names(page: Page): PatientNameResults!
-    administrative(page: Page): PatientAdministrativeResults!
     addresses(page: Page): PatientAddressResults!
-    phones(page: Page): PatientPhoneResults!
     identification(page: Page): PatientIdentificationResults!
     races(page: Page): PatientRaceResults!
     birth: PatientBirth
@@ -1309,25 +1156,10 @@ type PatientVaccinationResults {
 extend type Query {
     findVaccinationsForPatient(patient: ID!, page: Page): PatientVaccinationResults
 }
-type PatientDeleteSuccessful {
-    patient: Int!
-}
-
-type PatientDeleteFailed {
-    patient: Int!
-    reason: String!
-}
-
-union PatientDeleteResult = PatientDeleteSuccessful | PatientDeleteFailed
-
 type Mutation {
-    createPatient(patient: PersonInput!): PatientCreatedResponse!
-    deletePatient(patient: ID!): PatientDeleteResult!
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientGeneralChangeResult!
     updatePatientBirthAndGender(input: UpdateBirthAndGenderInput!): PatientBirthAndGenderChangeResult!
     updatePatientMortality(input: MortalityInput!): PatientMortalityChangeResult!
-    updatePatientAdministrative(input: AdministrativeInput!): PatientAdministrativeChangeResult!
-    deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     addPatientRace(input: RaceInput!): PatientRaceAddResult!
     updatePatientRace(input: RaceInput!): PatientRaceChangeSuccessful!
@@ -1338,17 +1170,9 @@ type Mutation {
     addPatientAddress(input: NewPatientAddressInput!): PatientAddressChangeResult!
     updatePatientAddress(input: UpdatePatientAddressInput!): PatientAddressChangeResult!
     deletePatientAddress(input: DeletePatientAddressInput): PatientAddressChangeResult!
-    addPatientPhone(input: NewPatientPhoneInput!): PatientPhoneChangeResult!
-    updatePatientPhone(input: UpdatePatientPhoneInput!): PatientPhoneChangeResult!
-    deletePatientPhone(input: DeletePatientPhoneInput): PatientPhoneChangeResult!
     addPatientIdentification(input: NewPatientIdentificationInput!): PatientIdentificationChangeResult!
     updatePatientIdentification(input: UpdatePatientIdentificationInput!): PatientIdentificationChangeResult!
     deletePatientIdentification(input: DeletePatientIdentificationInput): PatientIdentificationChangeResult!
-}
-
-type PatientCreatedResponse {
-    id: Int!
-    shortId: Int!
 }
 
 type PatientUpdateResponse {
@@ -1379,57 +1203,6 @@ enum NameUseCd {
     P # Name of Partner/Spouse
     R # Religious
     U
-}
-
-input NewPatientName {
-    first: String
-    middle: String
-    last: String
-    suffix: Suffix
-    use: NameUseCd!
-}
-
-input NewPatientAddress {
-    streetAddress1: String
-    streetAddress2: String
-    city: String
-    state: String
-    county: String
-    country: String
-    zip: String
-    censusTract: String
-}
-
-input NewPatientPhoneNumber {
-    number: String!
-    extension: String
-    type: String!
-    use: String!
-}
-
-input NewPatientIdentification {
-    value: String!
-    type: String!
-    authority: String
-}
-
-input PersonInput {
-    names: [NewPatientName]
-    dateOfBirth: Date
-    birthGender: Gender
-    currentGender: Gender
-    deceased: Deceased
-    deceasedTime: Date
-    maritalStatus: String
-    addresses: [NewPatientAddress!]
-    phoneNumbers: [NewPatientPhoneNumber!]
-    emailAddresses: [String]
-    identifications: [NewPatientIdentification!]
-    ethnicity: String
-    races: [String]
-    asOf: Date
-    comments: String
-    stateHIVCase: String
 }
 
 input GeneralInfoInput {
@@ -1698,23 +1471,6 @@ type ProgramAreaCode {
   codeSetNm: String
   codeSeq: Int
 }
-extend type Query {
-    findAllRaceValues(page: Page): RaceResults!
-}
-
-type RaceResults {
-    content: [Race]!
-    total: Int!
-}
-
-type Race {
-    id: RaceId!
-    codeDescTxt: String!
-}
-
-type RaceId {
-    code: String!
-}
 scalar Date
 scalar DateTime
 
@@ -1780,20 +1536,4 @@ enum PregnancyStatus {
   YES
   NO
   UNKNOWN
-}
-extend type Query {
-    findAllUsers(page: Page): UserResults!
-}
-
-type UserResults {
-    content: [User]!
-    total: Int!
-}
-
-type User {
-    nedssEntryId: ID!
-    userId: String!
-    userFirstNm: String!
-    userLastNm: String!
-    recordStatusCd: RecordStatus
 }

@@ -7,8 +7,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class WebInteractionSteps {
 
@@ -50,5 +49,11 @@ public class WebInteractionSteps {
     this.activeAction.active()
         .andExpect(status().isFound())
         .andExpect(header().string("Location", "/nbs/timeout"));
+  }
+
+  @Then("no values are returned")
+  public void emptyList() throws Exception {
+    this.activeAction.active()
+        .andExpect(jsonPath("$").isEmpty());
   }
 }

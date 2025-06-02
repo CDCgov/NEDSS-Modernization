@@ -1,6 +1,0 @@
-mutation updatePatientPhone($input: UpdatePatientPhoneInput!){
-    updatePatientPhone(input: $input){
-        patient
-        id
-    }
-}

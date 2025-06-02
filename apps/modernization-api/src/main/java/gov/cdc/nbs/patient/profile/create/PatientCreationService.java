@@ -8,6 +8,7 @@ import gov.cdc.nbs.patient.PatientIdentifierGenerator;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
+import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.ethnicity.EthnicityDemographic;
 import jakarta.persistence.EntityManager;
@@ -17,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Collection;
 
-import static gov.cdc.nbs.patient.profile.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
+import static gov.cdc.nbs.patient.demographics.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
+import static gov.cdc.nbs.patient.demographics.phone.PhoneDemographicPatientCommandMapper.asAddPhone;
 import static gov.cdc.nbs.patient.profile.birth.BirthDemographicPatientCommandMapper.asUpdateBirth;
 import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asAddDetailedEthnicity;
 import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;
@@ -35,6 +37,7 @@ class PatientCreationService {
   private final SoundexResolver soudexResolver;
   private final PatientIdentifierGenerator patientIdentifierGenerator;
   private final AddressIdentifierGenerator addressIdentifierGenerator;
+  private final PhoneIdentifierGenerator phoneIdentifierGenerator;
   private final PermissionScopeResolver permissionScopeResolver;
   private final EntityManager entityManager;
 
@@ -42,12 +45,14 @@ class PatientCreationService {
       final SoundexResolver soudexResolver,
       final PatientIdentifierGenerator patientIdentifierGenerator,
       final AddressIdentifierGenerator addressIdentifierGenerator,
+      final PhoneIdentifierGenerator phoneIdentifierGenerator,
       final PermissionScopeResolver permissionScopeResolver,
       final EntityManager entityManager
   ) {
     this.soudexResolver = soudexResolver;
     this.patientIdentifierGenerator = patientIdentifierGenerator;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
+    this.phoneIdentifierGenerator = phoneIdentifierGenerator;
     this.permissionScopeResolver = permissionScopeResolver;
     this.entityManager = entityManager;
   }
@@ -116,6 +121,11 @@ class PatientCreationService {
         .stream()
         .map(demographic -> asAddRace(identifier.id(), context, demographic))
         .forEach(patient::add);
+
+    newPatient.phoneEmails()
+        .stream()
+        .map(phone -> asAddPhone(identifier.id(), context, phone))
+        .forEach(command -> patient.add(command, phoneIdentifierGenerator));
 
     this.entityManager.persist(patient);
 

@@ -10,7 +10,7 @@ import { Column, DataTable } from 'design-system/table';
 import { Status, usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
 import { Shown } from 'conditional-render';
-import { Direction, useSorting } from 'sorting';
+import { Direction, useSorting } from 'libs/sorting';
 import { useNavigate } from 'react-router';
 import styles from './matches-requiring-review.module.scss';
 
@@ -19,24 +19,24 @@ const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
 export const MatchesRequiringReviewTable = () => {
     const nav = useNavigate();
     const { loading, response, fetchMatchesRequiringReview } = useMatchesRequiringReview();
-    const { sorting, sortBy } = useSorting();
+    const sorting = useSorting();
     const { page, ready, request, resize, firstPage } = usePagination();
     // required to prevent toggling through date identified sort triggering default sort
     const [previousSort, setPreviousSort] = useState<string | undefined>();
 
     useEffect(() => {
-        if (sorting === undefined) {
+        if (sorting.sorting === undefined) {
             if (previousSort === 'identified,desc') {
-                sortBy('identified', Direction.Ascending);
+                sorting.sortBy('identified', Direction.Ascending);
             } else {
-                sortBy('identified', Direction.Descending);
+                sorting.sortBy('identified', Direction.Descending);
             }
         } else if (page.current === 1) {
-            fetchMatchesRequiringReview(page.current - 1, page.pageSize, sorting);
+            fetchMatchesRequiringReview(page.current - 1, page.pageSize, sorting.sorting);
         } else {
             firstPage();
         }
-        setPreviousSort(sorting);
+        setPreviousSort(sorting.sorting);
     }, [sorting]);
 
     useEffect(() => {
@@ -45,7 +45,7 @@ export const MatchesRequiringReviewTable = () => {
 
     useEffect(() => {
         if (page.status === Status.Requested) {
-            fetchMatchesRequiringReview(page.current - 1, page.pageSize, sorting);
+            fetchMatchesRequiringReview(page.current - 1, page.pageSize, sorting.sorting);
         }
     }, [page.status]);
 
@@ -114,6 +114,7 @@ export const MatchesRequiringReviewTable = () => {
                     columns={columns}
                     data={response.matches}
                     className={styles.dataTable}
+                    features={{ sorting }}
                 />
             </div>
             <Shown when={page.total > 0}>

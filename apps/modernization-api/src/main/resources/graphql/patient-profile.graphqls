@@ -50,21 +50,6 @@ type PatientLegalName {
     suffix: String
 }
 
-type PatientAdministrative {
-    patient: ID!
-    id: ID!
-    version: Int!
-    asOf: Date!
-    comment: String
-}
-
-type PatientAdministrativeResults {
-    content: [PatientAdministrative!]!
-    total: Int!
-    number: Int!
-    size: Int!
-}
-
 type PatientNameUse {
     id: String!
     description: String!
@@ -153,38 +138,6 @@ type PatientAddress {
 
 type PatientAddressResults {
     content: [PatientAddress!]!
-    total: Int!
-    number: Int!
-    size: Int!
-}
-
-type PatientPhoneType {
-    id: String!
-    description: String!
-}
-
-type PatientPhoneUse {
-    id: String!
-    description: String!
-}
-
-type PatientPhone {
-    patient: Int!
-    id: ID!
-    version: Int!
-    asOf: Date!
-    type: PatientPhoneType
-    use: PatientPhoneUse
-    countryCode: String
-    number: String
-    extension: String
-    email: String
-    url: String
-    comment: String
-}
-
-type PatientPhoneResults {
-    content: [PatientPhone!]!
     total: Int!
     number: Int!
     size: Int!
@@ -379,9 +332,7 @@ type PatientProfile {
     deletable: Boolean!
     summary(asOf: Date): PatientSummary
     names(page: Page): PatientNameResults!
-    administrative(page: Page): PatientAdministrativeResults!
     addresses(page: Page): PatientAddressResults!
-    phones(page: Page): PatientPhoneResults!
     identification(page: Page): PatientIdentificationResults!
     races(page: Page): PatientRaceResults!
     birth: PatientBirth

@@ -7,6 +7,7 @@ import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
+import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
@@ -38,12 +39,13 @@ public class PatientMother {
   private final SequentialIdentityGenerator idGenerator;
   private final PatientLocalIdentifierGenerator localIdentifierGenerator;
   private final AddressIdentifierGenerator addressIdentifierGenerator;
+  private final PhoneIdentifierGenerator phoneIdentifierGenerator;
   private final PatientShortIdentifierResolver shortIdentifierResolver;
   private final EntityManager entityManager;
   private final Available<PatientIdentifier> available;
   private final Active<PatientIdentifier> active;
   private final PatientCleaner cleaner;
-  private final JdbcClient jdbcClient;
+  private final JdbcClient client;
   private final SoundexResolver soundexResolver;
 
   PatientMother(
@@ -51,23 +53,25 @@ public class PatientMother {
       final SequentialIdentityGenerator idGenerator,
       final PatientLocalIdentifierGenerator localIdentifierGenerator,
       final AddressIdentifierGenerator addressIdentifierGenerator,
+      final PhoneIdentifierGenerator phoneIdentifierGenerator,
       final PatientShortIdentifierResolver shortIdentifierResolver,
       final EntityManager entityManager,
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
       final PatientCleaner cleaner,
-      final JdbcClient jdbcClient,
+      final JdbcClient client,
       final SoundexResolver soundexResolver) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.localIdentifierGenerator = localIdentifierGenerator;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
+    this.phoneIdentifierGenerator = phoneIdentifierGenerator;
     this.shortIdentifierResolver = shortIdentifierResolver;
     this.entityManager = entityManager;
     this.available = available;
     this.active = active;
     this.cleaner = cleaner;
-    this.jdbcClient = jdbcClient;
+    this.client = client;
     this.soundexResolver = soundexResolver;
     this.faker = new Faker(Locale.of("en-us"));
   }
@@ -412,7 +416,6 @@ public class PatientMother {
     patient.add(
         new PatientCommand.AddPhone(
             identifier.id(),
-            idGenerator.next(),
             RandomUtil.oneFrom("AN", "BP", "CP", "FAX", "PH"),
             RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
             RandomUtil.dateInPast(),
@@ -423,7 +426,10 @@ public class PatientMother {
             null,
             RandomUtil.getRandomString(),
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        ),
+        phoneIdentifierGenerator
+    );
   }
 
   public void withPhone(
@@ -452,7 +458,6 @@ public class PatientMother {
     patient.add(
         new PatientCommand.AddPhone(
             identifier.id(),
-            idGenerator.next(),
             type,
             use,
             RandomUtil.dateInPast(),
@@ -463,7 +468,10 @@ public class PatientMother {
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        ),
+        phoneIdentifierGenerator
+    );
   }
 
   public void withPhone(
@@ -479,7 +487,6 @@ public class PatientMother {
     patient.add(
         new PatientCommand.AddPhone(
             identifier.id(),
-            idGenerator.next(),
             type,
             use,
             date,
@@ -490,7 +497,10 @@ public class PatientMother {
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        ),
+        phoneIdentifierGenerator
+    );
   }
 
   public void withEmail(final PatientIdentifier identifier) {
@@ -517,7 +527,6 @@ public class PatientMother {
     patient.add(
         new PatientCommand.AddPhone(
             identifier.id(),
-            idGenerator.next(),
             type,
             use,
             asOf,
@@ -528,7 +537,10 @@ public class PatientMother {
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        ),
+        phoneIdentifierGenerator
+    );
   }
 
   public void withEmail(
@@ -721,9 +733,23 @@ public class PatientMother {
   }
 
   public void withStateHIVCase(final PatientIdentifier identifier, final String value) {
-    jdbcClient.sql("update person set ehars_id = ?, as_of_date_general = GETDATE() where person_uid = ?")
+    client.sql("update person set ehars_id = ?, as_of_date_general = GETDATE() where person_uid = ?")
         .params(value, identifier.id())
         .update();
 
+  }
+
+  public void withAsOf(final PatientIdentifier identifier, final LocalDate value) {
+    client.sql("update person set as_of_date_admin = ? where person_uid = ?")
+        .param(value)
+        .param(identifier.id())
+        .update();
+  }
+
+  public void withComment(final PatientIdentifier identifier, final String value) {
+    client.sql("update person set [description] = ? where person_uid = ?")
+        .param(value)
+        .param(identifier.id())
+        .update();
   }
 }

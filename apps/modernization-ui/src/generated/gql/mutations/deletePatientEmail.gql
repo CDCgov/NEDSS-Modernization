@@ -1,5 +1,0 @@
-mutation deletePatientEmail($patientId: Int!, $personSeqNum: Int!){
-    deletePatientEmail(patientId: $patientId, personSeqNum: $personSeqNum){
-        patientId
-    }
-}

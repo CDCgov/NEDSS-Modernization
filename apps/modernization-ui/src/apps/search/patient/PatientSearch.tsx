@@ -12,7 +12,7 @@ import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
 import { PatientSearchActions } from './PatientSearchActions';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { usePatientSearch } from './usePatientSearch';
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 import { useComponentSizing } from 'design-system/sizing';
 
 const PatientSearch = () => {

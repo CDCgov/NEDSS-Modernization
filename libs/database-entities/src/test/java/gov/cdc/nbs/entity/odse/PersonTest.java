@@ -705,83 +705,6 @@ class PersonTest {
 
   }
 
-
-  @Test
-  void should_add_minimal_email_address() {
-
-    Person actual = new Person(117L, "local-id-value");
-
-    actual.add(
-        new PatientCommand.AddEmailAddress(
-            117L,
-            5333L,
-            LocalDate.parse("2017-05-16"),
-            "AnEmail@email.com",
-            131L,
-            LocalDateTime.parse("2020-03-03T10:15:30.00")
-        )
-    );
-
-    assertThat(actual.emailAddresses())
-        .satisfiesExactly(
-            actualEmailLocator -> assertThat(actualEmailLocator)
-                .returns(5333L, p -> p.getId().getLocatorUid())
-                .returns("NET", EntityLocatorParticipation::getCd)
-                .returns("H", EntityLocatorParticipation::getUseCd)
-                .returns(LocalDate.parse("2017-05-16"), EntityLocatorParticipation::getAsOfDate)
-                .extracting(TeleEntityLocatorParticipation::getLocator)
-                .returns(5333L, TeleLocator::getId)
-                .returns("AnEmail@email.com", TeleLocator::getEmailAddress)
-
-        );
-
-  }
-
-  @Test
-  void should_add_minimal_phone_number() {
-
-    Person actual = new Person(117L, "local-id-value");
-
-    actual.add(
-        new PatientCommand.AddPhoneNumber(
-            117L,
-            5347L,
-            LocalDate.parse("2017-05-16"),
-            "CP",
-            "MC",
-            "Phone Number",
-            "Extension",
-            131L,
-            LocalDateTime.parse("2020-03-03T10:15:30")
-        )
-    );
-
-    assertThat(actual).satisfies(
-        added -> assertThat(added.audit())
-            .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
-    );
-
-    assertThat(actual.phoneNumbers())
-        .satisfiesExactly(
-            actualPhoneLocator -> assertThat(actualPhoneLocator)
-                .returns(5347L, p -> p.getId().getLocatorUid())
-                .returns(LocalDate.parse("2017-05-16"), EntityLocatorParticipation::getAsOfDate)
-                .returns("CP", EntityLocatorParticipation::getCd)
-                .returns("MC", EntityLocatorParticipation::getUseCd)
-                .extracting(TeleEntityLocatorParticipation::getLocator)
-                .returns(5347L, TeleLocator::getId)
-                .returns("Phone Number", TeleLocator::getPhoneNbrTxt)
-                .returns("Extension", TeleLocator::getExtensionTxt)
-                .satisfies(
-                    added -> assertThat(added.audit())
-                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
-                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
-                )
-
-        );
-
-  }
-
   @Test
   void should_add_phone() {
     Person patient = new Person(117L, "local-id-value");
@@ -789,7 +712,6 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddPhone(
             117L,
-            5347L,
             "type-value",
             "use-value",
             LocalDate.parse("2023-11-27"),
@@ -801,7 +723,8 @@ class PersonTest {
             "comment",
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30")
-        )
+        ),
+        () -> 5347L
     );
 
     assertThat(patient).satisfies(
@@ -844,7 +767,6 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddPhone(
             117L,
-            5347L,
             "type-value",
             "use-value",
             LocalDate.parse("2023-11-27"),
@@ -856,7 +778,8 @@ class PersonTest {
             "comment",
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30")
-        )
+        ),
+        () -> 5347L
     );
 
     patient.update(
@@ -919,7 +842,6 @@ class PersonTest {
     patient.add(
         new PatientCommand.AddPhone(
             117L,
-            5347L,
             "type-value",
             "use-value",
             LocalDate.parse("2023-11-27"),
@@ -931,13 +853,13 @@ class PersonTest {
             "comment",
             131L,
             LocalDateTime.parse("2023-03-03T10:15:30")
-        )
+        ),
+        () -> 5347L
     );
 
     patient.add(
         new PatientCommand.AddPhone(
             117L,
-            1567L,
             "type-value",
             "use-value",
             LocalDate.parse("2023-11-27"),
@@ -949,7 +871,8 @@ class PersonTest {
             "comment",
             171L,
             LocalDateTime.parse("2023-03-03T10:15:30")
-        )
+        ),
+        () -> 1567L
     );
 
     patient.delete(

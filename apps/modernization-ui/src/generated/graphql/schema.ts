@@ -58,18 +58,6 @@ export type CodedResult = {
   name: Scalars['String']['output'];
 };
 
-export type CodedValue = {
-  __typename?: 'CodedValue';
-  name: Scalars['String']['output'];
-  value: Scalars['String']['output'];
-};
-
-export type ConditionCode = {
-  __typename?: 'ConditionCode';
-  conditionDescTxt?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
-};
-
 export type ContactsNamedByPatientResults = {
   __typename?: 'ContactsNamedByPatientResults';
   content: Array<Maybe<NamedByPatient>>;
@@ -161,29 +149,12 @@ export enum EntryMethod {
   Manual = 'MANUAL'
 }
 
-export type Ethnicity = {
-  __typename?: 'Ethnicity';
-  codeDescTxt: Scalars['String']['output'];
-  id: EthnicityId;
-};
-
-export type EthnicityId = {
-  __typename?: 'EthnicityId';
-  code: Scalars['String']['output'];
-};
-
 export type EthnicityInput = {
   asOf: Scalars['Date']['input'];
   detailed?: InputMaybe<Array<Scalars['String']['input']>>;
   ethnicGroup?: InputMaybe<Scalars['String']['input']>;
   patient: Scalars['String']['input'];
   unknownReason?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type EthnicityResults = {
-  __typename?: 'EthnicityResults';
-  content: Array<Maybe<Ethnicity>>;
-  total: Scalars['Int']['output'];
 };
 
 export type EventId = {
@@ -234,28 +205,10 @@ export type GeneralInfoInput = {
   stateHIVCase?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type GroupedCodedValue = {
-  __typename?: 'GroupedCodedValue';
-  group: Scalars['String']['output'];
-  name: Scalars['String']['output'];
-  value: Scalars['String']['output'];
-};
-
 export type IdentificationCriteria = {
   assigningAuthority?: InputMaybe<Scalars['String']['input']>;
   identificationNumber?: InputMaybe<Scalars['String']['input']>;
   identificationType?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type IdentificationType = {
-  __typename?: 'IdentificationType';
-  codeDescTxt: Scalars['String']['output'];
-  id: IdentificationTypeId;
-};
-
-export type IdentificationTypeId = {
-  __typename?: 'IdentificationTypeId';
-  code: Scalars['String']['output'];
 };
 
 export type Investigation = {
@@ -507,25 +460,18 @@ export type Mutation = {
   addPatientAddress: PatientAddressChangeResult;
   addPatientIdentification: PatientIdentificationChangeResult;
   addPatientName: PatientNameChangeResult;
-  addPatientPhone: PatientPhoneChangeResult;
   addPatientRace: PatientRaceAddResult;
-  createPatient: PatientCreatedResponse;
-  deletePatient: PatientDeleteResult;
   deletePatientAddress: PatientAddressChangeResult;
-  deletePatientEmail: PatientUpdateResponse;
   deletePatientIdentification: PatientIdentificationChangeResult;
   deletePatientName: PatientNameChangeResult;
-  deletePatientPhone: PatientPhoneChangeResult;
   deletePatientRace: PatientRaceChangeSuccessful;
   updateEthnicity: PatientEthnicityChangeResult;
   updatePatientAddress: PatientAddressChangeResult;
-  updatePatientAdministrative: PatientAdministrativeChangeResult;
   updatePatientBirthAndGender: PatientBirthAndGenderChangeResult;
   updatePatientGeneralInfo: PatientGeneralChangeResult;
   updatePatientIdentification: PatientIdentificationChangeResult;
   updatePatientMortality: PatientMortalityChangeResult;
   updatePatientName: PatientNameChangeResult;
-  updatePatientPhone: PatientPhoneChangeResult;
   updatePatientRace: PatientRaceChangeSuccessful;
 };
 
@@ -545,34 +491,13 @@ export type MutationAddPatientNameArgs = {
 };
 
 
-export type MutationAddPatientPhoneArgs = {
-  input: NewPatientPhoneInput;
-};
-
-
 export type MutationAddPatientRaceArgs = {
   input: RaceInput;
 };
 
 
-export type MutationCreatePatientArgs = {
-  patient: PersonInput;
-};
-
-
-export type MutationDeletePatientArgs = {
-  patient: Scalars['ID']['input'];
-};
-
-
 export type MutationDeletePatientAddressArgs = {
   input?: InputMaybe<DeletePatientAddressInput>;
-};
-
-
-export type MutationDeletePatientEmailArgs = {
-  patientId: Scalars['Int']['input'];
-  personSeqNum: Scalars['Int']['input'];
 };
 
 
@@ -583,11 +508,6 @@ export type MutationDeletePatientIdentificationArgs = {
 
 export type MutationDeletePatientNameArgs = {
   input: DeletePatientNameInput;
-};
-
-
-export type MutationDeletePatientPhoneArgs = {
-  input?: InputMaybe<DeletePatientPhoneInput>;
 };
 
 
@@ -603,11 +523,6 @@ export type MutationUpdateEthnicityArgs = {
 
 export type MutationUpdatePatientAddressArgs = {
   input: UpdatePatientAddressInput;
-};
-
-
-export type MutationUpdatePatientAdministrativeArgs = {
-  input: AdministrativeInput;
 };
 
 
@@ -633,11 +548,6 @@ export type MutationUpdatePatientMortalityArgs = {
 
 export type MutationUpdatePatientNameArgs = {
   input: UpdatePatientNameInput;
-};
-
-
-export type MutationUpdatePatientPhoneArgs = {
-  input: UpdatePatientPhoneInput;
 };
 
 
@@ -703,17 +613,6 @@ export type NamedContact = {
   name: Scalars['String']['output'];
 };
 
-export type NewPatientAddress = {
-  censusTract?: InputMaybe<Scalars['String']['input']>;
-  city?: InputMaybe<Scalars['String']['input']>;
-  country?: InputMaybe<Scalars['String']['input']>;
-  county?: InputMaybe<Scalars['String']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
-  streetAddress1?: InputMaybe<Scalars['String']['input']>;
-  streetAddress2?: InputMaybe<Scalars['String']['input']>;
-  zip?: InputMaybe<Scalars['String']['input']>;
-};
-
 export type NewPatientAddressInput = {
   address1?: InputMaybe<Scalars['String']['input']>;
   address2?: InputMaybe<Scalars['String']['input']>;
@@ -730,26 +629,12 @@ export type NewPatientAddressInput = {
   zipcode?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type NewPatientIdentification = {
-  authority?: InputMaybe<Scalars['String']['input']>;
-  type: Scalars['String']['input'];
-  value: Scalars['String']['input'];
-};
-
 export type NewPatientIdentificationInput = {
   asOf: Scalars['Date']['input'];
   authority?: InputMaybe<Scalars['String']['input']>;
   patient: Scalars['Int']['input'];
   type: Scalars['String']['input'];
   value: Scalars['String']['input'];
-};
-
-export type NewPatientName = {
-  first?: InputMaybe<Scalars['String']['input']>;
-  last?: InputMaybe<Scalars['String']['input']>;
-  middle?: InputMaybe<Scalars['String']['input']>;
-  suffix?: InputMaybe<Suffix>;
-  use: NameUseCd;
 };
 
 export type NewPatientNameInput = {
@@ -776,13 +661,6 @@ export type NewPatientPhoneInput = {
   patient: Scalars['Int']['input'];
   type: Scalars['String']['input'];
   url?: InputMaybe<Scalars['String']['input']>;
-  use: Scalars['String']['input'];
-};
-
-export type NewPatientPhoneNumber = {
-  extension?: InputMaybe<Scalars['String']['input']>;
-  number: Scalars['String']['input'];
-  type: Scalars['String']['input'];
   use: Scalars['String']['input'];
 };
 
@@ -825,24 +703,6 @@ export type OrganizationParticipation2 = {
   __typename?: 'OrganizationParticipation2';
   name?: Maybe<Scalars['String']['output']>;
   typeCd?: Maybe<Scalars['String']['output']>;
-};
-
-export type Outbreak = {
-  __typename?: 'Outbreak';
-  codeShortDescTxt?: Maybe<Scalars['String']['output']>;
-  id: OutbreakId;
-};
-
-export type OutbreakId = {
-  __typename?: 'OutbreakId';
-  code: Scalars['String']['output'];
-  codeSetNm: Scalars['String']['output'];
-};
-
-export type OutbreakResults = {
-  __typename?: 'OutbreakResults';
-  content: Array<Maybe<Outbreak>>;
-  total: Scalars['Int']['output'];
 };
 
 export type Page = {
@@ -895,26 +755,9 @@ export type PatientAddressUse = {
   id: Scalars['String']['output'];
 };
 
-export type PatientAdministrative = {
-  __typename?: 'PatientAdministrative';
-  asOf: Scalars['Date']['output'];
-  comment?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
-  patient: Scalars['ID']['output'];
-  version: Scalars['Int']['output'];
-};
-
 export type PatientAdministrativeChangeResult = {
   __typename?: 'PatientAdministrativeChangeResult';
   patient: Scalars['Int']['output'];
-};
-
-export type PatientAdministrativeResults = {
-  __typename?: 'PatientAdministrativeResults';
-  content: Array<PatientAdministrative>;
-  number: Scalars['Int']['output'];
-  size: Scalars['Int']['output'];
-  total: Scalars['Int']['output'];
 };
 
 export type PatientBirth = {
@@ -955,25 +798,6 @@ export type PatientCounty = {
   __typename?: 'PatientCounty';
   description: Scalars['String']['output'];
   id: Scalars['String']['output'];
-};
-
-export type PatientCreatedResponse = {
-  __typename?: 'PatientCreatedResponse';
-  id: Scalars['Int']['output'];
-  shortId: Scalars['Int']['output'];
-};
-
-export type PatientDeleteFailed = {
-  __typename?: 'PatientDeleteFailed';
-  patient: Scalars['Int']['output'];
-  reason: Scalars['String']['output'];
-};
-
-export type PatientDeleteResult = PatientDeleteFailed | PatientDeleteSuccessful;
-
-export type PatientDeleteSuccessful = {
-  __typename?: 'PatientDeleteSuccessful';
-  patient: Scalars['Int']['output'];
 };
 
 export type PatientDetailedEthnicity = {
@@ -1130,12 +954,6 @@ export type PatientIdentificationType = {
   __typename?: 'PatientIdentificationType';
   description: Scalars['String']['output'];
   id: Scalars['String']['output'];
-};
-
-export type PatientIdentificationTypeResults = {
-  __typename?: 'PatientIdentificationTypeResults';
-  content: Array<Maybe<IdentificationType>>;
-  total: Scalars['Int']['output'];
 };
 
 export type PatientIndicatorCodedValue = {
@@ -1354,46 +1172,10 @@ export type PatientOccupation = {
   id: Scalars['String']['output'];
 };
 
-export type PatientPhone = {
-  __typename?: 'PatientPhone';
-  asOf: Scalars['Date']['output'];
-  comment?: Maybe<Scalars['String']['output']>;
-  countryCode?: Maybe<Scalars['String']['output']>;
-  email?: Maybe<Scalars['String']['output']>;
-  extension?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
-  number?: Maybe<Scalars['String']['output']>;
-  patient: Scalars['Int']['output'];
-  type?: Maybe<PatientPhoneType>;
-  url?: Maybe<Scalars['String']['output']>;
-  use?: Maybe<PatientPhoneUse>;
-  version: Scalars['Int']['output'];
-};
-
 export type PatientPhoneChangeResult = {
   __typename?: 'PatientPhoneChangeResult';
   id: Scalars['Int']['output'];
   patient: Scalars['Int']['output'];
-};
-
-export type PatientPhoneResults = {
-  __typename?: 'PatientPhoneResults';
-  content: Array<PatientPhone>;
-  number: Scalars['Int']['output'];
-  size: Scalars['Int']['output'];
-  total: Scalars['Int']['output'];
-};
-
-export type PatientPhoneType = {
-  __typename?: 'PatientPhoneType';
-  description: Scalars['String']['output'];
-  id: Scalars['String']['output'];
-};
-
-export type PatientPhoneUse = {
-  __typename?: 'PatientPhoneUse';
-  description: Scalars['String']['output'];
-  id: Scalars['String']['output'];
 };
 
 export type PatientPreferredGender = {
@@ -1411,7 +1193,6 @@ export type PatientPrimaryLanguage = {
 export type PatientProfile = {
   __typename?: 'PatientProfile';
   addresses: PatientAddressResults;
-  administrative: PatientAdministrativeResults;
   birth?: Maybe<PatientBirth>;
   deletable: Scalars['Boolean']['output'];
   ethnicity?: Maybe<PatientEthnicity>;
@@ -1422,7 +1203,6 @@ export type PatientProfile = {
   local: Scalars['String']['output'];
   mortality?: Maybe<PatientMortality>;
   names: PatientNameResults;
-  phones: PatientPhoneResults;
   races: PatientRaceResults;
   shortId: Scalars['Int']['output'];
   status: Scalars['String']['output'];
@@ -1436,22 +1216,12 @@ export type PatientProfileAddressesArgs = {
 };
 
 
-export type PatientProfileAdministrativeArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
 export type PatientProfileIdentificationArgs = {
   page?: InputMaybe<Page>;
 };
 
 
 export type PatientProfileNamesArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
-export type PatientProfilePhonesArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -1710,25 +1480,6 @@ export type PersonFilter = {
   zip?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type PersonInput = {
-  addresses?: InputMaybe<Array<NewPatientAddress>>;
-  asOf?: InputMaybe<Scalars['Date']['input']>;
-  birthGender?: InputMaybe<Gender>;
-  comments?: InputMaybe<Scalars['String']['input']>;
-  currentGender?: InputMaybe<Gender>;
-  dateOfBirth?: InputMaybe<Scalars['Date']['input']>;
-  deceased?: InputMaybe<Deceased>;
-  deceasedTime?: InputMaybe<Scalars['Date']['input']>;
-  emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  ethnicity?: InputMaybe<Scalars['String']['input']>;
-  identifications?: InputMaybe<Array<NewPatientIdentification>>;
-  maritalStatus?: InputMaybe<Scalars['String']['input']>;
-  names?: InputMaybe<Array<InputMaybe<NewPatientName>>>;
-  phoneNumbers?: InputMaybe<Array<NewPatientPhoneNumber>>;
-  races?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  stateHIVCase?: InputMaybe<Scalars['String']['input']>;
-};
-
 export type PersonParticipation2 = {
   __typename?: 'PersonParticipation2';
   firstName?: Maybe<Scalars['String']['output']>;
@@ -1777,25 +1528,8 @@ export enum ProviderType {
 
 export type Query = {
   __typename?: 'Query';
-  addressTypes: Array<CodedValue>;
-  addressUses: Array<CodedValue>;
-  assigningAuthorities: Array<CodedValue>;
-  counties: Array<GroupedCodedValue>;
-  countries: Array<CodedValue>;
-  degrees: Array<CodedValue>;
-  detailedEthnicities: Array<CodedValue>;
-  detailedRaces: Array<GroupedCodedValue>;
-  educationLevels: Array<CodedValue>;
-  ethnicGroups: Array<CodedValue>;
-  ethnicityUnknownReasons: Array<CodedValue>;
-  findAllConditionCodes: Array<Maybe<ConditionCode>>;
-  findAllEthnicityValues: EthnicityResults;
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
-  findAllOutbreaks: OutbreakResults;
-  findAllPatientIdentificationTypes: PatientIdentificationTypeResults;
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
-  findAllRaceValues: RaceResults;
-  findAllUsers: UserResults;
   findContactsNamedByPatient?: Maybe<ContactsNamedByPatientResults>;
   findDistinctCodedResults: Array<CodedResult>;
   findDistinctResultedTest: Array<ResultedTest>;
@@ -1811,40 +1545,6 @@ export type Query = {
   findPatientsByFilter: PatientSearchResults;
   findTreatmentsForPatient?: Maybe<PatientTreatmentResults>;
   findVaccinationsForPatient?: Maybe<PatientVaccinationResults>;
-  genderUnknownReasons: Array<CodedValue>;
-  genders: Array<CodedValue>;
-  identificationTypes: Array<CodedValue>;
-  maritalStatuses: Array<CodedValue>;
-  nameTypes: Array<CodedValue>;
-  phoneTypes: Array<CodedValue>;
-  phoneUses: Array<CodedValue>;
-  preferredGenders: Array<CodedValue>;
-  prefixes: Array<CodedValue>;
-  primaryLanguages: Array<CodedValue>;
-  primaryOccupations: Array<CodedValue>;
-  raceCategories: Array<CodedValue>;
-  states: Array<StateCodedValue>;
-  suffixes: Array<CodedValue>;
-};
-
-
-export type QueryCountiesArgs = {
-  state?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryDetailedRacesArgs = {
-  category?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryFindAllConditionCodesArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindAllEthnicityValuesArgs = {
-  page?: InputMaybe<Page>;
 };
 
 
@@ -1853,27 +1553,7 @@ export type QueryFindAllJurisdictionsArgs = {
 };
 
 
-export type QueryFindAllOutbreaksArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindAllPatientIdentificationTypesArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
 export type QueryFindAllProgramAreasArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindAllRaceValuesArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindAllUsersArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -1967,28 +1647,11 @@ export type QueryFindVaccinationsForPatientArgs = {
   patient: Scalars['ID']['input'];
 };
 
-export type Race = {
-  __typename?: 'Race';
-  codeDescTxt: Scalars['String']['output'];
-  id: RaceId;
-};
-
-export type RaceId = {
-  __typename?: 'RaceId';
-  code: Scalars['String']['output'];
-};
-
 export type RaceInput = {
   asOf?: InputMaybe<Scalars['Date']['input']>;
   category: Scalars['String']['input'];
   detailed?: InputMaybe<Array<Scalars['String']['input']>>;
   patient: Scalars['Int']['input'];
-};
-
-export type RaceResults = {
-  __typename?: 'RaceResults';
-  content: Array<Maybe<Race>>;
-  total: Scalars['Int']['output'];
 };
 
 export enum RecordStatus {
@@ -2067,13 +1730,6 @@ export type SortablePage = {
   sort?: InputMaybe<Sort>;
   sortDirection?: InputMaybe<SortDirection>;
   sortField?: InputMaybe<SortField>;
-};
-
-export type StateCodedValue = {
-  __typename?: 'StateCodedValue';
-  abbreviation: Scalars['String']['output'];
-  name: Scalars['String']['output'];
-  value: Scalars['ID']['output'];
 };
 
 export enum Suffix {
@@ -2180,21 +1836,6 @@ export type UpdatePatientPhoneInput = {
   use: Scalars['String']['input'];
 };
 
-export type User = {
-  __typename?: 'User';
-  nedssEntryId: Scalars['ID']['output'];
-  recordStatusCd?: Maybe<RecordStatus>;
-  userFirstNm: Scalars['String']['output'];
-  userId: Scalars['String']['output'];
-  userLastNm: Scalars['String']['output'];
-};
-
-export type UserResults = {
-  __typename?: 'UserResults';
-  content: Array<Maybe<User>>;
-  total: Scalars['Int']['output'];
-};
-
 export enum UserType {
   External = 'EXTERNAL',
   Internal = 'INTERNAL'
@@ -2221,13 +1862,6 @@ export type AddPatientNameMutationVariables = Exact<{
 
 export type AddPatientNameMutation = { __typename?: 'Mutation', addPatientName: { __typename?: 'PatientNameChangeResult', patient: number, sequence: number } };
 
-export type AddPatientPhoneMutationVariables = Exact<{
-  input: NewPatientPhoneInput;
-}>;
-
-
-export type AddPatientPhoneMutation = { __typename?: 'Mutation', addPatientPhone: { __typename?: 'PatientPhoneChangeResult', patient: number, id: number } };
-
 export type AddPatientRaceMutationVariables = Exact<{
   input: RaceInput;
 }>;
@@ -2235,34 +1869,12 @@ export type AddPatientRaceMutationVariables = Exact<{
 
 export type AddPatientRaceMutation = { __typename?: 'Mutation', addPatientRace: { __typename: 'PatientRaceChangeFailureExistingCategory', patient: number, category: string } | { __typename: 'PatientRaceChangeSuccessful', patient: number } };
 
-export type CreatePatientMutationVariables = Exact<{
-  patient: PersonInput;
-}>;
-
-
-export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: { __typename?: 'PatientCreatedResponse', id: number, shortId: number } };
-
-export type DeletePatientMutationVariables = Exact<{
-  patient: Scalars['ID']['input'];
-}>;
-
-
-export type DeletePatientMutation = { __typename?: 'Mutation', deletePatient: { __typename: 'PatientDeleteFailed', patient: number, reason: string } | { __typename: 'PatientDeleteSuccessful', patient: number } };
-
 export type DeletePatientAddressMutationVariables = Exact<{
   input?: InputMaybe<DeletePatientAddressInput>;
 }>;
 
 
 export type DeletePatientAddressMutation = { __typename?: 'Mutation', deletePatientAddress: { __typename?: 'PatientAddressChangeResult', patient: number, id: number } };
-
-export type DeletePatientEmailMutationVariables = Exact<{
-  patientId: Scalars['Int']['input'];
-  personSeqNum: Scalars['Int']['input'];
-}>;
-
-
-export type DeletePatientEmailMutation = { __typename?: 'Mutation', deletePatientEmail: { __typename?: 'PatientUpdateResponse', patientId: string } };
 
 export type DeletePatientIdentificationMutationVariables = Exact<{
   input?: InputMaybe<DeletePatientIdentificationInput>;
@@ -2277,13 +1889,6 @@ export type DeletePatientNameMutationVariables = Exact<{
 
 
 export type DeletePatientNameMutation = { __typename?: 'Mutation', deletePatientName: { __typename?: 'PatientNameChangeResult', patient: number, sequence: number } };
-
-export type DeletePatientPhoneMutationVariables = Exact<{
-  input?: InputMaybe<DeletePatientPhoneInput>;
-}>;
-
-
-export type DeletePatientPhoneMutation = { __typename?: 'Mutation', deletePatientPhone: { __typename?: 'PatientPhoneChangeResult', patient: number, id: number } };
 
 export type DeletePatientRaceMutationVariables = Exact<{
   input: DeletePatientRace;
@@ -2305,13 +1910,6 @@ export type UpdatePatientAddressMutationVariables = Exact<{
 
 
 export type UpdatePatientAddressMutation = { __typename?: 'Mutation', updatePatientAddress: { __typename?: 'PatientAddressChangeResult', patient: number, id: number } };
-
-export type UpdatePatientAdministrativeMutationVariables = Exact<{
-  input: AdministrativeInput;
-}>;
-
-
-export type UpdatePatientAdministrativeMutation = { __typename?: 'Mutation', updatePatientAdministrative: { __typename?: 'PatientAdministrativeChangeResult', patient: number } };
 
 export type UpdatePatientBirthAndGenderMutationVariables = Exact<{
   input: UpdateBirthAndGenderInput;
@@ -2348,92 +1946,12 @@ export type UpdatePatientNameMutationVariables = Exact<{
 
 export type UpdatePatientNameMutation = { __typename?: 'Mutation', updatePatientName: { __typename?: 'PatientNameChangeResult', patient: number, sequence: number } };
 
-export type UpdatePatientPhoneMutationVariables = Exact<{
-  input: UpdatePatientPhoneInput;
-}>;
-
-
-export type UpdatePatientPhoneMutation = { __typename?: 'Mutation', updatePatientPhone: { __typename?: 'PatientPhoneChangeResult', patient: number, id: number } };
-
 export type UpdatePatientRaceMutationVariables = Exact<{
   input: RaceInput;
 }>;
 
 
 export type UpdatePatientRaceMutation = { __typename?: 'Mutation', updatePatientRace: { __typename?: 'PatientRaceChangeSuccessful', patient: number } };
-
-export type AddressTypesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AddressTypesQuery = { __typename?: 'Query', addressTypes: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type AddressUsesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AddressUsesQuery = { __typename?: 'Query', addressUses: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type AssigningAuthoritiesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AssigningAuthoritiesQuery = { __typename?: 'Query', assigningAuthorities: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type CountiesQueryVariables = Exact<{
-  state?: InputMaybe<Scalars['String']['input']>;
-}>;
-
-
-export type CountiesQuery = { __typename?: 'Query', counties: Array<{ __typename?: 'GroupedCodedValue', value: string, name: string, group: string }> };
-
-export type CountriesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CountriesQuery = { __typename?: 'Query', countries: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type DegreesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type DegreesQuery = { __typename?: 'Query', degrees: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type DetailedEthnicitiesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type DetailedEthnicitiesQuery = { __typename?: 'Query', detailedEthnicities: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type DetailedRacesQueryVariables = Exact<{
-  category?: InputMaybe<Scalars['String']['input']>;
-}>;
-
-
-export type DetailedRacesQuery = { __typename?: 'Query', detailedRaces: Array<{ __typename?: 'GroupedCodedValue', value: string, name: string, group: string }> };
-
-export type EducationLevelsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type EducationLevelsQuery = { __typename?: 'Query', educationLevels: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type EthnicGroupsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type EthnicGroupsQuery = { __typename?: 'Query', ethnicGroups: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type EthnicityUnknownReasonsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type EthnicityUnknownReasonsQuery = { __typename?: 'Query', ethnicityUnknownReasons: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type FindAllConditionCodesQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllConditionCodesQuery = { __typename?: 'Query', findAllConditionCodes: Array<{ __typename?: 'ConditionCode', id: string, conditionDescTxt?: string | null } | null> };
-
-export type FindAllEthnicityValuesQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllEthnicityValuesQuery = { __typename?: 'Query', findAllEthnicityValues: { __typename?: 'EthnicityResults', total: number, content: Array<{ __typename?: 'Ethnicity', codeDescTxt: string, id: { __typename?: 'EthnicityId', code: string } } | null> } };
 
 export type FindAllJurisdictionsQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -2442,40 +1960,12 @@ export type FindAllJurisdictionsQueryVariables = Exact<{
 
 export type FindAllJurisdictionsQuery = { __typename?: 'Query', findAllJurisdictions: Array<{ __typename?: 'Jurisdiction', id: string, typeCd: string, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, stateDomainCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeqNum?: number | null, nbsUid?: string | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null, exportInd?: string | null } | null> };
 
-export type FindAllOutbreaksQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllOutbreaksQuery = { __typename?: 'Query', findAllOutbreaks: { __typename?: 'OutbreakResults', total: number, content: Array<{ __typename?: 'Outbreak', codeShortDescTxt?: string | null, id: { __typename?: 'OutbreakId', codeSetNm: string, code: string } } | null> } };
-
-export type FindAllPatientIdentificationTypesQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllPatientIdentificationTypesQuery = { __typename?: 'Query', findAllPatientIdentificationTypes: { __typename?: 'PatientIdentificationTypeResults', total: number, content: Array<{ __typename?: 'IdentificationType', codeDescTxt: string, id: { __typename?: 'IdentificationTypeId', code: string } } | null> } };
-
 export type FindAllProgramAreasQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
 
 
 export type FindAllProgramAreasQuery = { __typename?: 'Query', findAllProgramAreas: Array<{ __typename?: 'ProgramAreaCode', id: string, progAreaDescTxt?: string | null, nbsUid?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeq?: number | null } | null> };
-
-export type FindAllRaceValuesQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllRaceValuesQuery = { __typename?: 'Query', findAllRaceValues: { __typename?: 'RaceResults', total: number, content: Array<{ __typename?: 'Race', codeDescTxt: string, id: { __typename?: 'RaceId', code: string } } | null> } };
-
-export type FindAllUsersQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllUsersQuery = { __typename?: 'Query', findAllUsers: { __typename?: 'UserResults', total: number, content: Array<{ __typename?: 'User', nedssEntryId: string, userId: string, userFirstNm: string, userLastNm: string, recordStatusCd?: RecordStatus | null } | null> } };
 
 export type FindContactsNamedByPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -2570,14 +2060,12 @@ export type FindPatientProfileQueryVariables = Exact<{
   page1?: InputMaybe<Page>;
   page2?: InputMaybe<Page>;
   page3?: InputMaybe<Page>;
-  page4?: InputMaybe<Page>;
-  page5?: InputMaybe<Page>;
   patient?: InputMaybe<Scalars['ID']['input']>;
   shortId?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId: number, version: number, status: string, deletable: boolean, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, races?: Array<string> | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, home?: { __typename?: 'PatientSummaryAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null, address: Array<{ __typename?: 'PatientSummaryAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null }>, identification?: Array<{ __typename?: 'PatientSummaryIdentification', type: string, value: string }> | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null }> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null }> | null } | null, names: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: number, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientNameUse', id: string, description: string }, prefix?: { __typename?: 'PatientNamePrefix', id: string, description: string } | null, suffix?: { __typename?: 'PatientNameSuffix', id: string, description: string } | null, degree?: { __typename?: 'PatientNameDegree', id: string, description: string } | null }> }, administrative: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null }> }, addresses: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type: { __typename?: 'PatientAddressType', id: string, description: string }, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null }> }, phones: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null }> }, identification: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientIdentificationAuthority', id: string, description: string } | null }> }, races: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: number, version: number, asOf: any, category: { __typename?: 'PatientRaceCategory', id: string, description: string }, detailed: Array<{ __typename?: 'PatientRaceDetail', id: string, description: string }> }> }, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientGenderCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientGenderCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientGenderUnknownReason', id: string, description: string } | null, preferred?: { __typename?: 'PatientPreferredGender', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, maritalStatus?: { __typename?: 'PatientMaritalStatus', id: string, description: string } | null, occupation?: { __typename?: 'PatientOccupation', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientEducationLevel', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientPrimaryLanguage', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, stateHIVCase?: { __typename: 'Allowed', value?: string | null } | { __typename: 'Restricted', reason: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientEthnicGroup', id: string, description: string }, unknownReason?: { __typename?: 'PatientEthnicityUnknownReason', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientDetailedEthnicity', id: string, description: string }> } | null } | null };
+export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId: number, version: number, status: string, deletable: boolean, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, races?: Array<string> | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, home?: { __typename?: 'PatientSummaryAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null, address: Array<{ __typename?: 'PatientSummaryAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null }>, identification?: Array<{ __typename?: 'PatientSummaryIdentification', type: string, value: string }> | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null }> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null }> | null } | null, names: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: number, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientNameUse', id: string, description: string }, prefix?: { __typename?: 'PatientNamePrefix', id: string, description: string } | null, suffix?: { __typename?: 'PatientNameSuffix', id: string, description: string } | null, degree?: { __typename?: 'PatientNameDegree', id: string, description: string } | null }> }, addresses: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type: { __typename?: 'PatientAddressType', id: string, description: string }, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null }> }, identification: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientIdentificationAuthority', id: string, description: string } | null }> }, races: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: number, version: number, asOf: any, category: { __typename?: 'PatientRaceCategory', id: string, description: string }, detailed: Array<{ __typename?: 'PatientRaceDetail', id: string, description: string }> }> }, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientGenderCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientGenderCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientGenderUnknownReason', id: string, description: string } | null, preferred?: { __typename?: 'PatientPreferredGender', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, maritalStatus?: { __typename?: 'PatientMaritalStatus', id: string, description: string } | null, occupation?: { __typename?: 'PatientOccupation', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientEducationLevel', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientPrimaryLanguage', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, stateHIVCase?: { __typename: 'Allowed', value?: string | null } | { __typename: 'Restricted', reason: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientEthnicGroup', id: string, description: string }, unknownReason?: { __typename?: 'PatientEthnicityUnknownReason', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientDetailedEthnicity', id: string, description: string }> } | null } | null };
 
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;
@@ -2603,76 +2091,6 @@ export type FindVaccinationsForPatientQueryVariables = Exact<{
 
 
 export type FindVaccinationsForPatientQuery = { __typename?: 'Query', findVaccinationsForPatient?: { __typename?: 'PatientVaccinationResults', total: number, number: number, content: Array<{ __typename?: 'PatientVaccination', vaccination: string, createdOn: any, provider?: string | null, administeredOn?: any | null, administered: string, event: string, associatedWith?: { __typename?: 'PatientVaccinationInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
-
-export type GenderUnknownReasonsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GenderUnknownReasonsQuery = { __typename?: 'Query', genderUnknownReasons: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type GendersQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GendersQuery = { __typename?: 'Query', genders: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type IdentificationTypesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type IdentificationTypesQuery = { __typename?: 'Query', identificationTypes: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type MaritalStatusesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MaritalStatusesQuery = { __typename?: 'Query', maritalStatuses: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type NameTypesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type NameTypesQuery = { __typename?: 'Query', nameTypes: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type PhoneTypesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PhoneTypesQuery = { __typename?: 'Query', phoneTypes: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type PhoneUsesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PhoneUsesQuery = { __typename?: 'Query', phoneUses: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type PreferredGendersQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PreferredGendersQuery = { __typename?: 'Query', preferredGenders: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type PrefixesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PrefixesQuery = { __typename?: 'Query', prefixes: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type PrimaryLanguagesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PrimaryLanguagesQuery = { __typename?: 'Query', primaryLanguages: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type PrimaryOccupationsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PrimaryOccupationsQuery = { __typename?: 'Query', primaryOccupations: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type RaceCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type RaceCategoriesQuery = { __typename?: 'Query', raceCategories: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
-
-export type StatesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type StatesQuery = { __typename?: 'Query', states: Array<{ __typename?: 'StateCodedValue', value: string, name: string, abbreviation: string }> };
-
-export type SuffixesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type SuffixesQuery = { __typename?: 'Query', suffixes: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
 
 
 export const AddPatientAddressDocument = gql`
@@ -2777,40 +2195,6 @@ export function useAddPatientNameMutation(baseOptions?: Apollo.MutationHookOptio
 export type AddPatientNameMutationHookResult = ReturnType<typeof useAddPatientNameMutation>;
 export type AddPatientNameMutationResult = Apollo.MutationResult<AddPatientNameMutation>;
 export type AddPatientNameMutationOptions = Apollo.BaseMutationOptions<AddPatientNameMutation, AddPatientNameMutationVariables>;
-export const AddPatientPhoneDocument = gql`
-    mutation addPatientPhone($input: NewPatientPhoneInput!) {
-  addPatientPhone(input: $input) {
-    patient
-    id
-  }
-}
-    `;
-export type AddPatientPhoneMutationFn = Apollo.MutationFunction<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>;
-
-/**
- * __useAddPatientPhoneMutation__
- *
- * To run a mutation, you first call `useAddPatientPhoneMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddPatientPhoneMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addPatientPhoneMutation, { data, loading, error }] = useAddPatientPhoneMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useAddPatientPhoneMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>(AddPatientPhoneDocument, options);
-      }
-export type AddPatientPhoneMutationHookResult = ReturnType<typeof useAddPatientPhoneMutation>;
-export type AddPatientPhoneMutationResult = Apollo.MutationResult<AddPatientPhoneMutation>;
-export type AddPatientPhoneMutationOptions = Apollo.BaseMutationOptions<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>;
 export const AddPatientRaceDocument = gql`
     mutation addPatientRace($input: RaceInput!) {
   addPatientRace(input: $input) {
@@ -2851,80 +2235,6 @@ export function useAddPatientRaceMutation(baseOptions?: Apollo.MutationHookOptio
 export type AddPatientRaceMutationHookResult = ReturnType<typeof useAddPatientRaceMutation>;
 export type AddPatientRaceMutationResult = Apollo.MutationResult<AddPatientRaceMutation>;
 export type AddPatientRaceMutationOptions = Apollo.BaseMutationOptions<AddPatientRaceMutation, AddPatientRaceMutationVariables>;
-export const CreatePatientDocument = gql`
-    mutation createPatient($patient: PersonInput!) {
-  createPatient(patient: $patient) {
-    id
-    shortId
-  }
-}
-    `;
-export type CreatePatientMutationFn = Apollo.MutationFunction<CreatePatientMutation, CreatePatientMutationVariables>;
-
-/**
- * __useCreatePatientMutation__
- *
- * To run a mutation, you first call `useCreatePatientMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreatePatientMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createPatientMutation, { data, loading, error }] = useCreatePatientMutation({
- *   variables: {
- *      patient: // value for 'patient'
- *   },
- * });
- */
-export function useCreatePatientMutation(baseOptions?: Apollo.MutationHookOptions<CreatePatientMutation, CreatePatientMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreatePatientMutation, CreatePatientMutationVariables>(CreatePatientDocument, options);
-      }
-export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatientMutation>;
-export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
-export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
-export const DeletePatientDocument = gql`
-    mutation deletePatient($patient: ID!) {
-  deletePatient(patient: $patient) {
-    __typename
-    ... on PatientDeleteSuccessful {
-      patient
-    }
-    ... on PatientDeleteFailed {
-      patient
-      reason
-    }
-  }
-}
-    `;
-export type DeletePatientMutationFn = Apollo.MutationFunction<DeletePatientMutation, DeletePatientMutationVariables>;
-
-/**
- * __useDeletePatientMutation__
- *
- * To run a mutation, you first call `useDeletePatientMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeletePatientMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deletePatientMutation, { data, loading, error }] = useDeletePatientMutation({
- *   variables: {
- *      patient: // value for 'patient'
- *   },
- * });
- */
-export function useDeletePatientMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientMutation, DeletePatientMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePatientMutation, DeletePatientMutationVariables>(DeletePatientDocument, options);
-      }
-export type DeletePatientMutationHookResult = ReturnType<typeof useDeletePatientMutation>;
-export type DeletePatientMutationResult = Apollo.MutationResult<DeletePatientMutation>;
-export type DeletePatientMutationOptions = Apollo.BaseMutationOptions<DeletePatientMutation, DeletePatientMutationVariables>;
 export const DeletePatientAddressDocument = gql`
     mutation deletePatientAddress($input: DeletePatientAddressInput) {
   deletePatientAddress(input: $input) {
@@ -2959,40 +2269,6 @@ export function useDeletePatientAddressMutation(baseOptions?: Apollo.MutationHoo
 export type DeletePatientAddressMutationHookResult = ReturnType<typeof useDeletePatientAddressMutation>;
 export type DeletePatientAddressMutationResult = Apollo.MutationResult<DeletePatientAddressMutation>;
 export type DeletePatientAddressMutationOptions = Apollo.BaseMutationOptions<DeletePatientAddressMutation, DeletePatientAddressMutationVariables>;
-export const DeletePatientEmailDocument = gql`
-    mutation deletePatientEmail($patientId: Int!, $personSeqNum: Int!) {
-  deletePatientEmail(patientId: $patientId, personSeqNum: $personSeqNum) {
-    patientId
-  }
-}
-    `;
-export type DeletePatientEmailMutationFn = Apollo.MutationFunction<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>;
-
-/**
- * __useDeletePatientEmailMutation__
- *
- * To run a mutation, you first call `useDeletePatientEmailMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeletePatientEmailMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deletePatientEmailMutation, { data, loading, error }] = useDeletePatientEmailMutation({
- *   variables: {
- *      patientId: // value for 'patientId'
- *      personSeqNum: // value for 'personSeqNum'
- *   },
- * });
- */
-export function useDeletePatientEmailMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>(DeletePatientEmailDocument, options);
-      }
-export type DeletePatientEmailMutationHookResult = ReturnType<typeof useDeletePatientEmailMutation>;
-export type DeletePatientEmailMutationResult = Apollo.MutationResult<DeletePatientEmailMutation>;
-export type DeletePatientEmailMutationOptions = Apollo.BaseMutationOptions<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>;
 export const DeletePatientIdentificationDocument = gql`
     mutation deletePatientIdentification($input: DeletePatientIdentificationInput) {
   deletePatientIdentification(input: $input) {
@@ -3061,40 +2337,6 @@ export function useDeletePatientNameMutation(baseOptions?: Apollo.MutationHookOp
 export type DeletePatientNameMutationHookResult = ReturnType<typeof useDeletePatientNameMutation>;
 export type DeletePatientNameMutationResult = Apollo.MutationResult<DeletePatientNameMutation>;
 export type DeletePatientNameMutationOptions = Apollo.BaseMutationOptions<DeletePatientNameMutation, DeletePatientNameMutationVariables>;
-export const DeletePatientPhoneDocument = gql`
-    mutation deletePatientPhone($input: DeletePatientPhoneInput) {
-  deletePatientPhone(input: $input) {
-    patient
-    id
-  }
-}
-    `;
-export type DeletePatientPhoneMutationFn = Apollo.MutationFunction<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>;
-
-/**
- * __useDeletePatientPhoneMutation__
- *
- * To run a mutation, you first call `useDeletePatientPhoneMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeletePatientPhoneMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deletePatientPhoneMutation, { data, loading, error }] = useDeletePatientPhoneMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useDeletePatientPhoneMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>(DeletePatientPhoneDocument, options);
-      }
-export type DeletePatientPhoneMutationHookResult = ReturnType<typeof useDeletePatientPhoneMutation>;
-export type DeletePatientPhoneMutationResult = Apollo.MutationResult<DeletePatientPhoneMutation>;
-export type DeletePatientPhoneMutationOptions = Apollo.BaseMutationOptions<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>;
 export const DeletePatientRaceDocument = gql`
     mutation deletePatientRace($input: DeletePatientRace!) {
   deletePatientRace(input: $input) {
@@ -3195,39 +2437,6 @@ export function useUpdatePatientAddressMutation(baseOptions?: Apollo.MutationHoo
 export type UpdatePatientAddressMutationHookResult = ReturnType<typeof useUpdatePatientAddressMutation>;
 export type UpdatePatientAddressMutationResult = Apollo.MutationResult<UpdatePatientAddressMutation>;
 export type UpdatePatientAddressMutationOptions = Apollo.BaseMutationOptions<UpdatePatientAddressMutation, UpdatePatientAddressMutationVariables>;
-export const UpdatePatientAdministrativeDocument = gql`
-    mutation updatePatientAdministrative($input: AdministrativeInput!) {
-  updatePatientAdministrative(input: $input) {
-    patient
-  }
-}
-    `;
-export type UpdatePatientAdministrativeMutationFn = Apollo.MutationFunction<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>;
-
-/**
- * __useUpdatePatientAdministrativeMutation__
- *
- * To run a mutation, you first call `useUpdatePatientAdministrativeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdatePatientAdministrativeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updatePatientAdministrativeMutation, { data, loading, error }] = useUpdatePatientAdministrativeMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpdatePatientAdministrativeMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>(UpdatePatientAdministrativeDocument, options);
-      }
-export type UpdatePatientAdministrativeMutationHookResult = ReturnType<typeof useUpdatePatientAdministrativeMutation>;
-export type UpdatePatientAdministrativeMutationResult = Apollo.MutationResult<UpdatePatientAdministrativeMutation>;
-export type UpdatePatientAdministrativeMutationOptions = Apollo.BaseMutationOptions<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>;
 export const UpdatePatientBirthAndGenderDocument = gql`
     mutation updatePatientBirthAndGender($input: UpdateBirthAndGenderInput!) {
   updatePatientBirthAndGender(input: $input) {
@@ -3395,40 +2604,6 @@ export function useUpdatePatientNameMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdatePatientNameMutationHookResult = ReturnType<typeof useUpdatePatientNameMutation>;
 export type UpdatePatientNameMutationResult = Apollo.MutationResult<UpdatePatientNameMutation>;
 export type UpdatePatientNameMutationOptions = Apollo.BaseMutationOptions<UpdatePatientNameMutation, UpdatePatientNameMutationVariables>;
-export const UpdatePatientPhoneDocument = gql`
-    mutation updatePatientPhone($input: UpdatePatientPhoneInput!) {
-  updatePatientPhone(input: $input) {
-    patient
-    id
-  }
-}
-    `;
-export type UpdatePatientPhoneMutationFn = Apollo.MutationFunction<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>;
-
-/**
- * __useUpdatePatientPhoneMutation__
- *
- * To run a mutation, you first call `useUpdatePatientPhoneMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdatePatientPhoneMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updatePatientPhoneMutation, { data, loading, error }] = useUpdatePatientPhoneMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpdatePatientPhoneMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>(UpdatePatientPhoneDocument, options);
-      }
-export type UpdatePatientPhoneMutationHookResult = ReturnType<typeof useUpdatePatientPhoneMutation>;
-export type UpdatePatientPhoneMutationResult = Apollo.MutationResult<UpdatePatientPhoneMutation>;
-export type UpdatePatientPhoneMutationOptions = Apollo.BaseMutationOptions<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>;
 export const UpdatePatientRaceDocument = gql`
     mutation updatePatientRace($input: RaceInput!) {
   updatePatientRace(input: $input) {
@@ -3462,537 +2637,6 @@ export function useUpdatePatientRaceMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdatePatientRaceMutationHookResult = ReturnType<typeof useUpdatePatientRaceMutation>;
 export type UpdatePatientRaceMutationResult = Apollo.MutationResult<UpdatePatientRaceMutation>;
 export type UpdatePatientRaceMutationOptions = Apollo.BaseMutationOptions<UpdatePatientRaceMutation, UpdatePatientRaceMutationVariables>;
-export const AddressTypesDocument = gql`
-    query addressTypes {
-  addressTypes {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useAddressTypesQuery__
- *
- * To run a query within a React component, call `useAddressTypesQuery` and pass it any options that fit your needs.
- * When your component renders, `useAddressTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAddressTypesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useAddressTypesQuery(baseOptions?: Apollo.QueryHookOptions<AddressTypesQuery, AddressTypesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AddressTypesQuery, AddressTypesQueryVariables>(AddressTypesDocument, options);
-      }
-export function useAddressTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AddressTypesQuery, AddressTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AddressTypesQuery, AddressTypesQueryVariables>(AddressTypesDocument, options);
-        }
-export function useAddressTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<AddressTypesQuery, AddressTypesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<AddressTypesQuery, AddressTypesQueryVariables>(AddressTypesDocument, options);
-        }
-export type AddressTypesQueryHookResult = ReturnType<typeof useAddressTypesQuery>;
-export type AddressTypesLazyQueryHookResult = ReturnType<typeof useAddressTypesLazyQuery>;
-export type AddressTypesSuspenseQueryHookResult = ReturnType<typeof useAddressTypesSuspenseQuery>;
-export type AddressTypesQueryResult = Apollo.QueryResult<AddressTypesQuery, AddressTypesQueryVariables>;
-export const AddressUsesDocument = gql`
-    query addressUses {
-  addressUses {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useAddressUsesQuery__
- *
- * To run a query within a React component, call `useAddressUsesQuery` and pass it any options that fit your needs.
- * When your component renders, `useAddressUsesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAddressUsesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useAddressUsesQuery(baseOptions?: Apollo.QueryHookOptions<AddressUsesQuery, AddressUsesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AddressUsesQuery, AddressUsesQueryVariables>(AddressUsesDocument, options);
-      }
-export function useAddressUsesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AddressUsesQuery, AddressUsesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AddressUsesQuery, AddressUsesQueryVariables>(AddressUsesDocument, options);
-        }
-export function useAddressUsesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<AddressUsesQuery, AddressUsesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<AddressUsesQuery, AddressUsesQueryVariables>(AddressUsesDocument, options);
-        }
-export type AddressUsesQueryHookResult = ReturnType<typeof useAddressUsesQuery>;
-export type AddressUsesLazyQueryHookResult = ReturnType<typeof useAddressUsesLazyQuery>;
-export type AddressUsesSuspenseQueryHookResult = ReturnType<typeof useAddressUsesSuspenseQuery>;
-export type AddressUsesQueryResult = Apollo.QueryResult<AddressUsesQuery, AddressUsesQueryVariables>;
-export const AssigningAuthoritiesDocument = gql`
-    query assigningAuthorities {
-  assigningAuthorities {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useAssigningAuthoritiesQuery__
- *
- * To run a query within a React component, call `useAssigningAuthoritiesQuery` and pass it any options that fit your needs.
- * When your component renders, `useAssigningAuthoritiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAssigningAuthoritiesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useAssigningAuthoritiesQuery(baseOptions?: Apollo.QueryHookOptions<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>(AssigningAuthoritiesDocument, options);
-      }
-export function useAssigningAuthoritiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>(AssigningAuthoritiesDocument, options);
-        }
-export function useAssigningAuthoritiesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>(AssigningAuthoritiesDocument, options);
-        }
-export type AssigningAuthoritiesQueryHookResult = ReturnType<typeof useAssigningAuthoritiesQuery>;
-export type AssigningAuthoritiesLazyQueryHookResult = ReturnType<typeof useAssigningAuthoritiesLazyQuery>;
-export type AssigningAuthoritiesSuspenseQueryHookResult = ReturnType<typeof useAssigningAuthoritiesSuspenseQuery>;
-export type AssigningAuthoritiesQueryResult = Apollo.QueryResult<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>;
-export const CountiesDocument = gql`
-    query counties($state: String) {
-  counties(state: $state) {
-    value
-    name
-    group
-  }
-}
-    `;
-
-/**
- * __useCountiesQuery__
- *
- * To run a query within a React component, call `useCountiesQuery` and pass it any options that fit your needs.
- * When your component renders, `useCountiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCountiesQuery({
- *   variables: {
- *      state: // value for 'state'
- *   },
- * });
- */
-export function useCountiesQuery(baseOptions?: Apollo.QueryHookOptions<CountiesQuery, CountiesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CountiesQuery, CountiesQueryVariables>(CountiesDocument, options);
-      }
-export function useCountiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountiesQuery, CountiesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CountiesQuery, CountiesQueryVariables>(CountiesDocument, options);
-        }
-export function useCountiesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<CountiesQuery, CountiesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<CountiesQuery, CountiesQueryVariables>(CountiesDocument, options);
-        }
-export type CountiesQueryHookResult = ReturnType<typeof useCountiesQuery>;
-export type CountiesLazyQueryHookResult = ReturnType<typeof useCountiesLazyQuery>;
-export type CountiesSuspenseQueryHookResult = ReturnType<typeof useCountiesSuspenseQuery>;
-export type CountiesQueryResult = Apollo.QueryResult<CountiesQuery, CountiesQueryVariables>;
-export const CountriesDocument = gql`
-    query countries {
-  countries {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useCountriesQuery__
- *
- * To run a query within a React component, call `useCountriesQuery` and pass it any options that fit your needs.
- * When your component renders, `useCountriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCountriesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useCountriesQuery(baseOptions?: Apollo.QueryHookOptions<CountriesQuery, CountriesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CountriesQuery, CountriesQueryVariables>(CountriesDocument, options);
-      }
-export function useCountriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountriesQuery, CountriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CountriesQuery, CountriesQueryVariables>(CountriesDocument, options);
-        }
-export function useCountriesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<CountriesQuery, CountriesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<CountriesQuery, CountriesQueryVariables>(CountriesDocument, options);
-        }
-export type CountriesQueryHookResult = ReturnType<typeof useCountriesQuery>;
-export type CountriesLazyQueryHookResult = ReturnType<typeof useCountriesLazyQuery>;
-export type CountriesSuspenseQueryHookResult = ReturnType<typeof useCountriesSuspenseQuery>;
-export type CountriesQueryResult = Apollo.QueryResult<CountriesQuery, CountriesQueryVariables>;
-export const DegreesDocument = gql`
-    query degrees {
-  degrees {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useDegreesQuery__
- *
- * To run a query within a React component, call `useDegreesQuery` and pass it any options that fit your needs.
- * When your component renders, `useDegreesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useDegreesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useDegreesQuery(baseOptions?: Apollo.QueryHookOptions<DegreesQuery, DegreesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<DegreesQuery, DegreesQueryVariables>(DegreesDocument, options);
-      }
-export function useDegreesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DegreesQuery, DegreesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<DegreesQuery, DegreesQueryVariables>(DegreesDocument, options);
-        }
-export function useDegreesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<DegreesQuery, DegreesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<DegreesQuery, DegreesQueryVariables>(DegreesDocument, options);
-        }
-export type DegreesQueryHookResult = ReturnType<typeof useDegreesQuery>;
-export type DegreesLazyQueryHookResult = ReturnType<typeof useDegreesLazyQuery>;
-export type DegreesSuspenseQueryHookResult = ReturnType<typeof useDegreesSuspenseQuery>;
-export type DegreesQueryResult = Apollo.QueryResult<DegreesQuery, DegreesQueryVariables>;
-export const DetailedEthnicitiesDocument = gql`
-    query detailedEthnicities {
-  detailedEthnicities {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useDetailedEthnicitiesQuery__
- *
- * To run a query within a React component, call `useDetailedEthnicitiesQuery` and pass it any options that fit your needs.
- * When your component renders, `useDetailedEthnicitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useDetailedEthnicitiesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useDetailedEthnicitiesQuery(baseOptions?: Apollo.QueryHookOptions<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>(DetailedEthnicitiesDocument, options);
-      }
-export function useDetailedEthnicitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>(DetailedEthnicitiesDocument, options);
-        }
-export function useDetailedEthnicitiesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>(DetailedEthnicitiesDocument, options);
-        }
-export type DetailedEthnicitiesQueryHookResult = ReturnType<typeof useDetailedEthnicitiesQuery>;
-export type DetailedEthnicitiesLazyQueryHookResult = ReturnType<typeof useDetailedEthnicitiesLazyQuery>;
-export type DetailedEthnicitiesSuspenseQueryHookResult = ReturnType<typeof useDetailedEthnicitiesSuspenseQuery>;
-export type DetailedEthnicitiesQueryResult = Apollo.QueryResult<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>;
-export const DetailedRacesDocument = gql`
-    query detailedRaces($category: String) {
-  detailedRaces(category: $category) {
-    value
-    name
-    group
-  }
-}
-    `;
-
-/**
- * __useDetailedRacesQuery__
- *
- * To run a query within a React component, call `useDetailedRacesQuery` and pass it any options that fit your needs.
- * When your component renders, `useDetailedRacesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useDetailedRacesQuery({
- *   variables: {
- *      category: // value for 'category'
- *   },
- * });
- */
-export function useDetailedRacesQuery(baseOptions?: Apollo.QueryHookOptions<DetailedRacesQuery, DetailedRacesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<DetailedRacesQuery, DetailedRacesQueryVariables>(DetailedRacesDocument, options);
-      }
-export function useDetailedRacesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DetailedRacesQuery, DetailedRacesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<DetailedRacesQuery, DetailedRacesQueryVariables>(DetailedRacesDocument, options);
-        }
-export function useDetailedRacesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<DetailedRacesQuery, DetailedRacesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<DetailedRacesQuery, DetailedRacesQueryVariables>(DetailedRacesDocument, options);
-        }
-export type DetailedRacesQueryHookResult = ReturnType<typeof useDetailedRacesQuery>;
-export type DetailedRacesLazyQueryHookResult = ReturnType<typeof useDetailedRacesLazyQuery>;
-export type DetailedRacesSuspenseQueryHookResult = ReturnType<typeof useDetailedRacesSuspenseQuery>;
-export type DetailedRacesQueryResult = Apollo.QueryResult<DetailedRacesQuery, DetailedRacesQueryVariables>;
-export const EducationLevelsDocument = gql`
-    query educationLevels {
-  educationLevels {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useEducationLevelsQuery__
- *
- * To run a query within a React component, call `useEducationLevelsQuery` and pass it any options that fit your needs.
- * When your component renders, `useEducationLevelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useEducationLevelsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useEducationLevelsQuery(baseOptions?: Apollo.QueryHookOptions<EducationLevelsQuery, EducationLevelsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<EducationLevelsQuery, EducationLevelsQueryVariables>(EducationLevelsDocument, options);
-      }
-export function useEducationLevelsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EducationLevelsQuery, EducationLevelsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<EducationLevelsQuery, EducationLevelsQueryVariables>(EducationLevelsDocument, options);
-        }
-export function useEducationLevelsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<EducationLevelsQuery, EducationLevelsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<EducationLevelsQuery, EducationLevelsQueryVariables>(EducationLevelsDocument, options);
-        }
-export type EducationLevelsQueryHookResult = ReturnType<typeof useEducationLevelsQuery>;
-export type EducationLevelsLazyQueryHookResult = ReturnType<typeof useEducationLevelsLazyQuery>;
-export type EducationLevelsSuspenseQueryHookResult = ReturnType<typeof useEducationLevelsSuspenseQuery>;
-export type EducationLevelsQueryResult = Apollo.QueryResult<EducationLevelsQuery, EducationLevelsQueryVariables>;
-export const EthnicGroupsDocument = gql`
-    query ethnicGroups {
-  ethnicGroups {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useEthnicGroupsQuery__
- *
- * To run a query within a React component, call `useEthnicGroupsQuery` and pass it any options that fit your needs.
- * When your component renders, `useEthnicGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useEthnicGroupsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useEthnicGroupsQuery(baseOptions?: Apollo.QueryHookOptions<EthnicGroupsQuery, EthnicGroupsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<EthnicGroupsQuery, EthnicGroupsQueryVariables>(EthnicGroupsDocument, options);
-      }
-export function useEthnicGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EthnicGroupsQuery, EthnicGroupsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<EthnicGroupsQuery, EthnicGroupsQueryVariables>(EthnicGroupsDocument, options);
-        }
-export function useEthnicGroupsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<EthnicGroupsQuery, EthnicGroupsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<EthnicGroupsQuery, EthnicGroupsQueryVariables>(EthnicGroupsDocument, options);
-        }
-export type EthnicGroupsQueryHookResult = ReturnType<typeof useEthnicGroupsQuery>;
-export type EthnicGroupsLazyQueryHookResult = ReturnType<typeof useEthnicGroupsLazyQuery>;
-export type EthnicGroupsSuspenseQueryHookResult = ReturnType<typeof useEthnicGroupsSuspenseQuery>;
-export type EthnicGroupsQueryResult = Apollo.QueryResult<EthnicGroupsQuery, EthnicGroupsQueryVariables>;
-export const EthnicityUnknownReasonsDocument = gql`
-    query ethnicityUnknownReasons {
-  ethnicityUnknownReasons {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useEthnicityUnknownReasonsQuery__
- *
- * To run a query within a React component, call `useEthnicityUnknownReasonsQuery` and pass it any options that fit your needs.
- * When your component renders, `useEthnicityUnknownReasonsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useEthnicityUnknownReasonsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useEthnicityUnknownReasonsQuery(baseOptions?: Apollo.QueryHookOptions<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>(EthnicityUnknownReasonsDocument, options);
-      }
-export function useEthnicityUnknownReasonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>(EthnicityUnknownReasonsDocument, options);
-        }
-export function useEthnicityUnknownReasonsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>(EthnicityUnknownReasonsDocument, options);
-        }
-export type EthnicityUnknownReasonsQueryHookResult = ReturnType<typeof useEthnicityUnknownReasonsQuery>;
-export type EthnicityUnknownReasonsLazyQueryHookResult = ReturnType<typeof useEthnicityUnknownReasonsLazyQuery>;
-export type EthnicityUnknownReasonsSuspenseQueryHookResult = ReturnType<typeof useEthnicityUnknownReasonsSuspenseQuery>;
-export type EthnicityUnknownReasonsQueryResult = Apollo.QueryResult<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>;
-export const FindAllConditionCodesDocument = gql`
-    query findAllConditionCodes($page: Page) {
-  findAllConditionCodes(page: $page) {
-    id
-    conditionDescTxt
-  }
-}
-    `;
-
-/**
- * __useFindAllConditionCodesQuery__
- *
- * To run a query within a React component, call `useFindAllConditionCodesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllConditionCodesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllConditionCodesQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllConditionCodesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
-      }
-export function useFindAllConditionCodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
-        }
-export function useFindAllConditionCodesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
-        }
-export type FindAllConditionCodesQueryHookResult = ReturnType<typeof useFindAllConditionCodesQuery>;
-export type FindAllConditionCodesLazyQueryHookResult = ReturnType<typeof useFindAllConditionCodesLazyQuery>;
-export type FindAllConditionCodesSuspenseQueryHookResult = ReturnType<typeof useFindAllConditionCodesSuspenseQuery>;
-export type FindAllConditionCodesQueryResult = Apollo.QueryResult<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>;
-export const FindAllEthnicityValuesDocument = gql`
-    query findAllEthnicityValues($page: Page) {
-  findAllEthnicityValues(page: $page) {
-    content {
-      id {
-        code
-      }
-      codeDescTxt
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindAllEthnicityValuesQuery__
- *
- * To run a query within a React component, call `useFindAllEthnicityValuesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllEthnicityValuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllEthnicityValuesQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllEthnicityValuesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
-      }
-export function useFindAllEthnicityValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
-        }
-export function useFindAllEthnicityValuesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
-        }
-export type FindAllEthnicityValuesQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesQuery>;
-export type FindAllEthnicityValuesLazyQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesLazyQuery>;
-export type FindAllEthnicityValuesSuspenseQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesSuspenseQuery>;
-export type FindAllEthnicityValuesQueryResult = Apollo.QueryResult<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>;
 export const FindAllJurisdictionsDocument = gql`
     query findAllJurisdictions($page: Page) {
   findAllJurisdictions(page: $page) {
@@ -4053,99 +2697,6 @@ export type FindAllJurisdictionsQueryHookResult = ReturnType<typeof useFindAllJu
 export type FindAllJurisdictionsLazyQueryHookResult = ReturnType<typeof useFindAllJurisdictionsLazyQuery>;
 export type FindAllJurisdictionsSuspenseQueryHookResult = ReturnType<typeof useFindAllJurisdictionsSuspenseQuery>;
 export type FindAllJurisdictionsQueryResult = Apollo.QueryResult<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>;
-export const FindAllOutbreaksDocument = gql`
-    query findAllOutbreaks($page: Page) {
-  findAllOutbreaks(page: $page) {
-    content {
-      id {
-        codeSetNm
-        code
-      }
-      codeShortDescTxt
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindAllOutbreaksQuery__
- *
- * To run a query within a React component, call `useFindAllOutbreaksQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllOutbreaksQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllOutbreaksQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllOutbreaksQuery(baseOptions?: Apollo.QueryHookOptions<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
-      }
-export function useFindAllOutbreaksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
-        }
-export function useFindAllOutbreaksSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
-        }
-export type FindAllOutbreaksQueryHookResult = ReturnType<typeof useFindAllOutbreaksQuery>;
-export type FindAllOutbreaksLazyQueryHookResult = ReturnType<typeof useFindAllOutbreaksLazyQuery>;
-export type FindAllOutbreaksSuspenseQueryHookResult = ReturnType<typeof useFindAllOutbreaksSuspenseQuery>;
-export type FindAllOutbreaksQueryResult = Apollo.QueryResult<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>;
-export const FindAllPatientIdentificationTypesDocument = gql`
-    query findAllPatientIdentificationTypes($page: Page) {
-  findAllPatientIdentificationTypes(page: $page) {
-    content {
-      id {
-        code
-      }
-      codeDescTxt
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindAllPatientIdentificationTypesQuery__
- *
- * To run a query within a React component, call `useFindAllPatientIdentificationTypesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllPatientIdentificationTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllPatientIdentificationTypesQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllPatientIdentificationTypesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
-      }
-export function useFindAllPatientIdentificationTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
-        }
-export function useFindAllPatientIdentificationTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
-        }
-export type FindAllPatientIdentificationTypesQueryHookResult = ReturnType<typeof useFindAllPatientIdentificationTypesQuery>;
-export type FindAllPatientIdentificationTypesLazyQueryHookResult = ReturnType<typeof useFindAllPatientIdentificationTypesLazyQuery>;
-export type FindAllPatientIdentificationTypesSuspenseQueryHookResult = ReturnType<typeof useFindAllPatientIdentificationTypesSuspenseQuery>;
-export type FindAllPatientIdentificationTypesQueryResult = Apollo.QueryResult<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>;
 export const FindAllProgramAreasDocument = gql`
     query findAllProgramAreas($page: Page) {
   findAllProgramAreas(page: $page) {
@@ -4192,99 +2743,6 @@ export type FindAllProgramAreasQueryHookResult = ReturnType<typeof useFindAllPro
 export type FindAllProgramAreasLazyQueryHookResult = ReturnType<typeof useFindAllProgramAreasLazyQuery>;
 export type FindAllProgramAreasSuspenseQueryHookResult = ReturnType<typeof useFindAllProgramAreasSuspenseQuery>;
 export type FindAllProgramAreasQueryResult = Apollo.QueryResult<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>;
-export const FindAllRaceValuesDocument = gql`
-    query findAllRaceValues($page: Page) {
-  findAllRaceValues(page: $page) {
-    content {
-      id {
-        code
-      }
-      codeDescTxt
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindAllRaceValuesQuery__
- *
- * To run a query within a React component, call `useFindAllRaceValuesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllRaceValuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllRaceValuesQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllRaceValuesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
-      }
-export function useFindAllRaceValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
-        }
-export function useFindAllRaceValuesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
-        }
-export type FindAllRaceValuesQueryHookResult = ReturnType<typeof useFindAllRaceValuesQuery>;
-export type FindAllRaceValuesLazyQueryHookResult = ReturnType<typeof useFindAllRaceValuesLazyQuery>;
-export type FindAllRaceValuesSuspenseQueryHookResult = ReturnType<typeof useFindAllRaceValuesSuspenseQuery>;
-export type FindAllRaceValuesQueryResult = Apollo.QueryResult<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>;
-export const FindAllUsersDocument = gql`
-    query findAllUsers($page: Page) {
-  findAllUsers(page: $page) {
-    content {
-      nedssEntryId
-      userId
-      userFirstNm
-      userLastNm
-      recordStatusCd
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindAllUsersQuery__
- *
- * To run a query within a React component, call `useFindAllUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllUsersQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllUsersQuery(baseOptions?: Apollo.QueryHookOptions<FindAllUsersQuery, FindAllUsersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
-      }
-export function useFindAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllUsersQuery, FindAllUsersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
-        }
-export function useFindAllUsersSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllUsersQuery, FindAllUsersQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
-        }
-export type FindAllUsersQueryHookResult = ReturnType<typeof useFindAllUsersQuery>;
-export type FindAllUsersLazyQueryHookResult = ReturnType<typeof useFindAllUsersLazyQuery>;
-export type FindAllUsersSuspenseQueryHookResult = ReturnType<typeof useFindAllUsersSuspenseQuery>;
-export type FindAllUsersQueryResult = Apollo.QueryResult<FindAllUsersQuery, FindAllUsersQueryVariables>;
 export const FindContactsNamedByPatientDocument = gql`
     query findContactsNamedByPatient($patient: ID!, $page: Page) {
   findContactsNamedByPatient(patient: $patient, page: $page) {
@@ -4956,7 +3414,7 @@ export type FindPatientNamedByContactLazyQueryHookResult = ReturnType<typeof use
 export type FindPatientNamedByContactSuspenseQueryHookResult = ReturnType<typeof useFindPatientNamedByContactSuspenseQuery>;
 export type FindPatientNamedByContactQueryResult = Apollo.QueryResult<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>;
 export const FindPatientProfileDocument = gql`
-    query findPatientProfile($asOf: Date, $page: Page, $page1: Page, $page2: Page, $page3: Page, $page4: Page, $page5: Page, $patient: ID, $shortId: Int) {
+    query findPatientProfile($asOf: Date, $page: Page, $page1: Page, $page2: Page, $page3: Page, $patient: ID, $shortId: Int) {
   findPatientProfile(patient: $patient, shortId: $shortId) {
     id
     local
@@ -5040,19 +3498,7 @@ export const FindPatientProfileDocument = gql`
       number
       size
     }
-    administrative(page: $page1) {
-      content {
-        patient
-        id
-        version
-        asOf
-        comment
-      }
-      total
-      number
-      size
-    }
-    addresses(page: $page2) {
+    addresses(page: $page1) {
       content {
         patient
         id
@@ -5085,24 +3531,7 @@ export const FindPatientProfileDocument = gql`
       number
       size
     }
-    phones(page: $page3) {
-      content {
-        patient
-        id
-        version
-        asOf
-        countryCode
-        number
-        extension
-        email
-        url
-        comment
-      }
-      total
-      number
-      size
-    }
-    identification(page: $page4) {
+    identification(page: $page2) {
       content {
         patient
         sequence
@@ -5118,7 +3547,7 @@ export const FindPatientProfileDocument = gql`
       number
       size
     }
-    races(page: $page5) {
+    races(page: $page3) {
       content {
         patient
         id
@@ -5287,8 +3716,6 @@ export const FindPatientProfileDocument = gql`
  *      page1: // value for 'page1'
  *      page2: // value for 'page2'
  *      page3: // value for 'page3'
- *      page4: // value for 'page4'
- *      page5: // value for 'page5'
  *      patient: // value for 'patient'
  *      shortId: // value for 'shortId'
  *   },
@@ -5507,564 +3934,3 @@ export type FindVaccinationsForPatientQueryHookResult = ReturnType<typeof useFin
 export type FindVaccinationsForPatientLazyQueryHookResult = ReturnType<typeof useFindVaccinationsForPatientLazyQuery>;
 export type FindVaccinationsForPatientSuspenseQueryHookResult = ReturnType<typeof useFindVaccinationsForPatientSuspenseQuery>;
 export type FindVaccinationsForPatientQueryResult = Apollo.QueryResult<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>;
-export const GenderUnknownReasonsDocument = gql`
-    query genderUnknownReasons {
-  genderUnknownReasons {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useGenderUnknownReasonsQuery__
- *
- * To run a query within a React component, call `useGenderUnknownReasonsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGenderUnknownReasonsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGenderUnknownReasonsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGenderUnknownReasonsQuery(baseOptions?: Apollo.QueryHookOptions<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>(GenderUnknownReasonsDocument, options);
-      }
-export function useGenderUnknownReasonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>(GenderUnknownReasonsDocument, options);
-        }
-export function useGenderUnknownReasonsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>(GenderUnknownReasonsDocument, options);
-        }
-export type GenderUnknownReasonsQueryHookResult = ReturnType<typeof useGenderUnknownReasonsQuery>;
-export type GenderUnknownReasonsLazyQueryHookResult = ReturnType<typeof useGenderUnknownReasonsLazyQuery>;
-export type GenderUnknownReasonsSuspenseQueryHookResult = ReturnType<typeof useGenderUnknownReasonsSuspenseQuery>;
-export type GenderUnknownReasonsQueryResult = Apollo.QueryResult<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>;
-export const GendersDocument = gql`
-    query genders {
-  genders {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useGendersQuery__
- *
- * To run a query within a React component, call `useGendersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGendersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGendersQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGendersQuery(baseOptions?: Apollo.QueryHookOptions<GendersQuery, GendersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GendersQuery, GendersQueryVariables>(GendersDocument, options);
-      }
-export function useGendersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GendersQuery, GendersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GendersQuery, GendersQueryVariables>(GendersDocument, options);
-        }
-export function useGendersSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GendersQuery, GendersQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GendersQuery, GendersQueryVariables>(GendersDocument, options);
-        }
-export type GendersQueryHookResult = ReturnType<typeof useGendersQuery>;
-export type GendersLazyQueryHookResult = ReturnType<typeof useGendersLazyQuery>;
-export type GendersSuspenseQueryHookResult = ReturnType<typeof useGendersSuspenseQuery>;
-export type GendersQueryResult = Apollo.QueryResult<GendersQuery, GendersQueryVariables>;
-export const IdentificationTypesDocument = gql`
-    query identificationTypes {
-  identificationTypes {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useIdentificationTypesQuery__
- *
- * To run a query within a React component, call `useIdentificationTypesQuery` and pass it any options that fit your needs.
- * When your component renders, `useIdentificationTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useIdentificationTypesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useIdentificationTypesQuery(baseOptions?: Apollo.QueryHookOptions<IdentificationTypesQuery, IdentificationTypesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<IdentificationTypesQuery, IdentificationTypesQueryVariables>(IdentificationTypesDocument, options);
-      }
-export function useIdentificationTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IdentificationTypesQuery, IdentificationTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<IdentificationTypesQuery, IdentificationTypesQueryVariables>(IdentificationTypesDocument, options);
-        }
-export function useIdentificationTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<IdentificationTypesQuery, IdentificationTypesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<IdentificationTypesQuery, IdentificationTypesQueryVariables>(IdentificationTypesDocument, options);
-        }
-export type IdentificationTypesQueryHookResult = ReturnType<typeof useIdentificationTypesQuery>;
-export type IdentificationTypesLazyQueryHookResult = ReturnType<typeof useIdentificationTypesLazyQuery>;
-export type IdentificationTypesSuspenseQueryHookResult = ReturnType<typeof useIdentificationTypesSuspenseQuery>;
-export type IdentificationTypesQueryResult = Apollo.QueryResult<IdentificationTypesQuery, IdentificationTypesQueryVariables>;
-export const MaritalStatusesDocument = gql`
-    query maritalStatuses {
-  maritalStatuses {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useMaritalStatusesQuery__
- *
- * To run a query within a React component, call `useMaritalStatusesQuery` and pass it any options that fit your needs.
- * When your component renders, `useMaritalStatusesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMaritalStatusesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMaritalStatusesQuery(baseOptions?: Apollo.QueryHookOptions<MaritalStatusesQuery, MaritalStatusesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MaritalStatusesQuery, MaritalStatusesQueryVariables>(MaritalStatusesDocument, options);
-      }
-export function useMaritalStatusesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MaritalStatusesQuery, MaritalStatusesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MaritalStatusesQuery, MaritalStatusesQueryVariables>(MaritalStatusesDocument, options);
-        }
-export function useMaritalStatusesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<MaritalStatusesQuery, MaritalStatusesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<MaritalStatusesQuery, MaritalStatusesQueryVariables>(MaritalStatusesDocument, options);
-        }
-export type MaritalStatusesQueryHookResult = ReturnType<typeof useMaritalStatusesQuery>;
-export type MaritalStatusesLazyQueryHookResult = ReturnType<typeof useMaritalStatusesLazyQuery>;
-export type MaritalStatusesSuspenseQueryHookResult = ReturnType<typeof useMaritalStatusesSuspenseQuery>;
-export type MaritalStatusesQueryResult = Apollo.QueryResult<MaritalStatusesQuery, MaritalStatusesQueryVariables>;
-export const NameTypesDocument = gql`
-    query nameTypes {
-  nameTypes {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useNameTypesQuery__
- *
- * To run a query within a React component, call `useNameTypesQuery` and pass it any options that fit your needs.
- * When your component renders, `useNameTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useNameTypesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useNameTypesQuery(baseOptions?: Apollo.QueryHookOptions<NameTypesQuery, NameTypesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<NameTypesQuery, NameTypesQueryVariables>(NameTypesDocument, options);
-      }
-export function useNameTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NameTypesQuery, NameTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<NameTypesQuery, NameTypesQueryVariables>(NameTypesDocument, options);
-        }
-export function useNameTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<NameTypesQuery, NameTypesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<NameTypesQuery, NameTypesQueryVariables>(NameTypesDocument, options);
-        }
-export type NameTypesQueryHookResult = ReturnType<typeof useNameTypesQuery>;
-export type NameTypesLazyQueryHookResult = ReturnType<typeof useNameTypesLazyQuery>;
-export type NameTypesSuspenseQueryHookResult = ReturnType<typeof useNameTypesSuspenseQuery>;
-export type NameTypesQueryResult = Apollo.QueryResult<NameTypesQuery, NameTypesQueryVariables>;
-export const PhoneTypesDocument = gql`
-    query phoneTypes {
-  phoneTypes {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __usePhoneTypesQuery__
- *
- * To run a query within a React component, call `usePhoneTypesQuery` and pass it any options that fit your needs.
- * When your component renders, `usePhoneTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePhoneTypesQuery({
- *   variables: {
- *   },
- * });
- */
-export function usePhoneTypesQuery(baseOptions?: Apollo.QueryHookOptions<PhoneTypesQuery, PhoneTypesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PhoneTypesQuery, PhoneTypesQueryVariables>(PhoneTypesDocument, options);
-      }
-export function usePhoneTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PhoneTypesQuery, PhoneTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PhoneTypesQuery, PhoneTypesQueryVariables>(PhoneTypesDocument, options);
-        }
-export function usePhoneTypesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PhoneTypesQuery, PhoneTypesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PhoneTypesQuery, PhoneTypesQueryVariables>(PhoneTypesDocument, options);
-        }
-export type PhoneTypesQueryHookResult = ReturnType<typeof usePhoneTypesQuery>;
-export type PhoneTypesLazyQueryHookResult = ReturnType<typeof usePhoneTypesLazyQuery>;
-export type PhoneTypesSuspenseQueryHookResult = ReturnType<typeof usePhoneTypesSuspenseQuery>;
-export type PhoneTypesQueryResult = Apollo.QueryResult<PhoneTypesQuery, PhoneTypesQueryVariables>;
-export const PhoneUsesDocument = gql`
-    query phoneUses {
-  phoneUses {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __usePhoneUsesQuery__
- *
- * To run a query within a React component, call `usePhoneUsesQuery` and pass it any options that fit your needs.
- * When your component renders, `usePhoneUsesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePhoneUsesQuery({
- *   variables: {
- *   },
- * });
- */
-export function usePhoneUsesQuery(baseOptions?: Apollo.QueryHookOptions<PhoneUsesQuery, PhoneUsesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PhoneUsesQuery, PhoneUsesQueryVariables>(PhoneUsesDocument, options);
-      }
-export function usePhoneUsesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PhoneUsesQuery, PhoneUsesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PhoneUsesQuery, PhoneUsesQueryVariables>(PhoneUsesDocument, options);
-        }
-export function usePhoneUsesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PhoneUsesQuery, PhoneUsesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PhoneUsesQuery, PhoneUsesQueryVariables>(PhoneUsesDocument, options);
-        }
-export type PhoneUsesQueryHookResult = ReturnType<typeof usePhoneUsesQuery>;
-export type PhoneUsesLazyQueryHookResult = ReturnType<typeof usePhoneUsesLazyQuery>;
-export type PhoneUsesSuspenseQueryHookResult = ReturnType<typeof usePhoneUsesSuspenseQuery>;
-export type PhoneUsesQueryResult = Apollo.QueryResult<PhoneUsesQuery, PhoneUsesQueryVariables>;
-export const PreferredGendersDocument = gql`
-    query preferredGenders {
-  preferredGenders {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __usePreferredGendersQuery__
- *
- * To run a query within a React component, call `usePreferredGendersQuery` and pass it any options that fit your needs.
- * When your component renders, `usePreferredGendersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePreferredGendersQuery({
- *   variables: {
- *   },
- * });
- */
-export function usePreferredGendersQuery(baseOptions?: Apollo.QueryHookOptions<PreferredGendersQuery, PreferredGendersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PreferredGendersQuery, PreferredGendersQueryVariables>(PreferredGendersDocument, options);
-      }
-export function usePreferredGendersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PreferredGendersQuery, PreferredGendersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PreferredGendersQuery, PreferredGendersQueryVariables>(PreferredGendersDocument, options);
-        }
-export function usePreferredGendersSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PreferredGendersQuery, PreferredGendersQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PreferredGendersQuery, PreferredGendersQueryVariables>(PreferredGendersDocument, options);
-        }
-export type PreferredGendersQueryHookResult = ReturnType<typeof usePreferredGendersQuery>;
-export type PreferredGendersLazyQueryHookResult = ReturnType<typeof usePreferredGendersLazyQuery>;
-export type PreferredGendersSuspenseQueryHookResult = ReturnType<typeof usePreferredGendersSuspenseQuery>;
-export type PreferredGendersQueryResult = Apollo.QueryResult<PreferredGendersQuery, PreferredGendersQueryVariables>;
-export const PrefixesDocument = gql`
-    query prefixes {
-  prefixes {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __usePrefixesQuery__
- *
- * To run a query within a React component, call `usePrefixesQuery` and pass it any options that fit your needs.
- * When your component renders, `usePrefixesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePrefixesQuery({
- *   variables: {
- *   },
- * });
- */
-export function usePrefixesQuery(baseOptions?: Apollo.QueryHookOptions<PrefixesQuery, PrefixesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PrefixesQuery, PrefixesQueryVariables>(PrefixesDocument, options);
-      }
-export function usePrefixesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PrefixesQuery, PrefixesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PrefixesQuery, PrefixesQueryVariables>(PrefixesDocument, options);
-        }
-export function usePrefixesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PrefixesQuery, PrefixesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PrefixesQuery, PrefixesQueryVariables>(PrefixesDocument, options);
-        }
-export type PrefixesQueryHookResult = ReturnType<typeof usePrefixesQuery>;
-export type PrefixesLazyQueryHookResult = ReturnType<typeof usePrefixesLazyQuery>;
-export type PrefixesSuspenseQueryHookResult = ReturnType<typeof usePrefixesSuspenseQuery>;
-export type PrefixesQueryResult = Apollo.QueryResult<PrefixesQuery, PrefixesQueryVariables>;
-export const PrimaryLanguagesDocument = gql`
-    query primaryLanguages {
-  primaryLanguages {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __usePrimaryLanguagesQuery__
- *
- * To run a query within a React component, call `usePrimaryLanguagesQuery` and pass it any options that fit your needs.
- * When your component renders, `usePrimaryLanguagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePrimaryLanguagesQuery({
- *   variables: {
- *   },
- * });
- */
-export function usePrimaryLanguagesQuery(baseOptions?: Apollo.QueryHookOptions<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>(PrimaryLanguagesDocument, options);
-      }
-export function usePrimaryLanguagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>(PrimaryLanguagesDocument, options);
-        }
-export function usePrimaryLanguagesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>(PrimaryLanguagesDocument, options);
-        }
-export type PrimaryLanguagesQueryHookResult = ReturnType<typeof usePrimaryLanguagesQuery>;
-export type PrimaryLanguagesLazyQueryHookResult = ReturnType<typeof usePrimaryLanguagesLazyQuery>;
-export type PrimaryLanguagesSuspenseQueryHookResult = ReturnType<typeof usePrimaryLanguagesSuspenseQuery>;
-export type PrimaryLanguagesQueryResult = Apollo.QueryResult<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>;
-export const PrimaryOccupationsDocument = gql`
-    query primaryOccupations {
-  primaryOccupations {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __usePrimaryOccupationsQuery__
- *
- * To run a query within a React component, call `usePrimaryOccupationsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePrimaryOccupationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePrimaryOccupationsQuery({
- *   variables: {
- *   },
- * });
- */
-export function usePrimaryOccupationsQuery(baseOptions?: Apollo.QueryHookOptions<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>(PrimaryOccupationsDocument, options);
-      }
-export function usePrimaryOccupationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>(PrimaryOccupationsDocument, options);
-        }
-export function usePrimaryOccupationsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>(PrimaryOccupationsDocument, options);
-        }
-export type PrimaryOccupationsQueryHookResult = ReturnType<typeof usePrimaryOccupationsQuery>;
-export type PrimaryOccupationsLazyQueryHookResult = ReturnType<typeof usePrimaryOccupationsLazyQuery>;
-export type PrimaryOccupationsSuspenseQueryHookResult = ReturnType<typeof usePrimaryOccupationsSuspenseQuery>;
-export type PrimaryOccupationsQueryResult = Apollo.QueryResult<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>;
-export const RaceCategoriesDocument = gql`
-    query raceCategories {
-  raceCategories {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useRaceCategoriesQuery__
- *
- * To run a query within a React component, call `useRaceCategoriesQuery` and pass it any options that fit your needs.
- * When your component renders, `useRaceCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useRaceCategoriesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useRaceCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<RaceCategoriesQuery, RaceCategoriesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<RaceCategoriesQuery, RaceCategoriesQueryVariables>(RaceCategoriesDocument, options);
-      }
-export function useRaceCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RaceCategoriesQuery, RaceCategoriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<RaceCategoriesQuery, RaceCategoriesQueryVariables>(RaceCategoriesDocument, options);
-        }
-export function useRaceCategoriesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<RaceCategoriesQuery, RaceCategoriesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<RaceCategoriesQuery, RaceCategoriesQueryVariables>(RaceCategoriesDocument, options);
-        }
-export type RaceCategoriesQueryHookResult = ReturnType<typeof useRaceCategoriesQuery>;
-export type RaceCategoriesLazyQueryHookResult = ReturnType<typeof useRaceCategoriesLazyQuery>;
-export type RaceCategoriesSuspenseQueryHookResult = ReturnType<typeof useRaceCategoriesSuspenseQuery>;
-export type RaceCategoriesQueryResult = Apollo.QueryResult<RaceCategoriesQuery, RaceCategoriesQueryVariables>;
-export const StatesDocument = gql`
-    query states {
-  states {
-    value
-    name
-    abbreviation
-  }
-}
-    `;
-
-/**
- * __useStatesQuery__
- *
- * To run a query within a React component, call `useStatesQuery` and pass it any options that fit your needs.
- * When your component renders, `useStatesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useStatesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useStatesQuery(baseOptions?: Apollo.QueryHookOptions<StatesQuery, StatesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<StatesQuery, StatesQueryVariables>(StatesDocument, options);
-      }
-export function useStatesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StatesQuery, StatesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<StatesQuery, StatesQueryVariables>(StatesDocument, options);
-        }
-export function useStatesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<StatesQuery, StatesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<StatesQuery, StatesQueryVariables>(StatesDocument, options);
-        }
-export type StatesQueryHookResult = ReturnType<typeof useStatesQuery>;
-export type StatesLazyQueryHookResult = ReturnType<typeof useStatesLazyQuery>;
-export type StatesSuspenseQueryHookResult = ReturnType<typeof useStatesSuspenseQuery>;
-export type StatesQueryResult = Apollo.QueryResult<StatesQuery, StatesQueryVariables>;
-export const SuffixesDocument = gql`
-    query suffixes {
-  suffixes {
-    value
-    name
-  }
-}
-    `;
-
-/**
- * __useSuffixesQuery__
- *
- * To run a query within a React component, call `useSuffixesQuery` and pass it any options that fit your needs.
- * When your component renders, `useSuffixesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSuffixesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useSuffixesQuery(baseOptions?: Apollo.QueryHookOptions<SuffixesQuery, SuffixesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SuffixesQuery, SuffixesQueryVariables>(SuffixesDocument, options);
-      }
-export function useSuffixesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SuffixesQuery, SuffixesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SuffixesQuery, SuffixesQueryVariables>(SuffixesDocument, options);
-        }
-export function useSuffixesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<SuffixesQuery, SuffixesQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<SuffixesQuery, SuffixesQueryVariables>(SuffixesDocument, options);
-        }
-export type SuffixesQueryHookResult = ReturnType<typeof useSuffixesQuery>;
-export type SuffixesLazyQueryHookResult = ReturnType<typeof useSuffixesLazyQuery>;
-export type SuffixesSuspenseQueryHookResult = ReturnType<typeof useSuffixesSuspenseQuery>;
-export type SuffixesQueryResult = Apollo.QueryResult<SuffixesQuery, SuffixesQueryVariables>;

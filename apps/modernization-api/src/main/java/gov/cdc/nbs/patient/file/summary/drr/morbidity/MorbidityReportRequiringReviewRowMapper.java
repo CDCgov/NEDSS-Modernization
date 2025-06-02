@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.file.summary.drr.morbidity;
 
+import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleNameRowMapper;
 import gov.cdc.nbs.patient.file.summary.drr.DocumentRequiringReview;
@@ -7,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringReview> {
@@ -16,6 +18,7 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
 
 
   record Column(
+      int patient,
       int identifier,
       int receivedOn,
       int eventDate,
@@ -27,7 +30,7 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
   ) {
 
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7, new DisplayableSimpleNameRowMapper.Columns(8, 9, 10));
+      this(1, 2, 3, 4, 5, 6, 7, 8, new DisplayableSimpleNameRowMapper.Columns(9, 10, 11));
     }
 
   }
@@ -47,10 +50,11 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
 
   @Override
   public DocumentRequiringReview mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
+    long patient = resultSet.getLong(columns.patient());
     long identifier = resultSet.getLong(columns.identifier());
     String local = resultSet.getString(columns.local());
     LocalDateTime receivedOn = resultSet.getObject(columns.receivedOn(), LocalDateTime.class);
-    LocalDateTime eventDate = resultSet.getObject(columns.eventDate(), LocalDateTime.class);
+    LocalDate eventDate = LocalDateColumnMapper.map(resultSet, columns.eventDate());
     String reportingFacility = resultSet.getString(columns.reportingFacility());
 
     boolean electronic = resultSet.getBoolean(columns.electronic());
@@ -60,6 +64,7 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
     String condition = resultSet.getString(this.columns.condition());
 
     return new DocumentRequiringReview(
+        patient,
         identifier,
         local,
         DOCUMENT_TYPE,
@@ -68,6 +73,7 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
         electronic,
         false,
         reportingFacility,
+        null,
         orderingProvider,
         null,
         condition

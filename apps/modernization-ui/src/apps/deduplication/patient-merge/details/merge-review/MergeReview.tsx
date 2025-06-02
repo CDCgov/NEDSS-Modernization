@@ -3,8 +3,13 @@ import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
 import { useNavigate } from 'react-router';
 import styles from './merge-review.module.scss';
-import { PatientIdSelection } from './patient-form/patient-id/PatientIdSelection';
 import { AdminCommentsSelection } from './patient-form/admin-comments/AdminCommentsSelection';
+import { NameSelection } from './patient-form/name/NameSelection';
+import { PatientIdSelection } from './patient-form/patient-id/PatientIdSelection';
+import { AddressSelection } from './patient-form/address/AddressSelection';
+import { PhoneEmailSelection } from './patient-form/phone-email/PhoneEmailSelection';
+import { IdentificationSelection } from './patient-form/identification/IdentificationSelection';
+import { RaceSelection } from './patient-form/race/RaceSelection';
 
 export type Props = {
     patientData: PatientData[];
@@ -37,6 +42,11 @@ export const MergeReview = ({ patientData, onPreview, onRemovePatient }: Props) 
                 <div className={styles.patientContent}>
                     <PatientIdSelection patientData={patientData} onRemovePatient={onRemovePatient} />
                     <AdminCommentsSelection patientData={patientData} />
+                    <NameSelection patientData={patientData} />
+                    <AddressSelection patientData={patientData} />
+                    <PhoneEmailSelection patientData={patientData} />
+                    <IdentificationSelection patientData={patientData} />
+                    <RaceSelection patientData={patientData} />
                 </div>
             </main>
         </div>

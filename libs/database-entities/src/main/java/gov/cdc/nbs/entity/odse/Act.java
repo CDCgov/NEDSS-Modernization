@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -106,21 +105,6 @@ public class Act {
     return this.participations;
   }
 
-  private List<ActRelationship> ensureRelationships() {
-    if (this.actRelationships == null) {
-      this.actRelationships = new ArrayList<>();
-    }
-    return this.actRelationships;
-  }
-
-  public void addRelationship(final Act target, final String type) {
-    ActRelationship relationship = new ActRelationship(
-        this,
-        target,
-        type);
-    ensureRelationships().add(relationship);
-  }
-
   private List<ActId> ensureIdentifiers() {
     if (this.actIds == null) {
       this.actIds = new ArrayList<>();
@@ -133,7 +117,4 @@ public class Act {
     ensureIdentifiers().add(identifier);
   }
 
-  public List<ActId> getActIds() {
-    return actIds == null ? Collections.emptyList() : List.copyOf(actIds);
-  }
 }

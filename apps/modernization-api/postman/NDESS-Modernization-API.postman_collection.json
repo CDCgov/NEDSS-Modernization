@@ -3999,25 +3999,74 @@
 							]
 						},
 						{
-							"name": "Demographics Summary",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics",
-									"host": [
-										"{{base}}"
-									],
-									"path": [
-										"nbs",
-										"api",
-										"patients",
-										"{{patient}}",
-										"demographics"
-									]
+							"name": "Demographics",
+							"item": [
+								{
+									"name": "Demographics Summary",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Administrative",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/administrative",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics",
+												"administrative"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Phones",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/phones",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics",
+												"phones"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
 						},
 						{
 							"name": "Patient File",

@@ -7,7 +7,7 @@ import { Status, usePagination } from 'pagination';
 import { BusinessRuleSort, RuleSortField, useFetchPageRules } from 'apps/page-builder/hooks/api/useFetchPageRules';
 import { useAlert } from 'alert';
 import { useDownloadPageLibrary } from 'apps/page-builder/hooks/api/useDownloadPageLibrary';
-import { Direction } from '../../../../sorting';
+import { Direction } from 'libs/sorting';
 
 export const BusinessRulesLibrary = ({ modalRef }: any) => {
     const { search, response, error, isLoading } = useFetchPageRules();

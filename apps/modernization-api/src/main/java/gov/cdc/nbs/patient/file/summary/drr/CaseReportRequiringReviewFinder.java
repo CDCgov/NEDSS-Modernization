@@ -10,16 +10,18 @@ import java.util.List;
 class CaseReportRequiringReviewFinder {
 
   private static final String QUERY = """
-      with revisions (person_uid) as (
+      with revisions (person_uid, mpr_id) as (
           select
-              [patient].[person_uid]
+              [patient].[person_uid],
+              [patient].person_parent_uid
           from  Person [patient]
           where   [patient].person_parent_uid = :patient
               and [patient].person_parent_uid <> [patient].person_uid
               and [patient].cd = 'PAT'
               and [patient].record_status_cd = 'ACTIVE'
-      )  
+      )
       select
+          [revisions].mpr_id                      as [patient],
           [document].nbs_document_uid             as [id],
           [document].add_time                     as [date_received],
           [document_type].code_short_desc_txt     as [document_type],

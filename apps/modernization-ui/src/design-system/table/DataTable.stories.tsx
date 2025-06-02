@@ -1,18 +1,17 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Column, DataTable } from './DataTable';
-import { MemoryRouter } from 'react-router';
 import { Checkbox } from 'design-system/checkbox';
-import { SortableDataTable } from './SortableDataTable';
 
 type Person = {
     id: string;
     name: string;
     email: string;
     dob: Date;
+    active?: boolean;
 };
 
 const meta = {
-    title: 'Design System/Table/DataTable',
+    title: 'Design System/Table',
     component: DataTable<Person>
 } satisfies Meta<typeof DataTable<Person>>;
 
@@ -24,42 +23,47 @@ const columns: Column<Person>[] = [
     {
         id: 'id',
         name: 'ID',
-        render: (value: Person) => <a href={`#${value.id}`}>{value.id}</a> // render link
+        value: (item) => item.id,
+        render: (item) => <a href={`#${item.id}`}>{item.id}</a> // render link
     },
     {
         id: 'name',
         name: 'Name',
-        render: (value: Person) => value.name,
+        value: (item) => item.name,
         sortIconType: 'alpha'
     },
     {
         id: 'email',
         name: 'Email',
-        render: (value: Person) => value.email
+        value: (item) => item.email
     },
     {
         id: 'dob',
         name: 'DOB',
-        render: (value: Person) => value.dob.toISOString().split('T')[0],
-        comparator: 'date'
+        value: (item) => item.dob
+    },
+    {
+        id: 'active',
+        name: 'Active',
+        value: (item) => item.active
     }
 ];
 const checkboxColumns: Column<Person>[] = [
     {
         id: 'select',
         name: 'X',
-        render: (value: Person) => (
+        render: (item) => (
             <Checkbox
-                id={value.id}
+                id={item.id}
                 label=" "
-                onChange={(checked) => console.log('Checkbox changed', checked, value.id)}
+                onChange={(checked) => console.log('Checkbox changed', checked, item.id)}
             />
         )
-    } as Column<Person>,
+    },
     ...columns
 ];
 
-const data: Person[] = [
+const data = [
     {
         id: '1001',
         name: 'Frodo Baggins',
@@ -76,35 +80,22 @@ const data: Person[] = [
         id: '1003',
         name: 'Meriadoc Brandybuck',
         email: 'merry@theshire.gov',
-        dob: new Date('2000-05-21')
+        dob: new Date('2000-05-21'),
+        active: false
     }
 ];
 
 export const Default: Story = {
     args: {
         id: 'people',
-        columns: columns as Column<Person>[],
-        data: data as Person[]
+        columns,
+        data
     }
-};
-
-export const Sortable: Story = {
-    args: {
-        id: 'people',
-        columns: columns.map((column) => ({ ...column, sortable: true })) as Column<Person>[], // make all columns sortable
-        data: data as Person[]
-    },
-    render: (args) => (
-        <MemoryRouter>
-            <SortableDataTable {...args} />
-        </MemoryRouter>
-    )
 };
 
 export const Checkboxes: Story = {
     args: {
-        id: 'people',
-        columns: checkboxColumns as Column<Person>[],
-        data: data as Person[]
+        ...Default.args,
+        columns: checkboxColumns
     }
 };

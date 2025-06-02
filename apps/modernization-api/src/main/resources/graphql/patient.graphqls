@@ -1,22 +1,7 @@
-type PatientDeleteSuccessful {
-    patient: Int!
-}
-
-type PatientDeleteFailed {
-    patient: Int!
-    reason: String!
-}
-
-union PatientDeleteResult = PatientDeleteSuccessful | PatientDeleteFailed
-
 type Mutation {
-    createPatient(patient: PersonInput!): PatientCreatedResponse!
-    deletePatient(patient: ID!): PatientDeleteResult!
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientGeneralChangeResult!
     updatePatientBirthAndGender(input: UpdateBirthAndGenderInput!): PatientBirthAndGenderChangeResult!
     updatePatientMortality(input: MortalityInput!): PatientMortalityChangeResult!
-    updatePatientAdministrative(input: AdministrativeInput!): PatientAdministrativeChangeResult!
-    deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     addPatientRace(input: RaceInput!): PatientRaceAddResult!
     updatePatientRace(input: RaceInput!): PatientRaceChangeSuccessful!
@@ -27,17 +12,9 @@ type Mutation {
     addPatientAddress(input: NewPatientAddressInput!): PatientAddressChangeResult!
     updatePatientAddress(input: UpdatePatientAddressInput!): PatientAddressChangeResult!
     deletePatientAddress(input: DeletePatientAddressInput): PatientAddressChangeResult!
-    addPatientPhone(input: NewPatientPhoneInput!): PatientPhoneChangeResult!
-    updatePatientPhone(input: UpdatePatientPhoneInput!): PatientPhoneChangeResult!
-    deletePatientPhone(input: DeletePatientPhoneInput): PatientPhoneChangeResult!
     addPatientIdentification(input: NewPatientIdentificationInput!): PatientIdentificationChangeResult!
     updatePatientIdentification(input: UpdatePatientIdentificationInput!): PatientIdentificationChangeResult!
     deletePatientIdentification(input: DeletePatientIdentificationInput): PatientIdentificationChangeResult!
-}
-
-type PatientCreatedResponse {
-    id: Int!
-    shortId: Int!
 }
 
 type PatientUpdateResponse {
@@ -68,57 +45,6 @@ enum NameUseCd {
     P # Name of Partner/Spouse
     R # Religious
     U
-}
-
-input NewPatientName {
-    first: String
-    middle: String
-    last: String
-    suffix: Suffix
-    use: NameUseCd!
-}
-
-input NewPatientAddress {
-    streetAddress1: String
-    streetAddress2: String
-    city: String
-    state: String
-    county: String
-    country: String
-    zip: String
-    censusTract: String
-}
-
-input NewPatientPhoneNumber {
-    number: String!
-    extension: String
-    type: String!
-    use: String!
-}
-
-input NewPatientIdentification {
-    value: String!
-    type: String!
-    authority: String
-}
-
-input PersonInput {
-    names: [NewPatientName]
-    dateOfBirth: Date
-    birthGender: Gender
-    currentGender: Gender
-    deceased: Deceased
-    deceasedTime: Date
-    maritalStatus: String
-    addresses: [NewPatientAddress!]
-    phoneNumbers: [NewPatientPhoneNumber!]
-    emailAddresses: [String]
-    identifications: [NewPatientIdentification!]
-    ethnicity: String
-    races: [String]
-    asOf: Date
-    comments: String
-    stateHIVCase: String
 }
 
 input GeneralInfoInput {

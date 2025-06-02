@@ -46,7 +46,7 @@ export const AdminComment = ({ personUid, adminComments }: Props) => {
                 <GroupLine last />
                 <div className={styles.commentText}>
                     <span className={styles.label}>Comments: </span>
-                    {adminComments?.comment ? <LengthConstrained content={adminComments.comment} limit={50} /> : '--'}
+                    {adminComments?.comment ? <LengthConstrained content={adminComments.comment} limit={50} /> : '---'}
                 </div>
             </div>
         </div>

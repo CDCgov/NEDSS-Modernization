@@ -1,6 +1,6 @@
 import { Condition, ConditionControllerService } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 
 export type ConditionSearch = {
     searchText?: string;

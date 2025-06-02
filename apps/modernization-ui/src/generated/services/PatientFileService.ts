@@ -2,9 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Administrative } from '../models/Administrative';
 import type { DocumentRequiringReview } from '../models/DocumentRequiringReview';
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientFile } from '../models/PatientFile';
+import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
 import type { StandardResponse } from '../models/StandardResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -43,6 +45,44 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Phone Demographics
+     * Provides the phone demographics for a patient
+     * @returns PatientPhoneDemographic OK
+     * @throws ApiError
+     */
+    public static phones({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientPhoneDemographic>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/phones',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Administrative Information
+     * Provides the administrative information for a patient
+     * @returns Administrative OK
+     * @throws ApiError
+     */
+    public static administrative({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Administrative> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/administrative',
             path: {
                 'patient': patient,
             },

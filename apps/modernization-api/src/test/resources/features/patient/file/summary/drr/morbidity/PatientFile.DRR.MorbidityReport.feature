@@ -12,12 +12,12 @@ Feature: Patient File Documents Requiring Review: Morbidity Report
 
   Scenario: I can view Morbidity Reports requiring review for a patient
     Given the morbidity report was received on 03/29/2010 at 02:51:07
-    And the morbidity report was reported on 07/11/1989 at 10:17:19
+    And the morbidity report was reported on 07/11/1989
     And the morbidity report is for the condition Diphtheria
     When I view the documents requiring review for the patient
     Then the patient file has the morbidity report requiring review
     And the morbidity report requiring review was received on 03/29/2010 at 02:51:07
-    And the morbidity report requiring review has the event date 07/11/1989 at 10:17:19
+    And the morbidity report requiring review has the event date 07/11/1989
     And there is one morbidity report requiring review
     And the morbidity report requiring review is not electronic
     And the morbidity report requiring review has the condition "Diphtheria"

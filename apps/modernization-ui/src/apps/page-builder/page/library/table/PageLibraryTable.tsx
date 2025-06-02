@@ -4,7 +4,7 @@ import { internalizeDate } from 'date';
 import { usePagination } from 'pagination';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { Direction } from 'sorting';
+import { Direction } from 'libs/sorting';
 
 import styles from './page-library-table.module.scss';
 import { ConditionsDisplay } from './ConditionsDisplay';
