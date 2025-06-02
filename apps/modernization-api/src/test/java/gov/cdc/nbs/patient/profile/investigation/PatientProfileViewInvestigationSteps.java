@@ -1,13 +1,14 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
+import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.event.investigation.TestInvestigations;
 import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -24,27 +25,37 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PatientProfileViewInvestigationSteps {
 
-  @Value("${nbs.wildfly.url:http://wildfly:7001}")
-  String classicUrl;
 
-  @Autowired
-  TestPatients patients;
+  private final String classicUrl;
+  private final MockRestServiceServer server;
 
-  @Autowired
-  TestInvestigations investigations;
+  private final Active<PatientIdentifier> activePatient;
 
-  @Autowired
-  Authenticated authenticated;
+  private final Active<InvestigationIdentifier> activeInvestigation;
 
-  @Autowired
-  MockMvc mvc;
+  private final Authenticated authenticated;
 
-  @Autowired
-  Active<ResultActions> response;
+  private final MockMvc mvc;
 
-  @Autowired
-  @Qualifier("classicRestService")
-  MockRestServiceServer server;
+  private final Active<ResultActions> response;
+
+  PatientProfileViewInvestigationSteps(
+      @Value("${nbs.wildfly.url:http://wildfly:7001}") final String classicUrl,
+      @Qualifier("classicRestService") final MockRestServiceServer server,
+      final Active<PatientIdentifier> activePatient,
+      final Active<InvestigationIdentifier> activeInvestigation,
+      final Authenticated authenticated,
+      final MockMvc mvc,
+      final Active<ResultActions> response
+  ) {
+    this.classicUrl = classicUrl;
+    this.server = server;
+    this.activePatient = activePatient;
+    this.activeInvestigation = activeInvestigation;
+    this.authenticated = authenticated;
+    this.mvc = mvc;
+    this.response = response;
+  }
 
   @Before
   public void clearServer() {
@@ -53,10 +64,10 @@ public class PatientProfileViewInvestigationSteps {
 
   @When("the investigation is viewed from the Patient Profile")
   public void the_investigation_is_viewed_from_the_patient_profile() throws Exception {
-    long patient = patients.one();
+    long patient = activePatient.active().id();
 
     server.expect(
-        requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+            requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
@@ -64,12 +75,12 @@ public class PatientProfileViewInvestigationSteps {
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    long investigation = investigations.one();
+    long investigation = activeInvestigation.active().identifier();
 
-    String request = 
+    String request =
         "/nbs/api/profile/%d/investigation/%d".formatted(
-        patient,
-        investigation);
+            patient,
+            investigation);
 
     response.active(
         mvc.perform(authenticated.withUser(MockMvcRequestBuilders.get(request))));
@@ -82,14 +93,14 @@ public class PatientProfileViewInvestigationSteps {
 
   @Then("I am redirected to Classic NBS to view an Investigation")
   public void i_am_redirected_to_classic_nbs_to_view_an_investigation() throws Exception {
-    long patient = patients.one();
-    long investigation = investigations.one();
+    long patient = activePatient.active().id();
+    long investigation = activeInvestigation.active().identifier();
 
     String expected = "/nbs/ViewFile1.do?ContextAction=InvestigationIDOnSummary&publicHealthCaseUID="
         + investigation;
 
     this.response.active()
-        .andExpect(status().isCreated())
+        .andExpect(status().isTemporaryRedirect())
         .andExpect(header().string("Location", containsString(expected)))
         .andExpect(cookie().value("Return-Patient", String.valueOf(patient)));
   }
