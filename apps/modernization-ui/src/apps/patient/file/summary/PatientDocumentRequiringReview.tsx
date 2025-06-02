@@ -7,39 +7,7 @@ import { DocumentRequiringReview } from 'generated';
 import { ClassicLink } from 'classic';
 import { internalizeDate } from 'date';
 import { internalizeDateTime } from 'date/InternalizeDateTime';
-import { renderMorbidity } from '../renderReports';
-
-const renderReporting = (value: DocumentRequiringReview) => {
-    return (
-        <>
-            {value.reportingFacility && (
-                <>
-                    <strong>Reporting facility:</strong>
-                    <br />
-                    {value.reportingFacility}
-                    <br />
-                </>
-            )}
-
-            {value.orderingProvider && (
-                <>
-                    <strong>Ordering provider:</strong>
-                    <br />
-                    {value.orderingProvider.prefix}
-                    {value.orderingProvider.first} {value.orderingProvider.last}
-                    <br />
-                </>
-            )}
-            {value.sendingFacility && (
-                <>
-                    <strong>Sending facility:</strong>
-                    <br />
-                    {value.sendingFacility}
-                </>
-            )}
-        </>
-    );
-};
+import { renderFacilityProvider, renderMorbidity } from '../renderPatientFile';
 
 const renderDescription = (value: DocumentRequiringReview) => {
     return (
@@ -98,7 +66,7 @@ export const PatientDocumentRequiringReview = () => {
         {
             id: 'reporting',
             name: 'Reporting facility/provider',
-            render: (value: DocumentRequiringReview) => <>{renderReporting(value)}</>
+            render: (value: DocumentRequiringReview) => <>{renderFacilityProvider(value)}</>
         },
         {
             id: 'eventDate',

@@ -30,3 +30,35 @@ export const renderMorbidity = (value: DocumentRequiringReview) => {
         </>
     );
 };
+
+export const renderFacilityProvider = (value: DocumentRequiringReview) => {
+    return (
+        <>
+            {value.reportingFacility && (
+                <>
+                    <strong>Reporting facility:</strong>
+                    <br />
+                    {value.reportingFacility}
+                    <br />
+                </>
+            )}
+
+            {value.orderingProvider && (
+                <>
+                    <strong>Ordering provider:</strong>
+                    <br />
+                    {value.orderingProvider.prefix}
+                    {value.orderingProvider.first} {value.orderingProvider.last}
+                    <br />
+                </>
+            )}
+            {value.sendingFacility && (
+                <>
+                    <strong>Sending facility:</strong>
+                    <br />
+                    {value.sendingFacility}
+                </>
+            )}
+        </>
+    );
+};
