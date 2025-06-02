@@ -159,7 +159,6 @@ const RepeatingBlock = <V extends FieldValues>({
                     columns={[...columns, iconColumn]}
                     data={entries}
                     sizing={sizing}
-                    noDataFallback
                 />
             </div>
             <Shown when={status === 'viewing'}>{selected && viewRenderer(selected)}</Shown>

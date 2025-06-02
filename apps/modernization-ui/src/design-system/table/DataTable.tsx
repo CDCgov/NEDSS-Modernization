@@ -33,6 +33,8 @@ type Column<R, C = CellValue> = {
     sortIconType?: SortIconType;
 } & RenderMethod<R, C>;
 
+type EmptyRenderer = (columns: number) => ReactNode | ReactNode[] | undefined;
+
 type DataTableFeatures = {
     sorting?: SortingInteraction;
     filtering?: FilterInteraction;
@@ -44,11 +46,19 @@ type DataTableProps<V> = {
     columns: Column<V>[];
     data: V[];
     sizing?: Sizing;
-    noDataFallback?: boolean;
+    onEmpty?: EmptyRenderer;
     features?: DataTableFeatures;
 };
 
-const DataTable = <V,>({ id, className, columns, data, sizing, features = {}, noDataFallback }: DataTableProps<V>) => {
+const DataTable = <V,>({
+    id,
+    className,
+    columns,
+    data,
+    sizing,
+    onEmpty = defaultEmptyHandler,
+    features = {}
+}: DataTableProps<V>) => {
     const resolvedClasses = classNames('usa-table--borderless', styles.table, {
         [styles.sized]: sizing,
         [styles.small]: sizing === 'small',
@@ -65,7 +75,7 @@ const DataTable = <V,>({ id, className, columns, data, sizing, features = {}, no
                     sorting={features.sorting}
                 />
                 <tbody>
-                    <Shown when={data.length > 0} fallback={noDataFallback && <NoDataRow colSpan={columns.length} />}>
+                    <Shown when={data.length > 0} fallback={onEmpty(columns.length)}>
                         {data.map((row, index) => (
                             <DataTableRow
                                 sorting={features.sorting}
@@ -82,6 +92,8 @@ const DataTable = <V,>({ id, className, columns, data, sizing, features = {}, no
         </div>
     );
 };
+
+const defaultEmptyHandler = (columns: number) => <NoDataRow columns={columns}>No data has been added.</NoDataRow>;
 
 export { DataTable };
 
