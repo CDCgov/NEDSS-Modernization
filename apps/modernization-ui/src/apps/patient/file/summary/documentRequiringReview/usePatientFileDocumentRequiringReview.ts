@@ -43,7 +43,7 @@ export const usePatientFileDocumentRequiringReview = (id: number) => {
     const patient = {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'fetching',
-        documents: state.status === 'complete' ? state.documents : undefined,
+        documents: state.status === 'complete' ? state.documents : [],
         fetch: (id: number) => dispatch({ type: 'fetch', id })
     };
 

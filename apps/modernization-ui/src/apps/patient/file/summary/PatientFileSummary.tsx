@@ -1,7 +1,7 @@
 import { usePatient } from '../usePatient';
 import { usePatientFileSummary } from './usePatientFileSummary';
 import { PatientSummaryContent } from './PatientSummaryContent';
-import { PatientDocumentRequiringReview } from './PatientDocumentRequiringReview';
+import { PatientDocumentRequiringReview } from './documentRequiringReview/PatientDocumentRequiringReview';
 
 import OpenInvestigationsCard from './openInvestigations/OpenInvestigationsCard';
 import styles from './patient-file-summary.module.scss';

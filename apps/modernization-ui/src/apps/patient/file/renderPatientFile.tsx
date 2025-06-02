@@ -1,13 +1,17 @@
-import { DocumentRequiringReview } from 'generated';
+import { OrderingProvider, ResultedTest } from 'generated';
 
-export const renderMorbidity = (value: DocumentRequiringReview) => {
+export const renderMorbidity = (
+    condition?: string,
+    resultedTests?: Array<ResultedTest>,
+    treatments?: Array<string>
+) => {
     return (
         <>
-            <strong>{value.condition}</strong>
+            <strong>{condition}</strong>
             <br />
-            {(value.resultedTests?.length ?? 0) > 0 && (
+            {(resultedTests?.length ?? 0) > 0 && (
                 <>
-                    {value.resultedTests?.map((result) => (
+                    {resultedTests?.map((result) => (
                         <>
                             <br />
                             <strong>{result.name}:</strong>
@@ -20,43 +24,47 @@ export const renderMorbidity = (value: DocumentRequiringReview) => {
                 </>
             )}
 
-            {(value.treatments?.length ?? 0) > 0 && (
+            {(treatments?.length ?? 0) > 0 && (
                 <>
                     <br />
                     <strong>Treatment information: </strong>
-                    <strong>{value.treatments?.map((treatment) => <li key={treatment}>{treatment}</li>)}</strong>
+                    <strong>{treatments?.map((treatment) => <li key={treatment}>{treatment}</li>)}</strong>
                 </>
             )}
         </>
     );
 };
 
-export const renderFacilityProvider = (value: DocumentRequiringReview) => {
+export const renderFacilityProvider = (
+    reportingFacility?: string,
+    orderingProvider?: OrderingProvider,
+    sendingFacility?: string
+) => {
     return (
         <>
-            {value.reportingFacility && (
+            {reportingFacility && (
                 <>
                     <strong>Reporting facility:</strong>
                     <br />
-                    {value.reportingFacility}
+                    {reportingFacility}
                     <br />
                 </>
             )}
 
-            {value.orderingProvider && (
+            {orderingProvider && (
                 <>
                     <strong>Ordering provider:</strong>
                     <br />
-                    {value.orderingProvider.prefix}
-                    {value.orderingProvider.first} {value.orderingProvider.last}
+                    {orderingProvider.prefix}
+                    {orderingProvider.first} {orderingProvider.last}
                     <br />
                 </>
             )}
-            {value.sendingFacility && (
+            {sendingFacility && (
                 <>
                     <strong>Sending facility:</strong>
                     <br />
-                    {value.sendingFacility}
+                    {sendingFacility}
                 </>
             )}
         </>
