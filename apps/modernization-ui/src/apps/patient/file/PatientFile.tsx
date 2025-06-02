@@ -7,8 +7,6 @@ import { Icon } from 'design-system/icon';
 import { Patient } from './patient';
 import { PatientLoaderResult } from './loader';
 import { PatientFileLayout } from './PatientFileLayout';
-
-import styles from './patient-file.module.scss';
 import { DeleteAction } from './delete';
 
 const PatientFile = () => {
@@ -26,7 +24,7 @@ export { PatientFile };
 const ViewActions = (patient: Patient) => {
     return (
         <>
-            <DeleteAction buttonClassName={styles['usa-button']} />
+            <DeleteAction />
             <Button
                 onClick={openPrintableView(patient.id.toString())}
                 aria-label="Print"

@@ -1,6 +1,12 @@
 @use 'styles/colors';
 
 .file {
+    & > header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
     & > main {
         padding: 1rem;
     }
