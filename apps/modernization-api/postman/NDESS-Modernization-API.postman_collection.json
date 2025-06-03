@@ -4065,6 +4065,28 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Addresses",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/addresses",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics",
+												"addresses"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},

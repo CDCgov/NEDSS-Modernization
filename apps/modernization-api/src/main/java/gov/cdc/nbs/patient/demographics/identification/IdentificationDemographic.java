@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.identification;
+package gov.cdc.nbs.patient.demographics.identification;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;

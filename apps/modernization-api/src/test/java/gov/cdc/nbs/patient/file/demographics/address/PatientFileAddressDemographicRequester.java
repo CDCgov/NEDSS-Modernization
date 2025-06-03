@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.file.demographics.phone;
+package gov.cdc.nbs.patient.file.demographics.address;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
@@ -7,14 +7,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
-class PatientFilePhoneDemographicRequester {
+class PatientFileAddressDemographicRequester {
 
   private final MockMvc mvc;
   private final Authenticated authenticated;
 
-  PatientFilePhoneDemographicRequester(
+  PatientFileAddressDemographicRequester(
       final MockMvc mvc,
       final Authenticated authenticated
   ) {
@@ -26,13 +27,13 @@ class PatientFilePhoneDemographicRequester {
     try {
       return mvc.perform(
           this.authenticated.withUser(
-              get("/nbs/api/patients/{patient}/demographics/phones", patient.id())
+              get("/nbs/api/patients/{patient}/demographics/addresses", patient.id())
 
           )
-      );
+      ).andDo(print());
     } catch (Exception exception) {
       throw new IllegalStateException(
-          "An unexpected error occurred when viewing the patient phone demographics.",
+          "An unexpected error occurred when viewing the patient address demographics.",
           exception
       );
     }

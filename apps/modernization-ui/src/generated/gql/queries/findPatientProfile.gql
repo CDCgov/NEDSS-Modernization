@@ -1,4 +1,4 @@
-query findPatientProfile($asOf: Date, $page: Page, $page1: Page, $page2: Page, $patient: ID, $shortId: Int){
+query findPatientProfile($asOf: Date, $page: Page, $page1: Page, $patient: ID, $shortId: Int){
     findPatientProfile(patient: $patient, shortId: $shortId){
         id
         local
@@ -82,27 +82,7 @@ query findPatientProfile($asOf: Date, $page: Page, $page1: Page, $page2: Page, $
             number
             size
         }
-        identification(page: $page1){
-            content{
-                patient
-                sequence
-                version
-                asOf
-                type{
-                    id
-                    description
-                }
-                authority{
-                    id
-                    description
-                }
-                value
-            }
-            total
-            number
-            size
-        }
-        races(page: $page2){
+        races(page: $page1){
             content{
                 patient
                 id
