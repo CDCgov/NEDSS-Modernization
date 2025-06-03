@@ -2,62 +2,11 @@ import { ClassicLink } from 'classic';
 import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { FacilityProviders, OrderingProvider, PatientLabReport, TestResult } from 'generated';
+import { PatientLabReport, TestResult } from 'generated';
 import { Icon } from 'design-system/icon';
 import { usePatient } from '../../usePatient';
 import { usePatientLabReports } from './usePatientLabReports';
-
-const maybeOrderingProviderName = (orderingProvider: OrderingProvider) => {
-    if (!orderingProvider) {
-        return undefined;
-    }
-    const { first, last } = orderingProvider;
-    if (
-        typeof first === 'string' &&
-        typeof last === 'string' &&
-        first.length > 0 &&
-        last.length > 0 &&
-        first !== 'null' &&
-        last !== 'null'
-    ) {
-        return `${first} ${last}`;
-    }
-    return undefined;
-};
-
-const displayFacilityProviders = (facilityProviders: FacilityProviders | undefined) => {
-    if (!facilityProviders) {
-        return undefined;
-    }
-
-    const { reportingFacility, sendingFacility, orderingProvider } = facilityProviders;
-
-    return (
-        <div>
-            {reportingFacility && (
-                <div>
-                    <b>Reporting Facility:</b>
-                    <br />
-                    {reportingFacility}
-                </div>
-            )}
-            {sendingFacility && (
-                <div>
-                    <b>Ordering Facility:</b>
-                    <br />
-                    {sendingFacility}
-                </div>
-            )}
-            {orderingProvider && (
-                <div>
-                    <b>Ordering Provider:</b>
-                    <br />
-                    {maybeOrderingProviderName(orderingProvider)}
-                </div>
-            )}
-        </div>
-    );
-};
+import { renderFacilityProvider } from '../../renderPatientFile';
 
 const displayTestResults = (testResults?: TestResult[] | undefined) => {
     if (!testResults || testResults.length < 1) {
@@ -149,7 +98,12 @@ const LabReports = () => {
         {
             ...FACILITY_PROVIDER,
             sortable: true,
-            render: (value: PatientLabReport) => displayFacilityProviders(value.facilityProviders)
+            render: (value: PatientLabReport) =>
+                renderFacilityProvider(
+                    value.facilityProviders?.reportingFacility,
+                    value.facilityProviders?.orderingProvider,
+                    value.facilityProviders?.sendingFacility
+                )
         },
         {
             ...DATE_COLLECTED,
