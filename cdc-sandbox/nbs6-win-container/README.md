@@ -18,8 +18,8 @@ Below are manual NBS6 creation and run process steps. Foundation image used is M
 ## Steps
 - Build Docker Container
   - Verify you're in cdc-sandbox -> nbs6-win-container directory
-  - Run:  ``` docker build --build-arg S3_ZIP_NAME=wildfly-10.0.0.Final-<VERSION> -t <CONTAINER-NAME>:<TAG> . ```
-    - S3_ZIP_NAME - Zip file name pulling NBS6 Wildfly installation zip from local.
+  - Run:  ``` docker build --build-arg S3_ZIP_NAME=wildfly-10.0.0.Final-<ADD-VERSION> -t <CONTAINER-NAME>:<TAG> . ```
+    - S3_ZIP_NAME - Zip file name pulling NBS6 Wildfly installation zip from local. Do NOT add .zip at end.
   - Verify container was built successfully
 - Run NBS6 Docker Container
   - Run:  ``` docker run -p 7001:7001 -e "GITHUB_RELEASE_TAG=latest" -e "DATABASE_ENDPOINT=<ENDPOINT>" -e "odse_user=<username>" -e "odse_pass=<password>" -e "rdb_user=<username>" -e "rdb_pass=<password>" -e "srte_user=<username>" -e "srte_pass=<password>"  -t <CONTAINER-NAME> ```
