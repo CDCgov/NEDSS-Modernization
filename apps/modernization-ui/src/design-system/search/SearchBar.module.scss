@@ -19,7 +19,6 @@
   background: colors.$base-white;
   width: 19.5rem;
   padding: 0 0.5rem;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 
   &.focused {
     border-color: colors.$focused;
