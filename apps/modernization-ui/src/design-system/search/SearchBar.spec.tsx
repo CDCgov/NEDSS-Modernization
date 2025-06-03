@@ -90,4 +90,29 @@ describe('SearchBar', () => {
         const focusedElement = container.querySelector(`.${'focused'}`);
         expect(focusedElement).toBeTruthy();
     });
+
+    it('calls onSearch when the search button is clicked', () => {
+        const handleSearch = jest.fn();
+        const { getByLabelText } = render(
+            <SearchBar value="Seashells" onSearch={handleSearch} />
+        );
+
+        const searchButton = getByLabelText('Search');
+        fireEvent.click(searchButton);
+
+        expect(handleSearch).toHaveBeenCalledWith('Seashells');
+    });
+
+
+    it('calls onSearch when Enter is pressed in the input', () => {
+        const handleSearch = jest.fn();
+        const { getByPlaceholderText } = render(
+            <SearchBar value="Seashore" onSearch={handleSearch} placeholder="Search..." />
+        );
+
+        const input = getByPlaceholderText('Search...');
+        fireEvent.keyDown(input, { key: 'Enter', code: 'Enter', charCode: 13 });
+
+        expect(handleSearch).toHaveBeenCalledWith('Seashore');
+    });
 });

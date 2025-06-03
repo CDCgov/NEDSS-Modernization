@@ -13,6 +13,7 @@ type SearchBarProps = {
     altIconName?: Icons;
     value?: string;
     onChange?: (value: string) => void;
+    onSearch?: (value: string) => void;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'value' | 'onChange'>;
 
 export const SearchBar = ({
@@ -22,6 +23,7 @@ export const SearchBar = ({
     altIconName = 'search',
     value: controlledValue,
     onChange: controlledOnChange,
+    onSearch,
     ...props
 }: SearchBarProps) => {
     // Internal state only if no controlledValue provided
@@ -67,6 +69,11 @@ export const SearchBar = ({
                     onChange={handleChange}
                     onFocus={() => setFocused(true)}
                     onBlur={() => setFocused(false)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            onSearch?.(value);
+                        }
+                    }}
                     placeholder={placeholder}
                     {...props}
                 />
@@ -87,6 +94,8 @@ export const SearchBar = ({
                     sizing={size}
                     icon={<Icon name={altIconName} aria-hidden />}
                     className={classNames(styles.searchButton, styles[`size-${size}`], { [styles.tall]: tall })}
+                    onClick={() => onSearch?.(value)}
+                    aria-label="Search"
                 />
             </div>
         </div>
