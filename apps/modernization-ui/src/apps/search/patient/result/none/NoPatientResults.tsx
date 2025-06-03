@@ -13,14 +13,15 @@ const NoPatientResults = () => {
                 <AlertMessage type="information">
                     <div className={styles.noResultsContent} role="alert">
                         <span className={styles.noResultsHeader}> No result found</span>
-                        <span className={styles.noResultsSubHeading}>
-                            <Permitted permission={permissions.patient.add} fallback="Try refining your search.">
+
+                        <Permitted permission={permissions.patient.add} fallback="Try refining your search.">
+                            <span className={styles.noResultsSubHeading} aria-label="Try refining your search, or add a new patient.">
                                 Try refining your search, or{' '}
-                                <Button className={styles.link} onClick={add} tertiary aria-label="add a new patient">
+                                <Button className={styles.link} onClick={add} tertiary>
                                     add a new patient.
                                 </Button>
-                            </Permitted>
-                        </span>
+                            </span>
+                        </Permitted>
                     </div>
                 </AlertMessage>
             </div>
