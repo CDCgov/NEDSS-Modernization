@@ -1,6 +1,6 @@
 import { PageTitle } from 'page';
 import SystemManagementPage from './layout/SystemManagementPage';
-import { FeatureGuard } from "../../feature";
+import { FeatureGuard } from '../../feature';
 
 const routing = [
     {

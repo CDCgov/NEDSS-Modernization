@@ -78,8 +78,8 @@ type Features = {
     search: Search;
     patient: PatientFeatures;
     systemManagement: {
-        enabled: boolean
-    }
+        enabled: boolean;
+    };
 };
 
 type Properties = {
