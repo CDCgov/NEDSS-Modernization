@@ -6,6 +6,6 @@ export type IdentificationDemographic = {
     asOf?: string;
     type?: string;
     issuer?: string;
-    id?: string;
+    value?: string;
 };
 

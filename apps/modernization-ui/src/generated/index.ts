@@ -41,6 +41,7 @@ export type { OrderingProvider } from './models/OrderingProvider';
 export type { PatientAddressDemographic } from './models/PatientAddressDemographic';
 export type { PatientDemographicsSummary } from './models/PatientDemographicsSummary';
 export { PatientFile } from './models/PatientFile';
+export type { PatientIdentificationDemographic } from './models/PatientIdentificationDemographic';
 export type { PatientInvestigation } from './models/PatientInvestigation';
 export type { PatientLabReport } from './models/PatientLabReport';
 export type { PatientPhoneDemographic } from './models/PatientPhoneDemographic';
