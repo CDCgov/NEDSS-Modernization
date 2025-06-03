@@ -29,7 +29,7 @@ export const AlertMessage = ({ title, type, children, className, slim = false, i
                 },
                 className
             )}>
-            {icon && <Icon name={icon} sizing={slim ? 'small' : 'medium'} aria-label={`${type} icon`} />}
+            {icon && <Icon name={icon} sizing={slim ? 'small' : 'medium'} />}
             <div className={styles.content}>
                 {title && <Heading level={2}>{title}</Heading>}
                 {children}
