@@ -15,7 +15,9 @@ const NoPatientResults = () => {
                         <span className={styles.noResultsHeader}> No result found</span>
 
                         <Permitted permission={permissions.patient.add} fallback="Try refining your search.">
-                            <span className={styles.noResultsSubHeading} aria-label="Try refining your search, or add a new patient.">
+                            <span
+                                className={styles.noResultsSubHeading}
+                                aria-label="Try refining your search, or add a new patient.">
                                 Try refining your search, or{' '}
                                 <Button className={styles.link} onClick={add} tertiary>
                                     add a new patient.
