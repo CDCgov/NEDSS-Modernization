@@ -6,7 +6,7 @@ const SystemManagementPage = () => {
     return (
         <div className={styles.page}>
             <Heading level={1}>System Management </Heading>
-            <SearchBar />
+            <SearchBar placeholder={'Filter by keyword'} />
         </div>
     );
 };
