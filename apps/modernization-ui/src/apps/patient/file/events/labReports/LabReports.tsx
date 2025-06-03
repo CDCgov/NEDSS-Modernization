@@ -78,6 +78,7 @@ const LabReports = () => {
         {
             ...EVENT_ID,
             sortable: true,
+            value: (value) => value.eventId,
             render: (value: PatientLabReport) => (
                 <ClassicLink id="condition" url={`/nbs/api/profile/${patient.id}/report/lab/${value.eventId}`}>
                     {value.eventId}
@@ -87,6 +88,7 @@ const LabReports = () => {
         {
             ...DATE_RECEIVED,
             sortable: true,
+            value: (value) => value.receivedDate,
             render: (value: PatientLabReport) =>
                 value.receivedDate && (
                     <div>
@@ -99,6 +101,7 @@ const LabReports = () => {
         {
             ...FACILITY_PROVIDER,
             sortable: true,
+            value: (value) => value.facilityProviders?.reportingFacility,
             render: (value: PatientLabReport) =>
                 renderFacilityProvider(
                     value.facilityProviders?.reportingFacility,
@@ -109,17 +112,20 @@ const LabReports = () => {
         {
             ...DATE_COLLECTED,
             sortable: true,
+            value: (value) => value.collectedDate,
             render: (value: PatientLabReport) =>
                 value.collectedDate && new Date(value.collectedDate).toLocaleDateString()
         },
         {
             ...TEST_RESULTS,
             sortable: true,
+            value: (value) => value?.testResults?.at(0)?.resultedTest,
             render: (value: PatientLabReport) => displayTestResults(value.testResults)
         },
         {
             ...ASSOCIATED_WITH,
             sortable: true,
+            value: (value) => value.associatedInvestigation?.id,
             render: (value: PatientLabReport) =>
                 value.associatedInvestigation && (
                     <div>
@@ -137,11 +143,13 @@ const LabReports = () => {
         {
             ...PROGRAM_AREA,
             sortable: true,
+            value: (value) => value.programArea,
             render: (value: PatientLabReport) => value.programArea
         },
         {
             ...JURISDICTION,
             sortable: true,
+            value: (value) => value.jurisdiction,
             render: (value: PatientLabReport) => value.jurisdiction
         }
     ];
