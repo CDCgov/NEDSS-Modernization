@@ -158,7 +158,7 @@ const LabReports = () => {
             id="patient-file-lab-reports-table-card"
             title="Lab reports"
             data={patientLabReports || []}
-            defaultCollapsed={patientLabReports && patientLabReports.length > 0 ? false : true}
+            defaultCollapsed={!(patientLabReports && patientLabReports.length > 0)}
             actions={[
                 {
                     sizing: 'small',
