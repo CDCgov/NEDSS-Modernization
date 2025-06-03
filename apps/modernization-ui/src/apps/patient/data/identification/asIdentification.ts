@@ -10,7 +10,7 @@ const asIdentification = (entry: IdentificationEntry): Identification | undefine
         return {
             asOf,
             type: asValue(type),
-            id,
+            value: id,
             issuer: asValue(issuer)
         };
     }

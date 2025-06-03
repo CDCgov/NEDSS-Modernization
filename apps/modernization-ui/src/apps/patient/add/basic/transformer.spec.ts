@@ -573,7 +573,7 @@ describe('when transforming entered basic patient data', () => {
                     identifications: expect.arrayContaining([
                         expect.objectContaining({
                             asOf: '11/07/2019',
-                            id: 'id-value',
+                            value: 'id-value',
                             type: 'identification-type-value',
                             issuer: 'issuer-value'
                         })
