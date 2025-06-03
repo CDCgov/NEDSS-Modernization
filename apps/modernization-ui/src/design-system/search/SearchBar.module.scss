@@ -13,6 +13,7 @@
 
 .searchBar {
   display: flex;
+  position: relative;
   align-items: center;
   border: 0.063rem solid colors.$base-darkest;
   border-right: none;
@@ -61,6 +62,7 @@
 
   &.size-large {
     height: 2.25rem;
+    width: 18.125rem;
   }
 }
 
@@ -162,6 +164,11 @@
 
 .clearButton {
   display: flex;
+  position: absolute;
+  right: 0.25rem;
+  transform: translateY(-50%);
+  top: 50%;
+  z-index: 1;
   justify-content: center;
   align-items: center;
   background: transparent;
