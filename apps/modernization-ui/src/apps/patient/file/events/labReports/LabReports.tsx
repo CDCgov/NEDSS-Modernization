@@ -9,6 +9,26 @@ import { usePatient } from '../../usePatient';
 import { renderFacilityProvider } from '../../renderPatientFile';
 import { mockPatientLabReports } from './mockPatientLabReports';
 
+const EVENT_ID = { id: 'patient-file-lab-reports-eventId', name: 'Event ID' };
+const DATE_RECEIVED = { id: 'patient-file-lab-reports-dateReceived', name: 'Date received' };
+const FACILITY_PROVIDER = { id: 'patient-file-lab-reports-facilityProvider', name: 'Facility/provider' };
+const DATE_COLLECTED = { id: 'patient-file-lab-reports-dateCollected', name: 'Date collected' };
+const TEST_RESULTS = { id: 'patient-file-lab-reports-testResults', name: 'Test results' };
+const ASSOCIATED_WITH = { id: 'patient-file-lab-reports-associatedWith', name: 'Associated with' };
+const PROGRAM_AREA = { id: 'patient-file-lab-reports-programArea', name: 'Program area' };
+const JURISDICTION = { id: 'patient-file-lab-reports-jurisdiction', name: 'Jurisdiction' };
+
+const columnPreferences: ColumnPreference[] = [
+    { ...EVENT_ID },
+    { ...DATE_RECEIVED, moveable: true, toggleable: true },
+    { ...FACILITY_PROVIDER, moveable: true, toggleable: true },
+    { ...DATE_COLLECTED, moveable: true, toggleable: true },
+    { ...TEST_RESULTS, moveable: true, toggleable: true },
+    { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
+    { ...PROGRAM_AREA, moveable: true, toggleable: true },
+    { ...JURISDICTION, moveable: true, toggleable: true }
+];
+
 const displayTestResults = (testResults?: TestResult[] | undefined) => {
     if (!testResults || testResults.length < 1) {
         return undefined;
@@ -53,26 +73,6 @@ const displayTestResults = (testResults?: TestResult[] | undefined) => {
 const LabReports = () => {
     const patient = usePatient();
     // const { patientLabReports } = usePatientLabReports(patient.id);
-
-    const EVENT_ID = { id: 'patient-file-lab-reports-eventId', name: 'Event ID' };
-    const DATE_RECEIVED = { id: 'patient-file-lab-reports-dateReceived', name: 'Date received' };
-    const FACILITY_PROVIDER = { id: 'patient-file-lab-reports-facilityProvider', name: 'Facility/provider' };
-    const DATE_COLLECTED = { id: 'patient-file-lab-reports-dateCollected', name: 'Date collected' };
-    const TEST_RESULTS = { id: 'patient-file-lab-reports-testResults', name: 'Test results' };
-    const ASSOCIATED_WITH = { id: 'patient-file-lab-reports-associatedWith', name: 'Associated with' };
-    const PROGRAM_AREA = { id: 'patient-file-lab-reports-programArea', name: 'Program area' };
-    const JURISDICTION = { id: 'patient-file-lab-reports-jurisdiction', name: 'Jurisdiction' };
-
-    const columnPreferences: ColumnPreference[] = [
-        { ...EVENT_ID },
-        { ...DATE_RECEIVED, moveable: true, toggleable: true },
-        { ...FACILITY_PROVIDER, moveable: true, toggleable: true },
-        { ...DATE_COLLECTED, moveable: true, toggleable: true },
-        { ...TEST_RESULTS, moveable: true, toggleable: true },
-        { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
-        { ...PROGRAM_AREA, moveable: true, toggleable: true },
-        { ...JURISDICTION, moveable: true, toggleable: true }
-    ];
 
     const columns: Column<PatientLabReport>[] = [
         {
@@ -155,27 +155,25 @@ const LabReports = () => {
     ];
 
     return (
-        <div>
-            <TableCard
-                id="patient-file-lab-reports-table-card"
-                title="Lab reports"
-                data={mockPatientLabReports || []}
-                defaultCollapsed={mockPatientLabReports && mockPatientLabReports.length > 0 ? false : true}
-                actions={[
-                    {
-                        sizing: 'small',
-                        secondary: true,
-                        children: 'Add lab report',
-                        icon: <Icon name="add_circle" />,
-                        labelPosition: 'right',
-                        onClick: () => console.log('Add lab report clicked')
-                    }
-                ]}
-                columns={columns}
-                columnPreferencesKey="patient-file-lab-reports-table-card-column-preferences"
-                defaultColumnPreferences={columnPreferences}
-            />
-        </div>
+        <TableCard
+            id="patient-file-lab-reports-table-card"
+            title="Lab reports"
+            data={mockPatientLabReports || []}
+            defaultCollapsed={mockPatientLabReports && mockPatientLabReports.length > 0 ? false : true}
+            actions={[
+                {
+                    sizing: 'small',
+                    secondary: true,
+                    children: 'Add lab report',
+                    icon: <Icon name="add_circle" />,
+                    labelPosition: 'right',
+                    onClick: () => console.log('Add lab report clicked')
+                }
+            ]}
+            columns={columns}
+            columnPreferencesKey="patient-file-lab-reports-table-card-column-preferences"
+            defaultColumnPreferences={columnPreferences}
+        />
     );
 };
 
