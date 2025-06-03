@@ -3,14 +3,12 @@ import classNames from 'classnames';
 import { Button } from 'design-system/button/Button';
 import { Sizing } from 'design-system/field';
 import { Icon } from 'design-system/icon';
-import type { Icons } from 'design-system/icon';
 import styles from './SearchBar.module.scss';
 
 type SearchBarProps = {
     size?: Sizing;
     tall?: boolean;
     placeholder?: string;
-    altIconName?: Icons;
     value?: string;
     onChange?: (value: string) => void;
     onSearch?: (value: string) => void;
@@ -20,7 +18,6 @@ export const SearchBar = ({
     size = 'medium',
     tall = false,
     placeholder = '',
-    altIconName = 'search',
     value: controlledValue,
     onChange: controlledOnChange,
     onSearch,
@@ -92,7 +89,7 @@ export const SearchBar = ({
             <div>
                 <Button
                     sizing={size}
-                    icon={<Icon name={altIconName} aria-hidden />}
+                    icon={<Icon name="search" aria-hidden />}
                     className={classNames(styles.searchButton, styles[`size-${size}`], { [styles.tall]: tall })}
                     onClick={() => onSearch?.(value)}
                     aria-label="Search"

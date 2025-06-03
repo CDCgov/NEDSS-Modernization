@@ -22,15 +22,6 @@ export const WithPlaceholder: Story = {
     }
 };
 
-export const WithAlternateIcon: Story = {
-    args: {
-        size: 'medium',
-        tall: false,
-        placeholder: 'Medium filter search...',
-        altIconName: 'filter_alt'
-    }
-};
-
 export const Small: Story = {
     args: {
         size: 'small',
