@@ -153,16 +153,27 @@ export const ReadOnlyRepeatingBlock: Story = {
         title: 'Person',
         defaultValues: defaultValue,
         columns,
-        values: [],
+        values: [{ firstName: 'test', lastName: 'test', veggie: asSelectable('carrot', 'Carrot') }],
         formRenderer: () => <SampleForm sizing={defaultSizing} />,
         viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
         onChange: handleChange,
         isDirty: () => {},
         isValid: () => {},
         readonly: true,
+        edit: false,
+        view: false,
+        delete: false,
         sizing: defaultSizing
     }
 };
+
+const SampleViewPatientFile = ({ entry, sizing }: { entry: SampleType; sizing: Sizing }) => (
+    <>
+        <ValueView title="First name" value={entry.firstName} sizing={sizing} required centerAlign />
+        <ValueView title="Last name" value={entry.lastName} sizing={sizing} centerAlign />
+        <ValueView title="Favorite veggie" value={entry.veggie?.name} sizing={sizing} required centerAlign />
+    </>
+);
 
 export const PatientFileBlock: Story = {
     args: {
@@ -170,15 +181,15 @@ export const PatientFileBlock: Story = {
         title: 'Person',
         defaultValues: defaultValue,
         columns,
-        values: [],
+        values: [{ firstName: 'test', lastName: 'test', veggie: asSelectable('carrot', 'Carrot') }],
         formRenderer: () => <SampleForm sizing={defaultSizing} />,
-        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
+        viewRenderer: (entry: SampleType) => <SampleViewPatientFile entry={entry} sizing={defaultSizing} />,
         onChange: handleChange,
         isDirty: () => {},
         isValid: () => {},
         edit: false,
         delete: false,
-        onViewCenter: true,
+        readonly: true,
         sizing: defaultSizing
     }
 };

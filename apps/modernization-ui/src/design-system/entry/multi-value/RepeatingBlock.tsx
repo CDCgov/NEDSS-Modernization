@@ -24,7 +24,6 @@ type RepeatingBlockProps<V extends FieldValues> = {
     edit?: boolean;
     delete?: boolean;
     readonly?: boolean;
-    onViewCenter?: boolean;
     onChange?: (data: V[]) => void;
     isDirty?: (isDirty: boolean) => void;
     isValid?: (isValid: boolean) => void;
@@ -44,7 +43,6 @@ const RepeatingBlock = <V extends FieldValues>({
     edit: editBtn = true,
     delete: deleteBtn = true,
     readonly = false,
-    onViewCenter = false,
     onChange,
     isDirty,
     isValid,
@@ -119,7 +117,9 @@ const RepeatingBlock = <V extends FieldValues>({
                         <Icon
                             name="visibility"
                             sizing={sizing}
-                            className={classNames({ [styles.active]: status === 'viewing' && value === selected })}
+                            className={classNames({
+                                [styles.active]: status === 'viewing' && value === selected
+                            })}
                         />
                     </div>
                 )}
@@ -128,7 +128,9 @@ const RepeatingBlock = <V extends FieldValues>({
                         <Icon
                             name="edit"
                             sizing={sizing}
-                            className={classNames({ [styles.active]: status === 'editing' && value === selected })}
+                            className={classNames({
+                                [styles.active]: status === 'editing' && value === selected
+                            })}
                         />
                     </div>
                 )}
@@ -182,17 +184,12 @@ const RepeatingBlock = <V extends FieldValues>({
                     noDataFallback
                 />
             </div>
+
+            <Shown when={status === 'viewing'}>
+                {selected && <div className={styles.viewMode}>{viewRenderer(selected)}</div>}
+            </Shown>
             {readonly === false && (
                 <>
-                    <Shown when={status === 'viewing'}>
-                        {selected && (
-                            <div className={styles.viewMode}>
-                                <div className={classNames({ [styles.centerAlign]: onViewCenter })}>
-                                    {viewRenderer(selected)}
-                                </div>
-                            </div>
-                        )}
-                    </Shown>
                     <Shown when={status !== 'viewing'}>
                         <FormProvider {...form}>
                             <div className={classNames(styles.form, { [styles.changed]: form.formState.isDirty })}>
@@ -200,6 +197,7 @@ const RepeatingBlock = <V extends FieldValues>({
                             </div>
                         </FormProvider>
                     </Shown>
+
                     <footer>
                         <Shown when={status === 'adding'}>
                             <Button
