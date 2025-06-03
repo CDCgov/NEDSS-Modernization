@@ -71,7 +71,7 @@ describe('RaceRepeatingBlock', () => {
     });
 
     it('should not allow adding the same race more than once', async () => {
-        const { getByLabelText, getByRole } = render(
+        const { getByLabelText, getByRole, getAllByRole } = render(
             <RaceRepeatingBlock
                 id="testing"
                 values={[
@@ -93,10 +93,8 @@ describe('RaceRepeatingBlock', () => {
 
         const user = userEvent.setup();
         await user.selectOptions(category, '1').then(() => user.click(add));
-
-        expect(getByRole('alert')).toHaveTextContent(
-            /Race race one name has already been added to the repeating block/
-        );
+        const errorAlert = getAllByRole('alert')[0];
+        expect(errorAlert).toHaveTextContent(/Race race one name has already been added to the repeating block/);
 
         expect(getByRole('listitem')).toHaveTextContent(
             /Race race one name has already been added to the repeating block/
