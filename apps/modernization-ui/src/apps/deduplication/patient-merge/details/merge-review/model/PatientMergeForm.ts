@@ -7,6 +7,7 @@ export type PatientMergeForm = {
     identifications: IdentificationId[];
     races: RaceId[];
     ethnicity: string; // the id of the person to pull ethnicity data from
+    sexAndBirth: SexAndBirthValues;
 };
 
 export type NameId = {
@@ -30,4 +31,18 @@ export type IdentificationId = {
 export type RaceId = {
     personUid: string;
     raceCode: string;
+};
+
+// all fields are the person_uid of the patient to pull values from
+export type SexAndBirthValues = {
+    asOf?: string;
+    dateOfBirth?: string;
+    currentSex?: string;
+    transgenderInfo?: string;
+    additionalGender?: string;
+    birthGender?: string;
+    multipleBirth?: string;
+    birthCity?: string;
+    birthState?: string;
+    birthCountry?: string;
 };

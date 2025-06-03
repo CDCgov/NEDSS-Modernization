@@ -7,6 +7,7 @@ export type MergeCandidate = {
     identifications: MergeIdentification[];
     races: MergeRace[];
     ethnicity: MergeEthnicity;
+    sexAndBirth: MergeSexAndBirth;
 };
 
 export type AdminComments = {
@@ -81,4 +82,20 @@ export type MergeEthnicity = {
     ethnicity?: string;
     reasonUnknown?: string;
     spanishOrigin?: string;
+};
+
+export type MergeSexAndBirth = {
+    asOf?: string;
+    dateOfBirth?: string;
+    currentSex?: string;
+    sexUnknown?: string;
+    transgender?: string;
+    additionalGender?: string;
+    birthGender?: string;
+    multipleBirth?: string;
+    birthOrder?: string;
+    birthCity?: string;
+    birthState?: string;
+    birthCounty?: string;
+    birthCountry?: string;
 };
