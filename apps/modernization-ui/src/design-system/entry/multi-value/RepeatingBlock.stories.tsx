@@ -147,7 +147,7 @@ export const Default: Story = {
     }
 };
 
-export const ReadOnlyRepeatingBlock: Story = {
+export const ReadOnlyBlock: Story = {
     args: {
         id: 'repeating-block-default',
         title: 'Person',
@@ -160,9 +160,8 @@ export const ReadOnlyRepeatingBlock: Story = {
         isDirty: () => {},
         isValid: () => {},
         readonly: true,
-        edit: false,
-        view: false,
-        delete: false,
+        editable: false,
+        viewable: false,
         sizing: defaultSizing
     }
 };
@@ -175,44 +174,28 @@ const SampleViewPatientFile = ({ entry, sizing }: { entry: SampleType; sizing: S
     </>
 );
 
-export const PatientFileBlock: Story = {
-    args: {
-        id: 'repeating-block-default',
-        title: 'Person',
-        defaultValues: defaultValue,
-        columns,
-        values: [{ firstName: 'test', lastName: 'test', veggie: asSelectable('carrot', 'Carrot') }],
-        formRenderer: () => <SampleForm sizing={defaultSizing} />,
-        viewRenderer: (entry: SampleType) => <SampleViewPatientFile entry={entry} sizing={defaultSizing} />,
-        onChange: handleChange,
-        isDirty: () => {},
-        isValid: () => {},
-        edit: false,
-        delete: false,
-        readonly: true,
-        sizing: defaultSizing
-    }
-};
-
 export const ViewOnlyBlock: Story = {
     args: {
         id: 'repeating-block-default',
         title: 'Person',
         defaultValues: defaultValue,
         columns,
-        values: [],
+        values: [
+            { firstName: 'test', lastName: 'test', veggie: asSelectable('carrot', 'Carrot') },
+            { firstName: 'test1', lastName: 'test1', veggie: asSelectable('eggplant', 'Eggplant') }
+        ],
         formRenderer: () => <SampleForm sizing={defaultSizing} />,
-        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
+        viewRenderer: (entry: SampleType) => <SampleViewPatientFile entry={entry} sizing={defaultSizing} />,
         onChange: handleChange,
         isDirty: () => {},
         isValid: () => {},
-        edit: false,
-        delete: false,
+        editable: false,
+        readonly: true,
         sizing: defaultSizing
     }
 };
 
-export const EditOnlyBlock: Story = {
+export const ViewableBlock: Story = {
     args: {
         id: 'repeating-block-default',
         title: 'Person',
@@ -224,13 +207,12 @@ export const EditOnlyBlock: Story = {
         onChange: handleChange,
         isDirty: () => {},
         isValid: () => {},
-        view: false,
-        delete: false,
+        editable: false,
         sizing: defaultSizing
     }
 };
 
-export const DeleteOnlyBlock: Story = {
+export const EditableBlock: Story = {
     args: {
         id: 'repeating-block-default',
         title: 'Person',
@@ -242,8 +224,7 @@ export const DeleteOnlyBlock: Story = {
         onChange: handleChange,
         isDirty: () => {},
         isValid: () => {},
-        edit: false,
-        view: false,
+        viewable: false,
         sizing: defaultSizing
     }
 };

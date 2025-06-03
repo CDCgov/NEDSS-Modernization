@@ -20,9 +20,8 @@ type RepeatingBlockProps<V extends FieldValues> = {
     errors?: ReactNode[];
     values?: V[];
     sizing?: Sizing;
-    view?: boolean;
-    edit?: boolean;
-    delete?: boolean;
+    viewable?: boolean;
+    editable?: boolean;
     readonly?: boolean;
     onChange?: (data: V[]) => void;
     isDirty?: (isDirty: boolean) => void;
@@ -39,9 +38,8 @@ const RepeatingBlock = <V extends FieldValues>({
     columns,
     errors,
     sizing,
-    view: viewBtn = true,
-    edit: editBtn = true,
-    delete: deleteBtn = true,
+    viewable = true,
+    editable = true,
     readonly = false,
     onChange,
     isDirty,
@@ -112,8 +110,12 @@ const RepeatingBlock = <V extends FieldValues>({
         className: styles.iconColumn,
         render: (value: V) => (
             <div className={classNames(styles.actions, sizing && styles[sizing])}>
-                {viewBtn && (
-                    <div data-tooltip-position="top" aria-label="View" role="button" onClick={() => view(value)}>
+                {viewable && (
+                    <div
+                        data-tooltip-position="top"
+                        aria-label="View"
+                        role="button"
+                        onClick={() => (status === 'viewing' && selected === value ? reset() : view(value))}>
                         <Icon
                             name="visibility"
                             sizing={sizing}
@@ -123,25 +125,25 @@ const RepeatingBlock = <V extends FieldValues>({
                         />
                     </div>
                 )}
-                {editBtn && (
-                    <div data-tooltip-position="top" aria-label="Edit" role="button" onClick={() => edit(value)}>
-                        <Icon
-                            name="edit"
-                            sizing={sizing}
-                            className={classNames({
-                                [styles.active]: status === 'editing' && value === selected
-                            })}
-                        />
-                    </div>
-                )}
-                {deleteBtn && (
-                    <div
-                        data-tooltip-position="top"
-                        aria-label="Delete"
-                        role="button"
-                        onClick={() => handleRemove(value)}>
-                        <Icon name="delete" sizing={sizing} />
-                    </div>
+                {editable && (
+                    <>
+                        <div data-tooltip-position="top" aria-label="Edit" role="button" onClick={() => edit(value)}>
+                            <Icon
+                                name="edit"
+                                sizing={sizing}
+                                className={classNames({
+                                    [styles.active]: status === 'editing' && value === selected
+                                })}
+                            />
+                        </div>
+                        <div
+                            data-tooltip-position="top"
+                            aria-label="Delete"
+                            role="button"
+                            onClick={() => handleRemove(value)}>
+                            <Icon name="delete" sizing={sizing} />
+                        </div>
+                    </>
                 )}
             </div>
         )
