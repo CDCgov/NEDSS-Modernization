@@ -22,7 +22,6 @@ type RepeatingBlockProps<V extends FieldValues> = {
     sizing?: Sizing;
     viewable?: boolean;
     editable?: boolean;
-    readonly?: boolean;
     onChange?: (data: V[]) => void;
     isDirty?: (isDirty: boolean) => void;
     isValid?: (isValid: boolean) => void;
@@ -40,7 +39,6 @@ const RepeatingBlock = <V extends FieldValues>({
     sizing,
     viewable = true,
     editable = true,
-    readonly = false,
     onChange,
     isDirty,
     isValid,
@@ -187,10 +185,13 @@ const RepeatingBlock = <V extends FieldValues>({
                 />
             </div>
 
-            <Shown when={status === 'viewing'}>
-                {selected && <div className={styles.viewMode}>{viewRenderer(selected)}</div>}
-            </Shown>
-            {readonly === false && (
+            {viewable && (
+                <Shown when={status === 'viewing'}>
+                    {selected && <div className={styles.viewMode}>{viewRenderer(selected)}</div>}
+                </Shown>
+            )}
+
+            {editable && (
                 <>
                     <Shown when={status !== 'viewing'}>
                         <FormProvider {...form}>

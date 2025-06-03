@@ -159,7 +159,6 @@ export const ReadOnlyBlock: Story = {
         onChange: handleChange,
         isDirty: () => {},
         isValid: () => {},
-        readonly: true,
         editable: false,
         viewable: false,
         sizing: defaultSizing
@@ -190,24 +189,7 @@ export const ViewOnlyBlock: Story = {
         isDirty: () => {},
         isValid: () => {},
         editable: false,
-        readonly: true,
-        sizing: defaultSizing
-    }
-};
-
-export const ViewableBlock: Story = {
-    args: {
-        id: 'repeating-block-default',
-        title: 'Person',
-        defaultValues: defaultValue,
-        columns,
-        values: [],
-        formRenderer: () => <SampleForm sizing={defaultSizing} />,
-        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
-        onChange: handleChange,
-        isDirty: () => {},
-        isValid: () => {},
-        editable: false,
+        viewable: true,
         sizing: defaultSizing
     }
 };
