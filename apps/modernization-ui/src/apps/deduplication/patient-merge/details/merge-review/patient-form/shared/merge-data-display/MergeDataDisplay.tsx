@@ -7,12 +7,12 @@ import classNames from 'classnames';
 
 type Props = {
     label: string;
-    value?: string;
+    display?: string;
     groupType?: 'blank' | 'linked' | 'last';
     underlined?: boolean;
-    selectable?: ControllerRenderProps & { id: string; selectValue: string };
+    selectable?: ControllerRenderProps & { id: string; formValue: string };
 };
-export const MergeDataDisplay = ({ label, value, groupType, selectable, underlined = false }: Props) => {
+export const MergeDataDisplay = ({ label, display, groupType, selectable, underlined = false }: Props) => {
     return (
         <div className={styles.mergeDataDisplay}>
             <Shown
@@ -30,8 +30,8 @@ export const MergeDataDisplay = ({ label, value, groupType, selectable, underlin
                             sizing="small"
                             label=""
                             onChange={selectable.onChange}
-                            value={selectable.selectValue}
-                            checked={selectable.selectValue === selectable.value}
+                            value={selectable.formValue}
+                            checked={selectable.formValue === selectable.value}
                         />
                     </div>
                 )}
@@ -39,7 +39,7 @@ export const MergeDataDisplay = ({ label, value, groupType, selectable, underlin
 
             <div className={classNames(styles.labelAndValue, underlined ? styles.underlined : '')}>
                 <div className={styles.label}>{label}</div>
-                <div className={styles.value}>{value ?? '---'}</div>
+                <div className={styles.value}>{display ?? '---'}</div>
             </div>
         </div>
     );

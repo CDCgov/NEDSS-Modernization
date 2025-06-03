@@ -26,18 +26,18 @@ export const Ethnicity = ({ personUid, ethnicity }: Props) => {
                 render={({ field }) => (
                     <MergeDataDisplay
                         label="As of date"
-                        value={parseDate(ethnicity.asOf)}
+                        display={parseDate(ethnicity.asOf)}
                         selectable={{
                             id: `ethnicity-${field.name}-${personUid}`,
-                            selectValue: personUid,
+                            formValue: personUid,
                             ...field
                         }}
                     />
                 )}
             />
-            <MergeDataDisplay label="Ethnicity" value={ethnicity.ethnicity} groupType="linked" />
-            <MergeDataDisplay label="Spanish origin" value={ethnicity.spanishOrigin} groupType="linked" />
-            <MergeDataDisplay label="Reason unknown" value={ethnicity.reasonUnknown} groupType="last" />
+            <MergeDataDisplay label="Ethnicity" display={ethnicity.ethnicity} groupType="linked" />
+            <MergeDataDisplay label="Spanish origin" display={ethnicity.spanishOrigin} groupType="linked" />
+            <MergeDataDisplay label="Reason unknown" display={ethnicity.reasonUnknown} groupType="last" />
         </section>
     );
 };
