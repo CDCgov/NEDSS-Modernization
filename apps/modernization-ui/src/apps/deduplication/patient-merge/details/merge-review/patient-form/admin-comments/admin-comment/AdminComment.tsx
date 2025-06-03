@@ -1,4 +1,4 @@
-import { AdminComments } from 'apps/deduplication/api/model/PatientData';
+import { AdminComments } from 'apps/deduplication/api/model/MergeCandidate';
 import { format, parseISO } from 'date-fns';
 import { Radio } from 'design-system/radio';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -43,7 +43,7 @@ export const AdminComment = ({ personUid, adminComments }: Props) => {
                 )}
             />
             <div className={styles.comment}>
-                <GroupLine last />
+                <GroupLine groupType="last" />
                 <div className={styles.commentText}>
                     <span className={styles.label}>Comments: </span>
                     {adminComments?.comment ? <LengthConstrained content={adminComments.comment} limit={50} /> : '---'}

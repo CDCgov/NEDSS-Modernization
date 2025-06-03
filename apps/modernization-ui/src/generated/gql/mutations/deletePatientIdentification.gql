@@ -1,6 +1,0 @@
-mutation deletePatientIdentification($input: DeletePatientIdentificationInput){
-    deletePatientIdentification(input: $input){
-        patient
-        sequence
-    }
-}

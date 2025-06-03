@@ -1,8 +1,8 @@
 import { render, within } from '@testing-library/react';
-import { PatientRace } from 'apps/deduplication/api/model/PatientData';
+import { MergeRace } from 'apps/deduplication/api/model/MergeCandidate';
 import { RaceDetails } from './RaceDetails';
 
-const defaultRace: PatientRace = {
+const defaultRace: MergeRace = {
     personUid: '1',
     raceCode: '2106-3',
     asOf: '2014-03-12T00:00:00.000',
@@ -10,7 +10,7 @@ const defaultRace: PatientRace = {
     detailedRaces: 'European'
 };
 
-const Fixture = ({ race = defaultRace }: { race?: PatientRace }) => {
+const Fixture = ({ race = defaultRace }: { race?: MergeRace }) => {
     return <RaceDetails race={race} />;
 };
 
@@ -24,7 +24,7 @@ describe('RaceDetails', () => {
     });
 
     it('should render "---" for missing optional fields', () => {
-        const sparseRace: PatientRace = {
+        const sparseRace: MergeRace = {
             personUid: '1',
             raceCode: '2106-3',
             asOf: '2014-03-11T00:00:00.000',

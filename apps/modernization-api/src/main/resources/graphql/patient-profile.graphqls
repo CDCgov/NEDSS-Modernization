@@ -118,31 +118,6 @@ type PatientCountry {
     description: String!
 }
 
-type PatientAddress {
-    patient: Int!
-    id: ID!
-    version: Int!
-    asOf: Date!
-    type: PatientAddressType!
-    use: PatientAddressUse!
-    address1: String
-    address2: String
-    city: String
-    county: PatientCounty
-    state: PatientState
-    zipcode: String
-    country: PatientCountry
-    censusTract: String
-    comment: String
-}
-
-type PatientAddressResults {
-    content: [PatientAddress!]!
-    total: Int!
-    number: Int!
-    size: Int!
-}
-
 type PatientBirth {
     patient: Int!
     id: ID!
@@ -183,35 +158,6 @@ type PatientGender {
     unknownReason: PatientGenderUnknownReason
     preferred: PatientPreferredGender
     additional: String
-}
-
-
-
-type PatientIdentificationType {
-    id: String!
-    description: String!
-}
-
-type PatientIdentificationAuthority {
-    id: String!
-    description: String!
-}
-
-type PatientIdentification {
-    patient: Int!
-    sequence: Int!
-    version: Int!
-    asOf: Date!
-    type: PatientIdentificationType!
-    authority: PatientIdentificationAuthority
-    value: String
-}
-
-type PatientIdentificationResults {
-    content: [PatientIdentification!]!
-    total: Int!
-    number: Int!
-    size: Int!
 }
 
 type PatientMortality {
@@ -332,8 +278,6 @@ type PatientProfile {
     deletable: Boolean!
     summary(asOf: Date): PatientSummary
     names(page: Page): PatientNameResults!
-    addresses(page: Page): PatientAddressResults!
-    identification(page: Page): PatientIdentificationResults!
     races(page: Page): PatientRaceResults!
     birth: PatientBirth
     gender: PatientGender

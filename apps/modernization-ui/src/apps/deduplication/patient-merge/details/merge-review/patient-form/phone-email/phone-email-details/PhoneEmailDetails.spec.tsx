@@ -1,8 +1,8 @@
 import { render, within } from '@testing-library/react';
-import { PatientPhoneEmail } from 'apps/deduplication/api/model/PatientData';
+import { MergePhoneEmail } from 'apps/deduplication/api/model/MergeCandidate';
 import { PhoneEmailDetails } from './PhoneEmailDetails';
 
-const defaultPhoneEmail: PatientPhoneEmail = {
+const defaultPhoneEmail: MergePhoneEmail = {
     id: '123',
     asOf: '2022-06-07T14:24:44.970',
     type: 'Cellular Phone',
@@ -15,7 +15,7 @@ const defaultPhoneEmail: PatientPhoneEmail = {
     comments: 'phone comment'
 };
 
-const Fixture = ({ phoneEmail = defaultPhoneEmail }: { phoneEmail?: PatientPhoneEmail }) => {
+const Fixture = ({ phoneEmail = defaultPhoneEmail }: { phoneEmail?: MergePhoneEmail }) => {
     return <PhoneEmailDetails phoneEmail={phoneEmail} />;
 };
 
@@ -35,7 +35,7 @@ describe('PhoneEmailDetails', () => {
     });
 
     it('should render "---" for missing optional fields', () => {
-        const sparsePhoneEmail: PatientPhoneEmail = {
+        const sparsePhoneEmail: MergePhoneEmail = {
             id: '1',
             asOf: '2022-06-07T14:24:44.970',
             type: 'Type',

@@ -1,4 +1,4 @@
-import { PatientData, PatientIdentification } from 'apps/deduplication/api/model/PatientData';
+import { MergeCandidate, MergeIdentification } from 'apps/deduplication/api/model/MergeCandidate';
 import { format, parseISO } from 'date-fns';
 import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -6,9 +6,9 @@ import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
 
 type Props = {
-    patientData: PatientData;
-    selectedIdentification?: PatientIdentification;
-    onViewIdentification: (identification: PatientIdentification) => void;
+    patientData: MergeCandidate;
+    selectedIdentification?: MergeIdentification;
+    onViewIdentification: (identification: MergeIdentification) => void;
 };
 export const IdentificationDataTable = ({ patientData, selectedIdentification, onViewIdentification }: Props) => {
     const form = useFormContext<PatientMergeForm>();
@@ -17,7 +17,7 @@ export const IdentificationDataTable = ({ patientData, selectedIdentification, o
         name: 'identifications'
     });
 
-    const handleIdentificationSelection = (identification: PatientIdentification) => {
+    const handleIdentificationSelection = (identification: MergeIdentification) => {
         const index = fields.findIndex(
             (f) => f.personUid === identification.personUid && f.sequence === identification.sequence
         );
@@ -28,7 +28,7 @@ export const IdentificationDataTable = ({ patientData, selectedIdentification, o
         }
     };
 
-    const columns: Column<PatientIdentification>[] = [
+    const columns: Column<MergeIdentification>[] = [
         {
             id: 'as-of',
             name: 'As of',
@@ -46,7 +46,7 @@ export const IdentificationDataTable = ({ patientData, selectedIdentification, o
         }
     ];
     return (
-        <MergeDataTable<PatientIdentification>
+        <MergeDataTable<MergeIdentification>
             id={`identification-data${patientData.personUid}`}
             columns={columns}
             data={patientData.identifications}

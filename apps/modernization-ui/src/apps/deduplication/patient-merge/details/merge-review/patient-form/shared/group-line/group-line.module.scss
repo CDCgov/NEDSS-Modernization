@@ -13,7 +13,7 @@
 
         & > div {
             display: flex;
-            width: 100%;
+            width: 50%;
         }
 
         .top {
@@ -22,7 +22,7 @@
             height: 100%;
         }
 
-        .bottom {
+        .linked {
             border-left: solid 1px colors.$base-lighter;
         }
     }

@@ -80,13 +80,13 @@ public class PostalLocator extends Locator {
     @Column(name = "census_tract", length = 10)
     private String censusTract;
 
-    public PostalLocator() {
+    protected PostalLocator() {
 
     }
 
-    public PostalLocator(final PatientCommand.AddAddress address) {
+    public PostalLocator(final PatientCommand.AddAddress address, final EntityLocatorParticipationId identifier) {
         super(address);
-        this.id = address.id();
+        this.id = identifier.getLocatorUid();
         this.streetAddr1 = address.address1();
         this.streetAddr2 = address.address2();
         this.cityDescTxt = address.city();
