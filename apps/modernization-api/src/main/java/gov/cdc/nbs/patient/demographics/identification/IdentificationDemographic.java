@@ -9,6 +9,11 @@ public record IdentificationDemographic(
     @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
     String type,
     String issuer,
-    String id
+    String value
 ) {
+
+  public IdentificationDemographic withIssuer(final String issuer) {
+    return new IdentificationDemographic(asOf(), type(), issuer, value());
+  }
+
 }
