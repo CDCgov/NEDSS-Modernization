@@ -1,19 +1,7 @@
-export enum Headers {
-    Investigation = 'Investigation ID',
-    StartDate = 'Start date',
-    Condition = 'Condition',
-    Status = 'Status',
-    CaseStatus = 'Case status',
-    Notification = 'Notification',
-    Jurisdiction = 'Jurisdiction',
-    Investigator = 'Investigator',
-    CoInfection = 'Co-infection ID'
-}
-
-export type Investigation = {
+export type PatientInvestigation = {
     investigationId: string;
     identifier: number;
-    startedOn?: string;
+    startedOn?: Date;
     condition: string;
     status: string;
     caseStatus?: string;

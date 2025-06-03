@@ -1,8 +1,9 @@
 import { Suspense } from 'react';
 import { Await, Outlet, useLoaderData } from 'react-router';
-import { Button } from 'components/button';
+import { RedirectHome } from 'routes';
 import { Spinner } from 'components/Spinner';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
+import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
 import { Patient } from './patient';
 import { PatientLoaderResult } from './loader';
@@ -14,7 +15,9 @@ const PatientFile = () => {
 
     return (
         <Suspense fallback={<Spinner />}>
-            <Await resolve={data.patient}>{WithMeta}</Await>
+            <Await resolve={data.patient} errorElement={<RedirectHome />}>
+                {WithMeta}
+            </Await>
         </Suspense>
     );
 };
