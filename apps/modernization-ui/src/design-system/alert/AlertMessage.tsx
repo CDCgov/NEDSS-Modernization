@@ -14,11 +14,35 @@ type Props = {
     slim?: boolean;
 } & Omit<HTMLAttributes<HTMLDivElement>, 'className'>;
 
-export const AlertMessage = ({ title, type, children, className, slim = false, iconless = false, ...props }: Props) => {
+const getDefaultAlertAriaLabel = (title?: string, children?: ReactNode): string | undefined => {
+    if (!title && !children) return undefined;
+
+    const childrenText = typeof children === 'string' ? children : '';
+    return title ? `${title}. ${childrenText}` : childrenText;
+};
+
+export const AlertMessage = ({
+    title,
+    type,
+    children,
+    className,
+    slim = false,
+    iconless = false,
+    'aria-label': ariaLabel,
+    ...props
+}: Props) => {
     const icon = iconless ? undefined : resolveIcon(type);
+    const defaultAriaLabel = getDefaultAlertAriaLabel(title, children);
+
+    const getAriaLabel = (): string | undefined => {
+        if (!title && !ariaLabel) return undefined;
+        return title ? `${title}. ${ariaLabel}` : ariaLabel;
+    };
 
     return (
         <div
+            role="alert"
+            aria-label={getAriaLabel() || defaultAriaLabel}
             className={classNames(
                 styles.alertMessage,
                 {
