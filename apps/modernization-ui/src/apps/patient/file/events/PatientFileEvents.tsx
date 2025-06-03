@@ -1,5 +1,6 @@
 import { InvestigationsCard } from './investigations';
 import { usePatient } from '../usePatient';
+import { LabReportsCard } from './labReports';
 
 const PatientFileEvents = () => {
     const { id } = usePatient();
@@ -7,6 +8,7 @@ const PatientFileEvents = () => {
     return (
         <>
             <InvestigationsCard patient={id} />
+            <LabReportsCard patient={id} />
         </>
     );
 };

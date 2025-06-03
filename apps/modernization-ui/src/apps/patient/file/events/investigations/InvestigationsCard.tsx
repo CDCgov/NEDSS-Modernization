@@ -121,7 +121,7 @@ const InvestigationsCard = ({ patient }: InvestigationsCardProps) => {
             sizing="small"
             title="Investigations"
             id={'investigations'}
-            columnPreferencesKey={'patient.file.open-investigations.preferences'}
+            columnPreferencesKey={'patient.file.investigations.preferences'}
             defaultCollapsed={data.length === 0}
             columns={columns}
             data={data}

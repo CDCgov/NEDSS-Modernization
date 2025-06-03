@@ -3,10 +3,8 @@ import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { PatientLabReport, TestResult } from 'generated';
-import { Icon } from 'design-system/icon';
-import { usePatient } from '../../usePatient';
 import { usePatientLabReports } from './usePatientLabReports';
-import { renderFacilityProvider } from '../../renderPatientFile';
+import { renderFacilityProvider } from 'apps/patient/file/renderPatientFile';
 
 const EVENT_ID = { id: 'patient-file-lab-reports-eventId', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'patient-file-lab-reports-dateReceived', name: 'Date received' };
@@ -69,9 +67,12 @@ const displayTestResults = (testResults?: TestResult[] | undefined) => {
     );
 };
 
-const LabReports = () => {
-    const patient = usePatient();
-    const { patientLabReports } = usePatientLabReports(patient.id);
+type LabReportsCardProps = {
+    patient: number;
+};
+
+const LabReportsCard = ({ patient }: LabReportsCardProps) => {
+    const { patientLabReports } = usePatientLabReports(patient);
 
     const columns: Column<PatientLabReport>[] = [
         {
@@ -79,7 +80,7 @@ const LabReports = () => {
             sortable: true,
             value: (value) => value.eventId,
             render: (value: PatientLabReport) => (
-                <ClassicLink id="condition" url={`/nbs/api/profile/${patient.id}/report/lab/${value.eventId}`}>
+                <ClassicLink id="condition" url={`/nbs/api/profile/${patient}/report/lab/${value.id}`}>
                     {value.eventId}
                 </ClassicLink>
             )
@@ -142,14 +143,12 @@ const LabReports = () => {
         {
             ...PROGRAM_AREA,
             sortable: true,
-            value: (value) => value.programArea,
-            render: (value: PatientLabReport) => value.programArea
+            value: (value) => value.programArea
         },
         {
             ...JURISDICTION,
             sortable: true,
-            value: (value) => value.jurisdiction,
-            render: (value: PatientLabReport) => value.jurisdiction
+            value: (value) => value.jurisdiction
         }
     ];
 
@@ -157,23 +156,14 @@ const LabReports = () => {
         <TableCard
             id="patient-file-lab-reports-table-card"
             title="Lab reports"
+            sizing="small"
             data={patientLabReports || []}
             defaultCollapsed={!(patientLabReports && patientLabReports.length > 0)}
-            actions={[
-                {
-                    sizing: 'small',
-                    secondary: true,
-                    children: 'Add lab report',
-                    icon: <Icon name="add_circle" />,
-                    labelPosition: 'right',
-                    onClick: () => console.log('Add lab report clicked')
-                }
-            ]}
             columns={columns}
-            columnPreferencesKey="patient-file-lab-reports-table-card-column-preferences"
+            columnPreferencesKey="patient.file.laboratory-report.preferences"
             defaultColumnPreferences={columnPreferences}
         />
     );
 };
 
-export default LabReports;
+export { LabReportsCard };
