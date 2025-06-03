@@ -14,15 +14,7 @@ type Props = {
     slim?: boolean;
 } & Omit<HTMLAttributes<HTMLDivElement>, 'className'>;
 
-export const AlertMessage = ({ 
-    title, 
-    type, 
-    children, 
-    className, 
-    slim = false, 
-    iconless = false,
-    ...props 
-}: Props) => {
+export const AlertMessage = ({ title, type, children, className, slim = false, iconless = false, ...props }: Props) => {
     const icon = iconless ? undefined : resolveIcon(type);
 
     return (
