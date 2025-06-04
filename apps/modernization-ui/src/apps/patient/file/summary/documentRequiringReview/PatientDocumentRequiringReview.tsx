@@ -7,7 +7,7 @@ import { DocumentRequiringReview } from 'generated';
 import { ClassicLink } from 'classic';
 import { internalizeDate } from 'date';
 import { internalizeDateTime } from 'date/InternalizeDateTime';
-import { renderFacilityProvider, renderMorbidity } from '../../renderPatientFile';
+import { renderFacilityProvider, renderLabReports, renderMorbidity } from '../../renderPatientFile';
 
 const renderDescription = (value: DocumentRequiringReview) => {
     return (
@@ -15,6 +15,7 @@ const renderDescription = (value: DocumentRequiringReview) => {
             {value.type === 'Case Report' && <strong>{value.condition}</strong>}
             {value.type === 'Morbidity Report' &&
                 renderMorbidity(value.condition, value.resultedTests, value.treatments)}
+            {value.type === 'Laboratory Report' && renderLabReports(value.resultedTests)}
         </>
     );
 };
@@ -50,25 +51,24 @@ const renderEventId = (value: DocumentRequiringReview) => {
 
 const columns: Column<DocumentRequiringReview>[] = [
     { id: 'id', name: 'Event ID', render: renderEventId },
-    { id: 'type', name: 'Document type', render: (value: DocumentRequiringReview) => <>{value.type}</> },
+    { id: 'type', name: 'Document type', value: (value: DocumentRequiringReview) => value.type },
     {
         id: 'dateReceived',
         name: 'Date received',
         value: (value: DocumentRequiringReview) => value.dateReceived,
-        render: (value: DocumentRequiringReview) => <>{renderDateReceived(value.dateReceived)}</>
+        render: (value: DocumentRequiringReview) => renderDateReceived(value.dateReceived)
     },
     {
         id: 'reporting',
         name: 'Reporting facility/provider',
-        render: (value: DocumentRequiringReview) => (
-            <>{renderFacilityProvider(value.reportingFacility, value.orderingProvider, value.sendingFacility)}</>
-        )
+        render: (value: DocumentRequiringReview) =>
+            renderFacilityProvider(value.reportingFacility, value.orderingProvider, value.sendingFacility)
     },
     {
         id: 'eventDate',
         name: 'Event date',
         value: (value: DocumentRequiringReview) => value.eventDate,
-        render: (value: DocumentRequiringReview) => <>{renderEventDate(value.eventDate)}</>
+        render: (value: DocumentRequiringReview) => renderEventDate(value.eventDate)
     },
     {
         id: 'description',

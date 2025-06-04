@@ -70,3 +70,23 @@ export const renderFacilityProvider = (
         </>
     );
 };
+
+export const renderLabReports = (resultedTests?: Array<ResultedTest>) => {
+    return (
+        <>
+            {resultedTests?.map((test) => (
+                <>
+                    <strong>{test.name}</strong>
+                    <br />
+                    {test.result}
+                    {test.reference && (
+                        <>
+                            <br />
+                            Reference Range: {test.reference}
+                        </>
+                    )}
+                </>
+            ))}
+        </>
+    );
+};
