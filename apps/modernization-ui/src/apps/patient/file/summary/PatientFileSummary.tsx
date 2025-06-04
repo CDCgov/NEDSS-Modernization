@@ -1,20 +1,18 @@
-import { usePatient } from '../usePatient';
+import { usePatient } from 'apps/patient/file/usePatient';
 import { usePatientFileSummary } from './usePatientFileSummary';
 import { PatientSummaryContent } from './PatientSummaryContent';
-import { PatientDocumentRequiringReview } from './documentRequiringReview/PatientDocumentRequiringReview';
-
-import OpenInvestigationsCard from './openInvestigations/OpenInvestigationsCard';
-import styles from './patient-file-summary.module.scss';
+import { PatientDocumentRequiringReview } from './documentRequiringReview';
+import { OpenInvestigationsCard } from './openInvestigations';
 
 export const PatientFileSummary = () => {
     const { id } = usePatient();
 
     const { summary } = usePatientFileSummary(id);
     return (
-        <div className={styles['summary-layout']}>
+        <>
             <PatientSummaryContent summary={summary} />
-            <OpenInvestigationsCard />
-            <PatientDocumentRequiringReview />
-        </div>
+            <OpenInvestigationsCard patient={id} />
+            <PatientDocumentRequiringReview patient={id} />
+        </>
     );
 };
