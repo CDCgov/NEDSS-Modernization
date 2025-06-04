@@ -57,6 +57,8 @@ nbs:
         enabled: true
         merge:
           enabled: true
+      system_management:
+        enabled: true
       search:
         events:
           enabled: true

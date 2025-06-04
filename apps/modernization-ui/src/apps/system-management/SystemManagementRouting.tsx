@@ -4,7 +4,7 @@ import { FeatureGuard } from '../../feature';
 
 const routing = [
     {
-        path: '/system_management',
+        path: '/system-management',
         element: (
             <FeatureGuard guard={(features) => features?.systemManagement?.enabled}>
                 <PageTitle title="System Management">
