@@ -77,8 +77,10 @@ type Features = {
     };
     search: Search;
     patient: PatientFeatures;
-    systemManagement: {
-        enabled: boolean;
+    system: {
+        management: {
+            enabled: boolean;
+        };
     };
 };
 

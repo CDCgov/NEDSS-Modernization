@@ -56,8 +56,10 @@ const defaultFeatures: Features = {
             enabled: false
         }
     },
-    systemManagement: {
-        enabled: false
+    system: {
+        management: {
+            enabled: false
+        }
     }
 };
 
