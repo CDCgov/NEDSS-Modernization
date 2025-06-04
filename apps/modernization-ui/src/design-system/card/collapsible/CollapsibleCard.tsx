@@ -7,14 +7,13 @@ import { useCollapseObserver } from './useCollapseObserver';
 
 export type CollapsibleCardProps = {
     id: string;
-    className?: string;
+    children: ReactNode;
     /** Whether the card is collapsible (shows the collapse header control). Default is true. */
     collapsible?: boolean;
     showCollapseSeparator?: boolean;
     defaultCollapsed?: boolean;
     header: ReactNode;
-    children: ReactNode;
-};
+} & JSX.IntrinsicElements['section'];
 
 export const CollapsibleCard = ({
     id,
@@ -23,14 +22,18 @@ export const CollapsibleCard = ({
     className,
     collapsible = true,
     showCollapseSeparator,
-    defaultCollapsed = false
+    defaultCollapsed = false,
+    ...remaining
 }: CollapsibleCardProps) => {
     const [collapsed, setCollapsed] = useState<boolean>(defaultCollapsed);
     const contentRef = useRef<HTMLDivElement>(null);
     const currentHeight = useCollapseObserver({ contentRef, collapsible, collapsed });
 
     return (
-        <section id={id} className={classNames(styles.card, { [styles.showControl]: collapsible }, className)}>
+        <section
+            id={id}
+            className={classNames(styles.card, { [styles.showControl]: collapsible }, className)}
+            {...remaining}>
             <header>
                 {header}
                 <Shown when={collapsible}>

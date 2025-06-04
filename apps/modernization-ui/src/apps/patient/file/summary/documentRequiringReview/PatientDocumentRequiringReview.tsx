@@ -104,7 +104,6 @@ export const PatientDocumentRequiringReview = ({ patient }: PatientDocumentRequi
             defaultCollapsed={documents.length === 0}
             columns={columns}
             data={documents}
-            showSettings={true}
             collapsible
         />
     );

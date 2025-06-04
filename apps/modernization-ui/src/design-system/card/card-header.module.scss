@@ -12,8 +12,23 @@
     padding-right: 1rem;
 }
 
-.titleBlock {
+.titles {
     display: flex;
     flex-direction: column;
     align-self: flex-start;
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-right: 1rem;
+    gap: 0.5rem;
 }

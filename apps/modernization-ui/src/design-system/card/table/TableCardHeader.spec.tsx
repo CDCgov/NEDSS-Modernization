@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { TableCardHeader, TableCardHeaderProps } from './TableCardHeader';
 import userEvent from '@testing-library/user-event';
+import { Button } from 'design-system/button';
+import { TableCardHeader, TableCardHeaderProps } from './TableCardHeader';
 
 // mock ColumnPreferencesPanel component
 jest.mock('design-system/table/preferences/ColumnPreferencesPanel', () => ({
@@ -11,12 +12,14 @@ const Fixture = (props: Partial<TableCardHeaderProps>) => {
     return (
         <TableCardHeader
             title="Test Title"
-            headingLevel={2}
+            level={2}
             subtext="Test Subtext"
-            actions={[
-                { children: 'Action 1', onClick: jest.fn() },
-                { children: 'Action 2', onClick: jest.fn() }
-            ]}
+            actions={
+                <>
+                    <Button>Action 1</Button>
+                    <Button>Action 2</Button>
+                </>
+            }
             {...props}
         />
     );
@@ -40,13 +43,8 @@ describe('TableCardHeader', () => {
         expect(getByLabelText('Settings')).toBeInTheDocument();
     });
 
-    it('does not render the settings button when showSettings is false', () => {
-        const { queryByLabelText } = render(<Fixture showSettings={false} />);
-        expect(queryByLabelText('Settings')).not.toBeInTheDocument();
-    });
-
     it('renders the correct heading level', () => {
-        const { getByText } = render(<Fixture headingLevel={3} />);
+        const { getByText } = render(<Fixture level={3} />);
         const heading = getByText('Test Title');
         expect(heading.tagName).toBe('H3');
     });

@@ -1,9 +1,9 @@
-import { CollapsibleCard } from '../collapsible';
+import { ComponentType, FC, ReactNode, useMemo } from 'react';
 import { Sizing } from 'design-system/field';
-import { SortableDataTable, DataTableProps } from 'design-system/table';
-import { TableCardAction, TableCardHeader } from './TableCardHeader';
+import { SortableDataTable, DataTableProps, Column } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences, withColumnPreferences } from 'design-system/table/preferences';
-import { ComponentType, FC, useMemo } from 'react';
+import { CollapsibleCard } from '../collapsible';
+import { TableCardHeader } from './TableCardHeader';
 
 export type TableCardProps<V> = {
     id: string;
@@ -13,30 +13,27 @@ export type TableCardProps<V> = {
     defaultCollapsed?: boolean;
     title: string;
     sizing?: Sizing;
-    tableClassName?: string;
-    actions?: TableCardAction[];
-    showSettings?: boolean;
+    actions?: ReactNode;
     /** Used to store/retrieve column preferences in local storage */
     columnPreferencesKey: string;
     /** When provided, uses these preferences as the starting point if no data in local storage */
     defaultColumnPreferences?: ColumnPreference[];
-} & Omit<DataTableProps<V>, 'id' | 'className'>;
+    columns: Column<V>[];
+    data: V[];
+};
 
 /**
  * Represents a specialized card component that contains a DataTable and settings to manage the column preferences.
  * @param {TableCardProps} props Component props
  * @return {TableCard} component
  */
-export const TableCard = <V,>({
+const TableCard = <V,>({
     id,
     className,
     collapsible = true,
-    defaultCollapsed = false,
     title,
-    tableClassName,
     actions,
     columns,
-    showSettings = true,
     columnPreferencesKey,
     defaultColumnPreferences,
     ...props
@@ -62,18 +59,10 @@ export const TableCard = <V,>({
             id={id}
             className={className}
             collapsible={collapsible}
-            defaultCollapsed={defaultCollapsed}
-            header={
-                <TableCardHeader
-                    title={title}
-                    actions={actions}
-                    resultCount={props?.data?.length ?? 0}
-                    showSettings={showSettings}
-                    sizing={props?.sizing}
-                />
-            }
+            defaultCollapsed={collapsible && props.data.length === 0}
+            header={<TableCardHeader title={title} actions={actions} resultCount={props.data.length} />}
             showCollapseSeparator={true}>
-            <ManagedDataTable {...props} id={`${id}-table`} className={tableClassName} columns={columns} />
+            <ManagedDataTable {...props} id={`${id}-table`} columns={columns} />
         </ColumnPreferencesCard>
     );
 };
@@ -93,3 +82,5 @@ const withColumnPreferencesDataTable = <V,>(WrappedComponent: ComponentType<Data
 
     return EnhancedComponent;
 };
+
+export { TableCard };

@@ -1,47 +1,26 @@
-import { Heading, HeadingLevel } from 'components/heading';
-import { Button, ButtonProps } from 'design-system/button';
+import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
-import { OverlayPanel } from 'overlay';
 import { ColumnPreferencesPanel } from 'design-system/table/preferences';
-import { Shown } from 'conditional-render';
 import { Tag } from 'design-system/tag';
-import { Sizing } from 'design-system/field';
+import { OverlayPanel } from 'overlay';
+import { CardHeader, CardHeaderProps } from '../CardHeader';
+
 import styles from './table-card-header.module.scss';
 
-export type TableCardAction = ButtonProps;
-
-export type TableCardHeaderProps = {
-    title: string;
-    subtext?: string;
-    headingLevel?: HeadingLevel;
-    tagText?: string;
-    showSettings?: boolean;
+type TableCardHeaderProps = {
     resultCount?: number;
-    actions?: TableCardAction[];
-    sizing?: Sizing;
-};
+} & CardHeaderProps;
 
-export const TableCardHeader = ({
-    title,
-    headingLevel = 2,
-    subtext,
-    showSettings = true,
-    actions,
-    resultCount,
-    sizing
-}: TableCardHeaderProps) => {
+const TableCardHeader = ({ title, level, subtext, actions, resultCount }: TableCardHeaderProps) => {
     return (
-        <>
-            <div className={styles.title}>
-                <div className={styles.titleContent}>
-                    <Heading level={headingLevel}>{title}</Heading>
-                    <Tag size={sizing}>{resultCount}</Tag>
-                </div>
-                {subtext && <div className={styles.subtext}>{subtext}</div>}
-            </div>
-            <div className={styles.actions}>
-                {actions?.map((action, index) => <Button key={index} {...action} />)}
-                <Shown when={showSettings}>
+        <CardHeader
+            title={title}
+            level={level}
+            extra={<Tag size="small">{resultCount}</Tag>}
+            subtext={subtext}
+            actions={
+                <>
+                    {actions}
                     <OverlayPanel
                         className={styles.overlay}
                         position="right"
@@ -58,8 +37,11 @@ export const TableCardHeader = ({
                         )}
                         render={(close) => <ColumnPreferencesPanel close={close} />}
                     />
-                </Shown>
-            </div>
-        </>
+                </>
+            }
+        />
     );
 };
+
+export { TableCardHeader };
+export type { TableCardHeaderProps };
