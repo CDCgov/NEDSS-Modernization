@@ -50,7 +50,7 @@ class CaseReportRequiringReviewFinder {
                   [document_type].[code_set_nm] = 'PUBLIC_HEALTH_EVENT'
               and [document_type].code = [document].doc_type_cd
       
-          join nbs_srte..Condition_code [condition] on
+          left join nbs_srte..Condition_code [condition] on
                   [condition].condition_cd = [document].cd
       """;
 
