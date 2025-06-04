@@ -1,25 +1,27 @@
-import { ComponentType, FC, ReactNode, useMemo } from 'react';
-import { Sizing } from 'design-system/field';
+import { ComponentType, FC, useMemo } from 'react';
 import { SortableDataTable, DataTableProps, Column } from 'design-system/table';
-import { ColumnPreference, useColumnPreferences, withColumnPreferences } from 'design-system/table/preferences';
-import { CollapsibleCard } from '../collapsible';
-import { TableCardHeader } from './TableCardHeader';
+import {
+    ColumnPreference,
+    ColumnPreferencesPanel,
+    useColumnPreferences,
+    withColumnPreferences
+} from 'design-system/table/preferences';
+import { Tag } from 'design-system/tag';
+import { Button } from 'design-system/button';
+import { Icon } from 'design-system/icon';
+import { OverlayPanel } from 'overlay';
+import { Card, CardProps } from '../Card';
+
+import styles from './table-card.module.scss';
 
 export type TableCardProps<V> = {
-    id: string;
-    className?: string;
-    /** Whether the card is collapsible (shows the collapse header control). Default is true. */
-    collapsible?: boolean;
-    title: string;
-    sizing?: Sizing;
-    actions?: ReactNode;
     /** Used to store/retrieve column preferences in local storage */
     columnPreferencesKey: string;
     /** When provided, uses these preferences as the starting point if no data in local storage */
     defaultColumnPreferences?: ColumnPreference[];
     columns: Column<V>[];
     data: V[];
-};
+} & Omit<CardProps, 'children'>;
 
 /**
  * Represents a specialized card component that contains a DataTable and settings to manage the column preferences.
@@ -48,7 +50,7 @@ const TableCard = <V,>({
             })),
         [defaultColumnPreferences, columns]
     );
-    const ColumnPreferencesCard = withColumnPreferences(CollapsibleCard, {
+    const ColumnPreferencesCard = withColumnPreferences(Card, {
         storageKey: columnPreferencesKey,
         defaults: columnPreferences
     });
@@ -56,11 +58,32 @@ const TableCard = <V,>({
     return (
         <ColumnPreferencesCard
             id={id}
+            title={title}
             className={className}
             collapsible={collapsible}
-            defaultCollapsed={collapsible && props.data.length === 0}
-            header={<TableCardHeader title={title} actions={actions} resultCount={props.data.length} />}
-            showCollapseSeparator={true}>
+            open={collapsible && props.data.length > 0}
+            flair={<Tag size={props.sizing}>{props.data.length}</Tag>}
+            actions={
+                <>
+                    {actions}
+                    <OverlayPanel
+                        className={styles.preferences}
+                        position="right"
+                        toggle={({ toggle }) => (
+                            <Button
+                                aria-label="Settings"
+                                data-tooltip-position="top"
+                                data-tooltip-offset="center"
+                                secondary
+                                icon={<Icon name="settings" />}
+                                onClick={toggle}
+                                sizing="small"
+                            />
+                        )}
+                        render={(close) => <ColumnPreferencesPanel close={close} />}
+                    />
+                </>
+            }>
             <ManagedDataTable {...props} id={`${id}-table`} columns={columns} />
         </ColumnPreferencesCard>
     );

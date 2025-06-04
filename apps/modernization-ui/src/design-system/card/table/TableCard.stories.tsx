@@ -76,10 +76,16 @@ export const Default: Story = {
     }
 };
 
+export const Empty: Story = {
+    args: {
+        ...Default.args,
+        data: []
+    }
+};
+
 export const Actions: Story = {
     args: {
         ...Default.args,
-        id: 'tablecard-actions',
         actions: (
             <Button sizing="small" secondary icon={<Icon name="add_circle" />}>
                 Add Person

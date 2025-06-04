@@ -1,0 +1,13 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.card {
+    @extend %thin;
+    @include borders.rounded();
+    background-color: colors.$base-white;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.14);
+
+    .toggle {
+        color: colors.$base-darkest;
+    }
+}
