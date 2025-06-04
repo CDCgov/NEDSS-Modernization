@@ -38,7 +38,9 @@ export const MergeDataDisplay = ({ label, display, groupType, selectable, underl
             </Shown>
 
             <div className={classNames(styles.labelAndValue, underlined ? styles.underlined : '')}>
-                <div className={styles.label}>{label}</div>
+                <label className={styles.label} htmlFor={selectable?.id}>
+                    {label}
+                </label>
                 <div className={styles.value}>{display ?? '---'}</div>
             </div>
         </div>

@@ -189,7 +189,6 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                             formValue: personUid,
                             ...field
                         }}
-                        underlined
                     />
                 )}
             />
