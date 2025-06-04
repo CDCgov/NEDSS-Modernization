@@ -2,7 +2,6 @@ import { TableCard } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { usePatientFileDocumentRequiringReview } from './usePatientFileDocumentRequiringReview';
-import { usePatient } from '../../usePatient';
 import { DocumentRequiringReview } from 'generated';
 import { ClassicLink } from 'classic';
 import { internalizeDate } from 'date';
@@ -88,17 +87,21 @@ const columnPreferences: ColumnPreference[] = [
     { ...columnIDs[5], toggleable: true }
 ];
 
-export const PatientDocumentRequiringReview = () => {
-    const { id } = usePatient();
+type PatientDocumentRequiringReviewCardProps = {
+    patient: number;
+};
 
-    const { documents } = usePatientFileDocumentRequiringReview(id);
+export const PatientDocumentRequiringReview = ({ patient }: PatientDocumentRequiringReviewCardProps) => {
+    const { documents } = usePatientFileDocumentRequiringReview(patient);
 
     return (
         <TableCard
             id="document-requiring-review"
             title="Document requiring review"
-            columnPreferencesKey="document-requiring-review"
+            sizing="small"
+            columnPreferencesKey="patient.file.drr.preferences"
             defaultColumnPreferences={columnPreferences}
+            defaultCollapsed={documents.length > 0}
             columns={columns}
             data={documents}
             showSettings={true}

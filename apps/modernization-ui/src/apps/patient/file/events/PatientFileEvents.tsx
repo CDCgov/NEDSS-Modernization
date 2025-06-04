@@ -1,12 +1,16 @@
-import { Investigations } from './investigations/Investigations';
-import LabReports from './labReports/LabReports';
-import styles from './patient-file-events.module.scss';
+import { InvestigationsCard } from './investigations';
+import { usePatient } from '../usePatient';
+import { LabReportsCard } from './labReports';
 
-export const PatientFileEvents = () => {
+const PatientFileEvents = () => {
+    const { id } = usePatient();
+
     return (
-        <div className={styles['events-layout']}>
-            <Investigations />
-            <LabReports />
-        </div>
+        <>
+            <InvestigationsCard patient={id} />
+            <LabReportsCard patient={id} />
+        </>
     );
 };
+
+export { PatientFileEvents };
