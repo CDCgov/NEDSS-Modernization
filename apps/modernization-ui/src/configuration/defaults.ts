@@ -55,6 +55,11 @@ const defaultFeatures: Features = {
         file: {
             enabled: false
         }
+    },
+    system: {
+        management: {
+            enabled: false
+        }
     }
 };
 
