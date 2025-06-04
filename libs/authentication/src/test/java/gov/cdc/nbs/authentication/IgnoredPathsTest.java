@@ -48,10 +48,25 @@ class IgnoredPathsTest {
     HttpServletRequest request = new MockHttpServletRequest("GET", "/some/other/path");
 
     // When the request is checked to be ignored
-    boolean ignore = ignoredPaths.ignored(request);
+    boolean actual = ignoredPaths.ignored(request);
 
     // Then the request is not ignored
-    assertFalse(ignore);
+    assertThat(actual).isFalse();
+  }
+
+  @Test
+  void should_not_ignore_requests_when_no_paths_ignored() {
+    // Given an ignore path
+    IgnoredPaths ignoredPaths = new IgnoredPaths();
+
+    // and a request
+    HttpServletRequest request = new MockHttpServletRequest("GET", "/some/other/path");
+
+    // When the request is checked to be ignored
+    boolean actual = ignoredPaths.ignored(request);
+
+    // Then the request is not ignored
+    assertThat(actual).isFalse();
   }
 
   @Test

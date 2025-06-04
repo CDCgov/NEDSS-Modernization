@@ -3,6 +3,7 @@ package gov.cdc.nbs.authentication;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.AnyRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -19,7 +20,7 @@ public class IgnoredPaths {
   public IgnoredPaths(final String... paths) {
     this.paths = paths;
     this.matcher = paths.length == 0
-        ? AnyRequestMatcher.INSTANCE
+        ? new NegatedRequestMatcher(AnyRequestMatcher.INSTANCE)
         : resolveMatcher(paths);
   }
 
