@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { TableCard } from 'design-system/card/table/TableCard';
+import { TableCard } from 'design-system/card';
 import { Tag } from 'design-system/tag';
 import { TagVariant } from 'design-system/tag/Tag';
 import { mapOr } from 'utils/mapping';
@@ -124,7 +124,6 @@ const InvestigationsCard = ({ patient }: InvestigationsCardProps) => {
             title="Investigations"
             id={'investigations'}
             columnPreferencesKey={'patient.file.investigations.preferences'}
-            defaultCollapsed={data.length === 0}
             columns={columns}
             data={data}
             defaultColumnPreferences={columnPreferences}

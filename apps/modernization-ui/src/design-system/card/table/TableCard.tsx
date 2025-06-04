@@ -10,7 +10,6 @@ export type TableCardProps<V> = {
     className?: string;
     /** Whether the card is collapsible (shows the collapse header control). Default is true. */
     collapsible?: boolean;
-    defaultCollapsed?: boolean;
     title: string;
     sizing?: Sizing;
     actions?: ReactNode;
