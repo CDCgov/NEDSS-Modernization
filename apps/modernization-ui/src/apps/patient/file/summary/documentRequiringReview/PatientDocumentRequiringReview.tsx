@@ -25,12 +25,12 @@ const renderDateReceived = (value?: string) => {
 
 const resolveUrl = (value: DocumentRequiringReview) => {
     switch (value.type) {
-        case 'Case Report':
-            return `/nbs/api/profile/${value.patient}/report/document/${value.id}`;
         case 'Morbidity Report':
             return `/nbs/api/profile/${value.patient}/report/morbidity/${value.id}`;
+        case 'Laboratory Report':
+            return `/nbs/api/profile/${value.patient}/report/lab/${value.id}`;
         default:
-            return '';
+            return `/nbs/api/profile/${value.patient}/document/${value.id}`;
     }
 };
 
