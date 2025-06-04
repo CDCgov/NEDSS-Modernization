@@ -5,6 +5,7 @@ import gov.cdc.nbs.configuration.features.deduplication.Deduplication;
 import gov.cdc.nbs.configuration.features.page_builder.PageBuilder;
 import gov.cdc.nbs.configuration.features.patient.Patient;
 import gov.cdc.nbs.configuration.features.search.Search;
+import gov.cdc.nbs.configuration.features.system_management.SystemManagement;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;
@@ -19,13 +20,15 @@ class FeaturesConfiguration {
       Address address,
       PageBuilder pageBuilder,
       Deduplication deduplication,
-      Patient patient) {
+      Patient patient,
+      SystemManagement systemManagement) {
     return () -> new Features(
         search,
         address,
         pageBuilder,
         deduplication,
-        patient);
+        patient,
+        systemManagement);
   }
 
 }

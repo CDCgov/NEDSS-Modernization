@@ -55,6 +55,9 @@ const defaultFeatures: Features = {
         file: {
             enabled: false
         }
+    },
+    systemManagement: {
+        enabled: false
     }
 };
 
