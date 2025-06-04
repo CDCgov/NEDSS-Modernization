@@ -82,7 +82,8 @@ export const renderLabReports = (resultedTests?: Array<ResultedTest>) => {
                     {test.reference && (
                         <>
                             <br />
-                            Reference Range: {test.reference}
+                            <strong>Reference Range: </strong>
+                            {test.reference}
                         </>
                     )}
                 </>
