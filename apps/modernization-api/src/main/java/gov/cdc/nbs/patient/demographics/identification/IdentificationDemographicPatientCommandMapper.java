@@ -14,7 +14,7 @@ public class IdentificationDemographicPatientCommandMapper {
     return new PatientCommand.AddIdentification(
         patient,
         demographic.asOf(),
-        demographic.id(),
+        demographic.value(),
         demographic.issuer(),
         demographic.type(),
         context.requestedBy(),

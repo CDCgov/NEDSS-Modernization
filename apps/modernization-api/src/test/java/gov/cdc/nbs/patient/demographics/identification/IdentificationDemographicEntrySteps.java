@@ -21,4 +21,10 @@ public class IdentificationDemographicEntrySteps {
   ) {
     this.active.active(new IdentificationDemographic(asOf, type, null, value));
   }
+
+  @Given("the entered identification was issued by {assigningAuthority}")
+  public void authorizedBy(final String authority) {
+    this.active.active(demographic -> demographic.withIssuer(authority));
+  }
+
 }

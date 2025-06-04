@@ -277,7 +277,7 @@ const asIdentification =
             return {
                 asOf,
                 type: asValue(type),
-                id,
+                value: id,
                 issuer: asValue(issuer)
             };
         }
