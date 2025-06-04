@@ -16,10 +16,10 @@ tasks.named("test") { testTask ->
     testsResults = []
     testLogging {
         events "failed"
-        exceptionFormat TestExceptionFormat.FULL
-        showExceptions true
-        showCauses true
-        showStackTraces true
+        exceptionFormat = TestExceptionFormat.FULL
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
     }
 
     ignoreFailures = true // Always try to run all tests for all modules
