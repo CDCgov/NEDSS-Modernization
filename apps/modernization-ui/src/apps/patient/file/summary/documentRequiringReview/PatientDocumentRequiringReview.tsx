@@ -100,7 +100,7 @@ export const PatientDocumentRequiringReview = ({ patient }: PatientDocumentRequi
             sizing="small"
             columnPreferencesKey="patient.file.drr.preferences"
             defaultColumnPreferences={columnPreferences}
-            defaultCollapsed={documents.length > 0}
+            defaultCollapsed={documents.length === 0}
             columns={columns}
             data={documents}
             showSettings={true}
