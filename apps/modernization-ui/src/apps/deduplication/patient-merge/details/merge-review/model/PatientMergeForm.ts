@@ -8,6 +8,7 @@ export type PatientMergeForm = {
     races: RaceId[];
     ethnicity: string; // the id of the person to pull ethnicity data from
     sexAndBirth: SexAndBirthValues;
+    mortality: MortalityValues;
 };
 
 export type NameId = {
@@ -45,4 +46,13 @@ export type SexAndBirthValues = {
     birthCity?: string;
     birthState?: string;
     birthCountry?: string;
+};
+
+export type MortalityValues = {
+    asOf?: string;
+    deceased?: string;
+    dateOfDeath?: string;
+    deathCity?: string;
+    deathState?: string;
+    deathCountry?: string;
 };

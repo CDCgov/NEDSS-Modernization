@@ -42,7 +42,9 @@ const createColumns = (id: number): Column<PatientInvestigation>[] => [
         sortable: true,
         value: (row) => row.investigationId,
         render: (value) => (
-            <ClassicLink url={`/patient/${id}/investigation/${value.identifier}`}>{value.investigationId}</ClassicLink>
+            <ClassicLink url={`/nbs/api/profile/${id}/investigation/${value.identifier}`}>
+                {value.investigationId}
+            </ClassicLink>
         )
     },
     {

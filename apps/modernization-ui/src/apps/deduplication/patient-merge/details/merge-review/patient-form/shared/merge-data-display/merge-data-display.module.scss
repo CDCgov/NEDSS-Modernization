@@ -15,7 +15,7 @@
             width: 50%;
             font-weight: 700;
 
-            & > label {
+            &[for] {
                 cursor: pointer;
             }
         }
