@@ -11,7 +11,7 @@ Feature: Frontend Feature Configuration
     And the laboratory report search feature is disabled
     And the deduplication feature is disabled
     And the patient file feature is disabled
-    AND the system management feature is disabled
+    And the system management feature is disabled
 
   Scenario Outline: I can configure Frontend features
     Given I <toggle> the <feature> feature
