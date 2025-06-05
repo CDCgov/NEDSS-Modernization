@@ -1,8 +1,6 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
 import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
-import gov.cdc.nbs.event.investigation.TestInvestigations;
-import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import gov.cdc.nbs.testing.support.Active;
