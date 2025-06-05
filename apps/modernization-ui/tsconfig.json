@@ -19,7 +19,7 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "jsx": "react-jsx",
-        "types": ["node"],
+        "types": ["node", "vite/client", "vite-plugin-svgr/client"],
         "plugins": [{ "name": "typescript-plugin-css-modules" }],
         "paths": {
             "@/*": ["./src/*"]
