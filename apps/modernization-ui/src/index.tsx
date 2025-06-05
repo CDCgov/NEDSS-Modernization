@@ -1,9 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import { AppRoutes } from './routes/AppRoutes';
+import { AppRoutes } from 'routes/AppRoutes';
 
-import './styles/global.scss';
+import 'styles/global.scss';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);

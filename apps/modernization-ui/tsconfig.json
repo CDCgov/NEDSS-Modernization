@@ -24,44 +24,6 @@
         "paths": {
             "@/*": ["./src/*"]
         }
-        /*
-        "pathsxxx": {
-            "@/*": ["./src/*"],
-            "address/*": ["./src/address/*"],
-            "alert/*": ["./src/alert/*"],
-            "analytics/*": ["./src/analytics/*"],
-            "apps/*": ["./src/apps/*"],
-            "classic/*": ["./src/classic/*"],
-            "components/*": ["./src/components/*"],
-            "conditional-render/*": ["./src/conditional-render/*"],
-            "config": ["./config.js"],
-            "configuration/*": ["./src/configuration/*"],
-            "cryptography/*": ["./src/cryptography/*"],
-            "date/*": ["./src/date/*"],
-            "design-system/*": ["./src/design-system/*"],
-            "feature/*": ["./src/feature/*"],
-            "filters/*": ["./src/filters/*"],
-            "generated/*": ["./src/generated/*"],
-            "layout/*": ["./src/layout/*"],
-            "libs/*": ["./src/libs/*"],
-            "options/*": ["./src/options/*"],
-            "page/*": ["./src/page/*"],
-            "pagination/*": ["./src/pagination/*"],
-            "providers/*": ["./src/providers/*"],
-            "routes/*": ["./src/routes/*"],
-            "SkipLink/*": ["./src/SkipLink/*"],
-            "storage/*": ["./src/storage/*"],
-            "styles/*": ["./src/styles/*"],
-            "system/*": ["./src/system/*"],
-            "user/*": ["./src/user/*"],
-            "utils/*": ["./src/utils/*"],
-            "breadcrumb/*": ["./src/breadcrumb/*"],
-            "confirmation/*": ["./src/confirmation/*"],
-            "shared/*": ["./src/shared/*"],
-            "name/*": ["./src/name/*"],
-            "validation/*": ["./src/validation/*"]
-        }
-        */
     },
     "include": ["src"]
 }
