@@ -92,7 +92,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "test:all": "vitest",
+    "test:all": "vitest run",
     "test:coverageAll": "vitest run --coverage",
     "test:coveragePatient": "vitest --coverage --include=src/apps/patient/**/*.{js,jsx,ts,tsx}",
     "test:coveragePageBuilder": "vitest --coverage --include=src/apps/page-builder/**/*.{js,jsx,ts,tsx}",

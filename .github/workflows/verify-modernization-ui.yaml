@@ -26,8 +26,8 @@ jobs:
 
       - name: Verify
         working-directory: ./apps/modernization-ui
-        run: npx react-scripts test --watchAll=false
+        run: npm run test:all
 
       - name: Ensure
         working-directory: ./apps/modernization-ui
-        run: npx react-scripts build
+        run: npm run build
