@@ -2,17 +2,12 @@ import { ComponentType, FC, useMemo } from 'react';
 import { SortableDataTable, DataTableProps, Column } from 'design-system/table';
 import {
     ColumnPreference,
-    ColumnPreferencesPanel,
+    ColumnPreferencesAction,
     useColumnPreferences,
     withColumnPreferences
 } from 'design-system/table/preferences';
 import { Tag } from 'design-system/tag';
-import { Button } from 'design-system/button';
-import { Icon } from 'design-system/icon';
-import { OverlayPanel } from 'overlay';
 import { Card, CardProps } from '../Card';
-
-import styles from './table-card.module.scss';
 
 export type TableCardProps<V> = {
     /** Used to store/retrieve column preferences in local storage */
@@ -66,22 +61,7 @@ const TableCard = <V,>({
             actions={
                 <>
                     {actions}
-                    <OverlayPanel
-                        className={styles.preferences}
-                        position="right"
-                        toggle={({ toggle }) => (
-                            <Button
-                                aria-label="Settings"
-                                data-tooltip-position="top"
-                                data-tooltip-offset="center"
-                                secondary
-                                icon={<Icon name="settings" />}
-                                onClick={toggle}
-                                sizing="small"
-                            />
-                        )}
-                        render={(close) => <ColumnPreferencesPanel close={close} />}
-                    />
+                    <ColumnPreferencesAction sizing="small" />
                 </>
             }>
             <ManagedDataTable {...props} id={`${id}-table`} columns={columns} />
