@@ -6,7 +6,7 @@ import { DocumentRequiringReview } from 'generated';
 import { ClassicLink } from 'classic';
 import { internalizeDate } from 'date';
 import { internalizeDateTime } from 'date/InternalizeDateTime';
-import { renderFacilityProvider, renderMorbidity } from 'apps/patient/file/renderPatientFile';
+import { renderFacilityProvider, renderLabReports, renderMorbidity } from '../../renderPatientFile';
 
 const renderDescription = (value: DocumentRequiringReview) => {
     return (
@@ -14,6 +14,7 @@ const renderDescription = (value: DocumentRequiringReview) => {
             {value.type === 'Case Report' && <strong>{value.condition}</strong>}
             {value.type === 'Morbidity Report' &&
                 renderMorbidity(value.condition, value.resultedTests, value.treatments)}
+            {value.type === 'Laboratory Report' && renderLabReports(value.resultedTests)}
         </>
     );
 };
@@ -24,12 +25,12 @@ const renderDateReceived = (value?: string) => {
 
 const resolveUrl = (value: DocumentRequiringReview) => {
     switch (value.type) {
-        case 'Case Report':
-            return `/nbs/api/profile/${value.patient}/report/document/${value.id}`;
         case 'Morbidity Report':
             return `/nbs/api/profile/${value.patient}/report/morbidity/${value.id}`;
+        case 'Laboratory Report':
+            return `/nbs/api/profile/${value.patient}/report/lab/${value.id}`;
         default:
-            return '';
+            return `/nbs/api/profile/${value.patient}/document/${value.id}`;
     }
 };
 

@@ -71,6 +71,7 @@ export const SearchBar = ({
                             onSearch?.(value);
                         }
                     }}
+                    aria-label={props['aria-label'] ?? 'Search-input'}
                     placeholder={placeholder}
                     {...props}
                 />

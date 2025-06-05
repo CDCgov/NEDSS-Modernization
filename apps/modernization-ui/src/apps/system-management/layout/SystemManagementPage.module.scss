@@ -1,0 +1,12 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1rem;
+  gap: 0.5rem;
+  background-color: colors.$base-white;
+  @extend %thin-bottom;
+}
