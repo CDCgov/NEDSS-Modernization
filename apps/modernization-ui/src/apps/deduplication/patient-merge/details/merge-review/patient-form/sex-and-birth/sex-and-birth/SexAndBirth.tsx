@@ -1,9 +1,10 @@
 import { MergeSexAndBirth } from 'apps/deduplication/api/model/MergeCandidate';
+import { parseISO } from 'date-fns';
 import { Controller, useFormContext } from 'react-hook-form';
-import { PatientMergeForm } from '../../../model/PatientMergeForm';
-import { format, parseISO } from 'date-fns';
-import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
 import { calculateAge } from 'utils/util';
+import { PatientMergeForm } from '../../../model/PatientMergeForm';
+import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
+import { toDateDisplay } from '../../shared/toDateDisplay';
 
 type Props = {
     personUid: string;
@@ -11,13 +12,6 @@ type Props = {
 };
 export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
     const form = useFormContext<PatientMergeForm>();
-
-    const parseDate = (date?: string) => {
-        if (date == undefined) {
-            return '---';
-        }
-        return format(parseISO(date), 'MM/dd/yyyy');
-    };
 
     const parseAge = (date?: string) => {
         if (date == undefined) {
@@ -34,7 +28,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                 render={({ field }) => (
                     <MergeDataDisplay
                         label="As of date"
-                        display={parseDate(sexAndBirth.asOf)}
+                        display={toDateDisplay(sexAndBirth.asOf)}
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
@@ -50,7 +44,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                 render={({ field }) => (
                     <MergeDataDisplay
                         label="DOB"
-                        display={parseDate(sexAndBirth.dateOfBirth)}
+                        display={toDateDisplay(sexAndBirth.dateOfBirth)}
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,

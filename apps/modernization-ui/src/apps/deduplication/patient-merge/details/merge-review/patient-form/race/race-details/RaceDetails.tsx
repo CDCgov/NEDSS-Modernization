@@ -1,6 +1,6 @@
 import { MergeRace } from 'apps/deduplication/api/model/MergeCandidate';
-import { format, parseISO } from 'date-fns';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
+import { toDateDisplay } from '../../shared/toDateDisplay';
 
 type Props = {
     race: MergeRace;
@@ -11,7 +11,7 @@ export const RaceDetails = ({ race }: Props) => {
             details={[
                 {
                     label: 'As of date',
-                    value: race.asOf ? format(parseISO(race.asOf), 'MM/dd/yyyy') : '---'
+                    value: toDateDisplay(race.asOf)
                 },
                 { label: 'Race', value: race.race },
                 { label: 'Detailed race', value: race.detailedRaces }
