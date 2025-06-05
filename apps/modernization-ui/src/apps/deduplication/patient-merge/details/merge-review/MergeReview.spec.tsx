@@ -17,7 +17,8 @@ const Fixture = () => {
             ethnicity: {},
             sexAndBirth: {},
             mortality: {},
-            general: {}
+            general: {},
+            investigations: []
         },
         {
             personUid: '200',
@@ -25,7 +26,8 @@ const Fixture = () => {
             ethnicity: {},
             sexAndBirth: {},
             mortality: {},
-            general: {}
+            general: {},
+            investigations: []
         },
         {
             personUid: '300',
@@ -33,7 +35,8 @@ const Fixture = () => {
             ethnicity: {},
             sexAndBirth: {},
             mortality: {},
-            general: {}
+            general: {},
+            investigations: []
         }
     ];
     return (

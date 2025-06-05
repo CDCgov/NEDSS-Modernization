@@ -10,6 +10,7 @@ export type MergeCandidate = {
     sexAndBirth: MergeSexAndBirth;
     mortality: MergeMortality;
     general: MergeGeneralInfo;
+    investigations: MergeInvestigation[];
 };
 
 export type AdminComments = {
@@ -123,4 +124,10 @@ export type MergeGeneralInfo = {
     primaryLanguage?: string;
     speaksEnglish?: string;
     stateHivCaseId?: string;
+};
+
+export type MergeInvestigation = {
+    id: string;
+    startDate?: string;
+    condition: string;
 };
