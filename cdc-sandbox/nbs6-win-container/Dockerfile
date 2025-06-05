@@ -17,19 +17,17 @@ COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
 RUN Expand-Archive -Path C:\$env:S3_ZIP_NAME.zip; mv C:\$env:S3_ZIP_NAME\wildfly-10.0.0.Final\* C:\wildfly-10.0.0.Final\/
 
 # Downloads
+## sqlcmd
 RUN mkdir C:\executables\sqlcmd
 RUN Invoke-WebRequest -Uri https://github.com/microsoft/go-sqlcmd/releases/download/v1.8.2/sqlcmd-windows-amd64.zip -OutFile C:\executables\sqlcmd\sqlcmd-windows-amd64.zip
 RUN Expand-Archive C:\executables\sqlcmd\sqlcmd-windows-amd64.zip C:\executables\sqlcmd\/
 
+## LogMonitor
+RUN mkdir C:\executables\LogMonitor
+RUN Invoke-WebRequest -Uri  https://github.com/microsoft/windows-container-tools/releases/download/v2.1.1/LogMonitor.exe -OutFile C:\executables\LogMonitor\LogMonitor.exe
+
 # Use Windows Server Core as the base image
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
-
-# Configure LogMonitor.exe
-RUN mkdir LogMonitor
-WORKDIR LogMonitor
-COPY LogMonitor.exe LogMonitor.exe
-COPY LogMonitorConfig.json LogMonitorConfig.json
-WORKDIR C:/
 
 
 ### Setting Docker Build Arguments ###
@@ -66,7 +64,10 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
 
 RUN mkdir C:\executables\sqlcmd
 
-# RUN [Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\executables\sqlcmd", "Machine")
+# Copy and update LogMonitor Config
+RUN mkdir C:\LogMonitor
+COPY LogMonitorConfig.json C:\\LogMonitor\\/
+RUN $escapedPath = $env:JBOSS_HOME -replace '\\', '\\'; (Get-Content -Path 'C:\LogMonitor\LogMonitorConfig.json' -Raw) -replace '<UPDATED-ON-DOCKER-BUILD>', $escapedPath | Set-Content -Path 'C:\LogMonitor\LogMonitorConfig.json'
 
 # USER ContainerAdministrator
 
@@ -76,6 +77,7 @@ RUN New-Item -ItemType directory -Path C:\wildfly-10.0.0.Final ; \
     
 COPY --from=builder C:\\wildfly-10.0.0.Final C:\\wildfly-10.0.0.Final
 COPY --from=builder C:\\executables\\sqlcmd\\/ C:\\executables\\sqlcmd\\/
+COPY --from=builder C:\\executables\\LogMonitor\\/ C:\\LogMonitor\\/
 
 # Configure Task Schedular. Requires Administrator Permissions
 COPY task-scheduler.ps1 task-scheduler.ps1

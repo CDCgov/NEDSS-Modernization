@@ -4,7 +4,7 @@
     "sources": [
       {
         "type": "File",
-        "directory": "C:\\wildfly-10.0.0.Final\\nedssdomain\\log",
+        "directory": "<UPDATED-ON-DOCKER-BUILD>\\nedssdomain\\log",
         "filter": "*.log",
         "includeSubdirectories": false,
         "includeFileNames" : true,
@@ -12,7 +12,7 @@
       },
       {
         "type": "File",
-        "directory": "C:\\wildfly-10.0.0.Final\\nedssdomain\\Nedss\\BatchFiles",
+        "directory": "<UPDATED-ON-DOCKER-BUILD>\\nedssdomain\\Nedss\\BatchFiles",
         "filter": "*.output",
         "includeSubdirectories": false,
         "includeFileNames" : true,
