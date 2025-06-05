@@ -1,4 +1,4 @@
-import { TableCard } from 'design-system/card/table/TableCard';
+import { TableCard } from 'design-system/card';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { usePatientFileDocumentRequiringReview } from './usePatientFileDocumentRequiringReview';
@@ -101,10 +101,8 @@ export const PatientDocumentRequiringReview = ({ patient }: PatientDocumentRequi
             sizing="small"
             columnPreferencesKey="patient.file.drr.preferences"
             defaultColumnPreferences={columnPreferences}
-            defaultCollapsed={documents.length === 0}
             columns={columns}
             data={documents}
-            showSettings={true}
             collapsible
         />
     );

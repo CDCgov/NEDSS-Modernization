@@ -1,0 +1,48 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.header {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @extend %thin-bottom;
+
+    .subtext {
+        font-size: 0.875rem;
+        line-height: 1.3125rem;
+        color: colors.$base-darker;
+    }
+
+    .titles {
+        display: flex;
+        flex-direction: column;
+
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    }
+
+    .controls {
+        display: flex;
+        gap: 0.5rem;
+
+        .actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        .control {
+            &:not(:only-child) {
+                margin-left: 0.5rem;
+                padding-left: 0.5rem;
+
+                border-left: 1px solid colors.$base-lighter;
+            }
+        }
+    }
+}

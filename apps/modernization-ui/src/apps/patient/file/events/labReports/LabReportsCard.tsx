@@ -1,5 +1,5 @@
 import { ClassicLink } from 'classic';
-import { TableCard } from 'design-system/card/table/TableCard';
+import { TableCard } from 'design-system/card';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { PatientLabReport, TestResult } from 'generated';
@@ -158,7 +158,6 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
             title="Lab reports"
             sizing="small"
             data={patientLabReports || []}
-            defaultCollapsed={!(patientLabReports && patientLabReports.length > 0)}
             columns={columns}
             columnPreferencesKey="patient.file.laboratory-report.preferences"
             defaultColumnPreferences={columnPreferences}

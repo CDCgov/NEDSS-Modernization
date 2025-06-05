@@ -1,34 +1,66 @@
-import { Heading, HeadingLevel } from 'components/heading';
-import { ReactNode } from 'react';
-import { CollapsibleCard } from './collapsible';
+import { ReactNode, useState } from 'react';
+import classNames from 'classnames';
+import { Shown } from 'conditional-render';
+import { Button } from 'design-system/button';
+import { Icon } from 'design-system/icon';
+import { CardHeader, CardHeaderProps } from './CardHeader';
+import { Collapsible } from './Collapsible';
+
 import styles from './card.module.scss';
 
-type Props = {
+type CardProps = {
     id: string;
-    title: ReactNode;
-    info?: ReactNode;
-    subtext?: string;
-    level?: HeadingLevel;
-    className?: string;
     children: ReactNode;
     collapsible?: boolean;
-};
-export const Card = ({ id, title, info, subtext, children, className, level = 2, collapsible = false }: Props) => {
+    open?: boolean;
+} & Omit<CardHeaderProps, 'control'> &
+    JSX.IntrinsicElements['section'];
+
+const Card = ({
+    id,
+    title,
+    info,
+    subtext,
+    className,
+    level,
+    flair,
+    actions,
+    collapsible = false,
+    open = true,
+    children,
+    ...remaining
+}: CardProps) => {
+    const [collapsed, setCollapsed] = useState<boolean>(!open);
+
     return (
-        <CollapsibleCard
-            id={id}
-            className={className}
-            collapsible={collapsible}
-            header={
-                <>
-                    <div className={styles.titleBlock}>
-                        <Heading level={level}>{title}</Heading>
-                        {subtext && <div className={styles.subtext}>{subtext}</div>}
-                    </div>
-                    {info && <div className={styles.info}>{info}</div>}
-                </>
-            }>
-            {children}
-        </CollapsibleCard>
+        <section id={id} aria-labelledby={`${id}-title`} className={classNames(styles.card, className)} {...remaining}>
+            <CardHeader
+                id={`${id}-title`}
+                title={title}
+                level={level}
+                flair={flair}
+                subtext={subtext}
+                info={info}
+                actions={actions}
+                control={
+                    <Shown when={collapsible}>
+                        <Button
+                            className={styles.toggle}
+                            tertiary
+                            aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}
+                            sizing="small"
+                            onClick={() => setCollapsed((current) => !current)}>
+                            <Icon name={collapsed ? 'expand_more' : 'expand_less'} />
+                        </Button>
+                    </Shown>
+                }
+            />
+            <Shown when={collapsible} fallback={children}>
+                <Collapsible open={!collapsed}>{children}</Collapsible>
+            </Shown>
+        </section>
     );
 };
+
+export { Card };
+export type { CardProps };
