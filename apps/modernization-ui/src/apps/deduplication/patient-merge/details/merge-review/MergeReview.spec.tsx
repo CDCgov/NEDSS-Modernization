@@ -16,21 +16,24 @@ const Fixture = () => {
             adminComments: { date: '2025-05-01T00:00', comment: 'First comment' },
             ethnicity: {},
             sexAndBirth: {},
-            mortality: {}
+            mortality: {},
+            general: {}
         },
         {
             personUid: '200',
             adminComments: { date: '2005-01-21T00:00', comment: 'Second comment' },
             ethnicity: {},
             sexAndBirth: {},
-            mortality: {}
+            mortality: {},
+            general: {}
         },
         {
             personUid: '300',
             adminComments: { date: '1995-04-23T00:00', comment: 'Third comment' },
             ethnicity: {},
             sexAndBirth: {},
-            mortality: {}
+            mortality: {},
+            general: {}
         }
     ];
     return (
