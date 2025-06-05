@@ -24,6 +24,14 @@ RUN Expand-Archive C:\executables\sqlcmd\sqlcmd-windows-amd64.zip C:\executables
 # Use Windows Server Core as the base image
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
+# Configure LogMonitor.exe
+RUN mkdir LogMonitor
+WORKDIR LogMonitor
+COPY LogMonitor.exe LogMonitor.exe
+COPY LogMonitorConfig.json LogMonitorConfig.json
+WORKDIR C:/
+
+
 ### Setting Docker Build Arguments ###
 # NBS Zip File to download from S3
 ARG S3_ZIP_NAME 
@@ -42,7 +50,7 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
     FINAL_NBS_USER_GUIDE_NAME="NBS User Training Guide.pdf" \
     # Full zip file name and file format to be downloaded from latest Release Assets in Modernization Repository. <version> will be replaced in entrypoint script.
     GITHUB_ZIP_FILE_NAME="<version>.NEDSS.NBS.Modernized.Documentation.zip" \
-    JAVA_MEMORY="4096M" \
+    JAVA_MEMORY="5096M" \
     MAX_META_SPACE_SIZE="512M" \
     # Task names for tasks to be disabled correspond to filename in tasks.csv (suggested removal SendAlertEMail.bat)
     DISABLED_SCHEDULED_TASKS="" \

@@ -1,0 +1,27 @@
+{
+  "LogConfig": {
+    "logFormat": "custom",
+    "sources": [
+      {
+        "type": "File",
+        "directory": "C:\\wildfly-10.0.0.Final\\nedssdomain\\log",
+        "filter": "*.log",
+        "includeSubdirectories": false,
+        "includeFileNames" : true,
+        "customLogFormat": ":%FileName%:%Message% "
+      },
+      {
+        "type": "File",
+        "directory": "C:\\wildfly-10.0.0.Final\\nedssdomain\\Nedss\\BatchFiles",
+        "filter": "*.output",
+        "includeSubdirectories": false,
+        "includeFileNames" : true,
+        "customLogFormat": ":%FileName%:%Message% "
+      },
+      {
+        "type": "Process",
+        "customLogFormat": "'%Source%:%Message% " 
+      }
+    ]
+  }
+}
