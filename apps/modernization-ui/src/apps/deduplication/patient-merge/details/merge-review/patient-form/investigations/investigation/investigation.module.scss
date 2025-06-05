@@ -1,0 +1,17 @@
+@use 'styles/colors';
+
+.investigation {
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem 0.5rem 0.25rem 1rem;
+
+    color: colors.$base-black;
+    font-size: 0.75rem;
+    font-weight: 400;
+
+    .label {
+        color: colors.$base-black;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+}
