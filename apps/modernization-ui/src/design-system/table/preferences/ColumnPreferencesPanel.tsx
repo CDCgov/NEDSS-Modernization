@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from '@hello-pangea/dnd';
 import { useColumnPreferences, ColumnPreference } from './useColumnPreferences';
 import { Checkbox } from 'design-system/checkbox';
@@ -23,8 +23,15 @@ type Props = {
 
 const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
     const { preferences, save, reset } = useColumnPreferences();
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
+
+    useLayoutEffect(() => {
+        if (closeButtonRef.current) {
+            closeButtonRef.current.focus();
+        }
+    }, []);
 
     useEffect(() => {
         setPending(structuredClone(preferences));
@@ -65,11 +72,13 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
         <div className={styles.panel}>
             <header>
                 <h2>Columns</h2>
-                <ActionIcon
-                    name="close"
-                    className={styles.close}
+                <Button
+                    ref={closeButtonRef}
+                    icon={<ActionIcon name="close" />}
                     aria-label="close the column preferences"
-                    onAction={close}
+                    onClick={close}
+                    className={styles.close}
+                    unstyled
                 />
             </header>
             <DragDropContext onDragEnd={handleDragEnd}>

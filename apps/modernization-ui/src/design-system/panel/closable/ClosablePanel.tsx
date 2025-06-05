@@ -1,6 +1,6 @@
 import { Icon } from 'design-system/icon';
-import { ReactNode } from 'react';
-
+import { ReactNode, useLayoutEffect, useRef } from 'react';
+import { Button } from 'design-system/button';
 import styles from './closable-panel.module.scss';
 
 type HeadingLevel = 2 | 3 | 4 | 5;
@@ -21,16 +21,25 @@ type Props = {
 } & Closable;
 
 const ClosablePanel = ({ title, headingLevel, children, footer, onClose }: Props) => {
+    const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+
+    useLayoutEffect(() => {
+        if (closeButtonRef.current) {
+            closeButtonRef.current.focus();
+        }
+    }, []);
+
     return (
         <div className={styles.panel}>
             <header>
                 {renderHeader(title, headingLevel)}
-                <Icon
-                    name="close"
-                    role="button"
-                    className={styles.closer}
+                <Button
+                    ref={closeButtonRef}
+                    icon={<Icon name="close" />}
                     onClick={onClose}
                     aria-label={`Close ${title}`}
+                    unstyled
+                    className={styles.closer}
                 />
             </header>
             {children}

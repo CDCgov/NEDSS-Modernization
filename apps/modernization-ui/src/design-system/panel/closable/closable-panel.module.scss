@@ -1,4 +1,5 @@
 @use 'styles/borders';
+@use 'styles/colors';
 
 .panel {
     display: flex;
@@ -15,8 +16,13 @@
 
         .closer {
             cursor: pointer;
-            width: 2rem;
-            height: 2rem;
+            min-height: auto;
+            color: colors.$base-black;
+
+            svg {
+                width: 2rem;
+                height: 2rem;
+            }
         }
 
         h2 {
