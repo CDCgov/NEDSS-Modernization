@@ -9,6 +9,7 @@ export type MergeCandidate = {
     ethnicity: MergeEthnicity;
     sexAndBirth: MergeSexAndBirth;
     mortality: MergeMortality;
+    general: MergeGeneralInfo;
 };
 
 export type AdminComments = {
@@ -109,4 +110,17 @@ export type MergeMortality = {
     deathState?: string;
     deathCounty?: string;
     deathCountry?: string;
+};
+
+export type MergeGeneralInfo = {
+    asOf?: string;
+    maritalStatus?: string;
+    mothersMaidenName?: string;
+    numberOfAdultsInResidence?: string;
+    numberOfChildrenInResidence?: string;
+    primaryOccupation?: string;
+    educationLevel?: string;
+    primaryLanguage?: string;
+    speaksEnglish?: string;
+    stateHivCaseId?: string;
 };
