@@ -1,13 +1,13 @@
 package gov.cdc.nbs.patient.profile.create;
 
 import gov.cdc.nbs.accumulation.Including;
-import gov.cdc.nbs.patient.profile.address.AddressDemographic;
+import gov.cdc.nbs.patient.demographics.address.AddressDemographic;
 import gov.cdc.nbs.patient.demographics.administrative.Administrative;
 import gov.cdc.nbs.patient.profile.birth.BirthDemographic;
 import gov.cdc.nbs.patient.profile.ethnicity.EthnicityDemographic;
 import gov.cdc.nbs.patient.profile.gender.GenderDemographic;
 import gov.cdc.nbs.patient.profile.general.GeneralInformationDemographic;
-import gov.cdc.nbs.patient.profile.identification.IdentificationDemographic;
+import gov.cdc.nbs.patient.demographics.identification.IdentificationDemographic;
 import gov.cdc.nbs.patient.profile.mortality.MortalityDemographic;
 import gov.cdc.nbs.patient.profile.names.NameDemographic;
 import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;

@@ -34,7 +34,7 @@ describe('when mapping an identification entry to a format accepted by the API',
 
         const actual = asIdentification(entry);
 
-        expect(actual).toEqual(expect.objectContaining({ id: 'id-value' }));
+        expect(actual).toEqual(expect.objectContaining({ value: 'id-value' }));
     });
 
     it('should include the issuer', () => {
@@ -47,7 +47,7 @@ describe('when mapping an identification entry to a format accepted by the API',
 
         const actual = asIdentification(entry);
 
-        expect(actual).toEqual(expect.objectContaining({ id: 'id-value' }));
+        expect(actual).toEqual(expect.objectContaining({ value: 'id-value' }));
     });
 
     it('should not map when type is null', () => {

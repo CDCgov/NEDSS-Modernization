@@ -171,7 +171,6 @@ public class PatientMother {
     patient.add(
         new PatientCommand.AddAddress(
             patient.getId(),
-            idGenerator.next(),
             asOf,
             type,
             use,
@@ -185,7 +184,10 @@ public class PatientMother {
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        ),
+        addressIdentifierGenerator
+    );
   }
 
   public void withAddress(
@@ -202,7 +204,6 @@ public class PatientMother {
     patient.add(
         new PatientCommand.AddAddress(
             patient.getId(),
-            idGenerator.next(),
             RandomUtil.dateInPast(),
             type,
             use,
@@ -216,7 +217,10 @@ public class PatientMother {
             null,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        ),
+        addressIdentifierGenerator
+    );
   }
 
   public void withAddress(final PatientIdentifier identifier) {
@@ -225,7 +229,6 @@ public class PatientMother {
     patient.add(
         new PatientCommand.AddAddress(
             patient.getId(),
-            idGenerator.next(),
             RandomUtil.dateInPast(),
             faker.address().streetAddress(),
             null,
@@ -236,7 +239,10 @@ public class PatientMother {
             RandomUtil.country(),
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn()
+        ),
+        addressIdentifierGenerator
+    );
   }
 
   public void withIdentification(final PatientIdentifier identifier) {

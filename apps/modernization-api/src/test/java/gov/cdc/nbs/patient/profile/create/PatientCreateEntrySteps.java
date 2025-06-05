@@ -1,6 +1,8 @@
 package gov.cdc.nbs.patient.profile.create;
 
+import gov.cdc.nbs.patient.demographics.address.AddressDemographic;
 import gov.cdc.nbs.patient.demographics.administrative.Administrative;
+import gov.cdc.nbs.patient.demographics.identification.IdentificationDemographic;
 import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;
 import gov.cdc.nbs.patient.profile.birth.BirthDemographic;
 import gov.cdc.nbs.patient.profile.ethnicity.EthnicityDemographic;
@@ -21,9 +23,11 @@ public class PatientCreateEntrySteps {
   private final Active<MortalityDemographic> activeMortalityDemographic;
   private final Active<GeneralInformationDemographic> activeGeneralInformation;
   private final Active<PhoneDemographic> activePhoneDemographic;
+  private final Active<AddressDemographic> activeAddressDemographic;
+  private final Active<IdentificationDemographic> activeIdentificationDemographic;
   private final Active<NewPatient> input;
 
-  public PatientCreateEntrySteps(
+  PatientCreateEntrySteps(
       final Active<Administrative> activeAdministrative,
       final Active<BirthDemographic> activeBirthDemographic,
       final Active<GenderDemographic> activeGenderDemographic,
@@ -32,6 +36,8 @@ public class PatientCreateEntrySteps {
       final Active<MortalityDemographic> activeMortalityDemographic,
       final Active<GeneralInformationDemographic> activeGeneralInformation,
       final Active<PhoneDemographic> activePhoneDemographic,
+      final Active<AddressDemographic> activeAddressDemographic,
+      final Active<IdentificationDemographic> activeIdentificationDemographic,
       final Active<NewPatient> input
   ) {
     this.activeAdministrative = activeAdministrative;
@@ -42,6 +48,8 @@ public class PatientCreateEntrySteps {
     this.activeEthnicity = activeEthnicity;
     this.activeGeneralInformation = activeGeneralInformation;
     this.activePhoneDemographic = activePhoneDemographic;
+    this.activeAddressDemographic = activeAddressDemographic;
+    this.activeIdentificationDemographic = activeIdentificationDemographic;
     this.input = input;
   }
 
@@ -67,6 +75,18 @@ public class PatientCreateEntrySteps {
   public void includePhone() {
     this.activePhoneDemographic.maybeActive().ifPresent(
         demographic -> this.input.active(current -> current.withPhoneEmail(demographic)));
+  }
+
+  @Given("the address is included with the extended patient data")
+  public void includeAddress() {
+    this.activeAddressDemographic.maybeActive().ifPresent(
+        demographic -> this.input.active(current -> current.withAddress(demographic)));
+  }
+
+  @Given("the identification is included with the extended patient data")
+  public void includeIdentification() {
+    this.activeIdentificationDemographic.maybeActive().ifPresent(
+        demographic -> this.input.active(current -> current.withIdentification(demographic)));
   }
 
   @Given("the birth demographics are included in the extended patient data")

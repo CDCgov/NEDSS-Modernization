@@ -1,4 +1,4 @@
-import { PatientData } from 'apps/deduplication/api/model/PatientData';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
 import { useNavigate } from 'react-router';
@@ -10,13 +10,18 @@ import { AddressSelection } from './patient-form/address/AddressSelection';
 import { PhoneEmailSelection } from './patient-form/phone-email/PhoneEmailSelection';
 import { IdentificationSelection } from './patient-form/identification/IdentificationSelection';
 import { RaceSelection } from './patient-form/race/RaceSelection';
+import { EthnicitySelection } from './patient-form/ethnicity/EthnicitySelection';
+import { SexAndBirthSelection } from './patient-form/sex-and-birth/SexAndBirthSelection';
+import { MortalitySelection } from './patient-form/mortality/MortalitySelection';
+import { GeneralSelection } from './patient-form/general/GeneralSelection';
+import { InvestigationDisplay } from './patient-form/investigations/InvestigationsDisplay';
 
 export type Props = {
-    patientData: PatientData[];
+    mergeCandidates: MergeCandidate[];
     onPreview: () => void;
     onRemovePatient: (personUid: string) => void;
 };
-export const MergeReview = ({ patientData, onPreview, onRemovePatient }: Props) => {
+export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient }: Props) => {
     const nav = useNavigate();
 
     return (
@@ -40,13 +45,18 @@ export const MergeReview = ({ patientData, onPreview, onRemovePatient }: Props) 
                     surviving ID. If this is not correct, select the appropriate record.
                 </div>
                 <div className={styles.patientContent}>
-                    <PatientIdSelection patientData={patientData} onRemovePatient={onRemovePatient} />
-                    <AdminCommentsSelection patientData={patientData} />
-                    <NameSelection patientData={patientData} />
-                    <AddressSelection patientData={patientData} />
-                    <PhoneEmailSelection patientData={patientData} />
-                    <IdentificationSelection patientData={patientData} />
-                    <RaceSelection patientData={patientData} />
+                    <PatientIdSelection mergeCandidates={mergeCandidates} onRemovePatient={onRemovePatient} />
+                    <AdminCommentsSelection mergeCandidates={mergeCandidates} />
+                    <NameSelection mergeCandidates={mergeCandidates} />
+                    <AddressSelection mergeCandidates={mergeCandidates} />
+                    <PhoneEmailSelection mergeCandidates={mergeCandidates} />
+                    <IdentificationSelection mergeCandidates={mergeCandidates} />
+                    <RaceSelection mergeCandidates={mergeCandidates} />
+                    <EthnicitySelection mergeCandidates={mergeCandidates} />
+                    <SexAndBirthSelection mergeCandidates={mergeCandidates} />
+                    <MortalitySelection mergeCandidates={mergeCandidates} />
+                    <GeneralSelection mergeCandidates={mergeCandidates} />
+                    <InvestigationDisplay mergeCandidates={mergeCandidates} />
                 </div>
             </main>
         </div>

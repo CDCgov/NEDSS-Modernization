@@ -8,6 +8,7 @@ import { routing as addPatientRouting } from 'apps/patient/add';
 import { routing as pageBuilderRouting } from 'apps/page-builder';
 import { routing as deduplicationRouting } from 'apps/deduplication';
 import { routing as welcomeRouting } from 'apps/landing';
+import { routing as systemManagementRouting } from 'apps/system-management';
 import { routing as logoutRouting } from 'logout';
 import { Login } from 'pages/login';
 import { Expired } from 'apps/landing/Expired/Expired';
@@ -27,7 +28,8 @@ const routing = [
             ...addPatientRouting,
             ...pageBuilderRouting,
             ...deduplicationRouting,
-            ...patientFileRouting
+            ...patientFileRouting,
+            ...systemManagementRouting
         ]
     },
     { path: '*', element: <Navigate to={'/'} /> },

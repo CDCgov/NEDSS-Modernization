@@ -16,8 +16,10 @@ const PatientFileLayout = ({ patient, actions, navigation, children }: PatientFi
     return (
         <PatientProvider patient={patient}>
             <div className={styles.file}>
-                <PatientFileHeader patient={patient} actions={actions(patient)} />
-                <nav>{navigation(patient)}</nav>
+                <header>
+                    <PatientFileHeader patient={patient} actions={actions(patient)} />
+                    <nav>{navigation(patient)}</nav>
+                </header>
                 <main>{children}</main>
             </div>
         </PatientProvider>

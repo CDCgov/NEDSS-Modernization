@@ -7,7 +7,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
 class PatientFilePhoneDemographicRequester {
@@ -30,7 +29,7 @@ class PatientFilePhoneDemographicRequester {
               get("/nbs/api/patients/{patient}/demographics/phones", patient.id())
 
           )
-      ).andDo(print());
+      );
     } catch (Exception exception) {
       throw new IllegalStateException(
           "An unexpected error occurred when viewing the patient phone demographics.",

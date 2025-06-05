@@ -110,7 +110,6 @@ public sealed interface PatientCommand {
 
   record AddAddress(
       long person,
-      long id,
       LocalDate asOf,
       String type,
       String use,
@@ -129,7 +128,6 @@ public sealed interface PatientCommand {
 
     public AddAddress(
         long person,
-        long id,
         LocalDate asOf,
         String address1,
         String address2,
@@ -144,7 +142,6 @@ public sealed interface PatientCommand {
     ) {
       this(
           person,
-          id,
           asOf,
           "H",
           "H",

@@ -2,14 +2,12 @@ package gov.cdc.nbs.patient.profile.investigation;
 
 import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientProfileRedirector;
 import io.swagger.v3.oas.annotations.Hidden;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import java.net.URISyntaxException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
@@ -17,7 +15,10 @@ import java.net.URI;
 @RestController
 class AddInvestigationRedirector {
 
-  private static final String LOCATION = "/nbs/LoadSelectCondition1.do?ContextAction=AddInvestigation";
+  private static final URI LOCATION = UriComponentsBuilder.fromPath("/nbs/LoadSelectCondition1.do")
+      .queryParam("ContextAction", "AddInvestigation")
+      .build()
+      .toUri();
 
   private final ClassicPatientProfileRedirector redirector;
 
@@ -27,11 +28,8 @@ class AddInvestigationRedirector {
 
   @PreAuthorize("hasAuthority('ADD-INVESTIGATION')")
   @GetMapping("/nbs/api/profile/{patient}/investigation")
-  @ResponseStatus(value = HttpStatus.TEMPORARY_REDIRECT)
-  ResponseEntity<Void> add(@PathVariable final long patient) throws URISyntaxException {
-    URI uri = new URI(LOCATION);
-
-    return redirector.preparedRedirect(patient, uri);
+  ResponseEntity<Void> add(@PathVariable final long patient) {
+    return redirector.preparedRedirect(patient, LOCATION);
   }
 }
 

@@ -4,6 +4,7 @@ import { Column } from 'design-system/table';
 import { Icon } from 'design-system/icon';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { MemoryRouter } from 'react-router';
+import { Button } from 'design-system/button';
 
 type Person = {
     id: string;
@@ -75,27 +76,20 @@ export const Default: Story = {
     }
 };
 
-export const Actions: Story = {
+export const Empty: Story = {
     args: {
         ...Default.args,
-        id: 'tablecard-actions',
-        actions: [
-            {
-                sizing: 'small',
-                secondary: true,
-                children: 'Add Person',
-                icon: <Icon name="add_circle" />,
-                labelPosition: 'right',
-                onClick: () => console.log('Add Person clicked')
-            }
-        ]
+        data: []
     }
 };
 
-export const NoSettings: Story = {
+export const Actions: Story = {
     args: {
         ...Default.args,
-        id: 'tablecard-no-settings',
-        showSettings: false
+        actions: (
+            <Button sizing="small" secondary icon={<Icon name="add_circle" />}>
+                Add Person
+            </Button>
+        )
     }
 };
