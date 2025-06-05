@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Collection;
 
+import static gov.cdc.nbs.patient.demographics.address.AddressDemographicPatientCommandMapper.asAddAddress;
 import static gov.cdc.nbs.patient.demographics.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
 import static gov.cdc.nbs.patient.demographics.phone.PhoneDemographicPatientCommandMapper.asAddPhone;
 import static gov.cdc.nbs.patient.profile.birth.BirthDemographicPatientCommandMapper.asUpdateBirth;
@@ -26,9 +27,9 @@ import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMappe
 import static gov.cdc.nbs.patient.profile.gender.GenderDemographicPatientCommandMapper.asUpdateGender;
 import static gov.cdc.nbs.patient.profile.general.GeneralInformationDemographicPatientCommandMapper.asUpdateGeneralInfo;
 import static gov.cdc.nbs.patient.profile.general.GeneralInformationDemographicPatientCommandMapper.maybeAsAssociateStateHIVCase;
-import static gov.cdc.nbs.patient.profile.identification.IdentificationDemographicPatientCommandMapper.asAddIdentification;
-import static gov.cdc.nbs.patient.profile.names.NameDemographicPatientCommandMapper.asAddName;
+import static gov.cdc.nbs.patient.demographics.identification.IdentificationDemographicPatientCommandMapper.asAddIdentification;
 import static gov.cdc.nbs.patient.profile.mortality.MortalityDemographicPatientCommandMapper.asUpdateMortality;
+import static gov.cdc.nbs.patient.profile.names.NameDemographicPatientCommandMapper.asAddName;
 import static gov.cdc.nbs.patient.profile.race.RaceDemographicPatientCommandMapper.asAddRace;
 
 @Component
@@ -124,8 +125,13 @@ class PatientCreationService {
 
     newPatient.phoneEmails()
         .stream()
-        .map(phone -> asAddPhone(identifier.id(), context, phone))
+        .map(demographic -> asAddPhone(identifier.id(), context, demographic))
         .forEach(command -> patient.add(command, phoneIdentifierGenerator));
+
+    newPatient.addresses()
+        .stream()
+        .map(demographic -> asAddAddress(identifier.id(), context, demographic))
+        .forEach(command -> patient.add(command, addressIdentifierGenerator));
 
     this.entityManager.persist(patient);
 

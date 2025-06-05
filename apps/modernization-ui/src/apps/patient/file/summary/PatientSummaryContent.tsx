@@ -48,7 +48,7 @@ const maybeRenderEthnicity = (ethnicity?: string) => <ItemGroup>{ethnicity}</Ite
 
 export const PatientSummaryContent = ({ summary }: SummaryContentProps) => {
     return (
-        <Card title={'Patient Summary'} id={'summary-card'} collapsible={true}>
+        <Card title={'Patient summary'} id={'summary-card'} collapsible={true}>
             <div className={styles.content}>
                 <div className={styles.group}>
                     <SummaryItem label="ADDRESS">{maybeRenderAddress(summary?.address)}</SummaryItem>

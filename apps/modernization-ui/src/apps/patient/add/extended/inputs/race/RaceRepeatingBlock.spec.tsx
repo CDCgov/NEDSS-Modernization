@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { internalizeDate } from 'date';
 import { RaceRepeatingBlock } from './RaceRepeatingBlock';
@@ -52,7 +52,7 @@ describe('RaceRepeatingBlock', () => {
         const dateInput = getByLabelText('Race as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));
 
-        const race = getByLabelText('Race');
+        const race = screen.getByRole('combobox', { name: 'Race' });
         expect(race).toHaveValue('');
 
         const detailedRace = getByLabelText('Detailed race');
@@ -60,9 +60,9 @@ describe('RaceRepeatingBlock', () => {
     });
 
     it('should mark repeating block as dirty when input changes', async () => {
-        const { getByLabelText } = render(<RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />);
+        render(<RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />);
 
-        const category = getByLabelText('Race');
+        const category = screen.getByRole('combobox', { name: 'Race' });
 
         const user = userEvent.setup();
         await user.selectOptions(category, '1');
@@ -71,7 +71,7 @@ describe('RaceRepeatingBlock', () => {
     });
 
     it('should not allow adding the same race more than once', async () => {
-        const { getByLabelText, getByRole } = render(
+        const { getByRole, getAllByRole } = render(
             <RaceRepeatingBlock
                 id="testing"
                 values={[
@@ -87,16 +87,14 @@ describe('RaceRepeatingBlock', () => {
             />
         );
 
-        const category = getByLabelText('Race');
+        const category = getByRole('combobox', { name: 'Race' });
 
         const add = getByRole('button', { name: 'Add race' });
 
         const user = userEvent.setup();
         await user.selectOptions(category, '1').then(() => user.click(add));
-
-        expect(getByRole('alert')).toHaveTextContent(
-            /Race race one name has already been added to the repeating block/
-        );
+        const errorAlert = getAllByRole('alert')[0];
+        expect(errorAlert).toHaveTextContent(/Race race one name has already been added to the repeating block/);
 
         expect(getByRole('listitem')).toHaveTextContent(
             /Race race one name has already been added to the repeating block/

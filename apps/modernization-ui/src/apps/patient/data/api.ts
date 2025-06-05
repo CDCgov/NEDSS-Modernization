@@ -48,7 +48,7 @@ type PhoneEmail = EffectiveDated &
 
 type Identification = EffectiveDated & {
     type: string;
-    id: string;
+    value: string;
     issuer?: string;
 };
 

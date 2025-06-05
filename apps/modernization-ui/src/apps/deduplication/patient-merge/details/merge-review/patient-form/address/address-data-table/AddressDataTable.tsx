@@ -1,15 +1,15 @@
 import { displayAddressText } from 'address/display';
-import { PatientAddress, PatientData } from 'apps/deduplication/api/model/PatientData';
-import { format, parseISO } from 'date-fns';
+import { MergeAddress, MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
+import { toDateDisplay } from '../../shared/toDateDisplay';
 
 type Props = {
-    patientData: PatientData;
-    selectedAddress?: PatientAddress;
-    onViewAddress: (address: PatientAddress) => void;
+    patientData: MergeCandidate;
+    selectedAddress?: MergeAddress;
+    onViewAddress: (address: MergeAddress) => void;
 };
 export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }: Props) => {
     const form = useFormContext<PatientMergeForm>();
@@ -18,7 +18,7 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
         name: 'addresses'
     });
 
-    const handleAddressSelection = (address: PatientAddress) => {
+    const handleAddressSelection = (address: MergeAddress) => {
         const index = fields.findIndex((f) => f.locatorId === address.id);
         if (index > -1) {
             remove(index);
@@ -27,11 +27,11 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
         }
     };
 
-    const columns: Column<PatientAddress>[] = [
+    const columns: Column<MergeAddress>[] = [
         {
             id: 'as-of',
             name: 'As of',
-            render: (n) => format(parseISO(n.asOf), 'MM/dd/yyyy')
+            render: (n) => toDateDisplay(n.asOf)
         },
         {
             id: 'type',
@@ -45,7 +45,7 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
         }
     ];
     return (
-        <MergeDataTable<PatientAddress>
+        <MergeDataTable<MergeAddress>
             id={`address-data${patientData.personUid}`}
             columns={columns}
             data={patientData.addresses}

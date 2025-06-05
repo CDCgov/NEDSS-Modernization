@@ -4,8 +4,10 @@
 /* eslint-disable */
 import type { Administrative } from '../models/Administrative';
 import type { DocumentRequiringReview } from '../models/DocumentRequiringReview';
+import type { PatientAddressDemographic } from '../models/PatientAddressDemographic';
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientFile } from '../models/PatientFile';
+import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
 import type { StandardResponse } from '../models/StandardResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -70,6 +72,25 @@ export class PatientFileService {
         });
     }
     /**
+     * Patient File Identification Demographics
+     * Provides the identification demographics for a patient
+     * @returns PatientIdentificationDemographic OK
+     * @throws ApiError
+     */
+    public static identifications({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientIdentificationDemographic>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/identifications',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
      * Patient File Administrative Information
      * Provides the administrative information for a patient
      * @returns Administrative OK
@@ -83,6 +104,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics/administrative',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Address Demographics
+     * Provides the address demographics for a patient
+     * @returns PatientAddressDemographic OK
+     * @throws ApiError
+     */
+    public static phones1({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientAddressDemographic>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/addresses',
             path: {
                 'patient': patient,
             },

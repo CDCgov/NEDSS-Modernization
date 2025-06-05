@@ -1,10 +1,10 @@
-import { PatientData } from 'apps/deduplication/api/model/PatientData';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { AddressDataTable } from './AddressDataTable';
 import { render, within } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 
-const patientData: Partial<PatientData> = {
+const patientData: Partial<MergeCandidate> = {
     addresses: [
         {
             id: '123',
@@ -40,7 +40,7 @@ const Fixture = () => {
     const form = useForm();
     return (
         <FormProvider {...form}>
-            <AddressDataTable onViewAddress={onViewAddress} patientData={patientData as PatientData} />
+            <AddressDataTable onViewAddress={onViewAddress} patientData={patientData as MergeCandidate} />
         </FormProvider>
     );
 };

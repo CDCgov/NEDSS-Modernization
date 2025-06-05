@@ -1,9 +1,9 @@
-import { PatientIdentification } from 'apps/deduplication/api/model/PatientData';
-import { format, parseISO } from 'date-fns';
+import { MergeIdentification } from 'apps/deduplication/api/model/MergeCandidate';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
+import { toDateDisplay } from '../../shared/toDateDisplay';
 
 type Props = {
-    identification: PatientIdentification;
+    identification: MergeIdentification;
 };
 export const IdentificationDetails = ({ identification }: Props) => {
     return (
@@ -11,7 +11,7 @@ export const IdentificationDetails = ({ identification }: Props) => {
             details={[
                 {
                     label: 'As of date',
-                    value: identification.asOf ? format(parseISO(identification.asOf), 'MM/dd/yyyy') : '---'
+                    value: toDateDisplay(identification.asOf)
                 },
                 { label: 'Type', value: identification.type },
                 { label: 'Assigning authority', value: identification.assigningAuthority },

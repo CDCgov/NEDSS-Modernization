@@ -1,0 +1,20 @@
+@mixin expanded($property) {
+    transition-duration: 0.3s;
+    transition-property: #{$property};
+    transition-timing-function: ease-out;
+}
+
+@mixin collapsed($property) {
+    transition-duration: 0.3s;
+    transition-property: #{$property};
+    transition-timing-function: ease-in;
+}
+
+.collapsible {
+    @include expanded('height');
+    overflow: hidden;
+
+    &.collapsed {
+        @include collapsed('height');
+    }
+}

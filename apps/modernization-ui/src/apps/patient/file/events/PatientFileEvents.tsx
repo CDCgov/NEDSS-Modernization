@@ -1,9 +1,16 @@
-import { Investigations } from './investigations/Investigations';
+import { InvestigationsCard } from './investigations';
+import { usePatient } from '../usePatient';
+import { LabReportsCard } from './labReports';
 
-export const PatientFileEvents = () => {
+const PatientFileEvents = () => {
+    const { id } = usePatient();
+
     return (
-        <div>
-            <Investigations />
-        </div>
+        <>
+            <InvestigationsCard patient={id} />
+            <LabReportsCard patient={id} />
+        </>
     );
 };
+
+export { PatientFileEvents };

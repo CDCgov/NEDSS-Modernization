@@ -1,6 +1,0 @@
-mutation updatePatientIdentification($input: UpdatePatientIdentificationInput!){
-    updatePatientIdentification(input: $input){
-        patient
-        sequence
-    }
-}

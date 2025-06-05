@@ -7,6 +7,10 @@
     border-left-style: solid;
     border-left-width: 8px;
 
+    &:focus {
+        outline: none !important;
+    }
+
     &.information {
         border-left-color: colors.$info;
         background-color: colors.$info-lighter;

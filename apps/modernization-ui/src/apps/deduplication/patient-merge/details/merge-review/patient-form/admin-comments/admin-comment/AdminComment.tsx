@@ -1,11 +1,11 @@
-import { AdminComments } from 'apps/deduplication/api/model/PatientData';
-import { format, parseISO } from 'date-fns';
+import { AdminComments } from 'apps/deduplication/api/model/MergeCandidate';
 import { Radio } from 'design-system/radio';
 import { Controller, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
-import styles from './admin-comment.module.scss';
-import { LengthConstrained } from '../length-constrained/LengthConstrained';
 import { GroupLine } from '../../shared/group-line/GroupLine';
+import { toDateDisplay } from '../../shared/toDateDisplay';
+import { LengthConstrained } from '../length-constrained/LengthConstrained';
+import styles from './admin-comment.module.scss';
 
 type Props = {
     personUid: string;
@@ -18,7 +18,7 @@ export const AdminComment = ({ personUid, adminComments }: Props) => {
         if (date == undefined) {
             return;
         }
-        return format(parseISO(date), 'MM/dd/yyyy');
+        return toDateDisplay(date);
     };
 
     return (
@@ -43,7 +43,7 @@ export const AdminComment = ({ personUid, adminComments }: Props) => {
                 )}
             />
             <div className={styles.comment}>
-                <GroupLine last />
+                <GroupLine groupType="last" />
                 <div className={styles.commentText}>
                     <span className={styles.label}>Comments: </span>
                     {adminComments?.comment ? <LengthConstrained content={adminComments.comment} limit={50} /> : '---'}

@@ -22,6 +22,6 @@ public class SelectableRowMapper implements RowMapper<Selectable> {
     String value = resultSet.getString(columns.value());
     String name = resultSet.getString(columns.name());
 
-    return (value != null) ? new Selectable(value, name) : null;
+    return (value != null && !value.isBlank()) ? new Selectable(value, name) : null;
   }
 }

@@ -557,31 +557,6 @@ type PatientCountry {
     description: String!
 }
 
-type PatientAddress {
-    patient: Int!
-    id: ID!
-    version: Int!
-    asOf: Date!
-    type: PatientAddressType!
-    use: PatientAddressUse!
-    address1: String
-    address2: String
-    city: String
-    county: PatientCounty
-    state: PatientState
-    zipcode: String
-    country: PatientCountry
-    censusTract: String
-    comment: String
-}
-
-type PatientAddressResults {
-    content: [PatientAddress!]!
-    total: Int!
-    number: Int!
-    size: Int!
-}
-
 type PatientBirth {
     patient: Int!
     id: ID!
@@ -622,35 +597,6 @@ type PatientGender {
     unknownReason: PatientGenderUnknownReason
     preferred: PatientPreferredGender
     additional: String
-}
-
-
-
-type PatientIdentificationType {
-    id: String!
-    description: String!
-}
-
-type PatientIdentificationAuthority {
-    id: String!
-    description: String!
-}
-
-type PatientIdentification {
-    patient: Int!
-    sequence: Int!
-    version: Int!
-    asOf: Date!
-    type: PatientIdentificationType!
-    authority: PatientIdentificationAuthority
-    value: String
-}
-
-type PatientIdentificationResults {
-    content: [PatientIdentification!]!
-    total: Int!
-    number: Int!
-    size: Int!
 }
 
 type PatientMortality {
@@ -771,8 +717,6 @@ type PatientProfile {
     deletable: Boolean!
     summary(asOf: Date): PatientSummary
     names(page: Page): PatientNameResults!
-    addresses(page: Page): PatientAddressResults!
-    identification(page: Page): PatientIdentificationResults!
     races(page: Page): PatientRaceResults!
     birth: PatientBirth
     gender: PatientGender
@@ -1012,12 +956,6 @@ type Mutation {
     addPatientName(input: NewPatientNameInput!): PatientNameChangeResult!
     updatePatientName(input: UpdatePatientNameInput!): PatientNameChangeResult!
     deletePatientName(input: DeletePatientNameInput!): PatientNameChangeResult!
-    addPatientAddress(input: NewPatientAddressInput!): PatientAddressChangeResult!
-    updatePatientAddress(input: UpdatePatientAddressInput!): PatientAddressChangeResult!
-    deletePatientAddress(input: DeletePatientAddressInput): PatientAddressChangeResult!
-    addPatientIdentification(input: NewPatientIdentificationInput!): PatientIdentificationChangeResult!
-    updatePatientIdentification(input: UpdatePatientIdentificationInput!): PatientIdentificationChangeResult!
-    deletePatientIdentification(input: DeletePatientIdentificationInput): PatientIdentificationChangeResult!
 }
 
 type PatientUpdateResponse {
@@ -1164,113 +1102,6 @@ input DeletePatientNameInput {
 }
 
 type PatientNameChangeResult {
-    patient: Int!
-    sequence: Int!
-}
-
-input NewPatientAddressInput {
-    patient: Int!
-    asOf: Date!
-    type: String!
-    use: String!
-    address1: String
-    address2: String
-    city: String
-    state: String
-    zipcode: String
-    county: String
-    censusTract: String
-    country: String
-    comment: String
-}
-
-input UpdatePatientAddressInput {
-    patient: Int!
-    id: Int!
-    asOf: Date!
-    type: String!
-    use: String!
-    address1: String
-    address2: String
-    city: String
-    state: String
-    zipcode: String
-    county: String
-    censusTract: String
-    country: String
-    comment: String
-}
-
-input DeletePatientAddressInput {
-    patient: Int!
-    id: Int!
-}
-
-type PatientAddressChangeResult {
-    patient: Int!
-    id: Int!
-}
-
-input NewPatientPhoneInput {
-    patient: Int!
-    asOf: Date!
-    type: String!
-    use: String!
-    countryCode: String
-    number: String
-    extension: String
-    email:String
-    url:String
-    comment: String
-}
-
-input UpdatePatientPhoneInput {
-    patient: Int!
-    id: Int!
-    asOf: Date!
-    type: String!
-    use: String!
-    countryCode: String
-    number: String
-    extension: String
-    email:String
-    url:String
-    comment: String
-}
-
-input DeletePatientPhoneInput {
-    patient: Int!
-    id: Int!
-}
-
-type PatientPhoneChangeResult {
-    patient: Int!
-    id: Int!
-}
-
-input NewPatientIdentificationInput {
-    patient: Int!
-    asOf: Date!
-    type: String!
-    authority: String
-    value: String!
-}
-
-input UpdatePatientIdentificationInput {
-    patient: Int!
-    sequence: Int!
-    asOf: Date!
-    type: String!
-    authority: String
-    value: String!
-}
-
-input DeletePatientIdentificationInput {
-    patient: Int!
-    sequence: Int!
-}
-
-type PatientIdentificationChangeResult {
     patient: Int!
     sequence: Int!
 }

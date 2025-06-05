@@ -1,0 +1,1 @@
+export { OpenInvestigationsCard } from './OpenInvestigationsCard';

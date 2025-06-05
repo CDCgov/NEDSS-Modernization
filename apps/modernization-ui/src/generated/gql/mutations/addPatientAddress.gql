@@ -1,6 +1,0 @@
-mutation addPatientAddress($input: NewPatientAddressInput!){
-    addPatientAddress(input: $input){
-        patient
-        id
-    }
-}

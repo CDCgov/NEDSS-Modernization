@@ -9,4 +9,7 @@ public record Selectable(
     String value,
     String name
 ) {
+    public Selectable {
+        name = name == null ? value : name;
+    }
 }

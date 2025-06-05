@@ -4065,6 +4065,50 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Addresses",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/addresses",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics",
+												"addresses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Identifications",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/identifications",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics",
+												"identifications"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},

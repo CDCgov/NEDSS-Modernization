@@ -1,15 +1,15 @@
-import { PatientData, PatientPhoneEmail } from 'apps/deduplication/api/model/PatientData';
-import { format, parseISO } from 'date-fns';
+import { MergeCandidate, MergePhoneEmail } from 'apps/deduplication/api/model/MergeCandidate';
 import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
+import { toDateDisplay } from '../../shared/toDateDisplay';
 import { formatPhone } from '../formatPhone';
 
 type Props = {
-    patientData: PatientData;
-    selectedPhoneEmail?: PatientPhoneEmail;
-    onViewPhoneEmail: (phoneEmail: PatientPhoneEmail) => void;
+    patientData: MergeCandidate;
+    selectedPhoneEmail?: MergePhoneEmail;
+    onViewPhoneEmail: (phoneEmail: MergePhoneEmail) => void;
 };
 export const PhoneEmailDataTable = ({ patientData, selectedPhoneEmail, onViewPhoneEmail }: Props) => {
     const form = useFormContext<PatientMergeForm>();
@@ -18,7 +18,7 @@ export const PhoneEmailDataTable = ({ patientData, selectedPhoneEmail, onViewPho
         name: 'phoneEmails'
     });
 
-    const handlePhoneEmailSelection = (phoneEmail: PatientPhoneEmail) => {
+    const handlePhoneEmailSelection = (phoneEmail: MergePhoneEmail) => {
         const index = fields.findIndex((f) => f.locatorId === phoneEmail.id);
         if (index > -1) {
             remove(index);
@@ -27,11 +27,11 @@ export const PhoneEmailDataTable = ({ patientData, selectedPhoneEmail, onViewPho
         }
     };
 
-    const columns: Column<PatientPhoneEmail>[] = [
+    const columns: Column<MergePhoneEmail>[] = [
         {
             id: 'as-of',
             name: 'As of',
-            render: (n) => format(parseISO(n.asOf), 'MM/dd/yyyy')
+            render: (n) => toDateDisplay(n.asOf)
         },
         {
             id: 'type',
@@ -45,7 +45,7 @@ export const PhoneEmailDataTable = ({ patientData, selectedPhoneEmail, onViewPho
         }
     ];
     return (
-        <MergeDataTable<PatientPhoneEmail>
+        <MergeDataTable<MergePhoneEmail>
             id={`phone-email-data${patientData.personUid}`}
             columns={columns}
             data={patientData.phoneEmails}
