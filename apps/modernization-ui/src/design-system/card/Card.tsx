@@ -50,6 +50,7 @@ const Card = ({
                             className={styles.toggle}
                             tertiary
                             aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}
+                            sizing="small"
                             onClick={() => setCollapsed((current) => !current)}>
                             <Icon name={collapsed ? 'expand_more' : 'expand_less'} />
                         </Button>
