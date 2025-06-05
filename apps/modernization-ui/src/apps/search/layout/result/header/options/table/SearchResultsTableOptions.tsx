@@ -1,3 +1,4 @@
+import React from 'react';
 import classNames from 'classnames';
 import { OverlayPanel } from 'overlay';
 import { Icon } from 'design-system/icon';
@@ -13,9 +14,10 @@ import styles from './search-results-table-options.module.scss';
 type Props = {
     disabled?: boolean;
     sizing?: Sizing;
+    openerRef?: React.RefObject<HTMLButtonElement>;
 };
 
-const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
+const SearchResultsTableOptions = ({ disabled = false, sizing, openerRef }: Props) => {
     const { active, toggle, clearAll, filter } = useFilter();
     const sorting = useSorting();
 
@@ -49,8 +51,10 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
             <OverlayPanel
                 className={styles.overlay}
                 position="right"
+                openerRef={openerRef}
                 toggle={({ toggle }) => (
                     <Button
+                        ref={openerRef}
                         aria-label="Settings"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
