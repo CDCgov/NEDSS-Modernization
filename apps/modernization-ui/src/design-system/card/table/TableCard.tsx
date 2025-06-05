@@ -7,9 +7,11 @@ import {
     withColumnPreferences
 } from 'design-system/table/preferences';
 import { Tag } from 'design-system/tag';
+import { Sizing } from 'design-system/field';
 import { Card, CardProps } from '../Card';
 
 export type TableCardProps<V> = {
+    sizing?: Sizing;
     /** Used to store/retrieve column preferences in local storage */
     columnPreferencesKey: string;
     /** When provided, uses these preferences as the starting point if no data in local storage */

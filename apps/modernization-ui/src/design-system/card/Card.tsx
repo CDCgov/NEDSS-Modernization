@@ -1,7 +1,6 @@
 import { ReactNode, useState } from 'react';
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
-import { Sizing } from 'design-system/field';
 import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
 import { CardHeader, CardHeaderProps } from './CardHeader';
@@ -14,7 +13,6 @@ type CardProps = {
     children: ReactNode;
     collapsible?: boolean;
     open?: boolean;
-    sizing?: Sizing;
 } & Omit<CardHeaderProps, 'control'> &
     JSX.IntrinsicElements['section'];
 
