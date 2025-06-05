@@ -24,7 +24,7 @@ RUN Expand-Archive C:\executables\sqlcmd\sqlcmd-windows-amd64.zip C:\executables
 
 ## LogMonitor
 RUN mkdir C:\executables\LogMonitor
-RUN Invoke-WebRequest -Uri  https://github.com/microsoft/windows-container-tools/releases/download/v2.1.1/LogMonitor.exe -OutFile C:\executables\LogMonitor\LogMonitor.exe
+RUN Invoke-WebRequest -Uri https://github.com/microsoft/windows-container-tools/releases/download/v2.1.1/LogMonitor.exe -OutFile C:\executables\LogMonitor\LogMonitor.exe
 
 # Use Windows Server Core as the base image
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
