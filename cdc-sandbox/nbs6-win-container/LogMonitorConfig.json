@@ -8,7 +8,7 @@
         "filter": "*.log",
         "includeSubdirectories": false,
         "includeFileNames" : true,
-        "customLogFormat": ":%FileName%:%Message% "
+        "customLogFormat": "%FileName%:%Message%"
       },
       {
         "type": "File",
@@ -16,11 +16,11 @@
         "filter": "*.output",
         "includeSubdirectories": false,
         "includeFileNames" : true,
-        "customLogFormat": ":%FileName%:%Message% "
+        "customLogFormat": "%FileName%:%Message%"
       },
       {
         "type": "Process",
-        "customLogFormat": "'%Source%:%Message% " 
+        "customLogFormat": "%Source%:%Message%" 
       }
     ]
   }
