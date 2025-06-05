@@ -10,7 +10,7 @@ RUN npm install
 # Copy required sources
 COPY apps/modernization-ui .
 
-RUN npx react-scripts build
+RUN npm run build
 
 FROM gradle:8-jdk21 AS api-builder
 

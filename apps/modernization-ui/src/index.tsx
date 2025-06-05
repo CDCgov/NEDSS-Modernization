@@ -17,3 +17,5 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+// If you previously had serviceWorker code from CRA, remove it. Vite does not register a service worker by default.
