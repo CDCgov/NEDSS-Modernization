@@ -51,7 +51,7 @@ RUN jlink \
   --no-man-pages \
   --output modernization-api/runtime
 
-FROM redhat/ubi9-micro:latest
+FROM redhat/ubi10-micro:latest
 
 ENV NBS_DATASOURCE_SERVER=nbs-mssql
 ENV NBS_ELASTICSEARCH_SERVER=elasticsearch
