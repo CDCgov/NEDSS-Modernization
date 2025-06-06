@@ -7,12 +7,12 @@ Feature: Patient Names API
 
   Scenario: The api return a blank packet if i do not have permissions
     When I call the patient names api
-    Then the packet is blank
+    Then I am not allowed due to insufficient permissions
 
   Scenario: The api returns an empty array when the patient has no names
     Given I can "View" any "Patient"
     When I call the patient names api
-    Then an empty array is returned
+    Then no values are returned
 
   Scenario: I can find patient names
     Given I can "View" any "Patient"
