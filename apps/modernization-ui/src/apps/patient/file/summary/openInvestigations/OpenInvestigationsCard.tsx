@@ -1,12 +1,8 @@
-import { useMemo } from 'react';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { TableCard } from 'design-system/card';
-import { PatientInvestigation } from 'generated';
-import { displayName } from 'name';
-import { mapOr } from 'utils/mapping';
-import { usePatientFileOpenInvestigations } from './usePatientFileOpenInvestigations';
-import { internalizeDate } from 'date';
+import { usePatientOpenInvestigations, PatientInvestigation } from 'libs/patient/events/investigations';
+import { displayInvestigator, displayNotificationStatus } from 'libs/events/investigations';
 
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };
 const START_DATE = { id: 'startDate', name: 'Start date' };
@@ -28,23 +24,19 @@ const columnPreferences: ColumnPreference[] = [
     { ...CO_INFECTION_ID, moveable: true, toggleable: true }
 ];
 
-const maybeDisplayName = mapOr(displayName('short'), undefined);
-
-const createColumns = (patient: number): Column<PatientInvestigation>[] => [
+const columns: Column<PatientInvestigation>[] = [
     {
         ...INVESTIGATION_ID,
         sortable: true,
-        value: (row) => row.investigationId,
+        value: (row) => row.local,
         render: (value) => (
-            <a href={`/nbs/api/profile/${patient}/investigation/${value.identifier}`}>{value.investigationId}</a>
+            <a href={`/nbs/api/profile/${value.patient}/investigation/${value.identifier}`}>{value.local}</a>
         )
     },
     {
         ...START_DATE,
         sortable: true,
-        value: (value) => value.startedOn,
-        //  if startedOn was a Date it would not require a render function
-        render: (row) => internalizeDate(row.startedOn)
+        value: (value) => value.startedOn
     },
     {
         ...CONDITION,
@@ -60,7 +52,8 @@ const createColumns = (patient: number): Column<PatientInvestigation>[] => [
     {
         ...NOTIFICATION,
         sortable: true,
-        value: (value) => value.notification
+        value: (value) => value.notification,
+        render: (row) => displayNotificationStatus(row.notification)
     },
     {
         ...JURISDICTION,
@@ -70,7 +63,7 @@ const createColumns = (patient: number): Column<PatientInvestigation>[] => [
     {
         ...INVESTIGATOR,
         sortable: true,
-        value: (value) => maybeDisplayName(value.investigatorName)
+        value: (value) => displayInvestigator(value.investigator)
     },
     {
         ...CO_INFECTION_ID,
@@ -84,16 +77,14 @@ type OpenInvestigationsCardProps = {
 };
 
 const OpenInvestigationsCard = ({ patient }: OpenInvestigationsCardProps) => {
-    const { patientOpenInvestigations } = usePatientFileOpenInvestigations(patient);
-
-    const columns = useMemo(() => createColumns(patient), [patient]);
+    const { data } = usePatientOpenInvestigations(patient);
 
     return (
         <TableCard
             id="patient-file-open-investigations-table-card"
             title="Open investigations"
             sizing="small"
-            data={patientOpenInvestigations || []}
+            data={data}
             columns={columns}
             columnPreferencesKey="patient.file.open-investigations.preferences"
             defaultColumnPreferences={columnPreferences}

@@ -1,6 +1,7 @@
-export type PatientInvestigation = {
-    investigationId: string;
+type PatientInvestigation = {
+    patient: number;
     identifier: number;
+    local: string;
     startedOn?: Date;
     condition: string;
     status: string;
@@ -8,9 +9,11 @@ export type PatientInvestigation = {
     jurisdiction: string;
     coInfection?: string;
     notification?: string;
-    investigatorName?: {
+    investigator?: {
         first?: string;
         last?: string;
     };
     comparable: boolean;
 };
+
+export type { PatientInvestigation };
