@@ -1,55 +1,9 @@
-query findPatientProfile($asOf: Date, $page: Page, $page1: Page, $patient: ID, $shortId: Int){
+query findPatientProfile($page: Page, $page1: Page, $patient: ID, $shortId: Int){
     findPatientProfile(patient: $patient, shortId: $shortId){
         id
         local
-        shortId
         version
         status
-        deletable
-        summary(asOf: $asOf){
-            legalName{
-                prefix
-                first
-                middle
-                last
-                suffix
-            }
-            birthday
-            age
-            gender
-            ethnicity
-            races
-            home{
-                use
-                address
-                address2
-                city
-                state
-                zipcode
-                country
-            }
-            address{
-                use
-                address
-                address2
-                city
-                state
-                zipcode
-                country
-            }
-            identification{
-                type
-                value
-            }
-            phone{
-                use
-                number
-            }
-            email{
-                use
-                address
-            }
-        }
         names(page: $page){
             content{
                 patient
