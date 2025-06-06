@@ -34,7 +34,6 @@ Feature: Patient Profile Investigations
     Given I can "Find" any "Patient" for "STD" within all jurisdictions
     Then the profile investigations are not accessible
 
-  @web-interaction
   Scenario: An investigation is viewed from the Patient Profile
     Given I am logged into NBS
     And I can "Find" any "Patient" for "STD" within all jurisdictions
@@ -44,25 +43,21 @@ Feature: Patient Profile Investigations
     Then the classic profile is prepared to view an investigation
     And I am redirected to Classic NBS to view an Investigation
 
-  @web-interaction
   Scenario: An investigation is viewed from the Patient Profile without required permissions
     Given the patient is a subject of an investigation
     When the investigation is viewed from the Patient Profile
     Then I am not allowed to view a Classic NBS Investigation
 
-  @web-interaction
   Scenario: An investigation is added from the Patient Profile
     Given I can "Add" any "INVESTIGATION" for "STD" within all jurisdictions
     When an investigation is added from a Patient Profile
     Then the classic profile is prepared to add an investigation
     And I am redirected to Classic NBS to add an Investigation
 
-  @web-interaction
   Scenario: An investigation is added from the Patient Profile without required permissions
     When an investigation is added from a Patient Profile
     Then I am not allowed to add a Classic NBS Investigation
 
-  @web-interaction
   Scenario: Investigations are compared from the Patient Profile
     Given I can "MERGEINVESTIGATION" any "INVESTIGATION" for "STD" within all jurisdictions
     And the patient is a subject of 2 investigations
@@ -70,7 +65,6 @@ Feature: Patient Profile Investigations
     Then the classic profile is prepared to compare investigations
     And I am redirected to Classic NBS to compare Investigation
 
-  @web-interaction
   Scenario: Investigations are compared from the Patient Profile without required permissions
     Given the patient is a subject of 2 investigations
     When the investigations are compared from a Patient Profile

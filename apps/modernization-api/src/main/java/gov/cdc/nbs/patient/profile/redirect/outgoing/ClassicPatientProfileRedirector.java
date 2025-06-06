@@ -24,7 +24,7 @@ public class ClassicPatientProfileRedirector {
   public ResponseEntity<Void> preparedRedirect(final long patient, final URI location) {
     prepare(patient);
     return ResponseEntity
-        .status(HttpStatus.CREATED)
+        .status(HttpStatus.TEMPORARY_REDIRECT)
         .location(location)
         .headers(new ReturningPatientCookie(patient).apply())
         .build();
