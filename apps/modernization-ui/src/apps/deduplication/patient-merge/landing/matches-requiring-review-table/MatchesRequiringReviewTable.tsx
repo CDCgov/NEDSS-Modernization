@@ -55,7 +55,7 @@ export const MatchesRequiringReviewTable = () => {
             name: 'Patient ID',
             sortable: true,
             sortIconType: 'numeric',
-            render: (match) => match.patientId
+            render: (match) => match.patientLocalId
         },
         {
             id: 'name',

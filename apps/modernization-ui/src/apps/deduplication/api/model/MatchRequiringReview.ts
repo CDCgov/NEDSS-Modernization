@@ -6,6 +6,7 @@ export type MatchRequiringReviewResponse = {
 
 export type MatchRequiringReview = {
     patientId: string;
+    patientLocalId: string;
     patientName: string;
     createdDate: string;
     identifiedDate: string;

@@ -13,6 +13,7 @@ beforeEach(() => {
         matches: [
             {
                 patientId: '1234',
+                patientLocalId: '4321',
                 patientName: 'John Smith',
                 createdDate: '2014-02-11T11:30:30',
                 identifiedDate: '2024-02-11T12:30:30',
@@ -148,7 +149,7 @@ describe('MatchesRequiringReviewTable', () => {
 
         const tableData = getAllByRole('cell');
 
-        expect(tableData[0]).toHaveTextContent('1234');
+        expect(tableData[0]).toHaveTextContent('4321');
         expect(tableData[1]).toHaveTextContent('John Smith');
         expect(tableData[2]).toHaveTextContent('02/11/2014 11:30 AM');
         expect(tableData[3]).toHaveTextContent('02/11/2024 12:30 PM');
