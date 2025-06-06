@@ -1,21 +1,6 @@
 server:
   port: 8000
 
-spring:
-  cloud:
-    gateway:
-      default-filters:
-        - RewriteLocationResponseHeader
-        - TokenRelay=
-      routes:
-        - id: classic
-          uri: ${nbs.gateway.classic}
-          order: 1000
-          predicates:
-            - Path=/nbs/**
-          filters:
-            - RemoveRequestHeader=Referer
-
 nbs:
   gateway:
     defaults:

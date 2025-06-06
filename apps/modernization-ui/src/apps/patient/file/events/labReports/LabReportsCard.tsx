@@ -1,4 +1,3 @@
-import { ClassicLink } from 'classic';
 import { TableCard } from 'design-system/card';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
@@ -80,9 +79,7 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
             sortable: true,
             value: (value) => value.eventId,
             render: (value: PatientLabReport) => (
-                <ClassicLink id="condition" url={`/nbs/api/profile/${patient}/report/lab/${value.id}`}>
-                    {value.eventId}
-                </ClassicLink>
+                <a href={`/nbs/api/profile/${patient}/report/lab/${value.id}`}>{value.eventId}</a>
             )
         },
         {
@@ -129,10 +126,9 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
             render: (value: PatientLabReport) =>
                 value.associatedInvestigation && (
                     <div>
-                        <ClassicLink
-                            url={`/nbs/api/profile/${patient}/investigation/${value.associatedInvestigation.id}`}>
+                        <a href={`/nbs/api/profile/${patient}/investigation/${value.associatedInvestigation.id}`}>
                             {value.associatedInvestigation.id}
-                        </ClassicLink>
+                        </a>
                         <p className="margin-0">
                             <b>{value.associatedInvestigation.condition}</b>
                         </p>

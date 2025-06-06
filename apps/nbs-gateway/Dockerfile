@@ -28,7 +28,7 @@ RUN jlink \
   --no-man-pages \
   --output gateway/runtime
 
-FROM redhat/ubi9-micro:latest
+FROM redhat/ubi10-micro:latest
 
 COPY --from=builder /usr/src/nbs/gateway/runtime /deployment/runtime
 
