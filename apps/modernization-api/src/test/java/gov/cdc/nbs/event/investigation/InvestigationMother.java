@@ -24,6 +24,7 @@ public class InvestigationMother {
   private static final String INVESTIGATION_CODE = "CAS";
   private static final String PERSON_CODE = "PSN";
   private static final String INVESTIGATION_CLASS = "CASE";
+
   private final SequentialIdentityGenerator idGenerator;
   private final MotherSettings settings;
   private final EntityManager entityManager;
@@ -48,7 +49,8 @@ public class InvestigationMother {
       final Active<AbcCaseIdentifier> activeAbcCase,
       final Active<StateCaseIdentifier> activeStateCase,
       final Active<CityCountyCaseIdentifier> activeCityCountyCase,
-      final TestInvestigationCleaner cleaner) {
+      final TestInvestigationCleaner cleaner
+  ) {
     this.idGenerator = idGenerator;
     this.settings = settings;
     this.entityManager = entityManager;

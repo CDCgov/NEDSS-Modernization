@@ -1,61 +1,75 @@
 package gov.cdc.nbs.patient.investigation;
 
+import gov.cdc.nbs.support.provider.ProviderIdentifier;
+import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
-import org.hamcrest.Matcher;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
+import java.time.LocalDate;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PatientFileInvestigationsVerificationSteps {
 
 
   private final Active<ResultActions> response;
+  private final Active<ProviderIdentifier> activeProvider;
 
   PatientFileInvestigationsVerificationSteps(
-      final Active<ResultActions> response
+      final Active<ResultActions> response,
+      final Active<ProviderIdentifier> activeProvider
   ) {
-
     this.response = response;
+    this.activeProvider = activeProvider;
   }
 
   @Then("the patient file has {int} investigation(s)")
-  public void found(final int count) {
-    this.response.active().andExpect(json)
+  public void found(final int count) throws Exception {
+    this.response.active().andExpect(jsonPath("$.[*]").value(hasSize(count)));
   }
 
-  @Then("the {nth} investigation has a(n) {string} of {string}")
-  public void the_nth_investigation_has_a_x_of_y(
-      final int position,
-      final String field,
-      final String value
-  ) throws Exception {
-    int index = position - 1;
+  @Then("the {nth} investigation is Open")
+  public void nthIsOpen(final int position) throws Exception {
+    nthHasStatus(position, "Open");
+  }
 
-    JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
+  @Then("the {nth} investigation is Closed")
+  public void nthIsClosed(final int position) throws Exception {
+    nthHasStatus(position, "Closed");
+  }
+
+  private void nthHasStatus(final int position, final String status) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$[%s].status", position - 1).value(status));
+  }
+
+  @Then("the {nth} investigation is within the {jurisdiction} jurisdiction")
+  public void nthWithin(final int position, final JurisdictionIdentifier value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$[%s].jurisdiction", position - 1).value(value.name()));
+  }
+
+  @Then("the {nth} investigation is for the {string} condition")
+  public void nthHasCondition(final int position, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$[%s].condition", position - 1).value(value));
+  }
+
+  @Then("the {nth} investigation was started on {localDate}")
+  public void nthWasStartedOn(final int position, final LocalDate value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$[%s].startedOn", position - 1).value(value.toString()));
+  }
+
+  @Then("the {nth} investigation was investigated by the provider")
+  public void nthInvestigatedBy(final int position) throws Exception {
+
+    ProviderIdentifier.Name provider = this.activeProvider.active().name();
 
     this.response.active()
-        .andExpect(pathMatcher.value(matchingValue(field, value)));
+        .andExpect(jsonPath("$[%s].investigator.first", position - 1).value(provider.first()))
+        .andExpect(jsonPath("$[%s].investigator.last", position - 1).value(provider.last()));
   }
-
-  private Matcher<?> matchingValue(final String field, final String value) {
-    return switch (field.toLowerCase()) {
-      case "status", "start date", "condition", "jurisdiction" -> equalTo(value);
-      default -> hasItem(value);
-    };
-  }
-
-  private JsonPathResultMatchers matchingPath(final String field, final String position) {
-    return switch (field.toLowerCase()) {
-      case "jurisdiction" -> jsonPath("$[%s].jurisdiction", position);
-      case "condition" -> jsonPath("$[%s].condition", position);
-      case "status" -> jsonPath("$[%s].status", position);
-      case "start date" -> jsonPath("$[%s].startedOn", position);
-      default -> throw new AssertionError("Unexpected Investigation property %s".formatted(field));
-    };
-  }
-
 }

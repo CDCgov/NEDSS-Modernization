@@ -12,7 +12,7 @@ class PatientInvestigationsFinder {
 
   private static final String QUERY = """
       select
-          [patient].person_parent_uid                 as [patient], 
+          [patient].person_parent_uid                 as [patient],
           [investigation].[public_health_case_uid]    as [identifier],
           [investigation].[local_id]                  as [local],
           [investigation].[activity_from_time]        as [start_date],
@@ -26,14 +26,14 @@ class PatientInvestigationsFinder {
           [investigator].last_nm                      as [investigator_last_name],
           [condition].investigation_form_cd           as [investigation_form]
       from person [patient]
-          
+      
           join participation [investigated] on
                   [investigated].record_status_cd = 'ACTIVE'
               and [investigated].[type_cd] = 'SubjOfPHC'
               and [investigated].[subject_class_cd] = 'PSN'
               and [investigated].[subject_entity_uid] = [patient].person_uid
               and [investigated].[act_class_cd] = 'CASE'
-          
+      
           join Public_health_case [investigation] on
                   [investigation].public_health_case_uid = [investigated].act_uid
               and [investigation].record_status_cd <> 'LOG_DEL'
@@ -64,7 +64,7 @@ class PatientInvestigationsFinder {
           left join NBS_SRTE..Code_value_general [notification_status] on
                     [notification_status].[code_set_nm] = 'REC_STAT'
                 and [notification_status].[code]        = [notification].[record_status_cd]
-          
+      
           left join Participation [investigated_by] on
                     [investigated_by].[type_cd] = 'InvestgrOfPHC'
                 and [investigated_by].[act_uid] = [investigation].[public_health_case_uid]
@@ -102,6 +102,7 @@ class PatientInvestigationsFinder {
     this.client = client;
     this.mapper = new PatientInvestigationsRowMapper(
         new PatientInvestigationsRowMapper.Column(
+            PATIENT_COLUMN,
             IDENTIFIER_COLUMN,
             INVESTIGATION_ID_COLUMN,
             START_DATE_COLUMN,

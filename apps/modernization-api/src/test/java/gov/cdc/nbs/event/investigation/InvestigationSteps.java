@@ -193,7 +193,7 @@ public class InvestigationSteps {
   }
 
   @Given("the investigation was investigated by the provider")
-  public void the_investigation_was_investigated_by_the_provider() {
+  public void investigatedBy() {
     this.activeInvestigation.maybeActive()
         .ifPresent(
             active -> mother.investigatedBy(
