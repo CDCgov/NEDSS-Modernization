@@ -1,10 +1,10 @@
 import { MergeMortality } from 'apps/deduplication/api/model/MergeCandidate';
 import { Shown } from 'conditional-render';
-import { format, parseISO } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
-import { useEffect, useState } from 'react';
+import { toDateDisplay } from '../../shared/toDateDisplay';
 
 type Props = {
     personUid: string;
@@ -19,13 +19,6 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
         setShowAllOptions(allowDetailedSelection && mortality.deceased === 'Yes');
     }, [allowDetailedSelection]);
 
-    const parseDate = (date?: string) => {
-        if (date == undefined) {
-            return '---';
-        }
-        return format(parseISO(date), 'MM/dd/yyyy');
-    };
-
     return (
         <section>
             <Shown when={showAllOptions}>
@@ -35,7 +28,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                     render={({ field }) => (
                         <MergeDataDisplay
                             label="As of date"
-                            display={parseDate(mortality.asOf)}
+                            display={toDateDisplay(mortality.asOf)}
                             selectable={{
                                 id: `${field.name}-${personUid}`,
                                 formValue: personUid,
@@ -56,7 +49,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                     render={({ field }) => (
                         <MergeDataDisplay
                             label="Date of death"
-                            display={parseDate(mortality.dateOfDeath)}
+                            display={toDateDisplay(mortality.dateOfDeath)}
                             selectable={{
                                 id: `${field.name}-${personUid}`,
                                 formValue: personUid,
@@ -121,7 +114,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                     render={({ field }) => (
                         <MergeDataDisplay
                             label="As of date"
-                            display={parseDate(mortality.asOf)}
+                            display={toDateDisplay(mortality.asOf)}
                             selectable={{
                                 id: `${field.name}-${personUid}`,
                                 formValue: personUid,
@@ -131,7 +124,11 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                     )}
                 />
                 <MergeDataDisplay label="Is the patient deceased?" display={mortality.deceased} groupType="linked" />
-                <MergeDataDisplay label="Date of death" display={parseDate(mortality.dateOfDeath)} groupType="linked" />
+                <MergeDataDisplay
+                    label="Date of death"
+                    display={toDateDisplay(mortality.dateOfDeath)}
+                    groupType="linked"
+                />
                 <MergeDataDisplay label="Death city" display={mortality.deathCity} groupType="linked" />
                 <MergeDataDisplay label="Death state" display={mortality.deathState} groupType="linked" />
                 <MergeDataDisplay label="Death county" display={mortality.deathCounty} groupType="linked" />

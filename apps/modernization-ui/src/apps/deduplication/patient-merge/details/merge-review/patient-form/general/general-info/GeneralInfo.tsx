@@ -1,34 +1,25 @@
-import { MergeSexAndBirth } from 'apps/deduplication/api/model/MergeCandidate';
-import { parseISO } from 'date-fns';
+import { MergeGeneralInfo } from 'apps/deduplication/api/model/MergeCandidate';
 import { Controller, useFormContext } from 'react-hook-form';
-import { calculateAge } from 'utils/util';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
 import { toDateDisplay } from '../../shared/toDateDisplay';
 
 type Props = {
     personUid: string;
-    sexAndBirth: MergeSexAndBirth;
+    generalInfo: MergeGeneralInfo;
 };
-export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
+export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
     const form = useFormContext<PatientMergeForm>();
-
-    const parseAge = (date?: string) => {
-        if (date == undefined) {
-            return '---';
-        }
-        return calculateAge(parseISO(date));
-    };
 
     return (
         <section>
             <Controller
                 control={form.control}
-                name="sexAndBirth.asOf"
+                name="generalInfo.asOf"
                 render={({ field }) => (
                     <MergeDataDisplay
                         label="As of date"
-                        display={toDateDisplay(sexAndBirth.asOf)}
+                        display={toDateDisplay(generalInfo.asOf)}
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
@@ -40,48 +31,11 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
             />
             <Controller
                 control={form.control}
-                name="sexAndBirth.dateOfBirth"
+                name="generalInfo.maritalStatus"
                 render={({ field }) => (
                     <MergeDataDisplay
-                        label="DOB"
-                        display={toDateDisplay(sexAndBirth.dateOfBirth)}
-                        selectable={{
-                            id: `${field.name}-${personUid}`,
-                            formValue: personUid,
-                            ...field
-                        }}
-                    />
-                )}
-            />
-            <MergeDataDisplay
-                label="Current age"
-                display={parseAge(sexAndBirth.dateOfBirth)}
-                groupType="blank"
-                underlined
-            />
-            <Controller
-                control={form.control}
-                name="sexAndBirth.currentSex"
-                render={({ field }) => (
-                    <MergeDataDisplay
-                        label="Current sex"
-                        display={sexAndBirth.currentSex}
-                        selectable={{
-                            id: `${field.name}-${personUid}`,
-                            formValue: personUid,
-                            ...field
-                        }}
-                    />
-                )}
-            />
-            <MergeDataDisplay label="Unknown reason" display={sexAndBirth.sexUnknown} groupType="last" underlined />
-            <Controller
-                control={form.control}
-                name="sexAndBirth.transgenderInfo"
-                render={({ field }) => (
-                    <MergeDataDisplay
-                        label="Transgender information"
-                        display={sexAndBirth.transgender}
+                        label="Marital status"
+                        display={generalInfo.maritalStatus}
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
@@ -93,11 +47,11 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
             />
             <Controller
                 control={form.control}
-                name="sexAndBirth.additionalGender"
+                name="generalInfo.mothersMaidenName"
                 render={({ field }) => (
                     <MergeDataDisplay
-                        label="Additional gender"
-                        display={sexAndBirth.additionalGender}
+                        label="Mother's maiden name"
+                        display={generalInfo.mothersMaidenName}
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
@@ -109,11 +63,11 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
             />
             <Controller
                 control={form.control}
-                name="sexAndBirth.birthGender"
+                name="generalInfo.numberOfAdultsInResidence"
                 render={({ field }) => (
                     <MergeDataDisplay
-                        label="Birth sex"
-                        display={sexAndBirth.birthGender}
+                        label="Number of adults in residence"
+                        display={generalInfo.numberOfAdultsInResidence}
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
@@ -125,27 +79,11 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
             />
             <Controller
                 control={form.control}
-                name="sexAndBirth.multipleBirth"
+                name="generalInfo.numberOfChildrenInResidence"
                 render={({ field }) => (
                     <MergeDataDisplay
-                        label="Multiple birth"
-                        display={sexAndBirth.multipleBirth}
-                        selectable={{
-                            id: `${field.name}-${personUid}`,
-                            formValue: personUid,
-                            ...field
-                        }}
-                    />
-                )}
-            />
-            <MergeDataDisplay label="Birth order" display={sexAndBirth.birthOrder} groupType="last" underlined />
-            <Controller
-                control={form.control}
-                name="sexAndBirth.birthCity"
-                render={({ field }) => (
-                    <MergeDataDisplay
-                        label="Birth city"
-                        display={sexAndBirth.birthCity}
+                        label="Number of children in residence"
+                        display={generalInfo.numberOfChildrenInResidence}
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
@@ -157,27 +95,75 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
             />
             <Controller
                 control={form.control}
-                name="sexAndBirth.birthState"
+                name="generalInfo.primaryOccupation"
                 render={({ field }) => (
                     <MergeDataDisplay
-                        label="Birth state"
-                        display={sexAndBirth.birthState}
+                        label="Primary occupation"
+                        display={generalInfo.primaryOccupation}
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
                             ...field
                         }}
+                        underlined
                     />
                 )}
             />
-            <MergeDataDisplay label="Birth county" display={sexAndBirth.birthCounty} groupType="last" underlined />
             <Controller
                 control={form.control}
-                name="sexAndBirth.birthCountry"
+                name="generalInfo.educationLevel"
                 render={({ field }) => (
                     <MergeDataDisplay
-                        label="Birth country"
-                        display={sexAndBirth.birthCountry}
+                        label="Highest level of education"
+                        display={generalInfo.educationLevel}
+                        selectable={{
+                            id: `${field.name}-${personUid}`,
+                            formValue: personUid,
+                            ...field
+                        }}
+                        underlined
+                    />
+                )}
+            />
+            <Controller
+                control={form.control}
+                name="generalInfo.primaryLanguage"
+                render={({ field }) => (
+                    <MergeDataDisplay
+                        label="Primary language"
+                        display={generalInfo.primaryLanguage}
+                        selectable={{
+                            id: `${field.name}-${personUid}`,
+                            formValue: personUid,
+                            ...field
+                        }}
+                        underlined
+                    />
+                )}
+            />
+            <Controller
+                control={form.control}
+                name="generalInfo.speaksEnglish"
+                render={({ field }) => (
+                    <MergeDataDisplay
+                        label="Speaks english"
+                        display={generalInfo.speaksEnglish}
+                        selectable={{
+                            id: `${field.name}-${personUid}`,
+                            formValue: personUid,
+                            ...field
+                        }}
+                        underlined
+                    />
+                )}
+            />
+            <Controller
+                control={form.control}
+                name="generalInfo.stateHivCaseId"
+                render={({ field }) => (
+                    <MergeDataDisplay
+                        label="State HIV case ID"
+                        display={generalInfo.stateHivCaseId}
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,

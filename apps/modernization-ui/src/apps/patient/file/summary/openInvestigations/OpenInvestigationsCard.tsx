@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { ClassicLink } from 'classic';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { TableCard } from 'design-system/card/table/TableCard';
+import { TableCard } from 'design-system/card';
 import { PatientInvestigation } from 'generated';
 import { displayName } from 'name';
 import { mapOr } from 'utils/mapping';
@@ -97,7 +97,6 @@ const OpenInvestigationsCard = ({ patient }: OpenInvestigationsCardProps) => {
             title="Open investigations"
             sizing="small"
             data={patientOpenInvestigations || []}
-            defaultCollapsed={patientOpenInvestigations && patientOpenInvestigations.length > 0 ? false : true}
             columns={columns}
             columnPreferencesKey="patient.file.open-investigations.preferences"
             defaultColumnPreferences={columnPreferences}
