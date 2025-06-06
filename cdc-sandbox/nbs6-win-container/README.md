@@ -9,20 +9,28 @@ Below are manual NBS6 creation and run process steps. Foundation image used is M
 - tasks.csv - A csv container tasks that are scheduled within the container, all tasks are on by default. Tasks can be disabled through an environment variable called DISABLED_SCHEDULED_TASKS which is a comma separated list.
   - CSV expected columns: filename, scriptPathFromWorkDir, startTime, frequencyDays, frequencyHours, frequencyMinutes
 - task-scheduler.ps1 - Script to configure windows scheduled jobs
+- LogMonitor.exe - Microsoft Log Monitor executable
+- LogMonitorConfig.json - Log Monitor configuration
+
+## Log Monitor
+Log Monitor is a log tool for Windows Containers. It monitors configured log sources and pipes a formatted output to STDOUT. It's from offical Microsoft Repository https://github.com/microsoft/windows-container-tools/tree/main. For more information view:
+- https://github.com/microsoft/windows-container-tools/tree/main/LogMonitor
+- https://github.com/microsoft/windows-container-tools/blob/main/LogMonitor/docs/README.md
 
 ## Prerequisites
 - Docker engine installed locally or on an instance with Docker engine installed
-- Access to S3 bucket containing NBS6 installation package
+- Access to S3 bucket containing NBS6 installation package and downloaded .zip locally
+- 6Gib memory available to run container locally with default container parameters
 - Optional: Access to a Quay.io Docker Repository if pushing image
 
 ## Steps
 - Build Docker Container
   - Verify you're in cdc-sandbox -> nbs6-win-container directory
-  - Run:  ``` docker build --build-arg S3_ZIP_NAME=wildfly-10.0.0.Final-6.0.15.1 -t <CONTAINER-NAME>:<TAG> . ```
-    - S3_ZIP_NAME - Zip file name pulling NBS6 Wildfly installation zip from S3.
+  - Run:  ``` docker build --build-arg S3_ZIP_NAME=wildfly-10.0.0.Final-<ADD-VERSION> -t <IMAGE-NAME>:<TAG> . ```
+    - S3_ZIP_NAME - Zip file name pulling NBS6 Wildfly installation zip from local. Do NOT add .zip at end.
   - Verify container was built successfully
 - Run NBS6 Docker Container
-  - Run:  ``` docker run -p 7001:7001 -e "GITHUB_RELEASE_TAG=latest" -e "DATABASE_ENDPOINT=<ENDPOINT>" -e "odse_user=<username>" -e "odse_pass=<password>" -e "rdb_user=<username>" -e "rdb_pass=<password>" -e "srte_user=<username>" -e "srte_pass=<password>"  -t <CONTAINER-NAME> ```
+  - Run:  ``` docker run -d -m 6Gib --name <CONTAINER-NAME> -p 7001:7001 -e "GITHUB_RELEASE_TAG=latest" -e "DATABASE_ENDPOINT=<ENDPOINT>" -e "odse_user=<username>" -e "odse_pass=<password>" -e "rdb_user=<username>" -e "rdb_pass=<password>" -e "srte_user=<username>" -e "srte_pass=<password>" <IMAGE-NAME>:<TAG> ```
     - GITHUB_RELEASE_TAG - Creates URL, downloads Release Package from GitHub Releases and configure User Guide. Default is always latest or Null
     - DATABASE_ENDPOINT - Provides Database Endpoint
     - odse_user - Provides odse Database user
