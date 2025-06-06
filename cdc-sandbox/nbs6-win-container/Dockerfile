@@ -37,11 +37,8 @@ ARG S3_ZIP_NAME
 # Run Shell as Powershell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
-# Set environment variables and AWS credentials and region
-ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
-    JBOSS_HOME="D:\wildfly-10.0.0.Final" \
-    # JBOSS_BASE_DIR="D:\wildfly-10.0.0.Final\nedssdomain" \
-    JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" \
+# Set environment variables
+ENV JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" \
     # GITHUB_RELEASE_TAG provided on RUN to create URL and download Release Package from. Default is always latest or Null
     GITHUB_RELEASE_TAG="" \
     # Userguide file name 
@@ -56,6 +53,9 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
     NNDM_CONFIG_PUBLIC_KEY_LDAP_BASE_DN="PUBLIC_KEY_LDAP_BASE_DN=" \
     NNDM_CONFIG_PUBLIC_KEY_LDAP_DN="PUBLIC_KEY_LDAP_DN=" \
     NNDM_CONFIG_CERTIFICATE_URL="CERTIFICATE_URL="
+
+RUN [Environment]::SetEnvironmentVariable("JAVA_HOME", "D:\wildfly-10.0.0.Final\Java\jdk8u412b08", "Machine") \
+    [Environment]::SetEnvironmentVariable("JBOSS_HOME", "D:\wildfly-10.0.0.Final", "Machine")
 
 # Configure NBS from Local Directory
 # NOTE: 
