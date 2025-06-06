@@ -16,91 +16,74 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 public class PatientProfileSteps {
 
-    private final Active<PatientIdentifier> patient;
+  private final Active<PatientIdentifier> patient;
 
-    private final PersonRepository repository;
+  private final PersonRepository repository;
 
-    private final PatientShortIdentifierResolver shortIdentifierResolver;
+  private final PatientShortIdentifierResolver shortIdentifierResolver;
 
-    private final PatientProfileResolver resolver;
+  private final PatientProfileResolver resolver;
 
-    private final PatientProfileDeletableResolver isDeletableResolver;
+  PatientProfileSteps(
+      final Active<PatientIdentifier> patient,
+      final PersonRepository repository,
+      final PatientShortIdentifierResolver shortIdentifierResolver,
+      final PatientProfileResolver resolver
+  ) {
+    this.patient = patient;
+    this.repository = repository;
+    this.shortIdentifierResolver = shortIdentifierResolver;
+    this.resolver = resolver;
+  }
 
-    PatientProfileSteps(
-        final Active<PatientIdentifier> patient,
-        final PersonRepository repository,
-        final PatientShortIdentifierResolver shortIdentifierResolver,
-        final PatientProfileResolver resolver,
-        final PatientProfileDeletableResolver isDeletableResolver
-    ) {
-        this.patient = patient;
-        this.repository = repository;
-        this.shortIdentifierResolver = shortIdentifierResolver;
-        this.resolver = resolver;
-        this.isDeletableResolver = isDeletableResolver;
+  PatientProfile profile;
+
+  Exception exception;
+
+  @Before
+  public void clear() {
+    this.profile = null;
+    this.exception = null;
+  }
+
+  @When("a profile is requested by patient identifier")
+  public void a_profile_is_loaded_by_patient_identifier() {
+    try {
+      this.profile = resolver.find(String.valueOf(this.patient.active().id()), null).orElse(null);
+    } catch (Exception thrown) {
+      this.exception = thrown;
+    }
+  }
+
+  @When("a profile is requested by short identifier")
+  public void a_profile_is_loaded_by_short_identifier() {
+
+    PatientIdentifier active = patient.active();
+
+    Person person = repository.findById(active.id()).orElseThrow();
+
+    long shortId = shortIdentifierResolver.resolve(person.getLocalId()).orElseThrow();
+
+    try {
+      this.profile = resolver.find(null, String.valueOf(shortId)).orElse(null);
+    } catch (Exception thrown) {
+      this.exception = thrown;
     }
 
-    PatientProfile profile;
+  }
 
-    Exception exception;
+  @Then("the profile is found")
+  public void the_profile_is_found() {
 
-    @Before
-    public void clear() {
-        this.profile = null;
-        this.exception = null;
-    }
+    assertThat(this.profile).isNotNull();
+    assertThat(this.exception).isNull();
+  }
 
-    @When("a profile is requested by patient identifier")
-    public void a_profile_is_loaded_by_patient_identifier() {
-        try {
-            this.profile = resolver.find(String.valueOf(this.patient.active().id()), null).orElse(null);
-        } catch (Exception thrown) {
-            this.exception = thrown;
-        }
-    }
+  @Then("the profile is not accessible")
+  public void the_profile_has_no_associated_document() {
 
-    @When("a profile is requested by short identifier")
-    public void a_profile_is_loaded_by_short_identifier() {
+    assertThat(this.profile).isNull();
+    assertThat(this.exception).isInstanceOf(AccessDeniedException.class);
+  }
 
-        PatientIdentifier active = patient.active();
-
-        Person person = repository.findById(active.id()).orElseThrow();
-
-        long shortId = shortIdentifierResolver.resolve(person.getLocalId()).orElseThrow();
-
-        try {
-            this.profile = resolver.find(null, String.valueOf(shortId)).orElse(null);
-        } catch (Exception thrown) {
-            this.exception = thrown;
-        }
-
-    }
-
-    @Then("the profile is found")
-    public void the_profile_is_found() {
-
-        assertThat(this.profile).isNotNull();
-        assertThat(this.exception).isNull();
-    }
-
-    @Then("the profile is not accessible")
-    public void the_profile_has_no_associated_document() {
-
-        assertThat(this.profile).isNull();
-        assertThat(this.exception).isInstanceOf(AccessDeniedException.class);
-    }
-
-    @Then("the patient can be deleted")
-    public void the_patient_can_be_deleted() {
-        boolean deletable = this.isDeletableResolver.resolve(this.profile);
-
-        assertThat(deletable).isTrue();
-    }
-
-    @Then("the patient can not be deleted")
-    public void the_patient_can_not_be_deleted() {
-        boolean deletable = this.isDeletableResolver.resolve(this.profile);
-
-        assertThat(deletable).isFalse();
-    }
 }

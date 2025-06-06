@@ -3,53 +3,6 @@ type PatientIndicatorCodedValue {
     description: String!
 }
 
-type PatientSummaryAddress {
-    use: String!
-    address: String
-    address2: String
-    city: String
-    state: String
-    zipcode: String
-    country: String
-}
-
-type PatientSummaryPhone {
-    use: String
-    number: String
-}
-
-type PatientSummaryEmail {
-    use: String
-    address: String
-}
-
-type PatientSummaryIdentification {
-    type: String!
-    value: String!
-}
-
-type PatientSummary {
-    legalName: PatientLegalName
-    birthday: Date
-    age: Int
-    gender: String
-    ethnicity: String
-    races: [String!]
-    home: PatientSummaryAddress
-    address: [PatientSummaryAddress!]!
-    identification: [PatientSummaryIdentification!]
-    phone: [PatientSummaryPhone!]
-    email: [PatientSummaryEmail!]
-}
-
-type PatientLegalName {
-    prefix: String
-    first: String
-    middle: String
-    last: String
-    suffix: String
-}
-
 type PatientNameUse {
     id: String!
     description: String!
@@ -272,11 +225,8 @@ type PatientRaceResults {
 type PatientProfile {
     id: ID!
     local: String!
-    shortId: Int!
     version: Int!
     status: String!
-    deletable: Boolean!
-    summary(asOf: Date): PatientSummary
     names(page: Page): PatientNameResults!
     races(page: Page): PatientRaceResults!
     birth: PatientBirth
