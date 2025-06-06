@@ -46,7 +46,14 @@ class PatientDeleteController {
       summary = "Allows deleting of a patient.",
       tags = "PatientFile",
       responses = {
-          @ApiResponse(responseCode = "202", description = "The patient has been deleted"),
+          @ApiResponse(responseCode = "202", description = "The patient has been deleted", content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema =
+                  @Schema(implementation = StandardResponse.Success.class)
+
+              )
+          }),
           @ApiResponse(
               responseCode = "400",
               description = "The patient could not be deleted.",
