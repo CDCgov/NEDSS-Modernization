@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { ClassicLink } from 'classic';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { TableCard } from 'design-system/card';
@@ -37,9 +36,7 @@ const createColumns = (patient: number): Column<PatientInvestigation>[] => [
         sortable: true,
         value: (row) => row.investigationId,
         render: (value) => (
-            <ClassicLink id="condition" url={`/nbs/api/profile/${patient}/investigation/${value.identifier}`}>
-                {value.investigationId}
-            </ClassicLink>
+            <a href={`/nbs/api/profile/${patient}/investigation/${value.identifier}`}>{value.investigationId}</a>
         )
     },
     {
