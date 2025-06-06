@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from '@hello-pangea/dnd';
 import { useColumnPreferences, ColumnPreference } from './useColumnPreferences';
 import { Checkbox } from 'design-system/checkbox';
@@ -19,20 +19,13 @@ const swap =
 type Props = {
     sizing?: Sizing;
     close: () => void;
+    closeButtonRef?: React.RefObject<HTMLButtonElement>;
 };
 
-const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
+const ColumnPreferencesPanel = ({ close, sizing = 'small', closeButtonRef }: Props) => {
     const { preferences, save, reset } = useColumnPreferences();
-    const closeButtonRef = useRef<HTMLButtonElement>(null);
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
-
-    useLayoutEffect(() => {
-        if (closeButtonRef.current) {
-            closeButtonRef.current.focus();
-        }
-    }, []);
-
     useEffect(() => {
         setPending(structuredClone(preferences));
     }, [JSON.stringify(preferences)]);

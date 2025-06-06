@@ -6,7 +6,6 @@ import { SearchResultsListOptions } from './list/SearchResultsListOptions';
 import { SearchResultsTableOptions } from './table/SearchResultsTableOptions';
 
 import style from './search-results-options.module.scss';
-import { useRef } from 'react';
 
 type Props = {
     view: View;
@@ -16,14 +15,11 @@ type Props = {
 
 const SearchResultsOptionsBar = ({ view, disabled = false, sizing }: Props) => {
     const { settings } = useSearchSettings();
-    const openerRef = useRef<HTMLButtonElement>(null);
 
     return (
         <div className={style.options}>
-            {view === 'list' && <SearchResultsListOptions disabled={disabled} sizing={sizing} openerRef={openerRef} />}
-            {view === 'table' && (
-                <SearchResultsTableOptions disabled={disabled} sizing={sizing} openerRef={openerRef} />
-            )}
+            {view === 'list' && <SearchResultsListOptions disabled={disabled} sizing={sizing} />}
+            {view === 'table' && <SearchResultsTableOptions disabled={disabled} sizing={sizing} />}
             {settings.allowToggle && <ToggleView sizing={sizing} />}
         </div>
     );

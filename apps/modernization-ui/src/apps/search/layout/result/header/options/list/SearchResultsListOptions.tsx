@@ -5,23 +5,20 @@ import { OverlayPanel } from 'overlay';
 
 import styles from './search-results-list-options.module.scss';
 import { Sizing } from 'design-system/field';
-import React from 'react';
 
 type Props = {
     disabled?: boolean;
     sizing?: Sizing;
-    openerRef?: React.RefObject<HTMLButtonElement>;
 };
 
-const SearchResultsListOptions = ({ disabled = false, sizing, openerRef }: Props) => {
+const SearchResultsListOptions = ({ disabled = false, sizing }: Props) => {
     return (
         <OverlayPanel
             className={styles.options}
             position="right"
-            openerRef={openerRef}
-            toggle={({ toggle }) => (
+            toggle={({ toggle, ref }) => (
                 <Button
-                    ref={openerRef}
+                    ref={ref}
                     className={styles.opener}
                     aria-label="Sort list by"
                     data-tooltip-position="top"
@@ -33,7 +30,9 @@ const SearchResultsListOptions = ({ disabled = false, sizing, openerRef }: Props
                     sizing={sizing}
                 />
             )}
-            render={(close) => <SortingPreferencesPanel onClose={close} />}
+            render={(close, closeButtonRef) => (
+                <SortingPreferencesPanel onClose={close} closeButtonRef={closeButtonRef} />
+            )}
         />
     );
 };

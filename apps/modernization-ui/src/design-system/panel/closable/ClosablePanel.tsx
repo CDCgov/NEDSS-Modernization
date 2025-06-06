@@ -1,5 +1,5 @@
 import { Icon } from 'design-system/icon';
-import { ReactNode, useLayoutEffect, useRef } from 'react';
+import { ReactNode, RefObject } from 'react';
 import { Button } from 'design-system/button';
 import styles from './closable-panel.module.scss';
 
@@ -18,17 +18,10 @@ type Props = {
     headingLevel?: HeadingLevel;
     children: ReactNode;
     footer?: FooterRenderer;
+    closeButtonRef?: RefObject<HTMLButtonElement>;
 } & Closable;
 
-const ClosablePanel = ({ title, headingLevel, children, footer, onClose }: Props) => {
-    const closeButtonRef = useRef<HTMLButtonElement | null>(null);
-
-    useLayoutEffect(() => {
-        if (closeButtonRef.current) {
-            closeButtonRef.current.focus();
-        }
-    }, []);
-
+const ClosablePanel = ({ title, headingLevel, children, footer, onClose, closeButtonRef }: Props) => {
     return (
         <div className={styles.panel}>
             <header>
