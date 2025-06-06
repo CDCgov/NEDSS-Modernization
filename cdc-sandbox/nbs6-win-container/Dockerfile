@@ -13,7 +13,6 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 ARG S3_ZIP_NAME 
 
 COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
-# USER ContainerAdministrator
 RUN Expand-Archive -Path C:\$env:S3_ZIP_NAME.zip; mv C:\$env:S3_ZIP_NAME\wildfly-10.0.0.Final\* C:\wildfly-10.0.0.Final\/
 
 # Downloads
@@ -32,7 +31,7 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 ### Setting Docker Build Arguments ###
 # NBS Zip File to download from S3
-ARG S3_ZIP_NAME 
+ARG S3_ZIP_NAME
 
 # Run Shell as Powershell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -54,8 +53,8 @@ ENV JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" 
     NNDM_CONFIG_PUBLIC_KEY_LDAP_DN="PUBLIC_KEY_LDAP_DN=" \
     NNDM_CONFIG_CERTIFICATE_URL="CERTIFICATE_URL="
 
-RUN [Environment]::SetEnvironmentVariable("JAVA_HOME", "D:\wildfly-10.0.0.Final\Java\jdk8u412b08", "Machine") \
-    [Environment]::SetEnvironmentVariable("JBOSS_HOME", "D:\wildfly-10.0.0.Final", "Machine")
+RUN [Environment]::SetEnvironmentVariable('JAVA_HOME', 'D:\wildfly-10.0.0.Final\Java\jdk8u412b08', 'Machine')
+RUN [Environment]::SetEnvironmentVariable('JBOSS_HOME', 'D:\wildfly-10.0.0.Final', 'Machine')
 
 # Configure NBS from Local Directory
 # NOTE: 
@@ -69,7 +68,6 @@ RUN mkdir C:\LogMonitor
 COPY LogMonitorConfig.json C:\\LogMonitor\\/
 RUN $escapedPath = $env:JBOSS_HOME -replace '\\', '\\'; (Get-Content -Path 'C:\LogMonitor\LogMonitorConfig.json' -Raw) -replace '<UPDATED-ON-DOCKER-BUILD>', $escapedPath | Set-Content -Path 'C:\LogMonitor\LogMonitorConfig.json'
 
-# USER ContainerAdministrator
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
 RUN New-Item -ItemType directory -Path C:\wildfly-10.0.0.Final ; \
@@ -89,9 +87,6 @@ COPY entrypoint.ps1 entrypoint.ps1
 
 # Expose necessary ports
 EXPOSE 7001
-
-# ContainerUser used for running NBS6, following best practacies
-# USER ContainerUser
 
 # Start WildFly
 CMD ["powershell","C:\\entrypoint.ps1"]
