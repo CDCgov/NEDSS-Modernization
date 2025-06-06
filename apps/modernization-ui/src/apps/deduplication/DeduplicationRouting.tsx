@@ -37,7 +37,7 @@ const routing = [
         )
     },
     {
-        path: '/deduplication/merge/:patientId',
+        path: '/deduplication/merge/:matchId',
         element: (
             <FeatureGuard guard={(features) => features?.deduplication?.merge.enabled}>
                 <PageTitle title="Patient matches requiring review">
