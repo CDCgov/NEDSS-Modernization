@@ -1,6 +1,6 @@
 import { MergeName } from 'apps/deduplication/api/model/MergeCandidate';
-import { format, parseISO } from 'date-fns';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
+import { toDateDisplay } from '../../shared/toDateDisplay';
 
 type Props = {
     name: MergeName;
@@ -9,7 +9,7 @@ export const NameDetails = ({ name }: Props) => {
     return (
         <DetailsSection
             details={[
-                { label: 'As of date', value: name.asOf ? format(parseISO(name.asOf), 'MM/dd/yyyy') : '---' },
+                { label: 'As of date', value: toDateDisplay(name.asOf) },
                 { label: 'Type', value: name.type },
                 { label: 'Prefix', value: name.prefix },
                 { label: 'Last', value: name.last },

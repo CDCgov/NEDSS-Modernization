@@ -1,6 +1,6 @@
 import { MergePhoneEmail } from 'apps/deduplication/api/model/MergeCandidate';
-import { format, parseISO } from 'date-fns';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
+import { toDateDisplay } from '../../shared/toDateDisplay';
 import { formatPhone } from '../formatPhone';
 
 type Props = {
@@ -12,7 +12,7 @@ export const PhoneEmailDetails = ({ phoneEmail }: Props) => {
             details={[
                 {
                     label: 'As of date',
-                    value: phoneEmail.asOf ? format(parseISO(phoneEmail.asOf), 'MM/dd/yyyy') : '---'
+                    value: toDateDisplay(phoneEmail.asOf)
                 },
                 { label: 'Type', value: phoneEmail.type },
                 { label: 'Use', value: phoneEmail.use },

@@ -1,19 +1,12 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.subtext {
-    font-size: 0.875rem;
-    line-height: 1.3125rem;
-    color: colors.$base-darker;
-}
+.card {
+    @include borders.rounded();
+    background-color: colors.$base-white;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.14);
 
-.info {
-    margin-left: auto;
-    padding-right: 1rem;
-}
-
-.titleBlock {
-    display: flex;
-    flex-direction: column;
-    align-self: flex-start;
+    .toggle {
+        color: colors.$base-darkest;
+    }
 }

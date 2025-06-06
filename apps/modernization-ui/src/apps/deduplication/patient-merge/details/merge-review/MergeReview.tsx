@@ -13,6 +13,8 @@ import { RaceSelection } from './patient-form/race/RaceSelection';
 import { EthnicitySelection } from './patient-form/ethnicity/EthnicitySelection';
 import { SexAndBirthSelection } from './patient-form/sex-and-birth/SexAndBirthSelection';
 import { MortalitySelection } from './patient-form/mortality/MortalitySelection';
+import { GeneralSelection } from './patient-form/general/GeneralSelection';
+import { InvestigationDisplay } from './patient-form/investigations/InvestigationsDisplay';
 
 export type Props = {
     mergeCandidates: MergeCandidate[];
@@ -53,6 +55,8 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient }: Pro
                     <EthnicitySelection mergeCandidates={mergeCandidates} />
                     <SexAndBirthSelection mergeCandidates={mergeCandidates} />
                     <MortalitySelection mergeCandidates={mergeCandidates} />
+                    <GeneralSelection mergeCandidates={mergeCandidates} />
+                    <InvestigationDisplay mergeCandidates={mergeCandidates} />
                 </div>
             </main>
         </div>
