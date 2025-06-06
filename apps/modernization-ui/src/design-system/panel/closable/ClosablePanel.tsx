@@ -28,10 +28,10 @@ const ClosablePanel = ({ title, headingLevel, children, footer, onClose, closeBu
                 {renderHeader(title, headingLevel)}
                 <Button
                     ref={closeButtonRef}
-                    icon={<Icon name="close" />}
+                    icon={<Icon sizing="medium" name="close" />}
                     onClick={onClose}
                     aria-label={`Close ${title}`}
-                    unstyled
+                    tertiary
                     className={styles.closer}
                 />
             </header>

@@ -71,7 +71,7 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small', closeButtonRef }: Pro
                     aria-label="close the column preferences"
                     onClick={close}
                     className={styles.close}
-                    unstyled
+                    tertiary
                 />
             </header>
             <DragDropContext onDragEnd={handleDragEnd}>
