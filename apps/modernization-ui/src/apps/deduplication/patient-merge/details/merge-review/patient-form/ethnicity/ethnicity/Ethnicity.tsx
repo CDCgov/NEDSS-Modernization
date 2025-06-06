@@ -1,8 +1,8 @@
 import { MergeEthnicity } from 'apps/deduplication/api/model/MergeCandidate';
-import { format, parseISO } from 'date-fns';
 import { Controller, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
+import { toDateDisplay } from '../../shared/toDateDisplay';
 
 type Props = {
     personUid: string;
@@ -10,13 +10,6 @@ type Props = {
 };
 export const Ethnicity = ({ personUid, ethnicity }: Props) => {
     const form = useFormContext<PatientMergeForm>();
-
-    const parseDate = (date?: string) => {
-        if (date == undefined) {
-            return '---';
-        }
-        return format(parseISO(date), 'MM/dd/yyyy');
-    };
 
     return (
         <section>
@@ -26,7 +19,7 @@ export const Ethnicity = ({ personUid, ethnicity }: Props) => {
                 render={({ field }) => (
                     <MergeDataDisplay
                         label="As of date"
-                        display={parseDate(ethnicity.asOf)}
+                        display={toDateDisplay(ethnicity.asOf)}
                         selectable={{
                             id: `ethnicity-${field.name}-${personUid}`,
                             formValue: personUid,

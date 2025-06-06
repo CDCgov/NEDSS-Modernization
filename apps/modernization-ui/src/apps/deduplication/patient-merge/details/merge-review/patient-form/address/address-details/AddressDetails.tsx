@@ -1,7 +1,6 @@
-import React from 'react';
-import { DetailsSection } from '../../shared/details-section/DetailsSection';
 import { MergeAddress } from 'apps/deduplication/api/model/MergeCandidate';
-import { format, parseISO } from 'date-fns';
+import { DetailsSection } from '../../shared/details-section/DetailsSection';
+import { toDateDisplay } from '../../shared/toDateDisplay';
 
 type Props = {
     address: MergeAddress;
@@ -10,7 +9,7 @@ export const AddressDetails = ({ address }: Props) => {
     return (
         <DetailsSection
             details={[
-                { label: 'As of date', value: address.asOf ? format(parseISO(address.asOf), 'MM/dd/yyyy') : '---' },
+                { label: 'As of date', value: toDateDisplay(address.asOf) },
                 { label: 'Type', value: address.type },
                 { label: 'Use', value: address.use },
                 { label: 'Street address 1', value: address.address },

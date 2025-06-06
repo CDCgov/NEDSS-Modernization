@@ -1,9 +1,8 @@
-import { TableCard } from 'design-system/card/table/TableCard';
+import { TableCard } from 'design-system/card';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { usePatientFileDocumentRequiringReview } from './usePatientFileDocumentRequiringReview';
 import { DocumentRequiringReview } from 'generated';
-import { ClassicLink } from 'classic';
 import { internalizeDate } from 'date';
 import { internalizeDateTime } from 'date/InternalizeDateTime';
 import { renderFacilityProvider, renderLabReports, renderMorbidity } from '../../renderPatientFile';
@@ -41,11 +40,7 @@ const renderEventDate = (value?: string) => {
 const renderEventId = (value: DocumentRequiringReview) => {
     const classicUrl = resolveUrl(value);
 
-    return (
-        <ClassicLink id="eventId" url={classicUrl} destination="current">
-            {value.local}
-        </ClassicLink>
-    );
+    return <a href={classicUrl}>{value.local}</a>;
 };
 
 const columns: Column<DocumentRequiringReview>[] = [
@@ -101,10 +96,8 @@ export const PatientDocumentRequiringReview = ({ patient }: PatientDocumentRequi
             sizing="small"
             columnPreferencesKey="patient.file.drr.preferences"
             defaultColumnPreferences={columnPreferences}
-            defaultCollapsed={documents.length === 0}
             columns={columns}
             data={documents}
-            showSettings={true}
             collapsible
         />
     );

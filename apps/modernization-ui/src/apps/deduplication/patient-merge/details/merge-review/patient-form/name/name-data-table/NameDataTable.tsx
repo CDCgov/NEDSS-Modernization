@@ -1,9 +1,9 @@
 import { MergeCandidate, MergeName } from 'apps/deduplication/api/model/MergeCandidate';
-import { format, parseISO } from 'date-fns';
 import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
+import { toDateDisplay } from '../../shared/toDateDisplay';
 
 type Props = {
     patientData: MergeCandidate;
@@ -33,7 +33,7 @@ export const NameDataTable = ({ patientData, onViewName, selectedName }: Props) 
         {
             id: 'as-of',
             name: 'As of',
-            render: (n) => format(parseISO(n.asOf), 'MM/dd/yyyy')
+            render: (n) => toDateDisplay(n.asOf)
         },
         {
             id: 'type',
