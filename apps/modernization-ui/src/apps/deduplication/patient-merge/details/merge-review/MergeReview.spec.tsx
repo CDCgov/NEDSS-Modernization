@@ -13,6 +13,7 @@ const Fixture = () => {
     const data: Partial<MergeCandidate>[] = [
         {
             personUid: '100',
+            personLocalId: '001',
             adminComments: { date: '2025-05-01T00:00', comment: 'First comment' },
             ethnicity: {},
             sexAndBirth: {},
@@ -22,6 +23,7 @@ const Fixture = () => {
         },
         {
             personUid: '200',
+            personLocalId: '002',
             adminComments: { date: '2005-01-21T00:00', comment: 'Second comment' },
             ethnicity: {},
             sexAndBirth: {},
@@ -31,6 +33,7 @@ const Fixture = () => {
         },
         {
             personUid: '300',
+            personLocalId: '003',
             adminComments: { date: '1995-04-23T00:00', comment: 'Third comment' },
             ethnicity: {},
             sexAndBirth: {},
@@ -92,9 +95,9 @@ describe('MergeReview', () => {
     it('should display patient id selection', () => {
         const { getByLabelText } = render(<Fixture />);
 
-        expect(getByLabelText('100')).toBeInTheDocument();
-        expect(getByLabelText('200')).toBeInTheDocument();
-        expect(getByLabelText('300')).toBeInTheDocument();
+        expect(getByLabelText('001')).toBeInTheDocument();
+        expect(getByLabelText('002')).toBeInTheDocument();
+        expect(getByLabelText('003')).toBeInTheDocument();
     });
 
     it('should handle patient remove', async () => {

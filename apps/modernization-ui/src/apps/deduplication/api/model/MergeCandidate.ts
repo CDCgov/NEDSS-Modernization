@@ -1,5 +1,7 @@
 export type MergeCandidate = {
     personUid: string;
+    personLocalId: string;
+    addTime: string;
     adminComments: AdminComments;
     names: MergeName[];
     addresses: MergeAddress[];
