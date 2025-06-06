@@ -75,7 +75,7 @@ class JurisdictionMother {
         .param("name", name)
         .update();
 
-    JurisdictionIdentifier created = new JurisdictionIdentifier(identifier, code);
+    JurisdictionIdentifier created = new JurisdictionIdentifier(identifier, code, name);
 
     this.identifiers.add(identifier);
 

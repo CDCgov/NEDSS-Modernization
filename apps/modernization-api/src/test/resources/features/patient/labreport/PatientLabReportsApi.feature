@@ -9,12 +9,12 @@ Feature: Patient Lab Reports API
   Scenario: The api return a blank packet if i do not have permissions
     And the patient has a lab report
     When I call the patient lab reports api
-    Then the packet is blank
+    Then I am not allowed due to insufficient permissions
 
   Scenario: The api returns an empty array when the patient has no lab reports
     And I can "view" any "ObservationLabReport" for "STD" within all jurisdictions
     When I call the patient lab reports api
-    Then an empty array is returned
+    Then no values are returned
 
   Scenario: The api returns results if the patient has lab reports
     And I can "view" any "ObservationLabReport" for "STD" within all jurisdictions
