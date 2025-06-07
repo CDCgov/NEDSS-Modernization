@@ -49,8 +49,9 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
             <OverlayPanel
                 className={styles.overlay}
                 position="right"
-                toggle={({ toggle }) => (
+                toggle={({ toggle, ref }) => (
                     <Button
+                        ref={ref}
                         aria-label="Settings"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
@@ -61,7 +62,10 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
                         sizing={sizing}
                     />
                 )}
-                render={(close) => <ColumnPreferencesPanel close={close} />}></OverlayPanel>
+                render={(close, closeButtonRef) => (
+                    <ColumnPreferencesPanel close={close} closeButtonRef={closeButtonRef} />
+                )}
+            />
         </>
     );
 };

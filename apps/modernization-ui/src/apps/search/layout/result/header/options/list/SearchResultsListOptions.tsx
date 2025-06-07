@@ -16,8 +16,9 @@ const SearchResultsListOptions = ({ disabled = false, sizing }: Props) => {
         <OverlayPanel
             className={styles.options}
             position="right"
-            toggle={({ toggle }) => (
+            toggle={({ toggle, ref }) => (
                 <Button
+                    ref={ref}
                     className={styles.opener}
                     aria-label="Sort list by"
                     data-tooltip-position="top"
@@ -29,7 +30,9 @@ const SearchResultsListOptions = ({ disabled = false, sizing }: Props) => {
                     sizing={sizing}
                 />
             )}
-            render={(close) => <SortingPreferencesPanel onClose={close} />}
+            render={(close, closeButtonRef) => (
+                <SortingPreferencesPanel onClose={close} closeButtonRef={closeButtonRef} />
+            )}
         />
     );
 };

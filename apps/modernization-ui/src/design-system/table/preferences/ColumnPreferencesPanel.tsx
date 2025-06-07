@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from '@hello-pangea/dnd';
 import { useColumnPreferences, ColumnPreference } from './useColumnPreferences';
 import { Checkbox } from 'design-system/checkbox';
@@ -19,13 +19,13 @@ const swap =
 type Props = {
     sizing?: Sizing;
     close: () => void;
+    closeButtonRef?: React.RefObject<HTMLButtonElement>;
 };
 
-const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
+const ColumnPreferencesPanel = ({ close, sizing = 'small', closeButtonRef }: Props) => {
     const { preferences, save, reset } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
-
     useEffect(() => {
         setPending(structuredClone(preferences));
     }, [JSON.stringify(preferences)]);
@@ -65,11 +65,13 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
         <div className={styles.panel}>
             <header>
                 <h2>Columns</h2>
-                <ActionIcon
-                    name="close"
-                    className={styles.close}
+                <Button
+                    ref={closeButtonRef}
+                    icon={<ActionIcon name="close" />}
                     aria-label="close the column preferences"
-                    onAction={close}
+                    onClick={close}
+                    className={styles.close}
+                    tertiary
                 />
             </header>
             <DragDropContext onDragEnd={handleDragEnd}>
