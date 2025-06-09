@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from '@hello-pangea/dnd';
 import { useColumnPreferences, ColumnPreference } from './useColumnPreferences';
 import { Checkbox } from 'design-system/checkbox';
-import { ActionIcon, Icon } from 'design-system/icon';
+import { Icon } from 'design-system/icon';
 import { Button } from 'design-system/button';
 
 import styles from './column-preference-panel.module.scss';

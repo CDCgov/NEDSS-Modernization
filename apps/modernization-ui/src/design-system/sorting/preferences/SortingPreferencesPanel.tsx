@@ -2,7 +2,6 @@ import { Closable, ClosablePanel } from 'design-system/panel/closable';
 import { SortingSelectable } from './selectable';
 import { SortPreference } from './SortPreference';
 import { useSortingPreferences } from './useSortingPreferences';
-import { RefObject } from 'react';
 
 type Props = Closable;
 
