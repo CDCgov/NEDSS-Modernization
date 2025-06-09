@@ -101,7 +101,7 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
                 value.associatedInvestigation && (
                     <div>
                         <a href={`/nbs/api/profile/${patient}/investigation/${value.associatedInvestigation.id}`}>
-                            {value.associatedInvestigation.id}
+                            {value.associatedInvestigation.local}
                         </a>
                         <p className="margin-0">
                             <b>{value.associatedInvestigation.condition}</b>
