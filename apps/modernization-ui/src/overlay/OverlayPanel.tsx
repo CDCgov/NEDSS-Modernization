@@ -11,7 +11,7 @@ type ButtonRendererProps = {
 };
 
 type ToggleRenderer = (props: ButtonRendererProps) => JSX.Element;
-type PanelRenderer = (close: Close, closeButtonRef?: React.RefObject<HTMLButtonElement>) => JSX.Element;
+type PanelRenderer = (close: Close) => JSX.Element;
 
 type OverlayPanelProps = {
     className?: string;
@@ -73,7 +73,7 @@ const Dialog = ({ position, onClose, children }: DialogProps) => {
         <dialog
             ref={dialogRef}
             tabIndex={0}
-            aria-label="Overlay panel"
+            aria-label="Overlay modal"
             open
             className={classNames({ [styles.right]: position === 'right', [styles.left]: position === 'left' })}
             onKeyDown={handleKeyDown}>

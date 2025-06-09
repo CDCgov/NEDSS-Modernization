@@ -1,5 +1,5 @@
 import { Icon } from 'design-system/icon';
-import { ReactNode, RefObject } from 'react';
+import { ReactNode } from 'react';
 import { Button } from 'design-system/button';
 import styles from './closable-panel.module.scss';
 
@@ -18,10 +18,9 @@ type Props = {
     headingLevel?: HeadingLevel;
     children: ReactNode;
     footer?: FooterRenderer;
-    closeButtonRef?: RefObject<HTMLButtonElement>;
 } & Closable;
 
-const ClosablePanel = ({ title, headingLevel, children, footer, onClose, closeButtonRef }: Props) => {
+const ClosablePanel = ({ title, headingLevel, children, footer, onClose }: Props) => {
     return (
         <div className={styles.panel}>
             <header>{renderHeader(title, headingLevel)}</header>
@@ -29,7 +28,6 @@ const ClosablePanel = ({ title, headingLevel, children, footer, onClose, closeBu
             {footer && <footer>{footer({ onClose })}</footer>}
 
             <Button
-                ref={closeButtonRef}
                 icon={<Icon sizing="medium" name="close" />}
                 onClick={onClose}
                 aria-label={`Close ${title}`}
