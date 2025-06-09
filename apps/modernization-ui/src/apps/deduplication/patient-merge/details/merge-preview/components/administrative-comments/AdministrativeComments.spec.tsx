@@ -10,6 +10,10 @@ describe('AdministrativeComments', () => {
         const mergeCandidates: MergeCandidate[] = [
             {
                 personUid: '123',
+                personLocalId: '98882',
+                addTime: '2023-05-31T00:00:00Z',
+                general:{},
+                investigations: [],
                 adminComments: {
                     date: '2023-05-31T00:00:00Z', // use ISO format date
                     comment: 'This is a test comment',
