@@ -2,7 +2,6 @@ import { PatientDescriptor } from 'libs/patient/PatientDescriptor';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import styles from './PatientSummary.module.scss';
-import { DisplayableName } from '../../../../../../../name';
 import { toMMDDYYYY } from '../../utils/dateUtils';
 
 type PatientSummaryProps = {
@@ -10,20 +9,17 @@ type PatientSummaryProps = {
     mergeFormData: PatientMergeForm;
 };
 
-export const PatientSummary = ({ mergeFormData, mergeCandidates }: PatientSummaryProps) => {
+export const PatientSummary = ({ mergeCandidates, mergeFormData }: PatientSummaryProps) => {
+    const selectedPersonUid = mergeFormData.survivingRecord;
+
     const findCandidateByUid = (uid: string) => mergeCandidates.find((c) => c.personUid === uid);
-    const selectedNameEntry =
-        mergeFormData.names.find((name) => name.personUid === mergeFormData.survivingRecord) || mergeFormData.names[0];
-    const selectedPersonUid = selectedNameEntry?.personUid ?? mergeFormData.survivingRecord;
-    const nameCandidate = mergeCandidates.find((c) => c.personUid === selectedPersonUid);
-    const survivingCandidate = mergeCandidates.find((c) => c.personUid === selectedPersonUid);
-    const name: DisplayableName = {
-        first: nameCandidate?.names?.[0]?.first || '',
-        middle: nameCandidate?.names?.[0]?.middle || '',
-        last: nameCandidate?.names?.[0]?.last || '',
-        suffix: nameCandidate?.names?.[0]?.suffix || '',
-        type: nameCandidate?.names?.[0]?.type || ''
-    };
+
+    const survivingCandidate = findCandidateByUid(selectedPersonUid);
+
+    const selectedName = mergeFormData.names.find((n) => n.personUid === selectedPersonUid);
+    const fullName = selectedName
+        ? survivingCandidate?.names.find((n) => n.sequence === selectedName.sequence)
+        : undefined;
 
     const sexCandidate = mergeFormData.sexAndBirth?.currentSex
         ? findCandidateByUid(mergeFormData.sexAndBirth.currentSex)
@@ -36,10 +32,10 @@ export const PatientSummary = ({ mergeFormData, mergeCandidates }: PatientSummar
     const descriptor = {
         id: parseInt(mergeFormData.survivingRecord, 10),
         patientId: survivingCandidate ? parseInt(survivingCandidate.personLocalId, 10) : NaN,
-        name: name,
+        name: fullName, // ✅ Let PatientDescriptor handle fallback
         status: 'active',
-        sex: sexCandidate?.sexAndBirth?.currentSex || '',
-        birthday: toMMDDYYYY(dateOfBirthCandidate?.sexAndBirth?.dateOfBirth || '')
+        sex: sexCandidate?.sexAndBirth?.currentSex,
+        birthday: toMMDDYYYY(dateOfBirthCandidate?.sexAndBirth?.dateOfBirth)
     };
 
     return (
