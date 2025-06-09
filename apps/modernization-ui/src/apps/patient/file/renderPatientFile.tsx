@@ -1,4 +1,4 @@
-import { OrderingProvider, ResultedTest } from 'generated';
+import { DisplayableSimpleName, ResultedTest } from 'generated';
 
 export const renderMorbidity = (
     condition?: string,
@@ -36,7 +36,7 @@ export const renderMorbidity = (
 
 export const renderFacilityProvider = (
     reportingFacility?: string,
-    orderingProvider?: OrderingProvider,
+    orderingProvider?: DisplayableSimpleName,
     sendingFacility?: string,
     orderingFacility?: string
 ) => {

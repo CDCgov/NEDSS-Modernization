@@ -72,13 +72,13 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
         {
             ...FACILITY_PROVIDER,
             sortable: true,
-            value: (value) => value.facilityProviders?.reportingFacility,
+            value: (value) => value.reportingFacility,
             render: (value: PatientLabReport) =>
                 renderFacilityProvider(
-                    value.facilityProviders?.reportingFacility,
-                    value.facilityProviders?.orderingProvider,
+                    value.reportingFacility,
+                    value.orderingProvider,
                     undefined,
-                    value.facilityProviders?.orderingFacility
+                    value.orderingFacility
                 )
         },
         {
