@@ -71,7 +71,7 @@ public class ProgramAreaMother {
         .param("name", name)
         .update();
 
-    ProgramAreaIdentifier created = new ProgramAreaIdentifier(identifier, code);
+    ProgramAreaIdentifier created = new ProgramAreaIdentifier(identifier, code, name);
 
     this.identifiers.add(identifier);
 

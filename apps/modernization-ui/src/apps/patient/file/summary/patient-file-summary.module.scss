@@ -4,8 +4,9 @@
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 5rem;
     padding: 1rem;
 
     .summaryItem {
@@ -27,15 +28,18 @@
     }
 
     .group {
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
-        width: 12rem;
+        min-width: 12rem;
+        max-width: 20rem;
     }
     .groupID {
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
-        width: 10rem;
+        min-width: 10rem;
+        max-width: 12rem;
     }
 }
 

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { Sizing } from 'design-system/field';
 import { buttonClassnames } from './buttonClassNames';
 
@@ -20,7 +20,6 @@ type ButtonProps = {
     outline?: boolean;
     /** Deprecated - replaced by tertiary */
     unstyled?: boolean;
-    onClick?: () => void;
 } & StandardButtonProps &
     JSX.IntrinsicElements['button'];
 

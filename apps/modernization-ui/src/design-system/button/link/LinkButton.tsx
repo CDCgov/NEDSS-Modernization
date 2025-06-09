@@ -10,7 +10,7 @@ type LinkButtonProps = InternalLinkProps & StandardButtonProps;
 
 const LinkButton = ({
     href,
-    target = '_blank',
+    target = '_self',
     rel = 'noreferrer',
     className,
     sizing,

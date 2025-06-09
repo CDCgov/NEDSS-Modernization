@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from '@hello-pangea/dnd';
 import { useColumnPreferences, ColumnPreference } from './useColumnPreferences';
 import { Checkbox } from 'design-system/checkbox';
-import { ActionIcon, Icon } from 'design-system/icon';
+import { Icon } from 'design-system/icon';
 import { Button } from 'design-system/button';
 
 import styles from './column-preference-panel.module.scss';
 import { Sizing } from 'design-system/field';
+import { ClosablePanel } from 'design-system/panel/closable';
 
 const swap =
     <I,>(items: I[]) =>
@@ -25,7 +26,6 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
     const { preferences, save, reset } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
-
     useEffect(() => {
         setPending(structuredClone(preferences));
     }, [JSON.stringify(preferences)]);
@@ -62,16 +62,20 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
     };
 
     return (
-        <div className={styles.panel}>
-            <header>
-                <h2>Columns</h2>
-                <ActionIcon
-                    name="close"
-                    className={styles.close}
-                    aria-label="close the column preferences"
-                    onAction={close}
-                />
-            </header>
+        <ClosablePanel
+            title="Columns"
+            headingLevel={2}
+            onClose={close}
+            footer={() => (
+                <div className={styles.footer}>
+                    <Button tertiary sizing={sizing} onClick={handleReset}>
+                        Reset
+                    </Button>
+                    <Button type="button" id="save-column-preferences" secondary sizing={sizing} onClick={handleSave}>
+                        Save columns
+                    </Button>
+                </div>
+            )}>
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="preferences">
                     {(droppable) => (
@@ -109,15 +113,7 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
                     )}
                 </Droppable>
             </DragDropContext>
-            <footer>
-                <Button tertiary sizing={sizing} onClick={handleReset}>
-                    Reset
-                </Button>
-                <Button type="button" id="save-column-preferences" outline sizing={sizing} onClick={handleSave}>
-                    Save columns
-                </Button>
-            </footer>
-        </div>
+        </ClosablePanel>
     );
 };
 
