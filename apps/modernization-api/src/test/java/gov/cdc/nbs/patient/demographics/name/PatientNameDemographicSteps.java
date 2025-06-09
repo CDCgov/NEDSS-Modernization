@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.names;
+package gov.cdc.nbs.patient.demographics.name;
 
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;

@@ -6,39 +6,10 @@ type Mutation {
     addPatientRace(input: RaceInput!): PatientRaceAddResult!
     updatePatientRace(input: RaceInput!): PatientRaceChangeSuccessful!
     deletePatientRace(input: DeletePatientRace!): PatientRaceChangeSuccessful!
-    addPatientName(input: NewPatientNameInput!): PatientNameChangeResult!
-    updatePatientName(input: UpdatePatientNameInput!): PatientNameChangeResult!
-    deletePatientName(input: DeletePatientNameInput!): PatientNameChangeResult!
 }
 
 type PatientUpdateResponse {
     patientId: ID!
-}
-
-enum Suffix {
-    ESQ
-    II
-    III
-    IV
-    JR
-    SR
-    V
-}
-
-enum NameUseCd {
-    AD # Adopted Name
-    AL # Alias Name
-    A # Artist/Stage Name
-    S # Coded Pseudo
-    I # Indigenous/Tribal
-    L # Legal
-    C # License
-    M # Maiden Name
-    MO # Mother's Name
-    BR # Name at Birth
-    P # Name of Partner/Spouse
-    R # Religious
-    U
 }
 
 input GeneralInfoInput {
@@ -119,45 +90,6 @@ type PatientRaceChangeFailureExistingCategory {
 }
 
 union PatientRaceAddResult = PatientRaceChangeSuccessful | PatientRaceChangeFailureExistingCategory
-
-input NewPatientNameInput {
-    patient: Int!
-    type: String!
-    asOf: Date!
-    prefix: String
-    first: String
-    middle: String
-    secondMiddle: String
-    last: String
-    secondLast: String
-    suffix: String
-    degree: String
-}
-
-input UpdatePatientNameInput {
-    patient: Int!
-    sequence: Int!
-    type: String!
-    asOf: Date!
-    prefix: String
-    first: String
-    middle: String
-    secondMiddle: String
-    last: String
-    secondLast: String
-    suffix: String
-    degree: String
-}
-
-input DeletePatientNameInput {
-    patient: Int!
-    sequence: Int!
-}
-
-type PatientNameChangeResult {
-    patient: Int!
-    sequence: Int!
-}
 
 input UpdateBirthAndGenderInput {
     patient: ID!
