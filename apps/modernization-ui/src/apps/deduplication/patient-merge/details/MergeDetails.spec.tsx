@@ -14,7 +14,7 @@ const Fixture = () => {
     return (
         <MemoryRouter initialEntries={['/deduplication/merge/1234']}>
             <Routes>
-                <Route path="/deduplication/merge/:patientId" element={<MergeDetails />} />
+                <Route path="/deduplication/merge/:matchId" element={<MergeDetails />} />
             </Routes>
         </MemoryRouter>
     );

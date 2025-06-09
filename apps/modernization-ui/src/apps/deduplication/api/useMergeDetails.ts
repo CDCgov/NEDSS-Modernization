@@ -7,10 +7,10 @@ export const useMergeDetails = () => {
     const [response, setResponse] = useState<MergeCandidate[] | undefined>();
     const [error, setError] = useState<string | undefined>(undefined);
 
-    const fetchPatientMergeDetails = (patientId: string) => {
+    const fetchPatientMergeDetails = (matchId: string) => {
         setLoading(true);
 
-        fetch(`${Config.deduplicationUrl}/merge/${patientId}`, {
+        fetch(`${Config.deduplicationUrl}/merge/${matchId}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json'

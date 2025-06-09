@@ -10,15 +10,18 @@ import java.util.Optional;
 @Component
 class JurisdictionParameterResolver {
 
-  private static final int IDENTIFIER_COLUMN = 1;
-  private static final int CODE_COLUMN = 2;
   private static final String QUERY = """
       select
           nbs_uid,
-          code
+          code,
+          code_desc_txt
       from NBS_SRTE.[dbo].Jurisdiction_code
       where code_desc_txt = ?
       """;
+
+  private static final int IDENTIFIER_COLUMN = 1;
+  private static final int CODE_COLUMN = 2;
+  private static final int NAME_COLUMN = 3;
 
   private final JdbcClient client;
 
@@ -36,7 +39,8 @@ class JurisdictionParameterResolver {
   private JurisdictionIdentifier map(final ResultSet resultSet, final int row) throws SQLException {
     long identifier = resultSet.getLong(IDENTIFIER_COLUMN);
     String code = resultSet.getString(CODE_COLUMN);
+    String name = resultSet.getString(NAME_COLUMN);
 
-    return new JurisdictionIdentifier(identifier, code);
+    return new JurisdictionIdentifier(identifier, code, name);
   }
 }

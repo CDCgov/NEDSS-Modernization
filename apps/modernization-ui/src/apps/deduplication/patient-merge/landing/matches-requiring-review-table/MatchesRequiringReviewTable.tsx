@@ -55,7 +55,7 @@ export const MatchesRequiringReviewTable = () => {
             name: 'Patient ID',
             sortable: true,
             sortIconType: 'numeric',
-            render: (match) => match.patientId
+            render: (match) => match.patientLocalId
         },
         {
             id: 'name',
@@ -93,7 +93,7 @@ export const MatchesRequiringReviewTable = () => {
                     <Button
                         sizing="small"
                         className={styles.reviewButton}
-                        onClick={() => nav(`/deduplication/merge/${match.patientId}`)}>
+                        onClick={() => nav(`/deduplication/merge/${match.matchId}`)}>
                         Review
                     </Button>
                 );

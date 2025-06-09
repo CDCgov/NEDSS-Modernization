@@ -11,7 +11,7 @@ import { PatientMergeForm } from './merge-review/model/PatientMergeForm';
 
 export const MergeDetails = () => {
     const [pageState, setPageState] = useState<'review' | 'preview'>('review');
-    const { patientId } = useParams();
+    const { matchId } = useParams();
     const { response, loading, fetchPatientMergeDetails } = useMergeDetails();
     const form = useForm<PatientMergeForm>({ mode: 'onBlur' });
     const watch = useWatch(form);
@@ -21,10 +21,10 @@ export const MergeDetails = () => {
     }, [watch]);
 
     useEffect(() => {
-        if (patientId !== undefined) {
-            fetchPatientMergeDetails(patientId);
+        if (matchId !== undefined) {
+            fetchPatientMergeDetails(matchId);
         }
-    }, [patientId]);
+    }, [matchId]);
 
     const handleRemovePatient = (personUid: string) => {
         console.log('Remove patient NYI', personUid);

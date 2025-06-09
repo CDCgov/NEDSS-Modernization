@@ -1,5 +1,5 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { render, waitFor, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { ExtendedNewPatientEntry, initial } from './entry';
 import { internalizeDate } from 'date';
@@ -70,72 +70,75 @@ const Fixture = ({ asOf, validationErrors }: Props) => {
     );
 };
 describe('AddPatientExtendedForm', () => {
-    it('should render the sections with appropriate help text', async () => {
-        const { getAllByText, getByText, getAllByRole } = render(<Fixture />);
+    it('should render the sections with appropriate help text', () => {
+        render(<Fixture />);
 
-        await waitFor(() => expect(getByText('Administrative')).toBeInTheDocument());
+        const administrative = screen.getByLabelText('Administrative');
 
-        const headers = getAllByRole('heading');
-        const requiredTexts = getAllByText('Required');
+        expect(within(administrative).getByText('Required')).toBeInTheDocument();
 
-        expect(headers[0]).toHaveTextContent('Administrative');
-        expect(headers[0].parentElement?.parentElement).toContainElement(requiredTexts[0]);
+        const name = screen.getByLabelText('Name');
 
-        expect(headers[1]).toHaveTextContent('Name');
-        expect(headers[1].parentElement?.parentElement).toContainElement(requiredTexts[1]);
+        expect(within(name).getByText('Required')).toBeInTheDocument();
 
-        expect(headers[2]).toHaveTextContent('Address');
-        expect(headers[2].parentElement?.parentElement).toContainElement(requiredTexts[2]);
+        const address = screen.getByLabelText('Address');
 
-        expect(headers[3]).toHaveTextContent('Phone & email');
-        expect(headers[3].parentElement?.parentElement).toContainElement(requiredTexts[3]);
+        expect(within(address).getByText('Required')).toBeInTheDocument();
 
-        expect(headers[4]).toHaveTextContent('Identification');
-        expect(headers[4].parentElement?.parentElement).toContainElement(requiredTexts[4]);
+        const phone = screen.getByLabelText('Phone & email');
 
-        expect(headers[5]).toHaveTextContent('Race');
-        expect(headers[5].parentElement?.parentElement).toContainElement(requiredTexts[5]);
+        expect(within(phone).getByText('Required')).toBeInTheDocument();
 
-        expect(headers[6]).toHaveTextContent('Ethnicity');
-        expect(headers[6].parentElement?.parentElement).toContainElement(requiredTexts[6]);
+        const identification = screen.getByLabelText('Identification');
 
-        expect(headers[7]).toHaveTextContent('Sex & birth');
-        expect(headers[7].parentElement?.parentElement).toContainElement(requiredTexts[7]);
+        expect(within(identification).getByText('Required')).toBeInTheDocument();
 
-        expect(headers[8]).toHaveTextContent('Mortality');
-        expect(headers[8].parentElement?.parentElement).toContainElement(requiredTexts[8]);
+        const race = screen.getByLabelText('Race', { selector: 'section' });
 
-        expect(headers[9]).toHaveTextContent('General patient information');
-        expect(headers[9].parentElement?.parentElement).toContainElement(requiredTexts[9]);
+        expect(within(race).getByText('Required')).toBeInTheDocument();
+
+        const ethnicity = screen.getByLabelText('Ethnicity', { selector: 'section' });
+
+        expect(within(ethnicity).getByText('Required')).toBeInTheDocument();
+
+        const sex = screen.getByLabelText('Sex & birth');
+
+        expect(within(sex).getByText('Required')).toBeInTheDocument();
+
+        const mortality = screen.getByLabelText('Mortality');
+
+        expect(within(mortality).getByText('Required')).toBeInTheDocument();
+
+        const general = screen.getByLabelText('Sex & birth');
+
+        expect(within(general).getByText('Required')).toBeInTheDocument();
     });
 
-    it('should set default date for as of fields', async () => {
+    it('should set default date for as of fields', () => {
         const { getByLabelText } = render(<Fixture asOf="05/07/1977" />);
 
         //  The Repeating block as of dates are being initialized to today's date within the component.
         const expected = internalizeDate(new Date());
 
-        await waitFor(() => {
-            expect(getByLabelText('Information as of date')).toHaveValue('05/07/1977');
+        expect(getByLabelText('Information as of date')).toHaveValue('05/07/1977');
 
-            expect(getByLabelText('Name as of')).toHaveValue(expected);
+        expect(getByLabelText('Name as of')).toHaveValue(expected);
 
-            expect(getByLabelText('Address as of')).toHaveValue(expected);
+        expect(getByLabelText('Address as of')).toHaveValue(expected);
 
-            expect(getByLabelText('Phone & email as of')).toHaveValue(expected);
+        expect(getByLabelText('Phone & email as of')).toHaveValue(expected);
 
-            expect(getByLabelText('Identification as of')).toHaveValue(expected);
+        expect(getByLabelText('Identification as of')).toHaveValue(expected);
 
-            expect(getByLabelText('Race as of')).toHaveValue(expected);
+        expect(getByLabelText('Race as of')).toHaveValue(expected);
 
-            expect(getByLabelText('Ethnicity information as of')).toHaveValue('05/07/1977');
+        expect(getByLabelText('Ethnicity information as of')).toHaveValue('05/07/1977');
 
-            expect(getByLabelText('Sex & birth information as of')).toHaveValue('05/07/1977');
+        expect(getByLabelText('Sex & birth information as of')).toHaveValue('05/07/1977');
 
-            expect(getByLabelText('Mortality information as of')).toHaveValue('05/07/1977');
+        expect(getByLabelText('Mortality information as of')).toHaveValue('05/07/1977');
 
-            expect(getByLabelText('General information as of')).toHaveValue('05/07/1977');
-        });
+        expect(getByLabelText('General information as of')).toHaveValue('05/07/1977');
     });
 
     it('should display validation errors', () => {

@@ -26,7 +26,7 @@ export const PatientIdSelection = ({ mergeCandidates, onRemovePatient }: Props) 
                             <Radio
                                 id={`${name}-${p.personUid}`}
                                 name={name}
-                                label={p.personUid}
+                                label={p.personLocalId}
                                 onChange={onChange}
                                 value={p.personUid}
                                 checked={value === p.personUid}

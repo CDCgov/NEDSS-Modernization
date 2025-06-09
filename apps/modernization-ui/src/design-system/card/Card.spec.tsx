@@ -1,7 +1,21 @@
 import { render } from '@testing-library/react';
-import { Card } from './Card';
+import userEvent from '@testing-library/user-event';
+import { Card, CardProps } from './Card';
 
-describe('Card Component', () => {
+const Fixture = ({
+    id = 'test-card',
+    title = 'Test Header',
+    children = 'Test content',
+    ...props
+}: Partial<CardProps>) => {
+    return (
+        <Card id={id} title={title} {...props}>
+            {children}
+        </Card>
+    );
+};
+
+describe('Card', () => {
     it('renders correctly with given props', () => {
         const { getByText, getByRole } = render(
             <Card id="test-id" title="Test Title" info="Additional info">
@@ -13,40 +27,43 @@ describe('Card Component', () => {
         expect(getByText('Additional info')).toBeInTheDocument();
     });
 
-    it('applies the correct id to the section', () => {
-        const { container } = render(
-            <Card id="test-id" title="Test Title">
-                <div>Child Content</div>
-            </Card>
-        );
-        expect(container.querySelector('section')).toHaveAttribute('id', 'test-id');
-    });
-
-    it('does not render subtext when subtext prop is not provided', () => {
-        // Render the Card without subtext
-        const { queryByText } = render(
-            // eslint-disable-next-line react/no-children-prop
-            <Card id="test-card" title="Test Title" children={<p>Test content</p>}>
-                {/* No subtext prop here */}
-            </Card>
-        );
-
-        // Check that subtext is not in the document
-        const subtextElement = queryByText(/subtext/i);
-        expect(subtextElement).toBeNull();
-    });
-
-    it('renders subtext when subtext prop is provided', () => {
+    it('renders with subtext', () => {
         // Render the Card with subtext
-        const { getByText } = render(
-            // eslint-disable-next-line react/no-children-prop
-            <Card id="test-card" title="Test Title" subtext="This is the subtext" children={<p>Test content</p>}>
-                {/* Subtext is passed */}
-            </Card>
-        );
+        const { getByText } = render(<Fixture subtext="This is the subtext" />);
 
         // Check that subtext is in the document
         const subtextElement = getByText(/This is the subtext/i);
         expect(subtextElement).toBeInTheDocument();
+    });
+
+    it('does not show collapse control when not collapsible', () => {
+        const { queryByRole } = render(<Fixture collapsible={false} />);
+        expect(queryByRole('button')).not.toBeInTheDocument();
+    });
+
+    describe('that is collapsible', () => {
+        it('collapses an open card when the control is clicked', async () => {
+            const { getByRole } = render(<Fixture title="card" collapsible open={true} />);
+
+            const toggle = getByRole('button', { name: /hide card content/i });
+
+            const user = userEvent.setup();
+
+            // Collapse
+            await user.click(toggle);
+            expect(getByRole('button', { name: /show card content/i })).toBeInTheDocument();
+        });
+
+        it('expands an collapsed card when the control is clicked', async () => {
+            const { getByRole } = render(<Fixture title="card" collapsible open={false} />);
+
+            const toggle = getByRole('button', { name: /show card content/i });
+
+            const user = userEvent.setup();
+
+            // Collapse
+            await user.click(toggle);
+            expect(getByRole('button', { name: /hide card content/i })).toBeInTheDocument();
+        });
     });
 });

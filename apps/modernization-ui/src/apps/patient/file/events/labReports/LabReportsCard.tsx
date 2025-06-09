@@ -1,5 +1,4 @@
-import { ClassicLink } from 'classic';
-import { TableCard } from 'design-system/card/table/TableCard';
+import { TableCard } from 'design-system/card';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { PatientLabReport } from 'generated';
@@ -54,9 +53,7 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
             sortable: true,
             value: (value) => value.eventId,
             render: (value: PatientLabReport) => (
-                <ClassicLink id="condition" url={`/nbs/api/profile/${patient}/report/lab/${value.id}`}>
-                    {value.eventId}
-                </ClassicLink>
+                <a href={`/nbs/api/profile/${patient}/report/lab/${value.id}`}>{value.eventId}</a>
             )
         },
         {
@@ -103,10 +100,9 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
             render: (value: PatientLabReport) =>
                 value.associatedInvestigation && (
                     <div>
-                        <ClassicLink
-                            url={`/nbs/api/profile/${patient}/investigation/${value.associatedInvestigation.id}`}>
-                            {value.associatedInvestigation.local}
-                        </ClassicLink>
+                        <a href={`/nbs/api/profile/${patient}/investigation/${value.associatedInvestigation.id}`}>
+                            {value.associatedInvestigation.id}
+                        </a>
                         <p className="margin-0">
                             <b>{value.associatedInvestigation.condition}</b>
                         </p>
@@ -132,7 +128,6 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
             title="Lab reports"
             sizing="small"
             data={patientLabReports || []}
-            defaultCollapsed={!(patientLabReports && patientLabReports.length > 0)}
             columns={columns}
             columnPreferencesKey="patient.file.laboratory-report.preferences"
             defaultColumnPreferences={columnPreferences}

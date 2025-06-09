@@ -8,7 +8,11 @@ import userEvent from '@testing-library/user-event';
 const onRemove = jest.fn();
 const Fixture = () => {
     const form = useForm<PatientMergeForm>();
-    const data: Partial<MergeCandidate>[] = [{ personUid: '100' }, { personUid: '200' }, { personUid: '300' }];
+    const data: Partial<MergeCandidate>[] = [
+        { personUid: '100', personLocalId: '001' },
+        { personUid: '200', personLocalId: '002' },
+        { personUid: '300', personLocalId: '003' }
+    ];
     return (
         <FormProvider {...form}>
             <PatientIdSelection mergeCandidates={data as MergeCandidate[]} onRemovePatient={onRemove} />
@@ -20,31 +24,31 @@ describe('PatientIdSelection', () => {
     it('should render radio buttons', () => {
         const { getByLabelText } = render(<Fixture />);
 
-        expect(getByLabelText('100')).toBeInTheDocument();
-        expect(getByLabelText('100')).toHaveAttribute('type', 'radio');
+        expect(getByLabelText('001')).toBeInTheDocument();
+        expect(getByLabelText('001')).toHaveAttribute('type', 'radio');
 
-        expect(getByLabelText('200')).toBeInTheDocument();
-        expect(getByLabelText('200')).toHaveAttribute('type', 'radio');
+        expect(getByLabelText('002')).toBeInTheDocument();
+        expect(getByLabelText('002')).toHaveAttribute('type', 'radio');
 
-        expect(getByLabelText('300')).toBeInTheDocument();
-        expect(getByLabelText('300')).toHaveAttribute('type', 'radio');
+        expect(getByLabelText('003')).toBeInTheDocument();
+        expect(getByLabelText('003')).toHaveAttribute('type', 'radio');
     });
 
     it('should select when clicked', async () => {
         const user = userEvent.setup();
         const { getByLabelText } = render(<Fixture />);
 
-        await user.click(getByLabelText('100'));
-        expect(getByLabelText('100')).toBeChecked();
+        await user.click(getByLabelText('001'));
+        expect(getByLabelText('001')).toBeChecked();
 
-        await user.click(getByLabelText('200'));
-        expect(getByLabelText('200')).toBeChecked();
+        await user.click(getByLabelText('002'));
+        expect(getByLabelText('002')).toBeChecked();
 
-        await user.click(getByLabelText('300'));
-        expect(getByLabelText('300')).toBeChecked();
+        await user.click(getByLabelText('003'));
+        expect(getByLabelText('003')).toBeChecked();
 
-        await user.click(getByLabelText('100'));
-        expect(getByLabelText('100')).toBeChecked();
+        await user.click(getByLabelText('001'));
+        expect(getByLabelText('001')).toBeChecked();
     });
 
     it('should render delete button for non-active entries', async () => {
@@ -60,7 +64,7 @@ describe('PatientIdSelection', () => {
         expect(deleteButtons[2]).toHaveTextContent('Remove');
 
         // Selecting an ID removes the delete button from it. leaving 2
-        await user.click(getByLabelText('100'));
+        await user.click(getByLabelText('001'));
         expect(getAllByRole('button')).toHaveLength(2);
     });
 
