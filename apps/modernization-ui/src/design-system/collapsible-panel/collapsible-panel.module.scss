@@ -30,7 +30,7 @@ $control-width: 1.5rem;
 
     top: calc(50% - #{$control-height});
 
-    right: -($control-width / 2);
+    right: calc($control-width / -2);
 
     cursor: pointer;
 
