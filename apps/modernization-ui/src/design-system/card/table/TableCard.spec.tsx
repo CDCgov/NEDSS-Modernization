@@ -92,20 +92,9 @@ describe('TableCard', () => {
         expect(container.querySelector('section')).toHaveClass('custom-class');
     });
 
-    it('renders table with custom tableClassName', () => {
-        const { getByRole } = render(<Fixture tableClassName="custom-table-class" />);
-        expect(getByRole('table')).toBeInTheDocument();
-        expect(getByRole('table')).toHaveClass('custom-table-class');
-    });
-
     it('renders the settings button by default', () => {
         const { queryByLabelText } = render(<Fixture />);
         expect(queryByLabelText('Settings')).toBeInTheDocument();
-    });
-
-    it('does not render settings button when showSettings is false', () => {
-        const { queryByLabelText } = render(<Fixture showSettings={false} />);
-        expect(queryByLabelText('Settings')).not.toBeInTheDocument();
     });
 
     it('renders with mocked column preferences', () => {

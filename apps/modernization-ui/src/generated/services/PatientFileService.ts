@@ -8,8 +8,10 @@ import type { PatientAddressDemographic } from '../models/PatientAddressDemograp
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientFile } from '../models/PatientFile';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
+import type { PatientInvestigation } from '../models/PatientInvestigation';
+import type { PatientNameDemographic } from '../models/PatientNameDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
-import type { StandardResponse } from '../models/StandardResponse';
+import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -66,6 +68,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics/phones',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Name Demographics
+     * Provides the name demographics for a patient
+     * @returns PatientNameDemographic OK
+     * @throws ApiError
+     */
+    public static names({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientNameDemographic>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/names',
             path: {
                 'patient': patient,
             },
@@ -147,15 +168,53 @@ export class PatientFileService {
         });
     }
     /**
+     * Patient Investigations
+     * Patient Investigations
+     * @returns PatientInvestigation OK
+     * @throws ApiError
+     */
+    public static investigations({
+        patientId,
+    }: {
+        patientId: number,
+    }): CancelablePromise<Array<PatientInvestigation>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patient/{patientId}/investigations',
+            path: {
+                'patientId': patientId,
+            },
+        });
+    }
+    /**
+     * Patient Open Investigations
+     * Patient Open Investigations
+     * @returns PatientInvestigation OK
+     * @throws ApiError
+     */
+    public static openInvestigations({
+        patientId,
+    }: {
+        patientId: number,
+    }): CancelablePromise<Array<PatientInvestigation>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patient/{patientId}/investigations/open',
+            path: {
+                'patientId': patientId,
+            },
+        });
+    }
+    /**
      * Allows deleting of a patient.
-     * @returns StandardResponse The patient has been deleted
+     * @returns Success The patient has been deleted
      * @throws ApiError
      */
     public static delete({
         patient,
     }: {
         patient: number,
-    }): CancelablePromise<StandardResponse> {
+    }): CancelablePromise<Success> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/nbs/api/patients/{patient}',

@@ -9,6 +9,7 @@ export type PatientMergeForm = {
     ethnicity: string; // the id of the person to pull ethnicity data from
     sexAndBirth: SexAndBirthValues;
     mortality: MortalityValues;
+    generalInfo: GeneralInfoValues;
 };
 
 export type NameId = {
@@ -55,4 +56,17 @@ export type MortalityValues = {
     deathCity?: string;
     deathState?: string;
     deathCountry?: string;
+};
+
+export type GeneralInfoValues = {
+    asOf: string;
+    maritalStatus: string;
+    mothersMaidenName: string;
+    numberOfAdultsInResidence: string;
+    numberOfChildrenInResidence: string;
+    primaryOccupation: string;
+    educationLevel: string;
+    primaryLanguage: string;
+    speaksEnglish: string;
+    stateHivCaseId: string;
 };

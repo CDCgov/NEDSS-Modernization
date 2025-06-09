@@ -2,10 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { InvestigatorName } from './InvestigatorName';
+import type { DisplayableSimpleName } from './DisplayableSimpleName';
 export type PatientInvestigation = {
-    investigationId: string;
+    patient: number;
     identifier: number;
+    local: string;
     startedOn?: string;
     condition: string;
     status: string;
@@ -13,7 +14,7 @@ export type PatientInvestigation = {
     jurisdiction: string;
     coInfection?: string;
     notification?: string;
-    investigatorName?: InvestigatorName;
+    investigator?: DisplayableSimpleName;
     comparable: boolean;
 };
 

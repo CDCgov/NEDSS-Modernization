@@ -29,7 +29,7 @@ import static gov.cdc.nbs.patient.profile.general.GeneralInformationDemographicP
 import static gov.cdc.nbs.patient.profile.general.GeneralInformationDemographicPatientCommandMapper.maybeAsAssociateStateHIVCase;
 import static gov.cdc.nbs.patient.demographics.identification.IdentificationDemographicPatientCommandMapper.asAddIdentification;
 import static gov.cdc.nbs.patient.profile.mortality.MortalityDemographicPatientCommandMapper.asUpdateMortality;
-import static gov.cdc.nbs.patient.profile.names.NameDemographicPatientCommandMapper.asAddName;
+import static gov.cdc.nbs.patient.demographics.name.NameDemographicPatientCommandMapper.asAddName;
 import static gov.cdc.nbs.patient.profile.race.RaceDemographicPatientCommandMapper.asAddRace;
 
 @Component
