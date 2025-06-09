@@ -30,9 +30,7 @@ const SearchResultsListOptions = ({ disabled = false, sizing }: Props) => {
                     sizing={sizing}
                 />
             )}
-            render={(close, closeButtonRef) => (
-                <SortingPreferencesPanel onClose={close} closeButtonRef={closeButtonRef} />
-            )}
+            render={(close) => <SortingPreferencesPanel onClose={close} />}
         />
     );
 };

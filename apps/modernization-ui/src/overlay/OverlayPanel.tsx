@@ -24,7 +24,6 @@ type OverlayPanelProps = {
 const OverlayPanel = ({ className, toggle, render, position, overlayVisible }: OverlayPanelProps) => {
     const [visible, setVisible] = useState(false);
     const openerRef = useRef<HTMLButtonElement>(null);
-    const closeButtonRef = useRef<HTMLButtonElement>(null);
 
     const handleToggle = () => setVisible((existing) => !existing);
     const handleClose = () => {
@@ -34,20 +33,14 @@ const OverlayPanel = ({ className, toggle, render, position, overlayVisible }: O
         }
     };
 
-    useEffect(() => {
-        if (closeButtonRef.current) {
-            closeButtonRef.current.focus();
-        }
-    }, [visible]);
-
     return (
         <div className={classNames(styles.overlay, className)}>
+            {toggle({ toggle: handleToggle, ref: openerRef })}
             {((overlayVisible !== undefined && overlayVisible) || visible) && (
                 <Dialog position={position} onClose={handleClose}>
-                    {render(handleClose, closeButtonRef)}
+                    {render(handleClose)}
                 </Dialog>
             )}
-            {toggle({ toggle: handleToggle, ref: openerRef })}
         </div>
     );
 };
@@ -61,6 +54,14 @@ type DialogProps = {
 };
 
 const Dialog = ({ position, onClose, children }: DialogProps) => {
+    const dialogRef = useRef<HTMLDialogElement>(null);
+
+    useEffect(() => {
+        if (dialogRef.current) {
+            dialogRef.current.focus();
+        }
+    }, []);
+
     const handleKeyDown = (event: ReactKeyboardEvent) => {
         if (event.key === 'Escape') {
             event.preventDefault();
@@ -70,6 +71,9 @@ const Dialog = ({ position, onClose, children }: DialogProps) => {
 
     return (
         <dialog
+            ref={dialogRef}
+            tabIndex={0}
+            aria-label="Overlay panel"
             open
             className={classNames({ [styles.right]: position === 'right', [styles.left]: position === 'left' })}
             onKeyDown={handleKeyDown}>

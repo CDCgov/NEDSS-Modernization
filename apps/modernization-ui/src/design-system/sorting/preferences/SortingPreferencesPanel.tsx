@@ -4,18 +4,16 @@ import { SortPreference } from './SortPreference';
 import { useSortingPreferences } from './useSortingPreferences';
 import { RefObject } from 'react';
 
-type Props = Closable & {
-    closeButtonRef?: RefObject<HTMLButtonElement>;
-};
+type Props = Closable;
 
-const SortingPreferencesPanel = ({ onClose, closeButtonRef }: Props) => {
+const SortingPreferencesPanel = ({ onClose }: Props) => {
     const { available, sortOn, active } = useSortingPreferences();
 
     const isActive = (selectable: SortingSelectable) =>
         selectable.property === active?.property && selectable.direction === active?.direction;
 
     return (
-        <ClosablePanel title="Sort list by" headingLevel={2} onClose={onClose} closeButtonRef={closeButtonRef}>
+        <ClosablePanel title="Sort list by" headingLevel={2} onClose={onClose}>
             {available.map((selectable, index) => (
                 <SortPreference key={index} selectable={selectable} active={isActive(selectable)} onSelect={sortOn} />
             ))}

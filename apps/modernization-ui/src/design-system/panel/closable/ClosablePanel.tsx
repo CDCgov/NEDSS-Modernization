@@ -24,19 +24,18 @@ type Props = {
 const ClosablePanel = ({ title, headingLevel, children, footer, onClose, closeButtonRef }: Props) => {
     return (
         <div className={styles.panel}>
-            <header>
-                {renderHeader(title, headingLevel)}
-                <Button
-                    ref={closeButtonRef}
-                    icon={<Icon sizing="medium" name="close" />}
-                    onClick={onClose}
-                    aria-label={`Close ${title}`}
-                    tertiary
-                    className={styles.closer}
-                />
-            </header>
+            <header>{renderHeader(title, headingLevel)}</header>
             {children}
             {footer && <footer>{footer({ onClose })}</footer>}
+
+            <Button
+                ref={closeButtonRef}
+                icon={<Icon sizing="medium" name="close" />}
+                onClick={onClose}
+                aria-label={`Close ${title}`}
+                tertiary
+                className={styles.closer}
+            />
         </div>
     );
 };

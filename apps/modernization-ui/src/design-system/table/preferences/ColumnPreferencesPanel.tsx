@@ -7,6 +7,7 @@ import { Button } from 'design-system/button';
 
 import styles from './column-preference-panel.module.scss';
 import { Sizing } from 'design-system/field';
+import { ClosablePanel } from 'design-system/panel/closable';
 
 const swap =
     <I,>(items: I[]) =>
@@ -19,10 +20,9 @@ const swap =
 type Props = {
     sizing?: Sizing;
     close: () => void;
-    closeButtonRef?: React.RefObject<HTMLButtonElement>;
 };
 
-const ColumnPreferencesPanel = ({ close, sizing = 'small', closeButtonRef }: Props) => {
+const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
     const { preferences, save, reset } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
@@ -62,18 +62,20 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small', closeButtonRef }: Pro
     };
 
     return (
-        <div className={styles.panel}>
-            <header>
-                <h2>Columns</h2>
-                <Button
-                    ref={closeButtonRef}
-                    icon={<ActionIcon name="close" />}
-                    aria-label="close the column preferences"
-                    onClick={close}
-                    className={styles.close}
-                    tertiary
-                />
-            </header>
+        <ClosablePanel
+            title="Columns"
+            headingLevel={2}
+            onClose={close}
+            footer={() => (
+                <div className={styles.footer}>
+                    <Button tertiary sizing={sizing} onClick={handleReset}>
+                        Reset
+                    </Button>
+                    <Button type="button" id="save-column-preferences" outline sizing={sizing} onClick={handleSave}>
+                        Save columns
+                    </Button>
+                </div>
+            )}>
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="preferences">
                     {(droppable) => (
@@ -111,15 +113,7 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small', closeButtonRef }: Pro
                     )}
                 </Droppable>
             </DragDropContext>
-            <footer>
-                <Button tertiary sizing={sizing} onClick={handleReset}>
-                    Reset
-                </Button>
-                <Button type="button" id="save-column-preferences" outline sizing={sizing} onClick={handleSave}>
-                    Save columns
-                </Button>
-            </footer>
-        </div>
+        </ClosablePanel>
     );
 };
 

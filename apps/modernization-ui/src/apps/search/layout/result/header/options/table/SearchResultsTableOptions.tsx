@@ -62,9 +62,7 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
                         sizing={sizing}
                     />
                 )}
-                render={(close, closeButtonRef) => (
-                    <ColumnPreferencesPanel close={close} closeButtonRef={closeButtonRef} />
-                )}
+                render={(close) => <ColumnPreferencesPanel close={close} />}
             />
         </>
     );
