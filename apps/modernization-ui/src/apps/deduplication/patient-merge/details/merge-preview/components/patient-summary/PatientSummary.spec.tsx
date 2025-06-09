@@ -10,6 +10,10 @@ describe('PatientSummary', () => {
         const mergeCandidates: MergeCandidate[] = [
             {
                 personUid: '123',
+                personLocalId: '98882',
+                addTime: '2023-05-31T00:00:00Z',
+                general:{},
+                investigations: [],
                 adminComments: { date: '', comment: '' },
                 names: [{
                     personUid: '123',

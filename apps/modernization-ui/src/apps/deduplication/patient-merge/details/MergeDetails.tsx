@@ -131,7 +131,11 @@ export const MergeDetails = () => {
                         />
                     </Shown>
                     <Shown when={pageState === 'preview'}>
-                        <MergePreview onBack={() => setPageState('review')} />
+                        <MergePreview
+                            mergeCandidates={response ?? []}
+                            mergeFormData={form.getValues()}
+                            onBack={() => setPageState('review')}
+                        />
                     </Shown>
                 </FormProvider>
             </Shown>

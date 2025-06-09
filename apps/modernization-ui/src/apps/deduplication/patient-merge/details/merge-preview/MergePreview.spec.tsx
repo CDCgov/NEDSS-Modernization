@@ -7,6 +7,10 @@ const mockMergeCandidates: MergeCandidate[] = [
     {
         personUid: '123',
         adminComments: { date: '2024-01-01', comment: 'No issues' },
+        personLocalId: '98882',
+        addTime: '2023-05-31T00:00:00Z',
+        general:{},
+        investigations: [],
         names: [
             {
                 personUid: '123',
