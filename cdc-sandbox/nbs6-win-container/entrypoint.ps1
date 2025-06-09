@@ -53,8 +53,6 @@ $env:JAVA_OPTS="$env:JAVA_OPTS -Djava.net.preferIPv4Stack=true"
 $env:JAVA_OPTS="$env:JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman"
 
 # Set global variables and paths
-[Environment]::SetEnvironmentVariable("JAVA_HOME", $env:JAVA_HOME, "Machine")
-[Environment]::SetEnvironmentVariable("JBOSS_HOME", $env:JBOSS_HOME, "Machine")
 [Environment]::SetEnvironmentVariable("JAVA_TOOL_OPTIONS", $env:JAVA_TOOL_OPTIONS, "Machine")
 [Environment]::SetEnvironmentVariable("DATABASE_ENDPOINT", $env:DATABASE_ENDPOINT, "Machine")
 [Environment]::SetEnvironmentVariable("odse_user", $env:odse_user, "Machine")
@@ -192,4 +190,5 @@ Remove-Item $zip_file_name
 Remove-Item $zip_folder -Recurse -Force -Confirm:$false
 #### END OF Configure User Guide ####
 
-Start-Process "D:\\wildfly-10.0.0.Final\\bin\\standalone.bat" -Wait -NoNewWindow -PassThru | Out-Host
+
+Start-Process -FilePath "C:\LogMonitor\LogMonitor.exe" -ArgumentList "powershell.exe", "-ExecutionPolicy", "Bypass", "-Command", "Start-Process -FilePath 'D:\\wildfly-10.0.0.Final\\bin\\standalone.bat' -NoNewWindow -Wait" -NoNewWindow -Wait

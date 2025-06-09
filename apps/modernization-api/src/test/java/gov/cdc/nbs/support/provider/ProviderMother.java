@@ -90,8 +90,9 @@ class ProviderMother {
         .param("last", last)
         .update();
 
+    ProviderIdentifier.Name name = new ProviderIdentifier.Name(prefix, first, last);
 
-    ProviderIdentifier created = new ProviderIdentifier(identifier);
+    ProviderIdentifier created = new ProviderIdentifier(identifier, name);
 
     this.identifiers.add(identifier);
 

@@ -8,6 +8,9 @@ import java.sql.SQLException;
 public class DisplayableSimpleNameRowMapper implements RowMapper<DisplayableSimpleName> {
 
   public record Columns(int prefix, int first, int last) {
+    public Columns(int first, int last) {
+      this(-1, first, last);
+    }
   }
 
 
@@ -19,7 +22,7 @@ public class DisplayableSimpleNameRowMapper implements RowMapper<DisplayableSimp
 
   @Override
   public DisplayableSimpleName mapRow(final ResultSet resultSet, final int row) throws SQLException {
-    String prefix = resultSet.getString(columns.prefix());
+    String prefix = maybeMapPrefix(resultSet);
     String first = resultSet.getString(columns.first());
     String last = resultSet.getString(columns.last());
 
@@ -32,5 +35,9 @@ public class DisplayableSimpleNameRowMapper implements RowMapper<DisplayableSimp
         first,
         last
     );
+  }
+
+  private String maybeMapPrefix(final ResultSet resultSet) throws SQLException {
+    return columns.prefix() > 0 ? resultSet.getString(columns.prefix()) : null;
   }
 }

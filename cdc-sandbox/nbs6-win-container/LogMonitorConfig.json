@@ -1,0 +1,27 @@
+{
+  "LogConfig": {
+    "logFormat": "custom",
+    "sources": [
+      {
+        "type": "File",
+        "directory": "<UPDATED-ON-DOCKER-BUILD>\\nedssdomain\\log",
+        "filter": "*.log",
+        "includeSubdirectories": false,
+        "includeFileNames" : true,
+        "customLogFormat": "%FileName%:%Message%"
+      },
+      {
+        "type": "File",
+        "directory": "<UPDATED-ON-DOCKER-BUILD>\\nedssdomain\\Nedss\\BatchFiles",
+        "filter": "*.output",
+        "includeSubdirectories": false,
+        "includeFileNames" : true,
+        "customLogFormat": "%FileName%:%Message%"
+      },
+      {
+        "type": "Process",
+        "customLogFormat": "%Source%:%Message%" 
+      }
+    ]
+  }
+}
