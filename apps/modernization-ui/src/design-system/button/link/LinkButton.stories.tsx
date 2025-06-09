@@ -52,6 +52,18 @@ const render = (remaining: LinkButtonProps) => {
                     {undefined}
                 </LinkButton>
             </div>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <LinkButton {...remaining} active={true} />
+                <LinkButton {...remaining} icon="check_circle" labelPosition="left" active={true}>
+                    {content}
+                </LinkButton>
+                <LinkButton {...remaining} icon="check_circle" labelPosition="right" active={true}>
+                    {content}
+                </LinkButton>
+                <LinkButton {...remaining} icon="check_circle" active={true} aria-label={content as string}>
+                    {undefined}
+                </LinkButton>
+            </div>
         </div>
     );
 };
