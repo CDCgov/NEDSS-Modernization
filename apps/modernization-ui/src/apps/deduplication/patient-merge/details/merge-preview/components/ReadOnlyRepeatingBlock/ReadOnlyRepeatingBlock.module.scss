@@ -1,0 +1,27 @@
+.read-only-repeating-block {
+  button,
+  [role="button"],
+  svg,
+  footer {
+    display: none !important;
+  }
+
+  margin-top: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.14);
+
+  border: none;
+  overflow: hidden;
+
+  :global(.required-before) {
+    display: none !important;
+  }
+}
+
+.read-only-repeating-block,
+.read-only-repeating-block > * {
+  border: none !important;
+  border-bottom-left-radius: 0.5rem !important;
+  border-bottom-right-radius: 0.5rem;
+}
