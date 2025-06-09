@@ -18,7 +18,6 @@ export const renderMorbidity = (
                             <br />
                             {result.result}
                             <br />
-                            {result.reference}
                         </>
                     ))}
                 </>
@@ -38,7 +37,8 @@ export const renderMorbidity = (
 export const renderFacilityProvider = (
     reportingFacility?: string,
     orderingProvider?: OrderingProvider,
-    sendingFacility?: string
+    sendingFacility?: string,
+    orderingFacility?: string
 ) => {
     return (
         <>
@@ -67,6 +67,13 @@ export const renderFacilityProvider = (
                     {sendingFacility}
                 </>
             )}
+            {orderingFacility && (
+                <>
+                    <strong>Ordering facility:</strong>
+                    <br />
+                    {orderingFacility}
+                </>
+            )}
         </>
     );
 };
@@ -86,6 +93,7 @@ export const renderLabReports = (resultedTests?: Array<ResultedTest>) => {
                             {test.reference}
                         </>
                     )}
+                    <br />
                 </>
             ))}
         </>

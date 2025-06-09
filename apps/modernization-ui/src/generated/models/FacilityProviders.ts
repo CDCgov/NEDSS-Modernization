@@ -6,6 +6,6 @@ import type { OrderingProvider } from './OrderingProvider';
 export type FacilityProviders = {
     reportingFacility?: string;
     orderingProvider?: OrderingProvider;
-    sendingFacility?: string;
+    orderingFacility?: string;
 };
 

@@ -2,7 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type Failure = {
+import type { StandardResponse } from './StandardResponse';
+export type Failure = (StandardResponse & {
     reason?: string;
-};
+});
 

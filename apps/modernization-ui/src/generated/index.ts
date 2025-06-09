@@ -50,7 +50,6 @@ export type { RaceDemographic } from './models/RaceDemographic';
 export type { ResultedTest } from './models/ResultedTest';
 export type { Selectable } from './models/Selectable';
 export type { StandardResponse } from './models/StandardResponse';
-export type { TestResult } from './models/TestResult';
 
 export { CodedResultOptionsService } from './services/CodedResultOptionsService';
 export { ConceptOptionsService } from './services/ConceptOptionsService';

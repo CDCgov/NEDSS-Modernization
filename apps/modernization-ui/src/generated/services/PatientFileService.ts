@@ -4,12 +4,12 @@
 /* eslint-disable */
 import type { Administrative } from '../models/Administrative';
 import type { DocumentRequiringReview } from '../models/DocumentRequiringReview';
+import type { Failure } from '../models/Failure';
 import type { PatientAddressDemographic } from '../models/PatientAddressDemographic';
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientFile } from '../models/PatientFile';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
-import type { StandardResponse } from '../models/StandardResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -148,14 +148,14 @@ export class PatientFileService {
     }
     /**
      * Allows deleting of a patient.
-     * @returns StandardResponse The patient has been deleted
+     * @returns any The patient has been deleted
      * @throws ApiError
      */
     public static delete({
         patient,
     }: {
         patient: number,
-    }): CancelablePromise<StandardResponse> {
+    }): CancelablePromise<Failure> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/nbs/api/patients/{patient}',

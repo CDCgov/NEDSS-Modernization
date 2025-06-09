@@ -1,8 +1,10 @@
 package gov.cdc.nbs.patient.labreport;
 
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import gov.cdc.nbs.patient.events.tests.ResultedTest;
 
 public record PatientLabReport(
     @JsonProperty(required = true) String eventId,
@@ -10,35 +12,27 @@ public record PatientLabReport(
     String processingDecision,
     FacilityProviders facilityProviders,
     String collectedDate,
-    List<TestResult> testResults,
+    List<ResultedTest> testResults,
     AssociatedInvestigation associatedInvestigation,
     String programArea,
     @JsonProperty(required = true) String jurisdiction,
-    long id) {
+    long id,
+    String specimenSource) {
 
   public record AssociatedInvestigation(
       String id,
       String condition,
+      String local,
       String status) {
   }
 
-  public record TestResult(
-      @JsonIgnore long observationUid,
-      @JsonIgnore long eventId,
-      String resultedTest,
-      String codedResult,
-      String numericResult,
-      String units,
-      String highRange,
-      String lowRange,
-      String statusDetails) {
-  }
 
   public record FacilityProviders(
       String reportingFacility,
       OrderingProvider orderingProvider,
-      String sendingFacility) {
+      String orderingFacility) {
   }
+
 
   public record OrderingProvider(
       String prefix,

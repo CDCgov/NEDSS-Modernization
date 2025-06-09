@@ -2,4 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type StandardResponse = Record<string, any>;
+export type StandardResponse = {
+};
+
