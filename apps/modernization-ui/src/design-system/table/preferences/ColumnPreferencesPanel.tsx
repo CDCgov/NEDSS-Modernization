@@ -71,7 +71,7 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
                     <Button tertiary sizing={sizing} onClick={handleReset}>
                         Reset
                     </Button>
-                    <Button type="button" id="save-column-preferences" outline sizing={sizing} onClick={handleSave}>
+                    <Button type="button" id="save-column-preferences" secondary sizing={sizing} onClick={handleSave}>
                         Save columns
                     </Button>
                 </div>

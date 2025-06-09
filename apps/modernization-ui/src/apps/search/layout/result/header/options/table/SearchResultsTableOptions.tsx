@@ -49,9 +49,8 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
             <OverlayPanel
                 className={styles.overlay}
                 position="right"
-                toggle={({ toggle, ref }) => (
+                toggle={({ toggle }) => (
                     <Button
-                        ref={ref}
                         aria-label="Settings"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"

@@ -17,7 +17,7 @@ const SortPreference = ({ className, active, selectable, onSelect }: Props) => (
         className={classNames(styles.preference, className)}
         onClick={() => onSelect(selectable)}
         aria-label={`Sort by ${selectable.name}`}
-        unstyled>
+        tertiary>
         {active && <Icon className={styles.indicator} name="check" />}
         {!active && <span className={styles.placeholder} />}
         {selectable.name}

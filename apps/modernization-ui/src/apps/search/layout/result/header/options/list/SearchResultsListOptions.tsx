@@ -16,9 +16,8 @@ const SearchResultsListOptions = ({ disabled = false, sizing }: Props) => {
         <OverlayPanel
             className={styles.options}
             position="right"
-            toggle={({ toggle, ref }) => (
+            toggle={({ toggle }) => (
                 <Button
-                    ref={ref}
                     className={styles.opener}
                     aria-label="Sort list by"
                     data-tooltip-position="top"

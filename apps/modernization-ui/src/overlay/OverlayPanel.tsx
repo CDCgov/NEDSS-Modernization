@@ -2,12 +2,11 @@ import classNames from 'classnames';
 import React, { ReactNode, useState, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect } from 'react';
 import styles from './overlay-panel.module.scss';
 
-type Toggle = () => void;
+type Toggle = (element?: React.MouseEvent<HTMLElement>) => void;
 type Close = () => void;
 
 type ButtonRendererProps = {
     toggle: Toggle;
-    ref: React.RefObject<HTMLButtonElement>;
 };
 
 type ToggleRenderer = (props: ButtonRendererProps) => JSX.Element;
@@ -23,19 +22,21 @@ type OverlayPanelProps = {
 
 const OverlayPanel = ({ className, toggle, render, position, overlayVisible }: OverlayPanelProps) => {
     const [visible, setVisible] = useState(false);
-    const openerRef = useRef<HTMLButtonElement>(null);
+    const [openerElement, setOpenerElement] = useState<HTMLElement | null>(null);
 
-    const handleToggle = () => setVisible((existing) => !existing);
+    const handleToggle = (element?: React.MouseEvent<HTMLElement>) => {
+        element && setOpenerElement(element.currentTarget);
+        setVisible((existing) => !existing);
+    };
     const handleClose = () => {
         setVisible(false);
-        if (openerRef.current) {
-            openerRef.current.focus();
-        }
+        openerElement?.focus();
+        setOpenerElement(null);
     };
 
     return (
         <div className={classNames(styles.overlay, className)}>
-            {toggle({ toggle: handleToggle, ref: openerRef })}
+            {toggle({ toggle: handleToggle })}
             {((overlayVisible !== undefined && overlayVisible) || visible) && (
                 <Dialog position={position} onClose={handleClose}>
                     {render(handleClose)}
