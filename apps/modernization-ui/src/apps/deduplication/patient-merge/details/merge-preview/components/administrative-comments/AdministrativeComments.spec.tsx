@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { AdministrativeComments } from './AdministrativeComments';
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
+import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
 
 describe('AdministrativeComments', () => {
     it('renders title, date, and comment', () => {
@@ -10,21 +11,54 @@ describe('AdministrativeComments', () => {
             {
                 personUid: '123',
                 adminComments: {
-                    date: '2023-06-01T00:00:00Z',
+                    date: '2023-05-31T00:00:00Z', // use ISO format date
                     comment: 'This is a test comment',
                 },
-                names: [],
+                names: [
+                    {
+                        personUid: '123',
+                        sequence: '1',
+                        asOf: '',
+                        type: '',
+                        first: 'John',
+                        middle: 'Q',
+                        last: 'Public',
+                        suffix: 'Jr.',
+                    },
+                ],
                 addresses: [],
                 phoneEmails: [],
                 identifications: [],
                 races: [],
                 ethnicity: {},
-                sexAndBirth: {},
+                sexAndBirth: {
+                    currentSex: 'Male',
+                    dateOfBirth: '2003-11-10T00:00:00Z',
+                },
                 mortality: {},
             },
         ];
 
-        const mergeFormData = { adminComments: '123' } as any;
+        const mergeFormData: PatientMergeForm = {
+            survivingRecord: '123',
+            adminComments: '123',
+            names: [
+                {
+                    personUid: '123',
+                    sequence: '1',
+                    asOf: '',
+                    type: '',
+                    first: 'John',
+                    middle: 'Q',
+                    last: 'Public',
+                    suffix: 'Jr.',
+                },
+            ],
+            sexAndBirth: {
+                currentSex: '123',
+                dateOfBirth: '123',
+            },
+        } as any;
 
         render(
             <AdministrativeComments
@@ -34,7 +68,7 @@ describe('AdministrativeComments', () => {
         );
 
         expect(screen.getByText(/Administrative comments/i)).toBeInTheDocument();
-        expect(screen.getByText('05/31/2023')).toBeInTheDocument();
+        expect(screen.getByText('05/30/2023')).toBeInTheDocument();
         expect(screen.getByText('This is a test comment')).toBeInTheDocument();
     });
 });
