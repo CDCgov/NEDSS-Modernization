@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.labreport;
 
+import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -50,7 +51,6 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
     String providerPrefix = resultSet.getString(this.columns.providerPrefix());
     String providerLastName = resultSet.getString(this.columns.providerLastName());
     String providerFirstName = resultSet.getString(this.columns.providerFirstName());
-    String providerSuffix = resultSet.getString(this.columns.providerSuffix());
     String associatedWithId = resultSet.getString(this.columns.associatedWithId());
     String associatedWithLocal = resultSet.getString(this.columns.associatedWithLocal());
     String associatedWithCondition = resultSet.getString(this.columns.associatedWithCondition());
@@ -64,12 +64,11 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
         eventId,
         dateReceived,
         processingDecision,
-        new PatientLabReport.FacilityProviders(reportingFacility, new PatientLabReport.OrderingProvider(
-            providerPrefix, providerFirstName, providerLastName, providerSuffix), orderingFacility),
         dateCollected,
         new ArrayList<>(),
         new PatientLabReport.AssociatedInvestigation(associatedWithId, associatedWithCondition, associatedWithLocal,
             associatedWithStatus),
-        programArea, jurisdiction, labIdentifier, specimenSource);
+        programArea, jurisdiction, labIdentifier, specimenSource, reportingFacility,
+        new DisplayableSimpleName(providerPrefix, providerFirstName, providerLastName), orderingFacility);
   }
 }

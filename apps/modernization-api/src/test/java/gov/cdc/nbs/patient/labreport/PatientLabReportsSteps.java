@@ -6,10 +6,13 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.hamcrest.CoreMatchers.not;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import org.hamcrest.Matcher;
+
 import static org.hamcrest.Matchers.*;
 
 public class PatientLabReportsSteps {
@@ -34,7 +37,7 @@ public class PatientLabReportsSteps {
       this.response.active(
           this.requester.request(activePatient.active().id()));
     } catch (Exception thrown) {
-      System.out.println("XXX exception:" + thrown.toString());
+      System.out.println("XXX exception:" + thrown);
 
       this.exception = thrown;
     }
@@ -60,7 +63,8 @@ public class PatientLabReportsSteps {
 
   private Matcher<?> matchingValue(final String field, final String value) {
     return switch (field.toLowerCase()) {
-      case "status", "start date", "condition", "jurisdiction", "receiveddate", "programarea", "reportingfacility" -> equalTo(
+      case "status", "start date", "condition", "jurisdiction", "receiveddate", "programarea", "reportingfacility",
+           "orderingprovider", "orderingfacility" -> equalTo(
           value);
       default -> hasItem(value);
     };
@@ -68,13 +72,15 @@ public class PatientLabReportsSteps {
 
   private JsonPathResultMatchers matchingPath(final String field, final String position) {
     return switch (field.toLowerCase()) {
-      case "reportingfacility" -> jsonPath("$[%s].facilityProviders.reportingFacility", position);
+      case "reportingfacility" -> jsonPath("$[%s].reportingFacility", position);
       case "receiveddate" -> jsonPath("$[%s].receivedDate", position);
       case "programarea" -> jsonPath("$[%s].programArea", position);
       case "jurisdiction" -> jsonPath("$[%s].jurisdiction", position);
       case "condition" -> jsonPath("$[%s].condition", position);
       case "status" -> jsonPath("$[%s].status", position);
       case "start date" -> jsonPath("$[%s].startedOn", position);
+      case "orderingprovider" -> jsonPath("$[%s].orderingProvider.last", position);
+      case "orderingfacility" -> jsonPath("$[%s].orderingFacility", position);
       default -> throw new AssertionError("Unexpected Lab Report property %s".formatted(field));
     };
   }

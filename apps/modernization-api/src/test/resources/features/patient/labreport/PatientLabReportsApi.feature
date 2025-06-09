@@ -42,6 +42,8 @@ Feature: Patient Lab Reports API
     Then the 1st labreport has a "jurisdiction" of "Out of system"
     Then the 1st labreport has a "programArea" of "STD"
     Then the 1st labreport has a "reportingFacility" of "Northside Hospital"
+    Then the 1st labreport has a "orderingProvider" of "Learner"
+    Then the 1st labreport has a "orderingFacility" of "Emory University Hospital"
 
   Scenario: The api returns multiple lab reports for a patient
     And I can "view" any "ObservationLabReport" for "STD" within all jurisdictions
