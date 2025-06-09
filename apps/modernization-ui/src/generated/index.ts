@@ -43,7 +43,7 @@ export { PatientFile } from './models/PatientFile';
 export type { PatientIdentificationDemographic } from './models/PatientIdentificationDemographic';
 export type { PatientInvestigation } from './models/PatientInvestigation';
 export type { PatientLabReport } from './models/PatientLabReport';
-export type { PatientName } from './models/PatientName';
+export type { PatientNameDemographic } from './models/PatientNameDemographic';
 export type { PatientPhoneDemographic } from './models/PatientPhoneDemographic';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
@@ -65,7 +65,6 @@ export { NotificationStatusControllerService } from './services/NotificationStat
 export { OccupationOptionsService } from './services/OccupationOptionsService';
 export { PatientFileService } from './services/PatientFileService';
 export { PatientLabReportsService } from './services/PatientLabReportsService';
-export { PatientNamesService } from './services/PatientNamesService';
 export { PatientProfileService } from './services/PatientProfileService';
 export { PatientRaceService } from './services/PatientRaceService';
 export { PrimaryLanguageOptionsService } from './services/PrimaryLanguageOptionsService';

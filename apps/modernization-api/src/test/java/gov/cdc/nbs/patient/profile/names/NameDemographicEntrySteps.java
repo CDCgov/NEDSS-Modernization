@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.profile.names;
 
+import gov.cdc.nbs.patient.demographics.name.NameDemographic;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
