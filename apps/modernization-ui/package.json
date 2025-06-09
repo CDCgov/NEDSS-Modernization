@@ -83,6 +83,7 @@
     "storybook": "^8.6.10",
     "typescript-plugin-css-modules": "^5.0.2",
     "vitest": "^3.2.1",
+    "vitest-axe": "^0.1.0",
     "webpack": "^5.90.1"
   },
   "scripts": {

@@ -6,9 +6,14 @@ export default defineConfig({
     test: {
         environment: 'jsdom',
         globals: true,
-        setupFiles: './src/setupTests.ts',
+        setupFiles: ['./src/setupTests.ts'],
         coverage: {
             reporter: ['text', 'json', 'html']
+        },
+        css: {
+            modules: {
+                classNameStrategy: 'non-scoped' // disables hashing for tests
+            }
         }
     }
 });
