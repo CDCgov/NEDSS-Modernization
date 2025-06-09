@@ -1,39 +1,12 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.panel {
+.footer {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
 
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        padding: 1rem;
-        padding-right: 0.5rem;
-
-        @extend %thin-bottom;
-
-        h2 {
-            margin: 0;
-        }
-
-        .close {
-            width: 1.5rem;
-            height: 1.5rem;
-
-            cursor: pointer;
-        }
-    }
-
-    footer {
-        display: flex;
-        justify-content: space-between;
-        padding: 1rem;
-
-        @extend %thin-top;
-    }
+    @extend %thin-top;
 }
 
 .preference {

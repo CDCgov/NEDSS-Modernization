@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { SortingSelectable } from './selectable';
 
 import styles from './sort-preference.module.scss';
+import { Button } from 'design-system/button';
 
 type Props = {
     className?: string;
@@ -12,11 +13,15 @@ type Props = {
 };
 
 const SortPreference = ({ className, active, selectable, onSelect }: Props) => (
-    <span className={classNames(styles.preference, className)} onClick={() => onSelect(selectable)}>
+    <Button
+        className={classNames(styles.preference, className)}
+        onClick={() => onSelect(selectable)}
+        aria-label={`Sort by ${selectable.name}`}
+        tertiary>
         {active && <Icon className={styles.indicator} name="check" />}
         {!active && <span className={styles.placeholder} />}
         {selectable.name}
-    </span>
+    </Button>
 );
 
 export { SortPreference };
