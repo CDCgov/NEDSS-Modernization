@@ -15,6 +15,29 @@ jest.mock('react-router', () => ({
     useSearchParams: jest.fn()
 }));
 
+const mockReturnValue = {
+    matches: [
+        {
+            matchId: 1,
+            patientId: '1234',
+            patientLocalId: '4321',
+            patientName: 'John Smith',
+            createdDate: '2014-02-11T11:30:30',
+            identifiedDate: '2024-02-11T12:30:30',
+            numOfMatchingRecords: 2
+        }
+    ],
+    page: 0,
+    total: 0
+};
+const mockFetch = jest.fn();
+jest.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
+    useMatchesRequiringReview: () => ({
+        response: mockReturnValue,
+        fetchMatchesRequiringReview: mockFetch
+    })
+}));
+
 const mockExportMatchesCSV = jest.fn();
 const mockExportMatchesPDF = jest.fn();
 

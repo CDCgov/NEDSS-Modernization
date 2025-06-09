@@ -2,10 +2,10 @@ package gov.cdc.nbs.event.investigation;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
-import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
-import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
+import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
+import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.concept.ConceptParameterResolver;
 import io.cucumber.java.Before;
@@ -49,12 +49,25 @@ public class InvestigationSteps {
   }
 
   @Given("the patient is a subject of an investigation")
-  public void the_patient_is_a_subject_of_an_investigation() {
+  public void subject() {
+    subject(
+        activeProgramArea.active(),
+        activeJurisdiction.active()
+    );
+  }
+
+  @Given("the patient is a subject of an investigation for {programArea} within {jurisdiction}")
+  public void subject(
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction
+  ) {
     activePatient.maybeActive().ifPresent(
-        p -> mother.create(
-            p,
-            activeJurisdiction.active(),
-            activeProgramArea.active()));
+        patient -> mother.create(
+            patient,
+            jurisdiction,
+            programArea
+        )
+    );
   }
 
   @Given("the patient is a subject of {int} investigations")
@@ -74,7 +87,8 @@ public class InvestigationSteps {
   @Given("the investigation is for {programArea} within {jurisdiction}")
   public void the_investigation_is_within(
       final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction) {
+      final JurisdictionIdentifier jurisdiction
+  ) {
     activeInvestigation.maybeActive().ifPresent(
         investigation -> mother.within(
             investigation,
@@ -179,7 +193,7 @@ public class InvestigationSteps {
   }
 
   @Given("the investigation was investigated by the provider")
-  public void the_investigation_was_investigated_by_the_provider() {
+  public void investigatedBy() {
     this.activeInvestigation.maybeActive()
         .ifPresent(
             active -> mother.investigatedBy(

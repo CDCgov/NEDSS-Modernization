@@ -1,17 +1,12 @@
-import { useMemo } from 'react';
-import { displayName } from 'name';
-import { maybeMap } from 'utils/mapping';
-import { equalsIgnoreCase } from 'utils/predicate';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { TableCard } from 'design-system/card';
-import { Tag } from 'design-system/tag';
-import { TagVariant } from 'design-system/tag/Tag';
 import { LinkButton } from 'design-system/button';
 import { Icon } from 'design-system/icon';
 import { Sizing } from 'design-system/field';
-import { PatientInvestigation } from './PatientInvestigation';
-import { usePatientInvestigations } from './usePatientInvestigations';
+import { PatientInvestigation, usePatientInvestigations } from 'libs/patient/events/investigations';
+import { displayInvestigator, displayNotificationStatus, displayStatus } from 'libs/events/investigations';
+import { permissions, Permitted } from 'libs/permission';
 
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };
 const START_DATE = { id: 'startedOn', name: 'Start date' };
@@ -23,31 +18,13 @@ const JURISDICTION = { id: 'jurisdiction', name: 'Jurisdiction' };
 const INVESTIGATOR = { id: 'investigator', name: 'Investigator' };
 const CO_INFECTION = { id: 'coInfection', name: 'Co-infection ID' };
 
-const maybeDisplayName = maybeMap(displayName('short'));
-
-const asTag = (value: string, variant: TagVariant) => (
-    <Tag size="small" weight="bold" variant={variant}>
-        {value}
-    </Tag>
-);
-
-const isRequiredStatus = equalsIgnoreCase('Rejected');
-
-const maybeDisplayStatus = maybeMap((value: string) => {
-    if (value === 'Open') {
-        return asTag(value, 'success');
-    } else if (isRequiredStatus(value)) {
-        return asTag(value, 'error');
-    }
-});
-
-const createColumns = (id: number): Column<PatientInvestigation>[] => [
+const columns: Column<PatientInvestigation>[] = [
     {
         ...INVESTIGATION_ID,
         sortable: true,
-        value: (row) => row.investigationId,
+        value: (row) => row.local,
         render: (value) => (
-            <a href={`/nbs/api/profile/${id}/investigation/${value.identifier}`}>{value.investigationId}</a>
+            <a href={`/nbs/api/profile/${value.patient}/investigation/${value.identifier}`}>{value.local}</a>
         )
     },
     {
@@ -60,7 +37,7 @@ const createColumns = (id: number): Column<PatientInvestigation>[] => [
         ...STATUS,
         sortable: true,
         value: (row) => row.status,
-        render: (row) => maybeDisplayStatus(row.status)
+        render: (row) => displayStatus(row.status)
     },
     {
         ...CONDITION,
@@ -72,13 +49,13 @@ const createColumns = (id: number): Column<PatientInvestigation>[] => [
         ...CASE_STATUS,
         sortable: true,
         value: (row) => row.caseStatus,
-        render: (row) => maybeDisplayStatus(row.caseStatus)
+        render: (row) => displayStatus(row.caseStatus)
     },
     {
         ...NOTIFICATION,
         sortable: true,
         value: (row) => row.notification,
-        render: (row) => maybeDisplayStatus(row.notification)
+        render: (row) => displayNotificationStatus(row.notification)
     },
     {
         ...JURISDICTION,
@@ -88,7 +65,7 @@ const createColumns = (id: number): Column<PatientInvestigation>[] => [
     {
         ...INVESTIGATOR,
         sortable: true,
-        value: (row) => maybeDisplayName(row.investigatorName)
+        value: (row) => displayInvestigator(row.investigator)
     },
     {
         ...CO_INFECTION,
@@ -117,8 +94,6 @@ type InvestigationsCardProps = {
 const InvestigationsCard = ({ patient, sizing = 'small' }: InvestigationsCardProps) => {
     const { data } = usePatientInvestigations(patient);
 
-    const columns = useMemo(() => createColumns(patient), [patient]);
-
     return (
         <TableCard
             sizing={sizing}
@@ -129,13 +104,15 @@ const InvestigationsCard = ({ patient, sizing = 'small' }: InvestigationsCardPro
             columnPreferencesKey={'patient.file.investigations.preferences'}
             defaultColumnPreferences={columnPreferences}
             actions={
-                <LinkButton
-                    secondary
-                    sizing={sizing}
-                    icon={<Icon name="add_circle" sizing={sizing} />}
-                    href={`/nbs/api/profile/${patient}/investigation`}>
-                    Add Investigation
-                </LinkButton>
+                <Permitted permission={permissions.investigation.add}>
+                    <LinkButton
+                        secondary
+                        sizing={sizing}
+                        icon={<Icon name="add_circle" sizing={sizing} />}
+                        href={`/nbs/api/profile/${patient}/investigation`}>
+                        Add investigation
+                    </LinkButton>
+                </Permitted>
             }
         />
     );

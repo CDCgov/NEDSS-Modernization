@@ -22,6 +22,6 @@ class ProgramAreaSupportConfiguration {
   }
 
   private static ProgramAreaIdentifier defaultProgramArea() {
-    return new ProgramAreaIdentifier(15, "STD");
+    return new ProgramAreaIdentifier(15, "STD", "STD");
   }
 }

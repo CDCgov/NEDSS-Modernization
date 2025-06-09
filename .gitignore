@@ -4,6 +4,7 @@
 .idea/
 lib/
 log/
+*.zip
 
 # dependencies
 node_modules/
