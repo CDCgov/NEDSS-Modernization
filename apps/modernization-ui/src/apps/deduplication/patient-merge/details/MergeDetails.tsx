@@ -17,12 +17,18 @@ import {
     RaceId
 } from './merge-review/model/PatientMergeForm';
 import styles from './MergeDetails.module.scss';
+import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
+import { useAlert } from 'alert';
+import { Confirmation } from 'design-system/modal';
 
 export const MergeDetails = () => {
     const [pageState, setPageState] = useState<'review' | 'preview'>('review');
     const { matchId } = useParams();
+    const { showError } = useAlert();
     const { response, loading, fetchPatientMergeDetails } = useMergeDetails();
+    const { removePatient } = useRemoveMerge();
     const form = useForm<PatientMergeForm>({ mode: 'onBlur' });
+    const [patientToRemove, setPatientToRemove] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         if (matchId !== undefined) {
@@ -115,8 +121,31 @@ export const MergeDetails = () => {
         );
     };
 
-    const handleRemovePatient = (personUid: string) => {
-        console.log('Remove patient NYI', personUid);
+    const onRemovePatient = (personUid: string) => {
+        setPatientToRemove(personUid);
+    };
+
+    const handleRemovePatient = () => {
+        if (matchId !== undefined && patientToRemove !== undefined) {
+            removePatient(
+                matchId,
+                patientToRemove,
+                () => fetchPatientMergeDetails(matchId),
+                () => showError('Failed to remove patient from merge.')
+            );
+        }
+    };
+
+    const getPatientNameDisplay = (personUid: string) => {
+        const patient = response?.find((p) => p.personUid === personUid);
+        if (patient) {
+            if (patient.names.length === 0) {
+                return `Patient ID: ${patient.personLocalId}`;
+            } else {
+                const name = [...patient.names].sort((a) => (a.type === 'Legal' ? -1 : 1))[0];
+                return `${name.first} ${name.last} (Patient ID:${patient.personLocalId})`;
+            }
+        }
     };
 
     return (
@@ -127,7 +156,7 @@ export const MergeDetails = () => {
                         <MergeReview
                             mergeCandidates={response ?? []}
                             onPreview={() => setPageState('preview')}
-                            onRemovePatient={handleRemovePatient}
+                            onRemovePatient={onRemovePatient}
                         />
                     </Shown>
                     <Shown when={pageState === 'preview'}>
@@ -138,6 +167,18 @@ export const MergeDetails = () => {
                         />
                     </Shown>
                 </FormProvider>
+            </Shown>
+            <Shown when={patientToRemove !== undefined}>
+                <Confirmation
+                    title="Remove from group"
+                    confirmText="Remove"
+                    cancelText="Cancel"
+                    onConfirm={handleRemovePatient}
+                    onCancel={() => setPatientToRemove(undefined)}>
+                    You have indicated that you do not want to merge{' '}
+                    <strong>{getPatientNameDisplay(patientToRemove!)}</strong>. This action will remove the patient from
+                    this identified merge group.
+                </Confirmation>
             </Shown>
         </div>
     );
