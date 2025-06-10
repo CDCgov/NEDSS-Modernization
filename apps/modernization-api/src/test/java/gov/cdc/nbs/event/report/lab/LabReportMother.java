@@ -1,5 +1,6 @@
 package gov.cdc.nbs.event.report.lab;
 
+import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
@@ -14,12 +15,14 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Component
 @ScenarioScope
@@ -71,6 +74,22 @@ public class LabReportMother {
       delete from Observation where observation_uid in (:identifiers);
       delete from Act_id where act_uid in (:identifiers);
       delete from Act where class_cd = 'OBS' and act_uid in (:identifiers);
+      """;
+
+  private static final String CREATE_ASSOCIATED_INVESTIGATION = """
+      insert into Act_relationship(
+          source_act_uid,
+          target_act_uid,
+          type_cd,
+          source_class_cd,
+          target_class_cd
+      ) values (
+          :labIdentifier,
+          :investigationIdentifier,
+          'LabReport',
+          'OBS',
+          'CASE'
+      );
       """;
 
   private static final String PARTICIPATE_IN = """
@@ -185,6 +204,13 @@ public class LabReportMother {
         .update();
   }
 
+  void createAssociated(final LabReportIdentifier identifier, final InvestigationIdentifier organization) {
+    this.client.sql(CREATE_ASSOCIATED_INVESTIGATION)
+        .param("labIdentifier", identifier.identifier())
+        .param("investigationIdentifier", organization.identifier())
+        .update();
+  }
+
 
   private void reportedBy(final long identifier, final long organization) {
     this.client.sql(PARTICIPATE_IN)
@@ -293,6 +319,8 @@ public class LabReportMother {
         .param(report.identifier())
         .update();
   }
+
+
 
   void reportedOn(final LabReportIdentifier report, final LocalDate on) {
     this.client.sql("update Observation set activity_to_time = ? where observation_uid = ?")
