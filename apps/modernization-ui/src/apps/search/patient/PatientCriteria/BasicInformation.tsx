@@ -65,6 +65,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
+                        showAdditionalDateCriteriaErrors
                     />
                 )}
             />

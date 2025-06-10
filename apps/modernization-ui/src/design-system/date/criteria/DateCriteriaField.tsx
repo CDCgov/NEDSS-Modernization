@@ -6,6 +6,7 @@ import { Field, FieldProps } from 'design-system/field';
 import { Shown } from 'conditional-render';
 
 import styles from './date-criteria.module.scss';
+import AdditionalDateCriteriaErrors from './AdditionalDateCriteriaErrors';
 
 type CriteriaType = 'equals' | 'between';
 
@@ -27,6 +28,7 @@ type DateCriteriaFieldProps = {
     onChange: (value?: DateCriteria) => void;
     onBlur?: () => void;
     clearErrors?: () => void;
+    showAdditionalDateCriteriaErrors?: boolean;
 } & FieldProps;
 
 const DateCriteriaField = ({
@@ -38,12 +40,14 @@ const DateCriteriaField = ({
     error,
     onChange,
     onBlur,
-    clearErrors
+    clearErrors,
+    showAdditionalDateCriteriaErrors
 }: DateCriteriaFieldProps) => {
     const type = resolveInitialCriteriaType(value);
 
     return (
         <Field error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
+            {showAdditionalDateCriteriaErrors && <AdditionalDateCriteriaErrors error={error} value={value} />}
             <div className={styles.content}>
                 <div className={styles.operators} data-range-operator={type}>
                     <Radio
