@@ -1,10 +1,13 @@
+import { InlineErrorMessage } from 'design-system/field/InlineErrorMessage';
 import { validateMonth, validateDay, validateYear } from '../validateDateEntry';
 import { DateCriteria, DateEqualsCriteria } from './dateCriteria';
+import styles from './additional-date-criteria-errors.module.scss';
 
 const NAME = 'Date of birth';
 
 type AdditionalDateCriteriaErrorsProps = {
     value: DateCriteria | null | undefined;
+    fieldId: string;
     error: string | undefined;
 };
 
@@ -13,7 +16,7 @@ const isDateEqualsCriteria = (x: DateCriteria): x is DateEqualsCriteria => {
 };
 
 const AdditionalDateCriteriaErrors = (props: AdditionalDateCriteriaErrorsProps) => {
-    const { value, error } = props;
+    const { value, fieldId, error } = props;
 
     // If no value or error is present, there are no additional errors to display.
     // Date must be in the DateEqualsCriteria format at this time to display additional errrors.
@@ -35,9 +38,9 @@ const AdditionalDateCriteriaErrors = (props: AdditionalDateCriteriaErrorsProps) 
     return (
         <div>
             {errorArr.map((v) => (
-                <p key={v} style={{ color: '#b51d09', fontWeight: 'bold', margin: 0 }}>
+                <InlineErrorMessage key={v} id={`${fieldId}-error`} className={styles.inlineErrorMessage}>
                     {v}
-                </p>
+                </InlineErrorMessage>
             ))}
         </div>
     );
