@@ -1,0 +1,25 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.adminCommentsCard {
+  margin-right: 1rem;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.14);
+  border: none !important;
+}
+
+.comment {
+  padding: 1rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: colors.$base-black;
+  white-space: pre-wrap;
+  padding-top: 0;
+}
+
+.adminCommentsCard :global(.titleBlock) {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
