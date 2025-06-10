@@ -2,12 +2,21 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { FormProvider, useForm } from 'react-hook-form';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { MergeReview } from './MergeReview';
 import { PatientMergeForm } from './model/PatientMergeForm';
+import { AlertProvider } from 'alert';
 
 const onPreview = jest.fn();
 const onRemove = jest.fn();
+
+const mockKeepAllSeparate = jest.fn();
+jest.mock('apps/deduplication/api/useRemoveMerge', () => ({
+    useRemoveMerge: () => {
+        return { keepAllSeparate: mockKeepAllSeparate };
+    }
+}));
+
 const Fixture = () => {
     const form = useForm<PatientMergeForm>();
     const data: Partial<MergeCandidate>[] = [
@@ -43,15 +52,24 @@ const Fixture = () => {
         }
     ];
     return (
-        <MemoryRouter>
-            <FormProvider {...form}>
-                <MergeReview
-                    mergeCandidates={data as MergeCandidate[]}
-                    onPreview={onPreview}
-                    onRemovePatient={onRemove}
-                />
-            </FormProvider>
-        </MemoryRouter>
+        <AlertProvider>
+            <MemoryRouter initialEntries={['/deduplication/merge/1234']}>
+                <Routes>
+                    <Route
+                        path="/deduplication/merge/:matchId"
+                        element={
+                            <FormProvider {...form}>
+                                <MergeReview
+                                    mergeCandidates={data as MergeCandidate[]}
+                                    onPreview={onPreview}
+                                    onRemovePatient={onRemove}
+                                />
+                            </FormProvider>
+                        }
+                    />
+                </Routes>
+            </MemoryRouter>
+        </AlertProvider>
     );
 };
 
@@ -106,5 +124,15 @@ describe('MergeReview', () => {
 
         await user.click(getAllByRole('button', { name: 'Remove' })[0]);
         expect(onRemove).toHaveBeenLastCalledWith('100');
+    });
+
+    it('should call keep all separate when button clicked', async () => {
+        const user = userEvent.setup();
+        const { getByText } = render(<Fixture />);
+
+        const keepSeparateButton = getByText('Keep all separate');
+        await user.click(keepSeparateButton);
+
+        expect(mockKeepAllSeparate).toHaveBeenCalledWith('1234', expect.any(Function), expect.any(Function));
     });
 });
