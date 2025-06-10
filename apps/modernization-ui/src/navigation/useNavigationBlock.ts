@@ -83,14 +83,14 @@ const useNavigationBlock = ({
 
     // Prompt
     useEffect(() => {
-        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-            if (isEngaged) {
+        if (activated && isEngaged) {
+            const handleBeforeUnload = (e: BeforeUnloadEvent) => {
                 e.preventDefault();
-            }
-        };
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-    }, [isEngaged]);
+            };
+            window.addEventListener('beforeunload', handleBeforeUnload);
+            return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+        }
+    }, [isEngaged, activated]);
 
     const block = useCallback(() => {
         if (activated) {

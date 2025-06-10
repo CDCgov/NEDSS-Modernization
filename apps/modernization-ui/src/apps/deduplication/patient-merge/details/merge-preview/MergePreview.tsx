@@ -1,12 +1,18 @@
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
 import styles from './merge-preview.module.scss';
+import { PatientMergeForm } from '../merge-review/model/PatientMergeForm';
+import { MergeCandidate } from '../../../api/model/MergeCandidate';
+import { PatientSummary } from './components/patient-summary/PatientSummary';
+import { AdministrativeComments } from './components/administrative-comments/AdministrativeComments';
 
 type MergePreviewProps = {
     onBack: () => void;
+    mergeFormData: PatientMergeForm;
+    mergeCandidates: MergeCandidate[];
 };
 
-export const MergePreview = ({ onBack }: MergePreviewProps) => {
+export const MergePreview = ({ onBack, mergeFormData, mergeCandidates }: MergePreviewProps) => {
     return (
         <div className={styles.mergePreview}>
             <header>
@@ -22,6 +28,10 @@ export const MergePreview = ({ onBack }: MergePreviewProps) => {
                     </Button>
                 </div>
             </header>
+            <section className={styles.summaryCardSection}>
+                <PatientSummary mergeFormData={mergeFormData} mergeCandidates={mergeCandidates} />
+                <AdministrativeComments mergeFormData={mergeFormData} mergeCandidates={mergeCandidates} />
+            </section>
         </div>
     );
 };

@@ -9,6 +9,7 @@ import type { PatientDemographicsSummary } from '../models/PatientDemographicsSu
 import type { PatientFile } from '../models/PatientFile';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientInvestigation } from '../models/PatientInvestigation';
+import type { PatientNameDemographic } from '../models/PatientNameDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
 import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -67,6 +68,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics/phones',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Name Demographics
+     * Provides the name demographics for a patient
+     * @returns PatientNameDemographic OK
+     * @throws ApiError
+     */
+    public static names({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientNameDemographic>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/names',
             path: {
                 'patient': patient,
             },
