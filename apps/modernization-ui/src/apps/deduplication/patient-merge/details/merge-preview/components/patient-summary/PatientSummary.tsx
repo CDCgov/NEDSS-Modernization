@@ -2,7 +2,7 @@ import { PatientDescriptor } from 'libs/patient/PatientDescriptor';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import styles from './PatientSummary.module.scss';
-import { toMMDDYYYY } from '../../utils/dateUtils';
+import { format, parseISO } from 'date-fns';
 
 type PatientSummaryProps = {
     mergeCandidates: MergeCandidate[];
@@ -29,13 +29,17 @@ export const PatientSummary = ({ mergeCandidates, mergeFormData }: PatientSummar
         ? findCandidateByUid(mergeFormData.sexAndBirth.dateOfBirth)
         : undefined;
 
+    const formattedDate = dateOfBirthCandidate?.sexAndBirth?.dateOfBirth
+        ? format(parseISO(dateOfBirthCandidate.sexAndBirth.dateOfBirth), 'MM/dd/yyyy')
+        : undefined;
+
     const descriptor = {
         id: parseInt(mergeFormData.survivingRecord, 10),
         patientId: survivingCandidate ? parseInt(survivingCandidate.personLocalId, 10) : NaN,
-        name: fullName, // ✅ Let PatientDescriptor handle fallback
+        name: fullName,
         status: 'active',
         sex: sexCandidate?.sexAndBirth?.currentSex,
-        birthday: toMMDDYYYY(dateOfBirthCandidate?.sexAndBirth?.dateOfBirth)
+        birthday: formattedDate
     };
 
     return (
