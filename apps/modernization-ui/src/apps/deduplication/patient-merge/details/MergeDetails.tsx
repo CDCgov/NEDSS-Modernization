@@ -130,7 +130,10 @@ export const MergeDetails = () => {
             removePatient(
                 matchId,
                 patientToRemove,
-                () => fetchPatientMergeDetails(matchId),
+                () => {
+                    fetchPatientMergeDetails(matchId);
+                    setPatientToRemove(undefined);
+                },
                 () => showError('Failed to remove patient from merge.')
             );
         }
