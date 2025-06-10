@@ -35,7 +35,11 @@ const validateDay = (name: string) => (value: DateEntry) => {
         } else if (value.day < 1) {
             return `The ${name} should be at least the first day of the month.`;
         }
+        if (value.day > 31) {
+            return `The ${name} should have at most 31 days.`;
+        }
     }
+
     return true;
 };
 
@@ -52,4 +56,4 @@ const validateDateEntry =
     (value: DateEntry): boolean | string =>
         validateAll(validateYear(name), validateMonth(name), validateDay(name), occursInThePast(name))(value);
 
-export { validateDateEntry };
+export { validateDateEntry, validateYear, validateMonth, validateDay };
