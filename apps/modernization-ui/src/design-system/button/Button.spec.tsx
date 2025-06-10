@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { Button } from './Button';
 
 describe('Button component tests', () => {
@@ -9,54 +9,31 @@ describe('Button component tests', () => {
     });
 
     it('should render the button with the icon', () => {
-        render(<Button icon={<span>icon</span>} />);
-        expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
+        render(
+            <Button icon="add" labelPosition="right">
+                Label on the right
+            </Button>
+        );
+        const button = screen.getByRole('button');
+
+        const icon = within(button).getByRole('img', { hidden: true });
+
+        expect(icon.querySelector('use')?.getAttribute('xlink:href')).toContain('#add');
     });
 
     it('should render the button with the label and icon', () => {
-        render(<Button icon={<span>icon</span>}>Click me</Button>);
-        expect(screen.getByRole('button')).toHaveTextContent('Click me');
-        expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
-    });
-
-    it('should render the button with the label on the left', () => {
         render(
-            <Button icon={<span>icon</span>} labelPosition="left">
+            <Button icon="add" labelPosition="right">
                 Click me
             </Button>
         );
-        expect(screen.getByRole('button')).toHaveTextContent('Click me');
-        expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
-    });
+        const button = screen.getByRole('button');
 
-    it('should render the button with the label on the right', () => {
-        render(
-            <Button icon={<span>icon</span>} labelPosition="right">
-                Click me
-            </Button>
-        );
-        expect(screen.getByRole('button')).toHaveTextContent('Click me');
-        expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
-    });
+        expect(button).toHaveTextContent('Click me');
 
-    it('should render the button with the label and icon and label on the right', () => {
-        render(
-            <Button icon={<span>icon</span>} labelPosition="right">
-                Click me
-            </Button>
-        );
-        expect(screen.getByRole('button')).toHaveTextContent('Click me');
-        expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
-    });
+        const icon = within(button).getByRole('img', { hidden: true });
 
-    it('should render the button with the label and icon and label on the left', () => {
-        render(
-            <Button icon={<span>icon</span>} labelPosition="left">
-                Click me
-            </Button>
-        );
-        expect(screen.getByRole('button')).toHaveTextContent('Click me');
-        expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
+        expect(icon.querySelector('use')?.getAttribute('xlink:href')).toContain('#add');
     });
 
     it('renders the destructive className when set', () => {

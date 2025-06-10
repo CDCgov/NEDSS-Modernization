@@ -1,5 +1,4 @@
 import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
-import { Icon } from 'design-system/icon';
 import classNames from 'classnames';
 import { Button } from 'components/button';
 import { ButtonGroup } from 'design-system/button';
@@ -19,9 +18,9 @@ export const ToggleView = ({ sizing }: ToggleViewProps) => {
                     aria-label="Table view"
                     data-tooltip-position="top"
                     data-tooltip-offset="center"
-                    className={view === 'table' ? styles.active : ''}
-                    outline={view !== 'table'}
-                    icon={<Icon name="table" />}
+                    secondary={view !== 'table'}
+                    active={view === 'table'}
+                    icon="table"
                     onClick={asTable}
                     sizing={sizing}
                 />
@@ -29,10 +28,10 @@ export const ToggleView = ({ sizing }: ToggleViewProps) => {
                     aria-label="List view"
                     data-tooltip-position="top"
                     data-tooltip-offset="center"
-                    className={view === 'list' ? styles.active : ''}
-                    icon={<Icon name="list" />}
+                    icon="list"
                     onClick={asList}
-                    outline={view !== 'list'}
+                    secondary={view !== 'list'}
+                    active={view === 'list'}
                     sizing={sizing}
                 />
             </ButtonGroup>

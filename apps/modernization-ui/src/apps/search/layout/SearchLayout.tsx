@@ -73,7 +73,7 @@ const SearchLayout = <R,>({
                         <Button type="button" onClick={onSearch} disabled={!searchEnabled} sizing={sizing}>
                             Search
                         </Button>
-                        <Button type="button" outline onClick={onClear} sizing={sizing}>
+                        <Button type="button" secondary onClick={onClear} sizing={sizing}>
                             Clear all
                         </Button>
                     </div>

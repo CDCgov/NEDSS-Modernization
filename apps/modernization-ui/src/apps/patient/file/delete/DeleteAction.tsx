@@ -2,7 +2,6 @@ import { ComponentType, ReactNode } from 'react';
 import { useAlert } from 'alert';
 import { Button } from 'design-system/button';
 import { Hint } from 'design-system/hint';
-import { Icon } from 'design-system/icon';
 import { Confirmation } from 'design-system/modal';
 
 import { useConditionalRender } from 'conditional-render';
@@ -60,7 +59,7 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
                 aria-label="Delete"
                 data-tooltip-position="top"
                 data-tooltip-offset="center"
-                icon={<Icon name="delete" />}
+                icon="delete"
                 sizing={'medium'}
                 onClick={show}
                 showHint={showHint}

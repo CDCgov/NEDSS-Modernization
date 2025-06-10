@@ -1,49 +1,20 @@
 import classNames from 'classnames';
-import { StandardButtonProps } from '../Button';
-import { buttonClassnames } from '../buttonClassNames';
+import { StandardButtonProps } from '../buttons';
+import { resolveClasses } from '../resolveClasses';
 
 import styles from './link-button.module.scss';
+import { resolveContent } from '../resolveContent';
 
-type InternalLinkProps = { href: string } & Omit<JSX.IntrinsicElements['a'], 'href'>;
+type LinkButtonProps = { href: string } & Omit<JSX.IntrinsicElements['a'], 'href' | 'children'> & StandardButtonProps;
 
-type LinkButtonProps = InternalLinkProps & StandardButtonProps;
-
-const LinkButton = ({
-    href,
-    target = '_self',
-    rel = 'noreferrer',
-    className,
-    sizing,
-    icon,
-    labelPosition = 'right',
-    active,
-    tertiary,
-    secondary,
-    destructive,
-    children,
-    ...defaultProps
-}: LinkButtonProps) => (
+const LinkButton = ({ href, target = '_self', rel = 'noreferrer', ...remaining }: LinkButtonProps) => (
     <a
-        className={classNames(
-            styles.link,
-            buttonClassnames({
-                className,
-                sizing,
-                icon,
-                labelPosition,
-                active,
-                tertiary,
-                secondary,
-                destructive,
-                children
-            })
-        )}
+        className={classNames(styles.link, resolveClasses(remaining))}
         href={href}
         target={target}
         rel={rel}
-        {...defaultProps}>
-        {icon}
-        {children}
+        {...remaining}>
+        {resolveContent(remaining)}
     </a>
 );
 

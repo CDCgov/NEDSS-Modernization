@@ -33,7 +33,7 @@ const Confirmation = ({
             onClose={onCancel}
             footer={(close) => (
                 <>
-                    <Button onClick={close} outline data-close-modal>
+                    <Button onClick={close} secondary data-close-modal>
                         {cancelText}
                     </Button>
                     <Button onClick={onConfirm} destructive={destructive}>

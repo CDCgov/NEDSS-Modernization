@@ -1,6 +1,4 @@
-import classNames from 'classnames';
 import { OverlayPanel } from 'overlay';
-import { Icon } from 'design-system/icon';
 import { Sizing } from 'design-system/field';
 import { ColumnPreferencesPanel } from 'design-system/table/preferences';
 import { useFilter } from 'design-system/filter';
@@ -37,10 +35,10 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
                         aria-label="Filter"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
-                        className={classNames({ [styles.filtered]: active })}
                         secondary={!active}
+                        active={active}
                         disabled={disabled}
-                        icon={<Icon name="filter_alt" />}
+                        icon="filter_alt"
                         onClick={toggle}
                         sizing={sizing}
                     />
@@ -54,9 +52,9 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
                         aria-label="Settings"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
-                        outline
+                        secondary
                         disabled={disabled}
-                        icon={<Icon name="settings" />}
+                        icon="settings"
                         onClick={toggle}
                         sizing={sizing}
                     />

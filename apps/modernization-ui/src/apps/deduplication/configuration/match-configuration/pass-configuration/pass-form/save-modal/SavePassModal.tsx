@@ -34,7 +34,7 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
 
     const footer = () => (
         <>
-            <Button outline onClick={onCancel} data-close-modal>
+            <Button secondary onClick={onCancel} data-close-modal>
                 Cancel
             </Button>
             <Button disabled={!isValid} onClick={onAccept} data-close-modal>

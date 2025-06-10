@@ -1,6 +1,5 @@
 import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { Button } from 'design-system/button';
-import { Icon } from 'design-system/icon';
 import { useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
@@ -42,13 +41,10 @@ export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
             onClose={onCancel}
             footer={
                 <>
-                    <Button outline onClick={handleCancel}>
+                    <Button secondary onClick={handleCancel}>
                         Cancel
                     </Button>
-                    <Button
-                        icon={<Icon name="add" sizing="small" />}
-                        labelPosition="right"
-                        onClick={() => onAccept(selectedAttributes)}>
+                    <Button icon="add" labelPosition="right" onClick={() => onAccept(selectedAttributes)}>
                         Add attribute(s)
                     </Button>
                 </>

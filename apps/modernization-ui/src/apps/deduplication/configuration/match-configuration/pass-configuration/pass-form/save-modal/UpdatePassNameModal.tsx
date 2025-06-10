@@ -25,7 +25,7 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
 
     const footer = () => (
         <>
-            <Button outline onClick={onCancel} data-close-modal>
+            <Button secondary onClick={onCancel} data-close-modal>
                 Cancel
             </Button>
             <Button

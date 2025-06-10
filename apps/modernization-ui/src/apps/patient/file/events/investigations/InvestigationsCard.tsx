@@ -2,7 +2,6 @@ import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { TableCard } from 'design-system/card';
 import { LinkButton } from 'design-system/button';
-import { Icon } from 'design-system/icon';
 import { Sizing } from 'design-system/field';
 import { PatientInvestigation, usePatientInvestigations } from 'libs/patient/events/investigations';
 import { displayInvestigator, displayNotificationStatus, displayStatus } from 'libs/events/investigations';
@@ -108,7 +107,7 @@ const InvestigationsCard = ({ patient, sizing = 'small' }: InvestigationsCardPro
                     <LinkButton
                         secondary
                         sizing={sizing}
-                        icon={<Icon name="add_circle" sizing={sizing} />}
+                        icon="add_circle"
                         href={`/nbs/api/profile/${patient}/investigation`}>
                         Add investigation
                     </LinkButton>

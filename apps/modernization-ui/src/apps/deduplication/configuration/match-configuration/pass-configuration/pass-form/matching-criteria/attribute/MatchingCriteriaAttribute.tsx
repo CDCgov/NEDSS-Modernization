@@ -2,7 +2,6 @@ import { MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/mod
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { Icon } from 'design-system/icon';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { NumericHintInput } from '../../matching-bounds/numeric-hint-input/NumericHintInput';
@@ -117,10 +116,11 @@ export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, on
                 </div>
                 <div className={styles.deleteButton}>
                     <Button
-                        icon={<Icon name="delete" />}
+                        icon="delete"
                         sizing="small"
-                        outline
+                        secondary
                         destructive
+                        aria-label="Remove"
                         onClick={() => onRemove(index)}
                     />
                 </div>

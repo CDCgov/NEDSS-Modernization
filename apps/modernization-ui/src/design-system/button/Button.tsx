@@ -1,63 +1,14 @@
-import React, { ReactNode } from 'react';
-import { Sizing } from 'design-system/field';
-import { buttonClassnames } from './buttonClassNames';
+import { StandardButtonProps } from './buttons';
+import { resolveClasses } from './resolveClasses';
+import { resolveContent } from './resolveContent';
 
-type StandardButtonProps = {
-    className?: string;
-    icon?: ReactNode;
-    children?: ReactNode;
-    active?: boolean;
-    secondary?: boolean;
-    destructive?: boolean;
-    disabled?: boolean;
-    sizing?: Sizing;
-    tertiary?: boolean;
-    labelPosition?: 'left' | 'right';
-};
+type ButtonProps = StandardButtonProps & Omit<JSX.IntrinsicElements['button'], 'children'>;
 
-type ButtonProps = {
-    /** Deprecated - replaced by secondary */
-    outline?: boolean;
-    /** Deprecated - replaced by tertiary */
-    unstyled?: boolean;
-} & StandardButtonProps &
-    JSX.IntrinsicElements['button'];
-
-const Button = ({
-    className,
-    sizing,
-    type = 'button',
-    icon,
-    labelPosition = 'right',
-    active,
-    disabled,
-    tertiary,
-    secondary,
-    destructive,
-    outline,
-    unstyled,
-    children,
-    ...defaultProps
-}: ButtonProps) => {
-    const classes = buttonClassnames({
-        className,
-        sizing,
-        icon,
-        labelPosition,
-        active,
-        tertiary: tertiary || unstyled,
-        secondary: secondary || outline,
-        destructive,
-        children
-    });
-
-    return (
-        <button className={classes} {...defaultProps} type={type} disabled={disabled}>
-            {icon}
-            {children}
-        </button>
-    );
-};
+const Button = ({ type = 'button', ...remaining }: ButtonProps) => (
+    <button className={resolveClasses(remaining)} {...remaining} type={type}>
+        {resolveContent(remaining)}
+    </button>
+);
 
 export { Button };
-export type { ButtonProps, StandardButtonProps };
+export type { ButtonProps };

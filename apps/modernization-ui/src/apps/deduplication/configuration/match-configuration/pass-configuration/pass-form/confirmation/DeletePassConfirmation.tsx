@@ -13,7 +13,7 @@ type Props = {
 export const DeletePassConfirmation = ({ passName, visible, isLastPass, onAccept, onCancel }: Props) => {
     const footer = () => (
         <>
-            <Button outline onClick={onCancel} data-close-modal>
+            <Button secondary onClick={onCancel} data-close-modal>
                 No, back to configuration
             </Button>
             <Button destructive onClick={onAccept} data-close-modal>

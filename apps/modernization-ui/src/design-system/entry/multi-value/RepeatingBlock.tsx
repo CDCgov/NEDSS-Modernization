@@ -203,7 +203,7 @@ const RepeatingBlock = <V extends FieldValues>({
                     <footer>
                         <Shown when={status === 'adding'}>
                             <Button
-                                outline
+                                secondary
                                 sizing={sizing}
                                 aria-description={`add ${title.toLowerCase()}`}
                                 onClick={form.handleSubmit(handleAdd)}>
@@ -212,7 +212,7 @@ const RepeatingBlock = <V extends FieldValues>({
                             </Button>
                             <Shown when={form.formState.isDirty}>
                                 <Button
-                                    outline
+                                    secondary
                                     sizing={sizing}
                                     aria-description={`clear ${title.toLowerCase()}`}
                                     onClick={handleClear}
@@ -225,14 +225,14 @@ const RepeatingBlock = <V extends FieldValues>({
                         </Shown>
                         <Shown when={status === 'editing'}>
                             <Button
-                                outline
+                                secondary
                                 sizing={sizing}
                                 aria-description={`update ${title.toLowerCase()}`}
                                 onClick={form.handleSubmit(handleUpdate)}>
                                 {`Update ${title.toLowerCase()}`}
                             </Button>
                             <Button
-                                outline
+                                secondary
                                 sizing={sizing}
                                 aria-description={`cancel editing current ${title.toLowerCase()}`}
                                 onClick={handleReset}>
@@ -241,7 +241,7 @@ const RepeatingBlock = <V extends FieldValues>({
                         </Shown>
                         <Shown when={status === 'viewing'}>
                             <Button
-                                outline
+                                secondary
                                 sizing={sizing}
                                 aria-description={`add ${title.toLowerCase()}`}
                                 onClick={handleReset}>
