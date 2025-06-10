@@ -41,7 +41,7 @@ export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props
             onClose={onCancel}
             footer={
                 <>
-                    <Button outline onClick={handleCancel}>
+                    <Button secondary onClick={handleCancel}>
                         Cancel
                     </Button>
                     <Button icon="add" labelPosition="right" onClick={() => onAccept(selectedAttributes)}>

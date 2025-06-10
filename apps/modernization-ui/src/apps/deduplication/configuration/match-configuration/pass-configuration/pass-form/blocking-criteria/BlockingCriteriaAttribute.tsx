@@ -31,7 +31,14 @@ export const BlockingCriteriaAttribute = ({ label, description, attribute, onRem
                     <div className={styles.description}>{description}</div>
                 </div>
                 <div>
-                    <Button icon="delete" outline sizing="small" destructive onClick={() => onRemove(attribute)} />
+                    <Button
+                        icon="delete"
+                        secondary
+                        sizing="small"
+                        destructive
+                        aria-label="Remove"
+                        onClick={() => onRemove(attribute)}
+                    />
                 </div>
             </div>
         </Shown>

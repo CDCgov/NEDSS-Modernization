@@ -18,8 +18,8 @@ export const ToggleView = ({ sizing }: ToggleViewProps) => {
                     aria-label="Table view"
                     data-tooltip-position="top"
                     data-tooltip-offset="center"
-                    className={view === 'table' ? styles.active : ''}
-                    outline={view !== 'table'}
+                    secondary={view !== 'table'}
+                    active={view === 'table'}
                     icon="table"
                     onClick={asTable}
                     sizing={sizing}
@@ -28,10 +28,10 @@ export const ToggleView = ({ sizing }: ToggleViewProps) => {
                     aria-label="List view"
                     data-tooltip-position="top"
                     data-tooltip-offset="center"
-                    className={view === 'list' ? styles.active : ''}
                     icon="list"
                     onClick={asList}
-                    outline={view !== 'list'}
+                    secondary={view !== 'list'}
+                    active={view === 'list'}
                     sizing={sizing}
                 />
             </ButtonGroup>

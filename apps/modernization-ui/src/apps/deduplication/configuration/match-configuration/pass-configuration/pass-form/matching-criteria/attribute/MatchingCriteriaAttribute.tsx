@@ -115,7 +115,14 @@ export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, on
                     />
                 </div>
                 <div className={styles.deleteButton}>
-                    <Button icon="delete" sizing="small" outline destructive onClick={() => onRemove(index)} />
+                    <Button
+                        icon="delete"
+                        sizing="small"
+                        secondary
+                        destructive
+                        aria-label="Remove"
+                        onClick={() => onRemove(index)}
+                    />
                 </div>
             </div>
         </Shown>

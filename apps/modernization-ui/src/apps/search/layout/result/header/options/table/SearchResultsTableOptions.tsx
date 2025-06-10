@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { OverlayPanel } from 'overlay';
 import { Sizing } from 'design-system/field';
 import { ColumnPreferencesPanel } from 'design-system/table/preferences';
@@ -36,8 +35,8 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
                         aria-label="Filter"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
-                        className={classNames({ [styles.filtered]: active })}
                         secondary={!active}
+                        active={active}
                         disabled={disabled}
                         icon="filter_alt"
                         onClick={toggle}
@@ -53,7 +52,7 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
                         aria-label="Settings"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
-                        outline
+                        secondary
                         disabled={disabled}
                         icon="settings"
                         onClick={toggle}

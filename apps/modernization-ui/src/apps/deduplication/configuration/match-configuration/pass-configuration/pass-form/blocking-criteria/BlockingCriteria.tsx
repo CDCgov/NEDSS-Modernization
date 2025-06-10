@@ -53,7 +53,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                     <Button
                         icon="add"
                         labelPosition="right"
-                        outline
+                        secondary
                         onClick={onShowAttributes}
                         sizing="small"
                         className={styles.addButton}>

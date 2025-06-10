@@ -38,7 +38,7 @@ export const MatchingCriteriaSidePanel = ({ visible, dataElements, onAccept, onC
             onClose={onCancel}
             footer={
                 <>
-                    <Button outline onClick={onCancel}>
+                    <Button secondary onClick={onCancel}>
                         Cancel
                     </Button>
                     <Button icon="add" labelPosition="right" onClick={() => onAccept(selectedAttributes)}>

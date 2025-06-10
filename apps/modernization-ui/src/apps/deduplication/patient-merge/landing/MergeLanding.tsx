@@ -25,8 +25,20 @@ const MergeLandingContent = () => {
             <header className={styles.mergeLandingHeader}>
                 <Heading level={1}>Matches requiring review</Heading>
                 <div className={styles.buttons}>
-                    <Button icon="print" sizing="medium" secondary onClick={() => exportPDF(sorting)} />
-                    <Button icon="file_download" sizing="medium" secondary onClick={() => exportCSV(sorting)} />
+                    <Button
+                        icon="print"
+                        sizing="medium"
+                        secondary
+                        aria-label="Print"
+                        onClick={() => exportPDF(sorting)}
+                    />
+                    <Button
+                        icon="file_download"
+                        sizing="medium"
+                        secondary
+                        aria-label="Download"
+                        onClick={() => exportCSV(sorting)}
+                    />
                 </div>
             </header>
             <main className={styles.mergeLandingContent}>
