@@ -4,7 +4,6 @@ Feature: Patient File Race Validation
   Background:
     Given I am logged in
     And I can "view" any "patient"
-    And I can "edit" any "patient"
     And I have a patient
 
   Scenario: A patient file should allow at least one entry for a Race Category

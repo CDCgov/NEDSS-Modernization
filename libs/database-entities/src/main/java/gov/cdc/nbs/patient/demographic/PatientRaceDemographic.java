@@ -106,7 +106,8 @@ public class PatientRaceDemographic {
 
   public void update(
       final Person patient,
-      final PatientCommand.UpdateRaceInfo changes) {
+      final PatientCommand.UpdateRaceInfo changes
+  ) {
 
     // change all the races for this category
     Collection<PersonRace> changed = ensureRaces().stream()

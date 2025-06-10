@@ -24,7 +24,7 @@ class PatientAddressDemographicController {
   )
   @GetMapping("/nbs/api/patients/{patient}/demographics/addresses")
   @PreAuthorize("hasAuthority('VIEW-PATIENT')")
-  List<PatientAddressDemographic> phones(@PathVariable("patient") long patient) {
+  List<PatientAddressDemographic> addresses(@PathVariable("patient") long patient) {
     return this.finder.find(patient);
   }
 }

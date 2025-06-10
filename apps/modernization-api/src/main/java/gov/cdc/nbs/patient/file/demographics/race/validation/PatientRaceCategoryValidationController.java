@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("nbs/api/patients/{patient}/demographics/races/{category}")
-class PatientFileRaceCategoryValidationController {
+class PatientRaceCategoryValidationController {
 
   private final ExistingRaceCategoryFinder finder;
 
-  PatientFileRaceCategoryValidationController(final ExistingRaceCategoryFinder finder) {
+  PatientRaceCategoryValidationController(final ExistingRaceCategoryFinder finder) {
     this.finder = finder;
   }
 
