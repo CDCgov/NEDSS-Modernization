@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.race;
+package gov.cdc.nbs.patient.demographics.race;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;

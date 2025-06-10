@@ -30,7 +30,7 @@ import static gov.cdc.nbs.patient.profile.general.GeneralInformationDemographicP
 import static gov.cdc.nbs.patient.demographics.identification.IdentificationDemographicPatientCommandMapper.asAddIdentification;
 import static gov.cdc.nbs.patient.profile.mortality.MortalityDemographicPatientCommandMapper.asUpdateMortality;
 import static gov.cdc.nbs.patient.demographics.name.NameDemographicPatientCommandMapper.asAddName;
-import static gov.cdc.nbs.patient.profile.race.RaceDemographicPatientCommandMapper.asAddRace;
+import static gov.cdc.nbs.patient.demographics.race.RaceDemographicPatientCommandMapper.asAddRace;
 
 @Component
 class PatientCreationService {

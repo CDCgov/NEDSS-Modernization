@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.race.validate.category;
+package gov.cdc.nbs.patient.file.demographics.race.validation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -6,25 +6,26 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("nbs/api/patients/{patient}/demographics/race")
-class PatientRaceCategoryValidationController {
+@RequestMapping("nbs/api/patients/{patient}/demographics/races/{category}")
+class PatientFileRaceCategoryValidationController {
 
   private final ExistingRaceCategoryFinder finder;
 
-  PatientRaceCategoryValidationController(final ExistingRaceCategoryFinder finder) {
+  PatientFileRaceCategoryValidationController(final ExistingRaceCategoryFinder finder) {
     this.finder = finder;
   }
 
   @Operation(
-      operationId = "validateCategory",
+      operationId = "validateRace",
       summary = "Validates that a patient can accept a race demographic for the given category.",
-      tags = "PatientRace",
+      tags = "PatientFile",
       responses = {
           @ApiResponse(responseCode = "200", description = "Allowable race category for the patient"),
           @ApiResponse(
@@ -39,7 +40,8 @@ class PatientRaceCategoryValidationController {
           )
       }
   )
-  @PostMapping("categories/{category}/validate")
+  @PostMapping("validate")
+  @PreAuthorize("hasAuthority('VIEW-PATIENT')")
   ResponseEntity<ExistingRaceCategory> validate(
       @PathVariable final long patient,
       @PathVariable final String category
