@@ -1,7 +1,6 @@
 package gov.cdc.nbs.event.report.lab;
 
 import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
-import gov.cdc.nbs.event.investigation.InvestigationSteps;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
