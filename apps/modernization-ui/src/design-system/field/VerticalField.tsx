@@ -12,12 +12,23 @@ type Props = {
     label: string;
     helperText?: string;
     error?: string;
+    displayErrorsExternally?: boolean;
     required?: boolean;
     warning?: string;
     children: ReactNode;
 };
 
-const VerticalField = ({ className, htmlFor, label, helperText, required, error, warning, children }: Props) => (
+const VerticalField = ({
+    className,
+    htmlFor,
+    label,
+    helperText,
+    required,
+    error,
+    displayErrorsExternally,
+    warning,
+    children
+}: Props) => (
     <span className={classNames(styles.entry, className)}>
         <span className={styles.labels}>
             <label className={classNames({ [styles.required]: required })} htmlFor={htmlFor}>
@@ -26,7 +37,7 @@ const VerticalField = ({ className, htmlFor, label, helperText, required, error,
             {helperText && <HelperText id={`${htmlFor}-hint`}>{helperText}</HelperText>}
         </span>
         {warning && <InlineWarningMessage id={`${htmlFor}-warning`}>{warning}</InlineWarningMessage>}
-        {error && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
+        {error && !displayErrorsExternally && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
 
         {children}
     </span>

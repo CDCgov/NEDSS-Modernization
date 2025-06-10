@@ -46,8 +46,16 @@ const DateCriteriaField = ({
     const type = resolveInitialCriteriaType(value);
 
     return (
-        <Field error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
-            {showAdditionalDateCriteriaErrors && <AdditionalDateCriteriaErrors error={error} value={value} />}
+        <Field
+            error={error}
+            displayErrorsExternally={true}
+            orientation={orientation}
+            label={label}
+            htmlFor={id}
+            sizing={sizing}>
+            {showAdditionalDateCriteriaErrors && (
+                <AdditionalDateCriteriaErrors fieldId={id} error={error} value={value} />
+            )}
             <div className={styles.content}>
                 <div className={styles.operators} data-range-operator={type}>
                     <Radio

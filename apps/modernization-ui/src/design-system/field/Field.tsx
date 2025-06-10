@@ -14,6 +14,7 @@ type FieldProps = {
     sizing?: Sizing;
     helperText?: string;
     error?: string;
+    displayErrorsExternally?: boolean;
     required?: boolean;
     warning?: string;
 };
