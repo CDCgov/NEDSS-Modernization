@@ -21,10 +21,11 @@ describe('DateRangeField Component', () => {
                     }
                 }}
                 onChange={jest.fn()}
+                label="Date Range"
             />
         );
-        const from = getByRole('textbox', { name: 'From' });
-        const to = getByRole('textbox', { name: 'To' });
+        const from = getByRole('textbox', { name: 'Date Range, From' });
+        const to = getByRole('textbox', { name: 'Date Range, To' });
 
         expect(from).toHaveValue('02/17/1990');
         expect(to).toHaveValue('02/17/2000');
@@ -32,9 +33,11 @@ describe('DateRangeField Component', () => {
 
     it('should call from input change handler when the from date is entered', async () => {
         const mockOnChange = jest.fn();
-        const { getByRole } = render(<DateRangeField id="testing-date-range-from-entered" onChange={mockOnChange} />);
+        const { getByRole } = render(
+            <DateRangeField id="testing-date-range-from-entered" onChange={mockOnChange} label="Date Range" />
+        );
 
-        const from = getByRole('textbox', { name: 'From' });
+        const from = getByRole('textbox', { name: 'Date Range, From' });
 
         const user = userEvent.setup();
 
@@ -48,6 +51,7 @@ describe('DateRangeField Component', () => {
         const { getByRole } = render(
             <DateRangeField
                 id="testing-date-range-from-change"
+                label="Date Range"
                 value={{
                     between: {
                         from: '02/17/1990'
@@ -57,7 +61,7 @@ describe('DateRangeField Component', () => {
             />
         );
 
-        const from = getByRole('textbox', { name: 'From' });
+        const from = getByRole('textbox', { name: 'Date Range, From' });
 
         const user = userEvent.setup();
 
@@ -68,9 +72,11 @@ describe('DateRangeField Component', () => {
 
     it('should call from input change handler when the to date is entered', async () => {
         const mockOnChange = jest.fn();
-        const { getByRole } = render(<DateRangeField id="testing-date-range-to-entered" onChange={mockOnChange} />);
+        const { getByRole } = render(
+            <DateRangeField id="testing-date-range-to-entered" onChange={mockOnChange} label="Date Range" />
+        );
 
-        const to = getByRole('textbox', { name: 'To' });
+        const to = getByRole('textbox', { name: 'Date Range, To' });
 
         const user = userEvent.setup();
 
@@ -84,6 +90,7 @@ describe('DateRangeField Component', () => {
         const { getByRole } = render(
             <DateRangeField
                 id="testing-date-range-to-change"
+                label="Date Range"
                 value={{
                     between: {
                         from: '02/17/1990',
@@ -94,7 +101,7 @@ describe('DateRangeField Component', () => {
             />
         );
 
-        const to = getByRole('textbox', { name: 'To' });
+        const to = getByRole('textbox', { name: 'Date Range, To' });
 
         const user = userEvent.setup();
 

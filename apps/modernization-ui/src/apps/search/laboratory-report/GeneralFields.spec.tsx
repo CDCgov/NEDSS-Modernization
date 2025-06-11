@@ -59,32 +59,32 @@ describe('GeneralFields component ', () => {
         const { getByText, getByRole } = render(<GeneralFieldsWithForm />);
         expect(getByText('Entry method')).toBeInTheDocument();
 
-        expect(getByRole('checkbox', { name: 'Manual' })).toBeInTheDocument();
-        expect(getByRole('checkbox', { name: 'Electronic' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Entry method, Manual' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Entry method, Electronic' })).toBeInTheDocument();
     });
 
     it('renders entered by checkboxes', () => {
         const { getByText, getByRole } = render(<GeneralFieldsWithForm />);
         expect(getByText('Entered by')).toBeInTheDocument();
 
-        expect(getByRole('checkbox', { name: 'External' })).toBeInTheDocument();
-        expect(getByRole('checkbox', { name: 'Internal' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Entered by, External' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Entered by, Internal' })).toBeInTheDocument();
     });
 
     it('renders event status checkboxes', () => {
         const { getByText, getByRole } = render(<GeneralFieldsWithForm />);
         expect(getByText('Event status')).toBeInTheDocument();
 
-        expect(getByRole('checkbox', { name: 'New' })).toBeInTheDocument();
-        expect(getByRole('checkbox', { name: 'Update' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Event status, New' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Event status, Update' })).toBeInTheDocument();
     });
 
     it('renders processing status checkboxes', () => {
         const { getByText, getByRole } = render(<GeneralFieldsWithForm />);
-        expect(getByText('Event status')).toBeInTheDocument();
+        expect(getByText('Processing status')).toBeInTheDocument();
 
-        expect(getByRole('checkbox', { name: 'Unprocessed' })).toBeInTheDocument();
-        expect(getByRole('checkbox', { name: 'Processed' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Processing status, Unprocessed' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Processing status, Processed' })).toBeInTheDocument();
     });
 
     it('renders user autocomplete fields', () => {
