@@ -1,4 +1,3 @@
-import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { AlertProvider } from 'alert';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
