@@ -1,9 +1,9 @@
 import { TableCard } from 'design-system/card';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { PatientLabReport, TestResult } from 'generated';
+import { PatientLabReport } from 'generated';
 import { usePatientLabReports } from './usePatientLabReports';
-import { renderFacilityProvider } from 'apps/patient/file/renderPatientFile';
+import { renderFacilityProvider, renderLabReports } from 'apps/patient/file/renderPatientFile';
 
 const EVENT_ID = { id: 'patient-file-lab-reports-eventId', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'patient-file-lab-reports-dateReceived', name: 'Date received' };
@@ -25,49 +25,23 @@ const columnPreferences: ColumnPreference[] = [
     { ...JURISDICTION, moveable: true, toggleable: true }
 ];
 
-const displayTestResults = (testResults?: TestResult[] | undefined) => {
-    if (!testResults || testResults.length < 1) {
-        return undefined;
-    }
-
-    const testResultAssignMapKays = testResults.map((v, i) => ({ ...v, renderKey: i }));
-
-    return (
-        <div>
-            {testResultAssignMapKays.map((testResult) => {
-                const { resultedTest, codedResult, numericResult, units, highRange, lowRange, statusDetails } =
-                    testResult;
-                return (
-                    <div key={testResult.renderKey}>
-                        {resultedTest && (
-                            <div>
-                                <b>{resultedTest}:</b>
-                            </div>
-                        )}
-                        {codedResult && <div>{codedResult}</div>}
-                        {numericResult && units && (
-                            <div>
-                                {numericResult} {units}
-                            </div>
-                        )}
-                        {highRange && lowRange && (
-                            <div>
-                                <b>Reference Range:</b>
-                                <br />
-                                From {lowRange} to {highRange}
-                            </div>
-                        )}
-                        {statusDetails && <div>{statusDetails}</div>}
-                        <br />
-                    </div>
-                );
-            })}
-        </div>
-    );
-};
-
 type LabReportsCardProps = {
     patient: number;
+};
+
+const resolveTest = (value: PatientLabReport) => {
+    return (
+        <>
+            {renderLabReports(value.testResults)}
+            {value.specimenSource && (
+                <>
+                    <br />
+                    <strong>Specimen Source: </strong>
+                    {value.specimenSource}
+                </>
+            )}
+        </>
+    );
 };
 
 const LabReportsCard = ({ patient }: LabReportsCardProps) => {
@@ -98,12 +72,13 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
         {
             ...FACILITY_PROVIDER,
             sortable: true,
-            value: (value) => value.facilityProviders?.reportingFacility,
+            value: (value) => value.reportingFacility,
             render: (value: PatientLabReport) =>
                 renderFacilityProvider(
-                    value.facilityProviders?.reportingFacility,
-                    value.facilityProviders?.orderingProvider,
-                    value.facilityProviders?.sendingFacility
+                    value.reportingFacility,
+                    value.orderingProvider,
+                    undefined,
+                    value.orderingFacility
                 )
         },
         {
@@ -116,8 +91,7 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
         {
             ...TEST_RESULTS,
             sortable: true,
-            value: (value) => value?.testResults?.at(0)?.resultedTest,
-            render: (value: PatientLabReport) => displayTestResults(value.testResults)
+            render: resolveTest
         },
         {
             ...ASSOCIATED_WITH,
@@ -127,7 +101,7 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
                 value.associatedInvestigation && (
                     <div>
                         <a href={`/nbs/api/profile/${patient}/investigation/${value.associatedInvestigation.id}`}>
-                            {value.associatedInvestigation.id}
+                            {value.associatedInvestigation.local}
                         </a>
                         <p className="margin-0">
                             <b>{value.associatedInvestigation.condition}</b>
