@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { MergeCandidate, MergeName } from '../../../../../api/model/MergeCandidate';
 import { NameId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
@@ -25,47 +25,18 @@ type NameProps = {
 
 export const PreviewName = ({ selectedNames, mergeCandidates }: NameProps) => {
     // Derive detailedNames by matching selectedNames against mergeCandidates' names
-    const detailedNames: MergeName[] = selectedNames.flatMap(({ personUid, sequence }) => {
-        const candidate = mergeCandidates.find((mc) => mc.personUid === personUid);
-        if (!candidate) {
-            console.warn(`No mergeCandidate found for UID ${personUid}`);
-            return [];
-        }
-        const matches = candidate.names.filter((name) => String(name.sequence) === String(sequence));
-        if (matches.length === 0) {
-            console.warn(`No names matched for UID ${personUid} and sequence ${sequence}`);
-        }
-        return matches;
-    });
+    const detailedNames: MergeName[] = mergeCandidates
+        .flatMap((mc) => mc.names)
+        .filter((name) =>
+            selectedNames.some((sn) => sn.personUid === name.personUid && String(sn.sequence) === String(name.sequence))
+        );
 
     const initialNames: NameEntry[] = detailedNames.map((n) => ({
-        personUid: n.personUid,
-        sequence: n.sequence,
-        asOf: format(parseISO(n.asOf), 'MM/dd/yyyy'),
-        type: n.type,
-        prefix: n.prefix,
-        last: n.last,
-        first: n.first,
-        middle: n.middle,
-        suffix: n.suffix,
-        degree: n.degree
+        ...n,
+        asOf: format(parseISO(n.asOf), 'MM/dd/yyyy')
     }));
 
     const [names] = useState(initialNames);
-    const [dirty, setDirty] = useState(false);
-
-    const deepEqual = (a: NameEntry[], b: NameEntry[]) => {
-        if (a.length !== b.length) return false;
-        return a.every((itemA, index) => {
-            const itemB = b[index];
-            return Object.keys(itemA).every((key) => (itemA as any)[key] === (itemB as any)[key]);
-        });
-    };
-
-    useEffect(() => {
-        setDirty(!deepEqual(names, initialNames));
-    }, [names, initialNames]);
-
     const columns: Column<NameEntry>[] = [
         {
             id: 'asOf',
@@ -125,10 +96,5 @@ export const PreviewName = ({ selectedNames, mergeCandidates }: NameProps) => {
         }
     ];
 
-    return (
-        <>
-            <MergePreviewTableCard<NameEntry> id="name" title="Name" columns={columns} data={names} />
-            {dirty && <p></p>}
-        </>
-    );
+    return <MergePreviewTableCard<NameEntry> id="name" title="Name" columns={columns} data={names} />;
 };

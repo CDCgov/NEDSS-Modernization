@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { MergeCandidate, MergeRace } from '../../../../../api/model/MergeCandidate';
 import { RaceId } from '../../../merge-review/model/PatientMergeForm';
 import { MergePreviewTableCard } from '../Card/MergePreviewTableCard';
@@ -18,38 +18,17 @@ type PreviewRaceProps = {
 };
 
 export const PreviewRace = ({ selectedRaces, mergeCandidates }: PreviewRaceProps) => {
-    const detailedRaces: MergeRace[] = selectedRaces.flatMap(({ personUid, raceCode }) => {
-        for (const candidate of mergeCandidates) {
-            if (candidate.personUid === personUid) {
-                const found = candidate.races.find((r) => r.raceCode === raceCode);
-                if (found) return [found];
-            }
-        }
-        return [];
-    });
+    const detailedRaces: MergeRace[] = mergeCandidates
+        .flatMap((mc) => mc.races)
+        .filter((race) => selectedRaces.some((sr) => sr.personUid === race.personUid && sr.raceCode === race.raceCode));
 
     const initialRaceEntries: RaceEntry[] = detailedRaces.map((r, index) => ({
+        ...r,
         id: `${r.personUid}-${r.raceCode}-${index}`,
-        asOf: format(parseISO(r.asOf), 'MM/dd/yyyy'),
-        race: r.race,
-        detailedRace: r.detailedRaces
+        asOf: format(parseISO(r.asOf), 'MM/dd/yyyy')
     }));
 
     const [races] = useState(initialRaceEntries);
-    const [dirty, setDirty] = useState(false);
-
-    const deepEqual = (a: RaceEntry[], b: RaceEntry[]) => {
-        if (a.length !== b.length) return false;
-        return a.every((itemA, index) => {
-            const itemB = b[index];
-            return Object.keys(itemA).every((key) => (itemA as any)[key] === (itemB as any)[key]);
-        });
-    };
-
-    useEffect(() => {
-        setDirty(!deepEqual(races, initialRaceEntries));
-    }, [races, initialRaceEntries]);
-
     const columns: Column<RaceEntry>[] = [
         {
             id: 'asOf',
@@ -74,10 +53,5 @@ export const PreviewRace = ({ selectedRaces, mergeCandidates }: PreviewRaceProps
         }
     ];
 
-    return (
-        <>
-            <MergePreviewTableCard<RaceEntry> id="race" title="Race" columns={columns} data={races} />
-            {dirty && <p></p>}
-        </>
-    );
+    return <MergePreviewTableCard<RaceEntry> id="race" title="Race" columns={columns} data={races} />;
 };
