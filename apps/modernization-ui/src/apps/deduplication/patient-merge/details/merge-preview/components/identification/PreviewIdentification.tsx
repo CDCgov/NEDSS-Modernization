@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MergeIdentification, MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { IdentificationId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
-import { SortableTableCard } from '../Card/SortableTableCard';
+import { MergePreviewTableCard } from '../Card/MergePreviewTableCard';
 import { Column } from 'design-system/table/DataTable';
 
 type IdentificationEntry = {
@@ -81,7 +81,7 @@ export const PreviewIdentification = ({ selectedIdentifications, mergeCandidates
 
     return (
         <>
-            <SortableTableCard<IdentificationEntry>
+            <MergePreviewTableCard<IdentificationEntry>
                 id="identification"
                 title="Identification"
                 columns={columns}

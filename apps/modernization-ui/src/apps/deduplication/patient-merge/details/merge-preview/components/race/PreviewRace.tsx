@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MergeCandidate, MergeRace } from '../../../../../api/model/MergeCandidate';
 import { RaceId } from '../../../merge-review/model/PatientMergeForm';
-import { SortableTableCard } from '../Card/SortableTableCard';
+import { MergePreviewTableCard } from '../Card/MergePreviewTableCard';
 import { Column } from 'design-system/table/DataTable';
 import { format, parseISO } from 'date-fns';
 
@@ -76,7 +76,7 @@ export const PreviewRace = ({ selectedRaces, mergeCandidates }: PreviewRaceProps
 
     return (
         <>
-            <SortableTableCard<RaceEntry> id="race" title="Race" columns={columns} data={races} />
+            <MergePreviewTableCard<RaceEntry> id="race" title="Race" columns={columns} data={races} />
             {dirty && <p></p>}
         </>
     );

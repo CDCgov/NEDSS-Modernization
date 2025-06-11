@@ -3,7 +3,7 @@ import { Card } from 'design-system/card/Card';
 import { SortableDataTable } from 'design-system/table/SortableDataTable';
 import { Tag } from 'design-system/tag/Tag';
 import { Column } from 'design-system/table/DataTable';
-import styles from './SortableTableCard.module.scss';
+import styles from './MergePreviewTableCard.module.scss';
 
 type SortableTableCardProps<T> = {
     id: string;
@@ -12,7 +12,7 @@ type SortableTableCardProps<T> = {
     data: T[];
 };
 
-export function SortableTableCard<T>({ id, title, columns, data }: SortableTableCardProps<T>) {
+export function MergePreviewTableCard<T>({ id, title, columns, data }: SortableTableCardProps<T>) {
     return (
         <Card
             id={id}

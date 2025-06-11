@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MergeAddress, MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { AddressId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
-import { SortableTableCard } from '../Card/SortableTableCard';
+import { MergePreviewTableCard } from '../Card/MergePreviewTableCard';
 import { Column } from 'design-system/table/DataTable';
 
 type AddressEntry = {
@@ -107,7 +107,7 @@ export const PreviewAddress = ({ selectedAddresses, mergeCandidates }: AddressPr
 
     return (
         <>
-            <SortableTableCard<AddressEntry> id="address" title="Address" columns={columns} data={addresses} />
+            <MergePreviewTableCard<AddressEntry> id="address" title="Address" columns={columns} data={addresses} />
             {dirty && <p></p>}
         </>
     );

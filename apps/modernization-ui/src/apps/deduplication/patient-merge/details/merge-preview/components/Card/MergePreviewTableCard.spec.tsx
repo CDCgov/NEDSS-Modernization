@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { SortableTableCard } from './SortableTableCard';
+import { MergePreviewTableCard } from './MergePreviewTableCard';
 import type { Column } from 'design-system/table/DataTable';
 import { MemoryRouter } from "react-router";
 
@@ -34,7 +34,7 @@ describe('SortableTableCard', () => {
     it('renders card title, tag, and table with data', () => {
         render(
             <MemoryRouter>
-                <SortableTableCard
+                <MergePreviewTableCard
                     id="test-address"
                     title="Test Addresses"
                     columns={mockColumns}

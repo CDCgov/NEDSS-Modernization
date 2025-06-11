@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MergePhoneEmail, MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PhoneEmailId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
-import { SortableTableCard } from '../Card/SortableTableCard';
+import { MergePreviewTableCard } from '../Card/MergePreviewTableCard';
 import { Column } from 'design-system/table/DataTable';
 
 type PhoneEmailEntry = {
@@ -92,7 +92,7 @@ export const PreviewPhoneAndEmail = ({ selectedPhoneEmails, mergeCandidates }: P
 
     return (
         <>
-            <SortableTableCard<PhoneEmailEntry>
+            <MergePreviewTableCard<PhoneEmailEntry>
                 id="phoneEmails"
                 title="Phone & email"
                 columns={columns}
