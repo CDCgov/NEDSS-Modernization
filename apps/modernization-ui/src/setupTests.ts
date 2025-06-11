@@ -1,6 +1,8 @@
-import '@testing-library/jest-dom/vitest';
 import { vi } from 'vitest';
+import '@testing-library/jest-dom/vitest';
 import * as matchers from 'vitest-axe/matchers';
+
+expect.extend(matchers);
 
 // All tests will create dates in the EST Timezone. UTC-5 or UTC-4 during DST
 // eslint-disable-next-line no-undef
@@ -20,8 +22,6 @@ globalThis.jest = {
     advanceTimersByTime: vi.advanceTimersByTime
     // Add more mappings if needed
 } as any;
-
-expect.extend(matchers);
 
 // Global fetch mock to prevent live network calls in all tests
 globalThis.fetch = vi.fn(() =>
