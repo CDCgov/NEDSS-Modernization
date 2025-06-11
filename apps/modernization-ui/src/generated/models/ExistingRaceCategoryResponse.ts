@@ -2,8 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type Selectable = {
-    value: string;
-    name: string;
+export type ExistingRaceCategoryResponse = {
 };
 

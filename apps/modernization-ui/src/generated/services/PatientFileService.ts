@@ -4,15 +4,16 @@
 /* eslint-disable */
 import type { Administrative } from '../models/Administrative';
 import type { DocumentRequiringReview } from '../models/DocumentRequiringReview';
-import type { ExistingRaceCategory } from '../models/ExistingRaceCategory';
+import type { ExistingRaceCategoryInvalid } from '../models/ExistingRaceCategoryInvalid';
+import type { ExistingRaceCategoryValid } from '../models/ExistingRaceCategoryValid';
 import type { PatientAddressDemographic } from '../models/PatientAddressDemographic';
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientFile } from '../models/PatientFile';
-import type { PatientFileRaceDemographic } from '../models/PatientFileRaceDemographic';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientInvestigation } from '../models/PatientInvestigation';
 import type { PatientNameDemographic } from '../models/PatientNameDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
+import type { PatientRaceDemographic } from '../models/PatientRaceDemographic';
 import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -20,7 +21,7 @@ import { request as __request } from '../core/request';
 export class PatientFileService {
     /**
      * Validates that a patient can accept a race demographic for the given category.
-     * @returns ExistingRaceCategory Allowable race category for the patient
+     * @returns any Allowable race category for the patient
      * @throws ApiError
      */
     public static validateRace({
@@ -29,7 +30,7 @@ export class PatientFileService {
     }: {
         patient: number,
         category: string,
-    }): CancelablePromise<ExistingRaceCategory> {
+    }): CancelablePromise<(ExistingRaceCategoryInvalid | ExistingRaceCategoryValid)> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/api/patients/{patient}/demographics/races/{category}/validate',
@@ -83,14 +84,14 @@ export class PatientFileService {
     /**
      * Patient file race demographics
      * Provides the race demographics for a patient
-     * @returns PatientFileRaceDemographic OK
+     * @returns PatientRaceDemographic OK
      * @throws ApiError
      */
-    public static identifications({
+    public static raceDemographics({
         patient,
     }: {
         patient: number,
-    }): CancelablePromise<Array<PatientFileRaceDemographic>> {
+    }): CancelablePromise<Array<PatientRaceDemographic>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics/races',
@@ -143,7 +144,7 @@ export class PatientFileService {
      * @returns PatientIdentificationDemographic OK
      * @throws ApiError
      */
-    public static identifications1({
+    public static identifications({
         patient,
     }: {
         patient: number,
@@ -181,7 +182,7 @@ export class PatientFileService {
      * @returns PatientAddressDemographic OK
      * @throws ApiError
      */
-    public static phones1({
+    public static addresses({
         patient,
     }: {
         patient: number,

@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Selectable } from './Selectable';
-export type PatientFileRaceDemographic = {
+export type PatientRaceDemographic = {
     asOf: string;
     race: Selectable;
     detailed?: Array<Selectable>;
