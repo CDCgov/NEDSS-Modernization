@@ -1,0 +1,62 @@
+import { internalizeDate } from 'date';
+import { initial, NameDemographic } from './names';
+import { Column, columnSortResolver } from 'design-system/table';
+import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
+import { NameDemographicFields } from './NameDemographicFields';
+import { NameDemographicView } from './NameDemographicView';
+import { SortHandler, SortingProvider } from 'libs/sorting';
+
+const defaultValue: Partial<NameDemographic> = initial();
+
+const columns: Column<NameDemographic>[] = [
+    {
+        id: 'name-as-of',
+        name: 'As of',
+        sortable: true,
+        sortIconType: 'numeric',
+        value: (v) => v.asOf,
+        render: (v) => internalizeDate(v.asOf)
+    },
+    { id: 'name-type', name: 'Type', sortable: true, value: (v) => v.type?.name },
+    { id: 'name-last', name: 'Last', sortable: true, value: (v) => v.last },
+    { id: 'name-first', name: 'First', sortable: true, value: (v) => v.first },
+    { id: 'name-middle', name: 'Middle', sortable: true, value: (v) => v.middle },
+    { id: 'name-suffix', name: 'Suffix', sortable: true, value: (v) => v.suffix?.name }
+];
+
+const sortResolver = columnSortResolver(columns);
+
+type NameRepeatingBlockProps = {
+    title?: string;
+} & Omit<RepeatingBlockProps<NameDemographic>, 'columns' | 'formRenderer' | 'viewRenderer' | 'defaultValues' | 'title'>;
+
+const NameDemographicCard = ({ title = 'Name', sizing, data = [], ...remaining }: NameRepeatingBlockProps) => {
+    const renderForm = () => <NameDemographicFields sizing={sizing} />;
+    const renderView = (value: NameDemographic) => <NameDemographicView entry={value} sizing={sizing} />;
+
+    return (
+        <SortingProvider appendToUrl={false}>
+            {(sorting) => (
+                <SortHandler sorting={sorting} resolver={sortResolver} data={data}>
+                    {({ sorting, sorted }) => (
+                        <RepeatingBlock<NameDemographic>
+                            {...remaining}
+                            title={title}
+                            sizing={sizing}
+                            columns={columns}
+                            data={sorted}
+                            features={{ sorting }}
+                            viewRenderer={renderView}
+                            defaultValues={defaultValue}
+                            formRenderer={renderForm}
+                            collapsible
+                        />
+                    )}
+                </SortHandler>
+            )}
+        </SortingProvider>
+    );
+};
+
+export { NameDemographicCard };
+export type { NameRepeatingBlockProps };

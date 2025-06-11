@@ -1,11 +1,11 @@
 import { ReactNode, useEffect, useMemo } from 'react';
 import { DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
-import { Button } from 'components/button';
 import { Shown } from 'conditional-render';
-import { Icon } from 'design-system/icon';
+import { Button } from 'design-system/button';
 import { Sizing } from 'design-system/field';
 import { Card, CardProps } from 'design-system/card';
+import { Icon } from 'design-system/icon';
 import { Tag } from 'design-system/tag';
 import { AlertMessage } from 'design-system/message';
 import { Column, DataTable, DataTableFeatures } from 'design-system/table';
