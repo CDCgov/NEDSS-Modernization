@@ -86,4 +86,26 @@ describe('AlertMessage', () => {
         const icon = container.querySelector('svg');
         expect(icon).toBeNull();
     });
+    
+    it('should set aria-label from title and string children when no aria-label prop provided', () => {
+        const { getByRole } = render(
+            <AlertMessage title="The title" type="information">
+                The content goes here
+            </AlertMessage>
+        );
+
+        const alert = getByRole('alert');
+        expect(alert).toHaveAttribute('aria-label', 'The title. The content goes here');
+    });
+
+    it('should set aria-label from custom aria-label prop when provided', () => {
+        const { getByRole } = render(
+            <AlertMessage title="The title" type="information" aria-label="Custom aria label">
+                The content goes here
+            </AlertMessage>
+        );
+
+        const alert = getByRole('alert');
+        expect(alert).toHaveAttribute('aria-label', 'The title. Custom aria label');
+    });
 });
