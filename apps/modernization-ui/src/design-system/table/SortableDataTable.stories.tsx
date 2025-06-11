@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Column } from './DataTable';
 import { MemoryRouter } from 'react-router';
 import { SortableDataTable } from './SortableDataTable';

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { TableCard } from './TableCard';
 import { Column } from 'design-system/table';
 import { Icon } from 'design-system/icon';
