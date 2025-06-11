@@ -83,6 +83,7 @@ export const CheckboxGroup = ({
                         selected={item.selected}
                         disabled={disabled}
                         onBlur={onBlur}
+                        aria-label={`${label}, ${item.value.name}`}
                     />
                 ))}
             </fieldset>

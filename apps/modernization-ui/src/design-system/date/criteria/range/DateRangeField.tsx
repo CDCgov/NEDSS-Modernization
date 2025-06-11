@@ -20,9 +20,10 @@ type DateRangeFieldProps = {
     sizing?: Sizing;
     onChange: (value?: DateBetweenCriteria) => void;
     onBlur?: () => void;
+    label?: string;
 };
 
-const DateRangeField = ({ id, value, sizing, onChange, onBlur }: DateRangeFieldProps) => {
+const DateRangeField = ({ id, value, sizing, onChange, onBlur, label }: DateRangeFieldProps) => {
     const [range, setRange] = useState<DateRange | undefined>(value?.between);
 
     useEffect(() => {
@@ -66,6 +67,7 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur }: DateRangeFieldP
                     id={`${id}-from`}
                     value={range?.from}
                     onChange={handleFieldOnChange('from')}
+                    aria-label={`${label}, From`}
                 />
             </div>
             <div className={classNames(styles['range-wrapper'])}>
@@ -77,6 +79,7 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur }: DateRangeFieldP
                     minDate={range?.from}
                     value={range?.to}
                     onChange={handleFieldOnChange('to')}
+                    aria-label={`${label}, To`}
                 />
             </div>
         </div>

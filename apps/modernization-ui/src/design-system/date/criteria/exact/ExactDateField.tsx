@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { HTMLProps, useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { withoutProperty, withProperty } from 'utils/object';
 import { Numeric } from 'design-system/input/numeric/Numeric';
@@ -17,9 +17,10 @@ type ExactDateFieldProps = {
     value?: DateEqualsCriteria;
     onChange: (value?: DateEqualsCriteria) => void;
     onBlur?: () => void;
+    label?: string;
 };
 
-const ExactDateField = ({ id, value, onChange, onBlur }: ExactDateFieldProps) => {
+const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldProps) => {
     const [criteria, setCriteria] = useState<DateEntry | undefined>(value?.equals);
 
     useEffect(() => {
@@ -53,6 +54,7 @@ const ExactDateField = ({ id, value, onChange, onBlur }: ExactDateFieldProps) =>
                     onBlur={onBlur}
                     min={1}
                     max={12}
+                    aria-label={`${label}, Month`}
                 />
             </div>
             <div className={classNames(styles['numeric-wrapper'], styles['day'])}>
@@ -65,6 +67,7 @@ const ExactDateField = ({ id, value, onChange, onBlur }: ExactDateFieldProps) =>
                     onBlur={onBlur}
                     min={1}
                     max={31}
+                    aria-label={`${label}, Day`}
                 />
             </div>
             <div className={classNames(styles['numeric-wrapper'], styles['year'])}>
@@ -76,6 +79,7 @@ const ExactDateField = ({ id, value, onChange, onBlur }: ExactDateFieldProps) =>
                     onChange={handleFieldOnChange('year')}
                     onBlur={onBlur}
                     min={1875}
+                    aria-label={`${label}, Year`}
                 />
             </div>
         </div>

@@ -58,6 +58,7 @@ const DateCriteriaField = ({
                         checked={type === 'equals'}
                         sizing={sizing}
                         className={styles.radio}
+                        aria-label={`${label}, Exact Date`}
                     />
                     <Radio
                         id={'between'}
@@ -71,6 +72,7 @@ const DateCriteriaField = ({
                         checked={type === 'between'}
                         sizing={sizing}
                         className={styles.radio}
+                        aria-label={`${label}, Date Range`}
                     />
                 </div>
                 <div key={type}>
@@ -80,6 +82,7 @@ const DateCriteriaField = ({
                             value={asDateEqualsCriteria(value)}
                             onChange={onChange}
                             onBlur={onBlur}
+                            label={label}
                         />
                     </Shown>
                     <Shown when={type === 'between'}>
@@ -89,6 +92,7 @@ const DateCriteriaField = ({
                             value={asDateRangeCriteria(value)}
                             onChange={onChange}
                             onBlur={onBlur}
+                            label={label}
                         />
                     </Shown>
                 </div>
