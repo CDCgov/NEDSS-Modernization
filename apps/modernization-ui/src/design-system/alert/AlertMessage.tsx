@@ -5,7 +5,7 @@ import { ReactNode, HTMLAttributes } from 'react';
 import { resolveIcon } from '../message/Message';
 import styles from './alert-message.module.scss';
 
-type Children = ReactNode | ReactNode[] | string;
+type Children = ReactNode | ReactNode[];
 
 type Props = {
     title?: string;
@@ -34,18 +34,17 @@ export const AlertMessage = ({
     ...props
 }: Props) => {
     const icon = iconless ? undefined : resolveIcon(type);
-    const defaultAriaLabel = getDefaultAlertAriaLabel(title, children);
 
     const getAriaLabel = (): string | undefined => {
         if (!title && !ariaLabel) return undefined;
         if (title && ariaLabel) return `${title}. ${ariaLabel}`;
-        return title ?? ariaLabel;
+        return getDefaultAlertAriaLabel(title, children);
     };
 
     return (
         <div
             role="alert"
-            aria-label={defaultAriaLabel || getAriaLabel()}
+            aria-label={getAriaLabel()}
             className={classNames(
                 styles.alertMessage,
                 {
