@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.11.8",
-    "@apollo/react-testing": "^4.0.0",
     "@eslint/compat": "^1.2.5",
     "@hello-pangea/dnd": "^18.0.1",
     "@trussworks/react-uswds": "^10.0.1",
@@ -88,9 +87,10 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build",
+    "build": "vitest run && vite build",
+    "build:only": "vite build",
     "preview": "vite preview",
-    "test": "vitest",
+    "test": "vitest --changed",
     "test:all": "vitest run",
     "test:coverageAll": "vitest run --coverage",
     "test:coveragePatient": "vitest --coverage --include=src/apps/patient/**/*.{js,jsx,ts,tsx}",
