@@ -5,16 +5,18 @@ import { ReactNode, HTMLAttributes } from 'react';
 import { resolveIcon } from '../message/Message';
 import styles from './alert-message.module.scss';
 
+type Children = ReactNode | ReactNode[] | string;
+
 type Props = {
     title?: string;
     type: 'information' | 'success' | 'warning' | 'error';
-    children: ReactNode | ReactNode[];
+    children: Children;
     className?: string;
     iconless?: boolean;
     slim?: boolean;
 } & Omit<HTMLAttributes<HTMLDivElement>, 'className'>;
 
-const getDefaultAlertAriaLabel = (title?: string, children?: ReactNode): string | undefined => {
+const getDefaultAlertAriaLabel = (title?: string, children?: Children): string | undefined => {
     if (!title && !children) return undefined;
 
     const childrenText = typeof children === 'string' ? children : '';
@@ -36,13 +38,14 @@ export const AlertMessage = ({
 
     const getAriaLabel = (): string | undefined => {
         if (!title && !ariaLabel) return undefined;
-        return title ? `${title}. ${ariaLabel}` : ariaLabel;
+        if (title && ariaLabel) return `${title}. ${ariaLabel}`;
+        return title ?? ariaLabel;
     };
 
     return (
         <div
             role="alert"
-            aria-label={getAriaLabel() || defaultAriaLabel}
+            aria-label={defaultAriaLabel || getAriaLabel()}
             className={classNames(
                 styles.alertMessage,
                 {
