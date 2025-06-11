@@ -36,7 +36,7 @@ export const AdministrativeComments = ({ mergeCandidates, mergeFormData }: Admin
             className={styles.adminCommentsCard}
             level={2}
             collapsible={false}>
-            <p className={styles.comment}>{comment || '---'}</p>
+            <p className={styles.comment}>{comment ?? '---'}</p>
         </Card>
     );
 };

@@ -1,0 +1,25 @@
+@use 'styles/borders';
+@use 'styles/colors';
+
+.dataTable {
+  border-bottom-left-radius: 0.3125rem;
+  border-bottom-right-radius: 0.3125rem;
+  border-bottom: none !important;
+}
+
+.card {
+  border-top-radius: 0.3125rem;
+  overflow: hidden;
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+
+.footer {
+  height: 1rem;
+  background-color: colors.$base-white;
+  border-bottom-left-radius: 0.3125rem;
+  border-bottom-right-radius: 0.3125rem;
+}
+
+
+
