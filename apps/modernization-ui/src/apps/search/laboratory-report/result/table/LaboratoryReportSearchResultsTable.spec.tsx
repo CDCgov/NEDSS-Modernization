@@ -5,7 +5,7 @@ import { LaboratoryReportSearchResultsTable } from './LaboratoryReportSearchResu
 import { Selectable } from 'options';
 import { Column } from 'design-system/table';
 
-jest.mock('design-system/table/preferences', () => ({
+vi.mock('design-system/table/preferences', () => ({
     useColumnPreferences: () => ({ apply: (columns: Column<LabReport>[]) => columns })
 }));
 

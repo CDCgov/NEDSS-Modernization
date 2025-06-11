@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render, within } from '@testing-library/react';
 import { MergeLanding } from './MergeLanding';
 import { MemoryRouter, useSearchParams } from 'react-router';
@@ -6,13 +7,13 @@ import { useExportMatches } from '../../api/useExportMatches';
 import { PaginationProvider } from 'pagination';
 import { SortingProvider } from 'libs/sorting';
 
-jest.mock('../../api/useExportMatches', () => ({
-    useExportMatches: jest.fn()
+vi.mock('../../api/useExportMatches', () => ({
+    useExportMatches: vi.fn()
 }));
 
-jest.mock('react-router', () => ({
-    ...jest.requireActual('react-router'),
-    useSearchParams: jest.fn()
+vi.mock('react-router', async () => ({
+    ...(await vi.importActual('react-router')),
+    useSearchParams: vi.fn()
 }));
 
 const mockReturnValue = {
@@ -30,27 +31,27 @@ const mockReturnValue = {
     page: 0,
     total: 0
 };
-const mockFetch = jest.fn();
-jest.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
+const mockFetch = vi.fn();
+vi.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
     useMatchesRequiringReview: () => ({
         response: mockReturnValue,
         fetchMatchesRequiringReview: mockFetch
     })
 }));
 
-const mockExportMatchesCSV = jest.fn();
-const mockExportMatchesPDF = jest.fn();
+const mockExportMatchesCSV = vi.fn();
+const mockExportMatchesPDF = vi.fn();
 
 beforeEach(() => {
     mockExportMatchesCSV.mockClear();
     mockExportMatchesPDF.mockClear();
 
-    (useExportMatches as jest.Mock).mockReturnValue({
+    (useExportMatches as ReturnType<typeof vi.fn>).mockReturnValue({
         exportCSV: mockExportMatchesCSV,
         exportPDF: mockExportMatchesPDF
     });
 
-    (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams(), jest.fn()]);
+    (useSearchParams as ReturnType<typeof vi.fn>).mockReturnValue([new URLSearchParams(), vi.fn()]);
 });
 
 const Fixture = () => (
@@ -73,8 +74,8 @@ describe('MergeLanding', () => {
         const { getByRole } = render(<Fixture />);
         const buttons = within(getByRole('heading').parentElement!).getAllByRole('button');
         expect(buttons).toHaveLength(2);
-        expect(buttons[0].children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#print');
-        expect(buttons[1].children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#file_download');
+        expect(buttons[0].children[0].children[0].getAttribute('xlink:href')).toContain('sprite.svg#print');
+        expect(buttons[1].children[0].children[0].getAttribute('xlink:href')).toContain('sprite.svg#file_download');
     });
 
     it('should trigger CSV download when the download button is clicked', async () => {

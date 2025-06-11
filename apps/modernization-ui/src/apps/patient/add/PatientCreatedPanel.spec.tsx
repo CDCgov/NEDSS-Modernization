@@ -1,10 +1,11 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { CreatedPatient } from './api';
 import { PatientCreatedPanel } from './PatientCreatedPanel';
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
+vi.mock('user', () => ({
     useUser: () => ({ state: { user: { permissions: mockPermissions } } })
 }));
 

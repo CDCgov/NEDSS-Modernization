@@ -1,10 +1,11 @@
+import { vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { useShowCancelModal } from './useShowCancelModal';
 
 const mockSave = jest.fn();
 const mockRemove = jest.fn();
 
-jest.mock('storage', () => ({
+vi.mock('storage', () => ({
     useLocalStorage: () => ({ value: false, save: mockSave, remove: mockRemove })
 }));
 

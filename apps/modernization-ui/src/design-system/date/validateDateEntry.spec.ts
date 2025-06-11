@@ -4,7 +4,7 @@ import { add } from 'date-fns';
 
 const mockNow = jest.fn();
 
-jest.mock('./clock', () => ({
+vi.mock('./clock', () => ({
     now: () => mockNow()
 }));
 

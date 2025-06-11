@@ -22,7 +22,7 @@ const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
 
 const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
 
-jest.mock('options/location', () => ({
+vi.mock('options/location', () => ({
     useCountyOptions: () => mockCountyCodedValues,
     useCountryOptions: () => mockCountryCodedValues,
     useStateOptions: () => mockStateCodedValues
@@ -30,11 +30,11 @@ jest.mock('options/location', () => ({
 
 const mockNow = jest.fn();
 
-jest.mock('design-system/date/clock', () => ({
+vi.mock('design-system/date/clock', () => ({
     now: () => mockNow()
 }));
 
-jest.mock('./useSexBirthCodedValues', () => ({
+vi.mock('./useSexBirthCodedValues', () => ({
     useSexBirthCodedValues: () => mockSexBirthCodedValues
 }));
 

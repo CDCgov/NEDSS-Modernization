@@ -1,18 +1,19 @@
-import { usePage } from 'page';
-import NavBar from './NavBar';
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
+import NavBar from './NavBar';
+import { usePage } from 'page';
 
-jest.mock('page', () => ({
-    usePage: jest.fn()
+vi.mock('page', () => ({
+    usePage: vi.fn()
 }));
 
-jest.mock('react-router', () => ({
-    useLocation: jest.fn()
+vi.mock('react-router', () => ({
+    useLocation: vi.fn()
 }));
 
 describe('NavBar component tests', () => {
     it('should render navigation bar', () => {
-        (usePage as jest.Mock).mockReturnValue({ title: 'Test page' });
+        (usePage as ReturnType<typeof vi.fn>).mockReturnValue({ title: 'Test page' });
         const { getByText } = render(<NavBar />);
         expect(getByText('Test page')).toBeInTheDocument();
     });
