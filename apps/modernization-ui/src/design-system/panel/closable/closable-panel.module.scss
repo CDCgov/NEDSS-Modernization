@@ -1,26 +1,36 @@
 @use 'styles/borders';
+@use 'styles/colors';
 
 .panel {
     display: flex;
     flex-direction: column;
+    position: relative;
 
     header {
         display: flex;
         justify-content: space-between;
         align-items: center;
 
-        padding: 1.5rem;
+        padding: 1rem;
+        padding-right: 0.5rem;
 
         @extend %thin-bottom;
-
-        .closer {
-            cursor: pointer;
-            width: 2rem;
-            height: 2rem;
-        }
 
         h2 {
             margin: 0;
         }
+    }
+
+    .closer {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: colors.$base-black;
+
+        cursor: pointer;
+        min-height: auto;
+
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
     }
 }

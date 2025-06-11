@@ -1,7 +1,7 @@
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import styles from './merge-review.module.scss';
 import { AdminCommentsSelection } from './patient-form/admin-comments/AdminCommentsSelection';
 import { NameSelection } from './patient-form/name/NameSelection';
@@ -15,6 +15,8 @@ import { SexAndBirthSelection } from './patient-form/sex-and-birth/SexAndBirthSe
 import { MortalitySelection } from './patient-form/mortality/MortalitySelection';
 import { GeneralSelection } from './patient-form/general/GeneralSelection';
 import { InvestigationDisplay } from './patient-form/investigations/InvestigationsDisplay';
+import { useAlert } from 'alert';
+import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
 
 export type Props = {
     mergeCandidates: MergeCandidate[];
@@ -22,7 +24,35 @@ export type Props = {
     onRemovePatient: (personUid: string) => void;
 };
 export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient }: Props) => {
+    const { matchId } = useParams();
+    const { keepAllSeparate } = useRemoveMerge();
     const nav = useNavigate();
+    const { showAlert, showError } = useAlert();
+
+    const handleKeepAllSeparate = () => {
+        if (matchId !== undefined) {
+            keepAllSeparate(matchId, handleKeepSeparateSuccess, handleKeepSeparateError);
+        }
+    };
+
+    const handleKeepSeparateSuccess = () => {
+        const patientIds = mergeCandidates.map((m) => m.personLocalId).join(',');
+        showAlert({
+            type: 'success',
+            title: 'Success',
+            message: (
+                <span>
+                    You have chosen to keep the following patients separate: <strong>{patientIds}.</strong> They have
+                    been removed from the matches requiring review.
+                </span>
+            )
+        });
+        nav('/deduplication/merge');
+    };
+
+    const handleKeepSeparateError = () => {
+        showError('Failed to remove patients from merge.');
+    };
 
     return (
         <div className={styles.mergeReview}>
@@ -35,7 +65,7 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient }: Pro
                     <Button secondary onClick={onPreview}>
                         Preview merge
                     </Button>
-                    <Button onClick={() => console.log('Keep all separate NYI')}>Keep all separate</Button>
+                    <Button onClick={handleKeepAllSeparate}>Keep all separate</Button>
                     <Button onClick={() => console.log('Merge all NYI')}>Merge all</Button>
                 </div>
             </header>

@@ -1,13 +1,12 @@
+import { permissions, Permitted } from 'libs/permission';
 import { Modal } from 'design-system/modal';
 import { Message } from 'design-system/message';
+import { NavLinkButton } from 'design-system/button';
+import { LinkButton } from 'design-system/button';
+import { Heading } from 'components/heading';
 import { CreatedPatient } from './api';
 import { displayName } from 'name';
-import { ClassicButton } from 'classic';
-import { NavLinkButton } from 'design-system/button';
-import { Heading } from 'components/heading';
 import { FeatureToggle } from 'feature';
-import { LinkButton } from 'design-system/button';
-import { permissions, Permitted } from 'libs/permission';
 
 type Props = {
     created: CreatedPatient;
@@ -22,19 +21,19 @@ const PatientCreatedPanel = ({ created }: Props) => (
         footer={() => (
             <>
                 <Permitted permission={permissions.morbidityReport.add}>
-                    <ClassicButton outline url={`/nbs/api/profile/${created.id}/report/morbidity`}>
+                    <LinkButton secondary href={`/nbs/api/profile/${created.id}/report/morbidity`}>
                         Add morbidity report
-                    </ClassicButton>
+                    </LinkButton>
                 </Permitted>
                 <Permitted permission={permissions.labReport.add}>
-                    <ClassicButton outline url={`/nbs/api/profile/${created.id}/report/lab`}>
+                    <LinkButton secondary href={`/nbs/api/profile/${created.id}/report/lab`}>
                         Add lab report
-                    </ClassicButton>
+                    </LinkButton>
                 </Permitted>
                 <Permitted permission={permissions.investigation.add}>
-                    <ClassicButton outline url={`/nbs/api/profile/${created.id}/investigation`}>
+                    <LinkButton secondary href={`/nbs/api/profile/${created.id}/investigation`}>
                         Add investigation
-                    </ClassicButton>
+                    </LinkButton>
                 </Permitted>
                 <FeatureToggle
                     guard={(features) => features?.patient?.file.enabled}

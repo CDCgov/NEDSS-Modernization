@@ -1,11 +1,13 @@
 import classNames from 'classnames';
-import { ReactNode, useState, KeyboardEvent as ReactKeyboardEvent } from 'react';
+import React, { ReactNode, useState, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect } from 'react';
 import styles from './overlay-panel.module.scss';
 
-type Toggle = () => void;
+type Toggle = (element?: React.MouseEvent<HTMLElement>) => void;
 type Close = () => void;
 
-type ButtonRendererProps = { toggle: Toggle };
+type ButtonRendererProps = {
+    toggle: Toggle;
+};
 
 type ToggleRenderer = (props: ButtonRendererProps) => JSX.Element;
 type PanelRenderer = (close: Close) => JSX.Element;
@@ -20,18 +22,26 @@ type OverlayPanelProps = {
 
 const OverlayPanel = ({ className, toggle, render, position, overlayVisible }: OverlayPanelProps) => {
     const [visible, setVisible] = useState(false);
+    const [openerElement, setOpenerElement] = useState<HTMLElement | null>(null);
 
-    const handleToggle = () => setVisible((existing) => !existing);
-    const handleClose = () => setVisible(false);
+    const handleToggle = (element?: React.MouseEvent<HTMLElement>) => {
+        element && setOpenerElement(element.currentTarget);
+        setVisible((existing) => !existing);
+    };
+    const handleClose = () => {
+        setVisible(false);
+        openerElement?.focus();
+        setOpenerElement(null);
+    };
 
     return (
         <div className={classNames(styles.overlay, className)}>
+            {toggle({ toggle: handleToggle })}
             {((overlayVisible !== undefined && overlayVisible) || visible) && (
                 <Dialog position={position} onClose={handleClose}>
                     {render(handleClose)}
                 </Dialog>
             )}
-            {toggle({ toggle: handleToggle })}
         </div>
     );
 };
@@ -45,6 +55,14 @@ type DialogProps = {
 };
 
 const Dialog = ({ position, onClose, children }: DialogProps) => {
+    const dialogRef = useRef<HTMLDialogElement>(null);
+
+    useEffect(() => {
+        if (dialogRef.current) {
+            dialogRef.current.focus();
+        }
+    }, []);
+
     const handleKeyDown = (event: ReactKeyboardEvent) => {
         if (event.key === 'Escape') {
             event.preventDefault();
@@ -54,6 +72,9 @@ const Dialog = ({ position, onClose, children }: DialogProps) => {
 
     return (
         <dialog
+            ref={dialogRef}
+            tabIndex={0}
+            aria-label="Overlay modal"
             open
             className={classNames({ [styles.right]: position === 'right', [styles.left]: position === 'left' })}
             onKeyDown={handleKeyDown}>

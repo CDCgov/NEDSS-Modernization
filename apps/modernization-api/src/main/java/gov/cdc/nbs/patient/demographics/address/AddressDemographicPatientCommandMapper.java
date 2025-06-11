@@ -21,8 +21,8 @@ public class AddressDemographicPatientCommandMapper {
         input.state(),
         input.zipcode(),
         input.county(),
-        input.censusTract(),
         input.country(),
+        input.censusTract(),
         input.comment(),
         context.requestedBy(),
         context.requestedAt()

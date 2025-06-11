@@ -146,3 +146,67 @@ export const Default: Story = {
         sizing: defaultSizing
     }
 };
+
+export const ReadOnlyBlock: Story = {
+    args: {
+        id: 'repeating-block-default',
+        title: 'Person',
+        defaultValues: defaultValue,
+        columns,
+        values: [{ firstName: 'test', lastName: 'test', veggie: asSelectable('carrot', 'Carrot') }],
+        formRenderer: () => <SampleForm sizing={defaultSizing} />,
+        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
+        onChange: handleChange,
+        isDirty: () => {},
+        isValid: () => {},
+        editable: false,
+        viewable: false,
+        sizing: defaultSizing
+    }
+};
+
+const SampleViewPatientFile = ({ entry, sizing }: { entry: SampleType; sizing: Sizing }) => (
+    <>
+        <ValueView title="First name" value={entry.firstName} sizing={sizing} required centerAlign />
+        <ValueView title="Last name" value={entry.lastName} sizing={sizing} centerAlign />
+        <ValueView title="Favorite veggie" value={entry.veggie?.name} sizing={sizing} required centerAlign />
+    </>
+);
+
+export const ViewOnlyBlock: Story = {
+    args: {
+        id: 'repeating-block-default',
+        title: 'Person',
+        defaultValues: defaultValue,
+        columns,
+        values: [
+            { firstName: 'test', lastName: 'test', veggie: asSelectable('carrot', 'Carrot') },
+            { firstName: 'test1', lastName: 'test1', veggie: asSelectable('eggplant', 'Eggplant') }
+        ],
+        formRenderer: () => <SampleForm sizing={defaultSizing} />,
+        viewRenderer: (entry: SampleType) => <SampleViewPatientFile entry={entry} sizing={defaultSizing} />,
+        onChange: handleChange,
+        isDirty: () => {},
+        isValid: () => {},
+        editable: false,
+        viewable: true,
+        sizing: defaultSizing
+    }
+};
+
+export const EditableBlock: Story = {
+    args: {
+        id: 'repeating-block-default',
+        title: 'Person',
+        defaultValues: defaultValue,
+        columns,
+        values: [],
+        formRenderer: () => <SampleForm sizing={defaultSizing} />,
+        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
+        onChange: handleChange,
+        isDirty: () => {},
+        isValid: () => {},
+        viewable: false,
+        sizing: defaultSizing
+    }
+};

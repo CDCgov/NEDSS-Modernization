@@ -33,7 +33,6 @@ public class PageCreatorSteps {
 
     @Given("I am an admin user make an add page request")
     public void i_am_an_admin_user_make_an_add_page_request() {
-
         try {
             userMother.adminUser();
             pageCreateResponse = new PageCreateResponse(null, null, null);
@@ -45,21 +44,16 @@ public class PageCreatorSteps {
                     "HEP_Case_Map_V1.0",
                     "create page steps",
                     "dataMart");
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
 
     @When("I make a request to create a Page")
     public void i_make_a_request_to_create_a_page() {
-
         try {
             pageCreateResponse = pageController.createPage(request);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }

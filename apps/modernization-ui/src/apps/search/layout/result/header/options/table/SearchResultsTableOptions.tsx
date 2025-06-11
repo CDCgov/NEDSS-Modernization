@@ -61,7 +61,8 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
                         sizing={sizing}
                     />
                 )}
-                render={(close) => <ColumnPreferencesPanel close={close} />}></OverlayPanel>
+                render={(close) => <ColumnPreferencesPanel close={close} />}
+            />
         </>
     );
 };

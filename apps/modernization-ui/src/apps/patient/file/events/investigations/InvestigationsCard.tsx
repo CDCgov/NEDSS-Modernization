@@ -6,6 +6,7 @@ import { Icon } from 'design-system/icon';
 import { Sizing } from 'design-system/field';
 import { PatientInvestigation, usePatientInvestigations } from 'libs/patient/events/investigations';
 import { displayInvestigator, displayNotificationStatus, displayStatus } from 'libs/events/investigations';
+import { permissions, Permitted } from 'libs/permission';
 
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };
 const START_DATE = { id: 'startedOn', name: 'Start date' };
@@ -103,13 +104,15 @@ const InvestigationsCard = ({ patient, sizing = 'small' }: InvestigationsCardPro
             columnPreferencesKey={'patient.file.investigations.preferences'}
             defaultColumnPreferences={columnPreferences}
             actions={
-                <LinkButton
-                    secondary
-                    sizing={sizing}
-                    icon={<Icon name="add_circle" sizing={sizing} />}
-                    href={`/nbs/api/profile/${patient}/investigation`}>
-                    Add investigation
-                </LinkButton>
+                <Permitted permission={permissions.investigation.add}>
+                    <LinkButton
+                        secondary
+                        sizing={sizing}
+                        icon={<Icon name="add_circle" sizing={sizing} />}
+                        href={`/nbs/api/profile/${patient}/investigation`}>
+                        Add investigation
+                    </LinkButton>
+                </Permitted>
             }
         />
     );
