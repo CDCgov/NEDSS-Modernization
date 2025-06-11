@@ -94,8 +94,7 @@ describe('AlertMessage', () => {
             </AlertMessage>
         );
 
-        const alert = getByRole('alert');
-        expect(alert).toHaveAttribute('aria-label', 'The title. The content goes here');
+        expect(getByRole('alert', { name: 'The title. The content goes here' })).toBeInTheDocument();
     });
 
     it('should set aria-label from custom aria-label prop when provided', () => {
@@ -105,7 +104,6 @@ describe('AlertMessage', () => {
             </AlertMessage>
         );
 
-        const alert = getByRole('alert');
-        expect(alert).toHaveAttribute('aria-label', 'The title. Custom aria label');
+        expect(getByRole('alert', { name: 'The title. Custom aria label' })).toBeInTheDocument();
     });
 });
