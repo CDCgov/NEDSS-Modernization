@@ -954,6 +954,28 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Races",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/races",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics",
+												"races"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
