@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { SortableTableCard } from './SortableTableCard';
 import type { Column } from 'design-system/table/DataTable';
+import { MemoryRouter } from "react-router";
 
 type TestData = {
     id: number;
@@ -14,32 +15,32 @@ const mockData: TestData[] = [
     { id: 2, name: 'Bob', email: 'bob@example.com' },
 ];
 
-const mockColumns: Column<TestData, any>[] = [
+const mockColumns: Column<TestData>[] = [
     {
-        header: 'Name',
-        accessor: 'name',
         id: 'name',
+        name: 'Name',
         sortable: true,
-        cell: ({ row }) => row.name,
+        value: (row) => row.name,
     },
     {
-        header: 'Email',
-        accessor: 'email',
         id: 'email',
+        name: 'Email',
         sortable: true,
-        cell: ({ row }) => row.email,
+        value: (row) => row.email,
     },
 ];
 
 describe('SortableTableCard', () => {
     it('renders card title, tag, and table with data', () => {
         render(
-            <SortableTableCard
-                id="test-address"
-                title="Test Addresses"
-                columns={mockColumns}
-                data={mockData}
-            />
+            <MemoryRouter>
+                <SortableTableCard
+                    id="test-address"
+                    title="Test Addresses"
+                    columns={mockColumns}
+                    data={mockData}
+                />
+            </MemoryRouter>
         );
 
         // Card title
