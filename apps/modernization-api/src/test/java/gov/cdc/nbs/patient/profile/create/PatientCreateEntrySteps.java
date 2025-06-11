@@ -4,6 +4,7 @@ import gov.cdc.nbs.patient.demographics.address.AddressDemographic;
 import gov.cdc.nbs.patient.demographics.administrative.Administrative;
 import gov.cdc.nbs.patient.demographics.identification.IdentificationDemographic;
 import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;
+import gov.cdc.nbs.patient.demographics.race.RaceDemographic;
 import gov.cdc.nbs.patient.profile.birth.BirthDemographic;
 import gov.cdc.nbs.patient.profile.ethnicity.EthnicityDemographic;
 import gov.cdc.nbs.patient.profile.gender.GenderDemographic;
@@ -25,6 +26,7 @@ public class PatientCreateEntrySteps {
   private final Active<PhoneDemographic> activePhoneDemographic;
   private final Active<AddressDemographic> activeAddressDemographic;
   private final Active<IdentificationDemographic> activeIdentificationDemographic;
+  private final Active<RaceDemographic> activeRaceDemographic;
   private final Active<NewPatient> input;
 
   PatientCreateEntrySteps(
@@ -38,6 +40,7 @@ public class PatientCreateEntrySteps {
       final Active<PhoneDemographic> activePhoneDemographic,
       final Active<AddressDemographic> activeAddressDemographic,
       final Active<IdentificationDemographic> activeIdentificationDemographic,
+      final Active<RaceDemographic> activeRaceDemographic,
       final Active<NewPatient> input
   ) {
     this.activeAdministrative = activeAdministrative;
@@ -50,6 +53,7 @@ public class PatientCreateEntrySteps {
     this.activePhoneDemographic = activePhoneDemographic;
     this.activeAddressDemographic = activeAddressDemographic;
     this.activeIdentificationDemographic = activeIdentificationDemographic;
+    this.activeRaceDemographic = activeRaceDemographic;
     this.input = input;
   }
 
@@ -75,6 +79,12 @@ public class PatientCreateEntrySteps {
   public void includePhone() {
     this.activePhoneDemographic.maybeActive().ifPresent(
         demographic -> this.input.active(current -> current.withPhoneEmail(demographic)));
+  }
+
+  @Given("the race is included with the extended patient data")
+  public void includeRace() {
+    this.activeRaceDemographic.maybeActive().ifPresent(
+        demographic -> this.input.active(current -> current.withRace(demographic)));
   }
 
   @Given("the address is included with the extended patient data")
