@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Sizing } from 'design-system/field';
 import { buttonClassnames } from './buttonClassNames';
 
