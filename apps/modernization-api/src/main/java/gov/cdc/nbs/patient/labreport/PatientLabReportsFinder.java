@@ -25,7 +25,7 @@ class PatientLabReportsFinder {
                    [investigation].public_health_case_uid              as [Associated With Id],
                    [investigation].local_id                            as [Associated With local],
                    [investigation_condition].condition_short_nm        as [Associated With Condition],
-                   [investigation].record_status_cd                    as [Asssociated With Status],
+                   [follow_up_status].code_desc_txt                    as [Asssociated With Status],
                    [lab].prog_area_cd                                  as [Program Area],
                    [jurisdiction].code_short_desc_txt                  as [Jurisduction],
                    [lab].[local_id]                                    as [Event Id],
@@ -68,6 +68,11 @@ class PatientLabReportsFinder {
            + oids.stream().map(String::valueOf).collect(Collectors.joining(",")) +
            """
                          )
+                 left join case_management [case_management] with (nolock) on
+                       [case_management].public_health_case_uid = [investigation].public_health_case_uid
+                 left join NBS_SRTE..Code_value_general [follow_up_status] with (nolock) on
+                       [follow_up_status].code = [case_management].init_foll_up
+                   and [follow_up_status].code_set_nm = 'STD_NBS_PROCESSING_DECISION_ALL'
                left join Participation [report_provider] with (nolock) on
                        [report_provider].act_uid = [lab].observation_uid
                    and [report_provider].type_cd = 'ORD'
