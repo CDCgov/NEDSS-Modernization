@@ -6,7 +6,7 @@ import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 
 const mockAllows = jest.fn();
 
-jest.mock('libs/permission/usePermissions', () => ({
+vi.mock('libs/permission/usePermissions', () => ({
     usePermissions: () => ({ permissions: [], allows: mockAllows })
 }));
 

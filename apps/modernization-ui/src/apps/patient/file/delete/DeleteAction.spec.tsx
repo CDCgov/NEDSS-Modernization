@@ -24,28 +24,28 @@ const mockShowSuccess = jest.fn();
 const mockShowError = jest.fn();
 const mockGo = jest.fn();
 
-jest.mock('alert', () => ({
+vi.mock('alert', () => ({
     useAlert: () => ({
         showSuccess: mockShowSuccess,
         showError: mockShowError
     })
 }));
 
-jest.mock('apps/search', () => ({
+vi.mock('apps/search', () => ({
     useSearchNavigation: () => ({
         go: mockGo
     })
 }));
 
-jest.mock('./useDeletePatient', () => ({
+vi.mock('./useDeletePatient', () => ({
     useDeletePatient: jest.fn()
 }));
 
-jest.mock('../usePatient', () => ({
+vi.mock('../usePatient', () => ({
     usePatient: jest.fn(() => mockPatient)
 }));
 
-jest.mock('libs/permission', () => ({
+vi.mock('libs/permission', () => ({
     Permitted: jest.fn(({ children }: { children: ReactNode }) => <>{children}</>),
     permissions: {
         patient: {

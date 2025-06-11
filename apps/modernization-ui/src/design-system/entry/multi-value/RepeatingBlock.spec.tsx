@@ -1,9 +1,10 @@
+import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import { RepeatingBlock, RepeatingBlockProps } from './RepeatingBlock';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 
 type TestType = {
     firstInput: string;
@@ -81,8 +82,8 @@ const Fixture = ({
     errors,
     defaultValues,
     sizing,
-    onChange = jest.fn(),
-    isDirty = jest.fn(),
+    onChange = vi.fn(),
+    isDirty = vi.fn(),
     isValid
 }: Partial<RepeatingBlockProps<TestType>>) => (
     <RepeatingBlock<TestType>
@@ -163,7 +164,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should trigger on change when data is submitted', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole, getByLabelText } = render(<Fixture onChange={onChange} />);
 
@@ -230,7 +231,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should display submitted data in table', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole, getAllByRole, getByLabelText } = render(<Fixture onChange={onChange} />);
 
@@ -253,7 +254,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should reset after adding data', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole, getByLabelText, queryByText } = render(<Fixture onChange={onChange} />);
 
@@ -395,7 +396,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should delete row when delete icon clicked', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         const { getByLabelText } = render(
             <Fixture
                 onChange={onChange}
@@ -418,7 +419,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should allow edit of row', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole, getAllByRole, getByLabelText } = render(
             <Fixture
@@ -460,7 +461,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should allow cancelling update of row being edited', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole, getAllByRole, getByLabelText } = render(
             <Fixture
@@ -522,7 +523,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should call isDirty with true when form input applied', async () => {
-        const isDirty = jest.fn();
+        const isDirty = vi.fn();
         const { getByLabelText } = render(<Fixture isDirty={isDirty} />);
         const input1 = getByLabelText('First Input');
         const user = userEvent.setup();
@@ -533,7 +534,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should call isDirty with false when form input cleared', async () => {
-        const isDirty = jest.fn();
+        const isDirty = vi.fn();
         const { getByLabelText, getByRole } = render(<Fixture isDirty={isDirty} />);
         const input1 = getByLabelText('First Input');
         const user = userEvent.setup();
@@ -548,7 +549,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should call isValid with false when there are form errors', async () => {
-        const isValid = jest.fn();
+        const isValid = vi.fn();
         const { getByRole, getByText } = render(<Fixture isValid={isValid} />);
 
         const add = getByRole('button', { name: 'Add test title' });

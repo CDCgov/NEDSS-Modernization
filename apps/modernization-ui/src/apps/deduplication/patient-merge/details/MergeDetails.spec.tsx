@@ -1,6 +1,7 @@
+import { vi } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { MergeDetails } from './MergeDetails';
-import { getAllByRole, render, within } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 const response = [
     {
@@ -353,7 +354,7 @@ const response = [
 
 const mockFetch = jest.fn();
 let mockLoading = false;
-jest.mock('apps/deduplication/api/useMergeDetails', () => ({
+vi.mock('apps/deduplication/api/useMergeDetails', () => ({
     useMergeDetails: () => {
         return { fetchPatientMergeDetails: mockFetch, loading: mockLoading, response: response };
     }

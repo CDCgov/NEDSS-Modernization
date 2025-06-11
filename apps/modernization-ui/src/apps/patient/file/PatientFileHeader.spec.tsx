@@ -4,7 +4,7 @@ import { Patient } from './patient';
 
 const mockNow = jest.fn();
 
-jest.mock('design-system/date/clock', () => ({
+vi.mock('design-system/date/clock', () => ({
     now: () => mockNow()
 }));
 

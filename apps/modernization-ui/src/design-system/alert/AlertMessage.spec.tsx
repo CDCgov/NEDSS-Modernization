@@ -34,28 +34,28 @@ describe('AlertMessage', () => {
         const { container } = render(<AlertMessage type="information">Content</AlertMessage>);
 
         const icon = container.querySelector('svg use');
-        expect(icon).toHaveAttribute('xlink:href', 'undefined#info');
+        expect(icon?.getAttribute('xlink:href')).toContain('sprite.svg#info');
     });
 
     it('should render the success icon', () => {
         const { container } = render(<AlertMessage type="success">Content</AlertMessage>);
 
         const icon = container.querySelector('svg use');
-        expect(icon).toHaveAttribute('xlink:href', 'undefined#check_circle');
+        expect(icon?.getAttribute('xlink:href')).toContain('sprite.svg#check_circle');
     });
 
     it('should render the warning icon', () => {
         const { container } = render(<AlertMessage type="warning">Content</AlertMessage>);
 
         const icon = container.querySelector('svg use');
-        expect(icon).toHaveAttribute('xlink:href', 'undefined#warning');
+        expect(icon?.getAttribute('xlink:href')).toContain('sprite.svg#warning');
     });
 
     it('should render the error icon', () => {
         const { container } = render(<AlertMessage type="error">Content</AlertMessage>);
 
         const icon = container.querySelector('svg use');
-        expect(icon).toHaveAttribute('xlink:href', 'undefined#error');
+        expect(icon?.getAttribute('xlink:href')).toContain('sprite.svg#error');
     });
 
     it('should render the medium icon by default', () => {

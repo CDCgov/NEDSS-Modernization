@@ -3,10 +3,11 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RaceEntry } from './entry';
 import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
+import { vi } from 'vitest';
 
 const mockDetailResolver = jest.fn();
 
-jest.mock('options/race', () => ({
+vi.mock('options/race', () => ({
     useDetailedRaceOptions: (category?: string) => mockDetailResolver(category)
 }));
 
@@ -14,7 +15,7 @@ type Props = Partial<RaceEntryFieldsProps> & { entry?: RaceEntry };
 
 const Fixture = ({
     categories = [],
-    categoryValidator = jest.fn().mockResolvedValue('true'),
+    categoryValidator = vi.fn().mockResolvedValue('true'),
     entry = {
         id: 19,
         asOf: '04/11/2022',

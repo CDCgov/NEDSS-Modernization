@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
 import { LaboratoryReportSearchCriteria } from './LaboratoryReportSearchCriteria'; // Update this import path
 
-jest.mock('./GeneralFields', () => ({
+vi.mock('./GeneralFields', () => ({
     GeneralFields: () => <div data-testid="general-fields">General Fields</div>
 }));
 
-jest.mock('./CriteriaFields', () => ({
+vi.mock('./CriteriaFields', () => ({
     CriteriaFields: () => <div data-testid="criteria-fields">Criteria Fields</div>
 }));
 

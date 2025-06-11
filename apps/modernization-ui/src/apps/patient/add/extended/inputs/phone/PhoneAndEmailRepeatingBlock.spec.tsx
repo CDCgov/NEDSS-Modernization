@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { screen, render, waitFor, act } from '@testing-library/react';
 import { PhoneAndEmailRepeatingBlock, PhoneAndEmailRepeatingBlockProps } from './PhoneAndEmailRepeatingBlock';
 import { internalizeDate } from 'date';
@@ -8,7 +9,7 @@ const mockPatientPhoneCodedValues = {
     uses: [{ name: 'Home', value: 'H' }]
 };
 
-jest.mock('apps/patient/data/phoneEmail/usePhoneCodedValues', () => ({
+vi.mock('apps/patient/data/phoneEmail/usePhoneCodedValues', () => ({
     usePhoneCodedValues: () => mockPatientPhoneCodedValues
 }));
 

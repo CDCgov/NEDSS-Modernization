@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
 import { createMemoryRouter, Navigate, RouterProvider, useNavigate } from 'react-router';
@@ -26,15 +27,22 @@ Object.defineProperty(window, 'IntersectionObserverEntry', {
     value: jest.fn()
 });
 
+vi.mock('options/concepts', () => ({
+    useConceptOptions: () => ({ options: [] })
+}));
+
 const mockCountyCodedValues: CountiesCodedValues = { counties: [{ name: 'CountyA', value: 'A', group: 'G' }] };
-jest.mock('location/useCountyCodedValues', () => ({
+vi.mock('location/useCountyCodedValues', () => ({
     useCountyCodedValues: () => mockCountyCodedValues
 }));
 
-jest.mock('react-router', () => ({
-    ...jest.requireActual('react-router'),
-    useNavigate: jest.fn()
-}));
+vi.mock('react-router', async () => {
+    const actual = await vi.importActual<any>('react-router');
+    return {
+        ...actual,
+        useNavigate: jest.fn()
+    };
+});
 
 const mockLocationCodedValues = {
     states: {
@@ -46,7 +54,7 @@ const mockLocationCodedValues = {
     countries: [{ name: 'CountryName', value: '3' }]
 };
 
-jest.mock('location/useLocationCodedValues', () => ({
+vi.mock('location/useLocationCodedValues', () => ({
     useLocationCodedValues: () => mockLocationCodedValues
 }));
 
@@ -57,12 +65,39 @@ const mockDetailedRaces: Selectable[] = [
     { value: '3', name: 'detailed race2' }
 ];
 
-jest.mock('options/race', () => ({
+vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
     useDetailedRaceOptions: () => mockDetailedRaces
 }));
 
-jest.mock('../cancelAddPatientPanel/useShowCancelModal', () => ({
+vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
+    useIdentificationCodedValues: () => ({
+        types: [{ value: 'type-value', name: 'type-name' }],
+        authorities: [{ value: 'authority-value', name: 'authority-name' }]
+    })
+}));
+
+const mockNameCodedValues = {
+    types: [{ name: 'Adopted name', value: 'AN' }],
+    prefixes: [{ name: 'Miss', value: 'MS' }],
+    suffixes: [{ name: 'Sr.', value: 'SR' }],
+    degrees: [{ name: 'BA', value: 'BA' }]
+};
+
+vi.mock('apps/patient/data/name/useNameCodedValues', () => ({
+    useNameCodedValues: () => mockNameCodedValues
+}));
+
+const mockPatientPhoneCodedValues = {
+    types: [{ name: 'Phone', value: 'PH' }],
+    uses: [{ name: 'Home', value: 'H' }]
+};
+
+vi.mock('apps/patient/data/phoneEmail/usePhoneCodedValues', () => ({
+    usePhoneCodedValues: () => mockPatientPhoneCodedValues
+}));
+
+vi.mock('../cancelAddPatientPanel/useShowCancelModal', () => ({
     useShowCancelModal: jest.fn()
 }));
 
@@ -106,7 +141,7 @@ describe('AddPatientExtended', () => {
 
         const cancelButton = getByRole('button', { name: 'Cancel' });
         const saveButton = getByRole('button', { name: 'Save' });
-        
+
         expect(cancelButton).toBeInTheDocument();
         expect(saveButton).toBeInTheDocument();
     });

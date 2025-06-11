@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { ReactNode, act } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { SearchResultSettings, useSearchResults } from './useSearchResults';
@@ -8,7 +9,7 @@ let mockCriteria: Criteria | undefined = undefined;
 const mockClear = jest.fn();
 const mockChange = jest.fn();
 
-jest.mock('./useSearchCriteria', () => ({
+vi.mock('./useSearchCriteria', () => ({
     useSearchCriteria: () => ({
         criteria: mockCriteria,
         clear: mockClear,
@@ -16,7 +17,7 @@ jest.mock('./useSearchCriteria', () => ({
     })
 }));
 
-const { Status } = jest.requireActual('pagination');
+const { Status } = (await vi.importActual('pagination')) as any;
 
 const mockPage: Page = {
     status: Status.Ready,
@@ -25,14 +26,14 @@ const mockPage: Page = {
     current: 11
 };
 
-const mockFirstPage = jest.fn();
-const mockReload = jest.fn();
-const mockRequest = jest.fn();
-const mockReady = jest.fn();
-const mockResize = jest.fn();
-const mockPageReset = jest.fn();
+const mockFirstPage = vi.fn();
+const mockReload = vi.fn();
+const mockRequest = vi.fn();
+const mockReady = vi.fn();
+const mockResize = vi.fn();
+const mockPageReset = vi.fn();
 
-jest.mock('pagination', () => ({
+vi.mock('pagination', () => ({
     usePagination: () => ({
         page: mockPage,
         firstPage: mockFirstPage,
@@ -44,15 +45,15 @@ jest.mock('pagination', () => ({
     })
 }));
 
-const { Direction } = jest.requireActual('libs/sorting');
+const { Direction } = (await vi.importActual('libs/sorting')) as any;
 
 let mockSortProperty: string | undefined = undefined;
 let mockSortDirection: any | undefined = undefined;
-const mockSortReset = jest.fn();
-const mockSortBy = jest.fn();
-const mockToggle = jest.fn();
+const mockSortReset = vi.fn();
+const mockSortBy = vi.fn();
+const mockToggle = vi.fn();
 
-jest.mock('libs/sorting', () => ({
+vi.mock('libs/sorting', () => ({
     useSorting: () => ({
         property: mockSortProperty,
         direction: mockSortDirection,
@@ -228,7 +229,7 @@ describe('when searching using useSearchResults', () => {
 
         mockSortProperty = 'property-value';
 
-        const { result, rerender } = setup({ resultResolver });
+        const { result } = setup({ resultResolver });
 
         act(() => {
             result.current.search({ name: 'name-value' });

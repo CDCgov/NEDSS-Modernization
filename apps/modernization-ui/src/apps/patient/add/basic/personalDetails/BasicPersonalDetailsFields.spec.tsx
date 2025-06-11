@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SexBirthCodedValues } from 'apps/patient/data/sexAndBirth/useSexBirthCodedValues';
@@ -10,11 +11,11 @@ const mockNow = jest.fn();
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
+vi.mock('user', () => ({
     useUser: () => ({ state: { user: { permissions: mockPermissions } } })
 }));
 
-jest.mock('design-system/date/clock', () => ({
+vi.mock('design-system/date/clock', () => ({
     now: () => mockNow()
 }));
 
@@ -26,7 +27,7 @@ const mockPatientCodedValues: GeneralCodedValues = {
     speaksEnglish: [{ name: 'Yes', value: 'Y' }]
 };
 
-jest.mock('apps/patient/data/general/useGeneralCodedValues', () => ({
+vi.mock('apps/patient/data/general/useGeneralCodedValues', () => ({
     useGeneralCodedValues: () => mockPatientCodedValues
 }));
 
@@ -41,7 +42,7 @@ const mockSexBirthCodedValues: SexBirthCodedValues = {
     multipleBirth: [{ name: 'Yes', value: 'Y' }]
 };
 
-jest.mock('apps/patient/data/sexAndBirth/useSexBirthCodedValues', () => ({
+vi.mock('apps/patient/data/sexAndBirth/useSexBirthCodedValues', () => ({
     useSexBirthCodedValues: () => mockSexBirthCodedValues
 }));
 
