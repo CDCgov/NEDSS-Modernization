@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
@@ -272,12 +272,12 @@ describe('RepeatingBlock', () => {
         await user.type(getByLabelText('First Input'), 'typed value').then(() => user.click(add));
 
         // expect value to be added
-
-        expect(onChange).toHaveBeenNthCalledWith(1, []);
-        expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'typed value', secondInput: undefined }]);
+        await waitFor(() => {
+            expect(onChange).toHaveBeenNthCalledWith(1, []);
+            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'typed value', secondInput: undefined }]);
+        });
 
         // verify validation message is no longer visible
-
         expect(queryByText('First input is required.')).not.toBeInTheDocument();
 
         // immediately click add button again
