@@ -1,21 +1,24 @@
 import { vi } from 'vitest';
+import { render } from '@testing-library/react';
+import { AlertProvider } from 'alert';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { MergeDetails } from './MergeDetails';
-import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-const response = [
+const mockResponse: MergeCandidate[] = [
     {
         personLocalId: '89003',
         personUid: '10052298',
         addTime: '2022-05-19 18:34:42.363', // oldest record
         adminComments: {
-            date: null,
-            comment: null
+            date: '',
+            comment: 'abc'
         },
         ethnicity: {
             asOf: '2025-05-30T00:00:00',
             ethnicity: 'Hispanic or Latino',
-            reasonUnknown: null,
+            reasonUnknown: undefined,
             spanishOrigin: 'Central American | Cuban'
         },
         sexAndBirth: {
@@ -23,36 +26,36 @@ const response = [
             dateOfBirth: '1952-07-20T00:00:00',
             currentSex: 'Unknown',
             sexUnknown: 'Refused',
-            transgender: null,
-            additionalGender: null,
-            birthGender: null,
-            multipleBirth: null,
-            birthOrder: null,
-            birthCity: null,
-            birthState: null,
-            birthCounty: null,
-            birthCountry: null
+            transgender: undefined,
+            additionalGender: undefined,
+            birthGender: undefined,
+            multipleBirth: undefined,
+            birthOrder: undefined,
+            birthCity: undefined,
+            birthState: undefined,
+            birthCounty: undefined,
+            birthCountry: undefined
         },
         mortality: {
             asOf: '2025-06-09T00:00:00',
             deceased: 'No',
-            dateOfDeath: null,
-            deathCity: null,
-            deathState: null,
-            deathCounty: null,
-            deathCountry: null
+            dateOfDeath: undefined,
+            deathCity: undefined,
+            deathState: undefined,
+            deathCounty: undefined,
+            deathCountry: undefined
         },
         general: {
             asOf: '2022-06-07T00:00:00',
             maritalStatus: 'Single, never married',
-            mothersMaidenName: null,
-            numberOfAdultsInResidence: null,
-            numberOfChildrenInResidence: null,
-            primaryOccupation: null,
-            educationLevel: null,
-            primaryLanguage: null,
-            speaksEnglish: null,
-            stateHivCaseId: null
+            mothersMaidenName: undefined,
+            numberOfAdultsInResidence: undefined,
+            numberOfChildrenInResidence: undefined,
+            primaryOccupation: undefined,
+            educationLevel: undefined,
+            primaryLanguage: undefined,
+            speaksEnglish: undefined,
+            stateHivCaseId: undefined
         },
         investigations: [],
         addresses: [
@@ -62,14 +65,14 @@ const response = [
                 type: 'House',
                 use: 'Home',
                 address: '9 TRUMPET LN',
-                address2: null,
+                address2: undefined,
                 city: 'GORDONSVILLE',
                 state: 'Tennessee',
                 zipcode: '38563-0000',
-                county: null,
-                censusTract: null,
+                county: undefined,
+                censusTract: undefined,
                 country: 'United States',
-                comments: null
+                comments: undefined
             }
         ],
         phoneEmails: [
@@ -80,10 +83,10 @@ const response = [
                 use: 'Home',
                 countryCode: '1',
                 phoneNumber: '6154899999',
-                extension: null,
-                email: null,
-                url: null,
-                comments: null
+                extension: undefined,
+                email: undefined,
+                url: undefined,
+                comments: undefined
             },
             {
                 id: '10052301',
@@ -92,10 +95,10 @@ const response = [
                 use: 'Mobile Contact',
                 countryCode: '1',
                 phoneNumber: '6154899999',
-                extension: null,
-                email: null,
-                url: null,
-                comments: null
+                extension: undefined,
+                email: undefined,
+                url: undefined,
+                comments: undefined
             }
         ],
         names: [
@@ -104,14 +107,14 @@ const response = [
                 sequence: '1',
                 asOf: '2022-06-07T00:00:00',
                 type: 'Legal',
-                prefix: null,
+                prefix: undefined,
                 first: 'RONALD',
-                middle: null,
-                secondMiddle: null,
+                middle: undefined,
+                secondMiddle: undefined,
                 last: 'WESLEY',
-                secondLast: null,
-                suffix: null,
-                degree: null
+                secondLast: undefined,
+                suffix: undefined,
+                degree: undefined
             }
         ],
         identifications: [
@@ -158,16 +161,16 @@ const response = [
             comment: 'Some admin comment goes here'
         },
         ethnicity: {
-            asOf: null,
-            ethnicity: null,
-            reasonUnknown: null,
-            spanishOrigin: null
+            asOf: undefined,
+            ethnicity: undefined,
+            reasonUnknown: undefined,
+            spanishOrigin: undefined
         },
         sexAndBirth: {
             asOf: '2025-06-05T00:00:00',
             dateOfBirth: '2025-05-04T00:00:00',
             currentSex: 'Male',
-            sexUnknown: null,
+            sexUnknown: undefined,
             transgender: 'Did not ask',
             additionalGender: 'Add Gender',
             birthGender: 'Male',
@@ -189,7 +192,7 @@ const response = [
         },
         general: {
             asOf: '2025-06-05T00:00:00',
-            maritalStatus: 'Annulled',
+            maritalStatus: 'Anundefineded',
             mothersMaidenName: 'MotherMaiden',
             numberOfAdultsInResidence: '2',
             numberOfChildrenInResidence: '0',
@@ -197,7 +200,7 @@ const response = [
             educationLevel: '10th grade',
             primaryLanguage: 'Eastern Frisian',
             speaksEnglish: 'Yes',
-            stateHivCaseId: null
+            stateHivCaseId: undefined
         },
         investigations: [
             {
@@ -207,7 +210,7 @@ const response = [
             },
             {
                 id: 'CAS10001001GA01',
-                startDate: null,
+                startDate: undefined,
                 condition: 'Cholera'
             }
         ],
@@ -218,14 +221,14 @@ const response = [
                 type: 'Dormitory',
                 use: 'Primary Business',
                 address: '1112 Another address',
-                address2: null,
+                address2: undefined,
                 city: 'Atlanta',
                 state: 'Georgia',
                 zipcode: '12345',
-                county: null,
-                censusTract: null,
-                country: null,
-                comments: null
+                county: undefined,
+                censusTract: undefined,
+                country: undefined,
+                comments: undefined
             },
             {
                 id: '10055292',
@@ -253,9 +256,9 @@ const response = [
                 state: 'Georgia',
                 zipcode: '11111',
                 county: 'Atkinson County',
-                censusTract: null,
+                censusTract: undefined,
                 country: 'United States',
-                comments: null
+                comments: undefined
             },
             {
                 id: '10056294',
@@ -268,9 +271,9 @@ const response = [
                 state: 'Georgia',
                 zipcode: '11111',
                 county: 'Atkinson County',
-                censusTract: null,
+                censusTract: undefined,
                 country: 'United States',
-                comments: null
+                comments: undefined
             }
         ],
         phoneEmails: [
@@ -291,12 +294,12 @@ const response = [
                 asOf: '2025-05-28T00:00:00',
                 type: 'Cellular Phone',
                 use: 'Temporary',
-                countryCode: null,
+                countryCode: undefined,
                 phoneNumber: '123',
-                extension: null,
-                email: null,
-                url: null,
-                comments: null
+                extension: undefined,
+                email: undefined,
+                url: undefined,
+                comments: undefined
             }
         ],
         names: [
@@ -346,27 +349,122 @@ const response = [
                 raceCode: '2106-3',
                 asOf: '2025-06-05T00:00:00',
                 race: 'White',
-                detailedRaces: null
+                detailedRaces: undefined
             }
         ]
+    },
+    {
+        personUid: '000123',
+        personLocalId: '3',
+        addTime: '2025-05-27 14:56:50.523',
+        adminComments: {
+            date: '2025-05-27T00:00',
+            comment: 'Some admin comment goes here'
+        },
+        ethnicity: {
+            asOf: undefined,
+            ethnicity: undefined,
+            reasonUnknown: undefined,
+            spanishOrigin: undefined
+        },
+        sexAndBirth: {
+            asOf: '2025-06-05T00:00:00',
+            dateOfBirth: '2025-05-04T00:00:00',
+            currentSex: 'Male',
+            sexUnknown: undefined,
+            transgender: 'Did not ask',
+            additionalGender: 'Add Gender',
+            birthGender: 'Male',
+            multipleBirth: 'No',
+            birthOrder: '1',
+            birthCity: 'Birth City',
+            birthState: 'Tennessee',
+            birthCounty: 'Monroe County',
+            birthCountry: 'United States'
+        },
+        mortality: {
+            asOf: '2025-06-05T00:00:00',
+            deceased: 'Yes',
+            dateOfDeath: '2025-05-11T00:00:00',
+            deathCity: 'Death city',
+            deathState: 'Texas',
+            deathCounty: 'Anderson County',
+            deathCountry: 'Afghanistan'
+        },
+        general: {
+            asOf: '2025-06-05T00:00:00',
+            maritalStatus: 'Annulled',
+            mothersMaidenName: 'MotherMaiden',
+            numberOfAdultsInResidence: '2',
+            numberOfChildrenInResidence: '0',
+            primaryOccupation: 'Mining',
+            educationLevel: '10th grade',
+            primaryLanguage: 'Eastern Frisian',
+            speaksEnglish: 'Yes',
+            stateHivCaseId: undefined
+        },
+        investigations: [],
+        addresses: [],
+        phoneEmails: [],
+        names: [
+            {
+                personUid: '10055283',
+                sequence: '1',
+                asOf: '2025-05-27T00:00:00',
+                type: 'Alias',
+                prefix: 'Bishop',
+                first: 'Not',
+                middle: 'R',
+                secondMiddle: '2M',
+                last: 'Match',
+                secondLast: '2Last',
+                suffix: 'Esquire',
+                degree: 'PHD'
+            },
+            {
+                personUid: '10055283',
+                sequence: '1',
+                asOf: '2025-05-27T00:00:00',
+                type: 'Legal',
+                prefix: 'Bishop',
+                first: 'John',
+                middle: 'R',
+                secondMiddle: '2M',
+                last: 'Doe',
+                secondLast: '2Last',
+                suffix: 'Esquire',
+                degree: 'PHD'
+            }
+        ],
+        identifications: [],
+        races: []
     }
 ];
 
-const mockFetch = jest.fn();
+const mockFetch = vi.fn();
 let mockLoading = false;
 vi.mock('apps/deduplication/api/useMergeDetails', () => ({
     useMergeDetails: () => {
-        return { fetchPatientMergeDetails: mockFetch, loading: mockLoading, response: response };
+        return { fetchPatientMergeDetails: mockFetch, loading: mockLoading, response: mockResponse };
+    }
+}));
+
+const mockRemovePatient = vi.fn();
+vi.mock('apps/deduplication/api/useRemoveMerge', () => ({
+    useRemoveMerge: () => {
+        return { removePatient: mockRemovePatient };
     }
 }));
 
 const Fixture = () => {
     return (
-        <MemoryRouter initialEntries={['/deduplication/merge/1234']}>
-            <Routes>
-                <Route path="/deduplication/merge/:matchId" element={<MergeDetails />} />
-            </Routes>
-        </MemoryRouter>
+        <AlertProvider>
+            <MemoryRouter initialEntries={['/deduplication/merge/1234']}>
+                <Routes>
+                    <Route path="/deduplication/merge/:matchId" element={<MergeDetails />} />
+                </Routes>
+            </MemoryRouter>
+        </AlertProvider>
     );
 };
 describe('MergeDetails', () => {
@@ -400,10 +498,30 @@ describe('MergeDetails', () => {
 
         // unchecked radio buttons should have the newer record id for value
         const allNotChecked = getAllByRole('radio', { checked: false });
-        allNotChecked.forEach((c) => expect(c).toHaveAttribute('value', '10055283'));
+        allNotChecked.forEach((c) => expect(c).not.toHaveAttribute('value', '10052298'));
 
         // All repeating block values (old and new) should be selected
         const checkboxes = getAllByRole('checkbox', { hidden: true });
         checkboxes.forEach((c) => expect(c).toBeChecked());
+    });
+
+    it('should confirm removal from group', async () => {
+        const user = userEvent.setup();
+        const { getAllByText, getByText } = render(<Fixture />);
+
+        const removeButtons = getAllByText('Remove');
+        expect(removeButtons).toHaveLength(2);
+
+        // click remove
+        await user.click(removeButtons[1]);
+
+        // modal should pop up
+        expect(getByText('Remove from group')).toBeInTheDocument();
+
+        // click confirm
+        await user.click(getAllByText('Remove')[2]);
+
+        // api called
+        expect(mockRemovePatient).toHaveBeenCalledWith('1234', '000123', expect.any(Function), expect.any(Function));
     });
 });
