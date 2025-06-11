@@ -1,5 +1,6 @@
 package gov.cdc.nbs.event.report.lab;
 
+import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
@@ -24,6 +25,7 @@ public class LabReportSteps {
   private final Active<ProviderIdentifier> activeProvider;
   private final Active<LabReportIdentifier> activeReport;
   private final LabReportMother reportMother;
+  private final Active<InvestigationIdentifier> activeInvestigation;
 
   public LabReportSteps(
       final Active<PatientIdentifier> activePatient,
@@ -32,7 +34,8 @@ public class LabReportSteps {
       final Active<OrganizationIdentifier> activeOrganization,
       final Active<ProviderIdentifier> activeProvider,
       final Active<LabReportIdentifier> activeReport,
-      final LabReportMother reportMother
+      final LabReportMother reportMother,
+      final Active<InvestigationIdentifier> activeInvestigation
   ) {
     this.activePatient = activePatient;
     this.activeJurisdiction = activeJurisdiction;
@@ -41,6 +44,7 @@ public class LabReportSteps {
     this.activeProvider = activeProvider;
     this.activeReport = activeReport;
     this.reportMother = reportMother;
+    this.activeInvestigation = activeInvestigation;
   }
 
   @Given("the patient has a(nother) Lab(oratory) Report")
@@ -83,6 +87,11 @@ public class LabReportSteps {
             jurisdiction
         )
     );
+  }
+
+  @Given("the lab(oratory) report is associated with the investigation")
+  public void the_lab_report_is_associated_with_the_investigation() {
+    activeReport.maybeActive().ifPresent(lab -> reportMother.createAssociated(lab, activeInvestigation.active()));
   }
 
   @Given("the lab(oratory) report has not been processed")
