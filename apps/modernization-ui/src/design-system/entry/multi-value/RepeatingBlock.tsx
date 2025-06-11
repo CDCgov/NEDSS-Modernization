@@ -4,21 +4,25 @@ import classNames from 'classnames';
 import { Button } from 'components/button';
 import { Shown } from 'conditional-render';
 import { Icon } from 'design-system/icon';
-import { AlertMessage } from 'design-system/message';
-import { Column, DataTable } from 'design-system/table';
-import { useMultiValueEntryState } from './useMultiValueEntryState';
 import { Sizing } from 'design-system/field';
-import { Card } from 'design-system/card';
+import { Card, CardProps } from 'design-system/card';
+import { Tag } from 'design-system/tag';
+import { AlertMessage } from 'design-system/message';
+import { Column, DataTable, DataTableFeatures } from 'design-system/table';
+import { Required } from '../required/Required';
+import { Entry, useMultiValueEntry } from './useMultiValueEntry';
+import { entryIdentifierGenerator } from './entryIdentifierGenerator';
+import { entryColumns } from './entryColumns';
 
 import styles from './RepeatingBlock.module.scss';
+import { features } from 'process';
 
 type RepeatingBlockProps<V extends FieldValues> = {
-    id: string;
-    title: string;
+    features?: DataTableFeatures;
     columns: Column<V>[];
+    data?: V[];
     defaultValues?: DefaultValues<V>; // Provide all default values to allow `isDirty` to function
     errors?: ReactNode[];
-    values?: V[];
     sizing?: Sizing;
     viewable?: boolean;
     editable?: boolean;
@@ -27,14 +31,16 @@ type RepeatingBlockProps<V extends FieldValues> = {
     isValid?: (isValid: boolean) => void;
     formRenderer: (entry?: V) => ReactNode;
     viewRenderer: (entry: V) => ReactNode;
-};
+} & Pick<CardProps, 'id' | 'title' | 'collapsible'>;
 
 const RepeatingBlock = <V extends FieldValues>({
     id,
     title,
-    defaultValues,
-    values = [],
+    collapsible,
+    features,
     columns,
+    data = [],
+    defaultValues,
     errors,
     sizing,
     viewable = true,
@@ -46,13 +52,26 @@ const RepeatingBlock = <V extends FieldValues>({
     viewRenderer
 }: RepeatingBlockProps<V>) => {
     const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onBlur', defaultValues });
-    const { status, entries, selected, add, edit, update, remove, view, reset } = useMultiValueEntryState<V>({
-        values
+
+    const {
+        status,
+        entries,
+        values: enteredValues,
+        selected,
+        add,
+        edit,
+        update,
+        remove,
+        view,
+        reset
+    } = useMultiValueEntry<V>({
+        values: data,
+        identifierGenerator: entryIdentifierGenerator
     });
 
     useEffect(() => {
-        onChange?.(entries);
-    }, [JSON.stringify(entries)]);
+        onChange?.(enteredValues);
+    }, [JSON.stringify(enteredValues)]);
 
     useEffect(() => {
         isDirty?.(form.formState.isDirty);
@@ -66,8 +85,8 @@ const RepeatingBlock = <V extends FieldValues>({
     useEffect(() => {
         // Perform form reset after status update to allow time for rendering of form
         // fixes issue with coded values not being selected within the form
-        if (status === 'editing') {
-            form.reset(selected);
+        if (status === 'editing' && selected) {
+            form.reset(selected.value);
         } else {
             // Conversely, if status is not editing, reset to default values to clear form between state changes
             form.reset(defaultValues);
@@ -95,52 +114,52 @@ const RepeatingBlock = <V extends FieldValues>({
         update(value);
     };
 
-    const handleRemove = (value: V) => {
-        if ((status === 'editing' || status === 'viewing') && selected === value) {
+    const handleRemove = (identifier: string) => {
+        if ((status === 'editing' || status === 'viewing') && selected?.id === identifier) {
             form.reset(defaultValues);
         }
-        remove(value);
+        remove(identifier);
     };
 
-    const iconColumn: Column<V> = {
+    const adjustedColumns = entryColumns(columns);
+
+    const actions: Column<Entry<V>> = {
         id: 'actions',
         label: 'Actions',
-        // className: styles.iconColumn,
-        render: (value: V) => (
-            <div className={classNames(styles.actions, sizing && styles[sizing])}>
+        className: styles['action-header'],
+        render: (entry: Entry<V>) => (
+            <div className={styles.actions}>
                 {viewable && (
-                    <div
+                    <Button
+                        tertiary
                         data-tooltip-position="top"
                         aria-label="View"
-                        role="button"
-                        onClick={() => (status === 'viewing' && selected === value ? reset() : view(value))}>
-                        <Icon
-                            name="visibility"
-                            sizing={sizing}
-                            className={classNames({
-                                [styles.active]: status === 'viewing' && value === selected
-                            })}
-                        />
-                    </div>
+                        onClick={() => view(entry.id)}
+                        className={classNames({
+                            [styles.active]: status === 'viewing' && selected?.id === entry.id
+                        })}
+                        icon={<Icon name="visibility" />}
+                    />
                 )}
                 {editable && (
                     <>
-                        <div data-tooltip-position="top" aria-label="Edit" role="button" onClick={() => edit(value)}>
-                            <Icon
-                                name="edit"
-                                sizing={sizing}
-                                className={classNames({
-                                    [styles.active]: status === 'editing' && value === selected
-                                })}
-                            />
-                        </div>
-                        <div
+                        <Button
+                            tertiary
+                            data-tooltip-position="top"
+                            aria-label="Edit"
+                            onClick={() => edit(entry.id)}
+                            className={classNames({
+                                [styles.active]: status === 'editing' && selected?.id === entry.id
+                            })}
+                            icon={<Icon name="edit" />}
+                        />
+                        <Button
+                            tertiary
                             data-tooltip-position="top"
                             aria-label="Delete"
-                            role="button"
-                            onClick={() => handleRemove(value)}>
-                            <Icon name="delete" sizing={sizing} />
-                        </div>
+                            onClick={() => handleRemove(entry.id)}
+                            icon={<Icon name="delete" />}
+                        />
                     </>
                 )}
             </div>
@@ -163,8 +182,12 @@ const RepeatingBlock = <V extends FieldValues>({
         <Card
             id={id}
             title={title}
-            className={classNames(styles.input, sizing && styles[sizing])}
-            info={<span className="required-before">Required</span>}>
+            collapsible={collapsible}
+            sizing={sizing}
+            flair={<Tag size={sizing}>{entries.length}</Tag>}
+            className={classNames(styles.card)}
+            info={editable && <Required />}
+            open={entries.length > 0}>
             <Shown when={errorMessages && errorMessages.length > 0}>
                 <AlertMessage title="Please fix the following errors:" type="error">
                     <ul className={styles.errorList}>
@@ -174,84 +197,67 @@ const RepeatingBlock = <V extends FieldValues>({
                     </ul>
                 </AlertMessage>
             </Shown>
-            <div>
-                <DataTable<V>
-                    className={styles.dataTable}
-                    id={`${id}-data-table`}
-                    columns={[...columns, iconColumn]}
-                    data={entries}
-                    sizing={sizing}
-                />
-            </div>
+            <DataTable<Entry<V>>
+                className={classNames(styles.table, {
+                    [styles.small]: sizing === 'small',
+                    [styles.medium]: sizing === 'medium',
+                    [styles.large]: sizing === 'large'
+                })}
+                id={`${id}-table`}
+                columns={[...adjustedColumns, actions]}
+                data={entries}
+                sizing={sizing}
+                features={features}
+            />
+            <Shown when={viewable && status === 'viewing'}>
+                {selected && <div className={styles.viewMode}>{viewRenderer(selected.value)}</div>}
+            </Shown>
 
-            {viewable && (
-                <Shown when={status === 'viewing'}>
-                    {selected && <div className={styles.viewMode}>{viewRenderer(selected)}</div>}
-                </Shown>
-            )}
-
-            {editable && (
-                <>
-                    <Shown when={status !== 'viewing'}>
-                        <FormProvider {...form}>
-                            <div className={classNames(styles.form, { [styles.changed]: form.formState.isDirty })}>
-                                {formRenderer(selected)}
-                            </div>
-                        </FormProvider>
+            <Shown when={editable && status !== 'viewing'}>
+                <FormProvider {...form}>
+                    <div className={classNames(styles.form, { [styles.changed]: form.formState.isDirty })}>
+                        {formRenderer(selected?.value)}
+                    </div>
+                </FormProvider>
+                <footer>
+                    <Shown when={status === 'adding'}>
+                        <Button
+                            secondary
+                            icon={<Icon name="add" />}
+                            sizing={sizing}
+                            aria-description={`add ${title.toLowerCase()}`}
+                            onClick={form.handleSubmit(handleAdd)}>
+                            {`Add ${title.toLowerCase()}`}
+                        </Button>
+                        <Shown when={form.formState.isDirty}>
+                            <Button
+                                secondary
+                                sizing={sizing}
+                                aria-description={`clear ${title.toLowerCase()}`}
+                                onClick={handleClear}
+                                onMouseDown={(e) => e.preventDefault() /* prevent need to double click after blur */}>
+                                Clear
+                            </Button>
+                        </Shown>
                     </Shown>
-
-                    <footer>
-                        <Shown when={status === 'adding'}>
-                            <Button
-                                outline
-                                sizing={sizing}
-                                aria-description={`add ${title.toLowerCase()}`}
-                                onClick={form.handleSubmit(handleAdd)}>
-                                <Icon name="add" sizing={sizing} />
-                                {`Add ${title.toLowerCase()}`}
-                            </Button>
-                            <Shown when={form.formState.isDirty}>
-                                <Button
-                                    outline
-                                    sizing={sizing}
-                                    aria-description={`clear ${title.toLowerCase()}`}
-                                    onClick={handleClear}
-                                    onMouseDown={
-                                        (e) => e.preventDefault() /* prevent need to double click after blur */
-                                    }>
-                                    Clear
-                                </Button>
-                            </Shown>
-                        </Shown>
-                        <Shown when={status === 'editing'}>
-                            <Button
-                                outline
-                                sizing={sizing}
-                                aria-description={`update ${title.toLowerCase()}`}
-                                onClick={form.handleSubmit(handleUpdate)}>
-                                {`Update ${title.toLowerCase()}`}
-                            </Button>
-                            <Button
-                                outline
-                                sizing={sizing}
-                                aria-description={`cancel editing current ${title.toLowerCase()}`}
-                                onClick={handleReset}>
-                                Cancel
-                            </Button>
-                        </Shown>
-                        <Shown when={status === 'viewing'}>
-                            <Button
-                                outline
-                                sizing={sizing}
-                                aria-description={`add ${title.toLowerCase()}`}
-                                onClick={handleReset}>
-                                <Icon name="add" sizing={sizing} />
-                                {`Add ${title.toLowerCase()}`}
-                            </Button>
-                        </Shown>
-                    </footer>
-                </>
-            )}
+                    <Shown when={status === 'editing'}>
+                        <Button
+                            secondary
+                            sizing={sizing}
+                            aria-description={`update ${title.toLowerCase()}`}
+                            onClick={form.handleSubmit(handleUpdate)}>
+                            {`Update ${title.toLowerCase()}`}
+                        </Button>
+                        <Button
+                            secondary
+                            sizing={sizing}
+                            aria-description={`cancel editing current ${title.toLowerCase()}`}
+                            onClick={handleReset}>
+                            Cancel
+                        </Button>
+                    </Shown>
+                </footer>
+            </Shown>
         </Card>
     );
 };

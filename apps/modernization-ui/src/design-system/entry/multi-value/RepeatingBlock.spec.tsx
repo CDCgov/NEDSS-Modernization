@@ -15,7 +15,7 @@ type TestType = {
 const UnderTestForm = () => {
     const { control } = useFormContext<TestType>();
     return (
-        <section>
+        <>
             <Controller
                 name="firstInput"
                 control={control}
@@ -48,19 +48,15 @@ const UnderTestForm = () => {
                     />
                 )}
             />
-        </section>
+        </>
     );
 };
 
 const UnderTestView = ({ entry }: { entry: TestType }) => (
-    <section>
-        <div>
-            <label>Render view first value: {entry.firstInput}</label>
-        </div>
-        <div>
-            <label>Render view second value: {entry.secondInput}</label>
-        </div>
-    </section>
+    <>
+        <span>Render view first value: {entry.firstInput}</span>
+        <span>Render view second value: {entry.secondInput}</span>
+    </>
 );
 
 const columns = [
@@ -77,7 +73,7 @@ const columns = [
 ];
 
 const Fixture = ({
-    values = [],
+    data = [],
     errors,
     defaultValues,
     sizing,
@@ -90,7 +86,7 @@ const Fixture = ({
         title={'Test title'}
         defaultValues={defaultValues}
         columns={columns}
-        values={values}
+        data={data}
         onChange={onChange}
         isDirty={isDirty}
         sizing={sizing}
@@ -153,7 +149,7 @@ describe('RepeatingBlock', () => {
 
     it('should display specified columns', () => {
         const { getByRole } = render(
-            <Fixture values={[{ firstInput: 'first-input-value', secondInput: 'second-input-value', others: [] }]} />
+            <Fixture data={[{ firstInput: 'first-input-value', secondInput: 'second-input-value', others: [] }]} />
         );
 
         expect(getByRole('table')).toBeInTheDocument();
@@ -289,7 +285,7 @@ describe('RepeatingBlock', () => {
     it('should display icons in last column of table', () => {
         render(
             <Fixture
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -315,31 +311,10 @@ describe('RepeatingBlock', () => {
         expect(remove).toHaveAttribute('data-tooltip-position', 'top');
     });
 
-    it('should render icons with correct sizing', async () => {
-        const { container } = render(
-            <Fixture
-                sizing="small"
-                values={[
-                    {
-                        firstInput: 'first-value',
-                        secondInput: 'second-value',
-                        others: []
-                    }
-                ]}
-            />
-        );
-
-        const icons = container.querySelectorAll('.actions svg');
-        expect(icons).toHaveLength(3);
-        icons.forEach((icon) => {
-            expect(icon).toHaveClass('small');
-        });
-    });
-
     it('should render view when view icon clicked', async () => {
         const { getByLabelText, getByText, getByRole } = render(
             <Fixture
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -356,17 +331,12 @@ describe('RepeatingBlock', () => {
 
         expect(getByText('Render view first value: first-value')).toBeInTheDocument();
         expect(getByText('Render view second value: second-value')).toBeInTheDocument();
-
-        const addButton = getByRole('button', { name: 'Add test title' });
-        expect(addButton).toBeInTheDocument();
-        expect(addButton.innerHTML).toContain('svg');
-        expect(addButton).toHaveAttribute('aria-description');
     });
 
     it('should render edit when edit icon clicked', async () => {
         const { getByLabelText, getByRole } = render(
             <Fixture
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -399,7 +369,7 @@ describe('RepeatingBlock', () => {
         const { getByLabelText } = render(
             <Fixture
                 onChange={onChange}
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -423,7 +393,7 @@ describe('RepeatingBlock', () => {
         const { getByRole, getAllByRole, getByLabelText } = render(
             <Fixture
                 onChange={onChange}
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -465,7 +435,7 @@ describe('RepeatingBlock', () => {
         const { getByRole, getAllByRole, getByLabelText } = render(
             <Fixture
                 onChange={onChange}
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -475,7 +445,7 @@ describe('RepeatingBlock', () => {
             />
         );
 
-        const edit = getByLabelText('Edit');
+        const edit = screen.getByRole('button', { name: 'Edit' });
 
         const user = userEvent.setup();
 

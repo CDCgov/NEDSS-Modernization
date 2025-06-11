@@ -10,6 +10,7 @@ import styles from './card.module.scss';
 
 type CardProps = {
     id: string;
+    title: string;
     children: ReactNode;
     collapsible?: boolean;
     open?: boolean;
