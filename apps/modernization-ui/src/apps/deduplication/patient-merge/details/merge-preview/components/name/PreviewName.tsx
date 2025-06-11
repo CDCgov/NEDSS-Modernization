@@ -41,56 +41,56 @@ export const PreviewName = ({ selectedNames, mergeCandidates }: NameProps) => {
         {
             id: 'asOf',
             name: 'As of',
-            render: (entry: NameEntry) => entry.asOf || '---',
+            render: (entry: NameEntry) => entry.asOf ?? '---',
             value: (entry: NameEntry) => entry.asOf,
             sortable: true
         },
         {
             id: 'type',
             name: 'Type',
-            render: (entry: NameEntry) => entry.type || '---',
+            render: (entry: NameEntry) => entry.type ?? '---',
             value: (entry: NameEntry) => entry.type,
             sortable: true
         },
         {
             id: 'prefix',
             name: 'Prefix',
-            render: (entry: NameEntry) => entry.prefix || '---',
+            render: (entry: NameEntry) => entry.prefix ?? '---',
             value: (entry: NameEntry) => entry.prefix,
             sortable: true
         },
         {
             id: 'last',
             name: 'Last',
-            render: (entry: NameEntry) => entry.last || '---',
+            render: (entry: NameEntry) => entry.last ?? '---',
             value: (entry: NameEntry) => entry.last,
             sortable: true
         },
         {
             id: 'first',
             name: 'First',
-            render: (entry: NameEntry) => entry.first || '---',
+            render: (entry: NameEntry) => entry.first ?? '---',
             value: (entry: NameEntry) => entry.first,
             sortable: true
         },
         {
             id: 'middle',
             name: 'Middle',
-            render: (entry: NameEntry) => entry.middle || '---',
+            render: (entry: NameEntry) => entry.middle ?? '---',
             value: (entry: NameEntry) => entry.middle,
             sortable: true
         },
         {
             id: 'suffix',
             name: 'Suffix',
-            render: (entry: NameEntry) => entry.suffix || '---',
+            render: (entry: NameEntry) => entry.suffix ?? '---',
             value: (entry: NameEntry) => entry.suffix,
             sortable: true
         },
         {
             id: 'degree',
             name: 'Degree',
-            render: (entry: NameEntry) => entry.degree || '---',
+            render: (entry: NameEntry) => entry.degree ?? '---',
             value: (entry: NameEntry) => entry.degree,
             sortable: true
         }

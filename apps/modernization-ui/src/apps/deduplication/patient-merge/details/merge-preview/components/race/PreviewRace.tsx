@@ -33,21 +33,21 @@ export const PreviewRace = ({ selectedRaces, mergeCandidates }: PreviewRaceProps
         {
             id: 'asOf',
             name: 'As of',
-            render: (entry: RaceEntry) => entry.asOf || '---',
+            render: (entry: RaceEntry) => entry.asOf ?? '---',
             value: (entry: RaceEntry) => entry.asOf,
             sortable: true
         },
         {
             id: 'race',
             name: 'Race',
-            render: (entry: RaceEntry) => entry.race || '---',
+            render: (entry: RaceEntry) => entry.race ?? '---',
             value: (entry: RaceEntry) => entry.race,
             sortable: true
         },
         {
             id: 'detailedRace',
             name: 'Detailed Race',
-            render: (entry: RaceEntry) => entry.detailedRace || '---',
+            render: (entry: RaceEntry) => entry.detailedRace ?? '---',
             value: (entry: RaceEntry) => entry.detailedRace,
             sortable: true
         }
