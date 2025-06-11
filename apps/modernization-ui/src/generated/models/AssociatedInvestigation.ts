@@ -5,6 +5,7 @@
 export type AssociatedInvestigation = {
     id?: string;
     condition?: string;
+    local?: string;
     status?: string;
 };
 
