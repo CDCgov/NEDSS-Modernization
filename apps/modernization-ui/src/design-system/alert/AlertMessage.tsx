@@ -45,7 +45,6 @@ export const AlertMessage = ({
         <div
             role="alert"
             aria-label={getAriaLabel()}
-
             className={classNames(
                 styles.alertMessage,
                 {
