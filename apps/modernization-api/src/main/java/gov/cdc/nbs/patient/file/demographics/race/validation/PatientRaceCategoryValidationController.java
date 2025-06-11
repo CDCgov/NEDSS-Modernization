@@ -42,7 +42,7 @@ class PatientRaceCategoryValidationController {
   )
   @PostMapping("validate")
   @PreAuthorize("hasAuthority('VIEW-PATIENT')")
-  ResponseEntity<ExistingRaceCategory> validate(
+  ResponseEntity<ExistingRaceCategoryResponse> validate(
       @PathVariable final long patient,
       @PathVariable final String category
   ) {
@@ -51,14 +51,15 @@ class PatientRaceCategoryValidationController {
         .orElseGet(this::valid);
   }
 
-  private ResponseEntity<ExistingRaceCategory> valid() {
+  private ResponseEntity<ExistingRaceCategoryResponse> valid() {
     return ResponseEntity.ok().build();
   }
 
-  private ResponseEntity<ExistingRaceCategory> invalid(final ExistingRaceCategory existing) {
+  private ResponseEntity<ExistingRaceCategoryResponse> invalid(final ExistingRaceCategory existing) {
     return ResponseEntity
         .badRequest()
-        .body(existing);
+        .body(new ExistingRaceCategoryResponse.ExistingRaceCategoryInvalid(existing.identifier(),
+            existing.description()));
   }
 
 }
