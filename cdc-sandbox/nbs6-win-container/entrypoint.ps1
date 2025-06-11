@@ -28,12 +28,34 @@ foreach ($row in $csvDataUpdated) {
     $minutes=[int]$row.frequencyMinutes
     $jobName = $row.filename
     $repeat = (New-TimeSpan -Days $days -Hours $hours -Minutes $minutes)
+    
+    #split string to get am or pm, if start time does not equal end time
+    if ($null -ne $row.dailyStopTime -and $row.dailyStartTime -ine $row.dailyStopTime -and $row.dailyStopTime -ne '') {
+        <# Action to perform if the condition is true #>
+   
+    # Define start and end times (date is arbitrary), 
+    $startTimeString = "2025-06-11 " + $row.dailyStartTime
+    $startTime = Get-Date $startTimeString
+    $endTimeString = "2025-06-11 " + $row.dailyStopTime
+    $endTime = Get-Date $endTimeString
+    # Calculate the time difference
+    $timeDiff = New-TimeSpan -Start $startTime -End $endTime
 
-    $currentDate= ([DateTime]::Now)
-    $duration = $currentDate.AddYears(25) -$currentDate
+    # catch negative times and exit
+    if ($timeDiff.TotalSeconds -lt 0) { Write-Host "TimeSpan is negative for $row.filename; Exit (1)"; exit 1 }
+    }         
+    
+    if ($days -ge 1)
+    {
+        $timeDiff = New-TimeSpan -Days 1095        
+        $triggerMain = New-ScheduledTaskTrigger -Once -RepetitionInterval $repeat -RepetitionDuration $timeDiff -At $row.dailyStartTime
+    } else {
+        $triggerMain = New-ScheduledTaskTrigger -Daily -DaysInterval 1 -At $row.dailyStartTime
+        $triggerAdvanced = New-ScheduledTaskTrigger -Once -RepetitionInterval $repeat -RepetitionDuration $timeDiff -At $row.dailyStartTime
+        $triggerMain.Repetition = $triggerAdvanced.Repetition
+    }
 
-    $trigger = New-ScheduledTaskTrigger -Once -At $row.startTime -RepetitionInterval $repeat -RepetitionDuration $duration
-    Set-ScheduledTask -TaskName $jobName -Trigger $trigger
+    Set-ScheduledTask -TaskName $jobName -Trigger $triggerMain
 }
 
 #Disable specific scheduled tasks (all enabled by default)

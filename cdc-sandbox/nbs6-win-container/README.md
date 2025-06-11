@@ -7,7 +7,7 @@ Below are manual NBS6 creation and run process steps. Foundation image used is M
 - Dockerfile - Configuration file to build docker image
 - entrypoint.ps1 - Docker entrypoint script to run each time a container runs
 - tasks.csv - A csv container tasks that are scheduled within the container, all tasks are on by default. Tasks can be disabled through an environment variable called DISABLED_SCHEDULED_TASKS which is a comma separated list.
-  - CSV expected columns: filename, scriptPathFromWorkDir, startTime, frequencyDays, frequencyHours, frequencyMinutes
+  - CSV expected columns: filename, scriptPathFromWorkDir, dailyStartTime, dailyStopTime, frequencyDays, frequencyHours, frequencyMinutes
 - task-scheduler.ps1 - Script to configure windows scheduled jobs
 - LogMonitor.exe - Microsoft Log Monitor executable
 - LogMonitorConfig.json - Log Monitor configuration
@@ -69,7 +69,19 @@ This docker container makes use of environment variables that are explicitly def
 
 ### Supplemental
 1. The ability to update any scheduled task on runtime for a container has been added. This comes in the form of adding environment variables starting with updateScheduledTask_. To update a scheduled task simply provide a uniquely named environment variable starting with updateScheduledTask_ (ex. updateScheduledTask_ELRImporter or updateScheduledTask_MsgOutProcessor). The format of the variables should follow what is present in [tasks.csv](./tasks.csv) and **ENDING** with a semicolon.
-    - EXAMPLE: updating ELRImporter.bat tasks to run at 8 am, instead of 6 am, and every 5 minutes instead of every 2 minutes.
+    - EXAMPLE: updating ELRImporter.bat tasks to run at 8 am, instead of 6 am, while stopping at 7pm and running every 5 minutes instead of every 2 minutes.
       ```
-        updateScheduledTask_ELRImporter="ELRImporter.bat,, 8am, 0, 0, 5;"
+        updateScheduledTask_ELRImporter="ELRImporter.bat,, 8:00:00am, 7:00:00pm,, 0, 0, 5;"
       ```
+2. Format of [tasks.csv](./tasks.csv): filename, scriptPathFromWorkDir, dailyStartTime, dailyStopTime, frequencyDays, frequencyHours, frequencyMinutes
+
+| Key | Description |
+| --- | --- |
+| filename | Exact Batch filename in the BatchFiles directory |
+| scriptPathFromWorkDir | Subdirectory of the BatchFiles directory |
+| dailyStartTime | Daily Time to start Windows scheduled task in standard time (format HH:MM:SS(am/pm are optional)) |
+| dailyStopTime | Daily Time to stop Windows scheduled task in standard time (format HH:MM:SS(am/pm are optional)). Leave blank or set equal to dailyStartTime for indefinite run. (Note: this is ignored for frequencyDays>=1) |
+| frequencyDays | Number of days which task should be repeated |
+| frequencyHours |  Number of hours which task should be repeated |
+| frequencyMinutes |  Number of minutes which task should be repeated |
+   
