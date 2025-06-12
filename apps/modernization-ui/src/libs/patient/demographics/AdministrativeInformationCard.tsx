@@ -24,6 +24,7 @@ export const AdministrativeInformationCard = ({
             title={'Administrative comments'}
             subtext={subtext}
             collapsible={collapsible}
+            open={data?.comment ? true : false}
             sizing={sizing}>
             <div className={styles.content}>{data?.comment ? data?.comment : <NoData display="dashes" />}</div>
         </Card>
