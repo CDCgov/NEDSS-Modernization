@@ -4,6 +4,6 @@
 /* eslint-disable */
 export type Selectable = {
     value: string;
-    name?: string;
+    name: string;
 };
 

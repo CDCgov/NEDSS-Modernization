@@ -46,7 +46,7 @@ ENV JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" 
     GITHUB_ZIP_FILE_NAME="<version>.NEDSS.NBS.Modernized.Documentation.zip" \
     JAVA_MEMORY="5096M" \
     MAX_META_SPACE_SIZE="512M" \
-    # Task names for tasks to be disabled correspond to filename in tasks.csv (suggested removal SendAlertEMail.bat)
+    # Task names for tasks to be disabled correspond to filename in tasks.csv (suggested removal SendAlertEMail.bat,Create-Approve_Notifications_Close_Investigation.bat)
     DISABLED_SCHEDULED_TASKS="" \
     NNDM_CONFIG_PUBLIC_KEY_LDAP_ADDRESS="PUBLIC_KEY_LDAP_ADDRESS=" \
     NNDM_CONFIG_PUBLIC_KEY_LDAP_BASE_DN="PUBLIC_KEY_LDAP_BASE_DN=" \

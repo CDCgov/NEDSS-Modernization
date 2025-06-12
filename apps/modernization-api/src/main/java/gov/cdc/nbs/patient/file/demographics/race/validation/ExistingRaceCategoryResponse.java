@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.race.validate.category;
+package gov.cdc.nbs.patient.file.demographics.race.validation;
 
 sealed interface ExistingRaceCategoryResponse {
   record ExistingRaceCategoryValid() implements ExistingRaceCategoryResponse{}
