@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { CheckboxGroup } from './CheckboxGroup';
 import { asSelectable, Selectable } from 'options';
 
