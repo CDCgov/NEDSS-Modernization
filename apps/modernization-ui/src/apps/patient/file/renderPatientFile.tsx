@@ -55,8 +55,7 @@ export const renderFacilityProvider = (
                 <>
                     <strong>Ordering provider:</strong>
                     <br />
-                    {orderingProvider.prefix}
-                    {orderingProvider.first} {orderingProvider.last}
+                    {orderingProvider.prefix} {orderingProvider.first} {orderingProvider.last}
                     <br />
                 </>
             )}
