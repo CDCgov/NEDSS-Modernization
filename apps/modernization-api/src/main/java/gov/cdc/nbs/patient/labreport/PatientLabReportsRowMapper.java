@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
@@ -39,11 +40,9 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
   @Override
   public PatientLabReport mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
     String eventId = resultSet.getString(this.columns.eventId());
-    String dateReceived = resultSet.getString(this.columns.receiveDate());
-    dateReceived = dateReceived == null ? null : dateReceived.substring(0, 10);
+    LocalDateTime dateReceived = resultSet.getObject(this.columns.receiveDate(), LocalDateTime.class);
     String processingDecision = resultSet.getString(this.columns.specimenSite());
-    String dateCollected = resultSet.getString(this.columns.dateCollected());
-    dateCollected = dateCollected == null ? null : dateCollected.substring(0, 10);
+    LocalDateTime dateCollected = resultSet.getObject(this.columns.dateCollected(), LocalDateTime.class);
     String jurisdiction = resultSet.getString(this.columns.jurisdiction());
     String programArea = resultSet.getString(this.columns.programArea());
     long labIdentifier = resultSet.getLong(this.columns.investigationId());
