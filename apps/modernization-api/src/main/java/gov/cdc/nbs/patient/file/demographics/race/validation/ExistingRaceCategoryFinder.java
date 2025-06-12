@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.race.validate.category;
+package gov.cdc.nbs.patient.file.demographics.race.validation;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.race.validate.category;
+package gov.cdc.nbs.patient.file.demographics.race.validation;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
@@ -27,7 +27,7 @@ class PatientProfileRaceCategoryValidationRequester {
       return mvc.perform(
               this.authenticated.withUser(
                   post(
-                      "/nbs/api/patients/{patient}/demographics/race/categories/{category}/validate",
+                      "/nbs/api/patients/{patient}/demographics/races/{category}/validate",
                       patient.id(),
                       category
                   )

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.race;
+package gov.cdc.nbs.patient.demographics.race;
 
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
