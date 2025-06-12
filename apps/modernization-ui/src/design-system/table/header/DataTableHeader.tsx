@@ -1,10 +1,10 @@
-import { Sizing } from 'design-system/field';
-import { Column } from 'design-system/table';
-import { ColumnHeader } from 'design-system/table/header/ColumnHeader';
-
-import styles from '../data-table.module.scss';
 import { SortingInteraction } from 'libs/sorting';
 import { FilterInteraction } from 'design-system/filter';
+import { Sizing } from 'design-system/field';
+import { Column } from './column';
+import { ColumnHeader } from './ColumnHeader';
+
+import styles from '../data-table.module.scss';
 
 type HeaderRowProps<V> = {
     columns: Column<V>[];
