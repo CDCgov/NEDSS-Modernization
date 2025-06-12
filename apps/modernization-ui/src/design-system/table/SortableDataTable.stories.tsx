@@ -1,6 +1,6 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { Column } from './DataTable';
 import { MemoryRouter } from 'react-router';
+import { Meta, StoryObj } from '@storybook/react';
+import { Column } from './header/column';
 import { SortableDataTable } from './SortableDataTable';
 
 type Person = {

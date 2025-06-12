@@ -104,8 +104,8 @@ const RepeatingBlock = <V extends FieldValues>({
 
     const iconColumn: Column<V> = {
         id: 'actions',
-        name: 'Actions',
-        className: styles.iconColumn,
+        label: 'Actions',
+        // className: styles.iconColumn,
         render: (value: V) => (
             <div className={classNames(styles.actions, sizing && styles[sizing])}>
                 {viewable && (
