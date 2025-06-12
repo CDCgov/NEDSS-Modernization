@@ -45,36 +45,36 @@ const DateCriteriaField = ({
     return (
         <Field error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
             <div className={styles.content}>
-                <div className={styles.operators} data-range-operator={type}>
-                    <Radio
-                        id={'equals'}
-                        name="dateOperation"
-                        label={'Exact Date'}
-                        value={'equals'}
-                        onChange={() => {
-                            onChange({ equals: {} });
-                            clearErrors?.();
-                        }}
-                        checked={type === 'equals'}
-                        sizing={sizing}
-                        className={styles.radio}
-                        aria-label={`${label}, Exact Date`}
-                    />
-                    <Radio
-                        id={'between'}
-                        name="dateOperation"
-                        label={'Date Range'}
-                        value={'between'}
-                        onChange={() => {
-                            onChange({ between: {} });
-                            clearErrors?.();
-                        }}
-                        checked={type === 'between'}
-                        sizing={sizing}
-                        className={styles.radio}
-                        aria-label={`${label}, Date Range`}
-                    />
-                </div>
+                <fieldset aria-label={label}>
+                    <div className={styles.operators} data-range-operator={type}>
+                        <Radio
+                            id={'equals'}
+                            name="dateOperation"
+                            label={'Exact Date'}
+                            value={'equals'}
+                            onChange={() => {
+                                onChange({ equals: {} });
+                                clearErrors?.();
+                            }}
+                            checked={type === 'equals'}
+                            sizing={sizing}
+                            className={styles.radio}
+                        />
+                        <Radio
+                            id={'between'}
+                            name="dateOperation"
+                            label={'Date Range'}
+                            value={'between'}
+                            onChange={() => {
+                                onChange({ between: {} });
+                                clearErrors?.();
+                            }}
+                            checked={type === 'between'}
+                            sizing={sizing}
+                            className={styles.radio}
+                        />
+                    </div>
+                </fieldset>
                 <div key={type}>
                     <Shown when={type === 'equals'}>
                         <ExactDateField

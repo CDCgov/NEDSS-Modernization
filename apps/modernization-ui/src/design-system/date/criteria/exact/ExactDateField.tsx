@@ -43,7 +43,7 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
     );
 
     return (
-        <div id={id} className={styles['exact-date-entry']}>
+        <fieldset id={id} className={styles['exact-date-entry']} aria-label={label}>
             <div className={classNames(styles['numeric-wrapper'], styles['month'])}>
                 <label htmlFor={`${id}-month`}>Month</label>
                 <Numeric
@@ -54,7 +54,6 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
                     onBlur={onBlur}
                     min={1}
                     max={12}
-                    aria-label={`${label}, Month`}
                 />
             </div>
             <div className={classNames(styles['numeric-wrapper'], styles['day'])}>
@@ -67,7 +66,6 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
                     onBlur={onBlur}
                     min={1}
                     max={31}
-                    aria-label={`${label}, Day`}
                 />
             </div>
             <div className={classNames(styles['numeric-wrapper'], styles['year'])}>
@@ -79,10 +77,9 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
                     onChange={handleFieldOnChange('year')}
                     onBlur={onBlur}
                     min={1875}
-                    aria-label={`${label}, Year`}
                 />
             </div>
-        </div>
+        </fieldset>
     );
 };
 

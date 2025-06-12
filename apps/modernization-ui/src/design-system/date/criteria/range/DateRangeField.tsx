@@ -55,34 +55,34 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label }: DateRang
     });
 
     return (
-        <div
-            id={id}
-            ref={dateRangePickerRef}
-            className={classNames('usa-date-range-picker', styles['date-range-entry'])}>
-            <div className={classNames(styles['range-wrapper'], 'from')}>
-                <label htmlFor={`${id}-from`}>From</label>
-                <DatePicker
-                    sizing={sizing}
-                    onBlur={onBlur}
-                    id={`${id}-from`}
-                    value={range?.from}
-                    onChange={handleFieldOnChange('from')}
-                    aria-label={`${label}, From`}
-                />
+        <fieldset aria-label={label}>
+            <div
+                id={id}
+                ref={dateRangePickerRef}
+                className={classNames('usa-date-range-picker', styles['date-range-entry'])}>
+                <div className={classNames(styles['range-wrapper'], 'from')}>
+                    <label htmlFor={`${id}-from`}>From</label>
+                    <DatePicker
+                        sizing={sizing}
+                        onBlur={onBlur}
+                        id={`${id}-from`}
+                        value={range?.from}
+                        onChange={handleFieldOnChange('from')}
+                    />
+                </div>
+                <div className={classNames(styles['range-wrapper'])}>
+                    <label htmlFor={`${id}-to`}>To</label>
+                    <DatePicker
+                        sizing={sizing}
+                        onBlur={onBlur}
+                        id={`${id}-to`}
+                        minDate={range?.from}
+                        value={range?.to}
+                        onChange={handleFieldOnChange('to')}
+                    />
+                </div>
             </div>
-            <div className={classNames(styles['range-wrapper'])}>
-                <label htmlFor={`${id}-to`}>To</label>
-                <DatePicker
-                    sizing={sizing}
-                    onBlur={onBlur}
-                    id={`${id}-to`}
-                    minDate={range?.from}
-                    value={range?.to}
-                    onChange={handleFieldOnChange('to')}
-                    aria-label={`${label}, To`}
-                />
-            </div>
-        </div>
+        </fieldset>
     );
 };
 

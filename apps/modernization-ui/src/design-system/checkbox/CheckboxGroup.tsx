@@ -72,7 +72,8 @@ export const CheckboxGroup = ({
                         [styles.horizontalOptions]: orientation === 'horizontal'
                     },
                     styles.fieldSet
-                )}>
+                )}
+                aria-label={label}>
                 {items.map((item, index) => (
                     <SelectableCheckbox
                         name={name}
@@ -83,7 +84,6 @@ export const CheckboxGroup = ({
                         selected={item.selected}
                         disabled={disabled}
                         onBlur={onBlur}
-                        aria-label={`${label}, ${item.value.name}`}
                     />
                 ))}
             </fieldset>
