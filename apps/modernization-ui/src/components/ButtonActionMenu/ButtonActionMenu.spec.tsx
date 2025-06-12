@@ -1,7 +1,7 @@
 import { ButtonActionMenu } from './ButtonActionMenu';
 import { Button } from 'design-system/button';
 import { render } from '@testing-library/react';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 
 describe('When ButtonActionMenu renders', () => {
     it('should not display menu by default', () => {

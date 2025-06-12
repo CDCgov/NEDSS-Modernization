@@ -8,7 +8,7 @@ let mockDirection: Direction | undefined = undefined;
 const mockReset = jest.fn();
 const mockSortBy = jest.fn();
 
-jest.mock('libs/sorting', () => ({
+vi.mock('libs/sorting', () => ({
     useSorting: () => ({
         property: mockProperty,
         direction: mockDirection,
@@ -21,7 +21,7 @@ let mockValue: ActiveSorting | undefined = undefined;
 const mockSave = jest.fn();
 const mockRemove = jest.fn();
 
-jest.mock('storage', () => ({
+vi.mock('storage', () => ({
     useLocalStorage: ({ key, initial }: { key: string; initial?: any }) => ({
         value: mockValue,
         save: mockSave,

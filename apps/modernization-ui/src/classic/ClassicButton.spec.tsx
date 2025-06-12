@@ -1,9 +1,10 @@
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ClassicButton } from './ClassicButton';
+import { vi } from 'vitest';
 
 import { useRedirect } from './useRedirect';
-jest.mock('./useRedirect');
+vi.mock('./useRedirect');
 
 const mockUseRedirect = useRedirect as jest.MockedFunction<typeof useRedirect>;
 

@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
@@ -8,7 +9,7 @@ import { GeneralInformationEntryFields } from './GeneralInformationEntryFields';
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
+vi.mock('user', () => ({
     useUser: () => ({ state: { user: { permissions: mockPermissions } } })
 }));
 
@@ -20,7 +21,7 @@ const mockGeneralCodedValues: GeneralCodedValues = {
     speaksEnglish: [{ name: 'Yes', value: 'Y' }]
 };
 
-jest.mock('./useGeneralCodedValues', () => ({
+vi.mock('./useGeneralCodedValues', () => ({
     useGeneralCodedValues: () => mockGeneralCodedValues
 }));
 

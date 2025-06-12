@@ -1,15 +1,16 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { TabNavigationEntry, TabNavigation } from './TabNavigation';
 import style from './tabNavigation.module.scss';
 import { ReactElement } from 'react';
 
-describe('TabNavigation and TabNavigationEntry', () => {
-    const renderWithRouter = (ui: ReactElement, { route = '/' } = {}) => {
-        window.history.pushState({}, 'Test page', route);
-        return render(ui, { wrapper: MemoryRouter });
-    };
+const renderWithRouter = (ui: ReactElement, { route = '/' } = {}) => {
+    return render(ui, {
+        wrapper: ({ children }) => <MemoryRouter initialEntries={[route]}>{children}</MemoryRouter>
+    });
+};
 
+describe('TabNavigation and TabNavigationEntry', () => {
     test('TabNavigationEntry renders with correct text', () => {
         const { getByText } = renderWithRouter(<TabNavigationEntry path="/test-path">Test Link</TabNavigationEntry>, {
             route: '/'
@@ -22,17 +23,19 @@ describe('TabNavigation and TabNavigationEntry', () => {
             route: '/test-path'
         });
         const linkElement = getByText('Test Link');
-        setTimeout(() => {
+        await waitFor(() => {
             expect(linkElement).toHaveClass(style.active);
         });
     });
 
-    test('TabNavigationEntry active class is not applied when path does not match', () => {
+    test('TabNavigationEntry active class is not applied when path does not match', async () => {
         const { getByText } = renderWithRouter(<TabNavigationEntry path="/test-path">Test Link</TabNavigationEntry>, {
             route: '/different-path'
         });
         const linkElement = getByText('Test Link');
-        expect(linkElement).not.toHaveClass(style.active);
+        await waitFor(() => {
+            expect(linkElement).not.toHaveClass(style.active);
+        });
     });
 
     test('TabNavigation renders multiple children correctly', () => {
@@ -50,7 +53,7 @@ describe('TabNavigation and TabNavigationEntry', () => {
         expect(getByText('Link 3')).toBeInTheDocument();
     });
 
-    test('Correct child has active class based on route', () => {
+    test('Correct child has active class based on route', async () => {
         const tabs = (
             <TabNavigation>
                 <TabNavigationEntry path="/path1">Link 1</TabNavigationEntry>
@@ -61,7 +64,9 @@ describe('TabNavigation and TabNavigationEntry', () => {
         const { getByText } = renderWithRouter(tabs, { route: '/path2' });
 
         const linkElement = getByText('Link 2');
-        setTimeout(() => {
+        // Wait for the next tick and then for the class to be applied
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        await waitFor(() => {
             expect(linkElement).toHaveClass(style.active);
         });
     });

@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { MatchRequiringReviewResponse } from 'apps/deduplication/api/model/MatchRequiringReview';
 import { MatchesRequiringReviewTable } from './MatchesRequiringReviewTable';
 import { render, waitFor, within } from '@testing-library/react';
@@ -8,7 +9,7 @@ import { SortingProvider } from 'libs/sorting';
 
 let mockReturnValue: MatchRequiringReviewResponse;
 beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockReturnValue = {
         matches: [
             {
@@ -26,10 +27,11 @@ beforeEach(() => {
     };
 });
 
-jest.mock('pagination', () => {
-    const original = jest.requireActual('pagination');
+vi.mock('pagination', async () => {
+    const original = await vi.importActual<any>('pagination');
     return {
         ...original,
+        PaginationProvider: original.PaginationProvider, // Ensure PaginationProvider is exported
         usePagination: () => ({
             page: {
                 current: 1,
@@ -37,16 +39,16 @@ jest.mock('pagination', () => {
                 status: 'Requested',
                 total: 1
             },
-            ready: jest.fn(),
-            request: jest.fn(),
-            resize: jest.fn(),
-            firstPage: jest.fn()
+            ready: vi.fn(),
+            request: vi.fn(),
+            resize: vi.fn(),
+            firstPage: vi.fn()
         })
     };
 });
 
-const mockFetch = jest.fn();
-jest.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
+const mockFetch = vi.fn();
+vi.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
     useMatchesRequiringReview: () => ({
         response: mockReturnValue,
         fetchMatchesRequiringReview: mockFetch
@@ -83,23 +85,25 @@ describe('MatchesRequiringReviewTable', () => {
 
         const patientId = getByText('Patient ID');
         expect(patientId).toHaveClass('sortable');
-        expect(patientId.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_arrow');
+        expect(patientId.children[0].children[0].getAttribute('xlink:href')).toContain('sprite.svg#sort_arrow');
 
         const personName = getByText('Person name');
         expect(personName).toHaveClass('sortable');
-        expect(personName.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_arrow');
+        expect(personName.children[0].children[0].getAttribute('xlink:href')).toContain('sprite.svg#sort_arrow');
 
         const dateCreated = getByText('Date created');
         expect(dateCreated).toHaveClass('sortable');
-        expect(dateCreated.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_arrow');
+        expect(dateCreated.children[0].children[0].getAttribute('xlink:href')).toContain('sprite.svg#sort_arrow');
 
         const dateIdentified = getByText('Date identified');
         expect(dateIdentified).toHaveClass('sortable');
-        expect(dateIdentified.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_des_numeric');
+        expect(dateIdentified.children[0].children[0].getAttribute('xlink:href')).toContain(
+            'sprite.svg#sort_des_numeric'
+        );
 
         const numberOfMatching = getByText('Number of matching records');
         expect(numberOfMatching).toHaveClass('sortable');
-        expect(numberOfMatching.children[0].children[0]).toHaveAttribute('xlink:href', 'undefined#sort_arrow');
+        expect(numberOfMatching.children[0].children[0].getAttribute('xlink:href')).toContain('sprite.svg#sort_arrow');
     });
 
     it('should sort on click', async () => {

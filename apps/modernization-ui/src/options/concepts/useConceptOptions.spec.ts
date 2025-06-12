@@ -2,14 +2,15 @@ import { renderHook } from '@testing-library/react';
 import { useConceptOptions } from './useConceptOptions';
 import { ConceptOptionsService } from 'generated';
 import { useSelectableOptions } from 'options/useSelectableOptions';
+import { vi } from 'vitest';
 
-jest.mock('generated', () => ({
+vi.mock('generated', () => ({
     ConceptOptionsService: {
         concepts: jest.fn()
     }
 }));
 
-jest.mock('options/useSelectableOptions', () => ({
+vi.mock('options/useSelectableOptions', () => ({
     useSelectableOptions: jest.fn()
 }));
 

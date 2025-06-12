@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router';
@@ -7,17 +8,17 @@ import { PagesTab, Tab } from 'apps/page-builder/generated';
 import { ManageTabs } from '../ManageTabs/ManageTabs';
 import { FormProvider, useForm } from 'react-hook-form';
 
-jest.mock('react-router', () => ({
-    ...jest.requireActual('react-router'),
-    useParams: jest.fn()
-}));
-
-beforeEach(() => {
-    jest.spyOn(Router, 'useParams').mockReturnValue({ pageId: '1' });
+vi.mock('react-router', async () => {
+    const actual = await vi.importActual<typeof import('react-router')>('react-router');
+    return {
+        ...actual,
+        default: actual,
+        useParams: vi.fn(() => ({ pageId: '1' })) // Mock useParams to return a default value
+    };
 });
 
 afterEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
 });
 
 describe('<AddEditTab />', () => {

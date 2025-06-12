@@ -1,5 +1,5 @@
 import { render, waitFor } from '@testing-library/react';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { DatePicker, DatePickerProps } from './DatePicker';
 
 const Fixture = ({ id = 'testing-date-picker', ...remaining }: Partial<DatePickerProps>) => (

@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { FormProvider, useForm } from 'react-hook-form';
 import { render, screen, within } from '@testing-library/react';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
@@ -6,13 +7,17 @@ import { internalizeDate } from 'date';
 import { ValidationErrors } from './useAddExtendedPatientInteraction';
 import { Selectable } from 'options';
 
+vi.mock('options/concepts', () => ({
+    useConceptOptions: () => ({ options: [] })
+}));
+
 const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
 const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
 
 const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
 
-jest.mock('options/location', () => ({
+vi.mock('options/location', () => ({
     useCountyOptions: () => mockCountyCodedValues,
     useCountryOptions: () => mockCountryCodedValues,
     useStateOptions: () => mockStateCodedValues
@@ -30,7 +35,7 @@ const mockLocationCodedValues = {
     countries: [{ name: 'CountryName', value: '3' }]
 };
 
-jest.mock('location/useLocationCodedValues', () => ({
+vi.mock('location/useLocationCodedValues', () => ({
     useLocationCodedValues: () => mockLocationCodedValues
 }));
 const mockPatientPhoneCodedValues = {
@@ -45,7 +50,7 @@ const mockDetailedRaces: Selectable[] = [
     { value: '3', name: 'detailed race2' }
 ];
 
-jest.mock('options/race', () => ({
+vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
     useDetailedRaceOptions: () => mockDetailedRaces
 }));

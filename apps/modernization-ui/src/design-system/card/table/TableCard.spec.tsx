@@ -1,18 +1,18 @@
 import { render } from '@testing-library/react';
 import { TableCard, TableCardProps } from './TableCard';
 import { Column } from 'design-system/table';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { MemoryRouter } from 'react-router';
 
 const mockApply = jest.fn();
 
-jest.mock('design-system/table/preferences/useColumnPreferences', () => ({
+vi.mock('design-system/table/preferences/useColumnPreferences', () => ({
     useColumnPreferences: () => ({
         apply: mockApply
     })
 }));
 
-jest.mock('design-system/table/preferences/withColumnPreferences', () => ({
+vi.mock('design-system/table/preferences/withColumnPreferences', () => ({
     withColumnPreferences: (Component: any) => (props: any) => <Component {...props} />
 }));
 
