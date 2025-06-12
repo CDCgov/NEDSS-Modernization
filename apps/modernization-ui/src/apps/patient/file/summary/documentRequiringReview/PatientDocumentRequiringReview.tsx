@@ -43,43 +43,46 @@ const renderEventId = (value: DocumentRequiringReview) => {
     return <a href={classicUrl}>{value.local}</a>;
 };
 
+const EVENT_ID = { id: 'id', name: 'Event ID' };
+const DOCUMENT_TYPE = { id: 'type', name: 'Document type' };
+const DATE_RECEIVED = { id: 'dateReceived', name: 'Date received' };
+const REPORTING = { id: 'reporting', name: 'Reporting facility/provider' };
+const EVENT_DATE = { id: 'eventDate', name: 'Event date' };
+const DESCRIPTION = { id: 'description', name: 'Description' };
+
 const columns: Column<DocumentRequiringReview>[] = [
-    { id: 'id', name: 'Event ID', render: renderEventId },
-    { id: 'type', name: 'Document type', value: (value: DocumentRequiringReview) => value.type },
+    { ...EVENT_ID, sortable: true, value: (value) => value.local, render: renderEventId },
+    { ...DOCUMENT_TYPE, sortable: true, value: (value) => value.type },
     {
-        id: 'dateReceived',
-        name: 'Date received',
-        value: (value: DocumentRequiringReview) => value.dateReceived,
-        render: (value: DocumentRequiringReview) => renderDateReceived(value.dateReceived)
+        ...DATE_RECEIVED,
+        sortable: true,
+        value: (value) => value.dateReceived,
+        render: (value) => renderDateReceived(value.dateReceived)
     },
     {
-        id: 'reporting',
-        name: 'Reporting facility/provider',
-        render: (value: DocumentRequiringReview) =>
+        ...REPORTING,
+        render: (value) =>
             renderFacilityProvider(value.reportingFacility, value.orderingProvider, value.sendingFacility)
     },
     {
-        id: 'eventDate',
-        name: 'Event date',
-        value: (value: DocumentRequiringReview) => value.eventDate,
-        render: (value: DocumentRequiringReview) => renderEventDate(value.eventDate)
+        ...EVENT_DATE,
+        sortable: true,
+        value: (value) => value.eventDate,
+        render: (value) => renderEventDate(value.eventDate)
     },
     {
-        id: 'description',
-        name: 'Description',
+        ...DESCRIPTION,
         render: renderDescription
     }
 ];
 
-const columnIDs = columns.map((column) => ({ id: column.id, name: column.name }));
-
 const columnPreferences: ColumnPreference[] = [
-    { ...columnIDs[0] },
-    { ...columnIDs[1], toggleable: true },
-    { ...columnIDs[2], toggleable: true },
-    { ...columnIDs[3], toggleable: true },
-    { ...columnIDs[4], toggleable: true },
-    { ...columnIDs[5], toggleable: true }
+    { ...EVENT_ID },
+    { ...DOCUMENT_TYPE, toggleable: true },
+    { ...DATE_RECEIVED, toggleable: true },
+    { ...REPORTING, toggleable: true },
+    { ...EVENT_DATE, toggleable: true },
+    { ...DESCRIPTION, toggleable: true }
 ];
 
 type PatientDocumentRequiringReviewCardProps = {

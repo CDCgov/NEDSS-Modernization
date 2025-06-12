@@ -4,17 +4,45 @@
 /* eslint-disable */
 import type { Administrative } from '../models/Administrative';
 import type { DocumentRequiringReview } from '../models/DocumentRequiringReview';
+import type { ExistingRaceCategoryInvalid } from '../models/ExistingRaceCategoryInvalid';
+import type { ExistingRaceCategoryValid } from '../models/ExistingRaceCategoryValid';
 import type { PatientAddressDemographic } from '../models/PatientAddressDemographic';
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientFile } from '../models/PatientFile';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientInvestigation } from '../models/PatientInvestigation';
+import type { PatientNameDemographic } from '../models/PatientNameDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
+import type { PatientRaceDemographic } from '../models/PatientRaceDemographic';
 import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class PatientFileService {
+    /**
+     * Validates that a patient can accept a race demographic for the given category.
+     * @returns any Allowable race category for the patient
+     * @throws ApiError
+     */
+    public static validateRace({
+        patient,
+        category,
+    }: {
+        patient: number,
+        category: string,
+    }): CancelablePromise<(ExistingRaceCategoryInvalid | ExistingRaceCategoryValid)> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/api/patients/{patient}/demographics/races/{category}/validate',
+            path: {
+                'patient': patient,
+                'category': category,
+            },
+            errors: {
+                400: `The race category is already present on the patient`,
+            },
+        });
+    }
     /**
      * Patient File Documents Requiring Review
      * Provides Documents Requiring Review for a patient
@@ -54,6 +82,25 @@ export class PatientFileService {
         });
     }
     /**
+     * Patient file race demographics
+     * Provides the race demographics for a patient
+     * @returns PatientRaceDemographic OK
+     * @throws ApiError
+     */
+    public static raceDemographics({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientRaceDemographic>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/races',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
      * Patient File Phone Demographics
      * Provides the phone demographics for a patient
      * @returns PatientPhoneDemographic OK
@@ -67,6 +114,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics/phones',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Name Demographics
+     * Provides the name demographics for a patient
+     * @returns PatientNameDemographic OK
+     * @throws ApiError
+     */
+    public static names({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientNameDemographic>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/names',
             path: {
                 'patient': patient,
             },
@@ -116,7 +182,7 @@ export class PatientFileService {
      * @returns PatientAddressDemographic OK
      * @throws ApiError
      */
-    public static phones1({
+    public static addresses({
         patient,
     }: {
         patient: number,

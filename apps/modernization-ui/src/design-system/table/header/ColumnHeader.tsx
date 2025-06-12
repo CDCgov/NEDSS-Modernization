@@ -1,87 +1,118 @@
+import { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Direction, SortingInteraction } from 'libs/sorting';
+import { Button } from 'design-system/button';
 import { FilterInteraction } from 'design-system/filter';
-import { HeaderFilterField } from './filter';
 import { Column, SortIconType } from 'design-system/table';
 import { Icon } from 'design-system/icon';
 import { Sizing } from 'design-system/field';
+import { HeaderFilterField } from './filter';
+import { isNamed, NamedColumn } from './column';
 
 import styles from './column-header.module.scss';
 
-type ColumnHeaderProps<V> = {
+type ColumnOptions = {
     className?: string;
     sizing?: Sizing;
     sorting?: SortingInteraction;
     filtering?: FilterInteraction;
+};
+
+type ColumnHeaderProps<V> = ColumnOptions & {
     children: Column<V>;
 };
 
-const ColumnHeader = <V,>({ sorting, filtering, children, ...remaining }: ColumnHeaderProps<V>) => {
-    const isSortable = sorting && children.sortable;
-
-    return isSortable ? (
-        <SortableHeader sorting={sorting} {...remaining} filtering={filtering}>
-            {children}
-        </SortableHeader>
+const ColumnHeader = <V,>({ children, className, ...remaining }: ColumnHeaderProps<V>) => {
+    return isNamed(children) ? (
+        <NamedColumnHeader {...remaining} column={children} className={className} />
     ) : (
-        <StandardHeader {...remaining} filtering={filtering}>
-            {children}
-        </StandardHeader>
+        <BaseHeader column={children} {...remaining} className={classNames(className, styles.action)}>
+            {children.label}
+        </BaseHeader>
     );
 };
 
-type StandardHeaderProps<V> = ColumnHeaderProps<V> & { filtering?: FilterInteraction };
+type BaseHeaderProps<V> = ColumnOptions & {
+    column: Column<V>;
+} & JSX.IntrinsicElements['th'];
 
-const StandardHeader = <V,>({ className, children, filtering, sizing }: StandardHeaderProps<V>) => (
-    <th className={classNames(styles.header, className, sizing && styles[sizing], { [styles.fixed]: children.fixed })}>
-        <div className={classNames(styles.content)}>
-            {children.name}
-            {filtering?.active && children?.filter?.id && (
-                <HeaderFilterField
-                    label={children.name}
-                    descriptor={children.filter}
-                    filtering={filtering}
-                    sizing={sizing}
-                />
-            )}
-        </div>
+const BaseHeader = <V,>({ className, sizing, column, children, ...remaining }: BaseHeaderProps<V>) => (
+    <th
+        className={classNames(
+            styles.header,
+            {
+                [styles.fixed]: column.fixed,
+                [styles.small]: sizing === 'small',
+                [styles.medium]: sizing === 'medium',
+                [styles.large]: sizing === 'large'
+            },
+            className
+        )}
+        {...remaining}>
+        {children}
     </th>
 );
 
-type SortableProps<V> = StandardHeaderProps<V> & { sorting: SortingInteraction };
+type NamedHeaderContentProps<V> = {
+    column: NamedColumn<V>;
+    sizing?: Sizing;
+    filtering?: FilterInteraction;
+    children: ReactNode;
+};
 
-const SortableHeader = <V,>({ className, sorting, children, filtering, sizing }: SortableProps<V>) => {
-    const direction = sorting.property === children.id ? ensureDirection(sorting.direction) : Direction.None;
+const NamedHeaderContent = <V,>({ column, sizing, filtering, children }: NamedHeaderContentProps<V>) => (
+    <div className={classNames(styles.content, { [styles.extended]: filtering?.active })}>
+        {children}
+        {filtering?.active && column?.filter?.id && (
+            <HeaderFilterField label={column.name} descriptor={column.filter} filtering={filtering} sizing={sizing} />
+        )}
+    </div>
+);
+
+type NamedColumnHeaderProps<V> = ColumnOptions & { column: NamedColumn<V> };
+
+const NamedColumnHeader = <V,>({ sizing, sorting, filtering, column, ...remaining }: NamedColumnHeaderProps<V>) => {
+    const isSortable = sorting && column.sortable;
+
+    return isSortable ? (
+        <SortableHeader sizing={sizing} sorting={sorting} filtering={filtering} column={column} {...remaining} />
+    ) : (
+        <BaseHeader column={column} sizing={sizing} {...remaining}>
+            <NamedHeaderContent column={column} sizing={sizing} filtering={filtering}>
+                {column.name}
+            </NamedHeaderContent>
+        </BaseHeader>
+    );
+};
+
+type SortableProps<V> = NamedColumnHeaderProps<V> & { sorting: SortingInteraction };
+
+const SortableHeader = <V,>({ sorting, filtering, column, sizing, ...remaining }: SortableProps<V>) => {
+    const direction = sorting.property === column.id ? ensureDirection(sorting.direction) : Direction.None;
     const ariaSort = resolveSortAria(direction);
-    const icon = resolveSortIcon(direction, children.sortIconType);
+    const icon = resolveSortIcon(direction, column.sortIconType);
 
     return (
-        <th
-            className={classNames(styles.header, className, sizing && styles[sizing], {
-                [styles.fixed]: children.fixed,
+        <BaseHeader
+            column={column}
+            sizing={sizing}
+            className={classNames({
                 [styles.sorted]: direction !== Direction.None
             })}
-            aria-sort={ariaSort}>
-            <div className={classNames(styles.content, { [styles.extended]: filtering?.active })}>
+            aria-sort={ariaSort}
+            {...remaining}>
+            <NamedHeaderContent column={column} sizing={sizing} filtering={filtering}>
                 <div className={styles.sortable}>
-                    {children.name}
-                    <Icon
-                        tabIndex={0}
-                        name={icon}
-                        aria-label={`Sort ${children.name}`}
-                        onClick={() => sorting.toggle(children.id)}
+                    {column.name}
+                    <Button
+                        tertiary
+                        icon={<Icon name={icon} />}
+                        aria-label={`Sort ${column.name}`}
+                        onClick={() => sorting.toggle(column.id)}
                     />
                 </div>
-                {filtering?.active && children?.filter?.id && (
-                    <HeaderFilterField
-                        label={children.name}
-                        descriptor={children.filter}
-                        filtering={filtering}
-                        sizing={sizing}
-                    />
-                )}
-            </div>
-        </th>
+            </NamedHeaderContent>
+        </BaseHeader>
     );
 };
 

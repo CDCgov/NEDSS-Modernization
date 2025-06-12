@@ -1,12 +1,12 @@
-import { SortingInteraction } from 'libs/sorting';
-import { Column } from './DataTable';
 import classNames from 'classnames';
+import { SortingInteraction } from 'libs/sorting';
 import { NoData } from 'components/NoData';
 import { Sizing } from 'design-system/field';
 import { Shown } from 'conditional-render';
+import { Column } from './header/column';
+import { defaultCellRenderer } from './defaultCellRenderer';
 
 import styles from './data-table.module.scss';
-import { defaultCellRenderer } from './defaultCellRenderer';
 
 type Props<V> = {
     columns: Column<V>[];

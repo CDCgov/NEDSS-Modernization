@@ -1,0 +1,11 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.summaryContainer {
+  background-color: white;
+  border-radius: 0.3125rem 0.3125rem 0 0; // Only top corners rounded
+  padding: 1rem 0.5rem 1rem 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  @extend %thin;
+}

@@ -328,10 +328,15 @@ public class PatientMother {
 
     List<String> details =
         Stream.concat(
+                //  any existing details for the race category
                 patient.getRace().races()
                     .stream()
-                    .filter(r -> !Objects.equals(r.getRaceCategoryCd(), race) && Objects.equals(r.getRaceCd(), race))
+                    .filter(
+                        existing -> !Objects.equals(existing.getRaceCategoryCd(), existing.getRaceCd())
+                            && Objects.equals(existing.getRaceCategoryCd(), race)
+                    )
                     .map(PersonRace::getRaceCd),
+                //  the new detail
                 Stream.of(detail)
             )
             .toList();

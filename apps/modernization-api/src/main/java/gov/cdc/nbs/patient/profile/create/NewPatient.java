@@ -9,9 +9,9 @@ import gov.cdc.nbs.patient.profile.gender.GenderDemographic;
 import gov.cdc.nbs.patient.profile.general.GeneralInformationDemographic;
 import gov.cdc.nbs.patient.demographics.identification.IdentificationDemographic;
 import gov.cdc.nbs.patient.profile.mortality.MortalityDemographic;
-import gov.cdc.nbs.patient.profile.names.NameDemographic;
+import gov.cdc.nbs.patient.demographics.name.NameDemographic;
 import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;
-import gov.cdc.nbs.patient.profile.race.RaceDemographic;
+import gov.cdc.nbs.patient.demographics.race.RaceDemographic;
 
 import java.util.List;
 import java.util.Optional;

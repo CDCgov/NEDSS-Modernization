@@ -2,12 +2,15 @@
 @use 'styles/borders';
 
 .mergePreview {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
   header {
     display: flex;
     justify-content: space-between;
     padding: 1rem;
     background-color: colors.$base-white;
-    @extend %thin-bottom;
 
     .buttons {
       display: flex;

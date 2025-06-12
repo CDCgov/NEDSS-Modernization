@@ -20,7 +20,6 @@ type ButtonProps = {
     outline?: boolean;
     /** Deprecated - replaced by tertiary */
     unstyled?: boolean;
-    onClick?: () => void;
 } & StandardButtonProps &
     JSX.IntrinsicElements['button'];
 

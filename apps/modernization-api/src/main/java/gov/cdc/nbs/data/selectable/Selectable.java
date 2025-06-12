@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record Selectable(
     @JsonProperty(required = true)
     String value,
+    @JsonProperty(required = true)
     String name
 ) {
     public Selectable {
