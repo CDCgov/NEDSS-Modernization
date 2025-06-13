@@ -57,6 +57,3 @@ export const Hint = ({ id, children, target, marginTop = 0, marginLeft = 0, posi
         </div>
     );
 };
-
-
-
