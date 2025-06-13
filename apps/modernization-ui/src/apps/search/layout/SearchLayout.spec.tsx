@@ -5,7 +5,7 @@ import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { SearchResultDisplayProvider } from '../useSearchResultDisplay';
 import { FilterProvider } from 'design-system/filter/useFilter';
 
-jest.mock('pagination', () => ({
+vi.mock('pagination', () => ({
     usePagination: () => ({
         page: {
             status: 0,
@@ -22,7 +22,7 @@ jest.mock('pagination', () => ({
     })
 }));
 
-jest.mock('libs/sorting', () => ({
+vi.mock('libs/sorting', () => ({
     useSorting: () => ({
         reset: jest.fn(),
         sortBy: jest.fn(),
@@ -30,7 +30,7 @@ jest.mock('libs/sorting', () => ({
     })
 }));
 
-jest.mock('apps/search', () => ({
+vi.mock('apps/search', () => ({
     useSearchResultDisplay: () => ({
         view: 'list'
     }),

@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { ConditionSearch } from './ConditionSearch';
 import { MemoryRouter } from 'react-router';
@@ -14,8 +15,8 @@ const mockCondition: Condition = {
     status: 'A'
 };
 
-const search = jest.fn();
-const reset = jest.fn();
+const search = vi.fn();
+const reset = vi.fn();
 
 const mockUsConditionSearch = {
     search: search,
@@ -25,10 +26,13 @@ const mockUsConditionSearch = {
     reset
 };
 
-jest.mock('./useConditionSearch', () => ({
-    ...jest.requireActual('./useConditionSearch'),
-    useConditionSearch: () => mockUsConditionSearch
-}));
+vi.mock('./useConditionSearch', async () => {
+    const actual = await vi.importActual<any>('./useConditionSearch');
+    return {
+        ...actual,
+        useConditionSearch: () => mockUsConditionSearch
+    };
+});
 
 describe('ConditionSearch', () => {
     const onConditionSelect = jest.fn();

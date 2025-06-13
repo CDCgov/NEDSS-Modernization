@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { internalizeDate } from 'date';
@@ -14,7 +15,7 @@ const mockDetailedRaces: Selectable[] = [
     { value: '3', name: 'detailed race2' }
 ];
 
-jest.mock('options/race', () => ({
+vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
     useDetailedRaceOptions: () => mockDetailedRaces
 }));

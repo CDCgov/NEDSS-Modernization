@@ -48,10 +48,10 @@ describe('when Subsection renders', () => {
         const inputs = container.getElementsByTagName('input');
         expect(inputs.length).toBe(5);
     });
-    xit('should display input labels', () => {
-        //  disabling this test as the component being tested contains field labels that are label elements.
-        const { container } = setup();
-        const labels = container.getElementsByTagName('label');
-        expect(labels.length).toBe(2);
-    });
+    // xit('should display input labels', () => {
+    //     //  disabling this test as the component being tested contains field labels that are label elements.
+    //     const { container } = setup();
+    //     const labels = container.getElementsByTagName('label');
+    //     expect(labels.length).toBe(2);
+    // });
 });

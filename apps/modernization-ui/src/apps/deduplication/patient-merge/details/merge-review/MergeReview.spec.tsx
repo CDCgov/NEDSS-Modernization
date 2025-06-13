@@ -7,11 +7,11 @@ import { MergeReview } from './MergeReview';
 import { PatientMergeForm } from './model/PatientMergeForm';
 import { AlertProvider } from 'alert';
 
-const onPreview = jest.fn();
-const onRemove = jest.fn();
+const onPreview = vi.fn();
+const onRemove = vi.fn();
 
-const mockKeepAllSeparate = jest.fn();
-jest.mock('apps/deduplication/api/useRemoveMerge', () => ({
+const mockKeepAllSeparate = vi.fn();
+vi.mock('apps/deduplication/api/useRemoveMerge', () => ({
     useRemoveMerge: () => {
         return { keepAllSeparate: mockKeepAllSeparate };
     }

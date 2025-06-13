@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Hint } from './Hint';
 import { ComponentProps, ReactNode } from 'react';
 

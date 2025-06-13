@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { RepeatingBlock } from './RepeatingBlock';
 import { Controller, useFormContext } from 'react-hook-form';
 import { SingleSelect } from 'design-system/select';
