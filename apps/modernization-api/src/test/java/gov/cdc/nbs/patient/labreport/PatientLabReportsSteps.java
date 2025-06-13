@@ -14,6 +14,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.hamcrest.Matcher;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.Matchers.*;
 
@@ -49,6 +52,24 @@ public class PatientLabReportsSteps {
   public void lab_reports_are_returned() throws Exception {
     this.response.active().andExpect(content().string(not("[]")));
   }
+
+  @Then("the {nth} labreport has a(n) {string} of {localDate} at {time}")
+  public void the_nth_labreport_has_a_x_of_date_time(final int position,
+      final String field,
+      final LocalDate value,
+      final LocalTime at) throws Exception {
+    int index = position - 1;
+
+    System.out.println(at.format(DateTimeFormatter.ISO_DATE_TIME));
+
+    JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
+
+    this.response.active()
+        .andExpect(
+            pathMatcher.value(
+                matchingValue(field, LocalDateTime.of(value, at).format(DateTimeFormatter.ISO_DATE_TIME))));
+  }
+
 
   @Then("the {nth} labreport has a(n) {string} of {localDate}")
   public void the_nth_labreport_has_a_x_of_date(final int position,

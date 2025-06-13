@@ -35,7 +35,6 @@ const resolveTest = (value: PatientLabReport) => {
             {renderLabReports(value.testResults)}
             {value.specimenSource && (
                 <>
-                    <br />
                     <strong>Specimen Source: </strong>
                     {value.specimenSource}
                 </>

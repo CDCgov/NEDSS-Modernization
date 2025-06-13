@@ -339,7 +339,7 @@ public class LabReportMother {
       final long by,
       final LocalDate on
   ) {
-    this.client.sql("update Observation set add_user_id = ?, add_time = ? where observation_uid = ?")
+    this.client.sql("update Observation set add_user_id = ?, rpt_to_state_time = ? where observation_uid = ?")
         .param(by)
         .param(on)
         .param(report.identifier())
