@@ -1,4 +1,3 @@
-/* eslint-disable no-redeclare */
 import { Sensitive as GraphQLSensitive, Maybe } from 'generated/graphql/schema';
 import { orNull } from 'utils';
 

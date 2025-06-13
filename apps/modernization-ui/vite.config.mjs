@@ -4,7 +4,7 @@ import { resolve } from 'path';
 
 export default defineConfig(({ mode }) => {
     // note: Will load ports from .env file in root (of the project)
-    // eslint-disable-next-line no-undef
+     
     const env = loadEnv(mode, process.cwd(), '');
     const NBS_API_PORT = env.VITE_NBS_API_PORT || 8080;
     const DEDUPLICATION_PORT = env.VITE_DEDUPLICATION_PORT || 8083;
