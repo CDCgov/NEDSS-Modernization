@@ -34,7 +34,6 @@ Feature: Patient Lab Reports API
     And the lab report is for a pregnant patient
     And the lab report was entered externally
     And the lab report was filled by "307947"
-    And the lab report was received on 08/11/2017
     And the lab report has not been processed
     And the lab report is electronic
     When the patient lab report api are retrieved
@@ -44,7 +43,7 @@ Feature: Patient Lab Reports API
     Then the 1st labreport has a "reportingFacility" of "Northside Hospital"
     Then the 1st labreport has a "orderingProvider" of "Learner"
     Then the 1st labreport has a "orderingFacility" of "Emory University Hospital"
-    Then the 1st labreport has a "receivedDate" of 01/01/2000
+    Then the 1st labreport has a "receivedDate" of 01/01/2000 at 00:00:00
     Then the lab report has an Acid-Fast Stain test with a coded result of abnormal
 
 
