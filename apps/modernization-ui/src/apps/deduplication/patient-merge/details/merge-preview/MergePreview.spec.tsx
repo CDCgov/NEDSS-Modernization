@@ -3,15 +3,15 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MergePreview } from './MergePreview';
 import { PatientMergeForm } from '../merge-review/model/PatientMergeForm';
 import { MergeCandidate } from '../../../api/model/MergeCandidate';
-import {MemoryRouter} from "react-router";
-import {PatientSummary} from "./components/patient-summary/PatientSummary";
-import {AdministrativeComments} from "./components/administrative-comments/AdministrativeComments";
-import {PreviewName} from "./components/name/PreviewName";
-import {PreviewAddress} from "./components/address/PreviewAddress";
-import {PreviewPhoneAndEmail} from "./components/phone-and-email/PreviewPhoneAndEmail";
-import {PreviewIdentification} from "./components/identification/PreviewIdentification";
-import {PreviewRace} from "./components/race/PreviewRace";
-import {PreviewEthnicity} from "./components/ethnicity/PreviewEthnicity";
+import { MemoryRouter } from 'react-router';
+import { PatientSummary } from './components/patient-summary/PatientSummary';
+import { AdministrativeComments } from './components/administrative-comments/AdministrativeComments';
+import { PreviewName } from './components/name/PreviewName';
+import { PreviewAddress } from './components/address/PreviewAddress';
+import { PreviewPhoneAndEmail } from './components/phone-and-email/PreviewPhoneAndEmail';
+import { PreviewIdentification } from './components/identification/PreviewIdentification';
+import { PreviewRace } from './components/race/PreviewRace';
+import { PreviewEthnicity } from './components/ethnicity/PreviewEthnicity';
 
 describe('MergePreview', () => {
     const mockOnBack = jest.fn();

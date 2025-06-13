@@ -1,18 +1,20 @@
 @use 'styles/borders';
+@use 'styles/colors';
 
 .card {
-  max-width: 43.5rem;
+  width: 43.5rem !important;
   margin-left: 1rem;
+  margin-right: 1rem !important;
   border-radius: 0.315rem;
   overflow: hidden;
-  box-shadow: 0rem 0.125rem 0.25rem 0rem rgba(0, 0, 0, 0.14);
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.14);
 }
 
 .content {
   display: flex;
   flex-direction: column;
   padding-inline: 1rem;
-  max-width: 45rem;
+  width: 100%;
 }
 
 .item {
@@ -45,11 +47,12 @@
   margin-right: 2rem;
   flex-shrink: 0;
   font-weight: 600;
-  color: #333;
+  color: colors.$base-black;
 }
 
 .text {
+  font-weight: 400;
   flex-grow: 1;
   min-width: 0;
-  color: #555;
+  color: colors.$base-black;
 }

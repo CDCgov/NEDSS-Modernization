@@ -44,8 +44,10 @@ export type SexAndBirthValues = {
     additionalGender?: string;
     birthGender?: string;
     multipleBirth?: string;
+    birthOrder?: string;
     birthCity?: string;
     birthState?: string;
+    birthCounty?: string;
     birthCountry?: string;
 };
 
@@ -55,6 +57,7 @@ export type MortalityValues = {
     dateOfDeath?: string;
     deathCity?: string;
     deathState?: string;
+    deathCounty?: string;
     deathCountry?: string;
 };
 
