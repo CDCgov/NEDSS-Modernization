@@ -2,9 +2,7 @@
 @use 'styles/colors';
 
 .card {
-  width: 43.5rem !important;
-  margin-left: 1rem;
-  margin-right: 1rem !important;
+  width: 44.1rem !important;
   border-radius: 0.315rem;
   overflow: hidden;
   box-shadow: 0 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.14);
@@ -30,7 +28,7 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 43.2rem;
+  width: 43.5rem;
   @extend %thin-bottom;
   pointer-events: none;
 }
