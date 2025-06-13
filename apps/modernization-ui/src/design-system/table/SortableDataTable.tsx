@@ -1,6 +1,7 @@
-import { SortHandler, SortingInteraction, SortingProvider, useSorting } from 'libs/sorting';
-import { Column, DataTable, DataTableProps } from './DataTable';
 import { ReactNode } from 'react';
+import { SortHandler, SortingInteraction, SortingProvider, useSorting } from 'libs/sorting';
+import { Column } from './header/column';
+import { DataTable, DataTableProps } from './DataTable';
 
 /**
  * A variant of DataTable that provides in memory sorting of rows based on the values of the column

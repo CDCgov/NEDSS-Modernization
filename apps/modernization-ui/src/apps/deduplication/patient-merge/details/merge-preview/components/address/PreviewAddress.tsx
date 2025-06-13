@@ -3,7 +3,7 @@ import { MergeAddress, MergeCandidate } from '../../../../../api/model/MergeCand
 import { AddressId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
 import { MergePreviewTableCard } from '../Card/MergePreviewTableCard';
-import { Column } from 'design-system/table/DataTable';
+import { Column } from 'design-system/table';
 
 type AddressEntry = {
     id: string;

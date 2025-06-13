@@ -36,6 +36,17 @@ const columns: Column<TestData>[] = [
     }
 ];
 
+const preferences = [
+    {
+        id: 'id',
+        name: 'ID'
+    },
+    {
+        id: 'name',
+        name: 'Name'
+    }
+];
+
 const data: TestData[] = [
     { id: 1, name: 'John Doe' },
     { id: 2, name: 'Jane Smith' }
@@ -47,8 +58,9 @@ const Fixture = (props: Partial<TableCardProps<TestData>>) => {
             <TableCard
                 id="tablecard"
                 title="Test Title"
-                columnPreferencesKey="test-key"
                 columns={columns}
+                columnPreferencesKey="test-key"
+                defaultColumnPreferences={preferences}
                 data={data}
                 {...props}
             />

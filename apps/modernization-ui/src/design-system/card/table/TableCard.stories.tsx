@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { TableCard } from './TableCard';
+import { MemoryRouter } from 'react-router';
 import { Column } from 'design-system/table';
 import { Icon } from 'design-system/icon';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { MemoryRouter } from 'react-router';
 import { Button } from 'design-system/button';
+import { TableCard } from './TableCard';
 
 type Person = {
     id: string;
@@ -33,31 +33,29 @@ const columns: Column<Person>[] = [
         id: 'id',
         name: 'ID',
         sortable: true,
-        render: (value: Person) => <a href={`#${value.id}`}>{value.id}</a> // render link
+        value: (item) => item.id,
+        render: (item) => <a href={`#${item.id}`}>{item.id}</a>
     },
     {
         id: 'name',
         name: 'Name',
         sortable: true,
         sortIconType: 'alpha',
-        render: (value: Person) => value.name
+        value: (item) => item.name
     },
     {
         id: 'age',
         name: 'Age',
         sortable: true,
         sortIconType: 'numeric',
-        render: (value: Person) => value.age
+        value: (item) => item.age
     }
 ];
 
-const columnIDs = columns.map((column) => ({ id: column.id, name: column.name }));
-
-// column preferences
 const columnPreferences: ColumnPreference[] = [
-    { ...columnIDs[0] },
-    { ...columnIDs[1], moveable: true, toggleable: true },
-    { ...columnIDs[2], moveable: true, toggleable: true }
+    { id: 'id', name: 'ID' },
+    { id: 'name', name: 'Name', moveable: true, toggleable: true },
+    { id: 'age', name: 'Age', moveable: true, toggleable: true }
 ];
 
 export const Default: Story = {
