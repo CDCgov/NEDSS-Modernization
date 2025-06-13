@@ -16,6 +16,7 @@ import org.hamcrest.Matcher;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.Matchers.*;
 
@@ -59,10 +60,14 @@ public class PatientLabReportsSteps {
       final LocalTime at) throws Exception {
     int index = position - 1;
 
+    System.out.println(at.format(DateTimeFormatter.ISO_DATE_TIME));
+
     JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
 
     this.response.active()
-        .andExpect(pathMatcher.value(matchingValue(field, LocalDateTime.of(value, at).toString())));
+        .andExpect(
+            pathMatcher.value(
+                matchingValue(field, LocalDateTime.of(value, at).format(DateTimeFormatter.ISO_DATE_TIME))));
   }
 
 
