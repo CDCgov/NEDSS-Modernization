@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { DateCriteriaFieldProps, DateCriteriaField } from './DateCriteriaField';
 import { DateEqualsCriteria } from './dateCriteria';
+import { axe } from 'jest-axe';
 
 describe('DateCriteriaField Component', () => {
     const defaultProps: DateCriteriaFieldProps = {
@@ -10,6 +11,11 @@ describe('DateCriteriaField Component', () => {
         label: 'Test Date Entry',
         onChange: jest.fn()
     };
+
+    it('should render with no accessibility violations', async () => {
+        const { container } = render(<DateCriteriaField {...defaultProps} />);
+        expect(await axe(container)).toHaveNoViolations();
+    });
 
     it('should render with default props', () => {
         const { getByLabelText } = render(<DateCriteriaField {...defaultProps} />);

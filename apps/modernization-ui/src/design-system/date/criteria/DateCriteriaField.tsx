@@ -45,7 +45,7 @@ const DateCriteriaField = ({
     return (
         <Field error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
             <div className={styles.content}>
-                <div className={styles.operators} data-range-operator={type}>
+                <div role="group" className={styles.operators} data-range-operator={type} aria-label={label}>
                     <Radio
                         id={'equals'}
                         name="dateOperation"
@@ -80,6 +80,7 @@ const DateCriteriaField = ({
                             value={asDateEqualsCriteria(value)}
                             onChange={onChange}
                             onBlur={onBlur}
+                            label={label}
                         />
                     </Shown>
                     <Shown when={type === 'between'}>
@@ -89,6 +90,7 @@ const DateCriteriaField = ({
                             value={asDateRangeCriteria(value)}
                             onChange={onChange}
                             onBlur={onBlur}
+                            label={label}
                         />
                     </Shown>
                 </div>
