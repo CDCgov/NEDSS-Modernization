@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MergeIdentification, MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { IdentificationId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
-import { MergePreviewTableCard } from '../Card/MergePreviewTableCard';
+import { MergePreviewTableCard } from '../shared/preview-card-table/MergePreviewTableCard';
 import { Column } from 'design-system/table';
 
 type IdentificationEntry = {

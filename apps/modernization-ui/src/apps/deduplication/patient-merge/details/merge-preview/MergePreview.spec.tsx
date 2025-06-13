@@ -11,6 +11,7 @@ import {PreviewAddress} from "./components/address/PreviewAddress";
 import {PreviewPhoneAndEmail} from "./components/phone-and-email/PreviewPhoneAndEmail";
 import {PreviewIdentification} from "./components/identification/PreviewIdentification";
 import {PreviewRace} from "./components/race/PreviewRace";
+import {PreviewEthnicity} from "./components/ethnicity/PreviewEthnicity";
 
 describe('MergePreview', () => {
     const mockOnBack = jest.fn();
@@ -100,6 +101,7 @@ describe('MergePreview', () => {
                     mergeCandidates={mockMergeCandidates}
                     selectedRaces={mockMergeFormData.races.map(({ personUid, raceCode }) => ({ personUid, raceCode }))}
                 />
+                <PreviewEthnicity mergeFormData={mockMergeFormData} mergeCandidates={mockMergeCandidates} />
             </div>
         </MemoryRouter>
     );

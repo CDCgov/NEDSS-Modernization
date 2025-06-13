@@ -10,6 +10,7 @@ import { PreviewIdentification } from './components/identification/PreviewIdenti
 import { PreviewName } from './components/name/PreviewName';
 import { PreviewPhoneAndEmail } from './components/phone-and-email/PreviewPhoneAndEmail';
 import { PreviewRace } from './components/race/PreviewRace';
+import { PreviewEthnicity } from './components/ethnicity/PreviewEthnicity';
 
 type MergePreviewProps = {
     onBack: () => void;
@@ -68,6 +69,7 @@ export const MergePreview = ({ onBack, mergeFormData, mergeCandidates }: MergePr
                     raceCode
                 }))}
             />
+            <PreviewEthnicity mergeFormData={mergeFormData} mergeCandidates={mergeCandidates} />
         </div>
     );
 };
