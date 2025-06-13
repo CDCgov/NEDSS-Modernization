@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { MergeCandidate, MergeEthnicity } from '../../../../../api/model/MergeCandidate';
+import React from 'react';
+import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
 import { LinedMergePreviewCard } from '../shared/preview-card-lined/LinedMergePreviewCard';
 import { format, parseISO } from 'date-fns';
@@ -11,17 +11,10 @@ type PreviewEthnicityProps = {
 
 export const PreviewEthnicity = ({ mergeFormData, mergeCandidates }: PreviewEthnicityProps) => {
     // Find the candidate
-    const ethnicityData: MergeEthnicity | undefined = useMemo(() => {
-        if (!mergeFormData.ethnicity) return undefined;
-        const candidate = mergeCandidates.find((mc) => mc.personUid === mergeFormData.ethnicity);
-        return candidate?.ethnicity;
-    }, [mergeFormData.ethnicity, mergeCandidates]);
+    const ethnicityData = mergeCandidates.find((mc) => mc.personUid === mergeFormData.ethnicity)?.ethnicity;
 
     // Format asOf date
-    const formattedAsOf =
-        ethnicityData?.asOf || ethnicityData?.asof
-            ? format(parseISO(ethnicityData.asOf ?? ethnicityData.asof!), 'MM/dd/yyyy')
-            : '---';
+    const formattedAsOf = ethnicityData?.asOf ? format(parseISO(ethnicityData.asOf), 'MM/dd/yyyy') : '---';
 
     // Prepare items for LinedMergePreviewCard
     const items = [

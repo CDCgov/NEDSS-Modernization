@@ -11,41 +11,37 @@ export const PreviewGeneralPatientInfo = ({
     mergeFormData: PatientMergeForm;
     mergeCandidates: MergeCandidate[];
 }) => {
-    const getCandidateByUid = (uid?: string) => mergeCandidates.find((mc) => mc.personUid === uid);
+    const g = mergeFormData.generalInfo;
 
-    const gValues = mergeFormData.generalInfo;
-    const getField = (uid?: string, field?: keyof MergeCandidate['general']) => {
-        if (!uid || !field) return '---';
-        const c = getCandidateByUid(uid);
-        return c?.general?.[field] ?? '---';
+    const getField = (uid?: string, field?: keyof MergeCandidate['general']) =>
+        uid && field ? (mergeCandidates.find((c) => c.personUid === uid)?.general?.[field] ?? '---') : '---';
+
+    const parseValidDate = (str?: string) => {
+        const date = str ? parseISO(str) : undefined;
+        return isValid(date) ? date : undefined;
     };
 
-    const parseDate = (dateStr?: string) => {
-        const parsed = dateStr ? parseISO(dateStr) : undefined;
-        return parsed && isValid(parsed) ? parsed : undefined;
-    };
-
-    const asOfDate = parseDate(gValues?.asOf);
+    const asOfDate = parseValidDate(g.asOf);
 
     const items = [
         { label: 'As of', text: asOfDate ? format(asOfDate, 'MM/dd/yyyy') : '---', lined: true },
-        { label: 'Marital status', text: getField(gValues.maritalStatus, 'maritalStatus'), lined: true },
-        { label: "Mother's maiden name", text: getField(gValues.mothersMaidenName, 'mothersMaidenName'), lined: true },
+        { label: 'Marital status', text: getField(g.maritalStatus, 'maritalStatus'), lined: true },
+        { label: "Mother's maiden name", text: getField(g.mothersMaidenName, 'mothersMaidenName'), lined: true },
         {
             label: 'Number of adults in residence',
-            text: getField(gValues.numberOfAdultsInResidence, 'numberOfAdultsInResidence'),
+            text: getField(g.numberOfAdultsInResidence, 'numberOfAdultsInResidence'),
             lined: true
         },
         {
             label: 'Number of children in residence',
-            text: getField(gValues.numberOfChildrenInResidence, 'numberOfChildrenInResidence'),
+            text: getField(g.numberOfChildrenInResidence, 'numberOfChildrenInResidence'),
             lined: true
         },
-        { label: 'Primary occupation', text: getField(gValues.primaryOccupation, 'primaryOccupation'), lined: true },
-        { label: 'Highest level of education', text: getField(gValues.educationLevel, 'educationLevel'), lined: true },
-        { label: 'Primary language', text: getField(gValues.primaryLanguage, 'primaryLanguage'), lined: true },
-        { label: 'Speaks English', text: getField(gValues.speaksEnglish, 'speaksEnglish'), lined: true },
-        { label: 'State HIV case ID', text: getField(gValues.stateHivCaseId, 'stateHivCaseId'), lined: false }
+        { label: 'Primary occupation', text: getField(g.primaryOccupation, 'primaryOccupation'), lined: true },
+        { label: 'Highest level of education', text: getField(g.educationLevel, 'educationLevel'), lined: true },
+        { label: 'Primary language', text: getField(g.primaryLanguage, 'primaryLanguage'), lined: true },
+        { label: 'Speaks English', text: getField(g.speaksEnglish, 'speaksEnglish'), lined: true },
+        { label: 'State HIV case ID', text: getField(g.stateHivCaseId, 'stateHivCaseId'), lined: false }
     ];
 
     return <LinedMergePreviewCard id="generalInfo" title="General patient information" items={items} />;
