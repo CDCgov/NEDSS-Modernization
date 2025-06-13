@@ -1,3 +1,4 @@
+
 import { faker } from "@faker-js/faker";
 
 class AddPatientPage {
@@ -17,8 +18,7 @@ class AddPatientPage {
 
     cy.get("#lastName").type(randomLastName);
     cy.get("#firstName").type(randomFirstName);
-    cy.get("#middleName").type(randomMiddleName);
-    cy.wait(1000);
+    cy.get("#middleName").type(randomMiddleName);    
   }
 
   addSimplePatient() {
@@ -29,15 +29,9 @@ class AddPatientPage {
   addPatient() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");
-    // cy.get("input[data-testid=date-picker-external-input]")
-    //   .eq(1)
-    //   .type('10/23/1980');
-    cy.wait(1500);
-    cy.get("select[name=currentGender]").select("Female");
-    cy.wait(1000);
-    cy.get("select[name=birthGender]").select("Female");
-    cy.wait(1000);
+    cy.get("select[name=suffix]").select("Esquire");    
+    cy.get("select[name=currentGender]").select("Female");    
+    cy.get("select[name=birthGender]").select("Female");    
     cy.get("select[name=deceased]").select("No");
 
     this.clickSumbitSaveButton();
@@ -55,9 +49,6 @@ class AddPatientPage {
   }
 
   addPatientSingleDetail() {
-    // cy.get("input[data-testid=date-picker-external-input]")
-    //   .first()
-    //   .type(this.getCurrentDate());
     this.clickSumbitSaveButton();
     cy.wait(500)
     this.clickViewPatientLink();
@@ -101,22 +92,11 @@ class AddPatientPage {
     cy.get(".usa-button.padding-105.text-center").click();
   }
 
-  addPatientOtherInformation() {
-    // cy.get("input[data-testid=date-picker-external-input]")
-    //   .first()
-    //   .type(this.getCurrentDate());
-    // cy.get("input[data-testid=date-picker-external-input]")
-    // .eq(1)
-    // .type('10/23/1980');
-    cy.wait(1000);
-    cy.get("select[name=currentGender]").select("Female");
-    cy.wait(1000);
-    cy.get("select[name=birthGender]").select("Female");
-    cy.wait(1000);
-    cy.get("select[name=deceased]").select("No");
-    cy.wait(1000);
-    cy.get("select[name=maritalStatus]").select("Married");
-    cy.wait(1000);
+  addPatientOtherInformation() {    
+    cy.get("select[name=currentGender]").select("Female");    
+    cy.get("select[name=birthGender]").select("Female");    
+    cy.get("select[name=deceased]").select("No");    
+    cy.get("select[name=maritalStatus]").select("Married");    
     this.clickSumbitSaveButton();
 
     this.clickViewPatientLink();
@@ -127,16 +107,11 @@ class AddPatientPage {
     const randomLastStreet = faker.location.secondaryAddress();
     const randomCity = faker.location.city();
 
-    // cy.get("input[data-testid=date-picker-external-input]")
-    //   .first()
-    //   .type(this.getCurrentDate());
     cy.get("#streetAddress1").type(randomFirstStreet);
     cy.get("#streetAddress2").type(randomLastStreet);
-    cy.get('input[id="location.city"]').type(randomCity);
-    cy.wait(1000);
+    cy.get('input[id="location.city"]').type(randomCity);    
     cy.get("select[name=state]").select("California");
-    cy.get("#zip").type("93501");
-    cy.wait(1000);
+    cy.get("#zip").type("93501");    
     cy.get("select[name=country]").select("United States");
 
     this.clickSumbitSaveButton();
@@ -158,7 +133,6 @@ class AddPatientPage {
 
   clickViewPatientProfile() {
     this.clickViewPatientLink();
-    // cy.get("button").contains("View patient").click();
   }
 
   addAnotherPatient() {
@@ -168,15 +142,9 @@ class AddPatientPage {
   addPatientselectEthnicity() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");
-    // cy.get("input[data-testid=date-picker-external-input]")
-    //   .eq(1)
-    //   .type('10/23/1980');
-    cy.wait(1000);
-    cy.get("select[name=currentGender]").select("Female");
-    cy.wait(1000);
-    cy.get("select[name=birthGender]").select("Female");
-    cy.wait(1000);
+    cy.get("select[name=suffix]").select("Esquire");    
+    cy.get("select[name=currentGender]").select("Female");    
+    cy.get("select[name=birthGender]").select("Female");    
     cy.get("select[name=deceased]").select("No");
 
     cy.get("label[for='2135-2']").click();
@@ -189,15 +157,9 @@ class AddPatientPage {
   addPatientselectRace() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");
-    // cy.get("input[data-testid=date-picker-external-input]")
-    //   .eq(1)
-    //   .type('10/23/1980');
-    cy.wait(1000);
-    cy.get("select[name=currentGender]").select("Female");
-    cy.wait(1000);
-    cy.get("select[name=birthGender]").select("Female");
-    cy.wait(1000);
+    cy.get("select[name=suffix]").select("Esquire");    
+    cy.get("select[name=currentGender]").select("Female");    
+    cy.get("select[name=birthGender]").select("Female");    
     cy.get("select[name=deceased]").select("No");
 
     cy.get("label[for='2135-2']").click();
@@ -211,15 +173,9 @@ class AddPatientPage {
   addPatientSelectTwoRace() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");
-    // cy.get("input[data-testid=date-picker-external-input]")
-    //   .eq(1)
-    //   .type('10/23/1980');
-    cy.wait(1000);
-    cy.get("select[name=currentGender]").select("Female");
-    cy.wait(1000);
-    cy.get("select[name=birthGender]").select("Female");
-    cy.wait(1000);
+    cy.get("select[name=suffix]").select("Esquire");    
+    cy.get("select[name=currentGender]").select("Female");    
+    cy.get("select[name=birthGender]").select("Female");    
     cy.get("select[name=deceased]").select("No");
 
     cy.get("label[for='2135-2']").click();
@@ -234,23 +190,16 @@ class AddPatientPage {
   addPatientId_Identificatione() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");
-    // cy.get("input[data-testid=date-picker-external-input]")
-    //   .eq(1)
-    //   .type('10/23/1980');
-    cy.wait(1000);
-    cy.get("select[name=currentGender]").select("Female");
-    cy.wait(1000);
-    cy.get("select[name=birthGender]").select("Female");
-    cy.wait(1000);
+    cy.get("select[name=suffix]").select("Esquire");    
+    cy.get("select[name=currentGender]").select("Female");    
+    cy.get("select[name=birthGender]").select("Female");    
     cy.get("select[name=deceased]").select("No");
 
     cy.get("label[for='2135-2']").click();
     cy.get("label[for='1002-5']").click();
     cy.get("label[for='2028-9']").click();
     cy.get("label[for='2106-3']").click();
-
-    cy.wait(1000);
+    
     cy.get(
       "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > section:nth-child(8) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > select:nth-child(2)"
     ).select("Medicare number");
@@ -262,26 +211,18 @@ class AddPatientPage {
   addPatientAssigningAuthority_Identificatione() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");
-    // cy.get("input[data-testid=date-picker-external-input]")
-    //   .eq(1)
-    //   .type('10/23/1980');
-    cy.wait(1000);
-    cy.get("select[name=currentGender]").select("Female");
-    cy.wait(1000);
-    cy.get("select[name=birthGender]").select("Female");
-    cy.wait(1000);
+    cy.get("select[name=suffix]").select("Esquire");    
+    cy.get("select[name=currentGender]").select("Female");    
+    cy.get("select[name=birthGender]").select("Female");    
     cy.get("select[name=deceased]").select("No");
 
     cy.get("label[for='2135-2']").click();
     cy.get("label[for='1002-5']").click();
     cy.get("label[for='2028-9']").click();
-    cy.get("label[for='2106-3']").click();
-    cy.wait(1000);
+    cy.get("label[for='2106-3']").click();    
     cy.get(
       "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > section:nth-child(8) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > select:nth-child(2)"
-    ).select("Medicare number");
-    cy.wait(1000);
+    ).select("Medicare number");    
     cy.get(
       "select[placeholder='-Select-'][name='identification[0].authority']"
     ).select("CO");
@@ -293,35 +234,25 @@ class AddPatientPage {
   addPatientAddAnotherID() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");
-    // cy.get("input[data-testid=date-picker-external-input]")
-    //   .eq(1)
-    //   .type('10/23/1980');
-    cy.wait(1000);
-    cy.get("select[name=currentGender]").select("Female");
-    cy.wait(1000);
-    cy.get("select[name=birthGender]").select("Female");
-    cy.wait(1000);
+    cy.get("select[name=suffix]").select("Esquire");    
+    cy.get("select[name=currentGender]").select("Female");    
+    cy.get("select[name=birthGender]").select("Female");    
     cy.get("select[name=deceased]").select("No");
 
     cy.get("label[for='2135-2']").click();
     cy.get("label[for='1002-5']").click();
     cy.get("label[for='2028-9']").click();
     cy.get("label[for='2106-3']").click();
-
-    cy.wait(1000);
+    
     cy.get(
       "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > section:nth-child(8) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > select:nth-child(2)"
-    ).select("Medicare number");
-    cy.wait(1000);
+    ).select("Medicare number");    
     cy.get(
       "select[placeholder='-Select-'][name='identification[0].authority']"
-    ).select("CO");
-    cy.wait(1000);
+    ).select("CO");    
     cy.get(
       "div[class='grid-col-12 padding-x-3 padding-bottom-3 padding-top-0'] button[type='button']"
-    ).click();
-    cy.wait(1000);
+    ).click();    
     cy.get(
       "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > section:nth-child(8) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > select:nth-child(2)"
     ).select("Social Security");

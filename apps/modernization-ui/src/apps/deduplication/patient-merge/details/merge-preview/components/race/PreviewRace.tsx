@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MergeCandidate, MergeRace } from '../../../../../api/model/MergeCandidate';
 import { RaceId } from '../../../merge-review/model/PatientMergeForm';
-import { MergePreviewTableCard } from '../Card/MergePreviewTableCard';
+import { MergePreviewTableCard } from '../shared/preview-card-table/MergePreviewTableCard';
 import { Column } from 'design-system/table';
 import { format, parseISO } from 'date-fns';
 

@@ -1,0 +1,56 @@
+@use 'styles/borders';
+@use 'styles/colors';
+
+.card {
+  width: 44.1rem !important;
+  border-radius: 0.315rem;
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.14);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding-inline: 1rem;
+  width: 100%;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  padding-block: 0.5rem 0.5rem;
+  position: relative;
+}
+
+.underlined::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 43.5rem;
+  @extend %thin-bottom;
+  pointer-events: none;
+}
+
+.labelText {
+  display: flex;
+  align-items: baseline;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.label {
+  width: 12rem;
+  margin-right: 2rem;
+  flex-shrink: 0;
+  font-weight: 600;
+  color: colors.$base-black;
+}
+
+.text {
+  font-weight: 400;
+  flex-grow: 1;
+  min-width: 0;
+  color: colors.$base-black;
+}

@@ -8,7 +8,9 @@
     "cy:e2e": "cypress run --spec 'cypress/e2e/**/*.feature'",
     "cy:api": "cypress run --spec cypress/api/**/*.feature",
     "report": "node cucumber-html-report.js",
-    "githubReport": "node github-report.js"
+    "githubReport": "node github-report.js",
+    "lint": "eslint \"cypress/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "eslint \"cypress/step_definitions/**/*.{ts,tsx,js,jsx}\" --fix"
   },
   "keywords": [
     "cypress",
@@ -22,6 +24,8 @@
     "@faker-js/faker": "^8.0.2",
     "cypress": "^13.15.1",
     "cypress-xpath": "^2.0.1",
+    "eslint": "^9.20.1",
+    "eslint-plugin-cypress": "^4.3.0",
     "multiple-cucumber-html-reporter": "^3.6.2"
   },
   "cypress-cucumber-preprocessor": {

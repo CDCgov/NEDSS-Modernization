@@ -20,9 +20,10 @@ type DateRangeFieldProps = {
     sizing?: Sizing;
     onChange: (value?: DateBetweenCriteria) => void;
     onBlur?: () => void;
+    label?: string;
 };
 
-const DateRangeField = ({ id, value, sizing, onChange, onBlur }: DateRangeFieldProps) => {
+const DateRangeField = ({ id, value, sizing, onChange, onBlur, label }: DateRangeFieldProps) => {
     const [range, setRange] = useState<DateRange | undefined>(value?.between);
 
     useEffect(() => {
@@ -56,8 +57,10 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur }: DateRangeFieldP
     return (
         <div
             id={id}
+            role="group"
             ref={dateRangePickerRef}
-            className={classNames('usa-date-range-picker', styles['date-range-entry'])}>
+            className={classNames('usa-date-range-picker', styles['date-range-entry'])}
+            aria-label={label}>
             <div className={classNames(styles['range-wrapper'], 'from')}>
                 <label htmlFor={`${id}-from`}>From</label>
                 <DatePicker
