@@ -1,0 +1,49 @@
+// This file is only used for linting in the IDE for backwards compatibility with older linting extensions. 
+// The CLI uses eslint.config.mjs.
+{
+    "root": true,
+    "env": { "browser": true, "es2021": true, "jest": true },
+    "globals": { "JSX": "readonly" },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:prettier/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:storybook/recommended",
+        "plugin:jsdoc/recommended-typescript-flavor"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": { "ecmaFeatures": { "jsx": true }, "ecmaVersion": "latest" },
+    "plugins": ["react", "@typescript-eslint", "prettier", "react-hooks", "storybook", "jsdoc"],
+    "rules": {
+        "require-jsdoc": "off",
+        "valid-jsdoc": "off",
+        "jsdoc/require-jsdoc": "off",
+        "jsdoc/require-example": "off",
+        "jsdoc/require-param": "off",
+        "jsdoc/require-returns": "off",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error", { "caughtErrors": "none" }],
+        "react/react-in-jsx-scope": "off",
+        "react/no-unescaped-entities": "off",
+        "react-hooks/rules-of-hooks": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "storybook/hierarchy-separator": "off"
+    },
+    "settings": {
+        "jsdoc": {
+            "tagNamePreference": {
+                "return": "return"
+            }
+        }
+    },
+    "ignorePatterns": [
+        "build/**",
+        "node_modules/**",
+        "src/generated/**",
+        "src/setupTests.js",
+        "src/setupProxy.js",
+        "**/*.spec.{js,jsx,ts,tsx}",
+        "**/*.test.{js,jsx,ts,tsx}"
+    ]
+}
