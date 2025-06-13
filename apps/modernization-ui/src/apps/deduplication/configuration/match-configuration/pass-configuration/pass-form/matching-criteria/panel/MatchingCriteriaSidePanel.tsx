@@ -51,9 +51,9 @@ export const MatchingCriteriaSidePanel = ({ visible, dataElements, onAccept, onC
                 </>
             }>
             <div className={styles.matchingCriteriaPanel}>
-                {MatchingAttributeLabelsList.filter((a) => a[1].isActive(dataElements)).map(([attribute, entry], k) => (
+                {MatchingAttributeLabelsList.filter((a) => a[1].isActive(dataElements)).map(([attribute, entry]) => (
                     <AttributeEntry
-                        key={`matchingAttribute-${k}`}
+                        key={`matchingAttribute-${attribute}`}
                         label={entry.label}
                         onChange={() => {
                             handleOnChange(attribute);
