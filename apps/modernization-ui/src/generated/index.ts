@@ -40,6 +40,7 @@ export type { NotificationStatus } from './models/NotificationStatus';
 export type { Option } from './models/Option';
 export type { PatientAddressDemographic } from './models/PatientAddressDemographic';
 export type { PatientDemographicsSummary } from './models/PatientDemographicsSummary';
+export type { PatientEthnicityDemographic } from './models/PatientEthnicityDemographic';
 export { PatientFile } from './models/PatientFile';
 export type { PatientIdentificationDemographic } from './models/PatientIdentificationDemographic';
 export type { PatientInvestigation } from './models/PatientInvestigation';
