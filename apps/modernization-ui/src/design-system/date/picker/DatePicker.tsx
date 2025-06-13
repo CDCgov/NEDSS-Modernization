@@ -107,10 +107,6 @@ const DatePicker = ({
                 }
             };
         }
-
-        if (externalInputRef.current && remaining['aria-label']) {
-            externalInputRef.current.setAttribute('aria-label', remaining['aria-label']);
-        }
     }, [externalInputRef.current]);
 
     useEffect(() => {
