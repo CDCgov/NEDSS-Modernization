@@ -25,7 +25,6 @@ type Props = {
  * An accompanying `aria-describedby` should be set on the described element.
  * Ex: `<div aria-describedby='my-hint'>Something confusing</div><Hint id='my-hint'>More info</Hint>`
  * @return {Hint}
-
  */
 export const Hint = ({ id, children, target, marginTop = 0, marginLeft = 0, position = 'right' }: Props) => {
     const [visible, setVisible] = useState(false);
@@ -58,3 +57,6 @@ export const Hint = ({ id, children, target, marginTop = 0, marginLeft = 0, posi
         </div>
     );
 };
+
+
+
