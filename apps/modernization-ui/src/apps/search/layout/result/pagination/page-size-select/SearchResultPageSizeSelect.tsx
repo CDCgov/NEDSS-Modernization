@@ -1,5 +1,6 @@
 import { ChangeEvent as ReactChangeEvent } from 'react';
 import classNames from 'classnames';
+import { usePageSizePreference } from './usePageSizePreference';
 
 import styles from './search-result-page-size-select.module.scss';
 
@@ -16,7 +17,9 @@ const SearchResultPageSizeSelect = ({
     value,
     onPageSizeChanged
 }: SearchResultPageSizeSelectProps) => {
-    const current = value ?? Math.min(...selections);
+    const defaultPageSize = Math.min(...selections);
+    const { preferencePageSize } = usePageSizePreference(defaultPageSize);
+    const current = value ?? preferencePageSize;
 
     const handleChange = (event: ReactChangeEvent<HTMLSelectElement>) => {
         const selected = Number(event.target.value);
