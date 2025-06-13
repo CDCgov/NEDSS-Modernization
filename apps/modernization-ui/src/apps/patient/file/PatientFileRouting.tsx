@@ -5,6 +5,7 @@ import { PatientFile } from './PatientFile';
 import { loader } from './loader';
 import { PatientFileSummary } from './summary/PatientFileSummary';
 import { PatientFileEvents } from './events';
+import { PatientFileDemographics } from './demographics/PatientFileDemographics';
 
 const routing = [
     {
@@ -29,7 +30,7 @@ const routing = [
             },
             {
                 path: 'demographics',
-                element: <div></div>
+                element: <PatientFileDemographics />
             }
         ]
     }
