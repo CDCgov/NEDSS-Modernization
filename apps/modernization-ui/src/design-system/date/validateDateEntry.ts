@@ -1,7 +1,6 @@
 import { getDaysInMonth } from 'date-fns';
 import { DateEntry } from './entry';
 import { occursInThePast } from './occursInThePast';
-import { validateAll } from 'validation';
 import { now } from './clock';
 
 const validateYear = (name: string) => (value: DateEntry) => {
@@ -49,7 +48,16 @@ const validateDay = (name: string) => (value: DateEntry) => {
  */
 const validateDateEntry =
     (name: string) =>
-    (value: DateEntry): boolean | string =>
-        validateAll(validateYear(name), validateMonth(name), validateDay(name), occursInThePast(name))(value);
+    (value: DateEntry): boolean | string => {
+        const validators = [validateYear(name), validateMonth(name), validateDay(name), occursInThePast(name)];
+        const errors = validators
+            .map((validator) => validator(value))
+            .filter((result) => typeof result === 'string') as string[];
+
+        if (errors.length > 0) {
+            return errors.join('\n');
+        }
+        return true;
+    };
 
 export { validateDateEntry };

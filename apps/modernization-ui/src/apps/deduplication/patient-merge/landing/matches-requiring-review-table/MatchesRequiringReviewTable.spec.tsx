@@ -85,25 +85,25 @@ describe('MatchesRequiringReviewTable', () => {
 
         const patientId = getByText('Patient ID');
         expect(patientId).toHaveClass('sortable');
-        expect(patientId.children[0].children[0].getAttribute('xlink:href')).toContain('sprite.svg#sort_arrow');
+        expect(within(patientId).getByRole('button', { name: 'Sort Patient ID' })).toBeInTheDocument();
 
         const personName = getByText('Person name');
         expect(personName).toHaveClass('sortable');
-        expect(personName.children[0].children[0].getAttribute('xlink:href')).toContain('sprite.svg#sort_arrow');
+        expect(within(personName).getByRole('button', { name: 'Sort Person name' })).toBeInTheDocument();
 
         const dateCreated = getByText('Date created');
         expect(dateCreated).toHaveClass('sortable');
-        expect(dateCreated.children[0].children[0].getAttribute('xlink:href')).toContain('sprite.svg#sort_arrow');
+        expect(within(dateCreated).getByRole('button', { name: 'Sort Date created' })).toBeInTheDocument();
 
         const dateIdentified = getByText('Date identified');
         expect(dateIdentified).toHaveClass('sortable');
-        expect(dateIdentified.children[0].children[0].getAttribute('xlink:href')).toContain(
-            'sprite.svg#sort_des_numeric'
-        );
+        expect(within(dateIdentified).getByRole('button', { name: 'Sort Date identified' })).toBeInTheDocument();
 
         const numberOfMatching = getByText('Number of matching records');
         expect(numberOfMatching).toHaveClass('sortable');
-        expect(numberOfMatching.children[0].children[0].getAttribute('xlink:href')).toContain('sprite.svg#sort_arrow');
+        expect(
+            within(numberOfMatching).getByRole('button', { name: 'Sort Number of matching records' })
+        ).toBeInTheDocument();
     });
 
     it('should sort on click', async () => {

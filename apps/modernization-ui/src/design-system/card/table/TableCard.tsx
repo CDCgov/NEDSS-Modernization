@@ -1,4 +1,4 @@
-import { ComponentType, FC, useMemo } from 'react';
+import { ComponentType, FC } from 'react';
 import { SortableDataTable, DataTableProps, Column } from 'design-system/table';
 import {
     ColumnPreference,
@@ -12,16 +12,17 @@ import { Card, CardProps } from '../Card';
 
 export type TableCardProps<V> = {
     sizing?: Sizing;
-    /** Used to store/retrieve column preferences in local storage */
+    /** A unique identifier for persisting column preferences. */
     columnPreferencesKey: string;
-    /** When provided, uses these preferences as the starting point if no data in local storage */
-    defaultColumnPreferences?: ColumnPreference[];
+    /** The column preferences that are used when resetting the preferences. */
+    defaultColumnPreferences: ColumnPreference[];
     columns: Column<V>[];
     data: V[];
 } & Omit<CardProps, 'children'>;
 
 /**
  * Represents a specialized card component that contains a DataTable and settings to manage the column preferences.
+ *
  * @param {TableCardProps} props Component props
  * @return {TableCard} component
  */
@@ -36,20 +37,9 @@ const TableCard = <V,>({
     defaultColumnPreferences,
     ...props
 }: TableCardProps<V>) => {
-    const columnPreferences = useMemo(
-        () =>
-            defaultColumnPreferences ??
-            columns.map((column) => ({
-                id: column.id,
-                name: column.name,
-                moveable: true,
-                toggleable: true
-            })),
-        [defaultColumnPreferences, columns]
-    );
     const ColumnPreferencesCard = withColumnPreferences(Card, {
         storageKey: columnPreferencesKey,
-        defaults: columnPreferences
+        defaults: defaultColumnPreferences
     });
     const ManagedDataTable = withColumnPreferencesDataTable(SortableDataTable<V>);
     return (

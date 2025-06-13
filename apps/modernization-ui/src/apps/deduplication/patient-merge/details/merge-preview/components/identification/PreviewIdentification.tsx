@@ -3,7 +3,7 @@ import { MergeIdentification, MergeCandidate } from '../../../../../api/model/Me
 import { IdentificationId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
 import { MergePreviewTableCard } from '../Card/MergePreviewTableCard';
-import { Column } from 'design-system/table/DataTable';
+import { Column } from 'design-system/table';
 
 type IdentificationEntry = {
     asOf: string;
