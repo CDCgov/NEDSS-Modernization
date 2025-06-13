@@ -7,21 +7,33 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 
+/**
+ * A {@link ResultSetExtractor} that takes a {@link ResultSet} of zero or more rows and returns an {@link Optional}.
+ * When there is more than one row present a merge function is used to combine the values into one instance.  An empty
+ * {@code Optional} is returned when the {@code ResultSet} is empty or the mapper resolves a {@code null} value.
+ *
+ *
+ * @param <V> They type of the object being merged.
+ */
 public class MergingResultSetExtractor<V> implements ResultSetExtractor<Optional<V>> {
 
 
-  private final RowMapper<V> valueMapper;
-  private final BiFunction<V, V, V> mergeFunction;
+  private final RowMapper<V> mapper;
+  private final BinaryOperator<V> merger;
 
+  /**
+   * @param mapper The {@link RowMapper} used to map a {@link ResultSet} to a {@code V}.
+   * @param merger The function used to merger two instances of {@code V}.
+   */
   public MergingResultSetExtractor(
-      final RowMapper<V> valueMapper,
-      final BiFunction<V, V, V> mergeFunction
+      final RowMapper<V> mapper,
+      final BinaryOperator<V> merger
   ) {
 
-    this.valueMapper = valueMapper;
-    this.mergeFunction = mergeFunction;
+    this.mapper = mapper;
+    this.merger = merger;
   }
 
   @Override
@@ -30,12 +42,12 @@ public class MergingResultSetExtractor<V> implements ResultSetExtractor<Optional
     V result = null;
 
     for (int row = 0; resultSet.next(); row++) {
-      V current = valueMapper.mapRow(resultSet, row);
+      V current = mapper.mapRow(resultSet, row);
 
       if (result == null) {
         result = current;
       } else {
-        result = mergeFunction.apply(result, current);
+        result = merger.apply(result, current);
       }
 
     }
