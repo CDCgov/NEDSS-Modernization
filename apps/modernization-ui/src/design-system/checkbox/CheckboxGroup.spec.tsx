@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CheckboxGroup } from './CheckboxGroup';
+import { axe } from 'jest-axe';
 
 const options = [
     { value: 'value1', label: 'label1', name: 'name1' },
@@ -8,6 +9,10 @@ const options = [
 ];
 
 describe('CheckboxGroup', () => {
+    it('should render with no accessibility violations', async () => {
+        const { container } = render(<CheckboxGroup name="test" label="checkbox group label" options={options} />)
+        expect(await axe(container)).toHaveNoViolations()
+    })
     it('should render with options', () => {
         const { getByLabelText } = render(<CheckboxGroup name="test" label="checkbox group label" options={options} />);
 
