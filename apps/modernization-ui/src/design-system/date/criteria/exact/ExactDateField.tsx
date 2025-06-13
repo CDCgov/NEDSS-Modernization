@@ -17,9 +17,10 @@ type ExactDateFieldProps = {
     value?: DateEqualsCriteria;
     onChange: (value?: DateEqualsCriteria) => void;
     onBlur?: () => void;
+    label?: string;
 };
 
-const ExactDateField = ({ id, value, onChange, onBlur }: ExactDateFieldProps) => {
+const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldProps) => {
     const [criteria, setCriteria] = useState<DateEntry | undefined>(value?.equals);
 
     useEffect(() => {
@@ -42,7 +43,7 @@ const ExactDateField = ({ id, value, onChange, onBlur }: ExactDateFieldProps) =>
     );
 
     return (
-        <div id={id} className={styles['exact-date-entry']}>
+        <div role="group" id={id} className={styles['exact-date-entry']} aria-label={label}>
             <div className={classNames(styles['numeric-wrapper'], styles['month'])}>
                 <label htmlFor={`${id}-month`}>Month</label>
                 <Numeric
