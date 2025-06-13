@@ -14,9 +14,12 @@ import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import gov.cdc.nbs.support.IdentificationMother;
 import gov.cdc.nbs.support.RaceMother;
 import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
+import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PreDestroy;
 import jakarta.persistence.EntityManager;
 import net.datafaker.Faker;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -31,8 +34,61 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 @Component
+@ScenarioScope
 @Transactional
 public class PatientMother {
+
+  private static final String DELETE_IN = """  
+      -- Remove the history
+      delete from [locator]
+      from [Tele_locator_hist] [locator]
+          join [Entity_locator_participation] [participation] on
+                  [locator].[tele_locator_uid] = [participation].[locator_uid]
+      where [participation].entity_uid in (:identifiers);
+      delete from [locator]
+      from [Postal_locator_hist] [locator]
+          join [Entity_locator_participation] [participation] on
+                  [locator].[postal_locator_uid] = [participation].[locator_uid]
+      where [participation].entity_uid in (:identifiers);
+      
+      delete from Entity_loc_participation_hist where entity_uid in (:identifiers);
+      
+      delete from Entity_id_hist where entity_uid in (:identifiers);
+      
+      delete from Person_race_hist where person_uid in (:identifiers);
+      
+      delete from Person_ethnic_group_hist where person_uid in (:identifiers);
+      
+      delete from Person_Name_hist where person_uid in (:identifiers);
+      
+      delete from person_hist where person_uid in (:identifiers);
+      
+      --  Remove the Patient
+      
+            delete from [locator]
+      from [Tele_locator] [locator]
+          join [Entity_locator_participation] [participation] on
+                  [locator].[tele_locator_uid] = [participation].[locator_uid]
+      where [participation].entity_uid in (:identifiers);
+      
+      delete from [locator]
+      from [Postal_locator] [locator]
+          join [Entity_locator_participation] [participation] on
+                  [locator].[postal_locator_uid] = [participation].[locator_uid]
+      where [participation].entity_uid in (:identifiers);
+      
+      delete from Entity_loc_participation where entity_uid in (:identifiers);
+      
+      delete from Entity_id where entity_uid in (:identifiers);
+      
+      delete from Person_race where person_uid in (:identifiers);
+      
+      delete from Person_ethnic_group where person_uid in (:identifiers);
+      
+      delete from Person_Name where person_uid in (:identifiers);
+      
+      delete from person where person_uid in (:identifiers);
+      """;
 
   private final Faker faker;
   private final MotherSettings settings;
@@ -44,7 +100,7 @@ public class PatientMother {
   private final EntityManager entityManager;
   private final Available<PatientIdentifier> available;
   private final Active<PatientIdentifier> active;
-  private final PatientCleaner cleaner;
+  private final TestingDataCleaner<Long> cleaner;
   private final JdbcClient client;
   private final SoundexResolver soundexResolver;
 
@@ -58,9 +114,9 @@ public class PatientMother {
       final EntityManager entityManager,
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
-      final PatientCleaner cleaner,
       final JdbcClient client,
-      final SoundexResolver soundexResolver) {
+      final SoundexResolver soundexResolver
+  ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.localIdentifierGenerator = localIdentifierGenerator;
@@ -70,28 +126,30 @@ public class PatientMother {
     this.entityManager = entityManager;
     this.available = available;
     this.active = active;
-    this.cleaner = cleaner;
     this.client = client;
     this.soundexResolver = soundexResolver;
     this.faker = new Faker(Locale.of("en-us"));
+
+    this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
   }
 
+  @PreDestroy
   void reset() {
-
     this.cleaner.clean();
-    this.available.reset();
   }
 
   public PatientIdentifier create() {
     PatientIdentifier created = patient();
     available.available(created);
     active.active(created);
+    this.cleaner.include(created.id());
     return created;
   }
 
   public PatientIdentifier available() {
     PatientIdentifier created = patient();
     available.available(created);
+    this.cleaner.include(created.id());
     return created;
   }
 
@@ -684,63 +742,88 @@ public class PatientMother {
 
   public void withEthnicity(
       final PatientIdentifier identifier,
+      final String ethnicity,
+      final LocalDate asOf
+  ) {
+    client.sql(
+            """
+                update person set
+                    ethnic_group_ind = ?,
+                    as_of_date_ethnicity = ?
+                where person_uid = ?
+                """
+        )
+        .param(ethnicity)
+        .param(asOf)
+        .param(identifier.id())
+        .update();
+  }
+
+  public void withEthnicity(
+      final PatientIdentifier identifier,
       final String ethnicity
   ) {
-    Person patient = managed(identifier);
-
-    patient.update(
-        new PatientCommand.UpdateEthnicityInfo(
-            identifier.id(),
-            RandomUtil.dateInPast(),
-            ethnicity,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        )
-    );
+    withEthnicity(identifier, ethnicity, RandomUtil.dateInPast());
   }
 
-  public void withSpecificEthnicity(
-      final PatientIdentifier identifier,
-      final String ethnicity,
-      final String detail) {
-    Person patient = managed(identifier);
-
-    patient.update(
-        new PatientCommand.UpdateEthnicityInfo(
-            identifier.id(),
-            RandomUtil.dateInPast(),
-            ethnicity,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
-
-    patient.add(
-        new PatientCommand.AddDetailedEthnicity(
-            identifier.id(),
-            detail,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
+  public void withEthnicity(final PatientIdentifier identifier) {
+    withEthnicity(identifier, RandomUtil.ethnicity());
   }
+
 
   public void withSpecificEthnicity(
       final PatientIdentifier identifier,
       final String detail
   ) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddDetailedEthnicity(
-            identifier.id(),
-            detail,
-            this.settings.createdBy(),
-            this.settings.createdOn()
+    client.sql(
+            """
+                insert into Person_ethnic_group(
+                    person_uid,
+                    ethnic_group_cd,
+                    add_time,
+                    add_user_id,
+                    record_status_cd
+                ) values (
+                    :patient,
+                    :detail,
+                    :addedOn,
+                    :addedBy,
+                    'ACTIVE'
+                )
+                """
         )
-    );
+        .param("patient", identifier.id())
+        .param("detail", detail)
+        .param("addedOn", this.settings.createdOn())
+        .param("addedBy", this.settings.createdBy())
+        .update();
   }
 
-  public void withEthnicity(final PatientIdentifier identifier) {
-    withEthnicity(identifier, RandomUtil.ethnicity());
+  public void withUnknownEthnicity(
+      final PatientIdentifier identifier,
+      final String reason
+  ) {
+    withUnknownEthnicity(identifier, reason, RandomUtil.dateInPast());
+  }
+
+  public void withUnknownEthnicity(
+      final PatientIdentifier identifier,
+      final String reason,
+      final LocalDate asOf
+  ) {
+    client.sql(
+            """
+                update person set
+                    ethnic_group_ind = 'UNK',
+                    ethnic_unk_reason_cd = ?,
+                    as_of_date_ethnicity = ?
+                where person_uid = ?
+                """
+        )
+        .param(reason)
+        .param(asOf)
+        .param(identifier.id())
+        .update();
   }
 
   public void withStateHIVCase(final PatientIdentifier identifier, final String value) {

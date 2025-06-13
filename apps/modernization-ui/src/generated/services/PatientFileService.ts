@@ -8,6 +8,7 @@ import type { ExistingRaceCategoryInvalid } from '../models/ExistingRaceCategory
 import type { ExistingRaceCategoryValid } from '../models/ExistingRaceCategoryValid';
 import type { PatientAddressDemographic } from '../models/PatientAddressDemographic';
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
+import type { PatientEthnicityDemographic } from '../models/PatientEthnicityDemographic';
 import type { PatientFile } from '../models/PatientFile';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientInvestigation } from '../models/PatientInvestigation';
@@ -152,6 +153,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics/identifications',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient file ethnicity demographics
+     * Provides the ethnicity demographics for a patient
+     * @returns PatientEthnicityDemographic OK
+     * @throws ApiError
+     */
+    public static ethnicityDemographics({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<PatientEthnicityDemographic> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/ethnicity',
             path: {
                 'patient': patient,
             },
