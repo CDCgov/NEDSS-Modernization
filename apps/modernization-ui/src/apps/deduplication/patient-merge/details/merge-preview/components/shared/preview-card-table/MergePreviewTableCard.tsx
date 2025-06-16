@@ -1,6 +1,5 @@
-import React from 'react';
 import { Card } from 'design-system/card/Card';
-import { SortableDataTable } from 'design-system/table/SortableDataTable';
+import { SortableDataTable } from 'design-system/table';
 import { Tag } from 'design-system/tag/Tag';
 import { Column } from 'design-system/table';
 import styles from './MergePreviewTableCard.module.scss';

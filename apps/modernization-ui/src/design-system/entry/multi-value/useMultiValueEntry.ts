@@ -1,4 +1,4 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 
 type Entry<V> = { id: string; value: V };
 
@@ -153,6 +153,11 @@ const useMultiValueEntry = <E>({
     identifierGenerator
 }: MultiValueEntrySettings<E>): MultiValueEntryInteraction<E> => {
     const [state, dispatch] = useReducer(reducer<E>(identifierGenerator), values, initialize(identifierGenerator));
+
+    useEffect(() => {
+        dispatch({ type: 'initialize', values });
+    }, [JSON.stringify(values)]);
+
     const selected = state.status === 'editing' || state.status === 'viewing' ? state.selected : undefined;
 
     const add = useCallback((item: E) => dispatch({ type: 'add', item }), [dispatch]);
