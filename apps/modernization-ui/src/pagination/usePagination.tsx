@@ -1,3 +1,4 @@
+import { PageSizePreferenceKeyOptions, usePageSizePreference } from 'apps/search/usePageSizePreference';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useReducer } from 'react';
 import { useSearchParams } from 'react-router';
 import { TOTAL_TABLE_DATA } from 'utils/util';
@@ -65,6 +66,7 @@ const PaginationContext = createContext<PageContextState | undefined>(undefined)
 type PaginationSettings = {
     appendToUrl?: boolean;
     pageSize?: number;
+    pageSizePreferenceKey?: PageSizePreferenceKeyOptions;
 };
 
 type PaginationProviderProps = {
@@ -74,9 +76,11 @@ type PaginationProviderProps = {
 const PaginationProvider = ({
     pageSize = TOTAL_TABLE_DATA,
     appendToUrl = false,
+    pageSizePreferenceKey = 'simple-search-page-size',
     children
 }: PaginationProviderProps) => {
     const [page, dispatch] = useReducer(pageReducer, pageSize, initialize);
+    const { setPreferencePageSize } = usePageSizePreference(pageSize, pageSizePreferenceKey);
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -108,7 +112,13 @@ const PaginationProvider = ({
     const request = appendToUrl ? requestFromUrl : requestFromDispatch;
     const firstPage = () => request(1);
     const ready = useCallback((total: number, page: number) => dispatch({ type: 'ready', total, page }), [dispatch]);
-    const resize = useCallback((size: number) => dispatch({ type: 'resize', size }), [dispatch]);
+    const resize = useCallback(
+        (size: number) => {
+            setPreferencePageSize(size);
+            dispatch({ type: 'resize', size });
+        },
+        [dispatch]
+    );
     const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch]);
 
     const value = { page, firstPage, reload, request, ready, resize, reset };
