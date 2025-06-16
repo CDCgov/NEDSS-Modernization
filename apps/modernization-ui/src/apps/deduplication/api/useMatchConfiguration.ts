@@ -40,6 +40,9 @@ export const useMatchConfiguration = (lazy = false) => {
             }
         })
             .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to retrieve pass configuration');
+                }
                 response
                     .json()
                     .then((algorithm) => {
@@ -71,6 +74,9 @@ export const useMatchConfiguration = (lazy = false) => {
                 }
             })
                 .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete pass');
+                    }
                     response
                         .json()
                         .then((algorithm) => setPasses(algorithm.passes))
@@ -130,6 +136,9 @@ export const useMatchConfiguration = (lazy = false) => {
             body: JSON.stringify(pass)
         })
             .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to save pass');
+                }
                 response
                     .json()
                     .then((algorithm: { passes: Pass[] }) => onResponse(algorithm.passes))
@@ -162,6 +171,9 @@ export const useMatchConfiguration = (lazy = false) => {
             body: JSON.stringify(pass)
         })
             .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to save pass');
+                }
                 response
                     .json()
                     .then((algorithm: { passes: Pass[] }) => onResponse(algorithm.passes))

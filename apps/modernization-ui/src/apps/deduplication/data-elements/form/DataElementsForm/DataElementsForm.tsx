@@ -24,6 +24,7 @@ const dataElementKeys: (keyof DataElements)[] = [
     'telephone',
     'email',
     // Identification Details
+    'identifier',
     'accountNumber',
     'driversLicenseNumber',
     'medicaidNumber',
@@ -99,9 +100,9 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {dataElementKeys.map((field, k) => (
+                        {dataElementKeys.map((field) => (
                             <DataElementRow
-                                key={`data-element-row-${k}`}
+                                key={`data-element-row-${field}`}
                                 dataElements={dataElements}
                                 field={field}
                                 fieldName={MatchingAttributeLabels[DataElementToMatchingAttribute[field]].label}
