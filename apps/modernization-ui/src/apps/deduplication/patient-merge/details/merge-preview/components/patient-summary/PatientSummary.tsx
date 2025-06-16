@@ -10,25 +10,31 @@ type PatientSummaryProps = {
 };
 
 export const PatientSummary = ({ mergeCandidates, mergeFormData }: PatientSummaryProps) => {
-    const findCandidateByUid = (uid: string) => mergeCandidates.find((c) => c.personUid === uid);
+    // Accept undefined and return undefined if uid is falsy
+    const findCandidateByUid = (uid?: string) => {
+        if (!uid) return undefined;
+        return mergeCandidates.find((c) => c.personUid === uid);
+    };
+
     const survivingCandidate = findCandidateByUid(mergeFormData.survivingRecord);
 
     const mostRecentLegalName = mergeFormData.names
         .map(({ personUid, sequence }) =>
             findCandidateByUid(personUid)?.names.find((n) => n.sequence === sequence && n.type === 'Legal')
         )
-        .filter((n): n is typeof n & { asOf: string } => !!n?.asOf)
-        .sort((a, b) => parseISO(b.asOf).getTime() - parseISO(a.asOf).getTime())[0];
+        .filter((n) => n !== undefined)
+        .sort((a, b) => parseISO(b!.asOf).getTime() - parseISO(a!.asOf).getTime())[0];
 
-    const sex = findCandidateByUid(mergeFormData.sexAndBirth?.currentSex || '')?.sexAndBirth?.currentSex;
-    const birthdayRaw = findCandidateByUid(mergeFormData.sexAndBirth?.dateOfBirth || '')?.sexAndBirth?.dateOfBirth;
+    const sex = findCandidateByUid(mergeFormData.sexAndBirth?.currentSex)?.sexAndBirth?.currentSex;
+
+    const birthdayRaw = findCandidateByUid(mergeFormData.sexAndBirth?.dateOfBirth)?.sexAndBirth?.dateOfBirth;
     const birthday = birthdayRaw ? format(parseISO(birthdayRaw), 'MM/dd/yyyy') : undefined;
 
     const descriptor = {
         id: Number(mergeFormData.survivingRecord),
         patientId: Number(survivingCandidate?.personLocalId) || NaN,
         name: mostRecentLegalName,
-        status: 'active',
+        status: 'active', // placeholder
         sex,
         birthday
     };
