@@ -12,14 +12,14 @@ describe('PatientSummary', () => {
                 personUid: '123',
                 personLocalId: '98882',
                 addTime: '2023-05-31T00:00:00Z',
-                general:{},
+                general: {},
                 investigations: [],
                 adminComments: { date: '', comment: '' },
                 names: [{
                     personUid: '123',
                     sequence: '1',
-                    asOf: '',
-                    type: '',
+                    asOf: '2023-01-01T00:00:00Z',
+                    type: 'Legal',
                     first: 'John',
                     middle: 'Q',
                     last: 'Public',
@@ -42,26 +42,18 @@ describe('PatientSummary', () => {
             survivingRecord: '123',
             names: [{
                 personUid: '123',
-                sequence: '1',
-                asOf: '',
-                type: '',
-                first: 'John',
-                middle: 'Q',
-                last: 'Public',
-                suffix: 'Jr.'
+                sequence: '1'
             }],
             sexAndBirth: {
-                currentSex: '123',
+                currentSex: '123', // refers to the same personUid
                 dateOfBirth: '123'
             }
         } as any;
 
         render(<PatientSummary mergeCandidates={mergeCandidates} mergeFormData={mergeFormData} />);
 
-        expect(screen.getByRole('heading', { level: 2, name: (_content, element) =>
-                element?.textContent === 'Public, John Q, Jr.'
-        })).toBeInTheDocument();
-
+        expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Public, John Q, Jr.');
         expect(screen.getByText('Male')).toBeInTheDocument();
+        expect(screen.getByText((text) => text.includes('11/09/2003'))).toBeInTheDocument();
     });
 });

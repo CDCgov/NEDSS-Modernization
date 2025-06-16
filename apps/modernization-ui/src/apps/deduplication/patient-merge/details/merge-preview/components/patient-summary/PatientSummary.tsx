@@ -10,36 +10,27 @@ type PatientSummaryProps = {
 };
 
 export const PatientSummary = ({ mergeCandidates, mergeFormData }: PatientSummaryProps) => {
-    const selectedPersonUid = mergeFormData.survivingRecord;
-
     const findCandidateByUid = (uid: string) => mergeCandidates.find((c) => c.personUid === uid);
+    const survivingCandidate = findCandidateByUid(mergeFormData.survivingRecord);
 
-    const survivingCandidate = findCandidateByUid(selectedPersonUid);
+    const mostRecentLegalName = mergeFormData.names
+        .map(({ personUid, sequence }) =>
+            findCandidateByUid(personUid)?.names.find((n) => n.sequence === sequence && n.type === 'Legal')
+        )
+        .filter((n): n is typeof n & { asOf: string } => !!n?.asOf)
+        .sort((a, b) => parseISO(b.asOf).getTime() - parseISO(a.asOf).getTime())[0];
 
-    const selectedName = mergeFormData.names.find((n) => n.personUid === selectedPersonUid);
-    const fullName = selectedName
-        ? survivingCandidate?.names.find((n) => n.sequence === selectedName.sequence)
-        : undefined;
-
-    const sexCandidate = mergeFormData.sexAndBirth?.currentSex
-        ? findCandidateByUid(mergeFormData.sexAndBirth.currentSex)
-        : undefined;
-
-    const dateOfBirthCandidate = mergeFormData.sexAndBirth?.dateOfBirth
-        ? findCandidateByUid(mergeFormData.sexAndBirth.dateOfBirth)
-        : undefined;
-
-    const formattedDate = dateOfBirthCandidate?.sexAndBirth?.dateOfBirth
-        ? format(parseISO(dateOfBirthCandidate.sexAndBirth.dateOfBirth), 'MM/dd/yyyy')
-        : undefined;
+    const sex = findCandidateByUid(mergeFormData.sexAndBirth?.currentSex || '')?.sexAndBirth?.currentSex;
+    const birthdayRaw = findCandidateByUid(mergeFormData.sexAndBirth?.dateOfBirth || '')?.sexAndBirth?.dateOfBirth;
+    const birthday = birthdayRaw ? format(parseISO(birthdayRaw), 'MM/dd/yyyy') : undefined;
 
     const descriptor = {
-        id: parseInt(mergeFormData.survivingRecord, 10),
-        patientId: survivingCandidate ? parseInt(survivingCandidate.personLocalId, 10) : NaN,
-        name: fullName,
+        id: Number(mergeFormData.survivingRecord),
+        patientId: Number(survivingCandidate?.personLocalId) || NaN,
+        name: mostRecentLegalName,
         status: 'active',
-        sex: sexCandidate?.sexAndBirth?.currentSex,
-        birthday: formattedDate
+        sex,
+        birthday
     };
 
     return (
