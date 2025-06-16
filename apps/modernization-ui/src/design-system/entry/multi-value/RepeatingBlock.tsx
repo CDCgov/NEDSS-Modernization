@@ -15,7 +15,6 @@ import { entryIdentifierGenerator } from './entryIdentifierGenerator';
 import { entryColumns } from './entryColumns';
 
 import styles from './RepeatingBlock.module.scss';
-import { features } from 'process';
 
 type RepeatingBlockProps<V extends FieldValues> = {
     features?: DataTableFeatures;
@@ -53,25 +52,16 @@ const RepeatingBlock = <V extends FieldValues>({
 }: RepeatingBlockProps<V>) => {
     const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onBlur', defaultValues });
 
-    const {
-        status,
-        entries,
-        values: enteredValues,
-        selected,
-        add,
-        edit,
-        update,
-        remove,
-        view,
-        reset
-    } = useMultiValueEntry<V>({
+    const { status, entries, selected, using, add, edit, update, remove, view, reset } = useMultiValueEntry<V>({
         values: data,
-        identifierGenerator: entryIdentifierGenerator
+        identifierGenerator: entryIdentifierGenerator,
+        onChange
     });
 
     useEffect(() => {
-        onChange?.(enteredValues);
-    }, [JSON.stringify(enteredValues)]);
+        // if the data changes use the new values
+        using(data);
+    }, [JSON.stringify(data)]);
 
     useEffect(() => {
         isDirty?.(form.formState.isDirty);

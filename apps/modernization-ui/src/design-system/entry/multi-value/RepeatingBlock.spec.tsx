@@ -177,10 +177,7 @@ describe('RepeatingBlock', () => {
             .then(() => user.type(input2, 'second input value'))
             .then(() => user.click(add));
 
-        expect(onChange).toHaveBeenNthCalledWith(1, []);
-        expect(onChange).toHaveBeenNthCalledWith(2, [
-            { firstInput: 'first input value', secondInput: 'second input value' }
-        ]);
+        expect(onChange).toHaveBeenCalledWith([{ firstInput: 'first input value', secondInput: 'second input value' }]);
     });
 
     it('should not display clear button when adding and no changes have been made.', () => {
@@ -239,7 +236,7 @@ describe('RepeatingBlock', () => {
             .then(() => user.type(getByLabelText('Second Input'), 'second value'))
             .then(() => user.click(add));
 
-        expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
+        expect(onChange).toBeCalledWith([{ firstInput: 'first value', secondInput: 'second value' }]);
 
         const columns = getAllByRole('cell');
         expect(columns).toHaveLength(3);
@@ -268,8 +265,7 @@ describe('RepeatingBlock', () => {
 
         // expect value to be added
 
-        expect(onChange).toHaveBeenNthCalledWith(1, []);
-        expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'typed value', secondInput: undefined }]);
+        expect(onChange).toBeCalledWith([{ firstInput: 'typed value', secondInput: undefined }]);
 
         // verify validation message is no longer visible
 
@@ -430,11 +426,8 @@ describe('RepeatingBlock', () => {
     });
 
     it('should allow cancelling update of row being edited', async () => {
-        const onChange = jest.fn();
-
         const { getByRole, getAllByRole, getByLabelText } = render(
             <Fixture
-                onChange={onChange}
                 data={[
                     {
                         firstInput: 'first-value',
@@ -457,12 +450,6 @@ describe('RepeatingBlock', () => {
 
         const cancel = getByRole('button', { name: 'Cancel' });
         await user.click(cancel);
-
-        expect(onChange).toHaveBeenCalledWith(
-            expect.arrayContaining([
-                expect.objectContaining({ firstInput: 'first-value', secondInput: 'second-value' })
-            ])
-        );
 
         // table display updated
         const columns = getAllByRole('cell');
