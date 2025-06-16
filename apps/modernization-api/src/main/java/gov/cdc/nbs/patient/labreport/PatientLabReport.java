@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.labreport;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,9 +9,9 @@ import gov.cdc.nbs.patient.events.tests.ResultedTest;
 
 public record PatientLabReport(
     @JsonProperty(required = true) String eventId,
-    String receivedDate,
+    LocalDateTime receivedDate,
     String processingDecision,
-    String collectedDate,
+    LocalDateTime collectedDate,
     List<ResultedTest> testResults,
     AssociatedInvestigation associatedInvestigation,
     String programArea,
