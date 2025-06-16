@@ -16,6 +16,7 @@ export const DataElementToMatchingAttribute: Record<keyof DataElements, Matching
     county: MatchingAttribute.COUNTY,
     telephone: MatchingAttribute.PHONE,
     email: MatchingAttribute.EMAIL,
+    identifier: MatchingAttribute.IDENTIFIER,
     accountNumber: MatchingAttribute.ACCOUNT_NUMBER,
     driversLicenseNumber: MatchingAttribute.DRIVERS_LICENSE_NUMBER,
     medicaidNumber: MatchingAttribute.MEDICAID_NUMBER,
