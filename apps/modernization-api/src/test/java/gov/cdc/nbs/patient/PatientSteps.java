@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,15 +16,10 @@ public class PatientSteps {
 
   PatientSteps(
       final Active<PatientIdentifier> patient,
-      final PatientMother mother) {
+      final PatientMother mother
+  ) {
     this.patient = patient;
     this.mother = mother;
-  }
-
-  //  Make sure that patients are cleaned up after everything else
-  @Before(order = 15000)
-  public void clean() {
-    mother.reset();
   }
 
   @Given("I have a(nother) patient")
