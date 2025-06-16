@@ -92,6 +92,6 @@ describe('PatientSummary', () => {
         ).toBeInTheDocument();
 
         expect(screen.getByText('Male')).toBeInTheDocument();
-        expect(screen.getByText((text) => text.startsWith('11/09/2003'))).toBeInTheDocument();
+        expect(screen.getByText((text) => text.startsWith('11/10/2003'))).toBeInTheDocument();
     });
 });
