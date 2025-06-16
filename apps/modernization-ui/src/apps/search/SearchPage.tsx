@@ -5,14 +5,9 @@ import { SortingProvider, SortingSettings } from 'libs/sorting';
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 import { ComponentSizingProvider } from 'design-system/sizing';
 import { FilterProvider } from 'design-system/filter';
-import { useLocalStorage } from 'storage';
+import { PageSizePreferenceKeyOptions, usePageSizePreference } from './usePageSizePreference';
 
 const SEARCH_PAGE_SIZE = 20;
-type PageSizePreferenceKeyOptions =
-    | 'patients-search-page-size'
-    | 'lab-reports-search-page-size'
-    | 'investigations-search-page-size'
-    | 'simple-search-page-size';
 
 type SearchPageProviderProps = {
     sorting?: SortingSettings;
@@ -22,10 +17,7 @@ type SearchPageProviderProps = {
 };
 
 const SearchPageProvider = ({ sorting, paging, pageSizePreferenceKey, children }: SearchPageProviderProps) => {
-    const { value: preferencePageSize } = useLocalStorage<number>({
-        key: pageSizePreferenceKey,
-        initial: SEARCH_PAGE_SIZE
-    });
+    const { preferencePageSize } = usePageSizePreference(SEARCH_PAGE_SIZE, pageSizePreferenceKey);
 
     return (
         <ComponentSizingProvider>
@@ -35,6 +27,7 @@ const SearchPageProvider = ({ sorting, paging, pageSizePreferenceKey, children }
                 <PaginationProvider
                     {...paging}
                     pageSize={preferencePageSize}
+                    pageSizePreferenceKey={pageSizePreferenceKey}
                     appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
                     <FilterProvider>
                         <SearchResultDisplayProvider>{children}</SearchResultDisplayProvider>
