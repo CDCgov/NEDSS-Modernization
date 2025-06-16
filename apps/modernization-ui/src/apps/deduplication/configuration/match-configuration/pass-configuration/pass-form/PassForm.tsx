@@ -81,6 +81,7 @@ export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }
                     onAccept={handleSelectBlockingAttributes}
                     onCancel={closePanel}
                     visible={panelState.visible}
+                    dataElements={dataElements}
                 />
             </Shown>
             <Shown when={panelState.content === 'matching'}>

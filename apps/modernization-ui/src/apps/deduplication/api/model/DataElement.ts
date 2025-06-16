@@ -21,6 +21,7 @@ type DataElements = {
     telephone?: DataElement;
     email?: DataElement;
     // Identification Details
+    identifier?: DataElement;
     accountNumber?: DataElement;
     driversLicenseNumber?: DataElement;
     medicaidNumber?: DataElement;

@@ -30,6 +30,7 @@ const initial: DataElements = {
     county: { active: false, oddsRatio: undefined, logOdds: undefined },
     telephone: { active: false, oddsRatio: undefined, logOdds: undefined },
     email: { active: false, oddsRatio: undefined, logOdds: undefined },
+    identifier: { active: false, oddsRatio: undefined, logOdds: undefined },
     // Identification Details
     accountNumber: { active: false, oddsRatio: undefined, logOdds: undefined },
     driversLicenseNumber: { active: false, oddsRatio: undefined, logOdds: undefined },

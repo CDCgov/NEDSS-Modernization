@@ -18,7 +18,7 @@ export const DataElementValidationError = ({ validationError }: Props) => {
                     configuration. If you would like to remove this data element, first remove it from the following
                     pass configurations:
                 </span>
-                <ul>{validationError?.passes.map((p, k) => <li key={k}>{p}</li>)}</ul>
+                <ul>{validationError?.passes.map((p) => <li key={p}>{p}</li>)}</ul>
             </AlertMessage>
         </Shown>
     );
