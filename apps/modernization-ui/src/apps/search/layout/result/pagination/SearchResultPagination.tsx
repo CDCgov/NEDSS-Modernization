@@ -4,6 +4,7 @@ import { Shown } from 'conditional-render';
 import { Pagination } from 'design-system/pagination';
 import { SearchResultPageSizeSelect } from './page-size-select';
 import { SearchResultsShowing } from './showing';
+import { usePageSizePreference } from './page-size-select/usePageSizePreference';
 
 import styles from './search-result-pagination.module.scss';
 
@@ -16,20 +17,26 @@ type SearchPaginationProps = {
 
 const SearchResultPagination = ({ id, elementRef }: SearchPaginationProps) => {
     const { request, resize, page } = usePagination();
+    const { preferencePageSize, setPreferencePageSize } = usePageSizePreference(pageSizes[0]);
 
     const minimum = Math.min(...pageSizes);
     const visible = page.total > minimum;
 
     const pageCount = Math.ceil(page.total / page.pageSize);
 
+    const handlePageSizeChange = (size: number) => {
+        resize(size);
+        setPreferencePageSize(size);
+    };
+
     return (
         <Shown when={visible}>
             <div ref={elementRef} id={id} className={styles.pagination}>
                 <SearchResultPageSizeSelect
                     id={`${id}-page-size-select`}
-                    value={page.pageSize}
+                    value={preferencePageSize}
                     selections={pageSizes}
-                    onPageSizeChanged={resize}
+                    onPageSizeChanged={handlePageSizeChange}
                 />
                 <SearchResultsShowing className={styles.showing} page={page} />
                 <div className={styles.pages}>
