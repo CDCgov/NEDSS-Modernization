@@ -9,6 +9,7 @@ type PhoneEmailEntry = {
     id: string;
     asOf: string;
     type: string;
+    use: string;
     phoneNumber?: string;
     email?: string;
     comments?: string;
@@ -34,36 +35,32 @@ export const PreviewPhoneAndEmail = ({ selectedPhoneEmails, mergeCandidates }: P
         {
             id: 'asOf',
             name: 'As of',
-            render: (entry: PhoneEmailEntry) => entry.asOf ?? '---',
-            value: (entry: PhoneEmailEntry) => entry.asOf,
+            value: (entry) => entry.asOf ?? '---',
             sortable: true
         },
         {
-            id: 'type',
+            id: 'typeUse',
             name: 'Type',
-            render: (entry: PhoneEmailEntry) => entry.type ?? '---',
-            value: (entry: PhoneEmailEntry) => entry.type,
+            value: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '',
+            render: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '---',
             sortable: true
         },
         {
             id: 'phoneNumber',
             name: 'Phone Number',
-            render: (entry: PhoneEmailEntry) => entry.phoneNumber ?? '---',
-            value: (entry: PhoneEmailEntry) => entry.phoneNumber,
+            value: (entry) => entry.phoneNumber ?? '---',
             sortable: true
         },
         {
             id: 'email',
             name: 'Email Address',
-            render: (entry: PhoneEmailEntry) => entry.email ?? '---',
-            value: (entry: PhoneEmailEntry) => entry.email,
+            value: (entry) => entry.email ?? '---',
             sortable: true
         },
         {
             id: 'comments',
             name: 'Comments',
-            render: (entry: PhoneEmailEntry) => entry.comments ?? '---',
-            value: (entry: PhoneEmailEntry) => entry.comments,
+            value: (entry) => entry.comments ?? '---',
             sortable: true
         }
     ];
