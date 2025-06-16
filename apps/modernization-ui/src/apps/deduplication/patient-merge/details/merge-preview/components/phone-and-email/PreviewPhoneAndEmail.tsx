@@ -9,6 +9,7 @@ type PhoneEmailEntry = {
     id: string;
     asOf: string;
     type: string;
+    use: string;
     phoneNumber?: string;
     email?: string;
     comments?: string;
@@ -39,10 +40,10 @@ export const PreviewPhoneAndEmail = ({ selectedPhoneEmails, mergeCandidates }: P
             sortable: true
         },
         {
-            id: 'type',
-            name: 'Type',
-            render: (entry: PhoneEmailEntry) => entry.type ?? '---',
-            value: (entry: PhoneEmailEntry) => entry.type,
+            id: 'typeUse',
+            name: 'Type/Use',
+            render: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') ?? '---',
+            value: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') ?? '',
             sortable: true
         },
         {

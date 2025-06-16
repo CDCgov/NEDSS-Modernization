@@ -44,10 +44,10 @@ export const PreviewAddress = ({ selectedAddresses, mergeCandidates }: AddressPr
             sortable: true
         },
         {
-            id: 'type',
-            name: 'Type',
-            value: (entry) => entry.type,
-            render: (entry) => entry.type ?? '---',
+            id: 'typeUse',
+            name: 'Type/Use',
+            value: (entry) => `${entry.type ?? ''} / ${entry.use ?? ''}`.trim(),
+            render: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') ?? '---',
             sortable: true
         },
         {
