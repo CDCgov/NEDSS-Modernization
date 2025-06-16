@@ -6,7 +6,6 @@ import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 import { ComponentSizingProvider } from 'design-system/sizing';
 import { FilterProvider } from 'design-system/filter';
 import { useLocalStorage } from 'storage';
-// const PAGE_SIZE_PREFERENCE_KEY = 'patient-search-page-size';
 
 const SEARCH_PAGE_SIZE = 20;
 type PageSizePreferenceKeyOptions =
