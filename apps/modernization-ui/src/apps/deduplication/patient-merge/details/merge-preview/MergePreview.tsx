@@ -10,6 +10,10 @@ import { PreviewIdentification } from './components/identification/PreviewIdenti
 import { PreviewName } from './components/name/PreviewName';
 import { PreviewPhoneAndEmail } from './components/phone-and-email/PreviewPhoneAndEmail';
 import { PreviewRace } from './components/race/PreviewRace';
+import { PreviewEthnicity } from './components/ethnicity/PreviewEthnicity';
+import { PreviewSexAndBirth } from './components/sex-and-birth/PreviewSexAndBirth';
+import { PreviewMortality } from './components/mortality/PreviewMortality';
+import { PreviewGeneralPatientInfo } from './components/general-patient-info/PreviewGeneralPatientInfo';
 
 type MergePreviewProps = {
     onBack: () => void;
@@ -68,6 +72,16 @@ export const MergePreview = ({ onBack, mergeFormData, mergeCandidates }: MergePr
                     raceCode
                 }))}
             />
+            <div className={styles.previewTwoColumn}>
+                <div className={styles.column}>
+                    <PreviewEthnicity mergeFormData={mergeFormData} mergeCandidates={mergeCandidates} />
+                    <PreviewSexAndBirth mergeFormData={mergeFormData} mergeCandidates={mergeCandidates} />
+                </div>
+                <div className={styles.column}>
+                    <PreviewMortality mergeFormData={mergeFormData} mergeCandidates={mergeCandidates} />
+                    <PreviewGeneralPatientInfo mergeFormData={mergeFormData} mergeCandidates={mergeCandidates} />
+                </div>
+            </div>
         </div>
     );
 };
