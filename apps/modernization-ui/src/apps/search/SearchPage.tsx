@@ -9,12 +9,22 @@ import { useLocalStorage } from 'storage';
 // const PAGE_SIZE_PREFERENCE_KEY = 'patient-search-page-size';
 
 const SEARCH_PAGE_SIZE = 20;
+type PageSizePreferenceKeyOptions =
+    | 'patients-search-page-size'
+    | 'lab-reports-search-page-size'
+    | 'investigations-search-page-size'
+    | 'simple-search-page-size';
 
-type SearchPageProviderProps = { sorting?: SortingSettings; paging?: PaginationSettings; children: ReactNode };
+type SearchPageProviderProps = {
+    sorting?: SortingSettings;
+    paging?: PaginationSettings;
+    pageSizePreferenceKey: PageSizePreferenceKeyOptions;
+    children: ReactNode;
+};
 
-const SearchPageProvider = ({ sorting, paging, children }: SearchPageProviderProps) => {
+const SearchPageProvider = ({ sorting, paging, pageSizePreferenceKey, children }: SearchPageProviderProps) => {
     const { value: preferencePageSize } = useLocalStorage<number>({
-        key: PAGE_SIZE_PREFERENCE_KEY,
+        key: pageSizePreferenceKey,
         initial: SEARCH_PAGE_SIZE
     });
 
