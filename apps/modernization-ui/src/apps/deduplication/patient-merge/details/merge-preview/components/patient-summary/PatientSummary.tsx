@@ -10,7 +10,6 @@ type PatientSummaryProps = {
 };
 
 export const PatientSummary = ({ mergeCandidates, mergeFormData }: PatientSummaryProps) => {
-    // Accept undefined and return undefined if uid is falsy
     const findCandidateByUid = (uid?: string) => {
         if (!uid) return undefined;
         return mergeCandidates.find((c) => c.personUid === uid);
