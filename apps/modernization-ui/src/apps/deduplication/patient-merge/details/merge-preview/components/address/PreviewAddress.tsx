@@ -45,7 +45,7 @@ export const PreviewAddress = ({ selectedAddresses, mergeCandidates }: AddressPr
         },
         {
             id: 'typeUse',
-            name: 'Type/Use',
+            name: 'Type',
             value: (entry) => `${entry.type ?? ''} / ${entry.use ?? ''}`.trim(),
             render: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') ?? '---',
             sortable: true
