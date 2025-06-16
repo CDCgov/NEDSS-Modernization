@@ -26,7 +26,7 @@ Feature: Patient Lab Reports API
     And I can "view" any "ObservationLabReport" for "STD" within all jurisdictions
     And the "lab-creator" user exists
     And the patient has a lab report reported by Northside Hospital
-    And the lab report was created by lab-creator on 01/01/2000
+    And the laboratory report was received on 01/01/2000 at 01:20:33
     And the lab report has an Acid-Fast Stain test with a coded result of abnormal
     And the lab report was ordered by the Emory University Hospital facility
     And there is a provider named "Dean" "Learner"
@@ -43,7 +43,7 @@ Feature: Patient Lab Reports API
     Then the 1st labreport has a "reportingFacility" of "Northside Hospital"
     Then the 1st labreport has a "orderingProvider" of "Learner"
     Then the 1st labreport has a "orderingFacility" of "Emory University Hospital"
-    Then the 1st labreport has a "receivedDate" of 01/01/2000 at 00:00:00
+    Then the 1st labreport was received on 01/01/2000 at 01:20:33
     Then the lab report has an Acid-Fast Stain test with a coded result of abnormal
 
 
