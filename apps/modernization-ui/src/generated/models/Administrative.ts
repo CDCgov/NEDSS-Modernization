@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type Administrative = {
-    asOf: string;
+    asOf?: string;
     comment?: string;
 };
 

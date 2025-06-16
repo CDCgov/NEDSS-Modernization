@@ -976,6 +976,50 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Ethnicity",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/ethnicity",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics",
+												"ethnicity"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Ethnicity",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/ethnicity",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics",
+												"ethnicity"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
