@@ -1,11 +1,14 @@
-import { useComponentSizing } from 'design-system/sizing';
 import { usePatient } from '../usePatient';
 import { PatientFileAdministrativeInformationCard } from './administrative/PatientFileAdministrativeInformationCard';
 import { PatientFileNameCard } from './name/PatientFileNameCard';
+import { Sizing } from 'design-system/field';
 
-const PatientFileDemographics = () => {
+type Props = {
+    sizing?: Sizing;
+};
+
+const PatientFileDemographics = ({ sizing = 'small' }: Props) => {
     const { id } = usePatient();
-    const sizing = useComponentSizing();
 
     return (
         <>
