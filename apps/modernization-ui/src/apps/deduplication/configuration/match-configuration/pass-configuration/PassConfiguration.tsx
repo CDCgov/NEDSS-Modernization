@@ -47,7 +47,7 @@ export const PassConfiguration = ({ dataElements, onImportClick }: Props) => {
 
     useEffect(() => {
         if (error) {
-            showError('Failed to retrieve Pass configuration');
+            showError(error);
         }
     }, [error]);
 
