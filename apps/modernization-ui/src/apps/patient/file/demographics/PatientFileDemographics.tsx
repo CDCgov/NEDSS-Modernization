@@ -1,6 +1,7 @@
 import { useComponentSizing } from 'design-system/sizing';
 import { usePatient } from '../usePatient';
 import { PatientFileAdministrativeInformationCard } from './administrative/PatientFileAdministrativeInformationCard';
+import { PatientFileEthnicityCard } from './ethnicity/PatientFileEthnicityCard';
 
 export const PatientFileDemographics = () => {
     const { id } = usePatient();
@@ -9,6 +10,7 @@ export const PatientFileDemographics = () => {
     return (
         <>
             <PatientFileAdministrativeInformationCard patient={id} sizing={sizing} />
+            <PatientFileEthnicityCard patient={id} sizing={sizing} />
         </>
     );
 };
