@@ -11,15 +11,23 @@ type PatientSummaryProps = {
 
 export const PatientSummary = ({ mergeCandidates, mergeFormData }: PatientSummaryProps) => {
     const selectedPersonUid = mergeFormData.survivingRecord;
-
     const findCandidateByUid = (uid: string) => mergeCandidates.find((c) => c.personUid === uid);
-
     const survivingCandidate = findCandidateByUid(selectedPersonUid);
+    const selectedLegalNames = mergeFormData.names
+        .map(({ personUid, sequence }) => {
+            const candidate = findCandidateByUid(personUid);
+            return candidate?.names.find((n) => n.sequence === sequence && n.type === 'Legal'); // L for Legal
+        })
+        .filter((name): name is NonNullable<typeof name> => !!name && !!name.asOf);
 
-    const selectedName = mergeFormData.names.find((n) => n.personUid === selectedPersonUid);
-    const fullName = selectedName
-        ? survivingCandidate?.names.find((n) => n.sequence === selectedName.sequence)
-        : undefined;
+    // Sort descending by asOf date
+    selectedLegalNames.sort((a, b) => {
+        const dateA = parseISO(a.asOf ?? '');
+        const dateB = parseISO(b.asOf ?? '');
+        return dateB.getTime() - dateA.getTime();
+    });
+
+    const mostRecentLegalName = selectedLegalNames[0]; // This will be the fullName for display
 
     const sexCandidate = mergeFormData.sexAndBirth?.currentSex
         ? findCandidateByUid(mergeFormData.sexAndBirth.currentSex)
@@ -36,7 +44,7 @@ export const PatientSummary = ({ mergeCandidates, mergeFormData }: PatientSummar
     const descriptor = {
         id: parseInt(mergeFormData.survivingRecord, 10),
         patientId: survivingCandidate ? parseInt(survivingCandidate.personLocalId, 10) : NaN,
-        name: fullName,
+        name: mostRecentLegalName,
         status: 'active',
         sex: sexCandidate?.sexAndBirth?.currentSex,
         birthday: formattedDate
