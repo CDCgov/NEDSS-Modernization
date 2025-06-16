@@ -75,4 +75,52 @@ describe('AdministrativeComments', () => {
         expect(screen.getByText('05/30/2023')).toBeInTheDocument();
         expect(screen.getByText('This is a test comment')).toBeInTheDocument();
     });
+
+    it('hides the date when comment is empty', () => {
+        const mergeCandidates: MergeCandidate[] = [
+            {
+                personUid: '123',
+                personLocalId: '98882',
+                addTime: '2023-05-31T00:00:00Z',
+                general: {},
+                investigations: [],
+                adminComments: {
+                    date: '2023-05-31T00:00:00Z',
+                    comment: '', // intentionally empty
+                },
+                names: [],
+                addresses: [],
+                phoneEmails: [],
+                identifications: [],
+                races: [],
+                ethnicity: {},
+                sexAndBirth: {},
+                mortality: {},
+            },
+        ];
+
+        const mergeFormData: PatientMergeForm = {
+            survivingRecord: '123',
+            adminComments: '123',
+            names: [],
+            sexAndBirth: {},
+        } as any;
+
+        render(
+            <AdministrativeComments
+                mergeCandidates={mergeCandidates}
+                mergeFormData={mergeFormData}
+            />
+        );
+
+        //Confirm the date is not rendered
+        expect(screen.queryByText('05/31/2023')).not.toBeInTheDocument();
+
+        //Confirm the <p> tag is in the document, but empty
+        const commentParagraph = screen.getByRole('paragraph', { hidden: true }) || screen.getByText((_, el) => el?.tagName === 'P');
+        expect(commentParagraph).toBeInTheDocument();
+        expect(commentParagraph).toBeEmptyDOMElement();
+    });
+
+
 });

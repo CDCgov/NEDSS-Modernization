@@ -1,32 +1,22 @@
 import React from 'react';
-import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
-import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
+import { format, parseISO, isValid } from 'date-fns';
 import { Card } from 'design-system/card/Card';
 import styles from './AdministrativeComments.module.scss';
-import { format, parseISO } from 'date-fns';
+import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
+import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
 
-type AdministrativeCommentsProps = {
+type Props = {
     mergeCandidates: MergeCandidate[];
     mergeFormData: PatientMergeForm;
 };
 
-export const AdministrativeComments = ({ mergeCandidates, mergeFormData }: AdministrativeCommentsProps) => {
-    const adminCommentsUid = mergeFormData.adminComments;
-    const adminCandidate = mergeCandidates.find((c) => c.personUid === adminCommentsUid);
+export const AdministrativeComments = ({ mergeCandidates, mergeFormData }: Props) => {
+    const candidate = mergeCandidates.find((c) => c.personUid === mergeFormData.adminComments);
+    const comment = candidate?.adminComments?.comment?.trim() ?? '---';
+    const date = candidate?.adminComments?.date;
 
-    if (!adminCandidate || !adminCandidate.adminComments) {
-        return <div className={styles.noComments}>---</div>;
-    }
-
-    const { date = '', comment = '' } = adminCandidate.adminComments;
-    let formattedDate = 'No date available';
-    if (date) {
-        try {
-            formattedDate = format(parseISO(date), 'MM/dd/yyyy');
-        } catch (error) {
-            console.warn('Invalid date format:', date);
-        }
-    }
+    const formattedDate =
+        comment !== '---' && date && isValid(parseISO(date)) ? format(parseISO(date), 'MM/dd/yyyy') : undefined;
 
     return (
         <Card
@@ -36,7 +26,7 @@ export const AdministrativeComments = ({ mergeCandidates, mergeFormData }: Admin
             className={styles.adminCommentsCard}
             level={2}
             collapsible={false}>
-            <p className={styles.comment}>{comment ?? '---'}</p>
+            <p className={styles.comment}>{comment}</p>
         </Card>
     );
 };
