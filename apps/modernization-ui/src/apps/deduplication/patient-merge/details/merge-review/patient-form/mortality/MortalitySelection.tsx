@@ -15,23 +15,24 @@ export const MortalitySelection = ({ mergeCandidates }: Props) => {
     const [previousWasDeceased, setPreviousWasDeceased] = useState<boolean>(true);
 
     useEffect(() => {
-        // If the patient selected is deceased, allow detailed selection
-        const mergeCandidate = mergeCandidates.find(
-            (m) => m.personUid === selectedPerson && m.mortality.deceased === 'Yes'
+        // If the patient selected is deceased, and other entries with deceased 'Yes' exist, allow detailed selection
+        const deceasedEntries = mergeCandidates.filter((m) => m.mortality.deceased === 'Yes');
+        setAllowDetailedSelection(
+            deceasedEntries.length > 1 && deceasedEntries.some((d) => d.personUid === selectedPerson)
         );
-        setAllowDetailedSelection(mergeCandidate !== undefined);
 
         // going from deceased 'No' | undefined to anything else should update all values
         // going from deceased 'Yes' to 'No' | undefined should update all values
         // going from deceased 'Yes' to 'Yes' does NOT update all values
-        if (!previousWasDeceased || (previousWasDeceased && mergeCandidate?.mortality.deceased !== 'Yes')) {
+        const newIsDeceased = deceasedEntries.some((m) => m.personUid === selectedPerson);
+        if (!previousWasDeceased || !newIsDeceased) {
             form.setValue('mortality.dateOfDeath', selectedPerson);
             form.setValue('mortality.deathCity', selectedPerson);
             form.setValue('mortality.deathState', selectedPerson);
             form.setValue('mortality.deathCountry', selectedPerson);
         }
 
-        setPreviousWasDeceased(mergeCandidate?.mortality.deceased === 'Yes');
+        setPreviousWasDeceased(newIsDeceased);
     }, [selectedPerson]);
     return (
         <Section
