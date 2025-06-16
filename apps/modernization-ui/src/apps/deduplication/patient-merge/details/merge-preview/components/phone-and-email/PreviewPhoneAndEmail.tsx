@@ -4,6 +4,7 @@ import { PhoneEmailId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
 import { MergePreviewTableCard } from '../shared/preview-card-table/MergePreviewTableCard';
 import { Column } from 'design-system/table';
+import { formatPhone } from '../../../shared/formatPhone';
 
 type PhoneEmailEntry = {
     id: string;
@@ -30,40 +31,37 @@ export const PreviewPhoneAndEmail = ({ selectedPhoneEmails, mergeCandidates }: P
     }));
 
     const [phoneEmails] = useState(initialPhoneEmails);
+
     const columns: Column<PhoneEmailEntry>[] = [
         {
             id: 'asOf',
             name: 'As of',
-            render: (entry: PhoneEmailEntry) => entry.asOf ?? '---',
-            value: (entry: PhoneEmailEntry) => entry.asOf,
+            value: (e) => e.asOf ?? '---',
             sortable: true
         },
         {
             id: 'type',
             name: 'Type',
-            render: (entry: PhoneEmailEntry) => entry.type ?? '---',
-            value: (entry: PhoneEmailEntry) => entry.type,
+            value: (e) => e.type ?? '---',
             sortable: true
         },
         {
             id: 'phoneNumber',
             name: 'Phone Number',
-            render: (entry: PhoneEmailEntry) => entry.phoneNumber ?? '---',
-            value: (entry: PhoneEmailEntry) => entry.phoneNumber,
+            value: (e) => formatPhone(e.phoneNumber) ?? '---',
+            render: (e) => formatPhone(e.phoneNumber) ?? '---',
             sortable: true
         },
         {
             id: 'email',
             name: 'Email Address',
-            render: (entry: PhoneEmailEntry) => entry.email ?? '---',
-            value: (entry: PhoneEmailEntry) => entry.email,
+            value: (e) => e.email ?? '---',
             sortable: true
         },
         {
             id: 'comments',
             name: 'Comments',
-            render: (entry: PhoneEmailEntry) => entry.comments ?? '---',
-            value: (entry: PhoneEmailEntry) => entry.comments,
+            value: (e) => e.comments ?? '---',
             sortable: true
         }
     ];
