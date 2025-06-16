@@ -5,12 +5,12 @@ import styles from './AdministrativeComments.module.scss';
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
 
-type Props = {
+type AdministrativeCommentsProps = {
     mergeCandidates: MergeCandidate[];
     mergeFormData: PatientMergeForm;
 };
 
-export const AdministrativeComments = ({ mergeCandidates, mergeFormData }: Props) => {
+export const AdministrativeComments = ({ mergeCandidates, mergeFormData }: AdministrativeCommentsProps) => {
     const candidate = mergeCandidates.find((c) => c.personUid === mergeFormData.adminComments);
     const comment = candidate?.adminComments?.comment?.trim() ?? '---';
     const date = candidate?.adminComments?.date;
