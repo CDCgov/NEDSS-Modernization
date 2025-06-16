@@ -3,7 +3,6 @@ import userEvent from '@testing-library/user-event';
 import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BlockingCriteriaSidePanel } from './BlockingCriteriaSidePanel';
-import { DataElements } from 'apps/deduplication/api/model/DataElement';
 
 const onAccept = jest.fn();
 const onCancel = jest.fn();
@@ -23,23 +22,10 @@ class ResizeObserver {
 window.ResizeObserver = ResizeObserver;
 export default ResizeObserver;
 
-const defaultDataElements: DataElements = {
-    firstName: { active: true, logOdds: 23, oddsRatio: 120 },
-    lastName: { active: true, logOdds: 23, oddsRatio: 120 },
-    dateOfBirth: { active: true, logOdds: 23, oddsRatio: 120 },
-    sex: { active: true, logOdds: 23, oddsRatio: 120 },
-    race: { active: true, logOdds: 23, oddsRatio: 120 },
-    address: { active: true, logOdds: 23, oddsRatio: 120 },
-    zip: { active: true, logOdds: 23, oddsRatio: 120 },
-    email: { active: true, logOdds: 23, oddsRatio: 120 },
-    telephone: { active: true, logOdds: 23, oddsRatio: 120 },
-    identifier: { active: true, logOdds: 23, oddsRatio: 120 }
-};
 type Props = {
     visible?: boolean;
-    dataElements?: DataElements;
 };
-const Fixture = ({ visible = true, dataElements = defaultDataElements }: Props) => {
+const Fixture = ({ visible = true }: Props) => {
     const form = useForm<Pass>({
         defaultValues: {
             name: 'Pass name',
@@ -50,12 +36,7 @@ const Fixture = ({ visible = true, dataElements = defaultDataElements }: Props) 
     });
     return (
         <FormProvider {...form}>
-            <BlockingCriteriaSidePanel
-                visible={visible}
-                onAccept={onAccept}
-                onCancel={onCancel}
-                dataElements={dataElements}
-            />
+            <BlockingCriteriaSidePanel visible={visible} onAccept={onAccept} onCancel={onCancel} />
         </FormProvider>
     );
 };
@@ -119,13 +100,6 @@ describe('BlockingCriteriaSidePanel', () => {
 
         await waitFor(() => expect(queryByText('Identifier')).toBeInTheDocument());
         await waitFor(() => expect(queryByText("Any of the person's identifiers.")).toBeInTheDocument());
-    });
-
-    it('should not display identifier attribute if not enabled', async () => {
-        const { queryByText } = render(<Fixture dataElements={{}} />);
-
-        await waitFor(() => expect(queryByText('Identifier')).not.toBeInTheDocument());
-        await waitFor(() => expect(queryByText("Any of the person's identifiers.")).not.toBeInTheDocument());
     });
 
     it('should not render fields when closed', () => {

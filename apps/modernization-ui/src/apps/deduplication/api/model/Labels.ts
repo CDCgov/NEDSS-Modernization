@@ -24,10 +24,6 @@ const MatchingAttributeLabels: Record<MatchingAttribute, { label: string; isActi
     [MatchingAttribute.COUNTY]: { label: 'County', isActive: (d: DataElements) => d.county?.active ?? false },
     [MatchingAttribute.PHONE]: { label: 'Phone', isActive: (d: DataElements) => d.telephone?.active ?? false },
     [MatchingAttribute.EMAIL]: { label: 'Email', isActive: (d: DataElements) => d.email?.active ?? false },
-    [MatchingAttribute.IDENTIFIER]: {
-        label: 'Identifier',
-        isActive: (d: DataElements) => d.identifier?.active ?? false
-    },
     [MatchingAttribute.SOCIAL_SECURITY]: {
         label: 'Social security number',
         isActive: (d: DataElements) => d.socialSecurity?.active ?? false
@@ -83,60 +79,36 @@ const MatchingAttributeLabelsList = Array.from(Object.entries(MatchingAttributeL
     { label: string; isActive: (d: DataElements) => boolean }
 ][];
 
-const BlockingAttributeLabels: Record<
-    BlockingAttribute,
-    { label: string; description: string; isActive: (d: DataElements) => boolean }
-> = {
+const BlockingAttributeLabels: Record<BlockingAttribute, { label: string; description: string }> = {
     [BlockingAttribute.FIRST_NAME]: {
         label: 'First name',
-        description: "The first 4 characters of the person's first name.",
-        isActive: (d: DataElements) => d.firstName?.active ?? false
+        description: "The first 4 characters of the person's first name."
     },
     [BlockingAttribute.LAST_NAME]: {
         label: 'Last name',
-        description: "The first 4 characters of the person's last name.",
-        isActive: (d: DataElements) => d.lastName?.active ?? false
+        description: "The first 4 characters of the person's last name."
     },
     [BlockingAttribute.BIRTHDATE]: {
         label: 'Date of birth',
-        description: "The person's birthdate in the format YYYY-MM-DD.",
-        isActive: (d: DataElements) => d.dateOfBirth?.active ?? false
+        description: "The person's birthdate in the format YYYY-MM-DD."
     },
-    [BlockingAttribute.SEX]: {
-        label: 'Sex',
-        description: "The person's sex in the format of M or F.",
-        isActive: (d: DataElements) => d.sex?.active ?? false
-    },
+    [BlockingAttribute.SEX]: { label: 'Sex', description: "The person's sex in the format of M or F." },
     [BlockingAttribute.ADDRESS]: {
         label: 'Street address 1',
-        description: "The first 4 characters of the person's address.",
-        isActive: (d: DataElements) => d.address?.active ?? false
+        description: "The first 4 characters of the person's address."
     },
-    [BlockingAttribute.ZIP]: {
-        label: 'Zip',
-        description: "The person's 5 digit zip code.",
-        isActive: (d: DataElements) => d.zip?.active ?? false
-    },
-    [BlockingAttribute.EMAIL]: {
-        label: 'Email',
-        description: "The first 4 characters of the person's email address.",
-        isActive: (d: DataElements) => d.email?.active ?? false
-    },
-    [BlockingAttribute.PHONE]: {
-        label: 'Phone',
-        description: "The first 4 digits of the person's phone number.",
-        isActive: (d: DataElements) => d.telephone?.active ?? false
-    },
+    [BlockingAttribute.ZIP]: { label: 'Zip', description: "The person's 5 digit zip code." },
+    [BlockingAttribute.EMAIL]: { label: 'Email', description: "The first 4 characters of the person's email address." },
+    [BlockingAttribute.PHONE]: { label: 'Phone', description: "The first 4 digits of the person's phone number." },
     [BlockingAttribute.IDENTIFIER]: {
         label: 'Identifier',
-        description: "Any of the person's identifiers.",
-        isActive: (d: DataElements) => d.identifier?.active ?? false
+        description: "Any of the person's identifiers."
     }
 };
 
 const BlockingAttributeLabelsList = Array.from(Object.entries(BlockingAttributeLabels)) as [
     BlockingAttribute,
-    { label: string; description: string; isActive: (d: DataElements) => boolean }
+    { label: string; description: string }
 ][];
 
 export { BlockingAttributeLabels, BlockingAttributeLabelsList, MatchingAttributeLabels, MatchingAttributeLabelsList };

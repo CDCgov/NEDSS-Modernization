@@ -11,7 +11,7 @@ public class DateTimeSteps {
 
   @ParameterType(name = "time", value = "(?:\\d{2}:\\d{2}:\\d{2})")
   public LocalTime localTime(final String value) {
-    return LocalTime.parse(value, DateTimeFormatter.ISO_LOCAL_TIME);
+    return LocalTime.parse(value);
   }
 
   @ParameterType(name = "localDate", value = "(?:[0]\\d|1[0-2])/(?:[0-2]\\d|3[01])/(?:(?:19|20)\\d{2})")

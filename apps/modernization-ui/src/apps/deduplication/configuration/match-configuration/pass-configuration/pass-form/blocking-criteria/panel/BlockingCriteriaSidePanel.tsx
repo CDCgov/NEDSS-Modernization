@@ -7,15 +7,13 @@ import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
 import { SidePanel } from '../../side-panel/SidePanel';
 import styles from './blocking-criteria-panel.module.scss';
 import { BlockingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
-import { DataElements } from 'apps/deduplication/api/model/DataElement';
 
 type Props = {
     visible: boolean;
-    dataElements: DataElements;
     onAccept: (attributes: BlockingAttribute[]) => void;
     onCancel: () => void;
 };
-export const BlockingCriteriaSidePanel = ({ visible, dataElements, onAccept, onCancel }: Props) => {
+export const BlockingCriteriaSidePanel = ({ visible, onAccept, onCancel }: Props) => {
     const form = useFormContext<Pass>();
     const [selectedAttributes, setSelectedAttributes] = useState<BlockingAttribute[]>([]);
     const { blockingCriteria } = useWatch(form);
@@ -56,9 +54,9 @@ export const BlockingCriteriaSidePanel = ({ visible, dataElements, onAccept, onC
                 </>
             }>
             <div className={styles.blockingCriteriaPanel}>
-                {BlockingAttributeLabelsList.filter((a) => a[1].isActive(dataElements)).map(([attribute, entry]) => (
+                {BlockingAttributeLabelsList.map(([attribute, entry], k) => (
                     <AttributeEntry
-                        key={`blockingAttribute-${attribute}`}
+                        key={`blockingAttribute-${k}`}
                         label={entry.label}
                         description={entry.description}
                         onChange={() => {

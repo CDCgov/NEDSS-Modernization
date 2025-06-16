@@ -19,7 +19,8 @@ public class LaboratoryReportRequiringReviewResolver {
 
   LaboratoryReportRequiringReviewResolver(
       final LaboratoryReportRequiringReviewFinder reportFinder,
-      final ResultedTestResolver resultedTestResolver) {
+      final ResultedTestResolver resultedTestResolver
+  ) {
     this.reportFinder = reportFinder;
     this.resultedTestResolver = resultedTestResolver;
   }

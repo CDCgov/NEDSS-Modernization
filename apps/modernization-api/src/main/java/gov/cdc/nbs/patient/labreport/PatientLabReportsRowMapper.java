@@ -1,12 +1,10 @@
 package gov.cdc.nbs.patient.labreport;
 
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
-import gov.cdc.nbs.demographics.name.DisplayableSimpleNameRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
@@ -15,7 +13,10 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
       int receiveDate,
       int facilityName,
       int orderingName,
-      DisplayableSimpleNameRowMapper.Columns provider,
+      int providerPrefix,
+      int providerFirstName,
+      int providerLastName,
+      int providerSuffix,
       int dateCollected,
       int associatedWithId,
       int associatedWithLocal,
@@ -30,24 +31,26 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
 
 
   private final Column columns;
-  private final RowMapper<DisplayableSimpleName> providerMapper;
 
   PatientLabReportsRowMapper(final Column columns) {
     this.columns = columns;
-    this.providerMapper = new DisplayableSimpleNameRowMapper(columns.provider);
   }
 
   @Override
   public PatientLabReport mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
     String eventId = resultSet.getString(this.columns.eventId());
-    LocalDateTime dateReceived = resultSet.getObject(this.columns.receiveDate(), LocalDateTime.class);
+    String dateReceived = resultSet.getString(this.columns.receiveDate());
+    dateReceived = dateReceived == null ? null : dateReceived.substring(0, 10);
     String processingDecision = resultSet.getString(this.columns.specimenSite());
-    LocalDateTime dateCollected = resultSet.getObject(this.columns.dateCollected(), LocalDateTime.class);
+    String dateCollected = resultSet.getString(this.columns.dateCollected());
+    dateCollected = dateCollected == null ? null : dateCollected.substring(0, 10);
     String jurisdiction = resultSet.getString(this.columns.jurisdiction());
     String programArea = resultSet.getString(this.columns.programArea());
     long labIdentifier = resultSet.getLong(this.columns.investigationId());
     String reportingFacility = resultSet.getString(this.columns.facilityName());
-    DisplayableSimpleName orderingProvider = this.providerMapper.mapRow(resultSet, rowNum);
+    String providerPrefix = resultSet.getString(this.columns.providerPrefix());
+    String providerLastName = resultSet.getString(this.columns.providerLastName());
+    String providerFirstName = resultSet.getString(this.columns.providerFirstName());
     String associatedWithId = resultSet.getString(this.columns.associatedWithId());
     String associatedWithLocal = resultSet.getString(this.columns.associatedWithLocal());
     String associatedWithCondition = resultSet.getString(this.columns.associatedWithCondition());
@@ -66,6 +69,6 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
         new PatientLabReport.AssociatedInvestigation(associatedWithId, associatedWithCondition, associatedWithLocal,
             associatedWithStatus),
         programArea, jurisdiction, labIdentifier, specimenSource, reportingFacility,
-        orderingProvider, orderingFacility);
+        new DisplayableSimpleName(providerPrefix, providerFirstName, providerLastName), orderingFacility);
   }
 }

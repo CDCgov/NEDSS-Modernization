@@ -51,11 +51,12 @@ export const renderFacilityProvider = (
                 </>
             )}
 
-            {orderingProvider?.first && orderingProvider?.last && orderingProvider?.prefix && (
+            {orderingProvider && (
                 <>
                     <strong>Ordering provider:</strong>
                     <br />
-                    {orderingProvider.prefix} {orderingProvider.first} {orderingProvider.last}
+                    {orderingProvider.prefix}
+                    {orderingProvider.first} {orderingProvider.last}
                     <br />
                 </>
             )}
@@ -85,7 +86,6 @@ export const renderLabReports = (resultedTests?: Array<ResultedTest>) => {
                     <strong>{test.name}</strong>
                     <br />
                     {test.result}
-                    <br />
                     {test.reference && (
                         <>
                             <br />
@@ -93,7 +93,7 @@ export const renderLabReports = (resultedTests?: Array<ResultedTest>) => {
                             {test.reference}
                         </>
                     )}
-                    {resultedTests.length > 1 && <br />}
+                    <br />
                 </>
             ))}
         </>
