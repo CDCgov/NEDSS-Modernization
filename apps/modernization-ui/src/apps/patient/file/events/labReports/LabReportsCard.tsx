@@ -4,6 +4,8 @@ import { ColumnPreference } from 'design-system/table/preferences';
 import { PatientLabReport } from 'generated';
 import { usePatientLabReports } from './usePatientLabReports';
 import { renderFacilityProvider, renderLabReports } from 'apps/patient/file/renderPatientFile';
+import { internalizeDate } from 'date';
+import { internalizeDateTime } from 'date/InternalizeDateTime';
 
 const EVENT_ID = { id: 'patient-file-lab-reports-eventId', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'patient-file-lab-reports-dateReceived', name: 'Date received' };
@@ -59,14 +61,7 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
             ...DATE_RECEIVED,
             sortable: true,
             value: (value) => value.receivedDate,
-            render: (value: PatientLabReport) =>
-                value.receivedDate && (
-                    <div>
-                        <span>{new Date(value.receivedDate).toLocaleDateString()}</span>
-                        <br />
-                        <span>{new Date(value.receivedDate).toLocaleTimeString()}</span>
-                    </div>
-                )
+            render: (value: PatientLabReport) => internalizeDateTime(value.receivedDate)
         },
         {
             ...FACILITY_PROVIDER,
@@ -84,8 +79,7 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
             ...DATE_COLLECTED,
             sortable: true,
             value: (value) => value.collectedDate,
-            render: (value: PatientLabReport) =>
-                value.collectedDate && new Date(value.collectedDate).toLocaleDateString()
+            render: (value: PatientLabReport) => internalizeDate(value.collectedDate)
         },
         {
             ...TEST_RESULTS,

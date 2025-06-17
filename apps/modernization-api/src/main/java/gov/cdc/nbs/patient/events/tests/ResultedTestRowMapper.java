@@ -43,22 +43,28 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     Optional<String> status = maybeDisplayStatus(columns, resultSet)
         .filter(unused -> reference == null);
 
-    String coded = Optional.ofNullable(resultSet.getString(columns.coded()))
-        .map(value -> status.map(value::concat).orElse(value))
-        .orElse(null);
+    String coded = resultSet.getString(columns.coded());
 
+    String text = resultSet.getString(columns.text());
 
-    String text = Optional.ofNullable(resultSet.getString(columns.text()))
-        .map(value -> status.map(value::concat).orElse(value))
-        .orElse(null);
+    String numeric = maybeDisplayNumericResult(columns, resultSet);
+    
+    String result = null;
 
-    String numeric = Optional.ofNullable(maybeDisplayNumericResult(columns, resultSet))
-        .map(value -> status.map(value::concat).orElse(value))
-        .orElse(null);
+    if (coded != null) {
+      result = coded;
+    }
 
-    String result = Stream.of(coded, text, numeric)
-        .filter(Objects::nonNull)
-        .collect(joining("\n"));
+    if (text != null) {
+      result = Objects.requireNonNull(result).concat("\n").concat(text);
+    }
+
+    if (numeric != null) {
+      result = Objects.requireNonNull(result).concat("\n").concat(numeric);
+    }
+
+    result = Objects.requireNonNull(result).concat(status.orElse(""));
+
 
 
     return new ResultedTest(
