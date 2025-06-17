@@ -1,0 +1,6 @@
+@use 'styles/colors';
+
+.noData {
+    background-color: colors.$base-lightest;
+    text-align: center;
+}
