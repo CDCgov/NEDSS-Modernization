@@ -27,7 +27,6 @@ const SearchPageProvider = ({ sorting, paging, pageSizePreferenceKey, children }
                 <PaginationProvider
                     {...paging}
                     pageSize={preferencePageSize}
-                    pageSizePreferenceKey={pageSizePreferenceKey}
                     appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
                     <FilterProvider>
                         <SearchResultDisplayProvider>{children}</SearchResultDisplayProvider>
