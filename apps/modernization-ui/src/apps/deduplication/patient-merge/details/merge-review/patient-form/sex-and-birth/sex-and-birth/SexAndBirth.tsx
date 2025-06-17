@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { calculateAge } from 'utils/util';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
-import { toDateDisplay } from '../../shared/toDateDisplay';
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 
 type Props = {
     personUid: string;

@@ -1,0 +1,3 @@
+const NoData = () => '---';
+
+export { NoData };

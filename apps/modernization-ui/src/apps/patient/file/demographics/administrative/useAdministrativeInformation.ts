@@ -2,7 +2,7 @@ import { PatientFileService } from 'generated';
 import { useApi } from 'libs/api';
 import { useEffect } from 'react';
 import { transformer } from './transformer';
-import { AdministrativeInformation } from 'libs/patient/demographics/AdministrativeInformation';
+import { AdministrativeInformation } from 'libs/patient/demographics/administrative/AdministrativeInformation';
 
 const all = (request: Request) => PatientFileService.administrative(request).then((response) => transformer(response));
 

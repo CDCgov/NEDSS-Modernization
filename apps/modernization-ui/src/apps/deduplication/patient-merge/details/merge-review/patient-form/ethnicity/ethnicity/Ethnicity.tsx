@@ -2,7 +2,7 @@ import { MergeEthnicity } from 'apps/deduplication/api/model/MergeCandidate';
 import { Controller, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
-import { toDateDisplay } from '../../shared/toDateDisplay';
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 
 type Props = {
     personUid: string;

@@ -1,5 +1,5 @@
 import { displayAddress } from 'address/display';
-import { NoData } from 'components/NoData';
+import { NoData } from 'design-system/data';
 import { Card } from 'design-system/card';
 import { ItemGroup } from 'design-system/item';
 import { PatientDemographicsSummary, DisplayableAddress, DisplayablePhone, DisplayableIdentification } from 'generated';
@@ -38,7 +38,7 @@ const maybeRenderEmail = (email?: string) => (
 
 const maybeRenderIdentification = (identifications?: Array<DisplayableIdentification>) => (
     <div className={styles.itemContent}>
-        {(identifications?.length ?? 0 > 0) ? displayIdentification(identifications) : <NoData display="dashes" />}
+        {(identifications?.length ?? 0 > 0) ? displayIdentification(identifications) : <NoData />}
     </div>
 );
 

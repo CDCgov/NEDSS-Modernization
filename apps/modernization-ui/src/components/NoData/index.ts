@@ -1,1 +1,1 @@
-export * from './NoData';
+export { NoData } from 'design-system/data';
