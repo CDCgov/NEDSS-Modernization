@@ -1,12 +1,8 @@
 import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
 import { useLocalStorage } from 'storage';
 
-type PaginationPreference = {
-    resultsPerPage: number;
-};
-
 type Interaction = {
-    paginationSettings?: PaginationPreference;
+    paginationSettings?: { resultsPerPage: number };
     setResultsPerPage: (resultsPerPage: number) => void;
 };
 
@@ -14,12 +10,12 @@ const PaginationPreferencesContext = createContext<Interaction | undefined>(unde
 
 type State = {
     status: 'set' | 'unset';
-    paginationSettings?: PaginationPreference;
+    paginationSettings?: { resultsPerPage: number };
 };
 
 type Action =
     | { type: 'set'; resultsPerPage: number }
-    | { type: 'load'; paginationSettings: PaginationPreference }
+    | { type: 'load'; resultsPerPage: number }
     | { type: 'sync'; resultsPerPage?: number }
     | { type: 'reset' };
 
@@ -42,7 +38,7 @@ const reducer = (current: State, action: Action): State => {
             return { status: 'unset' };
         }
         case 'load': {
-            return { ...current, status: 'set', paginationSettings: { ...action.paginationSettings } };
+            return { ...current, status: 'set', paginationSettings: { resultsPerPage: action.resultsPerPage } };
         }
     }
 };
@@ -56,16 +52,16 @@ type Props = {
 const PaginationPreferenceProvider = ({ id, children, defaultResultsPerPage = DEFAULT_RESULTS_PER_PAGE }: Props) => {
     const [state, dispatch] = useReducer(reducer, { status: 'unset' });
 
-    const { value, save, remove } = useLocalStorage<PaginationPreference>({
+    const { value, save, remove } = useLocalStorage<{ resultsPerPage: number }>({
         key: id,
         initial: defaultResultsPerPage ? { resultsPerPage: defaultResultsPerPage } : undefined
     });
 
     useEffect(() => {
         if (value) {
-            dispatch({ type: 'load', paginationSettings: value });
+            dispatch({ type: 'load', resultsPerPage: value.resultsPerPage });
         } else if (defaultResultsPerPage) {
-            dispatch({ type: 'load', paginationSettings: { resultsPerPage: defaultResultsPerPage } });
+            dispatch({ type: 'load', resultsPerPage: defaultResultsPerPage });
         }
     }, [value, defaultResultsPerPage]);
 
@@ -101,4 +97,3 @@ const usePaginationPreferences = () => {
 };
 
 export { usePaginationPreferences, PaginationPreferenceProvider };
-export type { PaginationPreference };
