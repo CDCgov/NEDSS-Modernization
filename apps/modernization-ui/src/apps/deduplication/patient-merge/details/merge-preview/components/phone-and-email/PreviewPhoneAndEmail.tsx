@@ -10,6 +10,7 @@ type PhoneEmailEntry = {
     id: string;
     asOf: string;
     type: string;
+    use: string;
     phoneNumber?: string;
     email?: string;
     comments?: string;
@@ -40,7 +41,7 @@ export const PreviewPhoneAndEmail = ({ selectedPhoneEmails, mergeCandidates }: P
             sortable: true
         },
         {
-            id: 'type',
+            id: 'typeUse',
             name: 'Type',
             value: (e) => e.type ?? '---',
             sortable: true

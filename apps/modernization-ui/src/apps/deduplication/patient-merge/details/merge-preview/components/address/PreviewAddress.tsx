@@ -39,43 +39,38 @@ export const PreviewAddress = ({ selectedAddresses, mergeCandidates }: AddressPr
         {
             id: 'asOf',
             name: 'As of',
-            value: (entry) => entry.asOf,
-            render: (entry) => entry.asOf ?? '---',
+            value: (entry) => entry.asOf ?? '---',
             sortable: true
         },
         {
-            id: 'type',
+            id: 'typeUse',
             name: 'Type',
-            value: (entry) => entry.type,
-            render: (entry) => entry.type ?? '---',
+            value: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '',
+            render: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '---',
             sortable: true
         },
         {
             id: 'address',
             name: 'Address',
-            value: (entry) => entry.address,
-            render: (entry) => entry.address ?? '---',
+            value: (entry) => entry.address ?? '---',
             sortable: true
         },
         {
             id: 'city',
             name: 'City',
-            value: (entry) => entry.city,
-            render: (entry) => entry.city ?? '---',
+            value: (entry) => entry.city ?? '---',
             sortable: true
         },
         {
             id: 'state',
             name: 'State',
-            value: (entry) => entry.state,
-            render: (entry) => entry.state ?? '---',
+            value: (entry) => entry.state ?? '---',
             sortable: true
         },
         {
             id: 'zipcode',
             name: 'Zip',
-            value: (entry) => entry.zipcode,
-            render: (entry) => entry.zipcode ?? '---',
+            value: (entry) => entry.zipcode ?? '---',
             sortable: true
         }
     ];
