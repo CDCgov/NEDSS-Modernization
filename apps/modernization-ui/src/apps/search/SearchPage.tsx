@@ -5,37 +5,25 @@ import { SortingProvider, SortingSettings } from 'libs/sorting';
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 import { ComponentSizingProvider } from 'design-system/sizing';
 import { FilterProvider } from 'design-system/filter';
-import { PageSizePreferenceKeyOptions, usePageSizePreference } from './usePageSizePreference';
 
 const SEARCH_PAGE_SIZE = 20;
 
-type SearchPageProviderProps = {
-    sorting?: SortingSettings;
-    paging?: PaginationSettings;
-    pageSizePreferenceKey: PageSizePreferenceKeyOptions;
-    children: ReactNode;
-};
+type SearchPageProviderProps = { sorting?: SortingSettings; paging?: PaginationSettings; children: ReactNode };
 
-const SearchPageProvider = ({ sorting, paging, pageSizePreferenceKey, children }: SearchPageProviderProps) => {
-    const { preferencePageSize } = usePageSizePreference(SEARCH_PAGE_SIZE, pageSizePreferenceKey);
-
-    return (
-        <ComponentSizingProvider>
-            <SortingProvider
-                {...sorting}
-                appendToUrl={sorting?.appendToUrl === undefined ? false : sorting.appendToUrl}>
-                <PaginationProvider
-                    {...paging}
-                    pageSize={preferencePageSize}
-                    appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
-                    <FilterProvider>
-                        <SearchResultDisplayProvider>{children}</SearchResultDisplayProvider>
-                    </FilterProvider>
-                </PaginationProvider>
-            </SortingProvider>
-        </ComponentSizingProvider>
-    );
-};
+const SearchPageProvider = ({ sorting, paging, children }: SearchPageProviderProps) => (
+    <ComponentSizingProvider>
+        <SortingProvider {...sorting} appendToUrl={sorting?.appendToUrl === undefined ? false : sorting.appendToUrl}>
+            <PaginationProvider
+                {...paging}
+                pageSize={paging?.pageSize || SEARCH_PAGE_SIZE}
+                appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
+                <FilterProvider>
+                    <SearchResultDisplayProvider>{children}</SearchResultDisplayProvider>
+                </FilterProvider>
+            </PaginationProvider>
+        </SortingProvider>
+    </ComponentSizingProvider>
+);
 
 const SearchPage = (props: Omit<SearchPageProviderProps, 'children'>) => (
     <SearchPageProvider {...props}>

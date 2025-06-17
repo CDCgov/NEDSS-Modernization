@@ -8,27 +8,24 @@ import { SimpleSearch } from './simple';
 const routing = [
     {
         path: 'search',
+        element: <SearchPage />,
         children: [
             { index: true, element: <Navigate to="patients" /> },
             {
                 path: 'patients',
-                element: <SearchPage pageSizePreferenceKey="patients-search-page-size" />,
-                children: [{ index: true, element: <PatientSearch /> }]
+                element: <PatientSearch />
             },
             {
                 path: 'lab-reports',
-                element: <SearchPage pageSizePreferenceKey="lab-reports-search-page-size" />,
-                children: [{ index: true, element: <LaboratoryReportSearch /> }]
+                element: <LaboratoryReportSearch />
             },
             {
                 path: 'investigations',
-                element: <SearchPage pageSizePreferenceKey="investigations-search-page-size" />,
-                children: [{ index: true, element: <InvestigationSearch /> }]
+                element: <InvestigationSearch />
             },
             {
                 path: 'simple/:type/:criteria',
-                element: <SearchPage pageSizePreferenceKey="simple-search-page-size" />,
-                children: [{ index: true, element: <SimpleSearch /> }]
+                element: <SimpleSearch />
             }
         ]
     }
