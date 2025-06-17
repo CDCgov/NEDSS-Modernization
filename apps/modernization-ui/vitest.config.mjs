@@ -14,6 +14,7 @@ export default defineConfig({
         globals: true,
         setupFiles: ['./src/setupTests.ts'],
         clearMocks: true, // <-- This will clear all mocks before each test, like Jest's clearMocks
+        timeout: 10000, // Set global test timeout to 10s
         coverage: {
             reporter: ['text', 'json', 'html']
         },
