@@ -9,13 +9,14 @@ interface IdleTimerProps {
     timeout: number;
     /** Warning Timeout in milliseconds: amount of time modal shows before onIdle event is fired */
     warningTimeout: number;
+    keepAlivePath: string;
     /** Callback function to execute when idle */
     onIdle: () => void;
     /** Callback function to execute when user clicks continue */
     onContinue?: () => void;
 }
 
-const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle, onContinue }) => {
+const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAlivePath, onIdle, onContinue }) => {
     const [idle, setIdle] = useState(false);
     const idleTimer = useTimeout();
     const warningTimer = useTimeout();
@@ -46,6 +47,7 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle, 
             true
         );
         countdown.clear();
+        fetch(keepAlivePath);
     }, [timeout, startWarningTimer]);
     const debouncedResetIdleTimer = useCallback(debounce(resetIdleTimer, 100), [resetIdleTimer]);
 
