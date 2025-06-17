@@ -3,7 +3,7 @@ import { Card } from 'design-system/card';
 import { AdministrativeInformation } from './AdministrativeInformation';
 import styles from './administrative-information-card.module.scss';
 import { Sizing } from 'design-system/field';
-import { NoData } from 'components/NoData';
+import { NoData } from 'design-system/data';
 
 type AdministrativeInformationCardType = {
     collapsible?: boolean;
@@ -26,7 +26,7 @@ export const AdministrativeInformationCard = ({
             collapsible={collapsible}
             open={data?.comment ? true : false}
             sizing={sizing}>
-            <div className={styles.content}>{data?.comment ? data?.comment : <NoData display="dashes" />}</div>
+            <div className={styles.content}>{data?.comment ? data?.comment : <NoData />}</div>
         </Card>
     );
 };

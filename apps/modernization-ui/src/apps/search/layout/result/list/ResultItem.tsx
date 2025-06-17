@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { NoData } from 'components/NoData';
+import { NoData } from 'design-system/data';
 import { ReactNode } from 'react';
 
 import styles from './result-item.module.scss';

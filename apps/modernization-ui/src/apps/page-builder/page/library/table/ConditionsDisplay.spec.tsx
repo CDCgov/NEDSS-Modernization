@@ -33,7 +33,7 @@ describe('ConditionDisplay', () => {
         const { queryByRole, getByText } = render(<ConditionsDisplay conditions={[]} />);
         const entries = queryByRole('listitem');
         expect(entries).toBeNull();
-        expect(getByText('No Data')).toBeInTheDocument();
+        expect(getByText('---')).toBeInTheDocument();
     });
 
     it('should display condition and id', () => {

@@ -62,7 +62,7 @@ describe('Table component', () => {
     });
 
     it('table with no data', async () => {
-        const { container } = render(
+        const { getByRole } = render(
             <TableComponent
                 tableHeader="Test Table Header"
                 tableHead={[
@@ -97,8 +97,7 @@ describe('Table component', () => {
             />
         );
 
-        const notAvailable = container.getElementsByClassName('no-data');
-        expect(notAvailable[0].innerHTML).toBe('No Data');
+        expect(getByRole('cell', { name: '---' })).toBeInTheDocument();
     });
 });
 
