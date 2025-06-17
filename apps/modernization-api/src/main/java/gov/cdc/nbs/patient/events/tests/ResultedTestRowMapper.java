@@ -56,11 +56,11 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     }
 
     if (text != null) {
-      result = Objects.requireNonNullElse(result, "").concat("\n").concat(text);
+      result = result == null ? text : result.concat("\n").concat(text);
     }
 
     if (numeric != null) {
-      result = Objects.requireNonNullElse(result, "").concat("\n").concat(numeric);
+      result = result == null ? numeric : result.concat("\n").concat(numeric);
     }
 
     result = Objects.requireNonNullElse(result, "").concat(status.orElse(""));
