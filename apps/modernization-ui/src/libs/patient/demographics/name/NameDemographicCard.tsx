@@ -6,22 +6,45 @@ import { NameDemographicFields } from './NameDemographicFields';
 import { NameDemographicView } from './NameDemographicView';
 import { SortHandler, SortingProvider } from 'libs/sorting';
 
+import styles from './name-demographic-card.module.scss';
+
 const defaultValue: Partial<NameDemographic> = initial();
 
 const columns: Column<NameDemographic>[] = [
     {
         id: 'name-as-of',
         name: 'As of',
+        className: styles['date-header'],
         sortable: true,
         sortIconType: 'numeric',
         value: (v) => v.asOf,
         render: (v) => internalizeDate(v.asOf)
     },
-    { id: 'name-type', name: 'Type', sortable: true, value: (v) => v.type?.name },
+    { id: 'name-type', name: 'Type', className: styles['coded-header'], sortable: true, value: (v) => v.type?.name },
+    {
+        id: 'name-prefix',
+        name: 'Prefix',
+        className: styles['coded-header'],
+        sortable: true,
+        value: (v) => v.prefix?.name
+    },
     { id: 'name-last', name: 'Last', sortable: true, value: (v) => v.last },
     { id: 'name-first', name: 'First', sortable: true, value: (v) => v.first },
     { id: 'name-middle', name: 'Middle', sortable: true, value: (v) => v.middle },
-    { id: 'name-suffix', name: 'Suffix', sortable: true, value: (v) => v.suffix?.name }
+    {
+        id: 'name-suffix',
+        name: 'Suffix',
+        className: styles['coded-header'],
+        sortable: true,
+        value: (v) => v.suffix?.name
+    },
+    {
+        id: 'name-degree',
+        name: 'Degree',
+        className: styles['coded-header'],
+        sortable: true,
+        value: (v) => v.degree?.name
+    }
 ];
 
 const sortResolver = columnSortResolver(columns);

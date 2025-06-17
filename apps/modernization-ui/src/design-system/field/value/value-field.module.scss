@@ -22,7 +22,7 @@
 
         .content {
             .title {
-                min-width: 12rem;
+                width: 12rem;
             }
         }
     }
@@ -40,7 +40,11 @@
 
         .title {
             font-weight: 700;
-            min-width: 13rem;
+            width: 13rem;
+        }
+
+        .value {
+            width: 20rem;
         }
     }
 }

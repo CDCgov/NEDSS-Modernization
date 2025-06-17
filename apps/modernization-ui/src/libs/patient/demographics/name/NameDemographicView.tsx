@@ -1,27 +1,49 @@
-import { ValueView } from 'design-system/data-display/ValueView';
-import { Sizing } from 'design-system/field';
+import { Sizing, ValueField } from 'design-system/field';
 import { NameDemographic } from './names';
+import { internalizeDate } from 'date';
 
 type NameDemographicViewProps = {
     entry: NameDemographic;
     sizing?: Sizing;
+    centered?: boolean;
 };
 
-const NameDemographicView = ({ entry, sizing }: NameDemographicViewProps) => {
+const NameDemographicView = ({ entry, sizing, centered = true }: NameDemographicViewProps) => {
     return (
         <>
-            <ValueView title="As of" value={entry.asOf} sizing={sizing} />
-            <ValueView title="Type" value={entry.type?.name} sizing={sizing} />
-            <ValueView title="Prefix" value={entry.prefix?.name} sizing={sizing} />
-            <ValueView title="Last" value={entry.last} sizing={sizing} />
-            <ValueView title="Second last" value={entry.secondLast} sizing={sizing} />
-            <ValueView title="First" value={entry.first} sizing={sizing} />
-            <ValueView title="Middle" value={entry.middle} sizing={sizing} />
-            <ValueView title="Second middle" value={entry.secondMiddle} sizing={sizing} />
-            <ValueView title="Suffix" value={entry.suffix?.name} sizing={sizing} />
-            <ValueView title="Degree" value={entry.degree?.name} sizing={sizing} />
+            <ValueField title="As of" sizing={sizing} centered={centered}>
+                {internalizeDate(entry.asOf)}
+            </ValueField>
+            <ValueField title="Type" sizing={sizing} centered={centered}>
+                {entry.type?.name}
+            </ValueField>
+            <ValueField title="Prefix" sizing={sizing} centered={centered}>
+                {entry.prefix?.name}
+            </ValueField>
+            <ValueField title="Last" sizing={sizing} centered={centered}>
+                {entry.last}
+            </ValueField>
+            <ValueField title="Second last" sizing={sizing} centered={centered}>
+                {entry.secondLast}
+            </ValueField>
+            <ValueField title="First" sizing={sizing} centered={centered}>
+                {entry.first}
+            </ValueField>
+            <ValueField title="Middle" sizing={sizing} centered={centered}>
+                {entry.middle}
+            </ValueField>
+            <ValueField title="Second middle" sizing={sizing} centered={centered}>
+                {entry.secondMiddle}
+            </ValueField>
+            <ValueField title="Suffix" sizing={sizing} centered={centered}>
+                {entry.suffix?.name}
+            </ValueField>
+            <ValueField title="Degree" sizing={sizing} centered={centered}>
+                {entry.degree?.name}
+            </ValueField>
         </>
     );
 };
 
 export { NameDemographicView };
+export type { NameDemographicViewProps };
