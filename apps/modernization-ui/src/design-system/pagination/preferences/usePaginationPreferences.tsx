@@ -6,7 +6,6 @@ type PaginationPreference = {
 };
 
 type Interaction = {
-    available: number[];
     paginationSettings?: PaginationPreference;
     setResultsPerPage: (resultsPerPage: number) => void;
 };
@@ -25,7 +24,6 @@ type Action =
     | { type: 'reset' };
 
 const DEFAULT_RESULTS_PER_PAGE = 20;
-const DEFAULT_AVAILABLE_OPTIONS = [20, 30, 50, 100];
 
 const reducer = (current: State, action: Action): State => {
     switch (action.type) {
@@ -52,16 +50,10 @@ const reducer = (current: State, action: Action): State => {
 type Props = {
     id: string;
     children: ReactNode;
-    available?: number[];
     defaultResultsPerPage?: number;
 };
 
-const PaginationPreferenceProvider = ({
-    id,
-    children,
-    available = DEFAULT_AVAILABLE_OPTIONS,
-    defaultResultsPerPage = DEFAULT_RESULTS_PER_PAGE
-}: Props) => {
+const PaginationPreferenceProvider = ({ id, children, defaultResultsPerPage = DEFAULT_RESULTS_PER_PAGE }: Props) => {
     const [state, dispatch] = useReducer(reducer, { status: 'unset' });
 
     const { value, save, remove } = useLocalStorage<PaginationPreference>({
@@ -90,7 +82,6 @@ const PaginationPreferenceProvider = ({
     return (
         <PaginationPreferencesContext.Provider
             value={{
-                available,
                 paginationSettings: state.paginationSettings,
                 setResultsPerPage
             }}>
