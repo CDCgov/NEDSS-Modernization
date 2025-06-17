@@ -209,13 +209,14 @@ describe('PatientSearchResultListItem', () => {
             detailedPhones: []
         };
 
-        const { queryAllByText } = render(
+        const { queryAllByText, getByText } = render(
             <MemoryRouter>
                 <PatientSearchResultListItem result={patient} />
             </MemoryRouter>
         );
 
-        expect(queryAllByText('No Data')).toHaveLength(8);
+        expect(getByText('No Data')).toBeInTheDocument();
+        expect(queryAllByText('---')).toHaveLength(7);
     });
 
     it('should render each identification', () => {

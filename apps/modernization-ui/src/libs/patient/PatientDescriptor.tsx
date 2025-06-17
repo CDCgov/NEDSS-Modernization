@@ -6,7 +6,7 @@ import { equalsIgnoreCase, not } from 'utils/predicate';
 import { defaultTo } from 'libs/supplying';
 import { displayName, DisplayableName } from 'name';
 import { displayAgeAsOf, today } from 'date';
-import { NoData } from 'components/NoData';
+import { NoData } from 'design-system/data';
 import { Heading, HeadingLevel } from 'components/heading';
 
 import styles from './patient-descriptor.module.scss';
@@ -25,7 +25,7 @@ type ValueProps = {
 };
 
 const Value = ({ className, children }: ValueProps) => {
-    return <span className={classNames(styles.value, className)}>{children || <NoData display="dashes" />}</span>;
+    return <span className={classNames(styles.value, className)}>{children || <NoData />}</span>;
 };
 
 type PatientDescription = {

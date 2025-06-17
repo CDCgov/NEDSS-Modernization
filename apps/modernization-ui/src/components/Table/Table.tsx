@@ -1,7 +1,7 @@
 import { Table, Pagination, Checkbox } from '@trussworks/react-uswds';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
-import { NoData } from 'components/NoData';
+import { NoData } from 'design-system/data';
 import { Loading } from 'components/Spinner';
 import { SortHandler, Sorting, useTableSorting } from './useTableSorting';
 import { TableHeader } from './TableHeader';
@@ -130,7 +130,7 @@ export const TableComponent = ({
                             const className = classNames({ [styles.sorted]: isSorting });
                             return (
                                 <td className={className} key={column}>
-                                    {detail.title ? detail.title : <NoData key={column} className={className} />}
+                                    {detail.title ? detail.title : <NoData key={column} />}
                                 </td>
                             );
                         })}

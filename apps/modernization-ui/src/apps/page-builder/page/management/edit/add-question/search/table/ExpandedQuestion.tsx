@@ -2,7 +2,7 @@ import { AvailableQuestion } from 'apps/page-builder/generated';
 import { useState } from 'react';
 import { TabbedButtonBar } from 'apps/page-builder/components/TabbedButtonBar/TabbedButtonBar';
 import styles from './expanded-question.module.scss';
-import { NoData } from 'components/NoData';
+import { NoData } from 'design-system/data';
 
 type Props = {
     question: AvailableQuestion;
