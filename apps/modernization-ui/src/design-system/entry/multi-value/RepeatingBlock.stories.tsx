@@ -95,9 +95,9 @@ const SampleForm = ({ sizing }: { sizing: Sizing }) => {
 
 const SampleView = ({ entry, sizing }: { entry: SampleType; sizing: Sizing }) => (
     <>
-        <ValueView title="First name" value={entry.firstName} sizing={sizing} required />
+        <ValueView title="First name" value={entry.firstName} sizing={sizing} />
         <ValueView title="Last name" value={entry.lastName} sizing={sizing} />
-        <ValueView title="Favorite veggie" value={entry.veggie?.name} sizing={sizing} required />
+        <ValueView title="Favorite veggie" value={entry.veggie?.name} sizing={sizing} />
     </>
 );
 
@@ -105,23 +105,23 @@ const columns = [
     {
         id: 'firstName',
         name: 'First name',
-        render: (entry: SampleType) => entry.firstName
+        value: (entry: SampleType) => entry.firstName
     },
     {
         id: 'lastName',
         name: 'Last name',
-        render: (entry: SampleType) => entry.lastName
+        value: (entry: SampleType) => entry.lastName
     },
     {
         id: 'veggie',
         name: 'Favorite veggie',
-        render: (entry: SampleType) => entry.veggie?.name
+        value: (entry: SampleType) => entry.veggie?.name
     }
 ];
 
-const defaultValue: SampleType = {
-    firstName: '',
-    lastName: '',
+const defaultValue: Partial<SampleType> = {
+    firstName: undefined,
+    lastName: undefined,
     veggie: undefined
 };
 
@@ -137,76 +137,30 @@ export const Default: Story = {
         title: 'Person',
         defaultValues: defaultValue,
         columns,
-        values: [],
-        formRenderer: () => <SampleForm sizing={defaultSizing} />,
-        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
-        onChange: handleChange,
-        isDirty: () => {},
-        isValid: () => {},
-        sizing: defaultSizing
-    }
-};
-
-export const ReadOnlyBlock: Story = {
-    args: {
-        id: 'repeating-block-default',
-        title: 'Person',
-        defaultValues: defaultValue,
-        columns,
-        values: [{ firstName: 'test', lastName: 'test', veggie: asSelectable('carrot', 'Carrot') }],
-        formRenderer: () => <SampleForm sizing={defaultSizing} />,
-        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
-        onChange: handleChange,
-        isDirty: () => {},
-        isValid: () => {},
-        editable: false,
-        viewable: false,
-        sizing: defaultSizing
-    }
-};
-
-const SampleViewPatientFile = ({ entry, sizing }: { entry: SampleType; sizing: Sizing }) => (
-    <>
-        <ValueView title="First name" value={entry.firstName} sizing={sizing} required centerAlign />
-        <ValueView title="Last name" value={entry.lastName} sizing={sizing} centerAlign />
-        <ValueView title="Favorite veggie" value={entry.veggie?.name} sizing={sizing} required centerAlign />
-    </>
-);
-
-export const ViewOnlyBlock: Story = {
-    args: {
-        id: 'repeating-block-default',
-        title: 'Person',
-        defaultValues: defaultValue,
-        columns,
-        values: [
+        data: [
             { firstName: 'test', lastName: 'test', veggie: asSelectable('carrot', 'Carrot') },
             { firstName: 'test1', lastName: 'test1', veggie: asSelectable('eggplant', 'Eggplant') }
         ],
         formRenderer: () => <SampleForm sizing={defaultSizing} />,
-        viewRenderer: (entry: SampleType) => <SampleViewPatientFile entry={entry} sizing={defaultSizing} />,
-        onChange: handleChange,
-        isDirty: () => {},
-        isValid: () => {},
-        editable: false,
-        viewable: true,
-        sizing: defaultSizing
-    }
-};
-
-export const EditableBlock: Story = {
-    args: {
-        id: 'repeating-block-default',
-        title: 'Person',
-        defaultValues: defaultValue,
-        columns,
-        values: [],
-        formRenderer: () => <SampleForm sizing={defaultSizing} />,
         viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
         onChange: handleChange,
         isDirty: () => {},
-        isValid: () => {},
+        isValid: () => {}
+    }
+};
+
+export const ViewOnly: Story = {
+    args: {
+        ...Default.args,
+        viewable: true,
+        editable: false
+    }
+};
+
+export const EditableOnly: Story = {
+    args: {
+        ...Default.args,
         viewable: false,
-        sizing: defaultSizing
+        editable: true
     }
 };
