@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useId } from 'react';
 import classNames from 'classnames';
 import { Sizing } from 'design-system/field';
 import { NoData } from 'components/NoData';
@@ -6,24 +6,25 @@ import { NoData } from 'components/NoData';
 import styles from './value-field.module.scss';
 
 type Props = {
-    title: string;
+    label: string;
     sizing?: Sizing;
-    centered?: boolean;
     children?: ReactNode;
 };
 
-const ValueField = ({ title, children, sizing, centered = false }: Props) => {
+const ValueField = ({ label, children, sizing }: Props) => {
+    const id = useId();
     return (
         <div
             className={classNames(styles.view, {
-                [styles.centered]: centered,
                 [styles.small]: sizing === 'small',
                 [styles.medium]: sizing === 'medium',
                 [styles.large]: sizing === 'large'
             })}>
-            <span className={styles.content}>
-                <span className={styles.title}>{title}</span>
-                <span className={styles.value}>{children ?? <NoData />}</span>
+            <span id={id} role="term" className={styles.label}>
+                {label}
+            </span>
+            <span aria-labelledby={id} role="definition" className={styles.value}>
+                {children ?? <NoData />}
             </span>
         </div>
     );

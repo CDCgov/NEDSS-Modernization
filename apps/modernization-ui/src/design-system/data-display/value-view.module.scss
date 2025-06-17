@@ -1,0 +1,49 @@
+@use 'styles/colors';
+@use 'styles/borders';
+@use 'styles/components';
+
+.dataRow {
+    display: flex;
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.5rem 1.75rem;
+    gap: 2rem;
+    align-items: center;
+    @extend %thin-bottom;
+    font-size: 0.875rem;
+
+    .title {
+        line-height: 162%;
+        width: 13rem;
+        color: colors.$base-darkest;
+        font-weight: 700;
+        padding-top: 1px;
+    }
+
+    .value {
+        color: colors.$disabled-darkest;
+        padding: 0.25rem 0;
+    }
+
+    &.small {
+        @extend %small;
+        min-height: 2.375rem;
+        padding-left: 1.25rem;
+        .title {
+            width: 12rem;
+        }
+    }
+
+    &.medium {
+        @extend %medium;
+    }
+
+    &.large {
+        @extend %large;
+        min-height: 3.25rem;
+    }
+}
+
+.center {
+    justify-content: center;
+}

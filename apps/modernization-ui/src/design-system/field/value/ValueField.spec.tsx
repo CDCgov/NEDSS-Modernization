@@ -3,15 +3,18 @@ import { ValueField } from './ValueField';
 
 describe('ValueField', () => {
     it('should display title and value', () => {
-        render(<ValueField title="title goes here">Value goes here</ValueField>);
+        render(<ValueField label="title goes here">Value goes here</ValueField>);
 
-        expect(screen.getByText('title goes here')).toBeInTheDocument();
-        expect(screen.getByText('Value goes here')).toBeInTheDocument();
+        const actual = screen.getByRole('definition', { name: 'title goes here' });
+
+        expect(actual).toHaveTextContent('Value goes here');
     });
 
     it('should display no data placeholder when children is empty', () => {
-        render(<ValueField title="title goes here" />);
+        render(<ValueField label="title goes here" />);
 
-        expect(screen.getByText('---')).toBeInTheDocument();
+        const actual = screen.getByRole('definition', { name: 'title goes here' });
+
+        expect(actual).toHaveTextContent('---');
     });
 });

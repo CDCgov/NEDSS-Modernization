@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        title: 'Value Title',
+        label: 'Value Title',
         children: 'value'
     }
 };
@@ -21,12 +21,5 @@ export const Empty: Story = {
     args: {
         ...Default.args,
         children: undefined
-    }
-};
-
-export const Centered: Story = {
-    args: {
-        ...Default.args,
-        centered: true
     }
 };

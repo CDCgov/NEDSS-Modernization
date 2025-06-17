@@ -5,40 +5,39 @@ import { internalizeDate } from 'date';
 type NameDemographicViewProps = {
     entry: NameDemographic;
     sizing?: Sizing;
-    centered?: boolean;
 };
 
-const NameDemographicView = ({ entry, sizing, centered = true }: NameDemographicViewProps) => {
+const NameDemographicView = ({ entry, sizing }: NameDemographicViewProps) => {
     return (
         <>
-            <ValueField title="As of" sizing={sizing} centered={centered}>
+            <ValueField title="As of" sizing={sizing}>
                 {internalizeDate(entry.asOf)}
             </ValueField>
-            <ValueField title="Type" sizing={sizing} centered={centered}>
+            <ValueField title="Type" sizing={sizing}>
                 {entry.type?.name}
             </ValueField>
-            <ValueField title="Prefix" sizing={sizing} centered={centered}>
+            <ValueField title="Prefix" sizing={sizing}>
                 {entry.prefix?.name}
             </ValueField>
-            <ValueField title="Last" sizing={sizing} centered={centered}>
+            <ValueField title="Last" sizing={sizing}>
                 {entry.last}
             </ValueField>
-            <ValueField title="Second last" sizing={sizing} centered={centered}>
+            <ValueField title="Second last" sizing={sizing}>
                 {entry.secondLast}
             </ValueField>
-            <ValueField title="First" sizing={sizing} centered={centered}>
+            <ValueField title="First" sizing={sizing}>
                 {entry.first}
             </ValueField>
-            <ValueField title="Middle" sizing={sizing} centered={centered}>
+            <ValueField title="Middle" sizing={sizing}>
                 {entry.middle}
             </ValueField>
-            <ValueField title="Second middle" sizing={sizing} centered={centered}>
+            <ValueField title="Second middle" sizing={sizing}>
                 {entry.secondMiddle}
             </ValueField>
-            <ValueField title="Suffix" sizing={sizing} centered={centered}>
+            <ValueField title="Suffix" sizing={sizing}>
                 {entry.suffix?.name}
             </ValueField>
-            <ValueField title="Degree" sizing={sizing} centered={centered}>
+            <ValueField title="Degree" sizing={sizing}>
                 {entry.degree?.name}
             </ValueField>
         </>

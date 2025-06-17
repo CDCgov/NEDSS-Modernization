@@ -8,10 +8,4 @@ describe('ValueView', () => {
         expect(getByText('title goes here')).toBeInTheDocument();
         expect(getByText('Value goes here')).toBeInTheDocument();
     });
-
-    it('should display no data placeholder when children is empty', () => {
-        const { getByText } = render(<ValueView title="title goes here" />);
-
-        expect(getByText('---')).toBeInTheDocument();
-    });
 });
