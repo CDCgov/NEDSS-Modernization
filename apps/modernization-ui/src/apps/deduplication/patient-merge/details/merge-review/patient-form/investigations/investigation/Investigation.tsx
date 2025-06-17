@@ -1,6 +1,6 @@
 import { MergeInvestigation } from 'apps/deduplication/api/model/MergeCandidate';
 import styles from './investigation.module.scss';
-import { toDateDisplay } from '../../shared/toDateDisplay';
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 
 type Props = {
     investigations: MergeInvestigation[];

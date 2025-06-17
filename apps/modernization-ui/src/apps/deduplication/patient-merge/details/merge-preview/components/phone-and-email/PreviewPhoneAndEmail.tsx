@@ -4,6 +4,7 @@ import { PhoneEmailId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
 import { MergePreviewTableCard } from '../shared/preview-card-table/MergePreviewTableCard';
 import { Column } from 'design-system/table';
+import { formatPhone } from '../../../shared/formatPhone';
 
 type PhoneEmailEntry = {
     id: string;
@@ -31,36 +32,37 @@ export const PreviewPhoneAndEmail = ({ selectedPhoneEmails, mergeCandidates }: P
     }));
 
     const [phoneEmails] = useState(initialPhoneEmails);
+
     const columns: Column<PhoneEmailEntry>[] = [
         {
             id: 'asOf',
             name: 'As of',
-            value: (entry) => entry.asOf ?? '---',
+            value: (e) => e.asOf ?? '---',
             sortable: true
         },
         {
             id: 'typeUse',
             name: 'Type',
-            value: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '',
-            render: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '---',
+            value: (e) => e.type ?? '---',
             sortable: true
         },
         {
             id: 'phoneNumber',
             name: 'Phone Number',
-            value: (entry) => entry.phoneNumber ?? '---',
+            value: (e) => formatPhone(e.phoneNumber) ?? '---',
+            render: (e) => formatPhone(e.phoneNumber) ?? '---',
             sortable: true
         },
         {
             id: 'email',
             name: 'Email Address',
-            value: (entry) => entry.email ?? '---',
+            value: (e) => e.email ?? '---',
             sortable: true
         },
         {
             id: 'comments',
             name: 'Comments',
-            value: (entry) => entry.comments ?? '---',
+            value: (e) => e.comments ?? '---',
             sortable: true
         }
     ];
