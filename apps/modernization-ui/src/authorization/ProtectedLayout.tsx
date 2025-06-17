@@ -33,6 +33,7 @@ const ProtectedLayout = () => {
             <ConfigurationProvider initial={configuration}>
                 <IdleTimer
                     onIdle={handleIdle}
+                    nbs6KeepAlivePath={configuration.settings.session.nbs6KeepAlivePath}
                     onContinue={handleIdleContinue}
                     timeout={configuration.settings.session.warning}
                     warningTimeout={configuration.settings.session.expiration - configuration.settings.session.warning}
