@@ -1,0 +1,46 @@
+@use 'styles/colors';
+@use 'styles/borders';
+@use 'styles/components';
+
+.view {
+    display: flex;
+    @extend %thin-bottom;
+
+    padding: 0.5rem 1.5rem 0.5rem 1rem;
+
+    font-size: var(--component-font-size);
+    height: var(--component-height);
+
+    @extend %medium;
+
+    &.centered {
+        justify-content: center;
+    }
+
+    &.small {
+        @extend %small;
+
+        .content {
+            .title {
+                min-width: 12rem;
+            }
+        }
+    }
+
+    &.large {
+        @extend %large;
+    }
+
+    .content {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        color: colors.$base-darkest;
+        line-height: normal;
+
+        .title {
+            font-weight: 700;
+            min-width: 13rem;
+        }
+    }
+}
