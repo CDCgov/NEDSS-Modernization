@@ -3,4 +3,4 @@ export type { DataTableFeatures, DataTableProps } from './DataTable';
 
 export type { Column, CellValue, SortIconType, HasValueFunction } from './header/column';
 
-export { SortableDataTable } from './SortableDataTable';
+export { SortableDataTable, columnSortResolver } from './sortable';

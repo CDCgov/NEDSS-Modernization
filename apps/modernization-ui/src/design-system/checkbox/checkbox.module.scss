@@ -21,6 +21,7 @@ $checkbox-large: 1.25rem;
 
 .checkbox {
     min-height: 1.25rem;
+    position: relative;
 
     input {
         position: absolute;

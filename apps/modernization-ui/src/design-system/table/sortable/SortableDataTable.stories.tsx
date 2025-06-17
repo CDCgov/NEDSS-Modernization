@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router';
-import { Column } from './header/column';
+import { Column } from '../header/column';
 import { SortableDataTable } from './SortableDataTable';
 
 type Person = {

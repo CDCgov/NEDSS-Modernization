@@ -95,8 +95,10 @@ type SortingSettings = {
     appendToUrl?: boolean;
 };
 
+type SortingProviderChildren = ReactNode | ((sorting: Interaction) => ReactNode | ReactNode[]);
+
 type SortingProviderProps = {
-    children: ReactNode;
+    children: SortingProviderChildren;
 } & SortingSettings;
 
 const SortingProvider = ({ appendToUrl = false, children }: SortingProviderProps) => {
@@ -142,7 +144,11 @@ const SortingProvider = ({ appendToUrl = false, children }: SortingProviderProps
         toggle: (property: string) => dispatch({ type: 'toggle', property })
     };
 
-    return <SortingContext.Provider value={value}>{children}</SortingContext.Provider>;
+    return (
+        <SortingContext.Provider value={value}>
+            {typeof children === 'function' ? children(value) : children}
+        </SortingContext.Provider>
+    );
 };
 
 const useSorting = () => {

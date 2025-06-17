@@ -1,9 +1,12 @@
 @use 'styles/colors';
 @use 'styles/borders';
-@use 'styles/tooltip';
-@use 'styles/icons';
+@use 'design-system/table/header/widths';
 
-.input {
+$small-height: 1rem;
+$medium-height: 1.125rem;
+$large-height: 1.25rem;
+
+.card {
     @extend %thin;
     background-color: colors.$base-white;
 
@@ -17,25 +20,46 @@
         }
     }
 
-    .dataTable {
+    .table {
         .actions {
             display: flex;
             gap: 0.5rem;
-            justify-content: flex-end;
+            justify-content: center;
+            align-items: center;
+            max-width: fit-content;
 
-            svg {
-                color: colors.$primary;
-                cursor: pointer;
+            & > button {
+                --button-padding: 0rem;
+                min-width: 1rem;
+
+                --button-height: #{$medium-height};
+                --button-icon-size: #{$medium-height};
+
+                &.active {
+                    border-radius: 0.25rem;
+                    padding: 0.0625rem;
+                    color: colors.$base-white;
+                    background-color: colors.$primary-darker;
+                }
             }
+        }
 
-            .active {
-                border-radius: 0.25rem;
-                padding: 0.0625rem;
-                color: colors.$base-white;
-                background-color: colors.$primary-darker;
+        &.small {
+            .actions {
+                & > button {
+                    --button-height: #{$small-height};
+                    --button-icon-size: #{$small-height};
+                }
             }
+        }
 
-            @include icons.sizedIcon(1rem, 1rem);
+        &.large {
+            .actions {
+                & > button {
+                    --button-height: #{$large-height};
+                    --button-icon-size: #{$large-height};
+                }
+            }
         }
     }
 
@@ -57,17 +81,5 @@
         footer {
             padding-left: 15.25rem;
         }
-    }
-
-    &.large {
-        footer {
-            padding-left: 16.75rem;
-        }
-    }
-}
-
-.iconColumn {
-    div {
-        visibility: hidden !important;
     }
 }

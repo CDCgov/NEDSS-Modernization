@@ -1,5 +1,5 @@
 import { ConditionSummary } from 'apps/page-builder/generated';
-import { NoData } from 'components/NoData';
+import { NoData } from 'design-system/data';
 import { useState } from 'react';
 import styles from './page-library-table.module.scss';
 

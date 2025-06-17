@@ -99,9 +99,7 @@ describe('PhoneAndEmailRepeatingBlock', () => {
         });
 
         await waitFor(async () => {
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(
-                2,
+            expect(onChange).toHaveBeenCalledWith(
                 expect.arrayContaining([
                     expect.objectContaining({
                         type: expect.objectContaining({ name: 'Phone', value: 'PH' }),

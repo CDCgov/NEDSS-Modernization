@@ -1,6 +1,6 @@
 import { MergeIdentification } from 'apps/deduplication/api/model/MergeCandidate';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
-import { toDateDisplay } from '../../shared/toDateDisplay';
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 
 type Props = {
     identification: MergeIdentification;

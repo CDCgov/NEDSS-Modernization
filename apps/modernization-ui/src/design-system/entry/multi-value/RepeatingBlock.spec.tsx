@@ -16,7 +16,7 @@ type TestType = {
 const UnderTestForm = () => {
     const { control } = useFormContext<TestType>();
     return (
-        <section>
+        <>
             <Controller
                 name="firstInput"
                 control={control}
@@ -49,19 +49,15 @@ const UnderTestForm = () => {
                     />
                 )}
             />
-        </section>
+        </>
     );
 };
 
 const UnderTestView = ({ entry }: { entry: TestType }) => (
-    <section>
-        <div>
-            <label>Render view first value: {entry.firstInput}</label>
-        </div>
-        <div>
-            <label>Render view second value: {entry.secondInput}</label>
-        </div>
-    </section>
+    <>
+        <span>Render view first value: {entry.firstInput}</span>
+        <span>Render view second value: {entry.secondInput}</span>
+    </>
 );
 
 const columns = [
@@ -78,7 +74,7 @@ const columns = [
 ];
 
 const Fixture = ({
-    values = [],
+    data = [],
     errors,
     defaultValues,
     sizing,
@@ -91,7 +87,7 @@ const Fixture = ({
         title={'Test title'}
         defaultValues={defaultValues}
         columns={columns}
-        values={values}
+        data={data}
         onChange={onChange}
         isDirty={isDirty}
         sizing={sizing}
@@ -154,7 +150,7 @@ describe('RepeatingBlock', () => {
 
     it('should display specified columns', () => {
         const { getByRole } = render(
-            <Fixture values={[{ firstInput: 'first-input-value', secondInput: 'second-input-value', others: [] }]} />
+            <Fixture data={[{ firstInput: 'first-input-value', secondInput: 'second-input-value', others: [] }]} />
         );
 
         expect(getByRole('table')).toBeInTheDocument();
@@ -182,10 +178,7 @@ describe('RepeatingBlock', () => {
             .then(() => user.type(input2, 'second input value'))
             .then(() => user.click(add));
 
-        expect(onChange).toHaveBeenNthCalledWith(1, []);
-        expect(onChange).toHaveBeenNthCalledWith(2, [
-            { firstInput: 'first input value', secondInput: 'second input value' }
-        ]);
+        expect(onChange).toHaveBeenCalledWith([{ firstInput: 'first input value', secondInput: 'second input value' }]);
     });
 
     it('should not display clear button when adding and no changes have been made.', () => {
@@ -244,7 +237,7 @@ describe('RepeatingBlock', () => {
             .then(() => user.type(getByLabelText('Second Input'), 'second value'))
             .then(() => user.click(add));
 
-        expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
+        expect(onChange).toBeCalledWith([{ firstInput: 'first value', secondInput: 'second value' }]);
 
         const columns = getAllByRole('cell');
         expect(columns).toHaveLength(3);
@@ -273,8 +266,7 @@ describe('RepeatingBlock', () => {
 
         // expect value to be added
         await waitFor(() => {
-            expect(onChange).toHaveBeenNthCalledWith(1, []);
-            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'typed value', secondInput: undefined }]);
+            expect(onChange).toBeCalledWith([{ firstInput: 'typed value', secondInput: undefined }]);
         });
 
         // verify validation message is no longer visible
@@ -290,7 +282,7 @@ describe('RepeatingBlock', () => {
     it('should display icons in last column of table', () => {
         render(
             <Fixture
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -316,31 +308,10 @@ describe('RepeatingBlock', () => {
         expect(remove).toHaveAttribute('data-tooltip-position', 'top');
     });
 
-    it('should render icons with correct sizing', async () => {
-        const { container } = render(
-            <Fixture
-                sizing="small"
-                values={[
-                    {
-                        firstInput: 'first-value',
-                        secondInput: 'second-value',
-                        others: []
-                    }
-                ]}
-            />
-        );
-
-        const icons = container.querySelectorAll('.actions svg');
-        expect(icons).toHaveLength(3);
-        icons.forEach((icon) => {
-            expect(icon).toHaveClass('small');
-        });
-    });
-
     it('should render view when view icon clicked', async () => {
-        const { getByLabelText, getByText, getByRole } = render(
+        const { getByLabelText, getByText } = render(
             <Fixture
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -357,17 +328,12 @@ describe('RepeatingBlock', () => {
 
         expect(getByText('Render view first value: first-value')).toBeInTheDocument();
         expect(getByText('Render view second value: second-value')).toBeInTheDocument();
-
-        const addButton = getByRole('button', { name: 'Add test title' });
-        expect(addButton).toBeInTheDocument();
-        expect(addButton.innerHTML).toContain('svg');
-        expect(addButton).toHaveAttribute('aria-description');
     });
 
     it('should render edit when edit icon clicked', async () => {
         const { getByLabelText, getByRole } = render(
             <Fixture
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -400,7 +366,7 @@ describe('RepeatingBlock', () => {
         const { getByLabelText } = render(
             <Fixture
                 onChange={onChange}
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -424,7 +390,7 @@ describe('RepeatingBlock', () => {
         const { getByRole, getAllByRole, getByLabelText } = render(
             <Fixture
                 onChange={onChange}
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -461,12 +427,9 @@ describe('RepeatingBlock', () => {
     });
 
     it('should allow cancelling update of row being edited', async () => {
-        const onChange = vi.fn();
-
         const { getByRole, getAllByRole, getByLabelText } = render(
             <Fixture
-                onChange={onChange}
-                values={[
+                data={[
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
@@ -476,7 +439,7 @@ describe('RepeatingBlock', () => {
             />
         );
 
-        const edit = getByLabelText('Edit');
+        const edit = screen.getByRole('button', { name: 'Edit' });
 
         const user = userEvent.setup();
 
@@ -488,12 +451,6 @@ describe('RepeatingBlock', () => {
 
         const cancel = getByRole('button', { name: 'Cancel' });
         await user.click(cancel);
-
-        expect(onChange).toHaveBeenCalledWith(
-            expect.arrayContaining([
-                expect.objectContaining({ firstInput: 'first-value', secondInput: 'second-value' })
-            ])
-        );
 
         // table display updated
         const columns = getAllByRole('cell');

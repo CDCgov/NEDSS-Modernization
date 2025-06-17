@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { SortingInteraction } from 'libs/sorting';
-import { NoData } from 'components/NoData';
+import { NoData } from 'design-system/data';
 import { Sizing } from 'design-system/field';
 import { Shown } from 'conditional-render';
 import { Column } from './header/column';
@@ -29,7 +29,7 @@ export const DataTableRow = <V,>({ columns, sorting, row, index }: Props<V>) => 
                             [styles.fixed]: column.fixed,
                             [styles.sorted]: sorted
                         })}>
-                        <Shown when={!!children} fallback={<NoData display="dashes" />}>
+                        <Shown when={!!children} fallback={<NoData />}>
                             {children}
                         </Shown>
                     </td>

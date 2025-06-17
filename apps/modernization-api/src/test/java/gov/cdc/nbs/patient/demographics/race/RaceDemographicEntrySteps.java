@@ -14,7 +14,7 @@ public class RaceDemographicEntrySteps {
   }
 
   @Given("I am entering the {raceCategory} race as of {localDate}")
-  public void enteringPhone(
+  public void entering(
       final String race,
       final LocalDate asOf
   ) {
@@ -22,7 +22,7 @@ public class RaceDemographicEntrySteps {
   }
 
   @Given("I am entering the detailed race {raceDetail}")
-  public void enteringEmail(final String detail) {
+  public void entering(final String detail) {
     this.active.active(current -> current.withDetail(detail));
   }
 }

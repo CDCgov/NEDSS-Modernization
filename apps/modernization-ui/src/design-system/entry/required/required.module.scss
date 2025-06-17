@@ -1,0 +1,9 @@
+@use 'styles/colors';
+
+.required {
+    &::before {
+        content: '*';
+        color: colors.$mandatory;
+        padding-right: 1ch;
+    }
+}

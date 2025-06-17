@@ -13,7 +13,7 @@ describe('question search table tests', () => {
                 </PaginationProvider>
             </MemoryRouter>
         );
-        expect(getByText('No Data')).toBeInTheDocument();
+        expect(getByText('---')).toBeInTheDocument();
     });
 
     it('should render headers when empty', () => {

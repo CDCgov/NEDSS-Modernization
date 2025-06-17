@@ -93,7 +93,7 @@ describe('ConditionSearch', () => {
         expect(cells[4]).toHaveTextContent('conditionFamily');
         expect(cells[5]).toHaveTextContent('coinfection');
         expect(cells[6]).toHaveTextContent('T');
-        expect(cells[7]).toHaveTextContent('No Data');
+        expect(cells[7]).toHaveTextContent('---');
         expect(cells[8]).toHaveTextContent('Active');
     });
 
