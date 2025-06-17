@@ -10,7 +10,7 @@ const timeout = 5000;
 const warningTimeout = 2000;
 
 const Fixture: React.FC<FixtureProps> = ({ onIdle }) => {
-    return <IdleTimer timeout={timeout} nbs6KeepAlivePath="/foo" warningTimeout={warningTimeout} onIdle={onIdle} />;
+    return <IdleTimer timeout={timeout} keepAlivePath="/foo" warningTimeout={warningTimeout} onIdle={onIdle} />;
 };
 
 describe('IdleTimer Component', () => {

@@ -72,7 +72,7 @@ const defaultSettings: Settings = {
     session: {
         warning: 1000 * 60 * 18,
         expiration: 1000 * 60 * 20,
-        nbs6KeepAlivePath: '/nbs/HomePage.do?method=loadHomePage'
+        keepAlivePath: '/nbs/HomePage.do?method=loadHomePage'
     },
     defaults: {
         sizing: 'large'

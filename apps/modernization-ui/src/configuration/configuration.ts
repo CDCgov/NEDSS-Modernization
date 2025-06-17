@@ -10,7 +10,7 @@ type Settings = {
     session: {
         warning: number;
         expiration: number;
-        nbs6KeepAlivePath: string;
+        keepAlivePath: string;
     };
     smarty?: {
         key: string;
