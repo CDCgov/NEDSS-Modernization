@@ -1,6 +1,6 @@
 import { MergeName } from 'apps/deduplication/api/model/MergeCandidate';
 import { DetailsSection } from '../../shared/details-section/DetailsSection';
-import { toDateDisplay } from '../../shared/toDateDisplay';
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 
 type Props = {
     name: MergeName;

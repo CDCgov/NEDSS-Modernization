@@ -2,7 +2,7 @@ import React from 'react';
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
 import { LinedMergePreviewCard } from '../shared/preview-card-lined/LinedMergePreviewCard';
-import { format, parseISO } from 'date-fns';
+import { format, isValid, parseISO } from 'date-fns';
 
 type PreviewEthnicityProps = {
     mergeFormData: PatientMergeForm;
@@ -10,13 +10,10 @@ type PreviewEthnicityProps = {
 };
 
 export const PreviewEthnicity = ({ mergeFormData, mergeCandidates }: PreviewEthnicityProps) => {
-    // Find the candidate
     const ethnicityData = mergeCandidates.find((mc) => mc.personUid === mergeFormData.ethnicity)?.ethnicity;
+    const asOfDate = ethnicityData?.asOf ? parseISO(ethnicityData.asOf) : undefined;
+    const formattedAsOf = asOfDate && isValid(asOfDate) ? format(asOfDate, 'MM/dd/yyyy') : '---';
 
-    // Format asOf date
-    const formattedAsOf = ethnicityData?.asOf ? format(parseISO(ethnicityData.asOf), 'MM/dd/yyyy') : '---';
-
-    // Prepare items for LinedMergePreviewCard
     const items = [
         { label: 'As of', text: formattedAsOf, lined: true },
         { label: 'Ethnicity', text: ethnicityData?.ethnicity ?? '---', lined: true },
