@@ -55,7 +55,7 @@ type NameRepeatingBlockProps = {
 
 const NameDemographicCard = ({ title = 'Name', sizing, data = [], ...remaining }: NameRepeatingBlockProps) => {
     const renderForm = () => <NameDemographicFields sizing={sizing} />;
-    const renderView = (value: NameDemographic) => <NameDemographicView entry={value} sizing={sizing} />;
+    const renderView = (value: NameDemographic) => <NameDemographicView entry={value} />;
 
     return (
         <SortingProvider appendToUrl={false}>

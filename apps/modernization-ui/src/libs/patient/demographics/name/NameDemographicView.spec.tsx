@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { NameDemographicView } from './NameDemographicView';
 import { asSelectable } from 'options/selectable';
 import { NameDemographic } from './names';
@@ -20,11 +20,9 @@ describe('NameDemographicView', () => {
     it('should display the as of', () => {
         render(<NameDemographicView entry={{ asOf: '2022-09-27', type: asSelectable('type') }} />);
 
-        const label = screen.getByText('As of').parentElement!;
+        const actual = screen.getByRole('definition', { name: 'Name as of' });
 
-        const value = within(label).getByText('09/27/2022');
-
-        expect(value).toBeInTheDocument();
+        expect(actual).toHaveTextContent('09/27/2022');
     });
 
     it('should display the type', () => {
@@ -32,11 +30,9 @@ describe('NameDemographicView', () => {
             <NameDemographicView entry={{ asOf: '2024-10-07', type: { name: 'type name', value: 'type value' } }} />
         );
 
-        const label = screen.getByText('Type').parentElement!;
+        const actual = screen.getByRole('definition', { name: 'Type' });
 
-        const value = within(label).getByText('type name');
-
-        expect(value).toBeInTheDocument();
+        expect(actual).toHaveTextContent('type name');
     });
 
     it('should display the no data placeholder when values are not present', () => {
@@ -49,29 +45,21 @@ describe('NameDemographicView', () => {
             />
         );
 
-        const prefix = screen.getByText('Prefix').parentElement!;
-        within(prefix).getByText('---');
+        expect(screen.getByRole('definition', { name: 'Prefix' })).toHaveTextContent('---');
 
-        const first = screen.getByText('First').parentElement!;
-        within(first).getByText('---');
+        expect(screen.getByRole('definition', { name: 'First' })).toHaveTextContent('---');
 
-        const middle = screen.getByText('Middle').parentElement!;
-        within(middle).getByText('---');
+        expect(screen.getByRole('definition', { name: 'Middle' })).toHaveTextContent('---');
 
-        const secondMiddle = screen.getByText('Second middle').parentElement!;
-        within(secondMiddle).getByText('---');
+        expect(screen.getByRole('definition', { name: 'Second middle' })).toHaveTextContent('---');
 
-        const last = screen.getByText('Last').parentElement!;
-        within(last).getByText('---');
+        expect(screen.getByRole('definition', { name: 'Last' })).toHaveTextContent('---');
 
-        const secondLast = screen.getByText('Second last').parentElement!;
-        within(secondLast).getByText('---');
+        expect(screen.getByRole('definition', { name: 'Second last' })).toHaveTextContent('---');
 
-        const suffix = screen.getByText('Suffix').parentElement!;
-        within(suffix).getByText('---');
+        expect(screen.getByRole('definition', { name: 'Suffix' })).toHaveTextContent('---');
 
-        const degree = screen.getByText('Degree').parentElement!;
-        within(degree).getByText('---');
+        expect(screen.getByRole('definition', { name: 'Degree' })).toHaveTextContent('---');
     });
 
     it('should display the prefix when present', () => {
@@ -85,11 +73,7 @@ describe('NameDemographicView', () => {
             />
         );
 
-        const label = screen.getByText('Prefix').parentElement!;
-
-        const value = within(label).getByText('prefix name');
-
-        expect(value).toBeInTheDocument();
+        expect(screen.getByRole('definition', { name: 'Prefix' })).toHaveTextContent('prefix name');
     });
 
     it('should display the first name when present', () => {
@@ -103,11 +87,7 @@ describe('NameDemographicView', () => {
             />
         );
 
-        const label = screen.getByText('First').parentElement!;
-
-        const value = within(label).getByText('First name value');
-
-        expect(value).toBeInTheDocument();
+        expect(screen.getByRole('definition', { name: 'First' })).toHaveTextContent('First name value');
     });
 
     it('should display the middle name when present', () => {
@@ -121,11 +101,7 @@ describe('NameDemographicView', () => {
             />
         );
 
-        const label = screen.getByText('Middle').parentElement!;
-
-        const value = within(label).getByText('Middle name value');
-
-        expect(value).toBeInTheDocument();
+        expect(screen.getByRole('definition', { name: 'Middle' })).toHaveTextContent('Middle name value');
     });
 
     it('should display the second middle name when present', () => {
@@ -139,11 +115,7 @@ describe('NameDemographicView', () => {
             />
         );
 
-        const label = screen.getByText('Second middle').parentElement!;
-
-        const value = within(label).getByText('Second middle name value');
-
-        expect(value).toBeInTheDocument();
+        expect(screen.getByRole('definition', { name: 'Second middle' })).toHaveTextContent('Second middle name value');
     });
 
     it('should display the last name when present', () => {
@@ -157,11 +129,7 @@ describe('NameDemographicView', () => {
             />
         );
 
-        const label = screen.getByText('Last').parentElement!;
-
-        const value = within(label).getByText('Last name value');
-
-        expect(value).toBeInTheDocument();
+        expect(screen.getByRole('definition', { name: 'Last' })).toHaveTextContent('Last name value');
     });
 
     it('should display the second last name when present', () => {
@@ -175,11 +143,7 @@ describe('NameDemographicView', () => {
             />
         );
 
-        const label = screen.getByText('Second last').parentElement!;
-
-        const value = within(label).getByText('Second last name value');
-
-        expect(value).toBeInTheDocument();
+        expect(screen.getByRole('definition', { name: 'Second last' })).toHaveTextContent('Second last name value');
     });
 
     it('should display the suffix when present', () => {
@@ -193,11 +157,7 @@ describe('NameDemographicView', () => {
             />
         );
 
-        const label = screen.getByText('Suffix').parentElement!;
-
-        const value = within(label).getByText('suffix name');
-
-        expect(value).toBeInTheDocument();
+        expect(screen.getByRole('definition', { name: 'Suffix' })).toHaveTextContent('suffix name');
     });
 
     it('should display the degree when present', () => {
@@ -210,11 +170,6 @@ describe('NameDemographicView', () => {
                 }}
             />
         );
-
-        const label = screen.getByText('Degree').parentElement!;
-
-        const value = within(label).getByText('degree name');
-
-        expect(value).toBeInTheDocument();
+        expect(screen.getByRole('definition', { name: 'Degree' })).toHaveTextContent('degree name');
     });
 });

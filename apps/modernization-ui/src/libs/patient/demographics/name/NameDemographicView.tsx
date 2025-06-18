@@ -1,46 +1,25 @@
-import { Sizing, ValueField } from 'design-system/field';
+import { DetailValue, DetailView } from 'design-system/entry/multi-value';
 import { NameDemographic } from './names';
 import { internalizeDate } from 'date';
 
 type NameDemographicViewProps = {
     entry: NameDemographic;
-    sizing?: Sizing;
 };
 
-const NameDemographicView = ({ entry, sizing }: NameDemographicViewProps) => {
+const NameDemographicView = ({ entry }: NameDemographicViewProps) => {
     return (
-        <>
-            <ValueField title="As of" sizing={sizing}>
-                {internalizeDate(entry.asOf)}
-            </ValueField>
-            <ValueField title="Type" sizing={sizing}>
-                {entry.type?.name}
-            </ValueField>
-            <ValueField title="Prefix" sizing={sizing}>
-                {entry.prefix?.name}
-            </ValueField>
-            <ValueField title="Last" sizing={sizing}>
-                {entry.last}
-            </ValueField>
-            <ValueField title="Second last" sizing={sizing}>
-                {entry.secondLast}
-            </ValueField>
-            <ValueField title="First" sizing={sizing}>
-                {entry.first}
-            </ValueField>
-            <ValueField title="Middle" sizing={sizing}>
-                {entry.middle}
-            </ValueField>
-            <ValueField title="Second middle" sizing={sizing}>
-                {entry.secondMiddle}
-            </ValueField>
-            <ValueField title="Suffix" sizing={sizing}>
-                {entry.suffix?.name}
-            </ValueField>
-            <ValueField title="Degree" sizing={sizing}>
-                {entry.degree?.name}
-            </ValueField>
-        </>
+        <DetailView>
+            <DetailValue label="Name as of">{internalizeDate(entry.asOf)}</DetailValue>
+            <DetailValue label="Type">{entry.type?.name}</DetailValue>
+            <DetailValue label="Prefix">{entry.prefix?.name}</DetailValue>
+            <DetailValue label="Last">{entry.last}</DetailValue>
+            <DetailValue label="Second last">{entry.secondLast}</DetailValue>
+            <DetailValue label="First">{entry.first}</DetailValue>
+            <DetailValue label="Middle">{entry.middle}</DetailValue>
+            <DetailValue label="Second middle">{entry.secondMiddle}</DetailValue>
+            <DetailValue label="Suffix">{entry.suffix?.name}</DetailValue>
+            <DetailValue label="Degree">{entry.degree?.name}</DetailValue>
+        </DetailView>
     );
 };
 
