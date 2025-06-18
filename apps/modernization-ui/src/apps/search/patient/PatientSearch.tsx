@@ -14,6 +14,7 @@ import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { usePatientSearch } from './usePatientSearch';
 import { Direction } from 'libs/sorting';
 import { useComponentSizing } from 'design-system/sizing';
+import { PaginationPreferenceProvider } from 'design-system/pagination';
 
 const PatientSearch = () => {
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
@@ -34,28 +35,30 @@ const PatientSearch = () => {
                     property: 'patientname',
                     direction: Direction.Ascending
                 }}>
-                <SearchInteractionProvider interaction={interaction}>
-                    <FormProvider {...form}>
-                        <SearchLayout
-                            sizing={sizing}
-                            actions={() => <PatientSearchActions disabled={interaction.status !== 'completed'} />}
-                            criteria={() => <PatientCriteria sizing={sizing} />}
-                            resultsAsList={() => (
-                                <SearchResultList<PatientSearchResult>
-                                    results={interaction.results.content}
-                                    render={(result) => <PatientSearchResultListItem result={result} />}
-                                />
-                            )}
-                            resultsAsTable={() => (
-                                <PatientSearchResultTable sizing={sizing} results={interaction.results.content} />
-                            )}
-                            searchEnabled={interaction.enabled}
-                            onSearch={interaction.search}
-                            noResults={() => <NoPatientResults />}
-                            onClear={interaction.clear}
-                        />
-                    </FormProvider>
-                </SearchInteractionProvider>
+                <PaginationPreferenceProvider id="search.patients.preferences.pagination">
+                    <SearchInteractionProvider interaction={interaction}>
+                        <FormProvider {...form}>
+                            <SearchLayout
+                                sizing={sizing}
+                                actions={() => <PatientSearchActions disabled={interaction.status !== 'completed'} />}
+                                criteria={() => <PatientCriteria sizing={sizing} />}
+                                resultsAsList={() => (
+                                    <SearchResultList<PatientSearchResult>
+                                        results={interaction.results.content}
+                                        render={(result) => <PatientSearchResultListItem result={result} />}
+                                    />
+                                )}
+                                resultsAsTable={() => (
+                                    <PatientSearchResultTable sizing={sizing} results={interaction.results.content} />
+                                )}
+                                searchEnabled={interaction.enabled}
+                                onSearch={interaction.search}
+                                noResults={() => <NoPatientResults />}
+                                onClear={interaction.clear}
+                            />
+                        </FormProvider>
+                    </SearchInteractionProvider>
+                </PaginationPreferenceProvider>
             </SortingPreferenceProvider>
         </ColumnPreferenceProvider>
     );
