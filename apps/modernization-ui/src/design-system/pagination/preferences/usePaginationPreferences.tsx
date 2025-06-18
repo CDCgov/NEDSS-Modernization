@@ -57,20 +57,17 @@ const reducer = (current: State, action: Action): State => {
 type Props = {
     id: string;
     children: ReactNode;
-    defaultPageSize?: ActivePagination;
 };
 
-const PaginationPreferenceProvider = ({ id, children, defaultPageSize }: Props) => {
+const PaginationPreferenceProvider = ({ id, children }: Props) => {
     const [state, dispatch] = useReducer(reducer, {});
 
-    const { value, save, remove } = useLocalStorage<ActivePagination>({ key: id, initial: defaultPageSize });
+    const { value, save, remove } = useLocalStorage<ActivePagination>({ key: id });
 
     useEffect(() => {
         if (value) {
             //  use the stored pagination value
             dispatch({ type: 'load', active: value });
-        } else if (defaultPageSize) {
-            dispatch({ type: 'load', active: defaultPageSize });
         }
     }, [value]);
 
