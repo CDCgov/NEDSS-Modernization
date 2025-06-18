@@ -48,7 +48,6 @@ const Select = ({
 
     return (
         <select
-            key={value?.value ?? ''}
             id={id}
             className={classNames('usa-select', className)}
             name={inputProps.name ?? id}
