@@ -24,11 +24,22 @@ const useInPageNavigation = (threshold: number = 0) => {
 
         sections.forEach((section) => observer.observe(section));
 
-        const smoothScroll = (element: HTMLElement) => {
-            element.scrollIntoView({
+        const smoothScrollAndFocus = (section: HTMLElement) => {
+            // First scroll to the section.
+            section.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
+
+            // Focus on the header link after scroll complete.
+            setTimeout(() => {
+                const headerLink = section.querySelector('a[href^="#"]');
+                if (headerLink instanceof HTMLElement) {
+                    headerLink.focus();
+                }
+
+                // 500ms delay to allow scrolling to complete.
+            }, 500);
         };
 
         sections.forEach((section) => {
@@ -37,7 +48,7 @@ const useInPageNavigation = (threshold: number = 0) => {
             if (sectionLink) {
                 sectionLink.addEventListener('click', (event) => {
                     event.preventDefault();
-                    smoothScroll(section as HTMLElement);
+                    smoothScrollAndFocus(section as HTMLElement);
                 });
             }
         });
