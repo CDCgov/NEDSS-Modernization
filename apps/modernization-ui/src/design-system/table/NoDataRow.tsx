@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import styles from './data-table.module.scss';
+
+import styles from './no-data-row.module.scss';
 
 type NoDataRowProps = {
     columns: number;

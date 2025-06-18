@@ -9,7 +9,7 @@ type CellValue = string | number | boolean | Date;
 type HasRenderFunction<R> = { render: (value: R, index: number) => ReactNode | undefined };
 type HasValueFunction<R, C = CellValue> = { value: Mapping<R, C | undefined> };
 
-type RenderMethod<R, C = CellValue> =
+type Rendered<R, C = CellValue> =
     | HasRenderFunction<R>
     | HasValueFunction<R, C>
     | (HasRenderFunction<R> & HasValueFunction<R, C>);
@@ -21,14 +21,23 @@ type BaseColumn<R, C> = {
     className?: string;
     filter?: FilterDescriptor;
     sortIconType?: SortIconType;
-} & RenderMethod<R, C>;
+} & Rendered<R, C>;
 
 type NamedColumn<R, C = CellValue> = BaseColumn<R, C> & { name: string };
 type LabeledColumn<R, C = CellValue> = BaseColumn<R, C> & { label: string };
 
 type Column<R, C = CellValue> = NamedColumn<R, C> | LabeledColumn<R, C>;
 
-export type { CellValue, Column, NamedColumn, LabeledColumn, SortIconType, HasValueFunction };
+export type {
+    CellValue,
+    Column,
+    NamedColumn,
+    LabeledColumn,
+    SortIconType,
+    HasValueFunction,
+    HasRenderFunction,
+    Rendered
+};
 
 const isNamed = <R, C>(column: Column<R, C>): column is NamedColumn<R, C> => 'name' in column;
 

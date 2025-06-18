@@ -3,8 +3,8 @@ import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
-import { toDateDisplay } from '../../shared/toDateDisplay';
-import { formatPhone } from '../formatPhone';
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
+import { formatPhone } from '../../../../shared/formatPhone';
 
 type Props = {
     patientData: MergeCandidate;
