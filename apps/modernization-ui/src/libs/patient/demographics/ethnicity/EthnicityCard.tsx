@@ -1,15 +1,17 @@
 import { Card, CardProps } from 'design-system/card';
-import { PatientEthnicityDemographic } from 'generated';
-import styles from './ethnicity-card.module.scss';
+import { Ethnicity } from './Ethnicity';
+import { EthnicityView } from './EthnicityView';
+import { Sizing } from 'design-system/field';
 
 type EthnicityCardProps = {
-    data?: PatientEthnicityDemographic;
+    data?: Ethnicity;
+    sizing?: Sizing;
 } & Omit<CardProps, 'subtext' | 'children'>;
 
-const EthnicityCard = ({ data, title = 'Ethnicity', collapsible = true, ...remaining }: EthnicityCardProps) => {
+const EthnicityCard = ({ data, title = 'Ethnicity', collapsible = true, sizing, ...remaining }: EthnicityCardProps) => {
     return (
         <Card title={title} collapsible={collapsible} {...remaining}>
-            <div className={styles.content}>{data?.asOf}</div>
+            <EthnicityView data={data} sizing={sizing} />
         </Card>
     );
 };
