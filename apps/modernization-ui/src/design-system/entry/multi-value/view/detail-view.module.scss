@@ -1,0 +1,30 @@
+@use 'styles/colors';
+@use 'styles/components';
+
+.details {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    column-gap: 2rem;
+    row-gap: 0.5rem;
+    justify-content: center;
+
+    color: colors.$base-darkest;
+    line-height: normal;
+
+    box-sizing: border-box;
+
+    margin: 0;
+
+    @extend %small;
+
+    dt {
+        grid-column-start: 1;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    dd {
+        grid-column-start: 2;
+        margin: 0;
+    }
+}

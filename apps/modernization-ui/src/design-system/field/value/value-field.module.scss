@@ -1,0 +1,52 @@
+@use 'styles/colors';
+@use 'styles/borders';
+@use 'styles/components';
+
+.view {
+    display: flex;
+    gap: 2rem;
+
+    color: colors.$base-darkest;
+    line-height: normal;
+
+    box-sizing: border-box;
+
+    padding: 0.5rem 1.5rem 0.5rem 1rem;
+
+    @extend %medium;
+
+    font-size: var(--component-font-size);
+
+    .label {
+        display: flex;
+        align-items: center;
+        height: var(--component-height);
+        font-weight: 700;
+        width: 13rem;
+    }
+
+    .value {
+        display: flex;
+        align-items: center;
+        height: var(--component-height);
+        width: 20rem;
+    }
+
+    &:not(:last-child) {
+        @extend %thin-bottom;
+    }
+
+    &.small {
+        @extend %small;
+
+        .content {
+            .label {
+                width: 12rem;
+            }
+        }
+    }
+
+    &.large {
+        @extend %large;
+    }
+}

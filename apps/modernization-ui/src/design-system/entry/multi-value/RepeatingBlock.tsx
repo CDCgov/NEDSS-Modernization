@@ -168,6 +168,8 @@ const RepeatingBlock = <V extends FieldValues>({
         isValid?.(!errorMessages || errorMessages.length === 0);
     }, [errorMessages]);
 
+    const opened = collapsible ? entries.length > 0 : true;
+
     return (
         <Card
             id={id}
@@ -177,7 +179,56 @@ const RepeatingBlock = <V extends FieldValues>({
             flair={<Tag size={sizing}>{entries.length}</Tag>}
             className={classNames(styles.card)}
             info={editable && <Required />}
-            open={entries.length > 0}>
+            open={opened}
+            footer={
+                <Shown when={editable}>
+                    <span
+                        className={classNames(styles.controls, {
+                            [styles.small]: sizing === 'small',
+                            [styles.medium]: sizing === 'medium',
+                            [styles.large]: sizing === 'large'
+                        })}>
+                        <Shown when={status === 'adding'}>
+                            <Button
+                                secondary
+                                icon={<Icon name="add" />}
+                                sizing={sizing}
+                                aria-description={`add ${title.toLowerCase()}`}
+                                onClick={form.handleSubmit(handleAdd)}>
+                                {`Add ${title.toLowerCase()}`}
+                            </Button>
+                            <Shown when={form.formState.isDirty || errorMessages.length !== 0}>
+                                <Button
+                                    secondary
+                                    sizing={sizing}
+                                    aria-description={`clear ${title.toLowerCase()}`}
+                                    onClick={handleClear}
+                                    onMouseDown={
+                                        (e) => e.preventDefault() /* prevent need to double click after blur */
+                                    }>
+                                    Clear
+                                </Button>
+                            </Shown>
+                        </Shown>
+                        <Shown when={status === 'editing'}>
+                            <Button
+                                secondary
+                                sizing={sizing}
+                                aria-description={`update ${title.toLowerCase()}`}
+                                onClick={form.handleSubmit(handleUpdate)}>
+                                {`Update ${title.toLowerCase()}`}
+                            </Button>
+                            <Button
+                                secondary
+                                sizing={sizing}
+                                aria-description={`cancel editing current ${title.toLowerCase()}`}
+                                onClick={handleReset}>
+                                Cancel
+                            </Button>
+                        </Shown>
+                    </span>
+                </Shown>
+            }>
             <Shown when={errorMessages && errorMessages.length > 0}>
                 <AlertMessage title="Please fix the following errors:" type="error">
                     <ul className={styles.errorList}>
@@ -200,7 +251,7 @@ const RepeatingBlock = <V extends FieldValues>({
                 features={features}
             />
             <Shown when={viewable && status === 'viewing'}>
-                {selected && <div className={styles.viewMode}>{viewRenderer(selected.value)}</div>}
+                {selected && <div className={styles.view}>{viewRenderer(selected.value)}</div>}
             </Shown>
 
             <Shown when={editable && status !== 'viewing'}>
@@ -209,44 +260,6 @@ const RepeatingBlock = <V extends FieldValues>({
                         {formRenderer(selected?.value)}
                     </div>
                 </FormProvider>
-                <footer>
-                    <Shown when={status === 'adding'}>
-                        <Button
-                            secondary
-                            icon={<Icon name="add" />}
-                            sizing={sizing}
-                            aria-description={`add ${title.toLowerCase()}`}
-                            onClick={form.handleSubmit(handleAdd)}>
-                            {`Add ${title.toLowerCase()}`}
-                        </Button>
-                        <Shown when={form.formState.isDirty}>
-                            <Button
-                                secondary
-                                sizing={sizing}
-                                aria-description={`clear ${title.toLowerCase()}`}
-                                onClick={handleClear}
-                                onMouseDown={(e) => e.preventDefault() /* prevent need to double click after blur */}>
-                                Clear
-                            </Button>
-                        </Shown>
-                    </Shown>
-                    <Shown when={status === 'editing'}>
-                        <Button
-                            secondary
-                            sizing={sizing}
-                            aria-description={`update ${title.toLowerCase()}`}
-                            onClick={form.handleSubmit(handleUpdate)}>
-                            {`Update ${title.toLowerCase()}`}
-                        </Button>
-                        <Button
-                            secondary
-                            sizing={sizing}
-                            aria-description={`cancel editing current ${title.toLowerCase()}`}
-                            onClick={handleReset}>
-                            Cancel
-                        </Button>
-                    </Shown>
-                </footer>
             </Shown>
         </Card>
     );
