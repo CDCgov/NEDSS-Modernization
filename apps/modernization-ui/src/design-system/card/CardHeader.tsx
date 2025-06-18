@@ -21,9 +21,11 @@ const CardHeader = ({ id, title, level = 2, flair, control, actions, info, subte
         <header className={styles.header}>
             <div className={styles.titles}>
                 <span className={styles.title}>
-                    <Heading id={id} level={level}>
-                        {title}
-                    </Heading>
+                    <a href={`#${id}`} className={styles.titleLink}>
+                        <Heading id={id} level={level}>
+                            {title}
+                        </Heading>
+                    </a>
                     {flair}
                 </span>
                 {subtext && <div className={styles.subtext}>{subtext}</div>}
