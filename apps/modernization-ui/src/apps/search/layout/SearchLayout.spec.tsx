@@ -42,8 +42,8 @@ jest.mock('apps/search', () => ({
     })
 }));
 
-describe('when a search is performed without ', () => {
-    it('should render no input', () => {
+describe('SearchLayout', () => {
+    it('should render no input by default', () => {
         const { getByText } = render(
             <MemoryRouter>
                 <SkipLinkProvider>
@@ -63,5 +63,57 @@ describe('when a search is performed without ', () => {
         );
 
         expect(getByText(/You must enter at least one item to search/)).toBeInTheDocument();
+    });
+
+    it('calls onSearch when Enter is pressed on an input and searchEnabled is true', () => {
+        const onSearch = jest.fn();
+        const { getByTestId } = render(
+            <MemoryRouter>
+                <SkipLinkProvider>
+                    <SearchResultDisplayProvider>
+                        <FilterProvider>
+                            <SearchLayout
+                                criteria={() => <input data-testid="search-input" />}
+                                resultsAsList={jest.fn()}
+                                resultsAsTable={jest.fn()}
+                                onSearch={onSearch}
+                                onClear={jest.fn()}
+                                searchEnabled={true}
+                            />
+                        </FilterProvider>
+                    </SearchResultDisplayProvider>
+                </SkipLinkProvider>
+            </MemoryRouter>
+        );
+        const input = getByTestId('search-input');
+        input.focus();
+        input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+        expect(onSearch).toHaveBeenCalled();
+    });
+
+    it('does not call onSearch when Enter is pressed on an input and searchEnabled is false', () => {
+        const onSearch = jest.fn();
+        const { getByTestId } = render(
+            <MemoryRouter>
+                <SkipLinkProvider>
+                    <SearchResultDisplayProvider>
+                        <FilterProvider>
+                            <SearchLayout
+                                criteria={() => <input data-testid="search-input" />}
+                                resultsAsList={jest.fn()}
+                                resultsAsTable={jest.fn()}
+                                onSearch={onSearch}
+                                onClear={jest.fn()}
+                                searchEnabled={false}
+                            />
+                        </FilterProvider>
+                    </SearchResultDisplayProvider>
+                </SkipLinkProvider>
+            </MemoryRouter>
+        );
+        const input = getByTestId('search-input');
+        input.focus();
+        input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+        expect(onSearch).not.toHaveBeenCalled();
     });
 });
