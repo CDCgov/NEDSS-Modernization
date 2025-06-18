@@ -71,7 +71,8 @@ const defaultProperties: Properties = {
 const defaultSettings: Settings = {
     session: {
         warning: 1000 * 60 * 18,
-        expiration: 1000 * 60 * 20
+        expiration: 1000 * 60 * 20,
+        keepAlivePath: '/nbs/HomePage.do?method=loadHomePage'
     },
     defaults: {
         sizing: 'large'

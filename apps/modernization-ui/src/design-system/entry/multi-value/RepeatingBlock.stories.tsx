@@ -14,7 +14,7 @@ type SampleType = {
 };
 
 const meta = {
-    title: 'Design System/RepeatingBlock',
+    title: 'Design System/Multi-value/RepeatingBlock',
     component: RepeatingBlock<SampleType>
 } satisfies Meta<typeof RepeatingBlock<SampleType>>;
 
