@@ -2,7 +2,6 @@ import { LoginWrapper } from 'apps/landing/Layout/LoginWrapper';
 import { ReturnMessage } from 'system/return-message';
 
 export const Expired = () => {
-    fetch('/nbs/logout');
     return (
         <LoginWrapper>
             <ReturnMessage title="Session time-out">
