@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import styles from './InPageNavigation.module.scss';
+import { focusedTarget } from 'utils';
 
 const useInPageNavigation = (threshold: number = 0) => {
     useEffect(() => {
@@ -30,16 +31,6 @@ const useInPageNavigation = (threshold: number = 0) => {
                 behavior: 'smooth',
                 block: 'start'
             });
-
-            // Focus on the header link after scroll complete.
-            setTimeout(() => {
-                const headerLink = section.querySelector('a[href^="#"]');
-                if (headerLink instanceof HTMLElement) {
-                    headerLink.focus();
-                }
-
-                // 500ms delay to allow scrolling to complete.
-            }, 500);
         };
 
         sections.forEach((section) => {
@@ -49,6 +40,15 @@ const useInPageNavigation = (threshold: number = 0) => {
                 sectionLink.addEventListener('click', (event) => {
                     event.preventDefault();
                     smoothScrollAndFocus(section as HTMLElement);
+                });
+
+                sectionLink.addEventListener('keydown', (event) => {
+                    const keyboardEvent = event as KeyboardEvent;
+                    if (keyboardEvent.key == 'Enter' || keyboardEvent.key === ' ') {
+                        event.preventDefault();
+                        smoothScrollAndFocus(section as HTMLElement);
+                        focusedTarget(`${section.id}-title`);
+                    }
                 });
             }
         });
