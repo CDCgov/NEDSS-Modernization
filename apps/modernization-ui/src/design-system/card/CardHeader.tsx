@@ -21,7 +21,7 @@ const CardHeader = ({ id, title, level = 2, flair, control, actions, info, subte
         <header className={styles.header}>
             <div className={styles.titles}>
                 <span className={styles.title}>
-                    <Heading id={id} level={level} tabIndex={-1}>
+                    <Heading id={id} level={level} tabIndex={-1} onMouseDown={(e) => e.preventDefault()}>
                         {title}
                     </Heading>
                     {flair}
