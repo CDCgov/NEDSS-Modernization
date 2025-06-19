@@ -1,10 +1,10 @@
 import { Card, CardProps } from 'design-system/card';
-import { Ethnicity } from './Ethnicity';
 import { EthnicityView } from './EthnicityView';
 import { Sizing } from 'design-system/field';
+import { PatientEthnicityDemographic } from 'generated';
 
 type EthnicityCardProps = {
-    data?: Ethnicity;
+    data?: PatientEthnicityDemographic;
     sizing?: Sizing;
 } & Omit<CardProps, 'subtext' | 'children'>;
 

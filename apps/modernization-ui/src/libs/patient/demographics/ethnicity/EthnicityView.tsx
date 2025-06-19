@@ -1,19 +1,26 @@
-import { ValueView } from 'design-system/data-display/ValueView';
-import { Ethnicity } from './Ethnicity';
-import { Sizing } from 'design-system/field';
+import { Sizing, ValueField } from 'design-system/field';
+import { PatientEthnicityDemographic } from 'generated';
 
 type EthnicityViewProp = {
-    data?: Ethnicity;
+    data?: PatientEthnicityDemographic;
     sizing?: Sizing;
 };
 
 const EthnicityView = ({ data, sizing }: EthnicityViewProp) => {
     return (
         <div>
-            <ValueView title={'As of'} value={data?.asOf} sizing={sizing} />
-            <ValueView title={'Ethnicity'} value={data?.detailed} sizing={sizing} />
-            <ValueView title={'Spanish origin'} value={data?.ethnicGroup?.name} sizing={sizing} />
-            <ValueView title={'Reason unknown'} value={data?.unknownReason?.name} sizing={sizing} />
+            <ValueField label={'As of'} sizing={sizing}>
+                {data?.asOf}
+            </ValueField>
+            <ValueField label={'Ethnicity'} sizing={sizing}>
+                {data?.detailed?.map((detail) => detail.name).join(', ')}
+            </ValueField>
+            <ValueField label={'Spanish origin'} sizing={sizing}>
+                {data?.ethnicGroup?.name}
+            </ValueField>
+            <ValueField label={'Reason unknown'} sizing={sizing}>
+                {data?.unknownReason?.name}
+            </ValueField>
         </div>
     );
 };

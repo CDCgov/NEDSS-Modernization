@@ -1,16 +1,13 @@
-import { PatientFileService } from 'generated';
+import { PatientEthnicityDemographic, PatientFileService } from 'generated';
 import { useApi } from 'libs/api';
 import { useEffect } from 'react';
-import { transformer } from './transform';
-import { Ethnicity } from 'libs/patient/demographics/ethnicity/Ethnicity';
 
-const all = (request: Request) =>
-    PatientFileService.ethnicityDemographics(request).then((response) => transformer(response));
+const all = (request: Request) => PatientFileService.ethnicityDemographics(request).then((response) => response);
 
 type Request = { patient: number };
 
 type Interaction = {
-    data?: Ethnicity;
+    data?: PatientEthnicityDemographic;
 };
 
 const useEthnicity = (patient?: number): Interaction => {
