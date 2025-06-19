@@ -25,8 +25,8 @@ const useInPageNavigation = (threshold: number = 0) => {
 
         sections.forEach((section) => observer.observe(section));
 
-        const smoothScrollAndFocus = (section: HTMLElement) => {
-            section.scrollIntoView({
+        const smoothScroll = (element: HTMLElement) => {
+            element.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
@@ -38,20 +38,19 @@ const useInPageNavigation = (threshold: number = 0) => {
             if (sectionLink) {
                 const clickEventListener = (event: Event) => {
                     event.preventDefault();
-                    smoothScrollAndFocus(section as HTMLElement);
+                    smoothScroll(section as HTMLElement);
                 };
 
                 const enterOrSpaceEventListener = (event: Event) => {
                     const keyboardEvent = event as KeyboardEvent;
                     if (keyboardEvent.key == 'Enter' || keyboardEvent.key === ' ') {
                         event.preventDefault();
-                        smoothScrollAndFocus(section as HTMLElement);
+                        smoothScroll(section as HTMLElement);
                         focusedTarget(`${section.id}-title`);
                     }
                 };
 
                 sectionLink.addEventListener('click', clickEventListener);
-
                 sectionLink.addEventListener('keydown', enterOrSpaceEventListener);
 
                 return { sectionLink, clickEventListener, enterOrSpaceEventListener };
