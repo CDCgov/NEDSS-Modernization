@@ -145,13 +145,13 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the patient's sex ascending
     Given I have a patient
-    And the patient has a "sex" of "F"
+    And the patient's gender is Female
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has a "sex" of "U"
+    And the patient's gender is Unknown
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has a "sex" of "M"
+    And the patient's gender is Male
     And the patient is a subject of an investigation
     And investigations are available for search
     And I want search results sorted by "sex" "asc"
@@ -162,13 +162,13 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the patient's sex descending
     Given I have a patient
-    And the patient has a "sex" of "F"
+    And the patient's gender is Female
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has a "sex" of "U"
+    And the patient's gender is Unknown
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has a "sex" of "M"
+    And the patient's gender is Male
     And the patient is a subject of an investigation
     And investigations are available for search
     And I want search results sorted by "sex" "desc"

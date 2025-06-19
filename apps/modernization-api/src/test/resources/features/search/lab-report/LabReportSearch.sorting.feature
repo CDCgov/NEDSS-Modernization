@@ -111,13 +111,13 @@ Feature: Lab Report Search Sorting
 
   Scenario: I can find Lab Reports ordered by the patient's gender ascending
     Given I have a patient
-    And the patient has a "sex" of "F"
+    And the patient's gender is Female
     And the patient has a lab report
     And I have another patient
-    And the patient has a "sex" of "U"
+    And the patient's gender is Unknown
     And the patient has a lab report
     And I have another patient
-    And the patient has a "sex" of "M"
+    And the patient's gender is Male
     And the patient has a lab report
     And lab reports are available for search
     And I want search results sorted by "sex" "asc"
@@ -128,13 +128,13 @@ Feature: Lab Report Search Sorting
 
   Scenario: I can find Lab Reports ordered by the patient's gender descending
     Given I have a patient
-    And the patient has a "sex" of "F"
+    And the patient's gender is Female
     And the patient has a lab report
     And I have another patient
-    And the patient has a "sex" of "U"
+    And the patient's gender is Unknown
     And the patient has a lab report
     And I have another patient
-    And the patient has a "sex" of "M"
+    And the patient's gender is Male
     And the patient has a lab report
     And lab reports are available for search
     And I want search results sorted by "sex" "desc"
