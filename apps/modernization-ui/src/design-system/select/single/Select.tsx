@@ -51,7 +51,7 @@ const Select = ({
             id={id}
             className={classNames('usa-select', className)}
             name={inputProps.name ?? id}
-            value={value?.value}
+            value={value?.value ?? ''}
             onChange={handleChange}
             {...inputProps}>
             {renderOptions(options, placeholder)}
