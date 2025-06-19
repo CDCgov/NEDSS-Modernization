@@ -48,6 +48,7 @@ export type { PatientLabReport } from './models/PatientLabReport';
 export type { PatientNameDemographic } from './models/PatientNameDemographic';
 export type { PatientPhoneDemographic } from './models/PatientPhoneDemographic';
 export type { PatientRaceDemographic } from './models/PatientRaceDemographic';
+export type { PatientSexBirthDemographic } from './models/PatientSexBirthDemographic';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
 export type { ResultedTest } from './models/ResultedTest';

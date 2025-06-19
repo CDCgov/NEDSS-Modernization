@@ -15,6 +15,7 @@ import type { PatientInvestigation } from '../models/PatientInvestigation';
 import type { PatientNameDemographic } from '../models/PatientNameDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
 import type { PatientRaceDemographic } from '../models/PatientRaceDemographic';
+import type { PatientSexBirthDemographic } from '../models/PatientSexBirthDemographic';
 import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -77,6 +78,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Sex & Birth Demographics
+     * Provides the Sex & Birth demographics for a patient
+     * @returns PatientSexBirthDemographic OK
+     * @throws ApiError
+     */
+    public static sexBirthDemographics({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<PatientSexBirthDemographic> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/sex-birth',
             path: {
                 'patient': patient,
             },
