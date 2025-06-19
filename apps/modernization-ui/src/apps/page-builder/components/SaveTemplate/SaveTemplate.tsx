@@ -20,6 +20,7 @@ export const SaveTemplates = ({ modalRef }: any) => {
 
     const handleSubmit = () => {
         const { name, desc } = details;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const request = { name, desc };
     };
     const validateBtn = !details.name || validateName || !details.desc;

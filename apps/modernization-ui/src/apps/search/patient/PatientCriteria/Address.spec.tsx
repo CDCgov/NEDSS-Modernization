@@ -1,8 +1,13 @@
+import { vi } from 'vitest';
 import { FormProvider, useForm } from 'react-hook-form';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { render } from '@testing-library/react';
 import { Address } from './Address';
 import { PatientCriteriaEntry } from '../criteria';
+
+vi.mock('options/location', () => ({
+    useStateOptions: () => []
+}));
 
 const Fixture = () => {
     const form = useForm<PatientCriteriaEntry>({
@@ -11,7 +16,7 @@ const Fixture = () => {
     });
 
     return (
-        <MockedProvider>
+        <MockedProvider mocks={[]}>
             <FormProvider {...form}>
                 <Address />
             </FormProvider>

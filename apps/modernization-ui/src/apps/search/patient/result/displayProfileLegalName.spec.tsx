@@ -20,7 +20,7 @@ const withModernizedPatientProfile = (enabled: boolean) => ({
     }
 });
 
-jest.mock('configuration', () => ({
+vi.mock('configuration', () => ({
     useConfiguration: () => ({ ready: false, loading: false, load: jest.fn(), features: mockFeatures })
 }));
 

@@ -1,8 +1,9 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
 import { AddPatientLayout } from './AddPatientLayout';
 
-jest.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
+vi.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
     __esModule: true,
     default: jest.fn()
 }));

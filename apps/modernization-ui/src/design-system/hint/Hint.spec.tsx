@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { Hint } from './Hint';
 import userEvent from '@testing-library/user-event';
 import { ComponentProps } from 'react';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 
 const Fixture = ({
     marginTop = 0,
@@ -28,7 +28,7 @@ describe('Hint', () => {
         const { container } = render(<Fixture />);
 
         const icon = container.querySelector('svg use');
-        expect(icon).toHaveAttribute('xlink:href', 'undefined#info_outline');
+        expect(icon?.getAttribute('xlink:href')).toContain('sprite.svg#info_outline');
     });
 
     it('should display the custom target instead of the icon when provided', () => {

@@ -6,11 +6,11 @@ import userEvent from '@testing-library/user-event';
 import { useRedirect } from './useRedirect';
 import { Status, useClassicModal } from 'classic';
 
-jest.mock('./useRedirect');
+vi.mock('./useRedirect');
 
 const mockUseRedirect = useRedirect as jest.MockedFunction<typeof useRedirect>;
 
-jest.mock('classic');
+vi.mock('classic');
 const mockUseClassicModal = useClassicModal as jest.MockedFunction<typeof useClassicModal>;
 
 describe('A ClassicModalLink component', () => {

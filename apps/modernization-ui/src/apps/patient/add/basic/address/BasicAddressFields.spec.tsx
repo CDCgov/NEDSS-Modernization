@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AddressEntry } from 'apps/patient/data';
@@ -10,7 +11,7 @@ const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
 
 const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
 
-jest.mock('options/location', () => ({
+vi.mock('options/location', () => ({
     useCountyOptions: () => mockCountyCodedValues,
     useCountryOptions: () => mockCountryCodedValues,
     useStateOptions: () => mockStateCodedValues

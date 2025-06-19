@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render, renderHook } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { CreateQuestionForm } from '../QuestionForm';
@@ -22,11 +23,11 @@ const mockUseQuestionValidation = {
     isLoading: false
 };
 
-jest.mock('apps/page-builder/hooks/api/useQuestionValidation', () => ({
+vi.mock('apps/page-builder/hooks/api/useQuestionValidation', () => ({
     useQuestionValidation: () => mockUseQuestionValidation
 }));
 
-jest.mock('apps/page-builder/hooks/api/useOptions', () => ({
+vi.mock('apps/page-builder/hooks/api/useOptions', () => ({
     useOptions: () => {
         return { options: [] };
     }
