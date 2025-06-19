@@ -25,10 +25,11 @@ public class GenderDemographicEntrySteps {
 
   @Given("I enter the gender demographics with the unknown reason of {sexUnknown}")
   public void i_enter_patient_gender_unknown_reason(final String value) {
-    this.input.active(current -> current.withUnknownReason(value));
+    this.input.active(current -> current.withCurrent("U").withUnknownReason(value));
   }
 
-  @Given("I enter the gender demographics with preferred gender of {transgender}")
+  @Given("I enter the gender demographics with the transgender of {transgender}")
+  @Given("I enter the gender demographics with a preferred gender of {transgender}")
   public void i_enter_patient_gender_transgender_information(final String value) {
     this.input.active(current -> current.withTransgenderInformation(value));
   }
