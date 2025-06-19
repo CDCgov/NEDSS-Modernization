@@ -13,10 +13,10 @@ const EthnicityView = ({ data, sizing }: EthnicityViewProp) => {
                 {data?.asOf}
             </ValueField>
             <ValueField label={'Ethnicity'} sizing={sizing}>
-                {data?.detailed?.map((detail) => detail.name).join(', ')}
+                {data?.ethnicGroup?.name}
             </ValueField>
             <ValueField label={'Spanish origin'} sizing={sizing}>
-                {data?.ethnicGroup?.name}
+                {data?.detailed?.map((detail) => detail.name).join(', ')}
             </ValueField>
             <ValueField label={'Reason unknown'} sizing={sizing}>
                 {data?.unknownReason?.name}

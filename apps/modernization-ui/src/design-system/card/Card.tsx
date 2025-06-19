@@ -38,7 +38,7 @@ const Card = ({
     return (
         <section id={id} aria-labelledby={`${id}-title`} className={classNames(styles.card, className)} {...remaining}>
             <CardHeader
-                id={`${id}-title`}
+                id={`${id}-title-${open}`}
                 title={title}
                 level={level}
                 flair={flair}

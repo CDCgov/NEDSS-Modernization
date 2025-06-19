@@ -1,0 +1,17 @@
+.container {
+    display: grid;
+    gap: 1rem 1rem;
+    grid-template-areas: 'administrative administrative' 'name name' 'ethnicity .';
+
+    .administrative {
+        grid-area: administrative;
+    }
+
+    .name {
+        grid-area: name;
+    }
+
+    .ethnicity {
+        grid-area: ethnicity;
+    }
+}
