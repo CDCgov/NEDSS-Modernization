@@ -111,13 +111,13 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the patient's birthday ascending
     Given I have a patient
-    And the patient has a "birthday" of "1980-09-29"
+    And the patient was born on 09/29/1980
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has a "birthday" of "2013-09-24"
+    And the patient was born on 09/24/2013
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has a "birthday" of "1974-04-05"
+    And the patient was born on 04/05/1974
     And the patient is a subject of an investigation
     And investigations are available for search
     And I want search results sorted by "birthday" "asc"
@@ -128,13 +128,13 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the patient's birthday descending
     Given I have a patient
-    And the patient has a "birthday" of "1980-09-29"
+    And the patient was born on 09/29/1980
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has a "birthday" of "2013-09-24"
+    And the patient was born on 09/24/2013
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has a "birthday" of "1974-04-05"
+    And the patient was born on 04/05/1974
     And the patient is a subject of an investigation
     And investigations are available for search
     And I want search results sorted by "birthday" "desc"
