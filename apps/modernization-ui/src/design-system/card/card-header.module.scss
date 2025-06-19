@@ -37,6 +37,10 @@
                     outline: 2px solid colors.$primary;
                     outline-offset: 0.3rem;
                 }
+
+                &:focus:not(:focus-visible) {
+                    outline: none;
+                }
             }
         }
     }
