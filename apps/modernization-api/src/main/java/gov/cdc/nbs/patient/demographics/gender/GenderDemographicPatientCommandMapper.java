@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.gender;
+package gov.cdc.nbs.patient.demographics.gender;
 
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
