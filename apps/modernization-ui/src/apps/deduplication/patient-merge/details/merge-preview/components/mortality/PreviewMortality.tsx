@@ -23,7 +23,7 @@ export const PreviewMortality = ({
     const items = [
         { label: 'As of', text: formatDate(getField(m.asOf, 'asOf') as string), lined: true },
         { label: 'Is the patient deceased', text: getField(m.deceased, 'deceased'), lined: true },
-        { label: 'Date of death', text: getField(m.dateOfDeath, 'dateOfDeath'), lined: true },
+        { label: 'Date of death', text: formatDate(getField(m.dateOfDeath, 'dateOfDeath') as string), lined: true },
         { label: 'City of death', text: getField(m.deathCity, 'deathCity'), lined: true },
         { label: 'State of death', text: getField(m.deathState, 'deathState'), lined: true },
         { label: 'County of death', text: getField(m.deathState, 'deathCounty'), lined: true },

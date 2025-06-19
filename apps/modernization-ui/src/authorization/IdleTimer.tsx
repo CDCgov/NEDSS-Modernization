@@ -27,6 +27,7 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAliv
         setIdle(true);
         warningTimer.start(
             () => {
+                fetch('/nbs/logout');
                 onIdle();
             },
             warningTimeout,
@@ -34,6 +35,11 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAliv
         );
         countdown.start(warningTimeout);
     }, [onIdle, warningTimeout]);
+
+    const debouncedFetchKeepAlive = useCallback(
+        debounce(() => fetch(keepAlivePath), 60000),
+        [keepAlivePath]
+    );
 
     // this resets the idle timer, when there is mouse activity or the warning modal is dismissed
     const resetIdleTimer = useCallback(() => {
@@ -47,8 +53,9 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAliv
             true
         );
         countdown.clear();
-        fetch(keepAlivePath);
-    }, [timeout, startWarningTimer]);
+        debouncedFetchKeepAlive();
+    }, [timeout, startWarningTimer, debouncedFetchKeepAlive]);
+
     const debouncedResetIdleTimer = useCallback(debounce(resetIdleTimer, 100), [resetIdleTimer]);
 
     const handleActivity = useCallback(() => {
