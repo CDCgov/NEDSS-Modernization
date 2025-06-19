@@ -50,7 +50,7 @@ const SearchLayout = <R,>({
     const { view } = useSearchResultDisplay();
 
     const handleKey = (event: ReactKeyboardEvent<HTMLElement>) => {
-        if (event.key === 'Enter' && event.target instanceof HTMLInputElement && searchEnabled) {
+        if (event.key === 'Enter' && searchEnabled && !(event.target instanceof HTMLButtonElement)) {
             onSearch();
         }
     };
