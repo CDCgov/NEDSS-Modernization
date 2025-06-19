@@ -26,34 +26,48 @@ const useInPageNavigation = (threshold: number = 0) => {
         sections.forEach((section) => observer.observe(section));
 
         const smoothScrollAndFocus = (section: HTMLElement) => {
-            // First scroll to the section.
             section.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
         };
 
-        sections.forEach((section) => {
+        const sectionListeners = sections.map((section) => {
             const sectionId = section.id;
             const sectionLink = document.querySelector(`a[id="inPageNav-${sectionId}"]`);
             if (sectionLink) {
-                sectionLink.addEventListener('click', (event) => {
+                const clickEventListener = (event: Event) => {
                     event.preventDefault();
                     smoothScrollAndFocus(section as HTMLElement);
-                });
+                };
 
-                sectionLink.addEventListener('keydown', (event) => {
+                const enterOrSpaceEventListener = (event: Event) => {
                     const keyboardEvent = event as KeyboardEvent;
                     if (keyboardEvent.key == 'Enter' || keyboardEvent.key === ' ') {
                         event.preventDefault();
                         smoothScrollAndFocus(section as HTMLElement);
                         focusedTarget(`${section.id}-title`);
                     }
-                });
+                };
+
+                sectionLink.addEventListener('click', clickEventListener);
+
+                sectionLink.addEventListener('keydown', enterOrSpaceEventListener);
+
+                return { sectionLink, clickEventListener, enterOrSpaceEventListener };
             }
         });
 
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+            sectionListeners.forEach((section) => {
+                if (section) {
+                    const { sectionLink, clickEventListener, enterOrSpaceEventListener } = section;
+                    sectionLink.removeEventListener('click', clickEventListener);
+                    sectionLink.removeEventListener('keydown', enterOrSpaceEventListener);
+                }
+            });
+        };
     }, [threshold]);
 };
 
