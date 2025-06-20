@@ -60,6 +60,6 @@ const PatientCreatedPanel = ({ created }: Props) => (
     </Modal>
 );
 
-const resolveName = (created: CreatedPatient) => (created.name ? displayName('full')(created.name) : 'the patient');
+const resolveName = (created: CreatedPatient) => (created.name ? displayName('full')(created.name) : '');
 
 export { PatientCreatedPanel };
