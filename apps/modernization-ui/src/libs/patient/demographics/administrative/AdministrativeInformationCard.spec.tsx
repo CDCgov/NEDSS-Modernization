@@ -2,11 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { AdministrativeInformationCard } from './AdministrativeInformationCard';
 import { AdministrativeInformation } from './AdministrativeInformation';
 import { internalizeDate, today } from 'date';
-import { Administrative } from 'generated';
 
 describe('when displaying administrative comments for a patient', () => {
     it('should display title correctly', () => {
-        const data: Administrative = { asOf: today(), comment: 'random comments' };
+        const data: AdministrativeInformation = { asOf: today(), comment: 'random comments' };
         render(<AdministrativeInformationCard data={data} collapsible />);
 
         expect(screen.getByText('Administrative comments')).toBeInTheDocument();
@@ -14,7 +13,7 @@ describe('when displaying administrative comments for a patient', () => {
 
     it('should display the data correctly', () => {
         const date = today();
-        const data: Administrative = { asOf: today(), comment: 'random comments' };
+        const data: AdministrativeInformation = { asOf: today(), comment: 'random comments' };
         render(<AdministrativeInformationCard data={data} collapsible />);
 
         expect(screen.getByText('random comments')).toBeInTheDocument();

@@ -3,11 +3,11 @@ import { Card } from 'design-system/card';
 import styles from './administrative-information-card.module.scss';
 import { Sizing } from 'design-system/field';
 import { NoData } from 'design-system/data';
-import { Administrative } from 'generated';
+import { AdministrativeInformation } from './AdministrativeInformation';
 
 type AdministrativeInformationCardType = {
     collapsible?: boolean;
-    data?: Administrative;
+    data?: AdministrativeInformation;
     sizing?: Sizing;
 };
 
