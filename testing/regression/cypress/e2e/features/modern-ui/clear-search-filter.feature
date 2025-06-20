@@ -5,7 +5,7 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     Given I am on the modernized Patient Search page
 
   Scenario: Search patient by exact Patient ID and reset
-    Then I feel input id "name.last" with text "rat"
+    Then I fill input id "name.last" with text "rat"
     When I select input id "name.lastOperator" with type "Contains"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
@@ -15,7 +15,7 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     Then Verify top Search result is not "78917"
 
   Scenario: Clear and Search patient by Patient Name
-    Then I feel input id "name.last" with text "rat"
+    Then I fill input id "name.last" with text "rat"
     When I select input id "name.lastOperator" with type "Contains"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
@@ -25,7 +25,7 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     Then Verify top Search result by "rat"
 
   Scenario: Clear and Search patient by DOB
-    Then I feel input id "name.last" with text "rat"
+    Then I fill input id "name.last" with text "rat"
     When I select input id "name.lastOperator" with type "Contains"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
@@ -35,7 +35,7 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     Then Verify top Search result by "1958"
 
   Scenario: Clear and Search patient by Sex
-    Then I feel input id "name.last" with text "rat"
+    Then I fill input id "name.last" with text "rat"
     When I select input id "name.lastOperator" with type "Contains"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
@@ -45,7 +45,7 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     Then Verify top Search result by "Female"
 
   Scenario: Clear and Search patient by Address
-    Then I feel input id "name.last" with text "rat"
+    Then I fill input id "name.last" with text "rat"
     When I select input id "name.lastOperator" with type "Contains"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
@@ -55,7 +55,7 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     Then Verify top Search result by "East Melissa"
 
   Scenario: Clear and Search patient by Phone Number
-    Then I feel input id "name.last" with text "rat"
+    Then I fill input id "name.last" with text "rat"
     When I select input id "name.lastOperator" with type "Contains"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
@@ -65,7 +65,7 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     Then Verify top Search result by "732-207-5470"
 
   Scenario: Clear and Search patient by ID
-    Then I feel input id "name.last" with text "rat"
+    Then I fill input id "name.last" with text "rat"
     When I select input id "name.lastOperator" with type "Contains"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
@@ -75,7 +75,7 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     Then Verify top Search result by "123-45-6789"
 
   Scenario: Clear and Search patient by Email
-    Then I feel input id "name.last" with text "rat"
+    Then I fill input id "name.last" with text "rat"
     When I select input id "name.lastOperator" with type "Contains"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
