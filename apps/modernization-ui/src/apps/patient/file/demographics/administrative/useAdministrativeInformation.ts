@@ -1,5 +1,6 @@
-import { Administrative, PatientFileService } from 'generated';
+import { PatientFileService } from 'generated';
 import { useApi } from 'libs/api';
+import { AdministrativeInformation } from 'libs/patient/demographics/administrative/AdministrativeInformation';
 import { useEffect } from 'react';
 
 const all = (request: Request) => PatientFileService.administrative(request).then((response) => response);
@@ -7,7 +8,7 @@ const all = (request: Request) => PatientFileService.administrative(request).the
 type Request = { patient: number };
 
 type Interaction = {
-    data?: Administrative;
+    data?: AdministrativeInformation;
 };
 
 const useAdministrativeInformation = (patient?: number): Interaction => {
