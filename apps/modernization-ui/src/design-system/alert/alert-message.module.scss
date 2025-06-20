@@ -58,15 +58,11 @@
     border: none;
     cursor: pointer;
     align-self: flex-start;
+    display: flex;
     margin-left: auto;
     padding: 0;
 
-    &:focus {
-        outline: 2px solid colors.$base-darkest;
-        outline-offset: 2px;
-    }
-
     svg {
-        fill: colors.$base-dark;
+        fill: colors.$base-darkest;
     }
 }
