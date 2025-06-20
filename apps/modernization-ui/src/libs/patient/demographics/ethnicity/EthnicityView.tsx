@@ -1,3 +1,4 @@
+import { internalizeDate } from 'date';
 import { Sizing, ValueField } from 'design-system/field';
 import { PatientEthnicityDemographic } from 'generated';
 
@@ -10,13 +11,15 @@ const EthnicityView = ({ data, sizing }: EthnicityViewProp) => {
     return (
         <div>
             <ValueField label={'As of'} sizing={sizing}>
-                {data?.asOf}
+                {internalizeDate(data?.asOf)}
             </ValueField>
             <ValueField label={'Ethnicity'} sizing={sizing}>
                 {data?.ethnicGroup?.name}
             </ValueField>
             <ValueField label={'Spanish origin'} sizing={sizing}>
-                {data?.detailed?.map((detail) => detail.name).join(', ')}
+                {(data?.detailed?.length ?? 0) > 0
+                    ? data?.detailed?.map((detail) => detail.name).join(', ')
+                    : undefined}
             </ValueField>
             <ValueField label={'Reason unknown'} sizing={sizing}>
                 {data?.unknownReason?.name}

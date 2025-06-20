@@ -11,13 +11,13 @@ const PatientFileDemographics = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.administrative}>
+            <div className={styles.full}>
                 <PatientFileAdministrativeInformationCard patient={id} sizing={sizing} />
             </div>
-            <div className={styles.name}>
+            <div className={styles.full}>
                 <PatientFileNameCard patient={id} sizing={sizing} />
             </div>
-            <div className={styles.ethnicity}>
+            <div className={styles.half}>
                 <PatientFileEthnicityCard patient={id} sizing={sizing} />
             </div>
         </div>
