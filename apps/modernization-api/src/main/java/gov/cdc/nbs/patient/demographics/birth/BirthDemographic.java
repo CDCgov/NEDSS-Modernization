@@ -1,10 +1,12 @@
-package gov.cdc.nbs.patient.profile.birth;
+package gov.cdc.nbs.patient.demographics.birth;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
 
 import java.time.LocalDate;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record BirthDemographic(
     @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
     LocalDate asOf,

@@ -156,10 +156,10 @@ Feature: Patient Search Name Sorting
 
   Scenario: I can find the patient that are ordered by legal name, that get sorted by birth date ascending
     Given the patient has the legal name "John" "Smith"
-    And the patient has a "birthday" of "1990-01-01"
+    And the patient was born on 01/01/1990
     And I have another patient
     Given the patient has the legal name "John" "Smith"
-    And the patient has a "birthday" of "2012-01-01"
+    And the patient was born on 01/01/2012
     And patients are available for search
     And I want patients sorted by "patientname" "asc"
     When I search for patients
@@ -168,10 +168,10 @@ Feature: Patient Search Name Sorting
 
   Scenario: I can find the patient that are ordered by legal name, that get sorted by birth date descending
     Given the patient has the legal name "John" "Smith"
-    And the patient has a "birthday" of "1990-01-01"
+    And the patient was born on 01/01/1990
     And I have another patient
     Given the patient has the legal name "John" "Smith"
-    And the patient has a "birthday" of "2012-01-01"
+    And the patient was born on 01/01/2012
     And patients are available for search
     And I want patients sorted by "patientname" "desc"
     When I search for patients

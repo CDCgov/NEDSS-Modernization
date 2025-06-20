@@ -7,11 +7,11 @@ Feature: Patient Search Sorting
     And I have a patient
 
   Scenario: I can find the patients ordered by birthday ascending
-    Given the patient has a "birthday" of "1987-01-15"
+    Given the patient was born on 01/15/1987
     And I have another patient
-    And the patient has a "birthday" of "1999-11-19"
+    And the patient was born on 11/19/1999
     And I have another patient
-    And the patient has a "birthday" of "1974-05-29"
+    And the patient was born on 05/29/1974
     And patients are available for search
     And I want patients sorted by "birthday" "asc"
     When I search for patients
@@ -20,11 +20,11 @@ Feature: Patient Search Sorting
     And search result 3 has a "birthday" of "1999-11-19"
 
   Scenario: I can find the patients ordered by birthday descending
-    Given the patient has a "birthday" of "1987-01-15"
+    Given the patient was born on 01/15/1987
     And I have another patient
-    And the patient has a "birthday" of "1999-11-19"
+    And the patient was born on 11/19/1999
     And I have another patient
-    And the patient has a "birthday" of "1974-05-29"
+    And the patient was born on 05/29/1974
     And patients are available for search
     And I want patients sorted by "birthday" "desc"
     When I search for patients
@@ -227,11 +227,11 @@ Feature: Patient Search Sorting
     And search result 3 has a "phone number" of "123-456-7890"
 
   Scenario: I can find the most relevant patient when sorting by gender ascending
-    Given the patient has a "sex" of "F"
+    Given the patient's gender is Female
     And I have another patient
-    And the patient has a "sex" of "U"
+    And the patient's gender is Unknown
     And I have another patient
-    And the patient has a "sex" of "M"
+    And the patient's gender is Male
     And patients are available for search
     And I want patients sorted by "sex" "asc"
     When I search for patients
@@ -240,11 +240,11 @@ Feature: Patient Search Sorting
     And search result 3 has a "sex" of "Unknown"
 
   Scenario: I can find the most relevant patient when sorting by gender descending
-    Given the patient has a "sex" of "F"
+    Given the patient's gender is Female
     And I have another patient
-    And the patient has a "sex" of "U"
+    And the patient's gender is Unknown
     And I have another patient
-    And the patient has a "sex" of "M"
+    And the patient's gender is Male
     And patients are available for search
     And I want patients sorted by "sex" "desc"
     When I search for patients
