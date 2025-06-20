@@ -2,8 +2,8 @@ import { internalizeDate } from 'date';
 import { Card } from 'design-system/card';
 import styles from './administrative-information-card.module.scss';
 import { Sizing } from 'design-system/field';
-import { NoData } from 'design-system/data';
 import { AdministrativeInformation } from './AdministrativeInformation';
+import { OrElseNoData } from 'design-system/data';
 
 type AdministrativeInformationCardType = {
     collapsible?: boolean;
@@ -26,7 +26,9 @@ export const AdministrativeInformationCard = ({
             collapsible={collapsible}
             open={Boolean(data?.comment)}
             sizing={sizing}>
-            <div className={styles.content}>{data?.comment ? data?.comment : <NoData />}</div>
+            <OrElseNoData>
+                <div className={styles.content}>{data?.comment}</div>
+            </OrElseNoData>
         </Card>
     );
 };
