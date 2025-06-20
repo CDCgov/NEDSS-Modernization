@@ -12,6 +12,7 @@ import type { PatientEthnicityDemographic } from '../models/PatientEthnicityDemo
 import type { PatientFile } from '../models/PatientFile';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientInvestigation } from '../models/PatientInvestigation';
+import type { PatientMortalityDemographic } from '../models/PatientMortalityDemographic';
 import type { PatientNameDemographic } from '../models/PatientNameDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
 import type { PatientRaceDemographic } from '../models/PatientRaceDemographic';
@@ -154,6 +155,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics/names',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Mortality Demographics
+     * Provides the Mortality demographics for a patient
+     * @returns PatientMortalityDemographic OK
+     * @throws ApiError
+     */
+    public static mortalityDemographics({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<PatientMortalityDemographic> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/mortality',
             path: {
                 'patient': patient,
             },
