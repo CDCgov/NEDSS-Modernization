@@ -3,7 +3,7 @@ import { Radio } from 'design-system/radio';
 import { Controller, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { GroupLine } from '../../shared/group-line/GroupLine';
-import { toDateDisplay } from '../../shared/toDateDisplay';
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 import { LengthConstrained } from '../length-constrained/LengthConstrained';
 import styles from './admin-comment.module.scss';
 

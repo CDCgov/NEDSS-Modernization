@@ -45,7 +45,7 @@ const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty, sizing
             title="Race"
             columns={columns}
             defaultValues={initial()}
-            values={values}
+            data={values}
             onChange={onChange}
             isDirty={isDirty}
             formRenderer={renderForm}

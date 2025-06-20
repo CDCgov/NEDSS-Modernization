@@ -18,26 +18,41 @@
             @extend %thin-bottom;
 
             & > td {
-                vertical-align: middle;
+                &:nth-child(5) {
+                    padding: 0.25rem 0.5rem 0 0.25rem;
+                }
+
+                .action {
+                    display: flex;
+                    gap: 0.5rem;
+                    justify-content: center;
+                    align-items: center;
+                    max-width: fit-content;
+
+                    & > button {
+                        --button-height: 1rem;
+                        --button-icon-size: 1rem;
+                    }
+
+                    .checkBox {
+                        display: flex;
+                        align-items: center;
+                        label {
+                            height: 1rem;
+
+                            &::before {
+                                height: 1rem;
+                                width: 1rem;
+                            }
+                        }
+                    }
+                }
             }
         }
 
         tr:nth-child(odd) {
             td {
                 background-color: colors.$base-white;
-            }
-        }
-    }
-
-    .checkBox {
-        display: flex;
-        align-items: center;
-        label {
-            height: 1rem;
-
-            &::before {
-                height: 1rem;
-                width: 1rem;
             }
         }
     }

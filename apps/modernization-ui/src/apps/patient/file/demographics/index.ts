@@ -1,0 +1,1 @@
+export { PatientFileDemographics } from './PatientFileDemographics';

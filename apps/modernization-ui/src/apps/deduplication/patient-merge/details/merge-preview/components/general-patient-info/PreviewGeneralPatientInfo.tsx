@@ -21,7 +21,8 @@ export const PreviewGeneralPatientInfo = ({
         return isValid(date) ? date : undefined;
     };
 
-    const asOfDate = parseValidDate(g.asOf);
+    const asOfRaw = getField(g.asOf, 'asOf');
+    const asOfDate = parseValidDate(asOfRaw);
 
     const items = [
         { label: 'As of', text: asOfDate ? format(asOfDate, 'MM/dd/yyyy') : '---', lined: true },

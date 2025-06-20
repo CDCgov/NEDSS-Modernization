@@ -6,3 +6,5 @@ type EntryFieldsProps = {
 };
 
 export type { EntryFieldsProps };
+
+export { Required } from './required/Required';

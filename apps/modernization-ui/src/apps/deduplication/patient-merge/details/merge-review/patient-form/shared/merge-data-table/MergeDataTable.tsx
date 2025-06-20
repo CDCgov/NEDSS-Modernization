@@ -45,13 +45,15 @@ export const MergeDataTable = <V,>({
             id: 'selection',
             name: '',
             render: (v) => (
-                <Checkbox
-                    id={`checkbox-column-${rowId(v)}`}
-                    label=""
-                    className={styles.checkBox}
-                    onChange={() => onSelect(v)}
-                    selected={isSelected(v)}
-                />
+                <div className={styles.action}>
+                    <Checkbox
+                        id={`checkbox-column-${rowId(v)}`}
+                        label=""
+                        className={styles.checkBox}
+                        onChange={() => onSelect(v)}
+                        selected={isSelected(v)}
+                    />
+                </div>
             )
         },
         ...columns,
@@ -59,12 +61,13 @@ export const MergeDataTable = <V,>({
             id: 'view-icon',
             name: '',
             render: (v) => (
-                <Button
-                    unstyled
-                    sizing="small"
-                    icon={<Icon name="visibility" className={isViewed(v) ? styles.selected : ''} />}
-                    onClick={() => onView(v)}
-                />
+                <div className={styles.action}>
+                    <Button
+                        unstyled
+                        icon={<Icon name="visibility" className={isViewed(v) ? styles.selected : ''} />}
+                        onClick={() => onView(v)}
+                    />
+                </div>
             )
         }
     ];

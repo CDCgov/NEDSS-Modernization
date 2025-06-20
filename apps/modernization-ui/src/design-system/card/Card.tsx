@@ -10,9 +10,11 @@ import styles from './card.module.scss';
 
 type CardProps = {
     id: string;
+    title: string;
     children: ReactNode;
     collapsible?: boolean;
     open?: boolean;
+    footer?: ReactNode;
 } & Omit<CardHeaderProps, 'control'> &
     JSX.IntrinsicElements['section'];
 
@@ -27,6 +29,7 @@ const Card = ({
     actions,
     collapsible = false,
     open = true,
+    footer,
     children,
     ...remaining
 }: CardProps) => {
@@ -55,8 +58,12 @@ const Card = ({
                     </Shown>
                 }
             />
+
             <Shown when={collapsible} fallback={children}>
                 <Collapsible open={!collapsed}>{children}</Collapsible>
+            </Shown>
+            <Shown when={!collapsed}>
+                <footer>{footer}</footer>
             </Shown>
         </section>
     );
