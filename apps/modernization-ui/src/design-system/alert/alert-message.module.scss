@@ -52,3 +52,21 @@
         padding: 0.5rem 0.75rem;
     }
 }
+
+.closeButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+    margin-left: auto;
+    padding: 0;
+
+    &:focus {
+        outline: 2px solid colors.$base-darkest;
+        outline-offset: 2px;
+    }
+
+    svg {
+        fill: colors.$base-dark;
+    }
+}

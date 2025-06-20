@@ -152,3 +152,12 @@ export const Iconless = () => (
         ))}
     </div>
 );
+
+export const Closable: Story = {
+    args: {
+        type: 'information',
+        children: 'You can dismiss this message.',
+        slim: true,
+        onClose: () => alert('Alert closed!')
+    }
+};
