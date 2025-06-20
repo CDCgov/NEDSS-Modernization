@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.file.demographics.sexBirth;
+package gov.cdc.nbs.patient.file.demographics.sex_birth;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;

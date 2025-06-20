@@ -5,7 +5,6 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 public class PatientBirthDemographicsSteps {
 

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.file.demographics.sexBirth;
+package gov.cdc.nbs.patient.file.demographics.sex_birth;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import gov.cdc.nbs.data.selectable.Selectable;

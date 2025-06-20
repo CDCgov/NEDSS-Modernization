@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.file.demographics.sexBirth;
+package gov.cdc.nbs.patient.file.demographics.sex_birth;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.AuthenticatedMvcRequester;

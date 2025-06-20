@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.file.demographics.sexBirth;
+package gov.cdc.nbs.patient.file.demographics.sex_birth;
 
 import gov.cdc.nbs.data.selectable.Selectable;
 import gov.cdc.nbs.data.selectable.SelectableRowMapper;

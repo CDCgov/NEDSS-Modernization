@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.file.demographics.sexBirth;
+package gov.cdc.nbs.patient.file.demographics.sex_birth;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
