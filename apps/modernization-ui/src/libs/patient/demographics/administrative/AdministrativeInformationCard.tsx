@@ -4,6 +4,7 @@ import styles from './administrative-information-card.module.scss';
 import { Sizing } from 'design-system/field';
 import { NoData } from 'design-system/data';
 import { AdministrativeInformation } from './AdministrativeInformation';
+import { isEmpty } from 'utils';
 
 type AdministrativeInformationCardType = {
     collapsible?: boolean;
