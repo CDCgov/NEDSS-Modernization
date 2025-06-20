@@ -2,27 +2,23 @@ import { createContext, ReactNode, useContext, useEffect, useReducer } from 'rea
 import { useLocalStorage } from 'storage';
 import { usePagination } from 'pagination';
 
-type ActivePagination = {
+type PaginationSizePreference = {
     pageSize: number;
 };
 
 type Interaction = {
-    active?: ActivePagination;
-    resizeOn: (selectable?: ActivePagination) => void;
+    paginationSize?: PaginationSizePreference;
+    resizeOn: (selectedPaginationSize?: PaginationSizePreference) => void;
 };
 
 const PaginationPreferencesContext = createContext<Interaction | undefined>(undefined);
 
 type State = {
     changed?: Date;
-    active?: ActivePagination;
+    active?: PaginationSizePreference;
 };
 
-type Action =
-    | { type: 'paginateSize'; active: ActivePagination }
-    | { type: 'load'; active: ActivePagination }
-    | { type: 'sync'; pageSize?: number }
-    | { type: 'reset' };
+type Action = { type: 'load'; active: PaginationSizePreference } | { type: 'sync'; pageSize?: number };
 
 const reducer = (current: State, action: Action): State => {
     switch (action.type) {
@@ -40,12 +36,7 @@ const reducer = (current: State, action: Action): State => {
             }
             return current;
         }
-        case 'paginateSize': {
-            return { changed: new Date(), active: { ...action.active } };
-        }
-        case 'reset': {
-            return { changed: new Date() };
-        }
+
         case 'load': {
             return { ...current, active: { ...action.active } };
         }
@@ -62,7 +53,7 @@ type Props = {
 const PaginationPreferenceProvider = ({ id, children }: Props) => {
     const [state, dispatch] = useReducer(reducer, { changed: new Date() });
 
-    const { value, save } = useLocalStorage<ActivePagination>({ key: id });
+    const { value, save } = useLocalStorage<PaginationSizePreference>({ key: id });
 
     const { resize, page } = usePagination();
 
@@ -72,7 +63,6 @@ const PaginationPreferenceProvider = ({ id, children }: Props) => {
 
     useEffect(() => {
         if (value) {
-            //  use the stored pagination value
             dispatch({ type: 'load', active: value });
         }
     }, [value]);
@@ -80,19 +70,11 @@ const PaginationPreferenceProvider = ({ id, children }: Props) => {
     useEffect(() => {
         if (state.active?.pageSize) {
             save(state.active);
-        }
-    }, [state.active?.pageSize]);
-
-    useEffect(() => {
-        if (state.active?.pageSize) {
             resize(state.active.pageSize);
         }
     }, [state.active?.pageSize]);
 
-    const resizeOn = (selectable?: ActivePagination) =>
-        selectable
-            ? dispatch({ type: 'paginateSize', active: { pageSize: selectable.pageSize } })
-            : dispatch({ type: 'reset' });
+    const resizeOn = () => dispatch({ type: 'sync' });
 
     const interaction = {
         active: state.active,
@@ -115,4 +97,4 @@ const usePaginationPreferences = () => {
 };
 
 export { usePaginationPreferences, PaginationPreferenceProvider };
-export type { ActivePagination };
+export type { PaginationSizePreference };
