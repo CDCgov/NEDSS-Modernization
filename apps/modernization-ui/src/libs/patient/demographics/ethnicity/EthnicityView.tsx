@@ -1,6 +1,7 @@
 import { internalizeDate } from 'date';
 import { Sizing, ValueField } from 'design-system/field';
 import { PatientEthnicityDemographic } from 'generated';
+import { renderSelectables } from 'options';
 
 type EthnicityViewProp = {
     data?: PatientEthnicityDemographic;
@@ -17,9 +18,7 @@ const EthnicityView = ({ data, sizing }: EthnicityViewProp) => {
                 {data?.ethnicGroup?.name}
             </ValueField>
             <ValueField label={'Spanish origin'} sizing={sizing}>
-                {(data?.detailed?.length ?? 0) > 0
-                    ? data?.detailed?.map((detail) => detail.name).join(', ')
-                    : undefined}
+                {renderSelectables(data?.detailed)}
             </ValueField>
             <ValueField label={'Reason unknown'} sizing={sizing}>
                 {data?.unknownReason?.name}
