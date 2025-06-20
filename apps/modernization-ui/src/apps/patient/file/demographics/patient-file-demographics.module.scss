@@ -1,0 +1,13 @@
+.container {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+
+    & > * {
+        grid-column: span 2;
+    }
+
+    & > [data-half] {
+        grid-column: 1;
+    }
+}
