@@ -1,9 +1,9 @@
 import { internalizeDate } from 'date';
 import { Card } from 'design-system/card';
-import { AdministrativeInformation } from './AdministrativeInformation';
 import styles from './administrative-information-card.module.scss';
 import { Sizing } from 'design-system/field';
 import { NoData } from 'design-system/data';
+import { AdministrativeInformation } from './AdministrativeInformation';
 
 type AdministrativeInformationCardType = {
     collapsible?: boolean;

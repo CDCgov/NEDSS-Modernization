@@ -244,7 +244,7 @@ When("I select input id {string} with type {string}", (id, type) => {
     classicSearchPatientPage.selectSearchNameType(id, type);
 });
 
-Then("I feel input id {string} with text {string}", (id, text) => {
+Then("I fill input id {string} with text {string}", (id, text) => {
     classicSearchPatientPage.fillIdInputWithText(id, text);
 });
 
