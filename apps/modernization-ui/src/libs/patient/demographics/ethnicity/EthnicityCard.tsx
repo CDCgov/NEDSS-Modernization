@@ -1,19 +1,20 @@
 import { Card, CardProps } from 'design-system/card';
 import { EthnicityView } from './EthnicityView';
-import { Sizing } from 'design-system/field';
 import { PatientEthnicityDemographic } from 'generated';
 
 type EthnicityCardProps = {
     data?: PatientEthnicityDemographic;
-    sizing?: Sizing;
-} & Omit<CardProps, 'subtext' | 'children'>;
+    title?: string;
+} & Omit<CardProps, 'subtext' | 'children' | 'title'>;
 
 const EthnicityCard = ({ data, title = 'Ethnicity', collapsible = true, sizing, ...remaining }: EthnicityCardProps) => {
     return (
-        <Card title={title} collapsible={collapsible} {...remaining}>
+        <Card title={title} collapsible={collapsible} sizing={sizing} {...remaining}>
             <EthnicityView data={data} sizing={sizing} />
         </Card>
     );
 };
 
 export { EthnicityCard };
+
+export type { EthnicityCardProps };

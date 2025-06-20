@@ -4,7 +4,6 @@ import styles from './administrative-information-card.module.scss';
 import { Sizing } from 'design-system/field';
 import { NoData } from 'design-system/data';
 import { AdministrativeInformation } from './AdministrativeInformation';
-import { isEmpty } from 'utils';
 
 type AdministrativeInformationCardType = {
     collapsible?: boolean;
@@ -25,7 +24,7 @@ export const AdministrativeInformationCard = ({
             title={'Administrative comments'}
             subtext={subtext}
             collapsible={collapsible}
-            open={!isEmpty(data?.comment)}
+            open={Boolean(data?.comment)}
             sizing={sizing}>
             <div className={styles.content}>{data?.comment ? data?.comment : <NoData />}</div>
         </Card>

@@ -3,11 +3,11 @@
     gap: 1rem;
     grid-template-columns: 1fr 1fr;
 
-    .full {
+    & > * {
         grid-column: span 2;
     }
 
-    .half {
-        grid-column: span 1;
+    & > [data-half] {
+        grid-column: 1;
     }
 }
