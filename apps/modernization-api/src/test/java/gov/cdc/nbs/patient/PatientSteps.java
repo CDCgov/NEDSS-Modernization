@@ -38,15 +38,6 @@ public class PatientSteps {
     mother.superseded(patient.active());
   }
 
-  @Given("the patient was born on {localDate}")
-  public void the_patient_was_born_on(final LocalDate value) {
-    this.patient.maybeActive().ifPresent(
-        found -> mother.withBirthday(
-            found,
-            value));
-
-  }
-
   @Given("the patient died on {localDate}")
   public void the_patient_died_on(final LocalDate value) {
     this.patient.maybeActive().ifPresent(
@@ -55,15 +46,6 @@ public class PatientSteps {
             value
         )
     );
-
-  }
-
-  @Given("the patient was born {int} years ago")
-  public void the_patient_was_born_on(final int value) {
-    this.patient.maybeActive().ifPresent(
-        found -> mother.withBirthday(
-            found,
-            LocalDate.now().minusYears(value).minusDays(100)));
 
   }
 
@@ -90,14 +72,6 @@ public class PatientSteps {
       case "race" -> mother.withRace(
           identifier,
           resolveRace(value));
-
-      case "birthday" -> mother.withBirthday(
-          identifier,
-          LocalDate.parse(value));
-
-      case "sex" -> mother.withGender(
-          identifier,
-          value);
 
       case "id" -> mother.withId(identifier, Long.parseLong(value));
 
@@ -205,11 +179,6 @@ public class PatientSteps {
         number,
         extension);
 
-  }
-
-  @Given("the patient has the gender {sex}")
-  public void the_patient_has_the_gender(final String gender) {
-    this.patient.maybeActive().ifPresent(found -> mother.withGender(found, gender));
   }
 
   @Given("the patient is associated with state HIV case {string}")

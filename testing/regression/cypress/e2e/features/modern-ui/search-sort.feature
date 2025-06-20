@@ -4,7 +4,7 @@ Feature: Classic NBS - Modern Search - User can search and sort for patients
     Given I am logged in as secure user and stay on classic
     Given I am on the modernized Patient Search page
     Given I select input id "name.lastOperator" with type "Contains"
-    Given I feel input id "name.last" with text "rat"
+    Given I fill input id "name.last" with text "rat"
     And Click on Search in Patient Search pane
 
   Scenario: Sort by Patient ID - ascending and descending
