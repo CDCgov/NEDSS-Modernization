@@ -1,5 +1,5 @@
 type AdministrativeInformation = {
-    asOf?: Date;
+    asOf?: string;
     comment?: string;
 };
 
