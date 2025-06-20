@@ -1,10 +1,9 @@
 import { PatientFileService } from 'generated';
 import { useApi } from 'libs/api';
-import { useEffect } from 'react';
-import { transformer } from './transformer';
 import { AdministrativeInformation } from 'libs/patient/demographics/administrative/AdministrativeInformation';
+import { useEffect } from 'react';
 
-const all = (request: Request) => PatientFileService.administrative(request).then((response) => transformer(response));
+const all = (request: Request) => PatientFileService.administrative(request).then((response) => response);
 
 type Request = { patient: number };
 

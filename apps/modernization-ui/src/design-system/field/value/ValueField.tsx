@@ -1,8 +1,8 @@
 import { ReactNode, useId } from 'react';
 import classNames from 'classnames';
 import { Sizing } from 'design-system/field';
-import { NoData } from 'design-system/data';
 import styles from './value-field.module.scss';
+import { NoData } from 'design-system/data';
 
 type Props = {
     label: string;
