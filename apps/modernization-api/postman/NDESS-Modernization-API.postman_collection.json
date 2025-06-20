@@ -1000,12 +1000,12 @@
 									"response": []
 								},
 								{
-									"name": "Ethnicity",
+									"name": "Sex & Birth",
 									"request": {
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/ethnicity",
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/sex-birth",
 											"host": [
 												"{{base}}"
 											],
@@ -1015,7 +1015,7 @@
 												"patients",
 												"{{patient}}",
 												"demographics",
-												"ethnicity"
+												"sex-birth"
 											]
 										}
 									},

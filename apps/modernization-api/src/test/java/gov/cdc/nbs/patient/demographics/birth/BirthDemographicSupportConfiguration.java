@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.gender;
+package gov.cdc.nbs.patient.demographics.birth;
 
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.spring.ScenarioScope;
@@ -9,11 +9,11 @@ import java.time.Clock;
 import java.time.LocalDate;
 
 @Configuration
-class GenderDemographicSupportConfiguration {
+class BirthDemographicSupportConfiguration {
 
   @Bean
   @ScenarioScope
-  Active<GenderDemographic> activeGenderDemographic(final Clock clock) {
-    return new Active<>(() -> new GenderDemographic(LocalDate.now(clock)));
+  Active<BirthDemographic> activeBirthDemographic(final Clock clock) {
+    return new Active<>(() -> new BirthDemographic(LocalDate.now(clock)));
   }
 }
