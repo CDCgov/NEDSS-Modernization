@@ -5,7 +5,7 @@ import { Mapping } from './mapping';
  * @template R The input value type.
  * @template S The output value type.
  * @param {Mapping<R, S>} mapping The mapping function to apply to the value if it exists.
- * @return {(value?: R) => S | undefined} A function that maps the value or returns undefined if the input value is undefined.
+ * @return {function} A function that maps the value or returns undefined if the input value is undefined.
  */
 const maybeMap =
     <R, S>(mapping: Mapping<R, S>) =>
