@@ -7,6 +7,7 @@ import { Heading } from 'components/heading';
 import { CreatedPatient } from './api';
 import { displayName } from 'name';
 import { FeatureToggle } from 'feature';
+import { maybeMap } from 'utils/mapping';
 
 type Props = {
     created: CreatedPatient;
@@ -60,6 +61,6 @@ const PatientCreatedPanel = ({ created }: Props) => (
     </Modal>
 );
 
-const resolveName = (created: CreatedPatient) => (created.name ? displayName('full')(created.name) : '');
+const resolveName = (created: CreatedPatient) => maybeMap(displayName('full'))(created.name);
 
 export { PatientCreatedPanel };
