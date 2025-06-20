@@ -5,8 +5,6 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-
 @Transactional
 public class PatientSteps {
 
