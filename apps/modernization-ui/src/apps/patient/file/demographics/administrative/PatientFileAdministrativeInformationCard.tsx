@@ -1,4 +1,4 @@
-import { AdministrativeInformationCard } from 'libs/patient/demographics/AdministrativeInformationCard';
+import { AdministrativeInformationCard } from 'libs/patient/demographics/administrative/AdministrativeInformationCard';
 import { useAdministrativeInformation } from './useAdministrativeInformation';
 import { Sizing } from 'design-system/field';
 
