@@ -109,7 +109,7 @@ describe('AlertMessage', () => {
 
     it('should close the alert when the close button is clicked', () => {
         render(
-            <AlertMessage title="Dismissible Alert" type="information" onClose={jest.fn()}>
+            <AlertMessage title="Dismissible Alert" type="success" onClose={jest.fn()}>
                 Dismiss this alert
             </AlertMessage>
         );

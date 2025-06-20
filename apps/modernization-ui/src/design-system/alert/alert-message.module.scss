@@ -47,22 +47,18 @@
         line-height: 1.3125rem;
     }
 
+    .closeButton {
+        color: colors.$base-darkest;
+        padding: 0;
+        display: flex;
+        align-self: flex-start;
+        margin-left: auto;
+    }
+
     &.slim {
         align-items: center;
         padding: 0.5rem 0.75rem;
     }
 }
 
-.closeButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    align-self: flex-start;
-    display: flex;
-    margin-left: auto;
-    padding: 0;
 
-    svg {
-        fill: colors.$base-darkest;
-    }
-}
