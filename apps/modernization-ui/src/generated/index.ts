@@ -9,6 +9,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { AddressDemographic } from './models/AddressDemographic';
 export type { Administrative } from './models/Administrative';
+export type { Allowed } from './models/Allowed';
 export type { AssociatedInvestigation } from './models/AssociatedInvestigation';
 export type { BirthDemographic } from './models/BirthDemographic';
 export type { ConceptOptionsResponse } from './models/ConceptOptionsResponse';
@@ -42,17 +43,21 @@ export type { PatientAddressDemographic } from './models/PatientAddressDemograph
 export type { PatientDemographicsSummary } from './models/PatientDemographicsSummary';
 export type { PatientEthnicityDemographic } from './models/PatientEthnicityDemographic';
 export { PatientFile } from './models/PatientFile';
+export type { PatientGeneralInformationDemographic } from './models/PatientGeneralInformationDemographic';
 export type { PatientIdentificationDemographic } from './models/PatientIdentificationDemographic';
 export type { PatientInvestigation } from './models/PatientInvestigation';
 export type { PatientLabReport } from './models/PatientLabReport';
+export type { PatientMortalityDemographic } from './models/PatientMortalityDemographic';
 export type { PatientNameDemographic } from './models/PatientNameDemographic';
 export type { PatientPhoneDemographic } from './models/PatientPhoneDemographic';
 export type { PatientRaceDemographic } from './models/PatientRaceDemographic';
 export type { PatientSexBirthDemographic } from './models/PatientSexBirthDemographic';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
+export type { Restricted } from './models/Restricted';
 export type { ResultedTest } from './models/ResultedTest';
 export type { Selectable } from './models/Selectable';
+export type { SensitiveValue } from './models/SensitiveValue';
 export type { Success } from './models/Success';
 
 export { CodedResultOptionsService } from './services/CodedResultOptionsService';

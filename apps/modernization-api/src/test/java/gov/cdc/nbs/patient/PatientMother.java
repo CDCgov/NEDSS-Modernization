@@ -672,24 +672,6 @@ public class PatientMother {
     patient.setId(id);
   }
 
-  public void withDeceasedOn(final PatientIdentifier identifier, final LocalDate date) {
-    Person patient = managed(identifier);
-    patient.update(
-        new PatientCommand.UpdateMortality(
-            identifier.id(),
-            RandomUtil.dateInPast(),
-            Deceased.Y.value(),
-            date,
-            null,
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()),
-        this.addressIdentifierGenerator
-    );
-  }
-
 
   public void withMortality(final PatientIdentifier identifier) {
 
@@ -800,12 +782,6 @@ public class PatientMother {
         .update();
   }
 
-  public void withStateHIVCase(final PatientIdentifier identifier, final String value) {
-    client.sql("update person set ehars_id = ?, as_of_date_general = GETDATE() where person_uid = ?")
-        .params(value, identifier.id())
-        .update();
-
-  }
 
   public void withAsOf(final PatientIdentifier identifier, final LocalDate value) {
     client.sql("update person set as_of_date_admin = ? where person_uid = ?")
