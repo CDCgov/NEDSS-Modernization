@@ -43,7 +43,8 @@ export const PreviewPhoneAndEmail = ({ selectedPhoneEmails, mergeCandidates }: P
         {
             id: 'typeUse',
             name: 'Type',
-            value: (e) => e.type ?? '---',
+            value: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '',
+            render: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '---',
             sortable: true
         },
         {

@@ -1020,6 +1020,50 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Mortality",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/mortality",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics",
+												"mortality"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "General",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/demographics/general",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"demographics",
+												"general"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},

@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.general;
 
-import gov.cdc.nbs.data.sensitive.Sensitive;
+import gov.cdc.nbs.data.sensitive.SensitiveValue;
 import gov.cdc.nbs.message.enums.Indicator;
 
 import java.time.LocalDate;
@@ -18,7 +18,7 @@ record PatientGeneral(
     EducationLevel educationLevel,
     Language primaryLanguage,
     Indicator speaksEnglish,
-    Sensitive stateHIVCase
+    SensitiveValue stateHIVCase
 ) {
 
     record MaritalStatus(String id, String description){}

@@ -5,8 +5,6 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-
 @Transactional
 public class PatientSteps {
 
@@ -36,17 +34,6 @@ public class PatientSteps {
   @Given("the patient is superseded")
   public void the_patient_is_superseded() {
     mother.superseded(patient.active());
-  }
-
-  @Given("the patient died on {localDate}")
-  public void the_patient_died_on(final LocalDate value) {
-    this.patient.maybeActive().ifPresent(
-        found -> mother.withDeceasedOn(
-            found,
-            value
-        )
-    );
-
   }
 
   @Given("the patient has a(n) {string} of {string}")
@@ -179,10 +166,5 @@ public class PatientSteps {
         number,
         extension);
 
-  }
-
-  @Given("the patient is associated with state HIV case {string}")
-  public void the_patient_is_associated_with_state_HIV_case(final String value) {
-    patient.maybeActive().ifPresent(current -> mother.withStateHIVCase(current, value));
   }
 }

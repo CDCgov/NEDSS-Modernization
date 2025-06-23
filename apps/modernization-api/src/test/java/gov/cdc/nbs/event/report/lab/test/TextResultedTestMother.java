@@ -61,11 +61,13 @@ class TextResultedTestMother {
       insert into Obs_value_txt (
           observation_uid,
           obs_value_txt_seq,
-          value_txt
+          value_txt,
+          txt_type_cd
       ) values (
           :identifier,
           (select count(*) + 1 from Obs_value_txt where observation_uid = :identifier),
-          :result
+          :result,
+          ''
       )
       ;
       """;
