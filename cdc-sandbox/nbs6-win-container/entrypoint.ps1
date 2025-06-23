@@ -213,4 +213,6 @@ Remove-Item $zip_folder -Recurse -Force -Confirm:$false
 #### END OF Configure User Guide ####
 
 
-Start-Process -FilePath "C:\LogMonitor\LogMonitor.exe" -ArgumentList "powershell.exe", "-ExecutionPolicy", "Bypass", "-Command", "Start-Process -FilePath 'D:\\wildfly-10.0.0.Final\\bin\\standalone.bat' -NoNewWindow -Wait" -NoNewWindow -Wait
+# Start-Process -FilePath "C:\LogMonitor\LogMonitor.exe" -ArgumentList "powershell.exe", "-ExecutionPolicy", "Bypass", "-Command", "Start-Process -FilePath 'D:\\wildfly-10.0.0.Final\\bin\\standalone.bat' -NoNewWindow -Wait" -NoNewWindow -Wait
+Start-Process "C:\LogMonitor\LogMonitor.exe" -NoNewWindow -PassThru | Out-Host
+Start-Process "D:\wildfly-10.0.0.Final\bin\standalone.bat" -Wait -NoNewWindow -PassThru | Out-Host
