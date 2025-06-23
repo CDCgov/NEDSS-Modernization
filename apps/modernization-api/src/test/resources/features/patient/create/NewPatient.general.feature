@@ -4,7 +4,7 @@ Feature: Creation of Patients with extended General Information data
   Background:
     Given I am logged into NBS
     And I can "add" any "patient"
-    And I can "find" any "patient"
+    And I can "view" any "patient"
 
   Scenario: I can create a patient with general information demographics
     Given I enter the general information as of date 05/29/2023
@@ -18,37 +18,37 @@ Feature: Creation of Patients with extended General Information data
     And I enter the general information that the patient does not speak english
     And the general information demographics are included in the extended patient data
     When I create a patient with extended data
-    Then I view the Patient Profile General Information
-    And the patient's general information is as of 05/29/2023
-    And the patient's general information includes the marital status Unmarried
-    And the patient's general information includes a mother's maiden name of "Zawistowska"
-    And the patient's general information includes 7 adults in the house
-    And the patient's general information includes 3 children in the house
-    And the patient's general information includes the occupation Industrial Gas Manufacturing
-    And the patient's general information includes an education level of Professional Degree
-    And the patient's general information includes a primary language of Polish
-    And the patient's general information includes that the patient does not speak English
+    Then I view the patient's general information demographics
+    And the patient file general information is as of 05/29/2023
+    And the patient file general information includes the marital status Unmarried
+    And the patient file general information includes a mother's maiden name of "Zawistowska"
+    And the patient file general information includes 7 adults in the residence
+    And the patient file general information includes 3 children in the residence
+    And the patient file general information includes the primary occupation Industrial Gas Manufacturing
+    And the patient file general information includes an education level of Professional Degree
+    And the patient file general information includes a primary language of Polish
+    And the patient file general information includes that the patient does not speak English
 
   Scenario: I can add a patient with general information demographics that include a State HIV case when I have access to HIV fields
     Given I can "HIVQuestions" any "Global"
     And I enter the general information state HIV case of "case-number"
     And the general information demographics are included in the extended patient data
     When I create a patient with extended data
-    Then I view the Patient Profile General Information
-    Then the patient's general information includes a state HIV case of "case-number"
+    Then I view the patient's general information demographics
+    Then the patient file general information includes a state HIV case of "case-number"
 
   Scenario: I can add a patient with general information demographics that does not include a blank State HIV case
     Given I can "HIVQuestions" any "Global"
     And I enter the general information state HIV case of ""
     And the general information demographics are included in the extended patient data
     When I create a patient with extended data
-    Then I view the Patient Profile General Information
-    And the patient's general information does not include a state HIV case
+    Then I view the patient's general information demographics
+    And the patient file general information does not include a state HIV case
 
   Scenario: I can add a patient's general information but it will not include the state HIV case a patient may be associated with without having access to HIV Fields
     Given I enter the general information state HIV case of "case-number"
     And the general information demographics are included in the extended patient data
     When I create a patient with extended data
     And I can "HIVQuestions" any "Global"
-    Then I view the Patient Profile General Information
-    And the patient's general information does not include a state HIV case
+    Then I view the patient's general information demographics
+    And the patient file general information does not include a state HIV case
