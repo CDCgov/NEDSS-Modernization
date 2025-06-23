@@ -24,7 +24,8 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
       int high,
       int low,
       int unit,
-      int text
+      int text,
+      int comment
   ) {
   }
 
@@ -49,6 +50,8 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
 
     String numeric = maybeDisplayNumericResult(columns, resultSet);
 
+    String comment = resultSet.getString(columns.comment());
+
     String result = null;
 
     if (coded != null) {
@@ -61,6 +64,10 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
 
     if (numeric != null) {
       result = result == null ? numeric : result.concat("\n").concat(numeric);
+    }
+
+    if (comment != null) {
+      result = result == null ? comment : result.concat("\n").concat(comment);
     }
 
     result = Objects.requireNonNullElse(result, "").concat(status.orElse(""));
