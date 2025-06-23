@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.general;
 
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.authorization.permission.Permission;
-import gov.cdc.nbs.data.sensitive.Sensitive;
+import gov.cdc.nbs.data.sensitive.SensitiveValue;
 import gov.cdc.nbs.data.sensitive.SensitiveValueResolver;
 import gov.cdc.nbs.message.enums.Indicator;
 import org.junit.jupiter.api.Test;
@@ -242,11 +242,11 @@ class PatientGeneralTupleMapperTest {
 
     SensitiveValueResolver resolver = mock(SensitiveValueResolver.class);
 
-    Sensitive.Allowed<Object> allowed = new Sensitive.Allowed<>("allowed-value");
+    SensitiveValue.Allowed<Object> allowed = new SensitiveValue.Allowed<>("allowed-value");
     when(resolver.resolve(any(), any())).thenReturn(allowed);
 
 
-    Sensitive actual = new PatientGeneralTupleMapper(tables, resolver)
+    SensitiveValue actual = new PatientGeneralTupleMapper(tables, resolver)
         .map(tuple)
         .stateHIVCase();
 

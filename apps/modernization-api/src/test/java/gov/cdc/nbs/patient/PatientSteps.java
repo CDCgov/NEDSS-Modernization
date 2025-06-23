@@ -167,9 +167,4 @@ public class PatientSteps {
         extension);
 
   }
-
-  @Given("the patient is associated with state HIV case {string}")
-  public void the_patient_is_associated_with_state_HIV_case(final String value) {
-    patient.maybeActive().ifPresent(current -> mother.withStateHIVCase(current, value));
-  }
 }
