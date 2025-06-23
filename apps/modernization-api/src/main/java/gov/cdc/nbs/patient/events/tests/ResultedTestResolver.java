@@ -26,8 +26,7 @@ public class ResultedTestResolver {
               [numeric].high_range                        as [high_range],
               [numeric].low_range                         as [low_range],
               [numeric].numeric_unit_cd                   as [unit],
-              [text].value_txt                            as [text],
-              [comment].value_txt                         as [comment]
+              [text].value_txt                            as [text]
       from  Act_relationship [lab_result_components]
               join observation [lab_result] with (nolock) on
                           [lab_result].observation_uid = [lab_result_components].[source_act_uid]
@@ -55,11 +54,6 @@ public class ResultedTestResolver {
               and [text].value_txt <> ''
               and [text].txt_type_cd <> 'N'
       
-          left join [Obs_value_txt] [comment] with (nolock) on
-                  [comment].observation_uid = [lab_result].[observation_uid]
-              and [comment].value_txt <> '' 
-              and [comment].txt_type_cd = 'N'
-      
       where [lab_result_components].target_act_uid in (:identifiers)
               and [lab_result_components].type_cd = 'COMP'
               and [lab_result_components].source_class_cd = 'OBS'
@@ -73,7 +67,7 @@ public class ResultedTestResolver {
     this.client = client;
 
     RowMapper<ResultedTest> valueMapper = new ResultedTestRowMapper(
-        new ResultedTestRowMapper.Column(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+        new ResultedTestRowMapper.Column(2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
     );
 
     this.extractor = new MultiMapResultSetExtractor<>(
