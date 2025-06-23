@@ -9,7 +9,7 @@ Feature: Viewing the ethnicity demographics of a patient
   Scenario: I can view a Patient's ethnicity demographics
     Given the patient has the Not Hispanic or Latino ethnicity as of 11/14/2022
     When I view the patient's ethnicity demographics
-    Then the patient file ethnicity demographics is as of 11/14/2022
+    Then the patient file ethnicity demographics are as of 11/14/2022
     And the patient file ethnicity demographics has the ethnicity Not Hispanic or Latino
     And the patient file ethnicity demographics does not include Spanish origins
 
