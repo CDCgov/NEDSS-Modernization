@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { AlertMessage } from './AlertMessage';
+import { useState } from 'react';
 
 const meta = {
     title: 'Design System/AlertMessage',
@@ -153,11 +154,14 @@ export const Iconless = () => (
     </div>
 );
 
-export const Closable: Story = {
-    args: {
-        type: 'information',
-        children: 'You can dismiss this message.',
-        slim: true,
-        onClose: () => alert('Alert closed!')
-    }
+export const Closable = () => {
+    const [show, setShow] = useState(true);
+
+    if (!show) return null;
+
+    return (
+        <AlertMessage type="information" slim onClose={() => setShow(false)}>
+            You can dismiss this message.
+        </AlertMessage>
+    );
 };

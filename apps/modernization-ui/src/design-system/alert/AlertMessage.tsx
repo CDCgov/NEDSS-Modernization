@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { Heading } from 'components/heading';
 import { Icon } from 'design-system/icon';
-import { ReactNode, HTMLAttributes, useState } from 'react';
+import { ReactNode, HTMLAttributes } from 'react';
 import { resolveIcon } from '../message/Message';
 import styles from './alert-message.module.scss';
 import { Button } from 'design-system/button';
@@ -16,7 +16,6 @@ type Props = {
     iconless?: boolean;
     slim?: boolean;
     onClose?: () => void;
-    visible?: boolean;
 } & Omit<HTMLAttributes<HTMLDivElement>, 'className'>;
 
 const getDefaultAlertAriaLabel = (title?: string, children?: Children): string | undefined => {
@@ -34,21 +33,9 @@ export const AlertMessage = ({
     slim = false,
     iconless = false,
     onClose,
-    visible,
     'aria-label': ariaLabel,
     ...props
 }: Props) => {
-    const [internalVisible, setInternalVisible] = useState(true);
-    const isVisible = visible ?? internalVisible;
-
-    const handleClose = () => {
-        if (visible === undefined) {
-            setInternalVisible(false);
-        }
-        onClose?.();
-    };
-
-    if (!isVisible) return null;
     const icon = iconless ? undefined : resolveIcon(type);
 
     const getAriaLabel = (): string | undefined => {
@@ -81,7 +68,7 @@ export const AlertMessage = ({
             {onClose && (
                 <Button
                     type="button"
-                    onClick={handleClose}
+                    onClick={onClose}
                     icon={<Icon name="close" sizing="small" />}
                     tertiary
                     sizing="small"
