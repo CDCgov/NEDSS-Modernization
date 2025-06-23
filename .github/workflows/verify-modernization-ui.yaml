@@ -24,10 +24,14 @@ jobs:
         working-directory: ./apps/modernization-ui
         run: npm install
 
+      - name: Lint
+        working-directory: ./apps/modernization-ui
+        run: npm run lint
+
       - name: Verify
         working-directory: ./apps/modernization-ui
-        run: npx react-scripts test --watchAll=false
+        run: npm run test:all
 
       - name: Ensure
         working-directory: ./apps/modernization-ui
-        run: npx react-scripts build
+        run: npm run build
