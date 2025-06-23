@@ -509,12 +509,11 @@ describe('when the PatientCriteria contains Identification criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'identificationType',
-                    title: 'ID TYPE',
-                    name: 'Identification Type Name',
-                    value: 'identification-type-value'
-                },
-                { source: 'identification', title: 'ID', name: 'identification-value', value: 'identification-value' }
+                    source: 'identification',
+                    title: 'Identification Type Name',
+                    name: 'identification-value',
+                    value: 'identification-value'
+                }
             ])
         );
     });
