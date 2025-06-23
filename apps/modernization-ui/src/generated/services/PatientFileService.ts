@@ -10,6 +10,7 @@ import type { PatientAddressDemographic } from '../models/PatientAddressDemograp
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientEthnicityDemographic } from '../models/PatientEthnicityDemographic';
 import type { PatientFile } from '../models/PatientFile';
+import type { PatientGeneralInformationDemographic } from '../models/PatientGeneralInformationDemographic';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientInvestigation } from '../models/PatientInvestigation';
 import type { PatientMortalityDemographic } from '../models/PatientMortalityDemographic';
@@ -193,6 +194,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics/identifications',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File General Information Demographics
+     * Provides the General Information demographics for a patient
+     * @returns PatientGeneralInformationDemographic OK
+     * @throws ApiError
+     */
+    public static generalInformationDemographics({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<PatientGeneralInformationDemographic> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/demographics/general',
             path: {
                 'patient': patient,
             },
