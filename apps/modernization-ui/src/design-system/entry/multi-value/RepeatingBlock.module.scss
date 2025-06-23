@@ -7,7 +7,6 @@ $medium-height: 1.125rem;
 $large-height: 1.25rem;
 
 .card {
-    @extend %thin;
     background-color: colors.$base-white;
 
     .errorList {
