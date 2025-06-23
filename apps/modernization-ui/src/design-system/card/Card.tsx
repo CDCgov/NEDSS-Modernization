@@ -14,6 +14,7 @@ type CardProps = {
     children: ReactNode;
     collapsible?: boolean;
     open?: boolean;
+    footer?: ReactNode;
 } & Omit<CardHeaderProps, 'control'> &
     JSX.IntrinsicElements['section'];
 
@@ -28,6 +29,7 @@ const Card = ({
     actions,
     collapsible = false,
     open = true,
+    footer,
     children,
     ...remaining
 }: CardProps) => {
@@ -46,18 +48,22 @@ const Card = ({
                 control={
                     <Shown when={collapsible}>
                         <Button
-                            className={styles.toggle}
-                            tertiary
-                            aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}
+                            className={classNames(styles.toggle, { [styles.collapsed]: collapsed })}
                             sizing="small"
-                            onClick={() => setCollapsed((current) => !current)}>
-                            <Icon name={collapsed ? 'expand_more' : 'expand_less'} />
-                        </Button>
+                            tertiary
+                            icon={<Icon name={'expand_less'} />}
+                            aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}
+                            onClick={() => setCollapsed((current) => !current)}
+                        />
                     </Shown>
                 }
             />
+
             <Shown when={collapsible} fallback={children}>
                 <Collapsible open={!collapsed}>{children}</Collapsible>
+            </Shown>
+            <Shown when={!collapsed}>
+                <footer>{footer}</footer>
             </Shown>
         </section>
     );

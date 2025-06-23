@@ -43,13 +43,13 @@ Feature: Lab Report Search Sorting
 
   Scenario: I can find Lab Reports ordered by the patient's birthday ascending
     Given I have a patient
-    And the patient has a "birthday" of "1987-01-15"
+    And the patient was born on 01/15/1987
     And the patient has a lab report
     And I have another patient
-    And the patient has a "birthday" of "1999-11-19"
+    And the patient was born on 11/19/1999
     And the patient has a lab report
     And I have another patient
-    And the patient has a "birthday" of "1974-05-29"
+    And the patient was born on 05/29/1974
     And the patient has a lab report
     And lab reports are available for search
     And I want search results sorted by "birthday" "asc"
@@ -60,13 +60,13 @@ Feature: Lab Report Search Sorting
 
   Scenario: I can find Lab Reports ordered by the patient's birthday descending
     Given I have a patient
-    And the patient has a "birthday" of "1987-01-15"
+    And the patient was born on 01/15/1987
     And the patient has a lab report
     And I have another patient
-    And the patient has a "birthday" of "1999-11-19"
+    And the patient was born on 11/19/1999
     And the patient has a lab report
     And I have another patient
-    And the patient has a "birthday" of "1974-05-29"
+    And the patient was born on 05/29/1974
     And the patient has a lab report
     And lab reports are available for search
     And I want search results sorted by "birthday" "desc"
@@ -111,13 +111,13 @@ Feature: Lab Report Search Sorting
 
   Scenario: I can find Lab Reports ordered by the patient's gender ascending
     Given I have a patient
-    And the patient has a "sex" of "F"
+    And the patient's gender is Female
     And the patient has a lab report
     And I have another patient
-    And the patient has a "sex" of "U"
+    And the patient's gender is Unknown
     And the patient has a lab report
     And I have another patient
-    And the patient has a "sex" of "M"
+    And the patient's gender is Male
     And the patient has a lab report
     And lab reports are available for search
     And I want search results sorted by "sex" "asc"
@@ -128,13 +128,13 @@ Feature: Lab Report Search Sorting
 
   Scenario: I can find Lab Reports ordered by the patient's gender descending
     Given I have a patient
-    And the patient has a "sex" of "F"
+    And the patient's gender is Female
     And the patient has a lab report
     And I have another patient
-    And the patient has a "sex" of "U"
+    And the patient's gender is Unknown
     And the patient has a lab report
     And I have another patient
-    And the patient has a "sex" of "M"
+    And the patient's gender is Male
     And the patient has a lab report
     And lab reports are available for search
     And I want search results sorted by "sex" "desc"

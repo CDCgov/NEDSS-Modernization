@@ -1,0 +1,7 @@
+@use 'styles/components';
+.content {
+    font-size: #{components.$small-font-size};
+
+    padding: 1rem;
+    white-space: pre-line;
+}

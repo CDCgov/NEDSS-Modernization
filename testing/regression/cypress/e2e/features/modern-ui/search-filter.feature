@@ -3,7 +3,7 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
   Background:
     Given I am logged in as secure user and stay on classic
     Given I am on the modernized Patient Search page
-    Given I feel input id "name.last" with text "rat"
+    Given I fill input id "name.last" with text "rat"
 
   Scenario: Search by patient contains filter with Patient ID    
     When I select input id "name.lastOperator" with type "Contains"

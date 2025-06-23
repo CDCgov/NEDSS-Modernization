@@ -7,7 +7,6 @@ $medium-height: 1.125rem;
 $large-height: 1.25rem;
 
 .card {
-    @extend %thin;
     background-color: colors.$base-white;
 
     .errorList {
@@ -61,25 +60,33 @@ $large-height: 1.25rem;
                 }
             }
         }
+
+        &:not(:last-child) {
+            @extend %thin-bottom;
+        }
+    }
+
+    .view {
+        @extend %thin-top;
+        padding: 1rem 0;
     }
 
     .form {
+        @extend %thin-top;
         background-color: colors.$base-white;
+
+        &.changed {
+            background-color: colors.$primary-lighter;
+        }
     }
 
-    .changed {
-        background-color: colors.$primary-lighter;
-    }
-
-    footer {
+    .controls {
         display: flex;
         gap: 0.5rem;
-        padding: 0.5rem 1.5rem 0.5rem 16.75rem;
-    }
+        padding-left: 15rem;
 
-    &.small {
-        footer {
-            padding-left: 15.25rem;
+        &.small {
+            padding-left: 14rem;
         }
     }
 }

@@ -5,6 +5,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 @Component
 public class AuthenticatedMvcRequester {
 
@@ -22,7 +24,7 @@ public class AuthenticatedMvcRequester {
           this.authenticated.withUser(
               builder
           )
-      );
+      ).andDo(print());
     } catch (Exception exception) {
       throw new IllegalStateException(
           "An unexpected error occurred when executing an authenticated request.",

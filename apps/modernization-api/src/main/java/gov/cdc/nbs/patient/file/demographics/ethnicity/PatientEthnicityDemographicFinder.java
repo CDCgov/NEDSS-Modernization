@@ -32,6 +32,7 @@ class PatientEthnicityDemographicFinder {
       
           left join [Person_ethnic_group] [ethnic_group] on
                   [ethnic_group].person_uid = [patient].[person_uid]
+              and [ethnic_group].record_status_cd = 'ACTIVE'
       
           left join NBS_SRTE..Code_value_general [ethnicity_detail] on
                   [ethnicity_detail].code_set_nm = 'P_ETHN'

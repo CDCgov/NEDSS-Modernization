@@ -77,7 +77,7 @@ public class PatientMother {
                   [locator].[postal_locator_uid] = [participation].[locator_uid]
       where [participation].entity_uid in (:identifiers);
       
-      delete from Entity_loc_participation where entity_uid in (:identifiers);
+      delete from Entity_locator_participation where entity_uid in (:identifiers);
       
       delete from Entity_id where entity_uid in (:identifiers);
       
@@ -625,27 +625,6 @@ public class PatientMother {
         RandomUtil.dateInPast());
   }
 
-  public void withBirthday(
-      final PatientIdentifier identifier,
-      final LocalDate birthday) {
-    Person patient = managed(identifier);
-
-    patient.update(
-        new PatientCommand.UpdateBirth(
-            identifier.id(),
-            RandomUtil.dateInPast(),
-            birthday,
-            null,
-            RandomUtil.maybeIndicator(),
-            null,
-            null,
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()),
-        this.addressIdentifierGenerator);
-  }
 
   public void withBirthInformation(final PatientIdentifier identifier) {
     Person patient = managed(identifier);
@@ -668,18 +647,13 @@ public class PatientMother {
   }
 
   public void withGender(final PatientIdentifier identifier) {
-    withGender(identifier, RandomUtil.gender().value());
-  }
-
-
-  public void withGender(final PatientIdentifier identifier, final String gender) {
     Person patient = managed(identifier);
 
     patient.update(
         new PatientCommand.UpdateGender(
             identifier.id(),
             RandomUtil.dateInPast(),
-            gender,
+            RandomUtil.gender().value(),
             null,
             null,
             null,
@@ -696,24 +670,6 @@ public class PatientMother {
     Person patient = managed(identifier);
 
     patient.setId(id);
-  }
-
-  public void withDeceasedOn(final PatientIdentifier identifier, final LocalDate date) {
-    Person patient = managed(identifier);
-    patient.update(
-        new PatientCommand.UpdateMortality(
-            identifier.id(),
-            RandomUtil.dateInPast(),
-            Deceased.Y.value(),
-            date,
-            null,
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()),
-        this.addressIdentifierGenerator
-    );
   }
 
 
@@ -826,12 +782,6 @@ public class PatientMother {
         .update();
   }
 
-  public void withStateHIVCase(final PatientIdentifier identifier, final String value) {
-    client.sql("update person set ehars_id = ?, as_of_date_general = GETDATE() where person_uid = ?")
-        .params(value, identifier.id())
-        .update();
-
-  }
 
   public void withAsOf(final PatientIdentifier identifier, final LocalDate value) {
     client.sql("update person set as_of_date_admin = ? where person_uid = ?")

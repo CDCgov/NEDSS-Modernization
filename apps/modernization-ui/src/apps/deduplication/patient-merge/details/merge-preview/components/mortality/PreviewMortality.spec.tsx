@@ -104,6 +104,6 @@ const mergeFormData: PatientMergeForm = {
 describe('PreviewMortality Component', () => {
     it('renders the mortality table', () => {
         const { getByText } = render(<Fixture />);
-        expect(getByText('2025-01-02')).toBeInTheDocument();
+        expect(getByText('01/02/2025')).toBeInTheDocument();
     });
 });
