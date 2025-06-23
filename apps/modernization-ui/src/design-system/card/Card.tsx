@@ -48,13 +48,13 @@ const Card = ({
                 control={
                     <Shown when={collapsible}>
                         <Button
-                            className={styles.toggle}
-                            tertiary
-                            aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}
+                            className={classNames(styles.toggle, { [styles.collapsed]: collapsed })}
                             sizing="small"
-                            onClick={() => setCollapsed((current) => !current)}>
-                            <Icon name={collapsed ? 'expand_more' : 'expand_less'} />
-                        </Button>
+                            tertiary
+                            icon={<Icon name={'expand_less'} />}
+                            aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}
+                            onClick={() => setCollapsed((current) => !current)}
+                        />
                     </Shown>
                 }
             />
