@@ -11,11 +11,11 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
-public class PatientFileGeneralInformationVerificationSteps {
+public class PatientFileGeneralInformationDemographicVerificationSteps {
 
   private final Active<ResultActions> response;
 
-  PatientFileGeneralInformationVerificationSteps(final Active<ResultActions> response) {
+  PatientFileGeneralInformationDemographicVerificationSteps(final Active<ResultActions> response) {
     this.response = response;
   }
 
@@ -35,11 +35,11 @@ public class PatientFileGeneralInformationVerificationSteps {
         );
   }
 
-  @Then("the patient file general information includes the occupation {occupation}")
+  @Then("the patient file general information includes the primary occupation {occupation}")
   public void occupation(final String value) throws Exception {
     this.response.active()
         .andExpect(
-            jsonPath("$.occupation.value", equalTo(value))
+            jsonPath("$.primaryOccupation.value", equalTo(value))
         );
   }
 
@@ -67,6 +67,7 @@ public class PatientFileGeneralInformationVerificationSteps {
         );
   }
 
+  @Then("the patient file general information includes a maternal maiden name of {string}")
   @Then("the patient file general information includes a mother's maiden name of {string}")
   public void maidenName(final String value)
       throws Exception {
@@ -81,32 +82,32 @@ public class PatientFileGeneralInformationVerificationSteps {
         .andExpect(jsonPath("$.maternalMaidenName").isEmpty());
   }
 
-  @Then("the patient file general information includes {int} adults in the house")
+  @Then("the patient file general information includes {int} adults in the residence")
   public void adults(final int value)
       throws Exception {
     this.response.active()
-        .andExpect(jsonPath("$.adultsInHouse").value(equalTo(value)));
+        .andExpect(jsonPath("$.adultsInResidence").value(equalTo(value)));
   }
 
-  @Then("the patient file general information does not include adults in the house")
+  @Then("the patient file general information does not include adults in the residence")
   public void noAdults()
       throws Exception {
     this.response.active()
-        .andExpect(jsonPath("$.adultsInHouse").isEmpty());
+        .andExpect(jsonPath("$.adultsInResidence").isEmpty());
   }
 
-  @Then("the patient file general information includes {int} children in the house")
+  @Then("the patient file general information includes {int} children in the residence")
   public void children(final int value)
       throws Exception {
     this.response.active()
-        .andExpect(jsonPath("$.childrenInHouse").value(equalTo(value)));
+        .andExpect(jsonPath("$.childrenInResidence").value(equalTo(value)));
   }
 
-  @Then("the patient file general information does not include children in the house")
+  @Then("the patient file general information does not include children in the residence")
   public void noChildren()
       throws Exception {
     this.response.active()
-        .andExpect(jsonPath("$.childrenInHouse").isEmpty());
+        .andExpect(jsonPath("$.childrenInResidence").isEmpty());
   }
 
   @Then("the patient file general information includes a state HIV case of {string}")
@@ -121,7 +122,7 @@ public class PatientFileGeneralInformationVerificationSteps {
         .andExpect(jsonPath("$.stateHIVCase.value").isEmpty());
   }
 
-  @Then("the patient's general information does not include state HIV case due to {string}")
+  @Then("the patient file general information does not include state HIV case due to {string}")
   public void noStateHIVCase(final String reason) throws Exception {
     this.response.active()
         .andExpect(jsonPath("$.stateHIVCase.reason", equalToIgnoringCase(reason)));

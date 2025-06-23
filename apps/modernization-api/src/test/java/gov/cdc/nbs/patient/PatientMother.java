@@ -782,12 +782,6 @@ public class PatientMother {
         .update();
   }
 
-  public void withStateHIVCase(final PatientIdentifier identifier, final String value) {
-    client.sql("update person set ehars_id = ?, as_of_date_general = GETDATE() where person_uid = ?")
-        .params(value, identifier.id())
-        .update();
-
-  }
 
   public void withAsOf(final PatientIdentifier identifier, final LocalDate value) {
     client.sql("update person set as_of_date_admin = ? where person_uid = ?")

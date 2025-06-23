@@ -6,7 +6,7 @@ import gov.cdc.nbs.patient.demographics.administrative.Administrative;
 import gov.cdc.nbs.patient.demographics.birth.BirthDemographic;
 import gov.cdc.nbs.patient.demographics.ethnicity.EthnicityDemographic;
 import gov.cdc.nbs.patient.demographics.gender.GenderDemographic;
-import gov.cdc.nbs.patient.profile.general.GeneralInformationDemographic;
+import gov.cdc.nbs.patient.demographics.general.GeneralInformationDemographic;
 import gov.cdc.nbs.patient.demographics.identification.IdentificationDemographic;
 import gov.cdc.nbs.patient.demographics.mortality.MortalityDemographic;
 import gov.cdc.nbs.patient.demographics.name.NameDemographic;

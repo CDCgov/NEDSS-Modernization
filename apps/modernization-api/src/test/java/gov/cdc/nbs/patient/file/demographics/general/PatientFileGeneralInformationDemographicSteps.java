@@ -23,7 +23,7 @@ public class PatientFileGeneralInformationDemographicSteps {
     this.response = response;
   }
 
-  @Then("I view the patient's general information")
+  @Then("I view the patient's general information demographics")
   public void races() {
     this.activePatient.maybeActive()
         .map(requester::request)
