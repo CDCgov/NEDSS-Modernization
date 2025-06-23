@@ -25,8 +25,8 @@ import static gov.cdc.nbs.patient.demographics.birth.BirthDemographicPatientComm
 import static gov.cdc.nbs.patient.demographics.ethnicity.EthnicityPatientCommandMapper.asAddDetailedEthnicity;
 import static gov.cdc.nbs.patient.demographics.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;
 import static gov.cdc.nbs.patient.demographics.gender.GenderDemographicPatientCommandMapper.asUpdateGender;
-import static gov.cdc.nbs.patient.profile.general.GeneralInformationDemographicPatientCommandMapper.asUpdateGeneralInfo;
-import static gov.cdc.nbs.patient.profile.general.GeneralInformationDemographicPatientCommandMapper.maybeAsAssociateStateHIVCase;
+import static gov.cdc.nbs.patient.demographics.general.GeneralInformationDemographicPatientCommandMapper.asUpdateGeneralInfo;
+import static gov.cdc.nbs.patient.demographics.general.GeneralInformationDemographicPatientCommandMapper.maybeAsAssociateStateHIVCase;
 import static gov.cdc.nbs.patient.demographics.identification.IdentificationDemographicPatientCommandMapper.asAddIdentification;
 import static gov.cdc.nbs.patient.demographics.mortality.MortalityDemographicPatientCommandMapper.asUpdateMortality;
 import static gov.cdc.nbs.patient.demographics.name.NameDemographicPatientCommandMapper.asAddName;

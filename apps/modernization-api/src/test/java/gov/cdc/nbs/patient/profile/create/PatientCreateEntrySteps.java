@@ -2,15 +2,15 @@ package gov.cdc.nbs.patient.profile.create;
 
 import gov.cdc.nbs.patient.demographics.address.AddressDemographic;
 import gov.cdc.nbs.patient.demographics.administrative.Administrative;
-import gov.cdc.nbs.patient.demographics.identification.IdentificationDemographic;
-import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;
-import gov.cdc.nbs.patient.demographics.race.RaceDemographic;
 import gov.cdc.nbs.patient.demographics.birth.BirthDemographic;
 import gov.cdc.nbs.patient.demographics.ethnicity.EthnicityDemographic;
 import gov.cdc.nbs.patient.demographics.gender.GenderDemographic;
-import gov.cdc.nbs.patient.profile.general.GeneralInformationDemographic;
+import gov.cdc.nbs.patient.demographics.general.GeneralInformationDemographic;
+import gov.cdc.nbs.patient.demographics.identification.IdentificationDemographic;
 import gov.cdc.nbs.patient.demographics.mortality.MortalityDemographic;
 import gov.cdc.nbs.patient.demographics.name.NameDemographic;
+import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;
+import gov.cdc.nbs.patient.demographics.race.RaceDemographic;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
