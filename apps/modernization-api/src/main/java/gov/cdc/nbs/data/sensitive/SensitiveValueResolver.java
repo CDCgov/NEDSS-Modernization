@@ -17,11 +17,11 @@ public class SensitiveValueResolver {
     this.resolver = resolver;
   }
 
-  public <V> Sensitive resolve(final Permission permission, final V value) {
+  public <V> SensitiveValue resolve(final Permission permission, final V value) {
     return resolve(permission, value, () -> DEFAULT_REASON);
   }
 
-  public <V> Sensitive resolve(
+  public <V> SensitiveValue resolve(
       final Permission permission,
       final V value,
       final Supplier<String> ifRestricted
@@ -29,7 +29,7 @@ public class SensitiveValueResolver {
     PermissionScope scope = resolver.resolve(permission);
 
     return scope.allowed()
-        ? new Sensitive.Allowed<>(value)
-        : new Sensitive.Restricted(ifRestricted.get());
+        ? new SensitiveValue.Allowed<>(value)
+        : new SensitiveValue.Restricted(ifRestricted.get());
   }
 }

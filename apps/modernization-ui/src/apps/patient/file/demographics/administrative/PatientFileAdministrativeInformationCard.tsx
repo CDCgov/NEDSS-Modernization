@@ -1,4 +1,4 @@
-import { AdministrativeInformationCard } from 'libs/patient/demographics/AdministrativeInformationCard';
+import { AdministrativeInformationCard } from 'libs/patient/demographics/administrative/AdministrativeInformationCard';
 import { useAdministrativeInformation } from './useAdministrativeInformation';
 import { Sizing } from 'design-system/field';
 
@@ -11,7 +11,7 @@ export const PatientFileAdministrativeInformationCard = ({
     patient,
     sizing
 }: PatientFileAdministrativeInformationCardType) => {
-    const data = useAdministrativeInformation(patient);
+    const { data, isLoading } = useAdministrativeInformation(patient);
 
-    return <AdministrativeInformationCard collapsible data={data.data} sizing={sizing} />;
+    return <AdministrativeInformationCard key={`${isLoading}`} collapsible data={data} sizing={sizing} />;
 };

@@ -7,7 +7,6 @@ $medium-height: 1.125rem;
 $large-height: 1.25rem;
 
 .card {
-    @extend %thin;
     background-color: colors.$base-white;
 
     .errorList {
@@ -26,7 +25,6 @@ $large-height: 1.25rem;
             gap: 0.5rem;
             justify-content: center;
             align-items: center;
-            max-width: fit-content;
 
             & > button {
                 --button-padding: 0rem;
@@ -35,7 +33,7 @@ $large-height: 1.25rem;
                 --button-height: #{$medium-height};
                 --button-icon-size: #{$medium-height};
 
-                &.active {
+                &[aria-pressed='true'] {
                     border-radius: 0.25rem;
                     padding: 0.0625rem;
                     color: colors.$base-white;
@@ -84,7 +82,7 @@ $large-height: 1.25rem;
     .controls {
         display: flex;
         gap: 0.5rem;
-        padding-left: 15rem;
+        padding-left: 16rem;
 
         &.small {
             padding-left: 14rem;

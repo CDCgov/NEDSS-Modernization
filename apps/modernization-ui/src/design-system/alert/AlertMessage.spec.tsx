@@ -1,5 +1,18 @@
-import { render } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { AlertMessage } from './AlertMessage';
+import { useState } from 'react';
+
+const AlertWrapper = () => {
+    const [visible, setVisible] = useState(true);
+
+    if (!visible) return null;
+
+    return (
+        <AlertMessage title="Dismissible Alert" type="success" onClose={() => setVisible(false)}>
+            Dismiss this alert
+        </AlertMessage>
+    );
+};
 
 describe('AlertMessage', () => {
     // Title
@@ -105,5 +118,16 @@ describe('AlertMessage', () => {
         );
 
         expect(getByRole('alert', { name: 'The title. Custom aria label' })).toBeInTheDocument();
+    });
+
+    it('should close the alert when the close button is clicked', () => {
+        render(<AlertWrapper />);
+
+        expect(screen.getByRole('alert')).toBeInTheDocument();
+
+        const closeButton = screen.getByRole('button', { name: /close alert/i });
+        fireEvent.click(closeButton);
+
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
 });

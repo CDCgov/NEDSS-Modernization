@@ -1,9 +1,8 @@
 import { ReactNode, useId } from 'react';
 import classNames from 'classnames';
 import { Sizing } from 'design-system/field';
-import { NoData } from 'components/NoData';
-
 import styles from './value-field.module.scss';
+import { OrElseNoData } from 'design-system/data';
 
 type Props = {
     label: string;
@@ -24,7 +23,7 @@ const ValueField = ({ label, children, sizing }: Props) => {
                 {label}
             </span>
             <span aria-labelledby={id} role="definition" className={styles.value}>
-                {children ?? <NoData />}
+                {<OrElseNoData>{children}</OrElseNoData>}
             </span>
         </div>
     );

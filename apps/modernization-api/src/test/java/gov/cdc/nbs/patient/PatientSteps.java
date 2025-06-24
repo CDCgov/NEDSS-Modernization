@@ -5,8 +5,6 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-
 @Transactional
 public class PatientSteps {
 
@@ -38,35 +36,6 @@ public class PatientSteps {
     mother.superseded(patient.active());
   }
 
-  @Given("the patient was born on {localDate}")
-  public void the_patient_was_born_on(final LocalDate value) {
-    this.patient.maybeActive().ifPresent(
-        found -> mother.withBirthday(
-            found,
-            value));
-
-  }
-
-  @Given("the patient died on {localDate}")
-  public void the_patient_died_on(final LocalDate value) {
-    this.patient.maybeActive().ifPresent(
-        found -> mother.withDeceasedOn(
-            found,
-            value
-        )
-    );
-
-  }
-
-  @Given("the patient was born {int} years ago")
-  public void the_patient_was_born_on(final int value) {
-    this.patient.maybeActive().ifPresent(
-        found -> mother.withBirthday(
-            found,
-            LocalDate.now().minusYears(value).minusDays(100)));
-
-  }
-
   @Given("the patient has a(n) {string} of {string}")
   public void the_patient_has_a_field_with_a_value_of(
       final String field,
@@ -90,14 +59,6 @@ public class PatientSteps {
       case "race" -> mother.withRace(
           identifier,
           resolveRace(value));
-
-      case "birthday" -> mother.withBirthday(
-          identifier,
-          LocalDate.parse(value));
-
-      case "sex" -> mother.withGender(
-          identifier,
-          value);
 
       case "id" -> mother.withId(identifier, Long.parseLong(value));
 
@@ -205,15 +166,5 @@ public class PatientSteps {
         number,
         extension);
 
-  }
-
-  @Given("the patient has the gender {sex}")
-  public void the_patient_has_the_gender(final String gender) {
-    this.patient.maybeActive().ifPresent(found -> mother.withGender(found, gender));
-  }
-
-  @Given("the patient is associated with state HIV case {string}")
-  public void the_patient_is_associated_with_state_HIV_case(final String value) {
-    patient.maybeActive().ifPresent(current -> mother.withStateHIVCase(current, value));
   }
 }

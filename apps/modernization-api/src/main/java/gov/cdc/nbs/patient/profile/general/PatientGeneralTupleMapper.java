@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.general;
 
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.authorization.permission.Permission;
-import gov.cdc.nbs.data.sensitive.Sensitive;
+import gov.cdc.nbs.data.sensitive.SensitiveValue;
 import gov.cdc.nbs.data.sensitive.SensitiveValueResolver;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
@@ -83,7 +83,7 @@ class PatientGeneralTupleMapper {
 
     Indicator speaksEnglish = IndicatorStringConverter.fromString(tuple.get(this.tables.patient().generalInformation.speaksEnglish));
 
-    Sensitive stateHIVCase = resolveStateHIVCase(tuple);
+    SensitiveValue stateHIVCase = resolveStateHIVCase(tuple);
 
     return new PatientGeneral(
         patient,
@@ -150,7 +150,7 @@ class PatientGeneralTupleMapper {
     );
   }
 
-  private Sensitive resolveStateHIVCase(final Tuple tuple) {
+  private SensitiveValue resolveStateHIVCase(final Tuple tuple) {
     return this.resolver.resolve(HIV_PERMISSION, tuple.get(this.tables.patient().generalInformation.stateHIVCase));
   }
 }
