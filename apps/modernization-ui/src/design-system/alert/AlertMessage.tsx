@@ -4,6 +4,7 @@ import { Icon } from 'design-system/icon';
 import { ReactNode, HTMLAttributes } from 'react';
 import { resolveIcon } from '../message/Message';
 import styles from './alert-message.module.scss';
+import { Button } from 'design-system/button';
 
 type Children = ReactNode | ReactNode[];
 
@@ -14,6 +15,7 @@ type Props = {
     className?: string;
     iconless?: boolean;
     slim?: boolean;
+    onClose?: () => void;
 } & Omit<HTMLAttributes<HTMLDivElement>, 'className'>;
 
 const getDefaultAlertAriaLabel = (title?: string, children?: Children): string | undefined => {
@@ -30,6 +32,7 @@ export const AlertMessage = ({
     className,
     slim = false,
     iconless = false,
+    onClose,
     'aria-label': ariaLabel,
     ...props
 }: Props) => {
@@ -62,6 +65,17 @@ export const AlertMessage = ({
                 {title && <Heading level={2}>{title}</Heading>}
                 {children}
             </div>
+            {onClose && (
+                <Button
+                    type="button"
+                    onClick={onClose}
+                    icon={<Icon name="close" sizing="small" />}
+                    tertiary
+                    sizing="small"
+                    aria-label="Close alert"
+                    className={styles.closeButton}
+                />
+            )}
         </div>
     );
 };

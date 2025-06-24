@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { RepeatingBlock } from './RepeatingBlock';
 import { Controller, useFormContext } from 'react-hook-form';
 import { SingleSelect } from 'design-system/select';
 import { asSelectable, Selectable } from 'options';
-import { Input } from 'components/FormInputs/Input';
-import { Sizing } from 'design-system/field';
-import { ValueView } from 'design-system/data-display/ValueView';
+import { Orientation, Sizing } from 'design-system/field';
+import { TextInputField } from 'design-system/input/text';
+import { RepeatingBlock } from './RepeatingBlock';
+import { DetailValue, DetailView } from './view/DetailView';
 
 type SampleType = {
     firstName: string;
@@ -30,7 +30,7 @@ const options: Selectable[] = [
     asSelectable('tomato', 'Tomato')
 ];
 
-const SampleForm = ({ sizing }: { sizing: Sizing }) => {
+const SampleForm = ({ sizing, orientation = 'horizontal' }: { sizing?: Sizing; orientation?: Orientation }) => {
     const { control } = useFormContext<SampleType>();
     return (
         <section>
@@ -39,15 +39,15 @@ const SampleForm = ({ sizing }: { sizing: Sizing }) => {
                 control={control}
                 rules={{ required: { value: true, message: 'First name is required.' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <Input
-                        flexBox
+                    <TextInputField
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
+                        value={value}
                         type="text"
                         label="First name"
                         id={name}
                         sizing={sizing}
+                        orientation={orientation}
                         error={error?.message}
                         required
                     />
@@ -57,14 +57,14 @@ const SampleForm = ({ sizing }: { sizing: Sizing }) => {
                 name="lastName"
                 control={control}
                 render={({ field: { onBlur, onChange, value, name } }) => (
-                    <Input
-                        flexBox
+                    <TextInputField
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
+                        value={value}
                         type="text"
                         label="Last name"
                         sizing={sizing}
+                        orientation={orientation}
                         id={name}
                     />
                 )}
@@ -76,7 +76,7 @@ const SampleForm = ({ sizing }: { sizing: Sizing }) => {
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Favorite veggie"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onBlur={onBlur}
                         sizing={sizing}
@@ -93,12 +93,12 @@ const SampleForm = ({ sizing }: { sizing: Sizing }) => {
     );
 };
 
-const SampleView = ({ entry, sizing }: { entry: SampleType; sizing: Sizing }) => (
-    <>
-        <ValueView title="First name" value={entry.firstName} sizing={sizing} />
-        <ValueView title="Last name" value={entry.lastName} sizing={sizing} />
-        <ValueView title="Favorite veggie" value={entry.veggie?.name} sizing={sizing} />
-    </>
+const SampleView = ({ entry }: { entry: SampleType }) => (
+    <DetailView>
+        <DetailValue label="First name">{entry.firstName}</DetailValue>
+        <DetailValue label="Last name">{entry.lastName}</DetailValue>
+        <DetailValue label="Favorite veggie">{entry.veggie?.name}</DetailValue>
+    </DetailView>
 );
 
 const columns = [
@@ -125,8 +125,6 @@ const defaultValue: Partial<SampleType> = {
     veggie: undefined
 };
 
-const defaultSizing: Sizing = 'small';
-
 const handleChange = (values: SampleType[]) => {
     console.log('Values:', values);
 };
@@ -141,8 +139,8 @@ export const Default: Story = {
             { firstName: 'test', lastName: 'test', veggie: asSelectable('carrot', 'Carrot') },
             { firstName: 'test1', lastName: 'test1', veggie: asSelectable('eggplant', 'Eggplant') }
         ],
-        formRenderer: () => <SampleForm sizing={defaultSizing} />,
-        viewRenderer: (entry: SampleType) => <SampleView entry={entry} sizing={defaultSizing} />,
+        formRenderer: (_entry, sizing) => <SampleForm sizing={sizing} />,
+        viewRenderer: (entry) => <SampleView entry={entry} />,
         onChange: handleChange,
         isDirty: () => {},
         isValid: () => {}
