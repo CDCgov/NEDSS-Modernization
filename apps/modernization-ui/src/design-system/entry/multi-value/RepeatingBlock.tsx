@@ -28,8 +28,8 @@ type RepeatingBlockProps<V extends FieldValues> = {
     onChange?: (data: V[]) => void;
     isDirty?: (isDirty: boolean) => void;
     isValid?: (isValid: boolean) => void;
-    formRenderer: (entry?: V) => ReactNode;
-    viewRenderer: (entry: V) => ReactNode;
+    formRenderer?: (entry?: V) => ReactNode;
+    viewRenderer?: (entry: V) => ReactNode;
 } & Pick<CardProps, 'id' | 'title' | 'collapsible'>;
 
 const RepeatingBlock = <V extends FieldValues>({
@@ -251,13 +251,13 @@ const RepeatingBlock = <V extends FieldValues>({
                 features={features}
             />
             <Shown when={viewable && status === 'viewing'}>
-                {selected && <div className={styles.view}>{viewRenderer(selected.value)}</div>}
+                {selected && <div className={styles.view}>{viewRenderer?.(selected.value)}</div>}
             </Shown>
 
             <Shown when={editable && status !== 'viewing'}>
                 <FormProvider {...form}>
                     <div className={classNames(styles.form, { [styles.changed]: form.formState.isDirty })}>
-                        {formRenderer(selected?.value)}
+                        {formRenderer?.(selected?.value)}
                     </div>
                 </FormProvider>
             </Shown>
