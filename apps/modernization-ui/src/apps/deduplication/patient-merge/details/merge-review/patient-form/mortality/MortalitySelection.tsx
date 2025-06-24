@@ -26,6 +26,7 @@ export const MortalitySelection = ({ mergeCandidates }: Props) => {
         // going from deceased 'Yes' to 'Yes' does NOT update all values
         const newIsDeceased = deceasedEntries.some((m) => m.personUid === selectedPerson);
         if (!previousWasDeceased || !newIsDeceased) {
+            form.setValue('mortality.deceased', selectedPerson);
             form.setValue('mortality.dateOfDeath', selectedPerson);
             form.setValue('mortality.deathCity', selectedPerson);
             form.setValue('mortality.deathState', selectedPerson);

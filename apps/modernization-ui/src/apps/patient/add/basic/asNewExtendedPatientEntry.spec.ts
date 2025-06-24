@@ -1,6 +1,5 @@
 import { today } from 'date';
 import { BasicNewPatientEntry } from './entry';
-import { Suffix } from 'generated/graphql/schema';
 import { asSelectable } from 'options';
 import { asNewExtendedPatientEntry } from './asNewExtendedPatientEntry';
 
@@ -13,7 +12,7 @@ describe('Basic form to extended transfer', () => {
                 first: 'testFirst',
                 middle: 'testMiddle',
                 last: 'testLast',
-                suffix: asSelectable(Suffix.Esq, 'Esquire')
+                suffix: asSelectable('ESQ', 'Esquire')
             }
         };
 

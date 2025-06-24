@@ -1,5 +1,0 @@
-mutation updatePatientGeneralInfo($input: GeneralInfoInput!){
-    updatePatientGeneralInfo(input: $input){
-        patient
-    }
-}
