@@ -78,8 +78,8 @@ export const CaseReportLaboratorySection = ({ filter, setAlert, links }: Props) 
                 {/* Render ungrouped links first */}
                 {grouped[0]?.title === undefined && (
                     <div className={styles.subGroup}>
-                        {grouped[0].links.map((link, j) => (
-                            <a key={j} href={link.href}>
+                        {grouped[0].links.map((link) => (
+                            <a key={link.href} href={link.href}>
                                 {link.text}
                             </a>
                         ))}
@@ -91,8 +91,8 @@ export const CaseReportLaboratorySection = ({ filter, setAlert, links }: Props) 
                     <div key={i}>
                         {group.title && <div className={styles.groupTitle}>{group.title}</div>}
                         <div className={styles.subGroup}>
-                            {group.links.map((link, j) => (
-                                <a key={j} href={link.href}>
+                            {group.links.map((link) => (
+                                <a key={link.href} href={link.href}>
                                     {link.text}
                                 </a>
                             ))}
