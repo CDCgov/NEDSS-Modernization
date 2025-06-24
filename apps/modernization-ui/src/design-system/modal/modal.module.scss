@@ -4,12 +4,12 @@
 @use 'styles/borders';
 @use 'styles/media';
 
-$min-height: 240px;
+$min-height: 15rem;
 $max-height: 90vh;
-$min-width: 480px;
+$min-width: 30rem;
 $max-width: 1100px;
-$header-height: 4.625rem;
-$footer-height: 5.75rem;
+$header-height: 3.625rem;
+$footer-height: 4.75rem;
 
 .overlay {
     z-index: 1000;
@@ -46,16 +46,15 @@ $footer-height: 5.75rem;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
 
-        padding: 1.5rem;
+        padding: 1rem;
         max-height: $header-height;
 
-        svg {
-            cursor: pointer;
-        }
+        @extend %thin-bottom;
 
-        h2 {
-            margin: 0;
+        button.closer {
+            color: colors.$base-black;
         }
     }
 
@@ -63,7 +62,9 @@ $footer-height: 5.75rem;
         min-height: calc($min-height - $header-height - $footer-height);
         max-height: calc($max-height - $header-height - $footer-height);
 
-        padding: 1.5rem !important;
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.5rem !important;
 
         overflow-y: auto;
     }
@@ -72,7 +73,7 @@ $footer-height: 5.75rem;
         display: flex;
         justify-content: flex-end;
         gap: 0.5rem;
-        padding: 1.5rem;
+        padding: 1rem;
         max-height: $footer-height;
         margin-top: 0;
 
