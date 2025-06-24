@@ -16,7 +16,7 @@ public class GraphQLExceptionHandlingConfigurer {
 
   public GraphQLExceptionHandlingConfigurer(
       final ObjectMapper mapper,
-      @Value("${spring.graphql.path}") final String endpoint
+      @Value("${spring.graphql.http.path}") final String endpoint
   ) {
     this.mapper = mapper;
     this.matcher = PathPatternRequestMatcher.withDefaults().matcher(endpoint);

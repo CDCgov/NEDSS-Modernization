@@ -54,16 +54,39 @@ nbs:
         - /nbs/timeout
         - /goodbye
         - /expired
+        # Monitoring endpoints
+        - /nbs/api/~/health
+        - /nbs/api/~/info
 
 logging:
   file:
     path: ./log/
 
+management:
+  health:
+    db:
+      enabled: true
+  endpoints:
+    web:
+      discovery:
+        enabled: false
+      exposure:
+        include: health,info
+      base-path: /nbs/api/~/
+    access:
+      default: read_only
+  endpoint:
+    health:
+      access: read_only
+    info:
+      access: read_only
+
 spring:
   profiles:
     include: ui,oidc
   graphql:
-    path: /graphql
+    http:
+      path: /graphql
   jackson:
     deserialization:
       fail-on-unknown-properties: false
