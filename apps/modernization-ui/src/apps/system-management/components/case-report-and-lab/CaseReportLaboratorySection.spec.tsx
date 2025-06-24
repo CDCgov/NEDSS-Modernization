@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { CaseReportLaboratorySection } from './CaseReportLaboratorySection';
 
 const mockLinks = [
@@ -27,22 +28,24 @@ describe('CaseReportLaboratorySection', () => {
         expect(container).toBeEmptyDOMElement();
     });
 
-    it('shows confirmation modal when button is clicked', () => {
+    it('shows confirmation modal when button is clicked', async () => {
+        const user = userEvent.setup();
         setup();
-        fireEvent.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
+
+        await user.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
         expect(screen.getByText(/Are you sure/i)).toBeInTheDocument();
     });
 
     it('calls setAlert with success after confirming reset', async () => {
+        const user = userEvent.setup();
         const { setAlert } = setup();
+
         global.fetch = jest.fn(() =>
-            Promise.resolve({
-                ok: true
-            })
+            Promise.resolve({ ok: true })
         ) as jest.Mock;
 
-        fireEvent.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
-        fireEvent.click(screen.getByRole('button', { name: /yes, reset/i }));
+        await user.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
+        await user.click(screen.getByRole('button', { name: /yes, reset/i }));
 
         await waitFor(() =>
             expect(setAlert).toHaveBeenCalledWith({
@@ -54,11 +57,13 @@ describe('CaseReportLaboratorySection', () => {
     });
 
     it('calls setAlert with error on fetch failure', async () => {
+        const user = userEvent.setup();
         const { setAlert } = setup();
+
         global.fetch = jest.fn(() => Promise.reject()) as jest.Mock;
 
-        fireEvent.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
-        fireEvent.click(screen.getByRole('button', { name: /yes, reset/i }));
+        await user.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
+        await user.click(screen.getByRole('button', { name: /yes, reset/i }));
 
         await waitFor(() =>
             expect(setAlert).toHaveBeenCalledWith({

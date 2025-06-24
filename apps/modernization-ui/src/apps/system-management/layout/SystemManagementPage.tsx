@@ -24,7 +24,7 @@ const SystemManagementPage = () => {
             </header>
             {alert && (
                 <div className={styles.alertWrapper}>
-                    <AlertMessage type={alert.type} slim={true}>
+                    <AlertMessage type={alert.type} slim={true} onClose={() => setAlert(null)}>
                         {alert.message}
                     </AlertMessage>
                 </div>
