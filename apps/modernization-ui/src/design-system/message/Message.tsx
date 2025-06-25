@@ -1,20 +1,22 @@
-import { ReactNode } from 'react';
-import sprite from '@uswds/uswds/img/sprite.svg';
+import { ReactNode, useId } from 'react';
 import classNames from 'classnames';
+import { Icon } from 'design-system/icon';
 import { resolveIcon } from './resolveIcon';
+
 import styles from './message.module.scss';
 
 type Type = 'information' | 'success' | 'warning' | 'error';
 
 type MessageProps = {
     type: Type;
-    children: ReactNode;
-};
+    children: ReactNode | ReactNode[];
+} & Omit<JSX.IntrinsicElements['div'], 'className'>;
 
-const Message = ({ type, children }: MessageProps) => {
+const Message = ({ type, children, ...remaining }: MessageProps) => {
+    const id = useId();
     const icon = resolveIcon(type);
     return (
-        <div className={styles.message}>
+        <div aria-label={type} className={styles.message} aria-describedby={id} {...remaining}>
             <div
                 className={classNames(styles.badge, {
                     [styles.information]: type == 'information',
@@ -22,13 +24,11 @@ const Message = ({ type, children }: MessageProps) => {
                     [styles.warning]: type == 'warning',
                     [styles.error]: type == 'error'
                 })}>
-                {icon && (
-                    <svg width={'2rem'} height={'2rem'}>
-                        <use xlinkHref={`${sprite}#${icon}`}></use>
-                    </svg>
-                )}
+                {icon && <Icon name={icon} sizing="large" />}
             </div>
-            <div className={styles.content}>{children}</div>
+            <div className={styles.content} id={id}>
+                {children}
+            </div>
         </div>
     );
 };
