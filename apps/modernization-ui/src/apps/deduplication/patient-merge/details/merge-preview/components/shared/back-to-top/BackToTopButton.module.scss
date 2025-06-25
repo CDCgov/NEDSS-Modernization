@@ -1,0 +1,23 @@
+@use 'styles/colors';
+
+.button :global(button){
+  background-color: colors.$base-white !important;
+  gap: 0.25rem;
+  font-size: 0.875rem !important;
+  font-weight: 700 !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.icon {
+  width: 1rem !important;
+  height: 1rem !important;
+  flex-shrink: 0;
+  margin-left: -0.25rem;
+}
