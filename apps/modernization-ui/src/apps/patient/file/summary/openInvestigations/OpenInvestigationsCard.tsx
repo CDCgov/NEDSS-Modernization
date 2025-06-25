@@ -36,7 +36,8 @@ const columns: Column<PatientInvestigation>[] = [
     {
         ...START_DATE,
         sortable: true,
-        value: (value) => value.startedOn
+        value: (value) => value.startedOn,
+        sortIconType: 'numeric'
     },
     {
         ...CONDITION,
