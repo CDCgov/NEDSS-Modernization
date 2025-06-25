@@ -72,11 +72,4 @@ describe('when entering text values', () => {
         expect(onChange).toHaveBeenCalledWith();
         expect(onClear).toHaveBeenCalled();
     });
-
-    it('should set aria-required="true" when required is true', () => {
-        const onChange = () => {};
-        const { getByRole } = render(<Fixture value={'given value'} clearable onChange={onChange} required />);
-        const input = getByRole('textbox', { name: 'Text input test' });
-        expect(input).toHaveAttribute('aria-required', 'true');
-    });
 });

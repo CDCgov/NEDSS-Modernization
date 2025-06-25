@@ -62,7 +62,6 @@ const TextInput = ({
                 onBlur={onBlur}
                 placeholder={placeholder}
                 value={current}
-                aria-required={props.required}
                 {...props}
             />
             {clearable && current && (

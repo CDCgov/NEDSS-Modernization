@@ -2,9 +2,9 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
 import { useConceptOptions } from 'options/concepts';
-import { Input } from 'components/FormInputs/Input';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
+import { TextInputField } from 'design-system/input/text/TextInputField';
 
 export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -36,12 +36,12 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
                         required: { value: true, message: 'ID number is required' }
                     }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                        <Input
+                        <TextInputField
                             id={name}
                             sizing={sizing}
                             orientation={orientation}
                             type="text"
-                            defaultValue={value}
+                            value={value}
                             onBlur={onBlur}
                             onChange={onChange}
                             name={name}
