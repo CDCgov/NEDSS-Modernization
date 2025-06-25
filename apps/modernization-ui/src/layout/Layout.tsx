@@ -1,24 +1,21 @@
 import { Outlet } from 'react-router';
-import { ApolloWrapper } from 'providers/ApolloContext';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { NavBar } from 'shared/header/NavBar';
 import { ScrollToTop } from './ScrollToTop';
-import { AlertProvider } from 'alert/useAlert';
+import { AlertProvider } from 'libs/alert';
 import { PageProvider } from 'page';
 
 const Layout = () => {
     return (
-        <ApolloWrapper>
+        <SkipLinkProvider>
             <ScrollToTop />
             <AlertProvider>
-                <SkipLinkProvider>
-                    <PageProvider>
-                        <NavBar />
-                        <Outlet />
-                    </PageProvider>
-                </SkipLinkProvider>
+                <PageProvider>
+                    <NavBar />
+                    <Outlet />
+                </PageProvider>
             </AlertProvider>
-        </ApolloWrapper>
+        </SkipLinkProvider>
     );
 };
 

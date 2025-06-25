@@ -1,6 +1,7 @@
+import { ReactNode } from 'react';
 import sprite from '@uswds/uswds/img/sprite.svg';
 import classNames from 'classnames';
-import { ReactNode } from 'react';
+import { resolveIcon } from './resolveIcon';
 import styles from './message.module.scss';
 
 type Type = 'information' | 'success' | 'warning' | 'error';
@@ -32,17 +33,5 @@ const Message = ({ type, children }: MessageProps) => {
     );
 };
 
-const resolveIcon = (type: Type) => {
-    if (type == 'information') {
-        return 'info';
-    } else if (type == 'success') {
-        return 'check_circle';
-    } else if (type == 'warning') {
-        return 'warning';
-    } else if (type == 'error') {
-        return 'error';
-    }
-};
-
-export { Message, resolveIcon };
+export { Message };
 export type { Type };
