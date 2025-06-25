@@ -24,7 +24,7 @@ const TextInputField = ({
             required={required}
             error={error}
             warning={warning}>
-            <TextInput id={id} {...remaining} />
+            <TextInput id={id} required={required} {...remaining} />
         </Field>
     );
 };

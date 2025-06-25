@@ -37,6 +37,7 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
                     }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
+                            id={name}
                             sizing={sizing}
                             orientation={orientation}
                             type="text"
