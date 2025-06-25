@@ -20,7 +20,7 @@ const columns: Column<IdentificationDemographic>[] = [
     {
         id: 'identification-type',
         name: 'Type',
-        className: styles['coded-header'],
+        className: styles.typeWidth,
         sortable: true,
         sortIconType: 'default',
         value: (v) => v.type?.name
@@ -28,7 +28,7 @@ const columns: Column<IdentificationDemographic>[] = [
     {
         id: 'identification-issuer',
         name: 'Assigning authority',
-        className: styles['coded-header'],
+        className: styles['text-header'],
         sortable: true,
         sortIconType: 'default',
         value: (v) => v.issuer?.name
@@ -36,7 +36,7 @@ const columns: Column<IdentificationDemographic>[] = [
     {
         id: 'identification-value',
         name: 'ID value',
-        className: styles['text-header'],
+        className: styles.valueWidth,
         sortable: true,
         sortIconType: 'default',
         value: (v) => v.value

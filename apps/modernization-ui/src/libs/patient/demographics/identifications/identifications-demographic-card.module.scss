@@ -1,1 +1,10 @@
 @use 'design-system/table/header/widths';
+
+.typeWidth {
+    min-width: 6rem;
+    max-width: 12rem;
+}
+
+.valueWidth {
+    min-width: 8rem;
+}
