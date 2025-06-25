@@ -1,5 +1,0 @@
-mutation updatePatientBirthAndGender($input: UpdateBirthAndGenderInput!){
-    updatePatientBirthAndGender(input: $input){
-        patient
-    }
-}

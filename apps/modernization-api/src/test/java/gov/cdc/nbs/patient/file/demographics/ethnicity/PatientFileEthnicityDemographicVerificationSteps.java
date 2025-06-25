@@ -18,7 +18,7 @@ public class PatientFileEthnicityDemographicVerificationSteps {
     this.response = response;
   }
 
-  @Then("the patient file ethnicity demographics is as of {localDate}")
+  @Then("the patient file ethnicity demographics are as of {localDate}")
   public void hasAsOf(final LocalDate asOf) throws Exception {
     this.response.active()
         .andExpect(jsonPath("$.asOf").value(asOf.toString()));
