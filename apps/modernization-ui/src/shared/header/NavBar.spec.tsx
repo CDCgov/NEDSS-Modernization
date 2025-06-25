@@ -1,13 +1,9 @@
 import { usePage } from 'page';
-import NavBar from './NavBar';
+import { NavBar } from './NavBar';
 import { render } from '@testing-library/react';
 
 jest.mock('page', () => ({
     usePage: jest.fn()
-}));
-
-jest.mock('react-router', () => ({
-    useLocation: jest.fn()
 }));
 
 describe('NavBar component tests', () => {
