@@ -8,14 +8,13 @@ export const BackToTopButton = () => {
     };
 
     return (
-        <div className={styles.button}>
-            <Button
-                sizing={'small'}
-                secondary={true}
-                icon={<Icon name="arrow_upward" sizing="small" aria-label="Back to top icon" className={styles.icon} />}
-                onClick={handleClick}>
-                Back to top
-            </Button>
-        </div>
+        <Button
+            sizing="small"
+            secondary
+            icon={<Icon name="arrow_upward" aria-label="Back to top icon" />}
+            className={styles.button}
+            onClick={handleClick}>
+            Back to top
+        </Button>
     );
 };
