@@ -53,21 +53,20 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
             ...EVENT_ID,
             sortable: true,
             value: (value) => value.eventId,
-            render: (value: PatientLabReport) => (
-                <a href={`/nbs/api/profile/${patient}/report/lab/${value.id}`}>{value.eventId}</a>
-            )
+            render: (value) => <a href={`/nbs/api/profile/${patient}/report/lab/${value.id}`}>{value.eventId}</a>
         },
         {
             ...DATE_RECEIVED,
             sortable: true,
             value: (value) => value.receivedDate,
-            render: (value: PatientLabReport) => internalizeDateTime(value.receivedDate)
+            render: (value) => internalizeDateTime(value.receivedDate),
+            sortIconType: 'numeric'
         },
         {
             ...FACILITY_PROVIDER,
             sortable: true,
             value: (value) => value.reportingFacility,
-            render: (value: PatientLabReport) =>
+            render: (value) =>
                 renderFacilityProvider(
                     value.reportingFacility,
                     value.orderingProvider,
@@ -79,7 +78,8 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
             ...DATE_COLLECTED,
             sortable: true,
             value: (value) => value.collectedDate,
-            render: (value: PatientLabReport) => internalizeDate(value.collectedDate)
+            render: (value) => internalizeDate(value.collectedDate),
+            sortIconType: 'numeric'
         },
         {
             ...TEST_RESULTS,
@@ -90,7 +90,7 @@ const LabReportsCard = ({ patient }: LabReportsCardProps) => {
             ...ASSOCIATED_WITH,
             sortable: true,
             value: (value) => value.associatedInvestigation?.id,
-            render: (value: PatientLabReport) =>
+            render: (value) =>
                 value.associatedInvestigation && (
                     <div>
                         <a href={`/nbs/api/profile/${patient}/investigation/${value.associatedInvestigation.id}`}>
