@@ -5,6 +5,39 @@ import { removeTerm, Term } from 'apps/search/terms';
 
 type Settings<C extends FieldValues, A, R> = { form: UseFormReturn<C> } & SearchResultSettings<C, A, R>;
 
+/**
+ * A custom React hook that adapts search result interactions to work with react-hook-form.
+ *
+ * This hook bridges the form state management from `react-hook-form` with the search result
+ * interaction logic provided by `useSearchResults`. It ensures that form state is synchronized
+ * with search status changes (such as resetting or initializing), and provides convenient
+ * handlers for searching, clearing, and removing search terms.
+ *
+ * @template C - The type of the form values.
+ * @template A - The type of the search action.
+ * @template R - The type of the search result.
+ *
+ * @param {Settings<C, A, R>} params - The settings object containing the form instance and search result settings.
+ * @param {UseFormReturn<C>} params.form - The react-hook-form instance for managing form state.
+ * @param {SearchResultSettings<C, A, R>} params - Additional settings for search result interaction.
+ *
+ * @returns {SearchInteraction<R>} An object containing the search interaction state and handlers:
+ * - `status`: The current status of the search interaction.
+ * - `results`: The current search results.
+ * - `enabled`: Whether the form is valid and search is enabled.
+ * - `search`: Handler to submit the search.
+ * - `without`: Handler to remove a specific search term and re-execute the search.
+ * - `clear`: Handler to clear all search terms and reset the search.
+ *
+ * @example
+ * const { status, results, enabled, search, without, clear } = useSearchResultsFormAdapter({
+ *   form,
+ *   defaultValues,
+ *   transformer,
+ *   resultResolver,
+ *   termResolver
+ * });
+ */
 const useSearchResultsFormAdapter = <C extends object, A extends object, R extends object>({
     form,
     ...settings
