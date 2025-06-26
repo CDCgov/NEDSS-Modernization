@@ -12,12 +12,13 @@ type Props = {
     children: ReactNode;
     view: View;
     total: number;
+    filteredTotal?: number;
     terms: Term[];
     loading?: boolean;
     sizing?: Sizing;
 };
 
-const SearchResults = ({ children, total, view, terms, loading = false, sizing }: Props) => {
+const SearchResults = ({ children, total, filteredTotal, view, terms, loading = false, sizing }: Props) => {
     const [contentHeight, setContentHeight] = useState<string>('auto');
     const headerRef = useRef<HTMLDivElement>(null);
     const paginationRef = useRef<HTMLDivElement>(null);
@@ -44,7 +45,7 @@ const SearchResults = ({ children, total, view, terms, loading = false, sizing }
     return (
         <div className={styles.results}>
             <div ref={headerRef}>
-                <SearchResultsHeader sizing={sizing} view={view} total={total} terms={terms} />
+                <SearchResultsHeader sizing={sizing} view={view} total={total} filteredTotal={filteredTotal} terms={terms} />
             </div>
             <main style={{ height: contentHeight }}>
                 <LoadingPanel loading={loading} className={styles.loader}>

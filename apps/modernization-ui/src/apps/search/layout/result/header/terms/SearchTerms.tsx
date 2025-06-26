@@ -8,13 +8,21 @@ import { SkipLink } from 'SkipLink';
 
 type Props = {
     total: number;
+    filteredTotal?: number;
     terms: Term[];
 };
 
-const SearchTerms = ({ total, terms }: Props) => {
-    const resultsText = pluralize('Result', total);
-    const verbText = pluralize('has', total, 'have');
-    const ariaLabel = `${total} ${resultsText} ${verbText} been found`;
+/**
+ * Renders the search terms with the total number of results and individual terms.
+ * If filteredTotal is provided, displays "Tf of T results for:".
+ */
+const SearchTerms = ({ total, filteredTotal, terms }: Props) => {
+    const resultsText = pluralize('Result', filteredTotal ?? total);
+    const verbText = pluralize('has', filteredTotal ?? total, 'have');
+    const ariaLabel =
+        filteredTotal !== undefined
+            ? `${filteredTotal} of ${total} ${resultsText} ${verbText} been found`
+            : `${total} ${resultsText} ${verbText} been found`;
 
     const { without } = useSearchInteraction();
 
@@ -23,7 +31,9 @@ const SearchTerms = ({ total, terms }: Props) => {
             <SkipLink id="resultsCount" autoFocus />
             <div className={styles.term}>
                 <h2>
-                    {total} {resultsText.toLowerCase()} for:
+                    {filteredTotal !== undefined
+                        ? `${filteredTotal} of ${total} found:`
+                        : `${total} ${resultsText.toLowerCase()} for:`}
                 </h2>
                 {terms.map((term, index) => (
                     <Chip
