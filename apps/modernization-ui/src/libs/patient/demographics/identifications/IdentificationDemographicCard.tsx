@@ -4,6 +4,8 @@ import { internalizeDate } from 'date';
 import styles from './identifications-demographic-card.module.scss';
 import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
 import { SortHandler, SortingProvider } from 'libs/sorting';
+import { IdentificationDemographicView } from './IdentificationDemographicView';
+import { IdentificationDemographicFields } from './IdentificationDemographicFields';
 
 const defaultValue: Partial<IdentificationDemographic> = initial();
 
@@ -22,7 +24,7 @@ const columns: Column<IdentificationDemographic>[] = [
         name: 'Type',
         className: styles.typeWidth,
         sortable: true,
-        sortIconType: 'default',
+        sortIconType: 'alpha',
         value: (v) => v.type?.name
     },
     {
@@ -30,7 +32,7 @@ const columns: Column<IdentificationDemographic>[] = [
         name: 'Assigning authority',
         className: styles['text-header'],
         sortable: true,
-        sortIconType: 'default',
+        sortIconType: 'alpha',
         value: (v) => v.issuer?.name
     },
     {
@@ -38,7 +40,7 @@ const columns: Column<IdentificationDemographic>[] = [
         name: 'ID value',
         className: styles.valueWidth,
         sortable: true,
-        sortIconType: 'default',
+        sortIconType: 'alpha',
         value: (v) => v.value
     }
 ];
@@ -58,6 +60,9 @@ const IdentificationDemographicCard = ({
     data = [],
     ...remaining
 }: IdentificationDemographicCardProps) => {
+    const renderView = (entry: IdentificationDemographic) => <IdentificationDemographicView entry={entry} />;
+    const renderForm = () => <IdentificationDemographicFields />;
+
     return (
         <SortingProvider appendToUrl={false}>
             {(sorting) => (
@@ -73,6 +78,8 @@ const IdentificationDemographicCard = ({
                             defaultValues={defaultValue}
                             editable={false}
                             viewable={false}
+                            viewRenderer={renderView}
+                            formRenderer={renderForm}
                             collapsible
                         />
                     )}

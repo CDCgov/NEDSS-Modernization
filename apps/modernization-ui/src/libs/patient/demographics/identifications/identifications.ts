@@ -3,7 +3,7 @@ import { Selectable } from 'options/selectable';
 
 type IdentificationDemographic = {
     identifier: number;
-    asOf?: string;
+    asOf: string;
     type?: Selectable;
     issuer?: Selectable;
     value?: string;
