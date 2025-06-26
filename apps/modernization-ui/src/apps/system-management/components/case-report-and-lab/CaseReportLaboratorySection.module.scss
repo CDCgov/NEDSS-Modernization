@@ -8,13 +8,12 @@
   font-size: 0.875rem;
 
   a {
-    color: colors.$primary;
     cursor: pointer;
   }
 
   .groupTitle {
     font-weight: bold;
-    color: black;
+    color: colors.$base-black;
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
     font-size: 1rem;
@@ -34,6 +33,5 @@
 }
 
 .card {
-  margin-left: 1rem;
   width: 28.625rem;
 }
