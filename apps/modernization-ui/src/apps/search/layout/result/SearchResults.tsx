@@ -45,7 +45,13 @@ const SearchResults = ({ children, total, filteredTotal, view, terms, loading = 
     return (
         <div className={styles.results}>
             <div ref={headerRef}>
-                <SearchResultsHeader sizing={sizing} view={view} total={total} filteredTotal={filteredTotal} terms={terms} />
+                <SearchResultsHeader
+                    sizing={sizing}
+                    view={view}
+                    total={total}
+                    filteredTotal={filteredTotal}
+                    terms={terms}
+                />
             </div>
             <main style={{ height: contentHeight }}>
                 <LoadingPanel loading={loading} className={styles.loader}>

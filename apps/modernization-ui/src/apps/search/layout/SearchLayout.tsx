@@ -100,7 +100,12 @@ const SearchLayout = <R,>({
                         </SearchResults>
                     </Shown>
                     <Shown when={status === 'no-input'}>
-                        <SearchResults sizing={sizing} view={view} total={total} filteredTotal={filteredTotal} terms={terms}>
+                        <SearchResults
+                            sizing={sizing}
+                            view={view}
+                            total={total}
+                            filteredTotal={filteredTotal}
+                            terms={terms}>
                             {noInput()}
                         </SearchResults>
                     </Shown>
