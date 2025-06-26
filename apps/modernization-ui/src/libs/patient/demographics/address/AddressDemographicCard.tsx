@@ -1,7 +1,107 @@
-import { RepeatingBlockProps } from 'design-system/entry/multi-value';
+import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
+import { AddressDemographic, initial } from './address';
+import { SortHandler, SortingProvider } from 'libs/sorting';
+import { Column, columnSortResolver } from 'design-system/table';
+import styles from './address-demographics-card.module.scss';
+import { internalizeDate } from 'date';
+import { AddressDemographicView } from './AddressDemographicView';
+import { AddressDemographicFields } from './AddressDemographicFields';
+
+const columns: Column<AddressDemographic>[] = [
+    {
+        id: 'address-as-of',
+        name: 'As of',
+        className: styles['date-header'],
+        sortable: true,
+        sortIconType: 'default',
+        value: (v) => v.asOf,
+        render: (v) => internalizeDate(v.asOf)
+    },
+    {
+        id: 'address-type',
+        name: 'Type',
+        className: styles.typeWidth,
+        sortable: true,
+        sortIconType: 'default',
+        value: (v) => v.type.name
+    },
+    {
+        id: 'address-address',
+        name: 'Address',
+        className: styles['text-header'],
+        sortable: true,
+        sortIconType: 'default',
+        value: (v) => v.address1
+    },
+    {
+        id: 'address-city',
+        name: 'City',
+        className: styles['text-header'],
+        sortable: true,
+        sortIconType: 'default',
+        value: (v) => v.city
+    },
+    {
+        id: 'address-state',
+        name: 'State',
+        className: styles['text-header'],
+        sortable: true,
+        sortIconType: 'default',
+        value: (v) => v.state?.name
+    },
+    {
+        id: 'address-zip',
+        name: 'Zip',
+        className: styles['coded-header'],
+        sortable: true,
+        sortIconType: 'default',
+        value: (v) => v.zipcode
+    }
+];
 
 type AddressDemographicCardProps = {
     title?: string;
-} & Omit<RepeatingBlockProps<>, 'columns' | 'formRenderer' | 'viewRenderer' | 'defaultValues' | 'title'>;
+} & Omit<
+    RepeatingBlockProps<AddressDemographic>,
+    'columns' | 'formRenderer' | 'viewRenderer' | 'defaultValues' | 'title'
+>;
 
-const AddressDemographicCard = () => {};
+const sortResolver = columnSortResolver(columns);
+
+const defaultValue = initial();
+
+const AddressDemographicCard = ({
+    title = 'Address',
+    sizing,
+    data = [],
+    ...remaining
+}: AddressDemographicCardProps) => {
+    const renderForm = () => <AddressDemographicFields />;
+    const renderView = (value: AddressDemographic) => <AddressDemographicView entry={value} />;
+
+    return (
+        <SortingProvider appendToUrl={false}>
+            {(sorting) => (
+                <SortHandler sorting={sorting} resolver={sortResolver} data={data}>
+                    {({ sorting, sorted }) => (
+                        <RepeatingBlock<AddressDemographic>
+                            {...remaining}
+                            title={title}
+                            sizing={sizing}
+                            columns={columns}
+                            data={sorted}
+                            editable={false}
+                            features={{ sorting }}
+                            viewRenderer={renderView}
+                            formRenderer={renderForm}
+                            defaultValues={defaultValue}
+                            collapsible
+                        />
+                    )}
+                </SortHandler>
+            )}
+        </SortingProvider>
+    );
+};
+
+export { AddressDemographicCard };

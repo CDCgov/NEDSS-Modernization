@@ -1,15 +1,36 @@
+import { today } from 'date';
+import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 
-type address = EffectiveDated & {
-    type?: string;
-    use?: string;
+type AddressDemographic = EffectiveDated & {
+    type: Selectable;
+    use: Selectable;
     address1?: string;
     address2?: string;
     city?: string;
-    state?: string;
+    state?: Selectable;
     zipcode?: string;
-    county?: string;
+    county?: Selectable;
     censusTract?: string;
-    country?: string;
+    country?: Selectable;
     comment?: string;
 };
+
+export type { AddressDemographic };
+
+const initial = (asOf: string = today()): Partial<AddressDemographic> => ({
+    asOf,
+    type: undefined,
+    use: undefined,
+    address1: undefined,
+    address2: undefined,
+    city: undefined,
+    state: undefined,
+    zipcode: undefined,
+    county: undefined,
+    country: undefined,
+    censusTract: undefined,
+    comment: undefined
+});
+
+export { initial };
