@@ -1,5 +1,0 @@
-mutation deletePatientRace($input: DeletePatientRace!){
-    deletePatientRace(input: $input){
-        patient
-    }
-}

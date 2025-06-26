@@ -8,6 +8,11 @@
 
     .toggle {
         color: colors.$base-darkest;
+        transition: 0.25s ease-out;
+
+        &.collapsed {
+            transform: rotate(-180deg);
+        }
     }
 
     & > footer:not(:empty) {

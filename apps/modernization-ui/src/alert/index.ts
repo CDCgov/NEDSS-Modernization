@@ -1,1 +1,1 @@
-export { useAlert, AlertProvider } from './useAlert';
+export { useAlert, AlertProvider } from 'libs/alert';

@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router';
+import { ApolloWrapper } from 'providers/ApolloContext';
 import { SearchPage } from './SearchPage';
 import { PatientSearch } from './patient/PatientSearch';
 import { LaboratoryReportSearch } from './laboratory-report';
@@ -8,7 +9,11 @@ import { SimpleSearch } from './simple';
 const routing = [
     {
         path: 'search',
-        element: <SearchPage />,
+        element: (
+            <ApolloWrapper>
+                <SearchPage />
+            </ApolloWrapper>
+        ),
         children: [
             { index: true, element: <Navigate to="patients" /> },
             {

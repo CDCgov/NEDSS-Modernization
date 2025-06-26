@@ -1,5 +1,5 @@
 import { Button, Form } from '@trussworks/react-uswds';
-import { useAlert } from 'alert/useAlert';
+import { useAlert } from 'libs/alert';
 import {
     PageStaticControllerService,
     PagesQuestion,

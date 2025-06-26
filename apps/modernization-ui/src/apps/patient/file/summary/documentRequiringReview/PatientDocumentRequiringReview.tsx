@@ -56,6 +56,7 @@ const columns: Column<DocumentRequiringReview>[] = [
     {
         ...DATE_RECEIVED,
         sortable: true,
+        sortIconType: 'numeric',
         value: (value) => value.dateReceived,
         render: (value) => renderDateReceived(value.dateReceived)
     },
@@ -67,6 +68,7 @@ const columns: Column<DocumentRequiringReview>[] = [
     {
         ...EVENT_DATE,
         sortable: true,
+        sortIconType: 'numeric',
         value: (value) => value.eventDate,
         render: (value) => renderEventDate(value.eventDate)
     },

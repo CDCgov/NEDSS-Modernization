@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useMemo } from 'react';
-import { DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
+import { DefaultValues, FieldValues, FormProvider, useForm, UseFormReturn } from 'react-hook-form';
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
@@ -10,7 +10,7 @@ import { Tag } from 'design-system/tag';
 import { AlertMessage } from 'design-system/message';
 import { Column, DataTable, DataTableFeatures } from 'design-system/table';
 import { Required } from '../required/Required';
-import { Entry, useMultiValueEntry } from './useMultiValueEntry';
+import { Entry, MultiValueEntryInteraction, useMultiValueEntry } from './useMultiValueEntry';
 import { entryIdentifierGenerator } from './entryIdentifierGenerator';
 import { entryColumns } from './entryColumns';
 
@@ -20,16 +20,18 @@ type RepeatingBlockProps<V extends FieldValues> = {
     features?: DataTableFeatures;
     columns: Column<V>[];
     data?: V[];
+    sizing?: Sizing;
+    // view properties
+    viewable?: boolean;
+    viewRenderer: (entry: V, sizing?: Sizing) => ReactNode;
+    // edit properties
+    editable?: boolean;
     defaultValues?: DefaultValues<V>; // Provide all default values to allow `isDirty` to function
     errors?: ReactNode[];
-    sizing?: Sizing;
-    viewable?: boolean;
-    editable?: boolean;
     onChange?: (data: V[]) => void;
     isDirty?: (isDirty: boolean) => void;
     isValid?: (isValid: boolean) => void;
-    formRenderer?: (entry?: V) => ReactNode;
-    viewRenderer?: (entry: V) => ReactNode;
+    formRenderer: (entry?: V, sizing?: Sizing) => ReactNode;
 } & Pick<CardProps, 'id' | 'title' | 'collapsible'>;
 
 const RepeatingBlock = <V extends FieldValues>({
@@ -40,7 +42,7 @@ const RepeatingBlock = <V extends FieldValues>({
     columns,
     data = [],
     defaultValues,
-    errors,
+    errors = [],
     sizing,
     viewable = true,
     editable = true,
@@ -52,7 +54,7 @@ const RepeatingBlock = <V extends FieldValues>({
 }: RepeatingBlockProps<V>) => {
     const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onBlur', defaultValues });
 
-    const { status, entries, selected, using, add, edit, update, remove, view, reset } = useMultiValueEntry<V>({
+    const interaction = useMultiValueEntry<V>({
         values: data,
         identifierGenerator: entryIdentifierGenerator,
         onChange
@@ -60,7 +62,7 @@ const RepeatingBlock = <V extends FieldValues>({
 
     useEffect(() => {
         // if the data changes use the new values
-        using(data);
+        interaction.using(data);
     }, [JSON.stringify(data)]);
 
     useEffect(() => {
@@ -75,41 +77,13 @@ const RepeatingBlock = <V extends FieldValues>({
     useEffect(() => {
         // Perform form reset after status update to allow time for rendering of form
         // fixes issue with coded values not being selected within the form
-        if (status === 'editing' && selected) {
-            form.reset(selected.value);
+        if (interaction.status === 'editing' && interaction.selected) {
+            form.reset(interaction.selected.value);
         } else {
             // Conversely, if status is not editing, reset to default values to clear form between state changes
             form.reset(defaultValues);
         }
-    }, [status, selected, form.reset]);
-
-    const handleReset = () => {
-        form.reset(defaultValues);
-        reset();
-    };
-
-    const handleClear = () => {
-        form.reset(defaultValues);
-    };
-
-    const handleAdd = (value: V) => {
-        // form reset must be triggered prior to `add` call,
-        // otherwise internal form state retains some values and fails to properly reset
-        form.reset(defaultValues);
-        add(value);
-    };
-
-    const handleUpdate = (value: V) => {
-        form.reset(defaultValues);
-        update(value);
-    };
-
-    const handleRemove = (identifier: string) => {
-        if ((status === 'editing' || status === 'viewing') && selected?.id === identifier) {
-            form.reset(defaultValues);
-        }
-        remove(identifier);
-    };
+    }, [interaction.status, interaction.selected?.value, form.reset]);
 
     const adjustedColumns = entryColumns(columns);
 
@@ -117,58 +91,22 @@ const RepeatingBlock = <V extends FieldValues>({
         id: 'actions',
         label: 'Actions',
         className: styles['action-header'],
-        render: (entry: Entry<V>) => (
-            <div className={styles.actions}>
-                {viewable && (
-                    <Button
-                        tertiary
-                        data-tooltip-position="top"
-                        aria-label="View"
-                        onClick={() => view(entry.id)}
-                        className={classNames({
-                            [styles.active]: status === 'viewing' && selected?.id === entry.id
-                        })}
-                        icon={<Icon name="visibility" />}
-                    />
-                )}
-                {editable && (
-                    <>
-                        <Button
-                            tertiary
-                            data-tooltip-position="top"
-                            aria-label="Edit"
-                            onClick={() => edit(entry.id)}
-                            className={classNames({
-                                [styles.active]: status === 'editing' && selected?.id === entry.id
-                            })}
-                            icon={<Icon name="edit" />}
-                        />
-                        <Button
-                            tertiary
-                            data-tooltip-position="top"
-                            aria-label="Delete"
-                            onClick={() => handleRemove(entry.id)}
-                            icon={<Icon name="delete" />}
-                        />
-                    </>
-                )}
-            </div>
-        )
+        render: renderActionColumn({ sizing, interaction, viewable, editable, form, defaultValues })
     };
 
     // Combine error message prop and internal form error messages into an array for display in the banner
     const errorMessages = useMemo<ReactNode[]>(() => {
         const formErrorMessages = Object.values(form.formState.errors).map((error) => error?.message?.toString());
-        const messages: ReactNode[] = [...(errors ?? []), ...formErrorMessages];
+        const messages: ReactNode[] = [...errors, ...formErrorMessages];
 
         return messages.filter((a) => a != undefined);
     }, [JSON.stringify(form.formState.errors), errors]);
 
     useEffect(() => {
-        isValid?.(!errorMessages || errorMessages.length === 0);
-    }, [errorMessages]);
+        isValid?.(errorMessages.length === 0);
+    }, [errorMessages.length]);
 
-    const opened = collapsible ? entries.length > 0 : true;
+    const opened = collapsible ? interaction.entries.length > 0 : true;
 
     return (
         <Card
@@ -176,60 +114,23 @@ const RepeatingBlock = <V extends FieldValues>({
             title={title}
             collapsible={collapsible}
             sizing={sizing}
-            flair={<Tag size={sizing}>{entries.length}</Tag>}
+            flair={<Tag size={sizing}>{interaction.entries.length}</Tag>}
             className={classNames(styles.card)}
             info={editable && <Required />}
             open={opened}
             footer={
-                <Shown when={editable}>
-                    <span
-                        className={classNames(styles.controls, {
-                            [styles.small]: sizing === 'small',
-                            [styles.medium]: sizing === 'medium',
-                            [styles.large]: sizing === 'large'
-                        })}>
-                        <Shown when={status === 'adding'}>
-                            <Button
-                                secondary
-                                icon={<Icon name="add" />}
-                                sizing={sizing}
-                                aria-description={`add ${title.toLowerCase()}`}
-                                onClick={form.handleSubmit(handleAdd)}>
-                                {`Add ${title.toLowerCase()}`}
-                            </Button>
-                            <Shown when={form.formState.isDirty || errorMessages.length !== 0}>
-                                <Button
-                                    secondary
-                                    sizing={sizing}
-                                    aria-description={`clear ${title.toLowerCase()}`}
-                                    onClick={handleClear}
-                                    onMouseDown={
-                                        (e) => e.preventDefault() /* prevent need to double click after blur */
-                                    }>
-                                    Clear
-                                </Button>
-                            </Shown>
-                        </Shown>
-                        <Shown when={status === 'editing'}>
-                            <Button
-                                secondary
-                                sizing={sizing}
-                                aria-description={`update ${title.toLowerCase()}`}
-                                onClick={form.handleSubmit(handleUpdate)}>
-                                {`Update ${title.toLowerCase()}`}
-                            </Button>
-                            <Button
-                                secondary
-                                sizing={sizing}
-                                aria-description={`cancel editing current ${title.toLowerCase()}`}
-                                onClick={handleReset}>
-                                Cancel
-                            </Button>
-                        </Shown>
-                    </span>
+                <Shown when={editable && interaction.status !== 'viewing'}>
+                    <EditFooter
+                        title={title}
+                        sizing={sizing}
+                        form={form}
+                        interaction={interaction}
+                        defaultValues={defaultValues}
+                        clearable={form.formState.isDirty || errorMessages.length !== 0}
+                    />
                 </Shown>
             }>
-            <Shown when={errorMessages && errorMessages.length > 0}>
+            <Shown when={errorMessages.length > 0}>
                 <AlertMessage title="Please fix the following errors:" type="error">
                     <ul className={styles.errorList}>
                         {errorMessages.map((e, i) => (
@@ -246,18 +147,20 @@ const RepeatingBlock = <V extends FieldValues>({
                 })}
                 id={`${id}-table`}
                 columns={[...adjustedColumns, actions]}
-                data={entries}
+                data={interaction.entries}
                 sizing={sizing}
                 features={features}
             />
-            <Shown when={viewable && status === 'viewing'}>
-                {selected && <div className={styles.view}>{viewRenderer?.(selected.value)}</div>}
+            <Shown when={viewable && interaction.status === 'viewing'}>
+                {interaction.selected && (
+                    <div className={styles.view}>{viewRenderer(interaction.selected.value, sizing)}</div>
+                )}
             </Shown>
 
-            <Shown when={editable && status !== 'viewing'}>
+            <Shown when={editable && interaction.status !== 'viewing'}>
                 <FormProvider {...form}>
                     <div className={classNames(styles.form, { [styles.changed]: form.formState.isDirty })}>
-                        {formRenderer?.(selected?.value)}
+                        {formRenderer(interaction.selected?.value, sizing)}
                     </div>
                 </FormProvider>
             </Shown>
@@ -267,3 +170,169 @@ const RepeatingBlock = <V extends FieldValues>({
 
 export { RepeatingBlock };
 export type { RepeatingBlockProps };
+
+type ActionColumnOptions<T extends FieldValues> = {
+    form: UseFormReturn<T>;
+    interaction: MultiValueEntryInteraction<T>;
+    viewable: boolean;
+    editable: boolean;
+    defaultValues?: DefaultValues<T>;
+    sizing?: Sizing;
+};
+
+const renderActionColumn = <E extends FieldValues>({
+    form,
+    defaultValues,
+    interaction,
+    viewable,
+    editable,
+    sizing
+}: ActionColumnOptions<E>) => {
+    const handleRemove = (identifier: string) => {
+        if (interaction.selected?.id === identifier) {
+            // the entry being removed is the one currently selected, reset the form.
+            form.reset(defaultValues);
+        }
+        interaction.remove(identifier);
+    };
+
+    // eslint-disable-next-line react/display-name
+    return (entry: Entry<E>) => (
+        <ActionColumn
+            sizing={sizing}
+            viewable={viewable}
+            onView={() => interaction.view(entry.id)}
+            isViewing={interaction.status === 'viewing' && interaction.selected?.id === entry.id}
+            editable={editable}
+            onEdit={() => interaction.edit(entry.id)}
+            isEditing={interaction.status === 'editing' && interaction.selected?.id === entry.id}
+            onRemove={() => handleRemove(entry.id)}
+        />
+    );
+};
+
+type ActionColumnProps = {
+    sizing?: Sizing;
+    viewable: boolean;
+    onView: () => void;
+    isViewing: boolean;
+    editable: boolean;
+    onEdit: () => void;
+    isEditing: boolean;
+    onRemove: () => void;
+};
+
+const ActionColumn = ({ viewable, onView, isViewing, editable, onEdit, isEditing, onRemove }: ActionColumnProps) => (
+    <div className={styles.actions}>
+        {viewable && (
+            <Button
+                tertiary
+                data-tooltip-position="top"
+                aria-label="View"
+                onClick={onView}
+                aria-pressed={isViewing}
+                icon={<Icon name="visibility" />}
+            />
+        )}
+        {editable && (
+            <>
+                <Button
+                    tertiary
+                    data-tooltip-position="top"
+                    aria-label="Edit"
+                    onClick={onEdit}
+                    aria-pressed={isEditing}
+                    icon={<Icon name="edit" />}
+                />
+                <Button
+                    tertiary
+                    data-tooltip-position="top"
+                    aria-label="Delete"
+                    onClick={onRemove}
+                    icon={<Icon name="delete" />}
+                />
+            </>
+        )}
+    </div>
+);
+
+type EditFooterProps<T extends FieldValues> = {
+    form: UseFormReturn<T>;
+    interaction: MultiValueEntryInteraction<T>;
+    title: string;
+    clearable: boolean;
+    defaultValues?: DefaultValues<T>;
+    sizing?: Sizing;
+};
+
+const EditFooter = <E extends FieldValues>({
+    form,
+    interaction,
+    title,
+    clearable,
+    defaultValues,
+    sizing
+}: EditFooterProps<E>) => {
+    const handleClear = () => {
+        form.reset(defaultValues);
+    };
+
+    const handleAdd = (value: E) => {
+        // form reset must be triggered prior to `add` call,
+        // otherwise internal form state retains some values and fails to properly reset
+        form.reset(defaultValues);
+        interaction.add(value);
+    };
+
+    const handleUpdate = (value: E) => {
+        // set the form values to the updated values sync the pending state
+        form.reset(defaultValues);
+        interaction.update(value);
+    };
+
+    return (
+        <span
+            className={classNames(styles.controls, {
+                [styles.small]: sizing === 'small',
+                [styles.medium]: sizing === 'medium',
+                [styles.large]: sizing === 'large'
+            })}>
+            <Shown when={interaction.status === 'adding'}>
+                <Button
+                    secondary
+                    icon={<Icon name="add" />}
+                    sizing={sizing}
+                    aria-description={`add ${title}`}
+                    onClick={form.handleSubmit(handleAdd)}>
+                    {`Add ${title.toLowerCase()}`}
+                </Button>
+                <Shown when={clearable}>
+                    <Button
+                        secondary
+                        sizing={sizing}
+                        aria-description={`clear ${title}`}
+                        onClick={handleClear}
+                        onMouseDown={(e) => e.preventDefault()}>
+                        Clear
+                    </Button>
+                </Shown>
+            </Shown>
+            <Shown when={interaction.status === 'editing'}>
+                <Button
+                    secondary
+                    sizing={sizing}
+                    aria-description={`update ${title}`}
+                    onClick={form.handleSubmit(handleUpdate)}>
+                    {`Update ${title.toLowerCase()}`}
+                </Button>
+                <Button
+                    secondary
+                    sizing={sizing}
+                    aria-description={`cancel editing current ${title}`}
+                    onClick={interaction.reset}>
+                    Cancel
+                </Button>
+            </Shown>
+        </span>
+    );
+};

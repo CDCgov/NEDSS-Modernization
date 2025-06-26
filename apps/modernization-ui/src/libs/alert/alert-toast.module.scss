@@ -1,0 +1,32 @@
+.toast {
+    position: fixed;
+    top: var(--nav-bar-height, 70px);
+    z-index: 10000;
+    min-width: 41.5rem;
+
+    &.showing {
+        animation: showing 0.25s ease-out forwards;
+    }
+
+    &.leaving {
+        animation: leaving 0.2s ease-in forwards;
+    }
+}
+
+@keyframes showing {
+    from {
+        right: -100%;
+    }
+    to {
+        right: 0;
+    }
+}
+
+@keyframes leaving {
+    to {
+        right: -100%;
+    }
+    from {
+        right: 0;
+    }
+}
