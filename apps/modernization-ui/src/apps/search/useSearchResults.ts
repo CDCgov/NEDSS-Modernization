@@ -27,7 +27,6 @@ type Refetching<A, R> = {
     terms: Term[];
     page: Page;
     results: SearchResults<R>;
-    filter: Filtering;
 };
 
 type Completed<A, R> = {
@@ -55,8 +54,8 @@ type State<C, A, R> =
 type Action<C, A, R> =
     | { type: 'wait' }
     | { type: 'reset' }
-    | { type: 'change-sort'; filter: Filtering }
-    | { type: 'change-filter'; filter: Filtering }
+    | { type: 'change-sort' }
+    | { type: 'change-filter' }
     | ({ type: 'change-page' } & Page)
     | { type: 'initialize'; criteria: C; page: Page }
     | { type: 'request'; criteria: C; page: Page }
@@ -118,8 +117,7 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
                     parameters: current.parameters,
                     terms: current.results.terms,
                     page: { number: action.number, size: action.size },
-                    results: current.results,
-                    filter: current.filter
+                    results: current.results
                 };
             }
             break;
@@ -134,8 +132,7 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
                     parameters: current.parameters,
                     terms: current.results.terms,
                     page,
-                    results: current.results,
-                    filter: action.filter
+                    results: current.results
                 };
             }
             break;
@@ -332,16 +329,15 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     useEffect(() => {
         if (sort?.direction) {
             //  the sorting changing without the criteria changing
-            dispatch({ type: 'change-sort', filter: filter });
+            dispatch({ type: 'change-sort' });
         }
     }, [sort?.direction, sort?.property]);
 
     useEffect(() => {
-        dispatch({ type: 'change-filter', filter: filter });
+        dispatch({ type: 'change-filter' });
     }, [filtering?.filter]);
 
     const handleComplete = (resolved: Resolved<R>) => {
-        console.log('handleComplete', resolved);
         ready(resolved.total, resolved.page);
         // set the current total since we are not filtering
         // when a filter is later applied we can use the value to determine the overall total
@@ -372,15 +368,10 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch]);
     const search = useCallback(
         (criteria: C) => {
-            console.log('search', criteria);
             dispatch({ type: 'request', criteria, page: { number: 1, size: page.pageSize } });
         },
         [dispatch, page.pageSize]
     );
-    if (state.status === 'completed') {
-        console.log('Search completed with results:', state.results);
-    }
-    console.log('status:', state.status, state.status);
 
     return {
         status,
