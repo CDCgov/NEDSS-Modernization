@@ -7,7 +7,7 @@ export const pageLinks = [
     },
     {
         text: 'Manage pages',
-        href: '/page-builder/pages'
+        href: '/nbs/ManagePage.do?method=list&amp;initLoad=true'
     },
     {
         text: 'Manage questions',

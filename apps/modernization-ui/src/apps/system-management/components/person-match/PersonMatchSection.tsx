@@ -16,5 +16,13 @@ type Props = {
 };
 
 export const PersonMatchSection = ({ filter }: Props) => {
-    return <SystemManagementInfoCard id="person-match" title="Person match" filter={filter} links={personMatchLinks} />;
+    return (
+        <SystemManagementInfoCard
+            id="person-match"
+            title="Person match"
+            filter={filter}
+            links={personMatchLinks}
+            useNavigation
+        />
+    );
 };
