@@ -8,4 +8,10 @@ describe('when entering text values for a field', () => {
 
         expect(await axe(container)).toHaveNoViolations();
     });
+
+    it('should set aria-required="true" when required is true', () => {
+        const { getByRole } = render(<TextInputField id={'testing-input'} label={'Test Input test'} required />);
+        const input = getByRole('textbox', { name: 'Test Input test' });
+        expect(input).toHaveAttribute('aria-required', 'true');
+    });
 });

@@ -1,14 +1,15 @@
+import { ReactNode, useId } from 'react';
 import classNames from 'classnames';
 import { Heading } from 'components/heading';
 import { Icon } from 'design-system/icon';
-import { ReactNode, HTMLAttributes } from 'react';
-import { resolveIcon } from '../message/Message';
-import styles from './alert-message.module.scss';
+import { resolveIcon } from 'design-system/message';
 import { Button } from 'design-system/button';
+
+import styles from './alert-message.module.scss';
 
 type Children = ReactNode | ReactNode[];
 
-type Props = {
+type AlertMessageProps = {
     title?: string;
     type: 'information' | 'success' | 'warning' | 'error';
     children: Children;
@@ -16,16 +17,9 @@ type Props = {
     iconless?: boolean;
     slim?: boolean;
     onClose?: () => void;
-} & Omit<HTMLAttributes<HTMLDivElement>, 'className'>;
+} & JSX.IntrinsicElements['div'];
 
-const getDefaultAlertAriaLabel = (title?: string, children?: Children): string | undefined => {
-    if (!title && !children) return undefined;
-
-    const childrenText = typeof children === 'string' ? children : '';
-    return title ? `${title}. ${childrenText}` : childrenText;
-};
-
-export const AlertMessage = ({
+const AlertMessage = ({
     title,
     type,
     children,
@@ -33,21 +27,17 @@ export const AlertMessage = ({
     slim = false,
     iconless = false,
     onClose,
-    'aria-label': ariaLabel,
+    role = 'alert',
     ...props
-}: Props) => {
+}: AlertMessageProps) => {
     const icon = iconless ? undefined : resolveIcon(type);
 
-    const getAriaLabel = (): string | undefined => {
-        if (!title && !ariaLabel) return undefined;
-        if (title && ariaLabel) return `${title}. ${ariaLabel}`;
-        return getDefaultAlertAriaLabel(title, children);
-    };
+    const messageId = useId();
 
     return (
         <div
-            role="alert"
-            aria-label={getAriaLabel()}
+            role={role}
+            aria-describedby={messageId}
             className={classNames(
                 styles.alertMessage,
                 {
@@ -63,7 +53,7 @@ export const AlertMessage = ({
             {icon && <Icon name={icon} sizing={slim ? 'small' : 'medium'} />}
             <div className={styles.content}>
                 {title && <Heading level={2}>{title}</Heading>}
-                {children}
+                <span id={messageId}>{children}</span>
             </div>
             {onClose && (
                 <Button
@@ -79,3 +69,6 @@ export const AlertMessage = ({
         </div>
     );
 };
+
+export { AlertMessage };
+export type { AlertMessageProps };

@@ -10,9 +10,9 @@ const options = [
 
 describe('CheckboxGroup', () => {
     it('should render with no accessibility violations', async () => {
-        const { container } = render(<CheckboxGroup name="test" label="checkbox group label" options={options} />)
-        expect(await axe(container)).toHaveNoViolations()
-    })
+        const { container } = render(<CheckboxGroup name="test" label="checkbox group label" options={options} />);
+        expect(await axe(container)).toHaveNoViolations();
+    });
     it('should render with options', () => {
         const { getByLabelText } = render(<CheckboxGroup name="test" label="checkbox group label" options={options} />);
 
@@ -122,6 +122,24 @@ describe('CheckboxGroup', () => {
                 expect.objectContaining({ value: 'value2' })
             ])
         );
+    });
+
+    it('should set aria-required="true" when required is true', () => {
+        const onChange = () => {};
+        const { getByRole } = render(
+            <CheckboxGroup
+                name="test"
+                label="Testing CheckboxGroup"
+                options={[
+                    { value: 'value1', label: 'label1', name: 'name1' },
+                    { value: 'value2', label: 'label2', name: 'name2' }
+                ]}
+                onChange={onChange}
+                required
+            />
+        );
+        const fieldset = getByRole('group');
+        expect(fieldset).toHaveAttribute('aria-required', 'true');
     });
 
     it('should disable checkboxes', () => {

@@ -1,10 +1,11 @@
 import { ReactNode, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import classNames from 'classnames';
-
-import sprite from '@uswds/uswds/img/sprite.svg';
+import { Button } from 'design-system/button';
 
 import styles from './modal.module.scss';
-import { createPortal } from 'react-dom';
+import { Heading } from 'components/heading';
+import { Icon } from 'design-system/icon';
 
 type Close = () => void;
 
@@ -75,18 +76,16 @@ const Component = ({
                     data-force-action={forceAction}
                     open>
                     <header id={header} className={'usa-modal__heading'}>
-                        <h2>{title}</h2>
+                        <Heading level={2}>{title}</Heading>
                         {!forceAction && (
-                            <svg
-                                tabIndex={0}
-                                role="button"
-                                width={'2rem'}
-                                height={'2rem'}
+                            <Button
+                                className={styles.closer}
+                                tertiary
                                 aria-label={`Close ${title}`}
+                                icon={<Icon name="close" />}
                                 onClick={onClose}
-                                data-close-modal>
-                                <use xlinkHref={`${sprite}#close`}></use>
-                            </svg>
+                                data-close-modal
+                            />
                         )}
                     </header>
                     <div className={'usa-modal__content'}>

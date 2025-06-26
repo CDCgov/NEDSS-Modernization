@@ -110,13 +110,13 @@ describe('MergePreview', () => {
         render(<Fixture />);
 
         expect(screen.getByRole('heading', { name: /merge preview/i })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /back/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Back' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /confirm and merge patient records/i })).toBeInTheDocument();
     });
 
     it('calls onBack when "Back" button is clicked', () => {
         render(<Fixture onBack={mockOnBack} />);
-        fireEvent.click(screen.getByRole('button', { name: /back/i }));
+        fireEvent.click(screen.getByRole('button', { name: 'Back' }));
         expect(mockOnBack).toHaveBeenCalled();
     });
 
