@@ -13,7 +13,7 @@ const columns: Column<AddressDemographic>[] = [
         name: 'As of',
         className: styles['date-header'],
         sortable: true,
-        sortIconType: 'default',
+        sortIconType: 'numeric',
         value: (v) => v.asOf,
         render: (v) => internalizeDate(v.asOf)
     },
@@ -22,7 +22,7 @@ const columns: Column<AddressDemographic>[] = [
         name: 'Type',
         className: styles.typeWidth,
         sortable: true,
-        sortIconType: 'default',
+        sortIconType: 'alpha',
         value: (v) => v.type.name
     },
     {
@@ -30,7 +30,7 @@ const columns: Column<AddressDemographic>[] = [
         name: 'Address',
         className: styles['text-header'],
         sortable: true,
-        sortIconType: 'default',
+        sortIconType: 'alpha',
         value: (v) => v.address1
     },
     {
@@ -38,7 +38,7 @@ const columns: Column<AddressDemographic>[] = [
         name: 'City',
         className: styles['text-header'],
         sortable: true,
-        sortIconType: 'default',
+        sortIconType: 'alpha',
         value: (v) => v.city
     },
     {
@@ -46,7 +46,7 @@ const columns: Column<AddressDemographic>[] = [
         name: 'State',
         className: styles['text-header'],
         sortable: true,
-        sortIconType: 'default',
+        sortIconType: 'alpha',
         value: (v) => v.state?.name
     },
     {
@@ -54,7 +54,7 @@ const columns: Column<AddressDemographic>[] = [
         name: 'Zip',
         className: styles['coded-header'],
         sortable: true,
-        sortIconType: 'default',
+        sortIconType: 'numeric',
         value: (v) => v.zipcode
     }
 ];
