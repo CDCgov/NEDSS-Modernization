@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type AssociatedInvestigation = {
-    id: number;
-    local: string;
-    condition: string;
-    status?: string;
+export type Specimen = {
+    site?: string;
+    source?: string;
 };
 
