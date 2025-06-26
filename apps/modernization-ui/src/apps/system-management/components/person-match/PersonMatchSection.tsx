@@ -1,10 +1,20 @@
 import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
 
+const personMatchLinks = [
+    {
+        text: 'Manage data elements',
+        href: '/deduplication/data_elements'
+    },
+    {
+        text: 'Manage pass configurations',
+        href: '/deduplication/configuration'
+    }
+];
+
 type Props = {
     filter: string;
-    links: { text: string; href: string }[];
 };
 
-export const PersonMatchSection = ({ filter, links }: Props) => {
-    return <SystemManagementInfoCard id="person-match" title="Person match" filter={filter} links={links} />;
+export const PersonMatchSection = ({ filter }: Props) => {
+    return <SystemManagementInfoCard id="person-match" title="Person match" filter={filter} links={personMatchLinks} />;
 };

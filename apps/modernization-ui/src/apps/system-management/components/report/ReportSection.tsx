@@ -1,10 +1,24 @@
 import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
 
+const reportLinks = [
+    {
+        text: 'Manage data sources',
+        href: '/nbs/ListDataSource.do'
+    },
+    {
+        text: 'Manage reports',
+        href: '/nbs/ListReport.do'
+    },
+    {
+        text: 'Manage report sections',
+        href: '/nbs/ListReportSections.do'
+    }
+];
+
 type Props = {
     filter: string;
-    links: { text: string; href: string }[];
 };
 
-export const ReportSection = ({ filter, links }: Props) => {
-    return <SystemManagementInfoCard id="report" title="Report" filter={filter} links={links} />;
+export const ReportSection = ({ filter }: Props) => {
+    return <SystemManagementInfoCard id="report" title="Report" filter={filter} links={reportLinks} />;
 };

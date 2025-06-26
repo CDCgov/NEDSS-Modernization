@@ -3,16 +3,14 @@ import { Card } from 'design-system/card/Card';
 import { Button } from 'design-system/button';
 import { Confirmation } from 'design-system/modal/Confirmation';
 import styles from './CaseReportLaboratorySection.module.scss';
-
-type LinkItem = { text: string; href: string } | { group: string };
+import { caseReportLinks } from './caseLinks';
 
 type Props = {
     filter: string;
     setAlert: (alert: { type: 'success' | 'error'; message: string } | null) => void;
-    links: LinkItem[];
 };
 
-export const CaseReportLaboratorySection = ({ filter, setAlert, links }: Props) => {
+export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
     const [showConfirm, setShowConfirm] = useState(false);
 
     const handleResetClick = () => {
@@ -43,7 +41,7 @@ export const CaseReportLaboratorySection = ({ filter, setAlert, links }: Props) 
     };
 
     const normalizedFilter = filter.trim().toLowerCase();
-    const filteredLinks = links.filter((item) => {
+    const filteredLinks = caseReportLinks.filter((item) => {
         if ('text' in item && item.text) {
             return item.text.toLowerCase().includes(normalizedFilter);
         }
@@ -87,18 +85,21 @@ export const CaseReportLaboratorySection = ({ filter, setAlert, links }: Props) 
                 )}
 
                 {/* Render all groups */}
-                {grouped.slice(grouped[0]?.title === undefined ? 1 : 0).map((group, i) => (
-                    <div key={i}>
-                        {group.title && <div className={styles.groupTitle}>{group.title}</div>}
-                        <div className={styles.subGroup}>
-                            {group.links.map((link) => (
-                                <a key={link.href} href={link.href}>
-                                    {link.text}
-                                </a>
-                            ))}
+                {grouped.slice(grouped[0]?.title === undefined ? 1 : 0).map((group) => {
+                    const groupKey = group.title ?? group.links.map((l) => l.href).join('-');
+                    return (
+                        <div key={groupKey}>
+                            {group.title && <div className={styles.groupTitle}>{group.title}</div>}
+                            <div className={styles.subGroup}>
+                                {group.links.map((link) => (
+                                    <a key={link.href} href={link.href}>
+                                        {link.text}
+                                    </a>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
 
                 <Button secondary sizing="small" onClick={handleResetClick}>
                     Reset lab mapping cache

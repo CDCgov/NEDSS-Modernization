@@ -11,14 +11,6 @@ import { PageSection } from '../components/page/PageSection';
 import { PersonMatchSection } from '../components/person-match/PersonMatchSection';
 import { ReportSection } from '../components/report/ReportSection';
 import { SecuritySection } from '../components/security/SecuritySection';
-import { caseReportLinks } from '../shared/caseLinks';
-import { decisionSupportLinks } from '../shared/decisionSupportLinks';
-import { epiLinkLinks } from '../shared/epiLinkLinks';
-import { messgaingLinks } from '../shared/messgaingLinks';
-import { pageLinks } from '../shared/pageLinks';
-import { personMatchLinks } from '../shared/personMatchLinks';
-import { reportLinks } from '../shared/reportLinks';
-import { securityLinks } from '../shared/securityLinks';
 
 const SystemManagementPage = () => {
     const [filter, setFilter] = useState('');
@@ -45,18 +37,18 @@ const SystemManagementPage = () => {
             )}
             <div className={styles.cardGroup}>
                 <div className={styles.column}>
-                    <CaseReportLaboratorySection filter={filter} setAlert={setAlert} links={caseReportLinks} />
-                    <DecisionSupportSection filter={filter} links={decisionSupportLinks} />
+                    <CaseReportLaboratorySection filter={filter} setAlert={setAlert} />
+                    <DecisionSupportSection filter={filter} />
                 </div>
                 <div className={styles.column}>
-                    <EpiLinkSection filter={filter} links={epiLinkLinks} />
-                    <MessagingSection filter={filter} links={messgaingLinks} />
-                    <PageSection filter={filter} links={pageLinks} />
+                    <EpiLinkSection filter={filter} />
+                    <MessagingSection filter={filter} />
+                    <PageSection filter={filter} />
                 </div>
                 <div className={styles.column}>
-                    <PersonMatchSection filter={filter} links={personMatchLinks} />
-                    <ReportSection filter={filter} links={reportLinks} />
-                    <SecuritySection filter={filter} links={securityLinks} />
+                    <PersonMatchSection filter={filter} />
+                    <ReportSection filter={filter} />
+                    <SecuritySection filter={filter} />
                 </div>
             </div>
         </div>
