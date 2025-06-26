@@ -13,7 +13,7 @@ const columns: Column<IdentificationDemographic>[] = [
         name: 'As of',
         className: styles['date-header'],
         sortable: true,
-        sortIconType: 'default',
+        sortIconType: 'numeric',
         value: (v) => v.asOf,
         render: (v) => internalizeDate(v.asOf)
     },
