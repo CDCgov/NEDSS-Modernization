@@ -2,16 +2,10 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CaseReportLaboratorySection } from './CaseReportLaboratorySection';
 
-const mockLinks = [
-    { text: 'Manage trigger codes for case reporting', href: '/trigger' },
-    { group: 'Manage lab results' },
-    { text: 'Manage SNOMEDs', href: '/snomeds' }
-];
-
 describe('CaseReportLaboratorySection', () => {
     const setup = (filter = '') => {
         const setAlert = jest.fn();
-        render(<CaseReportLaboratorySection filter={filter} setAlert={setAlert} links={mockLinks} />);
+        render(<CaseReportLaboratorySection filter={filter} setAlert={setAlert} />);
         return { setAlert };
     };
 
@@ -23,7 +17,7 @@ describe('CaseReportLaboratorySection', () => {
 
     it('does not render component if no matching links', () => {
         const { container } = render(
-            <CaseReportLaboratorySection filter="xyz" setAlert={jest.fn()} links={mockLinks} />
+            <CaseReportLaboratorySection filter="xyz" setAlert={jest.fn()} />
         );
         expect(container).toBeEmptyDOMElement();
     });

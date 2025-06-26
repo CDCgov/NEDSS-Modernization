@@ -1,4 +1,4 @@
-export const links = [
+export const caseReportLinks = [
     {
         text: 'Manage trigger codes for case reporting',
         href: '/nbs/TriggerCodes.do?method=manageLoad&initLoad=true'

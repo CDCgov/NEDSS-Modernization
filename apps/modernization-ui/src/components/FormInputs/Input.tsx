@@ -76,6 +76,7 @@ export const Input = ({
                         mask={mask}
                         pattern={pattern}
                         aria-label={ariaLabel}
+                        aria-required={required}
                     />
                 ) : (
                     <TextInput
@@ -91,6 +92,7 @@ export const Input = ({
                         className={className}
                         type={type}
                         aria-label={ariaLabel}
+                        aria-required={required}
                     />
                 )
             ) : (
@@ -108,6 +110,7 @@ export const Input = ({
                     className={className}
                     aria-label={ariaLabel}
                     disabled={props?.disabled}
+                    aria-required={required}
                 />
             )}
         </EntryWrapper>

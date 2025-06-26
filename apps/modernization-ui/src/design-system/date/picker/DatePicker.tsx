@@ -113,6 +113,10 @@ const DatePicker = ({
         if (externalInputRef.current) {
             const external = externalInputRef.current;
 
+            if (remaining.required) {
+                external.setAttribute('aria-required', 'true');
+            }
+
             external.addEventListener('blur', handleExternalOnBlur);
             external.addEventListener('change', handleExternalOnChange);
             external.addEventListener('keyup', handleExternalKeyUp);
