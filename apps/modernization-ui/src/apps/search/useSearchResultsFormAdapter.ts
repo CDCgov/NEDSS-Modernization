@@ -19,9 +19,9 @@ type Settings<C extends FieldValues, A, R> = { form: UseFormReturn<C> } & Search
  *
  * @param {Settings<C, A, R>} params - The settings object containing the form instance and search result settings.
  * @param {UseFormReturn<C>} params.form - The react-hook-form instance for managing form state.
- * @param {SearchResultSettings<C, A, R>} params - Additional settings for search result interaction.
+ * @param {SearchResultSettings<C, A, R>} settings - Additional settings for search result interaction.
  *
- * @returns {SearchInteraction<R>} An object containing the search interaction state and handlers:
+ * @return {SearchInteraction<R>} An object containing the search interaction state and handlers:
  * - `status`: The current status of the search interaction.
  * - `results`: The current search results.
  * - `enabled`: Whether the form is valid and search is enabled.

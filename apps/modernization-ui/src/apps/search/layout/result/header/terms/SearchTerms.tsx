@@ -15,6 +15,8 @@ type Props = {
 /**
  * Renders the search terms with the total number of results and individual terms.
  * If filteredTotal is provided, displays "Tf of T results for:".
+ * @param {Props} props - The properties for the component.
+ * @return {JSX.Element} The rendered search terms component.
  */
 const SearchTerms = ({ total, filteredTotal, terms }: Props) => {
     const resultsText = pluralize('Result', filteredTotal ?? total);

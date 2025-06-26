@@ -20,7 +20,7 @@ type Props = {
  * Renders the header for search results, including search terms and options bar.
  * If filteredTotal is provided, displays "Tf of T results for:".
  * @param {Props} props - The properties for the component.
- * @returns {JSX.Element} The rendered header component.
+ * @return {JSX.Element} The rendered header component.
  */
 const SearchResultsHeader = ({ className, sizing, view, total, filteredTotal, terms }: Props) => {
     return (
