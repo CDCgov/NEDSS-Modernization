@@ -50,6 +50,7 @@ const SingleSelect = ({
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
+                aria-required={required}
                 {...inputProps}
             />
         </EntryWrapper>

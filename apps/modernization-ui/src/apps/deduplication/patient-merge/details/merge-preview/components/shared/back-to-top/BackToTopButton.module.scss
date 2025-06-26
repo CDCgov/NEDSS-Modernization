@@ -1,0 +1,9 @@
+@use 'styles/colors';
+
+.button {
+  background-color: colors.$base-white !important;
+  font-size: 0.875rem !important;
+  font-weight: 700 !important;
+  margin: 1rem;
+  display: flex;
+}
