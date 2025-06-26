@@ -2,7 +2,6 @@ import { today } from 'date';
 import { Selectable } from 'options/selectable';
 
 type IdentificationDemographic = {
-    identifier: number;
     asOf: string;
     type?: Selectable;
     issuer?: Selectable;
