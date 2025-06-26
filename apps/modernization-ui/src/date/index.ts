@@ -5,3 +5,5 @@ export { calculateAge } from './calculateAge';
 export { today } from './today';
 export * from './asLocalDate';
 export { displayAgeAsOfToday, displayAgeAsOf } from './displayAge';
+
+export { maybeDate } from './maybeDate';
