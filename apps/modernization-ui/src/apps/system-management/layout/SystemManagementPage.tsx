@@ -4,7 +4,13 @@ import styles from './SystemManagementPage.module.scss';
 import { CaseReportLaboratorySection } from '../components/case-report-and-lab/CaseReportLaboratorySection';
 import { useState } from 'react';
 import { AlertMessage } from '../../../design-system/alert/AlertMessage';
-import { links as caseReportLinks } from '../shared/caseLinks';
+import { DecisionSupportSection } from '../components/decision-support/DecisionSupportSection';
+import { EpiLinkSection } from '../components/epi-link-lot-number/EpiLinkSection';
+import { MessagingSection } from '../components/messaging/MessagingSection';
+import { PageSection } from '../components/page/PageSection';
+import { PersonMatchSection } from '../components/person-match/PersonMatchSection';
+import { ReportSection } from '../components/report/ReportSection';
+import { SecuritySection } from '../components/security/SecuritySection';
 
 const SystemManagementPage = () => {
     const [filter, setFilter] = useState('');
@@ -29,7 +35,22 @@ const SystemManagementPage = () => {
                     </AlertMessage>
                 </div>
             )}
-            <CaseReportLaboratorySection filter={filter} setAlert={setAlert} links={caseReportLinks} />
+            <div className={styles.cardGroup}>
+                <div className={styles.column}>
+                    <CaseReportLaboratorySection filter={filter} setAlert={setAlert} />
+                    <DecisionSupportSection filter={filter} />
+                </div>
+                <div className={styles.column}>
+                    <EpiLinkSection filter={filter} />
+                    <MessagingSection filter={filter} />
+                    <PageSection filter={filter} />
+                </div>
+                <div className={styles.column}>
+                    <PersonMatchSection filter={filter} />
+                    <ReportSection filter={filter} />
+                    <SecuritySection filter={filter} />
+                </div>
+            </div>
         </div>
     );
 };
