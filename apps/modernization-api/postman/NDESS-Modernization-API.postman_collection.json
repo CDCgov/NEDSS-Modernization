@@ -818,6 +818,28 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Laboratory Reports",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/reports/laboratory",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"reports",
+												"laboratory"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
@@ -1293,6 +1315,60 @@
 					],
 					"path": [
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Health",
+			"protocolProfileBehavior": {
+				"followRedirects": false,
+				"followOriginalHttpMethod": false,
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/nbs/api/health",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"nbs",
+						"api",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Info",
+			"protocolProfileBehavior": {
+				"followRedirects": false,
+				"followOriginalHttpMethod": false,
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/nbs/api/info",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"nbs",
+						"api",
+						"info"
 					]
 				}
 			},
