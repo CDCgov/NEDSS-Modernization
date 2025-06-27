@@ -75,6 +75,7 @@ export const AddPatientExtended = () => {
                     id="patient.create.extended.cancel"
                     form={form}
                     activated={interaction.status !== 'created'}
+                    cancelText="If you cancel, any additional data you entered will be lost. Are you sure you want to continue?"
                 />
             </AddExtendedPatientInteractionProvider>
         </>
