@@ -25,7 +25,7 @@ describe('ScrollToTop', () => {
     describe('Accessibility', () => {
         it('should have no accessibility violations', async () => {
             const { container } = renderWithRouter(
-                <ScrollToTop>
+                <ScrollToTop title="Test Title">
                     <div>
                         <h1>Page Title</h1>
                         <p>Some content for testing accessibility</p>
@@ -42,7 +42,7 @@ describe('ScrollToTop', () => {
     describe('Rendering', () => {
         it('should render children correctly', () => {
             const { getByText } = renderWithRouter(
-                <ScrollToTop>
+                <ScrollToTop title="Test Title">
                     <div>Test Content</div>
                 </ScrollToTop>
             );
@@ -54,7 +54,7 @@ describe('ScrollToTop', () => {
     describe('Scroll and Focus Behavior', () => {
         it('should scroll to top on initial render', () => {
             renderWithRouter(
-                <ScrollToTop>
+                <ScrollToTop title="Test Title">
                     <div>Test Content</div>
                 </ScrollToTop>
             );

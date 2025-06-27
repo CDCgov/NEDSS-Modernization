@@ -6,14 +6,14 @@ import { PageProvider } from 'page';
 
 const Layout = () => {
     return (
-        <SkipLinkProvider>
-            <AlertProvider>
-                <PageProvider>
+        <AlertProvider>
+            <PageProvider>
+                <SkipLinkProvider>
                     <NavBar />
                     <Outlet />
-                </PageProvider>
-            </AlertProvider>
-        </SkipLinkProvider>
+                </SkipLinkProvider>
+            </PageProvider>
+        </AlertProvider>
     );
 };
 

@@ -3,10 +3,9 @@ import { useLocation } from 'react-router';
 
 import styles from './scroll-to-top.module.scss';
 
-const ScrollToTop = ({ children }: { children: React.ReactNode }) => {
+const ScrollToTop = ({ children, title }: { children: React.ReactNode; title: string }) => {
     const { pathname } = useLocation();
     const initialFocusRef = useRef<HTMLDivElement>(null);
-    const pageTitle = pathname.split('/').join(' ');
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -21,7 +20,7 @@ const ScrollToTop = ({ children }: { children: React.ReactNode }) => {
             role="main"
             ref={initialFocusRef}
             tabIndex={-1}
-            aria-label={`NBS, ${pageTitle || 'Main content'}`}
+            aria-label={`NBS, ${title}`}
             className={styles.mainContent}>
             {children}
         </div>

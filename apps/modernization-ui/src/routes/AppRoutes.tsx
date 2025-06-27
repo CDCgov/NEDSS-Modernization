@@ -13,7 +13,6 @@ import { routing as logoutRouting } from 'logout';
 import { Login } from 'pages/login';
 import { Expired } from 'apps/landing/Expired/Expired';
 import { routing as patientFileRouting } from 'apps/patient/file/PatientFileRouting';
-import { ScrollToTop } from './ScrollToTop';
 
 const routing = [
     welcomeRouting,
@@ -21,11 +20,7 @@ const routing = [
     { path: '/login', element: <Login /> },
     {
         path: '/',
-        element: (
-            <ScrollToTop>
-                <ProtectedLayout />
-            </ScrollToTop>
-        ),
+        element: <ProtectedLayout />,
         loader: initializationLoader,
         children: [
             { index: true, element: <RedirectHome /> },

@@ -1,6 +1,7 @@
 import { PatientDataEntryProvider } from './PatientDataEntryProvider';
 import { AddPatientExtended } from './extended/AddPatientExtended';
 import { AddPatientBasic } from './basic/AddPatientBasic';
+import { PageTitle } from 'page';
 
 const routing = [
     {
@@ -8,11 +9,19 @@ const routing = [
         children: [
             {
                 path: '/patient/add',
-                element: <AddPatientBasic />
+                element: (
+                    <PageTitle title="Add patient">
+                        <AddPatientBasic />
+                    </PageTitle>
+                )
             },
             {
                 path: '/patient/add/extended',
-                element: <AddPatientExtended />
+                element: (
+                    <PageTitle title="Add patient extended">
+                        <AddPatientExtended />
+                    </PageTitle>
+                )
             }
         ]
     }
