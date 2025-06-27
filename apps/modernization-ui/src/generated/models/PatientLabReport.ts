@@ -5,19 +5,22 @@
 import type { AssociatedInvestigation } from './AssociatedInvestigation';
 import type { DisplayableSimpleName } from './DisplayableSimpleName';
 import type { ResultedTest } from './ResultedTest';
+import type { Specimen } from './Specimen';
 export type PatientLabReport = {
-    eventId: string;
+    patient: number;
+    id: number;
+    local: string;
+    programArea: string;
+    jurisdiction: string;
     receivedDate?: string;
+    electronic: boolean;
     processingDecision?: string;
     collectedDate?: string;
-    testResults?: Array<ResultedTest>;
-    associatedInvestigation?: AssociatedInvestigation;
-    programArea?: string;
-    jurisdiction: string;
-    id?: number;
-    specimenSource?: string;
+    resultedTests?: Array<ResultedTest>;
     reportingFacility?: string;
     orderingProvider?: DisplayableSimpleName;
     orderingFacility?: string;
+    specimen?: Specimen;
+    associations?: Array<AssociatedInvestigation>;
 };
 
