@@ -61,6 +61,6 @@ const PatientCreatedPanel = ({ created }: Props) => (
     </Modal>
 );
 
-const resolveName = (created: CreatedPatient) => maybeMap(displayName('full'))(created.name);
+const resolveName = (created: CreatedPatient) => maybeMap(displayName('fullLastFirst'))(created.name);
 
 export { PatientCreatedPanel };
