@@ -6,22 +6,21 @@ import styles from './scroll-to-top.module.scss';
 const ScrollToTop = ({ children, title }: { children: React.ReactNode; title: string }) => {
     const { pathname } = useLocation();
     const initialFocusRef = useRef<HTMLDivElement>(null);
+    const lastPathnameRef = useRef<string>('');
 
     useEffect(() => {
-        window.scrollTo(0, 0);
+        if (pathname !== lastPathnameRef.current) {
+            window.scrollTo(0, 0);
+            lastPathnameRef.current = pathname;
 
-        if (initialFocusRef.current) {
-            initialFocusRef.current.focus();
+            if (initialFocusRef.current) {
+                initialFocusRef.current.focus();
+            }
         }
     }, [pathname]);
 
     return (
-        <div
-            role="main"
-            ref={initialFocusRef}
-            tabIndex={-1}
-            aria-label={`NBS, ${title}`}
-            className={styles.mainContent}>
+        <div role="main" ref={initialFocusRef} tabIndex={-1} aria-label={title} className={styles.mainContent}>
             {children}
         </div>
     );
