@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
-import { MainContentContainer } from './MainContentContainer';
+import { ScrollToTop } from './ScrollToTop';
 
 expect.extend(toHaveNoViolations);
 
@@ -17,7 +17,7 @@ const renderWithRouter = (component: React.ReactElement, initialEntries = ['/'])
     return render(<MemoryRouter initialEntries={initialEntries}>{component}</MemoryRouter>);
 };
 
-describe('MainContentContainer', () => {
+describe('ScrollToTop', () => {
     beforeEach(() => {
         mockScrollTo.mockClear();
     });
@@ -25,13 +25,13 @@ describe('MainContentContainer', () => {
     describe('Accessibility', () => {
         it('should have no accessibility violations', async () => {
             const { container } = renderWithRouter(
-                <MainContentContainer>
+                <ScrollToTop>
                     <div>
                         <h1>Page Title</h1>
                         <p>Some content for testing accessibility</p>
                         <button>Test Button</button>
                     </div>
-                </MainContentContainer>
+                </ScrollToTop>
             );
 
             const results = await axe(container);
@@ -41,23 +41,22 @@ describe('MainContentContainer', () => {
 
     describe('Rendering', () => {
         it('should render children correctly', () => {
-            renderWithRouter(
-                <MainContentContainer>
-                    <div data-testid="test-child">Test Content</div>
-                </MainContentContainer>
+            const { getByText } = renderWithRouter(
+                <ScrollToTop>
+                    <div>Test Content</div>
+                </ScrollToTop>
             );
 
-            expect(screen.getByTestId('test-child')).toBeInTheDocument();
-            expect(screen.getByText('Test Content')).toBeInTheDocument();
+            expect(getByText('Test Content')).toBeInTheDocument();
         });
     });
 
     describe('Scroll and Focus Behavior', () => {
         it('should scroll to top on initial render', () => {
             renderWithRouter(
-                <MainContentContainer>
+                <ScrollToTop>
                     <div>Test Content</div>
-                </MainContentContainer>
+                </ScrollToTop>
             );
 
             expect(mockScrollTo).toHaveBeenCalledWith(0, 0);
