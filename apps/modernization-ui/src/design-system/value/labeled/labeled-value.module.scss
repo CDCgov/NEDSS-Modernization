@@ -1,0 +1,9 @@
+.labeled {
+    display: flex;
+    gap: 0.25rem;
+
+    &.vertical {
+        flex-direction: column;
+        gap: unset;
+    }
+}

@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import { ScrollToTop } from './scrollToTop';
 
 type UsePageInteraction = {
     title: string | undefined;
@@ -38,7 +39,11 @@ export const PageProvider = ({ children }: PageProviderProps) => {
         resetTitle
     };
 
-    return <PageContext.Provider value={value}>{children}</PageContext.Provider>;
+    return (
+        <PageContext.Provider value={value}>
+            <ScrollToTop title={title || 'Main content'}>{children}</ScrollToTop>
+        </PageContext.Provider>
+    );
 };
 
 const resolveTitle = (value?: string) => {

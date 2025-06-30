@@ -3,9 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type AssociatedInvestigation = {
-    id?: string;
-    condition?: string;
-    local?: string;
+    id: number;
+    local: string;
+    condition: string;
     status?: string;
 };
 
