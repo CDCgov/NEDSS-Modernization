@@ -1,4 +1,6 @@
-import { DisplayableSimpleName, ResultedTest } from 'generated';
+import { MaybeLabeledValue } from 'design-system/value';
+import { ResultedTest } from 'generated';
+import { displayProvider, Provider } from 'libs/provider';
 
 export const renderMorbidity = (
     condition?: string,
@@ -36,43 +38,24 @@ export const renderMorbidity = (
 
 export const renderFacilityProvider = (
     reportingFacility?: string,
-    orderingProvider?: DisplayableSimpleName,
+    orderingProvider?: Provider,
     sendingFacility?: string,
     orderingFacility?: string
 ) => {
     return (
         <>
-            {reportingFacility && (
-                <>
-                    <strong>Reporting facility:</strong>
-                    <br />
-                    {reportingFacility}
-                    <br />
-                </>
-            )}
-
-            {(orderingProvider?.first || orderingProvider?.last || orderingProvider?.prefix) && (
-                <>
-                    <strong>Ordering provider:</strong>
-                    <br />
-                    {orderingProvider.prefix} {orderingProvider.first} {orderingProvider.last}
-                    <br />
-                </>
-            )}
-            {sendingFacility && (
-                <>
-                    <strong>Sending facility:</strong>
-                    <br />
-                    {sendingFacility}
-                </>
-            )}
-            {orderingFacility && (
-                <>
-                    <strong>Ordering facility:</strong>
-                    <br />
-                    {orderingFacility}
-                </>
-            )}
+            <MaybeLabeledValue orientation="vertical" label="Reporting facility:">
+                {reportingFacility}
+            </MaybeLabeledValue>
+            <MaybeLabeledValue orientation="vertical" label="Ordering provider:">
+                {displayProvider(orderingProvider)}
+            </MaybeLabeledValue>
+            <MaybeLabeledValue orientation="vertical" label="Sending facility:">
+                {sendingFacility}
+            </MaybeLabeledValue>
+            <MaybeLabeledValue orientation="vertical" label="Ordering facility:">
+                {orderingFacility}
+            </MaybeLabeledValue>
         </>
     );
 };
