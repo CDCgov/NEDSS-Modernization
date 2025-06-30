@@ -6,6 +6,15 @@ import styles from './address-demographics-card.module.scss';
 import { internalizeDate } from 'date';
 import { AddressDemographicView } from './AddressDemographicView';
 import { AddressDemographicFields } from './AddressDemographicFields';
+import { exists } from 'utils/exists';
+import { displayNoData } from 'design-system/data';
+
+const maybeRenderAddress = (value: AddressDemographic) =>
+    value.address1
+        ? [value.address1, value.address2].filter(exists).join(', ')
+        : value.address2
+          ? displayNoData() + `, ${value.address2}`
+          : displayNoData();
 
 const columns: Column<AddressDemographic>[] = [
     {
@@ -20,10 +29,11 @@ const columns: Column<AddressDemographic>[] = [
     {
         id: 'address-type',
         name: 'Type',
-        className: styles.typeWidth,
+        className: styles['coded-header'],
         sortable: true,
         sortIconType: 'alpha',
-        value: (v) => v.type.name
+        value: (v) => v.type.name,
+        render: (v) => `${v.type.name} / ${v.use.name}`
     },
     {
         id: 'address-address',
@@ -31,7 +41,8 @@ const columns: Column<AddressDemographic>[] = [
         className: styles['text-header'],
         sortable: true,
         sortIconType: 'alpha',
-        value: (v) => v.address1
+        value: (v) => (v.address1 ? v.address1 : v.address2),
+        render: (v) => maybeRenderAddress(v)
     },
     {
         id: 'address-city',
@@ -44,7 +55,7 @@ const columns: Column<AddressDemographic>[] = [
     {
         id: 'address-state',
         name: 'State',
-        className: styles['text-header'],
+        className: styles['coded-header'],
         sortable: true,
         sortIconType: 'alpha',
         value: (v) => v.state?.name
@@ -52,7 +63,7 @@ const columns: Column<AddressDemographic>[] = [
     {
         id: 'address-zip',
         name: 'Zip',
-        className: styles['coded-header'],
+        className: styles.zipWidth,
         sortable: true,
         sortIconType: 'numeric',
         value: (v) => v.zipcode
