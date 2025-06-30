@@ -1,0 +1,1 @@
+export { SexBirthDemographicCard } from './SexBirthDemographicCard';

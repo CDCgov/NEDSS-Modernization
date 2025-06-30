@@ -1,26 +1,26 @@
-import { indicators } from 'coded';
 import { Selectable } from 'options';
 import { useConceptOptions } from 'options/concepts';
-import { genders } from 'options/gender';
+import { Genders, genders } from 'options/gender';
+import { Indicators, indicators } from 'options/indicator';
 
-type SexBirthCodedValues = {
-    genders: Selectable[];
+type SexBirthOptions = {
+    genders: Genders;
     preferredGenders: Selectable[];
     genderUnknownReasons: Selectable[];
-    multipleBirth: Selectable[];
+    multipleBirth: Indicators;
 };
 
-const useSexBirthCodedValues = (): SexBirthCodedValues => {
+const useSexBirthOptions = (): SexBirthOptions => {
     const preferredGenders = useConceptOptions('NBS_STD_GENDER_PARPT', { lazy: false });
     const genderUnknownReasons = useConceptOptions('SEX_UNK_REASON', { lazy: false });
 
     return {
-        genders: genders.all,
+        genders: genders,
         preferredGenders: preferredGenders.options,
         genderUnknownReasons: genderUnknownReasons.options,
         multipleBirth: indicators
     };
 };
 
-export { useSexBirthCodedValues };
-export type { SexBirthCodedValues };
+export { useSexBirthOptions };
+export type { SexBirthOptions };
