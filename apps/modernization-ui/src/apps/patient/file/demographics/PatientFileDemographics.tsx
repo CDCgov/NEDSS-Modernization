@@ -5,6 +5,7 @@ import { PatientFileEthnicityCard } from './ethnicity/PatientFileEthnicityCard';
 import { PatientFileNameCard } from './name/PatientFileNameCard';
 import styles from './patient-file-demographics.module.scss';
 import { PatientFileIdentificationsCard } from './identifications/PatientFileIdentificationsCard';
+import { PatientFilePhoneEmailCard } from './phoneEmail/PatientFilePhoneEmailCard';
 
 const PatientFileDemographics = () => {
     const { id } = usePatient();
@@ -14,6 +15,7 @@ const PatientFileDemographics = () => {
         <div className={styles.container}>
             <PatientFileAdministrativeInformationCard patient={id} sizing={sizing} />
             <PatientFileNameCard patient={id} sizing={sizing} />
+            <PatientFilePhoneEmailCard patient={id} sizing={sizing} />
             <PatientFileIdentificationsCard patient={id} sizing={sizing} />
             <PatientFileEthnicityCard patient={id} sizing={sizing} data-half />
         </div>
