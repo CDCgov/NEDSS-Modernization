@@ -8,15 +8,13 @@
     z-index: 1000;
 }
 
-.modal {
+dialog.modal {
     left: auto;
     right: auto;
 
     border: none;
 
     background-color: colors.$base-white !important;
-
-    min-width: unset;
 
     &.small {
         width: 30rem;
@@ -26,10 +24,7 @@
         width: 55rem;
     }
 
-    &.unbounded {
-        height: clamp(15rem, 55rem, 90dvh);
-        width: clamp(30rem, 55rem, 90dvw);
-    }
+    max-width: clamp(30rem, 55rem, 90dvw);
 
     header.header {
         display: flex;
