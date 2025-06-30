@@ -41,7 +41,7 @@ const initial = (asOf: string = today()): SexBirthDemographic => ({
 export { initial };
 
 const labels = {
-    asOf: 'Sex & birth information as of',
+    asOf: 'As of',
     bornOn: 'Date of birth',
     age: 'Current age',
     current: 'Current sex',

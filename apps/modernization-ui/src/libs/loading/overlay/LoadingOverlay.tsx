@@ -12,7 +12,8 @@ const LoadingOverlay = ({ children }: LoadingOverlayProps) => {
     return (
         <div className={styles.container}>
             <LoadingIndicator />
-            <div className={styles.content}>{children}</div>
+            <span className={styles.glass}></span>
+            <span>{children}</span>
         </div>
     );
 };

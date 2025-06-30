@@ -1,11 +1,11 @@
-import { usePatient } from 'apps/patient/file/usePatient';
+import { usePatientFileData } from '../usePatientFileData';
 import { usePatientFileSummary } from './usePatientFileSummary';
 import { PatientSummaryContent } from './PatientSummaryContent';
 import { PatientDocumentRequiringReview } from './documentRequiringReview';
 import { OpenInvestigationsCard } from './openInvestigations';
 
 export const PatientFileSummary = () => {
-    const { id } = usePatient();
+    const { id } = usePatientFileData();
 
     const { summary } = usePatientFileSummary(id);
     return (

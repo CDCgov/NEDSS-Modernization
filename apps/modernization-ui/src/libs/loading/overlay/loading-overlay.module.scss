@@ -1,3 +1,5 @@
+@use 'styles/colors';
+
 .container {
     display: grid;
     grid-template-columns: 1fr;
@@ -7,8 +9,10 @@
     & > * {
         grid-area: container;
     }
-}
 
-.content {
-    filter: blur(1px);
+    .glass {
+        opacity: 85%;
+        background-color: colors.$base-white;
+        opacity: 85%;
+    }
 }

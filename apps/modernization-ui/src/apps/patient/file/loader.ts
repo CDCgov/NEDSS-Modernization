@@ -1,13 +1,18 @@
 import { PatientFileService } from 'generated';
+import { MemoizedSupplier } from 'libs/supplying';
+import { demographics } from './demographics';
+import { PatientFileData } from './usePatientFileData';
 import { Patient } from './patient';
 
-type LoaderParams = { params: { id: string } };
-type PatientLoaderResult = { patient: Patient };
+const description = (patientId: number): Promise<Patient> => PatientFileService.file({ patientId });
 
-const loader = ({ params }: LoaderParams): Promise<PatientLoaderResult> =>
-    PatientFileService.file({ patientId: Number(params.id) }).then((patient) => ({
-        patient
+type LoaderParams = { params: { id: string } };
+
+const loader = ({ params }: LoaderParams): Promise<PatientFileData> =>
+    description(Number(params.id)).then((patient) => ({
+        id: patient.id,
+        patient,
+        demographics: new MemoizedSupplier(() => demographics(patient.id))
     }));
 
 export { loader };
-export type { PatientLoaderResult };

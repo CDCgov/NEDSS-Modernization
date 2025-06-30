@@ -3,7 +3,7 @@ import { defaultTo } from 'libs/supplying';
 
 type AgeResolver = (birthday?: string) => string | undefined;
 
-const ageResolver =
+const asOfAgeResolver =
     (asOf?: string): AgeResolver =>
     (birthday?: string) => {
         if (birthday) {
@@ -11,5 +11,5 @@ const ageResolver =
         }
     };
 
-export { ageResolver };
+export { asOfAgeResolver };
 export type { AgeResolver };

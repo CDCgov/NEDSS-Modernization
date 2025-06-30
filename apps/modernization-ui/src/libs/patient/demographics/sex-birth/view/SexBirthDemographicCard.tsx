@@ -1,26 +1,29 @@
-import { AgeResolver } from 'date';
 import { Card, CardProps } from 'design-system/card';
-import { SexBirthDemographic } from '../sexBirth';
 import { SexBirthDemographicView } from './SexBirthDemographicView';
+import { SexBirthDemographic } from '../sexBirth';
+import { AgeResolver } from 'date';
 
-type SexBirthCardProps = {
-    demographic?: SexBirthDemographic;
+type SexBirthDemographicCardProps = {
     title?: string;
     ageResolver: AgeResolver;
-} & Omit<CardProps, 'title' | 'subtext' | 'children'>;
+    demographic?: SexBirthDemographic;
+} & Omit<CardProps, 'subtext' | 'children' | 'title'>;
 
 const SexBirthDemographicCard = ({
     title = 'Sex & birth',
-    collapsible = true,
-    demographic,
     ageResolver,
+    demographic,
+    collapsible = true,
     sizing,
     ...remaining
-}: SexBirthCardProps) => {
+}: SexBirthDemographicCardProps) => {
     return (
         <Card title={title} collapsible={collapsible} sizing={sizing} {...remaining}>
             <SexBirthDemographicView demographic={demographic} ageResolver={ageResolver} sizing={sizing} />
         </Card>
     );
 };
+
 export { SexBirthDemographicCard };
+
+export type { SexBirthDemographicCardProps };

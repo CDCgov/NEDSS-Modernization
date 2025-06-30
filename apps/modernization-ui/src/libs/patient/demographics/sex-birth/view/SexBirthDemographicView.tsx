@@ -3,8 +3,8 @@ import { Sizing, ValueField } from 'design-system/field';
 import { SexBirthDemographic, labels } from '../sexBirth';
 
 type SexBirthDemographicViewProps = {
-    ageResolver: AgeResolver;
     sizing?: Sizing;
+    ageResolver: AgeResolver;
     demographic?: SexBirthDemographic;
 };
 
