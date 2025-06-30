@@ -41,6 +41,7 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
     };
 
     const normalizedFilter = filter.trim().toLowerCase();
+    const showResetButton = 'reset lab mapping cache'.includes(normalizedFilter);
     const filteredLinks = caseReportLinks.filter((item) => {
         if ('text' in item && item.text) {
             return item.text.toLowerCase().includes(normalizedFilter);
@@ -49,7 +50,7 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
     });
 
     const hasVisibleLinks = filteredLinks.some((item) => 'text' in item && item.text);
-    if (!hasVisibleLinks) return null;
+    if (!hasVisibleLinks && !showResetButton) return null;
 
     // Group links dynamically based on last seen group title
     const grouped = [];
@@ -74,7 +75,7 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
             className={styles.card}>
             <div className={styles.sectionContent}>
                 {/* Render ungrouped links first */}
-                {grouped[0]?.title === undefined && (
+                {grouped.length > 0 && grouped[0].title === undefined && (
                     <div className={styles.subGroup}>
                         {grouped[0].links.map((link) => (
                             <a key={link.href} href={link.href}>
@@ -101,9 +102,11 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
                     );
                 })}
 
-                <Button secondary sizing="small" onClick={handleResetClick}>
-                    Reset lab mapping cache
-                </Button>
+                {showResetButton && (
+                    <Button secondary sizing="small" onClick={handleResetClick}>
+                        Reset lab mapping cache
+                    </Button>
+                )}
 
                 {showConfirm && (
                     <Confirmation
