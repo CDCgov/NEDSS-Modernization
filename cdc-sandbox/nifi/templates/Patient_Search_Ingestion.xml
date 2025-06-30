@@ -9249,7 +9249,7 @@ to the most recent record when NiFi is first started</label>
                     <comments></comments>
                     <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                     <name>Person Identification Observer</name>
-                    <state>RUNNING</state>
+                    <state>DISABLED</state>
                     <type>OUTPUT_PORT</type>
                 </outputPorts>
                 <processors>
@@ -9351,7 +9351,7 @@ to the most recent record when NiFi is first started</label>
                         <name>unmatched</name>
                         <retry>false</retry>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>DISABLED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                 </processors>
@@ -9428,7 +9428,7 @@ to the most recent record when NiFi is first started</label>
                         <name>success</name>
                         <retry>false</retry>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>DISABLED</state>
                     <style/>
                     <type>org.apache.nifi.processors.avro.ConvertAvroToJSON</type>
                 </processors>
@@ -9655,7 +9655,7 @@ FROM
                         <name>success</name>
                         <retry>false</retry>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>DISABLED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.QueryDatabaseTable</type>
                 </processors>
@@ -9742,5 +9742,5 @@ FROM
             <type>org.apache.nifi.processors.standard.LogMessage</type>
         </processors>
     </snippet>
-    <timestamp>06/30/2025 16:36:14 UTC</timestamp>
+    <timestamp>06/30/2025 16:47:15 UTC</timestamp>
 </template>
