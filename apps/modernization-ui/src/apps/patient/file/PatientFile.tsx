@@ -27,7 +27,7 @@ export { PatientFile };
 const ViewActions = (patient: Patient) => {
     return (
         <>
-            <DeleteAction />
+            <DeleteAction patient={patient} />
             <Button
                 onClick={openPrintableView(patient.id.toString())}
                 aria-label="Print"
