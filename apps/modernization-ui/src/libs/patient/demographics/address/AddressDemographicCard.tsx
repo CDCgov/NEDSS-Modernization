@@ -29,7 +29,7 @@ const columns: Column<AddressDemographic>[] = [
     {
         id: 'address-type',
         name: 'Type',
-        className: styles['coded-header'],
+        className: styles.typeWidth,
         sortable: true,
         sortIconType: 'alpha',
         value: (v) => v.type.name,
@@ -55,7 +55,7 @@ const columns: Column<AddressDemographic>[] = [
     {
         id: 'address-state',
         name: 'State',
-        className: styles['coded-header'],
+        className: styles['text-header'],
         sortable: true,
         sortIconType: 'alpha',
         value: (v) => v.state?.name
