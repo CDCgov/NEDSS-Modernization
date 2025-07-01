@@ -5,7 +5,7 @@ import { DataElementConfig } from './data-elements/DataElementConfig';
 import { MergeDetails } from './patient-merge/details/MergeDetails';
 import { MergeLanding } from './patient-merge/landing/MergeLanding';
 import { permitsAll, Permitted } from '../../libs/permission';
-import { Navigate } from 'react-router';
+import { RedirectHome } from '../../routes';
 
 const routing = [
     {
@@ -14,7 +14,7 @@ const routing = [
             <FeatureGuard guard={(features) => features?.deduplication?.enabled}>
                 <Permitted
                     permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
-                    fallback={<Navigate to="/search" replace />}>
+                    fallback={<RedirectHome />}>
                     <PageTitle title="Person match configuration">
                         <MatchConfigurationLandingPage />
                     </PageTitle>
@@ -28,7 +28,7 @@ const routing = [
             <FeatureGuard guard={(features) => features?.deduplication?.enabled}>
                 <Permitted
                     permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
-                    fallback={<Navigate to="/search" replace />}>
+                    fallback={<RedirectHome />}>
                     <PageTitle title="Person match configuration">
                         <DataElementConfig />
                     </PageTitle>
@@ -42,7 +42,7 @@ const routing = [
             <FeatureGuard guard={(features) => features?.deduplication?.merge.enabled}>
                 <Permitted
                     permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
-                    fallback={<Navigate to="/search" replace />}>
+                    fallback={<RedirectHome />}>
                     <PageTitle title="Patient Merge">
                         <MergeLanding />
                     </PageTitle>
@@ -56,7 +56,7 @@ const routing = [
             <FeatureGuard guard={(features) => features?.deduplication?.merge.enabled}>
                 <Permitted
                     permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
-                    fallback={<Navigate to="/search" replace />}>
+                    fallback={<RedirectHome />}>
                     <PageTitle title="Patient matches requiring review">
                         <MergeDetails />
                     </PageTitle>
