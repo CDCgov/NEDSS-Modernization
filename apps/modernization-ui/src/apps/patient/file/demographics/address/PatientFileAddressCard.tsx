@@ -13,8 +13,8 @@ const PatientFileAddressCard = ({ patient, sizing }: PatientFileAddressProps) =>
     const data = usePatientFileAddress(patient);
 
     return (
-        <Shown when={!data.isLoading} fallback={<LoadingCard id="loading-names" title="Name" sizing={sizing} />}>
-            <AddressDemographicCard id={'patient-file-address-demographic'} data={data.data} sizing={sizing} />{' '}
+        <Shown when={!data.isLoading} fallback={<LoadingCard id="loading-addresses" title="Address" sizing={sizing} />}>
+            <AddressDemographicCard id={'patient-file-address-demographic'} data={data.data} sizing={sizing} />
         </Shown>
     );
 };
