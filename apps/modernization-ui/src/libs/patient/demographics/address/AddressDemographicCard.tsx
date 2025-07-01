@@ -10,11 +10,9 @@ import { exists } from 'utils/exists';
 import { displayNoData } from 'design-system/data';
 
 const maybeRenderAddress = (value: AddressDemographic) =>
-    value.address1
-        ? [value.address1, value.address2].filter(exists).join(', ')
-        : value.address2
-          ? displayNoData() + `, ${value.address2}`
-          : displayNoData();
+    [orNoData(value.address1), value.address2].filter(exists).join(', ');
+
+const orNoData = (value?: string) => (value ? value : displayNoData());
 
 const columns: Column<AddressDemographic>[] = [
     {
