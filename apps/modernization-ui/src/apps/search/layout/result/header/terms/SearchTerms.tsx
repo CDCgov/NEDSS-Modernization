@@ -14,7 +14,7 @@ type Props = {
 const SearchTerms = ({ total, terms }: Props) => {
     const resultsText = pluralize('Result', total);
     const verbText = pluralize('has', total, 'have');
-    const ariaLabel = `${total} ${resultsText} ${verbText} been found`;
+    const ariaLabel = `${total} ${resultsText} ${verbText} been found, press Alt + A to add a new patient`;
 
     const { without } = useSearchInteraction();
 

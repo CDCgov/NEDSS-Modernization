@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { Sizing } from 'design-system/field';
 import { buttonClassnames } from './buttonClassNames';
 
@@ -13,6 +13,7 @@ type StandardButtonProps = {
     sizing?: Sizing;
     tertiary?: boolean;
     labelPosition?: 'left' | 'right';
+    buttonRef?: React.RefObject<HTMLButtonElement>;
 };
 
 type ButtonProps = {
@@ -37,6 +38,7 @@ const Button = ({
     outline,
     unstyled,
     children,
+    buttonRef,
     ...defaultProps
 }: ButtonProps) => {
     const classes = buttonClassnames({
@@ -52,7 +54,7 @@ const Button = ({
     });
 
     return (
-        <button className={classes} {...defaultProps} type={type} disabled={disabled}>
+        <button ref={buttonRef} className={classes} {...defaultProps} type={type} disabled={disabled}>
             {icon}
             {children}
         </button>

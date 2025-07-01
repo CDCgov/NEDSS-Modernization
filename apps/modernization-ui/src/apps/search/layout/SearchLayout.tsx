@@ -1,4 +1,4 @@
-import { ReactNode, KeyboardEvent as ReactKeyboardEvent } from 'react';
+import React, { ReactNode, KeyboardEvent as ReactKeyboardEvent, useRef } from 'react';
 import { Button } from 'components/button';
 import { Loading } from 'components/Spinner';
 import { Sizing } from 'design-system/field';
@@ -15,7 +15,7 @@ import { FeatureToggle } from 'feature';
 
 import styles from './search-layout.module.scss';
 
-type Renderer = () => ReactNode;
+type Renderer = (actionButtonRef?: React.RefObject<HTMLButtonElement>) => ReactNode;
 
 type Props = {
     sizing?: Sizing;
@@ -42,6 +42,7 @@ const SearchLayout = <R,>({
     noInput = () => <NoInput />,
     noResults = () => <NoResults />
 }: Props) => {
+    const actionButtonRef = useRef<HTMLButtonElement>(null);
     const {
         status,
         results: { total, terms }
@@ -52,6 +53,9 @@ const SearchLayout = <R,>({
     const handleKey = (event: ReactKeyboardEvent<HTMLElement>) => {
         if (event.key === 'Enter' && searchEnabled && !(event.target instanceof HTMLButtonElement)) {
             onSearch();
+        }
+        if (event.key === 'a' && event.altKey) {
+            actionButtonRef?.current?.click();
         }
     };
 
@@ -106,7 +110,7 @@ const SearchLayout = <R,>({
                 </div>
             </div>
             <Shown when={!!actions}>
-                <div className={styles.actions}>{actions?.()}</div>
+                <div className={styles.actions}>{actions?.(actionButtonRef)}</div>
             </Shown>
         </section>
     );

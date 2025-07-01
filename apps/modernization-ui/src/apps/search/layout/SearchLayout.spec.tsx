@@ -48,9 +48,10 @@ type FixtureProps = {
     criteria?: () => ReactNode;
     searchEnabled?: boolean;
     onSearch?: () => void;
+    actions?: (buttonRef?: React.RefObject<HTMLButtonElement>) => ReactNode;
 };
 
-const Fixture = ({ criteria, searchEnabled, onSearch }: FixtureProps) => (
+const Fixture = ({ criteria, searchEnabled, onSearch, actions }: FixtureProps) => (
     <MemoryRouter>
         <SkipLinkProvider>
             <SearchResultDisplayProvider>
@@ -62,6 +63,7 @@ const Fixture = ({ criteria, searchEnabled, onSearch }: FixtureProps) => (
                         onSearch={onSearch ?? jest.fn()}
                         onClear={jest.fn()}
                         searchEnabled={searchEnabled}
+                        actions={actions}
                     />
                 </FilterProvider>
             </SearchResultDisplayProvider>
@@ -108,5 +110,25 @@ describe('SearchLayout', () => {
         button.focus();
         await user.keyboard('{Enter}');
         expect(onSearch).not.toHaveBeenCalled();
+    });
+
+    it('clicks action button when Alt+A is pressed', async () => {
+        const user = userEvent.setup();
+        const mockClick = jest.fn();
+
+        const actions = (buttonRef?: React.RefObject<HTMLButtonElement>) => (
+            <button ref={buttonRef} onClick={mockClick}>
+                Action
+            </button>
+        );
+
+        const { getByRole } = render(<Fixture criteria={() => <input type="text" />} actions={actions} />);
+
+        const input = getByRole('textbox');
+        input.focus();
+
+        await user.keyboard('{Alt>}a{/Alt}');
+
+        expect(mockClick).toHaveBeenCalled();
     });
 });
