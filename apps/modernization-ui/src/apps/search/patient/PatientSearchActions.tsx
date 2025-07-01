@@ -13,11 +13,7 @@ const PatientSearchActions = ({ disabled }: Props) => {
 
     return (
         <Permitted permission={permissions.patient.add}>
-            <Button
-                type="button"
-                onClick={add}
-                disabled={disabled}
-                icon={<Icon name="add_circle" />}>
+            <Button type="button" onClick={add} disabled={disabled} icon={<Icon name="add_circle" />}>
                 Add new patient
             </Button>
         </Permitted>
