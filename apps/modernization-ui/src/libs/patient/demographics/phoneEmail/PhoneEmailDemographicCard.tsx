@@ -20,15 +20,16 @@ const columns: Column<PhoneEmailDemographic>[] = [
     {
         id: 'phone-email-type',
         name: 'Type',
-        className: styles['coded-header'],
+        className: styles.typeWidth,
         sortable: true,
         sortIconType: 'alpha',
-        value: (v) => v.type?.name
+        value: (v) => v.type?.name,
+        render: (v) => `${v.type.name} / ${v.use.name}`
     },
     {
         id: 'phone-email-number',
         name: 'Phone number',
-        className: styles['text-header'],
+        className: styles.numberWidth,
         sortable: true,
         sortIconType: 'numeric',
         value: (v) => v.phoneNumber
@@ -47,7 +48,7 @@ const columns: Column<PhoneEmailDemographic>[] = [
         className: styles['text-header'],
         sortable: true,
         sortIconType: 'alpha',
-        value: (v) => v.type?.name
+        value: (v) => v.comment
     }
 ];
 
@@ -85,7 +86,6 @@ const PhoneEmailDemographicCard = ({
                             features={{ sorting }}
                             defaultValues={defaultValue}
                             editable={false}
-                            viewable={false}
                             viewRenderer={renderView}
                             formRenderer={renderForm}
                             collapsible
