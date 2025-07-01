@@ -40,10 +40,9 @@ const PatientSearch = () => {
                         <FormProvider {...form}>
                             <SearchLayout
                                 sizing={sizing}
-                                actions={(buttonRef) => (
+                                actions={() => (
                                     <PatientSearchActions
                                         disabled={interaction.status !== 'completed'}
-                                        buttonRef={buttonRef}
                                     />
                                 )}
                                 criteria={() => <PatientCriteria sizing={sizing} />}

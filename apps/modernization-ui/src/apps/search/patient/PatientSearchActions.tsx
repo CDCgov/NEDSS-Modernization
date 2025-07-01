@@ -6,16 +6,14 @@ import { Icon } from 'design-system/icon';
 
 type Props = {
     disabled: boolean;
-    buttonRef?: React.RefObject<HTMLButtonElement>;
 };
 
-const PatientSearchActions = ({ disabled, buttonRef }: Props) => {
+const PatientSearchActions = ({ disabled }: Props) => {
     const { add } = useAddPatientFromSearch();
 
     return (
         <Permitted permission={permissions.patient.add}>
             <Button
-                buttonRef={buttonRef}
                 type="button"
                 onClick={add}
                 disabled={disabled}
