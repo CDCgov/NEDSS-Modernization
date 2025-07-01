@@ -1246,7 +1246,7 @@ to the most recent record when NiFi is first started</label>
     </entry>
     <entry>
         <key>db-fetch-where-clause</key>
-        <value>add_time &lt;&gt; last_chg_time</value>
+        <value>add_time &lt;&gt; last_chg_time and cd = 'PAT'</value>
     </entry>
     <entry>
         <key>db-fetch-sql-query</key>
@@ -2176,7 +2176,7 @@ WHERE
     </entry>
     <entry>
         <key>db-fetch-where-clause</key>
-        <value>person_uid = person_parent_uid</value>
+        <value>person_uid = person_parent_uid and cd = 'PAT'</value>
     </entry>
     <entry>
         <key>gen-table-custom-orderby-column</key>
@@ -6469,6 +6469,7 @@ AS nested,
 
 WHERE p.person_uid = p.person_parent_uid
   and p.person_uid in (${person_ids})
+  and p.cd = 'PAT'
  ;
 </value>
     </entry>
@@ -9761,5 +9762,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>07/01/2025 17:52:35 UTC</timestamp>
+    <timestamp>07/01/2025 18:10:33 UTC</timestamp>
 </template>
