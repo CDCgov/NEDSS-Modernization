@@ -30,6 +30,10 @@ class PatientIdentificationDemographicFinder {
       
       where   [identification].[entity_uid] = ?
           and [identification].[record_status_cd] = 'ACTIVE'
+      
+      order by
+          [identification].[as_of_date] desc,
+          [identification].[entity_id_seq] desc
       """;
 
   private final JdbcClient client;
