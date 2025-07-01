@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from 'components/button';
 import { useAddPatientFromSearch } from './add/useAddPatientFromSearch';
 import { permissions, Permitted } from 'libs/permission';
@@ -13,7 +12,7 @@ const PatientSearchActions = ({ disabled }: Props) => {
 
     return (
         <Permitted permission={permissions.patient.add}>
-            <Button type="button" onClick={add} disabled={disabled} icon={<Icon name="add_circle" />}>
+            <Button accessKey="a" type="button" onClick={add} disabled={disabled} icon={<Icon name="add_circle" />}>
                 Add new patient
             </Button>
         </Permitted>

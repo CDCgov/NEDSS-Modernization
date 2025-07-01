@@ -48,10 +48,9 @@ type FixtureProps = {
     criteria?: () => ReactNode;
     searchEnabled?: boolean;
     onSearch?: () => void;
-    actions?: () => ReactNode;
 };
 
-const Fixture = ({ criteria, searchEnabled, onSearch, actions }: FixtureProps) => (
+const Fixture = ({ criteria, searchEnabled, onSearch }: FixtureProps) => (
     <MemoryRouter>
         <SkipLinkProvider>
             <SearchResultDisplayProvider>
@@ -63,7 +62,6 @@ const Fixture = ({ criteria, searchEnabled, onSearch, actions }: FixtureProps) =
                         onSearch={onSearch ?? jest.fn()}
                         onClear={jest.fn()}
                         searchEnabled={searchEnabled}
-                        actions={actions}
                     />
                 </FilterProvider>
             </SearchResultDisplayProvider>
