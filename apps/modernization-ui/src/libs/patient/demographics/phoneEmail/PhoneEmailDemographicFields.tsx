@@ -1,11 +1,12 @@
 import { EntryFieldsProps } from 'design-system/entry';
 import { Controller, useFormContext } from 'react-hook-form';
 import { validDateRule, DatePickerInput } from 'design-system/date';
-import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { SingleSelect } from 'design-system/select';
 import { TextInputField } from 'design-system/input';
 import { PhoneEmailDemographic } from './phoneEmails';
 import { usePhoneEmailCodedValues } from './usePhoneEmailCodedValues';
+import { TextAreaField } from 'design-system/input/text/TextAreaField';
 
 type PhoneEmailDemographicFieldsProps = {} & EntryFieldsProps;
 
@@ -72,7 +73,7 @@ const PhoneEmailDemographicFields = ({
             <Controller
                 control={control}
                 name="use"
-                rules={{ ...validateRequiredRule(TYPE_LABEL) }}
+                rules={{ ...validateRequiredRule(USE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label={USE_LABEL}
@@ -91,17 +92,16 @@ const PhoneEmailDemographicFields = ({
             />
             <Controller
                 control={control}
-                name="issuer"
+                name="countryCode"
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <SingleSelect
-                        label={ASSIGNING_AUTHORITY_LABEL}
+                    <TextInputField
+                        label={COUNTRY_CODE_LABEL}
                         orientation={orientation}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
                         id={`name-${name}`}
                         name={`name-${name}`}
-                        options={coded.authorities}
                         error={error?.message}
                         required
                         sizing={sizing}
@@ -110,16 +110,87 @@ const PhoneEmailDemographicFields = ({
             />
             <Controller
                 control={control}
-                name="value"
-                rules={{ ...validateExtendedNameRule(VALUE_LABEL) }}
+                name="phoneNumber"
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <TextInputField
-                        label={VALUE_LABEL}
+                        label={PHONE_NUMBER_LABEL}
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
                         type="text"
+                        name={name}
+                        id={name}
+                        error={error?.message}
+                        sizing={sizing}
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="extension"
+                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                    <TextInputField
+                        label={EXTENSION_LABEL}
+                        orientation={orientation}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        value={value}
+                        type="text"
+                        name={name}
+                        id={name}
+                        error={error?.message}
+                        sizing={sizing}
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="email"
+                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                    <TextInputField
+                        label={EMAIL_LABEL}
+                        orientation={orientation}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        value={value}
+                        type="text"
+                        name={name}
+                        id={name}
+                        error={error?.message}
+                        sizing={sizing}
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="url"
+                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                    <TextInputField
+                        label={URL_LABEL}
+                        orientation={orientation}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        value={value}
+                        type="text"
+                        name={name}
+                        id={name}
+                        error={error?.message}
+                        sizing={sizing}
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="comment"
+                rules={{ ...maxLengthRule(2000, COMMENTS_LABEL) }}
+                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                    <TextAreaField
+                        label={COMMENTS_LABEL}
+                        orientation={orientation}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        value={value}
                         name={name}
                         id={name}
                         error={error?.message}

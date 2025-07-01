@@ -5,6 +5,7 @@ import { Column, columnSortResolver } from 'design-system/table';
 import { internalizeDate } from 'date';
 import styles from './phone-email-demographic-card.module.scss';
 import { PhoneEmailDemographicView } from './PhoneEmailDemographicView';
+import { PhoneEmailDemographicFields } from './PhoneEmailDemographicFields';
 
 const columns: Column<PhoneEmailDemographic>[] = [
     {
@@ -70,28 +71,30 @@ const PhoneEmailDemographicCard = ({
     const renderView = (entry: PhoneEmailDemographic) => <PhoneEmailDemographicView entry={entry} />;
     const renderForm = () => <PhoneEmailDemographicFields />;
 
-    <SortingProvider appendToUrl={false}>
-        {(sorting) => (
-            <SortHandler sorting={sorting} resolver={sortResolver} data={data}>
-                {({ sorting, sorted }) => (
-                    <RepeatingBlock<PhoneEmailDemographic>
-                        {...remaining}
-                        title={title}
-                        sizing={sizing}
-                        columns={columns}
-                        data={sorted}
-                        features={{ sorting }}
-                        defaultValues={defaultValue}
-                        editable={false}
-                        viewable={false}
-                        viewRenderer={renderView}
-                        formRenderer={renderForm}
-                        collapsible
-                    />
-                )}
-            </SortHandler>
-        )}
-    </SortingProvider>;
+    return (
+        <SortingProvider appendToUrl={false}>
+            {(sorting) => (
+                <SortHandler sorting={sorting} resolver={sortResolver} data={data}>
+                    {({ sorting, sorted }) => (
+                        <RepeatingBlock<PhoneEmailDemographic>
+                            {...remaining}
+                            title={title}
+                            sizing={sizing}
+                            columns={columns}
+                            data={sorted}
+                            features={{ sorting }}
+                            defaultValues={defaultValue}
+                            editable={false}
+                            viewable={false}
+                            viewRenderer={renderView}
+                            formRenderer={renderForm}
+                            collapsible
+                        />
+                    )}
+                </SortHandler>
+            )}
+        </SortingProvider>
+    );
 };
 
 export { PhoneEmailDemographicCard };
