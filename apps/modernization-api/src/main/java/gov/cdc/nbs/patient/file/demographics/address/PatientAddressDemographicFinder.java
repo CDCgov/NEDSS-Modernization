@@ -57,6 +57,10 @@ class PatientAddressDemographicFinder {
           and [locators].[class_cd] = 'PST'
           and [locators].record_status_cd = 'ACTIVE'
           and [locators].use_cd not in ('BIR', 'DTH')
+      
+      order by
+          [locators].[as_of_date] desc,
+          [locators].locator_uid desc
       """;
 
   private final JdbcClient client;
