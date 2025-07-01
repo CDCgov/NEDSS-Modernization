@@ -13,7 +13,7 @@ const routing = [
         element: (
             <FeatureGuard guard={(features) => features?.deduplication?.enabled}>
                 <Permitted
-                    permission={permitsAll('permissions.patient.merge', 'permissions.patient.search')}
+                    permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
                     fallback={<Navigate to="/search" replace />}>
                     <PageTitle title="Person match configuration">
                         <MatchConfigurationLandingPage />
@@ -27,7 +27,7 @@ const routing = [
         element: (
             <FeatureGuard guard={(features) => features?.deduplication?.enabled}>
                 <Permitted
-                    permission={permitsAll('permissions.patient.merge', 'permissions.patient.search')}
+                    permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
                     fallback={<Navigate to="/search" replace />}>
                     <PageTitle title="Person match configuration">
                         <DataElementConfig />
@@ -41,7 +41,7 @@ const routing = [
         element: (
             <FeatureGuard guard={(features) => features?.deduplication?.merge.enabled}>
                 <Permitted
-                    permission={permitsAll('permissions.patient.merge', 'permissions.patient.search')}
+                    permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
                     fallback={<Navigate to="/search" replace />}>
                     <PageTitle title="Patient Merge">
                         <MergeLanding />
@@ -55,7 +55,7 @@ const routing = [
         element: (
             <FeatureGuard guard={(features) => features?.deduplication?.merge.enabled}>
                 <Permitted
-                    permission={permitsAll('permissions.patient.merge', 'permissions.patient.search')}
+                    permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
                     fallback={<Navigate to="/search" replace />}>
                     <PageTitle title="Patient matches requiring review">
                         <MergeDetails />
