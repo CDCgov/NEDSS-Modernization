@@ -1,4 +1,6 @@
 import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
+import { Permitted } from '../../../../libs/permission';
+import { RedirectHome } from '../../../../routes';
 
 const reportLinks = [
     {
@@ -20,5 +22,9 @@ type Props = {
 };
 
 export const ReportSection = ({ filter }: Props) => {
-    return <SystemManagementInfoCard id="report" title="Report" filter={filter} links={reportLinks} />;
+    return (
+        <Permitted permission={'REPORTADMIN-SYSTEM'} fallback={<RedirectHome />}>
+            <SystemManagementInfoCard id="report" title="Report" filter={filter} links={reportLinks} />;
+        </Permitted>
+    );
 };
