@@ -68,13 +68,13 @@ describe('SearchTerms', () => {
 
     it('has correct aria-label', () => {
         const { getByLabelText } = render(<SearchTerms total={2} terms={terms} />);
-        const resultsCountDiv = getByLabelText('2 Results have been found');
+        const resultsCountDiv = getByLabelText('2 Results have been found, press Alt + A to add a new patient');
         expect(resultsCountDiv).toBeInTheDocument();
     });
 
     it('has correct aria-label singular form when total is 1', () => {
         const { getByLabelText } = render(<SearchTerms total={1} terms={terms} />);
-        const resultsCountDiv = getByLabelText('1 Result has been found');
+        const resultsCountDiv = getByLabelText('1 Result has been found, press Alt + A to add a new patient');
         expect(resultsCountDiv).toBeInTheDocument();
     });
 });
