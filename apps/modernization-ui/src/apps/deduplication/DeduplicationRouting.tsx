@@ -12,9 +12,7 @@ const routing = [
         path: '/deduplication/configuration',
         element: (
             <FeatureGuard guard={(features) => features?.deduplication?.enabled}>
-                <Permitted
-                    permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
-                    fallback={<RedirectHome />}>
+                <Permitted permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')} fallback={<RedirectHome />}>
                     <PageTitle title="Person match configuration">
                         <MatchConfigurationLandingPage />
                     </PageTitle>
@@ -26,9 +24,7 @@ const routing = [
         path: '/deduplication/data_elements',
         element: (
             <FeatureGuard guard={(features) => features?.deduplication?.enabled}>
-                <Permitted
-                    permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
-                    fallback={<RedirectHome />}>
+                <Permitted permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')} fallback={<RedirectHome />}>
                     <PageTitle title="Person match configuration">
                         <DataElementConfig />
                     </PageTitle>
@@ -40,9 +36,7 @@ const routing = [
         path: '/deduplication/merge',
         element: (
             <FeatureGuard guard={(features) => features?.deduplication?.merge.enabled}>
-                <Permitted
-                    permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
-                    fallback={<RedirectHome />}>
+                <Permitted permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')} fallback={<RedirectHome />}>
                     <PageTitle title="Patient Merge">
                         <MergeLanding />
                     </PageTitle>
@@ -54,9 +48,7 @@ const routing = [
         path: '/deduplication/merge/:matchId',
         element: (
             <FeatureGuard guard={(features) => features?.deduplication?.merge.enabled}>
-                <Permitted
-                    permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')}
-                    fallback={<RedirectHome />}>
+                <Permitted permission={permitsAll('MERGE-PATIENT', 'FIND-PATIENT')} fallback={<RedirectHome />}>
                     <PageTitle title="Patient matches requiring review">
                         <MergeDetails />
                     </PageTitle>
