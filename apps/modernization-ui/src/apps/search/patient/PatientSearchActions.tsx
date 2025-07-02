@@ -12,13 +12,13 @@ const PatientSearchActions = ({ disabled }: Props) => {
 
     return (
         <Permitted permission={permissions.patient.add}>
-            <Button 
-                accessKey="a" 
+            <Button
+                type="button"
+                onClick={add}
+                disabled={disabled}
+                icon={<Icon name="add_circle" />}
                 aria-keyshortcuts="Alt+A"
-                type="button" 
-                onClick={add} 
-                disabled={disabled} 
-                icon={<Icon name="add_circle" />}>
+                accessKey="a">
                 Add new patient
             </Button>
         </Permitted>
