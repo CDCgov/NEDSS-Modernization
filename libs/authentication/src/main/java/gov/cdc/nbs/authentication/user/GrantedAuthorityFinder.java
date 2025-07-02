@@ -1,67 +1,76 @@
 package gov.cdc.nbs.authentication.user;
-import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
-import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Set;
+
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @Component
-@DependsOnDatabaseInitialization
 class GrantedAuthorityFinder {
 
   private static final String QUERY = """
-      select distinct
-              [operation_type].bus_op_nm + '-' + [object_type].bus_obj_nm
-      from     auth_user [user]
-              join auth_user_role [role] on
-                      [role].auth_user_uid=[user].auth_user_uid
+      SELECT
+        grantedAuthority
+      FROM
+        (
+          SELECT
+            CASE
+              WHEN master_sec_admin_ind = 'T' THEN 'ADMINISTRATOR-SYSTEM'
+            END AS grantedAuthority
+          FROM
+            auth_user
+          WHERE
+            nedss_entry_id = :identifier
+          UNION
+          SELECT
+            CASE
+              WHEN prog_area_admin_ind = 'T' THEN 'ADMINISTRATOR-SECURITY'
+            END AS grantedAuthority
+          FROM
+            auth_user
+          WHERE
+            nedss_entry_id = :identifier
+          UNION
+          SELECT
+            DISTINCT operationType.bus_op_nm + '-' + objectType.bus_obj_nm
+          FROM
+            auth_user authUser
+            JOIN auth_user_role role ON role.auth_user_uid = authUser.auth_user_uid
+            JOIN auth_perm_set permissionSet ON role.auth_perm_set_uid = permissionSet.auth_perm_set_uid
+            JOIN auth_bus_obj_rt objectRight ON objectRight.auth_perm_set_uid = permissionSet.auth_perm_set_uid
+            JOIN auth_bus_obj_type objectType ON objectRight.auth_bus_obj_type_uid = objectType.auth_bus_obj_type_uid
+            JOIN auth_bus_op_rt operationRight ON operationRight.auth_bus_obj_rt_uid = objectRight.auth_bus_obj_rt_uid
+            JOIN auth_bus_op_type operationType ON operationType.auth_bus_op_type_uid = operationRight.auth_bus_op_type_uid
+          WHERE
+            authUser.nedss_entry_id = :identifier
+            AND NOT (
+              role.role_guest_ind = 'T'
+              AND isNull(operationRight.bus_op_guest_rt, 'F') = 'F'
+            )
+        ) AS permQuery
+      WHERE
+        grantedAuthority IS NOT NULL;
+        """;
 
-              join auth_perm_set [set] on
-                      [role].auth_perm_set_uid=[set].auth_perm_set_uid
+  private final JdbcClient client;
 
-              join auth_bus_obj_rt [object_right] on
-                      [object_right].auth_perm_set_uid=[set].auth_perm_set_uid
-
-              join auth_bus_obj_type [object_type] on
-                      [object_right].auth_bus_obj_type_uid=[object_type].auth_bus_obj_type_uid
-
-              join auth_bus_op_rt [operation_right] on
-                      [operation_right].auth_bus_obj_rt_uid=[object_right].auth_bus_obj_rt_uid
-
-              join auth_bus_op_type [operation_type] on
-                      [operation_type].auth_bus_op_type_uid=[operation_right].auth_bus_op_type_uid
-
-      where   [user].nedss_entry_id = ?
-              and not (
-                      [role].role_guest_ind = 'T'
-                      and isNull([operation_right].bus_op_guest_rt, 'F') = 'F'
-              )
-      """;
-  private static final int NEDSS_ENTRY_PARAMETER = 1;
-  private static final int AUTHORITY_COLUMN = 1;
-
-  private final JdbcTemplate template;
-
-  GrantedAuthorityFinder(final DataSource dataSource) {
-    this.template = new JdbcTemplate(dataSource);
+  GrantedAuthorityFinder(final JdbcClient client) {
+    this.client = client;
   }
 
   Set<GrantedAuthority> find(final long user) {
-    return this.template.queryForStream(
-        QUERY,
-        setter -> setter.setLong(NEDSS_ENTRY_PARAMETER, user),
-        this::map
-    ).collect(Collectors.toSet());
+    return client.sql(QUERY)
+        .param("identifier", user)
+        .query(this::map)
+        .set();
   }
 
   private GrantedAuthority map(final ResultSet rs, final int row) throws SQLException {
-    String authority = rs.getString(AUTHORITY_COLUMN);
+    String authority = rs.getString(1);
     return new SimpleGrantedAuthority(authority);
   }
 }
