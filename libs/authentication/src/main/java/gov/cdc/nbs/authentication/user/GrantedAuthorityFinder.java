@@ -18,7 +18,7 @@ class GrantedAuthorityFinder {
       FROM
         (
           SELECT
-            'ADMINISTRATOR-SYSTEM' grantedAuthority
+            'ADMINISTRATE-SYSTEM' grantedAuthority
           FROM
             auth_user
           WHERE
@@ -26,7 +26,7 @@ class GrantedAuthorityFinder {
             AND master_sec_admin_ind = 'T'
           UNION
           SELECT
-            'ADMINISTRATOR-SECURITY' grantedAuthority
+            'ADMINISTRATE-SECURITY' grantedAuthority
           FROM
             auth_user
           WHERE

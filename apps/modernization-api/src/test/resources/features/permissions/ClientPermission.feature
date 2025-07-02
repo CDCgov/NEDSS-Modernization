@@ -51,10 +51,10 @@ Feature: Permissions are available on the client
   Scenario Outline: A user is a master system administrator
     And I am a master system administrator
     When I access NBS from the client
-    Then I am able to "ADMINISTRATOR" "SYSTEM" from the client
+    Then I am able to "ADMINISTRATE" "SYSTEM" from the client
   
   Scenario Outline: A user is a security administrator
     And I am a security administrator
     When I access NBS from the client
-    Then I am able to "ADMINISTRATOR" "SECURITY" from the client
+    Then I am able to "ADMINISTRATE" "SECURITY" from the client
 
