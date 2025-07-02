@@ -78,13 +78,5 @@ describe('SearchTerms', () => {
         expect(resultsCountDiv).toBeInTheDocument();
     });
 
-    it('has correct aria-label with shortcut key aria label', () => {
-        const { getByLabelText } = render(
-            <SearchTerms total={2} terms={terms} shortcutKeyAnnouncement="by pressing Alt+A, you can add a new patient" />
-        );
-        const resultsCountDiv = getByLabelText(
-            '2 Results have been found , by pressing Alt+A, you can add a new patient'
-        );
-        expect(resultsCountDiv).toBeInTheDocument();
-    });
+
 });

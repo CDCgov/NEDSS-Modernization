@@ -55,7 +55,6 @@ const PatientSearch = () => {
                                 onSearch={interaction.search}
                                 noResults={() => <NoPatientResults />}
                                 onClear={interaction.clear}
-                                shortcutKeyAnnouncement="by pressing Alt+A, you can add a new patient"
                             />
                         </FormProvider>
                     </SearchInteractionProvider>

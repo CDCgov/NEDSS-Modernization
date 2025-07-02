@@ -26,7 +26,6 @@ type Props = {
     noInput?: Renderer;
     noResults?: Renderer;
     searchEnabled?: boolean;
-    shortcutKeyAnnouncement?: string;
     onSearch: () => void;
     onClear: () => void;
 };
@@ -41,8 +40,7 @@ const SearchLayout = <R,>({
     searchEnabled = true,
     onClear,
     noInput = () => <NoInput />,
-    noResults = () => <NoResults />,
-    shortcutKeyAnnouncement
+    noResults = () => <NoResults />
 }: Props) => {
     const {
         status,
@@ -94,7 +92,6 @@ const SearchLayout = <R,>({
                             view={view}
                             total={total}
                             terms={terms}
-                            shortcutKeyAnnouncement={shortcutKeyAnnouncement}
                             loading={status === 'reloading'}>
                             {view === 'list' && total > 0 && resultsAsList()}
                             {view === 'table' && resultsAsTable()}
@@ -102,12 +99,7 @@ const SearchLayout = <R,>({
                         </SearchResults>
                     </Shown>
                     <Shown when={status === 'no-input'}>
-                        <SearchResults
-                            sizing={sizing}
-                            view={view}
-                            total={total}
-                            terms={terms}
-                            shortcutKeyAnnouncement={shortcutKeyAnnouncement}>
+                        <SearchResults sizing={sizing} view={view} total={total} terms={terms}>
                             {noInput()}
                         </SearchResults>
                     </Shown>
