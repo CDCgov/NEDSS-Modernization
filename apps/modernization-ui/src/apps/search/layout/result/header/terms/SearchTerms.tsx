@@ -9,12 +9,13 @@ import { SkipLink } from 'SkipLink';
 type Props = {
     total: number;
     terms: Term[];
+    shortcutKeyAnnouncement?: string;
 };
 
-const SearchTerms = ({ total, terms }: Props) => {
+const SearchTerms = ({ total, terms, shortcutKeyAnnouncement }: Props) => {
     const resultsText = pluralize('Result', total);
     const verbText = pluralize('has', total, 'have');
-    const ariaLabel = `${total} ${resultsText} ${verbText} been found`;
+    const ariaLabel = `${total} ${resultsText} ${verbText} been found ${shortcutKeyAnnouncement ? `, ${shortcutKeyAnnouncement}` : ''}`;
 
     const { without } = useSearchInteraction();
 

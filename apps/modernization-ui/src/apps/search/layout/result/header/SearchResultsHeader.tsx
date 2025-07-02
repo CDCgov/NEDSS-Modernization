@@ -13,12 +13,13 @@ type Props = {
     total: number;
     terms: Term[];
     sizing?: Sizing;
+    shortcutKeyAnnouncement?: string;
 };
 
-const SearchResultsHeader = ({ className, sizing, view, total, terms }: Props) => {
+const SearchResultsHeader = ({ className, sizing, view, total, terms, shortcutKeyAnnouncement }: Props) => {
     return (
         <header className={classNames(styles.header, className, styles[sizing ?? ''])}>
-            <SearchTerms total={total} terms={terms} />
+            <SearchTerms total={total} terms={terms} shortcutKeyAnnouncement={shortcutKeyAnnouncement} />
             <SearchResultsOptionsBar view={view} sizing={sizing} />
         </header>
     );
