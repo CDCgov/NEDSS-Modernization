@@ -30,6 +30,7 @@ export const permissions = {
         search: 'FIND-PATIENT',
         searchInactive: 'FINDINACTIVE-PATIENT',
         update: 'EDIT-PATIENT',
-        view: 'VIEW-PATIENT'
+        view: 'VIEW-PATIENT',
+        merge: 'MERGE-PATIENT'
     }
 };

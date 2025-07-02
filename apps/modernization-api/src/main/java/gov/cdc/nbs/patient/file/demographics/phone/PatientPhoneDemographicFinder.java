@@ -40,6 +40,10 @@ class PatientPhoneDemographicFinder {
       where   [locators].entity_uid = ?
           and [locators].[class_cd] = 'TELE'
           and [locators].record_status_cd = 'ACTIVE'
+      
+      order by
+          [locators].[as_of_date] desc,
+          [locators].locator_uid desc
       """;
 
   private final JdbcClient client;
