@@ -49,13 +49,22 @@ public class AuthorizationRoleMother {
     allow(user, set, 'T', programArea.toUpperCase(), jurisdiction.toUpperCase());
   }
 
+  public void systemAdmin(final long user) {
+    AuthUser authUser = this.entityManager.find(AuthUser.class, user);
+    authUser.setMasterSecAdminInd('T');
+  }
+
+  public void securityAdmin(final long user) {
+    AuthUser authUser = this.entityManager.find(AuthUser.class, user);
+    authUser.setProgAreaAdminInd('T');
+  }
+
   private void allow(
       final long user,
       final long set,
       final char guest,
       final String programArea,
-      final String jurisdiction
-  ) {
+      final String jurisdiction) {
     AuthUser authUser = this.entityManager.find(AuthUser.class, user);
     AuthPermSet authPermSet = this.entityManager.find(AuthPermSet.class, set);
 

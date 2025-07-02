@@ -58,6 +58,7 @@ export type { Restricted } from './models/Restricted';
 export type { ResultedTest } from './models/ResultedTest';
 export type { Selectable } from './models/Selectable';
 export type { SensitiveValue } from './models/SensitiveValue';
+export type { Specimen } from './models/Specimen';
 export type { Success } from './models/Success';
 
 export { CodedResultOptionsService } from './services/CodedResultOptionsService';
@@ -72,7 +73,6 @@ export { LoginService } from './services/LoginService';
 export { NotificationStatusControllerService } from './services/NotificationStatusControllerService';
 export { OccupationOptionsService } from './services/OccupationOptionsService';
 export { PatientFileService } from './services/PatientFileService';
-export { PatientLabReportsService } from './services/PatientLabReportsService';
 export { PatientProfileService } from './services/PatientProfileService';
 export { PrimaryLanguageOptionsService } from './services/PrimaryLanguageOptionsService';
 export { ProgramAreaOptionsService } from './services/ProgramAreaOptionsService';

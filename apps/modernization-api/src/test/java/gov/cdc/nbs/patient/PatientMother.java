@@ -365,7 +365,7 @@ public class PatientMother {
             asOf,
             race,
             this.settings.createdBy(),
-            this.settings.createdOn()
+            LocalDateTime.now()
         )
     );
   }

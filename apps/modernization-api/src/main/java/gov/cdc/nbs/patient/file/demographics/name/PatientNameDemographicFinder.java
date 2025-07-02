@@ -8,7 +8,7 @@ import java.util.List;
 @Component
 class PatientNameDemographicFinder {
   private static final String QUERY = """
-        select
+      select
             [name].[person_name_seq]        as [sequence],
             [name].as_of_date               as [as_of],
             [name].nm_use_cd                as [type_value],
@@ -21,10 +21,10 @@ class PatientNameDemographicFinder {
             [name].last_nm                  as [last],
             [name].last_nm2                 as [second_last],
             [name].nm_suffix                as [suffix_value],
-            [suffix].code_desc_txt          as [suffix_name],
+            [suffix].[code_short_desc_txt]  as [suffix_name],
             [name].nm_degree                as [degree_value],
-            [degree].[code_desc_txt]        as [degree_name]
-        from Person_name [name]
+            [degree].[code_short_desc_txt]  as [degree_name]
+      from Person_name [name]
       
             join NBS_SRTE..Code_value_general [use] with (nolock) on
                     [use].[code_set_nm] = 'P_NM_USE'
@@ -42,9 +42,9 @@ class PatientNameDemographicFinder {
                     [degree].[code_set_nm] = 'P_NM_DEG'
                 and [degree].[code] = [name].nm_degree
       
-        where   [name].record_status_cd = 'ACTIVE'
+      where   [name].record_status_cd = 'ACTIVE'
             and [name].person_uid = ?
-        order by
+       order by
             [name].as_of_date desc,
             [name].[person_name_seq] desc
       """;

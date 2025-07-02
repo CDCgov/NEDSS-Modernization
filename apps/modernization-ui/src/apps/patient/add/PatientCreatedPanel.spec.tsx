@@ -22,7 +22,7 @@ describe('PatientCreatedPanel', () => {
     it('renders success message with patient name and ID', () => {
         const { getByText } = render(<PatientCreatedPanel created={createdPatient} />);
         expect(getByText(/You have successfully added a new patient/i)).toBeInTheDocument();
-        expect(getByText(/John Doe \(Patient ID: 123\)/i)).toBeInTheDocument();
+        expect(getByText(/Doe, John \(Patient ID: 123\)/i)).toBeInTheDocument();
     });
 
     it('renders success message without patient name when not provided', () => {

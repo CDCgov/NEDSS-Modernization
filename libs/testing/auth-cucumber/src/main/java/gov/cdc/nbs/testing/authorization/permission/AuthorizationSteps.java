@@ -54,6 +54,18 @@ public class AuthorizationSteps {
 
   }
 
+  @Given("I am a master system administrator")
+  public void systemAdmin() {
+    ActiveUser user = activeUser.active();
+    roleMother.systemAdmin(user.id());
+  }
+
+  @Given("I am a security administrator")
+  public void securityAdmin() {
+    ActiveUser user = activeUser.active();
+    roleMother.securityAdmin(user.id());
+  }
+
   @Given("I can {string} any {string} for {programArea} within all jurisdictions")
   public void authorize(
       final String operation,

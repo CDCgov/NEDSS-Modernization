@@ -7,7 +7,7 @@ import java.util.Collection;
 
 class PatientRaceDemographicMerger {
 
-  PatientRaceDemographic merge(final PatientRaceDemographic current, final PatientRaceDemographic next) {
+  static PatientRaceDemographic merge(final PatientRaceDemographic current, final PatientRaceDemographic next) {
 
     Collection<Selectable> detailed = CollectionMerge.merged(current.detailed(), next.detailed());
 
@@ -17,4 +17,9 @@ class PatientRaceDemographicMerger {
         detailed
     );
   }
+
+  private PatientRaceDemographicMerger() {
+    // static
+  }
+
 }

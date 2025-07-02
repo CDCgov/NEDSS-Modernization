@@ -1,12 +1,11 @@
 package gov.cdc.nbs.patient.file.demographics.race;
 
-import gov.cdc.nbs.accumulation.Accumulator;
-import org.springframework.jdbc.core.RowMapper;
+import gov.cdc.nbs.sql.AccumulatingResultSetExtractor;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.Collection;
 
 @Component
 class PatientRaceDemographicFinder {
@@ -29,32 +28,28 @@ class PatientRaceDemographicFinder {
       
       where   [person_race].[person_uid] = ?
           and [person_race].[record_status_cd] = 'ACTIVE'
+      
+      order by
+          [person_race].as_of_date desc,
+          [person_race].add_time desc
       """;
 
   private final JdbcClient client;
-  private final RowMapper<PatientRaceDemographic> mapper;
-  private final PatientRaceDemographicMerger merger;
+  private final ResultSetExtractor<Collection<PatientRaceDemographic>> extractor;
 
   PatientRaceDemographicFinder(final JdbcClient client) {
     this.client = client;
-    this.mapper = new PatientRaceDemographicRowMapper();
-    this.merger = new PatientRaceDemographicMerger();
+    this.extractor = new AccumulatingResultSetExtractor<>(
+        (resultSet, rowNum) -> resultSet.getString(2),
+        new PatientRaceDemographicRowMapper(),
+        PatientRaceDemographicMerger::merge
+    );
   }
 
-  List<PatientRaceDemographic> find(final long patient) {
+  Collection<PatientRaceDemographic> find(final long patient) {
     return this.client.sql(QUERY)
         .param(patient)
-        .query(this.mapper)
-        .list()
-        .stream()
-        .collect(
-            Accumulator.collecting(
-                PatientRaceDemographic::race,
-                merger::merge
-            )
-        ).stream()
-        .sorted(Comparator.comparing(PatientRaceDemographic::asOf).reversed())
-        .toList();
+        .query(this.extractor);
   }
 
 

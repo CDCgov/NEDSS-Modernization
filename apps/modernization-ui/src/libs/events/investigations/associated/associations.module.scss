@@ -1,0 +1,10 @@
+.associations {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .association {
+        display: flex;
+        flex-direction: column;
+    }
+}
