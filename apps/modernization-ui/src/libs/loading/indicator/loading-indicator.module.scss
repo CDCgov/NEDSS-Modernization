@@ -1,0 +1,34 @@
+@use 'styles/colors';
+
+.indicator {
+    place-self: center;
+
+    display: inline-block;
+    border: 0.35rem solid colors.$base-lighter;
+    border-top-color: colors.$base-darker;
+    border-radius: 50%;
+    height: 3.125rem;
+    width: 3.125rem;
+    animation: spin 1.5s linear infinite;
+    z-index: 10000;
+
+    .screen-reader {
+        clip: rect(0, 0, 0, 0);
+        word-wrap: normal;
+        border: 0;
+        height: 1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

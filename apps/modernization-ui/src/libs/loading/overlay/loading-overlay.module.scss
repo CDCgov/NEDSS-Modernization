@@ -1,0 +1,14 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'container';
+    overflow: hidden;
+
+    & > * {
+        grid-area: container;
+    }
+}
+
+.content {
+    filter: blur(1px);
+}
