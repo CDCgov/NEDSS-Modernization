@@ -4,10 +4,10 @@ import { SexBirthDemographicView } from './SexBirthDemographicView';
 const noop = () => undefined;
 
 describe('SexBirthDemographicView', () => {
-    it('should display "Sex & birth information as of" when present', () => {
+    it('should display "As of" when present', () => {
         render(<SexBirthDemographicView ageResolver={noop} demographic={{ asOf: '2020-03-17' }} />);
 
-        const actual = screen.getByRole('definition', { name: 'Sex & birth information as of' });
+        const actual = screen.getByRole('definition', { name: 'As of' });
 
         expect(actual).toHaveTextContent('03/17/2020');
     });
