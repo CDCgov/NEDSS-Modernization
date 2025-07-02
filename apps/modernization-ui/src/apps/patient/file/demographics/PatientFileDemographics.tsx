@@ -8,6 +8,7 @@ import { PatientFileEthnicityCard } from './ethnicity/PatientFileEthnicityCard';
 import { PatientFileSexBirthCard } from './sex-birth';
 
 import styles from './patient-file-demographics.module.scss';
+import { PatientFileGeneralInformationCard } from './general';
 
 const PatientFileDemographics = () => {
     const { id, demographics } = usePatientFileData();
@@ -30,7 +31,13 @@ const PatientFileDemographics = () => {
                     sizing={sizing}
                 />
             </span>
-            <span data-half>{/* general here */}</span>
+            <span data-half>
+                <PatientFileGeneralInformationCard
+                    id="patient-file-general"
+                    provider={demographics.get().general}
+                    sizing={sizing}
+                />
+            </span>
         </div>
     );
 };
