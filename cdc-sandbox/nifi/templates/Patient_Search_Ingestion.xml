@@ -1246,6 +1246,7 @@ to the most recent record when NiFi is first started</label>
     </entry>
     <entry>
         <key>db-fetch-where-clause</key>
+        <value>add_time &lt;&gt; last_chg_time and cd = 'PAT'</value>
     </entry>
     <entry>
         <key>db-fetch-sql-query</key>
@@ -2159,7 +2160,7 @@ WHERE
     </entry>
     <entry>
         <key>Maximum-value Columns</key>
-        <value>person_parent_uid</value>
+        <value>add_time</value>
     </entry>
     <entry>
         <key>Max Wait Time</key>
@@ -2175,7 +2176,7 @@ WHERE
     </entry>
     <entry>
         <key>db-fetch-where-clause</key>
-        <value>person_uid = person_parent_uid</value>
+        <value>person_uid = person_parent_uid and cd = 'PAT'</value>
     </entry>
     <entry>
         <key>gen-table-custom-orderby-column</key>
@@ -3183,7 +3184,7 @@ WHERE
     </entry>
     <entry>
         <key>SQL select query</key>
-        <value>select count(distinct person_parent_uid) row_count from person WITH(NOLOCK)</value>
+        <value>select count(person_parent_uid) row_count from person WITH(NOLOCK) where person_uid = person_parent_uid and cd = 'PAT'</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -6301,17 +6302,17 @@ WITH
         SELECT
       (
             SELECT
-        STRING_ESCAPE(pl.street_addr1, 'json') streetAddr1,
-        STRING_ESCAPE(pl.street_addr2, 'json') streetAddr2,
-        STRING_ESCAPE(pl.city_desc_txt, 'json') city,
+        STRING_ESCAPE(UPPER(pl.street_addr1), 'json') streetAddr1,
+        STRING_ESCAPE(UPPER(pl.street_addr2), 'json') streetAddr2,
+        STRING_ESCAPE(UPPER(pl.city_desc_txt), 'json') city,
         pl.zip_cd zip,
         pl.cnty_cd cntyCd,
         pl.state_cd state,
         pl.cntry_cd cntryCd,
-        [county].code_desc_txt cntyText,
-        [state].state_nm stateText,
-        [country].code_short_desc_txt cntryText,
-        trim(string_escape(isNull(pl.street_addr1, '') + ' ' + isNull(pl.street_addr2, '') + ' ' + isNull(pl.city_desc_txt, '') + ' ' + isNull([state].state_nm, '')  + ' ' + isNull(pl.zip_cd, ''),'json')) as [full]
+        UPPER([county].code_desc_txt) cntyText,
+        UPPER([state].state_nm) stateText,
+        UPPER([country].code_short_desc_txt) cntryText,
+        trim(string_escape(isNull(UPPER(pl.street_addr1), '') + ' ' + isNull(UPPER(pl.street_addr2), '') + ' ' + isNull(UPPER(pl.city_desc_txt), '') + ' ' + isNull(UPPER([state].state_nm), '')  + ' ' + isNull(pl.zip_cd, ''),'json')) as [full]
       FROM
         Entity_locator_participation elp WITH (NOLOCK)
         JOIN Postal_locator pl WITH (NOLOCK) ON 
@@ -6364,7 +6365,7 @@ WITH
         SELECT
       (
             SELECT
-        STRING_ESCAPE(tl.email_address, 'json') emailAddress
+        STRING_ESCAPE(UPPER(tl.email_address), 'json') emailAddress
       FROM
         Entity_locator_participation elp WITH (NOLOCK)
         JOIN Tele_locator tl WITH (NOLOCK) ON 
@@ -6387,20 +6388,20 @@ WITH
     (
         SELECT (
           SELECT
-        STRING_ESCAPE(REPLACE(pn.last_nm,'-',' '), 'json') lastNm,
+        STRING_ESCAPE(REPLACE(UPPER(pn.last_nm),'-',' '), 'json') lastNm,
         soundex(pn.last_nm) lastNmSndx,
-        STRING_ESCAPE(pn.middle_nm, 'json') middleNm,
-        STRING_ESCAPE(pn.first_nm, 'json') firstNm,
+        STRING_ESCAPE(UPPER(pn.middle_nm), 'json') middleNm,
+        STRING_ESCAPE(UPPER(pn.first_nm), 'json') firstNm,
         soundex(pn.first_nm) firstNmSndx,
         pn.nm_use_cd,
-        pn.nm_suffix nmSuffix,
+        UPPER(pn.nm_suffix) nmSuffix,
         trim(
           string_escape(
               replace(
-                isNull(pn.last_nm, '') + ' ' 
-              + isNull(pn.first_nm, '') + ' ' 
-              + isNull(pn.middle_nm, '') + ' ' 
-              + isNull([suffix].code_short_desc_txt, ''),
+                isNull(UPPER(pn.last_nm), '') + ' ' 
+              + isNull(UPPER(pn.first_nm), '') + ' ' 
+              + isNull(UPPER(pn.middle_nm), '') + ' ' 
+              + isNull(UPPER([suffix].code_short_desc_txt), ''),
               '-', ' '
             ),
             'json'
@@ -6441,7 +6442,7 @@ WITH
       (
         SELECT
         ei.type_cd typeCd,
-        STRING_ESCAPE(REPLACE(REPLACE(ei.root_extension_txt,'-',''),' ',''), 'json') rootExtensionTxt
+        STRING_ESCAPE(REPLACE(REPLACE(UPPER(ei.root_extension_txt),'-',''),' ',''), 'json') rootExtensionTxt
       FROM
         entity_id ei WITH (NOLOCK)
       WHERE ei.entity_uid = p.person_uid
@@ -6468,6 +6469,7 @@ AS nested,
 
 WHERE p.person_uid = p.person_parent_uid
   and p.person_uid in (${person_ids})
+  and p.cd = 'PAT'
  ;
 </value>
     </entry>
@@ -7315,7 +7317,7 @@ WHERE p.person_uid = p.person_parent_uid
 <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>3</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>Regular Expression</key>
@@ -7622,7 +7624,7 @@ to the most recent record when NiFi is first started</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>Person Race Observer</name>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <processors>
@@ -7848,7 +7850,7 @@ FROM
 <name>success</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryDatabaseTable</type>
                         </processors>
@@ -7951,7 +7953,7 @@ FROM
 <name>unmatched</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                         </processors>
@@ -8028,7 +8030,7 @@ FROM
 <name>success</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.avro.ConvertAvroToJSON</type>
                         </processors>
@@ -8167,7 +8169,7 @@ to the most recent record when NiFi is first started</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>Person Name Observer</name>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <processors>
@@ -8269,7 +8271,7 @@ to the most recent record when NiFi is first started</label>
 <name>unmatched</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                         </processors>
@@ -8496,7 +8498,7 @@ JOIN person p WITH (NOLOCK) ON person_name.person_uid = p.person_uid
 <name>success</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryDatabaseTable</type>
                         </processors>
@@ -8573,7 +8575,7 @@ JOIN person p WITH (NOLOCK) ON person_name.person_uid = p.person_uid
 <name>success</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.avro.ConvertAvroToJSON</type>
                         </processors>
@@ -8712,7 +8714,7 @@ to the most recent record when NiFi is first started</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>Person Locator Observer</name>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <processors>
@@ -8814,7 +8816,7 @@ to the most recent record when NiFi is first started</label>
 <name>unmatched</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                         </processors>
@@ -9042,7 +9044,7 @@ FROM
 <name>success</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryDatabaseTable</type>
                         </processors>
@@ -9119,7 +9121,7 @@ FROM
 <name>success</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.avro.ConvertAvroToJSON</type>
                         </processors>
@@ -9258,7 +9260,7 @@ to the most recent record when NiFi is first started</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>Person Identification Observer</name>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <processors>
@@ -9360,7 +9362,7 @@ to the most recent record when NiFi is first started</label>
 <name>unmatched</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                         </processors>
@@ -9437,7 +9439,7 @@ to the most recent record when NiFi is first started</label>
 <name>success</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.avro.ConvertAvroToJSON</type>
                         </processors>
@@ -9664,7 +9666,7 @@ FROM
 <name>success</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>DISABLED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryDatabaseTable</type>
                         </processors>
@@ -9760,5 +9762,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/26/2025 18:01:53 UTC</timestamp>
+    <timestamp>07/01/2025 18:10:33 UTC</timestamp>
 </template>

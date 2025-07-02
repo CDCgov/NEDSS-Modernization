@@ -26,9 +26,9 @@ export const AdministrativeInformationCard = ({
             collapsible={collapsible}
             open={Boolean(data?.comment)}
             sizing={sizing}>
-            <OrElseNoData>
-                <div className={styles.content}>{data?.comment}</div>
-            </OrElseNoData>
+            <div className={styles.content}>
+                <OrElseNoData>{data?.comment}</OrElseNoData>
+            </div>
         </Card>
     );
 };

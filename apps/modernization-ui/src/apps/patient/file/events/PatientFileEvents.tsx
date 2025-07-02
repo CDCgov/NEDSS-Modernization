@@ -1,6 +1,6 @@
 import { InvestigationsCard } from './investigations';
 import { usePatient } from '../usePatient';
-import { LabReportsCard } from './labReports';
+import { LabReportsCard } from './reports/laboratory';
 
 const PatientFileEvents = () => {
     const { id } = usePatient();

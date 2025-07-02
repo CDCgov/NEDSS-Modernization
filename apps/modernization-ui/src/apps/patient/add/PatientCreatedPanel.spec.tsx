@@ -22,7 +22,14 @@ describe('PatientCreatedPanel', () => {
     it('renders success message with patient name and ID', () => {
         const { getByText } = render(<PatientCreatedPanel created={createdPatient} />);
         expect(getByText(/You have successfully added a new patient/i)).toBeInTheDocument();
-        expect(getByText(/John Doe \(Patient ID: 123\)/i)).toBeInTheDocument();
+        expect(getByText(/Doe, John \(Patient ID: 123\)/i)).toBeInTheDocument();
+    });
+
+    it('renders success message without patient name when not provided', () => {
+        const noNamePatient = { ...createdPatient, name: undefined };
+        const { getByText, queryByText } = render(<PatientCreatedPanel created={noNamePatient} />);
+        expect(queryByText('the patient (Patient ID')).not.toBeInTheDocument();
+        expect(getByText(/\(Patient ID: 123\)/i)).toBeInTheDocument();
     });
 
     it('renders Add lab report button when permission is granted', () => {

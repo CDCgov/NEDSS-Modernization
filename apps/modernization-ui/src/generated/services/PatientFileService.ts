@@ -13,6 +13,7 @@ import type { PatientFile } from '../models/PatientFile';
 import type { PatientGeneralInformationDemographic } from '../models/PatientGeneralInformationDemographic';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientInvestigation } from '../models/PatientInvestigation';
+import type { PatientLabReport } from '../models/PatientLabReport';
 import type { PatientMortalityDemographic } from '../models/PatientMortalityDemographic';
 import type { PatientNameDemographic } from '../models/PatientNameDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
@@ -44,6 +45,25 @@ export class PatientFileService {
             },
             errors: {
                 400: `The race category is already present on the patient`,
+            },
+        });
+    }
+    /**
+     * Patient File Laboratory Reports
+     * Provides Documents Requiring Review for a patient
+     * @returns PatientLabReport OK
+     * @throws ApiError
+     */
+    public static laboratoryReports({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientLabReport>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/reports/laboratory',
+            path: {
+                'patient': patient,
             },
         });
     }

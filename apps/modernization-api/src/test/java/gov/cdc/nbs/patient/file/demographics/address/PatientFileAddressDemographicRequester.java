@@ -1,41 +1,22 @@
 package gov.cdc.nbs.patient.file.demographics.address;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.testing.interaction.http.Authenticated;
+import gov.cdc.nbs.testing.interaction.http.AuthenticatedMvcRequester;
 import org.springframework.stereotype.Component;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
 class PatientFileAddressDemographicRequester {
 
-  private final MockMvc mvc;
-  private final Authenticated authenticated;
+  private final AuthenticatedMvcRequester authenticated;
 
-  PatientFileAddressDemographicRequester(
-      final MockMvc mvc,
-      final Authenticated authenticated
-  ) {
-    this.mvc = mvc;
+  PatientFileAddressDemographicRequester(final AuthenticatedMvcRequester authenticated) {
     this.authenticated = authenticated;
   }
 
   ResultActions request(final PatientIdentifier patient) {
-    try {
-      return mvc.perform(
-          this.authenticated.withUser(
-              get("/nbs/api/patients/{patient}/demographics/addresses", patient.id())
-
-          )
-      ).andDo(print());
-    } catch (Exception exception) {
-      throw new IllegalStateException(
-          "An unexpected error occurred when viewing the patient address demographics.",
-          exception
-      );
-    }
+    return authenticated.request(get("/nbs/api/patients/{patient}/demographics/addresses", patient.id()));
   }
 }

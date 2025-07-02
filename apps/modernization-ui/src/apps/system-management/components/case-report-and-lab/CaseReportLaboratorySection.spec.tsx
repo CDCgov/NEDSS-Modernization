@@ -66,4 +66,9 @@ describe('CaseReportLaboratorySection', () => {
             })
         );
     });
+
+    it('shows reset button when filtering by "cache"', () => {
+        setup('cache');
+        expect(screen.getByRole('button', { name: /reset lab mapping cache/i })).toBeInTheDocument();
+    });
 });
