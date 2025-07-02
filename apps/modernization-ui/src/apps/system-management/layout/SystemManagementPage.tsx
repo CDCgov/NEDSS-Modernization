@@ -48,7 +48,7 @@ const SystemManagementPage = () => {
                 <div className={styles.column}>
                     <PersonMatchSection filter={filter} />
                     <ReportSection filter={filter} />
-                    <SecuritySection filter={filter} />
+                    {!!SecuritySection && <SecuritySection filter={filter} />}
                 </div>
             </div>
         </div>
