@@ -18,22 +18,20 @@ class GrantedAuthorityFinder {
       FROM
         (
           SELECT
-            CASE
-              WHEN master_sec_admin_ind = 'T' THEN 'ADMINISTRATOR-SYSTEM'
-            END AS grantedAuthority
+            'ADMINISTRATOR-SYSTEM' grantedAuthority
           FROM
             auth_user
           WHERE
             nedss_entry_id = :identifier
+            AND master_sec_admin_ind = 'T'
           UNION
           SELECT
-            CASE
-              WHEN prog_area_admin_ind = 'T' THEN 'ADMINISTRATOR-SECURITY'
-            END AS grantedAuthority
+            'ADMINISTRATOR-PROGRAMAREA' grantedAuthority
           FROM
             auth_user
           WHERE
             nedss_entry_id = :identifier
+            AND prog_area_admin_ind = 'T'
           UNION
           SELECT
             DISTINCT operationType.bus_op_nm + '-' + objectType.bus_obj_nm
