@@ -44,6 +44,7 @@ export const permissions = {
         ],
         page: 'LDFADMINISTRATION-SYSTEM',
         personMatch: 'MERGE-PATIENT',
-        report: 'REPORTADMIN-SYSTEM'
+        report: 'REPORTADMIN-SYSTEM',
+        security: 'SECURITYADMINISTRATION-SYSTEM'
     }
 };
