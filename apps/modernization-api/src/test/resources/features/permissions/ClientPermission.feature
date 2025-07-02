@@ -51,17 +51,10 @@ Feature: Permissions are available on the client
   Scenario Outline: A user is a master system administrator
     And I am a master system administrator
     When I access NBS from the client
-    Then I am able to <operation> <object> from the client
-
-    Examples:
-      | operation | object            |
-      | "ADMINISTRATOR"    | "SYSTEM" |
+    Then I am able to "ADMINISTRATOR" "SYSTEM" from the client
   
   Scenario Outline: A user is a security administrator
     And I am a security administrator
     When I access NBS from the client
-    Then I am able to <operation> <object> from the client
+    Then I am able to "ADMINISTRATOR" "SECURITY" from the client
 
-    Examples:
-      | operation | object            |
-      | "ADMINISTRATOR"    | "SECURITY" |

@@ -26,7 +26,7 @@ class GrantedAuthorityFinder {
             AND master_sec_admin_ind = 'T'
           UNION
           SELECT
-            'ADMINISTRATOR-PROGRAMAREA' grantedAuthority
+            'ADMINISTRATOR-SECURITY' grantedAuthority
           FROM
             auth_user
           WHERE
