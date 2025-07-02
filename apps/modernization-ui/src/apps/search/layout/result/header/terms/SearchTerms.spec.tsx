@@ -77,6 +77,4 @@ describe('SearchTerms', () => {
         const resultsCountDiv = getByLabelText('1 Result has been found');
         expect(resultsCountDiv).toBeInTheDocument();
     });
-
-
 });
