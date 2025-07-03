@@ -1,28 +1,29 @@
-import { Sizing } from 'design-system/field';
-import { usePatientFilePhoneEmail } from './usePatientFilePhoneEmail';
-import { PhoneEmailDemographicCard } from 'libs/patient/demographics/phoneEmail/PhoneEmailDemographicCard';
-import { Shown } from 'conditional-render';
-import { LoadingCard } from 'libs/loading';
+import {
+    PhoneEmailDemographicCard,
+    PhoneEmailDemographicCardProps
+} from 'libs/patient/demographics/phoneEmail/PhoneEmailDemographicCard';
+import { LoadingOverlay } from 'libs/loading';
+import { Suspense } from 'react';
+import { Await } from 'react-router';
+import { PhoneEmailDemographic } from 'libs/patient/demographics/phoneEmail/phoneEmails';
+import { MemoizedSupplier } from 'libs/supplying';
 
 type PatientFilePhoneEmailProps = {
-    patient: number;
-    sizing?: Sizing;
-};
+    provider: MemoizedSupplier<Promise<Array<PhoneEmailDemographic>>>;
+} & Omit<PhoneEmailDemographicCardProps, 'title'>;
 
-const PatientFilePhoneEmailCard = ({ patient, sizing }: PatientFilePhoneEmailProps) => {
-    const { data, isLoading } = usePatientFilePhoneEmail(patient);
-
+const PatientFilePhoneEmailCard = ({ provider, ...remaining }: PatientFilePhoneEmailProps) => {
     return (
-        <Shown
-            when={!isLoading}
-            fallback={<LoadingCard id="loading-phone-emails" title="Phone & email" sizing={sizing} />}>
-            <PhoneEmailDemographicCard
-                data={data}
-                sizing={sizing}
-                title="Phone & email"
-                id="patient-file-phone-email-demographic"
-            />
-        </Shown>
+        <Suspense
+            fallback={
+                <LoadingOverlay>
+                    <PhoneEmailDemographicCard data={undefined} title="Phone & email" {...remaining} />
+                </LoadingOverlay>
+            }>
+            <Await resolve={provider.get()}>
+                {(resolved) => <PhoneEmailDemographicCard data={resolved} title="Phone & email" {...remaining} />}
+            </Await>
+        </Suspense>
     );
 };
 

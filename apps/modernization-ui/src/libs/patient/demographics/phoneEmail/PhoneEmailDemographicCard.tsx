@@ -98,3 +98,5 @@ const PhoneEmailDemographicCard = ({
 };
 
 export { PhoneEmailDemographicCard };
+
+export type { PhoneEmailDemographicCardProps };

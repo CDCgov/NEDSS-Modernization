@@ -19,7 +19,11 @@ const PatientFileDemographics = () => {
         <div className={styles.container}>
             <PatientFileAdministrativeInformationCard patient={id} sizing={sizing} />
             <PatientFileNameCard patient={id} sizing={sizing} />
-            <PatientFilePhoneEmailCard patient={id} sizing={sizing} />
+            <PatientFilePhoneEmailCard
+                id="patient-file-phone-email"
+                sizing={sizing}
+                provider={demographics.get().phoneEmail}
+            />
             <PatientFileAddressCard patient={id} sizing={sizing} />
             <PatientFileIdentificationsCard patient={id} sizing={sizing} />
             <span data-half>
