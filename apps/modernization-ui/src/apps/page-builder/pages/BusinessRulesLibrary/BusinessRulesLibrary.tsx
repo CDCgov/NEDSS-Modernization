@@ -5,7 +5,7 @@ import { Breadcrumb } from 'breadcrumb';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { Status, usePagination } from 'pagination';
 import { BusinessRuleSort, RuleSortField, useFetchPageRules } from 'apps/page-builder/hooks/api/useFetchPageRules';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { useDownloadPageLibrary } from 'apps/page-builder/hooks/api/useDownloadPageLibrary';
 import { Direction } from 'libs/sorting';
 

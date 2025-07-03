@@ -1,5 +1,5 @@
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import {
     PageHeader,
     PageManagementLayout,

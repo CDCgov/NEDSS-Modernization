@@ -1,5 +1,5 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { CreateCodedQuestionRequest } from 'apps/page-builder/generated';
 import { CreateQuestionRequest, useCreateQuestion } from 'apps/page-builder/hooks/api/useCreateQuestion';
 import classNames from 'classnames';

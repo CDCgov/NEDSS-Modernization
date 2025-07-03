@@ -4,12 +4,13 @@ import userEvent from '@testing-library/user-event';
 import { Permitted } from 'libs/permission';
 import { DeleteAction } from './DeleteAction';
 import { useDeletePatient } from './useDeletePatient';
+import { AlertProvider } from 'libs/alert';
 
 const mockShowSuccess = jest.fn();
 const mockShowError = jest.fn();
 const mockGo = jest.fn();
 
-jest.mock('alert', () => ({
+jest.mock('libs/alert', () => ({
     useAlert: () => ({
         showSuccess: mockShowSuccess,
         showError: mockShowError

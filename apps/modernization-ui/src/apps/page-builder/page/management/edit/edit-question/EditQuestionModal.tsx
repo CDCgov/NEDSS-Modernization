@@ -1,5 +1,5 @@
 import { Button, Modal, ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { PagesQuestion } from 'apps/page-builder/generated';

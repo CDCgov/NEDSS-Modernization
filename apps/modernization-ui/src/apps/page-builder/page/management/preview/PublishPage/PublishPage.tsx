@@ -1,5 +1,5 @@
 import { Button, ErrorMessage, Form, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { PageInformationService, PagePublishControllerService, SelectableCondition } from 'apps/page-builder/generated';
 import { Dispatch, RefObject, SetStateAction, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';

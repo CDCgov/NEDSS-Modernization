@@ -1,5 +1,5 @@
 import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import {
     PageRuleControllerService,
     PagesQuestion,

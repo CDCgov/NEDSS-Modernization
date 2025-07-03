@@ -1,5 +1,5 @@
 import { Button, Form, ModalRef, ModalToggleButton, Radio } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { createCondition } from 'apps/page-builder/services/conditionAPI';
 import { fetchProgramAreaOptions } from 'apps/page-builder/services/programAreaAPI';
 import {

@@ -1,4 +1,4 @@
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';

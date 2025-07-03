@@ -1,5 +1,5 @@
 import { Button, Form, Modal, ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 import { ImportTemplate } from 'apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';

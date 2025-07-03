@@ -1,5 +1,5 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { CreateValuesetRequest, ValueSetControllerService, Valueset } from 'apps/page-builder/generated';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ButtonBar } from '../ButtonBar/ButtonBar';

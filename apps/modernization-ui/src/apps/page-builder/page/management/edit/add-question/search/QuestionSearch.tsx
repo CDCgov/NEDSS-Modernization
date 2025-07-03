@@ -8,7 +8,7 @@ import { QuestionSearchTable } from './table/QuestionSearchTable';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
 import styles from './question-search.module.scss';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 
 type Props = {
     pageId: number;

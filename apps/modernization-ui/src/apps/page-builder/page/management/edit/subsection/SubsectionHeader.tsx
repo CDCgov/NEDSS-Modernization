@@ -1,5 +1,5 @@
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 import { PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { AddStaticElement } from 'apps/page-builder/page/management/edit/staticelement/AddStaticElement';

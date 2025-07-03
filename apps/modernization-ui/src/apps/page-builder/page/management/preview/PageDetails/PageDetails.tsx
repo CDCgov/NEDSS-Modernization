@@ -10,7 +10,7 @@ import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { LinkButton } from 'components/button';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { useGetPageDetails } from 'apps/page-builder/page/management/useGetPageDetails';

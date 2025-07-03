@@ -7,7 +7,7 @@ import { ConceptForm } from './concept/ConceptForm';
 import { FormProvider, useForm, useFormState } from 'react-hook-form';
 import { useUpdateConcept } from 'apps/page-builder/hooks/api/useUpdateConcept';
 import { useEffect } from 'react';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { externalizeDateTime } from 'date/ExternalizeDateTime';
 import { internalizeDate } from 'date';
 

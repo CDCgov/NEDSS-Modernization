@@ -1,5 +1,4 @@
 import { ComponentType, ReactNode } from 'react';
-import { useAlert } from 'alert';
 import { Button } from 'design-system/button';
 import { Hint } from 'design-system/hint';
 import { Icon } from 'design-system/icon';
@@ -11,6 +10,7 @@ import { DeletePatientResponse, useDeletePatient } from './useDeletePatient';
 import { Permitted, permissions } from 'libs/permission';
 import { Deletability, Patient } from '../patient';
 import { displayName } from 'name';
+import { useAlert } from 'libs/alert';
 
 type DeleteActionProps = {
     patient: Patient;
