@@ -1,4 +1,5 @@
 import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
+import { Permitted } from '../../../../libs/permission';
 
 const decisionSupportLinks = [
     {
@@ -21,11 +22,13 @@ type Props = {
 
 export const DecisionSupportSection = ({ filter }: Props) => {
     return (
-        <SystemManagementInfoCard
-            id="decision-support"
-            title="Decision support"
-            filter={filter}
-            links={decisionSupportLinks}
-        />
+        <Permitted permission={'DECISIONSUPPORTADMIN-SYSTEM'}>
+            <SystemManagementInfoCard
+                id="decision-support"
+                title="Decision support"
+                filter={filter}
+                links={decisionSupportLinks}
+            />
+        </Permitted>
     );
 };
