@@ -16,17 +16,23 @@ public class ResultedTestResolver {
 
   private static final String QUERY = """
       select
-              [lab_result_components].target_act_uid      as [observation],
-              [lab_test].lab_test_desc_txt                as [name],
-              [lab_result_status].[code_short_desc_txt]   as [status],
-              [coded_result].lab_result_desc_txt          as [coded],
-              [numeric].comparator_cd_1                   as [comparator],
-              [numeric].numeric_value_1                   as [numeric],
-              [numeric].numeric_scale_1                   as [scale],
-              [numeric].high_range                        as [high_range],
-              [numeric].low_range                         as [low_range],
-              [numeric].numeric_unit_cd                   as [unit],
-              [text].value_txt                            as [text]
+          [lab_result_components].target_act_uid          as [observation],
+          coalesce(
+                  [lab_test].lab_test_desc_txt,
+                  [lab_result].cd_desc_txt
+          )                                               as [name],
+          [lab_result_status].[code_short_desc_txt]       as [status],
+          coalesce(
+                  [coded_result].lab_result_desc_txt,
+                  [coded].display_name
+          )                                               as [coded],
+          [numeric].comparator_cd_1                       as [comparator],
+          [numeric].numeric_value_1                       as [numeric],
+          [numeric].numeric_scale_1                       as [scale],
+          [numeric].high_range                            as [high_range],
+          [numeric].low_range                             as [low_range],
+          [numeric].numeric_unit_cd                       as [unit],
+          [text].value_txt                                as [text]
       from  Act_relationship [lab_result_components]
               join observation [lab_result] with (nolock) on
                           [lab_result].observation_uid = [lab_result_components].[source_act_uid]

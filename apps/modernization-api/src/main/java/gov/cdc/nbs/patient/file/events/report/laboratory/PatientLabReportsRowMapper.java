@@ -88,6 +88,6 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
     String source = resultSet.getString(this.columns.specimenSource());
     String site = resultSet.getString(this.columns.specimenSite());
 
-    return (source != null || site != null) ? new PatientLabReport.Specimen(source, site) : null;
+    return (source != null || site != null) ? new PatientLabReport.Specimen(site, source) : null;
   }
 }
