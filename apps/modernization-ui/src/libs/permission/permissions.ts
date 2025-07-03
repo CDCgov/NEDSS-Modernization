@@ -34,7 +34,6 @@ export const permissions = {
         merge: 'MERGE-PATIENT'
     },
     system: {
-        reportAdmin: 'REPORTADMIN-SYSTEM',
         caseReport: 'SRTADMIN-SYSTEM',
         decisionSupport: 'ALERTADMIN-SYSTEM',
         epiLink: 'EPILINKADMIN-SYSTEM',
