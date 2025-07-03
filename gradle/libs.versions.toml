@@ -15,6 +15,7 @@ springBoot = { module = 'org.springframework.boot:spring-boot-starter', version.
 springBoot-jdbc = { module = 'org.springframework.boot:spring-boot-starter-jdbc', version.ref = 'springBoot' }
 springBoot-jpa = { module = 'org.springframework.boot:spring-boot-starter-data-jpa', version.ref = 'springBoot' }
 springBoot-web = { module = 'org.springframework.boot:spring-boot-starter-web', version.ref = 'springBoot' }
+springBoot-actuator = {module='org.springframework.boot:spring-boot-starter-actuator', version.ref= 'springBoot'}
 graphql = { module = 'com.graphql-java:graphql-java', version = '22.3' }
 springBoot-graphql = { module = 'org.springframework.boot:spring-boot-starter-graphql', version.ref = 'springBoot' }
 spring-kafka = { module = 'org.springframework.kafka:spring-kafka', version.ref = 'spring-kafka' }

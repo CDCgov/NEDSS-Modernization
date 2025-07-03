@@ -18,7 +18,7 @@ public class PatientFileIdentificationDemographicVerificationSteps {
 
   @Then(
       "the patient file identification demographics includes a(n) {identificationType} of {string} as of {localDate}")
-  public void includesIdentification(
+  public void includes(
       final String type,
       final String value,
       final LocalDate asOf
@@ -33,7 +33,7 @@ public class PatientFileIdentificationDemographicVerificationSteps {
   }
 
   @Then("the patient file identification demographics includes a(n) {identificationType} issued by {assigningAuthority}")
-  public void includesIdentification(
+  public void includes(
       final String type,
       final String issuer
   ) throws Exception {
@@ -46,4 +46,20 @@ public class PatientFileIdentificationDemographicVerificationSteps {
         );
   }
 
+
+  @Then(
+      "the {nth} identification demographics on the patient file includes a(n) {identificationType} of {string} as of {localDate}")
+  public void includesNth(
+      final int nth,
+      final String type,
+      final String value,
+      final LocalDate asOf
+  ) throws Exception {
+    int position = nth - 1;
+
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].type.value", position).value(type))
+        .andExpect(jsonPath("$.[%d].value", position).value(value))
+        .andExpect(jsonPath("$.[%d].asOf", position).value(asOf.toString()));
+  }
 }

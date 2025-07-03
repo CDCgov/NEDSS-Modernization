@@ -50,6 +50,7 @@ dependencies {
 
     implementation libs.bundles.security
     implementation libs.springBoot.web
+    implementation libs.springBoot.actuator
 
     // graphql
     implementation libs.bundles.graphql

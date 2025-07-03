@@ -6,6 +6,7 @@ import type { Selectable } from './Selectable';
 export type PatientSexBirthDemographic = {
     asOf?: string;
     bornOn?: string;
+    deceasedOn?: string;
     sex?: Selectable;
     multiple?: Selectable;
     order?: number;

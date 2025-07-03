@@ -9,6 +9,7 @@ import java.time.LocalDate;
 record PatientSexBirthDemographic(
     LocalDate asOf,
     LocalDate bornOn,
+    LocalDate deceasedOn,
     Selectable sex,
     Selectable multiple,
     Integer order,

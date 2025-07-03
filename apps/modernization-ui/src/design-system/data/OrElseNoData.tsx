@@ -5,8 +5,6 @@ type OrElseNoDataProps = {
     children: ReactNode;
 };
 
-const OrElseNoData = ({ children }: OrElseNoDataProps) => {
-    return <>{children ? children : <NoData />}</>;
-};
+const OrElseNoData = ({ children }: OrElseNoDataProps) => (children ? children : <NoData />);
 
 export { OrElseNoData };

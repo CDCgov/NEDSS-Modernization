@@ -13,6 +13,7 @@ class PatientSexBirthDemographicFinder {
       select
           [patient].as_of_date_sex                as [as_of],
           [patient].[birth_time]                  as [born_on],
+          [patient].deceased_time                 as [deceased_on],
           [patient].birth_gender_cd               as [birth_gender_value],
           [birth_gender].[code_short_desc_txt]    as [birth_gender_name],
           [patient].multiple_birth_ind            as [multiple_birth_value],

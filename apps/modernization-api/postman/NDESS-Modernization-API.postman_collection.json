@@ -1334,13 +1334,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base}}/nbs/api/health",
+					"raw": "{{base}}/nbs/api/~/health",
 					"host": [
 						"{{base}}"
 					],
 					"path": [
 						"nbs",
 						"api",
+						"~",
 						"health"
 					]
 				}
@@ -1361,13 +1362,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base}}/nbs/api/info",
+					"raw": "{{base}}/nbs/api/~/info",
 					"host": [
 						"{{base}}"
 					],
 					"path": [
 						"nbs",
 						"api",
+						"~",
 						"info"
 					]
 				}

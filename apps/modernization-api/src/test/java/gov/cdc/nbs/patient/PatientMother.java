@@ -63,9 +63,37 @@ public class PatientMother {
       
       delete from person_hist where person_uid in (:identifiers);
       
+      -- Remove any revisions
+      declare @revisions table (
+          person_uid bigint not null
+      );
+      
+      insert into @revisions
+      select
+          person_uid
+      from [Person]
+      where person_parent_uid in (:identifiers)
+        and person_parent_uid <> person_uid;
+      
+      delete [names] from @revisions [revision]
+          join  person_name [names] on
+                  [names].[person_uid] = [revision].[person_uid];
+      
+      delete Person from @revisions [revision]
+          join  Person on
+                  Person.[person_uid] = [revision].[person_uid];
+      
+      delete Participation from @revisions [revision]
+          join  Participation on
+                  [subject_entity_uid] = [revision].[person_uid];
+      
+      delete Entity from @revisions [revision]
+        join  Entity on
+          [entity_uid] = [revision].[person_uid];
+      
       --  Remove the Patient
       
-            delete from [locator]
+      delete from [locator]
       from [Tele_locator] [locator]
           join [Entity_locator_participation] [participation] on
                   [locator].[tele_locator_uid] = [participation].[locator_uid]
@@ -88,6 +116,8 @@ public class PatientMother {
       delete from Person_Name where person_uid in (:identifiers);
       
       delete from person where person_uid in (:identifiers);
+      
+      delete from entity where entity_uid in (:identifiers);
       """;
 
   private final Faker faker;
@@ -365,7 +395,7 @@ public class PatientMother {
             asOf,
             race,
             this.settings.createdBy(),
-            this.settings.createdOn()
+            LocalDateTime.now()
         )
     );
   }

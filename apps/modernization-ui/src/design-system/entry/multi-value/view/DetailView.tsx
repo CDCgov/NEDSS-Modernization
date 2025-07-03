@@ -22,7 +22,7 @@ const DetailView = ({ className, children }: DetailViewProps) => {
 
 type DetailValueProps = {
     label: string;
-    children?: string;
+    children?: number | string | null;
 };
 
 const DetailValue = ({ label, children }: DetailValueProps) => {

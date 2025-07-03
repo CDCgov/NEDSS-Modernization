@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 class PatientRaceDemographicController {
@@ -25,7 +25,7 @@ class PatientRaceDemographicController {
   )
   @GetMapping("/nbs/api/patients/{patient}/demographics/races")
   @PreAuthorize("hasAuthority('VIEW-PATIENT')")
-  List<PatientRaceDemographic> races(@PathVariable("patient") long patient) {
+  Collection<PatientRaceDemographic> races(@PathVariable("patient") long patient) {
     return this.finder.find(patient);
   }
 }

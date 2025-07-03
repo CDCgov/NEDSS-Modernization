@@ -15,23 +15,30 @@ type HeaderRowProps<V> = {
 
 const DataTableHeader = <T,>({ columns, sizing, sorting, filtering }: HeaderRowProps<T>) => {
     return (
-        <thead>
-            <tr>
+        <>
+            <colgroup>
                 {columns.map((column, index) => (
-                    <ColumnHeader
-                        key={index}
-                        className={column.className}
-                        sizing={sizing}
-                        sorting={sorting}
-                        filtering={filtering}>
-                        {column}
-                    </ColumnHeader>
+                    <col className={column.className} key={index} />
                 ))}
-            </tr>
-            <tr className={styles.border} aria-hidden>
-                <th colSpan={columns.length} />
-            </tr>
-        </thead>
+            </colgroup>
+            <thead>
+                <tr>
+                    {columns.map((column, index) => (
+                        <ColumnHeader
+                            key={index}
+                            className={column.className}
+                            sizing={sizing}
+                            sorting={sorting}
+                            filtering={filtering}>
+                            {column}
+                        </ColumnHeader>
+                    ))}
+                </tr>
+                <tr className={styles.border} aria-hidden>
+                    <th colSpan={columns.length} />
+                </tr>
+            </thead>
+        </>
     );
 };
 
