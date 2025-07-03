@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Permitted } from 'libs/permission';
 import { DeleteAction } from './DeleteAction';
 import { useDeletePatient } from './useDeletePatient';
+import { AlertProvider } from 'libs/alert';
 
 const mockShowSuccess = jest.fn();
 const mockShowError = jest.fn();
@@ -45,15 +46,17 @@ describe('DeleteAction', () => {
     it('should handle the deletion flow', async () => {
         const user = userEvent.setup();
         const { getByRole, getByText } = render(
-            <DeleteAction
-                patient={{
-                    id: 10056284,
-                    local: 'PSN10091000GA01',
-                    patientId: 91000,
-                    deletability: 'Deletable',
-                    status: 'ACTIVE'
-                }}
-            />
+            <AlertProvider>
+                <DeleteAction
+                    patient={{
+                        id: 10056284,
+                        local: 'PSN10091000GA01',
+                        patientId: 91000,
+                        deletability: 'Deletable',
+                        status: 'ACTIVE'
+                    }}
+                />
+            </AlertProvider>
         );
 
         const deleteButton = getByRole('button');
@@ -67,15 +70,17 @@ describe('DeleteAction', () => {
     it('should not show the delete button when user does not have permissions', () => {
         (Permitted as jest.Mock).mockImplementation(() => <></>);
         const { queryByRole } = render(
-            <DeleteAction
-                patient={{
-                    id: 10056284,
-                    local: 'PSN10091000GA01',
-                    patientId: 91000,
-                    deletability: 'Deletable',
-                    status: 'ACTIVE'
-                }}
-            />
+            <AlertProvider>
+                <DeleteAction
+                    patient={{
+                        id: 10056284,
+                        local: 'PSN10091000GA01',
+                        patientId: 91000,
+                        deletability: 'Deletable',
+                        status: 'ACTIVE'
+                    }}
+                />
+            </AlertProvider>
         );
         expect(queryByRole('button')).not.toBeInTheDocument();
     });
@@ -84,15 +89,17 @@ describe('DeleteAction', () => {
         const user = userEvent.setup();
 
         const { getByRole, getByText } = render(
-            <DeleteAction
-                patient={{
-                    id: 10056284,
-                    local: 'PSN10091000GA01',
-                    patientId: 91000,
-                    deletability: 'Has_Associations',
-                    status: 'ACTIVE'
-                }}
-            />
+            <AlertProvider>
+                <DeleteAction
+                    patient={{
+                        id: 10056284,
+                        local: 'PSN10091000GA01',
+                        patientId: 91000,
+                        deletability: 'Has_Associations',
+                        status: 'ACTIVE'
+                    }}
+                />
+            </AlertProvider>
         );
 
         const deleteButton = getByRole('button');
@@ -114,15 +121,17 @@ describe('DeleteAction', () => {
         const user = userEvent.setup();
 
         const { getByRole, getByText } = render(
-            <DeleteAction
-                patient={{
-                    id: 10056284,
-                    local: 'PSN10091000GA01',
-                    patientId: 91000,
-                    deletability: 'Is_Inactive',
-                    status: 'ACTIVE'
-                }}
-            />
+            <AlertProvider>
+                <DeleteAction
+                    patient={{
+                        id: 10056284,
+                        local: 'PSN10091000GA01',
+                        patientId: 91000,
+                        deletability: 'Is_Inactive',
+                        status: 'ACTIVE'
+                    }}
+                />
+            </AlertProvider>
         );
 
         const deleteButton = getByRole('button');
@@ -137,15 +146,17 @@ describe('DeleteAction', () => {
         const user = userEvent.setup();
 
         const { getByRole, getByText } = render(
-            <DeleteAction
-                patient={{
-                    id: 797,
-                    local: 'PSN10091000GA01',
-                    patientId: 91000,
-                    deletability: 'Deletable',
-                    status: 'ACTIVE'
-                }}
-            />
+            <AlertProvider>
+                <DeleteAction
+                    patient={{
+                        id: 797,
+                        local: 'PSN10091000GA01',
+                        patientId: 91000,
+                        deletability: 'Deletable',
+                        status: 'ACTIVE'
+                    }}
+                />
+            </AlertProvider>
         );
 
         const deleteButton = getByRole('button');
@@ -164,19 +175,21 @@ describe('DeleteAction', () => {
 
         const user = userEvent.setup();
         const { getByRole, getByText } = render(
-            <DeleteAction
-                patient={{
-                    id: 10056284,
-                    local: 'PSN10091000GA01',
-                    patientId: 91000,
-                    deletability: 'Deletable',
-                    status: 'ACTIVE',
-                    name: {
-                        first: 'John',
-                        last: 'Doe'
-                    }
-                }}
-            />
+            <AlertProvider>
+                <DeleteAction
+                    patient={{
+                        id: 10056284,
+                        local: 'PSN10091000GA01',
+                        patientId: 91000,
+                        deletability: 'Deletable',
+                        status: 'ACTIVE',
+                        name: {
+                            first: 'John',
+                            last: 'Doe'
+                        }
+                    }}
+                />
+            </AlertProvider>
         );
 
         const deleteButton = getByRole('button');
@@ -200,15 +213,17 @@ describe('DeleteAction', () => {
         );
         const user = userEvent.setup();
         const { getByRole, getByText } = render(
-            <DeleteAction
-                patient={{
-                    id: 797,
-                    local: 'PSN10091000GA01',
-                    patientId: 91000,
-                    deletability: 'Deletable',
-                    status: 'ACTIVE'
-                }}
-            />
+            <AlertProvider>
+                <DeleteAction
+                    patient={{
+                        id: 797,
+                        local: 'PSN10091000GA01',
+                        patientId: 91000,
+                        deletability: 'Deletable',
+                        status: 'ACTIVE'
+                    }}
+                />
+            </AlertProvider>
         );
 
         const deleteButton = getByRole('button');
