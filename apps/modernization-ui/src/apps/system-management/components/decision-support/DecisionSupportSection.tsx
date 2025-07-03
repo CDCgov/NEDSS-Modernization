@@ -22,7 +22,7 @@ type Props = {
 
 export const DecisionSupportSection = ({ filter }: Props) => {
     return (
-        <Permitted permission={'DECISIONSUPPORTADMIN-SYSTEM'}>
+        <Permitted permission={'ALERTADMIN-SYSTEM'}>
             <SystemManagementInfoCard
                 id="decision-support"
                 title="Decision support"

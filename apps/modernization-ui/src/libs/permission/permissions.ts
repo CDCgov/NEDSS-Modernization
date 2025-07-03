@@ -30,12 +30,13 @@ export const permissions = {
         search: 'FIND-PATIENT',
         searchInactive: 'FINDINACTIVE-PATIENT',
         update: 'EDIT-PATIENT',
-        view: 'VIEW-PATIENT'
+        view: 'VIEW-PATIENT',
+        merge: 'MERGE-PATIENT'
     },
     system: {
         reportAdmin: 'REPORTADMIN-SYSTEM',
         caseReport: 'SRTADMIN-SYSTEM',
-        decisionSupport: 'DECISIONSUPPORTADMIN-SYSTEM',
+        decisionSupport: 'ALERTADMIN-SYSTEM',
         epiLink: 'EPILINKADMIN-SYSTEM',
         messagingManagement: [
             'VIEWELRACTIVITY-OBSERVATIONLABREPORT',
