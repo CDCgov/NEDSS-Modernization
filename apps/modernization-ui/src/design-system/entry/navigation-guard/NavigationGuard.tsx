@@ -15,6 +15,8 @@ type NavigationGuardProps<V extends FieldValues, C, D extends FieldValues | unde
     form: UseFormReturn<V, C, D>;
     /** When true navigating away from the form will be prevented */
     activated?: boolean;
+    /** When provided, will show this cancel text */
+    cancelText?: string;
     /** A list of routes that do not block navigation. */
     allowed?: Paths;
 };
@@ -30,6 +32,7 @@ const NavigationGuard = <V extends FieldValues, C, D extends FieldValues | undef
     id,
     form,
     activated = true,
+    cancelText,
     allowed
 }: NavigationGuardProps<V, C, D>) => {
     const { value, save } = useLocalStorage({ key: id, initial: false });
@@ -41,19 +44,20 @@ const NavigationGuard = <V extends FieldValues, C, D extends FieldValues | undef
     const handleConfirm = useCallback(() => {
         save(isPermanent);
         blocker.unblock();
-    }, [blocker.unblock, save]);
+    }, [blocker.unblock, save, isPermanent]);
 
     return (
         <Shown when={blocker.blocked}>
             <Confirmation
-                title="Warning"
+                title="Discard unsaved data?"
                 confirmText="Yes, cancel"
                 cancelText="No, back to form"
                 forceAction
                 onConfirm={handleConfirm}
                 onCancel={blocker.reset}>
-                Canceling the form will result in the loss of all additional data entered. Are you sure you want to
-                cancel?
+                {cancelText ?? (
+                    <>If you cancel, any data you entered will be lost. Are you sure you want to continue?</>
+                )}
                 <Checkbox label="Don't show again" id={'cancel-message-bypass'} onChange={setPermanent} />
             </Confirmation>
         </Shown>
