@@ -3,7 +3,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { Input } from 'components/FormInputs/Input';
-import { displayAgeAsOfToday, displayAgeAsOf } from 'date/displayAge';
+import { displayAgeAsOfToday, displayAgeAsOf } from 'date';
 import { maxLengthRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';

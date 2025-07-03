@@ -1,10 +1,25 @@
-import { Selectable, asSelectable, findByValue } from 'options';
+import { Selectable, findByValue } from 'options';
 
-const UNKNOWN = asSelectable('U', 'Unknown');
+const FEMALE = { name: 'Female', value: 'F' };
+const MALE = { name: 'Male', value: 'M' };
+const UNKNOWN = { name: 'Unknown', value: 'U' };
 
-const genders: Selectable[] = [asSelectable('F', 'Female'), asSelectable('M', 'Male'), UNKNOWN];
+type Genders = {
+    female: Selectable;
+    male: Selectable;
+    unknown: Selectable;
+    all: Selectable[];
+};
+
+const genders: Genders = {
+    female: FEMALE,
+    male: MALE,
+    unknown: UNKNOWN,
+    all: [FEMALE, MALE, UNKNOWN]
+};
 
 const asSelectableGender = (value: string | null | undefined) =>
-    (value && findByValue(genders, UNKNOWN)(value)) || UNKNOWN;
+    (value && findByValue(genders.all, UNKNOWN)(value)) || UNKNOWN;
 
-export { genders, asSelectableGender };
+export { genders, asSelectableGender, UNKNOWN };
+export type { Genders };

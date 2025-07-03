@@ -1,9 +1,10 @@
 export { externalizeDate, asDate } from './ExternalizeDate';
 export { externalizeDateTime } from './ExternalizeDateTime';
 export { internalizeDate } from './InternalizeDate';
-export { calculateAge } from './calculateAge';
+export { internalizeDateTime } from './InternalizeDateTime';
 export { today } from './today';
 export * from './asLocalDate';
-export { displayAgeAsOfToday, displayAgeAsOf } from './displayAge';
+
+export * from './age';
 
 export { maybeDate } from './maybeDate';

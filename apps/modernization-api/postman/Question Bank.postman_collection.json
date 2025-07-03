@@ -1,0 +1,1555 @@
+{
+	"info": {
+		"_postman_id": "5c21478d-bb79-4431-9f3e-cca3d256b6eb",
+		"name": "Question Bank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28141522"
+	},
+	"item": [
+		{
+			"name": "Questions",
+			"item": [
+				{
+					"name": "Create Text Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"TEXT\",\n    \"adminComments\": \"Administrative comments\",\n    \"codeSet\": \"LOCAL\",\n    \"dataMartInfo\": {\n        \"dataMartColumnName\": \"DATA_MART_COLUMN_NAME\",\n        \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n        \"rdbColumnName\": \"RDB_COLUMN_NAME\",\n        \"reportLabel\": \"Report label\"\n    },\n    \"defaultValue\": null,\n    \"description\": \"Test Question\",\n    \"displayControl\": 1008,\n    \"fieldLength\": \"50\",\n    \"label\": \"Sample question label\",\n    \"mask\": \"TXT\",\n    \"messagingInfo\": {\n        \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n        \"hl7DataType\": \"CE\",\n        \"includedInMessage\": true,\n        \"labelInMessage\": \"Label in message\",\n        \"messageVariableId\": \"MessageVariableId\",\n        \"requiredInMessage\": true\n    },\n    \"subgroup\": \"ADM\",\n    \"tooltip\": \"Sample question tooltip\",\n    \"uniqueId\": null,\n    \"uniqueName\": \"Sample question\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/questions",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Coded Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"CODED\",\n  \"adminComments\": \"Coded administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"CODED_DATA_MART_COL\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"CODED_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Coded report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Coded Question\",\n  \"displayControl\": 1007,\n  \"label\": \"Sample coded question label\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Coded question label in message\",\n    \"messageVariableId\": \"Coded MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample coded question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample coded question\",\n  \"valueSet\": 4150\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/questions",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Date Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"DATE\",\n  \"adminComments\": \"Date Question administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATE_DATA_MART_COLUMN\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"DATE_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Date report label\"\n  },\n  \"description\": \"Test Date Question\",\n  \"displayControl\": 1008,\n  \"label\": \"Sample date question label\",\n  \"mask\": \"DATE\",\n  \"allowFutureDates\": false,\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Date label in message\",\n    \"messageVariableId\": \"Date MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample date question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample date question\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/questions",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Numeric Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"NUMERIC\",\n    \"adminComments\": \"Numeric Question administrative comments\",\n    \"codeSet\": \"LOCAL\",\n    \"dataMartInfo\": {\n        \"dataMartColumnName\": \"NUM_DATA_MART_COLUMN\",\n        \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n        \"rdbColumnName\": \"NUM_RDB_COLUMN_NAME\",\n        \"reportLabel\": \"Numeric report label\"\n    },\n    \"description\": \"Test Numeric Question\",\n    \"displayControl\": 1008,\n    \"label\": \"Sample Numeric question label\",\n    \"allowFutureDates\": false,\n    \"messagingInfo\": {\n        \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n        \"hl7DataType\": \"CE\",\n        \"includedInMessage\": true,\n        \"labelInMessage\": \"Numeric label in message\",\n        \"messageVariableId\": \"Numeric MessageVariableId\",\n        \"requiredInMessage\": true\n    },\n    \"subgroup\": \"ADM\",\n    \"tooltip\": \"Sample numeric question tooltip\",\n    \"uniqueId\": null,\n    \"uniqueName\": \"Sample Numeric question\",\n    \"mask\": \"NUM\",\n    \"fieldLength\": \"3\",\n    \"defaultValue\": \"1\",\n    \"minValue\": 0,\n    \"maxValue\": 100,\n    \"unitTypeCd\": \"LITERAL\",\n    \"unitValue\": \"some literal value\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/questions",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"active\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/questions/1018500/status",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"questions",
+								"1018500",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"search\": \"sample\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/questions/search?page=0&size=25&sort=id,ASC",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"questions",
+								"search"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "25"
+								},
+								{
+									"key": "sort",
+									"value": "id,ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"search\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/questions?page=1&size=25&sort=id,DESC",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"questions"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "25"
+								},
+								{
+									"key": "sort",
+									"value": "id,DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Question",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/questions/1018500",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"questions",
+								"1018500"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Question",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"TEXT\",\n    \"uniqueName\": \"updatedUniqueName\",\n\n    \"description\": \"updatedDesc\",\n    \"label\": \"updatedLabel\",\n    \"tooltip\": \"updatedTooltip sample\",\n    \"displayControl\": 0,\n    \"adminComments\": \"updated comment\",\n    \n    \"mask\": \"TXT_EMAIL\",\n    \"defaultValue\": \"updated@default.com\",\n    \"fieldLength\": \"22\",\n\n    \"defaultLabelInReport\": \"updated report label\",\n    \"rdbColumnName\": \"UP_RDB_COL_NM\",\n    \"datamartColumnName\": \"UP_DM_COL_NM\",    \n    \n    \"includedInMessage\": true,\n    \"messageVariableId\": \"update_msg_var\",\n    \"labelInMessage\": \"update label\",\n    \"codeSystem\": \"PH_ACCEPTAPPLICATION\",\n    \"requiredInMessage\": true,\n    \"hl7DataType\": \"CWE\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/questions/1018500",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"questions",
+								"1018500"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pages",
+			"item": [
+				{
+					"name": "Tabs",
+					"item": [
+						{
+							"name": "Create Tab",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{$randomNoun}}\",\n    \"visible\" : true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/tabs",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										":page",
+										"tabs"
+									],
+									"variable": [
+										{
+											"key": "page",
+											"value": "1000315"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Search",
+					"item": [
+						{
+							"name": "Search",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"search\": \"HIV\",\n    \"filters\": [\n        {\n            \"property\" : \"status\",\n            \"operator\" : \"equals\",\n            \"value\": \"Published with Draft\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=25&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "25"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with single value filter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"conditions\",\"operator\":\"contains\",\"value\":\"type\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with single value filter equals",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"conditions\",\"operator\":\"equals\",\"value\":\"hiv\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with multi value filter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"conditions\",\"operator\":\"contains\",\"values\":[\"type\", \"sec\"]}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with date range filter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"lastUpdate\", \"after\":\"2023-10-05\", \"before\":\"2023-10-31\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with date after",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"lastUpdate\", \"after\":\"2023-10-05\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with date before",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"lastUpdate\", \"before\":\"2023-10-31\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with date between",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"lastUpdate\", \"after\":\"2023-10-01\",\"before\":\"2023-10-31\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Information",
+					"item": [
+						{
+							"name": "Information",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/information",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										":page",
+										"information"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "page",
+											"value": "{{page}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Information",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"eventType\":  \"INV\",\n    \"messageMappingGuide\": \"GEN_Case_Map_v2.0\",\n    \"name\": \"They cloned methodologies\",\n    \"datamart\": null,\n    \"description\": \"A description of a page that can be up to 2000 characters............................................................................................\",\n    \"conditions\": [\"10057\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/information",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										":page",
+										"information"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1000319",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "page",
+											"value": "{{page}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Page Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":page"
+							],
+							"variable": [
+								{
+									"key": "page",
+									"value": "{{page}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Page History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/page-history",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":page",
+								"page-history"
+							],
+							"variable": [
+								{
+									"key": "page",
+									"value": "1000408"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Page Details",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dataMartName\": \"updatedDataMartName\",\n  \"description\": \"Updated description\",\n  \"messageMappingGuide\": \"Mumps_MMG_V1.0\",\n  \"name\": \"Updated Name\",\n   \"conditionIds\": [\n    \"10180\"\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:id/details",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":id",
+								"details"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1000366"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Template",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n  \"name\": \"Template {{$randomBsBuzz}}\",\n  \"description\": \"{{$randomLoremSentence}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/template",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":page",
+								"template"
+							],
+							"variable": [
+								{
+									"key": "page",
+									"value": "1000470"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reorder component",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/components/:component/after/:after",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":page",
+								"components",
+								":component",
+								"after",
+								":after"
+							],
+							"variable": [
+								{
+									"key": "page",
+									"value": "1000376"
+								},
+								{
+									"key": "component",
+									"value": "1118520"
+								},
+								{
+									"key": "after",
+									"value": "1118383"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const page = pm.response.json().pageId;",
+									"pm.collectionVariables.set(\"page\", page);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"templateId\": \"1000378\",\n    \"eventType\": \"INV\",\n    \"name\": \"{{$randomBsNoun}}\",\n    \"pageDescription\": \"Created for development testing.\",\n    \"conditionIds\": [\n        \"10057\"\n    ],\n    \"messageMappingGuide\": \"GEN_Case_Map_v2.0\",\n    \"dataMartName\": \"{{$randomWord}}\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/page-history",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":page",
+								"page-history"
+							],
+							"variable": [
+								{
+									"key": "page",
+									"value": "{{page}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"ruleFunction\":\"ENABLE\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://app.int1.nbspreview.com/nbs/page-builder/api/v1/pages/1000901/rules/source/questions",
+							"protocol": "https",
+							"host": [
+								"app",
+								"int1",
+								"nbspreview",
+								"com"
+							],
+							"path": [
+								"nbs",
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								"1000901",
+								"rules",
+								"source",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ValueSet",
+			"item": [
+				{
+					"name": "Find Concepts by CodeSet Name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/valueset/:valueSet/concepts",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"valueset",
+								":valueSet",
+								"concepts"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "valueSet",
+									"value": "COINFECTION_GROUP",
+									"description": "The code_set_nm of the ValueSet"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Program Areas",
+			"item": [
+				{
+					"name": "List Program Areas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/program-area",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"program-area"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rules",
+			"item": [
+				{
+					"name": "Rules",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/rules?page=0&size=10&sort=ruleDescText",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"rules"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "ruleDescText"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Rules",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"searchValue\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/rules/search",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"rules",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const token = pm.response.json().token;",
+							"pm.collectionVariables.set(\"token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{page-builder-user}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base}}/login",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NBS Login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{classic}}/nbs/nfc?UserName={{page-builder-user}}",
+					"host": [
+						"{{classic}}"
+					],
+					"path": [
+						"nbs",
+						"nfc"
+					],
+					"query": [
+						{
+							"key": "UserName",
+							"value": "{{page-builder-user}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Health",
+			"protocolProfileBehavior": {
+				"followRedirects": false,
+				"followOriginalHttpMethod": false,
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{page-builder}}/page-builder/~/health",
+					"host": [
+						"{{page-builder}}"
+					],
+					"path": [
+						"page-builder",
+						"~",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Info",
+			"protocolProfileBehavior": {
+				"followRedirects": false,
+				"followOriginalHttpMethod": false,
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{page-builder}}/page-builder/~/info",
+					"host": [
+						"{{page-builder}}"
+					],
+					"path": [
+						"page-builder",
+						"~",
+						"info"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "clientSecret",
+				"value": "{{auth-client-secret}}",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{auth-client-id}}",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "{{auth-host}}/realms/nbs-users/protocol/openid-connect/token",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "{{auth-host}}/realms/nbs-users/protocol/openid-connect/auth",
+				"type": "string"
+			},
+			{
+				"key": "useBrowser",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "tokenName",
+				"value": "nbs-users",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "page",
+			"value": ""
+		}
+	]
+}

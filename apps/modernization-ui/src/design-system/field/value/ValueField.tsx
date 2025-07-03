@@ -4,13 +4,13 @@ import { Sizing } from 'design-system/field';
 import styles from './value-field.module.scss';
 import { OrElseNoData } from 'design-system/data';
 
-type Props = {
+type ValueFieldProps = {
     label: string;
     sizing?: Sizing;
     children?: ReactNode;
 };
 
-const ValueField = ({ label, children, sizing }: Props) => {
+const ValueField = ({ label, children, sizing }: ValueFieldProps) => {
     const id = useId();
     return (
         <div
@@ -23,10 +23,11 @@ const ValueField = ({ label, children, sizing }: Props) => {
                 {label}
             </span>
             <span aria-labelledby={id} role="definition" className={styles.value}>
-                {<OrElseNoData>{children}</OrElseNoData>}
+                <OrElseNoData>{children}</OrElseNoData>
             </span>
         </div>
     );
 };
 
 export { ValueField };
+export type { ValueFieldProps };

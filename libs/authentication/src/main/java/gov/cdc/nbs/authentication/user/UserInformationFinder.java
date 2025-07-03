@@ -1,55 +1,38 @@
 package gov.cdc.nbs.authentication.user;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
+
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 class UserInformationFinder {
 
   private static final String QUERY = """
-    select
-        [user].[nedss_entry_id],
-        [user].[user_first_nm],
-        [user].[user_last_nm],
-        [user].user_id,
-        case record_status_cd
-            when 'ACTIVE' then 1
-            else 0
-        end
-    from Auth_user [user]
-    where [user].[user_id] = ?
-      """;
-  private static final int IDENTIFIER_COLUMN = 1;
-  private static final int FIRST_COLUMN = 2;
-  private static final int LAST_COLUMN = 3;
-  private static final int USERNAME_COLUMN = 4;
-  private static final int ENABLED_COLUMN = 5;
-  private static final int USERNAME_PARAMETER = 1;
+      select
+          [user].[nedss_entry_id] as identifier,
+          [user].[user_first_nm] as first,
+          [user].[user_last_nm] as last,
+          [user].user_id as username,
+          case record_status_cd
+              when 'ACTIVE' then 1
+              else 0
+          end as enabled
+      from Auth_user [user]
+      where [user].[user_id] = :username
+        """;
 
-  private final JdbcTemplate template;
-  private final RowMapper<UserInformation> mapper;
+  private final JdbcClient client;
 
-  UserInformationFinder(final JdbcTemplate template) {
-    this.template = template;
-    this.mapper = new UserInformationRowMapper(
-        new UserInformationRowMapper.Column(
-            IDENTIFIER_COLUMN,
-            FIRST_COLUMN,
-            LAST_COLUMN,
-            USERNAME_COLUMN,
-            ENABLED_COLUMN
-        )
-    );
+  UserInformationFinder(final JdbcClient client) {
+    this.client = client;
+
   }
 
   Optional<UserInformation> find(final String username) {
-    return this.template.queryForStream(
-        QUERY,
-        statement -> statement.setString(USERNAME_PARAMETER, username),
-        this.mapper
-    ).findFirst();
+    return this.client.sql(QUERY)
+        .param("username", username)
+        .query(UserInformation.class)
+        .optional();
   }
 }

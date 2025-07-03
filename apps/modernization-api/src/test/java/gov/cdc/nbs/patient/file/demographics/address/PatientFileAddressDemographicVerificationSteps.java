@@ -35,4 +35,27 @@ public class PatientFileAddressDemographicVerificationSteps {
         );
   }
 
+  @Then(
+      "the {nth} address demographics on the patient file includes a(n) {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
+  public void includesNt(
+      final int nth,
+      final String type,
+      final String use,
+      final String address,
+      final String city,
+      final String zip,
+      final LocalDate asOf
+  ) throws Exception {
+
+    int position = nth - 1;
+
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].type.value", position).value(type))
+        .andExpect(jsonPath("$.[%d].use.value", position).value(use))
+        .andExpect(jsonPath("$.[%d].address1", position).value(address))
+        .andExpect(jsonPath("$.[%d].city", position).value(city))
+        .andExpect(jsonPath("$.[%d].zipcode", position).value(zip))
+        .andExpect(jsonPath("$.[%d].asOf", position).value(asOf.toString()));
+  }
+
 }

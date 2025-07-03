@@ -1,14 +1,18 @@
 import { useComponentSizing } from 'design-system/sizing';
-import { usePatient } from '../usePatient';
+import { usePatientFileData } from '../usePatientFileData';
 import { PatientFileAdministrativeInformationCard } from './administrative/PatientFileAdministrativeInformationCard';
-import { PatientFileEthnicityCard } from './ethnicity/PatientFileEthnicityCard';
 import { PatientFileNameCard } from './name/PatientFileNameCard';
-import styles from './patient-file-demographics.module.scss';
+import { PatientFileAddressCard } from './address/PatientFileAddressCard';
 import { PatientFileIdentificationsCard } from './identifications/PatientFileIdentificationsCard';
 import { PatientFilePhoneEmailCard } from './phoneEmail/PatientFilePhoneEmailCard';
+import { PatientFileEthnicityCard } from './ethnicity/PatientFileEthnicityCard';
+import { PatientFileSexBirthCard } from './sex-birth';
+
+import styles from './patient-file-demographics.module.scss';
+import { PatientFileGeneralInformationCard } from './general';
 
 const PatientFileDemographics = () => {
-    const { id } = usePatient();
+    const { id, demographics } = usePatientFileData();
     const sizing = useComponentSizing();
 
     return (
@@ -16,8 +20,26 @@ const PatientFileDemographics = () => {
             <PatientFileAdministrativeInformationCard patient={id} sizing={sizing} />
             <PatientFileNameCard patient={id} sizing={sizing} />
             <PatientFilePhoneEmailCard patient={id} sizing={sizing} />
+            <PatientFileAddressCard patient={id} sizing={sizing} />
             <PatientFileIdentificationsCard patient={id} sizing={sizing} />
-            <PatientFileEthnicityCard patient={id} sizing={sizing} data-half />
+            <span data-half>
+                <PatientFileEthnicityCard patient={id} sizing={sizing} />
+            </span>
+            <span data-half>{/* mortality here */}</span>
+            <span data-half>
+                <PatientFileSexBirthCard
+                    id="patient-file-sex-birth"
+                    provider={demographics.get().sexBirth}
+                    sizing={sizing}
+                />
+            </span>
+            <span data-half>
+                <PatientFileGeneralInformationCard
+                    id="patient-file-general"
+                    provider={demographics.get().general}
+                    sizing={sizing}
+                />
+            </span>
         </div>
     );
 };

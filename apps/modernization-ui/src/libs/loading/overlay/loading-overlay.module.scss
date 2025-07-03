@@ -1,0 +1,18 @@
+@use 'styles/colors';
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'container';
+    overflow: hidden;
+
+    & > * {
+        grid-area: container;
+    }
+
+    .glass {
+        opacity: 85%;
+        background-color: colors.$base-white;
+        opacity: 85%;
+    }
+}

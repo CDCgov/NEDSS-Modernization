@@ -1,3 +1,5 @@
-const NoData = () => '---';
+const displayNoData = () => '---';
 
-export { NoData };
+const NoData = displayNoData;
+
+export { NoData, displayNoData };

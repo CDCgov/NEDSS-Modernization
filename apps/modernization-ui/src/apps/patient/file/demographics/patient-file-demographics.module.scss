@@ -2,12 +2,13 @@
     display: grid;
     gap: 1rem;
     grid-template-columns: 1fr 1fr;
+    grid-template-areas: left right;
 
     & > * {
         grid-column: span 2;
     }
 
     & > [data-half] {
-        grid-column: 1;
+        grid-column: span 1;
     }
 }
