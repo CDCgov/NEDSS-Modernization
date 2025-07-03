@@ -56,6 +56,18 @@ Feature: Patient File Laboratory Report
     When I view the laboratory reports for the patient
     Then the patient file has the laboratory report associated with the investigation
 
+  Scenario: I can retrieve Laboratory Reports with tests ordered for a patient
+    Given the patient has a laboratory report
+    And the laboratory report has an ordered test with a specimen from the Cornea
+    When I view the laboratory reports for the patient
+    Then the patient file has the laboratory report containing an ordered test with a specimen from the "Cornea"
+
+  Scenario: I can retrieve Laboratory Reports with specimen tests ordered for a patient
+    Given the patient has a laboratory report
+    And the laboratory report has an ordered test with a Calculus (=Stone) specimen from the Right Naris
+    When I view the laboratory reports for the patient
+    Then the patient file has the laboratory report containing an ordered test with a "Calculus (=Stone)" specimen from the "Right Naris"
+
   Scenario: I cannot retrieve Laboratory Report associated investigations for a patient without permissions
     Given the patient is a subject of an investigation
     And the patient has a laboratory report

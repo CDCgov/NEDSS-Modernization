@@ -64,6 +64,24 @@ class ResultedTestRowMapperTest {
   }
 
   @Test
+  void should_map_non_empty_results_with_status_from_result_set() throws SQLException {
+
+    ResultSet resultSet = mock(ResultSet.class);
+
+    when(resultSet.getString(columns.name())).thenReturn("name-value");
+    when(resultSet.getString(columns.coded())).thenReturn("coded-value");
+    when(resultSet.getString(columns.text())).thenReturn("");
+    when(resultSet.getString(columns.status())).thenReturn("status-value");
+
+    ResultedTestRowMapper mapper = new ResultedTestRowMapper(columns);
+
+    ResultedTest mapped = mapper.mapRow(resultSet, 0);
+
+    assertThat(mapped.name()).isEqualTo("name-value");
+    assertThat(mapped.result()).isEqualTo("coded-value - (status-value)");
+  }
+
+  @Test
   void should_map_coded_result_with_reference_range_from_result_set() throws SQLException {
 
     ResultSet resultSet = mock(ResultSet.class);

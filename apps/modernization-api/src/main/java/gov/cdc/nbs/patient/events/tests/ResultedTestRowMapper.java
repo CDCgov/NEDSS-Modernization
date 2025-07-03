@@ -40,8 +40,9 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     String name = resultSet.getString(columns.name());
     String reference = maybeDisplayReferenceRange(columns, resultSet);
 
-    Optional<String> status = maybeDisplayStatus(columns, resultSet)
-        .filter(unused -> reference == null);
+    String status = maybeDisplayStatus(columns, resultSet)
+        .filter(unused -> reference == null)
+        .orElse("");
 
     String coded = resultSet.getString(columns.coded());
 
@@ -49,23 +50,17 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
 
     String numeric = maybeDisplayNumericResult(columns, resultSet);
 
-    String result = null;
-
-    if (coded != null) {
-      result = coded;
-    }
-
-    if (text != null) {
-      result = result == null ? text : result.concat("\n").concat(text);
-    }
-
-    if (numeric != null) {
-      result = result == null ? numeric : result.concat("\n").concat(numeric);
-    }
-
-    result = Objects.requireNonNullElse(result, "").concat(status.orElse(""));
-
-
+    String result =
+        Stream.of(
+                coded, text, numeric
+            ).filter(value -> value != null && !value.isEmpty())
+            .collect(
+                joining(
+                    "\n",
+                    "",
+                    status
+                )
+            );
 
     return new ResultedTest(
         name,

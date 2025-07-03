@@ -171,4 +171,29 @@ public class PatientFileLaboratoryReportVerificationSteps {
             ).value(hasItem(empty()))
         );
   }
+
+  @Then("the patient file has the laboratory report containing an ordered test with a specimen from the {string}")
+  public void specimenSite(final String value) throws Exception {
+    String local = this.activeReport.maybeActive().map(LabReportIdentifier::local).orElse(null);
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.specimen.site=='%s')]",
+                local, value
+            ).exists()
+        );
+  }
+
+  @Then(
+      "the patient file has the laboratory report containing an ordered test with a {string} specimen from the {string}")
+  public void specimenSource(final String source, final String site) throws Exception {
+    String local = this.activeReport.maybeActive().map(LabReportIdentifier::local).orElse(null);
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.specimen.source=='%s' && @.specimen.site=='%s')]",
+                local, source, site
+            ).exists()
+        );
+  }
 }
