@@ -23,15 +23,14 @@ class OIDCAuthenticationConfiguration {
         .authorizeExchange(
             authorize ->
                 //  the landing page
-                authorize.pathMatchers(
-                        HttpMethod.GET,
-                        "/welcome/**").permitAll()
+                authorize.pathMatchers(HttpMethod.GET, "/welcome/**").permitAll()
                     //  paths associated with authentication
                     .pathMatchers(
                         HttpMethod.GET,
                         "/nbs/logged-out",
                         "/nbs/timeout",
-                        "/nbs/logOut")
+                        "/nbs/logOut"
+                    )
                     .permitAll()
                     //  assets that do not require authentication
                     .pathMatchers(
@@ -49,8 +48,11 @@ class OIDCAuthenticationConfiguration {
                         "/expired"
                     )
                     .permitAll()
+                    // monitoring endpoints that do not require authentication
+                    .pathMatchers(HttpMethod.GET, "/~/**").permitAll()
                     .anyExchange()
-                    .authenticated())
+                    .authenticated()
+        )
         .oauth2Client(withDefaults())
         .oauth2Login(withDefaults())
         .logout(logout -> logout

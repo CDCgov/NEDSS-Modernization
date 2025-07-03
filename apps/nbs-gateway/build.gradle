@@ -43,6 +43,7 @@ dependencies {
     implementation libs.bundles.security
     implementation libs.bundles.oidc
     implementation 'org.springframework.security:spring-security-oauth2-client'
+    implementation libs.springBoot.actuator
 
 }
 

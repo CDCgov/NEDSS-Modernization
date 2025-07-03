@@ -18,7 +18,7 @@ public class GraphQLExceptionHandler implements DataFetcherExceptionHandler {
     public CompletableFuture<DataFetcherExceptionHandlerResult> handleException(
             DataFetcherExceptionHandlerParameters handlerParameters) {
 
-        Throwable exception = handlerParameters.getException();
+        Throwable exception = handlerParameters.getException().getCause();
 
         GraphQLError error = GraphqlErrorBuilder
                 .newError()
