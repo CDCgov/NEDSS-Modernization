@@ -45,6 +45,6 @@ export const permissions = {
         page: 'LDFADMINISTRATION-SYSTEM',
         personMatch: 'MERGE-PATIENT',
         report: 'REPORTADMIN-SYSTEM',
-        security: 'SECURITYADMINISTRATION-SYSTEM'
+        security: ['ADMISTRATE-SYSTEM', 'ADMINISTRATE-SECURITY']
     }
 };

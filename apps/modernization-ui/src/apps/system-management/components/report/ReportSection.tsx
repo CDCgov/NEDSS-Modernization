@@ -24,7 +24,7 @@ type Props = {
 export const ReportSection = ({ filter }: Props) => {
     return (
         <Permitted permission={'REPORTADMIN-SYSTEM'} fallback={<RedirectHome />}>
-            <SystemManagementInfoCard id="report" title="Report" filter={filter} links={reportLinks} />;
+            <SystemManagementInfoCard id="report" title="Report" filter={filter} links={reportLinks} />
         </Permitted>
     );
 };
