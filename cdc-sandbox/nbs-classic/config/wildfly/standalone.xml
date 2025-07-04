@@ -33,6 +33,7 @@
 
     <system-properties>
         <property name="com.arjuna.ats.arjuna.allowMultipleLastResources" value="true"/>
+        <property name="nbs.dir" value="${jboss.home.dir}/nedssdomain/Nedss"/>
     </system-properties>
 
 
@@ -139,16 +140,8 @@
         <subsystem xmlns="urn:jboss:domain:bean-validation:1.0"/>
         <subsystem xmlns="urn:jboss:domain:datasources:4.0">
             <datasources>
-                <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
-                    <driver>h2</driver>
-                    <security>
-                        <user-name>sa</user-name>
-                        <password>sa</password>
-                    </security>
-                </datasource>
                 <datasource jndi-name="java:jboss/datasources/NedssDataSource" pool-name="NedssDS" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:sqlserver://localhost\singhm;SelectMethod=direct;DatabaseName=nbs_odse</connection-url>
+                    <connection-url>jdbc:sqlserver://${env.nedss_datasource_host:nbs-mssql};SelectMethod=direct;DatabaseName=nbs_odse</connection-url>
                     <driver>sqlserver</driver>
                     <pool>
                         <min-pool-size>75</min-pool-size>
@@ -156,8 +149,8 @@
                         <flush-strategy>Gracefully</flush-strategy>
                     </pool>
                     <security>
-                        <user-name>nbs_ods</user-name>
-                        <password>ods</password>
+                        <user-name>${env.nedss_datasource_user:nbs_ods}</user-name>
+                        <password>${env.nedss_datasource_password:ods}</password>
                     </security>
                     <validation>
                         <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mssql.MSSQLValidConnectionChecker"/>
@@ -171,7 +164,7 @@
                     </statement>
                 </datasource>
                 <datasource jndi-name="java:jboss/datasources/MsgOutDataSource" pool-name="MsgOutDS" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:sqlserver://localhost\singhm;SelectMethod=direct;DatabaseName=nbs_msgoute</connection-url>
+                    <connection-url>jdbc:sqlserver://${env.msg_out_datasource_host:nbs-mssql};SelectMethod=direct;DatabaseName=nbs_msgoute</connection-url>
                     <driver>sqlserver</driver>
                     <pool>
                         <min-pool-size>75</min-pool-size>
@@ -179,8 +172,8 @@
                         <flush-strategy>Gracefully</flush-strategy>
                     </pool>
                     <security>
-                        <user-name>nbs_ods</user-name>
-                        <password>ods</password>
+                       <user-name>${env.msg_out_datasource_user:nbs_ods}</user-name>
+                        <password>${env.msg_out_datasource_password:ods}</password>
                     </security>
                     <validation>
                         <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mssql.MSSQLValidConnectionChecker"/>
@@ -194,7 +187,7 @@
                     </statement>
                 </datasource>
                 <datasource jndi-name="java:jboss/datasources/MsgInDataSource" pool-name="MsgInDS" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:sqlserver://localhost\singhm;SelectMethod=direct;DatabaseName=nbs_msgine</connection-url>
+                    <connection-url>jdbc:sqlserver://${env.msg_in_datasource_host:nbs-mssql};SelectMethod=direct;DatabaseName=nbs_msgine</connection-url>
                     <driver>sqlserver</driver>
                     <pool>
                         <min-pool-size>75</min-pool-size>
@@ -202,8 +195,8 @@
                         <flush-strategy>Gracefully</flush-strategy>
                     </pool>
                     <security>
-                        <user-name>nbs_ods</user-name>
-                        <password>ods</password>
+                        <user-name>${env.msg_in_datasource_user:nbs_ods}</user-name>
+                        <password>${env.msg_in_datasource_password:ods}</password>
                     </security>
                     <validation>
                         <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mssql.MSSQLValidConnectionChecker"/>
@@ -217,7 +210,7 @@
                     </statement>
                 </datasource>
                 <datasource jndi-name="java:jboss/datasources/ElrXrefDataSource" pool-name="ElrXrefDS" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:sqlserver://localhost\singhm;SelectMethod=direct;DatabaseName=nbs_msgoute</connection-url>
+                    <connection-url>jdbc:sqlserver://${env.elr_xref_datasource_host:nbs-mssql};SelectMethod=direct;DatabaseName=nbs_msgoute</connection-url>
                     <driver>sqlserver</driver>
                     <pool>
                         <min-pool-size>75</min-pool-size>
@@ -225,8 +218,8 @@
                         <flush-strategy>Gracefully</flush-strategy>
                     </pool>
                     <security>
-                        <user-name>nbs_ods</user-name>
-                        <password>ods</password>
+                        <user-name>${env.elr_xref_datasource_user:nbs_ods}</user-name>
+                        <password>${env.elr_xref_datasource_password:ods}</password>
                     </security>
                     <validation>
                         <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mssql.MSSQLValidConnectionChecker"/>
@@ -240,15 +233,15 @@
                     </statement>
                 </datasource>
                 <datasource jndi-name="java:jboss/datasources/RdbDataSource" pool-name="RdbDS" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:sqlserver://localhost\singhm;SelectMethod=direct;DatabaseName=rdb</connection-url>
+                    <connection-url>jdbc:sqlserver://${env.rdb_datasource_host:nbs-mssql};SelectMethod=direct;DatabaseName=rdb</connection-url>
                     <driver>sqlserver</driver>
                     <pool>
                         <min-pool-size>75</min-pool-size>
                         <max-pool-size>150</max-pool-size>
                     </pool>
                     <security>
-                        <user-name>nbs_rdb</user-name>
-                        <password>rdb</password>
+                        <user-name>${env.rdb_datasource_user:nbs_rdb}</user-name>
+                        <password>${env.rdb_datasource_password:rdb}</password>
                     </security>
                     <validation>
                         <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mssql.MSSQLValidConnectionChecker"/>
@@ -262,7 +255,7 @@
                     </statement>
                 </datasource>
                 <datasource jndi-name="java:jboss/datasources/SrtDataSource" pool-name="SrtDS" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:sqlserver://localhost\singhm;SelectMethod=direct;DatabaseName=nbs_srte</connection-url>
+                    <connection-url>jdbc:sqlserver://${env.srt_datasource_host:nbs-mssql};SelectMethod=direct;DatabaseName=nbs_srte</connection-url>
                     <driver>sqlserver</driver>
                     <pool>
                         <min-pool-size>75</min-pool-size>
@@ -270,8 +263,8 @@
                         <flush-strategy>Gracefully</flush-strategy>
                     </pool>
                     <security>
-                        <user-name>srte_admin</user-name>
-                        <password>admin</password>
+                        <user-name>${env.srt_datasource_user:srte_admin}</user-name>
+                        <password>${env.srte_datasource_password:admin}</password>
                     </security>
                     <validation>
                         <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mssql.MSSQLValidConnectionChecker"/>
@@ -316,7 +309,7 @@
                     <managed-scheduled-executor-service name="default" jndi-name="java:jboss/ee/concurrency/scheduler/default" context-service="default" hung-task-threshold="60000" keepalive-time="3000"/>
                 </managed-scheduled-executor-services>
             </concurrent>
-            <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
+            <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/NedssDataSource" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ejb3:4.0">
             <session-bean>
