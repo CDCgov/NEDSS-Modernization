@@ -63,6 +63,9 @@ echo "Restoring database '$DATABASE_NAME' in container '$CONTAINER_NAME'..."
 # Restore the database with sqlcmd
 docker exec -it "$CONTAINER_NAME" /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U SA -Q "RESTORE DATABASE [$DATABASE_NAME] FROM DISK = N'/var/opt/mssql/restores/$FILE_NAME' WITH FILE = 1, NOUNLOAD, REPLACE, RECOVERY, STATS = 5"
 
+# Recreate the database user permissions
+docker exec -it "$CONTAINER_NAME" /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U SA -i "/var/opt/database/initialize/restore.d/01-database-user-permissions.sql"
+
 echo ""
 echo "Restored database '$DATABASE_NAME' in container '$CONTAINER_NAME' from file $FILE_PATH"
 echo "Done!"
