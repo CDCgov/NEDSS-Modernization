@@ -17,7 +17,7 @@ services:
       - nbs
   wildfly:
     build: ./nbs-classic
-    image: nbs-classic:6.0.16
+    image: nbs-classic:6.0.17.1
     container_name: wildfly
     depends_on:
       - nbs-mssql

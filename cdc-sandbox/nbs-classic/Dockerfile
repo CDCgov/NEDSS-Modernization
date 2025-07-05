@@ -36,7 +36,7 @@ RUN apk add unzip && \
     mkdir /wildfly && tar -zxvf wildfly-10.0.0.Final.tar.gz --directory /wildfly && \
     mkdir /pagemanagement && unzip "./pagemanagement.zip" -d /pagemanagement
 
-FROM eclipse-temurin:8-jdk-ubi9-minimal
+FROM eclipse-temurin:8-jre-ubi9-minimal
 #===============================================================================================================
 # Set WildFly and NEDSS Specific Environment Variables
 #===============================================================================================================
