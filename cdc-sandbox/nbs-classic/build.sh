@@ -25,7 +25,7 @@ done
 if [ ! -d $NBS6_PATH ]; then
   echo "Downloading NEDSSDev:[$NBS6_VERSION]"
   git clone -b $NBS6_VERSION git@github.com:cdcent/NEDSSDev.git $NBS6_PATH
-  clean=true
+  # clean=true
 fi
 
 echo "Building NBS6 Application [$NBS6_VERSION]"
