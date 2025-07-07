@@ -3,7 +3,17 @@ import { MemoryRouter } from 'react-router';
 import { PatientSearchResultListItem } from './PatientSearchResultListItem';
 import { PatientSearchResult } from 'generated/graphql/schema';
 
+const mockNow = jest.fn();
+
+jest.mock('design-system/date/clock', () => ({
+    now: () => mockNow()
+}));
+
 describe('PatientSearchResultListItem', () => {
+    beforeEach(() => {
+        mockNow.mockReturnValue(new Date('2025-01-25T00:00:00'));
+    });
+
     it('should render the patient name', () => {
         const patient: PatientSearchResult = {
             patient: 829,
