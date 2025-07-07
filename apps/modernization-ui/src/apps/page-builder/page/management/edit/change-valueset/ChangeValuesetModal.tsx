@@ -6,7 +6,7 @@ import { RefObject, useEffect } from 'react';
 import './ChangeValuesetModal.scss';
 import styles from './change-valueset-modal.module.scss';
 import { useUpdatePageQuestionValueset } from 'apps/page-builder/hooks/api/useUpdatePageQuestionValueset';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { Spinner } from 'components/Spinner';
 
 type Props = {

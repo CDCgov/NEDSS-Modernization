@@ -1,6 +1,6 @@
 import { Button } from '@trussworks/react-uswds';
 
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { ConceptControllerService, CreateConceptRequest } from 'apps/page-builder/generated';
 import { externalizeDateTime, internalizeDate } from 'date';
 import { FormProvider, useForm } from 'react-hook-form';

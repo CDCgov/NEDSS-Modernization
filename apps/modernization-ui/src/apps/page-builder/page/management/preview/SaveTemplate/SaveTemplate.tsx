@@ -4,7 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { RefObject } from 'react';
 import { CreateTemplateRequest, PagesService } from 'apps/page-builder/generated';
 import { usePageManagement } from '../../usePageManagement';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { maxLengthRule } from 'validation/entry';
 import styles from './save-tempate.module.scss';
 

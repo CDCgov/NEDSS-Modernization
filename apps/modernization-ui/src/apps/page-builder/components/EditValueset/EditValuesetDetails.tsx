@@ -6,7 +6,7 @@ import { Button } from '@trussworks/react-uswds';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { useUpdateValueset } from 'apps/page-builder/hooks/api/useUpdateValueset';
 import { useEffect } from 'react';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import styles from './edit-valueset.module.scss';
 
 type Props = {

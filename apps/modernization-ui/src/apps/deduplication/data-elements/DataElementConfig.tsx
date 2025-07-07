@@ -1,4 +1,4 @@
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Loading } from 'components/Spinner';
