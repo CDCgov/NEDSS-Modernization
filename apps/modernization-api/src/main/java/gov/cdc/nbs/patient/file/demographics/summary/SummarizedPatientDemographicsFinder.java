@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.file.demographics.summary;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -24,23 +24,22 @@ class SummarizedPatientDemographicsFinder {
 
   private static final int PATIENT_PARAMETER = 1;
 
-  private final JdbcTemplate template;
+  private final JdbcClient client;
   private final RowMapper<SummarizedPatientDemographics> mapper;
 
 
   SummarizedPatientDemographicsFinder(
-      final JdbcTemplate template
+      final JdbcClient client
   ) {
-    this.template = template;
+    this.client = client;
     this.mapper = new SummarizedPatientDemographicsRowMapper();
   }
 
   Optional<SummarizedPatientDemographics> find(final long patient) {
-    return this.template.query(
-            QUERY, statement -> statement.setLong(PATIENT_PARAMETER, patient),
-            this.mapper
-        ).stream()
-        .findFirst();
+    return this.client.sql(QUERY)
+        .param(patient)
+        .query(this.mapper)
+        .optional();
   }
 
 
