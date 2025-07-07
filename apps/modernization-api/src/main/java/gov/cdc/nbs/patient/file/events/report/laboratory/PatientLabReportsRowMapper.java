@@ -18,6 +18,7 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
       int local,
       int programArea,
       int jurisdiction,
+      int processingDecision,
       int dateReceived,
       int electronic,
       int reportingFacility,
@@ -28,9 +29,9 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
       int specimenSource
   ) {
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7, 8, 9,
-          new DisplayableSimpleNameRowMapper.Columns(10, 11,12),
-          13, 14, 15
+      this(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+          new DisplayableSimpleNameRowMapper.Columns(11, 12, 13),
+          14, 15, 16
       );
     }
   }
@@ -55,7 +56,7 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
     String local = resultSet.getString(this.columns.local());
     LocalDateTime dateReceived = resultSet.getObject(this.columns.dateReceived(), LocalDateTime.class);
     boolean electronic = resultSet.getBoolean(this.columns.electronic());
-    String processingDecision = resultSet.getString(this.columns.specimenSite());
+    String processingDecision = resultSet.getString(this.columns.processingDecision());
     LocalDate dateCollected = LocalDateColumnMapper.map(resultSet, this.columns.dateCollected());
     String jurisdiction = resultSet.getString(this.columns.jurisdiction());
     String programArea = resultSet.getString(this.columns.programArea());
@@ -88,6 +89,6 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
     String source = resultSet.getString(this.columns.specimenSource());
     String site = resultSet.getString(this.columns.specimenSite());
 
-    return (source != null || site != null) ? new PatientLabReport.Specimen(source, site) : null;
+    return (source != null || site != null) ? new PatientLabReport.Specimen(site, source) : null;
   }
 }
