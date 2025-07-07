@@ -19,8 +19,10 @@
 function exists<T>(value: T | null | undefined): value is NonNullable<T> {
     if (typeof value === 'object' && value && !Array.isArray(value)) {
         return Object.keys(value).length > 0;
+    } else if (typeof value === 'string') {
+        return value.length > 0;
     }
-    return typeof value === 'boolean' || value ? true : false;
+    return typeof value !== 'undefined' && value !== null;
 }
 
 export { exists };
