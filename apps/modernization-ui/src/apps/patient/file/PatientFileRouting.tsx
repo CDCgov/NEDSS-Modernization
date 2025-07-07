@@ -1,10 +1,9 @@
 import { lazy, Suspense } from 'react';
 import { Navigate } from 'react-router';
-import { permissions, Permitted } from 'libs/permission';
+import { permissions } from 'libs/permission';
 import { PageTitle } from 'page';
-
+import { Guarded } from 'libs/guard';
 import { loader } from './loader';
-import { FeatureGuard } from 'feature';
 
 const LazyPatientFile = lazy(() => import('./PatientFile').then((module) => ({ default: module.PatientFile })));
 const LazyPatientFileSummary = lazy(() =>
@@ -19,15 +18,13 @@ const routing = [
     {
         path: '/patient/:id',
         element: (
-            <FeatureGuard guard={(features) => features.patient.file.enabled}>
-                <Permitted permission={permissions.patient.view}>
-                    <PageTitle title="Patient file">
-                        <Suspense>
-                            <LazyPatientFile />
-                        </Suspense>
-                    </PageTitle>
-                </Permitted>
-            </FeatureGuard>
+            <Guarded feature={(features) => features.patient.file.enabled} permission={permissions.patient.file}>
+                <PageTitle title="Patient file">
+                    <Suspense>
+                        <LazyPatientFile />
+                    </Suspense>
+                </PageTitle>
+            </Guarded>
         ),
         loader,
         children: [
