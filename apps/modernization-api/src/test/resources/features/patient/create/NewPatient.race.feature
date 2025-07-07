@@ -4,7 +4,7 @@ Feature: Creation of Patients with race demographics
   Background:
     Given I am logged into NBS
     And I can "add" any "patient"
-    And I can "view" any "patient"
+    And I can "viewworkup" any "patient"
 
   Scenario: I can create a patient with a race
     Given I am entering the Other race as of 04/11/2019

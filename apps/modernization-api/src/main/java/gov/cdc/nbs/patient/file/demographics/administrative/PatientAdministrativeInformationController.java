@@ -17,13 +17,9 @@ class PatientAdministrativeInformationController {
     this.finder = finder;
   }
 
-  @Operation(
-      summary = "Patient File Administrative Information",
-      description = "Provides the administrative information for a patient",
-      tags = "PatientFile"
-  )
+  @Operation(summary = "Patient File Administrative Information", description = "Provides the administrative information for a patient", tags = "PatientFile")
   @GetMapping("/nbs/api/patients/{patient}/demographics/administrative")
-  @PreAuthorize("hasAuthority('VIEW-PATIENT')")
+  @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT')")
   ResponseEntity<Administrative> administrative(@PathVariable("patient") long patient) {
     return this.finder.find(patient).map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());

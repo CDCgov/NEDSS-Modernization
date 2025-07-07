@@ -4,7 +4,7 @@
     Background:
       Given I am logged into NBS
       And I can "add" any "patient"
-      And I can "view" any "patient"
+      And I can "viewworkup" any "patient"
 
     Scenario: I can create a patient with administrative demographics information
       Given I enter the patient administrative as of date 05/29/2023

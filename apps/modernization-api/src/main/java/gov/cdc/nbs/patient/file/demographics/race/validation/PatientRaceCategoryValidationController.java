@@ -22,30 +22,17 @@ class PatientRaceCategoryValidationController {
     this.finder = finder;
   }
 
-  @Operation(
-      operationId = "validateRace",
-      summary = "Validates that a patient can accept a race demographic for the given category.",
-      tags = "PatientFile",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Allowable race category for the patient"),
-          @ApiResponse(
-              responseCode = "400",
-              description = "The race category is already present on the patient",
-              content = {
-                  @Content(
-                      mediaType = MediaType.APPLICATION_JSON_VALUE,
-                      schema = @Schema(implementation = ExistingRaceCategory.class)
-                  )
-              }
-          )
-      }
-  )
+  @Operation(operationId = "validateRace", summary = "Validates that a patient can accept a race demographic for the given category.", tags = "PatientFile", responses = {
+      @ApiResponse(responseCode = "200", description = "Allowable race category for the patient"),
+      @ApiResponse(responseCode = "400", description = "The race category is already present on the patient", content = {
+          @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExistingRaceCategory.class))
+      })
+  })
   @PostMapping("validate")
-  @PreAuthorize("hasAuthority('VIEW-PATIENT')")
+  @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT')")
   ResponseEntity<ExistingRaceCategoryResponse> validate(
       @PathVariable final long patient,
-      @PathVariable final String category
-  ) {
+      @PathVariable final String category) {
     return this.finder.find(patient, category)
         .map(this::invalid)
         .orElseGet(this::valid);
