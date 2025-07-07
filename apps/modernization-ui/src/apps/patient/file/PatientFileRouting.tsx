@@ -1,20 +1,32 @@
+import { lazy, Suspense } from 'react';
 import { Navigate } from 'react-router';
-import { FeatureGuard } from 'feature';
+import { permissions, Permitted } from 'libs/permission';
 import { PageTitle } from 'page';
-import { PatientFile } from './PatientFile';
+
 import { loader } from './loader';
-import { PatientFileSummary } from './summary/PatientFileSummary';
-import { PatientFileEvents } from './events';
-import { PatientFileDemographics } from './demographics';
+import { FeatureGuard } from 'feature';
+
+const LazyPatientFile = lazy(() => import('./PatientFile').then((module) => ({ default: module.PatientFile })));
+const LazyPatientFileSummary = lazy(() =>
+    import('./summary/PatientFileSummary').then((module) => ({ default: module.PatientFileSummary }))
+);
+const LazyPatientFileEvents = lazy(() => import('./events').then((module) => ({ default: module.PatientFileEvents })));
+const LazyPatientFileDemographics = lazy(() =>
+    import('./demographics').then((module) => ({ default: module.PatientFileDemographics }))
+);
 
 const routing = [
     {
         path: '/patient/:id',
         element: (
             <FeatureGuard guard={(features) => features.patient.file.enabled}>
-                <PageTitle title="Patient file">
-                    <PatientFile />
-                </PageTitle>
+                <Permitted permission={permissions.patient.view}>
+                    <PageTitle title="Patient file">
+                        <Suspense>
+                            <LazyPatientFile />
+                        </Suspense>
+                    </PageTitle>
+                </Permitted>
             </FeatureGuard>
         ),
         loader,
@@ -22,15 +34,27 @@ const routing = [
             { index: true, element: <Navigate to="summary" replace /> },
             {
                 path: 'summary',
-                element: <PatientFileSummary />
+                element: (
+                    <Suspense>
+                        <LazyPatientFileSummary />
+                    </Suspense>
+                )
             },
             {
                 path: 'events',
-                element: <PatientFileEvents />
+                element: (
+                    <Suspense>
+                        <LazyPatientFileEvents />
+                    </Suspense>
+                )
             },
             {
                 path: 'demographics',
-                element: <PatientFileDemographics />
+                element: (
+                    <Suspense>
+                        <LazyPatientFileDemographics />
+                    </Suspense>
+                )
             }
         ]
     }
