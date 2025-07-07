@@ -1,9 +1,9 @@
+import { usePatientFileData } from '../usePatientFileData';
 import { InvestigationsCard } from './investigations';
-import { usePatient } from '../usePatient';
 import { LabReportsCard } from './reports/laboratory';
 
 const PatientFileEvents = () => {
-    const { id } = usePatient();
+    const { id } = usePatientFileData();
 
     return (
         <>

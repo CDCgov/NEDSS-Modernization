@@ -104,6 +104,7 @@ dependencies {
     implementation libs.guava
 
     implementation libs.springBoot.web
+    implementation libs.springBoot.actuator
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
 

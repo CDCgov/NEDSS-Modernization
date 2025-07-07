@@ -1,4 +1,3 @@
-import { useAlert } from 'alert';
 import { AlgorithmExport } from 'apps/deduplication/api/model/AlgorithmExport';
 import { Shown } from 'conditional-render';
 import { useEffect, useState } from 'react';
@@ -8,6 +7,7 @@ import { ImportConfigurationModal } from './import/ImportConfigurationModal';
 import { ImportPreview } from './import/importPreview/ImportPreview';
 import styles from './match-configuration-landing.module.scss';
 import { MatchConfiguration } from './match-configuration/MatchConfiguration';
+import { useAlert } from 'libs/alert';
 
 export const MatchConfigurationLandingPage = () => {
     const { showError, showSuccess } = useAlert();

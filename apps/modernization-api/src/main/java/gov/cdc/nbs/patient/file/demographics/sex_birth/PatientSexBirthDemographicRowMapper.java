@@ -15,6 +15,7 @@ class PatientSexBirthDemographicRowMapper implements RowMapper<PatientSexBirthDe
   record Column(
       int asOf,
       int bornOn,
+      int deceasedOn,
       SelectableRowMapper.Column sex,
       SelectableRowMapper.Column multiple,
       int order,
@@ -29,18 +30,18 @@ class PatientSexBirthDemographicRowMapper implements RowMapper<PatientSexBirthDe
       int additionalGender
   ) {
     Column() {
-      this(1, 2,
-          new SelectableRowMapper.Column(3, 4),
-          new SelectableRowMapper.Column(5, 6),
-          7, 8,
-          new SelectableRowMapper.Column(9, 10),
-          new SelectableRowMapper.Column(11, 12),
-          new SelectableRowMapper.Column(13, 14),
+      this(1, 2, 3,
+          new SelectableRowMapper.Column(4, 5),
+          new SelectableRowMapper.Column(6, 7),
+          8, 9,
+          new SelectableRowMapper.Column(10, 11),
+          new SelectableRowMapper.Column(12, 13),
+          new SelectableRowMapper.Column(14, 15),
           //
-          new SelectableRowMapper.Column(15, 16),
-          new SelectableRowMapper.Column(17, 18),
-          new SelectableRowMapper.Column(19, 20),
-          21
+          new SelectableRowMapper.Column(16, 17),
+          new SelectableRowMapper.Column(18, 19),
+          new SelectableRowMapper.Column(20, 21),
+          22
       );
     }
   }
@@ -79,6 +80,7 @@ class PatientSexBirthDemographicRowMapper implements RowMapper<PatientSexBirthDe
 
     LocalDate asOf = LocalDateColumnMapper.map(resultSet, columns.asOf());
     LocalDate bornOn = LocalDateColumnMapper.map(resultSet, columns.bornOn());
+    LocalDate deceasedOn = LocalDateColumnMapper.map(resultSet, columns.deceasedOn());
     Selectable sex = sexMapper.mapRow(resultSet, rowNum);
     Selectable multiple = multipleMapper.mapRow(resultSet, rowNum);
     Integer order = IntegerColumnMapper.map(resultSet, columns.order());
@@ -96,6 +98,7 @@ class PatientSexBirthDemographicRowMapper implements RowMapper<PatientSexBirthDe
     return new PatientSexBirthDemographic(
         asOf,
         bornOn,
+        deceasedOn,
         sex,
         multiple,
         order,

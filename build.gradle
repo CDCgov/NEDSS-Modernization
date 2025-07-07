@@ -10,7 +10,7 @@ buildscript {
     }
 
     ext {
-        commit = System.getenv('IMAGE_TAG') ?: ''
+        commit = System.getenv('github_sha_short') ?: ''
     }
 }
 

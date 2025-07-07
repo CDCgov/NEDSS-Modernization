@@ -1,4 +1,4 @@
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import {
     PageQuestionControllerService,
     PageStaticControllerService,

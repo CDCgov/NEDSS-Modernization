@@ -1,5 +1,5 @@
 import { Button, Form } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { PageRuleControllerService, Rule, RuleRequest } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { useGetPageDetails } from 'apps/page-builder/page/management';

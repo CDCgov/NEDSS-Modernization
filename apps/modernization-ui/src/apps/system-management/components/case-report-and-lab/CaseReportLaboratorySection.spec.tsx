@@ -2,12 +2,27 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CaseReportLaboratorySection } from './CaseReportLaboratorySection';
 
+const mockPermissions = ['LDFADMINISTRATION-SYSTEM', 'DECISION_SUPPORT_ADMIN', 'REPORTADMIN', 'SRTADMIN-SYSTEM'];
+
+const mockAllows = (p: string) => mockPermissions.includes(p);
+const mockAllowFn = jest.fn(mockAllows);
+
+jest.mock('../../../../libs/permission/usePermissions', () => ({
+    usePermissions: () => ({
+        permissions: mockPermissions,
+        allows: mockAllowFn,
+    }),
+}));
+
 describe('CaseReportLaboratorySection', () => {
     const setup = (filter = '') => {
         const setAlert = jest.fn();
         render(<CaseReportLaboratorySection filter={filter} setAlert={setAlert} />);
         return { setAlert };
     };
+    beforeEach(() => {
+        mockAllowFn.mockImplementation(mockAllows);
+    });
 
     it('renders filtered links based on the filter prop', () => {
         setup('SNOMED');

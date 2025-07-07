@@ -4,6 +4,7 @@ import { Button } from 'design-system/button';
 import { Confirmation } from 'design-system/modal/Confirmation';
 import styles from './CaseReportLaboratorySection.module.scss';
 import { caseReportLinks } from './caseLinks';
+import { Permitted } from '../../../../libs/permission';
 
 type Props = {
     filter: string;
@@ -67,57 +68,59 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
     if (currentGroup.links.length) grouped.push(currentGroup);
 
     return (
-        <Card
-            id="case-report-lab"
-            title="Case report & laboratory"
-            level={2}
-            collapsible={true}
-            className={styles.card}>
-            <div className={styles.sectionContent}>
-                {/* Render ungrouped links first */}
-                {grouped.length > 0 && grouped[0].title === undefined && (
-                    <div className={styles.subGroup}>
-                        {grouped[0].links.map((link) => (
-                            <a key={link.href} href={link.href}>
-                                {link.text}
-                            </a>
-                        ))}
-                    </div>
-                )}
-
-                {/* Render all groups */}
-                {grouped.slice(grouped[0]?.title === undefined ? 1 : 0).map((group) => {
-                    const groupKey = group.title ?? group.links.map((l) => l.href).join('-');
-                    return (
-                        <div key={groupKey}>
-                            {group.title && <div className={styles.groupTitle}>{group.title}</div>}
-                            <div className={styles.subGroup}>
-                                {group.links.map((link) => (
-                                    <a key={link.href} href={link.href}>
-                                        {link.text}
-                                    </a>
-                                ))}
-                            </div>
+        <Permitted permission={'SRTADMIN-SYSTEM'}>
+            <Card
+                id="case-report-lab"
+                title="Case report & laboratory"
+                level={2}
+                collapsible={true}
+                className={styles.card}>
+                <div className={styles.sectionContent}>
+                    {/* Render ungrouped links first */}
+                    {grouped.length > 0 && grouped[0].title === undefined && (
+                        <div className={styles.subGroup}>
+                            {grouped[0].links.map((link) => (
+                                <a key={link.href} href={link.href}>
+                                    {link.text}
+                                </a>
+                            ))}
                         </div>
-                    );
-                })}
+                    )}
 
-                {showResetButton && (
-                    <Button secondary sizing="small" onClick={handleResetClick}>
-                        Reset lab mapping cache
-                    </Button>
-                )}
+                    {/* Render all groups */}
+                    {grouped.slice(grouped[0]?.title === undefined ? 1 : 0).map((group) => {
+                        const groupKey = group.title ?? group.links.map((l) => l.href).join('-');
+                        return (
+                            <div key={groupKey}>
+                                {group.title && <div className={styles.groupTitle}>{group.title}</div>}
+                                <div className={styles.subGroup}>
+                                    {group.links.map((link) => (
+                                        <a key={link.href} href={link.href}>
+                                            {link.text}
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })}
 
-                {showConfirm && (
-                    <Confirmation
-                        title="Reset Lab Mapping Cache"
-                        confirmText="Yes, reset"
-                        onConfirm={handleConfirm}
-                        onCancel={handleCancel}>
-                        Are you sure you want to reset lab mapping cache?
-                    </Confirmation>
-                )}
-            </div>
-        </Card>
+                    {showResetButton && (
+                        <Button secondary sizing="small" onClick={handleResetClick}>
+                            Reset lab mapping cache
+                        </Button>
+                    )}
+
+                    {showConfirm && (
+                        <Confirmation
+                            title="Reset Lab Mapping Cache"
+                            confirmText="Yes, reset"
+                            onConfirm={handleConfirm}
+                            onCancel={handleCancel}>
+                            Are you sure you want to reset lab mapping cache?
+                        </Confirmation>
+                    )}
+                </div>
+            </Card>
+        </Permitted>
     );
 };

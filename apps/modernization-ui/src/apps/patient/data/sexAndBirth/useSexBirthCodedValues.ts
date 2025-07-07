@@ -15,7 +15,7 @@ const useSexBirthCodedValues = (): SexBirthCodedValues => {
     const genderUnknownReasons = useConceptOptions('SEX_UNK_REASON', { lazy: false });
 
     return {
-        genders: genders,
+        genders: genders.all,
         preferredGenders: preferredGenders.options,
         genderUnknownReasons: genderUnknownReasons.options,
         multipleBirth: indicators

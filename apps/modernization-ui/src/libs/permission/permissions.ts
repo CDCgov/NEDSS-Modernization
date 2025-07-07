@@ -32,5 +32,19 @@ export const permissions = {
         update: 'EDIT-PATIENT',
         view: 'VIEW-PATIENT',
         merge: 'MERGE-PATIENT'
+    },
+    system: {
+        caseReport: 'SRTADMIN-SYSTEM',
+        decisionSupport: 'ALERTADMIN-SYSTEM',
+        epiLink: 'EPILINKADMIN-SYSTEM',
+        messagingManagement: [
+            'VIEWELRACTIVITY-OBSERVATIONLABREPORT',
+            'VIEWPHCRACTIVITY-CASEREPORTING',
+            'IMPORTEXPORTADMIN-SYSTEM'
+        ],
+        page: 'LDFADMINISTRATION-SYSTEM',
+        personMatch: 'MERGE-PATIENT',
+        report: 'REPORTADMIN-SYSTEM',
+        security: ['ADMISTRATE-SYSTEM', 'ADMINISTRATE-SECURITY']
     }
 };

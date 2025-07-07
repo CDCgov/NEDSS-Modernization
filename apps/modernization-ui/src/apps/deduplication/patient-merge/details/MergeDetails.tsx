@@ -18,7 +18,7 @@ import {
 } from './merge-review/model/PatientMergeForm';
 import styles from './MergeDetails.module.scss';
 import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { Confirmation } from 'design-system/modal';
 
 export const MergeDetails = () => {

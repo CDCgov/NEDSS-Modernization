@@ -1,4 +1,5 @@
 import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
+import { Permitted } from '../../../../libs/permission';
 
 export const pageLinks = [
     {
@@ -28,5 +29,9 @@ type Props = {
 };
 
 export const PageSection = ({ filter }: Props) => {
-    return <SystemManagementInfoCard id="page" title="Page" filter={filter} links={pageLinks} />;
+    return (
+        <Permitted permission={'LDFADMINISTRATION-SYSTEM'}>
+            <SystemManagementInfoCard id="page" title="Page" filter={filter} links={pageLinks} />
+        </Permitted>
+    );
 };

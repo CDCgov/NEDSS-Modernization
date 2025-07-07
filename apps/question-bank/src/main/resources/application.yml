@@ -23,6 +23,8 @@ nbs:
         - /v3/api-docs/**
         - /swagger-ui/**
         - /swagger-resources/**
+        - /~/health
+        - /~/info
 
 spring:
   profiles:
@@ -56,4 +58,24 @@ springdoc:
   packages-to-scan: "gov.cdc.nbs.questionbank"
 
 logging:
-  file.name.path: ./log/
+  file:
+    path: ./log/
+
+management:
+  health:
+    db:
+      enabled: true
+  endpoints:
+    web:
+      discovery:
+        enabled: false
+      exposure:
+        include: health,info
+      base-path: /~
+    access:
+      default: read_only
+  endpoint:
+    health:
+      access: read_only
+    info:
+      access: read_only
