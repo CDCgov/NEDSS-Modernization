@@ -26,6 +26,10 @@ class PatientLabReportsFinder {
           [lab].[local_id]                                    as [local],
           [program_area].prog_area_desc_txt                   as [Program Area],
           [jurisdiction].code_short_desc_txt                  as [Jurisduction],
+          coalesce(
+              [processing_decision].code_short_desc_txt,
+              [lab].processing_decision_txt
+          )                                                   as [Processing Decision],
           [lab].[rpt_to_state_time]                           as [Date Received],
           case [lab].electronic_ind
                    when 'Y' then 1
@@ -37,8 +41,14 @@ class PatientLabReportsFinder {
           [provider].[first_nm]                               as [provider_first_name],
           [provider].[last_nm]                                as [provider_last_name],
           [lab].[effective_from_time]                         as [Date Collected],
-          [specimen_site].[code_desc_txt]                     as [Specimen Site],
-          [specimen_source].[code_desc_txt]                   as [Speciman Source]
+          coalesce(
+              [specimen_site].[code_desc_txt],
+              [lab].target_site_cd
+          )                                                   as [Specimen Site],
+          coalesce(
+              [specimen_source].[code_desc_txt],
+              [specimen_source_material].cd_desc_txt
+          )                                                   as [Speciman Source]
       from revisions
       
           join [Participation] [subject_of_report] with (nolock) on
@@ -68,8 +78,12 @@ class PatientLabReportsFinder {
           join Organization [reporting_facility] with (nolock) on
               [reporting_facility].organization_uid = [reporting_facility_participation].[subject_entity_uid]
       
+          left join NBS_SRTE..Code_value_general [processing_decision] with (nolock) on
+                [processing_decision].[code_set_nm] = 'STD_UNKCOND_PROC_DECISION'
+            and [processing_decision].code = [lab].processing_decision_cd
+      
           left join Participation [ordering_facility_participation] with (nolock) on
-              [ordering_facility_participation].act_uid = [lab].observation_uid
+                  [ordering_facility_participation].act_uid = [lab].observation_uid
               and [ordering_facility_participation].type_cd = 'ORD'
               and [ordering_facility_participation].subject_class_cd = 'ORG'
       
@@ -95,6 +109,7 @@ class PatientLabReportsFinder {
                   [specimen_source_participation].act_uid = [lab].[observation_uid]
               and [specimen_source_participation].act_class_cd = 'OBS'
               and [specimen_source_participation].type_cd = 'SPC'
+              and [specimen_source_participation].subject_class_cd = 'MAT'
               and [specimen_source_participation].[record_status_cd] = 'ACTIVE'
       
           left join Material [specimen_source_material] with (nolock) on

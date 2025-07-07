@@ -5,7 +5,7 @@ import { RefObject, useEffect, useState } from 'react';
 import './ManageSectionModal.scss';
 import { usePageManagement } from '../../../usePageManagement';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 
 type ManageSectionModalProps = {
     addSecModalRef: RefObject<ModalRef>;

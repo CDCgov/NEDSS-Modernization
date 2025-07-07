@@ -4,6 +4,7 @@ import { PatientFileAdministrativeInformationCard } from './administrative/Patie
 import { PatientFileNameCard } from './name/PatientFileNameCard';
 import { PatientFileAddressCard } from './address/PatientFileAddressCard';
 import { PatientFileIdentificationsCard } from './identifications/PatientFileIdentificationsCard';
+import { PatientFilePhoneEmailCard } from './phoneEmail/PatientFilePhoneEmailCard';
 import { PatientFileEthnicityCard } from './ethnicity/PatientFileEthnicityCard';
 import { PatientFileSexBirthCard } from './sex-birth';
 
@@ -18,6 +19,11 @@ const PatientFileDemographics = () => {
         <div className={styles.container}>
             <PatientFileAdministrativeInformationCard patient={id} sizing={sizing} />
             <PatientFileNameCard patient={id} sizing={sizing} />
+            <PatientFilePhoneEmailCard
+                id="patient-file-phone-email"
+                sizing={sizing}
+                provider={demographics.get().phoneEmail}
+            />
             <PatientFileAddressCard patient={id} sizing={sizing} />
             <PatientFileIdentificationsCard patient={id} sizing={sizing} />
             <span data-half>

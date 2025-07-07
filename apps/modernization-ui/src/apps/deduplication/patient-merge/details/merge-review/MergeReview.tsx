@@ -15,7 +15,7 @@ import { SexAndBirthSelection } from './patient-form/sex-and-birth/SexAndBirthSe
 import { MortalitySelection } from './patient-form/mortality/MortalitySelection';
 import { GeneralSelection } from './patient-form/general/GeneralSelection';
 import { InvestigationDisplay } from './patient-form/investigations/InvestigationsDisplay';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
 
 export type Props = {

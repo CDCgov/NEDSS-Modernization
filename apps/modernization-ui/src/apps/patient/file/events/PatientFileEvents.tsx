@@ -1,5 +1,5 @@
-import { InvestigationsCard } from './investigations';
 import { usePatientFileData } from '../usePatientFileData';
+import { InvestigationsCard } from './investigations';
 import { LabReportsCard } from './reports/laboratory';
 
 const PatientFileEvents = () => {

@@ -14,7 +14,7 @@ import { HyperlinkFields } from './HyperlinkFields';
 import { CommentsFields } from './CommentsFields';
 import { usePageManagement } from '../../usePageManagement';
 import styles from './staticelement.module.scss';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 
 const staticType = [
     { value: 'LIN', name: 'Line separator' },
