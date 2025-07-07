@@ -22,8 +22,9 @@ export type Props = {
     mergeCandidates: MergeCandidate[];
     onPreview: () => void;
     onRemovePatient: (personUid: string) => void;
+    onMerge: () => void;
 };
-export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient }: Props) => {
+export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient, onMerge }: Props) => {
     const { matchId } = useParams();
     const { keepAllSeparate } = useRemoveMerge();
     const nav = useNavigate();
@@ -66,7 +67,7 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient }: Pro
                         Preview merge
                     </Button>
                     <Button onClick={handleKeepAllSeparate}>Keep all separate</Button>
-                    <Button onClick={() => console.log('Merge all NYI')}>Merge all</Button>
+                    <Button onClick={onMerge}>Merge all</Button>
                 </div>
             </header>
             <main>
