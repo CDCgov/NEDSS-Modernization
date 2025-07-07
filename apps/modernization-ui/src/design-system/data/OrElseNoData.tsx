@@ -9,7 +9,7 @@ type OrElseNoDataProps = {
 /**
  * Renders the children component or the "no data" placeholder of "---" if it does not {@link exists}.
  *
- * @param {OrElseNoDataProps}
+ * @param {OrElseNoDataProps} props
  * @return {ReactNode}
  */
 const OrElseNoData = ({ children }: OrElseNoDataProps) => (exists(children) ? children : <NoData />);
