@@ -1,5 +1,5 @@
 import { ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { PagesQuestion, PagesSection, PagesSubSection, SectionControllerService } from 'apps/page-builder/generated';
 import { useRef, useState } from 'react';
 import { ConfirmationModal } from '../../../../../../confirmation';

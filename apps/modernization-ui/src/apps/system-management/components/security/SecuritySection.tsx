@@ -1,4 +1,5 @@
 import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
+import { permitsAll, Permitted } from '../../../../libs/permission';
 
 const securityLinks = [
     {
@@ -16,5 +17,9 @@ type Props = {
 };
 
 export const SecuritySection = ({ filter }: Props) => {
-    return <SystemManagementInfoCard id="security" title="Security" filter={filter} links={securityLinks} />;
+    return (
+        <Permitted permission={permitsAll('ADMISTRATE-SYSTEM', 'ADMINISTRATE-SECURITY')}>
+            <SystemManagementInfoCard id="security" title="Security" filter={filter} links={securityLinks} />
+        </Permitted>
+    );
 };

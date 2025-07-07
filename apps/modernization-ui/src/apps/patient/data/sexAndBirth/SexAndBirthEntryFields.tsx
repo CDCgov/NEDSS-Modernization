@@ -4,7 +4,7 @@ import { useSexBirthCodedValues } from './useSexBirthCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { Input } from 'components/FormInputs/Input';
-import { displayAgeAsOf, displayAgeAsOfToday } from 'date/displayAge';
+import { displayAgeAsOf, displayAgeAsOfToday } from 'date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { BirthEntry, MortalityEntry, SexEntry } from 'apps/patient/data/entry';
 import { EntryFieldsProps } from 'design-system/entry';

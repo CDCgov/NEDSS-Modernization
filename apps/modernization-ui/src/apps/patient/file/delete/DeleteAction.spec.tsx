@@ -1,30 +1,16 @@
 import { ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { DeleteAction } from './DeleteAction';
-import { Patient } from '../patient';
 import { Permitted } from 'libs/permission';
+import { DeleteAction } from './DeleteAction';
 import { useDeletePatient } from './useDeletePatient';
-import { usePatient } from '../usePatient';
-
-const mockPatient: Partial<Patient> = {
-    id: 10056284,
-    local: 'PSN10091000GA01',
-    patientId: 91000,
-    deletability: 'Deletable',
-    status: 'ACTIVE',
-    name: {
-        first: 'John',
-        last: 'Doe'
-    },
-    birthday: '1990-01-01'
-};
+import { AlertProvider } from 'libs/alert';
 
 const mockShowSuccess = jest.fn();
 const mockShowError = jest.fn();
 const mockGo = jest.fn();
 
-jest.mock('alert', () => ({
+jest.mock('libs/alert', () => ({
     useAlert: () => ({
         showSuccess: mockShowSuccess,
         showError: mockShowError
@@ -41,10 +27,6 @@ jest.mock('./useDeletePatient', () => ({
     useDeletePatient: jest.fn()
 }));
 
-jest.mock('../usePatient', () => ({
-    usePatient: jest.fn(() => mockPatient)
-}));
-
 jest.mock('libs/permission', () => ({
     Permitted: jest.fn(({ children }: { children: ReactNode }) => <>{children}</>),
     permissions: {
@@ -57,14 +39,23 @@ jest.mock('libs/permission', () => ({
 describe('DeleteAction', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        (usePatient as jest.Mock).mockReturnValue(mockPatient);
+
         (Permitted as jest.Mock).mockImplementation(({ children }: { children: ReactNode }) => <>{children}</>);
     });
 
     it('should handle the deletion flow', async () => {
         const user = userEvent.setup();
-        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
-        const { getByRole, getByText } = render(<DeleteAction />);
+        const { getByRole, getByText } = render(
+            <DeleteAction
+                patient={{
+                    id: 10056284,
+                    local: 'PSN10091000GA01',
+                    patientId: 91000,
+                    deletability: 'Deletable',
+                    status: 'ACTIVE'
+                }}
+            />
+        );
 
         const deleteButton = getByRole('button');
 
@@ -76,18 +67,34 @@ describe('DeleteAction', () => {
 
     it('should not show the delete button when user does not have permissions', () => {
         (Permitted as jest.Mock).mockImplementation(() => <></>);
-        const { queryByRole } = render(<DeleteAction />);
+        const { queryByRole } = render(
+            <DeleteAction
+                patient={{
+                    id: 10056284,
+                    local: 'PSN10091000GA01',
+                    patientId: 91000,
+                    deletability: 'Deletable',
+                    status: 'ACTIVE'
+                }}
+            />
+        );
         expect(queryByRole('button')).not.toBeInTheDocument();
     });
 
     it('should show warning if patient has associations', async () => {
         const user = userEvent.setup();
-        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Has_Associations);
-        (usePatient as jest.Mock).mockReturnValue({
-            ...mockPatient,
-            deletability: 'Has_Associations'
-        });
-        const { getByRole, getByText } = render(<DeleteAction />);
+
+        const { getByRole, getByText } = render(
+            <DeleteAction
+                patient={{
+                    id: 10056284,
+                    local: 'PSN10091000GA01',
+                    patientId: 91000,
+                    deletability: 'Has_Associations',
+                    status: 'ACTIVE'
+                }}
+            />
+        );
 
         const deleteButton = getByRole('button');
         await user.hover(deleteButton);
@@ -106,12 +113,18 @@ describe('DeleteAction', () => {
 
     it('should show warning if patient is inactive', async () => {
         const user = userEvent.setup();
-        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Is_Inactive);
-        (usePatient as jest.Mock).mockReturnValue({
-            ...mockPatient,
-            deletability: 'Is_Inactive'
-        });
-        const { getByRole, getByText } = render(<DeleteAction />);
+
+        const { getByRole, getByText } = render(
+            <DeleteAction
+                patient={{
+                    id: 10056284,
+                    local: 'PSN10091000GA01',
+                    patientId: 91000,
+                    deletability: 'Is_Inactive',
+                    status: 'ACTIVE'
+                }}
+            />
+        );
 
         const deleteButton = getByRole('button');
         await user.hover(deleteButton);
@@ -123,8 +136,18 @@ describe('DeleteAction', () => {
         const mockDeletePatient = jest.fn(() => Promise.resolve({ success: true }));
         (useDeletePatient as jest.Mock).mockReturnValue(mockDeletePatient);
         const user = userEvent.setup();
-        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
-        const { getByRole, getByText } = render(<DeleteAction />);
+
+        const { getByRole, getByText } = render(
+            <DeleteAction
+                patient={{
+                    id: 797,
+                    local: 'PSN10091000GA01',
+                    patientId: 91000,
+                    deletability: 'Deletable',
+                    status: 'ACTIVE'
+                }}
+            />
+        );
 
         const deleteButton = getByRole('button');
 
@@ -134,14 +157,28 @@ describe('DeleteAction', () => {
         const confirmButton = getByText('Delete', { selector: 'button' });
 
         await user.click(confirmButton);
-        expect(mockDeletePatient).toHaveBeenCalledWith(mockPatient.id);
+        expect(mockDeletePatient).toHaveBeenCalledWith(797);
     });
 
     it('should show success message when patient successfully deleted', async () => {
         (useDeletePatient as jest.Mock).mockImplementation((onComplete) => () => onComplete({ success: true }));
-        // (resolveDeletability as jest.Mock).mockReturnValue(DeletabilityResult.Deletable);
+
         const user = userEvent.setup();
-        const { getByRole, getByText } = render(<DeleteAction />);
+        const { getByRole, getByText } = render(
+            <DeleteAction
+                patient={{
+                    id: 10056284,
+                    local: 'PSN10091000GA01',
+                    patientId: 91000,
+                    deletability: 'Deletable',
+                    status: 'ACTIVE',
+                    name: {
+                        first: 'John',
+                        last: 'Doe'
+                    }
+                }}
+            />
+        );
 
         const deleteButton = getByRole('button');
         await user.click(deleteButton);
@@ -150,7 +187,11 @@ describe('DeleteAction', () => {
         await user.click(confirmButton);
 
         // eslint-disable-next-line prettier/prettier
-        expect(mockShowSuccess).toHaveBeenCalledWith(<span>You have successfully deleted <strong>Doe, John (Patient ID: 91000)</strong>.</span>);
+        expect(mockShowSuccess).toHaveBeenCalledWith(
+            <span>
+                You have successfully deleted <strong>Doe, John (Patient ID: 91000)</strong>.
+            </span>
+        );
         expect(mockGo).toHaveBeenCalled();
     });
 
@@ -159,7 +200,17 @@ describe('DeleteAction', () => {
             (onComplete) => () => onComplete({ success: false, message: 'Error in delete' })
         );
         const user = userEvent.setup();
-        const { getByRole, getByText } = render(<DeleteAction />);
+        const { getByRole, getByText } = render(
+            <DeleteAction
+                patient={{
+                    id: 797,
+                    local: 'PSN10091000GA01',
+                    patientId: 91000,
+                    deletability: 'Deletable',
+                    status: 'ACTIVE'
+                }}
+            />
+        );
 
         const deleteButton = getByRole('button');
         await user.click(deleteButton);

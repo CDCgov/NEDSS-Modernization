@@ -1,4 +1,5 @@
 import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
+import { Permitted } from '../../../../libs/permission';
 
 const reportLinks = [
     {
@@ -20,5 +21,9 @@ type Props = {
 };
 
 export const ReportSection = ({ filter }: Props) => {
-    return <SystemManagementInfoCard id="report" title="Report" filter={filter} links={reportLinks} />;
+    return (
+        <Permitted permission={'REPORTADMIN-SYSTEM'}>
+            <SystemManagementInfoCard id="report" title="Report" filter={filter} links={reportLinks} />
+        </Permitted>
+    );
 };

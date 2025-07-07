@@ -1,5 +1,4 @@
 import { ComponentType, ReactNode } from 'react';
-import { useAlert } from 'alert';
 import { Button } from 'design-system/button';
 import { Hint } from 'design-system/hint';
 import { Icon } from 'design-system/icon';
@@ -9,12 +8,12 @@ import { useConditionalRender } from 'conditional-render';
 import { useSearchNavigation } from 'apps/search';
 import { DeletePatientResponse, useDeletePatient } from './useDeletePatient';
 import { Permitted, permissions } from 'libs/permission';
-import { usePatient } from '../usePatient';
-import { Deletability } from '../patient';
+import { Deletability, Patient } from '../patient';
 import { displayName } from 'name';
+import { useAlert } from 'libs/alert';
 
 type DeleteActionProps = {
-    buttonClassName?: string;
+    patient: Patient;
 };
 
 /**
@@ -22,12 +21,10 @@ type DeleteActionProps = {
  * @param {Props} props - The props for the component.
  * @return {JSX.Element} The rendered component.
  */
-const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
+const DeleteAction = ({ patient }: DeleteActionProps) => {
     const { showSuccess, showError } = useAlert();
     const { go } = useSearchNavigation();
     const { show, hide, render } = useConditionalRender();
-    const patient = usePatient();
-    const deletability = patient.deletability;
 
     const handleDeleteComplete = (response: DeletePatientResponse) => {
         if (response.success) {
@@ -51,12 +48,11 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
 
     const HintableButton = withHintable(Button);
 
-    const showHint = deletability === 'Has_Associations' || deletability === 'Is_Inactive';
+    const showHint = patient.deletability === 'Has_Associations' || patient.deletability === 'Is_Inactive';
 
     return (
         <Permitted permission={permissions.patient.delete}>
             <HintableButton
-                className={buttonClassName}
                 aria-label="Delete"
                 data-tooltip-position="top"
                 data-tooltip-offset="center"
@@ -65,10 +61,10 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
                 onClick={show}
                 showHint={showHint}
                 hintId="delete-patient-hint"
-                hintContent={<DeletabilityContent deletability={deletability} />}
+                hintContent={<DeletabilityContent deletability={patient.deletability} />}
                 secondary
                 destructive
-                disabled={deletability !== 'Deletable'}
+                disabled={patient.deletability !== 'Deletable'}
             />
             {render(
                 <Confirmation

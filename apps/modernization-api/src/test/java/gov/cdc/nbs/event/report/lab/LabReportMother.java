@@ -365,4 +365,18 @@ public class LabReportMother {
         .update();
   }
 
+   void specimen(
+       final LabReportIdentifier report,
+       final String site
+   ) {
+     this.client.sql("""
+            update Observation set
+                target_site_cd = ?
+            where observation_uid = ?
+            """
+         )
+         .param(site)
+         .param(report.identifier())
+         .update();
+  }
 }

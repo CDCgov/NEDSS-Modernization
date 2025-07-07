@@ -1,4 +1,5 @@
 import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
+import { permitsAny, Permitted } from '../../../../libs/permission';
 
 const messagingLinks = [
     {
@@ -24,5 +25,14 @@ type Props = {
 };
 
 export const MessagingSection = ({ filter }: Props) => {
-    return <SystemManagementInfoCard id="messaging" title="Messaging" filter={filter} links={messagingLinks} />;
+    return (
+        <Permitted
+            permission={permitsAny(
+                'VIEWELRACTIVITY-OBSERVATIONLABREPORT',
+                'VIEWPHCRACTIVITY-CASEREPORTING',
+                'IMPORTEXPORTADMIN-SYSTEM'
+            )}>
+            <SystemManagementInfoCard id="messaging" title="Messaging" filter={filter} links={messagingLinks} />
+        </Permitted>
+    );
 };

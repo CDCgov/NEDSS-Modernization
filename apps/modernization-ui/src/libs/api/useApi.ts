@@ -37,7 +37,10 @@ const useApi = <I, O>({ resolver }: ApiProps<I, O>): ApiInteraction<I, O> => {
 
     useEffect(() => {
         if (state.status === 'fetching') {
-            resolver(state.input).then((result) => dispatch({ type: 'complete', data: result }));
+            resolver(state.input).then(
+                (result) => dispatch({ type: 'complete', data: result }),
+                () => dispatch({ type: 'error', error: 'An unexpected error occurred.' })
+            );
         }
     }, [state.status]);
 
