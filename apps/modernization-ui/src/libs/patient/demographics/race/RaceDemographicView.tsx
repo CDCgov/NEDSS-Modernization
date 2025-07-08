@@ -13,7 +13,7 @@ const RaceDemographicView = ({ entry }: RaceDemographicViewProps) => {
             <DetailValue label="Race as of">{internalizeDate(entry.asOf)}</DetailValue>
             <DetailValue label="Race">{entry.race.name}</DetailValue>
             <DetailValue label="Detailed race">
-                {entry.detailed.length > 0 ? entry.detailed.join(', ') : displayNoData()}
+                {entry.detailed.length > 0 ? entry.detailed.map((detail) => detail.name).join(', ') : displayNoData()}
             </DetailValue>
         </DetailView>
     );
