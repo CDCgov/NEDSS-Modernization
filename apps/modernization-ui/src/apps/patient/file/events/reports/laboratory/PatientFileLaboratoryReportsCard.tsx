@@ -1,15 +1,21 @@
-import { displayProvider } from 'libs/provider';
-import { internalizeDateTime } from 'date/InternalizeDateTime';
-import { TableCard } from 'design-system/card';
+import { Suspense } from 'react';
+import { Await } from 'react-router';
+import { LoadingOverlay } from 'libs/loading';
+import { MemoizedSupplier } from 'libs/supplying';
 import { Column } from 'design-system/table';
-import { MaybeLabeledValue } from 'design-system/value';
 import { ColumnPreference } from 'design-system/table/preferences';
+import { TableCard, TableCardProps } from 'design-system/card';
+import { PatientFileLaboratoryReport } from './laboratory-report';
+import { internalizeDateTime } from 'date';
+import { displayProvider } from 'libs/provider';
+import { MaybeLabeledValue } from 'design-system/value';
 import { Associations } from 'libs/events/investigations/associated';
 import { ResultedTests } from 'libs/events/tests';
-import { PatientLabReport } from './patientLabReport';
-import { usePatientLabReports } from './usePatientLabReports';
 
 import styles from './lab-reports.module.scss';
+import { permissions, Permitted } from 'libs/permission';
+import { Icon } from 'design-system/icon';
+import { LinkButton } from 'design-system/button';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'received-on', name: 'Date received' };
@@ -31,11 +37,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...JURISDICTION, moveable: true, toggleable: true }
 ];
 
-type LabReportsCardProps = {
-    patient: number;
-};
-
-const columns: Column<PatientLabReport>[] = [
+const columns: Column<PatientFileLaboratoryReport>[] = [
     {
         ...EVENT_ID,
         className: styles['local-header'],
@@ -108,20 +110,50 @@ const columns: Column<PatientLabReport>[] = [
     }
 ];
 
-const LabReportsCard = ({ patient }: LabReportsCardProps) => {
-    const { data } = usePatientLabReports(patient);
+type InternalCardProps = {
+    patient: number;
+    data?: PatientFileLaboratoryReport[];
+} & Omit<
+    TableCardProps<PatientFileLaboratoryReport>,
+    'columnPreferencesKey' | 'defaultColumnPreferences' | 'columns' | 'data' | 'title'
+>;
 
-    return (
-        <TableCard
-            id="patient-file-lab-reports-table-card"
-            title="Lab reports"
-            sizing="small"
-            data={data}
-            columns={columns}
-            columnPreferencesKey="patient.file.laboratory-report.preferences"
-            defaultColumnPreferences={columnPreferences}
-        />
-    );
-};
+const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCardProps) => (
+    <TableCard
+        title="Lab reports"
+        sizing={sizing}
+        data={data}
+        columns={columns}
+        columnPreferencesKey="patient.file.laboratory-report.preferences"
+        defaultColumnPreferences={columnPreferences}
+        actions={
+            <Permitted permission={permissions.labReport.add}>
+                <LinkButton
+                    secondary
+                    sizing={sizing}
+                    icon={<Icon name="add_circle" />}
+                    href={`/nbs/api/profile/${patient}/report/lab`}>
+                    Add lab report
+                </LinkButton>
+            </Permitted>
+        }
+        {...remaining}
+    />
+);
 
-export { LabReportsCard };
+type PatientFileLaboratoryReportsCardProps = {
+    provider: MemoizedSupplier<Promise<PatientFileLaboratoryReport[]>>;
+} & Omit<InternalCardProps, 'data'>;
+
+const PatientFileLaboratoryReportsCard = ({ provider, ...remaining }: PatientFileLaboratoryReportsCardProps) => (
+    <Suspense
+        fallback={
+            <LoadingOverlay>
+                <InternalCard {...remaining} />
+            </LoadingOverlay>
+        }>
+        <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
+    </Suspense>
+);
+
+export { PatientFileLaboratoryReportsCard };

@@ -6,8 +6,7 @@ import { TableCardProps } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { TableCard } from 'design-system/card';
-import { displayNotificationStatus } from 'libs/events/investigations';
-import { displayInvestigator } from 'libs/investigator';
+import { displayNotificationStatus, displayInvestigator } from 'libs/events/investigations';
 import { PatientFileOpenInvestigation } from './openInvestigation';
 
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };

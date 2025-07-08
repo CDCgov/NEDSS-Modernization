@@ -3,7 +3,7 @@ import { Specimen } from 'libs/events/reports/laboratory';
 import { ResultedTest } from 'libs/events/tests';
 import { Provider } from 'libs/provider';
 
-type PatientLabReport = {
+type PatientFileLaboratoryReport = {
     patient: number;
     id: number;
     local: string;
@@ -21,4 +21,4 @@ type PatientLabReport = {
     associations?: AssociatedInvestigation[];
 };
 
-export type { PatientLabReport };
+export type { PatientFileLaboratoryReport };

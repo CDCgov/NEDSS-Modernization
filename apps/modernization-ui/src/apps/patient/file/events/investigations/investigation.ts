@@ -1,4 +1,6 @@
-type PatientInvestigation = {
+import { Investigator } from 'libs/events/investigations';
+
+type PatientFileInvestigation = {
     patient: number;
     identifier: number;
     local: string;
@@ -9,11 +11,8 @@ type PatientInvestigation = {
     jurisdiction: string;
     coInfection?: string;
     notification?: string;
-    investigator?: {
-        first?: string;
-        last?: string;
-    };
+    investigator?: Investigator;
     comparable: boolean;
 };
 
-export type { PatientInvestigation };
+export type { PatientFileInvestigation };

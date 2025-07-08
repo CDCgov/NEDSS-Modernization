@@ -1,4 +1,4 @@
-import { Investigator } from 'libs/investigator/investigator';
+import { Investigator } from 'libs/events/investigations';
 
 type PatientFileOpenInvestigation = {
     patient: number;
