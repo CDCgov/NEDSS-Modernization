@@ -1,22 +1,22 @@
 import { today } from 'date';
 import { Selectable } from 'options';
-import { EffectiveDated } from 'utils';
 import { Location } from 'libs/location';
 
-type SexDemographic = EffectiveDated & {
+type SexDemographic = {
+    asOf?: string;
     current?: Selectable;
     unknownReason?: Selectable;
     transgenderInformation?: Selectable;
     additionalGender?: string;
 };
 
-type BirthDemographic = EffectiveDated &
-    Location & {
-        bornOn?: string;
-        sex?: Selectable;
-        multiple?: Selectable;
-        order?: number;
-    };
+type BirthDemographic = {
+    asOf?: string;
+    bornOn?: string;
+    sex?: Selectable;
+    multiple?: Selectable;
+    order?: number;
+} & Location;
 
 type SexBirthDemographic = SexDemographic & BirthDemographic;
 
