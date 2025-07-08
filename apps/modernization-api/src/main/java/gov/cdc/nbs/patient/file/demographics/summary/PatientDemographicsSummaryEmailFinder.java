@@ -58,7 +58,7 @@ class PatientDemographicsSummaryEmailFinder {
   Optional<String> find(final long patient, final LocalDate asOf) {
     return this.client.sql(QUERY)
         .param(patient)
-        .param(asOf)
+        .param(asOf.atTime(23, 59, 59))
         .query(String.class)
         .optional();
   }

@@ -2,11 +2,10 @@ package gov.cdc.nbs.patient.name;
 
 import gov.cdc.nbs.demographics.name.DisplayableName;
 import gov.cdc.nbs.demographics.name.DisplayableNameRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -53,26 +52,19 @@ public class PatientLegalNameFinder {
           )
       """;
 
-  private static final int PATIENT_PARAMETER = 1;
-  private static final int AS_OF_PARAMETER = 2;
-
-  private final JdbcTemplate template;
+  private final JdbcClient client;
   private final RowMapper<DisplayableName> mapper;
 
-  PatientLegalNameFinder(final JdbcTemplate template) {
-    this.template = template;
+  PatientLegalNameFinder(final JdbcClient client) {
+    this.client = client;
     this.mapper = new DisplayableNameRowMapper();
   }
 
   public Optional<DisplayableName> find(final long patient, final LocalDate asOf) {
-    return this.template.query(
-            QUERY,
-            statement -> {
-              statement.setTimestamp(AS_OF_PARAMETER, Timestamp.valueOf(asOf.atStartOfDay()));
-              statement.setLong(PATIENT_PARAMETER, patient);
-            },
-            this.mapper).stream()
-        .findFirst();
+    return this.client.sql(QUERY)
+        .param(patient)
+        .param(asOf.atTime(23, 59, 59))
+        .query(this.mapper)
+        .optional();
   }
 }
-//
