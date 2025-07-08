@@ -2,8 +2,7 @@ import { LoadingOverlay } from 'libs/loading';
 import { Suspense } from 'react';
 import { Await } from 'react-router';
 import { MemoizedSupplier } from 'libs/supplying';
-import { RaceDemographic } from 'libs/patient/demographics/race/race';
-import { RaceDemographicCard, RaceDemographicCardProps } from 'libs/patient/demographics/race/RaceDemographicCard';
+import { RaceDemographic, RaceDemographicCard, RaceDemographicCardProps } from 'libs/patient/demographics/race';
 
 type PatientFileRaceProps = {
     provider: MemoizedSupplier<Promise<Array<RaceDemographic>>>;
