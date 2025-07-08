@@ -2,11 +2,13 @@ import { createContext, ReactNode, useContext } from 'react';
 import { MemoizedSupplier } from 'libs/supplying/';
 import { Patient } from './patient';
 import { PatientDemographics } from './demographics';
+import { PatientFileSummaryData } from './summary';
 
 type PatientFileData = {
     id: number;
     patient: Patient;
     demographics: MemoizedSupplier<PatientDemographics>;
+    summary: MemoizedSupplier<PatientFileSummaryData>;
 };
 
 const PatientContext = createContext<PatientFileData | undefined>(undefined);

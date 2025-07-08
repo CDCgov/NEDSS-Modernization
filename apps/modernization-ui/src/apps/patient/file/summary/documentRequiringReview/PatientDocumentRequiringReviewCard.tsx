@@ -1,13 +1,17 @@
+import { Suspense } from 'react';
+import { Await } from 'react-router';
+import { MemoizedSupplier } from 'libs/supplying';
+import { LoadingOverlay } from 'libs/loading';
 import { TableCard } from 'design-system/card';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { usePatientFileDocumentRequiringReview } from './usePatientFileDocumentRequiringReview';
-import { DocumentRequiringReview } from 'generated';
 import { internalizeDate } from 'date';
 import { internalizeDateTime } from 'date/InternalizeDateTime';
 import { renderFacilityProvider, renderLabReports, renderMorbidity } from '../../renderPatientFile';
+import { PatientFileDocumentRequiringReview } from './drr';
+import { TableCardProps } from 'design-system/card/table/TableCard';
 
-const renderDescription = (value: DocumentRequiringReview) => {
+const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
         <>
             {value.type === 'Case Report' && <strong>{value.condition}</strong>}
@@ -22,7 +26,7 @@ const renderDateReceived = (value?: string) => {
     return internalizeDateTime(value);
 };
 
-const resolveUrl = (value: DocumentRequiringReview) => {
+const resolveUrl = (value: PatientFileDocumentRequiringReview) => {
     switch (value.type) {
         case 'Morbidity Report':
             return `/nbs/api/profile/${value.patient}/report/morbidity/${value.id}`;
@@ -37,7 +41,7 @@ const renderEventDate = (value?: string) => {
     return internalizeDate(value);
 };
 
-const renderEventId = (value: DocumentRequiringReview) => {
+const renderEventId = (value: PatientFileDocumentRequiringReview) => {
     const classicUrl = resolveUrl(value);
 
     return <a href={classicUrl}>{value.local}</a>;
@@ -50,7 +54,7 @@ const REPORTING = { id: 'reporting', name: 'Reporting facility/provider' };
 const EVENT_DATE = { id: 'eventDate', name: 'Event date' };
 const DESCRIPTION = { id: 'description', name: 'Description' };
 
-const columns: Column<DocumentRequiringReview>[] = [
+const columns: Column<PatientFileDocumentRequiringReview>[] = [
     { ...EVENT_ID, sortable: true, value: (value) => value.local, render: renderEventId },
     { ...DOCUMENT_TYPE, sortable: true, value: (value) => value.type },
     {
@@ -87,23 +91,39 @@ const columnPreferences: ColumnPreference[] = [
     { ...DESCRIPTION, toggleable: true }
 ];
 
-type PatientDocumentRequiringReviewCardProps = {
-    patient: number;
-};
+type InternalCardProps = {
+    data?: PatientFileDocumentRequiringReview[];
+} & Omit<
+    TableCardProps<PatientFileDocumentRequiringReview>,
+    'columnPreferencesKey' | 'defaultColumnPreferences' | 'columns' | 'data' | 'title'
+>;
 
-export const PatientDocumentRequiringReview = ({ patient }: PatientDocumentRequiringReviewCardProps) => {
-    const { documents } = usePatientFileDocumentRequiringReview(patient);
-
+const InternalCard = ({ data = [], ...remaining }: InternalCardProps) => {
     return (
         <TableCard
-            id="document-requiring-review"
             title="Document requiring review"
-            sizing="small"
+            data={data}
+            columns={columns}
             columnPreferencesKey="patient.file.drr.preferences"
             defaultColumnPreferences={columnPreferences}
-            columns={columns}
-            data={documents}
-            collapsible
+            {...remaining}
         />
     );
 };
+
+type PatientDocumentRequiringReviewCardProps = {
+    provider: MemoizedSupplier<Promise<PatientFileDocumentRequiringReview[]>>;
+} & Omit<InternalCardProps, 'data'>;
+
+const PatientDocumentRequiringReviewCard = ({ provider, ...remaining }: PatientDocumentRequiringReviewCardProps) => (
+    <Suspense
+        fallback={
+            <LoadingOverlay>
+                <InternalCard {...remaining} />
+            </LoadingOverlay>
+        }>
+        <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
+    </Suspense>
+);
+
+export { PatientDocumentRequiringReviewCard };
