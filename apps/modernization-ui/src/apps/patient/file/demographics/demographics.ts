@@ -6,12 +6,15 @@ import { PhoneEmailDemographic } from 'libs/patient/demographics/phoneEmail/phon
 import { patientPhoneEmail } from './phoneEmail/patientPhoneEmail';
 import { MortalityDemographic } from 'libs/patient/demographics/mortality';
 import { patientMortality } from './mortality';
+import { RaceDemographic } from 'libs/patient/demographics/race/race';
+import { patientRace } from './race/patientRace';
 
 type PatientDemographics = {
     phoneEmail: MemoizedSupplier<Promise<Array<PhoneEmailDemographic>>>;
     sexBirth: MemoizedSupplier<Promise<PatientFileSexBirthDemographic>>;
     mortality: MemoizedSupplier<Promise<MortalityDemographic>>;
     general: MemoizedSupplier<Promise<GeneralInformationDemographic>>;
+    race: MemoizedSupplier<Promise<Array<RaceDemographic>>>;
 };
 
 export type { PatientDemographics };
@@ -21,7 +24,8 @@ const demographics = (patient: number): PatientDemographics => {
         phoneEmail: new MemoizedSupplier(() => patientPhoneEmail(patient)),
         sexBirth: new MemoizedSupplier(() => patientSexBirth(patient)),
         mortality: new MemoizedSupplier(() => patientMortality(patient)),
-        general: new MemoizedSupplier(() => patientGeneral(patient))
+        general: new MemoizedSupplier(() => patientGeneral(patient)),
+        race: new MemoizedSupplier(() => patientRace(patient))
     };
 };
 

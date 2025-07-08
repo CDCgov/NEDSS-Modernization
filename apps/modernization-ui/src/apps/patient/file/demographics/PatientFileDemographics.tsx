@@ -11,6 +11,7 @@ import { PatientFileGeneralInformationCard } from './general';
 import { PatientFileMortalityCard } from './mortality';
 
 import styles from './patient-file-demographics.module.scss';
+import { PatientFileRaceCard } from './race/PatientFileRaceCard';
 
 const PatientFileDemographics = () => {
     const { id, demographics } = usePatientFileData();
@@ -27,6 +28,7 @@ const PatientFileDemographics = () => {
             />
             <PatientFileAddressCard patient={id} sizing={sizing} />
             <PatientFileIdentificationsCard patient={id} sizing={sizing} />
+            <PatientFileRaceCard id="patient-file-race" provider={demographics.get().race} sizing={sizing} />
             <span data-half>
                 <PatientFileEthnicityCard patient={id} sizing={sizing} />
                 <PatientFileSexBirthCard
