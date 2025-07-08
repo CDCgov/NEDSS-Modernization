@@ -21,9 +21,7 @@ class SummarizedPatientDemographicsFinder {
       where [patient].[cd] = 'PAT'
           and [patient].[person_uid] = ?
       """;
-
-  private static final int PATIENT_PARAMETER = 1;
-
+  
   private final JdbcClient client;
   private final RowMapper<SummarizedPatientDemographics> mapper;
 
