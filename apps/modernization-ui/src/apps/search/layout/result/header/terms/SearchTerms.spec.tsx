@@ -41,6 +41,11 @@ describe('SearchTerms', () => {
         expect(getByText('1 result for:')).toBeInTheDocument();
     });
 
+    it('renders the correct number of results when total and filteredTotal is set', () => {
+        const { getByText } = render(<SearchTerms total={10} filteredTotal={5} terms={terms} />);
+        expect(getByText('5 of 10 found:')).toBeInTheDocument();
+    });
+
     it('renders the correct terms', () => {
         const { getByText } = render(<SearchTerms total={2} terms={terms} />);
         expect(getByText('Term1: term1')).toBeInTheDocument();
@@ -75,6 +80,12 @@ describe('SearchTerms', () => {
     it('has correct aria-label singular form when total is 1', () => {
         const { getByLabelText } = render(<SearchTerms total={1} terms={terms} />);
         const resultsCountDiv = getByLabelText('1 Result has been found');
+        expect(resultsCountDiv).toBeInTheDocument();
+    });
+
+    it('has correct aria-label singular form when total and filteredTotal is 1', () => {
+        const { getByLabelText } = render(<SearchTerms total={1} filteredTotal={1} terms={terms} />);
+        const resultsCountDiv = getByLabelText('1 of 1 Result has been found');
         expect(resultsCountDiv).toBeInTheDocument();
     });
 });
