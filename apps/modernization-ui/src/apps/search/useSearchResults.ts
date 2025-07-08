@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useReducer } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { usePagination, Status as PageStatus } from 'pagination';
 import { useSorting } from 'libs/sorting';
 import { Predicate } from 'utils';
@@ -8,6 +8,7 @@ import { SearchInteractionStatus, SearchResults } from './useSearchInteraction';
 import { Term } from './terms';
 
 type Page = { number: number; size: number };
+type Filtering = { overallTotal: number; filtering: boolean };
 
 type Resolved<R> = Omit<SearchResults<R>, 'terms'>;
 
@@ -20,9 +21,20 @@ type Initializing<C> = { status: 'initializing'; criteria: C; page: Page };
 type Requesting<C> = { status: 'requesting'; criteria: C; page: Page };
 
 type Fetching<A> = { status: 'fetching'; parameters: A; terms: Term[]; page: Page };
-type Refetching<A, R> = { status: 'reloading'; parameters: A; terms: Term[]; page: Page; results: SearchResults<R> };
+type Refetching<A, R> = {
+    status: 'reloading';
+    parameters: A;
+    terms: Term[];
+    page: Page;
+    results: SearchResults<R>;
+};
 
-type Completed<A, R> = { status: 'completed'; parameters: A; results: SearchResults<R> };
+type Completed<A, R> = {
+    status: 'completed';
+    parameters: A;
+    results: SearchResults<R>;
+    filter: Filtering;
+};
 
 type Failed = { status: 'error'; reason: string };
 
@@ -48,7 +60,7 @@ type Action<C, A, R> =
     | { type: 'initialize'; criteria: C; page: Page }
     | { type: 'request'; criteria: C; page: Page }
     | { type: 'fetch'; parameters: A; terms: Term[]; page: Page }
-    | { type: 'complete'; found: Resolved<R> }
+    | { type: 'complete'; found: Resolved<R>; filter: Filtering }
     | { type: 'no-input'; parameters: A; page: Page }
     | { type: 'error'; reason: string };
 
@@ -83,7 +95,18 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
         }
         case 'complete': {
             if (current.status === 'fetching' || current.status === 'reloading') {
-                return { ...current, status: 'completed', results: { ...action.found, terms: current.terms } };
+                const { found, filter } = action;
+                return {
+                    ...current,
+                    status: 'completed',
+                    results: {
+                        ...action.found,
+                        total: filter.filtering ? filter.overallTotal : found.total,
+                        filteredTotal: filter.filtering ? found.total : undefined,
+                        terms: current.terms
+                    },
+                    filter: filter
+                };
             }
             break;
         }
@@ -181,10 +204,9 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     defaultValues
 }: SearchResultSettings<C, A, R>): SearchResultsInteraction<C, R> => {
     const { page, ready, reset: pageReset } = usePagination();
-
     const { property, direction } = useSorting();
-
     const filtering = maybeUseFilter();
+    const [currentTotal, setCurrentTotal] = useState<number>(0);
 
     const sort = useMemo(() => {
         if (property && direction) {
@@ -194,6 +216,14 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
             };
         }
     }, [property, direction]);
+
+    const filter: Filtering = useMemo(
+        () => ({
+            overallTotal: currentTotal,
+            filtering: !!filtering?.filter
+        }),
+        [currentTotal, filtering]
+    );
 
     const {
         criteria: searchCriteria,
@@ -215,13 +245,6 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
             pageReset();
         }
     }, [state.status, pageReset]);
-
-    const handleComplete = (resolved: Resolved<R>) => {
-        ready(resolved.total, resolved.page);
-        dispatch({ type: 'complete', found: { ...resolved } });
-    };
-
-    const handleError = (error: Error) => dispatch({ type: 'error', reason: error.message });
 
     useEffect(() => {
         if (searchCriteria) {
@@ -297,7 +320,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     }, [state.status]);
 
     useEffect(() => {
-        if (state.status === 'completed' && page.status === PageStatus.Requested) {
+        if (state.status === 'completed' && page.status === PageStatus?.Requested) {
             //  the page changing without the criteria changing
             dispatch({ type: 'change-page', number: page.current, size: page.pageSize });
         }
@@ -313,6 +336,18 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     useEffect(() => {
         dispatch({ type: 'change-filter' });
     }, [filtering?.filter]);
+
+    const handleComplete = (resolved: Resolved<R>) => {
+        ready(resolved.total, resolved.page);
+        // set the current total since we are not filtering
+        // when a filter is later applied we can use the value to determine the overall total
+        if (!filter.filtering) {
+            setCurrentTotal(resolved.total);
+        }
+        dispatch({ type: 'complete', found: { ...resolved }, filter: filter });
+    };
+
+    const handleError = (error: Error) => dispatch({ type: 'error', reason: error.message });
 
     const status = useMemo(
         () => (state.status === 'fetching' || state.status === 'requesting' ? 'loading' : state.status),
@@ -332,7 +367,9 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     const error = useMemo(() => (state.status === 'error' ? state.reason : undefined), [state.status]);
     const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch]);
     const search = useCallback(
-        (criteria: C) => dispatch({ type: 'request', criteria, page: { number: 1, size: page.pageSize } }),
+        (criteria: C) => {
+            dispatch({ type: 'request', criteria, page: { number: 1, size: page.pageSize } });
+        },
         [dispatch, page.pageSize]
     );
 

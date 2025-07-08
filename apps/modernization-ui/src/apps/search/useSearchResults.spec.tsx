@@ -3,23 +3,24 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { SearchResultSettings, useSearchResults } from './useSearchResults';
 import { Page } from 'pagination';
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';
+import { Filter } from 'design-system/filter';
 
 let mockCriteria: Criteria | undefined = undefined;
-const mockClear = jest.fn();
-const mockChange = jest.fn();
+const mockClearCriteria = jest.fn();
+const mockChangeCriteria = jest.fn();
 
 jest.mock('./useSearchCriteria', () => ({
     useSearchCriteria: () => ({
         criteria: mockCriteria,
-        clear: mockClear,
-        change: mockChange
+        clear: mockClearCriteria,
+        change: mockChangeCriteria
     })
 }));
 
-const { Status } = jest.requireActual('pagination');
+const { Status: PageStatus } = jest.requireActual('pagination');
 
 const mockPage: Page = {
-    status: Status.Ready,
+    status: PageStatus.Ready,
     pageSize: 5,
     total: 7,
     current: 11
@@ -62,7 +63,27 @@ jest.mock('libs/sorting', () => ({
     })
 }));
 
-type Criteria = { name: string };
+let mockFilterActive: boolean = false;
+let mockFilterObject: Filter | undefined = undefined;
+
+jest.mock('design-system/filter', () => ({
+    maybeUseFilter: () => ({
+        active: mockFilterActive,
+        filter: mockFilterObject,
+        show: jest.fn(),
+        hide: jest.fn(),
+        toggle: jest.fn(),
+        valueOf: jest.fn(),
+        apply: jest.fn(),
+        clear: jest.fn(),
+        clearAll: jest.fn(),
+        reset: jest.fn(),
+        add: jest.fn(),
+        pendingFilter: undefined
+    })
+}));
+
+type Criteria = { name: string; filteredName?: string };
 type APIParameters = { search: string };
 type Result = { label: string; value: string };
 
@@ -92,6 +113,15 @@ const setup = (props?: Partial<SearchResultSettings<Criteria, APIParameters, Res
 describe('when searching using useSearchResults', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        mockPage.status = PageStatus.Ready;
+        mockPage.pageSize = 10;
+        mockPage.total = 1;
+        mockPage.current = 1;
+        mockSortProperty = undefined;
+        mockSortDirection = undefined;
+        mockFilterActive = false;
+        mockFilterObject = undefined;
+        mockCriteria = undefined;
     });
 
     it('should default to waiting without any results', () => {
@@ -193,7 +223,7 @@ describe('when searching using useSearchResults', () => {
 
             expect(termResolver).toHaveBeenCalledWith({ name: 'name-value' });
 
-            expect(mockChange).toHaveBeenCalledWith(expect.objectContaining({ name: 'name-value' }));
+            expect(mockChangeCriteria).toHaveBeenCalledWith(expect.objectContaining({ name: 'name-value' }));
         });
     });
 
@@ -222,13 +252,13 @@ describe('when searching using useSearchResults', () => {
     it('should use the request first page when sort property changes', async () => {
         const resultResolver = jest.fn();
         resultResolver.mockResolvedValue({ total: 2, content: [], page: 3, size: 5 });
-
+        mockCriteria = { name: 'name-value' };
         mockPage.current = 227;
         mockPage.pageSize = 307;
 
         mockSortProperty = 'property-value';
 
-        const { result, rerender } = setup({ resultResolver });
+        const { result } = setup({ resultResolver });
 
         act(() => {
             result.current.search({ name: 'name-value' });
@@ -244,7 +274,7 @@ describe('when searching using useSearchResults', () => {
     it('should use the request first page when sort direction changes', async () => {
         const resultResolver = jest.fn();
         resultResolver.mockResolvedValue({ total: 2, content: [], page: 3, size: 5 });
-
+        mockCriteria = { name: 'name-value' };
         mockPage.current = 227;
         mockPage.pageSize = 307;
 
@@ -261,5 +291,61 @@ describe('when searching using useSearchResults', () => {
                 expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
             )
         );
+    });
+
+    it('should return a results object with separate total and filteredTotal properties when filter applied', async () => {
+        const resultResolver = jest.fn();
+        resultResolver.mockResolvedValue({ total: 13, content: [], page: 0, size: 10 });
+
+        const { result } = setup({ resultResolver });
+
+        act(() => {
+            // search reverts to requesting state
+            result.current.search({ name: 'name-value' });
+            // mock updating criteria to force a completion
+            mockCriteria = { name: 'name-value' };
+        });
+
+        await waitFor(() => {
+            expect(result.current.status).toBe('completed');
+        });
+
+        await waitFor(() => {
+            expect(result.current.results).toEqual(
+                expect.objectContaining({
+                    total: 13,
+                    filteredTotal: undefined,
+                    content: [],
+                    page: 1,
+                    size: 10
+                })
+            );
+        });
+
+        // Mocking the filter interaction to simulate a filter being applied
+        mockFilterActive = true;
+        mockFilterObject = { someValue: '123' };
+        resultResolver.mockResolvedValue({ total: 9, content: [], page: 0, size: 10 });
+
+        act(() => {
+            result.current.search({ name: 'name-value', filteredName: 'filtered-name-value' });
+            mockCriteria = { name: 'name-value', filteredName: 'filtered-name-value' };
+        });
+
+        await waitFor(() => {
+            expect(result.current.status).toBe('completed');
+        });
+
+        await waitFor(() => {
+            expect(result.current.results).toEqual(
+                expect.objectContaining({
+                    total: 13,
+                    filteredTotal: 9,
+                    content: [],
+                    page: 1,
+                    size: 10
+                })
+            );
+        });
     });
 });
