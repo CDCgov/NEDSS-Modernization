@@ -48,8 +48,8 @@ describe('Input component tests', () => {
             const onChange = () => {};
             const { getByLabelText } = render(
                 <Input
-                    id="test-input-id"
-                    name="test-input-name"
+                    id="test"
+                    name="test"
                     label="Test Input Label"
                     type="text"
                     onChange={onChange}
@@ -65,12 +65,30 @@ describe('Input component tests', () => {
             const onChange = () => {};
             const { getByLabelText } = render(
                 <Input
-                    id="test-input-id"
-                    name="test-input-name"
+                    id="test"
+                    name="test"
                     label="Test Input Label"
                     type="text"
                     onChange={onChange}
                     defaultValue="test-input-defaultValue"
+                    required
+                />
+            );
+            const input = getByLabelText('Test Input Label');
+            expect(input).toHaveAttribute('aria-required', 'true');
+        });
+
+        it('should set aria-required attribute for masked input when required is true', () => {
+            const onChange = () => {};
+            const { getByLabelText } = render(
+                <Input
+                    id="test"
+                    name="test"
+                    label="Test Input Label"
+                    type="text"
+                    onChange={onChange}
+                    defaultValue="test-input-defaultValue"
+                    mask="99/99/9999"
                     required
                 />
             );
