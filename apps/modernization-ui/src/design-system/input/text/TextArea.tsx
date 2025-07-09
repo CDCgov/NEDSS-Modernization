@@ -56,7 +56,7 @@ const TextArea = ({
                 onBlur={onBlur}
                 placeholder={placeholder}
                 value={current}
-                aria-required={props.required}
+                required={props.required}
                 {...props}
             />
             <div className={styles.counter}>

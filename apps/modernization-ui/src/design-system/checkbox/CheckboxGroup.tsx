@@ -77,6 +77,7 @@ export const CheckboxGroup = ({
                 aria-label={label}>
                 {items.map((item, index) => (
                     <SelectableCheckbox
+                        required={required}
                         name={name}
                         sizing={sizing}
                         key={index}

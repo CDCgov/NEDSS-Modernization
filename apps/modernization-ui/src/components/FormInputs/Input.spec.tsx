@@ -44,7 +44,7 @@ describe('Input component tests', () => {
     });
 
     describe('when required is true', () => {
-        it('should set aria-required="true" when required is true', () => {
+        it('should set required attribute when required is true', () => {
             const onChange = () => {};
             const { getByLabelText } = render(
                 <Input
@@ -58,7 +58,7 @@ describe('Input component tests', () => {
                 />
             );
             const input = getByLabelText('Test Input Label');
-            expect(input).toHaveAttribute('aria-required', 'true');
+            expect(input).toHaveAttribute('required');
         });
     });
 });

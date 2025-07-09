@@ -22,7 +22,7 @@ const MaskedTextInputField = ({
             required={required}
             error={error}
             helperText={helperText}>
-            <MaskedTextInput id={id} aria-required={required} {...remaining} />
+            <MaskedTextInput id={id} required={required} {...remaining} />
         </Field>
     );
 };
