@@ -86,3 +86,37 @@ describe('when one of the options is clicked', () => {
         expect(checked).toHaveTextContent('name-four');
     });
 });
+
+describe('when required is true', () => {
+    it('should set required attribute when required is true', () => {
+        const { getByRole } = render(
+            <SingleSelect
+                id="test-id"
+                label="Test Label"
+                options={[
+                    { name: 'name-one', value: 'value-one', label: 'label-one' },
+                    { name: 'name-two', value: 'value-two', label: 'label-two' }
+                ]}
+                required
+            />
+        );
+        const select = getByRole('combobox', { name: 'Test Label' });
+        expect(select).toHaveAttribute('required');
+    });
+
+    it('should set aria-required attribute when required is true', () => {
+        const { getByRole } = render(
+            <SingleSelect
+                id="test-id"
+                label="Test Label"
+                options={[
+                    { name: 'name-one', value: 'value-one', label: 'label-one' },
+                    { name: 'name-two', value: 'value-two', label: 'label-two' }
+                ]}
+                required
+            />
+        );
+        const select = getByRole('combobox', { name: 'Test Label' });
+        expect(select).toHaveAttribute('aria-required', 'true');
+    });
+});

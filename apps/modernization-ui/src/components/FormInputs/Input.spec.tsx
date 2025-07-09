@@ -60,5 +60,22 @@ describe('Input component tests', () => {
             const input = getByLabelText('Test Input Label');
             expect(input).toHaveAttribute('required');
         });
+
+        it('should set aria-required attribute when required is true', () => {
+            const onChange = () => {};
+            const { getByLabelText } = render(
+                <Input
+                    id="test-input-id"
+                    name="test-input-name"
+                    label="Test Input Label"
+                    type="text"
+                    onChange={onChange}
+                    defaultValue="test-input-defaultValue"
+                    required
+                />
+            );
+            const input = getByLabelText('Test Input Label');
+            expect(input).toHaveAttribute('aria-required', 'true');
+        });
     });
 });

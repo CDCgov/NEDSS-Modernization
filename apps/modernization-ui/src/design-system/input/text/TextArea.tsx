@@ -57,6 +57,7 @@ const TextArea = ({
                 placeholder={placeholder}
                 value={current}
                 required={props.required}
+                aria-required={props.required}
                 {...props}
             />
             <div className={styles.counter}>

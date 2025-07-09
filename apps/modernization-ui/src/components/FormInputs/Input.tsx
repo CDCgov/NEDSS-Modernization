@@ -77,6 +77,7 @@ export const Input = ({
                         pattern={pattern}
                         aria-label={ariaLabel}
                         required={required}
+                        aria-required={required}
                     />
                 ) : (
                     <TextInput
