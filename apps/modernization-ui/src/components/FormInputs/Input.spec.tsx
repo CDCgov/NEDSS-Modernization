@@ -60,5 +60,57 @@ describe('Input component tests', () => {
             const input = getByLabelText('Test Input Label');
             expect(input).toHaveAttribute('aria-required', 'true');
         });
+
+        it('should set required attribute when required is true', () => {
+            const onChange = () => {};
+            const { getByLabelText } = render(
+                <Input
+                    id="test"
+                    name="test"
+                    label="Test Input Label"
+                    type="text"
+                    onChange={onChange}
+                    required
+                />
+            );
+            const input = getByLabelText('Test Input Label');
+            expect(input).toHaveAttribute('required');
+        });
+
+        it('should set required and aria-required on masked input', () => {
+            const onChange = () => {};
+            const { getByLabelText } = render(
+                <Input
+                    id="test"
+                    name="test"
+                    label="Test Input Label"
+                    type="text"
+                    onChange={onChange}
+                    mask="99/99/9999"
+                    required
+                />
+            );
+            const input = getByLabelText('Test Input Label');
+            expect(input).toHaveAttribute('required');
+            expect(input).toHaveAttribute('aria-required', 'true');
+        });
+
+        it('should set required and aria-required on textarea', () => {
+            const onChange = () => {};
+            const { getByLabelText } = render(
+                <Input
+                    id="test"
+                    name="test"
+                    label="Test Input Label"
+                    type="text"
+                    onChange={onChange}
+                    multiline
+                    required
+                />
+            );
+            const textarea = getByLabelText('Test Input Label');
+            expect(textarea).toHaveAttribute('required');
+            expect(textarea).toHaveAttribute('aria-required', 'true');
+        });
     });
 });
