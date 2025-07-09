@@ -20,7 +20,7 @@ const ScrollToTop = ({ children, title }: { children: React.ReactNode; title: st
     }, [pathname]);
 
     return (
-        <div role="main" ref={initialFocusRef} tabIndex={-1} aria-label={title} className={styles.mainContent}>
+        <div ref={initialFocusRef} tabIndex={-1} aria-label={title} className={styles.mainContent}>
             {children}
         </div>
     );
