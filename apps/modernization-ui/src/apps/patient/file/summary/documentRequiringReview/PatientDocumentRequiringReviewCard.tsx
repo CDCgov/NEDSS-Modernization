@@ -67,7 +67,12 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
     {
         ...REPORTING,
         render: (value) =>
-            renderFacilityProvider(value.reportingFacility, value.orderingProvider, value.sendingFacility)
+            renderFacilityProvider(
+                value.reportingFacility,
+                value.orderingProvider,
+                value.sendingFacility,
+                value.orderingFacility
+            )
     },
     {
         ...EVENT_DATE,
