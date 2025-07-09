@@ -13,5 +13,14 @@ export const PatientFileAdministrativeInformationCard = ({
 }: PatientFileAdministrativeInformationCardType) => {
     const { data, isLoading } = useAdministrativeInformation(patient);
 
-    return <AdministrativeInformationCard key={`${isLoading}`} collapsible data={data} sizing={sizing} />;
+    return (
+        <AdministrativeInformationCard
+            key={`${isLoading}`}
+            collapsible
+            data={data}
+            sizing={sizing}
+            id="patient-file-administrative"
+            title={'Administrative'}
+        />
+    );
 };
