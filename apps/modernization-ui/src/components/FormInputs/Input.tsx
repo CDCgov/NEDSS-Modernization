@@ -94,6 +94,7 @@ export const Input = ({
                         type={type}
                         aria-label={ariaLabel}
                         required={required}
+                        aria-required={required}
                     />
                 )
             ) : (
@@ -112,6 +113,7 @@ export const Input = ({
                     aria-label={ariaLabel}
                     disabled={props?.disabled}
                     required={required}
+                    aria-required={required}
                 />
             )}
         </EntryWrapper>
