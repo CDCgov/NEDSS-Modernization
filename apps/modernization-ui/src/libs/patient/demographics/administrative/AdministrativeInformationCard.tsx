@@ -1,29 +1,30 @@
 import { internalizeDate } from 'date';
 import { Card, CardProps } from 'design-system/card';
-import styles from './administrative-information-card.module.scss';
-import { Sizing } from 'design-system/field';
-import { AdministrativeInformation } from './AdministrativeInformation';
 import { OrElseNoData } from 'design-system/data';
+import { AdministrativeInformation } from './AdministrativeInformation';
 
-type AdministrativeInformationCardType = {
-    collapsible?: boolean;
+import styles from './administrative-information-card.module.scss';
+
+type AdministrativeInformationCardProps = {
+    title?: string;
     data?: AdministrativeInformation;
-    sizing?: Sizing;
-} & Omit<CardProps, 'children'>;
+} & Omit<CardProps, 'subtext' | 'children' | 'title'>;
 
-export const AdministrativeInformationCard = ({
-    collapsible = false,
+const AdministrativeInformationCard = ({
+    title = 'Administrative',
     data,
-    sizing = 'small',
     ...remaining
-}: AdministrativeInformationCardType) => {
+}: AdministrativeInformationCardProps) => {
     const subtext = data?.comment ? `As of ${internalizeDate(data?.asOf)}` : undefined;
 
     return (
-        <Card subtext={subtext} collapsible={collapsible} open={Boolean(data?.comment)} sizing={sizing} {...remaining}>
+        <Card title={title} subtext={subtext} open={Boolean(data?.comment)} {...remaining}>
             <div className={styles.content}>
                 <OrElseNoData>{data?.comment}</OrElseNoData>
             </div>
         </Card>
     );
 };
+
+export { AdministrativeInformationCard };
+export type { AdministrativeInformationCardProps };

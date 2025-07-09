@@ -114,3 +114,4 @@ const AddressDemographicCard = ({
 };
 
 export { AddressDemographicCard };
+export type { AddressDemographicCardProps };

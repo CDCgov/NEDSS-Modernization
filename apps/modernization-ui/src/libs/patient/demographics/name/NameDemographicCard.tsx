@@ -49,11 +49,11 @@ const columns: Column<NameDemographic>[] = [
 
 const sortResolver = columnSortResolver(columns);
 
-type NameRepeatingBlockProps = {
+type NameDemographicCardProps = {
     title?: string;
 } & Omit<RepeatingBlockProps<NameDemographic>, 'columns' | 'formRenderer' | 'viewRenderer' | 'defaultValues' | 'title'>;
 
-const NameDemographicCard = ({ title = 'Name', sizing, data = [], ...remaining }: NameRepeatingBlockProps) => {
+const NameDemographicCard = ({ title = 'Name', sizing, data = [], ...remaining }: NameDemographicCardProps) => {
     const renderForm = () => <NameDemographicFields sizing={sizing} />;
     const renderView = (value: NameDemographic) => <NameDemographicView entry={value} />;
 
@@ -82,4 +82,4 @@ const NameDemographicCard = ({ title = 'Name', sizing, data = [], ...remaining }
 };
 
 export { NameDemographicCard };
-export type { NameRepeatingBlockProps };
+export type { NameDemographicCardProps };

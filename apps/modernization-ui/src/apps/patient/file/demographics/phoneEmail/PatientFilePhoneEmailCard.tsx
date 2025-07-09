@@ -1,15 +1,15 @@
-import {
-    PhoneEmailDemographicCard,
-    PhoneEmailDemographicCardProps
-} from 'libs/patient/demographics/phoneEmail/PhoneEmailDemographicCard';
-import { LoadingOverlay } from 'libs/loading';
 import { Suspense } from 'react';
 import { Await } from 'react-router';
-import { PhoneEmailDemographic } from 'libs/patient/demographics/phoneEmail/phoneEmails';
 import { MemoizedSupplier } from 'libs/supplying';
+import { LoadingOverlay } from 'libs/loading';
+import {
+    PhoneEmailDemographic,
+    PhoneEmailDemographicCard,
+    PhoneEmailDemographicCardProps
+} from 'libs/patient/demographics/phoneEmail';
 
 type PatientFilePhoneEmailProps = {
-    provider: MemoizedSupplier<Promise<Array<PhoneEmailDemographic>>>;
+    provider: MemoizedSupplier<Promise<PhoneEmailDemographic[]>>;
 } & Omit<PhoneEmailDemographicCardProps, 'title'>;
 
 const PatientFilePhoneEmailCard = ({ provider, ...remaining }: PatientFilePhoneEmailProps) => {
@@ -17,11 +17,11 @@ const PatientFilePhoneEmailCard = ({ provider, ...remaining }: PatientFilePhoneE
         <Suspense
             fallback={
                 <LoadingOverlay>
-                    <PhoneEmailDemographicCard data={undefined} title="Phone & email" {...remaining} />
+                    <PhoneEmailDemographicCard {...remaining} />
                 </LoadingOverlay>
             }>
             <Await resolve={provider.get()}>
-                {(resolved) => <PhoneEmailDemographicCard data={resolved} title="Phone & email" {...remaining} />}
+                {(resolved) => <PhoneEmailDemographicCard data={resolved} {...remaining} />}
             </Await>
         </Suspense>
     );

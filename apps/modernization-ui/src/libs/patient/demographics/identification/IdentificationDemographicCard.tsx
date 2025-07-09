@@ -90,3 +90,4 @@ const IdentificationDemographicCard = ({
 };
 
 export { IdentificationDemographicCard };
+export type { IdentificationDemographicCardProps };
