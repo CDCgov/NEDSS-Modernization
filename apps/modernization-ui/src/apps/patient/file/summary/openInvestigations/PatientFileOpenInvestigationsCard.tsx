@@ -1,8 +1,13 @@
+import { Suspense } from 'react';
+import { Await } from 'react-router';
+import { MemoizedSupplier } from 'libs/supplying';
+import { LoadingOverlay } from 'libs/loading';
+import { TableCardProps } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { TableCard } from 'design-system/card';
-import { usePatientOpenInvestigations, PatientInvestigation } from 'libs/patient/events/investigations';
-import { displayInvestigator, displayNotificationStatus } from 'libs/events/investigations';
+import { displayNotificationStatus, displayInvestigator } from 'libs/events/investigations';
+import { PatientFileOpenInvestigation } from './openInvestigation';
 
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };
 const START_DATE = { id: 'startDate', name: 'Start date' };
@@ -24,7 +29,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...CO_INFECTION_ID, moveable: true, toggleable: true }
 ];
 
-const columns: Column<PatientInvestigation>[] = [
+const columns: Column<PatientFileOpenInvestigation>[] = [
     {
         ...INVESTIGATION_ID,
         sortable: true,
@@ -73,24 +78,39 @@ const columns: Column<PatientInvestigation>[] = [
     }
 ];
 
-type OpenInvestigationsCardProps = {
-    patient: number;
-};
+type InternalCardProps = {
+    data?: PatientFileOpenInvestigation[];
+} & Omit<
+    TableCardProps<PatientFileOpenInvestigation>,
+    'columnPreferencesKey' | 'defaultColumnPreferences' | 'columns' | 'data' | 'title'
+>;
 
-const OpenInvestigationsCard = ({ patient }: OpenInvestigationsCardProps) => {
-    const { data } = usePatientOpenInvestigations(patient);
-
+const InternalCard = ({ data = [], ...remaining }: InternalCardProps) => {
     return (
         <TableCard
-            id="patient-file-open-investigations-table-card"
             title="Open investigations"
-            sizing="small"
             data={data}
             columns={columns}
             columnPreferencesKey="patient.file.open-investigations.preferences"
             defaultColumnPreferences={columnPreferences}
+            {...remaining}
         />
     );
 };
 
-export { OpenInvestigationsCard };
+type PatientFileOpenInvestigationsCardProps = {
+    provider: MemoizedSupplier<Promise<PatientFileOpenInvestigation[]>>;
+} & Omit<InternalCardProps, 'data'>;
+
+const PatientFileOpenInvestigationsCard = ({ provider, ...remaining }: PatientFileOpenInvestigationsCardProps) => (
+    <Suspense
+        fallback={
+            <LoadingOverlay>
+                <InternalCard {...remaining} />
+            </LoadingOverlay>
+        }>
+        <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
+    </Suspense>
+);
+
+export { PatientFileOpenInvestigationsCard };

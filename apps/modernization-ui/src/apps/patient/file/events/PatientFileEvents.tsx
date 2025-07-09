@@ -1,14 +1,26 @@
+import { useComponentSizing } from 'design-system/sizing';
 import { usePatientFileData } from '../usePatientFileData';
-import { InvestigationsCard } from './investigations';
-import { LabReportsCard } from './reports/laboratory';
+import { PatientFileInvestigationsCard } from './investigations';
+import { PatientFileLaboratoryReportsCard } from './reports/laboratory';
 
 const PatientFileEvents = () => {
-    const { id } = usePatientFileData();
+    const { id, events } = usePatientFileData();
+    const sizing = useComponentSizing();
 
     return (
         <>
-            <InvestigationsCard patient={id} />
-            <LabReportsCard patient={id} />
+            <PatientFileInvestigationsCard
+                id="investigations"
+                patient={id}
+                provider={events.get().investigations}
+                sizing={sizing}
+            />
+            <PatientFileLaboratoryReportsCard
+                id="laboratory-reports"
+                patient={id}
+                provider={events.get().reports.laboratory}
+                sizing={sizing}
+            />
         </>
     );
 };

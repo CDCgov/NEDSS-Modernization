@@ -1,16 +1,23 @@
-import { displayAddress } from 'address/display';
-import { NoData } from 'design-system/data';
-import { Card } from 'design-system/card';
-import { ItemGroup } from 'design-system/item';
-import { PatientDemographicsSummary, DisplayableAddress, DisplayablePhone, DisplayableIdentification } from 'generated';
 import { ReactNode } from 'react';
-import { displayIdentification } from '../identification/displayIdentification';
-import { displayPhone } from '../phone/displayPhone';
+import { NoData } from 'design-system/data';
+import { Card, CardProps } from 'design-system/card';
+import { ItemGroup } from 'design-system/item';
+import { DisplayableAddress, displayAddress } from 'address/display';
+import { PatientFileDemographicsSummary, DisplayablePhone, DisplayableIdentification } from '.';
+
 import styles from './patient-file-summary.module.scss';
 
 type SummaryItemProps = {
     label: string;
     children: ReactNode;
+};
+
+const displayPhone = (phone?: DisplayablePhone) => {
+    return (
+        <ItemGroup type="phone" label={phone?.use}>
+            {phone?.number}
+        </ItemGroup>
+    );
 };
 
 const SummaryItem = ({ label, children }: SummaryItemProps) => (
@@ -19,10 +26,6 @@ const SummaryItem = ({ label, children }: SummaryItemProps) => (
         <span className={styles.summaryContent}>{children}</span>
     </div>
 );
-
-type SummaryContentProps = {
-    summary?: PatientDemographicsSummary;
-};
 
 const maybeRenderAddress = (address?: DisplayableAddress) => (
     <div className={styles.itemContent}>{displayAddress(address ?? {})}</div>
@@ -36,19 +39,42 @@ const maybeRenderEmail = (email?: string) => (
     </div>
 );
 
-const maybeRenderIdentification = (identifications?: Array<DisplayableIdentification>) => (
+const displayIdentification = (identifications?: Array<DisplayableIdentification>) => {
+    return (
+        <>
+            {identifications?.map((id, key) => (
+                <ItemGroup key={key} label={id.type}>
+                    {id?.value}
+                </ItemGroup>
+            ))}
+        </>
+    );
+};
+
+const maybeRenderIdentification = (identifications?: DisplayableIdentification[]) => (
     <div className={styles.itemContent}>
         {(identifications?.length ?? 0 > 0) ? displayIdentification(identifications) : <NoData />}
     </div>
 );
 
-const maybeRenderRace = (races?: Array<string>) => <ItemGroup>{races?.map((race) => race).join(', ')}</ItemGroup>;
+const maybeRenderRace = (races?: string[]) => <ItemGroup>{races?.map((race) => race).join(', ')}</ItemGroup>;
 
 const maybeRenderEthnicity = (ethnicity?: string) => <ItemGroup>{ethnicity}</ItemGroup>;
 
-export const PatientSummaryContent = ({ summary }: SummaryContentProps) => {
+type PatientDemographicsSummaryCardProps = {
+    title?: string;
+    summary?: PatientFileDemographicsSummary;
+} & Omit<CardProps, 'subtext' | 'children' | 'title'>;
+
+const PatientDemographicsSummaryCard = ({
+    title = 'Patient summary',
+    summary,
+    collapsible = true,
+    sizing,
+    ...remaining
+}: PatientDemographicsSummaryCardProps) => {
     return (
-        <Card title={'Patient summary'} id={'summary-card'} collapsible={true}>
+        <Card title={title} sizing={sizing} collapsible={collapsible} {...remaining}>
             <div className={styles.content}>
                 <div className={styles.group}>
                     <SummaryItem label="ADDRESS">{maybeRenderAddress(summary?.address)}</SummaryItem>
@@ -70,3 +96,6 @@ export const PatientSummaryContent = ({ summary }: SummaryContentProps) => {
         </Card>
     );
 };
+
+export { PatientDemographicsSummaryCard };
+export type { PatientDemographicsSummaryCardProps };
