@@ -2,10 +2,14 @@ import { createContext, ReactNode, useContext } from 'react';
 import { MemoizedSupplier } from 'libs/supplying/';
 import { Patient } from './patient';
 import { PatientDemographics } from './demographics';
+import { PatientFileSummaryData } from './summary';
+import { PatientFileEventData } from './events';
 
 type PatientFileData = {
     id: number;
     patient: Patient;
+    summary: MemoizedSupplier<PatientFileSummaryData>;
+    events: MemoizedSupplier<PatientFileEventData>;
     demographics: MemoizedSupplier<PatientDemographics>;
 };
 

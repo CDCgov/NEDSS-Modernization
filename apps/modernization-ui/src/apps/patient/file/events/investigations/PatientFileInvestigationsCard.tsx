@@ -1,12 +1,15 @@
+import { Suspense } from 'react';
+import { Await } from 'react-router';
+import { LoadingOverlay } from 'libs/loading';
+import { MemoizedSupplier } from 'libs/supplying';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { TableCard } from 'design-system/card';
+import { TableCard, TableCardProps } from 'design-system/card';
+import { permissions, Permitted } from 'libs/permission';
 import { LinkButton } from 'design-system/button';
 import { Icon } from 'design-system/icon';
-import { Sizing } from 'design-system/field';
-import { PatientInvestigation, usePatientInvestigations } from 'libs/patient/events/investigations';
-import { displayInvestigator, displayNotificationStatus, displayStatus } from 'libs/events/investigations';
-import { permissions, Permitted } from 'libs/permission';
+import { displayNotificationStatus, displayStatus, displayInvestigator } from 'libs/events/investigations';
+import { PatientFileInvestigation } from './investigation';
 
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };
 const START_DATE = { id: 'startedOn', name: 'Start date' };
@@ -18,7 +21,7 @@ const JURISDICTION = { id: 'jurisdiction', name: 'Jurisdiction' };
 const INVESTIGATOR = { id: 'investigator', name: 'Investigator' };
 const CO_INFECTION = { id: 'coInfection', name: 'Co-infection ID' };
 
-const columns: Column<PatientInvestigation>[] = [
+const columns: Column<PatientFileInvestigation>[] = [
     {
         ...INVESTIGATION_ID,
         sortable: true,
@@ -86,36 +89,52 @@ const columnPreferences: ColumnPreference[] = [
     { ...CO_INFECTION, moveable: true, toggleable: true }
 ];
 
-type InvestigationsCardProps = {
+type InternalCardProps = {
     patient: number;
-    sizing?: Sizing;
-};
+    data?: PatientFileInvestigation[];
+} & Omit<
+    TableCardProps<PatientFileInvestigation>,
+    'columnPreferencesKey' | 'defaultColumnPreferences' | 'columns' | 'data' | 'title'
+>;
 
-const InvestigationsCard = ({ patient, sizing = 'small' }: InvestigationsCardProps) => {
-    const { data } = usePatientInvestigations(patient);
-
+const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCardProps) => {
     return (
         <TableCard
-            sizing={sizing}
             title="Investigations"
-            id="investigations"
-            columns={columns}
             data={data}
+            columns={columns}
             columnPreferencesKey={'patient.file.investigations.preferences'}
             defaultColumnPreferences={columnPreferences}
+            sizing={sizing}
             actions={
                 <Permitted permission={permissions.investigation.add}>
                     <LinkButton
                         secondary
                         sizing={sizing}
-                        icon={<Icon name="add_circle" sizing={sizing} />}
+                        icon={<Icon name="add_circle" />}
                         href={`/nbs/api/profile/${patient}/investigation`}>
                         Add investigation
                     </LinkButton>
                 </Permitted>
             }
+            {...remaining}
         />
     );
 };
 
-export { InvestigationsCard };
+type PatientFileInvestigationsCardProps = {
+    provider: MemoizedSupplier<Promise<PatientFileInvestigation[]>>;
+} & Omit<InternalCardProps, 'data'>;
+
+const PatientFileInvestigationsCard = ({ provider, ...remaining }: PatientFileInvestigationsCardProps) => (
+    <Suspense
+        fallback={
+            <LoadingOverlay>
+                <InternalCard {...remaining} />
+            </LoadingOverlay>
+        }>
+        <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
+    </Suspense>
+);
+
+export { PatientFileInvestigationsCard };
