@@ -101,7 +101,7 @@ type InternalCardProps = {
 const InternalCard = ({ data = [], ...remaining }: InternalCardProps) => {
     return (
         <TableCard
-            title="Document requiring review"
+            title="Documents requiring review"
             data={data}
             columns={columns}
             columnPreferencesKey="patient.file.drr.preferences"
