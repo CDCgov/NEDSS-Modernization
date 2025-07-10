@@ -18,7 +18,7 @@ type Props = {
 
 export const SecuritySection = ({ filter }: Props) => {
     return (
-        <Permitted permission={permitsAll('ADMISTRATE-SYSTEM', 'ADMINISTRATE-SECURITY')}>
+        <Permitted permission={permitsAll('ADMINISTRATE-SYSTEM', 'ADMINISTRATE-SECURITY')}>
             <SystemManagementInfoCard id="security" title="Security" filter={filter} links={securityLinks} />
         </Permitted>
     );
