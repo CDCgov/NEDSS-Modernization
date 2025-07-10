@@ -1,14 +1,28 @@
-import { useEthnicity } from './useEthnicity';
-import { EthnicityCard, EthnicityCardProps } from 'libs/patient/demographics/ethnicity';
+import { Suspense } from 'react';
+import { Await } from 'react-router';
+import { MemoizedSupplier } from 'libs/supplying';
+import { LoadingOverlay } from 'libs/loading';
+import {
+    EthnicityDemographic,
+    EthnicityDemographicCard,
+    EthnicityDemographicCardProps
+} from 'libs/patient/demographics/ethnicity';
 
 type PatientFileEthnicityCardType = {
-    patient: number;
-} & Omit<EthnicityCardProps, 'id' | 'title'>;
+    provider: MemoizedSupplier<Promise<EthnicityDemographic>>;
+} & Omit<EthnicityDemographicCardProps, 'title'>;
 
-const PatientFileEthnicityCard = ({ patient, ...remaining }: PatientFileEthnicityCardType) => {
-    const { data } = useEthnicity(patient);
-
-    return <EthnicityCard id={'patient-file-ethnicity'} data={data} {...remaining} />;
-};
+const PatientFileEthnicityCard = ({ provider, ...remaining }: PatientFileEthnicityCardType) => (
+    <Suspense
+        fallback={
+            <LoadingOverlay>
+                <EthnicityDemographicCard {...remaining} />
+            </LoadingOverlay>
+        }>
+        <Await resolve={provider.get()}>
+            {(demographic) => <EthnicityDemographicCard demographic={demographic} {...remaining} />}
+        </Await>
+    </Suspense>
+);
 
 export { PatientFileEthnicityCard };

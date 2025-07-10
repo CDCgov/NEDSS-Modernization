@@ -1,2 +1,3 @@
-export { EthnicityCard } from './EthnicityCard';
-export type { EthnicityCardProps } from './EthnicityCard';
+export { EthnicityDemographicCard } from './EthnicityDemographicCard';
+export type { EthnicityDemographicCardProps } from './EthnicityDemographicCard';
+export type { EthnicityDemographic } from './ethnicity';

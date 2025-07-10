@@ -1,11 +1,11 @@
 import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
-import { initial, PhoneEmailDemographic } from './phoneEmails';
-import { SortHandler, SortingProvider } from 'libs/sorting';
-import { Column, columnSortResolver } from 'design-system/table';
 import { internalizeDate } from 'date';
-import styles from './phone-email-demographic-card.module.scss';
+import { Column, columnSortResolver } from 'design-system/table';
+import { SortHandler, SortingProvider } from 'libs/sorting';
+import { initial, PhoneEmailDemographic } from './phoneEmails';
 import { PhoneEmailDemographicView } from './PhoneEmailDemographicView';
 import { PhoneEmailDemographicFields } from './PhoneEmailDemographicFields';
+import styles from './phone-email-demographic-card.module.scss';
 
 const columns: Column<PhoneEmailDemographic>[] = [
     {
@@ -85,7 +85,6 @@ const PhoneEmailDemographicCard = ({
                             data={sorted}
                             features={{ sorting }}
                             defaultValues={defaultValue}
-                            editable={false}
                             viewRenderer={renderView}
                             formRenderer={renderForm}
                             collapsible

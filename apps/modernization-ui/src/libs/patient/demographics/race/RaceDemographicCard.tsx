@@ -1,11 +1,12 @@
-import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
-import { initial, RaceDemographic } from './race';
-import { SortHandler, SortingProvider } from 'libs/sorting';
-import { Column, columnSortResolver } from 'design-system/table';
 import { internalizeDate } from 'date';
-import styles from './race-demographic-card.module.scss';
+import { SortHandler, SortingProvider } from 'libs/sorting';
+import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
+import { Column, columnSortResolver } from 'design-system/table';
+import { initial, RaceDemographic } from './race';
 import { RaceDemographicView } from './RaceDemographicView';
 import { RaceDemographicFields } from './RaceDemographicFields';
+
+import styles from './race-demographic-card.module.scss';
 
 const columns: Column<RaceDemographic>[] = [
     {
@@ -61,10 +62,8 @@ const RaceDemographicCard = ({ title = 'Race', sizing, data = [], ...remaining }
                             data={sorted}
                             features={{ sorting }}
                             defaultValues={defaultValue}
-                            editable={false}
                             viewRenderer={renderView}
                             formRenderer={renderForm}
-                            viewable={false}
                             collapsible
                         />
                     )}
