@@ -76,8 +76,6 @@ const IdentificationDemographicCard = ({
                             data={sorted}
                             features={{ sorting }}
                             defaultValues={defaultValue}
-                            editable={false}
-                            viewable={false}
                             viewRenderer={renderView}
                             formRenderer={renderForm}
                             collapsible

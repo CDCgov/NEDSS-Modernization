@@ -30,8 +30,7 @@ const columns: Column<AddressDemographic>[] = [
         className: styles.typeWidth,
         sortable: true,
         sortIconType: 'alpha',
-        value: (v) => v.type.name,
-        render: (v) => `${v.type.name} / ${v.use.name}`
+        value: (v) => `${v.type.name} / ${v.use.name}`
     },
     {
         id: 'address-address',
@@ -99,7 +98,6 @@ const AddressDemographicCard = ({
                             sizing={sizing}
                             columns={columns}
                             data={sorted}
-                            editable={false}
                             features={{ sorting }}
                             viewRenderer={renderView}
                             formRenderer={renderForm}

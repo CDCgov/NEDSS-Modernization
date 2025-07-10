@@ -24,22 +24,41 @@ const PatientFileDemographics = () => {
                 sizing={sizing}
                 provider={demographics.get().administrative}
             />
-            <PatientFileNameCard id="patient-file-names" sizing={sizing} provider={demographics.get().names} />
-            <PatientFileAddressCard id="patient-file-address" sizing={sizing} provider={demographics.get().addresses} />
+            <PatientFileNameCard
+                id="patient-file-names"
+                sizing={sizing}
+                provider={demographics.get().names}
+                editable={false}
+            />
+            <PatientFileAddressCard
+                id="patient-file-address"
+                sizing={sizing}
+                provider={demographics.get().addresses}
+                editable={false}
+            />
             <PatientFilePhoneEmailCard
                 id="patient-file-phone-email"
                 sizing={sizing}
                 provider={demographics.get().phoneEmail}
+                editable={false}
             />
             <PatientFileIdentificationCard
                 id="patient-file-identification"
                 sizing={sizing}
                 provider={demographics.get().identifications}
+                viewable={false}
+                editable={false}
             />
-            <PatientFileRaceCard id="patient-file-race" provider={demographics.get().race} sizing={sizing} />
+            <PatientFileRaceCard
+                id="patient-file-race"
+                provider={demographics.get().race}
+                sizing={sizing}
+                viewable={false}
+                editable={false}
+            />
             <span data-half>
                 <PatientFileEthnicityCard
-                    id="patient-file-administrative"
+                    id="patient-file-ethnicity"
                     sizing={sizing}
                     provider={demographics.get().ethnicity}
                 />

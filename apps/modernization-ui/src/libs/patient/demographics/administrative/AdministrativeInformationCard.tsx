@@ -12,13 +12,14 @@ type AdministrativeInformationCardProps = {
 
 const AdministrativeInformationCard = ({
     title = 'Administrative',
+    collapsible = true,
     data,
     ...remaining
 }: AdministrativeInformationCardProps) => {
     const subtext = data?.comment ? `As of ${internalizeDate(data?.asOf)}` : undefined;
 
     return (
-        <Card title={title} subtext={subtext} open={Boolean(data?.comment)} {...remaining}>
+        <Card title={title} subtext={subtext} collapsible={collapsible} open={Boolean(data?.comment)} {...remaining}>
             <div className={styles.content}>
                 <OrElseNoData>{data?.comment}</OrElseNoData>
             </div>
