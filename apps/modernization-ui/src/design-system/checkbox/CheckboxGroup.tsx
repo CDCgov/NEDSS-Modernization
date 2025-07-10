@@ -73,8 +73,7 @@ export const CheckboxGroup = ({
                     },
                     styles.fieldSet
                 )}
-                aria-required={required}
-                aria-label={label}>
+                aria-label={`${label}${required ? ' (required)' : ''}`}>
                 {items.map((item, index) => (
                     <SelectableCheckbox
                         name={name}
