@@ -38,6 +38,7 @@ const LinkButton = ({
                 children
             })
         )}
+        role="button"
         href={href}
         target={target}
         rel={rel}

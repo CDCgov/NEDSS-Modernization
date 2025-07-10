@@ -1,16 +1,16 @@
 import { useReducer } from 'react';
-import { Investigation } from './PatientInvestigation';
+import { PatientFileInvestigation } from './investigation';
 
 type Action =
     | { type: 'reset' }
-    | { type: 'select'; investigation: Investigation }
-    | { type: 'deselect'; investigation: Investigation };
+    | { type: 'select'; investigation: PatientFileInvestigation }
+    | { type: 'deselect'; investigation: PatientFileInvestigation };
 
 type Idle = { status: 'waiting' };
 type Active = {
     status: 'selecting' | 'comparable' | 'uncomparable';
     condition: string;
-    investigations: Investigation[];
+    investigations: PatientFileInvestigation[];
 };
 
 type ComparisonState = Idle | Active;
@@ -28,7 +28,7 @@ const reducer = (existing: ComparisonState, action: Action): ComparisonState => 
     }
 };
 
-const including = (existing: ComparisonState, investigation: Investigation): ComparisonState => {
+const including = (existing: ComparisonState, investigation: PatientFileInvestigation): ComparisonState => {
     if (existing.status === 'waiting') {
         return {
             status: 'selecting',
@@ -44,7 +44,7 @@ const including = (existing: ComparisonState, investigation: Investigation): Com
     }
 };
 
-const verify = (existing: Active, investigation: Investigation): ComparisonState => {
+const verify = (existing: Active, investigation: PatientFileInvestigation): ComparisonState => {
     if (existing.condition !== investigation.condition) {
         return {
             ...existing,
@@ -60,17 +60,17 @@ const verify = (existing: Active, investigation: Investigation): ComparisonState
     }
 };
 
-const removing = (existing: ComparisonState, investigation: Investigation) => {
+const removing = (existing: ComparisonState, investigation: PatientFileInvestigation) => {
     if (existing.status === 'waiting') {
         return existing;
     } else {
         //  remove the investigation and evaluate the remaining
-        const remaining = existing.investigations.filter((i) => i.investigation !== investigation.investigation);
+        const remaining = existing.investigations.filter((i) => i.identifier !== investigation.identifier);
         return evaluate(remaining);
     }
 };
 
-const evaluate = (investigations: Investigation[]): ComparisonState => {
+const evaluate = (investigations: PatientFileInvestigation[]): ComparisonState => {
     if (investigations.length === 1) {
         return {
             status: 'selecting',
@@ -82,14 +82,14 @@ const evaluate = (investigations: Investigation[]): ComparisonState => {
     }
 };
 
-const useInvestigationCompare = () => {
+const useCompareInvestigation = () => {
     const [state, dispatch] = useReducer(reducer, initial);
 
     const reset = () => dispatch({ type: 'reset' });
 
-    const select = (investigation: Investigation) => dispatch({ type: 'select', investigation });
+    const select = (investigation: PatientFileInvestigation) => dispatch({ type: 'select', investigation });
 
-    const deselect = (investigation: Investigation) => dispatch({ type: 'deselect', investigation });
+    const deselect = (investigation: PatientFileInvestigation) => dispatch({ type: 'deselect', investigation });
 
     const comparable = state.status === 'comparable';
 
@@ -104,4 +104,4 @@ const useInvestigationCompare = () => {
     };
 };
 
-export { useInvestigationCompare };
+export { useCompareInvestigation };
