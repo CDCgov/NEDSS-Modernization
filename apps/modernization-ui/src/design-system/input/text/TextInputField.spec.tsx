@@ -14,4 +14,10 @@ describe('when entering text values for a field', () => {
         const input = getByRole('textbox', { name: 'Test Input test' });
         expect(input).toHaveAttribute('aria-required', 'true');
     });
+
+    it('should set required attribute when required is true', () => {
+        const { getByRole } = render(<TextInputField id="test" label="Test Input test" required />);
+        const input = getByRole('textbox', { name: 'Test Input test' });
+        expect(input).toHaveAttribute('required');
+    });
 });
