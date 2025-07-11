@@ -150,4 +150,19 @@ describe('CheckboxGroup', () => {
         const group = getByRole('group');
         expect(group).toBeInTheDocument();
     });
+    it('should set aria-required and required attributes when required is true', () => {
+        const { getAllByRole } = render(
+            <CheckboxGroup
+                name="test"
+                label="Testing CheckboxGroup"
+                options={options}
+                required
+            />
+        );
+        const checkboxes = getAllByRole('checkbox');
+        checkboxes.forEach(checkbox => {
+            expect(checkbox).toHaveAttribute('aria-required', 'true');
+            expect(checkbox).toHaveAttribute('required');
+        });
+    })
 });
