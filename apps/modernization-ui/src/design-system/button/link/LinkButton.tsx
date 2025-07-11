@@ -1,8 +1,4 @@
-import classNames from 'classnames';
-import { StandardButtonProps } from '../Button';
-import { buttonClassnames } from '../buttonClassNames';
-
-import styles from './link-button.module.scss';
+import { Button, StandardButtonProps } from '../Button';
 
 type InternalLinkProps = { href: string } & Omit<JSX.IntrinsicElements['a'], 'href'>;
 
@@ -20,30 +16,23 @@ const LinkButton = ({
     tertiary,
     secondary,
     destructive,
+    disabled,
     children,
-    ...defaultProps
+    ...remaining
 }: LinkButtonProps) => (
-    <a
-        className={classNames(
-            styles.link,
-            buttonClassnames({
-                className,
-                sizing,
-                icon,
-                labelPosition,
-                active,
-                tertiary,
-                secondary,
-                destructive,
-                children
-            })
-        )}
-        href={href}
-        target={target}
-        rel={rel}
-        {...defaultProps}>
-        {icon}
-        {children}
+    <a href={disabled ? undefined : href} target={target} rel={rel} {...remaining}>
+        <Button
+            className={className}
+            sizing={sizing}
+            icon={icon}
+            labelPosition={labelPosition}
+            active={active}
+            tertiary={tertiary}
+            secondary={secondary}
+            destructive={destructive}
+            disabled={disabled}>
+            {children}
+        </Button>
     </a>
 );
 
