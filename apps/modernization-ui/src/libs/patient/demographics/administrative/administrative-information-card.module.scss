@@ -1,7 +1,21 @@
 @use 'styles/components';
-.content {
-    font-size: #{components.$small-font-size};
 
+.content {
     padding: 1rem;
     white-space: pre-line;
+    word-wrap: normal;
+    max-width: 75ch;
+    line-height: 140%;
+
+    &.small {
+        @extend %small;
+    }
+
+    &.medium {
+        @extend %medium;
+    }
+
+    &.large {
+        @extend %large;
+    }
 }
