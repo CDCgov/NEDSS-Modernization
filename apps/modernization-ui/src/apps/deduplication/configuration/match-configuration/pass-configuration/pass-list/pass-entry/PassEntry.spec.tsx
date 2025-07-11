@@ -80,7 +80,7 @@ describe('PassEntry', () => {
 
         const user = userEvent.setup();
 
-        const editButton = getByRole('button', { name: 'Edit Pass name' });
+        const editButton = getByRole('button', { name: 'Edit name', hidden: true });
 
         await user.click(editButton);
 
@@ -97,7 +97,7 @@ describe('PassEntry', () => {
             />
         );
 
-        const editButton = queryByRole('button', { name: 'Edit Pass name' });
+        const editButton = queryByRole('button', { name: 'Edit name' });
 
         expect(editButton).not.toBeInTheDocument();
     });

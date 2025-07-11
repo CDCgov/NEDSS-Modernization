@@ -25,8 +25,23 @@ export const PersonMatchHeader = ({ showButtons = false, onImportClick, onConfig
                         onClick={onConfigureDataElementsClick}>
                         Configure data elements
                     </Button>
-                    <Button onClick={onImportClick} icon={<Icon name="file_upload" />} sizing="medium" secondary />
-                    <Button onClick={exportAlgorithm} icon={<Icon name="file_download" />} sizing="medium" secondary />
+                    <Button
+                        onClick={onImportClick}
+                        icon={<Icon name="file_upload" />}
+                        sizing="medium"
+                        data-tooltip-position="top"
+                        aria-label="Import configuration"
+                        secondary
+                    />
+                    <Button
+                        onClick={exportAlgorithm}
+                        icon={<Icon name="file_download" />}
+                        sizing="medium"
+                        data-tooltip-position="top"
+                        data-tooltip-offset="left"
+                        aria-label="Export configuration"
+                        secondary
+                    />
                 </div>
             </Shown>
         </header>

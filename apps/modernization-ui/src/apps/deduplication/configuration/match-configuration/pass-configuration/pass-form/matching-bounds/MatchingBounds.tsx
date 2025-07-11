@@ -138,7 +138,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                             )}
                         />
                     </div>
-                    <div>
+                    <div className={styles.totalLogOdds}>
                         Total log odds: <strong>{totalLogOdds ?? '--'}</strong>
                     </div>
                 </div>

@@ -7,7 +7,7 @@ const ERROR_MESSAGE =
 
 type Props = {
     visible: boolean;
-    onImport: (algorithm: AlgorithmExport) => void;
+    onImport: (fileName: string, algorithm: AlgorithmExport) => void;
     onCancel: () => void;
 };
 export const ImportConfigurationModal = ({ visible, onImport, onCancel }: Props) => {
@@ -19,7 +19,7 @@ export const ImportConfigurationModal = ({ visible, onImport, onCancel }: Props)
             try {
                 const algorithm: AlgorithmExport = JSON.parse(content);
                 if (algorithm?.algorithm?.passes && algorithm?.dataElements) {
-                    onImport(algorithm);
+                    onImport(file.name, algorithm);
                 } else {
                     setImportError(ERROR_MESSAGE);
                 }

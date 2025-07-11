@@ -10,10 +10,12 @@ import { MatchConfiguration } from './match-configuration/MatchConfiguration';
 import { useAlert } from 'libs/alert';
 
 export const MatchConfigurationLandingPage = () => {
-    const { showError, showSuccess } = useAlert();
+    const { showError, showAlert } = useAlert();
     const { fetchDataElements, dataElements, error, loading } = useDataElements();
     const { importAlgorithm, error: importError } = useMatchConfiguration(true);
-    const [previewedAlgorithm, setPreviewedAlgorithm] = useState<AlgorithmExport | undefined>();
+    const [previewedAlgorithm, setPreviewedAlgorithm] = useState<
+        { algorithm: AlgorithmExport; fileName: string } | undefined
+    >();
     const [showImportModal, setShowImportModal] = useState(false);
 
     useEffect(() => {
@@ -28,15 +30,24 @@ export const MatchConfigurationLandingPage = () => {
         }
     }, [importError]);
 
-    const handleAlgorithmPreview = (algorithm: AlgorithmExport) => {
+    const handleAlgorithmPreview = (fileName: string, algorithm: AlgorithmExport) => {
         setShowImportModal(false);
-        setPreviewedAlgorithm(algorithm);
+        setPreviewedAlgorithm({ algorithm, fileName });
     };
 
     const handleAlgorithmUpload = () => {
         if (previewedAlgorithm) {
-            importAlgorithm(previewedAlgorithm, () => {
-                showSuccess('Successfully imported algorithm');
+            importAlgorithm(previewedAlgorithm.algorithm, () => {
+                showAlert({
+                    type: 'success',
+                    title: 'Success',
+                    message: (
+                        <span>
+                            You have successfully imported the configuration file{' '}
+                            <strong>{previewedAlgorithm.fileName}</strong>
+                        </span>
+                    )
+                });
                 fetchDataElements();
                 setPreviewedAlgorithm(undefined);
             });
@@ -49,7 +60,7 @@ export const MatchConfigurationLandingPage = () => {
                 when={previewedAlgorithm === undefined}
                 fallback={
                     <ImportPreview
-                        previewedAlgorithm={previewedAlgorithm!}
+                        previewedAlgorithm={previewedAlgorithm?.algorithm!}
                         onAccept={handleAlgorithmUpload}
                         onCancel={() => setPreviewedAlgorithm(undefined)}
                     />
