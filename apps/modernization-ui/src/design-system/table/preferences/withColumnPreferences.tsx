@@ -1,5 +1,6 @@
 import React from 'react';
-import { ColumnPreference, ColumnPreferenceProvider } from './useColumnPreferences';
+import { ColumnPreference } from './preference';
+import { ColumnPreferenceProvider } from './useColumnPreferences';
 
 type WithColumnPreferencesOptions = {
     /** The local storage key to use to read/write column preferences.

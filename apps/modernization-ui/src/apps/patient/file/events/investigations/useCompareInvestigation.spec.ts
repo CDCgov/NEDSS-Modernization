@@ -4,13 +4,43 @@ import { useCompareInvestigation } from './useCompareInvestigation';
 
 describe('useCompareInvestigation', () => {
     describe('given a waiting comparison', () => {
-        it('should move to selecting when given comparable investigation', async () => {
+        it('should evaluate a comparable investigation as comparable', () => {
             const { result } = renderHook(() => useCompareInvestigation());
 
-            const { select } = result.current;
+            expect(
+                result.current.isComparable({
+                    patient: 881,
+                    identifier: 73,
+                    condition: 'condition-value',
+                    status: 'status-value',
+                    jurisdiction: 'jurisdiction-value',
+                    local: 'event-value',
+                    comparable: true
+                })
+            ).toBe(true);
+        });
+
+        it('should not evaluate a non comparable investigation as comparable', () => {
+            const { result } = renderHook(() => useCompareInvestigation());
+
+            expect(
+                result.current.isComparable({
+                    patient: 881,
+                    identifier: 73,
+                    condition: 'condition-value',
+                    status: 'status-value',
+                    jurisdiction: 'jurisdiction-value',
+                    local: 'event-value',
+                    comparable: false
+                })
+            ).toBe(false);
+        });
+
+        it('should select the comparable investigation', () => {
+            const { result } = renderHook(() => useCompareInvestigation());
 
             act(() =>
-                select({
+                result.current.select({
                     patient: 881,
                     identifier: 73,
                     condition: 'condition-value',
@@ -21,25 +51,26 @@ describe('useCompareInvestigation', () => {
                 })
             );
 
-            await waitFor(() =>
-                expect(result.current).toEqual(
-                    expect.objectContaining({
-                        comparable: false,
-                        selected: []
-                    })
-                )
-            );
+            expect(
+                result.current.isSelected({
+                    patient: 881,
+                    identifier: 73,
+                    condition: 'condition-value',
+                    status: 'status-value',
+                    jurisdiction: 'jurisdiction-value',
+                    local: 'event-value',
+                    comparable: true
+                })
+            ).toBe(true);
         });
     });
 
     describe('given a selecting comparison', () => {
-        it('should be comparable after given an investigation with the same condition', async () => {
+        it('should be comparable after given a comparable investigation with the same condition', () => {
             const { result } = renderHook(() => useCompareInvestigation());
 
-            const { select } = result.current;
-
             act(() =>
-                select({
+                result.current.select({
                     patient: 881,
                     identifier: 73,
                     condition: 'condition-value',
@@ -51,7 +82,7 @@ describe('useCompareInvestigation', () => {
             );
 
             act(() =>
-                select({
+                result.current.select({
                     patient: 881,
                     identifier: 179,
                     condition: 'condition-value',
@@ -62,26 +93,45 @@ describe('useCompareInvestigation', () => {
                 })
             );
 
-            await waitFor(() =>
-                expect(result.current).toEqual(
-                    expect.objectContaining({
-                        comparable: true,
-                        selected: expect.arrayContaining([
-                            expect.objectContaining({ identifier: 73 }),
-                            expect.objectContaining({ identifier: 179 })
-                        ])
+            expect(
+                result.current.isSelected({
+                    patient: 881,
+                    identifier: 73,
+                    condition: 'condition-value',
+                    status: 'status-value',
+                    jurisdiction: 'jurisdiction-value',
+                    local: 'event-value',
+                    comparable: true
+                })
+            ).toBe(true);
+
+            expect(
+                result.current.isSelected({
+                    patient: 881,
+                    identifier: 179,
+                    condition: 'condition-value',
+                    status: 'status-value',
+                    jurisdiction: 'jurisdiction-value',
+                    local: 'event-value',
+                    comparable: true
+                })
+            ).toBe(true);
+
+            expect(result.current).toEqual(
+                expect.objectContaining({
+                    comparison: expect.objectContaining({
+                        selected: 73,
+                        comparedTo: 179
                     })
-                )
+                })
             );
         });
 
-        it('should not be comparable after given an investigation with a different condition', async () => {
+        it('should be able to compare a comparable investigation with the same condition', () => {
             const { result } = renderHook(() => useCompareInvestigation());
 
-            const { comparable, select, selected } = result.current;
-
             act(() =>
-                select({
+                result.current.select({
                     patient: 881,
                     identifier: 73,
                     condition: 'condition-value',
@@ -92,35 +142,80 @@ describe('useCompareInvestigation', () => {
                 })
             );
 
-            act(() =>
-                select({
-                    patient: 881,
-                    identifier: 179,
-                    condition: 'other-condition',
-                    status: 'status-value',
-                    jurisdiction: 'jurisdiction-value',
-                    local: 'event-value',
-                    comparable: true
-                })
-            );
+            const actual = result.current.isComparable({
+                patient: 881,
+                identifier: 179,
+                condition: 'condition-value',
+                status: 'status-value',
+                jurisdiction: 'jurisdiction-value',
+                local: 'event-value',
+                comparable: true
+            });
 
-            await waitFor(() =>
-                expect(result.current).toEqual(
-                    expect.objectContaining({
-                        comparable: false,
-                        selected: []
-                    })
-                )
-            );
+            expect(actual).toBe(true);
         });
 
-        it('should not be comparable after given more than two investigations with the same condition', async () => {
+        it('should not be able to compare an incomparable investigation', () => {
             const { result } = renderHook(() => useCompareInvestigation());
 
-            const { select } = result.current;
+            act(() =>
+                result.current.select({
+                    patient: 881,
+                    identifier: 73,
+                    condition: 'condition-value',
+                    status: 'status-value',
+                    jurisdiction: 'jurisdiction-value',
+                    local: 'event-value',
+                    comparable: true
+                })
+            );
+
+            const actual = result.current.isComparable({
+                patient: 881,
+                identifier: 179,
+                condition: 'other-condition',
+                status: 'status-value',
+                jurisdiction: 'jurisdiction-value',
+                local: 'event-value',
+                comparable: true
+            });
+
+            expect(actual).toBe(false);
+        });
+
+        it('should be able to compare a comparable investigation with the same condition', () => {
+            const { result } = renderHook(() => useCompareInvestigation());
 
             act(() =>
-                select({
+                result.current.select({
+                    patient: 881,
+                    identifier: 73,
+                    condition: 'condition-value',
+                    status: 'status-value',
+                    jurisdiction: 'jurisdiction-value',
+                    local: 'event-value',
+                    comparable: true
+                })
+            );
+
+            const actual = result.current.isComparable({
+                patient: 881,
+                identifier: 179,
+                condition: 'condition-value',
+                status: 'status-value',
+                jurisdiction: 'jurisdiction-value',
+                local: 'event-value',
+                comparable: false
+            });
+
+            expect(actual).toBe(false);
+        });
+
+        it('should not be comparable after given more than two comparable investigations with the same condition', () => {
+            const { result } = renderHook(() => useCompareInvestigation());
+
+            act(() =>
+                result.current.select({
                     patient: 881,
                     identifier: 73,
                     condition: 'condition-value',
@@ -132,7 +227,7 @@ describe('useCompareInvestigation', () => {
             );
 
             act(() =>
-                select({
+                result.current.select({
                     patient: 881,
                     identifier: 179,
                     condition: 'condition-value',
@@ -143,36 +238,26 @@ describe('useCompareInvestigation', () => {
                 })
             );
 
-            act(() =>
-                select({
-                    patient: 881,
-                    identifier: 283,
-                    condition: 'condition-value',
-                    status: 'status-value',
-                    jurisdiction: 'jurisdiction-value',
-                    local: 'event-value',
-                    comparable: true
-                })
-            );
+            const actual = result.current.isComparable({
+                patient: 881,
+                identifier: 283,
+                condition: 'condition-value',
+                status: 'status-value',
+                jurisdiction: 'jurisdiction-value',
+                local: 'event-value',
+                comparable: true
+            });
 
-            await waitFor(() =>
-                expect(result.current).toEqual(
-                    expect.objectContaining({
-                        comparable: false
-                    })
-                )
-            );
+            expect(actual).toBe(false);
         });
     });
 
-    describe('given an uncomparable comparison', () => {
-        it('should be comparable after removing the third investigation', async () => {
+    describe('given a comparable comparison', () => {
+        it('should not evaluate a comparable investigation with the same condition as comparable', () => {
             const { result } = renderHook(() => useCompareInvestigation());
 
-            const { select, deselect } = result.current;
-
             act(() =>
-                select({
+                result.current.select({
                     patient: 881,
                     identifier: 73,
                     condition: 'condition-value',
@@ -184,7 +269,7 @@ describe('useCompareInvestigation', () => {
             );
 
             act(() =>
-                select({
+                result.current.select({
                     patient: 881,
                     identifier: 179,
                     condition: 'condition-value',
@@ -195,50 +280,24 @@ describe('useCompareInvestigation', () => {
                 })
             );
 
-            act(() =>
-                select({
+            expect(
+                result.current.isComparable({
                     patient: 881,
-                    identifier: 283,
+                    identifier: 1033,
                     condition: 'condition-value',
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
                     comparable: true
                 })
-            );
-
-            act(() =>
-                deselect({
-                    patient: 881,
-                    identifier: 179,
-                    condition: 'condition-value',
-                    status: 'status-value',
-                    jurisdiction: 'jurisdiction-value',
-                    local: 'event-value',
-                    comparable: true
-                })
-            );
-
-            await waitFor(() =>
-                expect(result.current).toEqual(
-                    expect.objectContaining({
-                        comparable: true,
-                        selected: expect.arrayContaining([
-                            expect.objectContaining({ identifier: 73 }),
-                            expect.objectContaining({ identifier: 283 })
-                        ])
-                    })
-                )
-            );
+            ).toBe(false);
         });
 
-        it('should be comparable after removing the investigation with a differing condition', async () => {
+        it('should not produce a comparison when the selected is removed', () => {
             const { result } = renderHook(() => useCompareInvestigation());
 
-            const { comparable, select, deselect, selected } = result.current;
-
             act(() =>
-                select({
+                result.current.select({
                     patient: 881,
                     identifier: 73,
                     condition: 'condition-value',
@@ -250,21 +309,9 @@ describe('useCompareInvestigation', () => {
             );
 
             act(() =>
-                select({
+                result.current.select({
                     patient: 881,
                     identifier: 179,
-                    condition: 'other-condition',
-                    status: 'status-value',
-                    jurisdiction: 'jurisdiction-value',
-                    local: 'event-value',
-                    comparable: true
-                })
-            );
-
-            act(() =>
-                select({
-                    patient: 881,
-                    identifier: 283,
                     condition: 'condition-value',
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
@@ -274,10 +321,10 @@ describe('useCompareInvestigation', () => {
             );
 
             act(() =>
-                deselect({
+                result.current.deselect({
                     patient: 881,
-                    identifier: 179,
-                    condition: 'other-condition',
+                    identifier: 73,
+                    condition: 'condition-value',
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
@@ -285,26 +332,26 @@ describe('useCompareInvestigation', () => {
                 })
             );
 
-            await waitFor(() =>
-                expect(result.current).toEqual(
-                    expect.objectContaining({
-                        comparable: true,
-                        selected: expect.arrayContaining([
-                            expect.objectContaining({ identifier: 73 }),
-                            expect.objectContaining({ identifier: 283 })
-                        ])
-                    })
-                )
-            );
+            expect(
+                result.current.isSelected({
+                    patient: 881,
+                    identifier: 73,
+                    condition: 'condition-value',
+                    status: 'status-value',
+                    jurisdiction: 'jurisdiction-value',
+                    local: 'event-value',
+                    comparable: true
+                })
+            ).toBe(false);
+
+            expect(result.current.comparison).toBeUndefined();
         });
 
-        it('should remain uncomparable after removing the investigation with a similar condition', async () => {
+        it('should not produce a comparison when the compare to is removed', () => {
             const { result } = renderHook(() => useCompareInvestigation());
 
-            const { select, deselect } = result.current;
-
             act(() =>
-                select({
+                result.current.select({
                     patient: 881,
                     identifier: 73,
                     condition: 'condition-value',
@@ -316,21 +363,9 @@ describe('useCompareInvestigation', () => {
             );
 
             act(() =>
-                select({
+                result.current.select({
                     patient: 881,
                     identifier: 179,
-                    condition: 'other-condition',
-                    status: 'status-value',
-                    jurisdiction: 'jurisdiction-value',
-                    local: 'event-value',
-                    comparable: true
-                })
-            );
-
-            act(() =>
-                select({
-                    patient: 881,
-                    identifier: 283,
                     condition: 'condition-value',
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
@@ -340,9 +375,9 @@ describe('useCompareInvestigation', () => {
             );
 
             act(() =>
-                deselect({
+                result.current.deselect({
                     patient: 881,
-                    identifier: 283,
+                    identifier: 179,
                     condition: 'condition-value',
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
@@ -351,14 +386,19 @@ describe('useCompareInvestigation', () => {
                 })
             );
 
-            await waitFor(() =>
-                expect(result.current).toEqual(
-                    expect.objectContaining({
-                        comparable: false,
-                        selected: []
-                    })
-                )
-            );
+            expect(
+                result.current.isSelected({
+                    patient: 881,
+                    identifier: 179,
+                    condition: 'condition-value',
+                    status: 'status-value',
+                    jurisdiction: 'jurisdiction-value',
+                    local: 'event-value',
+                    comparable: true
+                })
+            ).toBe(false);
+
+            expect(result.current.comparison).toBeUndefined();
         });
     });
 });
