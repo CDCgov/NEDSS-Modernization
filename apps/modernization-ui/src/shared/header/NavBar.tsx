@@ -64,7 +64,9 @@ export const NavBar = () => {
                                                 'VIEWPHCRACTIVITY-CASEREPORTING',
                                                 'IMPORTEXPORTADMIN-SYSTEM',
                                                 'REPORTADMIN-SYSTEM',
-                                                'ALERTADMIN-SYSTEM'
+                                                'ALERTADMIN-SYSTEM',
+                                                'ADMINISTRATE-SYSTEM',
+                                                'ADMINISTRATE-SECURITY'
                                             )}>
                                             <td className={styles.navLink}>
                                                 <span> | </span>
