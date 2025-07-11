@@ -12,17 +12,9 @@ then
 fi
 
 
-CLASSIC_PATH=$BASE/nbs-classic/builder/NEDSSDev
-CLASSIC_VERSION=NBS_6.0.16
-
 ./db/build.sh "$@"
 
-echo "Building NBS6 Application"
-
-rm -rf $CLASSIC_PATH && \
-  git clone -b $CLASSIC_VERSION git@github.com:cdcent/NEDSSDev.git $CLASSIC_PATH && \
-  docker compose -f $BASE/docker-compose.yml up wildfly --build -d && \
-  rm -rf $CLASSIC_PATH
+./nbs-classic/build.sh
 
 
 echo "**** Classic build complete ****"
