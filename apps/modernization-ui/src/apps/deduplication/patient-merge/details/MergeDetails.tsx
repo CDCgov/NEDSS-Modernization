@@ -184,7 +184,7 @@ export const MergeDetails = () => {
                 return `Surviving ID: ${patient.personLocalId}`;
             } else {
                 const name = [...patient.names].sort((a) => (a.type === 'Legal' ? -1 : 1))[0];
-                return `${name.last}, ${name.first} (Surviving ID:${patient.personLocalId})`;
+                return `${name.last ?? '---'}, ${name.first ?? '---'} (Surviving ID:${patient.personLocalId})`;
             }
         }
     };
