@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useCallback, useReducer } from 'react';
 import { PatientFileInvestigation } from './investigation';
 
 type Action =
@@ -7,13 +7,21 @@ type Action =
     | { type: 'deselect'; investigation: PatientFileInvestigation };
 
 type Idle = { status: 'waiting' };
-type Active = {
-    status: 'selecting' | 'comparable' | 'uncomparable';
+
+type Selecting = {
+    status: 'selecting';
     condition: string;
-    investigations: PatientFileInvestigation[];
+    selected: number;
 };
 
-type ComparisonState = Idle | Active;
+type Comparable = {
+    status: 'comparable';
+    condition: string;
+    selected: number;
+    comparedTo: number;
+};
+
+type ComparisonState = Idle | Selecting | Comparable;
 
 const initial: ComparisonState = { status: 'waiting' };
 
@@ -33,75 +41,94 @@ const including = (existing: ComparisonState, investigation: PatientFileInvestig
         return {
             status: 'selecting',
             condition: investigation.condition,
-            investigations: [investigation]
+            selected: investigation.identifier
         };
-    } else if (existing.status === 'selecting') {
-        //  need to evaluate against existing selections
-        return verify(existing, investigation);
-    } else {
-        //  uncomparable
-        return { ...existing, status: 'uncomparable', investigations: [...existing.investigations, investigation] };
-    }
-};
-
-const verify = (existing: Active, investigation: PatientFileInvestigation): ComparisonState => {
-    if (existing.condition !== investigation.condition) {
-        return {
-            ...existing,
-            status: 'uncomparable',
-            investigations: [...existing.investigations, investigation]
-        };
-    } else {
+    } else if (existing.status === 'selecting' && investigation.condition === existing.condition) {
         return {
             ...existing,
             status: 'comparable',
-            investigations: [...existing.investigations, investigation]
+            comparedTo: investigation.identifier
         };
-    }
-};
-
-const removing = (existing: ComparisonState, investigation: PatientFileInvestigation) => {
-    if (existing.status === 'waiting') {
-        return existing;
     } else {
-        //  remove the investigation and evaluate the remaining
-        const remaining = existing.investigations.filter((i) => i.identifier !== investigation.identifier);
-        return evaluate(remaining);
+        return existing;
     }
 };
 
-const evaluate = (investigations: PatientFileInvestigation[]): ComparisonState => {
-    if (investigations.length === 1) {
+const removing = (existing: ComparisonState, investigation: PatientFileInvestigation): ComparisonState => {
+    if (existing.status === 'selecting' && existing.selected === investigation.identifier) {
+        //  removing the selected investigation, reset to waiting
+        return initial;
+    } else if (existing.status === 'comparable' && existing.selected === investigation.identifier) {
+        // removing the selected investigation that is already comparable, make the comparison the selected investigation
         return {
             status: 'selecting',
-            condition: investigations[0].condition,
-            investigations
+            condition: existing.condition,
+            selected: existing.comparedTo
+        };
+    } else if (existing.status === 'comparable' && existing.comparedTo === investigation.identifier) {
+        // removing the comparison, revert to selecting
+        return {
+            status: 'selecting',
+            condition: existing.condition,
+            selected: existing.selected
         };
     } else {
-        return investigations.reduce(including, initial);
+        return existing;
     }
 };
 
-const useCompareInvestigation = () => {
+type CompareInvestigationInteraction = {
+    comparison?: Omit<Comparable, 'status' | 'condition'>;
+    reset: () => void;
+    select: (investigation: PatientFileInvestigation) => void;
+    deselect: (investigation: PatientFileInvestigation) => void;
+    isComparable: (Investigation: PatientFileInvestigation) => boolean;
+    isSelected: (Investigation: PatientFileInvestigation) => boolean;
+};
+
+const useCompareInvestigation = (): CompareInvestigationInteraction => {
     const [state, dispatch] = useReducer(reducer, initial);
 
-    const reset = () => dispatch({ type: 'reset' });
+    const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch]);
 
-    const select = (investigation: PatientFileInvestigation) => dispatch({ type: 'select', investigation });
+    const select = useCallback(
+        (investigation: PatientFileInvestigation) => dispatch({ type: 'select', investigation }),
+        [dispatch]
+    );
 
-    const deselect = (investigation: PatientFileInvestigation) => dispatch({ type: 'deselect', investigation });
+    const deselect = useCallback(
+        (investigation: PatientFileInvestigation) => dispatch({ type: 'deselect', investigation }),
+        [dispatch]
+    );
 
-    const comparable = state.status === 'comparable';
+    const isSelected = useCallback(
+        (investigation: PatientFileInvestigation) =>
+            (state.status === 'selecting' && investigation.identifier === state.selected) ||
+            (state.status === 'comparable' &&
+                (investigation.identifier === state.selected || investigation.identifier === state.comparedTo)),
+        [state.status, (state.status === 'selecting' || state.status === 'comparable') && state.selected]
+    );
 
-    const selected = comparable ? state.investigations : [];
+    const isComparable = useCallback(
+        (investigation: PatientFileInvestigation) =>
+            investigation.comparable &&
+            (state.status === 'waiting' ||
+                (state.status === 'selecting' && state.condition === investigation.condition)),
+        [state.status, state.status === 'selecting' && state.condition]
+    );
+
+    const comparison =
+        state.status === 'comparable' ? { selected: state.selected, comparedTo: state.comparedTo } : undefined;
 
     return {
-        comparable,
-        selected,
+        comparison,
         reset,
         select,
-        deselect
+        deselect,
+        isComparable,
+        isSelected
     };
 };
 
 export { useCompareInvestigation };
+export type { CompareInvestigationInteraction };

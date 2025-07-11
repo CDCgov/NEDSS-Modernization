@@ -5,7 +5,7 @@ import { Icon } from 'design-system/icon';
 import { Button } from 'design-system/button';
 import { Sizing } from 'design-system/field';
 import { ClosablePanel } from 'design-system/panel/closable';
-import { ColumnPreference, isNamed, NamedColumnPreference } from './preference';
+import { ColumnPreference, isNamed, isLabeled, NamedColumnPreference } from './preference';
 import { useColumnPreferences } from './useColumnPreferences';
 
 import styles from './column-preference-panel.module.scss';
@@ -96,33 +96,26 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
                                     key={preference.id}
                                     draggableId={preference.id}
                                     index={index}
-                                    isDragDisabled={isNamed(preference) && !preference.moveable}>
-                                    {(draggable: DraggableProvided) => {
-                                        if (isNamed(preference)) {
-                                            return (
-                                                <div
-                                                    ref={draggable.innerRef}
-                                                    {...draggable.draggableProps}
-                                                    className={styles.preference}>
-                                                    <Checkbox
-                                                        id={`${preference.id}_visible`}
-                                                        name={preference.id}
-                                                        label={preference.name}
-                                                        disabled={!preference.toggleable}
-                                                        selected={!preference.hidden}
-                                                        onChange={handleVisibilityChange(preference)}
-                                                    />
-                                                    {preference.moveable && (
-                                                        <span className={styles.handle} {...draggable.dragHandleProps}>
-                                                            <Icon name="drag" />
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            );
-                                        }
-
-                                        return <></>;
-                                    }}
+                                    disableInteractiveElementBlocking
+                                    isDragDisabled={
+                                        isLabeled(preference) || (isNamed(preference) && !preference.moveable)
+                                    }>
+                                    {(draggable: DraggableProvided) => (
+                                        <div ref={draggable.innerRef} {...draggable.draggableProps}>
+                                            {isNamed(preference) && (
+                                                <PreferenceOption
+                                                    draggable={draggable}
+                                                    onVisibilityChange={handleVisibilityChange(preference)}>
+                                                    {preference}
+                                                </PreferenceOption>
+                                            )}
+                                            {isLabeled(preference) && (
+                                                <PreferencePlaceholder draggable={draggable}>
+                                                    {preference}
+                                                </PreferencePlaceholder>
+                                            )}
+                                        </div>
+                                    )}
                                 </Draggable>
                             ))}
                             {droppable.placeholder}
@@ -133,5 +126,38 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
         </ClosablePanel>
     );
 };
+
+type PreferencePlaceholderProps = {
+    draggable: DraggableProvided;
+    children: ColumnPreference;
+};
+
+const PreferencePlaceholder = ({ draggable, children }: PreferencePlaceholderProps) => (
+    <span id={children.id} {...draggable.dragHandleProps} tabIndex={-1} />
+);
+
+type PreferenceOptionProps = {
+    draggable: DraggableProvided;
+    onVisibilityChange: (value: boolean) => void;
+    children: NamedColumnPreference;
+};
+
+const PreferenceOption = ({ draggable, onVisibilityChange, children }: PreferenceOptionProps) => (
+    <span className={styles.preference}>
+        <Checkbox
+            id={`${children.id}_visible`}
+            name={children.id}
+            label={children.name}
+            disabled={!children.toggleable}
+            selected={!children.hidden}
+            onChange={onVisibilityChange}
+        />
+        {children.moveable && (
+            <span className={styles.handle} {...draggable.dragHandleProps}>
+                <Icon name="drag" />
+            </span>
+        )}
+    </span>
+);
 
 export { ColumnPreferencesPanel };

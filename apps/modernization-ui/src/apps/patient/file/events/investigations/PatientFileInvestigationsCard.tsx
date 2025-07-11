@@ -8,13 +8,16 @@ import { TableCard, TableCardProps } from 'design-system/card';
 import { permissions, Permitted } from 'libs/permission';
 import { LinkButton } from 'design-system/button';
 import { Icon } from 'design-system/icon';
+import { Checkbox } from 'design-system/checkbox';
 import { displayNotificationStatus, displayStatus, displayInvestigator } from 'libs/events/investigations';
 import { PatientFileInvestigation } from './investigation';
-
-import styles from './investigations.module.scss';
-import { Checkbox } from 'design-system/checkbox';
 import { useCompareInvestigation } from './useCompareInvestigation';
 
+import styles from './investigations.module.scss';
+import { either, not } from 'utils/predicate';
+import { Shown } from 'conditional-render';
+
+const SELECTION = { id: 'selection', label: 'Select to compare' };
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };
 const START_DATE = { id: 'startedOn', name: 'Start date' };
 const STATUS = { id: 'status', name: 'Status' };
@@ -87,7 +90,8 @@ const columns: Column<PatientFileInvestigation>[] = [
 ];
 
 const columnPreferences: ColumnPreference[] = [
-    { ...INVESTIGATION_ID },
+    SELECTION,
+    INVESTIGATION_ID,
     { ...START_DATE, moveable: true, toggleable: true },
     { ...STATUS, moveable: true, toggleable: true },
     { ...CONDITION, moveable: true, toggleable: true },
@@ -107,7 +111,7 @@ type InternalCardProps = {
 >;
 
 const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCardProps) => {
-    const { comparable, selected, select, deselect } = useCompareInvestigation();
+    const { comparison, isSelected, isComparable, select, deselect } = useCompareInvestigation();
 
     const handleSelect = (investigation: PatientFileInvestigation) => (selected: boolean) => {
         if (selected) {
@@ -117,17 +121,23 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
         }
     };
 
-    const selection: Column<PatientFileInvestigation> = {
+    const isDisabled = not(either(isSelected, isComparable));
+
+    const selectionColumn: Column<PatientFileInvestigation> = {
         id: 'selection',
         label: 'Select to compare',
         className: styles['selection-header'],
         render: (investigation) => (
-            <Checkbox
-                id={`select ${investigation.local}`}
-                label={`select ${investigation.local} for comparison`}
-                className={styles.checkBox}
-                onChange={handleSelect(investigation)}
-            />
+            <Shown when={investigation.comparable}>
+                <Checkbox
+                    id={`select-${investigation.local}`}
+                    disabled={isDisabled(investigation)}
+                    aria-label={`select ${investigation.local} for comparison`}
+                    onChange={handleSelect(investigation)}
+                    selected={isSelected(investigation)}
+                    sizing={sizing}
+                />
+            </Shown>
         )
     };
 
@@ -135,10 +145,11 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
         <TableCard
             title="Investigations"
             data={data}
-            columns={[selection, ...columns]}
+            columns={[selectionColumn, ...columns]}
             columnPreferencesKey={'patient.file.investigations.preferences'}
             defaultColumnPreferences={columnPreferences}
             sizing={sizing}
+            className={styles.selectable}
             actions={
                 <>
                     <Permitted permission={permissions.investigation.add}>
@@ -154,8 +165,8 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                         <LinkButton
                             secondary
                             sizing={sizing}
-                            disabled={!comparable}
-                            href={`/nbs/api/profile/${patient}/investigation/${selected?.[0]?.identifier}/compare/${selected?.[1]?.identifier}`}>
+                            disabled={!comparison}
+                            href={`/nbs/api/profile/${patient}/investigation/${comparison?.selected}/compare/${comparison?.comparedTo}`}>
                             Compare investigations
                         </LinkButton>
                     </Permitted>
