@@ -4,7 +4,7 @@ import { occursInThePast } from './occursInThePast';
 import { now } from './clock';
 
 const validateYear = (name: string) => (value: DateEntry) => {
-    if (value.year) {
+    if (value.year !== undefined) {
         if (value.year < 1875) {
             return `The ${name} should occur after 12/31/1874.`;
         } else if (value.year > now().getFullYear()) {
