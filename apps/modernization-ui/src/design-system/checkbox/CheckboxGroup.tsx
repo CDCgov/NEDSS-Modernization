@@ -73,7 +73,7 @@ export const CheckboxGroup = ({
                     },
                     styles.fieldSet
                 )}
-                aria-label={`${label}${required ? ' (required)' : ''}`}>
+                aria-label={label}>
                 {items.map((item, index) => (
                     <SelectableCheckbox
                         name={name}
@@ -84,6 +84,8 @@ export const CheckboxGroup = ({
                         selected={item.selected}
                         disabled={disabled}
                         onBlur={onBlur}
+                        required={required}
+                        aria-required={required}
                     />
                 ))}
             </fieldset>
