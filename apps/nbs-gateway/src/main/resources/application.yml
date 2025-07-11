@@ -20,6 +20,9 @@ nbs:
     modernization:
       service: 'localhost:8080'
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
+    system:
+      management:
+        enabled: false
     patient:
       search:
         enabled: true

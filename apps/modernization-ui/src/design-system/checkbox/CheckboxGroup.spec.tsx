@@ -124,24 +124,6 @@ describe('CheckboxGroup', () => {
         );
     });
 
-    it('should set aria-required="true" when required is true', () => {
-        const onChange = () => {};
-        const { getByRole } = render(
-            <CheckboxGroup
-                name="test"
-                label="Testing CheckboxGroup"
-                options={[
-                    { value: 'value1', label: 'label1', name: 'name1' },
-                    { value: 'value2', label: 'label2', name: 'name2' }
-                ]}
-                onChange={onChange}
-                required
-            />
-        );
-        const fieldset = getByRole('group');
-        expect(fieldset).toHaveAttribute('aria-required', 'true');
-    });
-
     it('should disable checkboxes', () => {
         const { getByLabelText } = render(
             <CheckboxGroup name="test" label="Testing CheckboxGroup" options={options} disabled />
@@ -168,4 +150,19 @@ describe('CheckboxGroup', () => {
         const group = getByRole('group');
         expect(group).toBeInTheDocument();
     });
+    it('should set aria-required and required attributes when required is true', () => {
+        const { getAllByRole } = render(
+            <CheckboxGroup
+                name="test"
+                label="Testing CheckboxGroup"
+                options={options}
+                required
+            />
+        );
+        const checkboxes = getAllByRole('checkbox');
+        checkboxes.forEach(checkbox => {
+            expect(checkbox).toHaveAttribute('aria-required', 'true');
+            expect(checkbox).toHaveAttribute('required');
+        });
+    })
 });

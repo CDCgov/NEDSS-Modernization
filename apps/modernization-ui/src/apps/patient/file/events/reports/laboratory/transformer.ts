@@ -1,8 +1,8 @@
 import { PatientLabReport as PatientLabReportResponse } from 'generated';
-import { PatientLabReport } from './patientLabReport';
+import { PatientFileLaboratoryReport } from './laboratory-report';
 import { maybeDate } from 'date';
 
-const transformer = (response: PatientLabReportResponse): PatientLabReport => ({
+const transformer = (response: PatientLabReportResponse): PatientFileLaboratoryReport => ({
     ...response,
     receivedDate: maybeDate(response.receivedDate),
     collectedDate: maybeDate(response.collectedDate)

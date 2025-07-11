@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.file.demographics.summary;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -16,7 +16,7 @@ class PatientDemographicsSummaryRaceFinder {
               left join NBS_SRTE..Code_value_general [race] on
                   [race].code_set_nm = 'RACE_CALCULATED'
               and [race].[code] = [patient].race_category_cd
-                                                              
+      
       
       where [patient].person_uid = ?
           and [patient].record_status_cd = 'ACTIVE'
@@ -25,19 +25,16 @@ class PatientDemographicsSummaryRaceFinder {
           [patient].[as_of_date] desc
       """;
 
-  private static final int PATIENT_PARAMETER = 1;
-  private static final int RACE_COLUMN = 1;
+  private final JdbcClient client;
 
-  private final JdbcTemplate template;
-
-  PatientDemographicsSummaryRaceFinder(final JdbcTemplate template) {
-    this.template = template;
+  PatientDemographicsSummaryRaceFinder(final JdbcClient client) {
+    this.client = client;
   }
 
   Collection<String> find(final long patient) {
-    return this.template.query(
-        QUERY, statement -> statement.setLong(PATIENT_PARAMETER, patient),
-        (rs, row) -> rs.getString(RACE_COLUMN)
-    );
+    return this.client.sql(QUERY)
+        .param(patient)
+        .query(String.class)
+        .list();
   }
 }

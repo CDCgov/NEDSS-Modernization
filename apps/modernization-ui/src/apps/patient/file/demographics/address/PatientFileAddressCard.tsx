@@ -1,22 +1,28 @@
-import { AddressDemographicCard } from 'libs/patient/demographics/address';
-import { Sizing } from 'design-system/field';
-import { usePatientFileAddress } from './usePatientFileAddres';
-import { LoadingCard } from 'libs/loading';
-import { Shown } from 'conditional-render';
+import { Suspense } from 'react';
+import { Await } from 'react-router';
+import { MemoizedSupplier } from 'libs/supplying';
+import { LoadingOverlay } from 'libs/loading';
+import {
+    AddressDemographic,
+    AddressDemographicCard,
+    AddressDemographicCardProps
+} from 'libs/patient/demographics/address';
 
 type PatientFileAddressProps = {
-    patient: number;
-    sizing: Sizing;
-};
+    provider: MemoizedSupplier<Promise<AddressDemographic[]>>;
+} & Omit<AddressDemographicCardProps, 'title'>;
 
-const PatientFileAddressCard = ({ patient, sizing }: PatientFileAddressProps) => {
-    const data = usePatientFileAddress(patient);
-
-    return (
-        <Shown when={!data.isLoading} fallback={<LoadingCard id="loading-addresses" title="Address" sizing={sizing} />}>
-            <AddressDemographicCard id={'patient-file-address-demographic'} data={data.data} sizing={sizing} />
-        </Shown>
-    );
-};
+const PatientFileAddressCard = ({ provider, ...remaining }: PatientFileAddressProps) => (
+    <Suspense
+        fallback={
+            <LoadingOverlay>
+                <AddressDemographicCard {...remaining} />
+            </LoadingOverlay>
+        }>
+        <Await resolve={provider.get()}>
+            {(resolved) => <AddressDemographicCard data={resolved} {...remaining} />}
+        </Await>
+    </Suspense>
+);
 
 export { PatientFileAddressCard };

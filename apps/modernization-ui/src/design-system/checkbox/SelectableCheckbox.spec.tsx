@@ -79,4 +79,12 @@ describe('Checkbox testing', () => {
 
         expect(onChange).toHaveBeenCalledWith(option);
     });
+    it('should set aria-required="true" when required is true', () => {
+        const onChange = () => {};
+        const { getByRole } = render(
+            <SelectableCheckbox onChange={onChange} selectable={option} selected={false} aria-required={true} />
+        );
+        const checkbox = getByRole('checkbox');
+        expect(checkbox).toHaveAttribute('aria-required', 'true');
+    });
 });

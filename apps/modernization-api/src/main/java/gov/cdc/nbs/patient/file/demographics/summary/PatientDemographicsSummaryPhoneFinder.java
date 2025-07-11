@@ -78,18 +78,18 @@ class PatientDemographicsSummaryPhoneFinder {
       )
       """;
 
-  private final JdbcClient template;
+  private final JdbcClient client;
   private final RowMapper<DisplayablePhone> mapper;
 
   PatientDemographicsSummaryPhoneFinder(final JdbcClient client) {
-    this.template = client;
+    this.client = client;
     this.mapper = new DisplayablePhoneRowMapper();
   }
 
   Optional<DisplayablePhone> find(final long patient, final LocalDate asOf) {
-    return this.template.sql(QUERY)
+    return this.client.sql(QUERY)
         .param(patient)
-        .param(asOf)
+        .param(asOf.atTime(23, 59, 59))
         .query(this.mapper)
         .optional();
   }

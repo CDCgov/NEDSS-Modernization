@@ -1,34 +1,38 @@
+import classNames from 'classnames';
 import { internalizeDate } from 'date';
-import { Card } from 'design-system/card';
-import styles from './administrative-information-card.module.scss';
-import { Sizing } from 'design-system/field';
-import { AdministrativeInformation } from './AdministrativeInformation';
+import { Card, CardProps } from 'design-system/card';
 import { OrElseNoData } from 'design-system/data';
+import { AdministrativeInformation } from './AdministrativeInformation';
 
-type AdministrativeInformationCardType = {
-    collapsible?: boolean;
+import styles from './administrative-information-card.module.scss';
+
+type AdministrativeInformationCardProps = {
+    title?: string;
     data?: AdministrativeInformation;
-    sizing?: Sizing;
-};
+} & Omit<CardProps, 'subtext' | 'children' | 'title'>;
 
-export const AdministrativeInformationCard = ({
-    collapsible = false,
+const AdministrativeInformationCard = ({
+    title = 'Administrative',
+    collapsible = true,
     data,
-    sizing = 'small'
-}: AdministrativeInformationCardType) => {
+    sizing,
+    ...remaining
+}: AdministrativeInformationCardProps) => {
     const subtext = data?.comment ? `As of ${internalizeDate(data?.asOf)}` : undefined;
 
     return (
-        <Card
-            id={'administrative-comments'}
-            title={'Administrative comments'}
-            subtext={subtext}
-            collapsible={collapsible}
-            open={Boolean(data?.comment)}
-            sizing={sizing}>
-            <div className={styles.content}>
+        <Card title={title} subtext={subtext} collapsible={collapsible} open={Boolean(data?.comment)} {...remaining}>
+            <div
+                className={classNames(styles.content, {
+                    [styles.small]: sizing === 'small',
+                    [styles.medium]: sizing === 'medium',
+                    [styles.large]: sizing === 'large'
+                })}>
                 <OrElseNoData>{data?.comment}</OrElseNoData>
             </div>
         </Card>
     );
 };
+
+export { AdministrativeInformationCard };
+export type { AdministrativeInformationCardProps };

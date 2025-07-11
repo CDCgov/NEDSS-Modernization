@@ -3,10 +3,11 @@
 
 .details {
     display: grid;
-    grid-template-columns: max-content max-content;
+    grid-template-columns: 33% [label] 12rem [value] 1fr;
     column-gap: 2rem;
     row-gap: 0.5rem;
-    justify-content: center;
+
+    padding: 0 1rem;
 
     color: colors.$base-darkest;
     line-height: normal;
@@ -18,13 +19,20 @@
     @extend %small;
 
     dt {
-        grid-column-start: 1;
+        grid-column: label;
         font-weight: 700;
         margin: 0;
     }
 
     dd {
-        grid-column-start: 2;
+        grid-column: value;
         margin: 0;
+        white-space: pre-line;
+        word-wrap: normal;
+        max-width: 75ch;
+
+        &.vertical {
+            grid-column: label / span 2;
+        }
     }
 }

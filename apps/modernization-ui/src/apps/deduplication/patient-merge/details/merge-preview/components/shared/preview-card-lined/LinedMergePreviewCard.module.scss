@@ -2,7 +2,7 @@
 @use 'styles/colors';
 
 .card {
-  width: 44.1rem !important;
+  min-width: 21rem !important;
   border-radius: 0.315rem;
   overflow: hidden;
   box-shadow: 0 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.14);

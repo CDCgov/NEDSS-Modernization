@@ -1,6 +1,9 @@
 @use 'styles/colors';
 
 .file {
+    display: flex;
+    flex-direction: column;
+
     & > header {
         position: sticky;
         top: 0;
@@ -12,6 +15,7 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        margin-bottom: 2.5rem;
     }
 
     nav {

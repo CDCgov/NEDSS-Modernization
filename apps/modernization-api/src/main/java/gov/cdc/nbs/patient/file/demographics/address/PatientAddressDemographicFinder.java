@@ -27,7 +27,7 @@ class PatientAddressDemographicFinder {
           [address].zip_cd                as [zip_code],
           [address].[cntry_cd]            as [country_value],
           [country].code_desc_txt         as [country_name],
-          [address].census_track_cd       as [census_tract],
+          [address].census_tract          as [census_tract],
           [locators].locator_desc_txt     as [comment]
       from Entity_locator_participation [locators]
       
@@ -51,7 +51,6 @@ class PatientAddressDemographicFinder {
       
           left join NBS_SRTE..Country_code [country] with (nolock) on
                   [country].code = [address].cntry_cd
-      
       
       where   [locators].entity_uid = ?
           and [locators].[class_cd] = 'PST'
