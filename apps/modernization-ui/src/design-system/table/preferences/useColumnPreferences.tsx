@@ -1,13 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useMemo, useReducer } from 'react';
+import { ColumnPreference, isLabeled, isNamed } from './preference';
 import { useLocalStorage } from 'storage';
-
-type ColumnPreference = {
-    id: string;
-    name: string;
-    moveable?: boolean;
-    toggleable?: boolean;
-    hidden?: boolean;
-};
 
 type HasPreference = {
     id: string;
@@ -28,10 +21,10 @@ type State = {
     preferences: ColumnPreference[];
 };
 
-const initialize = (initial: ColumnPreference[]): State => step(initial, initial);
+const initialize = (initial: ColumnPreference[]): State => step(structuredClone(initial), initial);
 
 const step = (initial: ColumnPreference[], next: ColumnPreference[]): State => ({
-    initial: structuredClone(initial),
+    initial,
     preferences: structuredClone(next)
 });
 
@@ -46,7 +39,7 @@ const reducer = (state: State, action: Action): State => {
             return { changed: new Date(), ...step(state.initial, action.preferences) };
 
         case 'reset':
-            return { changed: new Date(), ...initialize(state.initial) };
+            return { changed: new Date(), ...step(state.initial, state.initial) };
 
         case 'load': {
             return { ...state, ...step(state.initial, action.preferences) };
@@ -107,7 +100,7 @@ const applyPreferences =
     (preferences: ColumnPreference[]) =>
     <C extends HasPreference>(columns: C[]): C[] => {
         return preferences.reduce((previous, preference) => {
-            if (!preference.hidden) {
+            if (isLabeled(preference) || (isNamed(preference) && !preference.hidden)) {
                 const column = columns.find((c) => c.id === preference.id);
 
                 if (column) {
@@ -120,4 +113,3 @@ const applyPreferences =
     };
 
 export { useColumnPreferences, ColumnPreferenceProvider };
-export type { ColumnPreference };
