@@ -4,7 +4,7 @@ Feature: Creation of Patients with gender demographics
   Background:
     Given I am logged into NBS
     And I can "add" any "patient"
-    And I can "view" any "patient"
+    And I can "viewworkup" any "patient"
 
   Scenario: I can create a patient with gender demographics information
     Given I enter the gender demographics as of date 07/03/1990

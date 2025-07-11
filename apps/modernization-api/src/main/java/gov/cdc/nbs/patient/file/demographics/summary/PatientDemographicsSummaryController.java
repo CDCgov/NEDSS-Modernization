@@ -18,19 +18,14 @@ class PatientDemographicsSummaryController {
 
   PatientDemographicsSummaryController(
       final Clock clock,
-      final PatientDemographicsSummaryResolver resolver
-  ) {
+      final PatientDemographicsSummaryResolver resolver) {
     this.clock = clock;
     this.resolver = resolver;
   }
 
-  @Operation(
-      summary = "Patient File Demographics Summary",
-      description = "Provides summarized demographics of a patient",
-      tags = "PatientFile"
-  )
+  @Operation(summary = "Patient File Demographics Summary", description = "Provides summarized demographics of a patient", tags = "PatientFile")
   @GetMapping("/nbs/api/patients/{patient}/demographics")
-  @PreAuthorize("hasAuthority('VIEW-PATIENT')")
+  @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT')")
   ResponseEntity<PatientDemographicsSummary> summary(@PathVariable("patient") long patient) {
     return resolver.resolve(patient, LocalDate.now(clock))
         .map(ResponseEntity::ok)

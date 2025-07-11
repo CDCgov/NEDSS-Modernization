@@ -1,3 +1,6 @@
 export { FeatureToggle } from './FeatureToggle';
-export { FeatureGuard } from './FeatureGuard';
+export type { FeatureToggleProps } from './FeatureToggle';
+
 export { FeatureLayout } from './FeatureLayout';
+
+export { FeatureGuard } from './FeatureGuard';

@@ -4,7 +4,7 @@
     Background:
       Given I am logged into NBS
       And I can "add" any "patient"
-      And I can "view" any "patient"
+      And I can "viewworkup" any "patient"
 
     Scenario: I can create a patient with a legal name
       Given I am entering a legal name as of 07/19/2017

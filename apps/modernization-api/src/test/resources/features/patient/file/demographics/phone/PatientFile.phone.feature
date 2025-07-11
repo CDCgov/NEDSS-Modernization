@@ -3,7 +3,7 @@ Feature: Viewing the phone demographics of a patient
 
   Background:
     Given I am logged into NBS
-    And I can "view" any "patient"
+    And I can "viewworkup" any "patient"
     And I have a patient
 
   Scenario: I can view the patient's phone demographics

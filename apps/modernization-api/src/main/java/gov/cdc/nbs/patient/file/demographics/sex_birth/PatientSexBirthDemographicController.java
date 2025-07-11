@@ -16,14 +16,9 @@ class PatientSexBirthDemographicController {
     this.finder = finder;
   }
 
-  @Operation(
-      operationId = "sexBirthDemographics",
-      summary = "Patient File Sex & Birth Demographics",
-      description = "Provides the Sex & Birth demographics for a patient",
-      tags = "PatientFile"
-  )
+  @Operation(operationId = "sexBirthDemographics", summary = "Patient File Sex & Birth Demographics", description = "Provides the Sex & Birth demographics for a patient", tags = "PatientFile")
   @GetMapping("/nbs/api/patients/{patient}/demographics/sex-birth")
-  @PreAuthorize("hasAuthority('VIEW-PATIENT')")
+  @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT')")
   ResponseEntity<PatientSexBirthDemographic> sexBirth(@PathVariable("patient") long patient) {
     return this.finder.find(patient).map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.ok().build());

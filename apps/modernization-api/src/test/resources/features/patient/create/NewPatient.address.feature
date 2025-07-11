@@ -4,7 +4,7 @@ Feature: Creation of Patients with address demographics
   Background:
     Given I am logged into NBS
     And I can "add" any "patient"
-    And I can "view" any "patient"
+    And I can "viewworkup" any "patient"
 
   Scenario: I can create a patient with an address demographic
     Given I am entering the House - Home address at "1640 Riverside Drive" "Hill Valley" "33266" as of 11/01/1955

@@ -23,12 +23,8 @@ class PatientFileController {
     this.finder = finder;
   }
 
-  @Operation(
-      operationId = "file",
-      summary = "Patient File Header",
-      tags = "PatientFile"
-  )
-  @PreAuthorize("hasAuthority('VIEW-PATIENT')")
+  @Operation(operationId = "file", summary = "Patient File Header", tags = "PatientFile")
+  @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT')")
   @GetMapping("/nbs/api/patients/{patientId}/file")
   ResponseEntity<PatientFile> find(@PathVariable final long patientId) {
     return finder.resolve(patientId, LocalDate.now(clock))

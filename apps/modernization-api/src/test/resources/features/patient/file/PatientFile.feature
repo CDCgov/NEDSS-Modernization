@@ -3,7 +3,7 @@ Feature: Patient File
 
   Background:
     Given I am logged into NBS
-    And I can "view" any "patient"
+    And I can "viewworkup" any "patient"
     And I have a patient
 
   Scenario: I cannot view Patient file of the patient that does not exist

@@ -43,3 +43,4 @@ const Permitted = ({ permission, children, fallback }: PermittedProps) => {
 };
 
 export { Permitted };
+export type { PermittedProps };

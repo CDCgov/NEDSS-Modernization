@@ -31,6 +31,7 @@ export const permissions = {
         searchInactive: 'FINDINACTIVE-PATIENT',
         update: 'EDIT-PATIENT',
         view: 'VIEW-PATIENT',
+        file: 'VIEWWORKUP-PATIENT',
         merge: 'MERGE-PATIENT'
     },
     system: {

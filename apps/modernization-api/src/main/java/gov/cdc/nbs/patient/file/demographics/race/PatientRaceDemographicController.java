@@ -17,14 +17,9 @@ class PatientRaceDemographicController {
     this.finder = finder;
   }
 
-  @Operation(
-      operationId = "raceDemographics",
-      summary = "Patient file race demographics",
-      description = "Provides the race demographics for a patient",
-      tags = "PatientFile"
-  )
+  @Operation(operationId = "raceDemographics", summary = "Patient file race demographics", description = "Provides the race demographics for a patient", tags = "PatientFile")
   @GetMapping("/nbs/api/patients/{patient}/demographics/races")
-  @PreAuthorize("hasAuthority('VIEW-PATIENT')")
+  @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT')")
   Collection<PatientRaceDemographic> races(@PathVariable("patient") long patient) {
     return this.finder.find(patient);
   }

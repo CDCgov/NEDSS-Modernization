@@ -3,7 +3,7 @@ Feature: Patient Delete
 
   Background:
     Given I am logged into NBS
-    And I can "view" any "patient"
+    And I can "viewworkup" any "patient"
     And I can "delete" any "patient"
     And I have a patient
 
