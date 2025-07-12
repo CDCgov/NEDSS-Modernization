@@ -60,7 +60,7 @@ export const renderFacilityProvider = (
     );
 };
 
-export const renderLabReports = (resultedTests?: Array<ResultedTest>) => {
+export const renderResultedTests = (resultedTests?: Array<ResultedTest>) => {
     return (
         <>
             {resultedTests?.map((test) => (

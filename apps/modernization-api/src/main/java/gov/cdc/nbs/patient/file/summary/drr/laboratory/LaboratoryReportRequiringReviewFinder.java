@@ -37,6 +37,14 @@ class LaboratoryReportRequiringReviewFinder {
           end                                 as [electronic],
           [reporting_facility].display_nm     as [reporting_facility],
           [ordering_facility].display_nm      as [ordering_facility],
+          coalesce(
+              [specimen_site].[code_desc_txt],
+              [lab].target_site_cd
+          )                                                   as [Specimen Site],
+          coalesce(
+              [specimen_source].[code_desc_txt],
+              [specimen_source_material].cd_desc_txt
+          )                                                   as [Speciman Source],
           [prefix].code_short_desc_txt        as [ordering_provider_prefix],
           [ordering_provider].[first_nm]      as [ordering_provider_first_name],
           [ordering_provider].[last_nm]       as [ordering_provider_last_name]
@@ -83,6 +91,23 @@ class LaboratoryReportRequiringReviewFinder {
           left join NBS_SRTE..Code_value_general [prefix] with (nolock) on
                   [prefix].[code_set_nm] = 'P_NM_PFX'
               and [prefix].code = [ordering_provider].nm_prefix
+          left join NBS_SRTE..Code_value_general [specimen_site] with (nolock) on
+                  [specimen_site].code_set_nm = 'ANATOMIC_SITE'
+              and [specimen_site].code = [lab].target_site_cd
+      
+      
+          left join Participation [specimen_source_participation] with (nolock) on
+                    [specimen_source_participation].act_uid = [lab].[observation_uid]
+                and [specimen_source_participation].act_class_cd = 'OBS'
+                and [specimen_source_participation].type_cd = 'SPC'
+                and [specimen_source_participation].subject_class_cd = 'MAT'
+                and [specimen_source_participation].[record_status_cd] = 'ACTIVE'
+      
+        left join Material [specimen_source_material] with (nolock) on
+                  [specimen_source_material].material_uid = [specimen_source_participation].[subject_entity_uid]
+          left join NBS_SRTE..Code_value_general [specimen_source] with (nolock) on
+                  [specimen_source].code = [specimen_source_material].cd
+              and [specimen_source].code_set_nm = 'SPECMN_SRC'
       """;
 
   private final JdbcClient client;

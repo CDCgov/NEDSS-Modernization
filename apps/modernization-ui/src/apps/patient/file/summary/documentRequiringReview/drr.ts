@@ -17,6 +17,12 @@ type PatientFileDocumentRequiringReview = {
     condition?: string;
     treatments?: string[];
     resultedTests?: ResultedTest[];
+    specimen?: Specimen;
+};
+
+type Specimen = {
+    site?: string;
+    source?: string;
 };
 
 export type { PatientFileDocumentRequiringReview };
