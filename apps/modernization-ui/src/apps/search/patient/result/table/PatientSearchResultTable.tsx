@@ -8,10 +8,10 @@ import {
     displayPhones,
     displayPatientName,
     displayPatientAge,
-    displayProfileLink,
     displayEmails,
     displayAddresses,
-    displayIdentifications
+    displayIdentifications,
+    PatientFileLink
 } from 'apps/search/patient/result';
 
 import styles from './patient-search-result-table.module.scss';
@@ -34,7 +34,7 @@ const columns: Column<PatientSearchResult>[] = [
         fixed: true,
         sortable: true,
         className: styles['col-patientid'],
-        render: (result) => displayProfileLink(result.patient, result.shortId),
+        render: (result) => <PatientFileLink identifier={result.patient} patientId={result.shortId} />,
         filter: { id: 'id', type: 'text' },
         sortIconType: 'numeric'
     },
