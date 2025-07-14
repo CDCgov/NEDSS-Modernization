@@ -10,7 +10,7 @@ import styles from './exact-date-field.module.scss';
 type Field = keyof DateEntry;
 
 const next = (field: Field, value: number | undefined) =>
-    value ? withProperty<DateEntry, number>(field, value) : withoutProperty<DateEntry>(field);
+    value !== undefined ? withProperty<DateEntry, number>(field, value) : withoutProperty<DateEntry>(field);
 
 type ExactDateFieldProps = {
     id: string;
