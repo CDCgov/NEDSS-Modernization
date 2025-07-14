@@ -1,3 +1,4 @@
+import { exists } from 'utils/exists';
 import { Mapping } from './mapping';
 
 /**
@@ -9,7 +10,7 @@ import { Mapping } from './mapping';
  */
 const maybeMap =
     <R, S>(mapping: Mapping<R, S>) =>
-    (value?: R): S | undefined =>
-        value ? mapping(value) : undefined;
+    (value?: R | null): S | undefined =>
+        exists(value) ? mapping(value) : undefined;
 
 export { maybeMap };
