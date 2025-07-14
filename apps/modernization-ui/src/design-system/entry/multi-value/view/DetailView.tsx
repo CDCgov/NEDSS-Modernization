@@ -1,6 +1,7 @@
 import { Fragment, ReactElement, useId } from 'react';
 import classNames from 'classnames';
-import { NoData } from 'design-system/data';
+import { Orientation } from 'design-system/field';
+import { OrElseNoData } from 'design-system/data';
 import styles from './detail-view.module.scss';
 
 type Children = ReactElement<DetailValueProps>;
@@ -22,16 +23,23 @@ const DetailView = ({ className, children }: DetailViewProps) => {
 
 type DetailValueProps = {
     label: string;
+    orientation?: Orientation;
     children?: number | string | null;
 };
 
-const DetailValue = ({ label, children }: DetailValueProps) => {
+const DetailValue = ({ label, orientation, children }: DetailValueProps) => {
     const id = useId();
+
+    const longText = typeof children === 'string' && children.length > 75;
 
     return (
         <>
             <dt id={id}>{label}</dt>
-            <dd aria-labelledby={id}>{children ?? <NoData />}</dd>
+            <dd
+                aria-labelledby={id}
+                className={classNames({ [styles.vertical]: longText || orientation === 'vertical' })}>
+                <OrElseNoData>{children}</OrElseNoData>
+            </dd>
         </>
     );
 };

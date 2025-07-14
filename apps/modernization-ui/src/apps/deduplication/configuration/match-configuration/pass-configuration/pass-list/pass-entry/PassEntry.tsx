@@ -33,7 +33,9 @@ export const PassEntry = ({ pass, onSelectPass, onEditName, isSelected = false }
                             type="button"
                             className={styles.editButton}
                             onClick={handleEditClick}
-                            aria-label={`Edit ${pass.name}`}>
+                            aria-label={`Edit name`}
+                            data-tooltip-position="top"
+                            data-tooltip-offset="left">
                             <Icon name="edit" />
                         </button>
                     </Shown>

@@ -62,6 +62,7 @@ $bumper: 0.375rem;
 .navbar {
     height: $height;
     margin-bottom: $bumper;
+    z-index: 100;
 
     .usa-nav {
         padding: 0 !important;

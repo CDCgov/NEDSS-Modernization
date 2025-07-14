@@ -20,9 +20,10 @@ type MergePreviewProps = {
     onBack: () => void;
     mergeFormData: PatientMergeForm;
     mergeCandidates: MergeCandidate[];
+    onMerge: () => void;
 };
 
-export const MergePreview = ({ onBack, mergeFormData, mergeCandidates }: MergePreviewProps) => {
+export const MergePreview = ({ onBack, mergeFormData, mergeCandidates, onMerge }: MergePreviewProps) => {
     return (
         <div className={styles.mergePreview}>
             <header>
@@ -31,9 +32,7 @@ export const MergePreview = ({ onBack, mergeFormData, mergeCandidates }: MergePr
                     <Button secondary onClick={onBack}>
                         Back
                     </Button>
-                    <Button
-                        aria-label="Confirm and merge patient records"
-                        onClick={() => console.log('Merge record NYI')}>
+                    <Button aria-label="Confirm and merge patient records" onClick={onMerge}>
                         Merge record
                     </Button>
                 </div>
