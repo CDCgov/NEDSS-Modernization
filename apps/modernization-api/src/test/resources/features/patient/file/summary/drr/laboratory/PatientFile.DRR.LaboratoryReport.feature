@@ -50,12 +50,10 @@ Feature: Patient File Documents Requiring Review: Laboratory Report
     Then the patient file has the laboratory report requiring review
     And the laboratory report requiring review is electronic
 
-  Scenario: I can retrieve Laboratory Reports with tests ordered for a patient
-    Given the patient has a laboratory report
+  Scenario: I can retrieve Laboratory Reports requiring review with tests ordered for a patient
     And the laboratory report has an ordered test with a specimen from the Cornea
-    When I view the laboratory reports for the patient
-    Then the patient file has the laboratory report containing an ordered test with a specimen from the "Cornea"
-
+    When I view the documents requiring review for the patient
+    Then the laboratory report requiring review contains specimen site of Cornea
 
   Scenario:I can view Resulted Tests of Laboratory Reports requiring review for a patient
     Given the laboratory report has an Aldolase test with a coded result of above threshold

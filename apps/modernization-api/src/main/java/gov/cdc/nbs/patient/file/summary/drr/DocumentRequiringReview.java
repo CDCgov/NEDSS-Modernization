@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.patient.events.tests.ResultedTest;
-import gov.cdc.nbs.patient.file.events.report.laboratory.PatientLabReport;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,9 +25,12 @@ public record DocumentRequiringReview(
     DisplayableSimpleName orderingProvider,
     String sendingFacility,
     String condition,
-    PatientLabReport.Specimen specimen,
+    Specimen specimen,
     Collection<String> treatments,
     Collection<ResultedTest> resultedTests) {
+
+  record Specimen(String site, String source) {
+  }
 
   public DocumentRequiringReview(
       long patient,
@@ -77,8 +79,8 @@ public record DocumentRequiringReview(
       DisplayableSimpleName orderingProvider,
       String sendingFacility,
       String condition,
-      String specimentSite,
-      String specimentSource) {
+      String specimenSite,
+      String specimenSource) {
     this(
         patient,
         id,
@@ -93,7 +95,7 @@ public record DocumentRequiringReview(
         orderingProvider,
         sendingFacility,
         condition,
-        new PatientLabReport.Specimen(specimentSite, specimentSource),
+        new Specimen(specimenSite, specimenSource),
         Collections.emptyList(),
         Collections.emptyList());
   }
@@ -137,5 +139,4 @@ public record DocumentRequiringReview(
         treatments(),
         resultedTests);
   }
-
 }

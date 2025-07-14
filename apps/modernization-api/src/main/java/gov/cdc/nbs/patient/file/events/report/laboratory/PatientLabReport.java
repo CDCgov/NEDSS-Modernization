@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record PatientLabReport(
+record PatientLabReport(
     @JsonProperty(required = true) long patient,
     @JsonProperty(required = true) long id,
     @JsonProperty(required = true) String local,
@@ -30,7 +30,7 @@ public record PatientLabReport(
     Collection<AssociatedInvestigation> associations
 ) {
 
-  public record Specimen(String site, String source) {
+  record Specimen(String site, String source) {
   }
 
 
