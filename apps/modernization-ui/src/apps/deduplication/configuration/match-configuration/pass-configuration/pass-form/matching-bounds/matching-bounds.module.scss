@@ -12,6 +12,7 @@
         height: 100%;
         width: 100%;
         z-index: 1;
+        @include borders.rounded();
     }
 
     .body {
@@ -31,6 +32,10 @@
                     color: colors.$primary;
                 }
             }
+        }
+
+        .totalLogOdds {
+            padding-top: 1.5rem;
         }
     }
 }
