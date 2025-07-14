@@ -4,7 +4,7 @@ Feature: Viewing the name demographics of a patient
   Background: I am logged in and can find patient
     Given I am logged into NBS
     And I have a patient
-    And I can "View" any "Patient"
+    And I can "viewworkup" any "patient"
 
   Scenario: I can find patient names
     Given the patient has the legal name "Joe" "Jacob" "Smith", Jr. as of 01/01/2000
