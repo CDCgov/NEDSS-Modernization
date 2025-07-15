@@ -6,6 +6,12 @@ import { Features } from 'configuration';
 import { displayProfileLegalName } from './displayProfileLegalName';
 import { PatientSearchResult } from 'generated/graphql/schema';
 
+let mockPermissions: string[] = [];
+
+jest.mock('user', () => ({
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+}));
+
 let mockFeatures: Features = {
     ...defaultConfiguration.features
 };
@@ -25,10 +31,16 @@ jest.mock('configuration', () => ({
 }));
 
 describe('when navigating to the patient profile from a list view search result', () => {
-    describe('and the modernized patient profile is enabled', () => {
-        it('should link to the modernized patient profile with the legal name as the link text', () => {
-            mockFeatures = withModernizedPatientProfile(true);
+    beforeEach(() => {
+        mockPermissions = ['VIEWWORKUP-PATIENT'];
+    });
 
+    describe('and the modernized patient profile is enabled', () => {
+        beforeEach(() => {
+            mockFeatures = withModernizedPatientProfile(true);
+        });
+
+        it('should link to the modernized patient profile with the legal name as the link text', () => {
             const searchResult: PatientSearchResult = {
                 status: 'ACTIVE',
                 patient: 307,
@@ -51,8 +63,6 @@ describe('when navigating to the patient profile from a list view search result'
         });
 
         it('should link to the modernized patient profile with "No Data" as the link text when there is no legal name', () => {
-            mockFeatures = withModernizedPatientProfile(true);
-
             const searchResult: PatientSearchResult = {
                 status: 'ACTIVE',
                 patient: 307,
@@ -73,9 +83,11 @@ describe('when navigating to the patient profile from a list view search result'
     });
 
     describe('and the modernized patient profile is disabled', () => {
-        it('should link to the NBS6 patient profile with the legal name as the link text', () => {
+        beforeEach(() => {
             mockFeatures = withModernizedPatientProfile(false);
+        });
 
+        it('should link to the NBS6 patient profile with the legal name as the link text', () => {
             const searchResult: PatientSearchResult = {
                 status: 'ACTIVE',
                 patient: 307,
@@ -98,8 +110,6 @@ describe('when navigating to the patient profile from a list view search result'
         });
 
         it('should link to the NBS6 patient profile with "No Data" as the link text when there is no legal name', () => {
-            mockFeatures = withModernizedPatientProfile(false);
-
             const searchResult: PatientSearchResult = {
                 status: 'ACTIVE',
                 patient: 307,

@@ -182,3 +182,7 @@ input.usa-input--error:focus {
 .usa-date-picker__calendar__date {
     padding: var(--calendar-date-padding, 10px) 0;
 }
+
+.usa-skipnav {
+    z-index: 10000;
+}

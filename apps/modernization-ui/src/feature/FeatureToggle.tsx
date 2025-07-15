@@ -4,13 +4,13 @@ import { useConfiguration } from 'configuration';
 import { ReactNode } from 'react';
 import { Guard } from './guard';
 
-type Props = {
+type FeatureToggleProps = {
     guard: Guard;
     children: ReactNode;
     fallback?: ReactNode;
 };
 
-const FeatureToggle = ({ guard, children, fallback }: Props) => {
+const FeatureToggle = ({ guard, children, fallback }: FeatureToggleProps) => {
     const { features } = useConfiguration();
 
     return (
@@ -21,3 +21,4 @@ const FeatureToggle = ({ guard, children, fallback }: Props) => {
 };
 
 export { FeatureToggle };
+export type { FeatureToggleProps };

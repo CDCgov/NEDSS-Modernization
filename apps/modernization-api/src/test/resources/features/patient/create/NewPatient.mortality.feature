@@ -4,7 +4,7 @@ Feature: Creation of Patients with mortality data
   Background:
     Given I am logged into NBS
     And I can "add" any "patient"
-    And I can "view" any "patient"
+    And I can "viewworkup" any "patient"
 
   Scenario: I can create a patient with mortality information
     Given I am entering the mortality as of date 06/29/2023

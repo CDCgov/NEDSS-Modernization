@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { AlertProvider } from 'alert';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { MemoryRouter, Route, Routes } from 'react-router';
@@ -522,5 +522,29 @@ describe('MergeDetails', () => {
 
         // api called
         expect(mockRemovePatient).toHaveBeenCalledWith('1234', '000123', expect.any(Function), expect.any(Function));
+    });
+
+    it('should confirm merge', async () => {
+        const user = userEvent.setup();
+        const { getByText } = render(<Fixture />);
+
+        const mergeButton = getByText('Merge all');
+
+        // click remove
+        await user.click(mergeButton);
+
+        // modal should pop up
+        // Header
+        expect(getByText('Merge patients')).toBeInTheDocument();
+
+        // Content
+        expect(
+            screen.getAllByText((_, element) => {
+                return (
+                    element?.textContent ===
+                    'You have indicated that you would like to merge the following patients: 89003, 91000, 3. Patient ID: 89003 will be the surviving record.'
+                );
+            })[0]
+        ).toBeInTheDocument();
     });
 });

@@ -103,7 +103,7 @@ describe('ImportConfigurationModal', () => {
         await user.click(importButton);
 
         expect(onImport).toHaveBeenCalledTimes(1);
-        expect(onImport).toHaveBeenCalledWith(algorithmExport);
+        expect(onImport).toHaveBeenCalledWith('test.json', algorithmExport);
     });
 
     it('should show warning when invalid configuration uploaded', async () => {

@@ -237,7 +237,7 @@ export const MergeDetails = () => {
                     onCancel={() => setDisplayMergeConfirmation(false)}>
                     You have indicated that you would like to merge the following patients:{' '}
                     <strong>{response?.map((c) => c.personLocalId).join(', ')}.</strong> Patient ID:{' '}
-                    <strong>{getSurvivingLocalId()}</strong> will be the surviving record;
+                    <strong>{getSurvivingLocalId()}</strong> will be the surviving record.
                 </Confirmation>
             </Shown>
         </div>
