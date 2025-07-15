@@ -1,35 +1,26 @@
 @use 'styles/colors';
-@use 'styles/borders';
 
-.hint {
-    display: flex;
-    align-items: center;
+.info {
+    color: colors.$primary;
+}
+
+.container {
     position: relative;
 
-    .target {
-        margin: 0;
-        padding: 0;
-        display: flex;
+    visibility: hidden;
+    pointer-events: none;
+
+    &.left {
+        right: 100%;
     }
 
-    .icon {
-        color: colors.$primary;
+    &.center {
+        transform: translateX(-50%);
     }
 
-    .panel {
-        position: absolute;
-        width: 17.6875rem; //283px;
-        padding: 1rem;
+    &.visible {
         z-index: 10000;
-        background-color: colors.$base-white;
-        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-
-        color: colors.$base-darkest;
-        font-size: 0.875rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 1.25rem;
-
-        @extend %thin;
+        visibility: visible;
+        pointer-events: all;
     }
 }
