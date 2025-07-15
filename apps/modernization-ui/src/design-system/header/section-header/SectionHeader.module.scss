@@ -22,7 +22,7 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
+  align-items: center;
   height: 100%;
 }
 
@@ -45,12 +45,6 @@
   flex-shrink: 0;
   align-items: center;
   display: flex;
-}
-
-.rightGroup {
-  display: flex;
-  align-items: center;
-  height: 100%;
 }
 
 .titleRow {
@@ -77,11 +71,11 @@
 .toggle {
   margin-left: 0.75rem;
   transition: 0.25s ease-out;
-  align-items: center;
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 0.875rem;
   height: 0.875rem;
-  justify-content: center;
   flex-shrink: 0;
 
   &.collapsed {

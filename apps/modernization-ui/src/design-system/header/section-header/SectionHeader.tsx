@@ -72,18 +72,16 @@ export const SectionHeader = ({
                     )}
                 </div>
 
-                <div className={styles.rightGroup}>
-                    <Button
-                        sizing="small"
-                        tertiary
-                        className={classNames(styles.toggle, {
-                            [styles.collapsed]: collapsed
-                        })}
-                        icon={<Icon name="expand_less" />}
-                        aria-label={collapsed ? `Show ${title}` : `Hide ${title}`}
-                        onClick={toggle}
-                    />
-                </div>
+                <Button
+                    sizing="small"
+                    tertiary
+                    className={classNames(styles.toggle, {
+                        [styles.collapsed]: collapsed
+                    })}
+                    icon={<Icon name="expand_less" />}
+                    aria-label={collapsed ? `Show ${title}` : `Hide ${title}`}
+                    onClick={toggle}
+                />
             </div>
         </div>
     );
