@@ -1,77 +1,90 @@
-import { useState, ReactNode } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
-import { Collapsible } from '../../card/Collapsible';
-import { Tag } from '../../tag';
+import { Hint } from 'design-system/hint';
+import { Tag } from 'design-system/tag';
 import styles from './SectionHeader.module.scss';
+import { Heading } from '../../../components/heading';
 
 type SectionHeaderProps = {
     title: string;
-    children: ReactNode;
     count?: number;
     subtext?: string;
-    tooltip?: string;
+    tooltip?: React.ReactNode;
     defaultOpen?: boolean;
     tall?: boolean;
     slim?: boolean;
     showCounter?: boolean;
     className?: string;
+    onToggle?: (collapsed: boolean) => void;
 };
 
 export const SectionHeader = ({
     title,
-    children,
     count,
     subtext,
     tooltip,
     defaultOpen = true,
-    tall = false,
+    tall = true,
     slim = false,
     showCounter = false,
-    className
+    className,
+    onToggle
 }: SectionHeaderProps) => {
     const [collapsed, setCollapsed] = useState<boolean>(!defaultOpen);
 
+    const toggle = () => {
+        const next = !collapsed;
+        setCollapsed(next);
+        onToggle?.(next);
+    };
+
     return (
-        <section className={classNames(styles.section, className)}>
-            <div
-                className={classNames(styles['header-container'], {
-                    [styles.tall]: tall,
-                    [styles.slim]: slim
-                })}>
-                <div className={styles.header}>
-                    <h2 className={styles.title}>{title}</h2>
-
-                    {showCounter && typeof count === 'number' && (
-                        <Tag size="small" weight="bold" variant="default">
-                            {count}
-                        </Tag>
+        <div
+            className={classNames(styles.headerContainer, className, {
+                [styles.tall]: tall,
+                [styles.slim]: slim
+            })}>
+            <div className={styles.header}>
+                <div className={classNames(styles.textContainer, { [styles.withSubtext]: !!subtext })}>
+                    <div className={styles.titleRow}>
+                        <Heading level={2} className={styles.title}>
+                            {title}
+                        </Heading>
+                        {showCounter && typeof count === 'number' && (
+                            <Tag size="small" weight="bold" variant="default">
+                                {count}
+                            </Tag>
+                        )}
+                    </div>
+                    {subtext && (
+                        <div className={styles.subtext}>
+                            {subtext}
+                            {tooltip && (
+                                <Hint
+                                    id={`${title.replace(/\s+/g, '-').toLowerCase()}-hint`}
+                                    target={<Icon name="help_outline" sizing="small" className={styles.tooltip} />}>
+                                    {tooltip}
+                                </Hint>
+                            )}
+                        </div>
                     )}
+                </div>
 
+                <div className={styles.rightGroup}>
                     <Button
                         sizing="small"
                         tertiary
-                        className={classNames(styles.toggle, { [styles.collapsed]: collapsed })}
+                        className={classNames(styles.toggle, {
+                            [styles.collapsed]: collapsed
+                        })}
                         icon={<Icon name="expand_less" />}
                         aria-label={collapsed ? `Show ${title}` : `Hide ${title}`}
-                        onClick={() => setCollapsed((c) => !c)}
+                        onClick={toggle}
                     />
                 </div>
-
-                {subtext && (
-                    <div className={styles.subtext}>
-                        {subtext}
-                        {tooltip && (
-                            <span className={styles.tooltip} title={tooltip}>
-                                <Icon name="info" />
-                            </span>
-                        )}
-                    </div>
-                )}
             </div>
-
-            <Collapsible open={!collapsed}>{children}</Collapsible>
-        </section>
+        </div>
     );
 };
