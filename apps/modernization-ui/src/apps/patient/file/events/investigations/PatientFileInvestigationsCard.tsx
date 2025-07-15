@@ -16,6 +16,8 @@ import { useCompareInvestigation } from './useCompareInvestigation';
 import styles from './investigations.module.scss';
 import { either, not } from 'utils/predicate';
 import { Shown } from 'conditional-render';
+import { Hint } from 'design-system/hint';
+import { LabeledValue } from 'design-system/value';
 
 const SELECTION = { id: 'selection', label: 'Select to compare' };
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };
@@ -128,16 +130,18 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
         label: 'Select to compare',
         className: styles['selection-header'],
         render: (investigation) => (
-            <Shown when={investigation.comparable}>
-                <Checkbox
-                    id={`select-${investigation.local}`}
-                    disabled={isDisabled(investigation)}
-                    aria-label={`select ${investigation.local} for comparison`}
-                    onChange={handleSelect(investigation)}
-                    selected={isSelected(investigation)}
-                    sizing={sizing}
-                />
-            </Shown>
+            <Permitted permission={permissions.investigation.compare}>
+                <Shown when={investigation.comparable}>
+                    <Checkbox
+                        id={`select-${investigation.local}`}
+                        disabled={isDisabled(investigation)}
+                        aria-label={`select ${investigation.local} for comparison`}
+                        onChange={handleSelect(investigation)}
+                        selected={isSelected(investigation)}
+                        sizing={sizing}
+                    />
+                </Shown>
+            </Permitted>
         )
     };
 
@@ -162,13 +166,25 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                         </LinkButton>
                     </Permitted>
                     <Permitted permission={permissions.investigation.compare}>
-                        <LinkButton
-                            secondary
-                            sizing={sizing}
-                            disabled={!comparison}
-                            href={`/nbs/api/profile/${patient}/investigation/${comparison?.selected}/compare/${comparison?.comparedTo}`}>
-                            Compare investigations
-                        </LinkButton>
+                        <Hint
+                            id="compare-investigations"
+                            position="center"
+                            enabled={!comparison}
+                            target={
+                                <LinkButton
+                                    secondary
+                                    sizing={sizing}
+                                    disabled={!comparison}
+                                    aria-describedby="compare-investigations"
+                                    href={`/nbs/api/profile/${patient}/investigation/${comparison?.selected}/compare/${comparison?.comparedTo}`}>
+                                    Compare investigations
+                                </LinkButton>
+                            }>
+                            <LabeledValue label="Compare investigations disabled" orientation="vertical">
+                                You can only select two Page Builder investigations of the same condition to compare.
+                                Legacy investigations cannot use Merge functionality.
+                            </LabeledValue>
+                        </Hint>
                     </Permitted>
                 </>
             }
