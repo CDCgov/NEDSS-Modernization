@@ -1,6 +1,7 @@
 @mixin fixed($width) {
     width: $width;
 }
+
 .selection-header {
     @include fixed(2rem);
 }
@@ -22,7 +23,7 @@
 }
 
 .long-coded-header {
-    @include fixed(12rem);
+    @include fixed(10rem);
 }
 
 .local-header {

@@ -10,3 +10,7 @@
 .status-header {
     @include widths.fixed(7rem);
 }
+
+.co-infection-header {
+    @include widths.fixed(10rem);
+}

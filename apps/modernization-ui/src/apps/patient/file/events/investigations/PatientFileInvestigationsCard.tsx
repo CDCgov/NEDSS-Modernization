@@ -49,24 +49,26 @@ const columns: Column<PatientFileInvestigation>[] = [
     {
         ...STATUS,
         sortable: true,
+        className: styles['coded-header'],
         value: (row) => row.status,
         render: (row) => displayStatus(row.status)
     },
     {
         ...CONDITION,
         sortable: true,
-        className: styles['coded-header'],
         value: (row) => row.condition,
         render: (value) => <b>{value.condition}</b>
     },
     {
         ...CASE_STATUS,
+        className: styles['status-header'],
         sortable: true,
         value: (row) => row.caseStatus,
         render: (row) => displayStatus(row.caseStatus)
     },
     {
         ...NOTIFICATION,
+        className: styles['status-header'],
         sortable: true,
         value: (row) => row.notification,
         render: (row) => displayNotificationStatus(row.notification)
@@ -74,7 +76,6 @@ const columns: Column<PatientFileInvestigation>[] = [
     {
         ...JURISDICTION,
         sortable: true,
-        className: styles['coded-header'],
         value: (row) => row.jurisdiction
     },
     {
@@ -85,7 +86,7 @@ const columns: Column<PatientFileInvestigation>[] = [
     {
         ...CO_INFECTION,
         sortable: true,
-        className: styles['local-header'],
+        className: styles['co-infection-header'],
         value: (row) => row.coInfection
     }
 ];
