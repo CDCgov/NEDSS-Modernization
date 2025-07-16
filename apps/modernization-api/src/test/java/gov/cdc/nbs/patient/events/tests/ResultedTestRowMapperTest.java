@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 class ResultedTestRowMapperTest {
 
   private final ResultedTestRowMapper.Column columns =
-      new ResultedTestRowMapper.Column(2, 3, 5, 7, 11, 13, 17, 19, 23, 29);
+      new ResultedTestRowMapper.Column(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 32, 37);
 
   @Test
   void should_map_from_result_set() throws SQLException {
