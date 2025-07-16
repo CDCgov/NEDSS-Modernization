@@ -237,5 +237,22 @@ class ResultedTestRowMapperTest {
     assertThat(mapped.reference()).isEqualTo("(low) - (status)");
   }
 
+  @Test
+  void should_map_numeric_2_with_separator() throws SQLException {
+    ResultSet resultSet = mock(ResultSet.class);
+
+    when(resultSet.getString(columns.name())).thenReturn("name-value");
+    when(resultSet.getBigDecimal(columns.numeric())).thenReturn(new BigDecimal("1"));
+    when(resultSet.getBigDecimal(columns.numeric2())).thenReturn(new BigDecimal("2"));
+    when(resultSet.getString(columns.separator())).thenReturn(":");
+
+    ResultedTestRowMapper mapper = new ResultedTestRowMapper(columns);
+
+    ResultedTest mapped = mapper.mapRow(resultSet, 0);
+
+    assertThat(mapped.name()).isEqualTo("name-value");
+    assertThat(mapped.result()).isEqualTo("1:2");
+  }
+
 }
 
