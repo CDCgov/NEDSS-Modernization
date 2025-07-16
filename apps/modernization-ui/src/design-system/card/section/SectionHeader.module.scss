@@ -1,0 +1,38 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.cardContainer {
+  background-color: colors.$cool-accent-lighter;
+  border-bottom: 1px solid colors.$base-lighter;
+  min-width: 23.25rem;
+  height: 4rem;
+  flex-shrink: 0;
+  border-radius: 0;
+  box-shadow: none !important;
+
+  [class*='header'] {
+    border-bottom: none !important;
+  }
+
+  .subtext {
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.05rem;
+  }
+
+  .tooltip {
+    width: 0.83331rem !important;
+    height: 0.83331rem !important;
+    display: flex;
+    align-items: center;
+  }
+
+  &.slim {
+    height: 3rem !important;
+    display: flex;
+    align-items: center;
+  }
+}
+
+
