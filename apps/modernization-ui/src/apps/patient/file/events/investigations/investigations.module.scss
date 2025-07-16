@@ -6,3 +6,7 @@
         background-color: colors.$primary-lighter !important;
     }
 }
+
+.status-header {
+    @include widths.fixed(7rem);
+}
