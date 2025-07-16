@@ -1,0 +1,9 @@
+@use 'design-system/table/header/widths';
+
+.date-time-header {
+    @include widths.fixed(7rem);
+}
+
+.reporting-header {
+    @include widths.fixed(15rem);
+}

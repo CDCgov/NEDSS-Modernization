@@ -13,6 +13,8 @@ import { TableCardProps } from 'design-system/card/table/TableCard';
 import { MaybeLabeledValue } from 'design-system/value';
 import { ResultedTests } from 'libs/events/tests';
 
+import styles from './drr.module.scss';
+
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
         <>
@@ -66,10 +68,17 @@ const EVENT_DATE = { id: 'eventDate', name: 'Event date' };
 const DESCRIPTION = { id: 'description', name: 'Description' };
 
 const columns: Column<PatientFileDocumentRequiringReview>[] = [
-    { ...EVENT_ID, sortable: true, value: (value) => value.local, render: renderEventId },
-    { ...DOCUMENT_TYPE, sortable: true, value: (value) => value.type },
+    {
+        ...EVENT_ID,
+        className: styles['local-header'],
+        sortable: true,
+        value: (value) => value.local,
+        render: renderEventId
+    },
+    { ...DOCUMENT_TYPE, className: styles['text-header'], sortable: true, value: (value) => value.type },
     {
         ...DATE_RECEIVED,
+        className: styles['date-time-header'],
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.dateReceived,
@@ -77,6 +86,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
     },
     {
         ...REPORTING,
+        className: styles['reporting-header'],
         render: (value) =>
             renderFacilityProvider(
                 value.reportingFacility,
@@ -87,6 +97,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
     },
     {
         ...EVENT_DATE,
+        className: styles['date-header'],
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,
