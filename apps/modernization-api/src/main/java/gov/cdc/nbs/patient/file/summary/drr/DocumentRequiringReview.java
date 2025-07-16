@@ -12,14 +12,10 @@ import java.util.Collections;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record DocumentRequiringReview(
-    @JsonProperty(required = true)
-    long patient,
-    @JsonProperty(required = true)
-    long id,
-    @JsonProperty(required = true)
-    String local,
-    @JsonProperty(required = true)
-    String type,
+    @JsonProperty(required = true) long patient,
+    @JsonProperty(required = true) long id,
+    @JsonProperty(required = true) String local,
+    @JsonProperty(required = true) String type,
     LocalDate eventDate,
     LocalDateTime dateReceived,
     boolean isElectronic,
@@ -29,9 +25,12 @@ public record DocumentRequiringReview(
     DisplayableSimpleName orderingProvider,
     String sendingFacility,
     String condition,
+    Specimen specimen,
     Collection<String> treatments,
-    Collection<ResultedTest> resultedTests
-) {
+    Collection<ResultedTest> resultedTests) {
+
+  record Specimen(String site, String source) {
+  }
 
   public DocumentRequiringReview(
       long patient,
@@ -46,8 +45,7 @@ public record DocumentRequiringReview(
       String orderingFacility,
       DisplayableSimpleName orderingProvider,
       String sendingFacility,
-      String condition
-  ) {
+      String condition) {
     this(
         patient,
         id,
@@ -62,9 +60,44 @@ public record DocumentRequiringReview(
         orderingProvider,
         sendingFacility,
         condition,
+        null,
         Collections.emptyList(),
-        Collections.emptyList()
-    );
+        Collections.emptyList());
+  }
+
+  public DocumentRequiringReview(
+      long patient,
+      long id,
+      String local,
+      String type,
+      LocalDate eventDate,
+      LocalDateTime dateReceived,
+      boolean isElectronic,
+      boolean isUpdate,
+      String reportingFacility,
+      String orderingFacility,
+      DisplayableSimpleName orderingProvider,
+      String sendingFacility,
+      String condition,
+      String specimenSite,
+      String specimenSource) {
+    this(
+        patient,
+        id,
+        local,
+        type,
+        eventDate,
+        dateReceived,
+        isElectronic,
+        isUpdate,
+        reportingFacility,
+        orderingFacility,
+        orderingProvider,
+        sendingFacility,
+        condition,
+        new Specimen(specimenSite, specimenSource),
+        Collections.emptyList(),
+        Collections.emptyList());
   }
 
   public DocumentRequiringReview withTreatments(final Collection<String> treatments) {
@@ -82,9 +115,9 @@ public record DocumentRequiringReview(
         orderingProvider(),
         sendingFacility(),
         condition(),
+        specimen(),
         treatments,
-        resultedTests()
-    );
+        resultedTests());
   }
 
   public DocumentRequiringReview withResultedTests(final Collection<ResultedTest> resultedTests) {
@@ -102,9 +135,8 @@ public record DocumentRequiringReview(
         orderingProvider(),
         sendingFacility(),
         condition(),
+        specimen(),
         treatments(),
-        resultedTests
-    );
+        resultedTests);
   }
-
 }

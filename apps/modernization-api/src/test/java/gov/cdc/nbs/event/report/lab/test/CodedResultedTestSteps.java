@@ -37,7 +37,7 @@ public class CodedResultedTestSteps {
     this.activeMorbidity.maybeActive()
         .map(reportMother::create)
         .ifPresent(
-        found -> testMother.create(found, test, result)
-    );
+            found -> testMother.create(found, test, result)
+        );
   }
 }

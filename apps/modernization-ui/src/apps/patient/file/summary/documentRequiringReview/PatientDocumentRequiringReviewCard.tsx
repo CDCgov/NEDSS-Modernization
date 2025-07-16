@@ -7,9 +7,11 @@ import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { internalizeDate } from 'date';
 import { internalizeDateTime } from 'date/InternalizeDateTime';
-import { renderFacilityProvider, renderLabReports, renderMorbidity } from '../../renderPatientFile';
+import { renderFacilityProvider, renderMorbidity } from '../../renderPatientFile';
 import { PatientFileDocumentRequiringReview } from './drr';
 import { TableCardProps } from 'design-system/card/table/TableCard';
+import { MaybeLabeledValue } from 'design-system/value';
+import { ResultedTests } from 'libs/events/tests';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
@@ -17,7 +19,16 @@ const renderDescription = (value: PatientFileDocumentRequiringReview) => {
             {value.type === 'Case Report' && <strong>{value.condition}</strong>}
             {value.type === 'Morbidity Report' &&
                 renderMorbidity(value.condition, value.resultedTests, value.treatments)}
-            {value.type === 'Laboratory Report' && renderLabReports(value.resultedTests)}
+            {value.type === 'Laboratory Report' && renderLabReport(value)}
+        </>
+    );
+};
+
+const renderLabReport = (value: PatientFileDocumentRequiringReview) => {
+    return (
+        <>
+            <ResultedTests>{value.resultedTests}</ResultedTests>
+            <MaybeLabeledValue label="Specimen Source:">{value?.specimen?.source}</MaybeLabeledValue>
         </>
     );
 };
