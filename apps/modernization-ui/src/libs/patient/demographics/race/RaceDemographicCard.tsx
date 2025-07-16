@@ -29,11 +29,8 @@ const columns: Column<RaceDemographic>[] = [
     {
         id: 'race-detailed',
         name: 'Detailed race',
-        className: styles['text-header'],
         sortable: true,
-        sortIconType: 'numeric',
-        value: (v) => v.detailed[0].name,
-        render: (v) => v.detailed.map((detail) => detail.name).join(', ')
+        value: (v) => v.detailed.map((detail) => detail.name).join(', ')
     }
 ];
 
