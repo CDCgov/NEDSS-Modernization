@@ -9,6 +9,8 @@ import { TableCard } from 'design-system/card';
 import { displayNotificationStatus, displayInvestigator } from 'libs/events/investigations';
 import { PatientFileOpenInvestigation } from './openInvestigation';
 
+import styles from './open-investigations.module.scss';
+
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };
 const START_DATE = { id: 'startDate', name: 'Start date' };
 const CONDITION = { id: 'condition', name: 'Condition' };
@@ -32,6 +34,7 @@ const columnPreferences: ColumnPreference[] = [
 const columns: Column<PatientFileOpenInvestigation>[] = [
     {
         ...INVESTIGATION_ID,
+        className: styles['local-header'],
         sortable: true,
         value: (row) => row.local,
         render: (value) => (
@@ -40,6 +43,7 @@ const columns: Column<PatientFileOpenInvestigation>[] = [
     },
     {
         ...START_DATE,
+        className: styles['date-header'],
         sortable: true,
         value: (value) => value.startedOn,
         sortIconType: 'numeric'
@@ -52,11 +56,13 @@ const columns: Column<PatientFileOpenInvestigation>[] = [
     },
     {
         ...CASE_STATUS,
+        className: styles['status-header'],
         sortable: true,
         value: (value) => value.caseStatus
     },
     {
         ...NOTIFICATION,
+        className: styles['status-header'],
         sortable: true,
         value: (value) => value.notification,
         render: (row) => displayNotificationStatus(row.notification)
@@ -73,6 +79,7 @@ const columns: Column<PatientFileOpenInvestigation>[] = [
     },
     {
         ...CO_INFECTION_ID,
+        className: styles['co-infection-header'],
         sortable: true,
         value: (value) => value.coInfection
     }
