@@ -31,6 +31,7 @@ public class ResultedTestResolver {
           [numeric].numeric_value_2                       as [numeric_2],
           [numeric].separator_cd                          as [separator],
           [numeric].numeric_scale_1                       as [scale],
+          [numeric].numeric_scale_2                       as [scale2],
           [numeric].high_range                            as [high_range],
           [numeric].low_range                             as [low_range],
           [numeric].numeric_unit_cd                       as [unit],
@@ -74,7 +75,7 @@ public class ResultedTestResolver {
     this.client = client;
 
     RowMapper<ResultedTest> valueMapper = new ResultedTestRowMapper(
-        new ResultedTestRowMapper.Column(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
+        new ResultedTestRowMapper.Column(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
     );
 
     this.extractor = new MultiMapResultSetExtractor<>(

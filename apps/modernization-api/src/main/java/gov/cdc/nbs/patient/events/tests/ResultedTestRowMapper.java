@@ -23,6 +23,7 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
       int numeric2,
       int separator,
       int scale,
+      int scale2,
       int high,
       int low,
       int unit,
@@ -93,9 +94,10 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
       }
 
       BigDecimal numeric2 = resultSet.getBigDecimal(columns.numeric2());
+      int scale2 = resultSet.getInt(columns.scale2());
 
       if (numeric2 != null) {
-        builder.append(numeric2.setScale(scale, RoundingMode.HALF_EVEN));
+        builder.append(numeric2.setScale(scale2, RoundingMode.HALF_EVEN));
       }
 
       String unit = resultSet.getString(columns.unit());
