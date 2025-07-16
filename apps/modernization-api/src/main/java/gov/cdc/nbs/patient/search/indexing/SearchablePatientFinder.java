@@ -219,7 +219,7 @@ class SearchablePatientFinder {
                 --Accession Ids
                 (SELECT STUFF(
                 (
-                  SELECT ' '+ replace(cast(accessionId as varchar), '-', '')
+                  SELECT ','+ replace(cast(accessionId as varchar), '-', '')
                   FROM (
                   SELECT ai.root_extension_txt accessionId
                   FROM

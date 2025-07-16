@@ -6269,7 +6269,7 @@ WITH
   --Accession Ids
   (SELECT STUFF(
   (
-    SELECT ','+ cast(accessionId as varchar)
+    SELECT ','+ replace(cast(accessionId as varchar), '-', '')
     FROM (  
 		SELECT DISTINCT ai.root_extension_txt accessionId
       FROM
