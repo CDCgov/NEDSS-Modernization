@@ -11,24 +11,22 @@ jest.mock('./CriteriaFields', () => ({
 
 describe('LaboratoryReportSearchCriteria', () => {
     it('renders the General search section expanded by default', () => {
-        const { getAllByRole } = render(<LaboratoryReportSearchCriteria />);
+        const { container } = render(<LaboratoryReportSearchCriteria />);
 
-        const sections = getAllByRole('region');
+        const detailsElements = container.querySelectorAll('details');
+        const generalAccordion = detailsElements[0];
 
-        const general = sections[0];
-
-        expect(general).toHaveTextContent('General search');
-        expect(general).toHaveAttribute('open');
+        expect(generalAccordion).toHaveTextContent('General search');
+        expect(generalAccordion).toHaveAttribute('open');
     });
 
     it('renders the Lab report criteria section collapsed by default', () => {
-        const { getAllByRole } = render(<LaboratoryReportSearchCriteria />);
+        const { container } = render(<LaboratoryReportSearchCriteria />);
 
-        const sections = getAllByRole('region');
+        const detailsElements = container.querySelectorAll('details');
+        const criteriaAccordion = detailsElements[1];
 
-        const criteria = sections[1];
-
-        expect(criteria).toHaveTextContent('Lab report criteria');
-        expect(criteria).not.toHaveAttribute('open');
+        expect(criteriaAccordion).toHaveTextContent('Lab report criteria');
+        expect(criteriaAccordion).not.toHaveAttribute('open');
     });
 });

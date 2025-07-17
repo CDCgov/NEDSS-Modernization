@@ -10,10 +10,10 @@ type Props = {
     id?: string;
 };
 
-export const Accordion = ({ title, children, open = false, id }: Props) => {
+export const Accordion = ({ title, children, open = false, id = 'accordion' }: Props) => {
     return (
-        <details className={styles.accordian} open={open} id={id} role="region">
-            <summary>
+        <details className={styles.accordian} open={open}>
+            <summary id={id} role="region" aria-label={title}>
                 <span>{title}</span>
                 <svg role="img" aria-label={`Expand ${title}`} className={styles.closed}>
                     <Icon name={'expand_more'} />
