@@ -4,7 +4,6 @@ import { useAlert } from 'libs/alert';
 import { Permitted, permissions } from 'libs/permission';
 import { Button } from 'design-system/button';
 import { Hint } from 'design-system/hint';
-import { Icon } from 'design-system/icon';
 import { Confirmation } from 'design-system/modal';
 import { LabeledValue } from 'design-system/value';
 import { useSearchNavigation } from 'apps/search';
@@ -65,7 +64,7 @@ const DeleteAction = ({ patient }: DeleteActionProps) => {
                         aria-label="Delete"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
-                        icon={<Icon name="delete" />}
+                        icon="delete"
                         sizing={'medium'}
                         onClick={show}
                     />

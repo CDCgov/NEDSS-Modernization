@@ -11,7 +11,6 @@ const LinkButton = ({
     className,
     sizing,
     icon,
-    labelPosition = 'right',
     active,
     tertiary,
     secondary,
@@ -19,22 +18,25 @@ const LinkButton = ({
     disabled,
     children,
     ...remaining
-}: LinkButtonProps) => (
-    <a href={disabled ? undefined : href} target={target} rel={rel} {...remaining}>
-        <Button
-            className={className}
-            sizing={sizing}
-            icon={icon}
-            labelPosition={labelPosition}
-            active={active}
-            tertiary={tertiary}
-            secondary={secondary}
-            destructive={destructive}
-            disabled={disabled}>
-            {children}
-        </Button>
-    </a>
-);
+}: LinkButtonProps) => {
+    const labelPosition = 'labelPosition' in remaining ? remaining.labelPosition : undefined;
+    return (
+        <a href={disabled ? undefined : href} target={target} rel={rel} {...remaining}>
+            <Button
+                className={className}
+                sizing={sizing}
+                icon={icon}
+                labelPosition={labelPosition}
+                active={active}
+                tertiary={tertiary}
+                secondary={secondary}
+                destructive={destructive}
+                disabled={disabled}>
+                {children}
+            </Button>
+        </a>
+    );
+};
 
 export { LinkButton };
 export type { LinkButtonProps };

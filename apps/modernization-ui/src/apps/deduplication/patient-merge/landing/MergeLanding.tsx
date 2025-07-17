@@ -1,7 +1,6 @@
 import { useExportMatches } from 'apps/deduplication/api/useExportMatches';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
-import { Icon } from 'design-system/icon';
 import { PaginationProvider } from 'pagination';
 import { SortingProvider, useSorting } from 'libs/sorting';
 import { MatchesRequiringReviewTable } from './matches-requiring-review-table/MatchesRequiringReviewTable';
@@ -26,11 +25,18 @@ const MergeLandingContent = () => {
             <header className={styles.mergeLandingHeader}>
                 <Heading level={1}>Matches requiring review</Heading>
                 <div className={styles.buttons}>
-                    <Button icon={<Icon name="print" />} sizing="medium" secondary onClick={() => exportPDF(sorting)} />
                     <Button
-                        icon={<Icon name="file_download" />}
+                        icon="print"
                         sizing="medium"
                         secondary
+                        aria-label="Print"
+                        onClick={() => exportPDF(sorting)}
+                    />
+                    <Button
+                        icon="file_download"
+                        sizing="medium"
+                        secondary
+                        aria-label="Download"
                         onClick={() => exportCSV(sorting)}
                     />
                 </div>

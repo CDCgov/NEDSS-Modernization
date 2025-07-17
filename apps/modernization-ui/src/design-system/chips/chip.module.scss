@@ -9,14 +9,17 @@
     display: flex;
     align-items: center;
 
-    .name {
-        text-transform: uppercase;
+    gap: 0.25rem;
+
+    button.close {
+        --button-padding: 0rem;
+        --button-height: 1rem;
+        --button-icon-size: 1rem;
+
+        color: colors.$base-black;
     }
 
-    .closeIcon {
-        cursor: pointer;
-        margin-left: 0.25rem;
-        height: 1rem;
-        width: 1rem;
+    .name {
+        text-transform: uppercase;
     }
 }

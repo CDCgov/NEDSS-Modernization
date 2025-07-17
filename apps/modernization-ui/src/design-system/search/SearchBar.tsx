@@ -2,7 +2,6 @@ import React, { useState, InputHTMLAttributes } from 'react';
 import classNames from 'classnames';
 import { Button } from 'design-system/button/Button';
 import { Sizing } from 'design-system/field';
-import { Icon } from 'design-system/icon';
 import styles from './SearchBar.module.scss';
 
 type SearchBarProps = {
@@ -80,7 +79,7 @@ export const SearchBar = ({
                     <Button
                         type="button"
                         sizing={size}
-                        icon={<Icon name="close" />}
+                        icon="close"
                         onClick={handleClear}
                         className={classNames(styles.clearButton, styles[`size-${size}`])}
                         aria-label="Clear"
@@ -90,7 +89,7 @@ export const SearchBar = ({
             <div>
                 <Button
                     sizing={size}
-                    icon={<Icon name="search" aria-hidden />}
+                    icon="search"
                     className={classNames(styles.searchButton, styles[`size-${size}`], { [styles.tall]: tall })}
                     onClick={() => onSearch?.(value)}
                     aria-label="Search"

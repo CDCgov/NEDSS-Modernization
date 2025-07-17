@@ -6,7 +6,6 @@ import { Button } from 'design-system/button';
 import { Sizing } from 'design-system/field';
 import { Card, CardProps } from 'design-system/card';
 import { Tooltip } from 'design-system/tooltip';
-import { Icon } from 'design-system/icon';
 import { Tag } from 'design-system/tag';
 import { AlertMessage } from 'design-system/message';
 import { Column, DataTable, DataTableFeatures } from 'design-system/table';
@@ -262,11 +261,12 @@ const ActionColumn = ({
                     {(id) => (
                         <Button
                             className={styles.action}
-                            aria-labelledby={id}
+                            aria-label="View"
+                            aria-describedby={id}
                             tertiary
                             onClick={onView}
                             aria-pressed={isViewing}
-                            icon={<Icon name="visibility" />}
+                            icon="visibility"
                         />
                     )}
                 </Tooltip>
@@ -276,11 +276,12 @@ const ActionColumn = ({
                     {(id) => (
                         <Button
                             className={styles.action}
-                            aria-labelledby={id}
+                            aria-label="Edit"
+                            aria-describedby={id}
                             tertiary
                             onClick={onEdit}
                             aria-pressed={isEditing}
-                            icon={<Icon name="edit" />}
+                            icon="edit"
                         />
                     )}
                 </Tooltip>
@@ -288,10 +289,11 @@ const ActionColumn = ({
                     {(id) => (
                         <Button
                             className={styles.action}
-                            aria-labelledby={id}
+                            aria-label="Delete"
+                            aria-describedby={id}
                             tertiary
                             onClick={onRemove}
-                            icon={<Icon name="delete" />}
+                            icon="delete"
                         />
                     )}
                 </Tooltip>
@@ -344,7 +346,7 @@ const EditFooter = <E extends FieldValues>({
             <Shown when={interaction.status === 'adding'}>
                 <Button
                     secondary
-                    icon={<Icon name="add" />}
+                    icon="add"
                     sizing={sizing}
                     aria-description={`add ${title}`}
                     onClick={form.handleSubmit(handleAdd)}>

@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { UpdatePassNameModal } from '../pass-form/save-modal/UpdatePassNameModal';
 import { PassEntry } from './pass-entry/PassEntry';
 import styles from './pass-list.module.scss';
-import { Icon } from 'design-system/icon';
 
 type Props = {
     passes: Pass[];
@@ -55,9 +54,9 @@ export const PassList = ({ passes, selectedPass, onSetSelectedPass, onAddPass, o
                     ))}
                 </Shown>
                 <Button
-                    icon={<Icon name="add" />}
+                    icon="add"
                     labelPosition="right"
-                    unstyled
+                    tertiary
                     onClick={onAddPass}
                     disabled={selectedPass !== undefined && selectedPass?.id === undefined}
                     className={styles.addPassButton}>
