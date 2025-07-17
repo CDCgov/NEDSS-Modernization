@@ -9,6 +9,12 @@
     @extend %thin-top;
 }
 
+.preferences {
+    & > :not(:last-child) {
+        @extend %thin-bottom;
+    }
+}
+
 .preference {
     display: flex;
     flex: 1 0 0;
@@ -18,8 +24,7 @@
     padding-right: 0.5rem;
     background-color: colors.$base-white;
 
-    height: 2.75rem;
-    border-bottom: 1px solid colors.$base-lighter;
+    height: 2rem;
 
     .handle {
         cursor: pointer;

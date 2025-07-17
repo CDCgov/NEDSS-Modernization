@@ -1,9 +1,7 @@
 @use 'styles/colors';
 @use 'styles/components';
 
-$checkbox-small: 1rem;
-$checkbox-medium: 1.125rem;
-$checkbox-large: 1.25rem;
+$border-size: 2px;
 
 .checkbox {
     --checkbox-size: 1.125rem;
@@ -19,12 +17,12 @@ $checkbox-large: 1.25rem;
         position: relative;
 
         height: var(--checkbox-size);
-        line-height: var(--checkbox-size);
+        line-height: 125%;
 
         display: inline-block;
 
         &.labeled {
-            padding-left: calc(var(--checkbox-size) + 0.5rem);
+            padding-left: calc(var(--checkbox-size) - $border-size + 0.75rem);
         }
 
         &.disabled {
@@ -32,12 +30,12 @@ $checkbox-large: 1.25rem;
             cursor: not-allowed;
 
             &::before {
-                box-shadow: 0 0 0 2px colors.$disabled-darker;
+                box-shadow: 0 0 0 $border-size colors.$disabled-darker;
             }
 
             &:has(input:checked)::before {
                 background-color: colors.$disabled-darker;
-                box-shadow: 0 0 0 2px colors.$disabled-darker;
+                box-shadow: 0 0 0 $border-size colors.$disabled-darker;
             }
         }
 
@@ -45,26 +43,25 @@ $checkbox-large: 1.25rem;
             content: '';
             display: block;
             left: 0;
-            // top: 2px;
             position: absolute;
-            height: var(--checkbox-size);
-            width: var(--checkbox-size);
+            height: calc(var(--checkbox-size) - $border-size);
+            width: calc(var(--checkbox-size) - $border-size);
             border-radius: 1px;
 
             background: colors.$base-white;
             background-position: center center;
             background-size: 0.75rem auto;
             background-repeat: no-repeat;
-            box-shadow: 0 0 0 2px colors.$base-darkest;
+            box-shadow: 0 0 0 $border-size colors.$base-darkest;
         }
 
         &:has(input:focus)::before {
-            outline: 0.25rem solid colors.$focused;
+            outline: 2px solid colors.$focused;
             outline-offset: 2px;
         }
 
         &:has(input:checked)::before {
-            box-shadow: 0 0 0 2px colors.$primary;
+            box-shadow: 0 0 0 $border-size colors.$primary;
             background-color: colors.$primary;
             background-image:
                 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='65' height='50' viewBox='0 0 65 50'%3E%3Ctitle%3Ecorrect8%3C/title%3E%3Cpath fill='%23FFF' fill-rule='evenodd' d='M63.268 7.063l-5.616-5.61C56.882.685 55.946.3 54.845.3s-2.038.385-2.808 1.155L24.951 28.552 12.81 16.385c-.77-.77-1.707-1.155-2.808-1.155-1.1 0-2.037.385-2.807 1.154l-5.616 5.61C.81 22.764.425 23.7.425 24.8s.385 2.035 1.155 2.805l14.947 14.93 5.616 5.61c.77.77 1.706 1.154 2.807 1.154s2.038-.384 2.808-1.154l5.616-5.61 29.894-29.86c.77-.77 1.157-1.707 1.157-2.805 0-1.101-.385-2.036-1.156-2.805l-.001-.002z'/%3E%3C/svg%3E"),
@@ -80,9 +77,11 @@ $checkbox-large: 1.25rem;
 
     &.small {
         --checkbox-size: 1rem;
+        @extend %small;
     }
 
     &.large {
         --checkbox-size: 1.25rem;
+        @extend %large;
     }
 }

@@ -103,6 +103,7 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
                                         <div ref={draggable.innerRef} {...draggable.draggableProps}>
                                             {isNamed(preference) && (
                                                 <PreferenceOption
+                                                    sizing={sizing}
                                                     draggable={draggable}
                                                     onVisibilityChange={handleVisibilityChange(preference)}>
                                                     {preference}
@@ -138,13 +139,15 @@ const PreferencePlaceholder = ({ draggable, children }: PreferencePlaceholderPro
 type PreferenceOptionProps = {
     draggable: DraggableProvided;
     onVisibilityChange: (value: boolean) => void;
+    sizing?: Sizing;
     children: NamedColumnPreference;
-};
+} & Omit<JSX.IntrinsicElements['span'], 'draggable' | 'children'>;
 
-const PreferenceOption = ({ draggable, onVisibilityChange, children }: PreferenceOptionProps) => (
-    <span className={styles.preference}>
+const PreferenceOption = ({ draggable, onVisibilityChange, sizing, children, ...remaining }: PreferenceOptionProps) => (
+    <span className={styles.preference} {...remaining}>
         <Checkbox
             id={`${children.id}_visible`}
+            sizing={sizing}
             name={children.id}
             label={children.name}
             disabled={!children.toggleable}
