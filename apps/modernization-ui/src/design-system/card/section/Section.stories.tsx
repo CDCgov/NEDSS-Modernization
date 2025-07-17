@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { SectionHeader } from './Section';
+import { Section } from './Section';
 import { Button } from 'design-system/button';
 import { Column, DataTable } from '../../table';
 import { Hint } from 'design-system/hint';
@@ -35,14 +35,14 @@ const data: Person[] = [
     { id: 3, name: 'Alice Johnson', age: 45 }
 ];
 
-const meta: Meta<typeof SectionHeader> = {
-    title: 'Design System/SectionHeader',
-    component: SectionHeader
+const meta: Meta<typeof Section> = {
+    title: 'Design System/Cards/Section',
+    component: Section
 };
 
 export default meta;
 
-type Story = StoryObj<typeof SectionHeader>;
+type Story = StoryObj<typeof Section>;
 
 export const Basic: Story = {
     args: {
@@ -99,7 +99,7 @@ export const WithCounterAndContent: Story = {
     }
 };
 
-export const WithChildrenTableAndCount: StoryObj<typeof SectionHeader> = {
+export const WithChildrenTableAndCount: StoryObj<typeof Section> = {
     args: {
         title: 'People Table',
         subtext: data.length + ' persons',
