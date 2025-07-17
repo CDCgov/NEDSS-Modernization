@@ -5,6 +5,7 @@
     @extend %thin;
     box-shadow: none;
     border-radius: 0;
+    min-height: 3rem;
 
     & > header {
         background-color: colors.$cool-accent-lighter;
