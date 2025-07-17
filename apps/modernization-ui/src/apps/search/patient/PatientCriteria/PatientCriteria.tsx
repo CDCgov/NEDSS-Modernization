@@ -13,19 +13,19 @@ type PatientCriteriaProps = {
 export const PatientCriteria = ({ sizing }: PatientCriteriaProps) => {
     return (
         <>
-            <Accordion title="Basic information" open>
+            <Accordion title="Basic information" id="basic-information" open>
                 <BasicInformation sizing={sizing} />
             </Accordion>
-            <Accordion title="Address">
+            <Accordion title="Address" id="address">
                 <Address sizing={sizing} />
             </Accordion>
-            <Accordion title="Contact">
+            <Accordion title="Contact" id="contact">
                 <Contact sizing={sizing} />
             </Accordion>
-            <Accordion title="ID">
+            <Accordion title="ID" id="id">
                 <Id sizing={sizing} />
             </Accordion>
-            <Accordion title="Race/Ethnicity">
+            <Accordion title="Race/Ethnicity" id="race-ethnicity">
                 <RaceEthnicity sizing={sizing} />
             </Accordion>
         </>
