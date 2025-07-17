@@ -25,13 +25,7 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAliv
     // this starts the warning timer and shows the warning modal
     const startWarningTimer = useCallback(() => {
         setIdle(true);
-        warningTimer.start(
-            () => {
-                onIdle();
-            },
-            warningTimeout,
-            true
-        );
+        warningTimer.start(() => fetch('/nbs/logout', { credentials: 'include' }).then(onIdle), warningTimeout, true);
         countdown.start(warningTimeout);
     }, [onIdle, warningTimeout]);
 
