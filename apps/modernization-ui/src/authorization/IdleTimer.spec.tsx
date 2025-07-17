@@ -91,6 +91,6 @@ describe('IdleTimer Component', () => {
         });
         expect(queryByRole('dialog')).toBeInTheDocument();
         fireEvent.click(getByText('Logout'));
-        expect(onIdle).toHaveBeenCalledTimes(0);
+        expect(onIdle).toHaveBeenCalledTimes(1);
     });
 });
