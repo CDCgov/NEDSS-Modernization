@@ -1,57 +1,55 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Hint } from './Hint';
-import { ComponentProps, ReactNode } from 'react';
+import { Hint, HintProps } from './Hint';
 
 const meta = {
     title: 'Design System/Hint',
-    component: Hint
+    component: Hint,
+    decorators: [
+        (Story) => (
+            <div style={{ margin: '3em', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Story />
+            </div>
+        )
+    ]
 } satisfies Meta<typeof Hint>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const Container = ({ children }: { children: ReactNode }) => (
-    <div
-        style={{
-            height: 150,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-        }}>
-        {children}
-    </div>
+const renderPositions = (props: HintProps) => (
+    <>
+        <Hint position="right" {...props} />
+        <Hint position="left" {...props} />
+        <Hint position="center" {...props} />
+    </>
 );
 
 export const Default: Story = {
     args: {
         id: 'storybook-hint',
-        position: 'right',
-        marginTop: 0,
-        marginLeft: 0,
         children: 'This is some additional information that is available in a tooltip.'
     },
-    render: (args: ComponentProps<typeof Hint>) => {
-        return (
-            <Container>
-                <Hint {...args}>{args.children}</Hint>
-            </Container>
-        );
-    }
+    render: renderPositions
 };
 
 export const CustomTarget: Story = {
     args: {
         ...Default.args,
         target: <span>Hover over me</span>
-    },
-    render: Default.render
+    }
 };
 
-export const PositionLeft: Story = {
+export const Left: Story = {
     args: {
         ...Default.args,
         position: 'left'
-    },
-    render: Default.render
+    }
+};
+
+export const Center: Story = {
+    args: {
+        ...Default.args,
+        position: 'center'
+    }
 };
