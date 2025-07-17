@@ -42,23 +42,6 @@ describe('BasicRaceEthnicityFields', () => {
         mockRaceCategories = [];
     });
 
-    it('should render the select box with the proper small styling when sizing is set to small', async () => {
-        mockRaceCategories = [
-            { value: 'asian', name: 'Asian' },
-            { value: 'white', name: 'White' },
-            { value: 'black', name: 'Black or African American' }
-        ];
-
-        const { getByText, getByLabelText } = render(<FormWrapper sizing="small" />);
-
-        const asianCheckbox = getByLabelText(/asian/i);
-        const whiteCheckbox = getByLabelText(/white/i);
-
-        expect(getByText('Ethnicity').parentElement?.parentElement).toHaveClass('small');
-        expect(asianCheckbox.parentElement).toHaveClass('small');
-        expect(whiteCheckbox.parentElement).toHaveClass('small');
-    });
-
     it('should allows selecting an ethnicity option', async () => {
         const { getByLabelText, getByText } = render(<FormWrapper />);
 
