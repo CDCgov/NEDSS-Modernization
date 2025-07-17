@@ -1,8 +1,10 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { SectionHeader } from './SectionHeader';
+import { SectionHeader } from './Section';
 import { Button } from 'design-system/button';
 import { Column, DataTable } from '../../table';
+import { Hint } from 'design-system/hint';
+import { Tag } from 'design-system/tag';
 
 type Person = {
     id: number;
@@ -44,12 +46,14 @@ type Story = StoryObj<typeof SectionHeader>;
 
 export const Basic: Story = {
     args: {
+        id: 'basic-header',
         title: 'Basic Header'
     }
 };
 
 export const WithSubtext: Story = {
     args: {
+        id: 'with-subtext',
         title: 'Title Header',
         subtext: 'subtext'
     }
@@ -57,28 +61,35 @@ export const WithSubtext: Story = {
 
 export const WithSubtextAndTooltip: Story = {
     args: {
+        id: 'with-subtext-and-tooltip',
         title: 'Title Header',
-        subtext: 'subtext',
-        tooltip: <div>Additional context or explanation about the section goes here.</div>
+        subtext: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                subtext <Hint id="tooltip-text">Additional context or explanation about the section goes here.</Hint>
+            </div>
+        )
     }
 };
 
 export const WithSubtextAndTooltipAndCounter: Story = {
     args: {
+        id: 'with-subtext-and-tooltip-and-tag',
         title: 'Title Header',
-        subtext: 'subtext',
-        showCounter: true,
-        count: 999,
-        tooltip: <div>Additional context or explanation about the section goes here.</div>
+        subtext: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                subtext <Hint id="tooltip-text">Additional context or explanation about the section goes here.</Hint>
+            </div>
+        ),
+        flair: <Tag>999</Tag>
     }
 };
 
 export const WithCounterAndContent: Story = {
     args: {
+        id: 'with-counter-and-content',
         title: 'Title Header',
         subtext: 'subtext',
-        showCounter: true,
-        count: 999,
+        flair: <Tag>999</Tag>,
         children: (
             <div style={{ padding: '1rem' }}>
                 <p>This is some content inside the collapsible section.</p>
