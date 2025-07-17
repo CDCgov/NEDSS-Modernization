@@ -5,6 +5,7 @@ import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Sizing } from 'design-system/field';
 import { Card, CardProps } from 'design-system/card';
+import { Tooltip } from 'design-system/tooltip';
 import { Icon } from 'design-system/icon';
 import { Tag } from 'design-system/tag';
 import { AlertMessage } from 'design-system/message';
@@ -87,12 +88,28 @@ const RepeatingBlock = <V extends FieldValues>({
 
     const adjustedColumns = entryColumns(columns);
 
-    const actions: Column<Entry<V>> = {
-        id: 'actions',
-        label: 'Actions',
-        className: styles['action-header'],
-        render: renderActionColumn({ sizing, interaction, viewable, editable, form, defaultValues })
-    };
+    const modifiedColumns =
+        viewable || editable
+            ? [
+                  ...adjustedColumns,
+                  {
+                      id: 'actions',
+                      label: 'Actions',
+                      className: styles['action-header'],
+                      render: (entry: Entry<V>) => (
+                          <EntryActionColumn<V>
+                              entry={entry}
+                              sizing={sizing}
+                              interaction={interaction}
+                              viewable={viewable}
+                              editable={editable}
+                              form={form}
+                              defaultValues={defaultValues}
+                          />
+                      )
+                  }
+              ]
+            : adjustedColumns;
 
     // Combine error message prop and internal form error messages into an array for display in the banner
     const errorMessages = useMemo<ReactNode[]>(() => {
@@ -146,7 +163,7 @@ const RepeatingBlock = <V extends FieldValues>({
                     [styles.large]: sizing === 'large'
                 })}
                 id={`${id}-table`}
-                columns={[...adjustedColumns, actions]}
+                columns={modifiedColumns}
                 data={interaction.entries}
                 sizing={sizing}
                 features={features}
@@ -171,7 +188,8 @@ const RepeatingBlock = <V extends FieldValues>({
 export { RepeatingBlock };
 export type { RepeatingBlockProps };
 
-type ActionColumnOptions<T extends FieldValues> = {
+type EntryActionColumnProps<T extends FieldValues> = {
+    entry: Entry<T>;
     form: UseFormReturn<T>;
     interaction: MultiValueEntryInteraction<T>;
     viewable: boolean;
@@ -180,14 +198,15 @@ type ActionColumnOptions<T extends FieldValues> = {
     sizing?: Sizing;
 };
 
-const renderActionColumn = <E extends FieldValues>({
+const EntryActionColumn = <E extends FieldValues>({
+    entry,
     form,
     defaultValues,
     interaction,
     viewable,
     editable,
     sizing
-}: ActionColumnOptions<E>) => {
+}: EntryActionColumnProps<E>) => {
     const handleRemove = (identifier: string) => {
         if (interaction.selected?.id === identifier) {
             // the entry being removed is the one currently selected, reset the form.
@@ -196,8 +215,7 @@ const renderActionColumn = <E extends FieldValues>({
         interaction.remove(identifier);
     };
 
-    // eslint-disable-next-line react/display-name
-    return (entry: Entry<E>) => (
+    return (
         <ActionColumn
             sizing={sizing}
             viewable={viewable}
@@ -222,39 +240,65 @@ type ActionColumnProps = {
     onRemove: () => void;
 };
 
-const ActionColumn = ({ viewable, onView, isViewing, editable, onEdit, isEditing, onRemove }: ActionColumnProps) => (
-    <div className={styles.actions}>
-        {viewable && (
-            <Button
-                tertiary
-                data-tooltip-position="top"
-                aria-label="View"
-                onClick={onView}
-                aria-pressed={isViewing}
-                icon={<Icon name="visibility" />}
-            />
-        )}
-        {editable && (
-            <>
-                <Button
-                    tertiary
-                    data-tooltip-position="top"
-                    aria-label="Edit"
-                    onClick={onEdit}
-                    aria-pressed={isEditing}
-                    icon={<Icon name="edit" />}
-                />
-                <Button
-                    tertiary
-                    data-tooltip-position="top"
-                    aria-label="Delete"
-                    onClick={onRemove}
-                    icon={<Icon name="delete" />}
-                />
-            </>
-        )}
-    </div>
-);
+const ActionColumn = ({
+    sizing,
+    viewable,
+    onView,
+    isViewing,
+    editable,
+    onEdit,
+    isEditing,
+    onRemove
+}: ActionColumnProps) => {
+    return (
+        <div
+            className={classNames(styles.actions, {
+                [styles.small]: sizing === 'small',
+                [styles.medium]: sizing === 'medium',
+                [styles.large]: sizing === 'large'
+            })}>
+            <Shown when={viewable}>
+                <Tooltip message="View">
+                    {(id) => (
+                        <Button
+                            className={styles.action}
+                            aria-labelledby={id}
+                            tertiary
+                            onClick={onView}
+                            aria-pressed={isViewing}
+                            icon={<Icon name="visibility" />}
+                        />
+                    )}
+                </Tooltip>
+            </Shown>
+            <Shown when={editable}>
+                <Tooltip message="Edit">
+                    {(id) => (
+                        <Button
+                            className={styles.action}
+                            aria-labelledby={id}
+                            tertiary
+                            onClick={onEdit}
+                            aria-pressed={isEditing}
+                            icon={<Icon name="edit" />}
+                        />
+                    )}
+                </Tooltip>
+                <Tooltip message="Delete">
+                    {(id) => (
+                        <Button
+                            className={styles.action}
+                            aria-labelledby={id}
+                            tertiary
+                            onClick={onRemove}
+                            icon={<Icon name="delete" />}
+                        />
+                    )}
+                </Tooltip>
+            </Shown>
+        </div>
+    );
+};
 
 type EditFooterProps<T extends FieldValues> = {
     form: UseFormReturn<T>;
