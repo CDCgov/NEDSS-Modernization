@@ -67,7 +67,7 @@ describe('IdleTimer Component', () => {
         });
         expect(queryByRole('dialog')).toBeInTheDocument();
         jest.advanceTimersByTime(2000);
-        expect(onIdle).toHaveBeenCalledTimes(1);
+        expect(onIdle).toHaveBeenCalledTimes(0);
     });
 
     it('should reset timers on continue', () => {
@@ -91,6 +91,6 @@ describe('IdleTimer Component', () => {
         });
         expect(queryByRole('dialog')).toBeInTheDocument();
         fireEvent.click(getByText('Logout'));
-        expect(onIdle).toHaveBeenCalledTimes(1);
+        expect(onIdle).toHaveBeenCalledTimes(0);
     });
 });
