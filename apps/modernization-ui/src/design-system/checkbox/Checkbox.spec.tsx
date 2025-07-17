@@ -1,10 +1,16 @@
-import { render } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import { Checkbox } from './Checkbox';
 
 describe('Checkbox testing', () => {
+    it('should render with no accessibility violations', async () => {
+        const { container } = render(<Checkbox id="test" label="Test Label" />);
+        expect(await axe(container)).toHaveNoViolations();
+    });
+
     it('should render the selectable label as the checkbox label', () => {
-        const { getByText } = render(<Checkbox id="test" label="Test Label" selected={false} />);
+        const { getByText } = render(<Checkbox id="test" label="Test Label" />);
 
         const label = getByText('Test Label');
 
@@ -12,16 +18,19 @@ describe('Checkbox testing', () => {
     });
 
     it('should render unchecked', () => {
-        const { container } = render(<Checkbox id="test" label="Test Label" selected={false} />);
+        render(<Checkbox id="test" label="Test Label" />);
 
-        const checkbox = container.firstChild;
+        const checkbox = screen.getByRole('checkbox', { name: 'Test Label' });
+
+        expect(checkbox).not.toBeChecked();
         expect(checkbox).toHaveAttribute('aria-checked', 'false');
     });
 
     it('should render checked', () => {
         const { container } = render(<Checkbox id="test" label="Test Label" selected={true} />);
 
-        const checkbox = container.firstChild;
+        const checkbox = screen.getByRole('checkbox', { name: 'Test Label' });
+        expect(checkbox).toBeChecked();
         expect(checkbox).toHaveAttribute('aria-checked', 'true');
     });
 
@@ -42,7 +51,7 @@ describe('Checkbox testing', () => {
         const user = userEvent.setup();
         const onChange = jest.fn();
 
-        const { getByText } = render(<Checkbox id="test" label="Test Label" onChange={onChange} selected={false} />);
+        const { getByText } = render(<Checkbox id="test" label="Test Label" onChange={onChange} />);
 
         const label = getByText('Test Label');
 

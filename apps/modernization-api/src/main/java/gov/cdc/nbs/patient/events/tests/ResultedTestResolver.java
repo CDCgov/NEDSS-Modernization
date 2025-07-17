@@ -28,7 +28,10 @@ public class ResultedTestResolver {
           )                                               as [coded],
           [numeric].comparator_cd_1                       as [comparator],
           [numeric].numeric_value_1                       as [numeric],
+          [numeric].numeric_value_2                       as [numeric_2],
+          [numeric].separator_cd                          as [separator],
           [numeric].numeric_scale_1                       as [scale],
+          [numeric].numeric_scale_2                       as [scale2],
           [numeric].high_range                            as [high_range],
           [numeric].low_range                             as [low_range],
           [numeric].numeric_unit_cd                       as [unit],
@@ -52,8 +55,7 @@ public class ResultedTestResolver {
                   [coded_result].[lab_result_cd] = [coded].code
       
           left join [Obs_value_numeric] [numeric] with (nolock) on
-                  [numeric].[observation_uid] = [lab_result].[observation_uid]
-              and [numeric].numeric_value_1 is not null
+                  [numeric].[observation_uid] = [lab_result].observation_uid
       
           left join [Obs_value_txt] [text] with (nolock) on
                   [text].observation_uid = [lab_result].[observation_uid]
@@ -73,7 +75,7 @@ public class ResultedTestResolver {
     this.client = client;
 
     RowMapper<ResultedTest> valueMapper = new ResultedTestRowMapper(
-        new ResultedTestRowMapper.Column(2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
+        new ResultedTestRowMapper.Column(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
     );
 
     this.extractor = new MultiMapResultSetExtractor<>(

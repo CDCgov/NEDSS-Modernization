@@ -1,0 +1,19 @@
+@use 'styles/tooltip';
+
+.tooltip {
+    @include tooltip.tooltip('title');
+
+    &::before,
+    &::after {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    &.visible {
+        &::before,
+        &::after {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+}

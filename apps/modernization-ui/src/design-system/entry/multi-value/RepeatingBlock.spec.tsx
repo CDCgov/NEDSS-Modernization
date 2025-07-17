@@ -292,23 +292,17 @@ describe('RepeatingBlock', () => {
         );
 
         // View icon
-        const view = screen.getByRole('button', { name: 'View' });
-
-        expect(view).toHaveAttribute('data-tooltip-position', 'top');
+        screen.getByRole('button', { name: 'View' });
 
         // Edit icon
-        const edit = screen.getByRole('button', { name: 'Edit' });
-
-        expect(edit).toHaveAttribute('data-tooltip-position', 'top');
+        screen.getByRole('button', { name: 'Edit' });
 
         // Delete icon
-        const remove = screen.getByRole('button', { name: 'Delete' });
-
-        expect(remove).toHaveAttribute('data-tooltip-position', 'top');
+        screen.getByRole('button', { name: 'Delete' });
     });
 
     it('should render view when view icon clicked', async () => {
-        const { getByLabelText, getByText, getByRole } = render(
+        const { getByText } = render(
             <Fixture
                 data={[
                     {
@@ -320,7 +314,7 @@ describe('RepeatingBlock', () => {
             />
         );
 
-        const view = getByLabelText('View');
+        const view = screen.getByRole('button', { name: 'View' });
         const user = userEvent.setup();
 
         await user.click(view);
@@ -342,27 +336,27 @@ describe('RepeatingBlock', () => {
             />
         );
 
-        const editIcon = getByLabelText('Edit');
+        const edit = getByRole('button', { name: 'Edit' });
         const user = userEvent.setup();
 
-        await user.click(editIcon);
+        await user.click(edit);
 
         expect(getByLabelText('First Input')).toBeInTheDocument();
         expect(getByLabelText('Second Input')).toBeInTheDocument();
 
-        const updateButton = getByRole('button', { name: 'Update test title' });
-        expect(updateButton).toBeInTheDocument();
-        expect(updateButton).toHaveAttribute('aria-description');
-        expect(updateButton.innerHTML).not.toContain('svg');
+        const update = getByRole('button', { name: 'Update test title' });
+        expect(update).toBeInTheDocument();
+        expect(update).toHaveAttribute('aria-description');
+        expect(update.innerHTML).not.toContain('svg');
 
-        const cancelButton = getByRole('button', { name: 'Cancel' });
-        expect(cancelButton).toBeInTheDocument();
-        expect(cancelButton).toHaveAttribute('aria-description');
+        const cancel = getByRole('button', { name: 'Cancel' });
+        expect(cancel).toBeInTheDocument();
+        expect(cancel).toHaveAttribute('aria-description');
     });
 
     it('should delete row when delete icon clicked', async () => {
         const onChange = jest.fn();
-        const { getByLabelText } = render(
+        render(
             <Fixture
                 onChange={onChange}
                 data={[
@@ -375,7 +369,7 @@ describe('RepeatingBlock', () => {
             />
         );
 
-        const remove = getByLabelText('Delete');
+        const remove = screen.getByRole('button', { name: 'Delete' });
         const user = userEvent.setup();
 
         await user.click(remove);
@@ -399,7 +393,7 @@ describe('RepeatingBlock', () => {
             />
         );
 
-        const edit = getByLabelText('Edit');
+        const edit = getByRole('button', { name: 'Edit' });
 
         const user = userEvent.setup();
 

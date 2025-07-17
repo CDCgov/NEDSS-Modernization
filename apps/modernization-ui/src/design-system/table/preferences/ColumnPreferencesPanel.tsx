@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from '@hello-pangea/dnd';
-import { useColumnPreferences, ColumnPreference } from './useColumnPreferences';
 import { Checkbox } from 'design-system/checkbox';
 import { Icon } from 'design-system/icon';
 import { Button } from 'design-system/button';
-
-import styles from './column-preference-panel.module.scss';
 import { Sizing } from 'design-system/field';
 import { ClosablePanel } from 'design-system/panel/closable';
+import { ColumnPreference, isNamed, isLabeled, NamedColumnPreference } from './preference';
+import { useColumnPreferences } from './useColumnPreferences';
+
+import styles from './column-preference-panel.module.scss';
 
 const swap =
     <I,>(items: I[]) =>
@@ -30,13 +31,17 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
         setPending(structuredClone(preferences));
     }, [JSON.stringify(preferences)]);
 
-    const handleVisibilityChange = (preference: ColumnPreference) => (visible: boolean) => {
+    const handleVisibilityChange = (preference: NamedColumnPreference) => (visible: boolean) => {
         setPending((current) => {
             const copy = current.slice();
             const index = copy.indexOf(preference);
 
             if (index >= 0) {
-                copy[index].hidden = !visible;
+                const found = copy[index];
+
+                if (isNamed(found)) {
+                    found.hidden = !visible;
+                }
             }
             return copy;
         });
@@ -45,9 +50,15 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
     const handleDragEnd = (result: DropResult) => {
         if (result.destination) {
             const { source, destination } = result;
-            setPending((current) =>
-                current[destination.index].moveable ? swap(current)(source.index, destination.index) : current
-            );
+            setPending((current) => {
+                const found = current[destination.index];
+
+                if (isNamed(found) && found.moveable) {
+                    return swap(current)(source.index, destination.index);
+                }
+
+                return current;
+            });
         }
     };
 
@@ -71,7 +82,7 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
                     <Button tertiary sizing={sizing} onClick={handleReset}>
                         Reset
                     </Button>
-                    <Button type="button" id="save-column-preferences" secondary sizing={sizing} onClick={handleSave}>
+                    <Button type="button" secondary sizing={sizing} onClick={handleSave}>
                         Save columns
                     </Button>
                 </div>
@@ -83,26 +94,25 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
                             {pending.map((preference, index) => (
                                 <Draggable
                                     key={preference.id}
-                                    draggableId={preference.id + 1}
+                                    draggableId={preference.id}
                                     index={index}
-                                    isDragDisabled={!preference.moveable}>
+                                    disableInteractiveElementBlocking
+                                    isDragDisabled={
+                                        isLabeled(preference) || (isNamed(preference) && !preference.moveable)
+                                    }>
                                     {(draggable: DraggableProvided) => (
-                                        <div
-                                            ref={draggable.innerRef}
-                                            {...draggable.draggableProps}
-                                            className={styles.preference}>
-                                            <Checkbox
-                                                id={`${preference.id}_visible`}
-                                                name={preference.id}
-                                                label={preference.name}
-                                                disabled={!preference.toggleable}
-                                                selected={!preference.hidden}
-                                                onChange={handleVisibilityChange(preference)}
-                                            />
-                                            {preference.moveable && (
-                                                <span className={styles.handle} {...draggable.dragHandleProps}>
-                                                    <Icon name="drag" />
-                                                </span>
+                                        <div ref={draggable.innerRef} {...draggable.draggableProps}>
+                                            {isNamed(preference) && (
+                                                <PreferenceOption
+                                                    draggable={draggable}
+                                                    onVisibilityChange={handleVisibilityChange(preference)}>
+                                                    {preference}
+                                                </PreferenceOption>
+                                            )}
+                                            {isLabeled(preference) && (
+                                                <PreferencePlaceholder draggable={draggable}>
+                                                    {preference}
+                                                </PreferencePlaceholder>
                                             )}
                                         </div>
                                     )}
@@ -116,5 +126,38 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
         </ClosablePanel>
     );
 };
+
+type PreferencePlaceholderProps = {
+    draggable: DraggableProvided;
+    children: ColumnPreference;
+};
+
+const PreferencePlaceholder = ({ draggable, children }: PreferencePlaceholderProps) => (
+    <span id={children.id} {...draggable.dragHandleProps} tabIndex={-1} />
+);
+
+type PreferenceOptionProps = {
+    draggable: DraggableProvided;
+    onVisibilityChange: (value: boolean) => void;
+    children: NamedColumnPreference;
+};
+
+const PreferenceOption = ({ draggable, onVisibilityChange, children }: PreferenceOptionProps) => (
+    <span className={styles.preference}>
+        <Checkbox
+            id={`${children.id}_visible`}
+            name={children.id}
+            label={children.name}
+            disabled={!children.toggleable}
+            selected={!children.hidden}
+            onChange={onVisibilityChange}
+        />
+        {children.moveable && (
+            <span className={styles.handle} {...draggable.dragHandleProps}>
+                <Icon name="drag" />
+            </span>
+        )}
+    </span>
+);
 
 export { ColumnPreferencesPanel };
