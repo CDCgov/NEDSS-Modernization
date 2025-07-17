@@ -4,7 +4,6 @@ import { Button } from 'design-system/button';
 import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { Icon } from 'design-system/icon';
 
 type AttributeProps = {
     label: string;
@@ -33,10 +32,11 @@ export const BlockingCriteriaAttribute = ({ label, description, attribute, onRem
                 </div>
                 <div>
                     <Button
-                        icon={<Icon name="delete" />}
-                        outline
+                        icon="delete"
+                        secondary
                         sizing="small"
                         destructive
+                        aria-label="Remove"
                         onClick={() => onRemove(attribute)}
                     />
                 </div>

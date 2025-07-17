@@ -8,11 +8,11 @@ type LabeledValueProps = {
     label: string;
     orientation?: Orientation;
     children: ReactNode;
-};
+} & JSX.IntrinsicElements['span'];
 
-const LabeledValue = ({ label, orientation, children }: LabeledValueProps) => {
+const LabeledValue = ({ label, orientation, children, ...remaining }: LabeledValueProps) => {
     return (
-        <span className={classNames(styles.labeled, { [styles.vertical]: orientation === 'vertical' })}>
+        <span className={classNames(styles.labeled, { [styles.vertical]: orientation === 'vertical' })} {...remaining}>
             <strong>{label}</strong>
             {children}
         </span>

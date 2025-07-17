@@ -28,11 +28,11 @@ export const LengthConstrained = ({ content, limit }: Props) => {
                 <Shown
                     when={constrained}
                     fallback={
-                        <Button unstyled sizing="small" onClick={() => setConstrained(true)}>
+                        <Button tertiary sizing="small" onClick={() => setConstrained(true)}>
                             [show less]
                         </Button>
                     }>
-                    <Button unstyled sizing="small" onClick={() => setConstrained(false)}>
+                    <Button tertiary sizing="small" onClick={() => setConstrained(false)}>
                         [show more]
                     </Button>
                 </Shown>

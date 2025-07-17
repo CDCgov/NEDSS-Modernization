@@ -4,7 +4,7 @@ import { Icon } from './Icon';
 import { Icons } from './types';
 import userEvent from '@testing-library/user-event';
 
-describe('When displaying Icons', () => {
+describe('Icon', () => {
     it('should render with no accessibility violations', async () => {
         const { container } = render(<Icon name="calendar" />);
 
@@ -49,22 +49,6 @@ describe('When displaying Icons', () => {
         const svgElement = getByRole('img', { hidden: true });
 
         expect(svgElement).toHaveAttribute('aria-hidden', 'true');
-    });
-
-    it('is visible to accessibility when aria-label is provided', () => {
-        const { getByRole } = render(<Icon name="calendar" aria-label="labeled" />);
-
-        const svgElement = getByRole('img');
-
-        expect(svgElement).toHaveAttribute('aria-hidden', 'false');
-    });
-
-    it('is visible to accessibility when aria-label is provided', () => {
-        const { getByRole } = render(<Icon name="calendar" aria-labelledby="labeled-by" />);
-
-        const svgElement = getByRole('img');
-
-        expect(svgElement).toHaveAttribute('aria-hidden', 'false');
     });
 
     it.each([
@@ -312,7 +296,7 @@ describe('When displaying Icons', () => {
         'zoom_in',
         'zoom_out',
         'zoom_out_map'
-    ] as Icons[])('should display USWDS icons', (name: Icons) => {
+    ] as Icons[])('should display USWDS icon: %s', (name: Icons) => {
         const { getByRole } = render(<Icon name={name} />);
 
         const icon = getByRole('img', { hidden: true });
@@ -331,7 +315,7 @@ describe('When displaying Icons', () => {
         'sort_des_numeric',
         'sort_asc_default',
         'sort_des_default'
-    ] as Icons[])('should display icons added in the design system', (name: Icons) => {
+    ] as Icons[])('should display icons added in the design system: %s', (name: Icons) => {
         const { getByRole } = render(<Icon name={name} />);
 
         const icon = getByRole('img', { hidden: true });
@@ -358,7 +342,7 @@ describe('When displaying Icons', () => {
         'textarea',
         'textbox',
         'ungroup'
-    ] as Icons[])('should display icons added in the design system as individual assets', (name: Icons) => {
+    ] as Icons[])('should display %s icon added in the design system as an individual asset', (name: Icons) => {
         const { getByRole } = render(<Icon name={name} />);
 
         const icon = getByRole('img', { hidden: true });

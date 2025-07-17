@@ -1,70 +1,28 @@
 @use 'styles/colors';
 
 $arrowWidth: 0.5rem;
+$arrowBuffer: calc(0.5rem + #{$arrowWidth});
 $bubbleWidth: calc($arrowWidth + 100%);
-
-[data-tooltip-position][aria-label] {
-    position: relative;
-
-    &::before {
-        content: attr(aria-label);
-        pointer-events: none;
-        white-space: pre;
-        position: absolute;
-        color: colors.$base-lightest;
-        background: colors.$base-darkest;
-        padding: 0.5rem;
-        border-radius: 0.25rem;
-        opacity: 0;
-        visibility: hidden;
-        font-weight: normal;
-        font-size: 0.875rem;
-        line-height: 1.3;
-        z-index: 1000;
-    }
-
-    &::after {
-        content: '';
-        pointer-events: none;
-        width: 0;
-        height: 0;
-        position: absolute;
-        border-color: colors.$base-darkest;
-        border-width: 0;
-        border-style: solid;
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    &:hover {
-        &::before,
-        &::after {
-            visibility: visible;
-            opacity: 1;
-            transition-property: opacity;
-            transition-duration: 0.2s;
-            transition-timing-function: ease-in-out;
-            transition-delay: 0s;
-        }
-    }
-}
 
 @mixin bubble($position, $offset: 'none') {
     @if $position == 'top' or $position == 'bottom' {
         #{$position}: $bubbleWidth;
-        transform: translateX(50%);
 
         @if $offset == 'left' {
             right: 100%;
+            transform: translateX($arrowBuffer);
         } @else if $offset == 'right' {
             right: 0;
+            transform: translateX(calc(100% - $arrowBuffer));
         } @else if $offset == 'center' {
             left: 50%;
             transform: translateX(-50%);
         } @else {
             right: 50%;
+            transform: translateX(50%);
         }
     } @else {
+        // left / right
         #{$position}: calc(1rem + 100%);
         transform: translateY(50%);
         bottom: 50%;
@@ -89,68 +47,143 @@ $bubbleWidth: calc($arrowWidth + 100%);
     transform: translateY(50%);
 }
 
-[data-tooltip-position='top'][aria-label] {
-    &:not([data-tooltip-offset])::before {
-        @include bubble(bottom);
+@mixin tooltip($messageProperty: 'aria-label') {
+    position: relative;
+    z-index: 10000;
+
+    &::before {
+        content: attr(#{$messageProperty});
+        pointer-events: none;
+        white-space: pre;
+        position: absolute;
+        color: colors.$base-lightest;
+        background: colors.$base-darkest;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+
+        font-weight: normal;
+        font-size: 0.875rem;
+        line-height: 1.3;
     }
 
-    &[data-tooltip-offset='left'] {
-        &::before {
-            @include bubble(bottom, left);
+    &::after {
+        content: '';
+        pointer-events: none;
+        width: 0;
+        height: 0;
+        position: absolute;
+        border-color: colors.$base-darkest;
+        border-width: 0;
+        border-style: solid;
+    }
+
+    &::before,
+    &::after {
+        transition-property: opacity;
+        transition-duration: 0.2s;
+        transition-timing-function: ease-in-out;
+        transition-delay: 0s;
+    }
+
+    &[data-tooltip-position='bottom'] {
+        &:not([data-tooltip-offset])::before {
+            @include bubble(top);
+        }
+
+        &[data-tooltip-offset='left'] {
+            &::before {
+                @include bubble(top, left);
+            }
+        }
+
+        &[data-tooltip-offset='right'] {
+            &::before {
+                @include bubble(top, right);
+            }
+        }
+
+        &[data-tooltip-offset='center'] {
+            &::before {
+                @include bubble(top, center);
+            }
+        }
+
+        &::after {
+            border-bottom-width: $arrowWidth;
+            top: 100%;
+            @include vertical-arrow();
         }
     }
 
-    &[data-tooltip-offset='right'] {
+    &[data-tooltip-position='left'] {
         &::before {
-            @include bubble(bottom, right);
+            @include bubble(right);
+        }
+
+        &::after {
+            border-left-width: $arrowWidth;
+            right: $bubbleWidth;
+            @include horizontal-arrow();
         }
     }
 
-    &[data-tooltip-offset='center'] {
+    &[data-tooltip-position='right'] {
         &::before {
-            @include bubble(bottom, center);
+            @include bubble(left);
+        }
+
+        &::after {
+            border-right-width: $arrowWidth;
+            left: $bubbleWidth;
+            @include horizontal-arrow();
         }
     }
 
-    &::after {
-        border-top-width: $arrowWidth;
-        bottom: 100%;
-        @include vertical-arrow();
+    &[data-tooltip-position='top'] {
+        &:not([data-tooltip-offset])::before {
+            @include bubble(bottom);
+        }
+
+        &[data-tooltip-offset='left'] {
+            &::before {
+                @include bubble(bottom, left);
+            }
+        }
+
+        &[data-tooltip-offset='right'] {
+            &::before {
+                @include bubble(bottom, right);
+            }
+        }
+
+        &[data-tooltip-offset='center'] {
+            &::before {
+                @include bubble(bottom, center);
+            }
+        }
+
+        &::after {
+            border-top-width: $arrowWidth;
+            bottom: 100%;
+            @include vertical-arrow();
+        }
     }
 }
 
-[data-tooltip-position='bottom'][aria-label] {
-    &::before {
-        @include bubble(top);
-    }
+[data-tooltip-position][aria-label] {
+    @include tooltip();
 
+    &::before,
     &::after {
-        border-bottom-width: $arrowWidth;
-        top: 100%;
-        @include vertical-arrow();
-    }
-}
-
-[data-tooltip-position='left'][aria-label] {
-    &::before {
-        @include bubble(right);
+        visibility: hidden;
+        opacity: 0;
     }
 
-    &::after {
-        border-left-width: $arrowWidth;
-        right: $bubbleWidth;
-        @include horizontal-arrow();
-    }
-}
-
-[data-tooltip-position='right'][aria-label] {
-    &::before {
-        @include bubble(left);
-    }
-
-    &::after {
-        border-right-width: $arrowWidth;
-        left: $bubbleWidth;
-        @include horizontal-arrow();
+    &:hover {
+        &::before,
+        &::after {
+            visibility: visible;
+            opacity: 1;
+        }
     }
 }

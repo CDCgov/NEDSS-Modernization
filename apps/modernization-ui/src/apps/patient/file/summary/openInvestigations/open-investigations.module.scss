@@ -1,0 +1,9 @@
+@use 'design-system/table/header/widths';
+
+.co-infection-header {
+    @include widths.fixed(10rem);
+}
+
+.status-header {
+    @include widths.fixed(7rem);
+}
