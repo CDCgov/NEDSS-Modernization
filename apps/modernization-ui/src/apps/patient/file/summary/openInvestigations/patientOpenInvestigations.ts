@@ -8,8 +8,8 @@ const transformer = (value: PatientInvestigationResponse): PatientFileOpenInvest
 });
 
 const patientOpenInvestigations = (patient: number) =>
-    PatientFileService.openInvestigations({ patientId: patient }).then((response) =>
-        response ? response.map(transformer) : []
-    );
+    PatientFileService.openInvestigations({ patientId: patient })
+        .then((response) => (response ? response.map(transformer) : []))
+        .catch(() => []);
 
 export { patientOpenInvestigations };
