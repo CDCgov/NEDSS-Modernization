@@ -4,7 +4,6 @@ import { Direction, SortingInteraction } from 'libs/sorting';
 import { Button } from 'design-system/button';
 import { FilterInteraction } from 'design-system/filter';
 import { Column, SortIconType } from 'design-system/table';
-import { Icon } from 'design-system/icon';
 import { Sizing } from 'design-system/field';
 import { HeaderFilterField } from './filter';
 import { isNamed, NamedColumn } from './column';
@@ -106,7 +105,7 @@ const SortableHeader = <V,>({ sorting, filtering, column, sizing, ...remaining }
                     {column.name}
                     <Button
                         tertiary
-                        icon={<Icon name={icon} />}
+                        icon={icon}
                         aria-label={`Sort ${column.name}`}
                         onClick={() => sorting.toggle(column.id)}
                     />

@@ -1,6 +1,5 @@
 import { OverlayPanel } from 'overlay';
 import { Button } from 'design-system/button';
-import { Icon } from 'design-system/icon';
 import { Sizing } from 'design-system/field';
 import { ColumnPreferencesPanel } from './ColumnPreferencesPanel';
 
@@ -22,7 +21,7 @@ const ColumnPreferencesAction = ({ sizing, position = 'right' }: ColumnPreferenc
                     data-tooltip-position="top"
                     data-tooltip-offset="center"
                     secondary
-                    icon={<Icon name="settings" />}
+                    icon="settings"
                     onClick={toggle}
                     sizing={sizing}
                 />

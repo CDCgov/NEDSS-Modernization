@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { Button } from 'design-system/button';
-import { Icon } from 'design-system/icon';
 import { Sizing } from 'design-system/field';
 
 import styles from './back-to-top.module.scss';
@@ -17,12 +16,7 @@ const BackToTop = ({ className, sizing }: BackToTopProps) => {
 
     return (
         <div className={classNames(styles.back, className)}>
-            <Button
-                className={styles.button}
-                sizing={sizing}
-                secondary
-                icon={<Icon name="arrow_upward" />}
-                onClick={handleClick}>
+            <Button className={styles.button} sizing={sizing} secondary icon="arrow_upward" onClick={handleClick}>
                 Back to top
             </Button>
         </div>

@@ -32,13 +32,6 @@ $large-height: 1.25rem;
 
                 --button-height: #{$medium-height};
                 --button-icon-size: #{$medium-height};
-
-                &[aria-pressed='true'] {
-                    border-radius: 0.25rem;
-                    padding: 0.0625rem;
-                    color: colors.$base-white;
-                    background-color: colors.$primary-darker;
-                }
             }
 
             &.small {

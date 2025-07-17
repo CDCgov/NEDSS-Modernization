@@ -14,7 +14,6 @@ import { ResultedTests } from 'libs/events/tests';
 
 import styles from './lab-reports.module.scss';
 import { permissions, Permitted } from 'libs/permission';
-import { Icon } from 'design-system/icon';
 import { LinkButton } from 'design-system/button';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
@@ -128,11 +127,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
         defaultColumnPreferences={columnPreferences}
         actions={
             <Permitted permission={permissions.labReport.add}>
-                <LinkButton
-                    secondary
-                    sizing={sizing}
-                    icon={<Icon name="add_circle" />}
-                    href={`/nbs/api/profile/${patient}/report/lab`}>
+                <LinkButton secondary sizing={sizing} icon="add_circle" href={`/nbs/api/profile/${patient}/report/lab`}>
                     Add lab report
                 </LinkButton>
             </Permitted>

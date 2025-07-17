@@ -1,6 +1,5 @@
 import { Button } from 'design-system/button';
 import styles from './BackToTopButton.module.scss';
-import { Icon } from 'design-system/icon';
 
 export const BackToTopButton = () => {
     const handleClick = () => {
@@ -8,12 +7,7 @@ export const BackToTopButton = () => {
     };
 
     return (
-        <Button
-            sizing="small"
-            secondary
-            icon={<Icon name="arrow_upward" aria-label="Back to top icon" />}
-            className={styles.button}
-            onClick={handleClick}>
+        <Button sizing="small" secondary icon="arrow_upward" className={styles.button} onClick={handleClick}>
             Back to top
         </Button>
     );
