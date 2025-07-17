@@ -5,7 +5,7 @@ const Logout = () => {
     return (
         <LoginWrapper>
             <ReturnMessage title="Logout confirmation">
-                You have successfully logged out.
+                You have successfully logged out or your session expired.
                 <br /> Thank you for using NBS.
             </ReturnMessage>
         </LoginWrapper>

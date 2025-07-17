@@ -27,7 +27,6 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAliv
         setIdle(true);
         warningTimer.start(
             () => {
-                fetch('/nbs/logout');
                 onIdle();
             },
             warningTimeout,

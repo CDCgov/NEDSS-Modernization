@@ -12,8 +12,8 @@ import IdleTimer from './IdleTimer';
 const ProtectedLayout = () => {
     const data = useLoaderData() as InitializationLoaderResult;
     const navigate = useNavigate();
+    const handleIdle = () => navigate('/nbs/logout');
 
-    const handleIdle = () => navigate('/expired');
     const handleIdleContinue = async () => {
         await currentUser();
     };
