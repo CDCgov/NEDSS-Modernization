@@ -13,7 +13,7 @@ describe('LaboratoryReportSearchCriteria', () => {
     it('renders the General search section expanded by default', () => {
         const { getAllByRole } = render(<LaboratoryReportSearchCriteria />);
 
-        const sections = getAllByRole('group');
+        const sections = getAllByRole('region');
 
         const general = sections[0];
 
@@ -24,7 +24,7 @@ describe('LaboratoryReportSearchCriteria', () => {
     it('renders the Lab report criteria section collapsed by default', () => {
         const { getAllByRole } = render(<LaboratoryReportSearchCriteria />);
 
-        const sections = getAllByRole('group');
+        const sections = getAllByRole('region');
 
         const criteria = sections[1];
 
