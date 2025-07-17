@@ -1,5 +1,6 @@
 import { PatientFileService, PatientInvestigation as PatientInvestigationResponse } from 'generated';
 import { maybeDate } from 'date';
+import { mapOr } from 'utils/mapping';
 import { PatientFileInvestigation } from './investigation';
 
 const transformer = (value: PatientInvestigationResponse): PatientFileInvestigation => ({
@@ -8,8 +9,8 @@ const transformer = (value: PatientInvestigationResponse): PatientFileInvestigat
 });
 
 const patientInvestigations = (patient: number) =>
-    PatientFileService.investigations({ patientId: patient }).then((response) =>
-        response ? response.map(transformer) : []
-    );
+    PatientFileService.investigations({ patientId: patient })
+        .then(mapOr((response) => response.map(transformer), []))
+        .catch(() => []);
 
 export { patientInvestigations };
