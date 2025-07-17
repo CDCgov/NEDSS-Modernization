@@ -5,7 +5,7 @@ import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Sizing } from 'design-system/field';
 import { Card, CardProps } from 'design-system/card';
-import { Tooltip } from 'design-system/tool-tip';
+import { Tooltip } from 'design-system/tooltip';
 import { Icon } from 'design-system/icon';
 import { Tag } from 'design-system/tag';
 import { AlertMessage } from 'design-system/message';
