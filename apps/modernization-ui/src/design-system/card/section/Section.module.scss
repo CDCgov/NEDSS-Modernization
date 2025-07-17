@@ -2,7 +2,6 @@
 @use 'styles/borders';
 
 .cardContainer {
-    border-bottom: 1px solid colors.$base-lighter;
     @extend %thin;
     box-shadow: none;
     border-radius: 0;
