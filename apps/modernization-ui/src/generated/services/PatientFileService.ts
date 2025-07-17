@@ -100,7 +100,7 @@ export class PatientFileService {
     }): CancelablePromise<Array<MergeHistory>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/api/history/{patientId}',
+            url: '/nbs/api/history/{patient}',
             path: {
                 'patient': patient,
             },
