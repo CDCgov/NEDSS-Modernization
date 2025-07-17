@@ -31,6 +31,15 @@ export const SkipLinkProvider = ({ children }: SkipLinkProviderProps) => {
         setCurrentFocusTargets((prev) => prev.filter((target) => target !== id));
     };
 
+    // On each skip link render, check each current focus target to make sure they exist.
+    // If the target is not in the document, remove the target from the focus list.
+    currentFocusTargets.forEach((targetId) => {
+        const validTarget = document.getElementById(targetId)?.id;
+        if (validTarget === undefined) {
+            remove(targetId);
+        }
+    });
+
     const contextValue: SkipLinkContextType = {
         skipTo,
         remove,
