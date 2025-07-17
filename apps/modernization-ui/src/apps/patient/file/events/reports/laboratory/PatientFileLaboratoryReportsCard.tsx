@@ -46,7 +46,7 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
     },
     {
         ...DATE_RECEIVED,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.receivedDate,
         render: (value) => internalizeDateTime(value.receivedDate),
@@ -73,14 +73,13 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
     },
     {
         ...DATE_COLLECTED,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.collectedDate,
         sortIconType: 'numeric'
     },
     {
         ...TEST_RESULTS,
-        className: styles['text-header'],
         sortable: true,
         value: (value) => value.resultedTests?.[0]?.name,
         render: (value) => (
@@ -92,7 +91,7 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
     },
     {
         ...ASSOCIATED_WITH,
-        className: styles['text-header'],
+        className: styles['local-header'],
         sortable: true,
         value: (value) => value.associations?.[0]?.local,
         render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
@@ -100,11 +99,13 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
     {
         ...PROGRAM_AREA,
         sortable: true,
+        className: styles['long-coded-header'],
         value: (value) => value.programArea
     },
     {
         ...JURISDICTION,
         sortable: true,
+        className: styles['long-coded-header'],
         value: (value) => value.jurisdiction
     }
 ];
