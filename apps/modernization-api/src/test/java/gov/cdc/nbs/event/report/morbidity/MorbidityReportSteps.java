@@ -1,5 +1,6 @@
 package gov.cdc.nbs.event.report.morbidity;
 
+import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
@@ -23,6 +24,7 @@ public class MorbidityReportSteps {
   private final Active<OrganizationIdentifier> activeOrganization;
   private final Active<ProviderIdentifier> activeProvider;
   private final Active<MorbidityReportIdentifier> activeReport;
+  private final Active<InvestigationIdentifier> activeInvestigation;
   private final MorbidityReportMother reportMother;
 
   public MorbidityReportSteps(
@@ -32,6 +34,7 @@ public class MorbidityReportSteps {
       final Active<OrganizationIdentifier> activeOrganization,
       final Active<ProviderIdentifier> activeProvider,
       final Active<MorbidityReportIdentifier> activeReport,
+      final Active<InvestigationIdentifier> activeInvestigation,
       final MorbidityReportMother reportMother
   ) {
     this.activeJurisdiction = activeJurisdiction;
@@ -40,6 +43,7 @@ public class MorbidityReportSteps {
     this.activeOrganization = activeOrganization;
     this.activeProvider = activeProvider;
     this.activeReport = activeReport;
+    this.activeInvestigation = activeInvestigation;
     this.reportMother = reportMother;
   }
 
@@ -101,6 +105,12 @@ public class MorbidityReportSteps {
         .ifPresent(report -> reportMother.withCondition(report, condition));
   }
 
+  @Given("the morbidity report was added on {localDate} at {time}")
+  public void addedOn(final LocalDate on, final LocalTime at) {
+    activeReport.maybeActive()
+        .ifPresent(report -> reportMother.addedOn(report, LocalDateTime.of(on, at)));
+  }
+
   @Given("the morbidity report was received on {localDate} at {time}")
   public void receivedOn(final LocalDate on, final LocalTime at) {
     activeReport.maybeActive()
@@ -120,4 +130,18 @@ public class MorbidityReportSteps {
             .ifPresent(provider -> reportMother.orderedBy(report, provider))
         );
   }
+
+  @Given("the morbidity report was reported by the provider")
+  public void reportedBy() {
+    activeReport.maybeActive()
+        .ifPresent(report -> this.activeProvider.maybeActive()
+            .ifPresent(provider -> reportMother.reportedBy(report, provider))
+        );
+  }
+
+  @Given("the morbidity report is associated with the investigation")
+  public void associatedWith() {
+    activeReport.maybeActive().ifPresent(report -> reportMother.createAssociated(report, activeInvestigation.active()));
+  }
+
 }

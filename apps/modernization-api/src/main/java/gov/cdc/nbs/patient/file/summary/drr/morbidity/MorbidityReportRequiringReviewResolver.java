@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.file.summary.drr.morbidity;
 
 import gov.cdc.nbs.patient.events.report.morbidity.MorbidityReportResultedTestResolver;
+import gov.cdc.nbs.patient.events.report.morbidity.MorbidityReportTreatmentFinder;
 import gov.cdc.nbs.patient.events.tests.ResultedTest;
 import gov.cdc.nbs.patient.file.summary.drr.DocumentRequiringReview;
 import gov.cdc.nbs.patient.file.summary.drr.DocumentsRequiringReviewCriteria;
@@ -36,7 +37,7 @@ public class MorbidityReportRequiringReviewResolver {
           .map(DocumentRequiringReview::id)
           .toList();
 
-      Map<Long, Collection<String>> treatments = treatments(criteria);
+      Map<Long, Collection<String>> treatments = treatments(criteria, identifiers);
 
       Map<Long, Collection<ResultedTest>> resultedTests = resultedTests(identifiers);
 
@@ -55,9 +56,12 @@ public class MorbidityReportRequiringReviewResolver {
     return Collections.emptyList();
   }
 
-  private Map<Long, Collection<String>> treatments(final DocumentsRequiringReviewCriteria criteria) {
+  private Map<Long, Collection<String>> treatments(
+      final DocumentsRequiringReviewCriteria criteria,
+      final Collection<Long> identifiers
+  ) {
     return criteria.treatmentScope().allowed()
-        ? this.treatmentFinder.find(criteria.patient(), criteria.morbidityReportScope())
+        ? this.treatmentFinder.find(identifiers)
         : Collections.emptyMap();
   }
 
