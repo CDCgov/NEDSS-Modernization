@@ -46,7 +46,7 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
     },
     {
         ...DATE_RECEIVED,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.receivedDate,
         render: (value) => internalizeDateTime(value.receivedDate),
@@ -73,7 +73,7 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
     },
     {
         ...DATE_COLLECTED,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.collectedDate,
         sortIconType: 'numeric'
@@ -99,7 +99,7 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
     {
         ...PROGRAM_AREA,
         sortable: true,
-        className: styles['coded-header'],
+        className: styles['long-coded-header'],
         value: (value) => value.programArea
     },
     {
