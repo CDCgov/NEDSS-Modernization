@@ -50,8 +50,17 @@ const resolveUrl = (value: PatientFileDocumentRequiringReview) => {
     }
 };
 
-const renderEventDate = (value?: string) => {
-    return internalizeDate(value);
+const renderEventDate = (value?: PatientFileDocumentRequiringReview) => {
+    if (value?.type === 'Morbidity Report') {
+        return (
+            <>
+                <strong>Report Date:</strong>
+                <br />
+                {internalizeDate(value.eventDate)}
+            </>
+        );
+    }
+    return internalizeDate(value?.eventDate);
 };
 
 const renderEventId = (value: PatientFileDocumentRequiringReview) => {
@@ -101,7 +110,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,
-        render: (value) => renderEventDate(value.eventDate)
+        render: (value) => renderEventDate(value)
     },
     {
         ...DESCRIPTION,
