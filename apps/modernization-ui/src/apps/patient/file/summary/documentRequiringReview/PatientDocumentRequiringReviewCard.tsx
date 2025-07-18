@@ -86,6 +86,9 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
     },
     {
         ...REPORTING,
+        sortable: true,
+        sortIconType: 'alpha',
+        value: (value) => value.reportingFacility ?? value.orderingProvider?.first ?? value.orderingFacility,
         className: styles['reporting-header'],
         render: (value) =>
             renderFacilityProvider(
@@ -105,6 +108,9 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
     },
     {
         ...DESCRIPTION,
+        sortable: true,
+        sortIconType: 'alpha',
+        value: (value) => value.condition ?? value.resultedTests?.at(0)?.name,
         render: renderDescription
     }
 ];
