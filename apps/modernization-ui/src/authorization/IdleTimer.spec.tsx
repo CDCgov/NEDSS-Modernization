@@ -4,6 +4,7 @@ import IdleTimer from './IdleTimer';
 
 interface FixtureProps {
     onIdle: () => void;
+    fetch: () => void;
 }
 
 const timeout = 5000;
@@ -15,9 +16,11 @@ const Fixture: React.FC<FixtureProps> = ({ onIdle }) => {
 
 describe('IdleTimer Component', () => {
     let onIdle: jest.Mock;
+    let fetch: jest.Mock;
 
     beforeEach(() => {
         onIdle = jest.fn();
+        fetch = jest.fn();
         jest.useFakeTimers();
         jest.clearAllTimers();
     });
@@ -67,7 +70,7 @@ describe('IdleTimer Component', () => {
         });
         expect(queryByRole('dialog')).toBeInTheDocument();
         jest.advanceTimersByTime(2000);
-        expect(onIdle).toHaveBeenCalledTimes(0);
+        expect(fetch).toHaveBeenCalledTimes(1);
     });
 
     it('should reset timers on continue', () => {
