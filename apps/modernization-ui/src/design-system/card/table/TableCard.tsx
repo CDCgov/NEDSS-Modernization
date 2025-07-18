@@ -48,7 +48,6 @@ const TableCard = <V,>({
             id={id}
             title={title}
             className={className}
-            sizing={sizing}
             collapsible={collapsible}
             open={collapsible && props.data.length > 0}
             flair={<Tag size={sizing}>{props.data.length}</Tag>}
@@ -58,7 +57,7 @@ const TableCard = <V,>({
                     <ColumnPreferencesAction sizing={sizing} />
                 </>
             }>
-            <ManagedDataTable {...props} id={`${id}-table`} columns={columns} />
+            <ManagedDataTable {...props} id={`${id}-table`} sizing={sizing} columns={columns} />
         </ColumnPreferencesCard>
     );
 };
