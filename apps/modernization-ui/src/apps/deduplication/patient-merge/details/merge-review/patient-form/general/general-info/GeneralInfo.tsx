@@ -3,6 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
 import { toDateDisplay } from '../../../../shared/toDateDisplay';
+import { Permitted } from 'libs/permission';
 
 type Props = {
     personUid: string;
@@ -157,21 +158,23 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                     />
                 )}
             />
-            <Controller
-                control={form.control}
-                name="generalInfo.stateHivCaseId"
-                render={({ field }) => (
-                    <MergeDataDisplay
-                        label="State HIV case ID"
-                        display={generalInfo.stateHivCaseId}
-                        selectable={{
-                            id: `${field.name}-${personUid}`,
-                            formValue: personUid,
-                            ...field
-                        }}
-                    />
-                )}
-            />
+            <Permitted permission="HIVQUESTIONS-GLOBAL">
+                <Controller
+                    control={form.control}
+                    name="generalInfo.stateHivCaseId"
+                    render={({ field }) => (
+                        <MergeDataDisplay
+                            label="State HIV case ID"
+                            display={generalInfo.stateHivCaseId}
+                            selectable={{
+                                id: `${field.name}-${personUid}`,
+                                formValue: personUid,
+                                ...field
+                            }}
+                        />
+                    )}
+                />
+            </Permitted>
         </section>
     );
 };

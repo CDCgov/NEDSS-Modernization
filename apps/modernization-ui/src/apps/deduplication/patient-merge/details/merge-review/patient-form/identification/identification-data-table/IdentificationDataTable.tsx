@@ -4,6 +4,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
 import { toDateDisplay } from '../../../../shared/toDateDisplay';
+import styles from './identification-data-table.module.scss';
 
 type Props = {
     patientData: MergeCandidate;
@@ -32,11 +33,13 @@ export const IdentificationDataTable = ({ patientData, selectedIdentification, o
         {
             id: 'as-of',
             name: 'As of',
+            className: styles['date-header'],
             render: (i) => toDateDisplay(i.asOf)
         },
         {
             id: 'type',
             name: 'Type',
+            className: styles['text-header'],
             render: (i) => i.type
         },
         {
