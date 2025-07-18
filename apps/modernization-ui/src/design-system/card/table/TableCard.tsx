@@ -35,6 +35,7 @@ const TableCard = <V,>({
     columns,
     columnPreferencesKey,
     defaultColumnPreferences,
+    sizing,
     ...props
 }: TableCardProps<V>) => {
     const ColumnPreferencesCard = withColumnPreferences(Card, {
@@ -49,14 +50,14 @@ const TableCard = <V,>({
             className={className}
             collapsible={collapsible}
             open={collapsible && props.data.length > 0}
-            flair={<Tag size={props.sizing}>{props.data.length}</Tag>}
+            flair={<Tag size={sizing}>{props.data.length}</Tag>}
             actions={
                 <>
                     {actions}
-                    <ColumnPreferencesAction sizing="small" />
+                    <ColumnPreferencesAction sizing={sizing} />
                 </>
             }>
-            <ManagedDataTable {...props} id={`${id}-table`} columns={columns} />
+            <ManagedDataTable {...props} id={`${id}-table`} sizing={sizing} columns={columns} />
         </ColumnPreferencesCard>
     );
 };

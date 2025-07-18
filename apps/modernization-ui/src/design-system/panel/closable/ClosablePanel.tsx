@@ -12,14 +12,15 @@ type Closable = {
 
 type FooterRenderer = (closeable: Closable) => ReactNode;
 
-type Props = {
+type ClosablePanelProps = {
     title: string;
     headingLevel?: HeadingLevel;
     children: ReactNode;
     footer?: FooterRenderer;
-} & Closable;
+} & Closable &
+    JSX.IntrinsicElements['div'];
 
-const ClosablePanel = ({ title, headingLevel = 2, children, footer, onClose }: Props) => {
+const ClosablePanel = ({ title, headingLevel = 2, children, footer, onClose }: ClosablePanelProps) => {
     return (
         <div className={styles.panel}>
             <header>
