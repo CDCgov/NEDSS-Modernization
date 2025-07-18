@@ -14,7 +14,6 @@ import { ResultedTests } from 'libs/events/tests';
 
 import styles from './lab-reports.module.scss';
 import { permissions, Permitted } from 'libs/permission';
-import { Icon } from 'design-system/icon';
 import { LinkButton } from 'design-system/button';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
@@ -47,7 +46,7 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
     },
     {
         ...DATE_RECEIVED,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.receivedDate,
         render: (value) => internalizeDateTime(value.receivedDate),
@@ -74,14 +73,13 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
     },
     {
         ...DATE_COLLECTED,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.collectedDate,
         sortIconType: 'numeric'
     },
     {
         ...TEST_RESULTS,
-        className: styles['text-header'],
         sortable: true,
         value: (value) => value.resultedTests?.[0]?.name,
         render: (value) => (
@@ -93,7 +91,7 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
     },
     {
         ...ASSOCIATED_WITH,
-        className: styles['text-header'],
+        className: styles['local-header'],
         sortable: true,
         value: (value) => value.associations?.[0]?.local,
         render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
@@ -101,11 +99,13 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
     {
         ...PROGRAM_AREA,
         sortable: true,
+        className: styles['long-coded-header'],
         value: (value) => value.programArea
     },
     {
         ...JURISDICTION,
         sortable: true,
+        className: styles['long-coded-header'],
         value: (value) => value.jurisdiction
     }
 ];
@@ -128,11 +128,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
         defaultColumnPreferences={columnPreferences}
         actions={
             <Permitted permission={permissions.labReport.add}>
-                <LinkButton
-                    secondary
-                    sizing={sizing}
-                    icon={<Icon name="add_circle" />}
-                    href={`/nbs/api/profile/${patient}/report/lab`}>
+                <LinkButton secondary sizing={sizing} icon="add_circle" href={`/nbs/api/profile/${patient}/report/lab`}>
                     Add lab report
                 </LinkButton>
             </Permitted>

@@ -16,13 +16,11 @@ export type IconProps = {
 const Icon = ({ name, sizing, role = 'img', className, ...props }: IconProps) => {
     const location = resolveLocation(name);
 
-    const hidden = props['aria-hidden'] || !(props['aria-label'] || props['aria-labelledby']);
-
     return (
         <svg
             className={classNames(styles.icon, className, sizing && styles[sizing])}
             role={role}
-            aria-hidden={hidden}
+            aria-hidden={true}
             {...props}>
             <use xlinkHref={location} />
         </svg>
