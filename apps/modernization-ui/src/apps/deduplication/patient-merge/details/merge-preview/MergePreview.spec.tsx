@@ -139,7 +139,7 @@ describe('MergePreview', () => {
 
     it('renders components correctly', () => {
         render(<Fixture />);
-        const adminComments = screen.getAllByRole('heading', { name: /Administrative comments/i });
+        const adminComments = screen.getAllByRole('heading', { name: /Administrative/i });
         expect(adminComments.length).toBeGreaterThan(0);
         const name = screen.getAllByRole('heading', { name: /Name/i });
         expect(name.length).toBeGreaterThan(0);

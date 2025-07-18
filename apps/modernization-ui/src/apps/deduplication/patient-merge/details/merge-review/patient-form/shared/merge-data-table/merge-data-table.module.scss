@@ -3,10 +3,11 @@
 
 .dataTable {
     border-collapse: collapse !important;
-
+    table-layout: auto !important;
+    height: 100%;
     & > thead tr th {
         &:nth-of-type(1) {
-            width: 1rem;
+            width: 50px;
         }
 
         &:nth-of-type(5) {
@@ -23,15 +24,16 @@
                 }
 
                 .action {
-                    display: flex;
-                    gap: 0.5rem;
-                    justify-content: center;
-                    align-items: center;
-                    max-width: fit-content;
-
                     & > button {
+                        min-width: 1rem;
+                        padding: 0;
                         --button-height: 1rem;
                         --button-icon-size: 1rem;
+
+                        & > svg {
+                            width: 1rem;
+                            height: 1rem;
+                        }
                     }
 
                     .checkBox {
