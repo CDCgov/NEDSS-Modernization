@@ -47,6 +47,7 @@ export type { PatientGeneralInformationDemographic } from './models/PatientGener
 export type { PatientIdentificationDemographic } from './models/PatientIdentificationDemographic';
 export type { PatientInvestigation } from './models/PatientInvestigation';
 export type { PatientLabReport } from './models/PatientLabReport';
+export type { PatientMorbidityReport } from './models/PatientMorbidityReport';
 export type { PatientMortalityDemographic } from './models/PatientMortalityDemographic';
 export type { PatientNameDemographic } from './models/PatientNameDemographic';
 export type { PatientPhoneDemographic } from './models/PatientPhoneDemographic';
