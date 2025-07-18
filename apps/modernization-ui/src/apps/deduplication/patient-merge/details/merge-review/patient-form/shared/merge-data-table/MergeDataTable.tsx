@@ -60,14 +60,16 @@ export const MergeDataTable = <V,>({
             id: 'view-icon',
             name: '',
             render: (v) => (
-                <Button
-                    tertiary
-                    sizing="small"
-                    icon="visibility"
-                    aria-pressed={isViewed(v)}
-                    aria-label="View"
-                    onClick={() => onView(v)}
-                />
+                <div className={styles.action}>
+                    <Button
+                        tertiary
+                        sizing="small"
+                        icon="visibility"
+                        aria-pressed={isViewed(v)}
+                        aria-label="View"
+                        onClick={() => onView(v)}
+                    />
+                </div>
             )
         }
     ];

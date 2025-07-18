@@ -3,6 +3,12 @@ import { render, within } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { GeneralInfo } from './GeneralInfo';
 
+let mockPermissions: string[] = [];
+
+jest.mock('user', () => ({
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+}));
+
 const data: MergeGeneralInfo = {
     asOf: '2025-05-20T00:00:00',
     maritalStatus: 'Annulled',
@@ -25,6 +31,8 @@ const Fixture = ({ generalInfo = data }: { generalInfo?: MergeGeneralInfo }) => 
 };
 describe('GeneralInfo', () => {
     it('should render proper label and value', () => {
+        mockPermissions = ['HIVQUESTIONS-GLOBAL'];
+
         const { getByText } = render(<Fixture />);
 
         const asOf = getByText('As of date');
@@ -69,6 +77,7 @@ describe('GeneralInfo', () => {
     });
 
     it('should render --- for missing values', () => {
+        mockPermissions = ['HIVQUESTIONS-GLOBAL'];
         const { getByText } = render(<Fixture generalInfo={{}} />);
 
         const asOf = getByText('As of date');
@@ -110,5 +119,12 @@ describe('GeneralInfo', () => {
         const hivCase = getByText('State HIV case ID');
         expect(hivCase).toBeInTheDocument();
         expect(within(hivCase.parentElement!).getByText('---')).toBeInTheDocument();
+    });
+
+    it('should not render State HIV case ID if user lacks permission', () => {
+        mockPermissions = [];
+        const { queryByText } = render(<Fixture />);
+        const hivCase = queryByText('State HIV case ID');
+        expect(hivCase).not.toBeInTheDocument();
     });
 });

@@ -5,6 +5,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
 import { toDateDisplay } from '../../../../shared/toDateDisplay';
+import styles from './address-data-table.module.scss';
 
 type Props = {
     patientData: MergeCandidate;
@@ -31,11 +32,13 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
         {
             id: 'as-of',
             name: 'As of',
+            className: styles['date-header'],
             render: (n) => toDateDisplay(n.asOf)
         },
         {
             id: 'type',
             name: 'Type',
+            className: styles['text-header'],
             render: (n) => `${n.type}/${n.use}`
         },
         {
