@@ -1,26 +1,20 @@
-import React from 'react';
-import { act, fireEvent, render } from '@testing-library/react';
-import IdleTimer from './IdleTimer';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
+import IdleTimer, { IdleTimerProps } from './IdleTimer';
 
-interface FixtureProps {
-    onIdle: () => void;
-    fetch: () => void;
-}
+global.fetch = jest.fn();
 
 const timeout = 5000;
-const warningTimeout = 2000;
 
-const Fixture: React.FC<FixtureProps> = ({ onIdle }) => {
+const Fixture = ({ onIdle = () => {}, timeout = 5000, warningTimeout = 2000 }: Partial<IdleTimerProps>) => {
     return <IdleTimer timeout={timeout} keepAlivePath="/foo" warningTimeout={warningTimeout} onIdle={onIdle} />;
 };
 
 describe('IdleTimer Component', () => {
     let onIdle: jest.Mock;
-    let fetch: jest.Mock;
 
     beforeEach(() => {
         onIdle = jest.fn();
-        fetch = jest.fn();
+
         jest.useFakeTimers();
         jest.clearAllTimers();
     });
@@ -63,14 +57,20 @@ describe('IdleTimer Component', () => {
         expect(queryByRole('dialog')).not.toBeInTheDocument();
     });
 
-    it('should call onIdle after warning timeout', () => {
-        const { queryByRole } = render(<Fixture onIdle={onIdle} />);
-        act(() => {
-            jest.advanceTimersByTime(timeout + 100);
-        });
-        expect(queryByRole('dialog')).toBeInTheDocument();
-        jest.advanceTimersByTime(2000);
-        expect(fetch).toHaveBeenCalledTimes(1);
+    it('should call onIdle after warning timeout', async () => {
+        (global.fetch as jest.Mock).mockResolvedValue({});
+
+        render(<Fixture onIdle={onIdle} timeout={17} warningTimeout={29} />);
+
+        // advance time by the timeout plus warning, then a little extra to ensure the task
+        // completes.  Time advancement should be wrapped in an act due to state changes that
+        // occur within the component after the timeout and warningTimeout durations
+        act(() => jest.advanceTimersByTime(17 + 29 + 100));
+
+        expect(global.fetch).toHaveBeenCalledWith('/nbs/logout', { credentials: 'include' });
+
+        // onIdle isn't called right away, wait for it to be called
+        await waitFor(() => expect(onIdle).toHaveBeenCalled());
     });
 
     it('should reset timers on continue', () => {

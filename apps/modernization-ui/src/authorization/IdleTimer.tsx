@@ -127,3 +127,4 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAliv
 };
 
 export default IdleTimer;
+export type { IdleTimerProps };
