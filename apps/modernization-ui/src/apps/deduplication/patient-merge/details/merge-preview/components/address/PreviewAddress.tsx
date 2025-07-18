@@ -28,10 +28,12 @@ export const PreviewAddress = ({ selectedAddresses, mergeCandidates }: AddressPr
         .flatMap((m) => m.addresses)
         .filter((a) => selectedAddresses.find((sa) => sa.locatorId === a.id));
 
-    const initialAddresses: AddressEntry[] = detailedAddresses.map((a) => ({
-        ...a,
-        asOf: format(parseISO(a.asOf), 'MM/dd/yyyy')
-    }));
+    const initialAddresses: AddressEntry[] = detailedAddresses
+        .map((a) => ({
+            ...a,
+            asOf: format(parseISO(a.asOf), 'MM/dd/yyyy')
+        }))
+        .sort((a, b) => (parseISO(a.asOf) > parseISO(b.asOf) ? -1 : 1));
 
     const [addresses] = useState(initialAddresses);
 

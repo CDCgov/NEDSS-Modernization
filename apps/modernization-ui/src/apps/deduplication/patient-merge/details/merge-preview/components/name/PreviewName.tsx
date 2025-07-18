@@ -31,10 +31,12 @@ export const PreviewName = ({ selectedNames, mergeCandidates }: NameProps) => {
             selectedNames.some((sn) => sn.personUid === name.personUid && String(sn.sequence) === String(name.sequence))
         );
 
-    const initialNames: NameEntry[] = detailedNames.map((n) => ({
-        ...n,
-        asOf: format(parseISO(n.asOf), 'MM/dd/yyyy')
-    }));
+    const initialNames: NameEntry[] = detailedNames
+        .map((n) => ({
+            ...n,
+            asOf: format(parseISO(n.asOf), 'MM/dd/yyyy')
+        }))
+        .sort((a, b) => (parseISO(a.asOf) > parseISO(b.asOf) ? -1 : 1));
 
     const [names] = useState(initialNames);
     const columns: Column<NameEntry>[] = [

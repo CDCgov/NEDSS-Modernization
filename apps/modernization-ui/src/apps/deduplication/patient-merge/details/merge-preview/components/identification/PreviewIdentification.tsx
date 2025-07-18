@@ -22,7 +22,10 @@ export const PreviewIdentification = ({ selectedIdentifications, mergeCandidates
         .flatMap((m) => m.identifications)
         .filter((id) =>
             selectedIdentifications.some((sid) => sid.personUid === id.personUid && sid.sequence === id.sequence)
-        );
+        )
+        .sort((a, b) => {
+            return parseISO(a.asOf) > parseISO(b.asOf) ? -1 : 1;
+        });
 
     const initialIdentifications: IdentificationEntry[] = detailedIdentifications.map((id) => ({
         ...id,
