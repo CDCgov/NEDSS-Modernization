@@ -8,7 +8,7 @@ type Props = {
 export const AdminCommentsSelection = ({ mergeCandidates }: Props) => {
     return (
         <Section
-            title="ADMINISTRATIVE COMMENTS"
+            title="ADMINISTRATIVE"
             mergeCandidates={mergeCandidates}
             render={(p) => <AdminComment personUid={p.personUid} adminComments={p.adminComments} />}
         />

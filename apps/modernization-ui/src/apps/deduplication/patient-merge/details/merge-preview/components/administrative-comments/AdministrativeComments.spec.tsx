@@ -71,7 +71,7 @@ describe('AdministrativeComments', () => {
             />
         );
 
-        expect(screen.getByText(/Administrative comments/i)).toBeInTheDocument();
+        expect(screen.getByText(/Administrative/i)).toBeInTheDocument();
         expect(screen.getByText('05/30/2023')).toBeInTheDocument();
         expect(screen.getByText('This is a test comment')).toBeInTheDocument();
     });

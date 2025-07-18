@@ -21,7 +21,7 @@ export const AdministrativeComments = ({ mergeCandidates, mergeFormData }: Admin
     return (
         <Card
             id="admin-comments"
-            title="Administrative comments"
+            title="Administrative"
             subtext={formattedDate}
             className={styles.adminCommentsCard}
             level={2}
