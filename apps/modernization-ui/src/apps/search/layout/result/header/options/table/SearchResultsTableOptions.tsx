@@ -1,6 +1,5 @@
-import { OverlayPanel } from 'overlay';
 import { Sizing } from 'design-system/field';
-import { ColumnPreferencesPanel } from 'design-system/table/preferences';
+import { ColumnPreferencesAction } from 'design-system/table/preferences';
 import { useFilter } from 'design-system/filter';
 import { Button } from 'components/button';
 import { FeatureToggle } from 'feature';
@@ -44,23 +43,7 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
                     />
                 </div>
             </FeatureToggle>
-            <OverlayPanel
-                className={styles.overlay}
-                position="right"
-                toggle={({ toggle }) => (
-                    <Button
-                        aria-label="Settings"
-                        data-tooltip-position="top"
-                        data-tooltip-offset="center"
-                        secondary
-                        disabled={disabled}
-                        icon="settings"
-                        onClick={toggle}
-                        sizing={sizing}
-                    />
-                )}
-                render={(close) => <ColumnPreferencesPanel close={close} />}
-            />
+            <ColumnPreferencesAction sizing={sizing} />
         </>
     );
 };

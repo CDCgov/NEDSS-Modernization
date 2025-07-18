@@ -49,7 +49,6 @@ $bubbleWidth: calc($arrowWidth + 100%);
 
 @mixin tooltip($messageProperty: 'aria-label') {
     position: relative;
-    z-index: 10000;
 
     &::before {
         content: attr(#{$messageProperty});
@@ -79,6 +78,7 @@ $bubbleWidth: calc($arrowWidth + 100%);
 
     &::before,
     &::after {
+        z-index: 10000;
         transition-property: opacity;
         transition-duration: 0.2s;
         transition-timing-function: ease-in-out;
