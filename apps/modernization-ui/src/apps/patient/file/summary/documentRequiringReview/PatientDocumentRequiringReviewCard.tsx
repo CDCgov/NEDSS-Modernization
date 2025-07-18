@@ -7,9 +7,13 @@ import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { internalizeDate } from 'date';
 import { internalizeDateTime } from 'date/InternalizeDateTime';
-import { renderFacilityProvider, renderLabReports, renderMorbidity } from '../../renderPatientFile';
+import { renderFacilityProvider, renderMorbidity } from '../../renderPatientFile';
 import { PatientFileDocumentRequiringReview } from './drr';
 import { TableCardProps } from 'design-system/card/table/TableCard';
+import { MaybeLabeledValue } from 'design-system/value';
+import { ResultedTests } from 'libs/events/tests';
+
+import styles from './drr.module.scss';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
@@ -17,7 +21,16 @@ const renderDescription = (value: PatientFileDocumentRequiringReview) => {
             {value.type === 'Case Report' && <strong>{value.condition}</strong>}
             {value.type === 'Morbidity Report' &&
                 renderMorbidity(value.condition, value.resultedTests, value.treatments)}
-            {value.type === 'Laboratory Report' && renderLabReports(value.resultedTests)}
+            {value.type === 'Laboratory Report' && renderLabReport(value)}
+        </>
+    );
+};
+
+const renderLabReport = (value: PatientFileDocumentRequiringReview) => {
+    return (
+        <>
+            <ResultedTests>{value.resultedTests}</ResultedTests>
+            <MaybeLabeledValue label="Specimen Source:">{value?.specimen?.source}</MaybeLabeledValue>
         </>
     );
 };
@@ -55,10 +68,17 @@ const EVENT_DATE = { id: 'eventDate', name: 'Event date' };
 const DESCRIPTION = { id: 'description', name: 'Description' };
 
 const columns: Column<PatientFileDocumentRequiringReview>[] = [
-    { ...EVENT_ID, sortable: true, value: (value) => value.local, render: renderEventId },
-    { ...DOCUMENT_TYPE, sortable: true, value: (value) => value.type },
+    {
+        ...EVENT_ID,
+        className: styles['local-header'],
+        sortable: true,
+        value: (value) => value.local,
+        render: renderEventId
+    },
+    { ...DOCUMENT_TYPE, className: styles['text-header'], sortable: true, value: (value) => value.type },
     {
         ...DATE_RECEIVED,
+        className: styles['date-time-header'],
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.dateReceived,
@@ -69,6 +89,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         sortable: true,
         sortIconType: 'alpha',
         value: (value) => value.reportingFacility ?? value.orderingProvider?.first ?? value.orderingFacility,
+        className: styles['reporting-header'],
         render: (value) =>
             renderFacilityProvider(
                 value.reportingFacility,
@@ -79,6 +100,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
     },
     {
         ...EVENT_DATE,
+        className: styles['date-header'],
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,

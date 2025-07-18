@@ -26,34 +26,23 @@ $large-height: 1.25rem;
             justify-content: center;
             align-items: center;
 
-            & > button {
+            button.action {
                 --button-padding: 0rem;
                 min-width: 1rem;
 
                 --button-height: #{$medium-height};
                 --button-icon-size: #{$medium-height};
-
-                &[aria-pressed='true'] {
-                    border-radius: 0.25rem;
-                    padding: 0.0625rem;
-                    color: colors.$base-white;
-                    background-color: colors.$primary-darker;
-                }
             }
-        }
 
-        &.small {
-            .actions {
-                & > button {
+            &.small {
+                button.action {
                     --button-height: #{$small-height};
                     --button-icon-size: #{$small-height};
                 }
             }
-        }
 
-        &.large {
-            .actions {
-                & > button {
+            &.large {
+                button.action {
                     --button-height: #{$large-height};
                     --button-icon-size: #{$large-height};
                 }

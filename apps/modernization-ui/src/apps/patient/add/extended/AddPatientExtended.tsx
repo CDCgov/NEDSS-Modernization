@@ -55,7 +55,7 @@ export const AddPatientExtended = () => {
                         sections={sections}
                         actions={() => (
                             <>
-                                <Button onClick={handleCancel} outline>
+                                <Button onClick={handleCancel} secondary>
                                     Cancel
                                 </Button>
                                 <Button onClick={handleSave} disabled={working}>
@@ -75,7 +75,6 @@ export const AddPatientExtended = () => {
                     id="patient.create.extended.cancel"
                     form={form}
                     activated={interaction.status !== 'created'}
-                    cancelText="If you cancel, any additional data you entered will be lost. Are you sure you want to continue?"
                 />
             </AddExtendedPatientInteractionProvider>
         </>

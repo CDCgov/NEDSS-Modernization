@@ -9,7 +9,7 @@ export const permissions = {
         add: 'ADD-INVESTIGATION',
         delete: 'DELETE-INVESTIGATION',
         edit: 'EDIT-INVESTIGATION',
-        merge: 'MERGEINVESTIGATION-INVESTIGATION',
+        compare: 'MERGEINVESTIGATION-INVESTIGATION',
         view: 'VIEW-INVESTIGATION'
     },
     labReport: {

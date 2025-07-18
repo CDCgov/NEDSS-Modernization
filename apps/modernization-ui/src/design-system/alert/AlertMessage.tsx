@@ -59,7 +59,7 @@ const AlertMessage = ({
                 <Button
                     type="button"
                     onClick={onClose}
-                    icon={<Icon name="close" sizing="small" />}
+                    icon="close"
                     tertiary
                     sizing="small"
                     aria-label="Close alert"

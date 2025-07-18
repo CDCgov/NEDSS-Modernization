@@ -26,11 +26,12 @@ class LaboratoryReportRequiringReviewRowMapper implements RowMapper<DocumentRequ
       int electronic,
       int reportingFacility,
       int orderingFacility,
-      DisplayableSimpleNameRowMapper.Columns orderedBy
-  ) {
+      int specimenSite,
+      int specimenSource,
+      DisplayableSimpleNameRowMapper.Columns orderedBy) {
 
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7, 8, new DisplayableSimpleNameRowMapper.Columns(9, 10, 11));
+      this(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, new DisplayableSimpleNameRowMapper.Columns(11, 12, 13));
     }
 
   }
@@ -63,6 +64,10 @@ class LaboratoryReportRequiringReviewRowMapper implements RowMapper<DocumentRequ
 
     String orderingFacility = resultSet.getString(this.columns.orderingFacility());
 
+    String specimenSite = resultSet.getString(this.columns.specimenSite());
+
+    String specimenSource = resultSet.getString(this.columns.specimenSource());
+
     return new DocumentRequiringReview(
         patient,
         identifier,
@@ -76,8 +81,7 @@ class LaboratoryReportRequiringReviewRowMapper implements RowMapper<DocumentRequ
         orderingFacility,
         orderingProvider,
         null,
-        null
-    );
+        null, specimenSite, specimenSource);
   }
 
 }

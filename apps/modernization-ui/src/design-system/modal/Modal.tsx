@@ -1,11 +1,10 @@
 import { ReactNode, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect, useId, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
+import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
 
 import styles from './modal.module.scss';
-import { Heading } from 'components/heading';
-import { Icon } from 'design-system/icon';
 
 type Close = () => void;
 
@@ -74,7 +73,7 @@ const Component = ({ title, size, forceAction = false, children, className, onCl
                                 className={styles.closer}
                                 tertiary
                                 aria-label={`Close ${title}`}
-                                icon={<Icon name="close" />}
+                                icon="close"
                                 onClick={onClose}
                                 data-close-modal
                             />

@@ -21,7 +21,7 @@ describe('AdminCommentsSelection', () => {
     it('should display sections for each patient', () => {
         const { getByText, getAllByText } = render(<Fixture />);
 
-        expect(getAllByText('ADMINISTRATIVE COMMENTS')).toHaveLength(3);
+        expect(getAllByText('ADMINISTRATIVE')).toHaveLength(3);
 
         // First
         expect(getByText('First comment')).toBeInTheDocument();

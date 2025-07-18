@@ -24,13 +24,13 @@ type PreviewPhoneAndEmailProps = {
 export const PreviewPhoneAndEmail = ({ selectedPhoneEmails, mergeCandidates }: PreviewPhoneAndEmailProps) => {
     const detailedPhoneEmails: MergePhoneEmail[] = mergeCandidates
         .flatMap((mc) => mc.phoneEmails)
-        .filter((pe) => selectedPhoneEmails.some((sel) => sel.locatorId === pe.id));
+        .filter((pe) => selectedPhoneEmails.some((sel) => sel.locatorId === pe.id))
+        .sort((a, b) => (parseISO(a.asOf) > parseISO(b.asOf) ? -1 : 1));
 
     const initialPhoneEmails: PhoneEmailEntry[] = detailedPhoneEmails.map((p) => ({
         ...p,
         asOf: format(parseISO(p.asOf), 'MM/dd/yyyy')
     }));
-
     const [phoneEmails] = useState(initialPhoneEmails);
 
     const columns: Column<PhoneEmailEntry>[] = [
