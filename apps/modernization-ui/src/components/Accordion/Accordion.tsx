@@ -7,13 +7,14 @@ type Props = {
     title?: string;
     children: ReactNode;
     open?: boolean;
+    id?: string;
 };
 
-export const Accordion = ({ title, children, open = false }: Props) => {
+export const Accordion = ({ title, children, open = false, id = 'accordion' }: Props) => {
     return (
         <details className={styles.accordian} open={open}>
-            <summary>
-                <h3>{title}</h3>
+            <summary id={id} role="region" aria-label={title}>
+                <span>{title}</span>
                 <svg role="img" aria-label={`Expand ${title}`} className={styles.closed}>
                     <Icon name={'expand_more'} />
                 </svg>
