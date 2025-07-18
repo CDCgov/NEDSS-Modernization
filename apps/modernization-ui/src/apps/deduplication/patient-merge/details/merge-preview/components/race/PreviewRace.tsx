@@ -1,4 +1,3 @@
-import React from 'react';
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { RaceId } from '../../../merge-review/model/PatientMergeForm';
 import { MergePreviewTableCard } from '../shared/preview-card-table/MergePreviewTableCard';
@@ -35,12 +34,15 @@ export const PreviewRace = ({ selectedRaces, mergeCandidates }: PreviewRaceProps
             });
         });
 
-    const races: RaceEntry[] = Array.from(raceMap.entries()).map(([race, { latestDate, detailed }], i) => ({
-        id: `race-${i}`,
-        race,
-        asOf: format(parseISO(latestDate), 'MM/dd/yyyy'),
-        detailedRace: detailed.size ? Array.from(detailed).join(', ') : undefined
-    }));
+    const races: (RaceEntry & { latestDate: string })[] = [...raceMap.entries()]
+        .map(([race, { latestDate, detailed }], i) => ({
+            id: `race-${i}`,
+            race,
+            asOf: format(parseISO(latestDate), 'MM/dd/yyyy'),
+            latestDate,
+            detailedRace: detailed.size ? Array.from(detailed).join(', ') : undefined
+        }))
+        .sort((a, b) => (parseISO(a.latestDate) > parseISO(b.latestDate) ? -1 : 1));
 
     const columns: Column<RaceEntry>[] = [
         { id: 'asOf', name: 'As of', value: (e) => e.asOf, sortable: true },
