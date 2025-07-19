@@ -508,7 +508,7 @@ class PatientChangeHashTest {
                 121L,
                 LocalDate.now(),
                 "ethnic-group-value",
-                "unknown-reason-value",
+                null,
                 131L,
                 LocalDateTime.now()
             )
@@ -517,7 +517,7 @@ class PatientChangeHashTest {
             new PatientCommand.UpdateEthnicityInfo(
                 121L,
                 LocalDate.parse("2012-03-03"),
-                "ethnic-group-value",
+                "UNK",
                 "changed unknown-reason-value",
                 131L,
                 LocalDateTime.now()
@@ -538,8 +538,8 @@ class PatientChangeHashTest {
         new PatientCommand.UpdateEthnicityInfo(
             121L,
             LocalDate.parse("2012-03-03"),
-            "ethnic-group-value",
-            "unknown-reason-value",
+            null,
+            null,
             131L,
             LocalDateTime.now()
         )

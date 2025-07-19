@@ -22,6 +22,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = 'nbs-modernization'
+
 // apps
 include ':modernization-api'
 project(':modernization-api').projectDir = new File('apps/modernization-api')
@@ -32,7 +33,6 @@ include ':nbs-gateway'
 project(':nbs-gateway').projectDir = new File('apps/nbs-gateway')
 
 // feature modules
-
 include ':me-api'
 project(':me-api').projectDir = new File('libs/me-api')
 
@@ -58,8 +58,12 @@ include ':audit'
 project(':audit').projectDir = new File('libs/audit')
 include ':id-generator'
 project(':id-generator').projectDir = new File('libs/id-generator')
+
 include ':accumulation'
 project(':accumulation').projectDir = new File('libs/accumulation')
+
+include ':change'
+project(':change').projectDir = new File('libs/change')
 
 include ':web'
 project(':web').projectDir = new File('libs/web')

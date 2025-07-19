@@ -36,6 +36,25 @@ public class PatientFileAddressDemographicVerificationSteps {
   }
 
   @Then(
+      "the patient file address demographics does not include a(n) {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
+  public void doesNotIncludeAddress(
+      final String type,
+      final String use,
+      final String address,
+      final String city,
+      final String zip,
+      final LocalDate asOf
+  ) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.asOf=='%s' && @.type.value=='%s' &&  @.use.value=='%s' &&  @.address1=='%s' &&  @.city=='%s' &&  @.zipcode=='%s')]",
+                asOf, type, use, address, city, zip
+            ).doesNotExist()
+        );
+  }
+
+  @Then(
       "the {nth} address demographics on the patient file includes a(n) {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
   public void includesNt(
       final int nth,

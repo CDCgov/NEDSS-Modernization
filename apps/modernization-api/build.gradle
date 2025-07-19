@@ -25,6 +25,7 @@ dependencies {
 
     implementation(project(':audit'))
     implementation(project(':accumulation'))
+    implementation(project(':change'))
     implementation(project(':database-entities'))
     implementation(project(':event-schema'))
     implementation(project(':authentication'))

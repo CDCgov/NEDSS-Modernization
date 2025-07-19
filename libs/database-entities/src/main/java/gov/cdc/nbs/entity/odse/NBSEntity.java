@@ -88,7 +88,8 @@ public class NBSEntity {
 
   public void update(
       final PatientCommand.UpdateMortality info,
-      final AddressIdentifierGenerator identifierGenerator) {
+      final AddressIdentifierGenerator identifierGenerator
+  ) {
 
     PostalEntityLocatorParticipation found = maybeMortalityLocator()
         .orElseGet(() -> createMortalityLocator(info, identifierGenerator));

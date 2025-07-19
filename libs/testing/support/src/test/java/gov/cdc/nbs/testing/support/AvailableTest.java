@@ -44,6 +44,45 @@ class AvailableTest {
   }
 
   @Test
+  void should_return_the_first_available_item_after_being_selected() {
+
+    Available<Object> available = new Available<>();
+
+    Object one = new Object();
+    Object two = new Object();
+    Object three = new Object();
+
+    available.available(one);
+    available.available(two);
+    available.available(three);
+
+    available.selectFirst(item -> item == two);
+
+    assertThat(available.one()).isSameAs(two);
+
+  }
+
+  @Test
+  void should_replace_the_first_available() {
+
+    Available<Object> available = new Available<>();
+
+    Object one = new Object();
+    Object two = new Object();
+    Object three = new Object();
+    Object changed = new Object();
+
+    available.available(one);
+    available.available(two);
+    available.available(three);
+
+    available.first(current -> changed);
+
+    assertThat(available.one()).isSameAs(changed);
+
+  }
+
+  @Test
   void should_throw_an_exception_when_reset() {
     Available<Object> available = new Available<>();
 

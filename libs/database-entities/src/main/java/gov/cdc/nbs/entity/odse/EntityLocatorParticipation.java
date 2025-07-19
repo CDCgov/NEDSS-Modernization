@@ -115,6 +115,10 @@ public abstract class EntityLocatorParticipation {
     this.versionCtrlNbr = 1;
   }
 
+  public long identifier() {
+    return this.id.getLocatorUid();
+  }
+
   public abstract Locator getLocator();
 
   public abstract String getClassCd();
