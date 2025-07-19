@@ -7,6 +7,7 @@ import { DataTable, Column } from 'design-system/table';
 import { PatientFileMergeHistory } from './mergeHistory';
 import { MemoizedSupplier } from 'libs/supplying';
 import { format } from 'date-fns';
+import styles from './PatientMergeHistory.module.scss';
 
 type PatientMergeHistoryCardProps = {
     id: string;
@@ -39,12 +40,14 @@ const InternalMergeHistoryCard = ({ id, data }: { id: string; data: PatientFileM
 
     return (
         <Card id={id} title="Merge history" flair={<Tag variant="default">{data.length}</Tag>} collapsible>
-            <Section
-                id={`${id}-card`}
-                title="The following superseded patient records were merged with ${(patientFullName)}"
-                subtext={data.length + ' records'}>
-                <DataTable id={`${id}-table`} columns={columns} data={data} />
-            </Section>
+            <div className={styles.sectionCard}>
+                <Section
+                    id={`${id}-card`}
+                    title="The following superseded patient records were merged with ${(patientFullName)}"
+                    subtext={data.length + ' records'}>
+                    <DataTable id={`${id}-table`} columns={columns} data={data} />
+                </Section>
+            </div>
         </Card>
     );
 };
