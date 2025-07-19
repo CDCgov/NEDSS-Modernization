@@ -3,6 +3,7 @@ import { usePatientFileData } from '../usePatientFileData';
 import { PatientFileDemographicsSummaryCard } from '../demographics/summary';
 import { PatientFileOpenInvestigationsCard } from './openInvestigations';
 import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
+import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
 
 const PatientFileSummary = () => {
     const { summary, demographics } = usePatientFileData();
@@ -25,6 +26,7 @@ const PatientFileSummary = () => {
                 provider={summary.get().drr}
                 sizing={sizing}
             />
+            <PatientMergeHistoryCard id="merge-history" provider={summary.get().mergeHistory} />
         </>
     );
 };
