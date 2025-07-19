@@ -84,8 +84,8 @@ The default profile contains the following properties configuration most likely 
 | nbs.gateway.classic                                    | `http://localhost:7001` | The URI location of the classic NBS Application                                     |
 | nbs.gateway.patient.search.enabled                     | `true`                  | Enables the Patient Search routing                                                  |
 | nbs.gateway.patient.search.service                     | `localhost:8080`        | The host name of the Patient Search service                                         |
-| nbs.gateway.patient.profile.enabled                    | `false`                 | Enables the Patient Profile routing                                                 |
-| nbs.gateway.patient.profile.service                    | `localhost:8080`        | The host name of the Patient Profile service                                        |
+| nbs.gateway.patient.file.enabled                       | `false`                 | Enables the Patient File routing                                                    |
+| nbs.gateway.patient.file.service                       | `localhost:8080`        | The host name of the Patient File service                                           |
 | nbs.gateway.pagebuilder.enabled                        | `false`                 | Enables Page Builder routing                                                        |
 | nbs.gateway.pagebuilder.service                        | `localhost:8080`        | The host name of the service                                                        |
 | nbs.gateway.pagebuilder.page.library.enabled           | `false`                 | Enables the Page Builder Page Library routing                                       |

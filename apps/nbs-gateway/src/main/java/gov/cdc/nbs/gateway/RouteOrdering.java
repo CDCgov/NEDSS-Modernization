@@ -3,7 +3,7 @@ package gov.cdc.nbs.gateway;
 public enum RouteOrdering {
 
   MODERNIZATION_API(-1000),
-  PATIENT_PROFILE(0),
+  PATIENT_FILE(0),
   NBS_6(1000);
 
   private final int order;

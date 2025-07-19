@@ -119,6 +119,10 @@ spring:
 springdoc:
   packages-to-scan: "gov.cdc.nbs"
 
+server:
+  tomcat:
+    max-part-count: 100 # to accommodate intercepted multipart requests from NBS6
+
 kafka:
   enabled: false
 
