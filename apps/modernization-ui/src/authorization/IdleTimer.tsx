@@ -30,7 +30,7 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAliv
     }, [onIdle, warningTimeout]);
 
     const debouncedFetchKeepAlive = useCallback(
-        debounce(() => fetch(keepAlivePath), 60000),
+        debounce(() => fetch(keepAlivePath, { credentials: 'include' }), 60000),
         [keepAlivePath]
     );
 
