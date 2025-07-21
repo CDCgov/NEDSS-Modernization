@@ -88,25 +88,6 @@ export class PatientFileService {
         });
     }
     /**
-     * Patient File Merge History
-     * Provides Merge History for a patient
-     * @returns MergeHistory OK
-     * @throws ApiError
-     */
-    public static mergeHistory({
-         patient,
-    }: {
-        patient: number,
-    }): CancelablePromise<Array<MergeHistory>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/api/history/{patient}',
-            path: {
-                'patient': patient,
-            },
-        });
-    }
-    /**
      * Patient File Demographics Summary
      * Provides summarized demographics of a patient
      * @returns PatientDemographicsSummary OK
