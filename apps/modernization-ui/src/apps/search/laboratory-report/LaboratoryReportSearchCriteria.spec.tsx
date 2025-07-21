@@ -11,23 +11,19 @@ jest.mock('./CriteriaFields', () => ({
 
 describe('LaboratoryReportSearchCriteria', () => {
     it('renders the General search section expanded by default', () => {
-        const { getAllByRole } = render(<LaboratoryReportSearchCriteria />);
+        const { getByRole } = render(<LaboratoryReportSearchCriteria />);
 
-        const buttons = getAllByRole('button');
-        const regions = getAllByRole('region');
-
-        const generalButton = buttons.find((button) => button.textContent?.includes('General search'));
-        const generalPanel = regions[0];
+        const generalButton = getByRole('button', { name: 'General search' });
+        const generalPanel = getByRole('region', { name: 'General search' });
 
         expect(generalButton).toHaveAttribute('aria-expanded', 'true');
         expect(generalPanel).not.toHaveAttribute('hidden');
     });
 
     it('renders the Lab report criteria section collapsed by default', () => {
-        const { getAllByRole } = render(<LaboratoryReportSearchCriteria />);
+        const { getByRole } = render(<LaboratoryReportSearchCriteria />);
 
-        const buttons = getAllByRole('button');
-        const criteriaButton = buttons.find((button) => button.textContent?.includes('Lab report criteria'));
+        const criteriaButton = getByRole('button', { name: 'Lab report criteria' });
 
         expect(criteriaButton).toHaveAttribute('aria-expanded', 'false');
     });
