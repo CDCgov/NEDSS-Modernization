@@ -1,5 +1,6 @@
 import { PatientFileMergeHistory } from './mergeHistory';
 
+// Placeholder dummy data
 const dummyMergeHistory: PatientFileMergeHistory[] = [
     {
         supersededPersonLocalId: '91001',
