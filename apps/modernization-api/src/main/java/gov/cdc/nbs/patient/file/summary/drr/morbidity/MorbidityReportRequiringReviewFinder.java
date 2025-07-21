@@ -28,7 +28,7 @@ class MorbidityReportRequiringReviewFinder {
       select
         [revisions].mpr_id                                  as [patient],
         [morbidity].[observation_uid]                       as [identifier],
-        [morbidity].[add_time]                              as [received_on],
+        [morbidity].[rpt_to_state_time]                     as [received_on],
         [morbidity].activity_to_time                        as [event_date],
         [reporting_facility].display_nm                     as [reporting_facility],
         [condition].condition_short_nm                      as [condition],
