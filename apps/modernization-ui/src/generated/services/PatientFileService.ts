@@ -19,7 +19,6 @@ import type { PatientNameDemographic } from '../models/PatientNameDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
 import type { PatientRaceDemographic } from '../models/PatientRaceDemographic';
 import type { PatientSexBirthDemographic } from '../models/PatientSexBirthDemographic';
-import type { MergeHistory } from '../models/MergeHistory';
 import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
