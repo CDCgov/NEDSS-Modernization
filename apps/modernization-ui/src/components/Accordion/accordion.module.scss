@@ -1,7 +1,26 @@
 @use 'styles/colors';
+@import 'styles/headers';
 
-.accordian {
-    summary {
+.accordion {
+    h2 {
+        @include header(3);
+        margin: 0;
+
+        // Ensure button and spans inside h2 inherit all font properties
+        button,
+        span {
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            font-style: inherit;
+            font-variant: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            text-transform: inherit;
+        }
+    }
+
+    .accordionTrigger {
         list-style-type: none;
         display: flex;
         justify-content: space-between;
@@ -10,40 +29,23 @@
         background-color: colors.$base-lightest;
         color: colors.$base-darkest;
         padding: 0.75rem 1rem;
-
+        border: none;
         cursor: pointer;
+        width: 100%;
 
-        h3 {
-            margin: 0;
+        &:focus {
+            outline: none;
         }
 
+        .accordionTitle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
         svg {
             width: 1.5rem;
             height: 1.5rem;
-
-            &.opened {
-                display: none;
-            }
-
-            &.closed {
-                display: inline;
-            }
-        }
-
-        &::-webkit-details-marker {
-            display: none;
-        }
-    }
-
-    &[open] summary {
-        svg {
-            &.opened {
-                display: inline;
-            }
-
-            &.closed {
-                display: none;
-            }
         }
     }
 }
