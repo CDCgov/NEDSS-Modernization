@@ -9,6 +9,8 @@
 
     visibility: hidden;
     pointer-events: none;
+    height: 0;
+    overflow: hidden;
 
     &.left {
         right: 100%;
@@ -22,5 +24,7 @@
         z-index: 10000;
         visibility: visible;
         pointer-events: all;
+        height: fit-content;
+        overflow: unset;
     }
 }
