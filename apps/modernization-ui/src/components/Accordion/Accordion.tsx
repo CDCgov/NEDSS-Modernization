@@ -12,7 +12,8 @@ type Props = {
 
 export const Accordion = ({ title, children, open = false, id }: Props) => {
     const [isExpanded, setIsExpanded] = useState(open);
-    const accordionId = id || useId();
+    const uniqueId = useId();
+    const accordionId = id || `accordion-${uniqueId}`;
     const panelId = `panel-${accordionId}`;
 
     const handleToggle = () => setIsExpanded((prev) => !prev);
