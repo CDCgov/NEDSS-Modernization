@@ -7,13 +7,12 @@ type Props = {
     title?: string;
     children: ReactNode;
     open?: boolean;
-    id?: string;
 };
 
-export const Accordion = ({ title, children, open = false, id }: Props) => {
+export const Accordion = ({ title, children, open = false }: Props) => {
     const [isExpanded, setIsExpanded] = useState(open);
     const uniqueId = useId();
-    const accordionId = id || `accordion-${uniqueId}`;
+    const accordionId = `accordion-${uniqueId}`;
     const panelId = `panel-${accordionId}`;
 
     const handleToggle = () => setIsExpanded((prev) => !prev);
