@@ -6,7 +6,7 @@ import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
 import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
 
 const PatientFileSummary = () => {
-    const { summary, demographics } = usePatientFileData();
+    const { summary, demographics, patient } = usePatientFileData();
     const sizing = useComponentSizing();
 
     return (
@@ -26,7 +26,7 @@ const PatientFileSummary = () => {
                 provider={summary.get().drr}
                 sizing={sizing}
             />
-            <PatientMergeHistoryCard id="merge-history" provider={summary.get().mergeHistory} />
+            <PatientMergeHistoryCard id="merge-history" provider={summary.get().mergeHistory} patient={patient} />
         </>
     );
 };

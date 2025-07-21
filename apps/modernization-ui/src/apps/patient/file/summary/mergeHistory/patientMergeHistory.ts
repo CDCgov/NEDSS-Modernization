@@ -2,7 +2,7 @@ import { PatientFileMergeHistory } from './mergeHistory';
 
 const dummyMergeHistory: PatientFileMergeHistory[] = [
     {
-        supersededPersonLocalId: '91000',
+        supersededPersonLocalId: '91001',
         supersededPersonLegalName: 'Loki Laufeyson',
         mergeTimestamp: '07/14/2021 2:33 pm',
         mergedByUser: 'admin_user'
@@ -14,7 +14,7 @@ const dummyMergeHistory: PatientFileMergeHistory[] = [
         mergedByUser: 'EpiDoe'
     },
     {
-        supersededPersonLocalId: '90052',
+        supersededPersonLocalId: '91002',
         supersededPersonLegalName: 'Humpty Dumpty',
         mergeTimestamp: '07/14/2022 2:00 pm',
         mergedByUser: 'EpiDoe'

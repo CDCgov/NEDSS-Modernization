@@ -8,10 +8,13 @@ import { PatientFileMergeHistory } from './mergeHistory';
 import { MemoizedSupplier } from 'libs/supplying';
 import { format } from 'date-fns';
 import styles from './PatientMergeHistory.module.scss';
+import { displayName } from '../../../../../name';
+import { Patient } from '../../patient';
 
 type PatientMergeHistoryCardProps = {
     id: string;
     provider: MemoizedSupplier<Promise<PatientFileMergeHistory[]>>;
+    patient?: Patient;
 };
 
 const columns: Column<PatientFileMergeHistory>[] = [
@@ -34,6 +37,7 @@ const columns: Column<PatientFileMergeHistory>[] = [
         name: 'Merge Date/Time',
         sortable: true,
         sortIconType: 'numeric',
+        value: (row) => row.mergeTimestamp,
         render: (row) => (row.mergeTimestamp ? format(new Date(row.mergeTimestamp), 'Pp') : '')
     },
     {
@@ -52,12 +56,22 @@ const groupByTimestamp = (rows: PatientFileMergeHistory[]) =>
         return acc;
     }, {});
 
-const InternalMergeHistoryCard = ({ id, data }: { id: string; data: PatientFileMergeHistory[] }) => {
+const InternalMergeHistoryCard = ({
+    id,
+    data,
+    patient
+}: {
+    id: string;
+    data: PatientFileMergeHistory[];
+    patient?: Patient;
+}) => {
     const grouped = useMemo(() => groupByTimestamp(data), [data]);
     const groupKeys = useMemo(
         () => Object.keys(grouped).sort((a, b) => new Date(b).getTime() - new Date(a).getTime()),
         [grouped]
     );
+
+    const patientName = patient?.name ? displayName('short')(patient.name) : '---';
 
     return (
         <Card id={id} title="Merge history" flair={<Tag variant="default">{data.length}</Tag>} collapsible>
@@ -69,7 +83,7 @@ const InternalMergeHistoryCard = ({ id, data }: { id: string; data: PatientFileM
                         <Section
                             key={timestampKey}
                             id={`${id}-section-${index}`}
-                            title="The following superseded patient records were merged with ${(patientFullName)}"
+                            title={`The following superseded patient records were merged with ${patientName}`}
                             subtext={`${group.length} record${group.length === 1 ? '' : 's'}`}>
                             <SortableDataTable
                                 id={`${id}-table-${index}`}
@@ -86,10 +100,12 @@ const InternalMergeHistoryCard = ({ id, data }: { id: string; data: PatientFileM
     );
 };
 
-const PatientMergeHistoryCard = ({ id, provider }: PatientMergeHistoryCardProps) => {
+const PatientMergeHistoryCard = ({ id, provider, patient }: PatientMergeHistoryCardProps) => {
     return (
         <Suspense fallback={<div>Loading Merge History...</div>}>
-            <Await resolve={provider.get()}>{(data) => <InternalMergeHistoryCard id={id} data={data} />}</Await>
+            <Await resolve={provider.get()}>
+                {(data) => <InternalMergeHistoryCard id={id} data={data} patient={patient} />}
+            </Await>
         </Suspense>
     );
 };
