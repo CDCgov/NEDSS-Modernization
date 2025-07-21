@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, type KeyboardEvent } from 'react';
 import classNames from 'classnames';
 import { findByValue, Selectable } from 'options';
 import { Sizing } from 'design-system/field';
@@ -46,6 +46,14 @@ const Select = ({
         }
     };
 
+    const handleKeyDown = (event: KeyboardEvent<HTMLSelectElement>) => {
+        if (event.key === 'Enter') {
+            event.stopPropagation();
+            const selectElement = event.currentTarget;
+            selectElement.showPicker();
+        }
+    };
+
     return (
         <select
             id={id}
@@ -53,6 +61,7 @@ const Select = ({
             name={inputProps.name ?? id}
             value={value?.value ?? ''}
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
             {...inputProps}>
             {renderOptions(options, placeholder)}
         </select>

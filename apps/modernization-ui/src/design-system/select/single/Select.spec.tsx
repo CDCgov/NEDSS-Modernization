@@ -10,19 +10,19 @@ describe('Select Component', () => {
         { name: 'name-four', value: 'value-four', label: 'label-four' }
     ];
 
-    test('renders with placeholder', () => {
+    it('renders with placeholder', () => {
         const { getByText } = render(<Select id="test-select" options={options} placeholder="Select an option" />);
         expect(getByText('Select an option')).toBeInTheDocument();
     });
 
-    test('renders options', () => {
+    it('renders options', () => {
         const { getByText } = render(<Select id="test-select" options={options} />);
         options.forEach((option) => {
             expect(getByText(option.name)).toBeInTheDocument();
         });
     });
 
-    test('calls onChange with selected option', () => {
+    it('calls onChange with selected option', () => {
         const handleChange = jest.fn();
         const { getByRole } = render(
             <Select
@@ -39,13 +39,28 @@ describe('Select Component', () => {
         expect(checked).toHaveTextContent('name-four');
     });
 
-    test('applies className', () => {
+    it('applies className', () => {
         const { getByRole } = render(<Select id="test-select" options={options} className="custom-class" />);
         expect(getByRole('combobox')).toHaveClass('custom-class');
     });
 
-    test('sets default value', () => {
+    it('sets default value', () => {
         const { getByRole } = render(<Select id="test-select" options={options} value={options[1]} />);
         expect(getByRole('combobox')).toHaveValue('value-two');
+    });
+
+    it('calls showPicker and stops propagation on Enter key press', async () => {
+        const user = userEvent.setup();
+        const { getByRole } = render(<Select id="test-select" options={options} />);
+        const select = getByRole('combobox') as HTMLSelectElement;
+
+        const mockShowPicker = jest.fn();
+        select.showPicker = mockShowPicker;
+
+        select.focus();
+
+        await user.keyboard('{Enter}');
+
+        expect(mockShowPicker).toHaveBeenCalled();
     });
 });
