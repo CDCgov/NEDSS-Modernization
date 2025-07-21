@@ -19,6 +19,7 @@ const columns: Column<PatientFileMergeHistory>[] = [
         id: 'supersededPersonLocalId',
         name: 'Patient ID',
         sortable: true,
+        value: (row) => row.supersededPersonLocalId,
         sortIconType: 'numeric',
         render: (row) => <a href={`/patient/${row.supersededPersonLocalId}/summary`}>{row.supersededPersonLocalId}</a>
     },
@@ -26,7 +27,7 @@ const columns: Column<PatientFileMergeHistory>[] = [
         id: 'supersededPersonLegalName',
         name: 'Patient Name',
         sortable: true,
-        render: (row) => row.supersededPersonLegalName
+        value: (row) => row.supersededPersonLegalName
     },
     {
         id: 'mergeTimestamp',
@@ -39,7 +40,7 @@ const columns: Column<PatientFileMergeHistory>[] = [
         id: 'mergedByUser',
         name: 'Merged By',
         sortable: true,
-        render: (row) => row.mergedByUser
+        value: (row) => row.mergedByUser
     }
 ];
 
