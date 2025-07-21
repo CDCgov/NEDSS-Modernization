@@ -13,5 +13,9 @@
       border-bottom-right-radius: 0;
     }
   }
+  .dataTable {
+    * {
+      border-radius: 0 !important;
+    }
+  }
 }
-

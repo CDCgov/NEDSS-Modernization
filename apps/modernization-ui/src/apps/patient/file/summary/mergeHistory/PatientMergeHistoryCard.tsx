@@ -1,9 +1,9 @@
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 import { Await } from 'react-router';
 import { Section } from 'design-system/card/section/Section';
 import { Card } from 'design-system/card';
 import { Tag } from 'design-system/tag';
-import { DataTable, Column } from 'design-system/table';
+import { Column, SortableDataTable } from 'design-system/table';
 import { PatientFileMergeHistory } from './mergeHistory';
 import { MemoizedSupplier } from 'libs/supplying';
 import { format } from 'date-fns';
@@ -14,39 +14,72 @@ type PatientMergeHistoryCardProps = {
     provider: MemoizedSupplier<Promise<PatientFileMergeHistory[]>>;
 };
 
+const columns: Column<PatientFileMergeHistory>[] = [
+    {
+        id: 'supersededPersonLocalId',
+        name: 'Patient ID',
+        sortable: true,
+        sortIconType: 'numeric',
+        render: (row) => <a href={`/patient/${row.supersededPersonLocalId}/summary`}>{row.supersededPersonLocalId}</a>
+    },
+    {
+        id: 'supersededPersonLegalName',
+        name: 'Patient Name',
+        sortable: true,
+        render: (row) => row.supersededPersonLegalName
+    },
+    {
+        id: 'mergeTimestamp',
+        name: 'Merge Date/Time',
+        sortable: true,
+        sortIconType: 'numeric',
+        render: (row) => (row.mergeTimestamp ? format(new Date(row.mergeTimestamp), 'Pp') : '')
+    },
+    {
+        id: 'mergedByUser',
+        name: 'Merged By',
+        sortable: true,
+        render: (row) => row.mergedByUser
+    }
+];
+
+const groupByTimestamp = (rows: PatientFileMergeHistory[]) =>
+    rows.reduce<Record<string, PatientFileMergeHistory[]>>((acc, row) => {
+        const key = row.mergeTimestamp ?? '---';
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(row);
+        return acc;
+    }, {});
+
 const InternalMergeHistoryCard = ({ id, data }: { id: string; data: PatientFileMergeHistory[] }) => {
-    const columns: Column<PatientFileMergeHistory>[] = [
-        {
-            id: 'supersededPersonLocalId',
-            name: 'Patient ID',
-            render: (row) => row.supersededPersonLocalId
-        },
-        {
-            id: 'supersededPersonLegalName',
-            name: 'Patient Name',
-            render: (row) => row.supersededPersonLegalName
-        },
-        {
-            id: 'mergeTimestamp',
-            name: 'Merge Date/Time',
-            render: (row) => (row.mergeTimestamp ? format(new Date(row.mergeTimestamp), 'Pp') : '')
-        },
-        {
-            id: 'mergedByUser',
-            name: 'Merged By',
-            render: (row) => row.mergedByUser
-        }
-    ];
+    const grouped = useMemo(() => groupByTimestamp(data), [data]);
+    const groupKeys = useMemo(
+        () => Object.keys(grouped).sort((a, b) => new Date(b).getTime() - new Date(a).getTime()),
+        [grouped]
+    );
 
     return (
         <Card id={id} title="Merge history" flair={<Tag variant="default">{data.length}</Tag>} collapsible>
             <div className={styles.sectionCard}>
-                <Section
-                    id={`${id}-card`}
-                    title="The following superseded patient records were merged with ${(patientFullName)}"
-                    subtext={data.length + ' records'}>
-                    <DataTable id={`${id}-table`} columns={columns} data={data} />
-                </Section>
+                {groupKeys.map((timestampKey, index) => {
+                    const group = grouped[timestampKey];
+
+                    return (
+                        <Section
+                            key={timestampKey}
+                            id={`${id}-section-${index}`}
+                            title="The following superseded patient records were merged with ${(patientFullName)}"
+                            subtext={`${group.length} record${group.length === 1 ? '' : 's'}`}>
+                            <SortableDataTable
+                                id={`${id}-table-${index}`}
+                                columns={columns}
+                                data={group}
+                                className={styles.dataTable}
+                                sizing={'small'}
+                            />
+                        </Section>
+                    );
+                })}
             </div>
         </Card>
     );
