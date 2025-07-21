@@ -58,10 +58,13 @@ class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicity
         ? List.of()
         : List.of(detail);
 
+    Selectable unknown =
+        ethnicGroup.value().equalsIgnoreCase("UNK") ? unknownReason : null;
+
     return new PatientEthnicityDemographic(
         asOf,
         ethnicGroup,
-        unknownReason,
+        unknown,
         detailed
     );
   }
