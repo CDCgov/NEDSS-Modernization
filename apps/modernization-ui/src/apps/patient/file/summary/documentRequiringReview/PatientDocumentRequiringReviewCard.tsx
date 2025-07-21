@@ -54,7 +54,9 @@ const renderEventDate = (value?: PatientFileDocumentRequiringReview) => {
     if (value?.type === 'Morbidity Report') {
         return (
             <>
-                <LabeledValue label="Report Date">{internalizeDate(value.eventDate)}</LabeledValue>
+                <LabeledValue label="Report Date" orientation="vertical">
+                    {internalizeDate(value.eventDate)}
+                </LabeledValue>
             </>
         );
     }
