@@ -412,43 +412,6 @@ export type PatientDocumentResults = {
   total: Scalars['Int']['output'];
 };
 
-export type PatientMorbidity = {
-  __typename?: 'PatientMorbidity';
-  associatedWith?: Maybe<PatientMorbidityInvestigation>;
-  condition: Scalars['String']['output'];
-  event: Scalars['String']['output'];
-  jurisdiction: Scalars['String']['output'];
-  labResults: Array<Maybe<PatientMorbidityLabResult>>;
-  morbidity: Scalars['ID']['output'];
-  provider?: Maybe<Scalars['String']['output']>;
-  receivedOn: Scalars['DateTime']['output'];
-  reportedOn: Scalars['DateTime']['output'];
-  treatments: Array<Maybe<Scalars['String']['output']>>;
-};
-
-export type PatientMorbidityInvestigation = {
-  __typename?: 'PatientMorbidityInvestigation';
-  condition: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  local: Scalars['String']['output'];
-};
-
-export type PatientMorbidityLabResult = {
-  __typename?: 'PatientMorbidityLabResult';
-  codedResult?: Maybe<Scalars['String']['output']>;
-  labTest: Scalars['String']['output'];
-  numericResult?: Maybe<Scalars['String']['output']>;
-  status?: Maybe<Scalars['String']['output']>;
-  textResult?: Maybe<Scalars['String']['output']>;
-};
-
-export type PatientMorbidityResults = {
-  __typename?: 'PatientMorbidityResults';
-  content: Array<Maybe<PatientMorbidity>>;
-  number: Scalars['Int']['output'];
-  total: Scalars['Int']['output'];
-};
-
 export type PatientNameCriteria = {
   first?: InputMaybe<TextCriteria>;
   last?: InputMaybe<TextCriteria>;
@@ -654,7 +617,6 @@ export type Query = {
   findDocumentsForPatient?: Maybe<PatientDocumentResults>;
   findInvestigationsByFilter: InvestigationResults;
   findLabReportsByFilter: LabReportResults;
-  findMorbidityReportsForPatient?: Maybe<PatientMorbidityResults>;
   findPatientNamedByContact?: Maybe<PatientNamedByContactResults>;
   findPatientsByFilter: PatientSearchResults;
   findTreatmentsForPatient?: Maybe<PatientTreatmentResults>;
@@ -693,12 +655,6 @@ export type QueryFindInvestigationsByFilterArgs = {
 export type QueryFindLabReportsByFilterArgs = {
   filter: LabReportFilter;
   page?: InputMaybe<SortablePage>;
-};
-
-
-export type QueryFindMorbidityReportsForPatientArgs = {
-  page?: InputMaybe<Page>;
-  patient: Scalars['ID']['input'];
 };
 
 
@@ -846,14 +802,6 @@ export type FindLabReportsByFilterQueryVariables = Exact<{
 
 
 export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, page: number, size: number, content: Array<{ __typename?: 'LabReport', relevance: number, id: string, jurisdictionCd: number, localId: string, addTime: any, personParticipations: Array<{ __typename?: 'LabReportPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }>, organizationParticipations: Array<{ __typename?: 'LabReportOrganizationParticipation', typeCd: string, name: string }>, observations: Array<{ __typename?: 'Observation', cdDescTxt?: string | null, statusCd?: string | null, altCd?: string | null, displayName?: string | null }>, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation', cdDescTxt: string, localId: string }>, tests: Array<{ __typename?: 'LabTestSummary', name?: string | null, status?: string | null, coded?: string | null, numeric?: number | null, high?: string | null, low?: string | null, unit?: string | null }> }> } };
-
-export type FindMorbidityReportsForPatientQueryVariables = Exact<{
-  patient: Scalars['ID']['input'];
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindMorbidityReportsForPatientQuery = { __typename?: 'Query', findMorbidityReportsForPatient?: { __typename?: 'PatientMorbidityResults', total: number, number: number, content: Array<{ __typename?: 'PatientMorbidity', morbidity: string, receivedOn: any, provider?: string | null, reportedOn: any, condition: string, jurisdiction: string, event: string, treatments: Array<string | null>, associatedWith?: { __typename?: 'PatientMorbidityInvestigation', id: string, local: string, condition: string } | null, labResults: Array<{ __typename?: 'PatientMorbidityLabResult', labTest: string, status?: string | null, codedResult?: string | null, numericResult?: string | null, textResult?: string | null } | null> } | null> } | null };
 
 export type FindPatientNamedByContactQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -1261,70 +1209,6 @@ export type FindLabReportsByFilterQueryHookResult = ReturnType<typeof useFindLab
 export type FindLabReportsByFilterLazyQueryHookResult = ReturnType<typeof useFindLabReportsByFilterLazyQuery>;
 export type FindLabReportsByFilterSuspenseQueryHookResult = ReturnType<typeof useFindLabReportsByFilterSuspenseQuery>;
 export type FindLabReportsByFilterQueryResult = Apollo.QueryResult<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>;
-export const FindMorbidityReportsForPatientDocument = gql`
-    query findMorbidityReportsForPatient($patient: ID!, $page: Page) {
-  findMorbidityReportsForPatient(patient: $patient, page: $page) {
-    content {
-      morbidity
-      receivedOn
-      provider
-      reportedOn
-      condition
-      jurisdiction
-      event
-      associatedWith {
-        id
-        local
-        condition
-      }
-      treatments
-      labResults {
-        labTest
-        status
-        codedResult
-        numericResult
-        textResult
-      }
-    }
-    total
-    number
-  }
-}
-    `;
-
-/**
- * __useFindMorbidityReportsForPatientQuery__
- *
- * To run a query within a React component, call `useFindMorbidityReportsForPatientQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindMorbidityReportsForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindMorbidityReportsForPatientQuery({
- *   variables: {
- *      patient: // value for 'patient'
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindMorbidityReportsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables> & ({ variables: FindMorbidityReportsForPatientQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>(FindMorbidityReportsForPatientDocument, options);
-      }
-export function useFindMorbidityReportsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>(FindMorbidityReportsForPatientDocument, options);
-        }
-export function useFindMorbidityReportsForPatientSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>(FindMorbidityReportsForPatientDocument, options);
-        }
-export type FindMorbidityReportsForPatientQueryHookResult = ReturnType<typeof useFindMorbidityReportsForPatientQuery>;
-export type FindMorbidityReportsForPatientLazyQueryHookResult = ReturnType<typeof useFindMorbidityReportsForPatientLazyQuery>;
-export type FindMorbidityReportsForPatientSuspenseQueryHookResult = ReturnType<typeof useFindMorbidityReportsForPatientSuspenseQuery>;
-export type FindMorbidityReportsForPatientQueryResult = Apollo.QueryResult<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>;
 export const FindPatientNamedByContactDocument = gql`
     query findPatientNamedByContact($patient: ID!, $page: Page) {
   findPatientNamedByContact(patient: $patient, page: $page) {
