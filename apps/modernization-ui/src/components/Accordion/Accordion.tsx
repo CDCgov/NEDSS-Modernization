@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useId, useState } from 'react';
 
 import styles from './accordion.module.scss';
 import { Icon } from 'design-system/icon';
@@ -12,12 +12,10 @@ type Props = {
 
 export const Accordion = ({ title, children, open = false, id }: Props) => {
     const [isExpanded, setIsExpanded] = useState(open);
-    const accordionId = id || `accordion-${Math.random().toString(36).substr(2, 9)}`;
+    const accordionId = id || useId();
     const panelId = `panel-${accordionId}`;
 
-    const handleToggle = () => {
-        setIsExpanded(!isExpanded);
-    };
+    const handleToggle = () => setIsExpanded((prev) => !prev);
 
     return (
         <div className={styles.accordion}>
