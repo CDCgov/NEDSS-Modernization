@@ -54,26 +54,14 @@ class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicity
     Selectable unknownReason = unknownReasonMapper.mapRow(resultSet, rowNum);
     Selectable detail = detailMapper.mapRow(resultSet, rowNum);
 
-
-    List<Selectable> detailed = List.of();
-    if (ethnicGroup != null && ethnicGroup.value().equalsIgnoreCase("Hispanic or Latino")) {
-      detailed = detail == null || Objects.equals(detail.value(), ethnicGroup.value())
-          ? List.of()
-          : List.of(detail);
-    }
-
-    Selectable unknown;
-    if (ethnicGroup != null && ethnicGroup.value().equalsIgnoreCase("UNK")) {
-      System.out.println(ethnicGroup.value());
-      unknown = unknownReason;
-    } else {
-      unknown = null;
-    }
-
+    List<Selectable> detailed = detail == null || Objects.equals(detail.value(), ethnicGroup.value())
+        ? List.of()
+        : List.of(detail);
+    
     return new PatientEthnicityDemographic(
         asOf,
         ethnicGroup,
-        unknown,
+        Objects.requireNonNull(unknownReason).value().equals("0") ? null : unknownReason,
         detailed
     );
   }

@@ -23,20 +23,21 @@ class PatientEthnicityDemographicFinder {
       from Person [patient]
       
           left join NBS_SRTE..Code_value_general [ethnicity] on
-                  [ethnicity].code_set_nm = 'PHVS_ETHNICITYGROUP_CDC_UNK'
-              and [ethnicity].[code] = [patient].[ethnic_group_ind]
+                      [ethnicity].code_set_nm = 'PHVS_ETHNICITYGROUP_CDC_UNK'
+                  and [ethnicity].[code] = [patient].[ethnic_group_ind]
       
           left join NBS_SRTE..Code_value_general [unknown_reason] on
                   [unknown_reason].code_set_nm = 'P_ETHN_UNK_REASON'
               and [unknown_reason].[code] = [patient].[ethnic_unk_reason_cd]
+              and [patient].[ethnic_group_ind] = 'UNK'
       
           left join [Person_ethnic_group] [ethnic_group] on
                   [ethnic_group].person_uid = [patient].[person_uid]
-              and [ethnic_group].record_status_cd = 'ACTIVE'
       
           left join NBS_SRTE..Code_value_general [ethnicity_detail] on
                   [ethnicity_detail].code_set_nm = 'P_ETHN'
               and [ethnicity_detail].[code] = [ethnic_group].ethnic_group_cd
+              and [patient].[ethnic_group_ind] <> 'UNK' and [patient].[ethnic_group_ind] <> '2186-5'
       
       where [patient].person_uid = ?
           and [patient].cd = 'PAT'
