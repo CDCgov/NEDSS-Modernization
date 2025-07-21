@@ -5,6 +5,7 @@
 
     &::before,
     &::after {
+        height: 0;
         visibility: hidden;
         opacity: 0;
     }
@@ -12,6 +13,7 @@
     &.visible {
         &::before,
         &::after {
+            height: fit-content;
             visibility: visible;
             opacity: 1;
         }
