@@ -1,14 +1,16 @@
-import React from 'react';
-import { render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 import { PreviewIdentification } from './PreviewIdentification';
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
-import {AddressId, IdentificationId} from '../../../merge-review/model/PatientMergeForm';
+import { IdentificationId } from '../../../merge-review/model/PatientMergeForm';
 import { MemoryRouter } from 'react-router';
 
 const Fixture = () => {
     return (
         <MemoryRouter>
-            <PreviewIdentification selectedIdentifications={selectedIdentifications} mergeCandidates={mockMergeCandidates} />
+            <PreviewIdentification
+                selectedIdentifications={selectedIdentifications}
+                mergeCandidates={mockMergeCandidates}
+            />
         </MemoryRouter>
     );
 };
@@ -23,12 +25,20 @@ const mockMergeCandidates: MergeCandidate[] = [
         phoneEmails: [],
         identifications: [
             {
+                personUid: '2',
+                sequence: '1',
+                asOf: '2022-02-03',
+                type: 'DL',
+                assigningAuthority: 'CDW',
+                value: '1110000'
+            },
+            {
                 personUid: '1',
                 sequence: '1',
                 asOf: '2023-01-02',
                 type: 'SSN',
                 assigningAuthority: 'CDW',
-                value: '123-456-789',
+                value: '123-456-789'
             }
         ],
         races: [],
@@ -36,17 +46,30 @@ const mockMergeCandidates: MergeCandidate[] = [
         sexAndBirth: {},
         mortality: {},
         general: {},
-        investigations: [],
+        investigations: []
     }
 ];
 
 const selectedIdentifications: IdentificationId[] = [
     { personUid: '1', sequence: '1' },
+    { personUid: '2', sequence: '1' }
 ];
 
 describe('PreviewIdentification Component', () => {
     it('renders the identification table', () => {
         const { getByText } = render(<Fixture />);
         expect(getByText('SSN')).toBeInTheDocument();
+    });
+
+    it('renders the identifications in the correct order', () => {
+        const { getAllByRole } = render(<Fixture />);
+
+        const rows = getAllByRole('row');
+
+        const firstRowCells = within(rows[1]).getAllByRole('cell');
+        expect(firstRowCells[0]).toHaveTextContent('01/02/2023');
+
+        const secondRowCells = within(rows[2]).getAllByRole('cell');
+        expect(secondRowCells[0]).toHaveTextContent('02/03/2022');
     });
 });

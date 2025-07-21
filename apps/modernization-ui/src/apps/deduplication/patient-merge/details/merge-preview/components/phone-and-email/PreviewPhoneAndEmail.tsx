@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { MergePhoneEmail, MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PhoneEmailId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
@@ -27,11 +26,10 @@ export const PreviewPhoneAndEmail = ({ selectedPhoneEmails, mergeCandidates }: P
         .filter((pe) => selectedPhoneEmails.some((sel) => sel.locatorId === pe.id))
         .sort((a, b) => (parseISO(a.asOf) > parseISO(b.asOf) ? -1 : 1));
 
-    const initialPhoneEmails: PhoneEmailEntry[] = detailedPhoneEmails.map((p) => ({
+    const phoneEmails: PhoneEmailEntry[] = detailedPhoneEmails.map((p) => ({
         ...p,
         asOf: format(parseISO(p.asOf), 'MM/dd/yyyy')
     }));
-    const [phoneEmails] = useState(initialPhoneEmails);
 
     const columns: Column<PhoneEmailEntry>[] = [
         {

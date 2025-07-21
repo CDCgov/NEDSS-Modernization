@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { MergeIdentification, MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { IdentificationId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
@@ -27,12 +26,10 @@ export const PreviewIdentification = ({ selectedIdentifications, mergeCandidates
             return parseISO(a.asOf) > parseISO(b.asOf) ? -1 : 1;
         });
 
-    const initialIdentifications: IdentificationEntry[] = detailedIdentifications.map((id) => ({
+    const identifications: IdentificationEntry[] = detailedIdentifications.map((id) => ({
         ...id,
         asOf: format(parseISO(id.asOf), 'MM/dd/yyyy')
     }));
-
-    const [identifications] = useState(initialIdentifications);
 
     const columns: Column<IdentificationEntry>[] = [
         {

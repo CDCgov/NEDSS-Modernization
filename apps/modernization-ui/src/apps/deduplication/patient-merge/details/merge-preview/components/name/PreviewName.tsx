@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { MergeCandidate, MergeName } from '../../../../../api/model/MergeCandidate';
 import { NameId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
@@ -32,13 +31,12 @@ export const PreviewName = ({ selectedNames, mergeCandidates }: NameProps) => {
         );
 
     const initialNames: NameEntry[] = detailedNames
+        .toSorted((a, b) => (parseISO(a.asOf) > parseISO(b.asOf) ? -1 : 1))
         .map((n) => ({
             ...n,
             asOf: format(parseISO(n.asOf), 'MM/dd/yyyy')
-        }))
-        .sort((a, b) => (parseISO(a.asOf) > parseISO(b.asOf) ? -1 : 1));
+        }));
 
-    const [names] = useState(initialNames);
     const columns: Column<NameEntry>[] = [
         {
             id: 'asOf',
@@ -98,5 +96,5 @@ export const PreviewName = ({ selectedNames, mergeCandidates }: NameProps) => {
         }
     ];
 
-    return <MergePreviewTableCard<NameEntry> id="name" title="Name" columns={columns} data={names} />;
+    return <MergePreviewTableCard<NameEntry> id="name" title="Name" columns={columns} data={initialNames} />;
 };

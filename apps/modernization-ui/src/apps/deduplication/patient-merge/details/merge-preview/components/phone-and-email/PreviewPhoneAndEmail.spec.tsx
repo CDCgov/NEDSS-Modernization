@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 import { PreviewPhoneAndEmail } from './PreviewPhoneAndEmail';
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PhoneEmailId } from '../../../merge-review/model/PatientMergeForm';
@@ -23,7 +23,7 @@ const mockMergeCandidates: MergeCandidate[] = [
         phoneEmails: [
             {
                 id: '1',
-                asOf: '2023-01-02',
+                asOf: '2022-01-05',
                 type: 'Home',
                 use: 'Home',
                 countryCode: '1',
@@ -31,7 +31,19 @@ const mockMergeCandidates: MergeCandidate[] = [
                 extension: '',
                 email: 'harry.potter@hogwarts.uk',
                 url: '',
-                comments: '',
+                comments: ''
+            },
+            {
+                id: '2',
+                asOf: '2023-01-04',
+                type: 'Home',
+                use: 'Home',
+                countryCode: '1',
+                phoneNumber: '12345',
+                extension: '',
+                email: 'harry.potter@hogwarts.uk',
+                url: '',
+                comments: ''
             }
         ],
         identifications: [],
@@ -40,17 +52,27 @@ const mockMergeCandidates: MergeCandidate[] = [
         sexAndBirth: {},
         mortality: {},
         general: {},
-        investigations: [],
+        investigations: []
     }
 ];
 
-const selectedPhoneEmails: PhoneEmailId[] = [
-    { locatorId: '1' },
-];
+const selectedPhoneEmails: PhoneEmailId[] = [{ locatorId: '1' }, { locatorId: '2' }];
 
 describe('PreviewPhoneAndEmail Component', () => {
     it('renders the phone and email table', () => {
         const { getByText } = render(<Fixture />);
         expect(getByText('672727252')).toBeInTheDocument();
+    });
+
+    it('renders the phone and emails in the correct order', () => {
+        const { getAllByRole } = render(<Fixture />);
+
+        const rows = getAllByRole('row');
+
+        const firstRowCells = within(rows[1]).getAllByRole('cell');
+        expect(firstRowCells[0]).toHaveTextContent('01/04/2023');
+
+        const secondRowCells = within(rows[2]).getAllByRole('cell');
+        expect(secondRowCells[0]).toHaveTextContent('01/05/2022');
     });
 });
