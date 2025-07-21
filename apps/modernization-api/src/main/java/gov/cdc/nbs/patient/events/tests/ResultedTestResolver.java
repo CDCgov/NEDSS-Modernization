@@ -60,7 +60,7 @@ public class ResultedTestResolver {
           left join [Obs_value_txt] [text] with (nolock) on
                   [text].observation_uid = [lab_result].[observation_uid]
               and [text].value_txt <> ''
-              and [text].txt_type_cd <> 'N'
+              and [text].txt_type_cd is null
       
       where [lab_result_components].target_act_uid in (:identifiers)
               and [lab_result_components].type_cd = 'COMP'
