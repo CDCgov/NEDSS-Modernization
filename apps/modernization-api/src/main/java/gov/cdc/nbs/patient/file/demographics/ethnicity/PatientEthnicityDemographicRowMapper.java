@@ -59,7 +59,8 @@ class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicity
         : List.of(detail);
 
     Selectable unknown =
-        unknownReason == null || unknownReason.value().equalsIgnoreCase("0") ? null : unknownReason;
+        unknownReason == null || unknownReason.value().equalsIgnoreCase("0") || unknownReason.value()
+            .equalsIgnoreCase("6") ? null : unknownReason;
 
     return new PatientEthnicityDemographic(
         asOf,
