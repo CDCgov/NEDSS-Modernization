@@ -57,11 +57,14 @@ class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicity
     List<Selectable> detailed = detail == null || Objects.equals(detail.value(), ethnicGroup.value())
         ? List.of()
         : List.of(detail);
-    
+
+    Selectable unknown =
+        unknownReason == null || unknownReason.value().equalsIgnoreCase("0") ? null : unknownReason;
+
     return new PatientEthnicityDemographic(
         asOf,
         ethnicGroup,
-        Objects.requireNonNull(unknownReason).value().equals("0") ? null : unknownReason,
+        unknown,
         detailed
     );
   }
