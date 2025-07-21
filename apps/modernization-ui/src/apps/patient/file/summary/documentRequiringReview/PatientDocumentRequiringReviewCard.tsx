@@ -10,7 +10,7 @@ import { internalizeDateTime } from 'date/InternalizeDateTime';
 import { renderFacilityProvider, renderMorbidity } from '../../renderPatientFile';
 import { PatientFileDocumentRequiringReview } from './drr';
 import { TableCardProps } from 'design-system/card/table/TableCard';
-import { MaybeLabeledValue } from 'design-system/value';
+import { LabeledValue, MaybeLabeledValue } from 'design-system/value';
 import { ResultedTests } from 'libs/events/tests';
 
 import styles from './drr.module.scss';
@@ -54,9 +54,7 @@ const renderEventDate = (value?: PatientFileDocumentRequiringReview) => {
     if (value?.type === 'Morbidity Report') {
         return (
             <>
-                <strong>Report Date:</strong>
-                <br />
-                {internalizeDate(value.eventDate)}
+                <LabeledValue label="Report Date">{internalizeDate(value.eventDate)}</LabeledValue>
             </>
         );
     }
