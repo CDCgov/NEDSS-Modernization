@@ -11,22 +11,24 @@ jest.mock('./CriteriaFields', () => ({
 
 describe('LaboratoryReportSearchCriteria', () => {
     it('renders the General search section expanded by default', () => {
-        const { container } = render(<LaboratoryReportSearchCriteria />);
+        const { getAllByRole } = render(<LaboratoryReportSearchCriteria />);
 
-        const detailsElements = container.querySelectorAll('details');
-        const generalAccordion = detailsElements[0];
+        const buttons = getAllByRole('button');
+        const regions = getAllByRole('region');
 
-        expect(generalAccordion).toHaveTextContent('General search');
-        expect(generalAccordion).toHaveAttribute('open');
+        const generalButton = buttons.find((button) => button.textContent?.includes('General search'));
+        const generalPanel = regions[0];
+
+        expect(generalButton).toHaveAttribute('aria-expanded', 'true');
+        expect(generalPanel).not.toHaveAttribute('hidden');
     });
 
     it('renders the Lab report criteria section collapsed by default', () => {
-        const { container } = render(<LaboratoryReportSearchCriteria />);
+        const { getAllByRole } = render(<LaboratoryReportSearchCriteria />);
 
-        const detailsElements = container.querySelectorAll('details');
-        const criteriaAccordion = detailsElements[1];
+        const buttons = getAllByRole('button');
+        const criteriaButton = buttons.find((button) => button.textContent?.includes('Lab report criteria'));
 
-        expect(criteriaAccordion).toHaveTextContent('Lab report criteria');
-        expect(criteriaAccordion).not.toHaveAttribute('open');
+        expect(criteriaButton).toHaveAttribute('aria-expanded', 'false');
     });
 });
