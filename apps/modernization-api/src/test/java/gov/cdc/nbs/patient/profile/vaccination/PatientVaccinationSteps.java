@@ -2,11 +2,8 @@ package gov.cdc.nbs.patient.profile.vaccination;
 
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.testing.patient.RevisionMother;
 import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,32 +18,12 @@ public class PatientVaccinationSteps {
 
   private final PatientVaccinationResolver resolver;
 
-  private final VaccinationMother mother;
-
-  private final RevisionMother revisionMother;
-
   PatientVaccinationSteps(
       final Active<PatientIdentifier> activePatient,
-      final PatientVaccinationResolver resolver,
-      final VaccinationMother mother,
-      final RevisionMother revisionMother
+      final PatientVaccinationResolver resolver
   ) {
     this.activePatient = activePatient;
     this.resolver = resolver;
-    this.mother = mother;
-    this.revisionMother = revisionMother;
-  }
-
-  @Before
-  public void clean() {
-    mother.reset();
-  }
-
-  @When("the patient is vaccinated")
-  public void the_patient_has_a_Case_Report() {
-    this.activePatient.maybeActive()
-        .map(this.revisionMother::revise)
-        .ifPresent(patient -> mother.vaccinate(patient.id()));
   }
 
   @Then("the profile has an associated vaccination")
