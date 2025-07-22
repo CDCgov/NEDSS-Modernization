@@ -67,7 +67,7 @@ class TextResultedTestMother {
           :identifier,
           (select count(*) + 1 from Obs_value_txt where observation_uid = :identifier),
           :result,
-          ''
+          null
       )
       ;
       """;
