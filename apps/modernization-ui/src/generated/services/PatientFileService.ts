@@ -20,6 +20,7 @@ import type { PatientNameDemographic } from '../models/PatientNameDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
 import type { PatientRaceDemographic } from '../models/PatientRaceDemographic';
 import type { PatientSexBirthDemographic } from '../models/PatientSexBirthDemographic';
+import type { PatientVaccination } from '../models/PatientVaccination';
 import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -46,6 +47,25 @@ export class PatientFileService {
             },
             errors: {
                 400: `The race category is already present on the patient`,
+            },
+        });
+    }
+    /**
+     * Patient File Vaccinations
+     * Provides Vaccinations for a patient
+     * @returns PatientVaccination OK
+     * @throws ApiError
+     */
+    public static vaccinations({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientVaccination>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/vaccinations',
+            path: {
+                'patient': patient,
             },
         });
     }

@@ -53,6 +53,7 @@ export type { PatientNameDemographic } from './models/PatientNameDemographic';
 export type { PatientPhoneDemographic } from './models/PatientPhoneDemographic';
 export type { PatientRaceDemographic } from './models/PatientRaceDemographic';
 export type { PatientSexBirthDemographic } from './models/PatientSexBirthDemographic';
+export type { PatientVaccination } from './models/PatientVaccination';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
 export type { Restricted } from './models/Restricted';
