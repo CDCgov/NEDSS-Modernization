@@ -28,9 +28,6 @@ class PatientMergeHistoryController {
   @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT')")
   ResponseEntity<List<PatientMergeHistory>> mergeHistory(@PathVariable("patient") long patient) {
     List<PatientMergeHistory> history = this.finder.find(patient);
-    if (history.isEmpty()) {
-      return ResponseEntity.notFound().build();
-    }
     return ResponseEntity.ok(history);
   }
 }
