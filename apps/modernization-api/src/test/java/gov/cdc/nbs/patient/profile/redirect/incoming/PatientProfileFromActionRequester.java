@@ -18,8 +18,7 @@ class PatientProfileFromActionRequester {
 
   PatientProfileFromActionRequester(
       final MockMvc mvc,
-      final Authenticated authenticated
-  ) {
+      final Authenticated authenticated) {
     this.mvc = mvc;
     this.authenticated = authenticated;
   }
@@ -27,9 +26,8 @@ class PatientProfileFromActionRequester {
   ResultActions returning(final InvestigationIdentifier investigation) {
     try {
       return mvc.perform(
-          authenticated.withSession(get("/nbs/redirect/patientProfile/summary/return"))
-              .cookie(new Cookie("Patient-Action", String.valueOf(investigation.identifier())))
-      );
+          authenticated.withSession(get("/nbs/redirect/patient/file/summary/return"))
+              .cookie(new Cookie("Patient-Action", String.valueOf(investigation.identifier()))));
     } catch (Exception e) {
       throw new IllegalStateException("Unexpected error when returning to a patient profile from an Investigation", e);
     }

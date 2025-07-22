@@ -16,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PatientProfileIncomingRedirectionSteps {
 
-
   private final Available<PatientIdentifier> patients;
   private final Authenticated authenticated;
   private final MockMvc mvc;
@@ -26,8 +25,7 @@ public class PatientProfileIncomingRedirectionSteps {
       final Available<PatientIdentifier> patients,
       final Authenticated authenticated,
       final MockMvc mvc,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.patients = patients;
     this.authenticated = authenticated;
     this.mvc = mvc;
@@ -42,10 +40,8 @@ public class PatientProfileIncomingRedirectionSteps {
     response.active(
         mvc
             .perform(
-                authenticated.withSession(post("/nbs/redirect/patient/profile"))
-                    .param("MPRUid", String.valueOf(patient.id()))
-            )
-    );
+                authenticated.withSession(post("/nbs/redirect/patient/file"))
+                    .param("MPRUid", String.valueOf(patient.id()))));
   }
 
   @When("Redirecting a Classic Revision Patient Profile")
@@ -55,10 +51,8 @@ public class PatientProfileIncomingRedirectionSteps {
     response.active(
         mvc
             .perform(
-                authenticated.withSession(post("/nbs/redirect/patient/profile"))
-                    .param("uid", String.valueOf(patient.id()))
-            )
-    );
+                authenticated.withSession(post("/nbs/redirect/patient/file"))
+                    .param("uid", String.valueOf(patient.id()))));
   }
 
   @Then("I am redirected to the Modernized Patient Profile")
@@ -67,10 +61,9 @@ public class PatientProfileIncomingRedirectionSteps {
 
     this.response.active()
         .andExpect(status().isSeeOther())
-        .andExpect(header().string("Location", startsWith("/patient-profile/" + patient.shortId())))
+        .andExpect(header().string("Location", startsWith("/patient/" + patient.shortId())))
         .andExpect(cookie().value("Return-Patient", ""))
-        .andExpect(cookie().value("Patient-Action", ""))
-    ;
+        .andExpect(cookie().value("Patient-Action", ""));
   }
 
   @Then("I am redirected to the Modernized Patient Profile {patientProfileTab} tab")
@@ -79,9 +72,8 @@ public class PatientProfileIncomingRedirectionSteps {
 
     this.response.active()
         .andExpect(status().isSeeOther())
-        .andExpect(header().string("Location", equalTo("/patient-profile/" + patient.shortId() + "/" + tab)))
+        .andExpect(header().string("Location", equalTo("/patient/" + patient.shortId() + "/" + tab)))
         .andExpect(cookie().value("Return-Patient", ""))
-        .andExpect(cookie().value("Patient-Action", ""))
-    ;
+        .andExpect(cookie().value("Patient-Action", ""));
   }
 }

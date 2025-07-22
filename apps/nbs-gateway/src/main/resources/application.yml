@@ -27,7 +27,7 @@ nbs:
       search:
         enabled: true
         service: 'localhost:8080'
-      profile:
+      file:
         enabled: false
         service: 'localhost:8080'
     pagebuilder:
