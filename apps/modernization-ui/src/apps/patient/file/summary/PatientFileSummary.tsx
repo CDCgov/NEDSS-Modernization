@@ -4,8 +4,7 @@ import { PatientFileDemographicsSummaryCard } from '../demographics/summary';
 import { PatientFileOpenInvestigationsCard } from './openInvestigations';
 import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
 import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
-import { Guarded } from '../../../../libs/guard';
-import { permissions } from '../../../../libs/permission';
+import { FeatureToggle } from '../../../../feature';
 
 const PatientFileSummary = () => {
     const { summary, demographics, patient } = usePatientFileData();
@@ -28,11 +27,9 @@ const PatientFileSummary = () => {
                 provider={summary.get().drr}
                 sizing={sizing}
             />
-            <Guarded
-                feature={(features) => features.patient.file.mergeHistory?.enabled}
-                permission={permissions.patient.file}>
+            <FeatureToggle guard={(features) => features.patient.file.mergeHistory?.enabled}>
                 <PatientMergeHistoryCard id="merge-history" provider={summary.get().mergeHistory} patient={patient} />
-            </Guarded>
+            </FeatureToggle>
         </>
     );
 };
