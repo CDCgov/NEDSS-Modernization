@@ -10,7 +10,7 @@ import { internalizeDateTime } from 'date/InternalizeDateTime';
 import { renderFacilityProvider, renderMorbidity } from '../../renderPatientFile';
 import { PatientFileDocumentRequiringReview } from './drr';
 import { TableCardProps } from 'design-system/card/table/TableCard';
-import { MaybeLabeledValue } from 'design-system/value';
+import { LabeledValue, MaybeLabeledValue } from 'design-system/value';
 import { ResultedTests } from 'libs/events/tests';
 
 import styles from './drr.module.scss';
@@ -50,8 +50,17 @@ const resolveUrl = (value: PatientFileDocumentRequiringReview) => {
     }
 };
 
-const renderEventDate = (value?: string) => {
-    return internalizeDate(value);
+const renderEventDate = (value?: PatientFileDocumentRequiringReview) => {
+    if (value?.type === 'Morbidity Report') {
+        return (
+            <>
+                <LabeledValue label="Report Date" orientation="vertical">
+                    {internalizeDate(value.eventDate)}
+                </LabeledValue>
+            </>
+        );
+    }
+    return internalizeDate(value?.eventDate);
 };
 
 const renderEventId = (value: PatientFileDocumentRequiringReview) => {
@@ -104,7 +113,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,
-        render: (value) => renderEventDate(value.eventDate)
+        render: (value) => renderEventDate(value)
     },
     {
         ...DESCRIPTION,
