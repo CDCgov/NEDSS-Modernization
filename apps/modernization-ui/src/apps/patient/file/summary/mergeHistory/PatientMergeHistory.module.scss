@@ -17,5 +17,19 @@
     * {
       border-radius: 0 !important;
     }
+    th:first-child,
+    td:first-child {
+      width: 5rem;
+      min-width: 5rem;
+      max-width: 9rem;
+      white-space: nowrap;
+    }
+    th:last-child,
+    td:last-child {
+      width: 40rem;
+      min-width: 15rem;
+      max-width: 150rem;
+      white-space: nowrap;
+    }
   }
 }

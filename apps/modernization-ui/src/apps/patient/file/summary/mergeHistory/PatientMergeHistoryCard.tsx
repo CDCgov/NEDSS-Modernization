@@ -24,7 +24,11 @@ const columns: Column<PatientFileMergeHistory>[] = [
         sortable: true,
         value: (row) => row.supersededPersonLocalId,
         sortIconType: 'numeric',
-        render: (row) => <a href={`/patient/${row.supersededPersonLocalId}/summary`}>{row.supersededPersonLocalId}</a>
+        render: (row) => (
+            <a href={`/patient/${row.supersededPersonLocalId}/summary`} target="_blank" rel="noopener noreferrer">
+                {row.supersededPersonLocalId}
+            </a>
+        )
     },
     {
         id: 'supersededPersonLegalName',
