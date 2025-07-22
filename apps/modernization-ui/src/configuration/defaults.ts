@@ -53,7 +53,10 @@ const defaultFeatures: Features = {
             }
         },
         file: {
-            enabled: false
+            enabled: false,
+            mergeHistory: {
+                enabled: false
+            }
         }
     },
     system: {

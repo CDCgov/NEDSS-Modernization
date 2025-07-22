@@ -13,6 +13,7 @@ public record Patient(Search search, Profile profile, File file) {
   public record Profile(Boolean enabled) {
   }
 
-  public record File(Boolean enabled) {
+  public record File(Boolean enabled, MergeHistory mergeHistory) {
+    public record MergeHistory(boolean enabled) {}
   }
 }
