@@ -35,6 +35,9 @@ type Search = {
 
 type PatientFileFeatures = {
     enabled: boolean;
+    mergeHistory?: {
+        enabled: boolean;
+    };
 };
 
 type PatientSearchFeatures = {

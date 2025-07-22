@@ -11,6 +11,7 @@ Feature: Frontend Feature Configuration
     And the laboratory report search feature is disabled
     And the deduplication feature is disabled
     And the patient file feature is disabled
+    And the patient file merge history feature is disabled
     And the system management feature is disabled
 
   Scenario Outline: I can configure Frontend features
@@ -40,5 +41,7 @@ Feature: Frontend Feature Configuration
       | deduplication merge        | enabled  |
       | patient file               | enabled  |
       | patient file               | disabled |
+      | patient file merge history | enabled  |
+      | patient file merge history | disabled |
       | system management          | enabled  |
       | system management          | disabled |
