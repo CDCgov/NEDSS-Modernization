@@ -36,7 +36,7 @@ class PatientFeaturesConfiguration {
   @Scope("prototype")
   Patient.File patientFileFeatures(
           @Value("${nbs.ui.features.patient.file.enabled:false}") final boolean enabled,
-          @Value("${nbs.ui.features.patient.file.merge-history.enabled:false}") final boolean mergeHistoryEnabled) {
+          @Value("${nbs.ui.features.patient.file.mergeHistory.enabled:false}") final boolean mergeHistoryEnabled) {
     return new Patient.File(enabled, new Patient.File.MergeHistory(mergeHistoryEnabled));
   }
 }
