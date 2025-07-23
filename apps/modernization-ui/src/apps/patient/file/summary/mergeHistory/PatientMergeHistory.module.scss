@@ -1,4 +1,5 @@
 @use 'styles/borders';
+@use 'design-system/table/header/widths';
 
 .sectionCard {
   padding: 1rem;
@@ -16,20 +17,6 @@
   .dataTable {
     * {
       border-radius: 0 !important;
-    }
-    th:first-child,
-    td:first-child {
-      width: 6rem;
-      min-width: 6rem;
-      max-width: 9rem;
-      white-space: nowrap;
-    }
-    th:last-child,
-    td:last-child {
-      width: 40rem;
-      min-width: 15rem;
-      max-width: 150rem;
-      white-space: nowrap;
     }
   }
 }
