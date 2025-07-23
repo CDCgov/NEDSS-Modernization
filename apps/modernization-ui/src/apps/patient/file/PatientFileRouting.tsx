@@ -3,6 +3,7 @@ import { Navigate } from 'react-router';
 import { permissions } from 'libs/permission';
 import { PageTitle } from 'page';
 import { Guarded } from 'libs/guard';
+import { RedirectHome } from 'routes';
 import { loader } from './loader';
 
 const LazyPatientFile = lazy(() => import('./PatientFile').then((module) => ({ default: module.PatientFile })));
@@ -18,14 +19,18 @@ const routing = [
     {
         path: '/patient/:id',
         element: (
-            <Guarded feature={(features) => features.patient.file.enabled} permission={permissions.patient.file}>
-                <PageTitle title="Patient file">
-                    <Suspense>
+            <Guarded
+                feature={(features) => features.patient.file.enabled}
+                permission={permissions.patient.file}
+                fallback={<RedirectHome />}>
+                <Suspense>
+                    <PageTitle title="Patient file">
                         <LazyPatientFile />
-                    </Suspense>
-                </PageTitle>
+                    </PageTitle>
+                </Suspense>
             </Guarded>
         ),
+        errorElement: <RedirectHome />,
         loader,
         children: [
             { index: true, element: <Navigate to="summary" replace /> },
