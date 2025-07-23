@@ -7,7 +7,11 @@ type TreatmentListProps = {
 
 const TreatmentList = ({ children }: TreatmentListProps) => (
     <Shown when={Boolean(children?.length)}>
-        <ul className={styles.treatments}>{children?.map((treatment, index) => <li key={index}>{treatment}</li>)}</ul>
+        <ul className={styles.treatments}>
+            {children?.map((treatment, index) => (
+                <li key={index}>{treatment}</li>
+            ))}
+        </ul>
     </Shown>
 );
 
