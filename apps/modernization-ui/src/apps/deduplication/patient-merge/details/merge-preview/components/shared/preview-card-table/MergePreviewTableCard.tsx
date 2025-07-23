@@ -24,7 +24,13 @@ export function MergePreviewTableCard<T>({ id, title, columns, data }: SortableT
                     {data.length}
                 </Tag>
             }>
-            <SortableDataTable id={`${id}-table`} columns={columns} data={data} className={styles.dataTable} />
+            <SortableDataTable
+                id={`${id}-table`}
+                columns={columns}
+                data={data}
+                sizing={'small'}
+                className={styles.dataTable}
+            />
             <div className={styles.footer} />
         </Card>
     );
