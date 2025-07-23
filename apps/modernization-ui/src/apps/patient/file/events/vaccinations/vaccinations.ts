@@ -1,0 +1,16 @@
+import { AssociatedInvestigation } from 'libs/events/investigations/associated';
+import { Provider } from 'libs/provider';
+
+type PatientFileVaccinations = {
+    patient: number;
+    id: number;
+    local: string;
+    receivedOn: Date;
+    organization: string;
+    provider: Provider;
+    administratedDate: Date;
+    vaccineAdministrated: string;
+    associations: AssociatedInvestigation[];
+};
+
+export type { PatientFileVaccinations };
