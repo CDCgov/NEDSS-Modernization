@@ -8,8 +8,8 @@ type PatientFileVaccinations = {
     receivedOn: Date;
     organization: string;
     provider: Provider;
-    administratedDate: Date;
-    vaccineAdministrated: string;
+    administratedOn: Date;
+    administered: string;
     associations: AssociatedInvestigation[];
 };
 

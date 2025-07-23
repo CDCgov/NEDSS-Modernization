@@ -106,7 +106,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                     secondary
                     sizing={sizing}
                     icon="add_circle"
-                    href={`/nbs/api/profile/${patient}/report/vaccination`}>
+                    href={`/nbs/api/profile/${patient}/vaccination`}>
                     Add vaccination
                 </LinkButton>
             </Permitted>
