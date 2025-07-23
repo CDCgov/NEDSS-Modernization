@@ -841,6 +841,27 @@
 									"response": []
 								},
 								{
+									"name": "Treatments",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/treatments",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"treatments"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Laboratory Reports",
 									"request": {
 										"method": "GET",
