@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import gov.cdc.nbs.testing.support.Active;
 
 @Configuration
-public class VaccinationConfiguration {
+class VaccinationSupportConfiguration {
 
   @Bean
-  public Active<VaccinationIdentifier> activeVaccination() {
+  Active<VaccinationIdentifier> activeVaccination() {
     return new Active<>();
   }
 }

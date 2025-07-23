@@ -569,31 +569,6 @@ type PatientTreatmentResults {
 extend type Query {
   findTreatmentsForPatient(patient: ID!, page: Page): PatientTreatmentResults
 }
-type PatientVaccination {
-    vaccination: ID!
-    createdOn: DateTime!
-    provider: String
-    administeredOn: DateTime
-    administered: String!
-    event: String!
-    associatedWith: PatientVaccinationInvestigation
-}
-
-type PatientVaccinationInvestigation {
-    id: ID!
-    local: String!
-    condition: String!
-}
-
-type PatientVaccinationResults {
-    content: [PatientVaccination]!
-    total: Int!
-    number: Int!
-}
-
-extend type Query {
-    findVaccinationsForPatient(patient: ID!, page: Page): PatientVaccinationResults
-}
 extend type Query {
   findAllProgramAreas(page: Page): [ProgramAreaCode]!
 }
