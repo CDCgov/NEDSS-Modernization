@@ -4,7 +4,7 @@ import { PatientFileDemographicsSummaryCard } from '../demographics/summary';
 import { PatientFileOpenInvestigationsCard } from './openInvestigations';
 import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
 import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
-import { FeatureToggle } from '../../../../feature';
+import { FeatureToggle } from 'feature';
 
 const PatientFileSummary = () => {
     const { summary, demographics, patient } = usePatientFileData();

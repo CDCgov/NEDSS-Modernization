@@ -1,15 +1,15 @@
 import { Suspense, useMemo } from 'react';
 import { Await } from 'react-router';
 import { Section } from 'design-system/card/section/Section';
+import { Column, SortableDataTable } from 'design-system/table';
 import { Card } from 'design-system/card';
 import { Tag } from 'design-system/tag';
-import { Column, SortableDataTable } from 'design-system/table';
 import { PatientFileMergeHistory } from './mergeHistory';
 import { MemoizedSupplier } from 'libs/supplying';
 import { format } from 'date-fns';
-import styles from './PatientMergeHistory.module.scss';
-import { displayName } from '../../../../../name';
+import { displayName } from 'name/displayName';
 import { Patient } from '../../patient';
+import styles from './PatientMergeHistory.module.scss';
 
 type PatientMergeHistoryCardProps = {
     id: string;
@@ -24,6 +24,7 @@ const columns: Column<PatientFileMergeHistory>[] = [
         sortable: true,
         value: (row) => row.supersededPersonLocalId,
         sortIconType: 'numeric',
+        className: styles['action-header'],
         render: (row) => (
             <a href={`/patient/${row.supersededPersonLocalId}/summary`} target="_blank" rel="noopener noreferrer">
                 {row.supersededPersonLocalId}
