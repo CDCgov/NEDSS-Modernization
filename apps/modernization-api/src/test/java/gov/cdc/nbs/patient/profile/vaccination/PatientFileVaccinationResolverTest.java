@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class PatientVaccinationResolverTest {
+class PatientFileVaccinationResolverTest {
 
     @Test
     void should_find_paginated_vaccination_reports_for_the_provided_patient_using_the_finder() {

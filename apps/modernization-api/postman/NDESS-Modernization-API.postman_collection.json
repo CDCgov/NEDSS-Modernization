@@ -820,6 +820,27 @@
 									"response": []
 								},
 								{
+									"name": "Vaccinations",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/vaccinations",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"vaccinations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Laboratory Reports",
 									"request": {
 										"method": "GET",
