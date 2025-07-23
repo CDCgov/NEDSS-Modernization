@@ -61,6 +61,6 @@ describe('PageContext', () => {
             result.current.setTitle('Test Page');
         });
 
-        expect(document.title).toBe('NBS | Test Page');
+        expect(document.title).toBe('NBS - Test Page');
     });
 });
