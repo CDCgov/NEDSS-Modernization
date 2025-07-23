@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router';
 import { Guarded, GuardedProps } from './Guarded';
+import { RedirectHome } from 'routes';
 
 type GuardedLayoutProps = Omit<GuardedProps, 'children'>;
 
@@ -10,7 +11,7 @@ type GuardedLayoutProps = Omit<GuardedProps, 'children'>;
  * @return {ReactNode} The component displayed when the feature and permission evaluation passes.
  */
 const GuardedLayout = (props: GuardedLayoutProps) => (
-    <Guarded {...props}>
+    <Guarded fallback={<RedirectHome />} {...props}>
         <Outlet />
     </Guarded>
 );
