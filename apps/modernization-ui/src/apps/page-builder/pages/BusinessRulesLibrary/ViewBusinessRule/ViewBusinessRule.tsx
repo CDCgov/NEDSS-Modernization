@@ -97,7 +97,11 @@ export const ViewBusinessRule = () => {
                             {rule?.ruleFunction !== 'DATE_COMPARE' && (
                                 <tr>
                                     <td>Source value(s)</td>
-                                    <td>{rule?.sourceValues?.map((value, key) => <span key={key}>{value}</span>)}</td>
+                                    <td>
+                                        {rule?.sourceValues?.map((value, key) => (
+                                            <span key={key}>{value}</span>
+                                        ))}
+                                    </td>
                                 </tr>
                             )}
                             {rule?.targetType && (
