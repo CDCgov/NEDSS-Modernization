@@ -30,6 +30,7 @@ const routing = [
                 </Suspense>
             </Guarded>
         ),
+        errorElement: <RedirectHome />,
         loader,
         children: [
             { index: true, element: <Navigate to="summary" replace /> },
