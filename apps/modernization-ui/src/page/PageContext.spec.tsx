@@ -4,7 +4,7 @@ import { PageProvider, usePage } from './PageContext';
 
 const mockLocation = {} as Location;
 
-jest.mock('react-router', () => ({
+vi.mock('react-router', () => ({
     useLocation: () => mockLocation
 }));
 

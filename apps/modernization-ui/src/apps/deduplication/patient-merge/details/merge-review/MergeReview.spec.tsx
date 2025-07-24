@@ -54,7 +54,7 @@ const Fixture = () => {
         }
     ];
     return (
-        <AlertProvider>
+        <AlertProvider duration={1000}>
             <MemoryRouter initialEntries={['/deduplication/merge/1234']}>
                 <Routes>
                     <Route

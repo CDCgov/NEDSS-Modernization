@@ -5,11 +5,11 @@ import * as navigation from 'navigation';
 import * as storage from 'storage';
 
 // Mock dependencies
-jest.mock('navigation');
-jest.mock('storage');
+vi.mock('navigation');
+vi.mock('storage');
 
-const mockUnblock = jest.fn();
-const mockReset = jest.fn();
+const mockUnblock = vi.fn();
+const mockReset = vi.fn();
 
 const Fixture = ({
     blocked = true,
@@ -17,7 +17,7 @@ const Fixture = ({
     value = false,
     allowed,
     cancelText,
-    save = jest.fn()
+    save = vi.fn()
 }: {
     blocked?: boolean;
     activated?: boolean;
@@ -26,12 +26,12 @@ const Fixture = ({
     cancelText?: string;
     save?: (value?: boolean) => void;
 } = {}) => {
-    (navigation.useFormNavigationBlock as jest.Mock).mockReturnValue({
+    (navigation.useFormNavigationBlock as vi.Mock).mockReturnValue({
         blocked,
         unblock: mockUnblock,
         reset: mockReset
     });
-    (storage.useLocalStorage as jest.Mock).mockReturnValue({ value, save });
+    (storage.useLocalStorage as vi.Mock).mockReturnValue({ value, save });
     const form = {} as any; // Mock form object, adjust as needed
 
     return <NavigationGuard id="nav" form={form} activated={activated} allowed={allowed} cancelText={cancelText} />;
@@ -39,7 +39,7 @@ const Fixture = ({
 
 describe('NavigationGuard', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('renders confirmation modal when navigation is blocked', () => {
@@ -58,7 +58,7 @@ describe('NavigationGuard', () => {
 
     it('calls unblock and save with false if checkbox not checked', async () => {
         userEvent.setup();
-        const save = jest.fn();
+        const save = vi.fn();
         const { getByText } = render(<Fixture save={save} />);
         const confirmButton = getByText('Yes, cancel');
         // Click confirm without checking the checkbox
@@ -71,7 +71,7 @@ describe('NavigationGuard', () => {
 
     it('calls unblock and save with correct value when confirmed', async () => {
         userEvent.setup();
-        const save = jest.fn();
+        const save = vi.fn();
         const { getByText } = render(<Fixture save={save} />);
         // Check the "Don't show again" checkbox
         const checkboxLabel = getByText("Don't show again");
