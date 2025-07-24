@@ -17,7 +17,7 @@ import { PatientFileVaccinations } from '.';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'created-on', name: 'Date created' };
-const ORG_PROV = { id: 'organization-provider', name: 'Organization/Provider' };
+const ORG_PROV = { id: 'organization-provider', name: 'Organization/provider' };
 const DATE_ADMINISTRATED = { id: 'date-administrated', name: 'Date administrated' };
 const VACCINE_ADMINISTRATED = { id: 'vaccine-administrated', name: 'Vaccine administrated' };
 const ASSOCIATED_WITH = { id: 'associated-with', name: 'Associated with' };
