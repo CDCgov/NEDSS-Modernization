@@ -25,7 +25,6 @@ export const PageProvider = ({ children }: PageProviderProps) => {
 
     const setTitle = useCallback(
         (value?: string) => {
-            const title = value ? value : resolveTitle(pathname);
             applyTitle(title);
         },
         [applyTitle, pathname]
