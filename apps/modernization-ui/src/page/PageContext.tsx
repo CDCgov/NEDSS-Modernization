@@ -31,6 +31,12 @@ export const PageProvider = ({ children }: PageProviderProps) => {
         [applyTitle, pathname]
     );
 
+    useEffect(() => {
+        if (title) {
+            document.title = `NBS - ${title}`;
+        }
+    }, [title]);
+
     const resetTitle = useCallback(() => setTitle(undefined), [setTitle]);
 
     const value: UsePageInteraction = {

@@ -17,6 +17,7 @@ const setup = () => {
 describe('PageContext', () => {
     beforeEach(() => {
         mockLocation.pathname = '/';
+        document.title = '';
     });
 
     it('should provide a default page title', () => {
@@ -51,5 +52,15 @@ describe('PageContext', () => {
             result.current.resetTitle();
         });
         expect(result.current.title).toEqual('Default');
+    });
+
+    it('should update document title when page title changes', () => {
+        const { result } = setup();
+
+        act(() => {
+            result.current.setTitle('Test Page');
+        });
+
+        expect(document.title).toBe('NBS - Test Page');
     });
 });

@@ -13,11 +13,19 @@ import { routing as logoutRouting } from 'logout';
 import { Login } from 'pages/login';
 import { Expired } from 'apps/landing/Expired/Expired';
 import { routing as patientFileRouting } from 'apps/patient/file/PatientFileRouting';
+import { PageProvider } from 'page';
 
 const routing = [
     welcomeRouting,
     logoutRouting,
-    { path: '/login', element: <Login /> },
+    {
+        path: '/login',
+        element: (
+            <PageProvider>
+                <Login />
+            </PageProvider>
+        )
+    },
     {
         path: '/',
         element: <ProtectedLayout />,

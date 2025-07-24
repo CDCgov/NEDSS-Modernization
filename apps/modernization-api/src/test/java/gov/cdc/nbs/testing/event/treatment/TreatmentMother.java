@@ -3,6 +3,9 @@ package gov.cdc.nbs.testing.event.treatment;
 import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.event.report.morbidity.MorbidityReportIdentifier;
 import gov.cdc.nbs.identity.MotherSettings;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.support.organization.OrganizationIdentifier;
+import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.data.TestingDataCleaner;
@@ -14,6 +17,7 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 @ScenarioScope
@@ -62,9 +66,10 @@ class TreatmentMother {
           :identifier,
           1,
           :treatedOn
-      )
-      
-      --  relate it to the patient
+      );
+      """;
+
+  private static final String PARTICIPATE_IN = """
       insert into Participation(
           act_uid,
           act_class_cd,
@@ -78,26 +83,25 @@ class TreatmentMother {
       ) values (
           :identifier,
           'TRMT',
-          'SubjOfTrmt',
+          :type,
           'ACTIVE',
           :addedOn,
           :addedBy,
           :addedOn,
-          'PSN',
-          :patient
+          :subjectClass,
+          :subject
       );
-      
-      -- relate it to the event
-      insert into Act_Relationship (
+      """;
+
+  private static final String RELATED_TO = """
+       insert into Act_Relationship (
           source_act_uid,
           source_class_cd,
           target_act_uid,
           target_class_cd,
           type_cd,
           record_status_cd,
-          record_status_time,
-          add_user_id,
-          add_time
+          record_status_time
       ) values (
           :identifier,
           'TRMT',
@@ -105,9 +109,7 @@ class TreatmentMother {
           :targetClass,
           :type,
           'ACTIVE',
-          :addedOn,
-          :addedBy,
-          :addedOn
+          GETDATE()
       )
       """;
 
@@ -146,15 +148,12 @@ class TreatmentMother {
     this.cleaner.clean();
   }
 
-  private void create(
+  private TreatmentIdentifier create(
       final ProgramAreaIdentifier programArea,
       final LocalDate treatedOn,
       final String treatment,
       final String description,
-      final long patient,
-      final long target,
-      final String targetClass,
-      final String type
+      final long patient
   ) {
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal("TRMT");
@@ -169,14 +168,60 @@ class TreatmentMother {
         .param("treatment", treatment)
         .param("description", description)
         .param("class", description == null ? "TA" : null)
-        .param("patient", patient)
-        .param("target", target)
-        .param("targetClass", targetClass)
-        .param("type", type)
         .update();
 
+    TreatmentIdentifier created = new TreatmentIdentifier(identifier, local);
+
+    participate(created, "SubjOfTrmt", patient, "PSN");
+
     this.cleaner.include(identifier);
-    this.active.active(new TreatmentIdentifier(identifier, local));
+    this.active.active(created);
+
+    return created;
+  }
+
+  private void participate(
+      final TreatmentIdentifier treatment,
+      final String type,
+      final long subject,
+      final String subjectClass
+  ) {
+    this.client.sql(PARTICIPATE_IN)
+        .param("identifier", treatment.identifier())
+        .param("type", type)
+        .param("addedOn", settings.createdOn())
+        .param("addedBy", settings.createdBy())
+        .param("subject", subject)
+        .param("subjectClass", subjectClass)
+        .update();
+  }
+
+  void create(
+      final ProgramAreaIdentifier programArea,
+      final PatientIdentifier patient,
+      final String treatment
+  ) {
+    create(
+        programArea,
+        RandomUtil.dateInPast(),
+        treatment,
+        null,
+        patient.id()
+    );
+  }
+
+  void createCustom(
+      final PatientIdentifier patient,
+      final ProgramAreaIdentifier programArea,
+      final String treatment
+  ) {
+    create(
+        programArea,
+        RandomUtil.dateInPast(),
+        "OTH",
+        treatment,
+        patient.id()
+    );
   }
 
   void create(
@@ -185,16 +230,15 @@ class TreatmentMother {
       final String description
   ) {
 
-    create(
+    TreatmentIdentifier created = create(
         report.programArea(),
         RandomUtil.dateInPast(),
         treatment,
         description,
-        report.revision(),
-        report.identifier(),
-        "OBS",
-        "TreatmentToMorb"
+        report.revision()
     );
+
+    relatedTo(created, report.identifier(), "OBS", "TreatmentToMorb");
   }
 
   void create(
@@ -206,15 +250,58 @@ class TreatmentMother {
   }
 
   void create(final InvestigationIdentifier investigation) {
-    create(
+    TreatmentIdentifier created = create(
         investigation.programArea(),
         RandomUtil.dateInPast(),
         "OTH",
         "Other",
-        investigation.revision(),
-        investigation.identifier(),
-        "CASE",
-        "TreatmentToPHC"
+        investigation.revision()
     );
+
+    associated(created, investigation);
+  }
+
+  private void relatedTo(
+      final TreatmentIdentifier treatment,
+      final long target,
+      final String targetClass,
+      final String type
+  ) {
+    this.client.sql(RELATED_TO)
+        .param("identifier", treatment.identifier())
+        .param("target", target)
+        .param("targetClass", targetClass)
+        .param("type", type)
+        .update();
+
+  }
+
+  void createdOn(final TreatmentIdentifier treatment, final LocalDateTime on) {
+    this.client.sql("update Treatment set add_time = ? where treatment_uid = ?")
+        .param(on)
+        .param(treatment.identifier())
+        .update();
+  }
+
+  void treatedOn(final TreatmentIdentifier treatment, final LocalDate on) {
+    this.client.sql("update Treatment_administered set effective_from_time = ? where treatment_uid = ?")
+        .param(on)
+        .param(treatment.identifier())
+        .update();
+  }
+
+  void providedBy(final TreatmentIdentifier treatment, final ProviderIdentifier provider) {
+    participate(treatment, "ProviderOfTrmt", provider.identifier(), "PSN");
+  }
+
+  void reportedAt(final TreatmentIdentifier treatment, final OrganizationIdentifier organization) {
+    participate(treatment, "ReporterOfTrmt", organization.identifier(), "ORG");
+  }
+
+  void associated(
+      final TreatmentIdentifier treatment,
+      final InvestigationIdentifier investigation
+  ) {
+    relatedTo(treatment, investigation.identifier(), "CASE", "TreatmentToPHC");
   }
 }

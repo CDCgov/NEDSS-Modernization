@@ -43,10 +43,12 @@ export type { PatientAddressDemographic } from './models/PatientAddressDemograph
 export type { PatientDemographicsSummary } from './models/PatientDemographicsSummary';
 export type { PatientEthnicityDemographic } from './models/PatientEthnicityDemographic';
 export { PatientFile } from './models/PatientFile';
+export type { PatientFileTreatment } from './models/PatientFileTreatment';
 export type { PatientGeneralInformationDemographic } from './models/PatientGeneralInformationDemographic';
 export type { PatientIdentificationDemographic } from './models/PatientIdentificationDemographic';
 export type { PatientInvestigation } from './models/PatientInvestigation';
 export type { PatientLabReport } from './models/PatientLabReport';
+export type { PatientMergeHistory } from './models/PatientMergeHistory';
 export type { PatientMorbidityReport } from './models/PatientMorbidityReport';
 export type { PatientMortalityDemographic } from './models/PatientMortalityDemographic';
 export type { PatientNameDemographic } from './models/PatientNameDemographic';

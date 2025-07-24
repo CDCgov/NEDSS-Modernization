@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.contact;
 
-import gov.cdc.nbs.entity.odse.PublicHealthCase;
+import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.event.investigation.InvestigationMother;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.patient.PatientMother;
@@ -47,10 +47,10 @@ public class PatientNamedAsAContactSteps {
 
     PatientIdentifier other = patientMother.available();
 
-    PublicHealthCase investigation = investigationMother.investigation(other.id());
+    InvestigationIdentifier investigation = investigationMother.investigation(other.id());
 
     mother.namedByPatient(
-        investigation.getId(),
+        investigation.identifier(),
         other.id(),
         revision.id());
   }

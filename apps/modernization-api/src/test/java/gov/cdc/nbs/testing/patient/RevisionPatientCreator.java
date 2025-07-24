@@ -3,13 +3,8 @@ package gov.cdc.nbs.testing.patient;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.sql.PreparedStatement;
-import java.util.Map;
 
 @Component
 class RevisionPatientCreator {
@@ -46,8 +41,7 @@ class RevisionPatientCreator {
         'ACTIVE',
         getDate()
       from Person [mpr]
-      where [mpr].person_uid = :mpr
-      ;
+      where [mpr].person_uid = :mpr;
       
       insert into Person_name (
           person_uid,
@@ -103,16 +97,16 @@ class RevisionPatientCreator {
       ;
       """;
 
-  private final NamedParameterJdbcTemplate template;
+  private final JdbcClient client;
   private final MotherSettings settings;
   private final SequentialIdentityGenerator idGenerator;
 
   RevisionPatientCreator(
-      final NamedParameterJdbcTemplate template,
+      final JdbcClient client,
       final MotherSettings settings,
       final SequentialIdentityGenerator idGenerator
   ) {
-    this.template = template;
+    this.client = client;
     this.settings = settings;
     this.idGenerator = idGenerator;
   }
@@ -121,19 +115,11 @@ class RevisionPatientCreator {
 
     long id = idGenerator.next();
 
-    SqlParameterSource parameters = new MapSqlParameterSource(
-        Map.of(
-            "mpr", patient.id(),
-            "identifier", id,
-            "by", this.settings.createdBy()
-        )
-    );
-
-    this.template.execute(
-        QUERY,
-        parameters,
-        PreparedStatement::executeUpdate
-    );
+    this.client.sql(QUERY)
+        .param("mpr", patient.id())
+        .param("identifier", id)
+        .param("by", this.settings.createdBy())
+        .update();
 
     return new PatientIdentifier(id, patient.shortId(), patient.local());
   }
