@@ -1,16 +1,9 @@
 package gov.cdc.nbs.entity.odse;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
 import java.time.Instant;
 
 @Getter
@@ -88,11 +81,6 @@ public class ActId {
 
   protected ActId() {
 
-  }
-
-  public ActId(final ActIdId identifier) {
-    this.id = identifier;
-    this.recordStatusCd = "ACTIVE";
   }
 
 }

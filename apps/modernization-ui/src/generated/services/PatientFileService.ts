@@ -10,10 +10,12 @@ import type { PatientAddressDemographic } from '../models/PatientAddressDemograp
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientEthnicityDemographic } from '../models/PatientEthnicityDemographic';
 import type { PatientFile } from '../models/PatientFile';
+import type { PatientFileTreatment } from '../models/PatientFileTreatment';
 import type { PatientGeneralInformationDemographic } from '../models/PatientGeneralInformationDemographic';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientInvestigation } from '../models/PatientInvestigation';
 import type { PatientLabReport } from '../models/PatientLabReport';
+import type { PatientMergeHistory } from '../models/PatientMergeHistory';
 import type { PatientMorbidityReport } from '../models/PatientMorbidityReport';
 import type { PatientMortalityDemographic } from '../models/PatientMortalityDemographic';
 import type { PatientNameDemographic } from '../models/PatientNameDemographic';
@@ -70,6 +72,25 @@ export class PatientFileService {
         });
     }
     /**
+     * Patient File Treatments
+     * Provides Treatments for a patient
+     * @returns PatientFileTreatment OK
+     * @throws ApiError
+     */
+    public static treatments({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientFileTreatment>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/treatments',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
      * Patient File Morbidity Reports
      * Provides Morbidity Reports for a patient
      * @returns PatientMorbidityReport OK
@@ -102,6 +123,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/reports/laboratory',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Merge History
+     * Provides the merge history for a patient
+     * @returns PatientMergeHistory OK
+     * @throws ApiError
+     */
+    public static mergeHistory({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientMergeHistory>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/merge/history',
             path: {
                 'patient': patient,
             },

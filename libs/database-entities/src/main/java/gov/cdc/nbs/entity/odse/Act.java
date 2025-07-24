@@ -1,14 +1,8 @@
 package gov.cdc.nbs.entity.odse;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,18 +97,6 @@ public class Act {
     }
 
     return this.participations;
-  }
-
-  private List<ActId> ensureIdentifiers() {
-    if (this.actIds == null) {
-      this.actIds = new ArrayList<>();
-    }
-    return this.actIds;
-  }
-
-  public void addIdentifier(final ActId identifier) {
-    identifier.setActUid(this);
-    ensureIdentifiers().add(identifier);
   }
 
 }
