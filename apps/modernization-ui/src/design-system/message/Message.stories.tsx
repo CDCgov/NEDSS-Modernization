@@ -18,7 +18,14 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         type: 'information',
-        children: <div>This is a message</div>
+        children: (
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu quam libero. Suspendisse quis dui
+                eros. Suspendisse porta lacus ligula, quis sollicitudin lectus consequat non. Maecenas iaculis hendrerit
+                cursus. In varius lacinia odio non cursus. Fusce quis tellus quis elit sollicitudin placerat. In
+                efficitur, massa eget pharetra pretium, ante eros venenatis ipsum, eu finibus dui diam sed massa.{' '}
+            </p>
+        )
     }
 };
 
@@ -26,27 +33,27 @@ export const ErrorStory: Story = {
     name: 'Error',
     args: {
         type: 'error',
-        children: <div>This is an error message</div>
+        children: 'This is an error message'
     }
 };
 
 export const Information: Story = {
     args: {
         type: 'information',
-        children: <div>This is an information message</div>
+        children: 'This is an information message'
     }
 };
 
 export const Success: Story = {
     args: {
         type: 'success',
-        children: <div>This is a success message</div>
+        children: 'This is a success message'
     }
 };
 
 export const Warning: Story = {
     args: {
         type: 'warning',
-        children: <div>This is a warning message</div>
+        children: 'This is a warning message'
     }
 };

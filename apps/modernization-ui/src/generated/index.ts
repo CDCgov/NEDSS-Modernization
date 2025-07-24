@@ -47,17 +47,20 @@ export type { PatientGeneralInformationDemographic } from './models/PatientGener
 export type { PatientIdentificationDemographic } from './models/PatientIdentificationDemographic';
 export type { PatientInvestigation } from './models/PatientInvestigation';
 export type { PatientLabReport } from './models/PatientLabReport';
+export type { PatientMorbidityReport } from './models/PatientMorbidityReport';
 export type { PatientMortalityDemographic } from './models/PatientMortalityDemographic';
 export type { PatientNameDemographic } from './models/PatientNameDemographic';
 export type { PatientPhoneDemographic } from './models/PatientPhoneDemographic';
 export type { PatientRaceDemographic } from './models/PatientRaceDemographic';
 export type { PatientSexBirthDemographic } from './models/PatientSexBirthDemographic';
+export type { PatientVaccination } from './models/PatientVaccination';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
 export type { Restricted } from './models/Restricted';
 export type { ResultedTest } from './models/ResultedTest';
 export type { Selectable } from './models/Selectable';
 export type { SensitiveValue } from './models/SensitiveValue';
+export type { Specimen } from './models/Specimen';
 export type { Success } from './models/Success';
 
 export { CodedResultOptionsService } from './services/CodedResultOptionsService';
@@ -72,7 +75,6 @@ export { LoginService } from './services/LoginService';
 export { NotificationStatusControllerService } from './services/NotificationStatusControllerService';
 export { OccupationOptionsService } from './services/OccupationOptionsService';
 export { PatientFileService } from './services/PatientFileService';
-export { PatientLabReportsService } from './services/PatientLabReportsService';
 export { PatientProfileService } from './services/PatientProfileService';
 export { PrimaryLanguageOptionsService } from './services/PrimaryLanguageOptionsService';
 export { ProgramAreaOptionsService } from './services/ProgramAreaOptionsService';

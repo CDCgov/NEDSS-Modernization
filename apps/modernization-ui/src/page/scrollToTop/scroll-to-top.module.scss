@@ -1,0 +1,7 @@
+.mainContent {
+    height: inherit;
+
+    &:focus {
+        outline: none !important;
+    }
+}

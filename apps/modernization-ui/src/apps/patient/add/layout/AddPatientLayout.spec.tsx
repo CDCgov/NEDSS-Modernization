@@ -2,6 +2,8 @@ import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
 import { AddPatientLayout } from './AddPatientLayout';
+import { MemoryRouter } from 'react-router';
+import { PageProvider } from 'page';
 
 vi.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
     __esModule: true,
@@ -19,9 +21,13 @@ describe('AddPatientLayout', () => {
 
     it('should render the header title and actions', () => {
         const { getByText } = render(
-            <AddPatientLayout actions={headerActions} title={headerTitle} sections={sections}>
-                {children}
-            </AddPatientLayout>
+            <MemoryRouter>
+                <PageProvider>
+                    <AddPatientLayout actions={headerActions} title={headerTitle} sections={sections}>
+                        {children}
+                    </AddPatientLayout>
+                </PageProvider>
+            </MemoryRouter>
         );
 
         expect(getByText('Add Patient')).toBeInTheDocument();
@@ -30,9 +36,13 @@ describe('AddPatientLayout', () => {
 
     it('should render the children content', () => {
         const { getByText } = render(
+            <MemoryRouter>
+                <PageProvider>
             <AddPatientLayout actions={headerActions} title={headerTitle} sections={sections}>
                 {children}
             </AddPatientLayout>
+            </PageProvider>
+            </MemoryRouter>
         );
 
         expect(getByText('Child Content')).toBeInTheDocument();
@@ -40,9 +50,13 @@ describe('AddPatientLayout', () => {
 
     it('should render the in-page navigation with sections', () => {
         const { getByText } = render(
-            <AddPatientLayout actions={headerActions} title={headerTitle} sections={sections}>
-                {children}
-            </AddPatientLayout>
+            <MemoryRouter>
+                <PageProvider>
+                    <AddPatientLayout actions={headerActions} title={headerTitle} sections={sections}>
+                        {children}
+                    </AddPatientLayout>
+                </PageProvider>
+            </MemoryRouter>
         );
 
         expect(getByText('On this page')).toBeInTheDocument();

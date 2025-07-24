@@ -2,11 +2,10 @@ package gov.cdc.nbs.patient.file.demographics.summary;
 
 import gov.cdc.nbs.demographics.indentification.DisplayableIdentification;
 import gov.cdc.nbs.demographics.indentification.DisplayableIdentificationRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -47,25 +46,20 @@ class PatientDemographicsSummaryIdentificationFinder {
           [identification].as_of_date desc
       """;
 
-  private static final int PATIENT_PARAMETER = 1;
-  private static final int AS_OF_PARAMETER = 2;
-
-  private final JdbcTemplate template;
+  private final JdbcClient client;
   private final RowMapper<DisplayableIdentification> mapper;
 
-  PatientDemographicsSummaryIdentificationFinder(final JdbcTemplate template) {
-    this.template = template;
+  PatientDemographicsSummaryIdentificationFinder(final JdbcClient client) {
+    this.client = client;
     this.mapper = new DisplayableIdentificationRowMapper();
   }
 
   Collection<DisplayableIdentification> find(final long patient, final LocalDate asOf) {
-    return this.template.query(
-        QUERY, statement -> {
-          statement.setLong(PATIENT_PARAMETER, patient);
-          statement.setTimestamp(AS_OF_PARAMETER, Timestamp.valueOf(asOf.atStartOfDay()));
-        },
-        this.mapper
-    );
+    return this.client.sql(QUERY)
+        .param(patient)
+        .param(asOf.atTime(23, 59, 59))
+        .query(this.mapper)
+        .list();
   }
 
 }

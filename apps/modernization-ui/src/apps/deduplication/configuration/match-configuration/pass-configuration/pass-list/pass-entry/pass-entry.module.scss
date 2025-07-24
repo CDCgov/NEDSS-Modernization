@@ -3,7 +3,9 @@
 
 .passEntry {
     background: none;
-    border: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
     margin: 0;
     text-align: left;
     cursor: pointer;
@@ -61,6 +63,10 @@
                 padding: 0;
             }
 
+            &:hover .editButton {
+                visibility: visible;
+            }
+
             .editButton {
                 padding: 0.18731rem;
                 color: colors.$base;
@@ -68,6 +74,7 @@
                 background: none;
                 border: none;
                 margin: 0;
+                visibility: hidden;
 
                 svg {
                     width: 1.5rem;

@@ -4,77 +4,57 @@
 @use 'styles/borders';
 @use 'styles/media';
 
-$min-height: 240px;
-$max-height: 90vh;
-$min-width: 480px;
-$max-width: 1100px;
-$header-height: 4.625rem;
-$footer-height: 5.75rem;
-
 .overlay {
     z-index: 1000;
 }
 
-.modal {
+dialog.modal {
     left: auto;
     right: auto;
-
-    height: auto !important;
 
     border: none;
 
     background-color: colors.$base-white !important;
 
-    min-height: $min-height !important;
-    max-height: $max-height !important;
-    min-width: $min-width !important;
-    max-width: $max-width !important;
-
     &.small {
-        width: $min-width;
+        width: 30rem;
     }
 
     &.large {
         width: 55rem;
     }
 
-    &.unbounded {
-        width: auto !important;
-    }
+    max-width: clamp(30rem, 55rem, 90dvw);
 
-    header {
+    header.header {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
 
-        padding: 1.5rem;
-        max-height: $header-height;
+        padding: 1rem;
 
-        svg {
-            cursor: pointer;
-        }
+        @extend %thin-bottom;
 
-        h2 {
-            margin: 0;
+        button.closer {
+            color: colors.$base-black;
         }
     }
 
     .main {
-        min-height: calc($min-height - $header-height - $footer-height);
-        max-height: calc($max-height - $header-height - $footer-height);
-
-        padding: 1.5rem !important;
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.5rem !important;
 
         overflow-y: auto;
     }
 
-    footer {
+    footer.footer {
         display: flex;
         justify-content: flex-end;
         gap: 0.5rem;
-        padding: 1.5rem;
-        max-height: $footer-height;
-        margin-top: 0;
+        padding: 1rem;
+        margin: 0;
 
         @extend %thin-top;
     }

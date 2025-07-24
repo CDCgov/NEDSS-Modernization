@@ -1,13 +1,18 @@
 .container {
-    display: grid;
     gap: 1rem;
-    grid-template-columns: 1fr 1fr;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 
     & > * {
+        box-sizing: border-box;
         grid-column: span 2;
     }
 
     & > [data-half] {
-        grid-column: 1;
+        grid-column: span 1;
+        flex-direction: column;
+
+        display: flex;
+        gap: 1rem;
     }
 }

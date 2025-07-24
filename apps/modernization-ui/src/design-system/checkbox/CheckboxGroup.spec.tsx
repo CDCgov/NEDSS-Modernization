@@ -10,9 +10,9 @@ const options = [
 
 describe('CheckboxGroup', () => {
     it('should render with no accessibility violations', async () => {
-        const { container } = render(<CheckboxGroup name="test" label="checkbox group label" options={options} />)
-        expect(await axe(container)).toHaveNoViolations()
-    })
+        const { container } = render(<CheckboxGroup name="test" label="checkbox group label" options={options} />);
+        expect(await axe(container)).toHaveNoViolations();
+    });
     it('should render with options', () => {
         const { getByLabelText } = render(<CheckboxGroup name="test" label="checkbox group label" options={options} />);
 
@@ -150,4 +150,19 @@ describe('CheckboxGroup', () => {
         const group = getByRole('group');
         expect(group).toBeInTheDocument();
     });
+    it('should set aria-required and required attributes when required is true', () => {
+        const { getAllByRole } = render(
+            <CheckboxGroup
+                name="test"
+                label="Testing CheckboxGroup"
+                options={options}
+                required
+            />
+        );
+        const checkboxes = getAllByRole('checkbox');
+        checkboxes.forEach(checkbox => {
+            expect(checkbox).toHaveAttribute('aria-required', 'true');
+            expect(checkbox).toHaveAttribute('required');
+        });
+    })
 });

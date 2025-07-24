@@ -1,22 +1,27 @@
 import { Suspense } from 'react';
 import { Await, Outlet, useLoaderData } from 'react-router';
 import { RedirectHome } from 'routes';
+import { Button } from 'design-system/button';
 import { Spinner } from 'components/Spinner';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
-import { Button } from 'design-system/button';
-import { Icon } from 'design-system/icon';
 import { Patient } from './patient';
-import { PatientLoaderResult } from './loader';
 import { PatientFileLayout } from './PatientFileLayout';
 import { DeleteAction } from './delete';
+import { PatientFileProvider, PatientFileData } from './usePatientFileData';
 
 const PatientFile = () => {
-    const data = useLoaderData<PatientLoaderResult>();
+    const data = useLoaderData<PatientFileData>();
 
     return (
         <Suspense fallback={<Spinner />}>
-            <Await resolve={data.patient} errorElement={<RedirectHome />}>
-                {WithMeta}
+            <Await resolve={data} errorElement={<RedirectHome />}>
+                {(data: PatientFileData) => (
+                    <PatientFileProvider data={data}>
+                        <PatientFileLayout patient={data.patient} actions={ViewActions} navigation={ViewNavigation}>
+                            <Outlet />
+                        </PatientFileLayout>
+                    </PatientFileProvider>
+                )}
             </Await>
         </Suspense>
     );
@@ -27,17 +32,17 @@ export { PatientFile };
 const ViewActions = (patient: Patient) => {
     return (
         <>
-            <DeleteAction />
+            <DeleteAction patient={patient} />
             <Button
                 onClick={openPrintableView(patient.id.toString())}
                 aria-label="Print"
                 data-tooltip-position="top"
                 data-tooltip-offset="center"
-                icon={<Icon name="print" />}
+                icon="print"
                 sizing={'medium'}
                 secondary
             />
-            <Button aria-label="Edit" icon={<Icon name="edit" />} secondary labelPosition="right" sizing={'medium'}>
+            <Button aria-label="Edit" icon="edit" secondary labelPosition="right" sizing={'medium'}>
                 Edit
             </Button>
         </>
@@ -57,9 +62,3 @@ const openPrintableView = (patient: string | undefined) => () => {
         window.open(`/nbs/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${patient}`, '_blank', 'noreferrer');
     }
 };
-
-const WithMeta = (meta: Patient) => (
-    <PatientFileLayout patient={meta} actions={ViewActions} navigation={ViewNavigation}>
-        <Outlet />
-    </PatientFileLayout>
-);

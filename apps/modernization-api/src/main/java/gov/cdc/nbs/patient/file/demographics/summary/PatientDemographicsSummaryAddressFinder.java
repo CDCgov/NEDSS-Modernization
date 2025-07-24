@@ -2,11 +2,10 @@ package gov.cdc.nbs.patient.file.demographics.summary;
 
 import gov.cdc.nbs.demographics.address.DisplayableAddress;
 import gov.cdc.nbs.demographics.address.DisplayableAddressRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -64,25 +63,19 @@ class PatientDemographicsSummaryAddressFinder {
           )
       """;
 
-  private static final int PATIENT_PARAMETER = 1;
-  private static final int AS_OF_PARAMETER = 2;
-
-  private final JdbcTemplate template;
+  private final JdbcClient client;
   private final RowMapper<DisplayableAddress> mapper;
 
-  PatientDemographicsSummaryAddressFinder(final JdbcTemplate template) {
-    this.template = template;
+  PatientDemographicsSummaryAddressFinder(final JdbcClient client) {
+    this.client = client;
     this.mapper = new DisplayableAddressRowMapper();
   }
 
   Optional<DisplayableAddress> find(final long patient, final LocalDate asOf) {
-    return this.template.query(
-            QUERY, statement -> {
-              statement.setLong(PATIENT_PARAMETER, patient);
-              statement.setTimestamp(AS_OF_PARAMETER, Timestamp.valueOf(asOf.atStartOfDay()));
-            },
-            this.mapper
-        ).stream()
-        .findFirst();
+    return this.client.sql(QUERY)
+        .param(patient)
+        .param(asOf.atTime(23, 59, 59))
+        .query(this.mapper)
+        .optional();
   }
 }

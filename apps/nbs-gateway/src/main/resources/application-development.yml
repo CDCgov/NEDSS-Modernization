@@ -6,7 +6,7 @@ nbs:
     log:
       level: INFO
     patient:
-      profile:
+      file:
         enabled: true
     pagebuilder:
       enabled: true

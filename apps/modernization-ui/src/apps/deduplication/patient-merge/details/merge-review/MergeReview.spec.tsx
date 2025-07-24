@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
@@ -9,6 +10,7 @@ import { AlertProvider } from 'alert';
 
 const onPreview = vi.fn();
 const onRemove = vi.fn();
+const onMerge = vi.fn();
 
 const mockKeepAllSeparate = vi.fn();
 vi.mock('apps/deduplication/api/useRemoveMerge', () => ({
@@ -63,6 +65,7 @@ const Fixture = () => {
                                     mergeCandidates={data as MergeCandidate[]}
                                     onPreview={onPreview}
                                     onRemovePatient={onRemove}
+                                    onMerge={onMerge}
                                 />
                             </FormProvider>
                         }
@@ -134,5 +137,13 @@ describe('MergeReview', () => {
         await user.click(keepSeparateButton);
 
         expect(mockKeepAllSeparate).toHaveBeenCalledWith('1234', expect.any(Function), expect.any(Function));
+    });
+
+    it('should handle patient merge', async () => {
+        const user = userEvent.setup();
+        const { getAllByRole } = render(<Fixture />);
+
+        await user.click(getAllByRole('button', { name: 'Merge all' })[0]);
+        expect(onMerge).toHaveBeenCalled();
     });
 });

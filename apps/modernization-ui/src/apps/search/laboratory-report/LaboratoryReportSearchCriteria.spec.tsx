@@ -11,24 +11,20 @@ vi.mock('./CriteriaFields', () => ({
 
 describe('LaboratoryReportSearchCriteria', () => {
     it('renders the General search section expanded by default', () => {
-        const { getAllByRole } = render(<LaboratoryReportSearchCriteria />);
+        const { getByRole } = render(<LaboratoryReportSearchCriteria />);
 
-        const sections = getAllByRole('group');
+        const generalButton = getByRole('button', { name: 'General search' });
+        const generalPanel = getByRole('region', { name: 'General search' });
 
-        const general = sections[0];
-
-        expect(general).toHaveTextContent('General search');
-        expect(general).toHaveAttribute('open');
+        expect(generalButton).toHaveAttribute('aria-expanded', 'true');
+        expect(generalPanel).not.toHaveAttribute('hidden');
     });
 
     it('renders the Lab report criteria section collapsed by default', () => {
-        const { getAllByRole } = render(<LaboratoryReportSearchCriteria />);
+        const { getByRole } = render(<LaboratoryReportSearchCriteria />);
 
-        const sections = getAllByRole('group');
+        const criteriaButton = getByRole('button', { name: 'Lab report criteria' });
 
-        const criteria = sections[1];
-
-        expect(criteria).toHaveTextContent('Lab report criteria');
-        expect(criteria).not.toHaveAttribute('open');
+        expect(criteriaButton).toHaveAttribute('aria-expanded', 'false');
     });
 });

@@ -44,7 +44,7 @@ public sealed interface ModernizedPatientProfileRedirect {
     @Override
     public ResponseEntity<Void> redirect() {
       URI uri = UriComponentsBuilder.fromPath("/")
-          .path("patient-profile/{identifier}/{tab}")
+          .path("patient/{identifier}/{tab}")
           .buildAndExpand(identifier(), tab())
           .toUri();
 

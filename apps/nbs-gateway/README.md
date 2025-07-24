@@ -79,13 +79,13 @@ Variable,and [other useful means](https://docs.spring.io/spring-boot/reference/f
 The default profile contains the following properties configuration most likely to change.
 
 | Name                                                   | Default                 | Description                                                                         |
-| ------------------------------------------------------ | ----------------------- | ----------------------------------------------------------------------------------- |
+|--------------------------------------------------------| ----------------------- |-------------------------------------------------------------------------------------|
 | nbs.gateway.defaults.protocol                          | `http`                  | The default protocol used to connect to services. Intra-pod communication is `http` |
 | nbs.gateway.classic                                    | `http://localhost:7001` | The URI location of the classic NBS Application                                     |
 | nbs.gateway.patient.search.enabled                     | `true`                  | Enables the Patient Search routing                                                  |
 | nbs.gateway.patient.search.service                     | `localhost:8080`        | The host name of the Patient Search service                                         |
-| nbs.gateway.patient.profile.enabled                    | `false`                 | Enables the Patient Profile routing                                                 |
-| nbs.gateway.patient.profile.service                    | `localhost:8080`        | The host name of the Patient Profile service                                        |
+| nbs.gateway.patient.file.enabled                       | `false`                 | Enables the Patient File routing                                                    |
+| nbs.gateway.patient.file.service                       | `localhost:8080`        | The host name of the Patient File service                                           |
 | nbs.gateway.pagebuilder.enabled                        | `false`                 | Enables Page Builder routing                                                        |
 | nbs.gateway.pagebuilder.service                        | `localhost:8080`        | The host name of the service                                                        |
 | nbs.gateway.pagebuilder.page.library.enabled           | `false`                 | Enables the Page Builder Page Library routing                                       |
@@ -95,7 +95,7 @@ The default profile contains the following properties configuration most likely 
 | nbs.gateway.deduplication.service                      | `localhost:8083`        | The host name of the Deduplication Api                                              |
 | nbs.gateway.deduplication.uri                          | `http://localhost:8083` | The full URI of the Deduplication Api                                               |
 | nbs.gateway.deduplication.merge.enabled                | `false`                 | Enables the routing for modernized System Identified merge list                     |
-
+| nbs.gateway.system.management.enabled                  | `false`                 | Enables the routing for modernized System Management screen                         |
 ### Logo
 
 By default, the NBS logo is served from the path `/images/nedssLogo.jpg` with the content coming from

@@ -35,10 +35,7 @@ local.env
 .env
 
 # cdc-sandbox
-cdc-sandbox/dist/
-
 cdc-sandbox/nifi/repo
 cdc-sandbox/nifi/nifi_conf/conf/flow.json.gz
-cdc-sandbox/archive/
-cdc-sandbox/NEDSSDev/
+cdc-sandbox/NEDSSDev
 cdc-sandbox/.env

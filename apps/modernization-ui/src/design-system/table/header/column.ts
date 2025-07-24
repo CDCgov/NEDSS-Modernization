@@ -2,7 +2,7 @@ import { FilterDescriptor } from 'design-system/filter';
 import { ReactNode } from 'react';
 import { Mapping } from 'utils/mapping';
 
-type SortIconType = 'default' | 'alpha' | 'numeric';
+type SortIconType = 'alpha' | 'numeric';
 
 type CellValue = string | number | boolean | Date;
 
@@ -17,13 +17,15 @@ type Rendered<R, C = CellValue> =
 type BaseColumn<R, C> = {
     id: string;
     fixed?: boolean;
-    sortable?: boolean;
     className?: string;
-    filter?: FilterDescriptor;
-    sortIconType?: SortIconType;
 } & Rendered<R, C>;
 
-type NamedColumn<R, C = CellValue> = BaseColumn<R, C> & { name: string };
+type NamedColumn<R, C = CellValue> = BaseColumn<R, C> & {
+    name: string;
+    filter?: FilterDescriptor;
+    sortable?: boolean;
+    sortIconType?: SortIconType;
+};
 type LabeledColumn<R, C = CellValue> = BaseColumn<R, C> & { label: string };
 
 type Column<R, C = CellValue> = NamedColumn<R, C> | LabeledColumn<R, C>;

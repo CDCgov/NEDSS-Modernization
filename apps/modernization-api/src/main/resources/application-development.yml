@@ -77,4 +77,6 @@ nbs:
             enabled: true
         file:
           enabled: true
+          merge-history:
+            enabled: false
 

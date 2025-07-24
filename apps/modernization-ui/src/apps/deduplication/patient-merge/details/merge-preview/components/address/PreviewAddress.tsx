@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { MergeAddress, MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { AddressId } from '../../../merge-review/model/PatientMergeForm';
 import { format, parseISO } from 'date-fns';
@@ -28,12 +27,12 @@ export const PreviewAddress = ({ selectedAddresses, mergeCandidates }: AddressPr
         .flatMap((m) => m.addresses)
         .filter((a) => selectedAddresses.find((sa) => sa.locatorId === a.id));
 
-    const initialAddresses: AddressEntry[] = detailedAddresses.map((a) => ({
-        ...a,
-        asOf: format(parseISO(a.asOf), 'MM/dd/yyyy')
-    }));
-
-    const [addresses] = useState(initialAddresses);
+    const addresses: AddressEntry[] = detailedAddresses
+        .toSorted((a, b) => (parseISO(a.asOf) > parseISO(b.asOf) ? -1 : 1))
+        .map((a) => ({
+            ...a,
+            asOf: format(parseISO(a.asOf), 'MM/dd/yyyy')
+        }));
 
     const columns: Column<AddressEntry>[] = [
         {

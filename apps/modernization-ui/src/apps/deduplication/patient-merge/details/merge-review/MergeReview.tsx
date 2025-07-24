@@ -15,15 +15,16 @@ import { SexAndBirthSelection } from './patient-form/sex-and-birth/SexAndBirthSe
 import { MortalitySelection } from './patient-form/mortality/MortalitySelection';
 import { GeneralSelection } from './patient-form/general/GeneralSelection';
 import { InvestigationDisplay } from './patient-form/investigations/InvestigationsDisplay';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
 
 export type Props = {
     mergeCandidates: MergeCandidate[];
     onPreview: () => void;
     onRemovePatient: (personUid: string) => void;
+    onMerge: () => void;
 };
-export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient }: Props) => {
+export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient, onMerge }: Props) => {
     const { matchId } = useParams();
     const { keepAllSeparate } = useRemoveMerge();
     const nav = useNavigate();
@@ -66,7 +67,7 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient }: Pro
                         Preview merge
                     </Button>
                     <Button onClick={handleKeepAllSeparate}>Keep all separate</Button>
-                    <Button onClick={() => console.log('Merge all NYI')}>Merge all</Button>
+                    <Button onClick={onMerge}>Merge all</Button>
                 </div>
             </header>
             <main>

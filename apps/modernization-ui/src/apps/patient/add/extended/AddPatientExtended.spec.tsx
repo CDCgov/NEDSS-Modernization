@@ -7,6 +7,7 @@ import { useShowCancelModal } from '../cancelAddPatientPanel';
 import { PatientDataEntryMethodProvider } from '../usePatientDataEntryMethod';
 import { Selectable } from 'options';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
+import { PageProvider } from 'page';
 
 class MockIntersectionObserver {
     observe = jest.fn();
@@ -106,11 +107,13 @@ const renderWithRouter = () => {
         {
             path: '/',
             element: (
-                <PatientDataEntryMethodProvider>
+                <PageProvider>
+                    <PatientDataEntryMethodProvider>
                     <SkipLinkProvider>
                         <AddPatientExtended />
                     </SkipLinkProvider>
                 </PatientDataEntryMethodProvider>
+                </PageProvider>
             )
         },
         {

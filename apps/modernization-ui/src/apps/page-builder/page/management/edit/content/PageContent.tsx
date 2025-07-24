@@ -1,5 +1,5 @@
 import { ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { PagesQuestion, PagesSubSection, PagesTab } from 'apps/page-builder/generated';
 import { useAddQuestionsToPage } from 'apps/page-builder/hooks/api/useAddQuestionsToPage';
 import { useEffect, useRef, useState } from 'react';

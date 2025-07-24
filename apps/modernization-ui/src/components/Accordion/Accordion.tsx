@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useId, useState } from 'react';
 
 import styles from './accordion.module.scss';
 import { Icon } from 'design-system/icon';
@@ -10,18 +10,38 @@ type Props = {
 };
 
 export const Accordion = ({ title, children, open = false }: Props) => {
+    const [isExpanded, setIsExpanded] = useState(open);
+    const uniqueId = useId();
+    const accordionId = `accordion-${uniqueId}`;
+    const panelId = `panel-${accordionId}`;
+
+    const handleToggle = () => setIsExpanded((prev) => !prev);
+
     return (
-        <details className={styles.accordian} open={open}>
-            <summary>
-                <h3>{title}</h3>
-                <svg role="img" aria-label={`Expand ${title}`} className={styles.closed}>
-                    <Icon name={'expand_more'} />
-                </svg>
-                <svg role="img" aria-label={`Collapse ${title}`} className={styles.opened}>
-                    <Icon name={'expand_less'} />
-                </svg>
-            </summary>
-            {children}
-        </details>
+        <div className={styles.accordion}>
+            <h2>
+                <button
+                    type="button"
+                    aria-expanded={isExpanded}
+                    className={styles.accordionTrigger}
+                    aria-controls={panelId}
+                    id={accordionId}
+                    onClick={handleToggle}>
+                    <span className={styles.accordionTitle}>
+                        {title}
+                        <Icon name={isExpanded ? 'expand_less' : 'expand_more'} />
+                    </span>
+                </button>
+            </h2>
+            <div
+                id={panelId}
+                role="region"
+                aria-label={title}
+                aria-labelledby={accordionId}
+                className={styles.accordionPanel}
+                hidden={!isExpanded}>
+                <div>{children}</div>
+            </div>
+        </div>
     );
 };

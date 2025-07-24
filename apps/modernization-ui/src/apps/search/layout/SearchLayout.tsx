@@ -44,7 +44,7 @@ const SearchLayout = <R,>({
 }: Props) => {
     const {
         status,
-        results: { total, terms }
+        results: { total, filteredTotal, terms }
     } = useSearchInteraction<R>();
 
     const { view } = useSearchResultDisplay();
@@ -73,7 +73,7 @@ const SearchLayout = <R,>({
                         <Button type="button" onClick={onSearch} disabled={!searchEnabled} sizing={sizing}>
                             Search
                         </Button>
-                        <Button type="button" outline onClick={onClear} sizing={sizing}>
+                        <Button type="button" secondary onClick={onClear} sizing={sizing}>
                             Clear all
                         </Button>
                     </div>
@@ -91,6 +91,7 @@ const SearchLayout = <R,>({
                             sizing={sizing}
                             view={view}
                             total={total}
+                            filteredTotal={filteredTotal}
                             terms={terms}
                             loading={status === 'reloading'}>
                             {view === 'list' && total > 0 && resultsAsList()}
@@ -99,7 +100,12 @@ const SearchLayout = <R,>({
                         </SearchResults>
                     </Shown>
                     <Shown when={status === 'no-input'}>
-                        <SearchResults sizing={sizing} view={view} total={total} terms={terms}>
+                        <SearchResults
+                            sizing={sizing}
+                            view={view}
+                            total={total}
+                            filteredTotal={filteredTotal}
+                            terms={terms}>
                             {noInput()}
                         </SearchResults>
                     </Shown>

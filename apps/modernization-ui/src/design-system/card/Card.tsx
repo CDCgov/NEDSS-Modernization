@@ -2,7 +2,6 @@ import { ReactNode, useState } from 'react';
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { Icon } from 'design-system/icon';
 import { CardHeader, CardHeaderProps } from './CardHeader';
 import { Collapsible } from './Collapsible';
 
@@ -51,7 +50,7 @@ const Card = ({
                             className={classNames(styles.toggle, { [styles.collapsed]: collapsed })}
                             sizing="small"
                             tertiary
-                            icon={<Icon name={'expand_less'} />}
+                            icon="expand_less"
                             aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}
                             onClick={() => setCollapsed((current) => !current)}
                         />

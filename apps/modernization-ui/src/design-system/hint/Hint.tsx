@@ -1,21 +1,26 @@
+import { ReactNode, useCallback, useState } from 'react';
+import { createPortal } from 'react-dom';
+import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { Icon } from 'design-system/icon';
-import { ReactNode, useCallback, useRef, useState } from 'react';
+import { HintPanel } from './HintPanel';
+
 import styles from './hint.module.scss';
 
-const DEFAULT_TOP = 26;
-// width of panel (283px) - width of icon (20px) = 263
-const DEFAULT_LEFT = 20;
-const LEFT_OFFSET = 283;
+type Target = ReactNode | ((id: string) => ReactNode);
 
-type Props = {
+type Placement = {
+    top: number;
+    left: number;
+};
+
+type HintProps = {
     id: string;
-    children: ReactNode | ReactNode[];
     /** When specified, uses this as the hover-over element, otherwise uses default info icon. */
-    target?: ReactNode;
-    marginTop?: number;
-    marginLeft?: number;
-    position?: 'left' | 'right';
+    position?: 'left' | 'right' | 'center';
+    enabled?: boolean;
+    target?: Target;
+    children: ReactNode | ReactNode[];
 };
 /**
  * Encapsulates a hint that can be displayed on hover.
@@ -26,34 +31,57 @@ type Props = {
  * Ex: `<div aria-describedby='my-hint'>Something confusing</div><Hint id='my-hint'>More info</Hint>`
  * @return {Hint}
  */
-export const Hint = ({ id, children, target, marginTop = 0, marginLeft = 0, position = 'right' }: Props) => {
+const Hint = ({ id, enabled = true, children, target, position }: HintProps) => {
     const [visible, setVisible] = useState(false);
-    const targetRef = useRef<HTMLDivElement>(null);
+    const [placement, setPlacement] = useState<Placement | undefined>();
 
-    const calcOffset = useCallback(() => {
-        const targetHeight = targetRef.current?.clientHeight || DEFAULT_TOP;
-        const targetWidth = targetRef.current?.clientWidth || DEFAULT_LEFT;
-        const top = marginTop + targetHeight;
-        const left = position === 'left' ? marginLeft - LEFT_OFFSET + targetWidth : marginLeft;
-        return { top, left };
-    }, [targetRef, marginTop, marginLeft, position]);
+    const targeted = useCallback(
+        (element: HTMLElement | null) => {
+            if (enabled && visible && element != null) {
+                const { top, left, width, height } = element.getBoundingClientRect();
 
-    const offset = calcOffset();
+                setPlacement({
+                    top: top + height + 1,
+                    left: left + width / 2
+                });
+            }
+        },
+        [visible, enabled, setPlacement]
+    );
+
+    const hasTarget = Boolean(target);
 
     return (
-        <div className={styles.hint}>
-            <div
-                ref={targetRef}
-                className={styles.target}
-                onMouseEnter={() => setVisible(true)}
-                onMouseLeave={() => setVisible(false)}>
-                {target || <Icon name="info_outline" sizing="small" className={styles.icon} />}
+        <span onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)}>
+            <div ref={targeted}>
+                <Shown
+                    when={hasTarget}
+                    fallback={
+                        <Icon name="info_outline" sizing="small" className={styles.info} aria-describedby={id} />
+                    }>
+                    {renderTarget(id, target)}
+                </Shown>
             </div>
-            <Shown when={visible}>
-                <div id={id} className={styles.panel} style={{ top: offset.top, left: offset.left }}>
-                    {children}
-                </div>
+            <Shown when={enabled}>
+                {createPortal(
+                    <div role="presentation" style={{ position: 'absolute', pointerEvents: 'none', ...placement }}>
+                        <div
+                            className={classNames(styles.container, {
+                                [styles.visible]: visible,
+                                [styles.left]: position === 'left',
+                                [styles.center]: position === 'center'
+                            })}>
+                            <HintPanel id={id}>{children}</HintPanel>
+                        </div>
+                    </div>,
+                    document.body
+                )}
             </Shown>
-        </div>
+        </span>
     );
 };
+
+const renderTarget = (id: string, target: Target) => (typeof target === 'function' ? target(id) : target);
+
+export { Hint };
+export type { HintProps };

@@ -3,7 +3,7 @@ Feature: Viewing the race demographics of a patient
 
   Background:
     Given I am logged into NBS
-    And I can "view" any "patient"
+    And I can "viewworkup" any "patient"
     And I have a patient
 
   Scenario: I can view a Patient's race demographics
@@ -25,3 +25,14 @@ Feature: Viewing the race demographics of a patient
     When I view the patient's race demographics
     Then the patient file race demographics includes Taiwanese within the Asian race
     And the patient file race demographics includes Bangladeshi within the Asian race
+
+  Scenario: I can view the patient's race demographics ordered by as of date with the newer entries being first
+    Given the patient's race is Asian as of 01/19/1987
+    And the patient's race is Other as of 03/11/2019
+    And the patient's race is Refused to answer as of 03/11/2021
+    And the patient's race is Unknown as of 03/11/2019
+    When I view the patient's race demographics
+    Then the 1st patient file race demographic has the category Refused to answer
+    And the 2nd patient file race demographic has the category Unknown
+    And the 3rd patient file race demographic has the category Other
+    And the 4th patient file race demographic has the category Asian

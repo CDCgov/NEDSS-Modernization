@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router';
 import { Column } from 'design-system/table';
-import { Icon } from 'design-system/icon';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { Button } from 'design-system/button';
 import { TableCard } from './TableCard';
@@ -85,7 +84,7 @@ export const Actions: Story = {
     args: {
         ...Default.args,
         actions: (
-            <Button sizing="small" secondary icon={<Icon name="add_circle" />}>
+            <Button sizing="small" secondary icon="add_circle">
                 Add Person
             </Button>
         )

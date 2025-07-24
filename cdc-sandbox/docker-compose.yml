@@ -17,7 +17,7 @@ services:
       - nbs
   wildfly:
     build: ./nbs-classic
-    image: nbs-classic:6.0.16
+    image: nbs-classic:6.0.17.1
     container_name: wildfly
     depends_on:
       - nbs-mssql
@@ -29,32 +29,6 @@ services:
       - ./nbs-classic/data/iis:/usr/nbs/iis
     networks:
       - nbs
-  reverse-proxy:
-    image: "traefik:2.11"
-    container_name: traefik
-    command:
-      - "--entrypoints.traefik.address=:8081"
-      - "--entrypoints.port.address=:8080"
-      - "--api.insecure=true"
-      - "--providers.file.filename=/etc/traefik/providers.yml"
-      - "--log.format=json"
-      - "--log.level=DEBUG"
-    ports:
-      - "8080:8080"
-      - "8081:8081" # traefik dashboard
-    volumes:
-      - "./proxy/providers.yml:/etc/traefik/providers.yml"
-    networks:
-      - nbs
-    environment:
-      - NBS_GATEWAY_SERVER=${NBS_GATEWAY_SERVER:-nbs-gateway}
-      - NBS_GATEWAY_PORT=${NBS_GATEWAY_PORT:-8000}
-      - MODERNIZATION_UI_SERVER=${MODERNIZATION_UI_SERVER:-modernization-api}
-      - MODERNIZATION_UI_PORT=${MODERNIZATION_UI_PORT:-8080}
-      - MODERNIZATION_API_SERVER=${MODERNIZATION_API_SERVER:-modernization-api}
-      - MODERNIZATION_API_PORT=${MODERNIZATION_API_PORT:-8080}
-      - PAGEBUILDER_API=${PAGEBUILDER_API:-pagebuilder-api}
-      - PAGEBUILDER_API_PORT=${PAGEBUILDER_API_PORT:-8095}
   elasticsearch:
     container_name: elasticsearch
     build: ./elasticsearch

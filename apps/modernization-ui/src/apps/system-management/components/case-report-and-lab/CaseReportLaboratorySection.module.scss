@@ -1,0 +1,37 @@
+@use 'styles/colors';
+
+.sectionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  font-size: 0.875rem;
+
+  a {
+    cursor: pointer;
+  }
+
+  .groupTitle {
+    font-weight: bold;
+    color: colors.$base-black;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .subGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 1rem;
+  }
+
+  button {
+    margin-top: 0.5rem;
+    align-self: flex-start;
+  }
+}
+
+.card {
+  min-width: 14rem;
+}

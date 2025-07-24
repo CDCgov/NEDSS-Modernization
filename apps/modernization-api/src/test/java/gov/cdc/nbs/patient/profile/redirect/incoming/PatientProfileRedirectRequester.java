@@ -18,8 +18,7 @@ class PatientProfileRedirectRequester {
 
   PatientProfileRedirectRequester(
       final MockMvc mvc,
-      final Authenticated authenticated
-  ) {
+      final Authenticated authenticated) {
     this.mvc = mvc;
     this.authenticated = authenticated;
   }
@@ -28,7 +27,7 @@ class PatientProfileRedirectRequester {
     try {
       return mvc.perform(
           authenticated.withSession(
-              get("/nbs/redirect/patient/profile").queryParam("uid", String.valueOf(patient.id())))
+              get("/nbs/redirect/patient/file").queryParam("uid", String.valueOf(patient.id())))
 
       );
     } catch (Exception e) {
@@ -38,7 +37,7 @@ class PatientProfileRedirectRequester {
 
   ResultActions returningTo(final PatientIdentifier patient, final String tab) {
     try {
-      return mvc.perform(authenticated.withSession(get("/nbs/redirect/patientProfile/{tab}/return", tab))
+      return mvc.perform(authenticated.withSession(get("/nbs/redirect/patient/file/{tab}/return", tab))
           .cookie(new Cookie("Return-Patient", String.valueOf(patient.id()))));
     } catch (Exception e) {
       throw new RuntimeException(e);

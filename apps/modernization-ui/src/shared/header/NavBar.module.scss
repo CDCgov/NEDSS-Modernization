@@ -1,28 +1,68 @@
 @use 'styles/colors';
 
-.navbar {
-    $classic-navigation-background: #003470;
-    $classic-navigation-color: colors.$base-white;
-    $classic-logo-color: #005ea2;
-    $classic-page-header-color: black;
-    $classic-page-header-background: #dcdcdc;
-    $classic-active-navigation-item-background: #a9aeb1;
-    $classic-active-navigation-item-color: #1b1b1b;
+$classic-navigation-background: #003470;
+$classic-navigation-color: colors.$base-white;
+$classic-logo-color: #005ea2;
+$classic-page-header-color: black;
+$classic-page-header-background: #dcdcdc;
+$classic-active-navigation-item-background: #a9aeb1;
+$classic-active-navigation-item-color: #1b1b1b;
 
-    .usa-logo__text,
-    .usa-accordion__button {
-        color: $classic-navigation-color;
+$height: 62.4px;
+$bumper: 0.375rem;
+
+:root {
+    --nav-bar-height: calc(#{$height} + #{$bumper});
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    background-color: $classic-navigation-background;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        z-index: -1;
+        box-shadow: 0 0 6px 3px rgba(0, 0, 0, 0.9);
     }
 
     .title {
-        .usa-logo__text {
-            background-image: linear-gradient(rgb(53, 113, 165), rgb(76, 103, 143), $classic-logo-color);
-            width: fit-content;
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: solid 2px $classic-logo-color;
+        background: $classic-page-header-background;
+        color: colors.$base-black;
+        font-size: 1.0625rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        flex-basis: 33.33%;
+        padding-left: 3px;
+    }
+
+    .user {
+        display: inline-flex;
+        gap: 1rem;
+        align-items: center;
+        background-color: $classic-navigation-background;
+        color: colors.$base-white;
+
+        font-size: 0.8125rem;
+        font-weight: 700;
+
+        padding-right: 3px;
+
+        img {
+            border: 0;
+            background: #dcdcdc;
         }
     }
+}
+
+.navbar {
+    height: $height;
+    margin-bottom: $bumper;
+    z-index: 100;
 
     .usa-nav {
         padding: 0 !important;

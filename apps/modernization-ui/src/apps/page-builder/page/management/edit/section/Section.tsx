@@ -1,5 +1,5 @@
 import { Modal, ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { PagesQuestion, PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { useEffect, useRef, useState } from 'react';

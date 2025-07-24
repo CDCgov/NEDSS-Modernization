@@ -243,4 +243,22 @@ public class PatientFileDocumentsRequiringReviewSteps {
             jsonPath("$.[?(@.type=='%s')].resultedTest]", type).isEmpty()
         );
   }
+
+  @Then("the laboratory report requiring review contains specimen source of {specimenSource}")
+  public void hasSpecimenSource(final String value) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.[?(@.type=='%s')].specimen.source")
+                .value(hasItem(containsStringIgnoringCase(value)))
+        );
+  }
+
+  @Then("the {documentType} requiring review contains specimen site of {specimenSite}")
+  public void hasSpecimenSite(String type, String site) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.[?(@.type=='%s')].specimen.site", type)
+                .value(hasItem(containsStringIgnoringCase(site)))
+        );
+  }
 }

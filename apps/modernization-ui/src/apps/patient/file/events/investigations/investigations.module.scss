@@ -1,0 +1,16 @@
+@use 'design-system/table/header/widths';
+@use 'styles/colors';
+
+.selectable {
+    :has([data-selected='true']) > td {
+        background-color: colors.$primary-lighter !important;
+    }
+}
+
+.status-header {
+    @include widths.fixed(7rem);
+}
+
+.co-infection-header {
+    @include widths.fixed(10rem);
+}

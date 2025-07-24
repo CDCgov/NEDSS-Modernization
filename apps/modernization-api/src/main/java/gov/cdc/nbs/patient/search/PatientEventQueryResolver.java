@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryVariant;
+import gov.cdc.nbs.search.AdjustStrings;
 
 @Component
 class PatientEventQueryResolver {
@@ -95,7 +96,8 @@ class PatientEventQueryResolver {
 
   private Optional<QueryVariant> applyAccessionNumberCriteria(final PatientSearchCriteria criteria) {
     return criteria.maybeAccessionNumber()
-        .map(identifier -> MatchQuery.of(match -> match.field(ACCESSIONS).query(criteria.getAccessionNumber())));
+        .map(AdjustStrings::withoutSpecialCharacters)
+        .map(identifier -> MatchQuery.of(match -> match.field(ACCESSIONS).query(identifier)));
   }
 
 }

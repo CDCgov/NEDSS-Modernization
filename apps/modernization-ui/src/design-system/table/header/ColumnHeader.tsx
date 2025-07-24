@@ -4,7 +4,6 @@ import { Direction, SortingInteraction } from 'libs/sorting';
 import { Button } from 'design-system/button';
 import { FilterInteraction } from 'design-system/filter';
 import { Column, SortIconType } from 'design-system/table';
-import { Icon } from 'design-system/icon';
 import { Sizing } from 'design-system/field';
 import { HeaderFilterField } from './filter';
 import { isNamed, NamedColumn } from './column';
@@ -106,7 +105,7 @@ const SortableHeader = <V,>({ sorting, filtering, column, sizing, ...remaining }
                     {column.name}
                     <Button
                         tertiary
-                        icon={<Icon name={icon} />}
+                        icon={icon}
                         aria-label={`Sort ${column.name}`}
                         onClick={() => sorting.toggle(column.id)}
                     />
@@ -129,27 +128,9 @@ const resolveSortIcon = (direction: Direction, type?: SortIconType) => {
     }
 };
 
-const resolveAscendingIcon = (type?: SortIconType) => {
-    switch (type) {
-        case 'alpha':
-            return 'sort_asc_alpha';
-        case 'numeric':
-            return 'sort_asc_numeric';
-        default:
-            return 'sort_asc_default';
-    }
-};
+const resolveAscendingIcon = (type?: SortIconType) => (type === 'numeric' ? 'sort_asc_numeric' : 'sort_asc_alpha');
 
-const resolveDescendingIcon = (type?: SortIconType) => {
-    switch (type) {
-        case 'alpha':
-            return 'sort_des_alpha';
-        case 'numeric':
-            return 'sort_des_numeric';
-        default:
-            return 'sort_des_default';
-    }
-};
+const resolveDescendingIcon = (type?: SortIconType) => (type === 'numeric' ? 'sort_des_numeric' : 'sort_des_alpha');
 
 const resolveSortAria = (direction: Direction) => {
     switch (direction) {

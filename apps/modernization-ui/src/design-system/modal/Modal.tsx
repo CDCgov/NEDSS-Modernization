@@ -1,10 +1,10 @@
-import { ReactNode, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect } from 'react';
+import { ReactNode, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect, useId, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import classNames from 'classnames';
-
-import sprite from '@uswds/uswds/img/sprite.svg';
+import { Heading } from 'components/heading';
+import { Button } from 'design-system/button';
 
 import styles from './modal.module.scss';
-import { createPortal } from 'react-dom';
 
 type Close = () => void;
 
@@ -20,7 +20,6 @@ type ModalProps = {
      */
     forceAction?: boolean;
     className?: string;
-    ariaDescribedBy?: string;
     children: ReactNode;
     onClose: Close;
     footer?: FooterRenderer;
@@ -28,20 +27,13 @@ type ModalProps = {
 
 const Modal = (props: ModalProps) => createPortal(<Component {...props} />, document.body);
 
-const Component = ({
-    id,
-    title,
-    size,
-    forceAction = false,
-    children,
-    className,
-    ariaDescribedBy,
-    onClose,
-    footer
-}: ModalProps) => {
+const Component = ({ title, size, forceAction = false, children, className, onClose, footer }: ModalProps) => {
     const focused = useRef<boolean>(false);
     const element = useRef<HTMLDialogElement>(null);
-    const header = `${id}-header`;
+
+    const id = useId();
+    const header = useId();
+    const content = useId();
 
     useEffect(() => {
         if (element.current && !focused.current) {
@@ -50,48 +42,52 @@ const Component = ({
         }
     }, [element.current, focused]);
 
-    const handleKeyDown = (event: ReactKeyboardEvent) => {
-        if (event.key === 'Escape') {
-            event.preventDefault();
-            onClose();
-        }
-    };
+    const handleKeyDown = useCallback(
+        (event: ReactKeyboardEvent) => {
+            if (!forceAction && event.key === 'Escape') {
+                event.preventDefault();
+                onClose();
+            }
+        },
+        [forceAction, onClose]
+    );
 
     return (
-        <div
-            id={`${id}-wrapper`}
-            className="usa-modal-wrapper"
-            onKeyDown={(!forceAction && handleKeyDown) || undefined}>
+        <div className="usa-modal-wrapper" onKeyDown={handleKeyDown}>
             <div className={classNames('usa-modal-overlay', styles.overlay)}>
                 <dialog
                     ref={element}
                     id={id}
                     aria-labelledby={header}
-                    aria-describedby={ariaDescribedBy}
+                    aria-describedby={content}
                     className={classNames('usa-modal', styles.modal, className, {
                         [styles.small]: size === 'small',
                         [styles.large]: size === 'large'
                     })}
                     data-force-action={forceAction}
                     open>
-                    <header id={header} className={'usa-modal__heading'}>
-                        <h2>{title}</h2>
+                    <header id={header} className={classNames('usa-modal__heading', styles.header)}>
+                        <Heading level={2}>{title}</Heading>
                         {!forceAction && (
-                            <svg
-                                tabIndex={0}
-                                role="button"
-                                width={'2rem'}
-                                height={'2rem'}
+                            <Button
+                                className={styles.closer}
+                                tertiary
                                 aria-label={`Close ${title}`}
+                                icon="close"
                                 onClick={onClose}
-                                data-close-modal>
-                                <use xlinkHref={`${sprite}#close`}></use>
-                            </svg>
+                                data-close-modal
+                            />
                         )}
                     </header>
                     <div className={'usa-modal__content'}>
-                        {footer && <footer className="usa-modal__footer">{footer(onClose)}</footer>}
-                        <div className={classNames('usa-modal__main', styles.main)}>{children}</div>
+                        {footer && (
+                            <footer className={classNames('usa-modal__footer', styles.footer)}>
+                                {footer(onClose)}
+                            </footer>
+                        )}
+                        <div id={content} className={classNames('usa-modal__main', styles.main)}>
+                            {children}
+                        </div>
                     </div>
                 </dialog>
             </div>

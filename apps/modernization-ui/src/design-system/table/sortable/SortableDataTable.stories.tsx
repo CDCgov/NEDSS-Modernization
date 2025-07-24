@@ -31,8 +31,7 @@ const columns: Column<Person>[] = [
         id: 'name',
         name: 'Name',
         sortable: true,
-        value: (value: Person) => value.name,
-        sortIconType: 'alpha'
+        value: (value: Person) => value.name
     },
     {
         id: 'email',
@@ -44,7 +43,8 @@ const columns: Column<Person>[] = [
         id: 'dob',
         name: 'DOB',
         sortable: true,
-        value: (value: Person) => value.dob
+        value: (value: Person) => value.dob,
+        sortIconType: 'numeric'
     }
 ];
 

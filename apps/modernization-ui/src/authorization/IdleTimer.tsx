@@ -25,19 +25,12 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAliv
     // this starts the warning timer and shows the warning modal
     const startWarningTimer = useCallback(() => {
         setIdle(true);
-        warningTimer.start(
-            () => {
-                fetch('/nbs/logout');
-                onIdle();
-            },
-            warningTimeout,
-            true
-        );
+        warningTimer.start(() => fetch('/nbs/logout', { credentials: 'include' }).then(onIdle), warningTimeout, true);
         countdown.start(warningTimeout);
     }, [onIdle, warningTimeout]);
 
     const debouncedFetchKeepAlive = useCallback(
-        debounce(() => fetch(keepAlivePath), 60000),
+        debounce(() => fetch(keepAlivePath, { credentials: 'include' }), 60000),
         [keepAlivePath]
     );
 
@@ -134,3 +127,4 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAliv
 };
 
 export default IdleTimer;
+export type { IdleTimerProps };

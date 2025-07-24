@@ -211,4 +211,4 @@ const useMultiValueEntry = <E>({
 };
 
 export { useMultiValueEntry };
-export type { MultiValueEntrySettings, Entry };
+export type { MultiValueEntrySettings, MultiValueEntryInteraction, Entry };

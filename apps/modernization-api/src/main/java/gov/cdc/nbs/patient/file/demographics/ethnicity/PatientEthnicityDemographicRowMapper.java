@@ -50,7 +50,7 @@ class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicity
   public PatientEthnicityDemographic mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
 
     LocalDate asOf = LocalDateColumnMapper.map(resultSet, columns.asOf());
-    Selectable ethnicGroup = Objects.requireNonNull(ethnicityMapper.mapRow(resultSet, rowNum));
+    Selectable ethnicGroup = ethnicityMapper.mapRow(resultSet, rowNum);
     Selectable unknownReason = unknownReasonMapper.mapRow(resultSet, rowNum);
     Selectable detail = detailMapper.mapRow(resultSet, rowNum);
 
@@ -58,10 +58,13 @@ class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicity
         ? List.of()
         : List.of(detail);
 
+    Selectable unknown =
+        ethnicGroup.value().equalsIgnoreCase("UNK") ? unknownReason : null;
+
     return new PatientEthnicityDemographic(
         asOf,
         ethnicGroup,
-        unknownReason,
+        unknown,
         detailed
     );
   }

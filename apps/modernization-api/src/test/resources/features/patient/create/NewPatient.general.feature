@@ -4,7 +4,7 @@ Feature: Creation of Patients with extended General Information data
   Background:
     Given I am logged into NBS
     And I can "add" any "patient"
-    And I can "view" any "patient"
+    And I can "viewworkup" any "patient"
 
   Scenario: I can create a patient with general information demographics
     Given I enter the general information as of date 05/29/2023

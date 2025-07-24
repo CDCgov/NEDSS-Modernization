@@ -1,5 +1,4 @@
 import { Button } from 'components/button';
-import { Icon } from 'design-system/icon';
 import { SortingPreferencesPanel } from 'design-system/sorting/preferences';
 import { OverlayPanel } from 'overlay';
 
@@ -22,9 +21,9 @@ const SearchResultsListOptions = ({ disabled = false, sizing }: Props) => {
                     aria-label="Sort list by"
                     data-tooltip-position="top"
                     data-tooltip-offset="left"
-                    outline
+                    secondary
                     disabled={disabled}
-                    icon={<Icon name="sort_arrow" />}
+                    icon="sort_arrow"
                     onClick={toggle}
                     sizing={sizing}
                 />

@@ -1,4 +1,4 @@
-import { useAlert } from 'alert';
+import { useAlert } from 'libs/alert';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Loading } from 'components/Spinner';
@@ -106,7 +106,7 @@ export const DataElementConfig = () => {
                 </main>
             </div>
             <div className={styles.buttonBar}>
-                <Button outline onClick={handleCancel}>
+                <Button secondary onClick={handleCancel}>
                     Cancel
                 </Button>
                 <Button onClick={handleSubmit} disabled={isSaveDisabled}>

@@ -818,6 +818,71 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Vaccinations",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/vaccinations",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"vaccinations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Laboratory Reports",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/reports/laboratory",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"reports",
+												"laboratory"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Morbidity Reports",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/reports/morbidity",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"reports",
+												"morbidity"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
@@ -1153,7 +1218,7 @@
 									"mode": "graphql",
 									"graphql": {
 										"query": "      query patients($filter: PersonFilter!, $page: SortablePage) {\n        findPatientsByFilter(filter: $filter, page: $page) {\n          content {\n            patient\n            shortId\n            status\n            birthday\n            age\n            gender\n            legalName {\n              first\n              middle\n              last\n              suffix\n            }\n            names {\n              type\n              first\n              middle\n              last\n              suffix\n            }\n            identification {\n              type\n              value\n            }\n            emails\n            phones\n            addresses {\n                type\n                use\n                address\n                address2\n                city\n                county\n                state\n                zipcode\n            }\n            detailedPhones {\n                type\n                use\n                number\n            }\n          }\n          total\n        }\n      }",
-										"variables": "{\n    \"filter\" :{\n        \"recordStatus\": [\"ACTIVE\"],\n        \"id\":\"114097\"\n        }        \n    },\n    \"page\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 25\n\t}\n}"
+										"variables": "{\n    \"filter\" :{\n        \"recordStatus\": [\"ACTIVE\"],\n        \"accessionNumber\":\"NM_000680.4\"\n               \n    },\n    \"page\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 25\n\t}\n}"
 									}
 								},
 								"url": {
@@ -1293,6 +1358,62 @@
 					],
 					"path": [
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Health",
+			"protocolProfileBehavior": {
+				"followRedirects": false,
+				"followOriginalHttpMethod": false,
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/nbs/api/~/health",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"nbs",
+						"api",
+						"~",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Info",
+			"protocolProfileBehavior": {
+				"followRedirects": false,
+				"followOriginalHttpMethod": false,
+				"followAuthorizationHeader": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/nbs/api/~/info",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"nbs",
+						"api",
+						"~",
+						"info"
 					]
 				}
 			},

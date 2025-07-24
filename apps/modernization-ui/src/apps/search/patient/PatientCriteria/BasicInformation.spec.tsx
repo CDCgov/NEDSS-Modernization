@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BasicInformation } from './BasicInformation';
 import { PatientCriteriaEntry } from '../criteria';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
+import { error } from 'console';
 
 const mockAllows = jest.fn();
 
@@ -18,11 +20,10 @@ const Fixture = () => {
 
     return (
         <SkipLinkProvider>
-             <FormProvider {...form}>
-            <BasicInformation />
-        </FormProvider>
+            <FormProvider {...form}>
+                <BasicInformation />
+            </FormProvider>
         </SkipLinkProvider>
-       
     );
 };
 
@@ -55,5 +56,27 @@ describe('when Basic information renders', () => {
         // expect(mockAllows).toBeCalledWith('FINDINACTIVE-PATIENT');
 
         expect(queryByText('Include records that are')).not.toBeInTheDocument();
+    });
+
+    it('should not accept 0/0/0 as a valid date of birth', async () => {
+        const { getByRole } = render(<Fixture />);
+
+        const user = userEvent.setup();
+
+        const monthInput = getByRole('spinbutton', { name: 'Month' });
+        const dayInput = getByRole('spinbutton', { name: 'Day' });
+        const yearInput = getByRole('spinbutton', { name: 'Year' });
+
+        // Try to enter 0 for month, day, and year
+
+        await user.type(monthInput, '0{tab}');
+        await user.type(dayInput, '0{tab}');
+        await user.type(yearInput, '0{tab}');
+
+        const errorMessage = getByRole('alert');
+        expect(errorMessage).toHaveClass('message error');
+        expect(errorMessage).toHaveTextContent('The Date of birth should occur after');
+        expect(errorMessage).toHaveTextContent('The Date of birth should have a month between');
+        expect(errorMessage).toHaveTextContent('The Date of birth should be at least');
     });
 });

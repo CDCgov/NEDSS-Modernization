@@ -20,11 +20,14 @@ nbs:
     modernization:
       service: 'localhost:8080'
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
+    system:
+      management:
+        enabled: false
     patient:
       search:
         enabled: true
         service: 'localhost:8080'
-      profile:
+      file:
         enabled: false
         service: 'localhost:8080'
     pagebuilder:
@@ -53,3 +56,22 @@ logging:
       springframework:
         security: ${nbs.gateway.security.log.level:INFO}
         cloud.gateway.handler.RoutePredicateHandlerMapping: ${nbs.gateway.log.level:INFO}
+
+management:
+  health:
+    db:
+      enabled: true
+  endpoints:
+    web:
+      discovery:
+        enabled: false
+      exposure:
+        include: health,info
+      base-path: /~/
+    access:
+      default: read_only
+  endpoint:
+    health:
+      access: read_only
+    info:
+      access: read_only

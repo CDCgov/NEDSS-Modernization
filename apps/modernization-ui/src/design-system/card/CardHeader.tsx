@@ -12,7 +12,7 @@ type CardHeaderProps = {
     actions?: ReactNode;
     control?: ReactNode;
     info?: ReactNode;
-    subtext?: string;
+    subtext?: ReactNode;
     sizing?: Sizing;
 };
 

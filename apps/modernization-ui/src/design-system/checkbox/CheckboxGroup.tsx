@@ -84,6 +84,8 @@ export const CheckboxGroup = ({
                         selected={item.selected}
                         disabled={disabled}
                         onBlur={onBlur}
+                        required={required}
+                        aria-required={required}
                     />
                 ))}
             </fieldset>

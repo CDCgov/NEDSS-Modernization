@@ -1,15 +1,31 @@
+@mixin fixed($width) {
+    width: $width;
+}
+
+.selection-header {
+    @include fixed(2rem);
+}
+
 .action-header {
-    width: 6rem;
+    @include fixed(6rem);
 }
 
 .date-header {
-    width: 10rem;
+    @include fixed(6rem);
 }
 
 .coded-header {
-    width: 6rem;
+    @include fixed(6rem);
 }
 
 .text-header {
-    min-width: 10rem;
+    @include fixed(10rem);
+}
+
+.long-coded-header {
+    @include fixed(10rem);
+}
+
+.local-header {
+    @include fixed(10rem);
 }

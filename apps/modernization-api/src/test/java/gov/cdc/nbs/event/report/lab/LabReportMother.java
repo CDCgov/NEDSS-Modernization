@@ -74,19 +74,19 @@ public class LabReportMother {
       delete from Act where class_cd = 'OBS' and act_uid in (:identifiers);
       """;
 
-  private static final String CREATE_ASSOCIATED_INVESTIGATION = """
+  private static final String ASSOCIATE_INVESTIGATION = """
       insert into Act_relationship(
           source_act_uid,
-          target_act_uid,
-          type_cd,
           source_class_cd,
-          target_class_cd
+          target_act_uid,
+          target_class_cd,
+          type_cd
       ) values (
-          :labIdentifier,
-          :investigationIdentifier,
-          'LabReport',
+          :identifier,
           'OBS',
-          'CASE'
+          :investigation,
+          'CASE',
+          'LabReport'
       );
       """;
 
@@ -202,10 +202,10 @@ public class LabReportMother {
         .update();
   }
 
-  void createAssociated(final LabReportIdentifier identifier, final InvestigationIdentifier organization) {
-    this.client.sql(CREATE_ASSOCIATED_INVESTIGATION)
-        .param("labIdentifier", identifier.identifier())
-        .param("investigationIdentifier", organization.identifier())
+  void createAssociated(final LabReportIdentifier report, final InvestigationIdentifier investigation) {
+    this.client.sql(ASSOCIATE_INVESTIGATION)
+        .param("identifier", report.identifier())
+        .param("investigation", investigation.identifier())
         .update();
   }
 
@@ -365,4 +365,18 @@ public class LabReportMother {
         .update();
   }
 
+   void specimen(
+       final LabReportIdentifier report,
+       final String site
+   ) {
+     this.client.sql("""
+            update Observation set
+                target_site_cd = ?
+            where observation_uid = ?
+            """
+         )
+         .param(site)
+         .param(report.identifier())
+         .update();
+  }
 }

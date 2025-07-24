@@ -75,7 +75,7 @@ export { asSelectable };
 
 const isEqual =
     (selectable: Selectable) =>
-    (other: Selectable): boolean =>
-        selectable.value === other.value;
+    (other?: Selectable): boolean =>
+        selectable.value === other?.value;
 
 export { isEqual };

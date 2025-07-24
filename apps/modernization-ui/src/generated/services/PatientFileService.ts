@@ -13,11 +13,14 @@ import type { PatientFile } from '../models/PatientFile';
 import type { PatientGeneralInformationDemographic } from '../models/PatientGeneralInformationDemographic';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientInvestigation } from '../models/PatientInvestigation';
+import type { PatientLabReport } from '../models/PatientLabReport';
+import type { PatientMorbidityReport } from '../models/PatientMorbidityReport';
 import type { PatientMortalityDemographic } from '../models/PatientMortalityDemographic';
 import type { PatientNameDemographic } from '../models/PatientNameDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
 import type { PatientRaceDemographic } from '../models/PatientRaceDemographic';
 import type { PatientSexBirthDemographic } from '../models/PatientSexBirthDemographic';
+import type { PatientVaccination } from '../models/PatientVaccination';
 import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -44,6 +47,63 @@ export class PatientFileService {
             },
             errors: {
                 400: `The race category is already present on the patient`,
+            },
+        });
+    }
+    /**
+     * Patient File Vaccinations
+     * Provides Vaccinations for a patient
+     * @returns PatientVaccination OK
+     * @throws ApiError
+     */
+    public static vaccinations({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientVaccination>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/vaccinations',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Morbidity Reports
+     * Provides Morbidity Reports for a patient
+     * @returns PatientMorbidityReport OK
+     * @throws ApiError
+     */
+    public static morbidityReports({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientMorbidityReport>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/reports/morbidity',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Laboratory Reports
+     * Provides Documents Requiring Review for a patient
+     * @returns PatientLabReport OK
+     * @throws ApiError
+     */
+    public static laboratoryReports({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientLabReport>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/reports/laboratory',
+            path: {
+                'patient': patient,
             },
         });
     }

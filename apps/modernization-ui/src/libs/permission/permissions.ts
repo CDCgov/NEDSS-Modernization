@@ -9,7 +9,7 @@ export const permissions = {
         add: 'ADD-INVESTIGATION',
         delete: 'DELETE-INVESTIGATION',
         edit: 'EDIT-INVESTIGATION',
-        merge: 'MERGEINVESTIGATION-INVESTIGATION',
+        compare: 'MERGEINVESTIGATION-INVESTIGATION',
         view: 'VIEW-INVESTIGATION'
     },
     labReport: {
@@ -30,6 +30,22 @@ export const permissions = {
         search: 'FIND-PATIENT',
         searchInactive: 'FINDINACTIVE-PATIENT',
         update: 'EDIT-PATIENT',
-        view: 'VIEW-PATIENT'
+        view: 'VIEW-PATIENT',
+        file: 'VIEWWORKUP-PATIENT',
+        merge: 'MERGE-PATIENT'
+    },
+    system: {
+        caseReport: 'SRTADMIN-SYSTEM',
+        decisionSupport: 'ALERTADMIN-SYSTEM',
+        epiLink: 'EPILINKADMIN-SYSTEM',
+        messagingManagement: [
+            'VIEWELRACTIVITY-OBSERVATIONLABREPORT',
+            'VIEWPHCRACTIVITY-CASEREPORTING',
+            'IMPORTEXPORTADMIN-SYSTEM'
+        ],
+        page: 'LDFADMINISTRATION-SYSTEM',
+        personMatch: 'MERGE-PATIENT',
+        report: 'REPORTADMIN-SYSTEM',
+        security: ['ADMISTRATE-SYSTEM', 'ADMINISTRATE-SECURITY']
     }
 };

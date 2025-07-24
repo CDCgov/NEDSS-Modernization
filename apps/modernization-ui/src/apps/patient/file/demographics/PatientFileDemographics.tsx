@@ -1,19 +1,85 @@
 import { useComponentSizing } from 'design-system/sizing';
-import { usePatient } from '../usePatient';
-import { PatientFileAdministrativeInformationCard } from './administrative/PatientFileAdministrativeInformationCard';
-import { PatientFileEthnicityCard } from './ethnicity/PatientFileEthnicityCard';
+import { usePatientFileData } from '../usePatientFileData';
+import { PatientFileAdministrativeInformationCard } from './administrative';
 import { PatientFileNameCard } from './name/PatientFileNameCard';
+import { PatientFileAddressCard } from './address';
+import { PatientFileIdentificationCard } from './identification';
+import { PatientFilePhoneEmailCard } from './phoneEmail';
+import { PatientFileEthnicityCard } from './ethnicity';
+import { PatientFileRaceCard } from './race';
+import { PatientFileSexBirthCard } from './sex-birth';
+import { PatientFileGeneralInformationCard } from './general';
+import { PatientFileMortalityCard } from './mortality';
+
 import styles from './patient-file-demographics.module.scss';
 
 const PatientFileDemographics = () => {
-    const { id } = usePatient();
+    const { demographics } = usePatientFileData();
     const sizing = useComponentSizing();
 
     return (
         <div className={styles.container}>
-            <PatientFileAdministrativeInformationCard patient={id} sizing={sizing} />
-            <PatientFileNameCard patient={id} sizing={sizing} />
-            <PatientFileEthnicityCard patient={id} sizing={sizing} data-half />
+            <PatientFileAdministrativeInformationCard
+                id="patient-file-administrative"
+                sizing={sizing}
+                provider={demographics.get().administrative}
+            />
+            <PatientFileNameCard
+                id="patient-file-names"
+                sizing={sizing}
+                provider={demographics.get().names}
+                editable={false}
+            />
+            <PatientFileAddressCard
+                id="patient-file-address"
+                sizing={sizing}
+                provider={demographics.get().addresses}
+                editable={false}
+            />
+            <PatientFilePhoneEmailCard
+                id="patient-file-phone-email"
+                sizing={sizing}
+                provider={demographics.get().phoneEmail}
+                editable={false}
+            />
+            <PatientFileIdentificationCard
+                id="patient-file-identification"
+                sizing={sizing}
+                provider={demographics.get().identifications}
+                viewable={false}
+                editable={false}
+            />
+            <PatientFileRaceCard
+                id="patient-file-race"
+                provider={demographics.get().race}
+                sizing={sizing}
+                viewable={false}
+                editable={false}
+            />
+            <span data-half>
+                <PatientFileEthnicityCard
+                    id="patient-file-ethnicity"
+                    sizing={sizing}
+                    provider={demographics.get().ethnicity}
+                />
+                <PatientFileSexBirthCard
+                    id="patient-file-sex-birth"
+                    provider={demographics.get().sexBirth}
+                    sizing={sizing}
+                />
+            </span>
+            <span data-half>
+                <PatientFileMortalityCard
+                    id="patient-file-mortality"
+                    provider={demographics.get().mortality}
+                    sizing={sizing}
+                />
+                <PatientFileGeneralInformationCard
+                    id="patient-file-general"
+                    provider={demographics.get().general}
+                    sizing={sizing}
+                />
+            </span>
         </div>
     );
 };

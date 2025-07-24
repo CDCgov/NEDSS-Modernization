@@ -1,20 +1,21 @@
-import { ComponentType, ReactNode } from 'react';
-import { useAlert } from 'alert';
+import { useConditionalRender } from 'conditional-render';
+import { displayName } from 'name';
+import { useAlert } from 'libs/alert';
+import { Permitted, permissions } from 'libs/permission';
 import { Button } from 'design-system/button';
 import { Hint } from 'design-system/hint';
-import { Icon } from 'design-system/icon';
 import { Confirmation } from 'design-system/modal';
-
-import { useConditionalRender } from 'conditional-render';
+import { LabeledValue } from 'design-system/value';
 import { useSearchNavigation } from 'apps/search';
+import { Patient } from '../patient';
 import { DeletePatientResponse, useDeletePatient } from './useDeletePatient';
-import { Permitted, permissions } from 'libs/permission';
-import { usePatient } from '../usePatient';
-import { Deletability } from '../patient';
-import { displayName } from 'name';
+
+const INACTIVE_MESSAGE = 'This patient file is inactive and cannot be deleted.';
+const HAS_ASSOCIATIONS_MESSAGE =
+    'This patient file has associated event records. The file cannot be deleted until all associated event records have been deleted. If you are unable to see the associated event records due to your user permission settings, please contact your system administrator.';
 
 type DeleteActionProps = {
-    buttonClassName?: string;
+    patient: Patient;
 };
 
 /**
@@ -22,12 +23,10 @@ type DeleteActionProps = {
  * @param {Props} props - The props for the component.
  * @return {JSX.Element} The rendered component.
  */
-const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
+const DeleteAction = ({ patient }: DeleteActionProps) => {
     const { showSuccess, showError } = useAlert();
     const { go } = useSearchNavigation();
     const { show, hide, render } = useConditionalRender();
-    const patient = usePatient();
-    const deletability = patient.deletability;
 
     const handleDeleteComplete = (response: DeletePatientResponse) => {
         if (response.success) {
@@ -49,27 +48,31 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
         deletePatient(patient.id);
     };
 
-    const HintableButton = withHintable(Button);
-
-    const showHint = deletability === 'Has_Associations' || deletability === 'Is_Inactive';
+    const showHint = patient.deletability === 'Has_Associations' || patient.deletability === 'Is_Inactive';
 
     return (
         <Permitted permission={permissions.patient.delete}>
-            <HintableButton
-                className={buttonClassName}
-                aria-label="Delete"
-                data-tooltip-position="top"
-                data-tooltip-offset="center"
-                icon={<Icon name="delete" />}
-                sizing={'medium'}
-                onClick={show}
-                showHint={showHint}
-                hintId="delete-patient-hint"
-                hintContent={<DeletabilityContent deletability={deletability} />}
-                secondary
-                destructive
-                disabled={deletability !== 'Deletable'}
-            />
+            <Hint
+                id="delete-patient-hint"
+                position="center"
+                enabled={showHint}
+                target={
+                    <Button
+                        secondary
+                        destructive
+                        disabled={patient.deletability !== 'Deletable'}
+                        aria-label="Delete"
+                        data-tooltip-position="top"
+                        data-tooltip-offset="center"
+                        icon="delete"
+                        sizing={'medium'}
+                        onClick={show}
+                    />
+                }>
+                <LabeledValue label="Delete disabled" orientation="vertical" aria-describedby="delete-patient-hint">
+                    {patient.deletability === 'Has_Associations' ? HAS_ASSOCIATIONS_MESSAGE : INACTIVE_MESSAGE}
+                </LabeledValue>
+            </Hint>
             {render(
                 <Confirmation
                     title="Delete patient file"
@@ -85,41 +88,6 @@ const DeleteAction = ({ buttonClassName }: DeleteActionProps) => {
             )}
         </Permitted>
     );
-};
-
-const DeletabilityContent = ({ deletability }: { deletability: Deletability }) =>
-    deletability === 'Has_Associations' ? (
-        <div>
-            This patient file has associated event records. The file cannot be deleted until all associated event
-            records have been deleted. If you are unable to see the associated event records due to your user permission
-            settings, please contact your system administrator.
-        </div>
-    ) : (
-        <div>This patient file is inactive and cannot be deleted.</div>
-    );
-
-const withHintable = <TProps extends object>(WrappedComponent: ComponentType<TProps>) => {
-    type HintableProps = {
-        hintId: string;
-        hintContent: ReactNode;
-        showHint?: boolean;
-    };
-    const EnhancedComponent = (props: TProps & HintableProps) => {
-        const { hintId, hintContent, showHint, ...restProps } = props;
-        return showHint ? (
-            <Hint
-                target={<WrappedComponent {...(restProps as TProps)} aria-describedby={hintId} />}
-                id={hintId}
-                position="left"
-                marginLeft={120}>
-                <strong>Delete disabled</strong>
-                {hintContent}
-            </Hint>
-        ) : (
-            <WrappedComponent {...(restProps as TProps)} aria-describedby={hintId} />
-        );
-    };
-    return EnhancedComponent;
 };
 
 export { DeleteAction };

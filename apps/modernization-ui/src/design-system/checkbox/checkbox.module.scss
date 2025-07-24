@@ -1,97 +1,87 @@
 @use 'styles/colors';
 @use 'styles/components';
 
-$checkbox-small: 1rem;
-$checkbox-medium: 1.125rem;
-$checkbox-large: 1.25rem;
-
-@mixin sizedCheckbox($height: $checkbox-small, $width: $checkbox-small, $padding: 2rem, $extend: '%small') {
-    height: $height;
-    min-height: $height;
-
-    label {
-        @extend #{$extend};
-        padding-left: $padding;
-        &::before {
-            height: $height;
-            width: $width;
-        }
-    }
-}
+$border-size: 2px;
 
 .checkbox {
-    min-height: 1.25rem;
-    position: relative;
+    --checkbox-size: 1.125rem;
 
-    input {
-        position: absolute;
-        left: -999rem;
-    }
+    box-sizing: border-box;
 
     label {
         color: colors.$base-darkest;
         cursor: pointer;
-        padding-left: 2rem;
-        position: relative;
-        line-height: 1.25rem;
         user-select: none;
+        vertical-align: middle;
 
-        width: auto;
+        position: relative;
+
+        height: var(--checkbox-size);
+        line-height: 125%;
+
         display: inline-block;
 
+        &.labeled {
+            padding-left: calc(var(--checkbox-size) - $border-size + 0.75rem);
+        }
+
+        &.disabled {
+            color: colors.$disabled-darker;
+            cursor: not-allowed;
+
+            &::before {
+                box-shadow: 0 0 0 $border-size colors.$disabled-darker;
+            }
+
+            &:has(input:checked)::before {
+                background-color: colors.$disabled-darker;
+                box-shadow: 0 0 0 $border-size colors.$disabled-darker;
+            }
+        }
+
         &::before {
-            content: ' ';
+            content: '';
             display: block;
             left: 0;
-            margin-left: 2px;
             position: absolute;
-            height: 1.25rem;
-            width: 1.25rem;
+            height: calc(var(--checkbox-size) - $border-size);
+            width: calc(var(--checkbox-size) - $border-size);
             border-radius: 1px;
 
             background: colors.$base-white;
             background-position: center center;
             background-size: 0.75rem auto;
             background-repeat: no-repeat;
-            box-shadow: 0 0 0 2px colors.$base-darkest;
+            box-shadow: 0 0 0 $border-size colors.$base-darkest;
+        }
+
+        &:has(input:focus)::before {
+            outline: 2px solid colors.$focused;
+            outline-offset: 2px;
+        }
+
+        &:has(input:checked)::before {
+            box-shadow: 0 0 0 $border-size colors.$primary;
+            background-color: colors.$primary;
+            background-image:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='65' height='50' viewBox='0 0 65 50'%3E%3Ctitle%3Ecorrect8%3C/title%3E%3Cpath fill='%23FFF' fill-rule='evenodd' d='M63.268 7.063l-5.616-5.61C56.882.685 55.946.3 54.845.3s-2.038.385-2.808 1.155L24.951 28.552 12.81 16.385c-.77-.77-1.707-1.155-2.808-1.155-1.1 0-2.037.385-2.807 1.154l-5.616 5.61C.81 22.764.425 23.7.425 24.8s.385 2.035 1.155 2.805l14.947 14.93 5.616 5.61c.77.77 1.706 1.154 2.807 1.154s2.038-.384 2.808-1.154l5.616-5.61 29.894-29.86c.77-.77 1.157-1.707 1.157-2.805 0-1.101-.385-2.036-1.156-2.805l-.001-.002z'/%3E%3C/svg%3E"),
+                linear-gradient(transparent, transparent);
+        }
+
+        & > input {
+            position: absolute;
+            left: -999em;
+            right: auto;
         }
     }
 
-    input:focus + label::before {
-        outline: 0.25rem solid colors.$focused;
-        outline-offset: 0.25rem;
-    }
-
-    input:checked + label::before {
-        box-shadow: 0 0 0 2px colors.$primary;
-        background-color: colors.$primary;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='65' height='50' viewBox='0 0 65 50'%3E%3Ctitle%3Ecorrect8%3C/title%3E%3Cpath fill='%23FFF' fill-rule='evenodd' d='M63.268 7.063l-5.616-5.61C56.882.685 55.946.3 54.845.3s-2.038.385-2.808 1.155L24.951 28.552 12.81 16.385c-.77-.77-1.707-1.155-2.808-1.155-1.1 0-2.037.385-2.807 1.154l-5.616 5.61C.81 22.764.425 23.7.425 24.8s.385 2.035 1.155 2.805l14.947 14.93 5.616 5.61c.77.77 1.706 1.154 2.807 1.154s2.038-.384 2.808-1.154l5.616-5.61 29.894-29.86c.77-.77 1.157-1.707 1.157-2.805 0-1.101-.385-2.036-1.156-2.805l-.001-.002z'/%3E%3C/svg%3E"),
-            linear-gradient(transparent, transparent);
-    }
-
-    .disabled {
-        color: colors.$disabled-darker;
-        cursor: not-allowed;
-    }
-
-    input:checked + label.disabled::before {
-        background-color: colors.$disabled-darker;
-        box-shadow: 0 0 0 2px colors.$disabled-darker;
-    }
-
-    input:not(:checked) + label.disabled::before {
-        box-shadow: 0 0 0 2px colors.$disabled-darker;
-    }
-
     &.small {
-        @include sizedCheckbox($checkbox-small, $checkbox-small, 2rem, '%small');
-    }
-
-    &.medium {
-        @include sizedCheckbox($checkbox-medium, $checkbox-medium, 2rem, '%medium');
+        --checkbox-size: 1rem;
+        @extend %small;
     }
 
     &.large {
-        @include sizedCheckbox($checkbox-large, $checkbox-large, 2rem, '%large');
+        --checkbox-size: 1.25rem;
+        @extend %large;
     }
 }

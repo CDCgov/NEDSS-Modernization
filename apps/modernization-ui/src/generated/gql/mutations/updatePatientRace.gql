@@ -1,5 +1,0 @@
-mutation updatePatientRace($input: RaceInput!){
-    updatePatientRace(input: $input){
-        patient
-    }
-}

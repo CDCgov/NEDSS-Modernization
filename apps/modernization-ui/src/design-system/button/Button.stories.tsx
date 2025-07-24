@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, ButtonProps } from './Button';
-import { Icon } from 'design-system/icon';
 
 const meta = {
     title: 'Design System/Button',
@@ -17,32 +16,60 @@ export const Default: Story = {
     }
 };
 
-const render = ({ children, ...remaining }: ButtonProps) => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem', backgroundColor: '#f0f7fd' }}>
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', backgroundColor: '' }}>
-            <Button {...remaining}>{children}</Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} labelPosition="left">
-                {children}
-            </Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} labelPosition="right">
-                {children}
-            </Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} />
+const render = (props: ButtonProps) => {
+    const content = 'children' in props ? props.children : 'Button';
+    return (
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+                padding: '1rem',
+                backgroundColor: '#f0f7fd'
+            }}>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', backgroundColor: '' }}>
+                <Button {...props}>{content}</Button>
+                <Button {...props} icon="check_circle" labelPosition="right">
+                    {content}
+                </Button>
+                <Button {...props} icon="check_circle" labelPosition="left">
+                    {content}
+                </Button>
+                <Button {...props} icon="check_circle" aria-label={content as string}>
+                    {undefined}
+                </Button>
+            </div>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <Button {...props} active={true}>
+                    {content}
+                </Button>
+                <Button {...props} icon="check_circle" labelPosition="right" active={true}>
+                    {content}
+                </Button>
+                <Button {...props} icon="check_circle" labelPosition="left" active={true}>
+                    {content}
+                </Button>
+                <Button {...props} icon="check_circle" active={true} aria-label={content as string}>
+                    {undefined}
+                </Button>
+            </div>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <Button {...props} disabled={true}>
+                    {content}
+                </Button>
+                <Button {...props} icon="check_circle" labelPosition="right" disabled={true}>
+                    {content}
+                </Button>
+                <Button {...props} icon="check_circle" labelPosition="left" disabled={true}>
+                    {content}
+                </Button>
+                <Button {...props} icon="check_circle" disabled={true} aria-label={content as string}>
+                    {undefined}
+                </Button>
+            </div>
         </div>
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <Button {...remaining} disabled={true}>
-                {children}
-            </Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} labelPosition="left" disabled={true}>
-                {children}
-            </Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} labelPosition="right" disabled={true}>
-                {children}
-            </Button>
-            <Button {...remaining} icon={<Icon name="check_circle" />} disabled={true} />
-        </div>
-    </div>
-);
+    );
+};
 
 export const Primary: Story = {
     args: {
