@@ -1,8 +1,13 @@
+import { PageProvider } from 'page';
 import Logout from './Logout';
 
 const routing = {
     path: '/goodbye',
-    element: <Logout />
+    element: (
+        <PageProvider>
+            <Logout />
+        </PageProvider>
+    )
 };
 
 export { routing };
