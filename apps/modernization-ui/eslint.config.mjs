@@ -53,6 +53,7 @@ export default defineConfig([
             'jsdoc/require-example': 'off',
             'jsdoc/require-param': 'off',
             'jsdoc/require-returns': 'off',
+            'max-len': ['warn', { code: 120 }],
             'no-unused-vars': 'off',
             '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'none' }],
             'react/react-in-jsx-scope': 'off',
