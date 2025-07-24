@@ -38,6 +38,44 @@ import java.util.stream.Stream;
 @Transactional
 public class PatientMother {
 
+  private static final String CREATE = """
+      insert into Entity(entity_uid, class_cd) values (:identifier, 'PSN');
+      
+      insert into Person(
+          person_uid,
+          person_parent_uid,
+          local_id,
+          version_ctrl_nbr,
+          cd,
+          electronic_ind,
+          edx_ind,
+          add_time,
+          add_user_id,
+          last_chg_time,
+          last_chg_user_id,
+          record_status_cd,
+          record_status_time,
+          status_cd,
+          status_time
+      ) values (
+          :identifier,
+          :identifier,
+          :local,
+          1,
+          'PAT',
+          'N',
+          'Y',
+          :addedOn,
+          :addedBy,
+          :addedOn,
+          :addedBy,
+          'ACTIVE',
+          :addedOn,
+          'A',
+          :addedOn
+      );
+      """;
+
   private static final String DELETE_IN = """  
       -- Remove the history
       delete from [locator]
@@ -85,13 +123,16 @@ public class PatientMother {
       
       delete Participation from @revisions [revision]
           join  Participation on
-                  [subject_entity_uid] = [revision].[person_uid];
+                  [subject_entity_uid] = [revision].[person_uid]
+              and [subject_class_cd] = 'PSN';
       
       delete Entity from @revisions [revision]
         join  Entity on
-          [entity_uid] = [revision].[person_uid];
+                  [entity_uid] = [revision].[person_uid]
+              and [class_cd] = 'PSN';
       
       --  Remove the Patient
+      delete from Participation where subject_class_cd = 'PSN' and subject_entity_uid in (:identifiers);
       
       delete from [locator]
       from [Tele_locator] [locator]
@@ -117,7 +158,7 @@ public class PatientMother {
       
       delete from person where person_uid in (:identifiers);
       
-      delete from entity where entity_uid in (:identifiers);
+      delete from entity where [class_cd] = 'PSN' and entity_uid in (:identifiers);
       """;
 
   private final Faker faker;
@@ -188,18 +229,16 @@ public class PatientMother {
     long identifier = idGenerator.next();
     String local = localIdentifierGenerator.generate();
 
-    Person patient = new Person(
-        new PatientCommand.CreatePatient(
-            identifier,
-            local,
-            settings.createdBy(),
-            settings.createdOn()));
-
-    this.entityManager.persist(patient);
+    this.client.sql(CREATE)
+        .param("identifier", identifier)
+        .param("local", local)
+        .param("addedOn", this.settings.createdOn())
+        .param("addedBy", this.settings.createdBy())
+        .update();
 
     long shortId = this.shortIdentifierResolver.resolve(local).orElse(0L);
 
-    return new PatientIdentifier(patient.getId(), shortId, local);
+    return new PatientIdentifier(identifier, shortId, local);
   }
 
   private Person managed(final PatientIdentifier identifier) {

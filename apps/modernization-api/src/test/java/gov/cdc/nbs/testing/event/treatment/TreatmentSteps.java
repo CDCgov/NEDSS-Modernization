@@ -45,13 +45,13 @@ public class TreatmentSteps {
   public void subjectOf() {
     this.activeInvestigation.maybeActive().ifPresent(mother::create);
     this.activePatient.maybeActive()
-        .ifPresent(patient -> mother.create(patient, activeProgramArea.active(), "181"));
+        .ifPresent(patient -> mother.create(activeProgramArea.active(), patient, "181"));
   }
 
   @Given("the patient is a subject of a(n) {treatment} treatment")
   public void treated(final String treatment) {
     this.activePatient.maybeActive()
-        .ifPresent(patient -> mother.create(patient, activeProgramArea.active(), treatment));
+        .ifPresent(patient -> mother.create(activeProgramArea.active(), patient, treatment));
   }
 
   @Given("the patient is a subject of the custom {string} treatment")

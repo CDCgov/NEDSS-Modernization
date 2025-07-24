@@ -4,7 +4,6 @@ import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.event.report.morbidity.MorbidityReportIdentifier;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.patient.profile.vaccination.VaccinationIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
@@ -67,31 +66,7 @@ class TreatmentMother {
           :identifier,
           1,
           :treatedOn
-      )
-      
-      --  relate it to the patient
-      insert into Participation(
-          act_uid,
-          act_class_cd,
-          type_cd,
-          record_status_cd,
-          record_status_time,
-          add_user_id,
-          add_time,
-          subject_class_cd,
-          subject_entity_uid
-      ) values (
-          :identifier,
-          'TRMT',
-          'SubjOfTrmt',
-          'ACTIVE',
-          :addedOn,
-          :addedBy,
-          :addedOn,
-          'PSN',
-          :patient
       );
-      
       """;
 
   private static final String PARTICIPATE_IN = """
@@ -193,19 +168,37 @@ class TreatmentMother {
         .param("treatment", treatment)
         .param("description", description)
         .param("class", description == null ? "TA" : null)
-        .param("patient", patient)
         .update();
 
     TreatmentIdentifier created = new TreatmentIdentifier(identifier, local);
+
+    participate(created, "SubjOfTrmt", patient, "PSN");
+
     this.cleaner.include(identifier);
     this.active.active(created);
 
     return created;
   }
 
+  private void participate(
+      final TreatmentIdentifier treatment,
+      final String type,
+      final long subject,
+      final String subjectClass
+  ) {
+    this.client.sql(PARTICIPATE_IN)
+        .param("identifier", treatment.identifier())
+        .param("type", type)
+        .param("addedOn", settings.createdOn())
+        .param("addedBy", settings.createdBy())
+        .param("subject", subject)
+        .param("subjectClass", subjectClass)
+        .update();
+  }
+
   void create(
-      final PatientIdentifier patient,
       final ProgramAreaIdentifier programArea,
+      final PatientIdentifier patient,
       final String treatment
   ) {
     create(
@@ -298,25 +291,11 @@ class TreatmentMother {
   }
 
   void providedBy(final TreatmentIdentifier treatment, final ProviderIdentifier provider) {
-    this.client.sql(PARTICIPATE_IN)
-        .param("identifier", treatment.identifier())
-        .param("type", "ProviderOfTrmt")
-        .param("addedOn", settings.createdOn())
-        .param("addedBy", settings.createdBy())
-        .param("subject", provider.identifier())
-        .param("subjectClass", "PSN")
-        .update();
+    participate(treatment, "ProviderOfTrmt", provider.identifier(), "PSN");
   }
 
   void reportedAt(final TreatmentIdentifier treatment, final OrganizationIdentifier organization) {
-    this.client.sql(PARTICIPATE_IN)
-        .param("identifier", treatment.identifier())
-        .param("type", "ReporterOfTrmt")
-        .param("addedOn", settings.createdOn())
-        .param("addedBy", settings.createdBy())
-        .param("subject", organization.identifier())
-        .param("subjectClass", "ORG")
-        .update();
+    participate(treatment, "ReporterOfTrmt", organization.identifier(), "ORG");
   }
 
   void associated(

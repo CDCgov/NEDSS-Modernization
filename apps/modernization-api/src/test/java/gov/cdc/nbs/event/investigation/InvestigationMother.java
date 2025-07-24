@@ -12,6 +12,8 @@ import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.patient.RevisionMother;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
+import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PreDestroy;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 
 @Component
+@ScenarioScope
 public class InvestigationMother {
 
   private static final String INVESTIGATION_CODE = "CAS";
@@ -64,6 +67,7 @@ public class InvestigationMother {
     this.cleaner = cleaner;
   }
 
+  @PreDestroy
   void reset() {
     this.cleaner.clean(this.settings.starting());
     this.investigations.reset();
