@@ -33,7 +33,7 @@ export const PageProvider = ({ children }: PageProviderProps) => {
 
     useEffect(() => {
         if (title) {
-            document.title = `NBS ${title}`;
+            document.title = `NBS - ${title}`;
         }
     }, [title]);
 
