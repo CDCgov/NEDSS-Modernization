@@ -24,6 +24,10 @@ export const permissions = {
         edit: 'EDIT-OBSERVATIONMORBIDITYREPORT',
         view: 'VIEW-OBSERVATIONMORBIDITYREPORT'
     },
+    vaccination: {
+        add: 'ADD-INTERVENTIONVACCINERECORD',
+        view: 'VIEW-INTERVENTIONVACCINERECORD'
+    },
     patient: {
         add: 'ADD-PATIENT',
         delete: 'DELETE-PATIENT',

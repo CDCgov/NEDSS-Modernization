@@ -29,11 +29,7 @@ export const renderMorbidity = (
                 <>
                     <br />
                     <strong>Treatment information: </strong>
-                    <strong>
-                        {treatments?.map((treatment) => (
-                            <li key={treatment}>{treatment}</li>
-                        ))}
-                    </strong>
+                    <strong>{treatments?.map((treatment) => <li key={treatment}>{treatment}</li>)}</strong>
                 </>
             )}
         </>

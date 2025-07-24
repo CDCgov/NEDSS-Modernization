@@ -1,0 +1,9 @@
+@use 'design-system/table/header/widths';
+
+.org-provider-header {
+    @include widths.fixed(11rem);
+}
+
+.event-header {
+    @include widths.fixed(8rem);
+}

@@ -2,7 +2,7 @@ import { LinkButton } from 'design-system/button';
 import { TableCard, TableCardProps } from 'design-system/card';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { Permitted } from 'libs/permission';
+import { permissions, Permitted } from 'libs/permission';
 import { MemoizedSupplier } from 'libs/supplying';
 
 import styles from './patient-file-vaccinations.module.scss';
@@ -10,10 +10,13 @@ import { internalizeDate, internalizeDateTime } from 'date';
 import { MaybeLabeledValue } from 'design-system/value';
 import { displayProvider } from 'libs/provider';
 import { Associations } from 'libs/events/investigations/associated';
-import { PatientFileVaccinations } from './vaccinations';
+import { LoadingOverlay } from 'libs/loading';
+import { Suspense } from 'react';
+import { Await } from 'react-router';
+import { PatientFileVaccinations } from '.';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
-const DATE_RECEIVED = { id: 'received-on', name: 'Date received' };
+const DATE_RECEIVED = { id: 'created-on', name: 'Date created' };
 const ORG_PROV = { id: 'organization-provider', name: 'Organization/Provider' };
 const DATE_ADMINISTRATED = { id: 'date-administrated', name: 'Date administrated' };
 const VACCINE_ADMINISTRATED = { id: 'vaccine-administrated', name: 'Vaccine administrated' };
@@ -22,7 +25,7 @@ const ASSOCIATED_WITH = { id: 'associated-with', name: 'Associated with' };
 const columnPreferences: ColumnPreference[] = [
     { ...EVENT_ID },
     { ...DATE_RECEIVED, moveable: true, toggleable: true },
-    { ...ORG_PROV, moveable: true, toggleable: true, hidden: true },
+    { ...ORG_PROV, moveable: true, toggleable: true },
     { ...DATE_ADMINISTRATED, moveable: true, toggleable: true },
     { ...VACCINE_ADMINISTRATED, moveable: true, toggleable: true },
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
@@ -31,22 +34,22 @@ const columnPreferences: ColumnPreference[] = [
 const columns: Column<PatientFileVaccinations>[] = [
     {
         ...EVENT_ID,
-        className: styles['local-header'],
+        className: styles['event-header'],
         sortable: true,
         value: (value) => value.local,
-        render: (value) => <a href={`/nbs/api/profile/${value.patient}/report/morbidity/${value.id}`}>{value.local}</a>
+        render: (value) => <a href={`/nbs/api/profile/${value.patient}/vaccination/${value.id}`}>{value.local}</a>
     },
     {
         ...DATE_RECEIVED,
-        className: styles['date-time-header'],
+        className: styles['date-header'],
         sortable: true,
-        value: (value) => value.receivedOn,
-        render: (value) => internalizeDateTime(value.receivedOn),
+        value: (value) => value.createdOn,
+        render: (value) => internalizeDateTime(value.createdOn),
         sortIconType: 'numeric'
     },
     {
         ...ORG_PROV,
-        className: styles['date-header'],
+        className: styles['org-provider-header'],
         sortable: true,
         value: (value) => value.organization,
         render: (value) => (
@@ -59,21 +62,21 @@ const columns: Column<PatientFileVaccinations>[] = [
                 </MaybeLabeledValue>
             </>
         ),
-        sortIconType: 'numeric'
+        sortIconType: 'alpha'
     },
     {
         ...DATE_ADMINISTRATED,
         className: styles['date-header'],
         sortable: true,
-        value: (value) => value.administratedDate,
-        render: (value) => internalizeDate(value.administratedDate)
+        value: (value) => value.administratedOn,
+        render: (value) => internalizeDate(value.administratedOn)
     },
     {
         ...VACCINE_ADMINISTRATED,
         className: styles['text-header'],
         sortable: true,
-        value: (value) => value.vaccineAdministrated,
-        sortIconType: 'numeric'
+        value: (value) => value.administered,
+        sortIconType: 'alpha'
     },
     {
         ...ASSOCIATED_WITH,
@@ -86,13 +89,13 @@ const columns: Column<PatientFileVaccinations>[] = [
 
 type InternalCardProps = {
     patient: number;
-    data?: any[];
+    data?: PatientFileVaccinations[];
 } & Omit<
     TableCardProps<PatientFileVaccinations>,
     'columnPreferencesKey' | 'defaultColumnPreferences' | 'columns' | 'data' | 'title'
 >;
 
-const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCardProps) => {
+const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCardProps) => (
     <TableCard
         title="Vaccinations"
         sizing={sizing}
@@ -101,7 +104,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
         columnPreferencesKey="patient.file.vaccinations.preferences"
         defaultColumnPreferences={columnPreferences}
         actions={
-            <Permitted permission={''}>
+            <Permitted permission={permissions.vaccination.add}>
                 <LinkButton
                     secondary
                     sizing={sizing}
@@ -112,15 +115,24 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
             </Permitted>
         }
         {...remaining}
-    />;
-};
+    />
+);
 
 type PatientFileVaccinationsCardProps = {
-    provider: MemoizedSupplier<Promise<any[]>>;
+    provider: MemoizedSupplier<Promise<PatientFileVaccinations[]>>;
 } & Omit<InternalCardProps, 'data'>;
 
 const PatientFileVaccinationsCard = ({ provider, ...remaining }: PatientFileVaccinationsCardProps) => {
-    return <></>;
+    return (
+        <Suspense
+            fallback={
+                <LoadingOverlay>
+                    <InternalCard {...remaining} />
+                </LoadingOverlay>
+            }>
+            <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
+        </Suspense>
+    );
 };
 
 export { PatientFileVaccinationsCard };

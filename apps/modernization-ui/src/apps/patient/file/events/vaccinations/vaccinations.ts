@@ -5,12 +5,12 @@ type PatientFileVaccinations = {
     patient: number;
     id: number;
     local: string;
-    receivedOn: Date;
-    organization: string;
-    provider: Provider;
-    administratedOn: Date;
-    administered: string;
-    associations: AssociatedInvestigation[];
+    createdOn?: Date;
+    organization?: string;
+    provider?: Provider;
+    administratedOn?: Date;
+    administered?: string;
+    associations?: AssociatedInvestigation[];
 };
 
 export type { PatientFileVaccinations };
