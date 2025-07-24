@@ -1,9 +1,9 @@
 @use 'design-system/table/header/widths';
 
-.org-provider-header {
-    @include widths.fixed(11rem);
+.date-time-header {
+    @include widths.fixed(7rem);
 }
 
-.event-header {
-    @include widths.fixed(8rem);
+.date-administrated-header {
+    @include widths.fixed(10rem);
 }

@@ -34,14 +34,14 @@ const columnPreferences: ColumnPreference[] = [
 const columns: Column<PatientFileVaccinations>[] = [
     {
         ...EVENT_ID,
-        className: styles['event-header'],
+        className: styles['local-header'],
         sortable: true,
         value: (value) => value.local,
         render: (value) => <a href={`/nbs/api/profile/${value.patient}/vaccination/${value.id}`}>{value.local}</a>
     },
     {
         ...DATE_RECEIVED,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.createdOn,
         render: (value) => internalizeDateTime(value.createdOn),
@@ -49,8 +49,8 @@ const columns: Column<PatientFileVaccinations>[] = [
     },
     {
         ...ORG_PROV,
-        className: styles['org-provider-header'],
         sortable: true,
+        className: styles['text-header'],
         value: (value) => value.organization,
         render: (value) => (
             <>
@@ -66,21 +66,20 @@ const columns: Column<PatientFileVaccinations>[] = [
     },
     {
         ...DATE_ADMINISTRATED,
-        className: styles['date-header'],
+        className: styles['date-administrated-header'],
         sortable: true,
         value: (value) => value.administratedOn,
         render: (value) => internalizeDate(value.administratedOn)
     },
     {
         ...VACCINE_ADMINISTRATED,
-        className: styles['text-header'],
         sortable: true,
         value: (value) => value.administered,
+        render: (value) => <strong>{value.administered}</strong>,
         sortIconType: 'alpha'
     },
     {
         ...ASSOCIATED_WITH,
-        className: styles['local-header'],
         sortable: true,
         value: (value) => value.associations?.[0]?.local,
         render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
