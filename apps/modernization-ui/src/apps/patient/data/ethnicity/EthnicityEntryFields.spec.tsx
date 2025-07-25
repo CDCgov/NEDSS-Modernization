@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -14,7 +15,7 @@ const mockEthnicityValues: EthnicityCodedValues = {
     detailedEthnicities: [{ name: 'Central American', value: '2155-0' }]
 };
 
-jest.mock('./useEthnicityCodedValues', () => ({
+vi.mock('./useEthnicityCodedValues', () => ({
     useEthnicityCodedValues: () => mockEthnicityValues
 }));
 

@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { anyOf } from './anyOf';
 
 describe('anyOf', () => {
@@ -8,10 +9,10 @@ describe('anyOf', () => {
     });
 
     it('should return false if all predicates fail', () => {
-        const first = jest.fn().mockReturnValue(false);
-        const second = jest.fn().mockReturnValue(false);
-        const third = jest.fn().mockReturnValue(false);
-        const fourth = jest.fn().mockReturnValue(false);
+        const first = vi.fn().mockReturnValue(false);
+        const second = vi.fn().mockReturnValue(false);
+        const third = vi.fn().mockReturnValue(false);
+        const fourth = vi.fn().mockReturnValue(false);
 
         const actual = anyOf<number>(first, second, third, fourth)(6);
 
@@ -24,10 +25,10 @@ describe('anyOf', () => {
     });
 
     it('should return true,  when the first predicate succeeds', () => {
-        const first = jest.fn().mockReturnValue(false);
-        const second = jest.fn().mockReturnValue(true);
-        const third = jest.fn().mockReturnValue(true);
-        const fourth = jest.fn().mockReturnValue(true);
+        const first = vi.fn().mockReturnValue(false);
+        const second = vi.fn().mockReturnValue(true);
+        const third = vi.fn().mockReturnValue(true);
+        const fourth = vi.fn().mockReturnValue(true);
 
         const actual = anyOf<number>(first, second, third, fourth, () => true)(6);
 

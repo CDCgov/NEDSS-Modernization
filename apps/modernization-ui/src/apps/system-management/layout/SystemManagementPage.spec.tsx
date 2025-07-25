@@ -8,8 +8,8 @@ const mockPermissions = ['LDFADMINISTRATION-SYSTEM', 'DECISION_SUPPORT_ADMIN', '
 const mockAllows = (permission: string) => mockPermissions.includes(permission);
 const mockAllowFn = jest.fn(mockAllows);
 
-jest.mock('../../../libs/permission/usePermissions', () => ({
-    usePermissions: () => ({ permissions: mockPermissions, allows: mockAllowFn }),
+vi.mock('../../../libs/permission/usePermissions', () => ({
+    usePermissions: () => ({ permissions: mockPermissions, allows: mockAllowFn })
 }));
 
 describe('SystemManagementPage', () => {

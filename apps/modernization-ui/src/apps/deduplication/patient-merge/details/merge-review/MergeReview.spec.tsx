@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
@@ -7,12 +8,12 @@ import { MergeReview } from './MergeReview';
 import { PatientMergeForm } from './model/PatientMergeForm';
 import { AlertProvider } from 'alert';
 
-const onPreview = jest.fn();
-const onRemove = jest.fn();
-const onMerge = jest.fn();
+const onPreview = vi.fn();
+const onRemove = vi.fn();
+const onMerge = vi.fn();
 
-const mockKeepAllSeparate = jest.fn();
-jest.mock('apps/deduplication/api/useRemoveMerge', () => ({
+const mockKeepAllSeparate = vi.fn();
+vi.mock('apps/deduplication/api/useRemoveMerge', () => ({
     useRemoveMerge: () => {
         return { keepAllSeparate: mockKeepAllSeparate };
     }
@@ -53,7 +54,7 @@ const Fixture = () => {
         }
     ];
     return (
-        <AlertProvider>
+        <AlertProvider duration={1000}>
             <MemoryRouter initialEntries={['/deduplication/merge/1234']}>
                 <Routes>
                     <Route
