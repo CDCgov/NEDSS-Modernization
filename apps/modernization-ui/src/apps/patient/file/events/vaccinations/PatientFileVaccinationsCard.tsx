@@ -81,6 +81,7 @@ const columns: Column<PatientFileVaccinations>[] = [
     {
         ...ASSOCIATED_WITH,
         sortable: true,
+        className: styles['long-coded-header'],
         value: (value) => value.associations?.[0]?.local,
         render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
     }

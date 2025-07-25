@@ -4,11 +4,14 @@ import { PatientFileLaboratoryReport, patientLaboratoryReports } from './reports
 import { PatientFileMorbidityReport, patientMorbidityReports } from './reports/morbidity';
 import { PatientFileVaccinations } from './vaccinations/vaccinations';
 import { patientVaccinations } from './vaccinations/patientVaccinations';
+import { PatientFileTreatment } from './treatments/treatment';
+import { patientTreatments } from './treatments/patientTreatments';
 
 type Reports = {
     laboratory: MemoizedSupplier<Promise<PatientFileLaboratoryReport[]>>;
     morbidity: MemoizedSupplier<Promise<PatientFileMorbidityReport[]>>;
     vaccination: MemoizedSupplier<Promise<PatientFileVaccinations[]>>;
+    treatment: MemoizedSupplier<Promise<PatientFileTreatment[]>>;
 };
 
 type PatientFileEventData = {
@@ -23,7 +26,8 @@ const events = (patient: number): PatientFileEventData => ({
     reports: {
         laboratory: new MemoizedSupplier(() => patientLaboratoryReports(patient)),
         morbidity: new MemoizedSupplier(() => patientMorbidityReports(patient)),
-        vaccination: new MemoizedSupplier(() => patientVaccinations(patient))
+        vaccination: new MemoizedSupplier(() => patientVaccinations(patient)),
+        treatment: new MemoizedSupplier(() => patientTreatments(patient))
     }
 });
 
