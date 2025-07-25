@@ -19,7 +19,9 @@ type Props = {
 export const SideNavigation = ({ title, className, children, ...remaining }: Props): ReactNode => {
     return (
         <div {...remaining} className={classNames(styles.sideNav, className)}>
-            <Heading className={styles.title} level={2}>{title}</Heading>
+            <Heading className={styles.title} level={2}>
+                {title}
+            </Heading>
             <nav aria-label={title} className={styles.navEntries}>
                 <ul>{children}</ul>
             </nav>
