@@ -1,6 +1,6 @@
 import { PatientFileService } from 'generated';
 import { mapOr } from 'utils/mapping';
-import { transformer } from './transformer';
+import { transformer } from '.';
 
 const patientTreatments = (patient: number) =>
     PatientFileService.treatments({ patient })

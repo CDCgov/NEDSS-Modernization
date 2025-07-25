@@ -3,7 +3,6 @@ import { LoadingOverlay } from 'libs/loading';
 import { MemoizedSupplier } from 'libs/supplying';
 import { Suspense } from 'react';
 import { Await } from 'react-router';
-import { PatientFileTreatment } from './treatment';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { Column } from 'design-system/table';
 
@@ -11,6 +10,7 @@ import styles from './treatments.module.scss';
 import { internalizeDate, internalizeDateTime } from 'date';
 import { displayProvider } from 'libs/provider';
 import { Associations } from 'libs/events/investigations/associated';
+import { PatientFileTreatment } from '.';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'created-on', name: 'Date created' };

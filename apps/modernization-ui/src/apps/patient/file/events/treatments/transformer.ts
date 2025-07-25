@@ -1,5 +1,5 @@
 import { maybeDate } from 'date';
-import { PatientFileTreatment as Treatment } from './treatment';
+import { PatientFileTreatment as Treatment } from '.';
 import { PatientFileTreatment } from 'generated';
 
 const transformer = (response: PatientFileTreatment): Treatment => ({
