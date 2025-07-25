@@ -1,12 +1,10 @@
 package gov.cdc.nbs.testing.support;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
@@ -14,8 +12,10 @@ public class Available<V> {
 
   private static final SecureRandom RANDOM = new SecureRandom();
 
+
   public record Indexed<V>(int index, V item) {
   }
+
 
   private final List<V> items;
 
@@ -71,20 +71,27 @@ public class Available<V> {
     return this.items.stream().skip(index).findFirst();
   }
 
-  public void selectFirst(final Predicate<V> filter) {
+  public void select(final Predicate<V> filter) {
     indexed().filter(item -> filter.test(item.item))
         .findFirst()
         .ifPresent(index -> {
-          this.items.remove(index.item);
+          this.items.remove(index.index);
           this.items.addFirst(index.item);
         });
   }
 
-  public void first(final UnaryOperator<V> operator) {
-    if(!this.items.isEmpty()) {
-      V current = this.items.getFirst();
+  public void selected(final UnaryOperator<V> operator, final Supplier<V> initializer) {
+    V current = this.items.isEmpty() ? Objects.requireNonNull(initializer).get() : this.items.getFirst();
+
+    if (current != null) {
       V next = operator.apply(current);
-      this.items.set(0, next);
+
+      if (this.items.isEmpty()) {
+        this.items.add(next);
+      } else {
+        this.items.set(0, next);
+      }
     }
   }
+
 }

@@ -3,9 +3,9 @@ package gov.cdc.nbs.patient.file.edit;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientException;
+import gov.cdc.nbs.patient.PatientService;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
-import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
 
 import static gov.cdc.nbs.patient.demographics.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
@@ -18,14 +18,14 @@ import static gov.cdc.nbs.patient.demographics.mortality.MortalityDemographicPat
 @Component
 class PatientEditService {
 
-  private final PatientProfileService service;
+  private final PatientService service;
   private final AddressIdentifierGenerator addressIdentifierGenerator;
   private final PermissionScopeResolver permissionScopeResolver;
   private final PatientEthnicityEditService ethnicityEditService;
-  private final PatientAddressEditService  addressEditService;
+  private final PatientAddressEditService addressEditService;
 
   PatientEditService(
-      final PatientProfileService service,
+      final PatientService service,
       final AddressIdentifierGenerator addressIdentifierGenerator,
       final PermissionScopeResolver permissionScopeResolver,
       final PatientEthnicityEditService ethnicityEditService, PatientAddressEditService addressEditService
@@ -84,7 +84,7 @@ class PatientEditService {
 
     changes.maybeEthnicity().ifPresent(demographic -> ethnicityEditService.apply(context, patient, demographic));
 
-    addressEditService.apply(context,patient,changes.addresses());
+    addressEditService.apply(context, patient, changes.addresses());
   }
 
 

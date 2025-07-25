@@ -51,7 +51,6 @@ class PersonTest {
     assertThat(actual.getId()).isEqualTo(117L);
     assertThat(actual.getLocalId()).isEqualTo("patient-local-id");
 
-    assertThat(actual.getVersionCtrlNbr()).isEqualTo((short) 1);
     assertThat(actual.getCd()).isEqualTo("PAT");
     assertThat(actual.getElectronicInd()).isEqualTo('N');
     assertThat(actual.getEdxInd()).isEqualTo("Y");
@@ -903,7 +902,6 @@ class PersonTest {
     );
 
     assertThat(actual)
-        .returns((short) 2, Person::getVersionCtrlNbr)
         .satisfies(
             updated -> assertThat(updated)
                 .extracting(Person::audit)
@@ -1197,8 +1195,8 @@ class PersonTest {
                 .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"))
         )
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
+            actual -> assertThat(actual.locationOfDeath())
+                .hasValueSatisfying(
                     address -> assertThat(address)
                         .returns("U", PostalEntityLocatorParticipation::getCd)
                         .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
@@ -1258,8 +1256,8 @@ class PersonTest {
                 .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
         )
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
+            actual -> assertThat(actual.locationOfDeath())
+                .hasValueSatisfying(
                     address -> assertThat(address)
                         .returns("U", PostalEntityLocatorParticipation::getCd)
                         .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
@@ -1324,8 +1322,8 @@ class PersonTest {
             .returns(null, PatientMortality::deceasedOn)
         )
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
+            actual -> assertThat(actual.locationOfDeath())
+                .hasValueSatisfying(
                     address -> assertThat(address)
                         .returns("U", PostalEntityLocatorParticipation::getCd)
                         .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
@@ -1387,8 +1385,8 @@ class PersonTest {
             .returns(LocalDate.parse("1986-11-16"), PatientMortality::deceasedOn)
         )
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
+            actual -> assertThat(actual.locationOfDeath())
+                .hasValueSatisfying(
                     address -> assertThat(address)
                         .returns("U", PostalEntityLocatorParticipation::getCd)
                         .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
@@ -1519,8 +1517,8 @@ class PersonTest {
 
     assertThat(patient)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
+            actual -> assertThat(actual.locationOfBirth())
+                .hasValueSatisfying(
                     address -> assertThat(address)
                         .returns("F", PostalEntityLocatorParticipation::getCd)
                         .returns("BIR", PostalEntityLocatorParticipation::getUseCd)

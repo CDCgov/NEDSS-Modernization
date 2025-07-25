@@ -2,8 +2,9 @@ package gov.cdc.nbs.testing.support;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.util.function.UnaryOperator;
+
+import static org.assertj.core.api.Assertions.*;
 
 class AvailableTest {
 
@@ -30,7 +31,7 @@ class AvailableTest {
   }
 
   @Test
-  void should_return_the_first_available_item() {
+  void should_return_the_first_item() {
 
     Available<Object> available = new Available<>();
 
@@ -44,7 +45,7 @@ class AvailableTest {
   }
 
   @Test
-  void should_return_the_first_available_item_after_being_selected() {
+  void should_return_the_selected_available_item_after_being_selected() {
 
     Available<Object> available = new Available<>();
 
@@ -56,14 +57,14 @@ class AvailableTest {
     available.available(two);
     available.available(three);
 
-    available.selectFirst(item -> item == two);
+    available.select(item -> item == two);
 
     assertThat(available.one()).isSameAs(two);
 
   }
 
   @Test
-  void should_replace_the_first_available() {
+  void should_replace_the_selected_available_with_the_value() {
 
     Available<Object> available = new Available<>();
 
@@ -76,10 +77,38 @@ class AvailableTest {
     available.available(two);
     available.available(three);
 
-    available.first(current -> changed);
+    available.selected(current -> changed, Object::new);
 
     assertThat(available.one()).isSameAs(changed);
 
+  }
+
+  @Test
+  void should_replace_the_selected_available_with_the_value_using_the_initializer() {
+
+    Object initialized = new Object();
+
+    Available<Object> available = new Available<>();
+
+    available.selected(UnaryOperator.identity(), () -> initialized);
+
+    assertThat(available.one()).isSameAs(initialized);
+
+  }
+
+  @Test
+  void should_not_apply_function_when_selected_is_null() {
+    Available<Object> available = new Available<>();
+
+    available.selected(current -> fail(), () -> null);
+  }
+
+  @Test
+  void should_require_initializer() {
+    Available<Object> available = new Available<>();
+
+   assertThatThrownBy(() -> available.selected(current -> fail(), null))
+       .isInstanceOf(NullPointerException.class);
   }
 
   @Test
@@ -110,7 +139,7 @@ class AvailableTest {
   }
 
   @Test
-  void should_contain_the_first_item() {
+  void should_contain_the_selected_item() {
     Available<Object> available = new Available<>();
 
     Object item = new Object();
@@ -200,13 +229,13 @@ class AvailableTest {
 
     assertThat(available.indexed())
         .satisfiesExactly(
-          indexed -> assertThat(indexed)
-              .satisfies(
-                  index -> assertThat(index.index()).isZero()
-              )
-              .satisfies(
-                  index -> assertThat(index.item()).isSameAs(one)
-              ),
+            indexed -> assertThat(indexed)
+                .satisfies(
+                    index -> assertThat(index.index()).isZero()
+                )
+                .satisfies(
+                    index -> assertThat(index.item()).isSameAs(one)
+                ),
             indexed -> assertThat(indexed)
                 .satisfies(
                     index -> assertThat(index.index()).isEqualTo(1)
@@ -225,4 +254,26 @@ class AvailableTest {
 
   }
 
+  @Test
+  void should_return_a_random_item_from_the_available() {
+    Available<Object> available = new Available<>();
+
+    Object one = new Object();
+    Object two = new Object();
+    Object three = new Object();
+
+    available.available(one);
+    available.available(two);
+    available.available(three);
+
+    assertThat(available.random()).hasValueSatisfying(item -> assertThat(item).isIn(one, two, three));
+  }
+
+  @Test
+  void should_not_return_random_item_when_nothing_is_available() {
+    Available<Object> available = new Available<>();
+
+    assertThat(available.random()).isNotPresent();
+
+  }
 }

@@ -3,15 +3,23 @@ package gov.cdc.nbs.patient.demographics.address;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class AddressDemographicEntrySteps {
 
+  private final Clock clock;
   private final Available<AddressDemographic> available;
 
-  AddressDemographicEntrySteps(final Available<AddressDemographic> available) {
+  AddressDemographicEntrySteps(final Clock clock, final Available<AddressDemographic> available) {
+    this.clock = clock;
     this.available = available;
+  }
+
+  private Supplier<AddressDemographic> initial() {
+    return () -> new AddressDemographic(LocalDate.now(clock));
   }
 
   @Given("I am entering the {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
@@ -23,27 +31,76 @@ public class AddressDemographicEntrySteps {
       final String zip,
       final LocalDate asOf
   ) {
-    this.available.available(
-        new AddressDemographic(
-            asOf,
-            type,
-            use,
-            address,
-            null,
-            city,
-            null,
-            zip,
-            null,
-            null,
-            null,
-            null
-        )
+    this.available.selected(
+        current -> current
+            .withAsOf(asOf)
+            .withType(type)
+            .withUse(use)
+            .withAddress(address)
+            .withCity(city)
+            .withZipcode(zip)
+        , initial()
     );
+  }
+
+  @Given("I enter the address as of {localDate}")
+  public void asOf(final LocalDate value) {
+    this.available.selected(current -> current.withAsOf(value), initial());
+  }
+
+  @Given("I enter the address type {addressType}")
+  public void type(final String value) {
+    this.available.selected(current -> current.withType(value), initial());
+  }
+
+  @Given("I enter the address use {addressUse}")
+  public void use(final String value) {
+    this.available.selected(current -> current.withUse(value), initial());
+  }
+
+  @Given("I enter the address street address {string}")
+  public void address(final String value) {
+    this.available.selected(current -> current.withAddress(value), initial());
+  }
+
+  @Given("I enter the address street address2 {string}")
+  public void address2(final String value) {
+    this.available.selected(current -> current.withAddress2(value), initial());
+  }
+
+  @Given("I enter the address city {string}")
+  public void city(final String value) {
+    this.available.selected(current -> current.withCity(value), initial());
+  }
+
+  @Given("I enter the address zipcode {string}")
+  public void zipcode(final String value) {
+    this.available.selected(current -> current.withZipcode(value), initial());
+  }
+
+  @Given("I enter the address state {state}")
+  public void state(final String value) {
+    this.available.selected(current -> current.withState(value), initial());
+  }
+
+  @Given("I enter the address county {string}")
+  public void county(final String value) {
+    this.available.selected(current -> current.withCounty(value), initial());
+  }
+
+  @Given("I enter the address country {string}")
+  public void country(final String value) {
+    this.available.selected(current -> current.withCountry(value), initial());
+  }
+
+  @Given("I enter the address comment {string}")
+  public void comment(final String value) {
+    this.available.selected(current -> current.withComment(value), initial());
   }
 
   @Given("I select the entered address that is as of {localDate}")
   public void select(final LocalDate asOf) {
-    this.available.selectFirst(item -> Objects.equals(item.asOf(), asOf));
+    this.available.select(item -> Objects.equals(item.asOf(), asOf));
   }
 
   @Given("I remove the entered address as of {localDate}")
@@ -51,20 +108,4 @@ public class AddressDemographicEntrySteps {
     this.available.removeIf(item -> Objects.equals(item.asOf(), asOf));
   }
 
-  @Given("I enter the address as of {localDate}")
-  public void asOf(final LocalDate value) {
-    this.available.first(current -> current.withAsOf(value));
-  }
-
-  @Given("I enter the address type {addressType}")
-  public void type(final String value) {
-    this.available.first(current -> current.withType(value));
-
-  }
-
-  @Given("I enter the address use {addressUse}")
-  public void use(final String value) {
-    this.available.first(current -> current.withUse(value));
-
-  }
 }

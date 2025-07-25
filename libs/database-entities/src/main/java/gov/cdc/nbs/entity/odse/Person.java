@@ -19,6 +19,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Predicate;
+
+import static java.util.function.Predicate.not;
 
 @Getter
 @Setter
@@ -26,12 +29,15 @@ import java.util.*;
 @SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7027", "javaarchitecture:S7091"})
 //  Bidirectional mappings require knowledge of each other
 public class Person {
+  public static final Predicate<EntityLocatorParticipation> BIRTH_PLACE = EntityLocatorParticipation.withUse("BIR");
+  public static final Predicate<EntityLocatorParticipation> DEATH_PLACE = EntityLocatorParticipation.withUse("DTH");
   @Id
-  @Column(name = "person_uid", nullable = false)
+  @Column(name = "person_uid")
   private Long id;
 
-  @Column(name = "version_ctrl_nbr", nullable = false)
-  private Short versionCtrlNbr;
+  @Version
+  @Column(name = "version_ctrl_nbr")
+  private short versionCtrlNbr;
 
   @Column(name = "cd", length = 50)
   private String cd;
@@ -122,7 +128,6 @@ public class Person {
   private Status status;
 
   protected Person() {
-    this.versionCtrlNbr = 1;
     this.audit = new Audit();
     this.recordStatus = new RecordStatus();
     this.status = new Status();
@@ -282,8 +287,16 @@ public class Person {
     changed(address);
   }
 
+  public Optional<PostalEntityLocatorParticipation> locationOfBirth() {
+    return this.nbsEntity.addresses(BIRTH_PLACE).findFirst();
+  }
+
+  public Optional<PostalEntityLocatorParticipation> locationOfDeath() {
+    return this.nbsEntity.addresses(DEATH_PLACE).findFirst();
+  }
+
   public List<PostalEntityLocatorParticipation> addresses() {
-    return this.nbsEntity.addresses();
+    return this.nbsEntity.addresses(not(BIRTH_PLACE.or(DEATH_PLACE))).toList();
   }
 
   public Collection<TeleEntityLocatorParticipation> phones() {
@@ -430,8 +443,6 @@ public class Person {
   }
 
   private void changed(final PatientCommand command) {
-    this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
-
     this.audit.changed(command.requester(), command.requestedOn());
   }
 
@@ -480,27 +491,4 @@ public class Person {
         sexBirth == null ? 0 : sexBirth.signature()
     );
   }
-
-  @Override
-  public int hashCode() {
-    return this.id == null ? System.identityHashCode(this) : Objects.hash(id);
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-    Person person = (Person) o;
-    return Objects.equals(id, person.id);
-  }
-
-  @Override
-  public String toString() {
-    return "Person{" +
-        "id=" + id +
-        '}';
-  }
-
 }

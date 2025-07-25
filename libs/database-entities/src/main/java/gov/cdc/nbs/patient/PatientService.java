@@ -1,8 +1,6 @@
-package gov.cdc.nbs.patient.profile;
+package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.patient.PatientHistoryCreator;
-import gov.cdc.nbs.patient.PatientNotFoundException;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,14 +10,14 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 @Component
-public class PatientProfileService {
+public class PatientService {
 
   private final EntityManager entityManager;
-  private final PatientHistoryCreator historyCreator;
+  private final PatientHistoryRecorder historyCreator;
 
-  PatientProfileService(
+  PatientService(
       final EntityManager entityManager,
-      final PatientHistoryCreator historyCreator
+      final PatientHistoryRecorder historyCreator
   ) {
     this.entityManager = entityManager;
     this.historyCreator = historyCreator;
@@ -35,7 +33,7 @@ public class PatientProfileService {
   public void using(final long identifier, final Consumer<Person> consumer) {
     Person patient = this.entityManager.find(Person.class, identifier);
     if (patient != null) {
-      long before = PatientChangeHash.compute(patient);
+      long before = patient.signature();
       consumer.andThen(resolveHistory(before)).accept(patient);
     } else {
       throw new PatientNotFoundException(identifier);
@@ -47,12 +45,10 @@ public class PatientProfileService {
   }
 
   private void maybeRecordHistory(final long before, final Person patient) {
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     if (before != after) {
-      int version = patient.getVersionCtrlNbr() - 1;
-      this.historyCreator.create(patient.getId(), version);
-
+      this.historyCreator.snapshot(patient.getId());
     }
   }
 
@@ -65,7 +61,7 @@ public class PatientProfileService {
   }
 
   private <M> Optional<M> with(final Person patient, final Function<Person, M> fn) {
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     M mapped = fn.apply(patient);
 

@@ -5,25 +5,13 @@ import gov.cdc.nbs.audit.RecordStatus;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientEntityLocatorHistoryListener;
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 @AllArgsConstructor
@@ -42,6 +30,10 @@ public abstract class EntityLocatorParticipation {
 
   public static <V extends EntityLocatorParticipation> Predicate<V> active() {
     return input -> input.recordStatus().isActive();
+  }
+
+  public static <V extends EntityLocatorParticipation> Predicate<V> withUse(final String value) {
+    return participation -> Objects.equals(participation.use(), value);
   }
 
   @EmbeddedId
@@ -82,8 +74,9 @@ public abstract class EntityLocatorParticipation {
   @Column(name = "valid_time_txt", length = 100)
   private String validTimeTxt;
 
-  @Column(name = "version_ctrl_nbr", nullable = false)
-  private Short versionCtrlNbr;
+  @Version
+  @Column(name = "version_ctrl_nbr")
+  private short versionCtrlNbr;
 
   @Column(name = "as_of_date")
   protected LocalDate asOfDate;
@@ -111,8 +104,6 @@ public abstract class EntityLocatorParticipation {
     this.status = new Status(command.requestedOn());
     this.recordStatus = new RecordStatus(command.requestedOn());
     this.audit = new Audit(command.requester(), command.requestedOn());
-
-    this.versionCtrlNbr = 1;
   }
 
   public long identifier() {
@@ -123,6 +114,10 @@ public abstract class EntityLocatorParticipation {
 
   public abstract String getClassCd();
 
+  public String use() {
+    return useCd;
+  }
+
   public Audit audit() {
     return audit;
   }
@@ -132,8 +127,6 @@ public abstract class EntityLocatorParticipation {
   }
 
   protected void changed(final PatientCommand command) {
-    this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
-
     this.audit.changed(command.requester(), command.requestedOn());
   }
 
