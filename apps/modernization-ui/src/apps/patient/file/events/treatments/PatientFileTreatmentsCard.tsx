@@ -9,7 +9,6 @@ import { Column } from 'design-system/table';
 
 import styles from './treatments.module.scss';
 import { internalizeDate, internalizeDateTime } from 'date';
-import { MaybeLabeledValue } from 'design-system/value';
 import { displayProvider } from 'libs/provider';
 import { Associations } from 'libs/events/investigations/associated';
 
@@ -50,18 +49,12 @@ const columns: Column<PatientFileTreatment>[] = [
         sortable: true,
         className: styles['text-header'],
         value: (value) => value.provider?.first,
-        render: (value) => (
-            <>
-                <MaybeLabeledValue orientation="vertical" label="Provider">
-                    {displayProvider(value.provider)}
-                </MaybeLabeledValue>
-            </>
-        ),
+        render: (value) => displayProvider(value.provider),
         sortIconType: 'alpha'
     },
     {
         ...TREATMENT_DATE,
-        className: styles['date-administrated-header'],
+        className: styles['treatment-date-header'],
         sortable: true,
         value: (value) => value.treatedOn,
         render: (value) => internalizeDate(value.treatedOn)
@@ -76,6 +69,7 @@ const columns: Column<PatientFileTreatment>[] = [
     {
         ...ASSOCIATED_WITH,
         sortable: true,
+        className: styles['long-coded-header'],
         value: (value) => value.associations?.[0]?.local,
         render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
     }
