@@ -1,6 +1,5 @@
 import { Shown } from 'conditional-render';
 import { AlertMessage } from 'design-system/message';
-import React from 'react';
 
 export type InUseDataElements = { passes: string[]; fields: string[] };
 
