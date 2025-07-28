@@ -11,10 +11,9 @@ import { displayProvider } from 'libs/provider';
 import { Associations } from 'libs/events/investigations/associated';
 import { LoadingOverlay } from 'libs/loading';
 import { Suspense } from 'react';
-import { Await, redirect } from 'react-router';
+import { Await } from 'react-router';
 import { PatientFileVaccinations } from '.';
-import { ClassicModalButton, ClassicModalProvider } from 'classic';
-import { usePage } from 'page';
+import { ClassicModalButton, ClassicModalLink, ClassicModalProvider } from 'classic';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'created-on', name: 'Date created' };
@@ -38,7 +37,11 @@ const columns: Column<PatientFileVaccinations>[] = [
         className: styles['local-header'],
         sortable: true,
         value: (value) => value.local,
-        render: (value) => <a href={`/nbs/api/profile/${value.patient}/vaccination/${value.id}`}>{value.local}</a>
+        render: (value) => (
+            <ClassicModalLink url={`/nbs/api/profile/${value.patient}/vaccination/${value.id}`}>
+                {value.local}
+            </ClassicModalLink>
+        )
     },
     {
         ...DATE_RECEIVED,
