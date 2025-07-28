@@ -91,12 +91,7 @@ export const NavBar = () => {
                                             <span> | </span>
                                         </td>
                                         <td className={styles.navLink}>
-                                            <a
-                                                href="/nbs/logout"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    logout();
-                                                }}>
+                                            <a href="/nbs/logout" onClick={logout}>
                                                 Logout
                                             </a>
                                         </td>
