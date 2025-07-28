@@ -58,7 +58,7 @@ class PatientMortalityDemographicRowMapper implements RowMapper<PatientMortality
     LocalDate asOf = LocalDateColumnMapper.map(resultSet, columns.asOf());
     Selectable deceased = deceasedMapper.mapRow(resultSet, rowNum);
     LocalDate deceasedOn = LocalDateColumnMapper.map(resultSet, columns.deceasedOn());
-    if (!deceased.value().equalsIgnoreCase("Y")) {
+    if (deceased != null && !deceased.value().equalsIgnoreCase("Y")) {
       deceasedOn = null;
     }
 
