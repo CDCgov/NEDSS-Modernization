@@ -1,4 +1,3 @@
-import { LinkButton } from 'design-system/button';
 import { TableCard, TableCardProps } from 'design-system/card';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
@@ -12,8 +11,10 @@ import { displayProvider } from 'libs/provider';
 import { Associations } from 'libs/events/investigations/associated';
 import { LoadingOverlay } from 'libs/loading';
 import { Suspense } from 'react';
-import { Await } from 'react-router';
+import { Await, redirect } from 'react-router';
 import { PatientFileVaccinations } from '.';
+import { ClassicModalButton, ClassicModalProvider } from 'classic';
+import { usePage } from 'page';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'created-on', name: 'Date created' };
@@ -95,28 +96,31 @@ type InternalCardProps = {
     'columnPreferencesKey' | 'defaultColumnPreferences' | 'columns' | 'data' | 'title'
 >;
 
-const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCardProps) => (
-    <TableCard
-        title="Vaccinations"
-        sizing={sizing}
-        data={data}
-        columns={columns}
-        columnPreferencesKey="patient.file.vaccinations.preferences"
-        defaultColumnPreferences={columnPreferences}
-        actions={
-            <Permitted permission={permissions.vaccination.add}>
-                <LinkButton
-                    secondary
-                    sizing={sizing}
-                    icon="add_circle"
-                    href={`/nbs/api/profile/${patient}/vaccination`}>
-                    Add vaccination
-                </LinkButton>
-            </Permitted>
-        }
-        {...remaining}
-    />
-);
+const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCardProps) => {
+    return (
+        <TableCard
+            title="Vaccinations"
+            sizing={sizing}
+            data={data}
+            columns={columns}
+            columnPreferencesKey="patient.file.vaccinations.preferences"
+            defaultColumnPreferences={columnPreferences}
+            actions={
+                <Permitted permission={permissions.vaccination.add}>
+                    <ClassicModalButton
+                        url={`/nbs/api/profile/${patient}/vaccination`}
+                        icon="add_circle"
+                        secondary
+                        sizing={sizing}
+                        onClose={() => location.reload()}>
+                        Add vaccination
+                    </ClassicModalButton>
+                </Permitted>
+            }
+            {...remaining}
+        />
+    );
+};
 
 type PatientFileVaccinationsCardProps = {
     provider: MemoizedSupplier<Promise<PatientFileVaccinations[]>>;
@@ -124,14 +128,16 @@ type PatientFileVaccinationsCardProps = {
 
 const PatientFileVaccinationsCard = ({ provider, ...remaining }: PatientFileVaccinationsCardProps) => {
     return (
-        <Suspense
-            fallback={
-                <LoadingOverlay>
-                    <InternalCard {...remaining} />
-                </LoadingOverlay>
-            }>
-            <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
-        </Suspense>
+        <ClassicModalProvider>
+            <Suspense
+                fallback={
+                    <LoadingOverlay>
+                        <InternalCard {...remaining} />
+                    </LoadingOverlay>
+                }>
+                <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
+            </Suspense>
+        </ClassicModalProvider>
     );
 };
 

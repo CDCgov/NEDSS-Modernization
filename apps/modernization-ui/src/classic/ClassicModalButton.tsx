@@ -1,40 +1,52 @@
-import { KeyboardEvent, MouseEvent, useEffect } from 'react';
-import { Button } from '@trussworks/react-uswds';
-import { Status, useClassicModal } from 'classic';
-import { useRedirect } from './useRedirect';
 import { Destination } from './Destination';
+import { Button, StandardButtonProps } from 'design-system/button';
+import { Status, useClassicModal } from './useClassicModal';
+import { useEffect } from 'react';
 
 type Props = {
     url: string;
     destination?: Destination;
     onClose?: () => void;
-} & JSX.IntrinsicElements['button'];
+} & JSX.IntrinsicElements['button'] &
+    StandardButtonProps;
 
-const ClassicModalButton = ({ url, onClose, children, ...defaultProps }: Props) => {
-    const { location, redirect } = useRedirect({ destination: 'none' });
+const ClassicModalButton = ({
+    url,
+    className,
+    sizing,
+    icon,
+    active,
+    tertiary,
+    secondary,
+    destructive,
+    disabled,
+    children,
+    onClose,
+    ...remaining
+}: Props) => {
+    // const { location, redirect } = useRedirect({ destination: 'none' });
 
     const { state, open, reset } = useClassicModal();
 
-    const handleClick = (event: MouseEvent) => {
-        event.preventDefault();
-        redirect(url);
+    const handleClick = () => {
+        open(url);
     };
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-        switch (event.key) {
-            case 'enter':
-            case 'space': {
-                event.preventDefault();
-                redirect(url);
-            }
-        }
-    };
+    // const handleKeyDown = (event: KeyboardEvent) => {
+    //     switch (event.key) {
+    //         case 'enter':
+    //         case 'space': {
+    //             event.preventDefault();
+    //             redirect(url);
+    //         }
+    //     }
+    // };
 
-    useEffect(() => {
-        if (location) {
-            open(location);
-        }
-    }, [location]);
+    // useEffect(() => {
+    //     if (location) {
+    //         open(location);
+    //     }
+    // }, [location]);
 
     useEffect(() => {
         if (state.status === Status.Closed) {
@@ -43,10 +55,23 @@ const ClassicModalButton = ({ url, onClose, children, ...defaultProps }: Props) 
         }
     }, [state.status]);
 
+    const labelPosition = 'labelPosition' in remaining ? remaining.labelPosition : undefined;
+
     return (
-        <Button type="button" className="grid-row" onClick={handleClick} onKeyDown={handleKeyDown} {...defaultProps}>
-            {children}
-        </Button>
+        <a href={url} target="popup" onClick={handleClick}>
+            <Button
+                className={className}
+                sizing={sizing}
+                icon={icon}
+                labelPosition={labelPosition}
+                active={active}
+                tertiary={tertiary}
+                secondary={secondary}
+                destructive={destructive}
+                disabled={disabled}>
+                {children}
+            </Button>
+        </a>
     );
 };
 
