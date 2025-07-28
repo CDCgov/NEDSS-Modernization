@@ -11,6 +11,7 @@ type PatientFileMorbidityReport = {
     receivedOn?: Date;
     reportedOn?: Date;
     condition?: string;
+    processingDecision?: string;
     reportingFacility?: string;
     orderingProvider?: Provider;
     reportingProvider?: Provider;
