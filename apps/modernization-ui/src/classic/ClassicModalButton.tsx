@@ -24,29 +24,11 @@ const ClassicModalButton = ({
     onClose,
     ...remaining
 }: Props) => {
-    // const { location, redirect } = useRedirect({ destination: 'none' });
-
     const { state, open, reset } = useClassicModal();
 
     const handleClick = () => {
         open(url);
     };
-
-    // const handleKeyDown = (event: KeyboardEvent) => {
-    //     switch (event.key) {
-    //         case 'enter':
-    //         case 'space': {
-    //             event.preventDefault();
-    //             redirect(url);
-    //         }
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     if (location) {
-    //         open(location);
-    //     }
-    // }, [location]);
 
     useEffect(() => {
         if (state.status === Status.Closed) {
