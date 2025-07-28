@@ -58,15 +58,18 @@ class PatientMortalityDemographicRowMapper implements RowMapper<PatientMortality
     LocalDate asOf = LocalDateColumnMapper.map(resultSet, columns.asOf());
     Selectable deceased = deceasedMapper.mapRow(resultSet, rowNum);
     LocalDate deceasedOn = LocalDateColumnMapper.map(resultSet, columns.deceasedOn());
-    if (deceased != null && !deceased.value().equalsIgnoreCase("Y")) {
-      deceasedOn = null;
-    }
-
     String city = resultSet.getString(columns.city());
     Selectable state = stateMapper.mapRow(resultSet, rowNum);
     Selectable county = countyMapper.mapRow(resultSet, rowNum);
     Selectable country = countryMapper.mapRow(resultSet, rowNum);
-
+    if (deceased != null && !deceased.value().equalsIgnoreCase("Y")) {
+      deceasedOn = null;
+      city = null;
+      state = null;
+      county = null;
+      country = null;
+    }
+    
     return new PatientMortalityDemographic(
         asOf,
         deceased,
