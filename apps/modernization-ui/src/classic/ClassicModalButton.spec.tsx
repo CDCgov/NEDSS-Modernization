@@ -4,16 +4,15 @@ import { ClassicModalProvider } from './ClassicModalContext';
 import { Status, useClassicModal } from 'classic';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('classic');
 const mockUseClassicModal = useClassicModal as jest.MockedFunction<typeof useClassicModal>;
-
-const open = jest.fn();
 
 describe('A ClassicModalButton component', () => {
     it('should open url when clicked', async () => {
+        const openMethod = jest.fn();
+
         mockUseClassicModal.mockImplementation(() => ({
             state: { status: Status.Idle },
-            open: open,
+            open: openMethod,
             reset: jest.fn()
         }));
 
@@ -30,7 +29,7 @@ describe('A ClassicModalButton component', () => {
         userEvent.click(button);
 
         await waitFor(() => {
-            expect(open).toHaveBeenCalledWith('url');
+            expect(openMethod).toHaveBeenCalledWith('url');
         });
     });
 });
