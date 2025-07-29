@@ -30,6 +30,7 @@ class PatientMorbidityReportFinder {
           [morbidity].[rpt_to_state_time]                 as [received_on],
           [morbidity].[activity_to_time]                  as [reported_on],
           [condition].condition_short_nm                  as [condition],
+          [processing_decision].code_short_desc_txt       as [processing_decision],
           [reporting_facility].display_nm                 as [reporting_facility],
           [ordering_provider_prefix].code_short_desc_txt  as [ordering_provider_prefix],
           [ordering_provider].[first_nm]                  as [ordering_provider_first_name],
@@ -90,6 +91,10 @@ class PatientMorbidityReportFinder {
           left join NBS_SRTE..Code_value_general [reporting_provider_prefix] with (nolock) on
                   [reporting_provider_prefix].[code_set_nm] = 'P_NM_PFX'
               and [reporting_provider_prefix].code = [reporting_provider].nm_prefix
+      
+          left join NBS_SRTE..Code_value_general [processing_decision] with (nolock) on
+                  [processing_decision].code_set_nm in ('NBS_NO_ACTION_RSN', 'STD_NBS_PROCESSING_DECISION_ALL')
+              and [processing_decision].code = [morbidity].processing_decision_cd
       
           order by
               [morbidity].[local_id] desc
