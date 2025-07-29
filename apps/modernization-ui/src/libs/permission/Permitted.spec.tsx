@@ -5,7 +5,7 @@ const mockPermissions: string[] = ['permitted', 'other-permitted'];
 const mockAllows = (p: string) => mockPermissions.includes(p);
 const mockAllowFn = jest.fn(mockAllows);
 
-jest.mock('./usePermissions', () => ({
+vi.mock('./usePermissions', () => ({
     usePermissions: () => ({ permissions: mockPermissions, allows: mockAllowFn })
 }));
 

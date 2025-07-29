@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { FormProvider, useForm } from 'react-hook-form';
 import { render, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -5,13 +6,13 @@ import { IdentificationCodedValues } from 'apps/patient/data/identification/useI
 import { BasicIdentificationEntry } from '../entry';
 import { BasicIdentificationFields } from './BasicIdentificationFields';
 
-const mockPatientIdentificationCodedValues: IdentificationCodedValues = {
+const mockIdentificationCodedValues: IdentificationCodedValues = {
     types: [{ name: 'Account number', value: 'AN' }],
     authorities: [{ name: 'Assigning auth', value: 'AA' }]
 };
 
-jest.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
-    useIdentificationCodedValues: () => mockPatientIdentificationCodedValues
+vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
+    useIdentificationCodedValues: () => mockIdentificationCodedValues
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
@@ -77,11 +78,11 @@ describe('BasicIdentificationFields', () => {
         const idValue = getByLabelText('ID value');
         await findByText('ID value');
 
-        act(() => {
-            userEvent.selectOptions(type, 'AN');
-            userEvent.tab();
-            userEvent.type(idValue, '1234');
-            userEvent.tab();
+        await act(async () => {
+            await userEvent.selectOptions(type, 'AN');
+            await userEvent.tab();
+            await userEvent.type(idValue, '1234');
+            await userEvent.tab();
         });
 
         await waitFor(() => {

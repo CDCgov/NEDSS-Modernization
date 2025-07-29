@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Message } from './Message';
 
 const messageTypes = ['information', 'success', 'warning', 'error'] as const;

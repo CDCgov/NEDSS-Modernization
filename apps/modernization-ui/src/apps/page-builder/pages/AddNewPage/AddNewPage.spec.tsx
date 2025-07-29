@@ -86,74 +86,74 @@ describe('Add New Page', () => {
     });
 
     //  The complexity of the AddNePage component makes testing it very difficult.  There are multiple modals being rendered that make API calls and the selection of the "Event Type" is not triggering changes.
-    xit('should display warning when non Investigation type is selected', async () => {
-        const { getByTestId, getByRole } = render(<Fixture />);
+    // xit('should display warning when non Investigation type is selected', async () => {
+    //     const { getByTestId, getByRole } = render(<Fixture />);
 
-        const select = getByRole('combobox', { name: 'Event type' });
-        const interview = getByRole('option', { name: 'Interview' });
+    //     const select = getByRole('combobox', { name: 'Event type' });
+    //     const interview = getByRole('option', { name: 'Interview' });
 
-        const user = userEvent.setup();
+    //     const user = userEvent.setup();
 
-        await user.selectOptions(select, interview);
+    //     await user.selectOptions(select, interview);
 
-        const warning = getByTestId('event-type-warning');
-        expect(warning).toBeInTheDocument();
-    });
+    //     const warning = getByTestId('event-type-warning');
+    //     expect(warning).toBeInTheDocument();
+    // });
 
-    xit('should redirect to classic on create page when non investigation is selected', async () => {
-        const savePage = jest.spyOn(PageControllerService, 'createPage');
-        savePage.mockImplementation(
-            (_) => Promise.resolve({} as PageCreateResponse) as CancelablePromise<PageCreateResponse>
-        );
+    // xit('should redirect to classic on create page when non investigation is selected', async () => {
+    //     const savePage = jest.spyOn(PageControllerService, 'createPage');
+    //     savePage.mockImplementation(
+    //         (_) => Promise.resolve({} as PageCreateResponse) as CancelablePromise<PageCreateResponse>
+    //     );
 
-        const { location } = window;
-        const setHrefSpy = jest.fn((href) => href);
-        const mockLocation = { ...location };
-        Object.defineProperty(mockLocation, 'href', {
-            set: setHrefSpy
-        });
+    //     const { location } = window;
+    //     const setHrefSpy = jest.fn((href) => href);
+    //     const mockLocation = { ...location };
+    //     Object.defineProperty(mockLocation, 'href', {
+    //         set: setHrefSpy
+    //     });
 
-        // @ts-expect-error : location is mocked to check that the href is changed
-        delete window.location;
-        // @ts-expect-error : location is mocked to check that the href is changed by the redirect
-        window.location = mockLocation;
+    //     // @ts-expect-error : location is mocked to check that the href is changed
+    //     delete window.location;
+    //     // @ts-expect-error : location is mocked to check that the href is changed by the redirect
+    //     window.location = mockLocation;
 
-        const { getByRole, getByText } = render(<Fixture />);
+    //     const { getByRole, getByText } = render(<Fixture />);
 
-        const select = getByRole('combobox', { name: 'Event type' });
+    //     const select = getByRole('combobox', { name: 'Event type' });
 
-        const user = userEvent.setup();
+    //     const user = userEvent.setup();
 
-        await user.selectOptions(select, 'IXS');
+    //     await user.selectOptions(select, 'IXS');
 
-        const submit = getByText('Create page');
+    //     const submit = getByText('Create page');
 
-        expect(submit).toBeEnabled();
+    //     expect(submit).toBeEnabled();
 
-        await user.click(submit);
+    //     await user.click(submit);
 
-        expect(setHrefSpy).toHaveBeenCalledWith('/nbs/page-builder/api/v1/pages/create');
-        expect(savePage).not.toBeCalled();
-    });
+    //     expect(setHrefSpy).toHaveBeenCalledWith('/nbs/page-builder/api/v1/pages/create');
+    //     expect(savePage).not.toBeCalled();
+    // });
 
-    xit('should display form when Investigation type is selected', async () => {
-        const { queryByText, getByText, getByRole } = render(<Fixture />);
+    // xit('should display form when Investigation type is selected', async () => {
+    //     const { queryByText, getByText, getByRole } = render(<Fixture />);
 
-        const select = getByRole('combobox', { name: 'Event type' });
-        const investigation = getByRole('option', { name: 'Investigation' });
+    //     const select = getByRole('combobox', { name: 'Event type' });
+    //     const investigation = getByRole('option', { name: 'Investigation' });
 
-        const user = userEvent.setup();
+    //     const user = userEvent.setup();
 
-        await user.selectOptions(select, investigation);
+    //     await user.selectOptions(select, investigation);
 
-        const warning = queryByText('event type is not supported');
-        expect(warning).not.toBeInTheDocument();
+    //     const warning = queryByText('event type is not supported');
+    //     expect(warning).not.toBeInTheDocument();
 
-        expect(getByText('Condition(s)')).toBeInTheDocument();
-        expect(getByText('Page name')).toBeInTheDocument();
-        expect(getByText('Template')).toBeInTheDocument();
-        expect(getByText('Reporting mechanism')).toBeInTheDocument();
-        expect(getByText('Page description')).toBeInTheDocument();
-        expect(getByText('Data mart name')).toBeInTheDocument();
-    });
+    //     expect(getByText('Condition(s)')).toBeInTheDocument();
+    //     expect(getByText('Page name')).toBeInTheDocument();
+    //     expect(getByText('Template')).toBeInTheDocument();
+    //     expect(getByText('Reporting mechanism')).toBeInTheDocument();
+    //     expect(getByText('Page description')).toBeInTheDocument();
+    //     expect(getByText('Data mart name')).toBeInTheDocument();
+    // });
 });

@@ -1,6 +1,6 @@
 import { act, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { DateRangeField } from './DateRangeField';
 
 describe('DateRangeField Component', () => {

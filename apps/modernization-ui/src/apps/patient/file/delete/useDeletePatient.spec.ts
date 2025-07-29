@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { useDeletePatient } from './useDeletePatient';
 import { PatientFileService } from 'generated';
 
-jest.mock('generated', () => ({
+vi.mock('generated', () => ({
     PatientFileService: {
         delete: jest.fn()
     }

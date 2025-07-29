@@ -9,7 +9,7 @@ const mockPhoneCodedValues = {
     uses: [{ name: 'Home', value: 'H' }]
 };
 
-jest.mock('./usePhoneCodedValues', () => ({
+vi.mock('./usePhoneCodedValues', () => ({
     usePhoneCodedValues: () => mockPhoneCodedValues
 }));
 
