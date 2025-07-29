@@ -1,19 +1,19 @@
-import { TableCard, TableCardProps } from 'design-system/card';
-import { Column } from 'design-system/table';
-import { ColumnPreference } from 'design-system/table/preferences';
-import { permissions, Permitted } from 'libs/permission';
+import { Suspense, useState } from 'react';
+import { Await } from 'react-router';
+import { internalizeDate, internalizeDateTime } from 'date';
 import { MemoizedSupplier } from 'libs/supplying';
+import { displayProvider } from 'libs/provider';
+import { LoadingOverlay } from 'libs/loading';
+import { permissions, Permitted } from 'libs/permission';
+import { ClassicModalButton } from 'libs/classic';
+import { Column } from 'design-system/table';
+import { TableCard, TableCardProps } from 'design-system/card';
+import { ColumnPreference } from 'design-system/table/preferences';
+import { MaybeLabeledValue } from 'design-system/value';
+import { Associations } from 'libs/events/investigations/associated';
+import { PatientFileVaccinations } from './vaccinations';
 
 import styles from './patient-file-vaccinations.module.scss';
-import { internalizeDate, internalizeDateTime } from 'date';
-import { MaybeLabeledValue } from 'design-system/value';
-import { displayProvider } from 'libs/provider';
-import { Associations } from 'libs/events/investigations/associated';
-import { LoadingOverlay } from 'libs/loading';
-import { Suspense } from 'react';
-import { Await } from 'react-router';
-import { PatientFileVaccinations } from '.';
-import { ClassicModalButton, ClassicModalLink, ClassicModalProvider } from 'classic';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'created-on', name: 'Date created' };
@@ -31,16 +31,21 @@ const columnPreferences: ColumnPreference[] = [
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
 ];
 
-const columns: Column<PatientFileVaccinations>[] = [
+const columns = (onClose: () => void): Column<PatientFileVaccinations>[] => [
     {
         ...EVENT_ID,
         className: styles['local-header'],
         sortable: true,
         value: (value) => value.local,
         render: (value) => (
-            <ClassicModalLink url={`/nbs/api/profile/${value.patient}/vaccination/${value.id}`}>
+            <ClassicModalButton
+                tertiary
+                sizing="small"
+                className={styles['event-id']}
+                url={`/nbs/api/profile/${value.patient}/vaccination/${value.id}`}
+                onClose={onClose}>
                 {value.local}
-            </ClassicModalLink>
+            </ClassicModalButton>
         )
     },
     {
@@ -65,8 +70,7 @@ const columns: Column<PatientFileVaccinations>[] = [
                     {displayProvider(value.provider)}
                 </MaybeLabeledValue>
             </>
-        ),
-        sortIconType: 'alpha'
+        )
     },
     {
         ...DATE_ADMINISTRATED,
@@ -79,8 +83,7 @@ const columns: Column<PatientFileVaccinations>[] = [
         ...VACCINE_ADMINISTRATED,
         sortable: true,
         value: (value) => value.administered,
-        render: (value) => <strong>{value.administered}</strong>,
-        sortIconType: 'alpha'
+        render: (value) => <strong>{value.administered}</strong>
     },
     {
         ...ASSOCIATED_WITH,
@@ -94,18 +97,19 @@ const columns: Column<PatientFileVaccinations>[] = [
 type InternalCardProps = {
     patient: number;
     data?: PatientFileVaccinations[];
+    onClose: () => void;
 } & Omit<
     TableCardProps<PatientFileVaccinations>,
     'columnPreferencesKey' | 'defaultColumnPreferences' | 'columns' | 'data' | 'title'
 >;
 
-const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCardProps) => {
+const InternalCard = ({ patient, sizing, data = [], onClose, ...remaining }: InternalCardProps) => {
     return (
         <TableCard
             title="Vaccinations"
             sizing={sizing}
             data={data}
-            columns={columns}
+            columns={columns(onClose)}
             columnPreferencesKey="patient.file.vaccinations.preferences"
             defaultColumnPreferences={columnPreferences}
             actions={
@@ -115,7 +119,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                         icon="add_circle"
                         secondary
                         sizing={sizing}
-                        onClose={() => location.reload()}>
+                        onClose={onClose}>
                         Add vaccination
                     </ClassicModalButton>
                 </Permitted>
@@ -127,20 +131,28 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
 
 type PatientFileVaccinationsCardProps = {
     provider: MemoizedSupplier<Promise<PatientFileVaccinations[]>>;
-} & Omit<InternalCardProps, 'data'>;
+} & Omit<InternalCardProps, 'data' | 'onClose'>;
 
 const PatientFileVaccinationsCard = ({ provider, ...remaining }: PatientFileVaccinationsCardProps) => {
+    const [key, setKey] = useState<number>(0);
+
+    const handleClose = () => {
+        provider.reset();
+        setKey((current) => current + 1);
+    };
+
     return (
-        <ClassicModalProvider>
-            <Suspense
-                fallback={
-                    <LoadingOverlay>
-                        <InternalCard {...remaining} />
-                    </LoadingOverlay>
-                }>
-                <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
-            </Suspense>
-        </ClassicModalProvider>
+        <Suspense
+            key={key}
+            fallback={
+                <LoadingOverlay>
+                    <InternalCard {...remaining} onClose={handleClose} />
+                </LoadingOverlay>
+            }>
+            <Await resolve={provider.get()}>
+                {(data) => <InternalCard data={data} onClose={handleClose} {...remaining} />}
+            </Await>
+        </Suspense>
     );
 };
 
