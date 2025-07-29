@@ -4,15 +4,16 @@ import { LoadingOverlay } from 'libs/loading';
 import { MemoizedSupplier } from 'libs/supplying';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
+import { Shown } from 'conditional-render';
+import { permissions, Permitted } from 'libs/permission';
 import { TableCard, TableCardProps } from 'design-system/card';
-import { PatientFileMorbidityReport } from './morbidity-report';
 import { internalizeDateTime } from 'date';
 import { displayProvider } from 'libs/provider';
-import { MaybeLabeledValue } from 'design-system/value';
-import { Associations } from 'libs/events/investigations/associated';
-import { ResultedTests } from 'libs/events/tests';
-import { permissions, Permitted } from 'libs/permission';
 import { LinkButton } from 'design-system/button';
+import { MaybeLabeledValue } from 'design-system/value';
+import { PatientFileMorbidityReport } from './morbidity-report';
+import { ResultedTests } from 'libs/events/tests';
+import { Associations } from 'libs/events/investigations/associated';
 import { TreatmentList } from 'libs/events/reports/morbidity';
 
 import styles from './morbidity-reports.module.scss';
@@ -45,7 +46,15 @@ const columns: Column<PatientFileMorbidityReport>[] = [
         className: styles['local-header'],
         sortable: true,
         value: (value) => value.local,
-        render: (value) => <a href={`/nbs/api/profile/${value.patient}/report/morbidity/${value.id}`}>{value.local}</a>
+        render: (value) => (
+            <>
+                <a href={`/nbs/api/profile/${value.patient}/report/morbidity/${value.id}`}>{value.local}</a>
+                <Shown when={Boolean(value.processingDecision)}>
+                    <br />
+                    {value.processingDecision}
+                </Shown>
+            </>
+        )
     },
     {
         ...DATE_RECEIVED,

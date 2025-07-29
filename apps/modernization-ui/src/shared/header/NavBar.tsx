@@ -91,9 +91,9 @@ export const NavBar = () => {
                                             <span> | </span>
                                         </td>
                                         <td className={styles.navLink}>
-                                            <button onClick={logout} tabIndex={0} className={styles.logoutButton}>
+                                            <a href="/nbs/logout" onClick={logout}>
                                                 Logout
-                                            </button>
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>

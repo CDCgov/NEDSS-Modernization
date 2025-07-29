@@ -21,14 +21,15 @@ class PatientMorbidityReportRowMapper implements RowMapper<PatientMorbidityRepor
       int receivedOn,
       int reportedOn,
       int condition,
+      int processingDecision,
       int reportingFacility,
       DisplayableSimpleNameRowMapper.Columns orderingProvider,
       DisplayableSimpleNameRowMapper.Columns reportingProvider
   ) {
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7, 8, 9,
-          new DisplayableSimpleNameRowMapper.Columns(10, 11, 12),
-          new DisplayableSimpleNameRowMapper.Columns(13, 14, 15)
+      this(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+          new DisplayableSimpleNameRowMapper.Columns(11, 12, 13),
+          new DisplayableSimpleNameRowMapper.Columns(14, 15, 16)
       );
     }
   }
@@ -58,6 +59,7 @@ class PatientMorbidityReportRowMapper implements RowMapper<PatientMorbidityRepor
     LocalDateTime receivedOn = resultSet.getObject(this.columns.receivedOn(), LocalDateTime.class);
     LocalDate reportedOn = LocalDateColumnMapper.map(resultSet, this.columns.reportedOn());
     String condition = resultSet.getString(this.columns.condition());
+    String processingDecision = resultSet.getString(this.columns.processingDecision());
 
     String reportingFacility = resultSet.getString(this.columns.reportingFacility());
     DisplayableSimpleName orderingProvider = this.orderingProviderMapper.mapRow(resultSet, rowNum);
@@ -72,6 +74,7 @@ class PatientMorbidityReportRowMapper implements RowMapper<PatientMorbidityRepor
         receivedOn,
         reportedOn,
         condition,
+        processingDecision,
         reportingFacility,
         orderingProvider,
         reportingProvider,

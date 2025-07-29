@@ -29,7 +29,7 @@ class PatientSexBirthDemographicFinder {
           --
           [patient].curr_sex_cd                   as [current_gender_value],
           [current_gender].[code_short_desc_txt]  as [current_gender_name],
-          [patient].[sex_unk_reason_cd]           as [unknown_reason_value],
+          [unknown_reason].[code]                 as [unknown_reason_value],
           [unknown_reason].code_short_desc_txt    as [unknown_reason_name],
           [patient].[preferred_gender_cd]         as [transgender_value],
           [transgender].[code_short_desc_txt]     as [transgender_name],
@@ -70,6 +70,7 @@ class PatientSexBirthDemographicFinder {
           left join NBS_SRTE..Code_value_general [unknown_reason] with (nolock) on
                   [unknown_reason].code_set_nm = 'SEX_UNK_REASON'
               and [unknown_reason].[code] = [patient].[sex_unk_reason_cd]
+              and [current_gender].code = 'U'
       
           left join NBS_SRTE..Code_value_general [transgender] with (nolock) on
                   [transgender].[code_set_nm] = 'NBS_STD_GENDER_PARPT'

@@ -8,5 +8,4 @@ module.exports.findLabReportsByFilter = fs.readFileSync(path.join(__dirname, 'fi
 module.exports.findContactsNamedByPatient = fs.readFileSync(path.join(__dirname, 'findContactsNamedByPatient.gql'), 'utf8');
 module.exports.findPatientNamedByContact = fs.readFileSync(path.join(__dirname, 'findPatientNamedByContact.gql'), 'utf8');
 module.exports.findDocumentsForPatient = fs.readFileSync(path.join(__dirname, 'findDocumentsForPatient.gql'), 'utf8');
-module.exports.findTreatmentsForPatient = fs.readFileSync(path.join(__dirname, 'findTreatmentsForPatient.gql'), 'utf8');
 module.exports.findAllProgramAreas = fs.readFileSync(path.join(__dirname, 'findAllProgramAreas.gql'), 'utf8');

@@ -79,7 +79,7 @@ class PatientLabReportsFinder {
               [reporting_facility].organization_uid = [reporting_facility_participation].[subject_entity_uid]
       
           left join NBS_SRTE..Code_value_general [processing_decision] with (nolock) on
-                [processing_decision].[code_set_nm] = 'STD_UNKCOND_PROC_DECISION'
+                [processing_decision].code_set_nm in ('NBS_NO_ACTION_RSN', 'STD_NBS_PROCESSING_DECISION_ALL')
             and [processing_decision].code = [lab].processing_decision_cd
       
           left join Participation [ordering_facility_participation] with (nolock) on

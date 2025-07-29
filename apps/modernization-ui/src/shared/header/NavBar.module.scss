@@ -15,22 +15,6 @@ $bumper: 0.375rem;
     --nav-bar-height: calc(#{$height} + #{$bumper});
 }
 
-@mixin nav-link {
-    color: $classic-navigation-color;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 10pt;
-    font-family: Arial, sans-serif;
-    padding: 0.15em;
-    cursor: pointer;
-
-    &:focus {
-        background-color: $classic-active-navigation-item-background;
-        color: $classic-active-navigation-item-color;
-        outline: none;
-    }
-}
-
 .bottom {
     display: flex;
     justify-content: space-between;
@@ -106,7 +90,18 @@ $bumper: 0.375rem;
             text-align: center;
             padding: 3px;
             &.navLink a {
-                @include nav-link;
+                color: $classic-navigation-color;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 10pt;
+                font-family: Arial, sans-serif;
+                padding: 0.15em;
+                cursor: pointer;
+                &:focus {
+                    background-color: $classic-active-navigation-item-background;
+                    color: $classic-active-navigation-item-color;
+                    outline: none;
+                }
             }
             a {
                 color: $classic-navigation-color;
@@ -120,16 +115,6 @@ $bumper: 0.375rem;
                 &:focus {
                     outline: none;
                     background-color: $classic-navigation-background;
-                }
-            }
-
-            &.navLink .logoutButton {
-                @include nav-link;
-                background: transparent;
-                border: none;
-
-                &:hover {
-                    text-decoration: underline;
                 }
             }
         }
