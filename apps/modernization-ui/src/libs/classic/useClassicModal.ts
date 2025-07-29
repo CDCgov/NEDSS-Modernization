@@ -66,7 +66,7 @@ const useClassicModal = (): ClassicModal => {
             );
         }
 
-        const modal = window.open(location, 'classic', features);
+        const modal = window.open(location, form.id, features);
         if (modal) {
             dispatch({ type: 'opened' });
         }

@@ -1,4 +1,5 @@
 import { useComponentSizing } from 'design-system/sizing';
+import { ClassicModalProvider } from 'libs/classic';
 import { usePatientFileData } from '../usePatientFileData';
 import { PatientFileInvestigationsCard } from './investigations';
 import { PatientFileLaboratoryReportsCard } from './reports/laboratory';
@@ -11,7 +12,7 @@ const PatientFileEvents = () => {
     const sizing = useComponentSizing();
 
     return (
-        <>
+        <ClassicModalProvider>
             <PatientFileInvestigationsCard
                 id="investigations"
                 patient={id}
@@ -37,7 +38,7 @@ const PatientFileEvents = () => {
                 sizing={sizing}
             />
             <PatientFileTreatmentsCard id="treatments" provider={events.get().reports.treatment} sizing={sizing} />
-        </>
+        </ClassicModalProvider>
     );
 };
 
