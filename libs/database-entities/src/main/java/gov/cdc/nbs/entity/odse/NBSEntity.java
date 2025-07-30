@@ -251,17 +251,6 @@ public class NBSEntity {
     return participation instanceof TeleEntityLocatorParticipation && !Objects.equals(participation.cd, "NET");
   }
 
-  public List<TeleEntityLocatorParticipation> emailAddress() {
-    return this.ensureLocators().stream()
-        .filter(this::isEmailAddress)
-        .map(TeleEntityLocatorParticipation.class::cast)
-        .toList();
-  }
-
-  private boolean isEmailAddress(final EntityLocatorParticipation participation) {
-    return Objects.equals(participation.cd, "NET");
-  }
-
   public EntityLocatorParticipation add(
       final PatientCommand.AddPhone phone,
       final PhoneIdentifierGenerator generator

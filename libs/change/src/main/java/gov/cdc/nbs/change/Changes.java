@@ -2,7 +2,7 @@ package gov.cdc.nbs.change;
 
 import java.util.Collection;
 import java.util.Objects;
-import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -12,8 +12,8 @@ public final class Changes<L, R> {
     return !Objects.equals(x, y);
   }
 
-  private static <L, R> Predicate<Match<L, R>> changed(final BiFunction<L, R, Boolean> hasChange) {
-    return match -> (match instanceof Match.Both<L, R> both) ? both.withBoth(hasChange) : false;
+  private static <L, R> Predicate<Match<L, R>> changed(final BiPredicate<L, R> hasChange) {
+    return match -> match instanceof Match.Both<L, R>(L left, R right) && hasChange.test(left, right);
   }
 
   private final Collection<Match<L, R>> matches;
@@ -33,7 +33,7 @@ public final class Changes<L, R> {
     return altered(Changes::notEqual);
   }
 
-  public Stream<Match.Both<L, R>> altered(final BiFunction<L, R, Boolean> hasChange) {
+  public Stream<Match.Both<L, R>> altered(final BiPredicate<L, R> hasChange) {
     return this.matches
         .stream()
         .filter(changed(hasChange))

@@ -71,8 +71,18 @@ public class PatientEditSteps {
     this.activePatient = activePatient;
   }
 
-  @When("I edit a patient with entered demographics")
+  @When("I edit the patient with entered demographics")
   public void edit() {
+
+    this.activePatient.maybeActive().ifPresent(patient -> edit(patient.id()));
+  }
+
+  @When("I edit an unknown patient with entered demographics")
+  public void editUnknown() {
+    edit(Long.MAX_VALUE);
+  }
+
+  private void edit(final long patient) {
     this.activeAdministrative.maybeActive()
         .ifPresent(administrative -> this.activeEntry.active(current -> current.withAdministrative(administrative)));
 
@@ -107,9 +117,8 @@ public class PatientEditSteps {
     this.activeGeneralInformation.maybeActive()
         .ifPresent(demographic -> this.activeEntry.active(current -> current.withGeneralInformation(demographic)));
 
-    this.activePatient.maybeActive()
-        .flatMap(patient -> this.activeEntry.maybeActive()
-            .map(changes -> this.requester.edit(patient.id(), changes)))
+    this.activeEntry.maybeActive().map(changes -> this.requester.edit(patient, changes))
         .ifPresent(this.response::active);
   }
+
 }

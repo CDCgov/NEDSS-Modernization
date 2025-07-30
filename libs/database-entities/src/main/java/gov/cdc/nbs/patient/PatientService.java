@@ -5,9 +5,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 @Component
 public class PatientService {
@@ -52,21 +50,4 @@ public class PatientService {
     }
   }
 
-  @Transactional
-  public <M> Optional<M> with(final long identifier, final Function<Person, M> fn) {
-    Person patient = this.entityManager.find(Person.class, identifier);
-    return patient != null
-        ? with(patient, fn)
-        : Optional.empty();
-  }
-
-  private <M> Optional<M> with(final Person patient, final Function<Person, M> fn) {
-    long before = patient.signature();
-
-    M mapped = fn.apply(patient);
-
-    maybeRecordHistory(before, patient);
-
-    return Optional.ofNullable(mapped);
-  }
 }

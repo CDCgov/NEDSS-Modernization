@@ -11,7 +11,7 @@ Feature: Editing of Patient ethnicity demographics
     Given the patient has the Hispanic or Latino ethnicity as of 05/11/2023
     And I am entering the ethnicity as of date 05/29/2023
     And I enter the ethnicity ethnic group Not Hispanic or Latino
-    When I edit a patient with entered demographics
+    When I edit the patient with entered demographics
     And I view the patient's ethnicity demographics
     Then the patient file ethnicity demographics are as of 05/29/2023
     And the patient file ethnicity demographics has the ethnicity Not Hispanic or Latino
@@ -23,7 +23,7 @@ Feature: Editing of Patient ethnicity demographics
     And I am entering the ethnicity as of date 05/29/2023
     And I enter the ethnicity ethnic group Unknown
     And I enter the ethnicity unknown reason Refused to answer
-    When I edit a patient with entered demographics
+    When I edit the patient with entered demographics
     And I view the patient's ethnicity demographics
     And the patient file ethnicity demographics are as of 05/29/2023
     And the patient file ethnicity demographics is unknown with the reason being Refused to answer
@@ -35,7 +35,7 @@ Feature: Editing of Patient ethnicity demographics
     And I enter the ethnicity ethnic group Hispanic or Latino
     And I enter the ethnicity detailed Spaniard
     And I enter the ethnicity detailed Cuban
-    When I edit a patient with entered demographics
+    When I edit the patient with entered demographics
     And I view the patient's ethnicity demographics
     Then the patient file ethnicity demographics are as of 05/11/2023
     And the patient file ethnicity demographics has the ethnicity Hispanic or Latino
@@ -50,7 +50,7 @@ Feature: Editing of Patient ethnicity demographics
     And I am entering the ethnicity as of date 08/17/2024
     And I enter the ethnicity ethnic group Hispanic or Latino
     And I enter the ethnicity detailed Cuban
-    When I edit a patient with entered demographics
+    When I edit the patient with entered demographics
     And I view the patient's ethnicity demographics
     Then the patient file ethnicity demographics are as of 08/17/2024
     And the patient file ethnicity demographics has the ethnicity Hispanic or Latino

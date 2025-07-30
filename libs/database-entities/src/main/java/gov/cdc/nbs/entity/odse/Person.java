@@ -307,9 +307,6 @@ public class Person {
     return this.nbsEntity.phoneNumbers();
   }
 
-  public List<TeleEntityLocatorParticipation> emailAddresses() {
-    return this.nbsEntity.emailAddress();
-  }
 
   public List<EntityId> identifications() {
     return this.nbsEntity.identifications();

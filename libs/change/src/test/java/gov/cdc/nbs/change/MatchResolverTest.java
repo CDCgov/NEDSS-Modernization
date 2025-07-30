@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DefaultMatchResolverTest {
+class MatchResolverTest {
 
   @Test
   void should_return_only_right_matches_when_left_is_empty() {
@@ -21,7 +21,7 @@ class DefaultMatchResolverTest {
     List<String> incoming = List.of("one", "two", "three", "four", "five", "six", "seven");
 
     //  execute
-    DefaultMatchResolver<String, String, String> resolver = new DefaultMatchResolver<>(Function.identity(), Function.identity());
+    MatchResolver<String, String, String> resolver = new MatchResolver<>(Function.identity(), Function.identity());
 
     Stream<Match<String, String>> actual = resolver.resolve(original, incoming);
 
@@ -46,7 +46,7 @@ class DefaultMatchResolverTest {
     List<String> incoming = List.of();
 
     //  execute
-    DefaultMatchResolver<String, String, String> resolver = new DefaultMatchResolver<>(Function.identity(), Function.identity());
+    MatchResolver<String, String, String> resolver = new MatchResolver<>(Function.identity(), Function.identity());
 
     Stream<Match<String, String>> actual = resolver.resolve(original, incoming);
 
@@ -71,7 +71,7 @@ class DefaultMatchResolverTest {
     List<String> incoming = List.of("two", "four", "six");
 
     //  execute
-    DefaultMatchResolver<String, String, String> resolver = new DefaultMatchResolver<>(Function.identity(), Function.identity());
+    MatchResolver<String, String, String> resolver = new MatchResolver<>(Function.identity(), Function.identity());
 
     Stream<Match<String, String>> actual = resolver.resolve(original, incoming);
 
@@ -96,7 +96,7 @@ class DefaultMatchResolverTest {
     List<String> incoming = List.of("one", "three", "five", "seven");
 
     //  execute
-    DefaultMatchResolver<String, String, String> resolver = new DefaultMatchResolver<>(Function.identity(), Function.identity());
+    MatchResolver<String, String, String> resolver = new MatchResolver<>(Function.identity(), Function.identity());
 
     Stream<Match<String, String>> actual = resolver.resolve(original, incoming);
 
@@ -121,7 +121,7 @@ class DefaultMatchResolverTest {
     List<String> incoming = List.of("one", "two", "three", "four", "five", "six", "seven");
 
     //  execute
-    DefaultMatchResolver<String, String, String> resolver = new DefaultMatchResolver<>(Function.identity(), Function.identity());
+    MatchResolver<String, String, String> resolver = new MatchResolver<>(Function.identity(), Function.identity());
 
     Stream<Match<String, String>> actual = resolver.resolve(original, incoming);
 
@@ -146,7 +146,7 @@ class DefaultMatchResolverTest {
     List<String> incoming = List.of("one", "two", "three", "four", "five", "six", "seven");
 
     //  execute
-    DefaultMatchResolver<String, String, String> resolver = new DefaultMatchResolver<>(Function.identity(), Function.identity());
+    MatchResolver<String, String, String> resolver = new MatchResolver<>(Function.identity(), Function.identity());
 
     Stream<Match<String, String>> actual = resolver.resolve(original, incoming);
 
@@ -171,7 +171,7 @@ class DefaultMatchResolverTest {
     List<String> incoming = List.of("one", "two", "three", "four", "five", "six", "seven");
 
     //  execute
-    DefaultMatchResolver<String, String, String> resolver = new DefaultMatchResolver<>(Function.identity(), Function.identity());
+    MatchResolver<String, String, String> resolver = new MatchResolver<>(Function.identity(), Function.identity());
 
     Stream<Match<String, String>> actual = resolver.resolve(original, incoming);
 

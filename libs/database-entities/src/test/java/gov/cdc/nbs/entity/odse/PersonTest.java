@@ -1468,7 +1468,7 @@ class PersonTest {
             LocalDate.of(1949, 10, 15),
             Gender.U.value(),
             Indicator.NO.getId(),
-            17,
+            null,
             null,
             null,
             null,
@@ -1485,11 +1485,47 @@ class PersonTest {
             .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf)
             .returns(LocalDateTime.parse("1949-10-15T00:00:00"), PatientSexBirth::birthday)
             .returns(Gender.U, PatientSexBirth::birthGender)
+        )
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
+  }
+
+  @Test
+  void should_update_patient_with_multiple_birth() {
+    Person patient = new Person(1049L, "local-id-value");
+
+    AddressIdentifierGenerator generator = () -> 1157L;
+
+    patient.update(
+        new PatientCommand.UpdateBirth(
+            1049L,
+            LocalDate.parse("2023-06-01"),
+            LocalDate.of(1949, 10, 15),
+            Gender.U.value(),
+            Indicator.YES.getId(),
+            17,
+            null,
+            null,
+            null,
+            null,
+            131L,
+            LocalDateTime.parse("2019-03-03T10:15:30")
+        ),
+        generator
+    );
+
+    assertThat(patient)
+        .satisfies(updated -> assertThat(updated)
+            .extracting(Person::sexBirth)
+            .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf)
+            .returns(LocalDateTime.parse("1949-10-15T00:00:00"), PatientSexBirth::birthday)
+            .returns(Indicator.YES.getId(), PatientSexBirth::multipleBirth)
             .returns((short) 17, PatientSexBirth::birthOrder)
         )
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
   }
+
 
   @Test
   void should_update_patient_birth_with_location() {

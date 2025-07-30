@@ -17,7 +17,7 @@ Feature: Editing of Patient General Information
     And I enter the general information education level of Professional Degree
     And I enter the general information primary language of Polish
     And I enter the general information that the patient does not speak english
-    When I edit a patient with entered demographics
+    When I edit the patient with entered demographics
     Then I view the patient's general information demographics
     And the patient file general information is as of 05/29/2023
     And the patient file general information includes the marital status Unmarried
@@ -33,7 +33,7 @@ Feature: Editing of Patient General Information
   Scenario: I can edit a patient with general information demographics that include a State HIV case when I have access to HIV fields
     Given I can "HIVQuestions" any "Global"
     And I enter the general information state HIV case of "case-number"
-    When I edit a patient with entered demographics
+    When I edit the patient with entered demographics
     And I view the patient's general information demographics
     Then the patient file general information includes a state HIV case of "case-number"
     And the patient history contains the previous version
@@ -41,14 +41,14 @@ Feature: Editing of Patient General Information
   Scenario: I can edit a patient with general information demographics that does not include a blank State HIV case
     Given I can "HIVQuestions" any "Global"
     And I enter the general information state HIV case of ""
-    When I edit a patient with entered demographics
+    When I edit the patient with entered demographics
     And I view the patient's general information demographics
     Then the patient file general information does not include a state HIV case
     And the patient history contains the previous version
 
   Scenario: I can edit a patient's general information but it will not include the state HIV case a patient may be associated with without having access to HIV Fields
     Given I enter the general information state HIV case of "case-number"
-    When I edit a patient with entered demographics
+    When I edit the patient with entered demographics
     And I can "HIVQuestions" any "Global"
     Then I view the patient's general information demographics
     And the patient file general information does not include a state HIV case

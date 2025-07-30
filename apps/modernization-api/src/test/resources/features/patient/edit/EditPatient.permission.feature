@@ -6,5 +6,5 @@ Feature: Editing of Patient demographics permission
     And I have a patient
 
   Scenario: I can not edit a patient without edit patient permissions
-    When I edit a patient with entered demographics
+    When I edit the patient with entered demographics
     Then I am not allowed due to insufficient permissions

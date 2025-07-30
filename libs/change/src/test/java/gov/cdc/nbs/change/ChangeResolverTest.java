@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -164,7 +164,7 @@ class ChangeResolverTest {
         ChangeResolver.<Tuple<Integer, String>, Integer>ofSameType(Tuple::x)
             .resolve(original, incoming);
 
-    BiFunction<Tuple<Integer, String>, Tuple<Integer, String>, Boolean> condition =
+    BiPredicate<Tuple<Integer, String>, Tuple<Integer, String>> condition =
         (left, right) -> !Objects.equals(right.y(), left.y());
 
     Stream<Match.Both<Tuple<Integer, String>, Tuple<Integer, String>>> actual = changes.altered(condition);
@@ -175,17 +175,17 @@ class ChangeResolverTest {
 
     assertThat(actual)
         .satisfiesExactlyInAnyOrder(
-            actual_match -> assertAll(
-                () -> assertThat(actual_match.left().x()).isEqualTo(2),
-                () -> assertThat(actual_match.left().y()).isEqualTo("two"),
-                () -> assertThat(actual_match.right().x()).isEqualTo(2),
-                () -> assertThat(actual_match.right().y()).isEqualTo("too")
+            match -> assertAll(
+                () -> assertThat(match.left().x()).isEqualTo(2),
+                () -> assertThat(match.left().y()).isEqualTo("two"),
+                () -> assertThat(match.right().x()).isEqualTo(2),
+                () -> assertThat(match.right().y()).isEqualTo("too")
             ),
-            actual_match -> assertAll(
-                () -> assertThat(actual_match.left().x()).isEqualTo(4),
-                () -> assertThat(actual_match.left().y()).isEqualTo("four"),
-                () -> assertThat(actual_match.right().x()).isEqualTo(4),
-                () -> assertThat(actual_match.right().y()).isEqualTo("for")
+            match -> assertAll(
+                () -> assertThat(match.left().x()).isEqualTo(4),
+                () -> assertThat(match.left().y()).isEqualTo("four"),
+                () -> assertThat(match.right().x()).isEqualTo(4),
+                () -> assertThat(match.right().y()).isEqualTo("for")
             )
         );
 
@@ -206,7 +206,7 @@ class ChangeResolverTest {
         ChangeResolver.<Tuple<Integer, Integer>, Tuple<Integer, String>, Integer>ofDifferingTypes(Tuple::x, Tuple::x)
             .resolve(original, incoming);
 
-    BiFunction<Tuple<Integer, Integer>, Tuple<Integer, String>, Boolean> condition =
+    BiPredicate<Tuple<Integer, Integer>, Tuple<Integer, String>> condition =
         (left, right) -> !Objects.equals(right.y(), String.valueOf(left.y()));
 
     Stream<Match.Both<Tuple<Integer, Integer>, Tuple<Integer, String>>> actual = changes.altered(condition);
@@ -217,17 +217,17 @@ class ChangeResolverTest {
 
     assertThat(actual)
         .satisfiesExactlyInAnyOrder(
-            actual_match -> assertAll(
-                () -> assertThat(actual_match.left().x()).isEqualTo(2),
-                () -> assertThat(actual_match.left().y()).isEqualTo(2),
-                () -> assertThat(actual_match.right().x()).isEqualTo(2),
-                () -> assertThat(actual_match.right().y()).isEqualTo("two")
+            match -> assertAll(
+                () -> assertThat(match.left().x()).isEqualTo(2),
+                () -> assertThat(match.left().y()).isEqualTo(2),
+                () -> assertThat(match.right().x()).isEqualTo(2),
+                () -> assertThat(match.right().y()).isEqualTo("two")
             ),
-            actual_match -> assertAll(
-                () -> assertThat(actual_match.left().x()).isEqualTo(4),
-                () -> assertThat(actual_match.left().y()).isEqualTo(4),
-                () -> assertThat(actual_match.right().x()).isEqualTo(4),
-                () -> assertThat(actual_match.right().y()).isEqualTo("four")
+            match -> assertAll(
+                () -> assertThat(match.left().x()).isEqualTo(4),
+                () -> assertThat(match.left().y()).isEqualTo(4),
+                () -> assertThat(match.right().x()).isEqualTo(4),
+                () -> assertThat(match.right().y()).isEqualTo("four")
             )
         );
   }

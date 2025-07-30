@@ -15,7 +15,7 @@ Feature: Editing of Patient mortality demographics
     And I enter the mortality country United States
     And I enter the mortality county Westchester County
     And I enter the mortality state New York
-    When I edit a patient with entered demographics
+    When I edit the patient with entered demographics
     And I view the patient's mortality demographics
     Then the patient file mortality demographics are as of 06/29/2023
     And the patient file mortality demographics has the patient deceased on 05/29/2023
@@ -34,7 +34,7 @@ Feature: Editing of Patient mortality demographics
     And the patient died in the country of United States
     And I am entering the mortality as of date 07/14/2013
     And I enter the mortality deceased option as No
-    When I edit a patient with entered demographics
+    When I edit the patient with entered demographics
     And I view the patient's mortality demographics
     Then the patient file mortality demographics are as of 07/14/2013
     And the patient file mortality demographics shows that the patient is not deceased

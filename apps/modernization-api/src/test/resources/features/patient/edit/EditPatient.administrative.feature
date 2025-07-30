@@ -10,7 +10,7 @@ Feature: Editing of Patient administrative information
     Scenario: I can edit a patient with administrative demographics information
       Given I enter the patient administrative as of date 05/29/2023
       And I enter the administrative comment "testing extended patient data"
-      When I edit a patient with entered demographics
+      When I edit the patient with entered demographics
       And I view the patient's Administrative information
       Then the patient file administrative information has the as of date 05/29/2023
       And the patient file administrative information has the comment "testing extended patient data"
