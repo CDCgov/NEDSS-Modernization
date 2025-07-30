@@ -50,11 +50,21 @@ public class Available<V> {
 
   public V one() {
     return maybeOne()
-        .orElseThrow(() -> new IllegalStateException("there are none available"));
+        .orElseThrow(() -> new NoSuchElementException("there are none available"));
   }
 
   public Stream<V> all() {
     return this.items.stream();
+  }
+
+  public Optional<V> maybePrevious() {
+    return (this.items.size() > 1)
+        ? Optional.ofNullable(this.items.get(this.items.size() - 2))
+        : Optional.empty();
+  }
+
+  public V previous() {
+    return maybePrevious().orElseThrow(() -> new NoSuchElementException("there is no previous available"));
   }
 
   public Stream<Indexed<V>> indexed() {

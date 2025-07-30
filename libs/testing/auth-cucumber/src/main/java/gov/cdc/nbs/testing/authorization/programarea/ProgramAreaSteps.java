@@ -21,7 +21,7 @@ public class ProgramAreaSteps {
     this.mother.create(name);
   }
 
-  @ParameterType(name = "programArea", value = "\"?([\\w ]*)\"?")
+  @ParameterType(name = "programArea", value = "\"?([\\w\\d- ]*)\"?")
   public ProgramAreaIdentifier programArea(final String value) {
     return resolver.resolve(value).orElse(null);
   }
