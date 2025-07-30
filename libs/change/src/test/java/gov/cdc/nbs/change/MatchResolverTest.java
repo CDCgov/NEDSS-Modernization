@@ -27,13 +27,13 @@ class MatchResolverTest {
 
     //  verify
     assertThat(actual).satisfiesExactlyInAnyOrder(
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("one")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("two")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("three")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("four")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("five")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("six")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("seven"))
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("one")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("two")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("three")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("four")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("five")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("six")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("seven"))
     );
 
   }
@@ -52,13 +52,13 @@ class MatchResolverTest {
 
     //  verify
     assertThat(actual).satisfiesExactlyInAnyOrder(
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("one")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("two")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("three")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("four")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("five")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("six")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("seven"))
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("one")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("two")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("three")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("four")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("five")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("six")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("seven"))
     );
 
   }
@@ -77,13 +77,13 @@ class MatchResolverTest {
 
     //  verify
     assertThat(actual).satisfiesExactlyInAnyOrder(
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("one")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("two")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("three")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("four")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("five")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("six")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("seven"))
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("one")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("two")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("three")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("four")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("five")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("six")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("seven"))
     );
 
   }
@@ -102,13 +102,13 @@ class MatchResolverTest {
 
     //  verify
     assertThat(actual).satisfiesExactlyInAnyOrder(
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("one", "one")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("two")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("three", "three")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("four")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("five", "five")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyLeft<>("six")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("seven", "seven"))
+        match -> assertThat(match).isEqualTo(new Both<>("one", "one")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("two")),
+        match -> assertThat(match).isEqualTo(new Both<>("three", "three")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("four")),
+        match -> assertThat(match).isEqualTo(new Both<>("five", "five")),
+        match -> assertThat(match).isEqualTo(new OnlyLeft<>("six")),
+        match -> assertThat(match).isEqualTo(new Both<>("seven", "seven"))
     );
 
   }
@@ -127,13 +127,13 @@ class MatchResolverTest {
 
     //  verify
     assertThat(actual).satisfiesExactlyInAnyOrder(
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("one", "one")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("two")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("three", "three")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("four")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("five", "five")),
-        actual_match -> assertThat(actual_match).isEqualTo(new OnlyRight<>("six")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("seven", "seven"))
+        match -> assertThat(match).isEqualTo(new Both<>("one", "one")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("two")),
+        match -> assertThat(match).isEqualTo(new Both<>("three", "three")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("four")),
+        match -> assertThat(match).isEqualTo(new Both<>("five", "five")),
+        match -> assertThat(match).isEqualTo(new OnlyRight<>("six")),
+        match -> assertThat(match).isEqualTo(new Both<>("seven", "seven"))
     );
 
   }
@@ -152,13 +152,13 @@ class MatchResolverTest {
 
     //  verify
     assertThat(actual).satisfiesExactlyInAnyOrder(
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("one", "one")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("two", "two")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("three", "three")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("four", "four")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("five", "five")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("six", "six")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("seven", "seven"))
+        match -> assertThat(match).isEqualTo(new Both<>("one", "one")),
+        match -> assertThat(match).isEqualTo(new Both<>("two", "two")),
+        match -> assertThat(match).isEqualTo(new Both<>("three", "three")),
+        match -> assertThat(match).isEqualTo(new Both<>("four", "four")),
+        match -> assertThat(match).isEqualTo(new Both<>("five", "five")),
+        match -> assertThat(match).isEqualTo(new Both<>("six", "six")),
+        match -> assertThat(match).isEqualTo(new Both<>("seven", "seven"))
     );
 
   }
@@ -177,13 +177,13 @@ class MatchResolverTest {
 
     //  verify
     assertThat(actual).satisfiesExactlyInAnyOrder(
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("one", "one")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("two", "two")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("three", "three")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("four", "four")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("five", "five")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("six", "six")),
-        actual_match -> assertThat(actual_match).isEqualTo(new Both<>("seven", "seven"))
+        match -> assertThat(match).isEqualTo(new Both<>("one", "one")),
+        match -> assertThat(match).isEqualTo(new Both<>("two", "two")),
+        match -> assertThat(match).isEqualTo(new Both<>("three", "three")),
+        match -> assertThat(match).isEqualTo(new Both<>("four", "four")),
+        match -> assertThat(match).isEqualTo(new Both<>("five", "five")),
+        match -> assertThat(match).isEqualTo(new Both<>("six", "six")),
+        match -> assertThat(match).isEqualTo(new Both<>("seven", "seven"))
     );
 
   }

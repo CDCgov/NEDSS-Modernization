@@ -91,9 +91,9 @@ class ChangesTest {
     Stream<Match.Both<String, String>> actual = changes.altered((l, r) -> !l.equalsIgnoreCase(r));
 
     assertThat(actual).satisfiesExactly(
-        actual_match -> assertAll(
-            () -> assertThat(actual_match.left()).isEqualTo("X"),
-            () -> assertThat(actual_match.right()).isEqualTo("Y")
+        match -> assertAll(
+            () -> assertThat(match.left()).isEqualTo("X"),
+            () -> assertThat(match.right()).isEqualTo("Y")
         )
     );
   }
