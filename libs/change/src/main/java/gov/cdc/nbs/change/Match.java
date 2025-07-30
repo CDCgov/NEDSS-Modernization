@@ -1,5 +1,6 @@
 package gov.cdc.nbs.change;
 
+@SuppressWarnings("java:S2326") //  Type parameters are needed on the interface for the implementations
 public sealed interface Match<L, R> {
 
   static <L, R> Match<L, R> of(L left, R right) {
