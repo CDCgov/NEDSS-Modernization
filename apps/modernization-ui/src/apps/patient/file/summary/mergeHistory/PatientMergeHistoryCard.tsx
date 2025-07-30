@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import { displayName } from 'name/displayName';
 import { Patient } from '../../patient';
 import styles from './PatientMergeHistory.module.scss';
+import { permissions, Permitted } from 'libs/permission';
 
 type PatientMergeHistoryCardProps = {
     id: string;
@@ -26,9 +27,13 @@ const columns: Column<PatientFileMergeHistory>[] = [
         sortIconType: 'numeric',
         className: styles['action-header'],
         render: (row) => (
-            <a href={`/patient/${row.supersededPersonLocalId}/summary`} target="_blank" rel="noopener noreferrer">
-                {row.supersededPersonLocalId}
-            </a>
+            <Permitted
+                permission={permissions.patient.searchInactive}
+                fallback={<span>{row.supersededPersonLocalId}</span>}>
+                <a href={`/patient/${row.supersededPersonLocalId}/summary`} target="_blank" rel="noopener noreferrer">
+                    {row.supersededPersonLocalId}
+                </a>
+            </Permitted>
         )
     },
     {
