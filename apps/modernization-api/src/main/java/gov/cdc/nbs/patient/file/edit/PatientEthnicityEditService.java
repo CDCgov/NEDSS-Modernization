@@ -29,7 +29,6 @@ class PatientEthnicityEditService {
       final EthnicityDemographic demographic
   ) {
     //  apply any changes to the base ethnicity
-
     patient.update(asUpdateEthnicityInfo(patient.getId(), context, demographic));
 
     //  resolve the changes for the details

@@ -30,6 +30,18 @@ Feature: Editing of Patient ethnicity demographics
     And the patient file ethnicity demographics does not include Spanish origins
     And the patient history contains the previous version
 
+  Scenario: A patient edit with unknown ethnicity information will not include Spanish Origins
+    Given  I am entering the ethnicity as of date 05/29/2023
+    And I enter the ethnicity ethnic group Unknown
+    And I enter the ethnicity detailed Spaniard
+    And I enter the ethnicity detailed Cuban
+    When I edit the patient with entered demographics
+    And I view the patient's ethnicity demographics
+    And the patient file ethnicity demographics are as of 05/29/2023
+    And the patient file ethnicity demographics has an unknown ethnicity
+    And the patient file ethnicity demographics does not include Spanish origins
+    And the patient history contains the previous version
+
   Scenario: I can edit a patient's ethnicity by adding detailed ethnicities
     Given I am entering the ethnicity as of date 05/11/2023
     And I enter the ethnicity ethnic group Hispanic or Latino
