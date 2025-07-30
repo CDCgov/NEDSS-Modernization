@@ -5,7 +5,6 @@ import { PatientFileOpenInvestigationsCard } from './openInvestigations';
 import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
 import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
 import { FeatureToggle } from 'feature';
-import { Permitted } from 'libs/permission';
 
 const PatientFileSummary = () => {
     const { summary, demographics, patient } = usePatientFileData();
@@ -29,13 +28,7 @@ const PatientFileSummary = () => {
                 sizing={sizing}
             />
             <FeatureToggle guard={(features) => features.patient.file.mergeHistory?.enabled}>
-                <Permitted permission={'VIEWWORKUP-PATIENT'}>
-                    <PatientMergeHistoryCard
-                        id="merge-history"
-                        provider={summary.get().mergeHistory}
-                        patient={patient}
-                    />
-                </Permitted>
+                <PatientMergeHistoryCard id="merge-history" provider={summary.get().mergeHistory} patient={patient} />
             </FeatureToggle>
         </>
     );
