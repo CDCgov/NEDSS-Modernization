@@ -114,7 +114,9 @@ const PatientMergeHistoryCard = ({ id, provider, patient }: PatientMergeHistoryC
     return (
         <Suspense fallback={<div>Loading Merge History...</div>}>
             <Await resolve={provider.get()}>
-                {(data) => <InternalMergeHistoryCard id={id} data={data} patient={patient} />}
+                {(data) =>
+                    data.length > 0 ? <InternalMergeHistoryCard id={id} data={data} patient={patient} /> : null
+                }
             </Await>
         </Suspense>
     );
