@@ -18,7 +18,11 @@ const DECEASED_ON_LABEL = 'Date of death';
 const STATE_HIV_CASE_LABEL = 'State HIV case ID';
 const ENTRY_FIELD_PLACEHOLDER = '';
 
-export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
+export const BasicPersonalDetailsFields = ({
+    orientation = 'horizontal',
+    sizing = 'medium',
+    groupName = ''
+}: EntryFieldsProps & { groupName?: string }) => {
     const { control, formState, getFieldState } = useFormContext<{ personalDetails: BasicPersonalDetailsEntry }>();
     const currentBirthday = useWatch({ control, name: 'personalDetails.bornOn' });
     const deceasedOn = useWatch({ control, name: 'personalDetails.deceasedOn' });
@@ -46,6 +50,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         onBlur={onBlur}
                         id={name}
                         error={error?.message}
+                        aria-label={`${groupName} ${BORN_ON_LABEL}`}
                     />
                 )}
             />
@@ -64,6 +69,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         id={name}
                         name={name}
                         options={useSexBirthCodedValues().genders}
+                        aria-label={`${groupName} Current sex`}
                     />
                 )}
             />
@@ -81,6 +87,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         id={name}
                         name={name}
                         options={useSexBirthCodedValues().genders}
+                        aria-label={`${groupName} Birth sex`}
                     />
                 )}
             />
@@ -98,6 +105,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         id={name}
                         name={name}
                         options={indicators}
+                        aria-label={`${groupName} Is the patient deceased?`}
                     />
                 )}
             />
@@ -117,6 +125,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                             onChange={onChange}
                             onBlur={onBlur}
                             error={error?.message}
+                            aria-label={`${groupName} ${DECEASED_ON_LABEL}`}
                         />
                     )}
                 />
@@ -135,6 +144,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         id={name}
                         name={name}
                         options={useGeneralCodedValues().maritalStatuses}
+                        aria-label={`${groupName} Marital status`}
                     />
                 )}
             />
@@ -158,6 +168,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                             id={name}
                             name={name}
                             error={error?.message}
+                            ariaLabel={`${groupName} ${STATE_HIV_CASE_LABEL}`}
                         />
                     )}
                 />

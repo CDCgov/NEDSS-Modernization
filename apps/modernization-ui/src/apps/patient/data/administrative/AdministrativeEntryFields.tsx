@@ -8,7 +8,11 @@ import { AdministrativeEntry } from 'apps/patient/data/entry';
 const AS_OF_DATE_LABEL = 'Information as of date';
 const COMMENTS_LABEL = 'Comments';
 
-export const AdministrativeEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
+export const AdministrativeEntryFields = ({
+    orientation = 'horizontal',
+    sizing = 'medium',
+    groupName = ''
+}: EntryFieldsProps & { groupName?: string }) => {
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
@@ -29,6 +33,7 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal', sizing =
                         error={error?.message}
                         sizing={sizing}
                         required
+                        aria-label={`${groupName} ${AS_OF_DATE_LABEL}`}
                     />
                 )}
             />
@@ -47,6 +52,7 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal', sizing =
                         name={name}
                         id={name}
                         error={error?.message}
+                        aria-label={`${groupName} ${COMMENTS_LABEL}`}
                     />
                 )}
             />

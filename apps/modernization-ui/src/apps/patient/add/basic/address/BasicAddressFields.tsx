@@ -15,7 +15,11 @@ const CITY_LABEL = 'City';
 const ZIP_LABEL = 'Zip';
 const CENSUS_TRACT_LABEL = 'Census tract';
 
-export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
+export const BasicAddressFields = ({
+    orientation = 'horizontal',
+    sizing = 'medium',
+    groupName = ''
+}: EntryFieldsProps & { groupName?: string }) => {
     const { control } = useFormContext<BasicNewPatientEntry>();
     const selectedState = useWatch({ control, name: 'address.state' });
 
@@ -39,6 +43,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
+                        aria-label={`${groupName} ${STREET_ADDRESS_LABEL}`}
                     />
                 )}
             />
@@ -59,6 +64,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         htmlFor={name}
                         id={name}
                         error={error?.message}
+                        ariaLabel={`${groupName} ${STREET_ADDRESS_2_LABEL}`}
                     />
                 )}
             />
@@ -79,6 +85,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         htmlFor={name}
                         id={name}
                         error={error?.message}
+                        ariaLabel={`${groupName} ${CITY_LABEL}`}
                     />
                 )}
             />
@@ -95,6 +102,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         id={name}
                         name={name}
                         options={states}
+                        aria-label={`${groupName} State`}
                     />
                 )}
             />
@@ -112,6 +120,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         orientation={orientation}
                         sizing={sizing}
                         error={error?.message}
+                        aria-label={`${groupName} ${ZIP_LABEL}`}
                     />
                 )}
             />
@@ -128,6 +137,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         id={name}
                         name={name}
                         options={counties}
+                        aria-label={`${groupName} County`}
                     />
                 )}
             />
@@ -145,6 +155,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         orientation={orientation}
                         sizing={sizing}
                         error={error?.message}
+                        aria-label={`${groupName} ${CENSUS_TRACT_LABEL}`}
                     />
                 )}
             />
@@ -162,6 +173,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         name={name}
                         options={countries}
                         autoComplete="off"
+                        aria-label={`${groupName} Country`}
                     />
                 )}
             />

@@ -11,7 +11,11 @@ const WORK_PHONE_LABEL = 'Work phone';
 const CELL_PHONE_LABEL = 'Cell phone';
 const EMAIL_LABEL = 'Email';
 
-export const BasicPhoneEmailFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
+export const BasicPhoneEmailFields = ({
+    orientation = 'horizontal',
+    sizing = 'medium',
+    groupName = ''
+}: EntryFieldsProps & { groupName?: string }) => {
     const { control } = useFormContext<{ phoneEmail: BasicPhoneEmail }>();
 
     return (
@@ -30,6 +34,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal', sizing = 'me
                         orientation={orientation}
                         sizing={sizing}
                         error={error?.message}
+                        aria-label={`${groupName} ${HOME_PHONE_LABEL}`}
                     />
                 )}
             />
@@ -47,6 +52,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal', sizing = 'me
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
+                        aria-label={`${groupName} ${WORK_PHONE_LABEL}`}
                     />
                 )}
             />
@@ -72,6 +78,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal', sizing = 'me
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
+                        aria-label={`${groupName} Work phone extension`}
                     />
                 )}
             />
@@ -90,6 +97,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal', sizing = 'me
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
+                        aria-label={`${groupName} ${CELL_PHONE_LABEL}`}
                     />
                 )}
             />
@@ -117,6 +125,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal', sizing = 'me
                                 orientation={orientation}
                                 error={error?.message}
                                 warning={violation}
+                                aria-label={`${groupName} ${EMAIL_LABEL}`}
                             />
                         )}
                     />

@@ -35,19 +35,19 @@ export const AddPatientBasicForm = ({ isValid }: Props) => {
                 id={ADMINISTRATIVE_SECTION.id}
                 title={ADMINISTRATIVE_SECTION.label}
                 info={<span className="required-before">Required</span>}>
-                <AdministrativeEntryFields sizing={sizing} />
+                <AdministrativeEntryFields sizing={sizing} groupName={ADMINISTRATIVE_SECTION.label} />
             </Card>
             <Card id={NAME_SECTION.id} title={NAME_SECTION.label}>
-                <NameEntryFields sizing={sizing} />
+                <NameEntryFields sizing={sizing} groupName={NAME_SECTION.label} />
             </Card>
             <Card id={PERSONAL_DETAILS_SECTION.id} title={PERSONAL_DETAILS_SECTION.label}>
-                <BasicPersonalDetailsFields sizing={sizing} />
+                <BasicPersonalDetailsFields sizing={sizing} groupName={PERSONAL_DETAILS_SECTION.label} />
             </Card>
             <Card id={ADDRESS_SECTION.id} title={ADDRESS_SECTION.label}>
-                <BasicAddressFields sizing={sizing} />
+                <BasicAddressFields sizing={sizing} groupName={ADDRESS_SECTION.label} />
             </Card>
             <Card id={PHONE_EMAIL_SECTION.id} title={PHONE_EMAIL_SECTION.label}>
-                <BasicPhoneEmailFields sizing={sizing} />
+                <BasicPhoneEmailFields sizing={sizing} groupName={PHONE_EMAIL_SECTION.label} />
             </Card>
             <Card id={RACE_ETHNICITY_SECTION.id} title={RACE_ETHNICITY_SECTION.label}>
                 <BasicRaceEthnicityFields sizing={sizing} />

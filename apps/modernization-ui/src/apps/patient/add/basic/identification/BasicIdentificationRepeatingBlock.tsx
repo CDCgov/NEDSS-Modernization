@@ -29,7 +29,7 @@ export const BasicIdentificationRepeatingBlock = ({
     errors,
     sizing
 }: BasicIdentificationRepeatingBlockProps) => {
-    const renderForm = () => <BasicIdentificationFields sizing={sizing} />;
+    const renderForm = () => <BasicIdentificationFields sizing={sizing} groupName={id} />;
     const renderView = (entry: BasicIdentificationEntry) => <BasicIdentificationView entry={entry} sizing={sizing} />;
 
     const columns: Column<BasicIdentificationEntry>[] = [

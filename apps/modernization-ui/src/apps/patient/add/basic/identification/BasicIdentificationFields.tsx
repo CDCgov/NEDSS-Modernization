@@ -9,7 +9,11 @@ import { useIdentificationCodedValues } from 'apps/patient/data/identification/u
 const TYPE_LABEL = 'Type';
 const ID_VALUE_LABEL = 'ID value';
 
-export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
+export const BasicIdentificationFields = ({
+    orientation = 'horizontal',
+    sizing = 'medium',
+    groupName = ''
+}: EntryFieldsProps & { groupName?: string }) => {
     const { control } = useFormContext<BasicIdentificationEntry>();
 
     return (
@@ -30,6 +34,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         options={useIdentificationCodedValues().types}
                         error={error?.message}
                         required
+                        aria-label={`${groupName} ${TYPE_LABEL}`}
                     />
                 )}
             />
@@ -46,6 +51,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         onBlur={onBlur}
                         id={name}
                         options={useIdentificationCodedValues().authorities}
+                        aria-label={`${groupName} Assigning authority`}
                     />
                 )}
             />
@@ -66,6 +72,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         id={name}
                         error={error?.message}
                         required
+                        ariaLabel={`${groupName} ${ID_VALUE_LABEL}`}
                     />
                 )}
             />

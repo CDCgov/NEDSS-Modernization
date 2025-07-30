@@ -6,7 +6,11 @@ import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
 import { useNameCodedValues } from 'apps/patient/data/name/useNameCodedValues';
 
-export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
+type Props = EntryFieldsProps & {
+    groupName?: string;
+};
+
+export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium', groupName = '' }: Props) => {
     const { control } = useFormContext<{ name: NameInformationEntry }>();
     return (
         <section>
@@ -26,6 +30,7 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' 
                         name={name}
                         id={name}
                         error={error?.message}
+                        ariaLabel={`${groupName} Last`}
                     />
                 )}
             />
@@ -46,6 +51,7 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' 
                         name={name}
                         id={name}
                         error={error?.message}
+                        ariaLabel={`${groupName} First`}
                     />
                 )}
             />
@@ -66,6 +72,7 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' 
                         name={name}
                         id={name}
                         error={error?.message}
+                        ariaLabel={`${groupName} Middle`}
                     />
                 )}
             />
@@ -84,6 +91,7 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' 
                         id={name}
                         name={name}
                         options={useNameCodedValues().suffixes}
+                        aria-label={`${groupName} Suffix`}
                     />
                 )}
             />
