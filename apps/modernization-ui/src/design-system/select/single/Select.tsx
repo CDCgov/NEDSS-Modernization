@@ -21,7 +21,7 @@ const renderOptions = (options: Selectable[], placeholder?: string) => (
             </option>
         )}
         {options?.map((item, index) => (
-            <option key={index} value={item.value} aria-label={item.label}>
+            <option key={index} value={item.value} aria-label={`${item.name} selected`}>
                 {item.name}
             </option>
         ))}

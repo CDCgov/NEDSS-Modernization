@@ -56,7 +56,7 @@ describe('when selecting a single item from a specific set of items', () => {
             />
         );
 
-        const checked = getByRole('option', { name: 'name-three', selected: true });
+        const checked = getByRole('option', { name: /name-three/i, selected: true });
 
         expect(checked).toHaveTextContent('name-three');
     });

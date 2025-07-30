@@ -37,7 +37,7 @@ describe('CriteriaSearchFields', () => {
             const user = userEvent.setup();
             await user.selectOptions(select, 'Open');
 
-            expect(getByRole('option', { name: 'Open', selected: true })).toBeInTheDocument();
+            expect(getByRole('option', { name: /open/i, selected: true })).toBeInTheDocument();
         });
     });
 

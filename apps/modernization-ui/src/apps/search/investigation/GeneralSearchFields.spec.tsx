@@ -49,14 +49,14 @@ describe('GeneralSearchFields', () => {
         });
 
         it('should update the selection', async () => {
-            const { getByRole } = render(<InvestigationFormWithFields />);
+            const { getByRole, getByDisplayValue } = render(<InvestigationFormWithFields />);
 
             const select = getByRole('combobox', { name: 'Pregnancy status' });
 
             const user = userEvent.setup();
             await user.selectOptions(select, 'No');
 
-            expect(getByRole('option', { name: 'No', selected: true })).toBeInTheDocument();
+            expect(getByDisplayValue(/no/i)).toBeInTheDocument();
         });
     });
 
@@ -89,14 +89,14 @@ describe('GeneralSearchFields', () => {
         });
 
         it('should update the selection', async () => {
-            const { getByRole } = render(<InvestigationFormWithFields />);
+            const { getByRole, getByDisplayValue } = render(<InvestigationFormWithFields />);
 
             const select = getByRole('combobox', { name: 'Event date type' });
 
             const user = userEvent.setup();
             await user.selectOptions(select, 'Date of report');
 
-            expect(getByRole('option', { name: 'Date of report', selected: true })).toBeInTheDocument();
+            expect(getByRole('option', { name: /Date of report/i, selected: true })).toBeInTheDocument();
         });
     });
 });
