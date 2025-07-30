@@ -27,6 +27,10 @@ class MatchTest {
     var actual = Match.of("left", null);
 
     assertThat(actual).isInstanceOf(Match.OnlyLeft.class);
+
+    assertThatThrownBy(actual::right)
+        .as("Right is unsupported in OnlyLeft")
+        .isInstanceOf(UnsupportedOperationException.class);
   }
 
   @Test
@@ -34,5 +38,9 @@ class MatchTest {
     var actual = Match.of(null, "right");
 
     assertThat(actual).isInstanceOf(Match.OnlyRight.class);
+
+    assertThatThrownBy(actual::left)
+        .as("Left is unsupported in OnlyRight")
+        .isInstanceOf(UnsupportedOperationException.class);
   }
 }

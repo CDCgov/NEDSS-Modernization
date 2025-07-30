@@ -21,24 +21,7 @@ public record AddressDemographic(
     String country,
     String comment
 ) {
-
-  public AddressDemographic(
-      LocalDate asOf,
-      String type,
-      String use,
-      String address1,
-      String address2,
-      String city,
-      String state,
-      String zipcode,
-      String county,
-      String censusTract,
-      String country,
-      String comment
-  ) {
-    this(null, asOf, type, use, address1, address2, city, state, zipcode, county, censusTract, country, comment);
-  }
-
+  
   public AddressDemographic(final LocalDate asOf) {
     this(null, asOf, null, null, null, null, null, null, null, null, null, null, null);
   }

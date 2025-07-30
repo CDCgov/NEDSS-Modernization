@@ -25,6 +25,25 @@ import static org.mockito.Mockito.when;
 class PersonTest {
 
   @Test
+  void should_create_patient() {
+
+    Person actual = new Person(
+        new PatientCommand.CreatePatient(
+            1033L,
+            "local-id-value",
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    );
+
+    assertThat(actual)
+        .returns(1033L, Person::id)
+        .returns("local-id-value", Person::localId)
+        .satisfies(current -> assertThat(current.names()).isEmpty());
+
+  }
+
+  @Test
   @SuppressWarnings("squid:S5961")
     // Allow more than 25 assertions
   void should_create_new_person_when_patient_added() {
@@ -113,7 +132,7 @@ class PersonTest {
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"));
 
-    assertThat(patient.getNames()).satisfiesExactly(
+    assertThat(patient.names()).satisfiesExactly(
         actual -> assertThat(actual)
             .returns(LocalDate.parse("2023-05-15"), PersonName::getAsOfDate)
             .returns("prefix", PersonName::getNmPrefix)
@@ -182,7 +201,7 @@ class PersonTest {
         )
     );
 
-    assertThat(patient.getNames()).satisfiesExactly(
+    assertThat(patient.names()).satisfiesExactly(
         actual -> assertThat(actual)
             .extracting(PersonName::getId)
             .returns(117L, PersonNameId::getPersonUid)
@@ -258,7 +277,7 @@ class PersonTest {
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(171L, "2021-04-05T06:07:08"));
 
-    assertThat(patient.getNames()).satisfiesExactly(
+    assertThat(patient.names()).satisfiesExactly(
         actual -> assertThat(actual)
             .returns(LocalDate.parse("2023-05-15"), PersonName::getAsOfDate)
             .returns("prefix", PersonName::getNmPrefix)
@@ -334,7 +353,7 @@ class PersonTest {
         .returns(171L, person -> person.audit().changed().changedBy())
         .returns(LocalDateTime.parse("2021-03-03T10:15:30"), person -> person.audit().changed().changedOn());
 
-    assertThat(patient.getNames()).satisfiesExactlyInAnyOrder(
+    assertThat(patient.names()).satisfiesExactlyInAnyOrder(
         actual -> assertThat(actual)
             .extracting(PersonName::getId)
             .returns(117L, PersonNameId::getPersonUid)
@@ -363,7 +382,7 @@ class PersonTest {
         )
     );
 
-    assertThat(actual.getNames()).satisfiesExactly(
+    assertThat(actual.names()).satisfiesExactly(
         actualPrimary -> assertThat(actualPrimary)
             .returns(LocalDate.parse("2021-05-15"), PersonName::getAsOfDate)
             .returns("First", PersonName::getFirstNm)
@@ -413,7 +432,7 @@ class PersonTest {
         )
     );
 
-    assertThat(actual.getNames()).satisfiesExactly(
+    assertThat(actual.names()).satisfiesExactly(
         actualPrimary -> assertThat(actualPrimary)
             .returns("First", PersonName::getFirstNm)
             .returns("Middle", PersonName::getMiddleNm)
@@ -1525,7 +1544,6 @@ class PersonTest {
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
   }
-
 
   @Test
   void should_update_patient_birth_with_location() {

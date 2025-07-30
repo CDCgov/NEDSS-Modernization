@@ -1,6 +1,5 @@
 package gov.cdc.nbs.change;
 
-@SuppressWarnings("java:S2326") //  Type parameters are needed on the interface for the implementations
 public sealed interface Match<L, R> {
 
   static <L, R> Match<L, R> of(L left, R right) {
@@ -13,6 +12,14 @@ public sealed interface Match<L, R> {
     } else {
       throw new IllegalStateException("Either a left or a right value is required.");
     }
+  }
+
+  default L left() {
+    throw new UnsupportedOperationException();
+  }
+
+  default R right() {
+    throw new UnsupportedOperationException();
   }
 
   record OnlyRight<L, R>(R right) implements Match<L, R> {

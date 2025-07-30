@@ -225,7 +225,7 @@ public class Person {
     return this.names;
   }
 
-  public List<PersonName> getNames() {
+  public List<PersonName> names() {
     return this.names == null ? List.of() : this.names.stream().filter(PersonName.active()).toList();
   }
 
@@ -453,6 +453,14 @@ public class Person {
 
   public Status status() {
     return status;
+  }
+
+  public Long id() {
+    return id;
+  }
+
+  public String localId() {
+    return localId;
   }
 
   public PatientAdministrativeInformation administrative() {
