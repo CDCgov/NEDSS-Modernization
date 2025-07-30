@@ -76,7 +76,7 @@ public class PatientEthnicity {
       final PatientCommand.AddDetailedEthnicity add
   ) {
 
-    if (!Objects.equals(this.ethnicGroupInd, UNKNOWN)) {
+    if (this.ethnicGroupInd != null && !Objects.equals(this.ethnicGroupInd, UNKNOWN)) {
       PersonEthnicGroup added = new PersonEthnicGroup(
           patient,
           add);
