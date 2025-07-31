@@ -107,7 +107,7 @@ const InternalCard = ({ sizing, data = [], onClose, ...remaining }: InternalCard
 
 type PatientFileTreatmentsCardProps = {
     provider: MemoizedSupplier<Promise<PatientFileTreatment[]>>;
-} & Omit<InternalCardProps, 'data'>;
+} & Omit<InternalCardProps, 'data' | 'onClose'>;
 
 const PatientFileTreatmentsCard = ({ provider, ...remaining }: PatientFileTreatmentsCardProps) => {
     const [key, setKey] = useState<number>(0);
