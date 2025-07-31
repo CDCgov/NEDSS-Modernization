@@ -6,7 +6,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    @extend %thin-bottom;
 
     .subtext {
         font-size: 0.875rem;

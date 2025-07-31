@@ -59,7 +59,9 @@ const Card = ({
             />
 
             <Shown when={collapsible} fallback={children}>
-                <Collapsible open={!collapsed}>{children}</Collapsible>
+                <Collapsible open={!collapsed}>
+                    <div className={styles.childCard}>{children}</div>
+                </Collapsible>
             </Shown>
             <Shown when={!collapsed}>
                 <footer>{footer}</footer>

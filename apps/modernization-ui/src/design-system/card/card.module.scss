@@ -18,4 +18,8 @@
     & > footer:not(:empty) {
         padding: 0.5rem 1rem;
     }
+
+    .childCard {
+        @extend %thin-top;
+    }
 }
