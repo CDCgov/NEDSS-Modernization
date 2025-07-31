@@ -21,6 +21,10 @@ public record EthnicityDemographic(
     this(asOf, null, null, Collections.emptyList());
   }
 
+  public EthnicityDemographic withAsOf(final LocalDate asOf) {
+    return new EthnicityDemographic(asOf,ethnicGroup,unknownReason,detailed);
+  }
+
   public EthnicityDemographic withEthnicGroup(final String ethnicGroup) {
     return new EthnicityDemographic(asOf(), ethnicGroup, unknownReason(), detailed());
   }

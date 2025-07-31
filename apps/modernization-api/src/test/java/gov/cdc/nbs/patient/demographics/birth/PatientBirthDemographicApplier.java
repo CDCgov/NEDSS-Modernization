@@ -131,7 +131,10 @@ class PatientBirthDemographicApplier {
                       version_ctrl_nbr,
                       entity_uid,
                       locator_uid,
+                      add_time,
+                      last_chg_time,
                       record_status_cd,
+                      record_status_time,
                       as_of_date,
                       use_cd,
                       class_cd
@@ -139,7 +142,10 @@ class PatientBirthDemographicApplier {
                       1,
                       source.patient,
                       :locator,
+                      getDate(),
+                      getDate(),
                       'ACTIVE',
+                      getDate(),
                       getDate(),
                       'BIR',
                       'PST'
@@ -172,13 +178,21 @@ class PatientBirthDemographicApplier {
                       city_desc_txt,
                       cnty_cd,
                       state_cd,
-                      cntry_cd
+                      cntry_cd,
+                      add_time,
+                      last_chg_time,
+                      record_status_cd,
+                      record_status_time
                   ) values (
                       [source].[id],
                       [source].city,
                       [source].county,
                       [source].state,
-                      [source].country
+                      [source].country,
+                      getDate(),
+                      getDate(),
+                      'ACTIVE',
+                      getDate()
                   );
                 """
         )

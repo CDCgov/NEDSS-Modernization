@@ -4,8 +4,10 @@
 /* eslint-disable */
 import type { Administrative } from '../models/Administrative';
 import type { DocumentRequiringReview } from '../models/DocumentRequiringReview';
+import type { EditedPatient } from '../models/EditedPatient';
 import type { ExistingRaceCategoryInvalid } from '../models/ExistingRaceCategoryInvalid';
 import type { ExistingRaceCategoryValid } from '../models/ExistingRaceCategoryValid';
+import type { Failure } from '../models/Failure';
 import type { PatientAddressDemographic } from '../models/PatientAddressDemographic';
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientEthnicityDemographic } from '../models/PatientEthnicityDemographic';
@@ -28,6 +30,49 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class PatientFileService {
+    /**
+     * Patient File Header
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static edit({
+        patient,
+        requestBody,
+    }: {
+        patient: number,
+        requestBody: EditedPatient,
+    }): CancelablePromise<(Failure | Success)> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/nbs/api/patients/{patient}',
+            path: {
+                'patient': patient,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * Allows deleting of a patient.
+     * @returns Success The patient has been deleted
+     * @throws ApiError
+     */
+    public static delete({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Success> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/nbs/api/patients/{patient}',
+            path: {
+                'patient': patient,
+            },
+            errors: {
+                400: `The patient could not be deleted.`,
+            },
+        });
+    }
     /**
      * Validates that a patient can accept a race demographic for the given category.
      * @returns any Allowable race category for the patient
@@ -428,27 +473,6 @@ export class PatientFileService {
             url: '/nbs/api/patient/{patientId}/investigations/open',
             path: {
                 'patientId': patientId,
-            },
-        });
-    }
-    /**
-     * Allows deleting of a patient.
-     * @returns Success The patient has been deleted
-     * @throws ApiError
-     */
-    public static delete({
-        patient,
-    }: {
-        patient: number,
-    }): CancelablePromise<Success> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/nbs/api/patients/{patient}',
-            path: {
-                'patient': patient,
-            },
-            errors: {
-                400: `The patient could not be deleted.`,
             },
         });
     }

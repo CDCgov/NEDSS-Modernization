@@ -71,6 +71,10 @@ public class PersonEthnicGroup {
     return recordStatus;
   }
 
+  public String ethnicGroup() {
+    return this.id.getEthnicGroupCd();
+  }
+
   @Override
   public String toString() {
     return "PersonEthnicGroup{" +

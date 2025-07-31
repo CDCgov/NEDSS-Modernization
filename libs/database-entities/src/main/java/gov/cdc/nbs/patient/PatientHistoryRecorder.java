@@ -1,13 +1,11 @@
 package gov.cdc.nbs.patient;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PatientHistoryCreator {
+public class PatientHistoryRecorder {
 
-  private static final int PATIENT_PARAMETER = 1;
-  private static final int VERSION_PARAMETER = 2;
   private static final String CREATE = """
       insert into Person_hist (
           person_uid,
@@ -224,21 +222,17 @@ public class PatientHistoryCreator {
           sex_unk_reason_cd
       from Person
       where person_uid = ?
-        and version_ctrl_nbr = ?
       """;
 
-  private final JdbcTemplate template;
+  private final JdbcClient client;
 
-  public PatientHistoryCreator(final JdbcTemplate template) {
-    this.template = template;
+  public PatientHistoryRecorder(final JdbcClient client) {
+    this.client = client;
   }
 
-  public void create(final long patient, final int version) {
-    this.template.update(
-        CREATE,
-        statement -> {
-          statement.setLong(PATIENT_PARAMETER, patient);
-          statement.setInt(VERSION_PARAMETER, version);
-        });
+  public void snapshot(final long patient) {
+    this.client.sql(CREATE)
+        .param(patient)
+        .update();
   }
 }

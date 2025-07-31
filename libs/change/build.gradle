@@ -1,0 +1,14 @@
+group = 'gov.cdc.changes'
+version = '1.0.0-SNAPSHOT'
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation.bundle(libs.bundles.testing)
+            }
+        }
+    }
+}

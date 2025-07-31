@@ -13,7 +13,7 @@ Feature: Patient Delete
 
   Scenario: I can not delete a patient that does not exist
     When I delete an unknown patient
-    Then there is no patient to delete
+    Then I am unable to delete the patient because it was not found
 
   Scenario: I can not delete a patient that is associated with an investigation
     Given the patient is a subject of an investigation

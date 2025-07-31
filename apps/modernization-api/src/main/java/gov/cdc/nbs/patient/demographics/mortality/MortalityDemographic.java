@@ -20,6 +20,10 @@ public record MortalityDemographic(
     this(asOf, null, null, null, null, null, null);
   }
 
+  public MortalityDemographic withAsOf(final LocalDate asOf) {
+    return new MortalityDemographic(asOf, deceased(), deceasedOn(), city(), state(), county(), country());
+  }
+
   public MortalityDemographic withDeceased(final String deceased) {
     return new MortalityDemographic(asOf(), deceased, deceasedOn(), city(), state(), county(), country());
   }

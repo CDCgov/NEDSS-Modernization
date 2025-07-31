@@ -20,6 +20,10 @@ public record GenderDemographic(
     this(asOf, null, null, null, null);
   }
 
+  public GenderDemographic withAsOf(final LocalDate asOf) {
+    return new GenderDemographic(asOf,current,unknownReason,transgenderInformation,additionalGender);
+  }
+
   GenderDemographic withCurrent(final String value) {
     return new GenderDemographic(asOf(), value, unknownReason(), transgenderInformation(), additionalGender());
   }

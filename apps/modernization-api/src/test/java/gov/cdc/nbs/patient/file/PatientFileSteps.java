@@ -7,7 +7,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PatientFileSteps {
 
@@ -112,5 +114,18 @@ public class PatientFileSteps {
   @Then("the patient file cannot be deleted because the patient {patientNotDeletableReason}")
   public void the_patient_deletability_is(final PatientDeletability deletability) throws Exception {
     this.response.active().andExpect(jsonPath("$.deletability").value(deletability.value()));
+  }
+
+  @Then("I am unable to delete the patient because it was not found")
+  @Then("I am unable to edit the patient because it was not found")
+  public void notFound() throws Exception {
+    this.response.active()
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            jsonPath(
+                "$.reason",
+                startsWith("Unable to find patient")
+            )
+        );
   }
 }

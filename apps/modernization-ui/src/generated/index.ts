@@ -20,6 +20,7 @@ export type { DisplayableName } from './models/DisplayableName';
 export type { DisplayablePhone } from './models/DisplayablePhone';
 export type { DisplayableSimpleName } from './models/DisplayableSimpleName';
 export type { DocumentRequiringReview } from './models/DocumentRequiringReview';
+export type { EditedPatient } from './models/EditedPatient';
 export type { EncryptionResponse } from './models/EncryptionResponse';
 export type { EthnicityDemographic } from './models/EthnicityDemographic';
 export type { ExistingRaceCategory } from './models/ExistingRaceCategory';

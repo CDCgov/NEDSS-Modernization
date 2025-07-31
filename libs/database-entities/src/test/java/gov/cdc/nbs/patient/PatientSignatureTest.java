@@ -1,9 +1,8 @@
-package gov.cdc.nbs.patient.profile;
+package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Indicator;
-import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,7 +17,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-class PatientChangeHashTest {
+class PatientSignatureTest {
 
 
   @Test
@@ -36,7 +35,7 @@ class PatientChangeHashTest {
         )
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(
         new PatientCommand.UpdateAdministrativeInfo(
@@ -48,7 +47,7 @@ class PatientChangeHashTest {
         )
     );
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isEqualTo(after);
   }
@@ -96,11 +95,11 @@ class PatientChangeHashTest {
         )
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(changes);
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isNotEqualTo(after);
   }
@@ -128,7 +127,7 @@ class PatientChangeHashTest {
             LocalDateTime.parse("2019-03-03T10:15:30"))
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(
         new PatientCommand.UpdateGeneralInfo(
@@ -146,7 +145,7 @@ class PatientChangeHashTest {
             LocalDateTime.parse("2019-03-03T10:15:30"))
     );
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isEqualTo(after);
   }
@@ -326,11 +325,11 @@ class PatientChangeHashTest {
 
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(changes);
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isNotEqualTo(after);
   }
@@ -360,7 +359,7 @@ class PatientChangeHashTest {
         generator
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(
         new PatientCommand.UpdateMortality(
@@ -378,7 +377,7 @@ class PatientChangeHashTest {
         generator
     );
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isEqualTo(after);
   }
@@ -456,11 +455,11 @@ class PatientChangeHashTest {
         generator
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(changes, generator);
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isNotEqualTo(after);
   }
@@ -483,7 +482,7 @@ class PatientChangeHashTest {
         )
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(
         new PatientCommand.UpdateEthnicityInfo(
@@ -496,7 +495,7 @@ class PatientChangeHashTest {
         )
     );
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isEqualTo(after);
   }
@@ -508,7 +507,7 @@ class PatientChangeHashTest {
                 121L,
                 LocalDate.now(),
                 "ethnic-group-value",
-                "unknown-reason-value",
+                null,
                 131L,
                 LocalDateTime.now()
             )
@@ -517,7 +516,7 @@ class PatientChangeHashTest {
             new PatientCommand.UpdateEthnicityInfo(
                 121L,
                 LocalDate.parse("2012-03-03"),
-                "ethnic-group-value",
+                "UNK",
                 "changed unknown-reason-value",
                 131L,
                 LocalDateTime.now()
@@ -538,18 +537,18 @@ class PatientChangeHashTest {
         new PatientCommand.UpdateEthnicityInfo(
             121L,
             LocalDate.parse("2012-03-03"),
-            "ethnic-group-value",
-            "unknown-reason-value",
+            null,
+            null,
             131L,
             LocalDateTime.now()
         )
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(changes);
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isNotEqualTo(after);
   }
@@ -574,7 +573,7 @@ class PatientChangeHashTest {
         )
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(
         new PatientCommand.UpdateGender(
@@ -589,7 +588,7 @@ class PatientChangeHashTest {
         )
     );
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isEqualTo(after);
   }
@@ -680,11 +679,11 @@ class PatientChangeHashTest {
         )
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(changes);
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isNotEqualTo(after);
   }
@@ -716,7 +715,7 @@ class PatientChangeHashTest {
         generator
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(
         new PatientCommand.UpdateBirth(
@@ -736,7 +735,7 @@ class PatientChangeHashTest {
         generator
     );
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isEqualTo(after);
   }
@@ -854,11 +853,11 @@ class PatientChangeHashTest {
         generator
     );
 
-    long before = PatientChangeHash.compute(patient);
+    long before = patient.signature();
 
     patient.update(changes, generator);
 
-    long after = PatientChangeHash.compute(patient);
+    long after = patient.signature();
 
     assertThat(before).isNotEqualTo(after);
   }

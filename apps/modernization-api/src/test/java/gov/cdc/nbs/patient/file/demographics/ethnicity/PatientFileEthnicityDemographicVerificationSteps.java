@@ -30,6 +30,11 @@ public class PatientFileEthnicityDemographicVerificationSteps {
         .andExpect(jsonPath("$.ethnicGroup.value").value(ethnicity));
   }
 
+  @Then("the patient file ethnicity demographics has an unknown ethnicity")
+  public void unknown() throws Exception {
+    hasEthnicity("UNK");
+  }
+
   @Then("the patient file ethnicity demographics is unknown with the reason being {ethnicityUnknownReason}")
   public void hasUnknownReason(final String reason) throws Exception {
     this.response.active()

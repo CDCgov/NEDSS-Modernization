@@ -12,6 +12,7 @@ import gov.cdc.nbs.patient.demographics.name.NameDemographic;
 import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;
 import gov.cdc.nbs.patient.demographics.race.RaceDemographic;
 import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
 
 public class PatientCreateEntrySteps {
@@ -24,7 +25,7 @@ public class PatientCreateEntrySteps {
   private final Active<MortalityDemographic> activeMortalityDemographic;
   private final Active<GeneralInformationDemographic> activeGeneralInformation;
   private final Active<PhoneDemographic> activePhoneDemographic;
-  private final Active<AddressDemographic> activeAddressDemographic;
+  private final Available<AddressDemographic> availableAddressDemographic;
   private final Active<IdentificationDemographic> activeIdentificationDemographic;
   private final Active<RaceDemographic> activeRaceDemographic;
   private final Active<NewPatient> input;
@@ -38,7 +39,7 @@ public class PatientCreateEntrySteps {
       final Active<MortalityDemographic> activeMortalityDemographic,
       final Active<GeneralInformationDemographic> activeGeneralInformation,
       final Active<PhoneDemographic> activePhoneDemographic,
-      final Active<AddressDemographic> activeAddressDemographic,
+      final Available<AddressDemographic> availableAddressDemographic,
       final Active<IdentificationDemographic> activeIdentificationDemographic,
       final Active<RaceDemographic> activeRaceDemographic,
       final Active<NewPatient> input
@@ -51,7 +52,7 @@ public class PatientCreateEntrySteps {
     this.activeEthnicity = activeEthnicity;
     this.activeGeneralInformation = activeGeneralInformation;
     this.activePhoneDemographic = activePhoneDemographic;
-    this.activeAddressDemographic = activeAddressDemographic;
+    this.availableAddressDemographic = availableAddressDemographic;
     this.activeIdentificationDemographic = activeIdentificationDemographic;
     this.activeRaceDemographic = activeRaceDemographic;
     this.input = input;
@@ -89,7 +90,7 @@ public class PatientCreateEntrySteps {
 
   @Given("the address is included with the extended patient data")
   public void includeAddress() {
-    this.activeAddressDemographic.maybeActive().ifPresent(
+    this.availableAddressDemographic.all().forEach(
         demographic -> this.input.active(current -> current.withAddress(demographic)));
   }
 
