@@ -18,16 +18,16 @@ import styles from './patient-file-vaccinations.module.scss';
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'created-on', name: 'Date created' };
 const ORG_PROV = { id: 'organization-provider', name: 'Organization/provider' };
-const DATE_ADMINISTRATED = { id: 'date-administrated', name: 'Date administrated' };
-const VACCINE_ADMINISTRATED = { id: 'vaccine-administrated', name: 'Vaccine administrated' };
+const DATE_ADMINISTERED = { id: 'date-administered', name: 'Date administered' };
+const VACCINE_ADMINISTERED = { id: 'vaccine-administered', name: 'Vaccine administered' };
 const ASSOCIATED_WITH = { id: 'associated-with', name: 'Associated with' };
 
 const columnPreferences: ColumnPreference[] = [
     { ...EVENT_ID },
     { ...DATE_RECEIVED, moveable: true, toggleable: true },
     { ...ORG_PROV, moveable: true, toggleable: true },
-    { ...DATE_ADMINISTRATED, moveable: true, toggleable: true },
-    { ...VACCINE_ADMINISTRATED, moveable: true, toggleable: true },
+    { ...DATE_ADMINISTERED, moveable: true, toggleable: true },
+    { ...VACCINE_ADMINISTERED, moveable: true, toggleable: true },
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
 ];
 
@@ -73,14 +73,14 @@ const columns = (onClose: () => void): Column<PatientFileVaccinations>[] => [
         )
     },
     {
-        ...DATE_ADMINISTRATED,
-        className: styles['date-administrated-header'],
+        ...DATE_ADMINISTERED,
+        className: styles['date-administered-header'],
         sortable: true,
-        value: (value) => value.administratedOn,
-        render: (value) => internalizeDate(value.administratedOn)
+        value: (value) => value.administeredOn,
+        render: (value) => internalizeDate(value.administeredOn)
     },
     {
-        ...VACCINE_ADMINISTRATED,
+        ...VACCINE_ADMINISTERED,
         sortable: true,
         value: (value) => value.administered,
         render: (value) => <strong>{value.administered}</strong>
