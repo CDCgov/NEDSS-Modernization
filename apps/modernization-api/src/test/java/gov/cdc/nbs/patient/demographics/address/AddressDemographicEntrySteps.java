@@ -83,14 +83,19 @@ public class AddressDemographicEntrySteps {
     this.available.selected(current -> current.withState(value), initial());
   }
 
-  @Given("I enter the address county {string}")
+  @Given("I enter the address county {county}")
   public void county(final String value) {
     this.available.selected(current -> current.withCounty(value), initial());
   }
 
-  @Given("I enter the address country {string}")
+  @Given("I enter the address country {country}")
   public void country(final String value) {
     this.available.selected(current -> current.withCountry(value), initial());
+  }
+
+  @Given("I enter the address census tract {string}")
+  public void censusTract(final String value) {
+    this.available.selected(current -> current.withCensusTract(value), initial());
   }
 
   @Given("I enter the address comment {string}")

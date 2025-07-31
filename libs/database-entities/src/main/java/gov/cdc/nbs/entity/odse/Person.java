@@ -250,10 +250,6 @@ public class Person {
     changed(deleted);
   }
 
-  public List<PersonRace> getRaces() {
-    return this.race.races();
-  }
-
   public EntityId add(final PatientCommand.AddIdentification information) {
     changed(information);
     return this.nbsEntity.add(information);
@@ -302,11 +298,6 @@ public class Person {
   public Collection<TeleEntityLocatorParticipation> phones() {
     return this.nbsEntity.phones();
   }
-
-  public List<TeleEntityLocatorParticipation> phoneNumbers() {
-    return this.nbsEntity.phoneNumbers();
-  }
-
 
   public List<EntityId> identifications() {
     return this.nbsEntity.identifications();

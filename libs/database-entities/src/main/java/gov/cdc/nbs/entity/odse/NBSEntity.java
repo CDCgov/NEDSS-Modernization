@@ -240,17 +240,6 @@ public class NBSEntity {
         .toList();
   }
 
-  public List<TeleEntityLocatorParticipation> phoneNumbers() {
-    return this.ensureLocators().stream()
-        .filter(EntityLocatorParticipation.active().and(this::isPhoneNumber))
-        .map(TeleEntityLocatorParticipation.class::cast)
-        .toList();
-  }
-
-  public boolean isPhoneNumber(final EntityLocatorParticipation participation) {
-    return participation instanceof TeleEntityLocatorParticipation && !Objects.equals(participation.cd, "NET");
-  }
-
   public EntityLocatorParticipation add(
       final PatientCommand.AddPhone phone,
       final PhoneIdentifierGenerator generator

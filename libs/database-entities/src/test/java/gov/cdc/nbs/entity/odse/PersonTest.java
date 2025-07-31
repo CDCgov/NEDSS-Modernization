@@ -39,7 +39,12 @@ class PersonTest {
     assertThat(actual)
         .returns(1033L, Person::id)
         .returns("local-id-value", Person::localId)
-        .satisfies(current -> assertThat(current.names()).isEmpty());
+        .satisfies(current -> assertThat(current.addresses()).isEmpty())
+        .satisfies(current -> assertThat(current.phones()).isEmpty())
+        .satisfies(current -> assertThat(current.names()).isEmpty())
+        .satisfies(current -> assertThat(current.identifications()).isEmpty())
+        .satisfies(current -> assertThat(current.race().races()).isEmpty())
+    ;
 
   }
 
@@ -736,7 +741,7 @@ class PersonTest {
             .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
     );
 
-    assertThat(patient.phoneNumbers())
+    assertThat(patient.phones())
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .returns(5347L, p -> p.getId().getLocatorUid())
@@ -809,7 +814,7 @@ class PersonTest {
             .satisfies(AuditAssertions.changed(171L, "2023-07-01T13:17:00"))
     );
 
-    assertThat(patient.phoneNumbers())
+    assertThat(patient.phones())
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .isInstanceOf(TeleEntityLocatorParticipation.class)
@@ -1085,6 +1090,52 @@ class PersonTest {
   }
 
   @Test
+  void should_not_update_unknown_identity() {
+    Person patient = new Person(117L, "local-id-value");
+
+    patient.add(
+        new PatientCommand.AddIdentification(
+            117L,
+            LocalDate.parse("1999-09-09"),
+            "identification-value",
+            "authority-value",
+            "identification-type",
+            131L,
+            LocalDateTime.parse("2023-03-03T10:15:30")
+        )
+    );
+
+    patient.update(
+        new PatientCommand.UpdateIdentification(
+            117L,
+            1013,
+            LocalDate.parse("2001-05-19"),
+            "updated-identification-value",
+            "updated-authority-value",
+            "updated-identification-type",
+            171L,
+            LocalDateTime.parse("2020-03-13T13:15:30")
+        )
+    );
+
+    assertThat(patient.identifications()).satisfiesExactly(
+        actual -> assertThat(actual)
+            .satisfies(
+                identification -> assertThat(identification)
+                    .extracting(EntityId::getAudit)
+                    .satisfies(AuditAssertions.added(131L, "2023-03-03T10:15:30"))
+                    .satisfies(AuditAssertions.changed(131L, "2023-03-03T10:15:30"))
+            )
+            .returns("identification-type", EntityId::getTypeCd)
+            .returns(LocalDate.parse("1999-09-09"), EntityId::getAsOfDate)
+            .returns("authority-value", EntityId::getAssigningAuthorityCd)
+            .returns("identification-value", EntityId::getRootExtensionTxt)
+
+    );
+  }
+
+
+  @Test
   void should_delete_existing_identity() {
     Person patient = new Person(117L, "local-id-value");
 
@@ -1149,6 +1200,73 @@ class PersonTest {
             )
     );
   }
+
+  @Test
+  void should_not_delete_unknown_identity() {
+    Person patient = new Person(117L, "local-id-value");
+
+    patient.add(
+        new PatientCommand.AddIdentification(
+            117L,
+            LocalDate.parse("1999-09-09"),
+            "identification-value",
+            "authority-value",
+            "identification-type",
+            131L,
+            LocalDateTime.parse("2023-03-03T10:15:30")
+        )
+    );
+
+    patient.add(
+        new PatientCommand.AddIdentification(
+            117L,
+            LocalDate.parse("2001-05-19"),
+            "other-identification-value",
+            "other-authority-value",
+            "other-identification-type",
+            131L,
+            LocalDateTime.parse("2023-03-03T10:15:30")
+        )
+    );
+
+    patient.delete(
+        new PatientCommand.DeleteIdentification(
+            117,
+            7,
+            171L,
+            LocalDateTime.parse("2020-03-13T13:15:30")
+        )
+    );
+
+    assertThat(patient)
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30"));
+
+    assertThat(patient.identifications()).satisfiesExactly(
+        actual -> assertThat(actual)
+            .satisfies(
+                identification -> assertThat(identification)
+                    .satisfies(id -> assertThat(id)
+                        .extracting(EntityId::recordStatus)
+                        .satisfies(RecordStatusAssertions.active("2023-03-03T10:15:30"))
+                    )
+                    .extracting(EntityId::getId)
+                    .returns((short) 1, EntityIdId::getEntityIdSeq)
+
+            ),
+        actual -> assertThat(actual)
+            .satisfies(
+                identification -> assertThat(identification)
+                    .satisfies(id -> assertThat(id)
+                        .extracting(EntityId::recordStatus)
+                        .satisfies(RecordStatusAssertions.active("2023-03-03T10:15:30"))
+                    )
+                    .extracting(EntityId::getId)
+                    .returns((short) 2, EntityIdId::getEntityIdSeq)
+            )
+    );
+  }
+
 
   @Test
   void should_update_patient_mortality_when_patient_is_deceased() {

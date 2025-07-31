@@ -77,4 +77,75 @@ public class PatientFileAddressDemographicVerificationSteps {
         .andExpect(jsonPath("$.[%d].asOf", position).value(asOf.toString()));
   }
 
+  @Then("the {nth} address demographic on the patient file is as of {localDate}")
+  public void asOf(final int nth, final LocalDate value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].asOf", nth - 1).value(value.toString()));
+  }
+
+  @Then("the {nth} address demographic on the patient file has the address type {addressType}")
+  public void type(final int nth, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].type.value", nth - 1).value(value));
+  }
+
+  @Then("the {nth} address demographic on the patient file has the address use {addressUse}")
+  public void use(final int nth, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].use.value", nth - 1).value(value));
+  }
+
+  @Then("the {nth} address demographic on the patient file has the street address {string}")
+  public void address(final int nth, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].address1", nth - 1).value(value));
+  }
+
+  @Then("the {nth} address demographic on the patient file has the street address 2 {string}")
+  public void address2(final int nth, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].address2", nth - 1).value(value));
+  }
+
+  @Then("the {nth} address demographic on the patient file has the city {string}")
+  public void city(final int nth, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].city", nth - 1).value(value));
+  }
+
+  @Then("the {nth} address demographic on the patient file has the state {state}")
+  public void state(final int nth, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].state.value", nth - 1).value(value));
+  }
+
+  @Then("the {nth} address demographic on the patient file has the zip(code) {string}")
+  public void zip(final int nth, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].zipcode", nth - 1).value(value));
+  }
+
+  @Then("the {nth} address demographic on the patient file has the county {county}")
+  public void county(final int nth, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].county.value", nth - 1).value(value));
+  }
+
+  @Then("the {nth} address demographic on the patient file has the country {country}")
+  public void country(final int nth, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].country.value", nth - 1).value(value));
+  }
+
+  @Then("the {nth} address demographic on the patient file has the census tract {string}")
+  public void censusTract(final int nth, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].censusTract", nth - 1).value(value));
+  }
+
+  @Then("the {nth} address demographic on the patient file has the comment {string}")
+  public void comment(final int nth, final String value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[%d].comment", nth - 1).value(value));
+  }
 }
