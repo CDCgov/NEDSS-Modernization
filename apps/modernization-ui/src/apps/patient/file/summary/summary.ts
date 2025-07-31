@@ -15,7 +15,7 @@ export type { PatientFileSummaryData };
 const summary = (patient: number): PatientFileSummaryData => ({
     drr: new MemoizedSupplier(() => patientDDR(patient)),
     openInvestigations: new MemoizedSupplier(() => patientOpenInvestigations(patient)),
-    mergeHistory: new MemoizedSupplier(() => patientMergeHistory())
+    mergeHistory: new MemoizedSupplier(() => patientMergeHistory(patient))
 });
 
 export { summary };
