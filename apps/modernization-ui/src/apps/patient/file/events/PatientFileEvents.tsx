@@ -5,6 +5,8 @@ import { PatientFileLaboratoryReportsCard } from './reports/laboratory';
 import { PatientFileMorbidityReportsCard } from './reports/morbidity';
 import { PatientFileVaccinationsCard } from './vaccinations/PatientFileVaccinationsCard';
 import { PatientFileTreatmentsCard } from './treatments/PatientFileTreatmentsCard';
+import { PatientFileContactsNamedCard } from './contactsNamed/PatientFileContactsNamedCard';
+import { initial } from 'libs/events/contacts/contactsNamed';
 
 const PatientFileEvents = () => {
     const { id, events } = usePatientFileData();
@@ -37,6 +39,8 @@ const PatientFileEvents = () => {
                 sizing={sizing}
             />
             <PatientFileTreatmentsCard id="treatments" provider={events.get().reports.treatment} sizing={sizing} />
+
+            <PatientFileContactsNamedCard provider={initial()} id={'contact-named'} patient={id} sizing={sizing} />
         </>
     );
 };
