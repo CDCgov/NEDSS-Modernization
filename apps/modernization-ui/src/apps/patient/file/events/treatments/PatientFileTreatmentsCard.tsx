@@ -38,7 +38,7 @@ const columns = (onClose: () => void): Column<PatientFileTreatment>[] => [
         render: (value) => (
             <ClassicModalButton
                 tertiary
-                sizing="small"
+                sizing={'small'}
                 className={styles['event-id']}
                 url={`/nbs/api/profile/${value.patient}/treatment/${value.id}`}
                 onClose={onClose}>
