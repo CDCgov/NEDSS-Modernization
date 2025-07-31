@@ -14,7 +14,7 @@ export const BasicRaceEthnicityFields = ({ orientation = 'horizontal', sizing = 
     const { control } = useFormContext<{ ethnicityRace: BasicEthnicityRace }>();
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="ethnicityRace.ethnicity"
@@ -51,6 +51,6 @@ export const BasicRaceEthnicityFields = ({ orientation = 'horizontal', sizing = 
                     )}
                 />
             )}
-        </section>
+        </>
     );
 };

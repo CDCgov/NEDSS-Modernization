@@ -16,7 +16,7 @@ export const AdministrativeEntryFields = ({
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="administrative.asOf"
@@ -33,7 +33,6 @@ export const AdministrativeEntryFields = ({
                         error={error?.message}
                         sizing={sizing}
                         required
-                        aria-label={`${groupName} ${AS_OF_DATE_LABEL}`}
                     />
                 )}
             />
@@ -52,10 +51,9 @@ export const AdministrativeEntryFields = ({
                         name={name}
                         id={name}
                         error={error?.message}
-                        aria-label={`${groupName} ${COMMENTS_LABEL}`}
                     />
                 )}
             />
-        </section>
+        </>
     );
 };

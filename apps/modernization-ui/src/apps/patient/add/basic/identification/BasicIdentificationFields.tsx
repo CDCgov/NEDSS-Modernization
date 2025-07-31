@@ -17,7 +17,7 @@ export const BasicIdentificationFields = ({
     const { control } = useFormContext<BasicIdentificationEntry>();
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="type"
@@ -34,7 +34,6 @@ export const BasicIdentificationFields = ({
                         options={useIdentificationCodedValues().types}
                         error={error?.message}
                         required
-                        aria-label={`${groupName} ${TYPE_LABEL}`}
                     />
                 )}
             />
@@ -51,7 +50,6 @@ export const BasicIdentificationFields = ({
                         onBlur={onBlur}
                         id={name}
                         options={useIdentificationCodedValues().authorities}
-                        aria-label={`${groupName} Assigning authority`}
                     />
                 )}
             />
@@ -72,10 +70,9 @@ export const BasicIdentificationFields = ({
                         id={name}
                         error={error?.message}
                         required
-                        ariaLabel={`${groupName} ${ID_VALUE_LABEL}`}
                     />
                 )}
             />
-        </section>
+        </>
     );
 };

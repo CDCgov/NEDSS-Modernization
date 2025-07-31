@@ -35,7 +35,7 @@ export const BasicPersonalDetailsFields = ({
     const { invalid: bornOnInvalid } = getFieldState('personalDetails.bornOn', formState);
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="personalDetails.bornOn"
@@ -50,7 +50,6 @@ export const BasicPersonalDetailsFields = ({
                         onBlur={onBlur}
                         id={name}
                         error={error?.message}
-                        aria-label={`${groupName} ${BORN_ON_LABEL}`}
                     />
                 )}
             />
@@ -69,7 +68,6 @@ export const BasicPersonalDetailsFields = ({
                         id={name}
                         name={name}
                         options={useSexBirthCodedValues().genders}
-                        aria-label={`${groupName} Current sex`}
                     />
                 )}
             />
@@ -87,7 +85,6 @@ export const BasicPersonalDetailsFields = ({
                         id={name}
                         name={name}
                         options={useSexBirthCodedValues().genders}
-                        aria-label={`${groupName} Birth sex`}
                     />
                 )}
             />
@@ -105,7 +102,6 @@ export const BasicPersonalDetailsFields = ({
                         id={name}
                         name={name}
                         options={indicators}
-                        aria-label={`${groupName} Is the patient deceased?`}
                     />
                 )}
             />
@@ -125,7 +121,6 @@ export const BasicPersonalDetailsFields = ({
                             onChange={onChange}
                             onBlur={onBlur}
                             error={error?.message}
-                            aria-label={`${groupName} ${DECEASED_ON_LABEL}`}
                         />
                     )}
                 />
@@ -144,7 +139,6 @@ export const BasicPersonalDetailsFields = ({
                         id={name}
                         name={name}
                         options={useGeneralCodedValues().maritalStatuses}
-                        aria-label={`${groupName} Marital status`}
                     />
                 )}
             />
@@ -168,11 +162,10 @@ export const BasicPersonalDetailsFields = ({
                             id={name}
                             name={name}
                             error={error?.message}
-                            ariaLabel={`${groupName} ${STATE_HIV_CASE_LABEL}`}
                         />
                     )}
                 />
             </Permitted>
-        </section>
+        </>
     );
 };

@@ -28,7 +28,7 @@ export const BasicAddressFields = ({
     const counties = useCountyOptions(selectedState?.value);
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="address.address1"
@@ -177,6 +177,6 @@ export const BasicAddressFields = ({
                     />
                 )}
             />
-        </section>
+        </>
     );
 };

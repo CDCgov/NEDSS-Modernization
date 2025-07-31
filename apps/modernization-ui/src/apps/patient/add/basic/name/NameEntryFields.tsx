@@ -13,7 +13,7 @@ type Props = EntryFieldsProps & {
 export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium', groupName = '' }: Props) => {
     const { control } = useFormContext<{ name: NameInformationEntry }>();
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="name.last"
@@ -30,11 +30,9 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium',
                         name={name}
                         id={name}
                         error={error?.message}
-                        ariaLabel={`${groupName} Last`}
                     />
                 )}
             />
-
             <Controller
                 control={control}
                 name="name.first"
@@ -51,11 +49,9 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium',
                         name={name}
                         id={name}
                         error={error?.message}
-                        ariaLabel={`${groupName} First`}
                     />
                 )}
             />
-
             <Controller
                 control={control}
                 name="name.middle"
@@ -72,11 +68,9 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium',
                         name={name}
                         id={name}
                         error={error?.message}
-                        ariaLabel={`${groupName} Middle`}
                     />
                 )}
             />
-
             <Controller
                 control={control}
                 name="name.suffix"
@@ -91,10 +85,9 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium',
                         id={name}
                         name={name}
                         options={useNameCodedValues().suffixes}
-                        aria-label={`${groupName} Suffix`}
                     />
                 )}
             />
-        </section>
+        </>
     );
 };
