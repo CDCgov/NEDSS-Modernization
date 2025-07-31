@@ -31,7 +31,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
     const { invalid: bornOnInvalid } = getFieldState('personalDetails.bornOn', formState);
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="personalDetails.bornOn"
@@ -162,6 +162,6 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                     )}
                 />
             </Permitted>
-        </section>
+        </>
     );
 };

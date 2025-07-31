@@ -115,7 +115,7 @@ describe('AddPatientExtendedForm', () => {
     });
 
     it('should set default date for as of fields', () => {
-        const { getByLabelText } = render(<Fixture asOf="05/07/1977" />);
+        const { getByLabelText, getByRole } = render(<Fixture asOf="05/07/1977" />);
 
         //  The Repeating block as of dates are being initialized to today's date within the component.
         const expected = internalizeDate(new Date());
