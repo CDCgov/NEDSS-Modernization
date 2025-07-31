@@ -12,7 +12,7 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal', sizing =
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="administrative.asOf"
@@ -50,6 +50,6 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal', sizing =
                     />
                 )}
             />
-        </section>
+        </>
     );
 };
