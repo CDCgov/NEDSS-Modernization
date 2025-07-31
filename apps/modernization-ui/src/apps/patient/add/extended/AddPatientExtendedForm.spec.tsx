@@ -120,7 +120,7 @@ describe('AddPatientExtendedForm', () => {
         //  The Repeating block as of dates are being initialized to today's date within the component.
         const expected = internalizeDate(new Date());
 
-        expect(getByRole('textbox', { name: /Information as of date/i })).toHaveValue('05/07/1977');
+        expect(getByLabelText('Information as of date')).toHaveValue('05/07/1977');
 
         expect(getByLabelText('Name as of')).toHaveValue(expected);
 
