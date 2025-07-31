@@ -63,9 +63,9 @@ describe('when entering patient sex and birth demographics', () => {
     });
 
     it('should render the proper labels', () => {
-        const { getByLabelText, getByText, getByRole } = render(<Fixture />);
+        const { getByLabelText, getByText } = render(<Fixture />);
 
-        expect(getByRole('textbox', { name: /Date of birth/i })).toBeInTheDocument();
+        expect(getByLabelText('Date of birth')).toBeInTheDocument();
         expect(getByText('Current age')).toBeInTheDocument();
         expect(getByLabelText('Current sex')).toBeInTheDocument();
         expect(getByLabelText('Birth sex')).toBeInTheDocument();
@@ -84,8 +84,8 @@ describe('when entering patient sex and birth demographics', () => {
     });
 
     it('should validate date of birth', async () => {
-        const { getByText, queryByText, getByRole } = render(<Fixture />);
-        const dateOfBirth = getByRole('textbox', { name: /Date of birth/i });
+        const { getByLabelText, getByText, queryByText } = render(<Fixture />);
+        const dateOfBirth = getByLabelText('Date of birth');
 
         expect(queryByText('The Date of birth should be in the format MM/DD/YYYY.')).not.toBeInTheDocument();
 
@@ -103,8 +103,8 @@ describe('when entering patient sex and birth demographics', () => {
     });
 
     it('should render age only when date of birth is valid', async () => {
-        const { queryByText, getByText, getByRole } = render(<Fixture />);
-        const dateOfBirth = getByRole('textbox', { name: /Date of birth/i });
+        const { queryByText, getByText, getByLabelText } = render(<Fixture />);
+        const dateOfBirth = getByLabelText('Date of birth');
 
         expect(getByText('Current age')).toBeInTheDocument();
         expect(queryByText(/year|month|day/)).not.toBeInTheDocument();
@@ -117,7 +117,7 @@ describe('when entering patient sex and birth demographics', () => {
     });
 
     it('should enable Date of death when deceased is true', async () => {
-        const { getByLabelText, queryByLabelText, getByRole } = render(<Fixture />);
+        const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
         const deceased = getByLabelText('Is the patient deceased?');
         expect(queryByLabelText('Date of death')).not.toBeInTheDocument();
@@ -126,7 +126,7 @@ describe('when entering patient sex and birth demographics', () => {
 
         await user.selectOptions(deceased, 'Y');
 
-        expect(getByRole('textbox', { name: /Date of death/i })).toBeInTheDocument();
+        expect(getByLabelText('Date of death')).toBeInTheDocument();
     });
 
     it('should not enable Date of death when deceased is false', async () => {
@@ -143,14 +143,14 @@ describe('when entering patient sex and birth demographics', () => {
     });
 
     it('should calculate currentAge against the deceasedOn date when provided', async () => {
-        const { getByLabelText, getByText, getByRole } = render(<Fixture />);
-        const dateOfBirth = getByRole('textbox', { name: /Date of birth/i });
+        const { getByLabelText, getByText } = render(<Fixture />);
+        const dateOfBirth = getByLabelText('Date of birth');
         const deceased = getByLabelText('Is the patient deceased?');
 
         const user = userEvent.setup();
         await user.selectOptions(deceased, 'Y');
 
-        const deceasedOn = getByRole('textbox', { name: /Date of death/i });
+        const deceasedOn = getByLabelText('Date of death');
         await user.clear(dateOfBirth).then(() => user.type(dateOfBirth, '12012012{tab}'));
         await user.clear(deceasedOn).then(() => user.type(deceasedOn, '01012018{tab}'));
 

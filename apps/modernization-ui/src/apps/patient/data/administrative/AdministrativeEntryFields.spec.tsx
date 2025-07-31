@@ -15,9 +15,9 @@ const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
 
 describe('when entering patient administrative information', () => {
     it('should render all input fields', () => {
-        const { getByLabelText, getByRole } = render(<Fixture />);
+        const { getByLabelText } = render(<Fixture />);
 
-        expect(getByRole('textbox', { name: /Information as of date/i })).toBeInTheDocument();
+        expect(getByLabelText('Information as of date')).toBeInTheDocument();
         expect(getByLabelText('Comments')).toBeInTheDocument();
     });
 
@@ -30,9 +30,9 @@ describe('when entering patient administrative information', () => {
     });
 
     it('should require as of date', async () => {
-        const { getByLabelText, queryByText, getByRole } = render(<Fixture />);
+        const { getByLabelText, queryByText } = render(<Fixture />);
 
-        const dateInput = getByRole('textbox', { name: /Information as of date/i });
+        const dateInput = getByLabelText('Information as of date');
 
         expect(queryByText('The Information as of date is required.')).not.toBeInTheDocument();
 
