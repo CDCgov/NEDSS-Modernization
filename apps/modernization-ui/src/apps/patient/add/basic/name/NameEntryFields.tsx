@@ -6,11 +6,7 @@ import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
 import { useNameCodedValues } from 'apps/patient/data/name/useNameCodedValues';
 
-type Props = EntryFieldsProps & {
-    groupName?: string;
-};
-
-export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium', groupName = '' }: Props) => {
+export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<{ name: NameInformationEntry }>();
     return (
         <>

@@ -18,11 +18,7 @@ const DECEASED_ON_LABEL = 'Date of death';
 const STATE_HIV_CASE_LABEL = 'State HIV case ID';
 const ENTRY_FIELD_PLACEHOLDER = '';
 
-export const BasicPersonalDetailsFields = ({
-    orientation = 'horizontal',
-    sizing = 'medium',
-    groupName = ''
-}: EntryFieldsProps & { groupName?: string }) => {
+export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control, formState, getFieldState } = useFormContext<{ personalDetails: BasicPersonalDetailsEntry }>();
     const currentBirthday = useWatch({ control, name: 'personalDetails.bornOn' });
     const deceasedOn = useWatch({ control, name: 'personalDetails.deceasedOn' });

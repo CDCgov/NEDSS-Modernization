@@ -9,11 +9,7 @@ import { useIdentificationCodedValues } from 'apps/patient/data/identification/u
 const TYPE_LABEL = 'Type';
 const ID_VALUE_LABEL = 'ID value';
 
-export const BasicIdentificationFields = ({
-    orientation = 'horizontal',
-    sizing = 'medium',
-    groupName = ''
-}: EntryFieldsProps & { groupName?: string }) => {
+export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<BasicIdentificationEntry>();
 
     return (

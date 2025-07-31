@@ -8,11 +8,7 @@ import { AdministrativeEntry } from 'apps/patient/data/entry';
 const AS_OF_DATE_LABEL = 'Information as of date';
 const COMMENTS_LABEL = 'Comments';
 
-export const AdministrativeEntryFields = ({
-    orientation = 'horizontal',
-    sizing = 'medium',
-    groupName = ''
-}: EntryFieldsProps & { groupName?: string }) => {
+export const AdministrativeEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
