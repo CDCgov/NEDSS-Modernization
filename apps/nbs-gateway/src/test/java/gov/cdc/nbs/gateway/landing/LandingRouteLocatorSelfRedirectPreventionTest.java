@@ -1,4 +1,4 @@
-package gov.cdc.nbs.gateway.welcome;
+package gov.cdc.nbs.gateway.landing;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import gov.cdc.nbs.gateway.GatewayApplication;
@@ -13,14 +13,14 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 @SpringBootTest(
-    classes = {GatewayApplication.class, WelcomeServiceProvider.class},
+    classes = {GatewayApplication.class, LandingServiceProvider.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
-        "nbs.gateway.ui.service=localhost:10001",
-        "nbs.gateway.welcome.enabled=true"
+        "nbs.gateway.landing.base=/",
+        "nbs.gateway.ui.service=localhost:10001"
     })
-@Import(WelcomeServiceProvider.class)
-class WelcomeFeatureFlagEnabledTest {
+@Import(LandingServiceProvider.class)
+class LandingRouteLocatorSelfRedirectPreventionTest {
 
   @RegisterExtension
   static WireMockExtension service = WireMockExtension.newInstance()
@@ -31,15 +31,14 @@ class WelcomeFeatureFlagEnabledTest {
   WebTestClient webClient;
 
   @Test
-  void should_route_to_ui_service() {
-    service.stubFor(get(urlEqualTo("/welcome")).willReturn(ok()));
+  void should_not_redirect_to_itself() {
+    service.stubFor(get(urlEqualTo("/")).willReturn(ok()));
 
     webClient
         .get().uri(
             builder -> builder
-                .path("/welcome")
-                .build()
-        )
+                .path("/")
+                .build())
         .exchange()
         .expectStatus()
         .isOk();

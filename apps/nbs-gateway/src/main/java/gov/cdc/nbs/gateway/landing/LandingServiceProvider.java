@@ -27,6 +27,8 @@ class LandingServiceProvider {
     return builder.routes()
         .route(
             "landing-service-redirect", route -> route.path("/")
+                .and()
+                .not(landing -> landing.path(landingService.base()))
                 .filters(filters -> filters.redirect(302, landingService.base())).uri("no://op"))
         .build();
   }

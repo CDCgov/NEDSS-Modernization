@@ -1,14 +1,11 @@
 package gov.cdc.nbs.gateway.landing;
 
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import gov.cdc.nbs.gateway.GatewayApplication;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 @SpringBootTest(
     classes = {GatewayApplication.class, LandingServiceProvider.class},
@@ -17,12 +14,8 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
         "nbs.gateway.landing.base=/welcome"
     })
 @Import(LandingServiceProvider.class)
-class LandingServiceTest {
+class LandingRouteLocatorTest {
 
-  @RegisterExtension
-  static WireMockExtension classic = WireMockExtension.newInstance()
-      .options(wireMockConfig().port(10000))
-      .build();
 
   @Autowired
   WebTestClient webClient;
