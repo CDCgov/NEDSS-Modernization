@@ -85,27 +85,26 @@ const InternalMergeHistoryCard = ({
 
     return (
         <Card id={id} title="Merge history" flair={<Tag variant="default">{data.length}</Tag>} collapsible>
-            <div className={styles.sectionCard}>
-                {groupKeys.map((timestampKey, index) => {
-                    const group = grouped[timestampKey];
+            {groupKeys.map((timestampKey, index) => {
+                const group = grouped[timestampKey];
 
-                    return (
-                        <Section
-                            key={timestampKey}
-                            id={`${id}-section-${index}`}
-                            title={`The following superseded patient records were merged with ${patientName}`}
-                            subtext={`${group.length} record${group.length === 1 ? '' : 's'}`}>
-                            <SortableDataTable
-                                id={`${id}-table-${index}`}
-                                columns={columns}
-                                data={group}
-                                className={styles.dataTable}
-                                sizing={'small'}
-                            />
-                        </Section>
-                    );
-                })}
-            </div>
+                return (
+                    <Section
+                        key={timestampKey}
+                        id={`${id}-section-${index}`}
+                        className={styles.sectionCard}
+                        title={`The following superseded patient records were merged with ${patientName}`}
+                        subtext={`${group.length} record${group.length === 1 ? '' : 's'}`}>
+                        <SortableDataTable
+                            id={`${id}-table-${index}`}
+                            columns={columns}
+                            data={group}
+                            className={styles.dataTable}
+                            sizing={'small'}
+                        />
+                    </Section>
+                );
+            })}
         </Card>
     );
 };
