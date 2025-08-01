@@ -47,6 +47,7 @@ export type { PatientEthnicityDemographic } from './models/PatientEthnicityDemog
 export { PatientFile } from './models/PatientFile';
 export type { PatientFileContact } from './models/PatientFileContact';
 export type { PatientFileContacts } from './models/PatientFileContacts';
+export type { PatientFileDocument } from './models/PatientFileDocument';
 export type { PatientFileTreatment } from './models/PatientFileTreatment';
 export type { PatientGeneralInformationDemographic } from './models/PatientGeneralInformationDemographic';
 export type { PatientIdentificationDemographic } from './models/PatientIdentificationDemographic';
