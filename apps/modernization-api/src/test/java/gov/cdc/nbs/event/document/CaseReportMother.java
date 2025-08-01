@@ -1,224 +1,261 @@
 package gov.cdc.nbs.event.document;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.*;
+import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
+import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
-import gov.cdc.nbs.testing.patient.RevisionMother;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import jakarta.persistence.EntityManager;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 
 @Component
 @ScenarioScope
 public class CaseReportMother {
 
-  private static final String DOCUMENT_CLASS = "DOC";
-  private static final String PERSON_CLASS = "PSN";
+  private static final String CREATE = """
+      insert into Act(act_uid, class_cd, mood_cd) values (:identifier, 'DOC','EVN');
+      
+      merge into NBS_document_metadata [meta]
+      using (values (1003, 'schemaLocation', 'documentViewXSL')) as source(nbs_document_metadata_uid, xml_schema_location, document_view_xsl)
+      on [meta].nbs_document_metadata_uid = [source].nbs_document_metadata_uid
+      when not matched then
+          insert (nbs_document_metadata_uid, xml_schema_location, document_view_xsl)
+          values (source.nbs_document_metadata_uid, source.xml_schema_location, source.document_view_xsl);
+      
+      insert into NBS_document(
+          nbs_document_uid,
+          local_id,
+          version_ctrl_nbr,
+          cd,
+          add_time,
+          add_user_id,
+          record_status_cd,
+          record_status_time,
+          doc_type_cd,
+          shared_ind,
+          doc_payload,
+          nbs_interface_uid,
+          nbs_document_metadata_uid,
+          prog_area_cd,
+          jurisdiction_cd,
+          program_jurisdiction_oid
+      ) values (
+          :identifier,
+          :local,
+          1,
+          :condition,
+          :addedOn,
+          :addedBy,
+          'ACTIVE',
+          :addedOn,
+          'PHC236',
+          'F',
+          '<?xml version="1.0"?>',
+          227,
+          1003,
+          :programArea,
+          :jurisdiction,
+          :oid
+      );
+      
+      insert into Participation(
+          act_uid,
+          act_class_cd,
+          type_cd,
+          record_status_cd,
+          record_status_time,
+          add_user_id,
+          add_time,
+          subject_class_cd,
+          subject_entity_uid
+      ) values (
+          :identifier,
+          'DOC',
+          'SubjOfDoc',
+          'ACTIVE',
+          :addedOn,
+          :addedBy,
+          :addedOn,
+          'PSN',
+          :patient
+      );
+      """;
+
+  private static final String ASSOCIATE_INVESTIGATION = """
+      insert into Act_relationship(
+          source_act_uid,
+          source_class_cd,
+          target_act_uid,
+          target_class_cd,
+          type_cd
+      ) values (
+          :identifier,
+          'DOC',
+          :investigation,
+          'CASE',
+          'MorbReport'
+      );
+      """;
+
+  private static final String DELETE_IN = """
+      delete from Participation where act_class_cd = 'DOC' and act_uid in (:identifiers);
+      delete from nbs_document where document_uid in (:identifiers);
+      delete from Act_relationship where source_class_cd = 'DOC' and source_act_uid in (:identifiers);
+      delete from Act where class_cd = 'DOC' and act_uid in (:identifiers);
+      """;
 
   private final MotherSettings settings;
   private final SequentialIdentityGenerator idGenerator;
-  private final EntityManager entityManager;
-  private final TestDocumentCleaner cleaner;
+  private final JdbcClient client;
+  private final TestingDataCleaner<Long> cleaner;
 
 
   private final Active<CaseReportIdentifier> active;
   private final Available<CaseReportIdentifier> available;
-  private final RevisionMother revisionMother;
 
   CaseReportMother(
       final MotherSettings settings,
       final SequentialIdentityGenerator idGenerator,
-      final EntityManager entityManager,
-      final TestDocumentCleaner cleaner,
+      final JdbcClient client,
       final Active<CaseReportIdentifier> active,
-      final Available<CaseReportIdentifier> available,
-      final RevisionMother revisionMother
+      final Available<CaseReportIdentifier> available
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
-    this.entityManager = entityManager;
-    this.cleaner = cleaner;
+    this.client = client;
     this.active = active;
     this.available = available;
-    this.revisionMother = revisionMother;
+
+    this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
   }
 
   @PreDestroy
   void reset() {
-    this.cleaner.clean(this.settings.starting());
+    this.cleaner.clean();
   }
 
-  CaseReportIdentifier create(
+  void create(
       final PatientIdentifier patient,
       final ProgramAreaIdentifier programArea,
       final JurisdictionIdentifier jurisdiction
   ) {
     // Condition: Flu activity code (Influenza)
-    return create(patient, programArea, jurisdiction, "10570");
+    create(patient, programArea, jurisdiction, "10570");
   }
 
-  /**
-   * Creates a Case Report associated with the given {@code patient} with the Out of System and STD
-   * programJurisdictionOid
-   */
-  CaseReportIdentifier create(
+  void create(
       final PatientIdentifier patient,
       final ProgramAreaIdentifier programArea,
       final JurisdictionIdentifier jurisdiction,
       final String condition
   ) {
-    PatientIdentifier revision = revisionMother.revise(patient);
-    //  create a document
-    NbsDocument document = new NbsDocument();
     long identifier = idGenerator.next();
-    String local = idGenerator.nextLocal(DOCUMENT_CLASS);
+    String local = idGenerator.nextLocal("DOC");
 
-    document.setId(identifier);
-    document.setDocPayload("<?xml version=\"1.0\"?>");
-    document.setDocTypeCd("PHC236");
-    document.setLocalId(local);
-    document.setNbsInterfaceUid(227L);
-    document.setSharedInd('F');
-    document.setVersionCtrlNbr((short) 1);
-    document.setRecordStatusCd("ACTIVE");
-    document.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-
-    document.setCd(condition);
-
-    document.setProgAreaCd(programArea.code());
-    document.setJurisdictionCd(jurisdiction.code());
-    document.setProgramJurisdictionOid(programArea.oid(jurisdiction));   //  STD Out of System
-
-    document.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    document.setAddUserId(settings.createdBy());
-    document.setLastChgTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    document.setLastChgUserId(settings.createdBy());
-
-    document.setNbsDocumentMetadataUid(metadatum());
-
-    entityManager.persist(document);
-
-    forPatient(revision.id(), identifier);
+    this.client.sql(CREATE)
+        .param("identifier", identifier)
+        .param("local", local)
+        .param("condition", condition)
+        .param("programArea", programArea.code())
+        .param("jurisdiction", jurisdiction.code())
+        .param("oid", programArea.oid(jurisdiction))
+        .param("addedOn", settings.createdOn())
+        .param("addedBy", settings.createdBy())
+        .param("patient", patient.id())
+        .update();
 
     CaseReportIdentifier created = new CaseReportIdentifier(identifier, local);
     include(created);
-    return created;
   }
 
-  private NbsDocumentMetadatum metadatum() {
-    var ref = entityManager.find(NbsDocumentMetadatum.class, 1003L);
-    if (ref == null) {
-      var metadatum = new NbsDocumentMetadatum();
-      metadatum.setId(1003L);
-      metadatum.setXmlSchemaLocation("schemaLocation");
-      metadatum.setDocumentViewXsl("docViewXsl");
-      entityManager.persist(metadatum);
-      return metadatum;
-    }
-    return ref;
+  private void include(final CaseReportIdentifier report) {
+    this.available.available(report);
+    this.active.active(report);
+    this.cleaner.include(report.identifier());
   }
 
-  private void forPatient(final long patient, final long document) {
-
-    //  create the act
-    Act act = new Act();
-    act.setId(document);
-    act.setClassCd(DOCUMENT_CLASS);
-    act.setMoodCd("EVN");
-
-    // create the participation
-    ParticipationId identifier = new ParticipationId(patient, document, "SubjOfDoc");
-
-    Participation participation = new Participation();
-    participation.setId(identifier);
-    participation.setActClassCd(DOCUMENT_CLASS);
-    participation.setSubjectClassCd(PERSON_CLASS);
-
-    participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    participation.setAddTime(settings.createdOn().toInstant(ZoneOffset.UTC));
-    participation.setAddUserId(settings.createdBy());
-    participation.setActUid(act);
-
-    act.addParticipation(participation);
-
-    entityManager.persist(act);
-
+  void unprocessed(final CaseReportIdentifier report) {
+    this.client.sql("update NBS_document set record_status_cd = 'UNPROCESSED' where nbs_document_uid = ?")
+        .param(report.identifier())
+        .update();
   }
 
-  private void include(final CaseReportIdentifier identifier) {
-    this.available.available(identifier);
-    this.active.active(identifier);
+  void sentBy(final CaseReportIdentifier report, final String name) {
+    this.client.sql("update NBS_document set sending_facility_nm = ? where nbs_document_uid = ?")
+        .param(name)
+        .param(report.identifier())
+        .update();
   }
 
-  void unprocessed(final CaseReportIdentifier identifier) {
-    NbsDocument document = managed(identifier);
-    document.setRecordStatusCd("UNPROCESSED");
+  void addedOn(final CaseReportIdentifier report, final LocalDateTime of) {
+    this.client.sql("update NBS_document set add_time = ? where nbs_document_uid = ?")
+        .param(of)
+        .param(report.identifier())
+        .update();
   }
 
-  void sentBy(final CaseReportIdentifier identifier, final String name) {
-    NbsDocument document = managed(identifier);
-    document.setSendingFacilityNm(name);
+
+  void requiresSecurityAssignment(final CaseReportIdentifier report) {
+    this.client.sql(
+            "update NBS_document set prog_area_cd = null, jurisdiction_cd = null, program_jurisdiction_oid = null where nbs_document_uid = ?")
+        .param(report.identifier())
+        .update();
   }
 
-  void receivedOn(final CaseReportIdentifier identifier, final Instant received) {
-    NbsDocument document = managed(identifier);
-    document.setAddTime(received);
+  void updated(final CaseReportIdentifier report) {
+    this.client.sql("""
+            update NBS_document set 
+                external_version_ctrl_nbr = isNull(external_version_ctrl_nbr, 0) + 1 
+            where nbs_document_uid = ?
+            """
+        )
+        .param(report.identifier())
+        .update();
   }
 
-  void receivedOn(final CaseReportIdentifier identifier, final LocalDateTime received) {
-    NbsDocument document = managed(identifier);
-    document.setAddTime(ZonedDateTime.of(received, ZoneOffset.UTC).toInstant());
-  }
-
-  void requiresSecurityAssignment(final CaseReportIdentifier identifier) {
-    NbsDocument document = managed(identifier);
-    document.setJurisdictionCd(null);
-    document.setProgAreaCd(null);
-    document.setProgramJurisdictionOid(null);
-  }
-
-  void updated(final CaseReportIdentifier identifier) {
-    NbsDocument document = managed(identifier);
-
-    short version = document.getExternalVersionCtrlNbr() == null
-        ? 0
-        : document.getExternalVersionCtrlNbr();
-
-    document.setExternalVersionCtrlNbr(++version);
-  }
-
-  void withCondition(final CaseReportIdentifier identifier, final String condition) {
-    NbsDocument document = managed(identifier);
-    document.setCd(condition);
+  void withCondition(final CaseReportIdentifier report, final String condition) {
+    this.client.sql("update NBS_document set cd = ? where nbs_document_uid = ?")
+        .param(condition)
+        .param(report.identifier())
+        .update();
   }
 
   void within(
-      final CaseReportIdentifier identifier,
+      final CaseReportIdentifier report,
       final ProgramAreaIdentifier programArea,
       final JurisdictionIdentifier jurisdiction
   ) {
-    NbsDocument document = managed(identifier);
-
-    document.setProgAreaCd(programArea.code());
-    document.setJurisdictionCd(jurisdiction.code());
-    document.setProgramJurisdictionOid(programArea.oid(jurisdiction));
+    this.client.sql("""
+            update NBS_document set
+                prog_area_cd = ?,
+                jurisdiction_cd = ?,
+                program_jurisdiction_oid = ?
+            where nbs_document_uid = ?
+            """
+        )
+        .param(programArea.code())
+        .param(jurisdiction.code())
+        .param(programArea.oid(jurisdiction))
+        .param(report.identifier())
+        .update();
   }
 
-  private NbsDocument managed(final CaseReportIdentifier identifier) {
-    return this.entityManager.find(NbsDocument.class, identifier.identifier());
+  void associated(
+      final CaseReportIdentifier report,
+      final InvestigationIdentifier investigation
+  ) {
+    this.client.sql(ASSOCIATE_INVESTIGATION)
+        .param("identifier", report.identifier())
+        .param("investigation", investigation.identifier())
+        .update();
   }
 
 }
