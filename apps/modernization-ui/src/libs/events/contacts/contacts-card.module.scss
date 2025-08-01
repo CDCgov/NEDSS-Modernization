@@ -1,0 +1,22 @@
+@use 'styles/colors';
+@use 'styles/borders';
+@use 'design-system/table/header/widths';
+
+.content {
+    padding: 1rem;
+    gap: 1rem;
+
+    .card {
+        @extend %thin;
+        box-shadow: none;
+        min-height: 3rem;
+
+        & > header {
+            background-color: colors.$cool-accent-lighter;
+        }
+    }
+}
+
+.date-time-header {
+    @include widths.fixed(7rem);
+}

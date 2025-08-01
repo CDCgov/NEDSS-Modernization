@@ -10,6 +10,7 @@ import { DisplayableName, displayName } from 'name';
 import { Associations } from '../investigations/associated';
 import { Tag } from 'design-system/tag';
 import { Sizing } from 'design-system/field';
+import { Patient } from 'apps/patient/file/patient';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_CREATED = { id: 'createx-on', name: 'Date created' };
@@ -51,14 +52,14 @@ const columns: Column<ContactNamed>[] = [
     },
     {
         ...DATE_NAMED,
-        className: styles['text-header'],
+        className: styles['date-header'],
         sortable: true,
         value: (value) => value.namedOn,
         render: (value) => internalizeDate(value.namedOn)
     },
     {
         ...NAMED_BY,
-        className: styles['date-time-header'],
+        className: styles['text-header'],
         sortable: true,
         value: (value) => value.name?.first ?? value.name?.last ?? '',
         render: (value) => displayPatientName(value.name),
@@ -79,36 +80,55 @@ const columns: Column<ContactNamed>[] = [
 ];
 
 type InternalCardProps = {
-    patient: number;
+    patient: Patient;
     data?: PatientFileContactsNamed[];
 } & Omit<
     TableCardProps<PatientFileContactsNamed>,
     'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey'
 >;
 
+const dataLength = (data: PatientFileContactsNamed[]) => {
+    let count = 0;
+    data.map((cond) => {
+        cond.contacts.map(() => {
+            count++;
+        });
+    });
+    return count;
+};
+
 const InternalCard = ({ patient, sizing, title, data = [], ...remaining }: InternalCardProps) => {
+    const subTitle = 'was named as a contact in the following';
     return (
         <ColumnPreferenceProvider id="key" defaults={columnPreferences}>
             <Card
                 id={'patient-file-contact-named'}
                 title={title}
                 collapsible
-                flair={<Tag size={sizing}>{data.length}</Tag>}
+                flair={<Tag size={sizing}>{dataLength(data)}</Tag>}
+                className={styles.card}
                 actions={<ColumnPreferencesAction sizing={sizing} />}>
-                {data.map((contact) => (
-                    <Section
-                        title={`${title} ${contact.condition}`}
-                        id={`${contact.condition}-${title}`}
-                        sizing={sizing}
-                        subtext={`${contact.contacts.length} records`}>
-                        <SortableDataTable columns={columns} data={contact.contacts} {...remaining} sizing={sizing} />
-                    </Section>
-                ))}
+                <div className={styles.content}>
+                    {data.map((contact) => (
+                        <Section
+                            key={contact.condition}
+                            title={`${patient.name && displayName('short')(patient.name)} ${subTitle} ${contact.condition}`}
+                            id={`${contact.condition}-${title}`}
+                            sizing={sizing}
+                            className={styles.card}
+                            subtext={`${contact.contacts.length} records`}>
+                            <SortableDataTable
+                                columns={columns}
+                                data={contact.contacts}
+                                {...remaining}
+                                sizing={sizing}
+                            />
+                        </Section>
+                    ))}
+                </div>
             </Card>
         </ColumnPreferenceProvider>
     );
-
-    // <TableCard title={title} sizing={sizing} data={data} {...remaining} />
 };
 
 type ContactsCardProps = {

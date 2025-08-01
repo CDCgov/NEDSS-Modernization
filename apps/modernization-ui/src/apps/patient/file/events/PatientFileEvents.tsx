@@ -9,7 +9,7 @@ import { PatientFileContactsNamedCard } from './contactsNamed/PatientFileContact
 import { initial } from 'libs/events/contacts/contactsNamed';
 
 const PatientFileEvents = () => {
-    const { id, events } = usePatientFileData();
+    const { id, patient, events } = usePatientFileData();
     const sizing = useComponentSizing();
 
     return (
@@ -40,7 +40,7 @@ const PatientFileEvents = () => {
             />
             <PatientFileTreatmentsCard id="treatments" provider={events.get().reports.treatment} sizing={sizing} />
 
-            <PatientFileContactsNamedCard provider={initial()} id={'contact-named'} patient={id} sizing={sizing} />
+            <PatientFileContactsNamedCard provider={initial()} id={'contact-named'} patient={patient} sizing={sizing} />
         </>
     );
 };
