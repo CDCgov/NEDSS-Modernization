@@ -20,13 +20,6 @@ public class NBSEntity {
   @Column(name = "class_cd", nullable = false, length = 10)
   private String classCd;
 
-  @OneToMany(mappedBy = "id.subjectEntityUid", fetch = FetchType.LAZY, cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, orphanRemoval = true)
-  private List<Participation> participations;
-
   @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.EAGER, cascade = {
       CascadeType.PERSIST,
       CascadeType.MERGE,

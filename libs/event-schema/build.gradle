@@ -26,10 +26,4 @@ dependencies {
 
     implementation libs.bundles.jackson
 
-    // lombok
-    compileOnly libs.lombok
-    annotationProcessor libs.lombok
-
-    // Kafka
-    implementation libs.bundles.kafka
 }
