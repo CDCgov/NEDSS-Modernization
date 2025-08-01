@@ -12,6 +12,7 @@ import type { PatientAddressDemographic } from '../models/PatientAddressDemograp
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientEthnicityDemographic } from '../models/PatientEthnicityDemographic';
 import type { PatientFile } from '../models/PatientFile';
+import type { PatientFileContacts } from '../models/PatientFileContacts';
 import type { PatientFileTreatment } from '../models/PatientFileTreatment';
 import type { PatientGeneralInformationDemographic } from '../models/PatientGeneralInformationDemographic';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
@@ -415,6 +416,44 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/demographics/addresses',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Contacts named by patient
+     * Provides contacts that were named by a patient during an investigation
+     * @returns PatientFileContacts OK
+     * @throws ApiError
+     */
+    public static contactsNamedByPatient({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientFileContacts>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/contacts',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Contacts that named patient
+     * Provides contacts that named the patient during their investigation
+     * @returns PatientFileContacts OK
+     * @throws ApiError
+     */
+    public static patientNamedByContact({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientFileContacts>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/contacts/named',
             path: {
                 'patient': patient,
             },
