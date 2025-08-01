@@ -28,25 +28,18 @@
     margin: 0 1rem;
     justify-content: flex-start; /* Align columns left */
     align-items: flex-start;
-    border: 1px solid red;
 
     .column {
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      flex: 0 0 320px;
-      flex-shrink: 1;   /* Shrink if needed */
+      flex: 1;
       flex-basis: 0;    /* Start from zero width */
-      min-width: 29rem;
+      min-width: 14rem;
       gap: 1rem;
-      border: 1px solid blue; /* DEBUG */
-      > * {
-        flex-shrink: 0;
-        flex-grow: 0;
-        width: 100%;
-        align-self: flex-start;
-        outline: 1px solid limegreen;
-        gap: 1rem;
+      .emptyColumnPlaceholder {
+        visibility: hidden;
+        height: 1px; // Ensures minimal footprint
       }
     }
   }

@@ -53,9 +53,11 @@ const SystemManagementPage = () => {
         setVisibilityMap(initialMap);
     }, [filter]); // Reset visibility on filter change
 
-    // Only keep card groups (columns) that have visible children
-    const visibleGroups = cardGroups.filter((group) => group.some(({ key }) => visibilityMap[key]));
-
+    // push empty columns to the right
+    const reorderedGroups = [
+        ...cardGroups.filter((group) => group.some(({ key }) => visibilityMap[key])), // visible columns
+        ...cardGroups.filter((group) => group.every(({ key }) => !visibilityMap[key])) // empty columns
+    ];
     return (
         <div className={styles.systemManagement}>
             <header>
@@ -79,19 +81,23 @@ const SystemManagementPage = () => {
             )}
 
             <div className={styles.cardGroup}>
-                {visibleGroups.map((group, i) => {
+                {reorderedGroups.map((group) => {
                     const visibleCards = group.filter(({ key }) => visibilityMap[key]);
-                    if (visibleCards.length === 0) return null;
 
                     return (
-                        <div key={i} className={styles.column}>
-                            {group.map(({ key, component }) => (
-                                <VisibleWrapper
-                                    key={key}
-                                    onVisibilityChange={(visible) => updateVisibility(key, visible)}>
-                                    {component}
-                                </VisibleWrapper>
-                            ))}
+                        <div key={group.map(({ key }) => key).join('-')} className={styles.column}>
+                            {visibleCards.length > 0 ? (
+                                visibleCards.map(({ key, component }) => (
+                                    <VisibleWrapper
+                                        key={key}
+                                        onVisibilityChange={(visible) => updateVisibility(key, visible)}>
+                                        {component}
+                                    </VisibleWrapper>
+                                ))
+                            ) : (
+                                // Render an empty div so column keeps its place, but doesn't take visual space
+                                <div className={styles.emptyColumnPlaceholder} />
+                            )}
                         </div>
                     );
                 })}
