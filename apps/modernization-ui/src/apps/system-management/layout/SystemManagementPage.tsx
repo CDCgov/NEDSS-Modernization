@@ -16,13 +16,16 @@ import { SecuritySection } from '../components/security/SecuritySection';
 const SystemManagementPage = () => {
     const [filter, setFilter] = useState('');
     const [alert, setAlert] = useState<null | { type: 'success' | 'error'; message: string }>(null);
+
     const [visibilityMap, setVisibilityMap] = useState<Record<string, boolean>>({});
+
     const updateVisibility = (key: string, visible: boolean) => {
         setVisibilityMap((prev) => {
             if (prev[key] === visible) return prev;
             return { ...prev, [key]: visible };
         });
     };
+
     const cardGroups = [
         [
             { key: 'lab', component: <CaseReportLaboratorySection filter={filter} setAlert={setAlert} /> },
@@ -39,20 +42,25 @@ const SystemManagementPage = () => {
             { key: 'security', component: <SecuritySection filter={filter} /> }
         ]
     ];
+
     useEffect(() => {
+        // Initialize all visibility to true (assume all cards will be visible)
         const allKeys = cardGroups.flat().map(({ key }) => key);
         const initialMap: Record<string, boolean> = {};
         allKeys.forEach((key) => {
             initialMap[key] = true;
         });
         setVisibilityMap(initialMap);
-    }, [filter]); // reset when filter changes
+    }, [filter]); // Reset visibility on filter change
+
+    // Only keep card groups (columns) that have visible children
     const visibleGroups = cardGroups.filter((group) => group.some(({ key }) => visibilityMap[key]));
+
     return (
         <div className={styles.systemManagement}>
             <header>
                 <div className={styles.titleBar}>
-                    <Heading level={1}>System Management </Heading>
+                    <Heading level={1}>System Management</Heading>
                     <SearchBar
                         placeholder={'Filter by keyword'}
                         aria-label="Search"
@@ -61,6 +69,7 @@ const SystemManagementPage = () => {
                     />
                 </div>
             </header>
+
             {alert && (
                 <div className={styles.alertWrapper}>
                     <AlertMessage type={alert.type} slim={true} onClose={() => setAlert(null)}>
@@ -68,20 +77,18 @@ const SystemManagementPage = () => {
                     </AlertMessage>
                 </div>
             )}
+
             <div className={styles.cardGroup}>
                 {visibleGroups.map((group, i) => {
-                    // Filter only cards currently visible in this group
                     const visibleCards = group.filter(({ key }) => visibilityMap[key]);
-
-                    // If no cards visible, skip rendering the column
                     if (visibleCards.length === 0) return null;
 
                     return (
                         <div key={i} className={styles.column}>
-                            {visibleCards.map(({ key, component }) => (
+                            {group.map(({ key, component }) => (
                                 <VisibleWrapper
                                     key={key}
-                                    onVisibilityChange={(visible: boolean) => updateVisibility(key, visible)}>
+                                    onVisibilityChange={(visible) => updateVisibility(key, visible)}>
                                     {component}
                                 </VisibleWrapper>
                             ))}

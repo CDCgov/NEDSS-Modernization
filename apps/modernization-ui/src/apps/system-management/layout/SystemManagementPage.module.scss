@@ -23,6 +23,7 @@
   .cardGroup {
     display: flex;
     flex-direction: row;
+    grid-template-columns: repeat(3, 320px);
     gap: 1rem;
     margin: 0 1rem;
     justify-content: flex-start; /* Align columns left */
@@ -33,12 +34,21 @@
     .column {
       display: flex;
       flex-direction: column;
-      flex-grow: 1;     /* Grow to fill available space */
+      align-items: stretch;
+      flex: 0 0 320px;
+      flex-grow: 1;
       flex-shrink: 1;   /* Shrink if needed */
       flex-basis: 0;    /* Start from zero width */
       min-width: 0;     /* Prevent overflow */
       gap: 1rem;
       border: 1px solid blue; /* DEBUG */
+      > * {
+        flex-shrink: 0;
+        flex-grow: 0;
+        align-self: flex-start;
+        outline: 1px solid limegreen;
+        gap: 1rem;
+      }
     }
   }
 }
