@@ -1,8 +1,9 @@
 import { Heading } from 'components/heading';
 import { SearchBar } from 'design-system/search/SearchBar';
+import VisibleWrapper from './VisibleWrapper';
 import styles from './SystemManagementPage.module.scss';
 import { CaseReportLaboratorySection } from '../components/case-report-and-lab/CaseReportLaboratorySection';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AlertMessage } from '../../../design-system/alert/AlertMessage';
 import { DecisionSupportSection } from '../components/decision-support/DecisionSupportSection';
 import { EpiLinkSection } from '../components/epi-link-lot-number/EpiLinkSection';
@@ -15,6 +16,38 @@ import { SecuritySection } from '../components/security/SecuritySection';
 const SystemManagementPage = () => {
     const [filter, setFilter] = useState('');
     const [alert, setAlert] = useState<null | { type: 'success' | 'error'; message: string }>(null);
+    const [visibilityMap, setVisibilityMap] = useState<Record<string, boolean>>({});
+    const updateVisibility = (key: string, visible: boolean) => {
+        setVisibilityMap((prev) => {
+            if (prev[key] === visible) return prev;
+            return { ...prev, [key]: visible };
+        });
+    };
+    const cardGroups = [
+        [
+            { key: 'lab', component: <CaseReportLaboratorySection filter={filter} setAlert={setAlert} /> },
+            { key: 'decision', component: <DecisionSupportSection filter={filter} /> }
+        ],
+        [
+            { key: 'epi', component: <EpiLinkSection filter={filter} /> },
+            { key: 'messaging', component: <MessagingSection filter={filter} /> },
+            { key: 'page', component: <PageSection filter={filter} /> }
+        ],
+        [
+            { key: 'person', component: <PersonMatchSection filter={filter} /> },
+            { key: 'report', component: <ReportSection filter={filter} /> },
+            { key: 'security', component: <SecuritySection filter={filter} /> }
+        ]
+    ];
+    useEffect(() => {
+        const allKeys = cardGroups.flat().map(({ key }) => key);
+        const initialMap: Record<string, boolean> = {};
+        allKeys.forEach((key) => {
+            initialMap[key] = true;
+        });
+        setVisibilityMap(initialMap);
+    }, [filter]); // reset when filter changes
+    const visibleGroups = cardGroups.filter((group) => group.some(({ key }) => visibilityMap[key]));
     return (
         <div className={styles.systemManagement}>
             <header>
@@ -36,20 +69,25 @@ const SystemManagementPage = () => {
                 </div>
             )}
             <div className={styles.cardGroup}>
-                <div className={styles.column}>
-                    <CaseReportLaboratorySection filter={filter} setAlert={setAlert} />
-                    <DecisionSupportSection filter={filter} />
-                </div>
-                <div className={styles.column}>
-                    <EpiLinkSection filter={filter} />
-                    <MessagingSection filter={filter} />
-                    <PageSection filter={filter} />
-                </div>
-                <div className={styles.column}>
-                    <PersonMatchSection filter={filter} />
-                    <ReportSection filter={filter} />
-                    <SecuritySection filter={filter} />
-                </div>
+                {visibleGroups.map((group, i) => {
+                    // Filter only cards currently visible in this group
+                    const visibleCards = group.filter(({ key }) => visibilityMap[key]);
+
+                    // If no cards visible, skip rendering the column
+                    if (visibleCards.length === 0) return null;
+
+                    return (
+                        <div key={i} className={styles.column}>
+                            {visibleCards.map(({ key, component }) => (
+                                <VisibleWrapper
+                                    key={key}
+                                    onVisibilityChange={(visible: boolean) => updateVisibility(key, visible)}>
+                                    {component}
+                                </VisibleWrapper>
+                            ))}
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
