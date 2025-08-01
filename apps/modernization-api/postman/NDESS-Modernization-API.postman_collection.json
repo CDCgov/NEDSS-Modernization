@@ -862,6 +862,49 @@
 									"response": []
 								},
 								{
+									"name": "Contacts named by patient",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/contacts",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"contacts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Patient named by contacts",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/contacts/named",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"contacts",
+												"named"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Laboratory Reports",
 									"request": {
 										"method": "GET",

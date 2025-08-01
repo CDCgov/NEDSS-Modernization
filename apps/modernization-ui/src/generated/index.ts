@@ -36,6 +36,7 @@ export type { LoginResponse } from './models/LoginResponse';
 export type { Me } from './models/Me';
 export type { MortalityDemographic } from './models/MortalityDemographic';
 export type { Name } from './models/Name';
+export type { NamedContact } from './models/NamedContact';
 export type { NameDemographic } from './models/NameDemographic';
 export type { NewPatient } from './models/NewPatient';
 export type { NotificationStatus } from './models/NotificationStatus';
@@ -44,6 +45,8 @@ export type { PatientAddressDemographic } from './models/PatientAddressDemograph
 export type { PatientDemographicsSummary } from './models/PatientDemographicsSummary';
 export type { PatientEthnicityDemographic } from './models/PatientEthnicityDemographic';
 export { PatientFile } from './models/PatientFile';
+export type { PatientFileContact } from './models/PatientFileContact';
+export type { PatientFileContacts } from './models/PatientFileContacts';
 export type { PatientFileTreatment } from './models/PatientFileTreatment';
 export type { PatientGeneralInformationDemographic } from './models/PatientGeneralInformationDemographic';
 export type { PatientIdentificationDemographic } from './models/PatientIdentificationDemographic';

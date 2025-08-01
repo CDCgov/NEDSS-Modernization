@@ -2,6 +2,7 @@ package gov.cdc.nbs.testing.support;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
 import java.util.function.UnaryOperator;
 
 import static org.assertj.core.api.Assertions.*;
@@ -107,8 +108,8 @@ class AvailableTest {
   void should_require_initializer() {
     Available<Object> available = new Available<>();
 
-   assertThatThrownBy(() -> available.selected(current -> fail(), null))
-       .isInstanceOf(NullPointerException.class);
+    assertThatThrownBy(() -> available.selected(current -> fail(), null))
+        .isInstanceOf(NullPointerException.class);
   }
 
   @Test
@@ -275,5 +276,41 @@ class AvailableTest {
 
     assertThat(available.random()).isNotPresent();
 
+  }
+
+  @Test
+  void should_return_the_previous_item() {
+    Available<Object> available = new Available<>();
+
+    Object one = new Object();
+    Object two = new Object();
+    Object three = new Object();
+
+    available.available(one);
+    available.available(two);
+    available.available(three);
+
+    assertThat(available.maybePrevious()).hasValueSatisfying(item -> assertThat(item).isSameAs(two));
+
+    assertThat(available.previous()).isSameAs(two);
+  }
+
+  @Test
+  void should_not_return_the_previous_when_there_are_no_elements() {
+    Available<Object> available = new Available<>();
+
+    assertThat(available.maybePrevious()).isEmpty();
+
+    assertThatThrownBy(available::previous).isInstanceOf(NoSuchElementException.class);
+  }
+
+  @Test
+  void should_not_return_the_previous_when_there_is_only_one_element() {
+    Available<Object> available = new Available<>();
+    available.available(new Object());
+
+    assertThat(available.maybePrevious()).isEmpty();
+
+    assertThatThrownBy(available::previous).isInstanceOf(NoSuchElementException.class);
   }
 }
