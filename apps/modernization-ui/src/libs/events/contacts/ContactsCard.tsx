@@ -1,4 +1,4 @@
-import { ContactNamed, PatientFileContactsNamed } from './contactsNamed';
+import { PatientFileContact, PatientFileContacts } from './contactsNamed';
 import { Card, TableCardProps } from 'design-system/card';
 import { Section } from 'design-system/card/section/Section';
 import { Column, SortableDataTable } from 'design-system/table';
@@ -7,10 +7,11 @@ import { ColumnPreference, ColumnPreferenceProvider, ColumnPreferencesAction } f
 import styles from './contacts-card.module.scss';
 import { internalizeDate, internalizeDateTime } from 'date';
 import { DisplayableName, displayName } from 'name';
-import { Associations } from '../investigations/associated';
+import { AssociatedWith } from '../investigations/associated';
 import { Tag } from 'design-system/tag';
 import { Sizing } from 'design-system/field';
 import { Patient } from 'apps/patient/file/patient';
+import { MaybeLabeledValue } from 'design-system/value';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_CREATED = { id: 'createx-on', name: 'Date created' };
@@ -30,7 +31,7 @@ const columnPreferences: ColumnPreference[] = [
 
 const displayPatientName = (value?: DisplayableName) => <a href="patient....">{value && displayName('full')(value)}</a>;
 
-const columns: Column<ContactNamed>[] = [
+const columns: Column<PatientFileContact>[] = [
     {
         ...EVENT_ID,
         className: styles['local-header'],
@@ -38,7 +39,7 @@ const columns: Column<ContactNamed>[] = [
         value: (value) => value.local,
         render: (value) => (
             <>
-                <a href={``}>{value.local}</a>
+                <a href={`/nbs/api/profile/${value.patient}/contact/${value.identifier}`}>{value.local}</a>
             </>
         )
     },
@@ -61,33 +62,45 @@ const columns: Column<ContactNamed>[] = [
         ...NAMED_BY,
         className: styles['text-header'],
         sortable: true,
-        value: (value) => value.name?.first ?? value.name?.last ?? '',
-        render: (value) => displayPatientName(value.name),
+        value: (value) => value.named?.first ?? value.named?.last ?? '',
+        render: (value) => (
+            <>
+                <a href={`/patient/${value.patient}`}> {displayPatientName(value.named)}</a>
+            </>
+        ),
         sortIconType: 'alpha'
     },
     {
         ...DESCRIPTION,
         sortable: true,
-        render: () => <>need to render description</>
+        render: (value) => (
+            <>
+                <strong>{value.associated?.condition}</strong>
+                <MaybeLabeledValue label="Priority:" orientation="horizontal">
+                    {value.priority}
+                </MaybeLabeledValue>
+                <MaybeLabeledValue label="Disposition:" orientation="horizontal">
+                    {value.disposition}
+                </MaybeLabeledValue>
+            </>
+        )
     },
     {
         ...ASSOCIATED_WITH,
         className: styles['local-header'],
         sortable: true,
-        value: (value) => value.associations?.[0]?.local,
-        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
+        value: (value) => value.associated?.local,
+        render: (value) =>
+            value.associated && <AssociatedWith patient={value.patient}>{value.associated}</AssociatedWith>
     }
 ];
 
 type InternalCardProps = {
     patient: Patient;
-    data?: PatientFileContactsNamed[];
-} & Omit<
-    TableCardProps<PatientFileContactsNamed>,
-    'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey'
->;
+    data?: PatientFileContacts[];
+} & Omit<TableCardProps<PatientFileContacts>, 'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey'>;
 
-const dataLength = (data: PatientFileContactsNamed[]) => {
+const dataLength = (data: PatientFileContacts[]) => {
     let count = 0;
     data.map((cond) => {
         cond.contacts.map(() => {
@@ -132,7 +145,7 @@ const InternalCard = ({ patient, sizing, title, data = [], ...remaining }: Inter
 };
 
 type ContactsCardProps = {
-    provider?: PatientFileContactsNamed[];
+    provider?: PatientFileContacts[];
     sizing?: Sizing;
 } & Omit<InternalCardProps, 'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey'>;
 
