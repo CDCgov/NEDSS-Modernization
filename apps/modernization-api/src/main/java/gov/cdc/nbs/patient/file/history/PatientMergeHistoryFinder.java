@@ -16,7 +16,7 @@ public class PatientMergeHistoryFinder {
         FROM
             person_merge pm
         LEFT JOIN
-            auth_user u ON pm.merge_user_id = u.auth_user_uid
+            auth_user u ON pm.merge_user_id = u.nedss_entry_id
         WHERE
             pm.surviving_person_uid = ?
         ORDER BY
