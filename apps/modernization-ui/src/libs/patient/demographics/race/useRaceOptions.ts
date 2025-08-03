@@ -1,11 +1,11 @@
 import { Selectable } from 'options';
 import { useRaceCategoryOptions } from 'options/race';
 
-type RaceCodedValues = {
+type RaceOptions = {
     race: Selectable[];
 };
 
-const useRaceCodedValues = (): RaceCodedValues => {
+const useRaceOptions = (): RaceOptions => {
     const races = useRaceCategoryOptions();
 
     return {
@@ -13,5 +13,5 @@ const useRaceCodedValues = (): RaceCodedValues => {
     };
 };
 
-export { useRaceCodedValues };
-export type { RaceCodedValues };
+export { useRaceOptions };
+export type { RaceOptions };

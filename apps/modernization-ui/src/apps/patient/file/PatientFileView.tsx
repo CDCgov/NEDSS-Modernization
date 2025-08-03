@@ -1,11 +1,14 @@
 import { ReactNode } from 'react';
 import { permissions, Permitted } from 'libs/permission';
-import { Button } from 'design-system/button';
+import { Button, NavLinkButton } from 'design-system/button';
 import { Sizing } from 'design-system/field';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
+import { BackToTop } from 'libs/page/back-to-top';
 import { Patient } from './patient';
 import { PatientFileLayout } from './PatientFileLayout';
 import { DeleteAction } from './delete';
+
+import styles from './patient-file-view.module.scss';
 
 type PatientFileViewProps = {
     patient: Patient;
@@ -14,8 +17,11 @@ type PatientFileViewProps = {
 };
 
 const PatientFileView = ({ patient, sizing, children }: PatientFileViewProps) => (
-    <PatientFileLayout patient={patient} sizing={sizing} actions={ViewActions} navigation={ViewNavigation}>
-        {children}
+    <PatientFileLayout patient={patient} actions={ViewActions} navigation={ViewNavigation}>
+        <div className={styles.content}>
+            {children}
+            <BackToTop sizing={sizing} />
+        </div>
     </PatientFileLayout>
 );
 
@@ -32,9 +38,9 @@ const ViewActions = (patient: Patient) => (
             secondary
         />
         <Permitted permission={permissions.patient.update}>
-            <Button aria-label="Edit" icon="edit" secondary sizing="medium">
+            <NavLinkButton icon="edit" secondary sizing="medium" to="../edit">
                 Edit
-            </Button>
+            </NavLinkButton>
         </Permitted>
     </>
 );

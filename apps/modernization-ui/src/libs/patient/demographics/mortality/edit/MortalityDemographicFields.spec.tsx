@@ -1,9 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { MortalityDemographicFields } from './MortalityDemographicFields';
 import { HasMortalityDemographic, initial } from '../mortality';
+import { useMortalityOptions } from './useMortalityOptions';
 
 const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
@@ -23,11 +24,9 @@ const Fixture = () => {
         defaultValues: { mortality: initial() }
     });
 
-    return (
-        <FormProvider {...form}>
-            <MortalityDemographicFields />
-        </FormProvider>
-    );
+    const options = useMortalityOptions();
+
+    return <MortalityDemographicFields form={form} options={options} />;
 };
 describe('when entering patient mortality demographics', () => {
     it('should render the proper labels', () => {

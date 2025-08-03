@@ -16,7 +16,11 @@ type AddressDemographic = EffectiveDated & {
     comment?: string;
 };
 
-export type { AddressDemographic };
+type HasAddressDemographics = {
+    addresses?: AddressDemographic[];
+};
+
+export type { AddressDemographic, HasAddressDemographics };
 
 const initial = (asOf: string = today()): Partial<AddressDemographic> => ({
     asOf,

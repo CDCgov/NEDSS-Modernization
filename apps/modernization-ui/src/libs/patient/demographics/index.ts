@@ -8,3 +8,9 @@ export type { NameDemographic } from './name';
 export type { PhoneEmailDemographic } from './phoneEmail';
 export type { RaceDemographic } from './race';
 export type { SexBirthDemographic } from './sex-birth';
+
+export type { PatientDemographics } from './demographics';
+
+export { PatientDemographicsForm } from './PatientDemographicsForm';
+
+export { sections } from './sections';

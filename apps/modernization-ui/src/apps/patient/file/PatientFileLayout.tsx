@@ -1,6 +1,4 @@
-import { ReactNode } from 'react';
-import { BackToTop } from 'libs/page/back-to-top';
-import { Sizing } from 'design-system/field';
+import { CSSProperties, ReactNode, useCallback, useState } from 'react';
 import { Patient } from './patient';
 import { PatientFileHeader } from './PatientFileHeader';
 
@@ -10,21 +8,25 @@ type PatientFileLayoutProps = {
     patient: Patient;
     actions: (patient: Patient) => ReactNode;
     navigation: (patient: Patient) => ReactNode | ReactNode[];
-    sizing?: Sizing;
     children: ReactNode | ReactNode[];
 };
 
-const PatientFileLayout = ({ patient, actions, navigation, sizing, children }: PatientFileLayoutProps) => {
+const PatientFileLayout = ({ patient, actions, navigation, children }: PatientFileLayoutProps) => {
+    const [inline, setInline] = useState<CSSProperties | undefined>();
+
+    const targeted = useCallback((element: HTMLElement | null) => {
+        if (element) {
+            setInline({ ['--patient-file-header-height']: `${element.clientHeight}px` } as CSSProperties);
+        }
+    }, []);
+
     return (
         <div className={styles.file}>
-            <header>
+            <header ref={targeted}>
                 <PatientFileHeader patient={patient} actions={actions(patient)} />
                 <nav>{navigation(patient)}</nav>
             </header>
-            <main>
-                {children}
-                <BackToTop sizing={sizing} />
-            </main>
+            <main style={inline}>{children}</main>
         </div>
     );
 };

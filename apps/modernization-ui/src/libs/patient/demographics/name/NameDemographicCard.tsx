@@ -53,7 +53,13 @@ type NameDemographicCardProps = {
     title?: string;
 } & Omit<RepeatingBlockProps<NameDemographic>, 'columns' | 'formRenderer' | 'viewRenderer' | 'defaultValues' | 'title'>;
 
-const NameDemographicCard = ({ title = 'Name', sizing, data = [], ...remaining }: NameDemographicCardProps) => {
+const NameDemographicCard = ({
+    title = 'Name',
+    collapsible = true,
+    sizing,
+    data = [],
+    ...remaining
+}: NameDemographicCardProps) => {
     const renderForm = () => <NameDemographicFields sizing={sizing} />;
     const renderView = (value: NameDemographic) => <NameDemographicView entry={value} />;
 
@@ -72,7 +78,7 @@ const NameDemographicCard = ({ title = 'Name', sizing, data = [], ...remaining }
                             viewRenderer={renderView}
                             defaultValues={defaultValue}
                             formRenderer={renderForm}
-                            collapsible
+                            collapsible={collapsible}
                         />
                     )}
                 </SortHandler>

@@ -4,14 +4,19 @@ import { Sizing } from 'design-system/field';
 
 import styles from './back-to-top.module.scss';
 
+type Target = Pick<Element, 'scrollTo'>;
+
 type BackToTopProps = {
     className?: string;
     sizing?: Sizing;
+    target?: Target | null;
 };
 
-const BackToTop = ({ className, sizing }: BackToTopProps) => {
+const BackToTop = ({ className, sizing, target = window }: BackToTopProps) => {
     const handleClick = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (target) {
+            target.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     };
 
     return (
