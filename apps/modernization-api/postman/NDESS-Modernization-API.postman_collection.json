@@ -862,6 +862,27 @@
 									"response": []
 								},
 								{
+									"name": "Documents",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/documents",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"documents"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Contacts named by patient",
 									"request": {
 										"method": "GET",

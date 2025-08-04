@@ -44,7 +44,7 @@ public class PatientMergeHistorySteps {
     patientMergeMother.createMerge(
         survivingId, 1, survivingId,
         supersededId, 1, supersededId,
-        user.id(),
+        user.nedssEntry(),
         LocalDateTime.now()
     );
   }

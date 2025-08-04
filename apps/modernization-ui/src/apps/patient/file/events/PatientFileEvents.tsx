@@ -7,6 +7,7 @@ import { PatientFileMorbidityReportsCard } from './reports/morbidity';
 import { PatientFileVaccinationsCard } from './vaccinations/PatientFileVaccinationsCard';
 import { PatientFileTreatmentsCard } from './treatments/PatientFileTreatmentsCard';
 import { PatientFileContactsNamedCard } from './contactsNamed/PatientFileContactsNamedCard';
+import { PatientFileDocumentsCard } from './documents/PatientFileDocumentsCard';
 
 const PatientFileEvents = () => {
     const { id, patient, events } = usePatientFileData();
@@ -46,6 +47,7 @@ const PatientFileEvents = () => {
                 patient={patient}
                 sizing={sizing}
             />
+            <PatientFileDocumentsCard id="documents" provider={events.get().reports.documents} sizing={sizing} />
         </ClassicModalProvider>
     );
 };
