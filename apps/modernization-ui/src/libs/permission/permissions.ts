@@ -24,6 +24,12 @@ export const permissions = {
         edit: 'EDIT-OBSERVATIONMORBIDITYREPORT',
         view: 'VIEW-OBSERVATIONMORBIDITYREPORT'
     },
+    viewReports: {
+        template: 'VIEWREPORTTEMPLATE-REPORTING',
+        public: 'VIEWREPORTPUBLIC-REPORTING',
+        private: 'VIEWREPORTPRIVATE-REPORTING',
+        reportingFacility: 'VIEWREPORTREPORTINGFACILITY-REPORTING'
+    },
     vaccination: {
         add: 'ADD-INTERVENTIONVACCINERECORD',
         view: 'VIEW-INTERVENTIONVACCINERECORD'

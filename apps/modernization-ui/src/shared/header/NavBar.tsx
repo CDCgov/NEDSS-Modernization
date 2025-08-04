@@ -1,4 +1,4 @@
-import { permitsAny, Permitted } from 'libs/permission';
+import { permitsAny, Permitted, permissions } from 'libs/permission';
 import { usePage } from 'page';
 import { useUser } from 'user';
 
@@ -52,9 +52,17 @@ export const NavBar = () => {
                                             <span> | </span>
                                         </td>
 
-                                        <td className={styles.navLink}>
-                                            <a href={`/nbs/nfc?ObjectType=7&amp;OperationType=116`}>Reports</a>
-                                        </td>
+                                        <Permitted
+                                            permission={permitsAny(
+                                                permissions.viewReports.template,
+                                                permissions.viewReports.public,
+                                                permissions.viewReports.private,
+                                                permissions.viewReports.reportingFacility
+                                            )}>
+                                            <td className={styles.navLink}>
+                                                <a href={`/nbs/nfc?ObjectType=7&amp;OperationType=116`}>Reports</a>
+                                            </td>
+                                        </Permitted>
 
                                         <Permitted
                                             permission={permitsAny(
@@ -66,7 +74,8 @@ export const NavBar = () => {
                                                 'REPORTADMIN-SYSTEM',
                                                 'ALERTADMIN-SYSTEM',
                                                 'ADMINISTRATE-SYSTEM',
-                                                'ADMINISTRATE-SECURITY'
+                                                'ADMINISTRATE-SECURITY',
+                                                'MERGE-PATIENT'
                                             )}>
                                             <td className={styles.navLink}>
                                                 <span> | </span>
