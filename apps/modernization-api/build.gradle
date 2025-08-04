@@ -44,8 +44,6 @@ dependencies {
     implementation libs.mssql.jdbc
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
-    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
-    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier("jakarta") })
 
     implementation libs.bundles.jackson
 
@@ -71,9 +69,6 @@ dependencies {
     implementation "commons-codec:commons-codec:1.15"
 
     implementation libs.bundles.jackson
-
-    // Kafka
-    implementation libs.spring.kafka
 
 }
 

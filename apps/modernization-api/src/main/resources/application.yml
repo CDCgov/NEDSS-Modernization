@@ -16,9 +16,6 @@ nbs:
     server: ${nbs.wildfly.host}:${nbs.wildfly.port}
     port: 7001
     url: http://${nbs.wildfly.server}
-  uid:
-    suffix: GA01
-    seed: 10000000
   datasource:
     server: localhost
     port: 1433
