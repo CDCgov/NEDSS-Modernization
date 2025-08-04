@@ -1,6 +1,7 @@
 import { SortHandler, SortingProvider } from 'libs/sorting';
 import { DataTable, DataTableProps } from '../DataTable';
 import { columnSortResolver } from './columnSortResolver';
+import { useColumnPreferences } from '../preferences';
 
 /**
  * A variant of DataTable that provides in memory sorting of rows based on the values of the column
@@ -11,16 +12,21 @@ import { columnSortResolver } from './columnSortResolver';
  * @param {DataTableProps<T>} props - The props for the DataTable component.
  * @return {JSX.Element} - A DataTable component with in memory sorting functionality.
  */
-const SortableDataTable = <T,>({ columns, data, ...remaining }: DataTableProps<T>) => (
-    <SortingProvider appendToUrl={false}>
-        {(sorting) => (
-            <SortHandler sorting={sorting} resolver={columnSortResolver(columns)} data={data}>
-                {({ sorting, sorted }) => (
-                    <DataTable {...remaining} features={{ sorting }} columns={columns} data={sorted} />
-                )}
-            </SortHandler>
-        )}
-    </SortingProvider>
-);
+const SortableDataTable = <T,>({ columns, data, ...remaining }: DataTableProps<T>) => {
+    const { apply } = useColumnPreferences();
+    const columnsPref = apply(columns);
+
+    return (
+        <SortingProvider appendToUrl={false}>
+            {(sorting) => (
+                <SortHandler sorting={sorting} resolver={columnSortResolver(columns)} data={data}>
+                    {({ sorting, sorted }) => (
+                        <DataTable {...remaining} features={{ sorting }} columns={columnsPref} data={sorted} />
+                    )}
+                </SortHandler>
+            )}
+        </SortingProvider>
+    );
+};
 
 export { SortableDataTable };
