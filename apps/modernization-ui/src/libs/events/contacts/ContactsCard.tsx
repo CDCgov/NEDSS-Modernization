@@ -21,7 +21,7 @@ import { ClassicModalButton } from 'libs/classic';
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_CREATED = { id: 'createx-on', name: 'Date created' };
 const DATE_NAMED = { id: 'named-on', name: 'Date named' };
-const NAMED_BY = { id: 'named-by', name: 'Named by' };
+const NAME = { id: 'name', name: 'Name' };
 const DESCRIPTION = { id: 'description', name: 'Description' };
 const ASSOCIATED_WITH = { id: 'associated-with', name: 'Associated with' };
 
@@ -29,7 +29,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...EVENT_ID },
     { ...DATE_CREATED, moveable: true, toggleable: true },
     { ...DATE_NAMED, moveable: true, toggleable: true },
-    { ...NAMED_BY, moveable: true, toggleable: true },
+    { ...NAME, moveable: true, toggleable: true },
     { ...DESCRIPTION, moveable: true, toggleable: true },
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
 ];
@@ -74,13 +74,13 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
         render: (value) => internalizeDate(value.namedOn)
     },
     {
-        ...NAMED_BY,
+        ...NAME,
         className: styles['text-header'],
         sortable: true,
         value: (value) => value.named?.first ?? value.named?.last ?? '',
         render: (value) => (
             <>
-                <a href={`/patient/${value.patient}`}> {displayPatientName(value.named)}</a>
+                <a href={`/patient/${value.patient}`}>{displayPatientName(value.named)}</a>
             </>
         ),
         sortIconType: 'alpha'
@@ -128,7 +128,7 @@ const dataLength = (data: PatientFileContacts[]) => {
 };
 
 const InternalCard = ({ patient, sizing, title, data = [], onClose, ...remaining }: InternalCardProps) => {
-    const subTitle = 'was named as a contact in the following';
+    const subTitle = 'The following contacts were named by ';
     return (
         <ColumnPreferenceProvider id="key" defaults={columnPreferences}>
             <Card
@@ -142,11 +142,11 @@ const InternalCard = ({ patient, sizing, title, data = [], onClose, ...remaining
                     {data.map((contact) => (
                         <Section
                             key={contact.condition}
-                            title={`${patient.name && displayName('short')(patient.name)} ${subTitle} ${contact.condition} investigation(s)`}
+                            title={`${subTitle} ${patient.name && displayName('short')(patient.name)}'s investigation of ${contact.condition}`}
                             id={`${contact.condition}-${title}`}
                             sizing={sizing}
                             className={styles.card}
-                            subtext={`${contact.contacts.length} records`}>
+                            subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}>
                             <SortableDataTable
                                 columns={columns(onClose)}
                                 data={contact.contacts}
