@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.profile.contact;
 
-import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.event.contact.ContactRecordIdentifier;
 import gov.cdc.nbs.testing.interaction.http.AuthenticatedMvcRequester;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,8 +34,6 @@ public class PatientProfileViewContactSteps {
       final Active<ContactRecordIdentifier> activeContactRecord,
       final AuthenticatedMvcRequester authenticated,
       @Value("${nbs.wildfly.url:http://wildfly:7001}") final String classicUrl,
-      final MockMvc mvc,
-      final Active<SessionCookie> activeSession,
       final Active<MockHttpServletResponse> activeResponse,
       @Qualifier("classicRestService") final MockRestServiceServer server
   ) {
@@ -55,7 +51,7 @@ public class PatientProfileViewContactSteps {
   }
 
   @When("the Contact is viewed from the Patient Profile")
-  public void the_contact_is_viewed_from_the_patient_profile() throws Exception {
+  public void the_contact_is_viewed_from_the_patient_profile() {
     long patient = activePatient.active().id();
 
     server.expect(

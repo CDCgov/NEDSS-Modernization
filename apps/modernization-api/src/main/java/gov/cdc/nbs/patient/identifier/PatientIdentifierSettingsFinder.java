@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient.identifier;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
