@@ -25,6 +25,20 @@ public record BirthDemographic(
     this(asOf, null, null, null, null, null, null, null, null);
   }
 
+  BirthDemographic withAsOf(final LocalDate asOf) {
+    return new BirthDemographic(
+        asOf,
+        bornOn,
+        sex,
+        multiple,
+        order,
+        city,
+        state,
+        county,
+        country
+    );
+  }
+
   BirthDemographic withBornOn(final LocalDate value) {
     return new BirthDemographic(
         asOf(),

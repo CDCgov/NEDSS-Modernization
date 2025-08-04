@@ -10,68 +10,19 @@ import org.springframework.stereotype.Component;
 class RevisionPatientCreator {
 
   private static final String QUERY = """
-      insert into Entity(entity_uid, class_cd) values (:identifier, 'PSN');
-      insert into Person (
-        person_parent_uid,
-        person_uid,
-        local_id,
-        version_ctrl_nbr,
-        cd,
-        birth_time,
-        curr_sex_cd,
-        add_user_id,
-        add_time,
-        last_chg_user_id,
-        last_chg_time,
-        record_status_cd,
-        record_status_time
-      )
-      select
-        [mpr].person_uid,
-        :identifier,
-        [mpr].local_id,
-        1,
-        [mpr].cd,
-        [mpr].birth_time,
-        [mpr].curr_sex_cd,
-        :by,
-        getDate(),
-        :by,
-        getDate(),
-        'ACTIVE',
-        getDate()
-      from Person [mpr]
-      where [mpr].person_uid = :mpr;
+      declare @legal table (patient bigint not null, first_nm varchar(50), middle_nm varchar(50), last_nm varchar(50));
       
-      insert into Person_name (
-          person_uid,
-          person_name_seq,
-          nm_use_cd,
+      insert into @legal (
+          patient,
           first_nm,
-          last_nm,
-          add_user_id,
-          add_time,
-          last_chg_user_id,
-          last_chg_time,
-          record_status_cd,
-          record_status_time,
-          status_cd,
-          status_time
+          middle_nm,
+          last_nm
       )
       select
-          :identifier,
-          1,
-          [name].nm_use_cd,
+          [name].person_uid,
           [name].first_nm,
-          [name].last_nm,
-          [name].add_user_id,
-          [name].add_time,
-          [name].last_chg_user_id,
-          [name].last_chg_time,
-          [name].record_status_cd,
-          [name].record_status_time,
-          [name].status_cd,
-          [name].status_time
+          [name].middle_nm,
+          [name].last_nm
       from Person_name [name]
       where   [name].person_uid = :mpr
           and [name].nm_use_cd = 'L'
@@ -95,6 +46,80 @@ class RevisionPatientCreator {
                   and [seq_name].[as_of_date] = [name].as_of_date
           )
       ;
+      
+      insert into Entity(entity_uid, class_cd) values (:identifier, 'PSN');
+      
+      insert into Person (
+        person_parent_uid,
+        person_uid,
+        local_id,
+        version_ctrl_nbr,
+        cd,
+        birth_time,
+        curr_sex_cd,
+        first_nm,
+        middle_nm,
+        last_nm,
+        add_user_id,
+        add_time,
+        last_chg_user_id,
+        last_chg_time,
+        record_status_cd,
+        record_status_time
+      )
+      select
+        [mpr].person_uid,
+        :identifier,
+        [mpr].local_id,
+        1,
+        [mpr].cd,
+        [mpr].birth_time,
+        [mpr].curr_sex_cd,
+        [legal].first_nm,
+        [legal].middle_nm,
+        [legal].last_nm,
+        :by,
+        getDate(),
+        :by,
+        getDate(),
+        'ACTIVE',
+        getDate()
+      from Person [mpr]
+          left join @legal [legal] on
+                  [legal].patient = [mpr].person_uid
+      
+      where [mpr].person_uid = :mpr;
+      
+      insert into Person_name (
+          person_uid,
+          person_name_seq,
+          nm_use_cd,
+          first_nm,
+          last_nm,
+          add_user_id,
+          add_time,
+          last_chg_user_id,
+          last_chg_time,
+          record_status_cd,
+          record_status_time,
+          status_cd,
+          status_time
+      )
+      select
+          :identifier,
+          1,
+          'L',
+          [name].first_nm,
+          [name].last_nm,
+          :by,
+          getDate(),
+          :by,
+          getDate(),
+          'ACTIVE',
+          getDate(),
+          'A',
+          :by
+      from @legal [name];
       """;
 
   private final JdbcClient client;

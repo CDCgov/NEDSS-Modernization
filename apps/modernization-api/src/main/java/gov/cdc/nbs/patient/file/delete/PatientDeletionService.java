@@ -4,18 +4,18 @@ import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientException;
 import gov.cdc.nbs.patient.RequestContext;
-import gov.cdc.nbs.patient.profile.PatientProfileService;
+import gov.cdc.nbs.patient.PatientService;
 import org.springframework.stereotype.Component;
 
 @Component
 class PatientDeletionService {
 
   private final PatientAssociationCountFinder finder;
-  private final PatientProfileService service;
+  private final PatientService service;
 
   PatientDeletionService(
       final PatientAssociationCountFinder finder,
-      final PatientProfileService service
+      final PatientService service
   ) {
     this.finder = finder;
     this.service = service;

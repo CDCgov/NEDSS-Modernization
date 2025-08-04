@@ -6,7 +6,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,18 +42,6 @@ public class PatientDeleteSteps {
   public void the_patient_is_deleted() throws Exception {
     this.response.active()
         .andExpect(status().isAccepted());
-  }
-
-  @Then("there is no patient to delete")
-  public void there_is_no_patient_to_delete() throws Exception {
-    this.response.active()
-        .andExpect(status().isBadRequest())
-        .andExpect(
-            jsonPath(
-                "$.reason",
-                startsWith("Unable to find patient")
-            )
-        );
   }
 
   @Then("the patient is not deleted because of an association with an event")

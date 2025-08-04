@@ -36,8 +36,8 @@ const columnPreferences: ColumnPreference[] = [
     { ...REPORT_DATE, moveable: true, toggleable: true },
     { ...CONDITION, moveable: true, toggleable: true },
     { ...TREATMENT_INFO, moveable: true, toggleable: true },
-    { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
-    { ...JURISDICTION, moveable: true, toggleable: true }
+    { ...JURISDICTION, moveable: true, toggleable: true },
+    { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
 ];
 
 const columns: Column<PatientFileMorbidityReport>[] = [

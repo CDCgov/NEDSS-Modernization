@@ -24,7 +24,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
     const counties = useCountyOptions(selectedState?.value);
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="address.address1"
@@ -165,6 +165,6 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                     />
                 )}
             />
-        </section>
+        </>
     );
 };

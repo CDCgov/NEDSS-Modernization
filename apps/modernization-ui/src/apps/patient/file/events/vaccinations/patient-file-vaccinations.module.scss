@@ -4,6 +4,12 @@
     @include widths.fixed(7rem);
 }
 
-.date-administrated-header {
+.date-administered-header {
     @include widths.fixed(9rem);
+}
+
+.event-id {
+    font-size: 0.75rem;
+    min-height: unset;
+    font-weight: 600;
 }

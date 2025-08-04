@@ -15,7 +15,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal', sizing = 'me
     const { control } = useFormContext<{ phoneEmail: BasicPhoneEmail }>();
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="phoneEmail.home"
@@ -122,6 +122,6 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal', sizing = 'me
                     />
                 )}
             />
-        </section>
+        </>
     );
 };

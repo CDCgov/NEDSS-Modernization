@@ -1,10 +1,11 @@
 package gov.cdc.nbs.testing.support;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 public class Available<V> {
@@ -16,14 +17,14 @@ public class Available<V> {
   }
 
 
-  private final Collection<V> items;
+  private final List<V> items;
 
   public Available() {
     items = new ArrayList<>();
   }
 
   public Available(final V initial) {
-    this.items = new ArrayList<>();
+    this();
     this.items.add(initial);
   }
 
@@ -33,6 +34,10 @@ public class Available<V> {
 
   public void available(final V item) {
     this.items.add(item);
+  }
+
+  public void removeIf(final Predicate<V> filter) {
+    this.items.removeIf(filter);
   }
 
   public void include(final Collection<V> items) {
@@ -45,11 +50,21 @@ public class Available<V> {
 
   public V one() {
     return maybeOne()
-        .orElseThrow(() -> new IllegalStateException("there are none available"));
+        .orElseThrow(() -> new NoSuchElementException("there are none available"));
   }
 
   public Stream<V> all() {
     return this.items.stream();
+  }
+
+  public Optional<V> maybePrevious() {
+    return (this.items.size() > 1)
+        ? Optional.ofNullable(this.items.get(this.items.size() - 2))
+        : Optional.empty();
+  }
+
+  public V previous() {
+    return maybePrevious().orElseThrow(() -> new NoSuchElementException("there is no previous available"));
   }
 
   public Stream<Indexed<V>> indexed() {
@@ -63,8 +78,30 @@ public class Available<V> {
     }
 
     int index = RANDOM.nextInt(0, items.size());
-    return this.items.stream()
-        .skip(index)
-        .findFirst();
+    return this.items.stream().skip(index).findFirst();
   }
+
+  public void select(final Predicate<V> filter) {
+    indexed().filter(item -> filter.test(item.item))
+        .findFirst()
+        .ifPresent(index -> {
+          this.items.remove(index.index);
+          this.items.addFirst(index.item);
+        });
+  }
+
+  public void selected(final UnaryOperator<V> operator, final Supplier<V> initializer) {
+    V current = this.items.isEmpty() ? Objects.requireNonNull(initializer).get() : this.items.getFirst();
+
+    if (current != null) {
+      V next = operator.apply(current);
+
+      if (this.items.isEmpty()) {
+        this.items.add(next);
+      } else {
+        this.items.set(0, next);
+      }
+    }
+  }
+
 }

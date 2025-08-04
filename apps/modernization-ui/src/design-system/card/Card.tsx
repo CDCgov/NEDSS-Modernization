@@ -35,7 +35,12 @@ const Card = ({
     const [collapsed, setCollapsed] = useState<boolean>(!open);
 
     return (
-        <section id={id} aria-labelledby={`${id}-title`} className={classNames(styles.card, className)} {...remaining}>
+        <section
+            id={id}
+            role="group"
+            aria-labelledby={`${id}-title`}
+            className={classNames(styles.card, className)}
+            {...remaining}>
             <CardHeader
                 id={`${id}-title`}
                 title={title}
@@ -59,7 +64,9 @@ const Card = ({
             />
 
             <Shown when={collapsible} fallback={children}>
-                <Collapsible open={!collapsed}>{children}</Collapsible>
+                <Collapsible open={!collapsed}>
+                    <div className={styles.childCard}>{children}</div>
+                </Collapsible>
             </Shown>
             <Shown when={!collapsed}>
                 <footer>{footer}</footer>

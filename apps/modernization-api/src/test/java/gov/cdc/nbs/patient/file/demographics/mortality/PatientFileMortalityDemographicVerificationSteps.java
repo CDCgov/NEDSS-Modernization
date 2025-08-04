@@ -60,4 +60,13 @@ public class PatientFileMortalityDemographicVerificationSteps {
         .andExpect(jsonPath("$.country.value").value(value));
   }
 
+  @Then("the patient file mortality demographics does not include details of death")
+  public void notDeathDetails() throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.deceasedOn").doesNotExist())
+        .andExpect(jsonPath("$.city").doesNotExist())
+        .andExpect(jsonPath("$.state").doesNotExist())
+        .andExpect(jsonPath("$.county").doesNotExist())
+        .andExpect(jsonPath("$.country").doesNotExist());
+  }
 }

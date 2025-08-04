@@ -1,6 +1,6 @@
-import { useRedirect } from './useRedirect';
 import { MouseEvent } from 'react';
-import { Destination } from './Destination';
+
+import { useRedirect, Destination } from './useRedirect';
 
 type Props = {
     url: string;
