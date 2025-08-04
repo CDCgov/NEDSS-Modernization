@@ -88,6 +88,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
     {
         ...DESCRIPTION,
         sortable: true,
+        value: (value) => value.associated?.condition ?? value.priority ?? value.disposition,
         render: (value) => (
             <>
                 <strong>{value.associated?.condition}</strong>
