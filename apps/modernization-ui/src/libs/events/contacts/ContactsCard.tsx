@@ -12,6 +12,11 @@ import { Tag } from 'design-system/tag';
 import { Sizing } from 'design-system/field';
 import { Patient } from 'apps/patient/file/patient';
 import { MaybeLabeledValue } from 'design-system/value';
+import { Suspense, useState } from 'react';
+import { LoadingOverlay } from 'libs/loading';
+import { Await } from 'react-router';
+import { MemoizedSupplier } from 'libs/supplying';
+import { ClassicModalButton } from 'libs/classic';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_CREATED = { id: 'createx-on', name: 'Date created' };
@@ -31,7 +36,7 @@ const columnPreferences: ColumnPreference[] = [
 
 const displayPatientName = (value?: DisplayableName) => <a href="patient....">{value && displayName('full')(value)}</a>;
 
-const columns: Column<PatientFileContact>[] = [
+const columns = (onClose: () => void): Column<PatientFileContact>[] => [
     {
         ...EVENT_ID,
         className: styles['local-header'],
@@ -39,7 +44,17 @@ const columns: Column<PatientFileContact>[] = [
         value: (value) => value.local,
         render: (value) => (
             <>
-                <a href={`/nbs/api/profile/${value.patient}/contact/${value.identifier}`}>{value.local}</a>
+                <ClassicModalButton
+                    tertiary
+                    sizing="small"
+                    className={styles['event-id']}
+                    url={`/nbs/api/profile/${value.patient}/contact/${value.identifier}`}
+                    onClose={onClose}>
+                    {value.local}
+                </ClassicModalButton>
+                <strong>{value.processingDecision}</strong>
+                <br />
+                {value.referralBasis && `(${value.referralBasis})`}
             </>
         )
     },
@@ -98,6 +113,7 @@ const columns: Column<PatientFileContact>[] = [
 type InternalCardProps = {
     patient: Patient;
     data?: PatientFileContacts[];
+    onClose: () => void;
 } & Omit<TableCardProps<PatientFileContacts>, 'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey'>;
 
 const dataLength = (data: PatientFileContacts[]) => {
@@ -110,7 +126,7 @@ const dataLength = (data: PatientFileContacts[]) => {
     return count;
 };
 
-const InternalCard = ({ patient, sizing, title, data = [], ...remaining }: InternalCardProps) => {
+const InternalCard = ({ patient, sizing, title, data = [], onClose, ...remaining }: InternalCardProps) => {
     const subTitle = 'was named as a contact in the following';
     return (
         <ColumnPreferenceProvider id="key" defaults={columnPreferences}>
@@ -125,13 +141,13 @@ const InternalCard = ({ patient, sizing, title, data = [], ...remaining }: Inter
                     {data.map((contact) => (
                         <Section
                             key={contact.condition}
-                            title={`${patient.name && displayName('short')(patient.name)} ${subTitle} ${contact.condition}`}
+                            title={`${patient.name && displayName('short')(patient.name)} ${subTitle} ${contact.condition} investigation(s)`}
                             id={`${contact.condition}-${title}`}
                             sizing={sizing}
                             className={styles.card}
                             subtext={`${contact.contacts.length} records`}>
                             <SortableDataTable
-                                columns={columns}
+                                columns={columns(onClose)}
                                 data={contact.contacts}
                                 {...remaining}
                                 sizing={sizing}
@@ -145,21 +161,30 @@ const InternalCard = ({ patient, sizing, title, data = [], ...remaining }: Inter
 };
 
 type ContactsCardProps = {
-    provider?: PatientFileContacts[];
+    provider: MemoizedSupplier<Promise<PatientFileContacts[]>>;
     sizing?: Sizing;
-} & Omit<InternalCardProps, 'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey'>;
+} & Omit<InternalCardProps, 'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey' | 'onClose'>;
 
 const ContactsCard = ({ provider, ...remaining }: ContactsCardProps) => {
+    const [key, setKey] = useState<number>(0);
+
+    const handleClose = () => {
+        provider.reset();
+        setKey((current) => current + 1);
+    };
+
     return (
-        // <Suspense
-        //     fallback={
-        //         <LoadingOverlay>
-        //             <InternalCard {...remaining} />
-        //         </LoadingOverlay>
-        //     }>
-        //     <Await resolve={provider?.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
-        // </Suspense>
-        <InternalCard data={provider} {...remaining} />
+        <Suspense
+            key={key}
+            fallback={
+                <LoadingOverlay>
+                    <InternalCard {...remaining} onClose={handleClose} />
+                </LoadingOverlay>
+            }>
+            <Await resolve={provider?.get()}>
+                {(data) => <InternalCard data={data} onClose={handleClose} {...remaining} />}
+            </Await>
+        </Suspense>
     );
 };
 

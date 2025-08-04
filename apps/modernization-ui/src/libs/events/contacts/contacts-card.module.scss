@@ -22,3 +22,9 @@
 .date-time-header {
     @include widths.fixed(7rem);
 }
+
+.event-id {
+    font-size: 0.75rem;
+    min-height: unset;
+    font-weight: 600;
+}

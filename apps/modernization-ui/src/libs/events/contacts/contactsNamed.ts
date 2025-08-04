@@ -11,7 +11,7 @@ type PatientFileContact = {
     local: string;
     processingDecision?: string;
     referralBasis?: string;
-    createdOn: Date;
+    createdOn?: Date;
     namedOn?: Date;
     named: NamedContact;
     priority?: string;
