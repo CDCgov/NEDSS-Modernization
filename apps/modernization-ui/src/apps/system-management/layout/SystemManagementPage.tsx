@@ -1,10 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Heading } from 'components/heading';
 import { SearchBar } from 'design-system/search/SearchBar';
-import VisibleWrapper from './VisibleWrapper';
-import styles from './SystemManagementPage.module.scss';
+import { AlertMessage } from 'design-system/alert/AlertMessage';
 import { CaseReportLaboratorySection } from '../components/case-report-and-lab/CaseReportLaboratorySection';
-import { useEffect, useState } from 'react';
-import { AlertMessage } from '../../../design-system/alert/AlertMessage';
 import { DecisionSupportSection } from '../components/decision-support/DecisionSupportSection';
 import { EpiLinkSection } from '../components/epi-link-lot-number/EpiLinkSection';
 import { MessagingSection } from '../components/messaging/MessagingSection';
@@ -12,6 +10,8 @@ import { PageSection } from '../components/page/PageSection';
 import { PersonMatchSection } from '../components/person-match/PersonMatchSection';
 import { ReportSection } from '../components/report/ReportSection';
 import { SecuritySection } from '../components/security/SecuritySection';
+import VisibleWrapper from './VisibleWrapper';
+import styles from './SystemManagementPage.module.scss';
 
 const SystemManagementPage = () => {
     const [filter, setFilter] = useState('');
