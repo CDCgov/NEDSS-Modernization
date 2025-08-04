@@ -13,6 +13,7 @@ import type { PatientDemographicsSummary } from '../models/PatientDemographicsSu
 import type { PatientEthnicityDemographic } from '../models/PatientEthnicityDemographic';
 import type { PatientFile } from '../models/PatientFile';
 import type { PatientFileContacts } from '../models/PatientFileContacts';
+import type { PatientFileDocument } from '../models/PatientFileDocument';
 import type { PatientFileTreatment } from '../models/PatientFileTreatment';
 import type { PatientGeneralInformationDemographic } from '../models/PatientGeneralInformationDemographic';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
@@ -188,6 +189,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/merge/history',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Documents
+     * Provides Documents for a patient
+     * @returns PatientFileDocument OK
+     * @throws ApiError
+     */
+    public static documents({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientFileDocument>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/documents',
             path: {
                 'patient': patient,
             },
