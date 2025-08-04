@@ -45,7 +45,8 @@ public class PatientProfileViewDocumentSteps {
       final MockMvc mvc,
       final Active<SessionCookie> activeSession,
       final Active<MockHttpServletResponse> activeResponse,
-      @Qualifier("classicRestService") final MockRestServiceServer server) {
+      @Qualifier("classicRestService") final MockRestServiceServer server
+  ) {
     this.classicUrl = classicUrl;
     this.patients = patients;
     this.documents = documents;
@@ -65,7 +66,7 @@ public class PatientProfileViewDocumentSteps {
     long patient = patients.active().id();
 
     server.expect(
-        requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+            requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
@@ -75,15 +76,15 @@ public class PatientProfileViewDocumentSteps {
 
     long document = documents.active().identifier();
 
-    String request = 
+    String request =
         "/nbs/api/profile/%d/document/%d".formatted(
-        patient,
-        document);
+            patient,
+            document);
 
     activeResponse.active(
         mvc.perform(
-            MockMvcRequestBuilders.get(request)
-                .cookie(activeSession.active().asCookie()))
+                MockMvcRequestBuilders.get(request)
+                    .cookie(activeSession.active().asCookie()))
             .andReturn()
             .getResponse());
   }

@@ -107,7 +107,7 @@ public class CaseReportMother {
 
   private static final String DELETE_IN = """
       delete from Participation where act_class_cd = 'DOC' and act_uid in (:identifiers);
-      delete from nbs_document where document_uid in (:identifiers);
+      delete from nbs_document where nbs_document_uid in (:identifiers);
       delete from Act_relationship where source_class_cd = 'DOC' and source_act_uid in (:identifiers);
       delete from Act where class_cd = 'DOC' and act_uid in (:identifiers);
       """;

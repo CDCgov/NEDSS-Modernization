@@ -35,13 +35,6 @@ export enum CaseStatus {
   Unknown = 'UNKNOWN'
 }
 
-export type ContactsNamedByPatientResults = {
-  __typename?: 'ContactsNamedByPatientResults';
-  content: Array<Maybe<NamedByPatient>>;
-  number: Scalars['Int']['output'];
-  total: Scalars['Int']['output'];
-};
-
 export type DateBetweenCriteria = {
   from?: InputMaybe<Scalars['Date']['input']>;
   to?: InputMaybe<Scalars['Date']['input']>;
@@ -322,36 +315,6 @@ export type LocationCriteria = {
   street?: InputMaybe<TextCriteria>;
 };
 
-export type NamedByContact = {
-  __typename?: 'NamedByContact';
-  associatedWith?: Maybe<PatientContactInvestigation>;
-  condition: TracedCondition;
-  contact: NamedContact;
-  contactRecord: Scalars['ID']['output'];
-  createdOn: Scalars['DateTime']['output'];
-  event: Scalars['String']['output'];
-  namedOn: Scalars['DateTime']['output'];
-};
-
-export type NamedByPatient = {
-  __typename?: 'NamedByPatient';
-  associatedWith?: Maybe<PatientContactInvestigation>;
-  condition: TracedCondition;
-  contact: NamedContact;
-  contactRecord: Scalars['ID']['output'];
-  createdOn: Scalars['DateTime']['output'];
-  disposition?: Maybe<Scalars['String']['output']>;
-  event: Scalars['String']['output'];
-  namedOn: Scalars['DateTime']['output'];
-  priority?: Maybe<Scalars['String']['output']>;
-};
-
-export type NamedContact = {
-  __typename?: 'NamedContact';
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-};
-
 export enum NotificationStatus {
   Approved = 'APPROVED',
   Completed = 'COMPLETED',
@@ -380,48 +343,9 @@ export type Page = {
   pageSize: Scalars['Int']['input'];
 };
 
-export type PatientContactInvestigation = {
-  __typename?: 'PatientContactInvestigation';
-  condition: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  local: Scalars['String']['output'];
-};
-
-export type PatientDocument = {
-  __typename?: 'PatientDocument';
-  associatedWith?: Maybe<PatientDocumentInvestigation>;
-  condition?: Maybe<Scalars['String']['output']>;
-  document: Scalars['ID']['output'];
-  event: Scalars['String']['output'];
-  receivedOn: Scalars['DateTime']['output'];
-  reportedOn: Scalars['DateTime']['output'];
-  sendingFacility: Scalars['String']['output'];
-  type: Scalars['String']['output'];
-};
-
-export type PatientDocumentInvestigation = {
-  __typename?: 'PatientDocumentInvestigation';
-  id: Scalars['ID']['output'];
-  local: Scalars['String']['output'];
-};
-
-export type PatientDocumentResults = {
-  __typename?: 'PatientDocumentResults';
-  content: Array<Maybe<PatientDocument>>;
-  number: Scalars['Int']['output'];
-  total: Scalars['Int']['output'];
-};
-
 export type PatientNameCriteria = {
   first?: InputMaybe<TextCriteria>;
   last?: InputMaybe<TextCriteria>;
-};
-
-export type PatientNamedByContactResults = {
-  __typename?: 'PatientNamedByContactResults';
-  content: Array<Maybe<NamedByPatient>>;
-  number: Scalars['Int']['output'];
-  total: Scalars['Int']['output'];
 };
 
 export type PatientSearchResult = {
@@ -563,11 +487,8 @@ export type Query = {
   __typename?: 'Query';
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
-  findContactsNamedByPatient?: Maybe<ContactsNamedByPatientResults>;
-  findDocumentsForPatient?: Maybe<PatientDocumentResults>;
   findInvestigationsByFilter: InvestigationResults;
   findLabReportsByFilter: LabReportResults;
-  findPatientNamedByContact?: Maybe<PatientNamedByContactResults>;
   findPatientsByFilter: PatientSearchResults;
 };
 
@@ -582,18 +503,6 @@ export type QueryFindAllProgramAreasArgs = {
 };
 
 
-export type QueryFindContactsNamedByPatientArgs = {
-  page?: InputMaybe<Page>;
-  patient: Scalars['ID']['input'];
-};
-
-
-export type QueryFindDocumentsForPatientArgs = {
-  page?: InputMaybe<Page>;
-  patient: Scalars['ID']['input'];
-};
-
-
 export type QueryFindInvestigationsByFilterArgs = {
   filter: InvestigationFilter;
   page?: InputMaybe<SortablePage>;
@@ -603,12 +512,6 @@ export type QueryFindInvestigationsByFilterArgs = {
 export type QueryFindLabReportsByFilterArgs = {
   filter: LabReportFilter;
   page?: InputMaybe<SortablePage>;
-};
-
-
-export type QueryFindPatientNamedByContactArgs = {
-  page?: InputMaybe<Page>;
-  patient: Scalars['ID']['input'];
 };
 
 
@@ -682,12 +585,6 @@ export type TextCriteria = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type TracedCondition = {
-  __typename?: 'TracedCondition';
-  description?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-};
-
 export enum UserType {
   External = 'EXTERNAL',
   Internal = 'INTERNAL'
@@ -707,22 +604,6 @@ export type FindAllProgramAreasQueryVariables = Exact<{
 
 export type FindAllProgramAreasQuery = { __typename?: 'Query', findAllProgramAreas: Array<{ __typename?: 'ProgramAreaCode', id: string, progAreaDescTxt?: string | null, nbsUid?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeq?: number | null } | null> };
 
-export type FindContactsNamedByPatientQueryVariables = Exact<{
-  patient: Scalars['ID']['input'];
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindContactsNamedByPatientQuery = { __typename?: 'Query', findContactsNamedByPatient?: { __typename?: 'ContactsNamedByPatientResults', total: number, number: number, content: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, namedOn: any, priority?: string | null, disposition?: string | null, event: string, condition: { __typename?: 'TracedCondition', id?: string | null, description?: string | null }, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
-
-export type FindDocumentsForPatientQueryVariables = Exact<{
-  patient: Scalars['ID']['input'];
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindDocumentsForPatientQuery = { __typename?: 'Query', findDocumentsForPatient?: { __typename?: 'PatientDocumentResults', total: number, number: number, content: Array<{ __typename?: 'PatientDocument', document: string, receivedOn: any, type: string, sendingFacility: string, reportedOn: any, condition?: string | null, event: string, associatedWith?: { __typename?: 'PatientDocumentInvestigation', id: string, local: string } | null } | null> } | null };
-
 export type FindInvestigationsByFilterQueryVariables = Exact<{
   filter: InvestigationFilter;
   page?: InputMaybe<SortablePage>;
@@ -738,14 +619,6 @@ export type FindLabReportsByFilterQueryVariables = Exact<{
 
 
 export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, page: number, size: number, content: Array<{ __typename?: 'LabReport', relevance: number, id: string, jurisdictionCd: number, localId: string, addTime: any, personParticipations: Array<{ __typename?: 'LabReportPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }>, organizationParticipations: Array<{ __typename?: 'LabReportOrganizationParticipation', typeCd: string, name: string }>, observations: Array<{ __typename?: 'Observation', cdDescTxt?: string | null, statusCd?: string | null, altCd?: string | null, displayName?: string | null }>, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation', cdDescTxt: string, localId: string }>, tests: Array<{ __typename?: 'LabTestSummary', name?: string | null, status?: string | null, coded?: string | null, numeric?: number | null, high?: string | null, low?: string | null, unit?: string | null }> }> } };
-
-export type FindPatientNamedByContactQueryVariables = Exact<{
-  patient: Scalars['ID']['input'];
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindPatientNamedByContactQuery = { __typename?: 'Query', findPatientNamedByContact?: { __typename?: 'PatientNamedByContactResults', total: number, number: number, content: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, namedOn: any, priority?: string | null, disposition?: string | null, event: string, condition: { __typename?: 'TracedCondition', id?: string | null, description?: string | null }, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
 
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;
@@ -863,124 +736,6 @@ export type FindAllProgramAreasQueryHookResult = ReturnType<typeof useFindAllPro
 export type FindAllProgramAreasLazyQueryHookResult = ReturnType<typeof useFindAllProgramAreasLazyQuery>;
 export type FindAllProgramAreasSuspenseQueryHookResult = ReturnType<typeof useFindAllProgramAreasSuspenseQuery>;
 export type FindAllProgramAreasQueryResult = Apollo.QueryResult<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>;
-export const FindContactsNamedByPatientDocument = gql`
-    query findContactsNamedByPatient($patient: ID!, $page: Page) {
-  findContactsNamedByPatient(patient: $patient, page: $page) {
-    content {
-      contactRecord
-      createdOn
-      condition {
-        id
-        description
-      }
-      contact {
-        id
-        name
-      }
-      namedOn
-      priority
-      disposition
-      event
-      associatedWith {
-        id
-        local
-        condition
-      }
-    }
-    total
-    number
-  }
-}
-    `;
-
-/**
- * __useFindContactsNamedByPatientQuery__
- *
- * To run a query within a React component, call `useFindContactsNamedByPatientQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindContactsNamedByPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindContactsNamedByPatientQuery({
- *   variables: {
- *      patient: // value for 'patient'
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindContactsNamedByPatientQuery(baseOptions: Apollo.QueryHookOptions<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables> & ({ variables: FindContactsNamedByPatientQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>(FindContactsNamedByPatientDocument, options);
-      }
-export function useFindContactsNamedByPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>(FindContactsNamedByPatientDocument, options);
-        }
-export function useFindContactsNamedByPatientSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>(FindContactsNamedByPatientDocument, options);
-        }
-export type FindContactsNamedByPatientQueryHookResult = ReturnType<typeof useFindContactsNamedByPatientQuery>;
-export type FindContactsNamedByPatientLazyQueryHookResult = ReturnType<typeof useFindContactsNamedByPatientLazyQuery>;
-export type FindContactsNamedByPatientSuspenseQueryHookResult = ReturnType<typeof useFindContactsNamedByPatientSuspenseQuery>;
-export type FindContactsNamedByPatientQueryResult = Apollo.QueryResult<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>;
-export const FindDocumentsForPatientDocument = gql`
-    query findDocumentsForPatient($patient: ID!, $page: Page) {
-  findDocumentsForPatient(patient: $patient, page: $page) {
-    content {
-      document
-      receivedOn
-      type
-      sendingFacility
-      reportedOn
-      condition
-      event
-      associatedWith {
-        id
-        local
-      }
-    }
-    total
-    number
-  }
-}
-    `;
-
-/**
- * __useFindDocumentsForPatientQuery__
- *
- * To run a query within a React component, call `useFindDocumentsForPatientQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindDocumentsForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindDocumentsForPatientQuery({
- *   variables: {
- *      patient: // value for 'patient'
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindDocumentsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables> & ({ variables: FindDocumentsForPatientQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>(FindDocumentsForPatientDocument, options);
-      }
-export function useFindDocumentsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>(FindDocumentsForPatientDocument, options);
-        }
-export function useFindDocumentsForPatientSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>(FindDocumentsForPatientDocument, options);
-        }
-export type FindDocumentsForPatientQueryHookResult = ReturnType<typeof useFindDocumentsForPatientQuery>;
-export type FindDocumentsForPatientLazyQueryHookResult = ReturnType<typeof useFindDocumentsForPatientLazyQuery>;
-export type FindDocumentsForPatientSuspenseQueryHookResult = ReturnType<typeof useFindDocumentsForPatientSuspenseQuery>;
-export type FindDocumentsForPatientQueryResult = Apollo.QueryResult<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>;
 export const FindInvestigationsByFilterDocument = gql`
     query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortablePage) {
   findInvestigationsByFilter(filter: $filter, page: $page) {
@@ -1129,69 +884,6 @@ export type FindLabReportsByFilterQueryHookResult = ReturnType<typeof useFindLab
 export type FindLabReportsByFilterLazyQueryHookResult = ReturnType<typeof useFindLabReportsByFilterLazyQuery>;
 export type FindLabReportsByFilterSuspenseQueryHookResult = ReturnType<typeof useFindLabReportsByFilterSuspenseQuery>;
 export type FindLabReportsByFilterQueryResult = Apollo.QueryResult<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>;
-export const FindPatientNamedByContactDocument = gql`
-    query findPatientNamedByContact($patient: ID!, $page: Page) {
-  findPatientNamedByContact(patient: $patient, page: $page) {
-    content {
-      contactRecord
-      createdOn
-      condition {
-        id
-        description
-      }
-      contact {
-        id
-        name
-      }
-      namedOn
-      priority
-      disposition
-      event
-      associatedWith {
-        id
-        local
-        condition
-      }
-    }
-    total
-    number
-  }
-}
-    `;
-
-/**
- * __useFindPatientNamedByContactQuery__
- *
- * To run a query within a React component, call `useFindPatientNamedByContactQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindPatientNamedByContactQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindPatientNamedByContactQuery({
- *   variables: {
- *      patient: // value for 'patient'
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindPatientNamedByContactQuery(baseOptions: Apollo.QueryHookOptions<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables> & ({ variables: FindPatientNamedByContactQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>(FindPatientNamedByContactDocument, options);
-      }
-export function useFindPatientNamedByContactLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>(FindPatientNamedByContactDocument, options);
-        }
-export function useFindPatientNamedByContactSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>(FindPatientNamedByContactDocument, options);
-        }
-export type FindPatientNamedByContactQueryHookResult = ReturnType<typeof useFindPatientNamedByContactQuery>;
-export type FindPatientNamedByContactLazyQueryHookResult = ReturnType<typeof useFindPatientNamedByContactLazyQuery>;
-export type FindPatientNamedByContactSuspenseQueryHookResult = ReturnType<typeof useFindPatientNamedByContactSuspenseQuery>;
-export type FindPatientNamedByContactQueryResult = Apollo.QueryResult<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>;
 export const FindPatientsByFilterDocument = gql`
     query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage, $share: String) {
   findPatientsByFilter(filter: $filter, page: $page, share: $share) {
