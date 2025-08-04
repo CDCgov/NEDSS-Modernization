@@ -37,3 +37,4 @@ const NavLinkButton = ({
 };
 
 export { NavLinkButton };
+export type { NavLinkButtonProps };
