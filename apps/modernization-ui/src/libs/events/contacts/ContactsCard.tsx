@@ -80,7 +80,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
         value: (value) => value.named?.first ?? value.named?.last ?? '',
         render: (value) => (
             <>
-                <a href={`/patient/${value.patient}`}>{displayPatientName(value.named)}</a>
+                <a href={`/patient/${value.named.patientId}`}>{displayPatientName(value.named)}</a>
             </>
         ),
         sortIconType: 'alpha'
