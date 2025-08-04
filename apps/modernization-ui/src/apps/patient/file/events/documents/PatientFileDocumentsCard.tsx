@@ -33,11 +33,7 @@ const columns: Column<PatientFileDocument>[] = [
         className: styles['local-header'],
         sortable: true,
         value: (value) => value.local,
-        render: (value) => (
-            <>
-                <a href={`/nbs/api/profile/${value.patient}/document/${value.id}`}>{value.local}</a>
-            </>
-        )
+        render: (value) => <a href={`/nbs/api/profile/${value.patient}/document/${value.id}`}>{value.local}</a>
     },
     {
         ...DATE_RECEIVED,
@@ -55,7 +51,7 @@ const columns: Column<PatientFileDocument>[] = [
     },
     {
         ...DATE_REPORTED,
-        className: styles['report-header'],
+        className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.reportedOn,
         render: (value) => internalizeDate(value.reportedOn),
