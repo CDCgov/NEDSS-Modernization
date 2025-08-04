@@ -132,10 +132,7 @@ const PreviewPageContent = () => {
             <PageManagementLayout name={page.name} mode={page.status}>
                 <PageHeader page={page} tabs={visibleTabs}>
                     <PageManagementMenu>
-                        <NavLinkButton
-                            to={`/page-builder/pages/${page.id}/business-rules`}
-                            type="outline"
-                            dataTestId="businessRulesBtn">
+                        <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                             Business rules
                         </NavLinkButton>
                         <ModalToggleButton modalRef={saveTemplateRef} outline type="button">
