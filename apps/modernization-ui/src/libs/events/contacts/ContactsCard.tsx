@@ -87,7 +87,7 @@ const columns: Column<PatientFileContact>[] = [
     },
     {
         ...ASSOCIATED_WITH,
-        className: styles['local-header'],
+        className: styles['long-coded-header'],
         sortable: true,
         value: (value) => value.associated?.local,
         render: (value) =>
