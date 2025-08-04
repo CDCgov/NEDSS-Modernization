@@ -11,7 +11,7 @@ import {
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { Loading } from 'components/Spinner';
 import { LinkButton } from 'design-system/button';
-import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { NavLinkButton } from 'design-system/button';
 import { ConfirmationModal } from 'confirmation';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
