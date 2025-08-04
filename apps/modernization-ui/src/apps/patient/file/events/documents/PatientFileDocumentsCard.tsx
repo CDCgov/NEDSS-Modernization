@@ -35,7 +35,7 @@ const columns: Column<PatientFileDocument>[] = [
         value: (value) => value.local,
         render: (value) => (
             <>
-                <a href="">{value.local}</a>
+                <a href={`/nbs/api/profile/${value.patient}/document/${value.id}`}>{value.local}</a>
             </>
         )
     },
