@@ -7,7 +7,7 @@ import { ColumnPreference } from 'design-system/table/preferences';
 import { Column } from 'design-system/table';
 
 import styles from './treatments.module.scss';
-import { internalizeDate, internalizeDateTime } from 'date';
+import { internalizeDateTime } from 'date';
 import { displayProvider } from 'libs/provider';
 import { Associations } from 'libs/events/investigations/associated';
 import { PatientFileTreatment } from '.';
@@ -40,7 +40,7 @@ const columns = (onClose: () => void): Column<PatientFileTreatment>[] => [
                 tertiary
                 sizing={'small'}
                 className={styles['event-id']}
-                url={`/nbs/api/profile/${value.patient}/treatment/${value.id}`}
+                url={`/nbs/api/patients/${value.patient}/treatments/${value.id}`}
                 onClose={onClose}>
                 {value.local}
             </ClassicModalButton>
@@ -58,23 +58,20 @@ const columns = (onClose: () => void): Column<PatientFileTreatment>[] => [
         ...PROVIDER,
         sortable: true,
         className: styles['text-header'],
-        value: (value) => value.provider?.first,
-        render: (value) => displayProvider(value.provider),
-        sortIconType: 'alpha'
+        value: (value) => displayProvider(value.provider)
     },
     {
         ...TREATMENT_DATE,
         className: styles['treatment-date-header'],
         sortable: true,
         value: (value) => value.treatedOn,
-        render: (value) => internalizeDate(value.treatedOn)
+        sortIconType: 'numeric'
     },
     {
         ...TREATMENT,
         sortable: true,
         value: (value) => value.description,
-        render: (value) => <strong>{value.description}</strong>,
-        sortIconType: 'alpha'
+        render: (value) => <strong>{value.description}</strong>
     },
     {
         ...ASSOCIATED_WITH,
