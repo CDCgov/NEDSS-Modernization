@@ -48,8 +48,8 @@ class PatientFileDocumentFinder {
               and [document].record_status_cd != 'LOG_DEL'
               and [document].program_jurisdiction_oid in (:any)
       
-              join nbs_srte..Condition_code [condition] with (nolock) on
-                          [condition].condition_cd = [document].cd
+          left join nbs_srte..Condition_code [condition] with (nolock) on
+                   [condition].condition_cd = [document].cd
       order by
           [document].local_id desc
       """;
