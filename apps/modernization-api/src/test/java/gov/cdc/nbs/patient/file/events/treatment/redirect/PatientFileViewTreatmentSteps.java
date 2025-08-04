@@ -56,7 +56,7 @@ public class PatientFileViewTreatmentSteps {
   }
 
   @When("the Treatment is viewed from the Patient file")
-  public void viewed() throws Exception {
+  public void viewed() {
     long patient = activePatient.active().id();
 
     server.expect(
