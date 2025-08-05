@@ -17,6 +17,9 @@ import { LoadingOverlay } from 'libs/loading';
 import { Await } from 'react-router';
 import { MemoizedSupplier } from 'libs/supplying';
 import { ClassicModalButton } from 'libs/classic';
+import { Shown } from 'conditional-render';
+import { exists } from 'utils';
+import { displayNoData } from 'design-system/data';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_CREATED = { id: 'createx-on', name: 'Date created' };
@@ -90,15 +93,19 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
         sortable: true,
         value: (value) => value.associated?.condition ?? value.priority ?? value.disposition,
         render: (value) => (
-            <>
-                <strong>{value.associated?.condition}</strong>
+            <Shown
+                when={exists(value.associated) || exists(value.priority) || exists(value.disposition)}
+                fallback={displayNoData()}>
+                <Shown when={exists(value.associated)}>
+                    <strong>{value.associated?.condition}</strong>
+                </Shown>
                 <MaybeLabeledValue label="Priority:" orientation="horizontal">
                     {value.priority}
                 </MaybeLabeledValue>
                 <MaybeLabeledValue label="Disposition:" orientation="horizontal">
                     {value.disposition}
                 </MaybeLabeledValue>
-            </>
+            </Shown>
         )
     },
     {
