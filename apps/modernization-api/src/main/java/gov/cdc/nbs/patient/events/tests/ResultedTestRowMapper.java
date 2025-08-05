@@ -48,10 +48,11 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
         .orElse("");
 
     String coded = resultSet.getString(columns.coded());
+    
+    String numeric = maybeDisplayNumericResult(columns, resultSet);
 
     String text = resultSet.getString(columns.text());
 
-    String numeric = maybeDisplayNumericResult(columns, resultSet);
 
     String result =
         Stream.of(
