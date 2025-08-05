@@ -154,4 +154,12 @@ describe('when entering patient sex and birth demographics', () => {
 
         expect(getByText('10 years')).toBeInTheDocument();
     });
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+        const dateInput = getByLabelText('Sex & birth information as of');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            "This field defaults to today's date and can be changed if needed."
+        );
+    });
 });
