@@ -1,7 +1,6 @@
 import { SortHandler, SortingProvider } from 'libs/sorting';
 import { DataTable, DataTableProps } from '../DataTable';
 import { columnSortResolver } from './columnSortResolver';
-import { useColumnPreferences } from '../preferences';
 
 /**
  * A variant of DataTable that provides in memory sorting of rows based on the values of the column
