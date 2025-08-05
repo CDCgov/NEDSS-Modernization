@@ -40,6 +40,20 @@ describe('NavBar component tests', () => {
         });
     });
 
+    describe('Merge Patients Section', ()=> {
+        it.each([
+            [permissions.patient.merge]
+        ])('should show Merge Patients with permission: %s', (permission) => {
+            const { getByText } = renderNavBarWithPermissions([permission]);
+            expect(getByText('Merge Patients')).toBeInTheDocument();
+        });
+
+        it('should NOT show Merge Patients without merge permissions', () => {
+            const { queryByText } = renderNavBarWithPermissions(['ADMINISTRATE-SYSTEM']);
+            expect(queryByText('Merge Patients')).not.toBeInTheDocument();
+        });
+    });
+
     describe('Reports section', () => {
         it.each([
             [permissions.viewReports.template],

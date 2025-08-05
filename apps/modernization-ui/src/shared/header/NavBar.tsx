@@ -1,4 +1,4 @@
-import { permitsAny, Permitted, permissions } from 'libs/permission';
+import { permitsAny, Permitted, permissions, permitsAll } from 'libs/permission';
 import { usePage } from 'page';
 import { useUser } from 'user';
 
@@ -35,9 +35,14 @@ export const NavBar = () => {
                                             <span> | </span>
                                         </td>
 
-                                        <td className={styles.navLink}>
-                                            <a href={`/nbs/LoadNavbar1.do?ContextAction=MergePerson`}>Merge Patients</a>
-                                        </td>
+                                        <Permitted permission={permitsAll(permissions.patient.merge)}>
+                                            <td className={styles.navLink}>
+                                                <a href={`/nbs/LoadNavbar1.do?ContextAction=MergePerson`}>
+                                                    Merge Patients
+                                                </a>
+                                            </td>
+                                        </Permitted>
+
                                         <td>
                                             <span> | </span>
                                         </td>
