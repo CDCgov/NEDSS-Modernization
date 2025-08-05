@@ -1,4 +1,4 @@
-import { permitsAny, Permitted } from 'libs/permission';
+import { permitsAny, Permitted, permissions, permitsAll } from 'libs/permission';
 import { usePage } from 'page';
 import { useUser } from 'user';
 
@@ -24,37 +24,58 @@ export const NavBar = () => {
                                         <td className={styles.navLink}>
                                             <a href={`/nbs/HomePage.do?method=loadHomePage`}>Home</a>
                                         </td>
-                                        <td>
-                                            <span> | </span>
-                                        </td>
 
-                                        <td className={styles.navLink}>
-                                            <a href={`/nbs/LoadNavbar.do?ContextAction=DataEntry`}>Data Entry</a>
-                                        </td>
-                                        <td>
-                                            <span> | </span>
-                                        </td>
+                                        <Permitted
+                                            permission={permitsAny(
+                                                permissions.morbidityReport.add,
+                                                permissions.labReport.add,
+                                                permissions.summaryReports.view,
+                                                permissions.patient.search
+                                            )}>
+                                            <td>
+                                                <span> | </span>
+                                            </td>
+                                            <td className={styles.navLink}>
+                                                <a href={`/nbs/LoadNavbar.do?ContextAction=DataEntry`}>Data Entry</a>
+                                            </td>
+                                        </Permitted>
+                                        <Permitted permission={permitsAll(permissions.patient.merge)}>
+                                            <td>
+                                                <span> | </span>
+                                            </td>
+                                            <td className={styles.navLink}>
+                                                <a href={`/nbs/LoadNavbar1.do?ContextAction=MergePerson`}>
+                                                    Merge Patients
+                                                </a>
+                                            </td>
+                                        </Permitted>
 
-                                        <td className={styles.navLink}>
-                                            <a href={`/nbs/LoadNavbar1.do?ContextAction=MergePerson`}>Merge Patients</a>
-                                        </td>
-                                        <td>
-                                            <span> | </span>
-                                        </td>
+                                        <Permitted permission={permitsAll(permissions.investigation.view)}>
+                                            <td>
+                                                <span> | </span>
+                                            </td>
+                                            <td className={styles.navLink}>
+                                                <a
+                                                    href={`/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true`}>
+                                                    Open Investigations
+                                                </a>
+                                            </td>
+                                        </Permitted>
 
-                                        <td className={styles.navLink}>
-                                            <a
-                                                href={`/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true`}>
-                                                Open Investigations
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <span> | </span>
-                                        </td>
-
-                                        <td className={styles.navLink}>
-                                            <a href={`/nbs/nfc?ObjectType=7&amp;OperationType=116`}>Reports</a>
-                                        </td>
+                                        <Permitted
+                                            permission={permitsAny(
+                                                permissions.reports.template.view,
+                                                permissions.reports.public.view,
+                                                permissions.reports.private.view,
+                                                permissions.reports.reportingFacility.view
+                                            )}>
+                                            <td>
+                                                <span> | </span>
+                                            </td>
+                                            <td className={styles.navLink}>
+                                                <a href={`/nbs/nfc?ObjectType=7&amp;OperationType=116`}>Reports</a>
+                                            </td>
+                                        </Permitted>
 
                                         <Permitted
                                             permission={permitsAny(
@@ -66,7 +87,8 @@ export const NavBar = () => {
                                                 'REPORTADMIN-SYSTEM',
                                                 'ALERTADMIN-SYSTEM',
                                                 'ADMINISTRATE-SYSTEM',
-                                                'ADMINISTRATE-SECURITY'
+                                                'ADMINISTRATE-SECURITY',
+                                                'MERGE-PATIENT'
                                             )}>
                                             <td className={styles.navLink}>
                                                 <span> | </span>
