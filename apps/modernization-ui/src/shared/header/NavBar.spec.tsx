@@ -40,6 +40,23 @@ describe('NavBar component tests', () => {
         });
     });
 
+    describe('Data Entry section', ()=>{
+        it.each([
+            [permissions.morbidityReport.add],
+            [permissions.labReport.add],
+            [permissions.summaryReports.view],
+            [permissions.patient.search]
+        ])('should show Data Entry with permission: %s', (permission) => {
+            const { getByText } = renderNavBarWithPermissions([permission]);
+            expect(getByText('Data Entry')).toBeInTheDocument();
+        });
+
+        it('should NOT show Data Entry without permissions', () => {
+            const { queryByText } = renderNavBarWithPermissions(['ADMINISTRATE-SYSTEM']);
+            expect(queryByText('Data Entry')).not.toBeInTheDocument();
+        });
+    });
+
     describe('Merge Patients Section', ()=> {
         it.each([
             [permissions.patient.merge]

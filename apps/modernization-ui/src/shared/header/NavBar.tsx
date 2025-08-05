@@ -24,18 +24,25 @@ export const NavBar = () => {
                                         <td className={styles.navLink}>
                                             <a href={`/nbs/HomePage.do?method=loadHomePage`}>Home</a>
                                         </td>
-                                        <td>
-                                            <span> | </span>
-                                        </td>
 
-                                        <td className={styles.navLink}>
-                                            <a href={`/nbs/LoadNavbar.do?ContextAction=DataEntry`}>Data Entry</a>
-                                        </td>
-                                        <td>
-                                            <span> | </span>
-                                        </td>
-
+                                        <Permitted
+                                            permission={permitsAny(
+                                                permissions.morbidityReport.add,
+                                                permissions.labReport.add,
+                                                permissions.summaryReports.view,
+                                                permissions.patient.search
+                                            )}>
+                                            <td>
+                                                <span> | </span>
+                                            </td>
+                                            <td className={styles.navLink}>
+                                                <a href={`/nbs/LoadNavbar.do?ContextAction=DataEntry`}>Data Entry</a>
+                                            </td>
+                                        </Permitted>
                                         <Permitted permission={permitsAll(permissions.patient.merge)}>
+                                            <td>
+                                                <span> | </span>
+                                            </td>
                                             <td className={styles.navLink}>
                                                 <a href={`/nbs/LoadNavbar1.do?ContextAction=MergePerson`}>
                                                     Merge Patients
@@ -43,27 +50,28 @@ export const NavBar = () => {
                                             </td>
                                         </Permitted>
 
-                                        <td>
-                                            <span> | </span>
-                                        </td>
-
-                                        <td className={styles.navLink}>
-                                            <a
-                                                href={`/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true`}>
-                                                Open Investigations
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <span> | </span>
-                                        </td>
+                                        <Permitted permission={permitsAll(permissions.investigation.view)}>
+                                            <td>
+                                                <span> | </span>
+                                            </td>
+                                            <td className={styles.navLink}>
+                                                <a
+                                                    href={`/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true`}>
+                                                    Open Investigations
+                                                </a>
+                                            </td>
+                                        </Permitted>
 
                                         <Permitted
                                             permission={permitsAny(
-                                                permissions.viewReports.template,
-                                                permissions.viewReports.public,
-                                                permissions.viewReports.private,
-                                                permissions.viewReports.reportingFacility
+                                                permissions.reports.template.view,
+                                                permissions.reports.public.view,
+                                                permissions.reports.private.view,
+                                                permissions.reports.reportingFacility.view
                                             )}>
+                                            <td>
+                                                <span> | </span>
+                                            </td>
                                             <td className={styles.navLink}>
                                                 <a href={`/nbs/nfc?ObjectType=7&amp;OperationType=116`}>Reports</a>
                                             </td>

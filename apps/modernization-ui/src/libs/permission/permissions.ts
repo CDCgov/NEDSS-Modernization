@@ -24,11 +24,23 @@ export const permissions = {
         edit: 'EDIT-OBSERVATIONMORBIDITYREPORT',
         view: 'VIEW-OBSERVATIONMORBIDITYREPORT'
     },
-    viewReports: {
-        template: 'VIEWREPORTTEMPLATE-REPORTING',
-        public: 'VIEWREPORTPUBLIC-REPORTING',
-        private: 'VIEWREPORTPRIVATE-REPORTING',
-        reportingFacility: 'VIEWREPORTREPORTINGFACILITY-REPORTING'
+    reports: {
+        template: {
+            view: 'VIEWREPORTTEMPLATE-REPORTING'
+        },
+        public: {
+            view: 'VIEWREPORTPUBLIC-REPORTING'
+        },
+        private: {
+            view: 'VIEWREPORTPRIVATE-REPORTING'
+        },
+        reportingFacility: {
+            view: 'VIEWREPORTREPORTINGFACILITY-REPORTING'
+        }
+    },
+    summaryReports: {
+        view: 'VIEW-SUMMARYREPORT',
+        delete: 'DELETE-SUMMARYREPORT'
     },
     vaccination: {
         add: 'ADD-INTERVENTIONVACCINERECORD',
