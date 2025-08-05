@@ -5,7 +5,7 @@ export type MatchRequiringReviewResponse = {
 };
 
 export type MatchRequiringReview = {
-    matchId: number;
+    groupId: number;
     patientId: string;
     patientLocalId: string;
     patientName: string;
