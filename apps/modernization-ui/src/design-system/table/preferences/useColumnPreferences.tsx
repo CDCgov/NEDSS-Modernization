@@ -50,9 +50,11 @@ const reducer = (state: State, action: Action): State => {
     }
 };
 
+type ColumnPreferenceProviderChildren = ReactNode | ((apply: Interaction) => ReactNode | ReactNode[]);
+
 type Props = {
     id: string;
-    children: ReactNode;
+    children: ColumnPreferenceProviderChildren;
     defaults?: ColumnPreference[];
 };
 
@@ -83,7 +85,11 @@ const ColumnPreferenceProvider = ({ id, children, defaults = [] }: Props) => {
         [dispatch, state.preferences]
     );
 
-    return <ColumnPreferenceContext.Provider value={interaction}>{children}</ColumnPreferenceContext.Provider>;
+    return (
+        <ColumnPreferenceContext.Provider value={interaction}>
+            {typeof children === 'function' ? children(interaction) : children}
+        </ColumnPreferenceContext.Provider>
+    );
 };
 
 const useColumnPreferences = (): Interaction => {
