@@ -71,4 +71,12 @@ describe('when entering patient ethnicity demographics', () => {
 
         expect(queryByLabelText('Spanish origin')).not.toBeInTheDocument();
     });
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+        const dateInput = getByLabelText('Ethnicity information as of');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            "This field defaults to today's date and can be changed if needed."
+        );
+    });
 });
