@@ -41,7 +41,7 @@ public class AssociatedInvestigationFinder {
       where   [source].target_class_cd = 'CASE'
           and [source].source_act_uid in (:sources)
       order by
-          [associated].local_id desc
+          [associated].add_time desc
       """;
 
   private final JdbcClient client;
