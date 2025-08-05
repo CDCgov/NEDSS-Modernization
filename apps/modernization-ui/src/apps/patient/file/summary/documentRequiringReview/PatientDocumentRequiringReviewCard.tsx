@@ -116,7 +116,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
     },
     {
         ...EVENT_DATE,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,

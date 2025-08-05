@@ -48,7 +48,7 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
         .orElse("");
 
     String coded = resultSet.getString(columns.coded());
-    
+
     String numeric = maybeDisplayNumericResult(columns, resultSet);
 
     String text = resultSet.getString(columns.text());
@@ -56,7 +56,7 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
 
     String result =
         Stream.of(
-                coded, text, numeric
+                coded, numeric, text
             ).filter(value -> value != null && !value.isEmpty())
             .collect(
                 joining(
