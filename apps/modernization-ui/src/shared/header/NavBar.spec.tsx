@@ -73,10 +73,10 @@ describe('NavBar component tests', () => {
 
     describe('Reports section', () => {
         it.each([
-            [permissions.viewReports.template],
-            [permissions.viewReports.public],
-            [permissions.viewReports.private],
-            [permissions.viewReports.reportingFacility],
+            [permissions.reports.template.view],
+            [permissions.reports.public.view],
+            [permissions.reports.private.view],
+            [permissions.reports.reportingFacility.view],
         ])('should show Reports with permission: %s', (permission) => {
             const { getByText } = renderNavBarWithPermissions([permission]);
             expect(getByText('Reports')).toBeInTheDocument();
@@ -84,8 +84,8 @@ describe('NavBar component tests', () => {
 
         it('should show Reports with multiple report permissions', () => {
             const { getByText } = renderNavBarWithPermissions([
-                permissions.viewReports.template,
-                permissions.viewReports.private,
+                permissions.reports.template.view,
+                permissions.reports.private.view,
             ]);
             expect(getByText('Reports')).toBeInTheDocument();
         });
