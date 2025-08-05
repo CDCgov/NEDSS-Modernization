@@ -12,10 +12,6 @@ jest.mock('design-system/table/preferences/useColumnPreferences', () => ({
     })
 }));
 
-jest.mock('design-system/table/preferences/withColumnPreferences', () => ({
-    withColumnPreferences: (Component: any) => (props: any) => <Component {...props} />
-}));
-
 type TestData = {
     id: number;
     name: string;

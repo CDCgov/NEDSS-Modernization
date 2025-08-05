@@ -33,11 +33,8 @@ const TableCard = <V,>({
     ...props
 }: TableCardProps<V>) => {
     return (
-        <ColumnPreferenceProvider
-            id={`preferences-${id}`}
-            key={columnPreferencesKey}
-            defaults={defaultColumnPreferences}>
-            {(columnPreferences) => (
+        <ColumnPreferenceProvider id={columnPreferencesKey} defaults={defaultColumnPreferences}>
+            {({ apply }) => (
                 <Card
                     id={id}
                     title={title}
@@ -51,12 +48,7 @@ const TableCard = <V,>({
                             <ColumnPreferencesAction sizing={sizing} />
                         </>
                     }>
-                    <SortableDataTable
-                        {...props}
-                        id={`${id}-table`}
-                        sizing={sizing}
-                        columns={columnPreferences.apply(columns)}
-                    />
+                    <SortableDataTable {...props} id={`${id}-table`} sizing={sizing} columns={apply(columns)} />
                 </Card>
             )}
         </ColumnPreferenceProvider>
