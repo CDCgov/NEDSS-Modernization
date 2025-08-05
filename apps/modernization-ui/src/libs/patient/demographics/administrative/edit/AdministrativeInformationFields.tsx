@@ -3,10 +3,10 @@ import { EntryFieldsProps } from 'design-system/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { AdministrativeInformation, labels } from '../administrative';
+import { HasAdministrativeInformation, labels } from '../administrative';
 
 type AdministrativeInformationFieldsProps = {
-    form: UseFormReturn<{ administrative?: AdministrativeInformation }>;
+    form: UseFormReturn<HasAdministrativeInformation>;
 } & EntryFieldsProps;
 
 const AdministrativeInformationFields = ({

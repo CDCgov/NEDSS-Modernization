@@ -5,6 +5,7 @@ import { Spinner } from 'components/Spinner';
 import { ComponentSizingProvider } from 'design-system/sizing';
 
 import { PatientFileProvider, PatientFileData } from './usePatientFileData';
+import { AlertProvider } from 'libs/alert';
 
 const PatientFile = () => {
     const data = useLoaderData<PatientFileData>();
@@ -14,9 +15,11 @@ const PatientFile = () => {
             <Await resolve={data} errorElement={<RedirectHome />}>
                 {(data: PatientFileData) => (
                     <PatientFileProvider data={data}>
-                        <ComponentSizingProvider>
-                            <Outlet />
-                        </ComponentSizingProvider>
+                        <AlertProvider>
+                            <ComponentSizingProvider>
+                                <Outlet />
+                            </ComponentSizingProvider>
+                        </AlertProvider>
                     </PatientFileProvider>
                 )}
             </Await>

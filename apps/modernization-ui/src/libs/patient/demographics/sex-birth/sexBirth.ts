@@ -24,7 +24,7 @@ type HasSexBirthDemographic = {
     sexBirth?: SexBirthDemographic;
 };
 
-export type { SexBirthDemographic, HasSexBirthDemographic };
+export type { SexBirthDemographic, BirthDemographic, SexDemographic, HasSexBirthDemographic };
 
 const initial = (asOf: string = today()): SexBirthDemographic => ({
     asOf,

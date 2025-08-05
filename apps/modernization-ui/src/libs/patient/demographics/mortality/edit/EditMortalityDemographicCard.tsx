@@ -1,12 +1,12 @@
 import { UseFormReturn } from 'react-hook-form';
 import { EntryFieldsProps, Required } from 'design-system/entry';
 import { Card, CardProps } from 'design-system/card';
-import { MortalityDemographic } from '../mortality';
+import { HasMortalityDemographic } from '../mortality';
 import { useMortalityOptions } from './useMortalityOptions';
 import { MortalityDemographicFields } from './MortalityDemographicFields';
 
 type EditMortalityDemographicCardProps = {
-    form: UseFormReturn<{ mortality?: MortalityDemographic }>;
+    form: UseFormReturn<HasMortalityDemographic>;
     title?: string;
 } & EntryFieldsProps &
     Omit<CardProps, 'subtext' | 'children' | 'title'>;

@@ -6,9 +6,9 @@ import styles from './patient-file-layout.module.scss';
 
 type PatientFileLayoutProps = {
     patient: Patient;
-    actions: (patient: Patient) => ReactNode;
-    navigation: (patient: Patient) => ReactNode | ReactNode[];
-    children: ReactNode | ReactNode[];
+    actions?: (patient: Patient) => ReactNode;
+    navigation: (patient: Patient) => ReactNode;
+    children?: ReactNode | ReactNode[];
 };
 
 const PatientFileLayout = ({ patient, actions, navigation, children }: PatientFileLayoutProps) => {
@@ -23,7 +23,7 @@ const PatientFileLayout = ({ patient, actions, navigation, children }: PatientFi
     return (
         <div className={styles.file}>
             <header ref={targeted}>
-                <PatientFileHeader patient={patient} actions={actions(patient)} />
+                <PatientFileHeader patient={patient} actions={actions?.(patient)} />
                 <nav>{navigation(patient)}</nav>
             </header>
             <main style={inline}>{children}</main>
