@@ -46,6 +46,15 @@ export const permissions = {
         add: 'ADD-INTERVENTIONVACCINERECORD',
         view: 'VIEW-INTERVENTIONVACCINERECORD'
     },
+    place: {
+        manage: 'MANAGE-PLACE'
+    },
+    provider: {
+        manage: 'MANAGE-PROVIDER'
+    },
+    organization: {
+        manage: 'MANAGE-ORGANIZATION'
+    },
     patient: {
         add: 'ADD-PATIENT',
         delete: 'DELETE-PATIENT',

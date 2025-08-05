@@ -30,7 +30,10 @@ export const NavBar = () => {
                                                 permissions.morbidityReport.add,
                                                 permissions.labReport.add,
                                                 permissions.summaryReports.view,
-                                                permissions.patient.search
+                                                permissions.patient.search,
+                                                permissions.place.manage,
+                                                permissions.provider.manage,
+                                                permissions.organization.manage
                                             )}>
                                             <td>
                                                 <span> | </span>
