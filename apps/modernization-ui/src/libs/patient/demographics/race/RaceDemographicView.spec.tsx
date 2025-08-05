@@ -1,10 +1,10 @@
-import { today } from 'date';
 import { asSelectable } from 'options';
 import { render, screen } from '@testing-library/react';
 import { RaceDemographic } from './race';
 import { RaceDemographicView } from './RaceDemographicView';
 
 const entry: RaceDemographic = {
+    id: 613,
     asOf: '2000-01-01',
     race: asSelectable('A', 'Asian'),
     detailed: [asSelectable('IN', 'Indian')]

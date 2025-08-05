@@ -7,6 +7,8 @@ import { RaceDemographicView } from './RaceDemographicView';
 import { RaceDemographicFields } from './RaceDemographicFields';
 
 import styles from './race-demographic-card.module.scss';
+import { useRaceCategoryOptions } from 'options/race';
+import { categoryValidator } from './edit/categoryValidator';
 
 const columns: Column<RaceDemographic>[] = [
     {
@@ -42,9 +44,24 @@ const defaultValue = initial();
 
 const sortResolver = columnSortResolver(columns);
 
-const RaceDemographicCard = ({ title = 'Race', sizing, data = [], ...remaining }: RaceDemographicCardProps) => {
+const RaceDemographicCard = ({
+    title = 'Race',
+    sizing,
+    collapsible = true,
+    data = [],
+    ...remaining
+}: RaceDemographicCardProps) => {
+    const categories = useRaceCategoryOptions();
+
     const renderView = (entry: RaceDemographic) => <RaceDemographicView entry={entry} />;
-    const renderForm = () => <RaceDemographicFields />;
+    const renderForm = (entry?: RaceDemographic) => (
+        <RaceDemographicFields
+            categories={categories}
+            categoryValidator={categoryValidator(data)}
+            entry={entry}
+            sizing={sizing}
+        />
+    );
 
     return (
         <SortingProvider appendToUrl={false}>
@@ -61,7 +78,7 @@ const RaceDemographicCard = ({ title = 'Race', sizing, data = [], ...remaining }
                             defaultValues={defaultValue}
                             viewRenderer={renderView}
                             formRenderer={renderForm}
-                            collapsible
+                            collapsible={collapsible}
                         />
                     )}
                 </SortHandler>

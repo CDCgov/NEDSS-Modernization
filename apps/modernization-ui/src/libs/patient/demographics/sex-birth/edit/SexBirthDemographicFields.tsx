@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { AgeResolver } from 'date';
 import { isEqual } from 'options';
 import { Shown } from 'conditional-render';
@@ -9,29 +9,29 @@ import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { NumericInput, TextInputField } from 'design-system/input';
 import { ValueField } from 'design-system/field';
-import { SexBirthDemographic, labels } from '../sexBirth';
-import { useSexBirthOptions } from './useSexBirthOptions';
 import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
+import { HasSexBirthDemographic, labels } from '../sexBirth';
+import { SexBirthOptions } from './useSexBirthOptions';
 
 type SexBirthDemographicFieldsProps = {
+    form: UseFormReturn<HasSexBirthDemographic>;
+    options: SexBirthOptions;
     ageResolver: AgeResolver;
 } & EntryFieldsProps;
 
 const SexBirthDemographicFields = ({
+    form,
+    options,
     ageResolver,
     orientation = 'horizontal',
-    sizing = 'medium'
+    sizing
 }: SexBirthDemographicFieldsProps) => {
-    const { control, setValue } = useFormContext<{ birthAndSex: SexBirthDemographic }>();
-
-    const currentBirthday = useWatch({ control, name: 'birthAndSex.bornOn' });
-    const selectedCurrentGender = useWatch({ control, name: 'birthAndSex.current' });
-    const selectedState = useWatch({ control, name: 'birthAndSex.state' });
-    const selectedMultipleBirth = useWatch({ control, name: 'birthAndSex.multiple' });
+    const currentBirthday = useWatch({ control: form.control, name: 'sexBirth.bornOn' });
+    const selectedCurrentGender = useWatch({ control: form.control, name: 'sexBirth.current' });
+    const selectedState = useWatch({ control: form.control, name: 'sexBirth.state' });
+    const selectedMultipleBirth = useWatch({ control: form.control, name: 'sexBirth.multiple' });
 
     const age = ageResolver(currentBirthday);
-
-    const options = useSexBirthOptions();
 
     const countries = useCountryOptions();
     const states = useStateOptions();
@@ -42,21 +42,21 @@ const SexBirthDemographicFields = ({
 
     useEffect(() => {
         if (!selectedState) {
-            setValue('birthAndSex.county', undefined);
+            form.setValue('sexBirth.county', undefined);
         }
     }, [selectedState]);
 
     useEffect(() => {
         if (!isUnknownGender(selectedCurrentGender)) {
-            setValue('birthAndSex.unknownReason', undefined);
+            form.setValue('sexBirth.unknownReason', undefined);
         }
     }, [selectedCurrentGender]);
 
     return (
-        <section>
+        <>
             <Controller
-                control={control}
-                name="birthAndSex.asOf"
+                control={form.control}
+                name="sexBirth.asOf"
                 rules={{ ...validateRequiredRule(labels.asOf), ...validDateRule(labels.asOf) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
@@ -73,8 +73,8 @@ const SexBirthDemographicFields = ({
                 )}
             />
             <Controller
-                control={control}
-                name="birthAndSex.bornOn"
+                control={form.control}
+                name="sexBirth.bornOn"
                 rules={validDateRule(labels.bornOn)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
@@ -93,8 +93,8 @@ const SexBirthDemographicFields = ({
                 {age}
             </ValueField>
             <Controller
-                control={control}
-                name="birthAndSex.current"
+                control={form.control}
+                name="sexBirth.current"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label={labels.current}
@@ -111,8 +111,8 @@ const SexBirthDemographicFields = ({
             />
             <Shown when={isUnknownGender(selectedCurrentGender)}>
                 <Controller
-                    control={control}
-                    name="birthAndSex.unknownReason"
+                    control={form.control}
+                    name="sexBirth.unknownReason"
                     shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
@@ -130,8 +130,8 @@ const SexBirthDemographicFields = ({
                 />
             </Shown>
             <Controller
-                control={control}
-                name="birthAndSex.transgenderInformation"
+                control={form.control}
+                name="sexBirth.transgenderInformation"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label={labels.transgenderInformation}
@@ -147,8 +147,8 @@ const SexBirthDemographicFields = ({
                 )}
             />
             <Controller
-                control={control}
-                name="birthAndSex.additionalGender"
+                control={form.control}
+                name="sexBirth.additionalGender"
                 rules={maxLengthRule(20)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <TextInputField
@@ -166,8 +166,8 @@ const SexBirthDemographicFields = ({
                 )}
             />
             <Controller
-                control={control}
-                name="birthAndSex.sex"
+                control={form.control}
+                name="sexBirth.sex"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label={labels.sex}
@@ -183,8 +183,8 @@ const SexBirthDemographicFields = ({
                 )}
             />
             <Controller
-                control={control}
-                name="birthAndSex.multiple"
+                control={form.control}
+                name="sexBirth.multiple"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label={labels.multiple}
@@ -201,8 +201,8 @@ const SexBirthDemographicFields = ({
             />
             <Shown when={isMultipleBirth(selectedMultipleBirth)}>
                 <Controller
-                    control={control}
-                    name="birthAndSex.order"
+                    control={form.control}
+                    name="sexBirth.order"
                     shouldUnregister
                     rules={{
                         min: { value: 0, message: 'Must be a positive number.' },
@@ -226,8 +226,8 @@ const SexBirthDemographicFields = ({
                 />
             </Shown>
             <Controller
-                control={control}
-                name="birthAndSex.city"
+                control={form.control}
+                name="sexBirth.city"
                 rules={maxLengthRule(100, labels.city)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <TextInputField
@@ -244,8 +244,8 @@ const SexBirthDemographicFields = ({
                 )}
             />
             <Controller
-                control={control}
-                name="birthAndSex.state"
+                control={form.control}
+                name="sexBirth.state"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label={labels.state}
@@ -261,8 +261,8 @@ const SexBirthDemographicFields = ({
                 )}
             />
             <Controller
-                control={control}
-                name="birthAndSex.county"
+                control={form.control}
+                name="sexBirth.county"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label={labels.county}
@@ -279,8 +279,8 @@ const SexBirthDemographicFields = ({
             />
 
             <Controller
-                control={control}
-                name="birthAndSex.country"
+                control={form.control}
+                name="sexBirth.country"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label={labels.country}
@@ -295,7 +295,7 @@ const SexBirthDemographicFields = ({
                     />
                 )}
             />
-        </section>
+        </>
     );
 };
 

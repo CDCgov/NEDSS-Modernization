@@ -1,4 +1,7 @@
-export { AdministrativeInformationCard } from './AdministrativeInformationCard';
-export type { AdministrativeInformationCardProps } from './AdministrativeInformationCard';
+export { initial } from './administrative';
+export type { AdministrativeInformation } from './administrative';
 
-export type { AdministrativeInformation } from './AdministrativeInformation';
+export { AdministrativeInformationCard } from './view/AdministrativeInformationCard';
+export type { AdministrativeInformationCardProps } from './view/AdministrativeInformationCard';
+
+export { EditAdministrativeInformationCard } from './edit/EditAdministrativeInformationCard';

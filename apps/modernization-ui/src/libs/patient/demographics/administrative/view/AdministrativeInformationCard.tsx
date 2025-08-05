@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { internalizeDate } from 'date';
 import { Card, CardProps } from 'design-system/card';
 import { OrElseNoData } from 'design-system/data';
-import { AdministrativeInformation } from './AdministrativeInformation';
+import { AdministrativeInformation } from '../administrative';
 
 import styles from './administrative-information-card.module.scss';
 
