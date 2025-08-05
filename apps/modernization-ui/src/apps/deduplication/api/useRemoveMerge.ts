@@ -1,8 +1,8 @@
 import { Config } from 'config';
 
 export const useRemoveMerge = () => {
-    const keepAllSeparate = (matchId: string, onSuccess: () => void, onError: () => void) => {
-        fetch(`${Config.deduplicationUrl}/merge/${matchId}`, {
+    const keepAllSeparate = (groupId: string, onSuccess: () => void, onError: () => void) => {
+        fetch(`${Config.deduplicationUrl}/merge/${groupId}`, {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json'
@@ -21,8 +21,8 @@ export const useRemoveMerge = () => {
             });
     };
 
-    const removePatient = (matchId: string, personUid: string, onSuccess: () => void, onError: () => void) => {
-        fetch(`${Config.deduplicationUrl}/merge/${matchId}/${personUid}`, {
+    const removePatient = (groupId: string, personUid: string, onSuccess: () => void, onError: () => void) => {
+        fetch(`${Config.deduplicationUrl}/merge/${groupId}/${personUid}`, {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json'

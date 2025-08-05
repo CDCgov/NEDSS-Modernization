@@ -12,7 +12,7 @@ beforeEach(() => {
     mockReturnValue = {
         matches: [
             {
-                matchId: 1,
+                groupId: 1,
                 patientId: '1234',
                 patientLocalId: '4321',
                 patientName: 'John Smith',
