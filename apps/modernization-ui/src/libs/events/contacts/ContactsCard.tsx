@@ -131,32 +131,34 @@ const InternalCard = ({ patient, sizing, title, data = [], onClose, ...remaining
     const subTitle = 'The following contacts were named by ';
     return (
         <ColumnPreferenceProvider id="key" defaults={columnPreferences}>
-            <Card
-                id={'patient-file-contact-named'}
-                title={title}
-                collapsible
-                flair={<Tag size={sizing}>{dataLength(data)}</Tag>}
-                className={styles.card}
-                actions={<ColumnPreferencesAction sizing={sizing} />}>
-                <div className={styles.content}>
-                    {data.map((contact) => (
-                        <Section
-                            key={contact.condition}
-                            title={`${subTitle} ${patient.name && displayName('short')(patient.name)}'s investigation of ${contact.condition}`}
-                            id={`${contact.condition}-${title}`}
-                            sizing={sizing}
-                            className={styles.card}
-                            subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}>
-                            <SortableDataTable
-                                columns={columns(onClose)}
-                                data={contact.contacts}
-                                {...remaining}
+            {(apply) => (
+                <Card
+                    id={'patient-file-contact-named'}
+                    title={title}
+                    collapsible
+                    flair={<Tag size={sizing}>{dataLength(data)}</Tag>}
+                    className={styles.card}
+                    actions={<ColumnPreferencesAction sizing={sizing} />}>
+                    <div className={styles.content}>
+                        {data.map((contact) => (
+                            <Section
+                                key={contact.condition}
+                                title={`${subTitle} ${patient.name && displayName('short')(patient.name)}'s investigation of ${contact.condition}`}
+                                id={`${contact.condition}-${title}`}
                                 sizing={sizing}
-                            />
-                        </Section>
-                    ))}
-                </div>
-            </Card>
+                                className={styles.card}
+                                subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}>
+                                <SortableDataTable
+                                    columns={apply.apply(columns(onClose))}
+                                    data={contact.contacts}
+                                    {...remaining}
+                                    sizing={sizing}
+                                />
+                            </Section>
+                        ))}
+                    </div>
+                </Card>
+            )}
         </ColumnPreferenceProvider>
     );
 };

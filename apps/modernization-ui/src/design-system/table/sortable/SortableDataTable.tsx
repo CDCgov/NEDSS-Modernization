@@ -13,15 +13,12 @@ import { useColumnPreferences } from '../preferences';
  * @return {JSX.Element} - A DataTable component with in memory sorting functionality.
  */
 const SortableDataTable = <T,>({ columns, data, ...remaining }: DataTableProps<T>) => {
-    const { apply } = useColumnPreferences();
-    const columnsPref = apply(columns);
-
     return (
         <SortingProvider appendToUrl={false}>
             {(sorting) => (
                 <SortHandler sorting={sorting} resolver={columnSortResolver(columns)} data={data}>
                     {({ sorting, sorted }) => (
-                        <DataTable {...remaining} features={{ sorting }} columns={columnsPref} data={sorted} />
+                        <DataTable {...remaining} features={{ sorting }} columns={columns} data={sorted} />
                     )}
                 </SortHandler>
             )}
