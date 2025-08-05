@@ -51,13 +51,19 @@ const resolveUrl = (value: PatientFileDocumentRequiringReview) => {
 };
 
 const renderEventDate = (value?: PatientFileDocumentRequiringReview) => {
-    if (value?.type === 'Morbidity Report') {
+    if (value?.type === 'Morbidity Report' || value?.type === 'Case Report') {
         return (
             <>
-                <LabeledValue label="Report Date" orientation="vertical">
+                <LabeledValue label="Report date" orientation="vertical">
                     {internalizeDate(value.eventDate)}
                 </LabeledValue>
             </>
+        );
+    } else if (value?.type === 'Laboratory Report') {
+        return (
+            <LabeledValue label="Date collected" orientation="vertical">
+                {internalizeDate(value.eventDate)}
+            </LabeledValue>
         );
     }
     return internalizeDate(value?.eventDate);
@@ -110,7 +116,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
     },
     {
         ...EVENT_DATE,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,
