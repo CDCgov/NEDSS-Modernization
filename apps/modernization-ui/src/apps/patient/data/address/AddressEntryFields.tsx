@@ -49,6 +49,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         error={error?.message}
                         required
                         sizing={sizing}
+                        aria-description="This date defaults to today and can be changed if needed"
                     />
                 )}
             />

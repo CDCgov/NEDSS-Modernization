@@ -67,6 +67,14 @@ describe('when entering patient name demographics', () => {
         expect(await findByText('The Name as of is required.')).toBeInTheDocument();
     });
 
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+
+        const dateInput = getByLabelText('Name as of');
+
+        expect(dateInput).toHaveAttribute('aria-description', 'This date defaults to today and can be changed if needed');
+    });
+
     it('should require type', async () => {
         const user = userEvent.setup();
         const { getByLabelText, findByText } = render(<Fixture />);
