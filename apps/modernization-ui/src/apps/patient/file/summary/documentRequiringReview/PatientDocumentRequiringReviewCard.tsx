@@ -14,9 +14,7 @@ import { MaybeLabeledValue } from 'design-system/value';
 import { ResultedTests } from 'libs/events/tests';
 
 import styles from './drr.module.scss';
-import { Shown } from 'conditional-render';
-import { exists } from 'utils';
-import { displayNoData } from 'design-system/data';
+import { OrElseNoData } from 'design-system/data';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
@@ -121,11 +119,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,
-        render: (value) => (
-            <Shown when={exists(value.eventDate)} fallback={displayNoData()}>
-                {renderEventDate(value)}
-            </Shown>
-        )
+        render: (value) => <OrElseNoData>{renderEventDate(value)}</OrElseNoData>
     },
     {
         ...DESCRIPTION,
