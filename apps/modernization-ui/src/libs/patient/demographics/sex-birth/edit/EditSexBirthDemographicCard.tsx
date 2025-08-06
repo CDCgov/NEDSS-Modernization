@@ -16,7 +16,7 @@ type EditSexBirthDemographicCardProps = {
 const EditSexBirthDemographicCard = ({
     form,
     ageResolver,
-    title = 'SexBirth',
+    title = 'Sex & birth',
     sizing,
     orientation = 'horizontal',
     ...remaining

@@ -1,27 +1,25 @@
 import { today } from 'date';
-import { AdministrativeInformation, initial as initialAdministrative } from './administrative';
-import { AddressDemographic } from './address';
-import { NameDemographic } from './name';
-import { PhoneEmailDemographic } from './phoneEmail';
-import { IdentificationDemographic } from './identification';
-import { RaceDemographic } from './race';
-import { EthnicityDemographic, initial as initialEthnicity } from './ethnicity';
-import { SexBirthDemographic, initial as initialSexBirth } from './sex-birth';
-import { MortalityDemographic, initial as initialMortality } from './mortality';
-import { GeneralInformationDemographic, initial as initialGeneral } from './general';
+import { HasAdministrativeInformation, initial as initialAdministrative } from './administrative';
+import { HasAddressDemographics } from './address';
+import { HasNameDemographics } from './name';
+import { HasPhoneEmailDemographics } from './phoneEmail';
+import { HasIdentificationDemographics } from './identification';
+import { HasRaceDemographics } from './race';
+import { HasEthnicityDemographic, initial as initialEthnicity } from './ethnicity';
+import { HasSexBirthDemographic, initial as initialSexBirth } from './sex-birth';
+import { HasMortalityDemographic, initial as initialMortality } from './mortality';
+import { HasGeneralInformationDemographic, initial as initialGeneral } from './general';
 
-type PatientDemographics = {
-    administrative?: AdministrativeInformation;
-    names?: NameDemographic[];
-    addresses?: AddressDemographic[];
-    phoneEmails?: PhoneEmailDemographic[];
-    identifications?: IdentificationDemographic[];
-    races?: RaceDemographic[];
-    ethnicity?: EthnicityDemographic;
-    sexBirth?: SexBirthDemographic;
-    mortality?: MortalityDemographic;
-    general?: GeneralInformationDemographic;
-};
+type PatientDemographics = HasAdministrativeInformation &
+    HasNameDemographics &
+    HasAddressDemographics &
+    HasPhoneEmailDemographics &
+    HasIdentificationDemographics &
+    HasRaceDemographics &
+    HasEthnicityDemographic &
+    HasSexBirthDemographic &
+    HasMortalityDemographic &
+    HasGeneralInformationDemographic;
 
 export type { PatientDemographics };
 

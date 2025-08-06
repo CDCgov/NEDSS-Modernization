@@ -3,7 +3,7 @@ import { HasRaceDemographics } from '../race';
 import { RaceDemographicCard, RaceDemographicCardProps } from '../RaceDemographicCard';
 
 type EditRaceDemographicsCardProps = {
-    form: UseFormReturn<HasRaceDemographics>;
+    form: UseFormReturn<Partial<HasRaceDemographics>>;
 } & Omit<RaceDemographicCardProps, 'id' | 'collapsible'>;
 
 const EditRaceDemographicsCard = ({ form, ...remaining }: EditRaceDemographicsCardProps) => {
