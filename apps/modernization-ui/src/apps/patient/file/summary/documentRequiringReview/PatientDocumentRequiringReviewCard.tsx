@@ -14,6 +14,9 @@ import { MaybeLabeledValue } from 'design-system/value';
 import { ResultedTests } from 'libs/events/tests';
 
 import styles from './drr.module.scss';
+import { Shown } from 'conditional-render';
+import { exists } from 'utils';
+import { displayNoData } from 'design-system/data';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
@@ -53,11 +56,9 @@ const resolveUrl = (value: PatientFileDocumentRequiringReview) => {
 const renderEventDate = (value?: PatientFileDocumentRequiringReview) => {
     if (value?.type === 'Morbidity Report' || value?.type === 'Case Report') {
         return (
-            <>
-                <MaybeLabeledValue label="Report date" orientation="vertical">
-                    {internalizeDate(value.eventDate)}
-                </MaybeLabeledValue>
-            </>
+            <MaybeLabeledValue label="Report date" orientation="vertical">
+                {internalizeDate(value.eventDate)}
+            </MaybeLabeledValue>
         );
     } else if (value?.type === 'Laboratory Report') {
         return (
@@ -120,7 +121,11 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,
-        render: (value) => renderEventDate(value)
+        render: (value) => (
+            <Shown when={exists(value.eventDate)} fallback={displayNoData()}>
+                {renderEventDate(value)}
+            </Shown>
+        )
     },
     {
         ...DESCRIPTION,
