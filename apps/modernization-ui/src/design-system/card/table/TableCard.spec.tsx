@@ -13,9 +13,8 @@ jest.mock('design-system/table/preferences/useColumnPreferences', () => ({
     useColumnPreferences: () => ({
         apply: mockApply
     }),
-    ColumnPreferenceProvider: ({ children }: { children: (a: { apply: () => [] }) => ReactNode | ReactNode[] }) => (
-        <>{children({ apply: mockApply })}</>
-    )
+    ColumnPreferenceProvider: ({ children }: { children: (a: { apply: () => TestData[] }) => ReactNode }) =>
+        children({ apply: mockApply })
 }));
 
 type TestData = {
