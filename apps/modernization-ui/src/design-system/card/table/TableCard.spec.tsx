@@ -1,15 +1,21 @@
 import { render } from '@testing-library/react';
-import { TableCard, TableCardProps } from './TableCard';
 import { Column } from 'design-system/table';
 import { axe } from 'jest-axe';
+import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
+import { TableCard, TableCardProps } from './TableCard';
 
 const mockApply = jest.fn();
+
+global.structuredClone = (val) => val;
 
 jest.mock('design-system/table/preferences/useColumnPreferences', () => ({
     useColumnPreferences: () => ({
         apply: mockApply
-    })
+    }),
+    ColumnPreferenceProvider: ({ children }: { children: (a: { apply: () => [] }) => ReactNode | ReactNode[] }) => (
+        <>{children({ apply: mockApply })}</>
+    )
 }));
 
 type TestData = {
