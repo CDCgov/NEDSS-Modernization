@@ -5,13 +5,26 @@ import { PatientFileOpenInvestigationsCard } from './openInvestigations';
 import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
 import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
 import { FeatureToggle } from 'feature';
+import { usePatientMergeQueueStatus } from '../usePatientMergeQueueStatus';
+import { AlertMessage } from 'design-system/alert/AlertMessage';
 
 const PatientFileSummary = () => {
     const { summary, demographics, patient } = usePatientFileData();
     const sizing = useComponentSizing();
+    const {
+        inMergeQueue,
+        mergeGroup,
+        loading: mergeQueueLoading
+    } = usePatientMergeQueueStatus(patient?.id?.toString());
 
     return (
         <>
+            {inMergeQueue && !mergeQueueLoading && (
+                <AlertMessage type="warning" slim>
+                    We found potential duplicates for this patient in system-identified matches.
+                    <a href={`/deduplication/merge/${mergeGroup}`}> Review Matches </a>
+                </AlertMessage>
+            )}
             <PatientFileDemographicsSummaryCard
                 id="demographics-summary"
                 provider={demographics.get().summary}
