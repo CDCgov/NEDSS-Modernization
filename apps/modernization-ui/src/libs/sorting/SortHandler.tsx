@@ -67,19 +67,23 @@ const SortHandler = <T, U>({
     comparator = nullsLast(defaultComparator),
     children
 }: SortHandlerProps<T, U>) => {
-    const [sorted, setSorted] = useState(data);
-
-    useEffect(() => {
+    const applySort = (): T[] => {
         if (sorting.property && sorting.direction && sorting.direction !== Direction.None) {
             const mapping = resolver(sorting.property);
             if (mapping) {
                 //  sort using the value of the column
-                setSorted(sortUsing(data, mapping, withDirection(comparator, sorting.direction)));
+                return sortUsing(data, mapping, withDirection(comparator, sorting.direction));
             }
-        } else {
-            //  no sorting needed, pass the data as is
-            setSorted(data);
         }
+        //  no sorting needed, pass the data as is
+        return data;
+    };
+
+    // initialize to sorted state to prevent double render
+    const [sorted, setSorted] = useState<T[]>(applySort());
+
+    useEffect(() => {
+        setSorted(applySort());
     }, [sorting.property, sorting.direction]);
 
     return children({ sorting, sorted });
