@@ -52,8 +52,7 @@ public class PatientEditSteps {
       final Active<EditedPatient> activeEntry,
       final PatientEditRequester requester,
       final Active<ResultActions> response,
-      final Active<PatientIdentifier> activePatient
-  ) {
+      final Active<PatientIdentifier> activePatient) {
     this.activeAdministrative = activeAdministrative;
     this.availableAddresses = availableAddresses;
     this.activeBirthDemographic = activeBirthDemographic;
@@ -73,7 +72,7 @@ public class PatientEditSteps {
 
   @When("I edit the patient with entered demographics")
   public void edit() {
-
+    this.activeEntry.reset();
     this.activePatient.maybeActive().ifPresent(patient -> edit(patient.id()));
   }
 
@@ -100,7 +99,6 @@ public class PatientEditSteps {
 
     this.availableRaces.all()
         .forEach(race -> this.activeEntry.active(current -> current.withRace(race)));
-
 
     this.activeEthnicity.maybeActive()
         .ifPresent(ethnicity -> this.activeEntry.active(current -> current.withEthnicity(ethnicity)));

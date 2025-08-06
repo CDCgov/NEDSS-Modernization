@@ -6,7 +6,7 @@ import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
 import java.time.LocalDate;
 
 public record NameDemographic(
-    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
+    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) 
     LocalDate asOf,
     String type,
     String prefix,
@@ -16,14 +16,43 @@ public record NameDemographic(
     String last,
     String secondLast,
     String suffix,
-    String degree
-) {
+    String degree,
+    Short sequence) {
 
   public NameDemographic(
       LocalDate asOf,
-      String type
-  ) {
-    this(asOf, type, null, null, null, null, null, null, null, null);
+      String type) {
+    this(asOf, type, null, null, null, null, null, null, null, null, null);
+  }
+
+  public NameDemographic withAsOf(final LocalDate value) {
+    return new NameDemographic(
+        value,
+        type(),
+        prefix(),
+        first(),
+        middle(),
+        secondMiddle(),
+        last(),
+        secondLast(),
+        suffix(),
+        degree(),
+        sequence());
+  }
+
+  public NameDemographic withType(final String value) {
+    return new NameDemographic(
+        asOf(),
+        value,
+        prefix(),
+        first(),
+        middle(),
+        secondMiddle(),
+        last(),
+        secondLast(),
+        suffix(),
+        degree(),
+        sequence());
   }
 
   public NameDemographic withPrefix(final String value) {
@@ -37,8 +66,8 @@ public record NameDemographic(
         last(),
         secondLast(),
         suffix(),
-        degree()
-    );
+        degree(),
+        sequence());
   }
 
   public NameDemographic withFirst(final String value) {
@@ -52,8 +81,8 @@ public record NameDemographic(
         last(),
         secondLast(),
         suffix(),
-        degree()
-    );
+        degree(),
+        sequence());
   }
 
   public NameDemographic withMiddle(final String value) {
@@ -67,8 +96,8 @@ public record NameDemographic(
         last(),
         secondLast(),
         suffix(),
-        degree()
-    );
+        degree(),
+        sequence());
   }
 
   public NameDemographic withSecondMiddle(final String value) {
@@ -82,10 +111,9 @@ public record NameDemographic(
         last(),
         secondLast(),
         suffix(),
-        degree()
-    );
+        degree(),
+        sequence());
   }
-
 
   public NameDemographic withLast(final String value) {
     return new NameDemographic(
@@ -98,8 +126,8 @@ public record NameDemographic(
         value,
         secondLast(),
         suffix(),
-        degree()
-    );
+        degree(),
+        sequence());
   }
 
   public NameDemographic withSecondLast(final String value) {
@@ -113,8 +141,8 @@ public record NameDemographic(
         last(),
         value,
         suffix(),
-        degree()
-    );
+        degree(),
+        sequence());
   }
 
   public NameDemographic withSuffix(final String value) {
@@ -128,8 +156,8 @@ public record NameDemographic(
         last(),
         secondLast(),
         value,
-        degree()
-    );
+        degree(),
+        sequence());
   }
 
   public NameDemographic withDegree(final String value) {
@@ -143,8 +171,8 @@ public record NameDemographic(
         last(),
         secondLast(),
         suffix(),
-        value
-    );
+        value,
+        sequence());
   }
 
 }
