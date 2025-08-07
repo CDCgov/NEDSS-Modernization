@@ -19,7 +19,8 @@ import { MemoizedSupplier } from 'libs/supplying';
 import { ClassicModalButton } from 'libs/classic';
 import { Shown } from 'conditional-render';
 import { exists } from 'utils';
-import { displayNoData } from 'design-system/data';
+import { displayNoData, NoData, OrElseNoData } from 'design-system/data';
+import { mapOr } from 'utils/mapping';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_CREATED = { id: 'createx-on', name: 'Date created' };
@@ -121,7 +122,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
 type InternalCardProps = {
     patient: Patient;
     data?: PatientFileContacts[];
-    patientNamed?: boolean;
+    titleResolver: (patient?: DisplayableName, contact?: PatientFileContacts) => string;
     onClose: () => void;
 } & Omit<TableCardProps<PatientFileContacts>, 'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey'>;
 
@@ -135,19 +136,13 @@ const dataLength = (data: PatientFileContacts[]) => {
     return count;
 };
 
-const renderSubTitle = (patient: Patient, contact: PatientFileContacts, patientNamed?: boolean) => {
-    return patientNamed
-        ? `${patient.name && displayName('short')(patient.name)} was named as a contact in the following ${contact.condition}`
-        : `The following contacts were named by ${patient.name && displayName('short')(patient.name)}'s investigation of ${contact.condition}`;
-};
-
 const InternalCard = ({
     patient,
     sizing,
     title,
     data = [],
-    patientNamed,
     onClose,
+    titleResolver,
     ...remaining
 }: InternalCardProps) => {
     return (
@@ -164,7 +159,7 @@ const InternalCard = ({
                         {data.map((contact) => (
                             <Section
                                 key={contact.condition}
-                                title={renderSubTitle(patient, contact, patientNamed)}
+                                title={titleResolver(patient.name, contact)}
                                 id={`${contact.condition}-${title}`}
                                 sizing={sizing}
                                 className={styles.card}
