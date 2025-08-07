@@ -121,6 +121,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
 type InternalCardProps = {
     patient: Patient;
     data?: PatientFileContacts[];
+    titleResolver: (patient?: DisplayableName, contact?: PatientFileContacts) => string;
     onClose: () => void;
 } & Omit<TableCardProps<PatientFileContacts>, 'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey'>;
 
@@ -134,8 +135,15 @@ const dataLength = (data: PatientFileContacts[]) => {
     return count;
 };
 
-const InternalCard = ({ patient, sizing, title, data = [], onClose, ...remaining }: InternalCardProps) => {
-    const subTitle = 'The following contacts were named by ';
+const InternalCard = ({
+    patient,
+    sizing,
+    title,
+    data = [],
+    onClose,
+    titleResolver,
+    ...remaining
+}: InternalCardProps) => {
     return (
         <ColumnPreferenceProvider id="key" defaults={columnPreferences}>
             {(apply) => (
@@ -150,7 +158,7 @@ const InternalCard = ({ patient, sizing, title, data = [], onClose, ...remaining
                         {data.map((contact) => (
                             <Section
                                 key={contact.condition}
-                                title={`${subTitle} ${patient.name && displayName('short')(patient.name)}'s investigation of ${contact.condition}`}
+                                title={titleResolver(patient.name, contact)}
                                 id={`${contact.condition}-${title}`}
                                 sizing={sizing}
                                 className={styles.card}
