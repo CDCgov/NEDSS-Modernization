@@ -23,38 +23,38 @@ class PatientEditService {
   private final PermissionScopeResolver permissionScopeResolver;
   private final PatientEthnicityEditService ethnicityEditService;
   private final PatientAddressEditService addressEditService;
+  private final PatientNameEditService nameEditService;
 
   PatientEditService(
       final PatientService service,
       final AddressIdentifierGenerator addressIdentifierGenerator,
       final PermissionScopeResolver permissionScopeResolver,
-      final PatientEthnicityEditService ethnicityEditService, PatientAddressEditService addressEditService
-  ) {
+      final PatientEthnicityEditService ethnicityEditService,
+      final PatientAddressEditService addressEditService,
+      final PatientNameEditService nameEditService) {
     this.service = service;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
     this.permissionScopeResolver = permissionScopeResolver;
     this.ethnicityEditService = ethnicityEditService;
     this.addressEditService = addressEditService;
+    this.nameEditService = nameEditService;
   }
 
   void edit(
       final RequestContext context,
       final long patient,
-      final EditedPatient changes
-  ) throws PatientException {
+      final EditedPatient changes) throws PatientException {
 
     this.service.using(
         patient,
-        found -> edit(context, changes, found)
-    );
+        found -> edit(context, changes, found));
 
   }
 
   private void edit(
       final RequestContext context,
       final EditedPatient changes,
-      final Person patient
-  ) {
+      final Person patient) {
 
     long identifier = patient.getId();
 
@@ -85,7 +85,7 @@ class PatientEditService {
     changes.maybeEthnicity().ifPresent(demographic -> ethnicityEditService.apply(context, patient, demographic));
 
     addressEditService.apply(context, patient, changes.addresses());
+    nameEditService.apply(context, patient, changes.names());
   }
-
 
 }

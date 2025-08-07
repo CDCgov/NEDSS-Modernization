@@ -13,5 +13,6 @@ export type NameDemographic = {
     secondLast?: string;
     suffix?: string;
     degree?: string;
+    sequence?: number;
 };
 

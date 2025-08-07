@@ -21,23 +21,25 @@ public class PatientFileNameDemographicVerificationSteps {
     this.response = response;
   }
 
-  @Then(
-      "the patient file name demographics includes a {nameUse} name {string} {string} {string}, {nameSuffix} as of {localDate}")
+  @Then("the patient file name demographics includes a {nameUse} name {string} {string} {string}, {nameSuffix} as of {localDate}")
   public void includes(
       final String type,
       final String first,
       final String middle,
       final String last,
       final String suffix,
-      final LocalDate asOf
-  ) throws Exception {
+      final LocalDate asOf) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath(
                 "$.[?(@.asOf=='%s' && @.type.value=='%s' &&  @.first=='%s' &&  @.middle=='%s' &&  @.last=='%s' &&  @.suffix.value=='%s')]",
-                asOf, type, first, middle, last, suffix
-            ).exists()
-        );
+                asOf, type, first, middle, last, suffix).exists());
+  }
+
+  @Then("the patient file name demographics does not include a name as of {localDate}")
+  public void doesNotInclude(final LocalDate value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[?(@.asOf=='%s')]", value).doesNotExist());
   }
 
   @Given("the patient file name demographics as of {localDate} contains the prefix {namePrefix}")
@@ -45,8 +47,7 @@ public class PatientFileNameDemographicVerificationSteps {
     this.response.active()
         .andExpect(
             jsonPath("$.[?(@.asOf=='%s')].prefix.value", asOf)
-                .value(value)
-        );
+                .value(value));
   }
 
   @Given("the patient file name demographics as of {localDate} contains the first name {string}")
@@ -54,8 +55,7 @@ public class PatientFileNameDemographicVerificationSteps {
     this.response.active()
         .andExpect(
             jsonPath("$.[?(@.asOf=='%s')].first", asOf)
-                .value(value)
-        );
+                .value(value));
   }
 
   @Given("the patient file name demographics as of {localDate} contains the middle name {string}")
@@ -63,8 +63,7 @@ public class PatientFileNameDemographicVerificationSteps {
     this.response.active()
         .andExpect(
             jsonPath("$.[?(@.asOf=='%s')].middle", asOf)
-                .value(value)
-        );
+                .value(value));
   }
 
   @Given("the patient file name demographics as of {localDate} contains the second middle name {string}")
@@ -72,8 +71,7 @@ public class PatientFileNameDemographicVerificationSteps {
     this.response.active()
         .andExpect(
             jsonPath("$.[?(@.asOf=='%s')].secondMiddle", asOf)
-                .value(value)
-        );
+                .value(value));
   }
 
   @Given("the patient file name demographics as of {localDate} contains the last name {string}")
@@ -81,8 +79,7 @@ public class PatientFileNameDemographicVerificationSteps {
     this.response.active()
         .andExpect(
             jsonPath("$.[?(@.asOf=='%s')].last", asOf)
-                .value(value)
-        );
+                .value(value));
   }
 
   @Given("the patient file name demographics as of {localDate} contains the second last name {string}")
@@ -90,8 +87,7 @@ public class PatientFileNameDemographicVerificationSteps {
     this.response.active()
         .andExpect(
             jsonPath("$.[?(@.asOf=='%s')].secondLast", asOf)
-                .value(value)
-        );
+                .value(value));
   }
 
   @Given("the patient file name demographics as of {localDate} contains the suffix {nameSuffix}")
@@ -99,8 +95,7 @@ public class PatientFileNameDemographicVerificationSteps {
     this.response.active()
         .andExpect(
             jsonPath("$.[?(@.asOf=='%s')].suffix.value", asOf)
-                .value(value)
-        );
+                .value(value));
   }
 
   @Given("the patient file name demographics as of {localDate} contains the degree {degree}")
@@ -108,15 +103,13 @@ public class PatientFileNameDemographicVerificationSteps {
     this.response.active()
         .andExpect(
             jsonPath("$.[?(@.asOf=='%s')].degree.value", asOf)
-                .value(value)
-        );
+                .value(value));
   }
 
   @Then("the {nth} patient file name demographic has the as of date {localDate}")
   public void nthAsOf(
       final int position,
-      final LocalDate value
-  ) throws Exception {
+      final LocalDate value) throws Exception {
     this.response.active()
         .andExpect(jsonPath("$[%s].asOf", position - 1).value(value.toString()));
   }
@@ -124,8 +117,7 @@ public class PatientFileNameDemographicVerificationSteps {
   @Then("the {nth} patient file name demographic has the first name {string}")
   public void nthFirstName(
       final int position,
-      final String value
-  ) throws Exception {
+      final String value) throws Exception {
     this.response.active()
         .andExpect(jsonPath("$[%s].first", position - 1).value(value));
   }
@@ -146,8 +138,9 @@ public class PatientFileNameDemographicVerificationSteps {
   private Matcher<?> matchingValue(final String field, final String value) {
     return switch (field.toLowerCase()) {
       case "asof", "first", "middle", "last", "typevalue", "typename", "suffixvalue", "suffixname", "degreevalue",
-           "degreename" -> equalTo(
-          value);
+          "degreename" ->
+        equalTo(
+            value);
       default -> hasItem(value);
     };
   }

@@ -448,7 +448,7 @@ public sealed interface PatientCommand {
 
   record DeleteNameInfo(
       long person,
-      int sequence,
+      short sequence,
       long requester,
       LocalDateTime requestedOn
   ) implements PatientCommand {
