@@ -7,5 +7,6 @@ export type IdentificationDemographic = {
     type?: string;
     issuer?: string;
     value?: string;
+    sequence?: number;
 };
 
