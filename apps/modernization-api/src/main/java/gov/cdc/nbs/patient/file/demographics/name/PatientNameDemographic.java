@@ -11,9 +11,8 @@ import java.time.LocalDate;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record PatientNameDemographic(
     @JsonProperty(required = true)
-    short identifier,
-    @JsonProperty(required = true)
-    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
+    short sequence,
+    @JsonProperty(required = true) @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
     LocalDate asOf,
     @JsonProperty(required = true)
     Selectable type,
@@ -24,6 +23,5 @@ record PatientNameDemographic(
     String last,
     String secondLast,
     Selectable suffix,
-    Selectable degree
-) {
+    Selectable degree) {
 }

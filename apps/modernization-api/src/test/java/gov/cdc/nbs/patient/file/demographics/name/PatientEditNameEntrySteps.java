@@ -45,6 +45,6 @@ public class PatientEditNameEntrySteps {
         incoming.secondLast(),
         Selectable.maybeValue(incoming.suffix()).orElse(null),
         Selectable.maybeValue(incoming.degree()).orElse(null),
-        incoming.identifier());
+        incoming.sequence());
   }
 }
