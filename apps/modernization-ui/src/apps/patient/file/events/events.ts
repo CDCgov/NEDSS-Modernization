@@ -7,10 +7,10 @@ import { patientVaccinations } from './vaccinations/patientVaccinations';
 import { PatientFileTreatment } from './treatments/treatment';
 import { patientTreatments } from './treatments/patientTreatments';
 import { PatientFileContacts } from 'libs/events/contacts/contactsNamed';
-import { patientContacts } from 'apps/patient/file/events/contactsNamed/patientContacts';
 import { PatientFileDocument } from './documents/documents';
 import { patientDocuments } from './documents/patientDocuments';
 import { patientsNamed } from './patientsNamed/patientNamed';
+import { patientContacts } from './contactsNamed/patientContacts';
 
 type Reports = {
     laboratory: MemoizedSupplier<Promise<PatientFileLaboratoryReport[]>>;
