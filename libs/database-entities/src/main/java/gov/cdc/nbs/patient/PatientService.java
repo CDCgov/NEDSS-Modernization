@@ -44,7 +44,7 @@ public class PatientService {
     } catch (PatientException exception) {
       //  rethrow any expected Patient exceptions
       throw exception;
-    } catch (Throwable throwable) {
+    } catch (RuntimeException throwable) {
       //  report any unexpected changes as a PatientException
       throw new PatientException(patient.id(), "Unable to apply changes to patient %d".formatted(patient.id()));
     }

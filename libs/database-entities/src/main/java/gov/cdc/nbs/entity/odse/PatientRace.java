@@ -110,16 +110,6 @@ public class PatientRace {
   }
 
   @Override
-  public boolean equals(final Object o) {
-    return o instanceof PatientRace other && this.race.equals(other.race);
-  }
-
-  @Override
-  public int hashCode() {
-    return race.hashCode();
-  }
-
-  @Override
   public String toString() {
     return "PatientRace{" +
         "asOfDate=" + asOfDate +

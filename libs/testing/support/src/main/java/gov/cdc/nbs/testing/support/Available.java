@@ -103,12 +103,11 @@ public class Available<V> {
         .or(() -> Optional.ofNullable(initializer.get()))
         .orElseThrow(() -> new NoSuchElementException("there are none available"));
 
-    if (current != null) {
-      this.items.remove(current);
-      V next = operator.apply(current);
+    this.items.remove(current);
+    V next = operator.apply(current);
 
-      selected(next);
-    }
+    selected(next);
+
   }
 
   public void selected(final UnaryOperator<V> operator) {
