@@ -6,8 +6,7 @@ import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
 import java.time.LocalDate;
 
 public record IdentificationDemographic(
-    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
-    LocalDate asOf,
+    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
     String type,
     String issuer,
     String value,
@@ -19,6 +18,33 @@ public record IdentificationDemographic(
         type(),
         issuer,
         value(),
+        sequence());
+  }
+
+  public IdentificationDemographic withAsOf(final LocalDate asOf) {
+    return new IdentificationDemographic(
+        asOf,
+        type(),
+        issuer(),
+        value(),
+        sequence());
+  }
+
+  public IdentificationDemographic withType(final String type) {
+    return new IdentificationDemographic(
+        asOf(),
+        type,
+        issuer(),
+        value(),
+        sequence());
+  }
+
+  public IdentificationDemographic withValue(final String value) {
+    return new IdentificationDemographic(
+        asOf(),
+        type(),
+        issuer(),
+        value,
         sequence());
   }
 

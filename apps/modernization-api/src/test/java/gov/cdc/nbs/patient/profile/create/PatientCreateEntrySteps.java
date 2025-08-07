@@ -26,7 +26,7 @@ public class PatientCreateEntrySteps {
   private final Active<GeneralInformationDemographic> activeGeneralInformation;
   private final Available<PhoneDemographic> availablePoneDemographic;
   private final Available<AddressDemographic> availableAddressDemographic;
-  private final Active<IdentificationDemographic> activeIdentificationDemographic;
+  private final Available<IdentificationDemographic> availableIdentificationDemographic;
   private final Active<RaceDemographic> activeRaceDemographic;
   private final Active<NewPatient> input;
 
@@ -40,7 +40,7 @@ public class PatientCreateEntrySteps {
       final Active<GeneralInformationDemographic> activeGeneralInformation,
       final Available<PhoneDemographic> availablePoneDemographic,
       final Available<AddressDemographic> availableAddressDemographic,
-      final Active<IdentificationDemographic> activeIdentificationDemographic,
+      final Available<IdentificationDemographic> availableIdentificationDemographic,
       final Active<RaceDemographic> activeRaceDemographic,
       final Active<NewPatient> input) {
     this.activeAdministrative = activeAdministrative;
@@ -52,7 +52,7 @@ public class PatientCreateEntrySteps {
     this.activeGeneralInformation = activeGeneralInformation;
     this.availablePoneDemographic = availablePoneDemographic;
     this.availableAddressDemographic = availableAddressDemographic;
-    this.activeIdentificationDemographic = activeIdentificationDemographic;
+    this.availableIdentificationDemographic = availableIdentificationDemographic;
     this.activeRaceDemographic = activeRaceDemographic;
     this.input = input;
   }
@@ -95,8 +95,8 @@ public class PatientCreateEntrySteps {
 
   @Given("the identification is included with the extended patient data")
   public void includeIdentification() {
-    this.activeIdentificationDemographic.maybeActive().ifPresent(
-        demographic -> this.input.active(current -> current.withIdentification(demographic)));
+    this.availableIdentificationDemographic.all()
+        .forEach(demographic -> this.input.active(current -> current.withIdentification(demographic)));
   }
 
   @Given("the birth demographics are included in the extended patient data")
