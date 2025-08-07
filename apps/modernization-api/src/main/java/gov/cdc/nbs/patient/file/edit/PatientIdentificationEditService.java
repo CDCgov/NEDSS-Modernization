@@ -19,7 +19,7 @@ import static gov.cdc.nbs.patient.demographics.identification.IdentificationDemo
 class PatientIdentificationEditService {
 
   private static long identifiedBy(final IdentificationDemographic demographic) {
-    return demographic.sequence() == null ? demographic.hashCode() : demographic.sequence();
+    return demographic.sequence() == null ? demographic.hashCode() : Objects.hash(demographic.sequence());
   }
 
   private static long identifyPersonName(EntityId identifier) {
