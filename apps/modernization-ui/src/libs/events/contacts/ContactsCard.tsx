@@ -19,8 +19,7 @@ import { MemoizedSupplier } from 'libs/supplying';
 import { ClassicModalButton } from 'libs/classic';
 import { Shown } from 'conditional-render';
 import { exists } from 'utils';
-import { displayNoData, NoData, OrElseNoData } from 'design-system/data';
-import { mapOr } from 'utils/mapping';
+import { displayNoData } from 'design-system/data';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_CREATED = { id: 'createx-on', name: 'Date created' };
