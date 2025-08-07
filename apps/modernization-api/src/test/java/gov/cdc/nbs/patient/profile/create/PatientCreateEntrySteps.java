@@ -24,7 +24,7 @@ public class PatientCreateEntrySteps {
   private final Active<EthnicityDemographic> activeEthnicity;
   private final Active<MortalityDemographic> activeMortalityDemographic;
   private final Active<GeneralInformationDemographic> activeGeneralInformation;
-  private final Active<PhoneDemographic> activePhoneDemographic;
+  private final Available<PhoneDemographic> availablePoneDemographic;
   private final Available<AddressDemographic> availableAddressDemographic;
   private final Active<IdentificationDemographic> activeIdentificationDemographic;
   private final Active<RaceDemographic> activeRaceDemographic;
@@ -38,7 +38,7 @@ public class PatientCreateEntrySteps {
       final Active<EthnicityDemographic> activeEthnicity,
       final Active<MortalityDemographic> activeMortalityDemographic,
       final Active<GeneralInformationDemographic> activeGeneralInformation,
-      final Active<PhoneDemographic> activePhoneDemographic,
+      final Available<PhoneDemographic> availablePoneDemographic,
       final Available<AddressDemographic> availableAddressDemographic,
       final Active<IdentificationDemographic> activeIdentificationDemographic,
       final Active<RaceDemographic> activeRaceDemographic,
@@ -50,7 +50,7 @@ public class PatientCreateEntrySteps {
     this.availableName = availableName;
     this.activeEthnicity = activeEthnicity;
     this.activeGeneralInformation = activeGeneralInformation;
-    this.activePhoneDemographic = activePhoneDemographic;
+    this.availablePoneDemographic = availablePoneDemographic;
     this.availableAddressDemographic = availableAddressDemographic;
     this.activeIdentificationDemographic = activeIdentificationDemographic;
     this.activeRaceDemographic = activeRaceDemographic;
@@ -77,7 +77,7 @@ public class PatientCreateEntrySteps {
 
   @Given("the phone is included with the extended patient data")
   public void includePhone() {
-    this.activePhoneDemographic.maybeActive().ifPresent(
+    this.availablePoneDemographic.maybeOne().ifPresent(
         demographic -> this.input.active(current -> current.withPhoneEmail(demographic)));
   }
 
