@@ -137,7 +137,7 @@ public class PatientFileSteps {
         .andExpect(
             jsonPath(
                 "$.reason",
-                equalTo("Unable to apply changes to %d".formatted(this.activePatient.active().id()))
+                equalTo("Unable to apply changes to patient %d".formatted(this.activePatient.active().id()))
             )
         );
   }

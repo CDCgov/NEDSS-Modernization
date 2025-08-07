@@ -41,7 +41,11 @@ public class PatientService {
     try {
       long before = patient.signature();
       consumer.andThen(resolveHistory(before)).accept(patient);
+    } catch (PatientException exception) {
+      //  rethrow any expected Patient exceptions
+      throw exception;
     } catch (Throwable throwable) {
+      //  report any unexpected changes as a PatientException
       throw new PatientException(patient.id(), "Unable to apply changes to patient %d".formatted(patient.id()));
     }
   }
