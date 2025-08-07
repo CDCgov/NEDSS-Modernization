@@ -101,7 +101,7 @@ jobs:
           DATABASE_PASSWORD: ${{ env.test_database_password }}
           TOKEN_SECRET: ${{ env.token_secret }}
           PARAMETER_SECRET: ${{ env.parameter_secret }}
-        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:530af60
+        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:6.0.17.1
 
       - name: Zip test report
         run: zip -r test-report.zip ./build/reports/*
