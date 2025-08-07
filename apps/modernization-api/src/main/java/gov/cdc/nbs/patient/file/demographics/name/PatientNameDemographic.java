@@ -12,7 +12,8 @@ import java.time.LocalDate;
 record PatientNameDemographic(
     @JsonProperty(required = true)
     short sequence,
-    @JsonProperty(required = true) @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
+    @JsonProperty(required = true)
+    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
     LocalDate asOf,
     @JsonProperty(required = true)
     Selectable type,
