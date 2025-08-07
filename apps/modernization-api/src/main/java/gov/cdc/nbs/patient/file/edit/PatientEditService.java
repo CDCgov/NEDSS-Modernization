@@ -25,6 +25,7 @@ class PatientEditService {
   private final PatientAddressEditService addressEditService;
   private final PatientNameEditService nameEditService;
   private final PatientPhoneEditService phoneEditService;
+  private final PatientIdentificationEditService identificationEditService;
 
   PatientEditService(
       final PatientService service,
@@ -33,7 +34,8 @@ class PatientEditService {
       final PatientEthnicityEditService ethnicityEditService,
       final PatientAddressEditService addressEditService,
       final PatientNameEditService nameEditService,
-      final PatientPhoneEditService phoneEditService) {
+      final PatientPhoneEditService phoneEditService,
+      final PatientIdentificationEditService identificationEditService) {
     this.service = service;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
     this.permissionScopeResolver = permissionScopeResolver;
@@ -41,6 +43,7 @@ class PatientEditService {
     this.addressEditService = addressEditService;
     this.nameEditService = nameEditService;
     this.phoneEditService = phoneEditService;
+    this.identificationEditService = identificationEditService;
   }
 
   void edit(
@@ -90,6 +93,7 @@ class PatientEditService {
     addressEditService.apply(context, patient, changes.addresses());
     nameEditService.apply(context, patient, changes.names());
     phoneEditService.apply(context, patient, changes.phoneEmails());
+    identificationEditService.apply(context, patient, changes.identifications());
   }
 
 }
