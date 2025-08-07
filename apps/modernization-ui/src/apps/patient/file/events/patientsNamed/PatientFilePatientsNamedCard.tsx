@@ -6,7 +6,7 @@ import { mapOr } from 'utils/mapping';
 
 type PatientFilePatientsNamedCardProps = Omit<ContactsCardProps, 'title' | 'titleResolver'>;
 
-const titleResolver = (patient?: DisplayableName, contact?: PatientFileContacts, patientNamed?: boolean): string => {
+const titleResolver = (patient?: DisplayableName, contact?: PatientFileContacts): string => {
     const name = mapOr(displayName('short'), <NoData />);
 
     return `${patient && name} was named as a contact in the following ${contact?.condition}`;
