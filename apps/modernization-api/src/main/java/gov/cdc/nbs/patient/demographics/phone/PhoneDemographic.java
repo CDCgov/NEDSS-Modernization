@@ -53,4 +53,40 @@ public record PhoneDemographic(
         null,
         null);
   }
+
+  public PhoneDemographic withPhoneValues(
+      final LocalDate asOf,
+      final String type,
+      final String use,
+      final String number) {
+    return new PhoneDemographic(
+        identifier(),
+        asOf,
+        type,
+        use,
+        countryCode(),
+        number,
+        extension(),
+        email(),
+        url(),
+        comment());
+  }
+
+  public PhoneDemographic withEmailValues(
+      final LocalDate asOf,
+      final String type,
+      final String use,
+      final String emailAddress) {
+    return new PhoneDemographic(
+        identifier(),
+        asOf,
+        type,
+        use,
+        countryCode(),
+        phoneNumber(),
+        extension(),
+        emailAddress,
+        url(),
+        comment());
+  }
 }

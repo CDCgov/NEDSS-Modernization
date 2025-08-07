@@ -89,5 +89,9 @@ public class PatientFilePhoneDemographicVerificationSteps {
         .andExpect(jsonPath("$.[%d].asOf", position).value(asOf.toString()));
   }
 
-
+  @Then("the patient file phone demographics does not include an entry with as of {localDate}")
+  public void doesNotInclude(final LocalDate value) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.[?(@.asOf=='%s')]", value).doesNotExist());
+  }
 }
