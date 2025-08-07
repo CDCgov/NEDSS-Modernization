@@ -255,7 +255,7 @@ public class NBSEntity {
     this.ensureLocators().stream()
         .filter(EntityLocatorParticipation.active().and(TeleEntityLocatorParticipation.class::isInstance))
         .map(TeleEntityLocatorParticipation.class::cast)
-        .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), phone.id()))
+        .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), phone.identifier()))
         .findFirst()
         .ifPresent(existing -> existing.update(phone));
   }

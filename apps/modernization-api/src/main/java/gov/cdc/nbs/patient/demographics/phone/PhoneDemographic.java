@@ -6,6 +6,7 @@ import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
 import java.time.LocalDate;
 
 public record PhoneDemographic(
+    Long identifier,
     @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
     String type,
     String use,
@@ -14,16 +15,15 @@ public record PhoneDemographic(
     String extension,
     String email,
     String url,
-    String comment
-) {
+    String comment) {
 
   public static PhoneDemographic phoneNumber(
       final LocalDate asOf,
       final String type,
       final String use,
-      final String number
-  ) {
+      final String number) {
     return new PhoneDemographic(
+        null,
         asOf,
         type,
         use,
@@ -32,8 +32,7 @@ public record PhoneDemographic(
         null,
         null,
         null,
-        null
-    );
+        null);
 
   }
 
@@ -41,9 +40,9 @@ public record PhoneDemographic(
       final LocalDate asOf,
       final String type,
       final String use,
-      final String email
-  ) {
+      final String email) {
     return new PhoneDemographic(
+        null,
         asOf,
         type,
         use,
@@ -52,7 +51,6 @@ public record PhoneDemographic(
         null,
         email,
         null,
-        null
-    );
+        null);
   }
 }
