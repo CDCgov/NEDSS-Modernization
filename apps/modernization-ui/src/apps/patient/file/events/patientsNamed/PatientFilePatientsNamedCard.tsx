@@ -8,7 +8,7 @@ type PatientFilePatientsNamedCardProps = Omit<ContactsCardProps, 'title' | 'titl
 const titleResolver = (patient?: DisplayableName, contact?: PatientFileContacts): string => {
     const name = patient ? displayName('short')(patient) : displayNoData();
 
-    return `${patient && name} was named as a contact in the following ${contact?.condition}`;
+    return `${patient && name} was named as a contact in the following ${contact?.condition} investigation(s)`;
 };
 
 const PatientFilePatientsNamedCard = ({ ...remaining }: PatientFilePatientsNamedCardProps) => {
