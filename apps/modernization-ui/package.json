@@ -86,7 +86,7 @@
     "scripts": {
         "clean": "rm -rf node_modules && rm package-lock.json && npm install",
         "start": "react-scripts start",
-        "build": "npx react-scripts test --watchAll=false && react-scripts build",
+        "build": "react-scripts build",
         "test": "react-scripts test",
         "test:all": "react-scripts test src/ --watchAll=false",
         "test:coverageAll": "react-scripts test src/ --coverage --watchAll=false",
