@@ -7,9 +7,10 @@ import { patientVaccinations } from './vaccinations/patientVaccinations';
 import { PatientFileTreatment } from './treatments/treatment';
 import { patientTreatments } from './treatments/patientTreatments';
 import { PatientFileContacts } from 'libs/events/contacts/contactsNamed';
-import { patientContacts } from 'libs/events/contacts/patientContacts';
+import { patientContacts } from 'apps/patient/file/events/contactsNamed/patientContacts';
 import { PatientFileDocument } from './documents/documents';
 import { patientDocuments } from './documents/patientDocuments';
+import { patientsNamed } from './patientsNamed/patientNamed';
 
 type Reports = {
     laboratory: MemoizedSupplier<Promise<PatientFileLaboratoryReport[]>>;
@@ -18,6 +19,7 @@ type Reports = {
     treatment: MemoizedSupplier<Promise<PatientFileTreatment[]>>;
     contactNamed: MemoizedSupplier<Promise<PatientFileContacts[]>>;
     documents: MemoizedSupplier<Promise<PatientFileDocument[]>>;
+    patientNamed: MemoizedSupplier<Promise<PatientFileContacts[]>>;
 };
 
 type PatientFileEventData = {
@@ -35,7 +37,8 @@ const events = (patient: number): PatientFileEventData => ({
         vaccination: new MemoizedSupplier(() => patientVaccinations(patient)),
         treatment: new MemoizedSupplier(() => patientTreatments(patient)),
         contactNamed: new MemoizedSupplier(() => patientContacts(patient)),
-        documents: new MemoizedSupplier(() => patientDocuments(patient))
+        documents: new MemoizedSupplier(() => patientDocuments(patient)),
+        patientNamed: new MemoizedSupplier(() => patientsNamed(patient))
     }
 });
 
