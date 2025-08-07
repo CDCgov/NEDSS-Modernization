@@ -12,12 +12,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PatientFileRaceDemographicValidationSteps {
 
   private final Active<PatientIdentifier> patient;
-  private final PatientProfileRaceCategoryValidationRequester requester;
+  private final PatientFileRaceCategoryValidationRequester requester;
   private final Active<ResultActions> response;
 
   PatientFileRaceDemographicValidationSteps(
       final Active<PatientIdentifier> patient,
-      final PatientProfileRaceCategoryValidationRequester requester,
+      final PatientFileRaceCategoryValidationRequester requester,
       final Active<ResultActions> response
   ) {
     this.patient = patient;

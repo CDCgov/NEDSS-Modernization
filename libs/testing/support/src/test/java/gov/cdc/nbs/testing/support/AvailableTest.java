@@ -101,7 +101,8 @@ class AvailableTest {
   void should_not_apply_function_when_selected_is_null() {
     Available<Object> available = new Available<>();
 
-    available.selected(current -> fail(), () -> null);
+    assertThatThrownBy(() -> available.selected(current -> fail(), () -> null))
+        .isInstanceOf(NoSuchElementException.class);
   }
 
   @Test

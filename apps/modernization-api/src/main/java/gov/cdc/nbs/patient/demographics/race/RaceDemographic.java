@@ -22,6 +22,14 @@ public record RaceDemographic(
     this(asOf, race, Collections.emptyList());
   }
 
+  public RaceDemographic withAsOf(final LocalDate asOf) {
+    return new RaceDemographic(asOf, race, detailed);
+  }
+
+  public RaceDemographic withRace(final String race) {
+    return new RaceDemographic(asOf, race, Collections.emptyList());
+  }
+
   public RaceDemographic withDetail(final String detail) {
     List<String> including = new ArrayList<>(detailed);
     including.add(detail);

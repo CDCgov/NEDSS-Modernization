@@ -7,20 +7,23 @@ import io.cucumber.java.en.Then;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PatientRaceHistorySteps {
-    private final Active<PatientIdentifier> activePatient;
-    private final PatientRaceHistoryPreviousVersionVerifier versionVerifier;
+  private final Active<PatientIdentifier> activePatient;
+  private final PatientRaceHistoryPreviousVersionVerifier versionVerifier;
 
-    public PatientRaceHistorySteps(Active<PatientIdentifier> activePatient, PatientRaceHistoryPreviousVersionVerifier versionVerifier) {
-        this.activePatient = activePatient;
-        this.versionVerifier = versionVerifier;
-    }
+  public PatientRaceHistorySteps(
+      final Active<PatientIdentifier> activePatient,
+      final PatientRaceHistoryPreviousVersionVerifier versionVerifier
+  ) {
+    this.activePatient = activePatient;
+    this.versionVerifier = versionVerifier;
+  }
 
-    @Then("the patient race history contains the previous version")
-    public void the_patient_race_history_contains_the_previous_version() {
-        boolean verified = this.activePatient.maybeActive()
-                .map(active -> this.versionVerifier.verify(active.id()))
-                .orElse(false);
+  @Then("the patient race history contains the previous version")
+  public void exists() {
+    boolean verified = this.activePatient.maybeActive()
+        .map(active -> this.versionVerifier.verify(active.id()))
+        .orElse(false);
 
-        assertThat(verified).isTrue();
-    }
+    assertThat(verified).isTrue();
+  }
 }

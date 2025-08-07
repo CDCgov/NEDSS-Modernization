@@ -45,7 +45,7 @@ public class Available<V> {
   }
 
   public Optional<V> maybeOne() {
-    return this.items.stream().findFirst();
+    return this.items.isEmpty() ? Optional.empty() : Optional.ofNullable(items.getFirst());
   }
 
   public V one() {
@@ -90,18 +90,28 @@ public class Available<V> {
         });
   }
 
-  public void selected(final UnaryOperator<V> operator, final Supplier<V> initializer) {
-    V current = this.items.isEmpty() ? Objects.requireNonNull(initializer).get() : this.items.getFirst();
-
-    if (current != null) {
-      V next = operator.apply(current);
-
-      if (this.items.isEmpty()) {
-        this.items.add(next);
-      } else {
-        this.items.set(0, next);
-      }
+  public void selected(final V next) {
+    if (this.items.isEmpty()) {
+      this.items.add(next);
+    } else {
+      this.items.addFirst(next);
     }
   }
 
+  public void selected(final UnaryOperator<V> operator, final Supplier<V> initializer) {
+    V current = maybeOne()
+        .or(() -> Optional.ofNullable(initializer.get()))
+        .orElseThrow(() -> new NoSuchElementException("there are none available"));
+
+    if (current != null) {
+      this.items.remove(current);
+      V next = operator.apply(current);
+
+      selected(next);
+    }
+  }
+
+  public void selected(final UnaryOperator<V> operator) {
+    selected(operator, () -> null);
+  }
 }

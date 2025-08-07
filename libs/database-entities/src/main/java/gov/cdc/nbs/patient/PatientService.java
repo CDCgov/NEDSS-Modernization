@@ -31,10 +31,18 @@ public class PatientService {
   public void using(final long identifier, final Consumer<Person> consumer) {
     Person patient = this.entityManager.find(Person.class, identifier);
     if (patient != null) {
-      long before = patient.signature();
-      consumer.andThen(resolveHistory(before)).accept(patient);
+      safely(patient, consumer);
     } else {
       throw new PatientNotFoundException(identifier);
+    }
+  }
+
+  private void safely(final Person patient, final Consumer<Person> consumer) {
+    try {
+      long before = patient.signature();
+      consumer.andThen(resolveHistory(before)).accept(patient);
+    } catch (Throwable throwable) {
+      throw new PatientException(patient.id(), "Unable to apply changes to patient %d".formatted(patient.id()));
     }
   }
 
