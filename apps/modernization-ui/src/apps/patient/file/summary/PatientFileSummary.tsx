@@ -7,6 +7,7 @@ import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard'
 import { FeatureToggle } from 'feature';
 import { usePatientMergeQueueStatus } from '../usePatientMergeQueueStatus';
 import { AlertMessage } from 'design-system/alert/AlertMessage';
+import { useNavigate } from 'react-router';
 
 const PatientFileSummary = () => {
     const { summary, demographics, patient } = usePatientFileData();
@@ -16,13 +17,23 @@ const PatientFileSummary = () => {
         mergeGroup,
         loading: mergeQueueLoading
     } = usePatientMergeQueueStatus(patient?.id?.toString());
+    const nav = useNavigate();
 
     return (
         <>
             {inMergeQueue && !mergeQueueLoading && (
                 <AlertMessage type="warning" slim>
                     We found potential duplicates for this patient in system-identified matches.
-                    <a href={`/deduplication/merge/${mergeGroup}`}> Review Matches </a>
+                    <a
+                        href={`/deduplication/merge/${mergeGroup}`}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            nav(`/deduplication/merge/${mergeGroup}`, {
+                                state: { fromPatientFileSummary: true, patientId: patient?.patientId?.toString() }
+                            });
+                        }}>
+                        Review Matches
+                    </a>
                 </AlertMessage>
             )}
             <PatientFileDemographicsSummaryCard

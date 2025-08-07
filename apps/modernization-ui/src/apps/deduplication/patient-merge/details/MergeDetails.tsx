@@ -5,7 +5,7 @@ import { Shown } from 'conditional-render';
 import { parseISO } from 'date-fns/fp';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams, useLocation } from 'react-router';
 import { MergePreview } from './merge-preview/MergePreview';
 import { MergeReview } from './merge-review/MergeReview';
 import {
@@ -33,6 +33,9 @@ export const MergeDetails = () => {
     const [patientToRemove, setPatientToRemove] = useState<string | undefined>(undefined);
     const { mergePatients } = usePatientMerge();
     const nav = useNavigate();
+    const location = useLocation();
+    const fromPatientFileSummary = location.state?.fromPatientFileSummary;
+    const toSurvivingPersonId = location.state?.patientId;
 
     useEffect(() => {
         if (matchId !== undefined) {
@@ -158,7 +161,11 @@ export const MergeDetails = () => {
                             </span>
                         )
                     });
-                    nav('/deduplication/merge');
+                    nav(
+                        fromPatientFileSummary && toSurvivingPersonId
+                            ? `/patient/${toSurvivingPersonId}/summary`
+                            : '/deduplication/merge'
+                    );
                 },
                 () => showError('Failed to merge patients.')
             );
