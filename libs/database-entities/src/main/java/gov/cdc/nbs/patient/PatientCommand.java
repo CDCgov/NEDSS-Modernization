@@ -210,7 +210,7 @@ public sealed interface PatientCommand {
 
   record UpdatePhone(
       long person,
-      long id,
+      long identifier,
       String type,
       String use,
       LocalDate asOf,
