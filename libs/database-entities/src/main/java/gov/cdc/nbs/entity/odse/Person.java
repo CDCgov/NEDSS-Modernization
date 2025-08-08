@@ -116,7 +116,7 @@ public class Person {
   private List<PersonName> names;
 
   @Embedded
-  private PatientRaceDemographic race;
+  private PatientRaceDemographics race;
 
   @Embedded
   private Audit audit;
@@ -131,7 +131,7 @@ public class Person {
     this.audit = new Audit();
     this.recordStatus = new RecordStatus();
     this.status = new Status();
-    this.race = new PatientRaceDemographic(this);
+    this.race = new PatientRaceDemographics(this);
   }
 
   public Person(final long identifier, final String localId) {
@@ -235,7 +235,7 @@ public class Person {
         : PatientLegalNameResolver.resolve(this.names, asOf);
   }
 
-  public void add(final PatientCommand.AddRace added) {
+  public void add(final PatientCommand.AddRaceInfo added) {
     this.race.patient(this).add(added);
     changed(added);
   }
@@ -466,7 +466,7 @@ public class Person {
     return ethnicity;
   }
 
-  public PatientRaceDemographic race() {
+  public PatientRaceDemographics race() {
     return race;
   }
 

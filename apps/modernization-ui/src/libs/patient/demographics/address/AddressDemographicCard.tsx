@@ -81,10 +81,11 @@ const defaultValue = initial();
 const AddressDemographicCard = ({
     title = 'Address',
     sizing,
+    collapsible = true,
     data = [],
     ...remaining
 }: AddressDemographicCardProps) => {
-    const renderForm = () => <AddressDemographicFields />;
+    const renderForm = () => <AddressDemographicFields sizing={sizing} />;
     const renderView = (value: AddressDemographic) => <AddressDemographicView entry={value} />;
 
     return (
@@ -102,7 +103,7 @@ const AddressDemographicCard = ({
                             viewRenderer={renderView}
                             formRenderer={renderForm}
                             defaultValues={defaultValue}
-                            collapsible
+                            collapsible={collapsible}
                         />
                     )}
                 </SortHandler>

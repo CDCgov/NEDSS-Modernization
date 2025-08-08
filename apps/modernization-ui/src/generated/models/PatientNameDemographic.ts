@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { Selectable } from './Selectable';
 export type PatientNameDemographic = {
-    identifier: number;
+    sequence: number;
     asOf: string;
     type: Selectable;
     prefix?: Selectable;

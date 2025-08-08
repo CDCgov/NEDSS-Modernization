@@ -20,41 +20,40 @@ public class PatientCreateEntrySteps {
   private final Active<Administrative> activeAdministrative;
   private final Active<BirthDemographic> activeBirthDemographic;
   private final Active<GenderDemographic> activeGenderDemographic;
-  private final Active<NameDemographic> activeName;
+  private final Available<NameDemographic> availableName;
   private final Active<EthnicityDemographic> activeEthnicity;
   private final Active<MortalityDemographic> activeMortalityDemographic;
   private final Active<GeneralInformationDemographic> activeGeneralInformation;
-  private final Active<PhoneDemographic> activePhoneDemographic;
+  private final Available<PhoneDemographic> availablePoneDemographic;
   private final Available<AddressDemographic> availableAddressDemographic;
-  private final Active<IdentificationDemographic> activeIdentificationDemographic;
-  private final Active<RaceDemographic> activeRaceDemographic;
+  private final Available<RaceDemographic> availableRaceDemographic;
+  private final Available<IdentificationDemographic> availableIdentificationDemographic;
   private final Active<NewPatient> input;
 
   PatientCreateEntrySteps(
       final Active<Administrative> activeAdministrative,
       final Active<BirthDemographic> activeBirthDemographic,
       final Active<GenderDemographic> activeGenderDemographic,
-      final Active<NameDemographic> activeName,
+      final Available<NameDemographic> availableName,
       final Active<EthnicityDemographic> activeEthnicity,
       final Active<MortalityDemographic> activeMortalityDemographic,
       final Active<GeneralInformationDemographic> activeGeneralInformation,
-      final Active<PhoneDemographic> activePhoneDemographic,
+      final Available<PhoneDemographic> availablePoneDemographic,
       final Available<AddressDemographic> availableAddressDemographic,
-      final Active<IdentificationDemographic> activeIdentificationDemographic,
-      final Active<RaceDemographic> activeRaceDemographic,
-      final Active<NewPatient> input
-  ) {
+      final Available<RaceDemographic> availableRaceDemographic,
+      final Available<IdentificationDemographic> availableIdentificationDemographic,
+      final Active<NewPatient> input) {
     this.activeAdministrative = activeAdministrative;
     this.activeBirthDemographic = activeBirthDemographic;
     this.activeGenderDemographic = activeGenderDemographic;
     this.activeMortalityDemographic = activeMortalityDemographic;
-    this.activeName = activeName;
+    this.availableName = availableName;
     this.activeEthnicity = activeEthnicity;
     this.activeGeneralInformation = activeGeneralInformation;
-    this.activePhoneDemographic = activePhoneDemographic;
+    this.availablePoneDemographic = availablePoneDemographic;
     this.availableAddressDemographic = availableAddressDemographic;
-    this.activeIdentificationDemographic = activeIdentificationDemographic;
-    this.activeRaceDemographic = activeRaceDemographic;
+    this.availableRaceDemographic = availableRaceDemographic;
+    this.availableIdentificationDemographic = availableIdentificationDemographic;
     this.input = input;
   }
 
@@ -72,19 +71,19 @@ public class PatientCreateEntrySteps {
 
   @Given("the name is included with the extended patient data")
   public void i_add_the_current_name() {
-    this.activeName.maybeActive().ifPresent(
+    this.availableName.maybeOne().ifPresent(
         name -> this.input.active(current -> current.withName(name)));
   }
 
   @Given("the phone is included with the extended patient data")
   public void includePhone() {
-    this.activePhoneDemographic.maybeActive().ifPresent(
+    this.availablePoneDemographic.maybeOne().ifPresent(
         demographic -> this.input.active(current -> current.withPhoneEmail(demographic)));
   }
 
   @Given("the race is included with the extended patient data")
   public void includeRace() {
-    this.activeRaceDemographic.maybeActive().ifPresent(
+    this.availableRaceDemographic.all().forEach(
         demographic -> this.input.active(current -> current.withRace(demographic)));
   }
 
@@ -96,8 +95,8 @@ public class PatientCreateEntrySteps {
 
   @Given("the identification is included with the extended patient data")
   public void includeIdentification() {
-    this.activeIdentificationDemographic.maybeActive().ifPresent(
-        demographic -> this.input.active(current -> current.withIdentification(demographic)));
+    this.availableIdentificationDemographic.all()
+        .forEach(demographic -> this.input.active(current -> current.withIdentification(demographic)));
   }
 
   @Given("the birth demographics are included in the extended patient data")

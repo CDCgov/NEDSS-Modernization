@@ -46,7 +46,7 @@ class PatientIdentificationDemographicRowMapper implements RowMapper<PatientIden
 
   @Override
   public PatientIdentificationDemographic mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
-    long identifier = resultSet.getLong(columns.identifier());
+    short identifier = resultSet.getShort(columns.identifier());
     LocalDate asOf = LocalDateColumnMapper.map(resultSet, columns.asOf());
     Selectable type = typeMapper.mapRow(resultSet, rowNum);
     Selectable issuer = issuerMapper.mapRow(resultSet, rowNum);

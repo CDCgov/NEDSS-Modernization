@@ -1,0 +1,29 @@
+.demographics {
+    display: grid;
+    grid-template-columns: [content] 1fr [in-page-navigation] 12.1875rem;
+    height: var(--demographics-form-height, 100%);
+
+    .content {
+        grid-area: content;
+
+        padding: 1rem;
+        gap: 1rem;
+
+        overflow-y: scroll;
+        scroll-snap-type: y proximity;
+
+        & > * {
+            margin-bottom: 1rem;
+            scroll-snap-align: center;
+        }
+
+        padding-bottom: calc(100vh - var(--demographics-form-height, 100%));
+    }
+
+    & > aside {
+        padding: 1rem;
+        grid-area: in-page-navigation;
+        position: sticky;
+        top: 0;
+    }
+}

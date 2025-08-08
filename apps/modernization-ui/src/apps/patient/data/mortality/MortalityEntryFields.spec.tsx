@@ -94,4 +94,12 @@ describe('when entering patient mortality demographics', () => {
         expect(getByLabelText('Death county')).toHaveValue('');
         expect(getByLabelText('Death country')).toHaveValue('');
     });
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+        const dateInput = getByLabelText('Mortality information as of');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            "This field defaults to today's date and can be changed if needed."
+        );
+    });
 });

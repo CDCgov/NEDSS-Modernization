@@ -39,6 +39,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal', sizing = 'me
                         error={error?.message}
                         required
                         sizing={sizing}
+                        aria-description="This date defaults to today and can be changed if needed"
                     />
                 )}
             />

@@ -8,7 +8,11 @@ type IdentificationDemographic = {
     value?: string;
 };
 
-export type { IdentificationDemographic };
+type HasIdentificationDemographics = {
+    identifications?: IdentificationDemographic[];
+};
+
+export type { IdentificationDemographic, HasIdentificationDemographics };
 
 const initial = (asOf: string = today()): Partial<IdentificationDemographic> => ({
     asOf,

@@ -67,10 +67,11 @@ const PhoneEmailDemographicCard = ({
     title = 'Phone & email',
     sizing,
     data = [],
+    collapsible = true,
     ...remaining
 }: PhoneEmailDemographicCardProps) => {
     const renderView = (entry: PhoneEmailDemographic) => <PhoneEmailDemographicView entry={entry} />;
-    const renderForm = () => <PhoneEmailDemographicFields />;
+    const renderForm = () => <PhoneEmailDemographicFields sizing={sizing} />;
 
     return (
         <SortingProvider appendToUrl={false}>
@@ -87,7 +88,7 @@ const PhoneEmailDemographicCard = ({
                             defaultValues={defaultValue}
                             viewRenderer={renderView}
                             formRenderer={renderForm}
-                            collapsible
+                            collapsible={collapsible}
                         />
                     )}
                 </SortHandler>

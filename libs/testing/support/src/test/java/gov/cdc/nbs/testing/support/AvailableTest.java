@@ -85,6 +85,26 @@ class AvailableTest {
   }
 
   @Test
+  void should_replace_the_selected_available_with_the_value_without_an_initializer() {
+
+    Available<Object> available = new Available<>();
+
+    Object one = new Object();
+    Object two = new Object();
+    Object three = new Object();
+    Object changed = new Object();
+
+    available.available(one);
+    available.available(two);
+    available.available(three);
+
+    available.selected(current -> changed);
+
+    assertThat(available.one()).isSameAs(changed);
+
+  }
+
+  @Test
   void should_replace_the_selected_available_with_the_value_using_the_initializer() {
 
     Object initialized = new Object();
@@ -101,7 +121,8 @@ class AvailableTest {
   void should_not_apply_function_when_selected_is_null() {
     Available<Object> available = new Available<>();
 
-    available.selected(current -> fail(), () -> null);
+    assertThatThrownBy(() -> available.selected(current -> fail(), () -> null))
+        .isInstanceOf(NoSuchElementException.class);
   }
 
   @Test

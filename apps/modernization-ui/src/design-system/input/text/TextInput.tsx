@@ -10,7 +10,7 @@ type TextInputProps = {
     id: string;
     type?: 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'search';
-    value?: string;
+    value?: string | null;
     onChange?: TextOnChange;
     onBlur?: () => void;
     onClear?: () => void;

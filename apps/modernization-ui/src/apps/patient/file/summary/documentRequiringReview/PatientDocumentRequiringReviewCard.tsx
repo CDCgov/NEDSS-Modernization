@@ -10,10 +10,11 @@ import { internalizeDateTime } from 'date/InternalizeDateTime';
 import { renderFacilityProvider, renderMorbidity } from '../../renderPatientFile';
 import { PatientFileDocumentRequiringReview } from './drr';
 import { TableCardProps } from 'design-system/card/table/TableCard';
-import { LabeledValue, MaybeLabeledValue } from 'design-system/value';
+import { MaybeLabeledValue } from 'design-system/value';
 import { ResultedTests } from 'libs/events/tests';
 
 import styles from './drr.module.scss';
+import { OrElseNoData } from 'design-system/data';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
@@ -53,17 +54,15 @@ const resolveUrl = (value: PatientFileDocumentRequiringReview) => {
 const renderEventDate = (value?: PatientFileDocumentRequiringReview) => {
     if (value?.type === 'Morbidity Report' || value?.type === 'Case Report') {
         return (
-            <>
-                <LabeledValue label="Report date" orientation="vertical">
-                    {internalizeDate(value.eventDate)}
-                </LabeledValue>
-            </>
+            <MaybeLabeledValue label="Report date" orientation="vertical">
+                {internalizeDate(value.eventDate)}
+            </MaybeLabeledValue>
         );
     } else if (value?.type === 'Laboratory Report') {
         return (
-            <LabeledValue label="Date collected" orientation="vertical">
+            <MaybeLabeledValue label="Date collected" orientation="vertical">
                 {internalizeDate(value.eventDate)}
-            </LabeledValue>
+            </MaybeLabeledValue>
         );
     }
     return internalizeDate(value?.eventDate);
@@ -120,7 +119,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,
-        render: (value) => renderEventDate(value)
+        render: (value) => <OrElseNoData>{renderEventDate(value)}</OrElseNoData>
     },
     {
         ...DESCRIPTION,

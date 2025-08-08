@@ -1,0 +1,1 @@
+export { PatientFileEdit } from './PatientFileEdit';

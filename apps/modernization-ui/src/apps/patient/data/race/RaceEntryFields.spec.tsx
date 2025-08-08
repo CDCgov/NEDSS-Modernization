@@ -183,4 +183,12 @@ describe('Race entry fields', () => {
         expect(getByText('category not valid')).toBeInTheDocument();
         expect(validator).toBeCalledWith(19, expect.objectContaining({ value: 'other' }));
     });
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+        const dateInput = getByLabelText('Race as of');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            "This field defaults to today's date and can be changed if needed."
+        );
+    });
 });

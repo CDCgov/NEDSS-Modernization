@@ -15,7 +15,11 @@ type NameDemographic = EffectiveDated & {
     degree?: Selectable | null;
 };
 
-export type { NameDemographic };
+type HasNameDemographics = {
+    names?: NameDemographic[];
+};
+
+export type { NameDemographic, HasNameDemographics };
 
 const initial = (asOf: string = today()): Partial<NameDemographic> => ({
     asOf,

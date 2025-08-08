@@ -23,18 +23,31 @@ class PatientEditService {
   private final PermissionScopeResolver permissionScopeResolver;
   private final PatientEthnicityEditService ethnicityEditService;
   private final PatientAddressEditService addressEditService;
+  private final PatientNameEditService nameEditService;
+  private final PatientRaceEditService raceEditService;
+  private final PatientPhoneEditService phoneEditService;
+  private final PatientIdentificationEditService identificationEditService;
 
   PatientEditService(
       final PatientService service,
       final AddressIdentifierGenerator addressIdentifierGenerator,
       final PermissionScopeResolver permissionScopeResolver,
-      final PatientEthnicityEditService ethnicityEditService, PatientAddressEditService addressEditService
+      final PatientEthnicityEditService ethnicityEditService,
+      final PatientAddressEditService addressEditService,
+      final PatientNameEditService nameEditService,
+      final PatientPhoneEditService phoneEditService,
+      final PatientIdentificationEditService identificationEditService,
+      final PatientRaceEditService raceEditService
   ) {
     this.service = service;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
     this.permissionScopeResolver = permissionScopeResolver;
     this.ethnicityEditService = ethnicityEditService;
     this.addressEditService = addressEditService;
+    this.nameEditService = nameEditService;
+    this.phoneEditService = phoneEditService;
+    this.identificationEditService = identificationEditService;
+    this.raceEditService = raceEditService;
   }
 
   void edit(
@@ -56,7 +69,7 @@ class PatientEditService {
       final Person patient
   ) {
 
-    long identifier = patient.getId();
+    long identifier = patient.id();
 
     changes.maybeAdministrative()
         .map(administrative -> asUpdateAdministrativeInfo(identifier, context, administrative))
@@ -85,7 +98,10 @@ class PatientEditService {
     changes.maybeEthnicity().ifPresent(demographic -> ethnicityEditService.apply(context, patient, demographic));
 
     addressEditService.apply(context, patient, changes.addresses());
+    nameEditService.apply(context, patient, changes.names());
+    phoneEditService.apply(context, patient, changes.phoneEmails());
+    identificationEditService.apply(context, patient, changes.identifications());
+    raceEditService.apply(context, patient, changes.races());
   }
-
 
 }

@@ -13,7 +13,11 @@ type PhoneEmailDemographic = EffectiveDated & {
     comment?: string;
 };
 
-export type { PhoneEmailDemographic };
+type HasPhoneEmailDemographics = {
+    phoneEmails?: PhoneEmailDemographic[];
+};
+
+export type { PhoneEmailDemographic, HasPhoneEmailDemographics };
 
 const initial = (asOf: string = today()): Partial<PhoneEmailDemographic> => ({
     asOf,

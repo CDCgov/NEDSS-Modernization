@@ -47,7 +47,8 @@ export const PageProvider = ({ children }: PageProviderProps) => {
 
     return (
         <PageContext.Provider value={value}>
-            <ScrollToTop title={title || 'Main content'}>{children}</ScrollToTop>
+            <ScrollToTop title={title || 'Main content'} />
+            {children}
         </PageContext.Provider>
     );
 };

@@ -57,11 +57,12 @@ type IdentificationDemographicCardProps = {
 const IdentificationDemographicCard = ({
     title = 'Identification',
     sizing,
+    collapsible = true,
     data = [],
     ...remaining
 }: IdentificationDemographicCardProps) => {
     const renderView = (entry: IdentificationDemographic) => <IdentificationDemographicView entry={entry} />;
-    const renderForm = () => <IdentificationDemographicFields />;
+    const renderForm = () => <IdentificationDemographicFields sizing={sizing} />;
 
     return (
         <SortingProvider appendToUrl={false}>
@@ -78,7 +79,7 @@ const IdentificationDemographicCard = ({
                             defaultValues={defaultValue}
                             viewRenderer={renderView}
                             formRenderer={renderForm}
-                            collapsible
+                            collapsible={collapsible}
                         />
                     )}
                 </SortHandler>

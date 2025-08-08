@@ -36,6 +36,7 @@ const PatientFileSummary = () => {
                     </a>
                 </AlertMessage>
             )}
+
             <PatientFileDemographicsSummaryCard
                 id="demographics-summary"
                 provider={demographics.get().summary}
@@ -54,7 +55,7 @@ const PatientFileSummary = () => {
             <FeatureToggle guard={(features) => features.patient.file.mergeHistory?.enabled}>
                 <PatientMergeHistoryCard id="merge-history" provider={summary.get().mergeHistory} patient={patient} />
             </FeatureToggle>
-        </>
+        </PatientFileView>
     );
 };
 
