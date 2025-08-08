@@ -1,4 +1,4 @@
-import { AdministrativeInformation, PatientDemographics, RaceDemographic } from 'libs/patient/demographics';
+import { AdministrativeInformation, PatientDemographics } from 'libs/patient/demographics';
 import { EthnicityDemographic, initial as initialEthnicity } from 'libs/patient/demographics/ethnicity';
 import { MortalityDemographic, initial as initialMortality } from 'libs/patient/demographics/mortality';
 import { SexBirthDemographic, initial as initialSexBirth } from 'libs/patient/demographics/sex-birth';
@@ -6,13 +6,14 @@ import { GeneralInformationDemographic, initial as initialGeneral } from 'libs/p
 import { PatientDemographicsData } from '../demographics';
 import { internalizeDate, today } from 'date';
 import { mapOr, Mapping, maybeMapAll } from 'utils/mapping';
+import { EffectiveDated } from 'utils';
 
 const into =
     <P extends string, R, S>(property: P, mapping: Mapping<R, S>): Mapping<R, Record<P, S>> =>
     (value) =>
         ({ [property]: mapping(value) }) as Record<P, S>;
 
-const copy = <V>(value: V): V => ({ ...value });
+const copy = <V extends EffectiveDated>(value: V): V => ({ ...value, asOf: internalizeDate(value.asOf) });
 const copyAll = maybeMapAll(copy);
 
 const orElseToday = mapOr((value: string) => internalizeDate(value), today);
@@ -38,7 +39,7 @@ const evaluated = (data: PatientDemographicsData): Promise<Required<PatientDemog
         data.addresses.get().then(into('addresses', copyAll)),
         data.phoneEmail.get().then(into('phoneEmails', copyAll)),
         data.identifications.get().then(into('identifications', copyAll)),
-        data.race.get().then(into('races', asRaces)),
+        data.race.get().then(into('races', copyAll)),
         data.ethnicity.get().then(into('ethnicity', mapOr(asEthnicity, initialEthnicity))),
         data.sexBirth
             .get()
@@ -55,13 +56,6 @@ export { evaluated };
 const asAdministrative = (demographic: AdministrativeInformation) => ({
     administrative: { ...demographic, asOf: orElseToday(demographic.asOf) }
 });
-
-const asRace = (demographic: RaceDemographic) => ({
-    ...demographic,
-    asOf: internalizeDate(demographic.asOf)
-});
-
-const asRaces = maybeMapAll(asRace);
 
 const asEthnicity = (demographic: EthnicityDemographic) => ({
     ...demographic,

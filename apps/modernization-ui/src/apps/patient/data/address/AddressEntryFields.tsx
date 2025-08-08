@@ -3,8 +3,12 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
-import { CensusTractInputField, validCensusTractRule } from './census-tract';
+import {
+    validZipCodeRule,
+    ZipCodeInputField,
+    CensusTractInputField,
+    validCensusTractRule
+} from 'libs/demographics/location';
 import { AddressEntry } from './entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { useAddressCodedValues } from './useAddressCodedValues';

@@ -38,3 +38,20 @@ const initial = (asOf: string = today()): Partial<AddressDemographic> => ({
 });
 
 export { initial };
+
+const labels = {
+    asOf: 'As of',
+    type: 'Type',
+    use: 'Use',
+    address1: 'Street address 1',
+    address2: 'Street address 2',
+    city: 'City',
+    state: 'State',
+    zip: 'Zip',
+    county: 'County',
+    censusTract: 'Census tract',
+    country: 'Country',
+    comment: 'Comments'
+};
+
+export { labels };

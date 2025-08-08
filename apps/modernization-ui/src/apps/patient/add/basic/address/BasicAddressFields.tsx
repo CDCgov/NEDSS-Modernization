@@ -1,9 +1,13 @@
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { validCensusTractRule, CensusTractInputField } from 'apps/patient/data/address';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
+import {
+    validZipCodeRule,
+    ZipCodeInputField,
+    validCensusTractRule,
+    CensusTractInputField
+} from 'libs/demographics/location';
 import { maxLengthRule } from 'validation/entry';
 import { BasicNewPatientEntry } from 'apps/patient/add/basic/entry';
 import { TextInputField } from 'design-system/input';

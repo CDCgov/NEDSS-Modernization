@@ -1,32 +1,28 @@
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { AddressDemographic } from './address';
-import { DatePickerInput, validDateRule } from 'design-system/date';
-import { maxLengthRule, validateExtendedNameRule, validateRequiredRule } from 'validation/entry';
-import { EntryFieldsProps } from 'design-system/entry';
-import { SingleSelect } from 'design-system/select';
-import { useAddressCodedValues } from './useAddressCodedValues';
-import { TextInputField } from 'design-system/input';
 import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import {
+    validZipCodeRule,
+    ZipCodeInputField,
+    CensusTractInputField,
+    validCensusTractRule
+} from 'libs/demographics/location';
+import { EntryFieldsProps } from 'design-system/entry';
+import { TextInputField } from 'design-system/input';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
+import { SingleSelect } from 'design-system/select';
+import { AddressOptions } from './useAddressOptions';
+import { AddressDemographic, labels } from '../address';
 
-const AS_OF_DATE_LABEL = 'Address as of';
-const TYPE_LABEL = 'Type';
-const USE_LABEL = 'Use';
-const ADDRESS_1_LABEL = 'Street address 1';
-const ADDRESS_2_LABEL = 'Street address 2';
-const CITY_LABEL = 'City';
-const STATE_LABEL = 'State';
-const ZIP_LABEL = 'Zip';
-const COUNTY_LABEL = 'County';
-const COUNTRY_LABEL = 'Country';
-const CENSUS_TRACT_LABEL = 'Census tract';
-const COMMENTS_LABEL = 'Address comments';
+type AddressDemographicFieldsProps = { options: AddressOptions } & EntryFieldsProps;
 
-type AddressDemographicFieldsProps = {} & EntryFieldsProps;
-
-const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium' }: AddressDemographicFieldsProps) => {
+const AddressDemographicFields = ({
+    orientation = 'horizontal',
+    sizing = 'medium',
+    options
+}: AddressDemographicFieldsProps) => {
     const { control } = useFormContext<AddressDemographic>();
-    const coded = useAddressCodedValues();
 
     const selectedState = useWatch({ control, name: 'state' });
 
@@ -35,15 +31,15 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
     const country = useCountryOptions();
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validDateRule(AS_OF_DATE_LABEL), ...validateRequiredRule(AS_OF_DATE_LABEL) }}
+                rules={{ ...validDateRule(labels.asOf), ...validateRequiredRule(labels.asOf) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         id={name}
-                        label={AS_OF_DATE_LABEL}
+                        label={labels.asOf}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -52,23 +48,24 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
                         error={error?.message}
                         required
                         sizing={sizing}
+                        aria-description="This date defaults to today and can be changed if needed"
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="type"
-                rules={{ ...validateRequiredRule(TYPE_LABEL) }}
+                rules={{ ...validateRequiredRule(labels.type) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label={TYPE_LABEL}
+                        label={labels.type}
                         orientation={orientation}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        id={`name-${name}`}
-                        name={`name-${name}`}
-                        options={coded.types}
+                        id={name}
+                        name={name}
+                        options={options.types}
                         error={error?.message}
                         required
                         sizing={sizing}
@@ -79,16 +76,19 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
             <Controller
                 control={control}
                 name="use"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                rules={{ ...validateRequiredRule(labels.use) }}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label={USE_LABEL}
+                        label={labels.use}
                         orientation={orientation}
                         value={value}
                         id={name}
                         onChange={onChange}
                         onBlur={onBlur}
                         name={name}
-                        options={coded.uses}
+                        options={options.uses}
+                        error={error?.message}
+                        required
                         sizing={sizing}
                     />
                 )}
@@ -96,15 +96,14 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
             <Controller
                 control={control}
                 name="address1"
-                rules={{ ...validateExtendedNameRule('Street address 1') }}
+                rules={{ ...maxLengthRule(100, labels.address1) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <TextInputField
-                        label={ADDRESS_1_LABEL}
+                        label={labels.address1}
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
-                        type="text"
                         name={name}
                         id={name}
                         error={error?.message}
@@ -115,15 +114,14 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
             <Controller
                 control={control}
                 name="address2"
-                rules={{ ...validateExtendedNameRule('Street address 2') }}
+                rules={{ ...maxLengthRule(100, labels.address2) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <TextInputField
-                        label={ADDRESS_2_LABEL}
+                        label={labels.address2}
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
-                        type="text"
                         name={name}
                         id={name}
                         error={error?.message}
@@ -134,10 +132,10 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
             <Controller
                 control={control}
                 name="city"
-                rules={{ ...validateExtendedNameRule('City') }}
+                rules={{ ...maxLengthRule(100, labels.city) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <TextInputField
-                        label={CITY_LABEL}
+                        label={labels.city}
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -155,7 +153,7 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
                 name="state"
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label={STATE_LABEL}
+                        label={labels.state}
                         orientation={orientation}
                         value={value}
                         onChange={onChange}
@@ -171,17 +169,15 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
             <Controller
                 control={control}
                 name="zipcode"
-                rules={{ ...validateExtendedNameRule('Zip') }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <TextInputField
-                        label={ZIP_LABEL}
-                        orientation={orientation}
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        value={value}
-                        type="text"
-                        name={name}
+                rules={validZipCodeRule(labels.zip)}
+                render={({ field: { onChange, value, name, onBlur }, fieldState: { error } }) => (
+                    <ZipCodeInputField
                         id={name}
+                        label={labels.zip}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        orientation={orientation}
                         error={error?.message}
                         sizing={sizing}
                     />
@@ -192,7 +188,7 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
                 name="county"
                 render={({ field: { onBlur, onChange, value, name } }) => (
                     <SingleSelect
-                        label={COUNTY_LABEL}
+                        label={labels.county}
                         orientation={orientation}
                         value={value}
                         onChange={onChange}
@@ -207,17 +203,15 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
             <Controller
                 control={control}
                 name="censusTract"
-                rules={{ ...validateExtendedNameRule('Census tract') }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <TextInputField
-                        label={CENSUS_TRACT_LABEL}
-                        orientation={orientation}
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        value={value}
-                        type="text"
-                        name={name}
+                rules={validCensusTractRule(labels.censusTract)}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                    <CensusTractInputField
                         id={name}
+                        label={labels.censusTract}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        orientation={orientation}
                         error={error?.message}
                         sizing={sizing}
                     />
@@ -228,7 +222,7 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
                 name="country"
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
-                        label={COUNTRY_LABEL}
+                        label={labels.country}
                         orientation={orientation}
                         value={value}
                         onChange={onChange}
@@ -242,10 +236,10 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
             <Controller
                 control={control}
                 name="comment"
-                rules={{ ...maxLengthRule(2000, 'Address comments') }}
+                rules={{ ...maxLengthRule(2000, labels.comment) }}
                 render={({ field: { onChange, value, name } }) => (
                     <TextAreaField
-                        label={COMMENTS_LABEL}
+                        label={labels.comment}
                         orientation={orientation}
                         value={value}
                         onChange={onChange}
@@ -255,7 +249,7 @@ const AddressDemographicFields = ({ orientation = 'horizontal', sizing = 'medium
                     />
                 )}
             />
-        </section>
+        </>
     );
 };
 
