@@ -33,11 +33,11 @@ public class PatientFileRaceDemographicVerificationSteps {
 
 
 
-  @Then("the patient file race demographics includes the category {raceCategory} as of {localDate} ")
-  public void includesCategory(final String category, final LocalDate asOf)
+  @Then("the patient file race demographics as of {localDate} includes the category {raceCategory}")
+  public void includesCategory(final LocalDate asOf, final String category)
       throws Exception {
     this.response.active()
-        .andExpect(jsonPath("$.[?(@.asOf=='%s' && @.race.value=='%s')]", category, asOf)
+        .andExpect(jsonPath("$.[?(@.asOf=='%s' && @.race.value=='%s')]", asOf, category)
             .exists());
   }
 

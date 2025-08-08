@@ -43,7 +43,7 @@ public sealed interface PatientCommand {
   }
 
 
-  record AddRace(
+  record AddRaceInfo(
       long person,
       LocalDate asOf,
       String category,
@@ -52,7 +52,7 @@ public sealed interface PatientCommand {
       LocalDateTime requestedOn
   ) implements PatientCommand {
 
-    public AddRace(
+    public AddRaceInfo(
         long person,
         LocalDate asOf,
         String category,

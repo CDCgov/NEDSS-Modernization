@@ -1,15 +1,11 @@
 package gov.cdc.nbs.patient.demographic;
 
+import gov.cdc.nbs.entity.odse.PatientRace;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.demographic.race.ExistingPatientRaceException;
+import jakarta.persistence.*;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,18 +13,22 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 @Embeddable
-public class PatientRaceDemographic {
+public class PatientRaceDemographics {
 
-  private static Predicate<PersonRace> inCategory(final String category) {
-    return test -> Objects.equals(test.getRaceCategoryCd(), category);
+  private static Predicate<PatientRace> inCategory(final String category) {
+    return test -> Objects.equals(test.category(), category);
   }
 
-  private static Predicate<PersonRace> identifiedBy(final String race) {
-    return test -> Objects.equals(test.getRaceCd(), race);
+  private static Predicate<PatientRace> identifiedBy(final String race) {
+    return test -> Objects.equals(test.detail(), race);
   }
 
-  private static Predicate<PersonRace> isDetail() {
-    return test -> !Objects.equals(test.getRaceCategoryCd(), test.getRaceCd());
+  private static Predicate<PatientRace> isCategory() {
+    return test -> Objects.equals(test.category(), test.detail());
+  }
+
+  private static Predicate<PatientRace> isDetail() {
+    return Predicate.not(isCategory());
   }
 
   @SuppressWarnings(
@@ -38,27 +38,27 @@ public class PatientRaceDemographic {
   @Transient
   private Person patient;
 
-  @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = {
+  @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = {
       CascadeType.PERSIST,
       CascadeType.MERGE,
       CascadeType.REMOVE
   }, orphanRemoval = true)
-  private List<PersonRace> races;
+  private List<PatientRace> races;
 
-  protected PatientRaceDemographic() {
+  protected PatientRaceDemographics() {
     this(null);
   }
 
-  public PatientRaceDemographic(final Person patient) {
+  public PatientRaceDemographics(final Person patient) {
     this.patient = patient;
   }
 
-  public PatientRaceDemographic patient(final Person patient) {
+  public PatientRaceDemographics patient(final Person patient) {
     this.patient = patient;
     return this;
   }
 
-  public void add(final PatientCommand.AddRace added) {
+  public void add(final PatientCommand.AddRaceInfo added) {
     // Add a PersonRace for the category
     add(
         patient,
@@ -84,24 +84,22 @@ public class PatientRaceDemographic {
 
   private void add(final Person patient, final PatientCommand.AddRaceCategory added) {
     checkExistingRaceCategory(added.category());
-    ensureRaces().add(new PersonRace(patient, added));
+    ensureRaces().add(new PatientRace(patient, added));
   }
 
   private void checkExistingRaceCategory(final String category) {
-    races().stream()
-        .filter(
-            inCategory(category)
-                .and(race -> Objects.equals(race.recordStatus().status(), "ACTIVE")))
+    ensureRaces().stream()
+        .filter(inCategory(category))
         .findFirst()
-        .ifPresent(existing -> existingRaceCategoryError(existing.getRaceCategoryCd()));
+        .ifPresent(existing -> existingRaceCategoryError(existing.category()));
   }
 
   private void existingRaceCategoryError(final String category) {
-    throw new ExistingPatientRaceException(this.patient.getId(), category);
+    throw new ExistingPatientRaceException(this.patient.id(), category);
   }
 
   private void add(final Person patient, final PatientCommand.AddDetailedRace added) {
-    ensureRaces().add(new PersonRace(patient, added));
+    ensureRaces().add(new PatientRace(patient, added));
   }
 
   public void update(
@@ -110,7 +108,7 @@ public class PatientRaceDemographic {
   ) {
 
     // change all the races for this category
-    Collection<PersonRace> changed = ensureRaces().stream()
+    Collection<PatientRace> changed = ensureRaces().stream()
         .filter(inCategory(changes.category()))
         .map(race -> race.update(changes))
         .toList();
@@ -119,7 +117,7 @@ public class PatientRaceDemographic {
 
     Collection<String> existingDetails = changed.stream()
         .filter(isDetail())
-        .map(PersonRace::getRaceCd)
+        .map(PatientRace::detail)
         .toList();
 
     ArrayList<String> added = new ArrayList<>(detailed);
@@ -133,14 +131,15 @@ public class PatientRaceDemographic {
                 changes.category(),
                 detail,
                 changes.requester(),
-                changes.requestedOn()))
-        .forEach(detail -> add(patient, detail));
+                changes.requestedOn()
+            )
+        ).forEach(detail -> add(patient, detail));
 
     ArrayList<String> removed = new ArrayList<>(existingDetails);
     removed.removeAll(detailed);
 
     removed.stream()
-        .map(PatientRaceDemographic::identifiedBy)
+        .map(PatientRaceDemographics::identifiedBy)
         .reduce(Predicate::or)
         .ifPresent(criteria -> ensureRaces().removeIf(criteria));
 
@@ -151,14 +150,20 @@ public class PatientRaceDemographic {
     ensureRaces().removeIf(inCategory(info.category()));
   }
 
-  private Collection<PersonRace> ensureRaces() {
+  private Collection<PatientRace> ensureRaces() {
     if (this.races == null) {
       this.races = new ArrayList<>();
     }
     return this.races;
   }
 
-  public List<PersonRace> races() {
+  public List<PatientRace> categories() {
+    return ensureRaces().stream()
+        .filter(isCategory())
+        .toList();
+  }
+
+  public List<PatientRace> details() {
     return this.races == null ? List.of() : List.copyOf(this.races);
   }
 

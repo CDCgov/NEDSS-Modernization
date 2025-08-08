@@ -4,50 +4,31 @@ import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientRaceHistoryListener;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "Person_race")
-@IdClass(PersonRaceId.class)
+@IdClass(PatientRaceId.class)
 @SuppressWarnings(
     //  The PatientRaceHistoryListener is an entity listener specifically for instances of this class
     {"javaarchitecture:S7027", "javaarchitecture:S7091"}
 )
 @EntityListeners(PatientRaceHistoryListener.class)
-public class PersonRace {
+public class PatientRace {
 
   @Id
   @Column(name = "race_cd", nullable = false, length = 20)
-  private String raceCd;
+  private String race;
 
   @Id
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "person_uid", nullable = false)
-  private Person personUid;
+  private Person patient;
 
   @Column(name = "race_category_cd", length = 20)
-  private String raceCategoryCd;
-
-  @Column(name = "race_desc_txt", length = 100)
-  private String raceDescTxt;
-
-  @Column(name = "user_affiliation_txt", length = 20)
-  private String userAffiliationTxt;
+  private String category;
 
   @Column(name = "as_of_date")
   private LocalDate asOfDate;
@@ -58,54 +39,82 @@ public class PersonRace {
   @Embedded
   private RecordStatus recordStatus;
 
-  protected PersonRace() {
+  protected PatientRace() {
 
   }
 
-  public PersonRace(
+  public PatientRace(
       final Person person,
       final PatientCommand.AddRaceCategory added
   ) {
-    this.personUid = person;
+    this.patient = person;
     this.asOfDate = added.asOf();
-    this.raceCategoryCd = added.category();
-    this.raceCd = added.category();
+    this.category = added.category();
+    this.race = added.category();
 
     this.recordStatus = new RecordStatus(added.requestedOn());
     this.audit = new Audit(added.requester(), added.requestedOn());
 
   }
 
-  public PersonRace(
+  public PatientRace(
       final Person person,
-      final PatientCommand.AddDetailedRace added) {
-    this.personUid = person;
+      final PatientCommand.AddDetailedRace added
+  ) {
+    this.patient = person;
     this.asOfDate = added.asOf();
-    this.raceCategoryCd = added.category();
-    this.raceCd = added.race();
+    this.category = added.category();
+    this.race = added.race();
 
     this.recordStatus = new RecordStatus(added.requestedOn());
     this.audit = new Audit(added.requester(), added.requestedOn());
 
   }
 
-  public PersonRace update(final PatientCommand.UpdateRaceInfo changed) {
+  public PatientRace update(final PatientCommand.UpdateRaceInfo changed) {
     this.asOfDate = changed.asOf();
 
-    this.audit.changed(changed.requester(), changed.requestedOn());
+    changed(changed);
     return this;
+  }
+
+  public long patient() {
+    return patient.id();
+  }
+
+  public LocalDate asOf() {
+    return asOfDate;
+  }
+
+  public String category() {
+    return this.category;
+  }
+
+  public String detail() {
+    return this.race;
   }
 
   public RecordStatus recordStatus() {
     return recordStatus;
   }
 
+  public Audit audit() {
+    return audit;
+  }
+
+  private void changed(final PatientCommand command) {
+    if (audit == null) {
+      this.audit = new Audit();
+    }
+    audit.changed(command.requester(), command.requestedOn());
+  }
+
   @Override
   public String toString() {
-    return "PersonRace{" +
-        "raceCd='" + raceCd + '\'' +
-        ", raceCategoryCd='" + raceCategoryCd + '\'' +
-        ", asOfDate=" + asOfDate +
+    return "PatientRace{" +
+        "asOfDate=" + asOfDate +
+        ", category='" + category + '\'' +
+        ", race='" + race + '\'' +
         '}';
   }
 }

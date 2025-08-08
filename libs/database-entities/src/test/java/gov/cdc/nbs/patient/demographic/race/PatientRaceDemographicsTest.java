@@ -2,10 +2,10 @@ package gov.cdc.nbs.patient.demographic.race;
 
 import gov.cdc.nbs.audit.Added;
 import gov.cdc.nbs.audit.Changed;
+import gov.cdc.nbs.entity.odse.PatientRace;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
+import gov.cdc.nbs.patient.demographic.PatientRaceDemographics;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -16,17 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.InstanceOfAssertFactories.type;
 
-class PatientRaceDemographicTest {
+class PatientRaceDemographicsTest {
 
   @Test
   void should_add_race() {
 
     Person patient = new Person(117L, "local-id-value");
 
-    PatientRaceDemographic raceDemographic = new PatientRaceDemographic(patient);
+    PatientRaceDemographics raceDemographic = new PatientRaceDemographics(patient);
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "race-category-value",
@@ -36,15 +36,15 @@ class PatientRaceDemographicTest {
         )
     );
 
-    assertThat(raceDemographic.races()).satisfiesExactly(
+    assertThat(raceDemographic.details()).satisfiesExactly(
         actual -> assertThat(actual)
             .describedAs("Expected Race Category")
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(LocalDate.parse("2022-05-12"), PersonRace::getAsOfDate)
-                    .returns("race-category-value", PersonRace::getRaceCd)
-                    .returns("race-category-value", PersonRace::getRaceCategoryCd)
+                    .returns(LocalDate.parse("2022-05-12"), PatientRace::asOf)
+                    .returns("race-category-value", PatientRace::detail)
+                    .returns("race-category-value", PatientRace::category)
             )
             .satisfies(
                 race -> assertThat(race)
@@ -53,7 +53,7 @@ class PatientRaceDemographicTest {
                     .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
-                race -> assertThat(race.getAudit())
+                race -> assertThat(race.audit())
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.added())
@@ -76,10 +76,10 @@ class PatientRaceDemographicTest {
 
     Person patient = new Person(117L, "local-id-value");
 
-    PatientRaceDemographic raceDemographic = new PatientRaceDemographic(patient);
+    PatientRaceDemographics raceDemographic = new PatientRaceDemographics(patient);
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "race-category-value",
@@ -89,15 +89,15 @@ class PatientRaceDemographicTest {
         )
     );
 
-    assertThat(raceDemographic.races()).satisfiesExactly(
+    assertThat(raceDemographic.details()).satisfiesExactly(
         actual -> assertThat(actual)
             .describedAs("Expected Race Category")
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(LocalDate.parse("2022-05-12"), PersonRace::getAsOfDate)
-                    .returns("race-category-value", PersonRace::getRaceCategoryCd)
-                    .returns("race-category-value", PersonRace::getRaceCd)
+                    .returns(LocalDate.parse("2022-05-12"), PatientRace::asOf)
+                    .returns("race-category-value", PatientRace::category)
+                    .returns("race-category-value", PatientRace::detail)
             )
             .satisfies(
                 race -> assertThat(race)
@@ -106,7 +106,7 @@ class PatientRaceDemographicTest {
                     .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
-                race -> assertThat(race.getAudit())
+                race -> assertThat(race.audit())
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.added())
@@ -124,9 +124,9 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(LocalDate.parse("2022-05-12"), PersonRace::getAsOfDate)
-                    .returns("race-category-value", PersonRace::getRaceCategoryCd)
-                    .returns("race-one", PersonRace::getRaceCd)
+                    .returns(LocalDate.parse("2022-05-12"), PatientRace::asOf)
+                    .returns("race-category-value", PatientRace::category)
+                    .returns("race-one", PatientRace::detail)
             )
             .satisfies(
                 race -> assertThat(race)
@@ -135,7 +135,7 @@ class PatientRaceDemographicTest {
                     .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
-                race -> assertThat(race.getAudit())
+                race -> assertThat(race.audit())
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.added())
@@ -153,9 +153,9 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(LocalDate.parse("2022-05-12"), PersonRace::getAsOfDate)
-                    .returns("race-category-value", PersonRace::getRaceCategoryCd)
-                    .returns("race-two", PersonRace::getRaceCd)
+                    .returns(LocalDate.parse("2022-05-12"), PatientRace::asOf)
+                    .returns("race-category-value", PatientRace::category)
+                    .returns("race-two", PatientRace::detail)
             )
             .satisfies(
                 race -> assertThat(race)
@@ -164,7 +164,7 @@ class PatientRaceDemographicTest {
                     .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
-                race -> assertThat(race.getAudit())
+                race -> assertThat(race.audit())
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.added())
@@ -185,10 +185,10 @@ class PatientRaceDemographicTest {
   void should_add_already_present_race_category_when_existing_is_inactive() {
     Person patient = new Person(117L, "local-id-value");
 
-    PatientRaceDemographic raceDemographic = new PatientRaceDemographic(patient);
+    PatientRaceDemographics raceDemographic = new PatientRaceDemographics(patient);
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "race-category-value",
@@ -199,7 +199,7 @@ class PatientRaceDemographicTest {
     );
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "another-race-category-value",
@@ -219,7 +219,7 @@ class PatientRaceDemographicTest {
     );
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2023-06-12"),
             "race-category-value",
@@ -229,11 +229,11 @@ class PatientRaceDemographicTest {
         )
     );
 
-    assertThat(raceDemographic.races()).satisfiesExactly(
+    assertThat(raceDemographic.details()).satisfiesExactly(
         actual -> assertThat(actual)
-            .returns("another-race-category-value", PersonRace::getRaceCategoryCd),
+            .returns("another-race-category-value", PatientRace::category),
         actual -> assertThat(actual)
-            .returns("race-category-value", PersonRace::getRaceCategoryCd)
+            .returns("race-category-value", PatientRace::category)
     );
 
   }
@@ -242,10 +242,10 @@ class PatientRaceDemographicTest {
   void should_not_add_race_if_the_category_is_already_present() {
     Person patient = new Person(117L, "local-id-value");
 
-    PatientRaceDemographic raceDemographic = new PatientRaceDemographic(patient);
+    PatientRaceDemographics raceDemographic = new PatientRaceDemographics(patient);
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "race-category-value",
@@ -255,7 +255,7 @@ class PatientRaceDemographicTest {
         )
     );
 
-    PatientCommand.AddRace duplicate = new PatientCommand.AddRace(
+    PatientCommand.AddRaceInfo duplicate = new PatientCommand.AddRaceInfo(
         117L,
         LocalDate.parse("2022-05-13"),
         "race-category-value",
@@ -275,10 +275,10 @@ class PatientRaceDemographicTest {
 
     Person patient = new Person(117L, "local-id-value");
 
-    PatientRaceDemographic raceDemographic = new PatientRaceDemographic(patient);
+    PatientRaceDemographics raceDemographic = new PatientRaceDemographics(patient);
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "race-category-value",
@@ -289,7 +289,7 @@ class PatientRaceDemographicTest {
     );
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "another-race-category-value",
@@ -311,19 +311,19 @@ class PatientRaceDemographicTest {
         )
     );
 
-    assertThat(raceDemographic.races()).satisfiesExactlyInAnyOrder(
+    assertThat(raceDemographic.details()).satisfiesExactlyInAnyOrder(
         unchanged -> assertThat(unchanged)
             .describedAs("Other Race Category remains unchanged")
-            .returns("another-race-category-value", PersonRace::getRaceCategoryCd)
-            .returns("another-race-category-value", PersonRace::getRaceCd),
+            .returns("another-race-category-value", PatientRace::category)
+            .returns("another-race-category-value", PatientRace::detail),
         updated -> assertThat(updated)
             .describedAs("Expected Race Category changed")
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(LocalDate.parse("2022-06-09"), PersonRace::getAsOfDate)
-                    .returns("race-category-value", PersonRace::getRaceCd)
-                    .returns("race-category-value", PersonRace::getRaceCategoryCd)
+                    .returns(LocalDate.parse("2022-06-09"), PatientRace::asOf)
+                    .returns("race-category-value", PatientRace::detail)
+                    .returns("race-category-value", PatientRace::category)
             )
             .satisfies(
                 race -> assertThat(race)
@@ -332,7 +332,7 @@ class PatientRaceDemographicTest {
                     .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
-                race -> assertThat(race.getAudit())
+                race -> assertThat(race.audit())
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.changed())
@@ -348,10 +348,10 @@ class PatientRaceDemographicTest {
 
     Person patient = new Person(117L, "local-id-value");
 
-    PatientRaceDemographic raceDemographic = new PatientRaceDemographic(patient);
+    PatientRaceDemographics raceDemographic = new PatientRaceDemographics(patient);
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "race-category-value",
@@ -362,7 +362,7 @@ class PatientRaceDemographicTest {
     );
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "another-race-category-value",
@@ -384,22 +384,22 @@ class PatientRaceDemographicTest {
         )
     );
 
-    assertThat(raceDemographic.races()).satisfiesExactlyInAnyOrder(
+    assertThat(raceDemographic.details()).satisfiesExactlyInAnyOrder(
         unchanged -> assertThat(unchanged)
             .describedAs("Other Race Category remains unchanged")
-            .returns("another-race-category-value", PersonRace::getRaceCategoryCd)
-            .returns("another-race-category-value", PersonRace::getRaceCd),
+            .returns("another-race-category-value", PatientRace::category)
+            .returns("another-race-category-value", PatientRace::detail),
         updated -> assertThat(updated)
             .describedAs("Expected Race Category changed")
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(LocalDate.parse("2022-06-09"), PersonRace::getAsOfDate)
-                    .returns("race-category-value", PersonRace::getRaceCd)
-                    .returns("race-category-value", PersonRace::getRaceCategoryCd)
+                    .returns(LocalDate.parse("2022-06-09"), PatientRace::asOf)
+                    .returns("race-category-value", PatientRace::detail)
+                    .returns("race-category-value", PatientRace::category)
             )
             .satisfies(
-                race -> assertThat(race.getAudit())
+                race -> assertThat(race.audit())
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.changed())
@@ -412,12 +412,12 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(LocalDate.parse("2022-06-09"), PersonRace::getAsOfDate)
-                    .returns("race-category-value", PersonRace::getRaceCategoryCd)
-                    .returns("race-one", PersonRace::getRaceCd)
+                    .returns(LocalDate.parse("2022-06-09"), PatientRace::asOf)
+                    .returns("race-category-value", PatientRace::category)
+                    .returns("race-one", PatientRace::detail)
             )
             .satisfies(
-                race -> assertThat(race.getAudit())
+                race -> assertThat(race.audit())
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.changed())
@@ -430,12 +430,12 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(LocalDate.parse("2022-06-09"), PersonRace::getAsOfDate)
-                    .returns("race-category-value", PersonRace::getRaceCategoryCd)
-                    .returns("race-two", PersonRace::getRaceCd)
+                    .returns(LocalDate.parse("2022-06-09"), PatientRace::asOf)
+                    .returns("race-category-value", PatientRace::category)
+                    .returns("race-two", PatientRace::detail)
             )
             .satisfies(
-                race -> assertThat(race.getAudit())
+                race -> assertThat(race.audit())
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.changed())
@@ -450,10 +450,10 @@ class PatientRaceDemographicTest {
   void should_add_race_detail_when_updating_race_to_include_details() {
     Person patient = new Person(117L, "local-id-value");
 
-    PatientRaceDemographic raceDemographic = new PatientRaceDemographic(patient);
+    PatientRaceDemographics raceDemographic = new PatientRaceDemographics(patient);
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "race-category-value",
@@ -475,17 +475,17 @@ class PatientRaceDemographicTest {
         )
     );
 
-    assertThat(raceDemographic.races()).satisfiesExactlyInAnyOrder(
+    assertThat(raceDemographic.details()).satisfiesExactlyInAnyOrder(
         updated -> assertThat(updated)
             .describedAs("Expected Race Category changed")
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns("race-category-value", PersonRace::getRaceCd)
-                    .returns("race-category-value", PersonRace::getRaceCategoryCd)
+                    .returns("race-category-value", PatientRace::detail)
+                    .returns("race-category-value", PatientRace::category)
             )
             .satisfies(
-                race -> assertThat(race.getAudit())
+                race -> assertThat(race.audit())
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.changed())
@@ -498,9 +498,9 @@ class PatientRaceDemographicTest {
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns(LocalDate.parse("2022-05-12"), PersonRace::getAsOfDate)
-                    .returns("race-category-value", PersonRace::getRaceCategoryCd)
-                    .returns("race-one", PersonRace::getRaceCd)
+                    .returns(LocalDate.parse("2022-05-12"), PatientRace::asOf)
+                    .returns("race-category-value", PatientRace::category)
+                    .returns("race-one", PatientRace::detail)
             )
             .satisfies(
                 race -> assertThat(race)
@@ -509,7 +509,7 @@ class PatientRaceDemographicTest {
                     .returns(LocalDateTime.parse("2020-03-03T10:15:30"), r -> r.recordStatus().appliedOn())
             )
             .satisfies(
-                race -> assertThat(race.getAudit())
+                race -> assertThat(race.audit())
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.added())
@@ -529,10 +529,10 @@ class PatientRaceDemographicTest {
   void should_remove_race_detail_when_updating_race_to_include_details() {
     Person patient = new Person(117L, "local-id-value");
 
-    PatientRaceDemographic raceDemographic = new PatientRaceDemographic(patient);
+    PatientRaceDemographics raceDemographic = new PatientRaceDemographics(patient);
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "race-category-value",
@@ -554,17 +554,17 @@ class PatientRaceDemographicTest {
         )
     );
 
-    assertThat(raceDemographic.races()).satisfiesExactlyInAnyOrder(
+    assertThat(raceDemographic.details()).satisfiesExactlyInAnyOrder(
         updated -> assertThat(updated)
             .describedAs("Expected Race Category changed")
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
-                    .returns("race-category-value", PersonRace::getRaceCd)
-                    .returns("race-category-value", PersonRace::getRaceCategoryCd)
+                    .returns("race-category-value", PatientRace::detail)
+                    .returns("race-category-value", PatientRace::category)
             )
             .satisfies(
-                race -> assertThat(race.getAudit())
+                race -> assertThat(race.audit())
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.changed())
@@ -580,10 +580,10 @@ class PatientRaceDemographicTest {
 
     Person patient = new Person(117L, "local-id-value");
 
-    PatientRaceDemographic raceDemographic = new PatientRaceDemographic(patient);
+    PatientRaceDemographics raceDemographic = new PatientRaceDemographics(patient);
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "race-category-value",
@@ -594,7 +594,7 @@ class PatientRaceDemographicTest {
     );
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "another-race-category-value",
@@ -613,9 +613,9 @@ class PatientRaceDemographicTest {
         )
     );
 
-    assertThat(raceDemographic.races()).satisfiesExactly(
+    assertThat(raceDemographic.details()).satisfiesExactly(
         actual -> assertThat(actual)
-            .returns("another-race-category-value", PersonRace::getRaceCategoryCd)
+            .returns("another-race-category-value", PatientRace::category)
     );
   }
 
@@ -624,10 +624,10 @@ class PatientRaceDemographicTest {
 
     Person patient = new Person(117L, "local-id-value");
 
-    PatientRaceDemographic raceDemographic = new PatientRaceDemographic(patient);
+    PatientRaceDemographics raceDemographic = new PatientRaceDemographics(patient);
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "race-category-value",
@@ -638,7 +638,7 @@ class PatientRaceDemographicTest {
     );
 
     raceDemographic.add(
-        new PatientCommand.AddRace(
+        new PatientCommand.AddRaceInfo(
             117L,
             LocalDate.parse("2022-05-12"),
             "another-race-category-value",
@@ -657,9 +657,9 @@ class PatientRaceDemographicTest {
         )
     );
 
-    assertThat(raceDemographic.races()).satisfiesExactly(
+    assertThat(raceDemographic.details()).satisfiesExactly(
         actual -> assertThat(actual)
-            .returns("another-race-category-value", PersonRace::getRaceCategoryCd)
+            .returns("another-race-category-value", PatientRace::category)
     );
   }
 

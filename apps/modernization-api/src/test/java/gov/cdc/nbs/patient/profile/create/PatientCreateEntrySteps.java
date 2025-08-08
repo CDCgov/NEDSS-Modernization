@@ -26,8 +26,8 @@ public class PatientCreateEntrySteps {
   private final Active<GeneralInformationDemographic> activeGeneralInformation;
   private final Available<PhoneDemographic> availablePoneDemographic;
   private final Available<AddressDemographic> availableAddressDemographic;
+  private final Available<RaceDemographic> availableRaceDemographic;
   private final Available<IdentificationDemographic> availableIdentificationDemographic;
-  private final Active<RaceDemographic> activeRaceDemographic;
   private final Active<NewPatient> input;
 
   PatientCreateEntrySteps(
@@ -40,8 +40,8 @@ public class PatientCreateEntrySteps {
       final Active<GeneralInformationDemographic> activeGeneralInformation,
       final Available<PhoneDemographic> availablePoneDemographic,
       final Available<AddressDemographic> availableAddressDemographic,
+      final Available<RaceDemographic> availableRaceDemographic,
       final Available<IdentificationDemographic> availableIdentificationDemographic,
-      final Active<RaceDemographic> activeRaceDemographic,
       final Active<NewPatient> input) {
     this.activeAdministrative = activeAdministrative;
     this.activeBirthDemographic = activeBirthDemographic;
@@ -52,8 +52,8 @@ public class PatientCreateEntrySteps {
     this.activeGeneralInformation = activeGeneralInformation;
     this.availablePoneDemographic = availablePoneDemographic;
     this.availableAddressDemographic = availableAddressDemographic;
+    this.availableRaceDemographic = availableRaceDemographic;
     this.availableIdentificationDemographic = availableIdentificationDemographic;
-    this.activeRaceDemographic = activeRaceDemographic;
     this.input = input;
   }
 
@@ -83,7 +83,7 @@ public class PatientCreateEntrySteps {
 
   @Given("the race is included with the extended patient data")
   public void includeRace() {
-    this.activeRaceDemographic.maybeActive().ifPresent(
+    this.availableRaceDemographic.all().forEach(
         demographic -> this.input.active(current -> current.withRace(demographic)));
   }
 

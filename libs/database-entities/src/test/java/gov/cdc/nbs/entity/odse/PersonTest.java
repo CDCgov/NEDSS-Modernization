@@ -43,7 +43,7 @@ class PersonTest {
         .satisfies(current -> assertThat(current.phones()).isEmpty())
         .satisfies(current -> assertThat(current.names()).isEmpty())
         .satisfies(current -> assertThat(current.identifications()).isEmpty())
-        .satisfies(current -> assertThat(current.race().races()).isEmpty())
+        .satisfies(current -> assertThat(current.race().details()).isEmpty())
     ;
 
   }

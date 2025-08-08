@@ -24,6 +24,7 @@ class PatientEditService {
   private final PatientEthnicityEditService ethnicityEditService;
   private final PatientAddressEditService addressEditService;
   private final PatientNameEditService nameEditService;
+  private final PatientRaceEditService raceEditService;
   private final PatientPhoneEditService phoneEditService;
   private final PatientIdentificationEditService identificationEditService;
 
@@ -35,7 +36,9 @@ class PatientEditService {
       final PatientAddressEditService addressEditService,
       final PatientNameEditService nameEditService,
       final PatientPhoneEditService phoneEditService,
-      final PatientIdentificationEditService identificationEditService) {
+      final PatientIdentificationEditService identificationEditService,
+      final PatientRaceEditService raceEditService
+  ) {
     this.service = service;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
     this.permissionScopeResolver = permissionScopeResolver;
@@ -44,25 +47,29 @@ class PatientEditService {
     this.nameEditService = nameEditService;
     this.phoneEditService = phoneEditService;
     this.identificationEditService = identificationEditService;
+    this.raceEditService = raceEditService;
   }
 
   void edit(
       final RequestContext context,
       final long patient,
-      final EditedPatient changes) throws PatientException {
+      final EditedPatient changes
+  ) throws PatientException {
 
     this.service.using(
         patient,
-        found -> edit(context, changes, found));
+        found -> edit(context, changes, found)
+    );
 
   }
 
   private void edit(
       final RequestContext context,
       final EditedPatient changes,
-      final Person patient) {
+      final Person patient
+  ) {
 
-    long identifier = patient.getId();
+    long identifier = patient.id();
 
     changes.maybeAdministrative()
         .map(administrative -> asUpdateAdministrativeInfo(identifier, context, administrative))
@@ -94,6 +101,7 @@ class PatientEditService {
     nameEditService.apply(context, patient, changes.names());
     phoneEditService.apply(context, patient, changes.phoneEmails());
     identificationEditService.apply(context, patient, changes.identifications());
+    raceEditService.apply(context, patient, changes.races());
   }
 
 }

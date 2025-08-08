@@ -7,6 +7,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,6 +126,18 @@ public class PatientFileSteps {
             jsonPath(
                 "$.reason",
                 startsWith("Unable to find patient")
+            )
+        );
+  }
+
+  @Then("I am unable to edit the patient")
+  public void unableToEdit() throws Exception {
+    this.response.active()
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            jsonPath(
+                "$.reason",
+                equalTo("Unable to apply changes to patient %d".formatted(this.activePatient.active().id()))
             )
         );
   }

@@ -10,11 +10,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
-class PatientProfileRaceCategoryValidationRequester {
+class PatientFileRaceCategoryValidationRequester {
   private final Authenticated authenticated;
   private final MockMvc mvc;
 
-  PatientProfileRaceCategoryValidationRequester(
+  PatientFileRaceCategoryValidationRequester(
       final Authenticated authenticated,
       final MockMvc mvc
   ) {
