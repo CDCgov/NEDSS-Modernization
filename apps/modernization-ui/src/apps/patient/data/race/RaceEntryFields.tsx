@@ -29,13 +29,14 @@ const RaceEntryFields = ({
     const id = useWatch({ control, name: 'id' });
 
     const selectedCategory = useWatch({ control, name: 'race.value', defaultValue: entry?.race?.value });
-    const detailedRaces = useDetailedRaceOptions(selectedCategory);
+    const { options: detailedRaces, load } = useDetailedRaceOptions();
 
     useEffect(() => {
         if (selectedCategory !== entry?.race?.value) {
             //  when the category differs from the entry, clear the details
             setValue('detailed', []);
         }
+        load(selectedCategory);
     }, [selectedCategory]);
 
     return (

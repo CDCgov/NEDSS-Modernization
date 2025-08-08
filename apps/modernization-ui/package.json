@@ -19,7 +19,7 @@
         "graphql": "^16.8.1",
         "lodash.debounce": "^4.0.8",
         "lodash.merge": "^4.0.8",
-        "posthog-js": "^1.161.0",
+        "posthog-js": "^1.259.0",
         "react": "^18",
         "react-dom": "^18",
         "react-hook-form": "7.54.2",
@@ -84,6 +84,7 @@
         "webpack": "^5.90.1"
     },
     "scripts": {
+        "clean": "rm -rf node_modules && rm package-lock.json && npm install",
         "start": "react-scripts start",
         "build": "npx react-scripts test --watchAll=false && react-scripts build",
         "test": "react-scripts test",

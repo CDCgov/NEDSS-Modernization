@@ -51,13 +51,7 @@ const PatientFileDemographics = () => {
                     viewable={false}
                     editable={false}
                 />
-                <PatientFileRaceCard
-                    id="patient-file-race"
-                    provider={demographics.get().race}
-                    sizing={sizing}
-                    viewable={false}
-                    editable={false}
-                />
+                <PatientFileRaceCard id="patient-file-race" provider={demographics.get().race} sizing={sizing} />
                 <span data-half>
                     <PatientFileEthnicityCard
                         id="patient-file-ethnicity"

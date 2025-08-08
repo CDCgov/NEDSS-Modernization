@@ -31,7 +31,7 @@ type RepeatingBlockProps<V extends FieldValues> = {
     onChange?: (data: V[]) => void;
     isDirty?: (isDirty: boolean) => void;
     isValid?: (isValid: boolean) => void;
-    formRenderer: (entry?: V, sizing?: Sizing) => ReactNode;
+    formRenderer?: (entry?: V, sizing?: Sizing) => ReactNode;
 } & Pick<CardProps, 'id' | 'title' | 'collapsible'>;
 
 const RepeatingBlock = <V extends FieldValues>({
@@ -176,7 +176,7 @@ const RepeatingBlock = <V extends FieldValues>({
             <Shown when={editable && interaction.status !== 'viewing'}>
                 <FormProvider {...form}>
                     <div className={classNames(styles.form, { [styles.changed]: form.formState.isDirty })}>
-                        {formRenderer(interaction.selected?.value, sizing)}
+                        {formRenderer?.(interaction.selected?.value, sizing)}
                     </div>
                 </FormProvider>
             </Shown>
@@ -344,19 +344,14 @@ const EditFooter = <E extends FieldValues>({
                 [styles.large]: sizing === 'large'
             })}>
             <Shown when={interaction.status === 'adding'}>
-                <Button
-                    secondary
-                    icon="add"
-                    sizing={sizing}
-                    aria-description={`add ${title}`}
-                    onClick={form.handleSubmit(handleAdd)}>
+                <Button secondary icon="add" sizing={sizing} onClick={form.handleSubmit(handleAdd)}>
                     {`Add ${title.toLowerCase()}`}
                 </Button>
                 <Shown when={clearable}>
                     <Button
                         secondary
                         sizing={sizing}
-                        aria-description={`clear ${title}`}
+                        aria-description={`clear the pending values for ${title}`}
                         onClick={handleClear}
                         onMouseDown={(e) => e.preventDefault()}>
                         Clear
@@ -364,11 +359,7 @@ const EditFooter = <E extends FieldValues>({
                 </Shown>
             </Shown>
             <Shown when={interaction.status === 'editing'}>
-                <Button
-                    secondary
-                    sizing={sizing}
-                    aria-description={`update ${title}`}
-                    onClick={form.handleSubmit(handleUpdate)}>
+                <Button secondary sizing={sizing} onClick={form.handleSubmit(handleUpdate)}>
                     {`Update ${title.toLowerCase()}`}
                 </Button>
                 <Button

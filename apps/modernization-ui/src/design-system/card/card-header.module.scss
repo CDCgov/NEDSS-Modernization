@@ -44,4 +44,8 @@
             }
         }
     }
+
+    &:not(:has(button[aria-expanded='false'])) {
+        @extend %thin-bottom;
+    }
 }

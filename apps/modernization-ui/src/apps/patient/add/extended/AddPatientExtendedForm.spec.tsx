@@ -47,7 +47,7 @@ const mockDetailedRaces: Selectable[] = [
 
 jest.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
-    useDetailedRaceOptions: () => mockDetailedRaces
+    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: jest.fn })
 }));
 
 type Props = {
