@@ -1,12 +1,12 @@
 import { Selectable } from 'options';
 import { useConceptOptions } from 'options/concepts';
 
-type IdentificationCodedValues = {
+type IdentificationOptions = {
     types: Selectable[];
     authorities: Selectable[];
 };
 
-const useIdentificationCodedValues = () => {
+const useIdentificationOptions = () => {
     const types = useConceptOptions('EI_TYPE_PAT', { lazy: false });
     const authorities = useConceptOptions('EI_AUTH_PAT', { lazy: false });
 
@@ -16,5 +16,5 @@ const useIdentificationCodedValues = () => {
     };
 };
 
-export { useIdentificationCodedValues };
-export type { IdentificationCodedValues };
+export { useIdentificationOptions };
+export type { IdentificationOptions };

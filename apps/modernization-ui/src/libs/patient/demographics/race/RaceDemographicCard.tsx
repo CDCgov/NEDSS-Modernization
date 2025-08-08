@@ -1,9 +1,13 @@
 import { SortHandler, SortingProvider } from 'libs/sorting';
 import { columnSortResolver } from 'design-system/table';
-import { RaceRepeatingBlock, RaceRepeatingBlockProps, columns } from './RaceRepeatingBlock';
+import {
+    RaceDemographicRepeatingBlock,
+    RaceDemographicRepeatingBlockProps,
+    columns
+} from './RaceDemographicRepeatingBlock';
 
 type RaceDemographicCardProps = Omit<
-    RaceRepeatingBlockProps,
+    RaceDemographicRepeatingBlockProps,
     'columns' | 'formRenderer' | 'viewRenderer' | 'defaultValues'
 >;
 
@@ -15,7 +19,7 @@ const RaceDemographicCard = ({ sizing, collapsible = true, data = [], ...remaini
             {(sorting) => (
                 <SortHandler sorting={sorting} resolver={sortResolver} data={data}>
                     {({ sorting, sorted }) => (
-                        <RaceRepeatingBlock
+                        <RaceDemographicRepeatingBlock
                             {...remaining}
                             sizing={sizing}
                             data={sorted}

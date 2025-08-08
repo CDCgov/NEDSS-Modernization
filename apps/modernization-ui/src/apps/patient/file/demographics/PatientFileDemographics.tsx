@@ -36,20 +36,16 @@ const PatientFileDemographics = () => {
                     id="patient-file-address"
                     sizing={sizing}
                     provider={demographics.get().addresses}
-                    editable={false}
                 />
                 <PatientFilePhoneEmailCard
                     id="patient-file-phone-email"
                     sizing={sizing}
                     provider={demographics.get().phoneEmail}
-                    editable={false}
                 />
                 <PatientFileIdentificationCard
                     id="patient-file-identification"
                     sizing={sizing}
                     provider={demographics.get().identifications}
-                    viewable={false}
-                    editable={false}
                 />
                 <PatientFileRaceCard id="patient-file-race" provider={demographics.get().race} sizing={sizing} />
                 <span data-half>
