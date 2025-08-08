@@ -37,7 +37,9 @@ const columnPreferences: ColumnPreference[] = [
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
 ];
 
-const displayPatientName = (value?: DisplayableName) => <a href="patient....">{value && displayName('full')(value)}</a>;
+const displayPatientName = (value?: DisplayableName) => (
+    <a href="patient....">{value && displayName('fullLastFirst')(value)}</a>
+);
 
 const columns = (onClose: () => void): Column<PatientFileContact>[] => [
     {
