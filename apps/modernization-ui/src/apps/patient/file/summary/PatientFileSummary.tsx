@@ -1,5 +1,6 @@
 import { useComponentSizing } from 'design-system/sizing';
 import { usePatientFileData } from '../usePatientFileData';
+import { PatientFileView } from '../PatientFileView';
 import { PatientFileDemographicsSummaryCard } from '../demographics/summary';
 import { PatientFileOpenInvestigationsCard } from './openInvestigations';
 import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
@@ -20,10 +21,10 @@ const PatientFileSummary = () => {
     const nav = useNavigate();
 
     return (
-        <>
+        <PatientFileView patient={patient} sizing={sizing}>
             {inMergeQueue && !mergeQueueLoading && (
                 <AlertMessage type="warning" slim>
-                    We found potential duplicates for this patient in system-identified matches.
+                    We found potential duplicates for this patient in system-identified matches.&nbsp;&nbsp;&nbsp;
                     <a
                         href={`/deduplication/merge/${mergeGroup}`}
                         onClick={(e) => {
