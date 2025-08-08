@@ -32,3 +32,17 @@ const initial = (asOf: string = today()): Partial<PhoneEmailDemographic> => ({
 });
 
 export { initial };
+
+const labels = {
+    asOf: 'As of',
+    type: 'Type',
+    use: 'Use',
+    countryCode: 'Country code',
+    phoneNumber: 'Phone number',
+    extension: 'Extension',
+    email: 'Email',
+    url: 'URL',
+    comment: 'Comments'
+};
+
+export { labels };

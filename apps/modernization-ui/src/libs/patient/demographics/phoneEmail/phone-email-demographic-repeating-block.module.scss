@@ -1,0 +1,9 @@
+@use 'design-system/table/header/widths';
+
+.type-header {
+    @include widths.fixed(15rem);
+}
+
+.number-header {
+    @include widths.fixed(8rem);
+}
