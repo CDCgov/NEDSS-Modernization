@@ -11,8 +11,6 @@ import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/lo
 import { HasMortalityDemographic, labels } from '../mortality';
 import { MoralityOptions } from './useMortalityOptions';
 
-const AS_OF_DATE_LABEL = 'Mortality information as of';
-
 type MortalityDemographicFieldsProps = {
     form: UseFormReturn<HasMortalityDemographic>;
     options: MoralityOptions;
@@ -48,11 +46,11 @@ const MortalityDemographicFields = ({
             <Controller
                 control={form.control}
                 name="mortality.asOf"
-                rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
+                rules={{ ...validateRequiredRule(labels.asOf), ...validDateRule(labels.asOf) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         id={name}
-                        label={AS_OF_DATE_LABEL}
+                        label={labels.asOf}
                         orientation={orientation}
                         value={value}
                         onChange={onChange}
