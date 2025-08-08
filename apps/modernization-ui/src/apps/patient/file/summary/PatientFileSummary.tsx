@@ -5,9 +5,9 @@ import { PatientFileDemographicsSummaryCard } from '../demographics/summary';
 import { PatientFileOpenInvestigationsCard } from './openInvestigations';
 import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
 import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
+import { AlertMessage } from 'design-system/message';
 import { FeatureToggle } from 'feature';
 import { usePatientMergeQueueStatus } from '../usePatientMergeQueueStatus';
-import { AlertMessage } from 'design-system/alert/AlertMessage';
 import { useNavigate } from 'react-router';
 
 const PatientFileSummary = () => {
