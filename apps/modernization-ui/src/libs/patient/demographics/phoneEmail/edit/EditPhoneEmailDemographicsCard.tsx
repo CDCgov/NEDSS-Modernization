@@ -1,22 +1,36 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
-import { HasPhoneEmailDemographics } from '../phoneEmails';
-import { PhoneEmailDemographicCard, PhoneEmailDemographicCardProps } from '../PhoneEmailDemographicCard';
+import { Sizing } from 'design-system/field';
+import { HasPhoneEmailDemographics, initial, PhoneEmailDemographic } from '../phoneEmails';
+import { PhoneEmailDemographicCardProps } from '../PhoneEmailDemographicCard';
+import { PhoneEmailDemographicRepeatingBlock } from '../PhoneEmailDemographicRepeatingBlock';
+import { PhoneEmailDemographicFields } from './PhoneEmailDemographicFields';
+import { usePhoneEmailOptions } from './usePhoneEmailOptions';
+
+const defaultValues = initial();
 
 type EditPhoneEmailDemographicsCardProps = {
     form: UseFormReturn<HasPhoneEmailDemographics>;
-} & Omit<PhoneEmailDemographicCardProps, 'id' | 'collapsible'>;
+} & Omit<PhoneEmailDemographicCardProps, 'id' | 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
 
 const EditPhoneEmailDemographicsCard = ({ form, ...remaining }: EditPhoneEmailDemographicsCardProps) => {
+    const options = usePhoneEmailOptions();
+
     return (
         <Controller
             control={form.control}
             name="phoneEmails"
             render={({ field: { onChange, value, name } }) => (
-                <PhoneEmailDemographicCard
+                <PhoneEmailDemographicRepeatingBlock
                     {...remaining}
                     id={name}
                     collapsible={false}
                     data={value}
+                    viewable
+                    editable
+                    defaultValues={defaultValues}
+                    formRenderer={(_?: PhoneEmailDemographic, sizing?: Sizing) => (
+                        <PhoneEmailDemographicFields sizing={sizing} options={options} />
+                    )}
                     onChange={onChange}
                 />
             )}

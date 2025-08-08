@@ -13,10 +13,14 @@
 .collapsible {
     @include expanded('height');
     overflow: hidden;
+    visibility: visible;
+
     border-end-start-radius: inherit;
     border-end-end-radius: inherit;
 
     &.collapsed {
         @include collapsed('height');
+
+        visibility: hidden;
     }
 }

@@ -1,16 +1,18 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { Sizing } from 'design-system/field';
 import { AddressDemographic, HasAddressDemographics, initial } from '../address';
-import { AddressDemographicCardProps } from '../AddressDemographicCard';
+import {
+    AddressDemographicRepeatingBlock,
+    AddressDemographicRepeatingBlockProps
+} from '../AddressDemographicRepeatingBlock';
 import { AddressDemographicFields } from './AddressDemographicFields';
-import { AddressDemographicRepeatingBlock } from '../AddressDemographicRepeatingBlock';
 import { useAddressOptions } from './useAddressOptions';
 
 const defaultValues = initial();
 
 type EditAddressDemographicsCardProps = {
     form: UseFormReturn<HasAddressDemographics>;
-} & Omit<AddressDemographicCardProps, 'id' | 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
+} & Omit<AddressDemographicRepeatingBlockProps, 'id' | 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
 
 const EditAddressDemographicsCard = ({ form, ...remaining }: EditAddressDemographicsCardProps) => {
     const options = useAddressOptions();
