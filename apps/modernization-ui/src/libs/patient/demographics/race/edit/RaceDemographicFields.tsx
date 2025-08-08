@@ -1,38 +1,37 @@
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { Selectable } from 'options';
-import { useDetailedRaceOptions } from 'options/race';
 import { EntryFieldsProps } from 'design-system/entry';
 import { validateRequiredRule } from 'validation/entry';
 import { validDateRule, DatePickerInput } from 'design-system/date';
 import { MultiSelect, SingleSelect } from 'design-system/select';
-import { RaceCategoryValidator, RaceDemographic, labels } from './race';
+import { RaceCategoryValidator, RaceDemographic, labels } from '../race';
+import { RaceOptions } from './useRaceOptions';
 
 type RaceDemographicFieldsProps = {
-    categories: Selectable[];
+    options: RaceOptions;
     categoryValidator: RaceCategoryValidator;
     entry?: RaceDemographic;
 } & EntryFieldsProps;
 
 const RaceDemographicFields = ({
-    orientation = 'horizontal',
-    sizing,
-    categories,
+    options,
     categoryValidator,
-    entry
+    entry,
+    orientation = 'horizontal',
+    sizing
 }: RaceDemographicFieldsProps) => {
     const { control, setValue } = useFormContext<RaceDemographic>();
 
     const id = useWatch({ control, name: 'id' });
 
-    const selectedCategory = useWatch({ control, name: 'race.value', defaultValue: entry?.race?.value });
-    const detailedRaces = useDetailedRaceOptions(selectedCategory);
+    const selectedCategory = useWatch({ control, name: 'race', defaultValue: entry?.race });
 
     useEffect(() => {
-        if (selectedCategory !== entry?.race?.value) {
+        if (selectedCategory?.value !== entry?.race?.value) {
             //  when the category differs from the entry, clear the details
             setValue('detailed', []);
         }
+        options.selected(selectedCategory);
     }, [selectedCategory]);
 
     return (
@@ -53,6 +52,7 @@ const RaceDemographicFields = ({
                         error={error?.message}
                         required
                         sizing={sizing}
+                        aria-description="This field defaults to today's date and can be changed if needed."
                     />
                 )}
             />
@@ -73,7 +73,7 @@ const RaceDemographicFields = ({
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={categories}
+                        options={options.categories}
                         error={error?.message}
                         sizing={sizing}
                     />
@@ -91,7 +91,8 @@ const RaceDemographicFields = ({
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={detailedRaces}
+                        disabled={options.details.length === 0}
+                        options={options.details}
                         error={error?.message}
                         sizing={sizing}
                         helperText="Use Crtl to select more than one"
@@ -103,3 +104,4 @@ const RaceDemographicFields = ({
 };
 
 export { RaceDemographicFields };
+export type { RaceDemographicFieldsProps };

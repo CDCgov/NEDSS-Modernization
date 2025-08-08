@@ -1,12 +1,13 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
 import { createMemoryRouter, Navigate, RouterProvider, useNavigate } from 'react-router';
-import { CountiesCodedValues } from 'location';
 import { useShowCancelModal } from '../cancelAddPatientPanel';
 import { PatientDataEntryMethodProvider } from '../usePatientDataEntryMethod';
 import { Selectable } from 'options';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { PageProvider } from 'page';
+
+window.scrollTo = jest.fn();
 
 class MockIntersectionObserver {
     observe = jest.fn();
@@ -27,28 +28,21 @@ Object.defineProperty(window, 'IntersectionObserverEntry', {
     value: jest.fn()
 });
 
-const mockCountyCodedValues: CountiesCodedValues = { counties: [{ name: 'CountyA', value: 'A', group: 'G' }] };
-jest.mock('location/useCountyCodedValues', () => ({
-    useCountyCodedValues: () => mockCountyCodedValues
-}));
-
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
     useNavigate: jest.fn()
 }));
 
-const mockLocationCodedValues = {
-    states: {
-        all: [{ name: 'StateName', value: '1' }]
-    },
-    counties: {
-        byState: () => [{ name: 'CountyName', value: '2' }]
-    },
-    countries: [{ name: 'CountryName', value: '3' }]
-};
+const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
-jest.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
+const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
+
+const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+
+jest.mock('options/location', () => ({
+    useCountyOptions: () => mockCountyCodedValues,
+    useCountryOptions: () => mockCountryCodedValues,
+    useStateOptions: () => mockStateCodedValues
 }));
 
 const mockRaceCategories: Selectable[] = [{ value: '1', name: 'race name' }];
@@ -60,7 +54,7 @@ const mockDetailedRaces: Selectable[] = [
 
 jest.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
-    useDetailedRaceOptions: () => mockDetailedRaces
+    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: jest.fn })
 }));
 
 jest.mock('../cancelAddPatientPanel/useShowCancelModal', () => ({
@@ -74,16 +68,12 @@ const renderWithRouter = () => {
             element: (
                 <PageProvider>
                     <PatientDataEntryMethodProvider>
-                    <SkipLinkProvider>
-                        <AddPatientExtended />
-                    </SkipLinkProvider>
-                </PatientDataEntryMethodProvider>
+                        <SkipLinkProvider>
+                            <AddPatientExtended />
+                        </SkipLinkProvider>
+                    </PatientDataEntryMethodProvider>
                 </PageProvider>
             )
-        },
-        {
-            path: '/add-patient',
-            element: <Navigate to={'/'} />
         }
     ];
 
@@ -109,7 +99,7 @@ describe('AddPatientExtended', () => {
 
         const cancelButton = getByRole('button', { name: 'Cancel' });
         const saveButton = getByRole('button', { name: 'Save' });
-        
+
         expect(cancelButton).toBeInTheDocument();
         expect(saveButton).toBeInTheDocument();
     });
@@ -122,9 +112,9 @@ describe('AddPatientExtended', () => {
     });
 
     it('should redirect to add-patient when cancel is clicked', () => {
-        const { getByText } = renderWithRouter();
+        renderWithRouter();
 
-        const cancelButton = getByText('Cancel');
+        const cancelButton = screen.getByRole('button', { name: 'Cancel' });
         cancelButton.click();
 
         expect(useNavigate).toBeCalled();
